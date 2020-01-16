@@ -84,8 +84,9 @@ public:
                 TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
-                    map_obstruction_set_error_text(tileElement);
-                    return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText);
+                    auto res = MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
+                    map_obstruction_set_error_text(tileElement, res);
+                    return res;
                 }
             }
             sceneryRemovalCost = GetSmallSceneryRemovalCost();
@@ -117,8 +118,9 @@ public:
         TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {
-            map_obstruction_set_error_text(tileElement);
-            return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText);
+            auto res = MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
+            map_obstruction_set_error_text(tileElement, res);
+            return res;
         }
 
         if (!gCheatsDisableClearanceChecks)
@@ -143,8 +145,9 @@ public:
             tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
             if (tileElement != nullptr)
             {
-                map_obstruction_set_error_text(tileElement);
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText);
+                auto res = MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
+                map_obstruction_set_error_text(tileElement, res);
+                return res;
             }
         }
         auto res = std::make_unique<GameActionResult>();
