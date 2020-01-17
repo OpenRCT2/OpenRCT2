@@ -187,9 +187,9 @@ public:
 
         auto* surfaceElement = map_get_surface_element_at(_loc);
 
-        if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
+        if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight())
         {
-            int32_t water_height = (surfaceElement->GetWaterHeight() * 16) - 1;
+            int32_t water_height = surfaceElement->GetWaterHeight() - 1;
             if (water_height > targetHeight)
             {
                 return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -205,7 +205,7 @@ public:
 
             if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
             {
-                if (static_cast<int32_t>((surfaceElement->GetWaterHeight() * 16)) > targetHeight)
+                if (surfaceElement->GetWaterHeight() > targetHeight)
                 {
                     return std::make_unique<SmallSceneryPlaceActionResult>(
                         GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
@@ -227,7 +227,7 @@ public:
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->GetWaterHeight() || (surfaceElement->GetBaseZ()) != targetHeight)
+                    if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->GetBaseZ()) != targetHeight)
                     {
                         return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
                     }

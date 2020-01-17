@@ -82,14 +82,13 @@ private:
                 auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
-                uint8_t height = surfaceElement->GetWaterHeight();
+                uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
 
                 if (surfaceElement->base_height > maxHeight)
                     continue;
 
                 if (height != 0)
                 {
-                    height *= 2;
                     if (height > maxHeight)
                         continue;
                     height += 2;
@@ -141,7 +140,7 @@ private:
                 uint8_t height = surfaceElement->base_height;
                 if (surfaceElement->GetWaterHeight() > 0)
                 {
-                    height = surfaceElement->GetWaterHeight() * 2;
+                    height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
                 }
 
                 if (maxHeight > height)

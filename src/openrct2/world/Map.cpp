@@ -562,9 +562,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
         return 0;
     }
 
-    uint16_t height = (surfaceElement->GetWaterHeight() << 4);
-
-    return height;
+    return surfaceElement->GetWaterHeight();
 }
 
 /**
@@ -1300,7 +1298,7 @@ bool map_can_construct_with_clear_at(
             }
             continue;
         }
-        water_height = tileElement->AsSurface()->GetWaterHeight() * 2 * 8;
+        water_height = tileElement->AsSurface()->GetWaterHeight();
         if (water_height && water_height > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
         {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
@@ -1728,21 +1726,19 @@ static void clear_elements_at(const CoordsXY& loc)
 
 int32_t map_get_highest_z(const CoordsXY& loc)
 {
-    uint32_t z;
-
     auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
         return -1;
 
-    z = surfaceElement->GetBaseZ();
+    auto z = surfaceElement->GetBaseZ();
 
     // Raise z so that is above highest point of land and water on tile
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
-        z += 16;
+        z += LAND_HEIGHT_STEP;
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
-        z += 16;
+        z += LAND_HEIGHT_STEP;
 
-    z = std::max(z, surfaceElement->GetWaterHeight() * 16);
+    z = std::max(z, surfaceElement->GetWaterHeight());
     return z;
 }
 
@@ -2071,9 +2067,7 @@ bool map_surface_is_blocked(CoordsXY mapCoords)
         return true;
     }
 
-    int16_t water_height = surfaceElement->GetWaterHeight();
-    water_height *= 2;
-    if (water_height > surfaceElement->base_height)
+    if (surfaceElement->GetWaterHeight() > surfaceElement->GetBaseZ())
         return true;
 
     int16_t base_z = surfaceElement->base_height;

@@ -166,7 +166,7 @@ public:
 
         if (surfaceElement->GetWaterHeight() > 0)
         {
-            uint16_t waterHeight = surfaceElement->GetWaterHeight() * 16;
+            uint16_t waterHeight = surfaceElement->GetWaterHeight();
 
             if (targetHeight < waterHeight && !gCheatsDisableClearanceChecks)
             {

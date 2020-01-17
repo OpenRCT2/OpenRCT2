@@ -318,7 +318,7 @@ static void mapgen_place_trees()
                 continue;
 
             // Exclude water tiles
-            if (surfaceElement->GetWaterHeight() > 0)
+            if (surfaceElement->GetWaterHeight())
                 continue;
 
             pos.x = x;
@@ -401,7 +401,7 @@ static void mapgen_set_water_level(int32_t waterLevel)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
-                surfaceElement->SetWaterHeight(waterLevel / 2);
+                surfaceElement->SetWaterHeight(waterLevel * COORDS_Z_STEP);
         }
     }
 }
@@ -840,7 +840,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
             // Set water level
             if (surfaceElement->base_height < settings->water_level)
             {
-                surfaceElement->SetWaterHeight(settings->water_level / 2);
+                surfaceElement->SetWaterHeight(settings->water_level * COORDS_Z_STEP);
             }
         }
     }

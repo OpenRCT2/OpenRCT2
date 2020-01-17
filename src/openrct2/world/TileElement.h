@@ -168,8 +168,8 @@ public:
     uint8_t GetOwnership() const;
     void SetOwnership(uint8_t newOwnership);
 
-    uint32_t GetWaterHeight() const;
-    void SetWaterHeight(uint32_t newWaterHeight);
+    int32_t GetWaterHeight() const;
+    void SetWaterHeight(int32_t newWaterHeight);
 
     uint8_t GetParkFences() const;
     void SetParkFences(uint8_t newParkFences);

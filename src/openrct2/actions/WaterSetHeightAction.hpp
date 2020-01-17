@@ -82,7 +82,7 @@ public:
         int32_t zLow = _height;
         if (surfaceElement->GetWaterHeight() > 0)
         {
-            zHigh = surfaceElement->GetWaterHeight() * 2;
+            zHigh = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
         }
         if (zLow > zHigh)
         {
@@ -127,7 +127,7 @@ public:
 
         if (_height > surfaceElement->base_height)
         {
-            surfaceElement->SetWaterHeight(_height / 2);
+            surfaceElement->SetWaterHeight(_height * COORDS_Z_STEP);
         }
         else
         {

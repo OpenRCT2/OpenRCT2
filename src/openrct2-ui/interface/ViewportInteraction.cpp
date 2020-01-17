@@ -677,7 +677,7 @@ CoordsXY sub_68A15E(ScreenCoordsXY screenCoords)
     int16_t waterHeight = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
     {
-        waterHeight = tileElement->AsSurface()->GetWaterHeight() << 4;
+        waterHeight = tileElement->AsSurface()->GetWaterHeight();
     }
 
     auto initialVPPos = screen_coord_to_viewport_coord(viewport, screenCoords);

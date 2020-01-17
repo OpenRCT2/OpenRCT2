@@ -578,7 +578,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 waterHeight = tileElement->AsSurface()->GetWaterHeight();
                 if (waterHeight != 0)
                 {
-                    int32_t z = waterHeight * 16;
+                    auto z = waterHeight;
                     if (z <= gRideRatingsCalcData.proximity_z)
                     {
                         proximity_score_increment(PROXIMITY_WATER_OVER);

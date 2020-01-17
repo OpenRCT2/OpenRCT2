@@ -315,7 +315,8 @@ public:
                 if (surfaceElement == nullptr)
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-                uint8_t waterHeight = surfaceElement->GetWaterHeight() * 2;
+                // TODO: Make everything use big Z coordinates so we can stop dividing and multiplying by COORDS_Z_STEP.
+                uint8_t waterHeight = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
                 if (waterHeight == 0)
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_WATER);

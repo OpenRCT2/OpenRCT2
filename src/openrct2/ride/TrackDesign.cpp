@@ -1439,7 +1439,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                 }
             }
 
-            int16_t waterZ = surfaceElement->GetWaterHeight() * 16;
+            int16_t waterZ = surfaceElement->GetWaterHeight();
             if (waterZ > 0 && waterZ > surfaceZ)
             {
                 surfaceZ = waterZ;
@@ -1603,7 +1603,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         }
                     }
 
-                    uint8_t waterZ = surfaceElement->GetWaterHeight() * 16;
+                    uint8_t waterZ = surfaceElement->GetWaterHeight();
                     if (waterZ > 0 && waterZ > surfaceZ)
                     {
                         surfaceZ = waterZ;
