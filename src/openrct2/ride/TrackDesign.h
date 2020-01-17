@@ -47,11 +47,11 @@ struct TrackDesignSceneryElement
  * Track design structure.
  */
 
-/* Track Element entry  size: 0x02 */
+/* Track Element entry  size: 0x03 */
 struct TrackDesignTrackElement
 {
-    uint8_t type;  // 0x00
-    uint8_t flags; // 0x01
+    track_type_t type; // 0x00
+    uint8_t flags;     // 0x02
 };
 
 /* Maze Element entry   size: 0x04 */

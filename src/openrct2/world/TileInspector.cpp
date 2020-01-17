@@ -753,7 +753,7 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
 
     if (isExecuting)
     {
-        uint8_t type = trackElement->AsTrack()->GetTrackType();
+        auto type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = loc.x;
         int16_t originY = loc.y;
         int16_t originZ = trackElement->GetBaseZ();
@@ -860,7 +860,7 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
             return std::make_unique<GameActionResult>();
         }
 
-        uint8_t type = trackElement->AsTrack()->GetTrackType();
+        auto type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = loc.x;
         int16_t originY = loc.y;
         int16_t originZ = trackElement->GetBaseZ();
