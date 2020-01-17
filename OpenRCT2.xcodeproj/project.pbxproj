@@ -54,6 +54,7 @@
 		4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */; };
 		4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
+		4CF9F01D23D2492300230918 /* NetworkGroups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CF9F01C23D2492200230918 /* NetworkGroups.cpp */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308D9FF209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308DA00209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -900,6 +901,8 @@
 		4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectJsonHelpers.cpp; sourceTree = "<group>"; };
 		4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectJsonHelpers.h; sourceTree = "<group>"; };
 		4CF67196206B7E720034ADDD /* object */ = {isa = PBXFileReference; lastKnownFileType = folder; name = object; path = data/object; sourceTree = "<group>"; };
+		4CF9F01B23D2492200230918 /* NetworkGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkGroups.h; sourceTree = "<group>"; };
+		4CF9F01C23D2492200230918 /* NetworkGroups.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkGroups.cpp; sourceTree = "<group>"; };
 		4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
 		4CFE4E7C1F90A3F1005243C2 /* Peep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peep.h; sourceTree = "<group>"; };
 		4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeepData.cpp; sourceTree = "<group>"; };
@@ -2797,6 +2800,8 @@
 				F76C83FD1EC4E7CC00FA49E2 /* NetworkConnection.h */,
 				F76C83FE1EC4E7CC00FA49E2 /* NetworkGroup.cpp */,
 				F76C83FF1EC4E7CC00FA49E2 /* NetworkGroup.h */,
+				4CF9F01C23D2492200230918 /* NetworkGroups.cpp */,
+				4CF9F01B23D2492200230918 /* NetworkGroups.h */,
 				F76C84001EC4E7CC00FA49E2 /* NetworkKey.cpp */,
 				F76C84011EC4E7CC00FA49E2 /* NetworkKey.h */,
 				F76C84021EC4E7CC00FA49E2 /* NetworkPacket.cpp */,
@@ -3927,6 +3932,7 @@
 				C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */,
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
 				C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */,
+				4CF9F01D23D2492300230918 /* NetworkGroups.cpp in Sources */,
 				C68D98BC1FC6B8AB008E8378 /* TileInspector.cpp in Sources */,
 				C64644FA1F3FA4120026AC2D /* EditorObjectiveOptions.cpp in Sources */,
 				C666EE741F37ACB10061AA04 /* News.cpp in Sources */,
