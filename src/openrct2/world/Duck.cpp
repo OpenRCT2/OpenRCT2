@@ -132,7 +132,6 @@ void rct_duck::UpdateFlyToWater()
     }
     else
     {
-        waterHeight <<= 4;
         int32_t newZ = abs(z - waterHeight);
 
         if (manhattanDistanceN <= manhattanDistance)

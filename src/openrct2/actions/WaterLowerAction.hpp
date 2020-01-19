@@ -82,11 +82,10 @@ private:
                 if (surfaceElement == nullptr)
                     continue;
 
-                uint8_t height = surfaceElement->GetWaterHeight();
+                uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
                 if (height == 0)
                     continue;
 
-                height *= 2;
                 if (height < minHeight)
                     continue;
 
@@ -131,11 +130,10 @@ private:
                 if (surfaceElement == nullptr)
                     continue;
 
-                uint8_t height = surfaceElement->GetWaterHeight();
+                uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
                 if (height == 0)
                     continue;
 
-                height *= 2;
                 if (height > minHeight)
                 {
                     minHeight = height;

@@ -427,9 +427,9 @@ uint8_t SurfaceElement::GetSlope() const
     return Slope;
 }
 
-uint32_t SurfaceElement::GetWaterHeight() const
+int32_t SurfaceElement::GetWaterHeight() const
 {
-    return WaterHeight;
+    return WaterHeight * 16;
 }
 
 bool TrackElement::IsHighlighted() const

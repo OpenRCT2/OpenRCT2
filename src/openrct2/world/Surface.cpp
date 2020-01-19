@@ -36,14 +36,14 @@ void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
     EdgeStyle = newStyle;
 }
 
-uint32_t SurfaceElement::GetWaterHeight() const
+int32_t SurfaceElement::GetWaterHeight() const
 {
-    return WaterHeight;
+    return WaterHeight * 16;
 }
 
-void SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
+void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
 {
-    WaterHeight = newWaterHeight;
+    WaterHeight = newWaterHeight / 16;
 }
 
 bool SurfaceElement::CanGrassGrow() const
@@ -109,8 +109,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     uint8_t grassLengthTmp = GrassLength & 7;
 
     // Check if grass is underwater or outside park
-    uint32_t waterHeight = GetWaterHeight() * 2;
-    if (waterHeight > base_height || !map_is_location_in_park(coords))
+    if (GetWaterHeight() > GetBaseZ() || !map_is_location_in_park(coords))
     {
         if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
             SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);

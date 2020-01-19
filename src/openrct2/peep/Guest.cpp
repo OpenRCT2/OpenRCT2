@@ -5412,9 +5412,8 @@ void Guest::UpdateWalking()
         if (surfaceElement != nullptr)
         {
             int32_t water_height = surfaceElement->GetWaterHeight();
-            if (water_height)
+            if (water_height > 0)
             {
-                water_height *= 16;
                 MoveTo(x, y, water_height);
                 SetState(PEEP_STATE_FALLING);
                 return;

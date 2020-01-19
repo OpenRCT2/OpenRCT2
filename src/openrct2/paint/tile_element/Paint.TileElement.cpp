@@ -213,17 +213,15 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     uint16_t max_height = 0;
     do
     {
-        max_height = std::max(max_height, (uint16_t)element->clearance_height);
+        max_height = std::max(max_height, (uint16_t)element->GetClearanceZ());
     } while (!(element++)->IsLastForTile());
 
     element--;
 
     if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE && (element->AsSurface()->GetWaterHeight() > 0))
     {
-        max_height = element->AsSurface()->GetWaterHeight() * 2;
+        max_height = element->AsSurface()->GetWaterHeight();
     }
-
-    max_height *= 8;
 
 #ifndef __TESTPAINT__
     if (partOfVirtualFloor)

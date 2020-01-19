@@ -587,7 +587,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
     if (isWater && neighbour.tile_element != nullptr)
     {
-        uint8_t waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
+        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
@@ -749,7 +749,7 @@ static void viewport_surface_draw_tile_side_top(
     if (!is_csg_loaded() && terrain >= TERRAIN_EDGE_RCT2_COUNT)
         terrain = TERRAIN_EDGE_ROCK;
 
-    int16_t al, ah, cl, ch, dl = 0, waterHeight;
+    int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2, dl = 0;
 
     CoordsXY offset = { 0, 0 };
     CoordsXY bounds = { 0, 0 };
@@ -757,22 +757,22 @@ static void viewport_surface_draw_tile_side_top(
     switch (edge)
     {
         case EDGE_TOPLEFT:
-            al = self.corner_heights.top;
-            cl = self.corner_heights.left;
+            cornerHeight1 = self.corner_heights.top;
+            cornerHeight2 = self.corner_heights.left;
 
-            ah = neighbour.corner_heights.right;
-            ch = neighbour.corner_heights.bottom;
+            neighbourCornerHeight1 = neighbour.corner_heights.right;
+            neighbourCornerHeight2 = neighbour.corner_heights.bottom;
 
             offset.y = -2;
             bounds.x = 30;
             break;
 
         case EDGE_TOPRIGHT:
-            al = self.corner_heights.top;
-            cl = self.corner_heights.right;
+            cornerHeight1 = self.corner_heights.top;
+            cornerHeight2 = self.corner_heights.right;
 
-            ah = neighbour.corner_heights.left;
-            ch = neighbour.corner_heights.bottom;
+            neighbourCornerHeight1 = neighbour.corner_heights.left;
+            neighbourCornerHeight2 = neighbour.corner_heights.bottom;
 
             offset.x = -2;
             bounds.y = 30;
@@ -788,26 +788,25 @@ static void viewport_surface_draw_tile_side_top(
     // save ecx
     if (neighbour.tile_element == nullptr)
     {
-        ah = 1;
-        ch = 1;
+        neighbourCornerHeight1 = 1;
+        neighbourCornerHeight2 = 1;
     }
     else
     {
         if (isWater)
         {
-            waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
+            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
             if (dl == waterHeight)
             {
                 return;
             }
 
-            al = dl;
-            cl = dl;
+            cornerHeight1 = dl;
+            cornerHeight2 = dl;
         }
     }
 
-    // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
-    if (al <= ah && cl <= ch)
+    if (cornerHeight1 <= neighbourCornerHeight1 && cornerHeight2 <= neighbourCornerHeight2)
     {
         return;
     }
@@ -827,26 +826,26 @@ static void viewport_surface_draw_tile_side_top(
     {
         if (!(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
-            const uint8_t incline = (cl - al) + 1;
+            const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
             const uint32_t image_id = get_edge_image(terrain, 3) + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
-            const int16_t y = (dl - al) * 16;
+            const int16_t y = (dl - cornerHeight1) * 16;
             paint_attach_to_previous_ps(session, image_id, 0, y);
             return;
         }
         base_image_id = get_edge_image(terrain, 1) + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
     }
 
-    uint8_t cur_height = std::min(ch, ah);
-    if (ch != ah)
+    uint8_t cur_height = std::min(neighbourCornerHeight2, neighbourCornerHeight1);
+    if (neighbourCornerHeight2 != neighbourCornerHeight1)
     {
         // neighbour tile corners aren't level
         uint32_t image_offset = 3;
-        if (ch > ah)
+        if (neighbourCornerHeight2 > neighbourCornerHeight1)
         {
             image_offset = 4;
         }
 
-        if (cur_height != al && cur_height != cl)
+        if (cur_height != cornerHeight1 && cur_height != cornerHeight2)
         {
             const uint32_t image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16);
@@ -854,7 +853,7 @@ static void viewport_surface_draw_tile_side_top(
         }
     }
 
-    ah = cl;
+    neighbourCornerHeight1 = cornerHeight2;
 
     if (isWater)
     {
@@ -862,18 +861,18 @@ static void viewport_surface_draw_tile_side_top(
         offset.y = 0;
     }
 
-    while (cur_height < al && cur_height < ah)
+    while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
         sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16);
         cur_height++;
     }
 
     uint32_t image_offset = 1;
-    if (cur_height >= al)
+    if (cur_height >= cornerHeight1)
     {
         image_offset = 2;
 
-        if (cur_height >= ah)
+        if (cur_height >= neighbourCornerHeight1)
         {
             return;
         }
@@ -1161,7 +1160,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 // Water tool
                 if (tileElement->AsSurface()->GetWaterHeight() > 0)
                 {
-                    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight() * 16;
+                    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
                     if (waterHeight > height)
                     {
                         local_height += 16;
@@ -1264,7 +1263,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         const uint16_t localHeight = height + 16;
-        const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight() * 16;
+        const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
 
         if (!gTrackDesignSaveMode)
         {

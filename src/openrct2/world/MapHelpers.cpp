@@ -289,8 +289,7 @@ int32_t tile_smooth(int32_t x, int32_t y)
         // All corners are raised, raise the entire tile instead.
         surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
-        uint8_t waterHeight = surfaceElement->GetWaterHeight() * 2;
-        if (waterHeight <= surfaceElement->base_height)
+        if (surfaceElement->GetWaterHeight() <= surfaceElement->GetBaseZ())
         {
             surfaceElement->SetWaterHeight(0);
         }

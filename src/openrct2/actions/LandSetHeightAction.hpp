@@ -321,7 +321,7 @@ private:
                         zCorner += 2;
                     }
                 }
-                if (zCorner > waterHeight * 2 - 2)
+                if (zCorner > (waterHeight / COORDS_Z_STEP) - 2)
                 {
                     return ++surfaceElement;
                 }
@@ -381,8 +381,8 @@ private:
         surfaceElement->base_height = _height;
         surfaceElement->clearance_height = _height;
         surfaceElement->AsSurface()->SetSlope(_style);
-        int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
-        if (waterHeight != 0 && waterHeight <= _height / 2)
+        int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
+        if (waterHeight != 0 && waterHeight <= _height)
         {
             surfaceElement->AsSurface()->SetWaterHeight(0);
         }

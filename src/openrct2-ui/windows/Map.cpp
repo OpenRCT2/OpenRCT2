@@ -1204,7 +1204,7 @@ static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoor
         return parkEntranceMapPosition;
     }
 
-    parkEntranceMapPosition.z = surfaceElement->GetWaterHeight() * 8;
+    parkEntranceMapPosition.z = surfaceElement->GetWaterHeight();
     if (parkEntranceMapPosition.z == 0)
     {
         parkEntranceMapPosition.z = surfaceElement->GetBaseZ();
