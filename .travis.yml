@@ -10,9 +10,9 @@ before_install:
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-k 10 all openrct2-cli" ; fi
 
 install:
-    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*; fi
-    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git config remote.origin.fetch +refs/tags/*:refs/tags/*; fi
-    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git fetch --tags; fi
+    - git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+    - git config remote.origin.fetch +refs/tags/*:refs/tags/*
+    - git fetch --tags
 
 sudo: required
 dist: trusty
@@ -158,12 +158,6 @@ matrix:
             - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
               curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-android-x86.apk" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=12" --form "file=@app/build/outputs/apk/x86/pr/app-x86-pr.apk" "https://openrct2.org/altapi/?command=push-build";
               fi
-        - os: linux
-          name: clang-format
-          services:
-            - docker
-          script:
-            - docker run --rm -w /openrct2 -v $(pwd):/openrct2 openrct2/openrct2:format ./scripts/run-clang-format.py -r src test --exclude src/openrct2/thirdparty
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux
