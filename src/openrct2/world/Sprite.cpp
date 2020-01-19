@@ -400,7 +400,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
 
     SpriteGeneric* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
 
-    move_sprite_to_list((rct_sprite*)sprite, linkedListIndex);
+    move_sprite_to_list(sprite, linkedListIndex);
 
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -426,10 +426,9 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
  * This function moves a sprite to the specified sprite linked list.
  * The game uses this list to categorise sprites by type.
  */
-void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newListIndex)
+void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
 {
-    SpriteGeneric* unkSprite = &sprite->generic;
-    int32_t oldListIndex = unkSprite->linked_list_index;
+    int32_t oldListIndex = sprite->linked_list_index;
 
     // No need to move if the sprite is already in the desired list
     if (oldListIndex == newListIndex)
@@ -439,32 +438,32 @@ void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newListIndex)
 
     // If the sprite is currently the head of the list, the
     // sprite following this one becomes the new head of the list.
-    if (unkSprite->previous == SPRITE_INDEX_NULL)
+    if (sprite->previous == SPRITE_INDEX_NULL)
     {
-        gSpriteListHead[oldListIndex] = unkSprite->next;
+        gSpriteListHead[oldListIndex] = sprite->next;
     }
     else
     {
         // Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-        get_sprite(unkSprite->previous)->generic.next = unkSprite->next;
+        get_sprite(sprite->previous)->generic.next = sprite->next;
     }
 
     // Similarly, hook up sprite->next->previous to sprite->previous
-    if (unkSprite->next != SPRITE_INDEX_NULL)
+    if (sprite->next != SPRITE_INDEX_NULL)
     {
-        get_sprite(unkSprite->next)->generic.previous = unkSprite->previous;
+        get_sprite(sprite->next)->generic.previous = sprite->previous;
     }
 
-    unkSprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
-    unkSprite->linked_list_index = newListIndex;
+    sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
+    sprite->linked_list_index = newListIndex;
 
-    unkSprite->next = gSpriteListHead[newListIndex]; // This sprite's next sprite is the old head, since we're the new head
-    gSpriteListHead[newListIndex] = unkSprite->sprite_index; // Store this sprite's index as head of its new list
+    sprite->next = gSpriteListHead[newListIndex]; // This sprite's next sprite is the old head, since we're the new head
+    gSpriteListHead[newListIndex] = sprite->sprite_index; // Store this sprite's index as head of its new list
 
-    if (unkSprite->next != SPRITE_INDEX_NULL)
+    if (sprite->next != SPRITE_INDEX_NULL)
     {
         // Fix the chain by settings sprite->next->previous to sprite_index
-        get_sprite(unkSprite->next)->generic.previous = unkSprite->sprite_index;
+        get_sprite(sprite->next)->generic.previous = sprite->sprite_index;
     }
 
     // These globals are probably counters for each sprite list?
@@ -698,7 +697,7 @@ void sprite_remove(rct_sprite* sprite)
         peep->SetName({});
     }
 
-    move_sprite_to_list(sprite, SPRITE_LIST_FREE);
+    move_sprite_to_list(&sprite->generic, SPRITE_LIST_FREE);
     sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->generic.sprite_index] = false;
 

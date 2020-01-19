@@ -158,7 +158,7 @@ private:
         }
         else
         {
-            move_sprite_to_list((rct_sprite*)newPeep, SPRITE_LIST_PEEP);
+            move_sprite_to_list(newPeep, SPRITE_LIST_PEEP);
 
             newPeep->sprite_identifier = 1;
             newPeep->window_invalidate_flags = 0;
