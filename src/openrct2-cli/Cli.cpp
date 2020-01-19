@@ -9,6 +9,7 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/cmdline/CommandLine.hpp>
 #include <openrct2/platform/platform.h>
 
 using namespace OpenRCT2;
@@ -21,7 +22,7 @@ int main(int argc, const char** argv)
     int32_t rc = EXIT_SUCCESS;
     int runGame = cmdline_run(argv, argc);
     core_init();
-    if (runGame == 1)
+    if (runGame == EXITCODE_CONTINUE)
     {
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
@@ -30,7 +31,7 @@ int main(int argc, const char** argv)
         auto context = CreateContext();
         rc = context->RunOpenRCT2(argc, argv);
     }
-    else if (runGame == -1)
+    else if (runGame == EXITCODE_FAIL)
     {
         rc = EXIT_FAILURE;
     }
