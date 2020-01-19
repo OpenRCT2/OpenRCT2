@@ -1289,7 +1289,7 @@ public:
         }
     }
 
-    void ImportSpriteVehicle(rct_vehicle* dst, const RCT2SpriteVehicle* src)
+    void ImportSpriteVehicle(Vehicle* dst, const RCT2SpriteVehicle* src)
     {
         ImportSpriteCommonProperties((SpriteBase*)dst, src);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;

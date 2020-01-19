@@ -57,7 +57,7 @@ static void top_spin_paint_vehicle(
     height += 3;
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
 
     uint8_t seatRotation = 0;
     int8_t armRotation = 0;

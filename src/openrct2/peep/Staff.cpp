@@ -2199,7 +2199,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
+        Vehicle* vehicle = ride_get_broken_vehicle(ride);
         if (vehicle == nullptr)
         {
             return true;
@@ -2281,7 +2281,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
         return false;
     }
 
-    rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
+    Vehicle* vehicle = ride_get_broken_vehicle(ride);
     if (vehicle == nullptr)
     {
         return true;
@@ -2322,7 +2322,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
         return false;
     }
 
-    rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
+    Vehicle* vehicle = ride_get_broken_vehicle(ride);
     if (vehicle == nullptr)
     {
         return true;

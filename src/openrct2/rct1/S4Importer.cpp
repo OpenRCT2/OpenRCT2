@@ -1102,7 +1102,7 @@ private:
 
     void ImportVehicles()
     {
-        std::vector<rct_vehicle*> vehicles;
+        std::vector<Vehicle*> vehicles;
         uint16_t spriteIndexMap[RCT1_MAX_SPRITES];
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
@@ -1112,7 +1112,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    rct_vehicle* vehicle = (rct_vehicle*)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
+                    Vehicle* vehicle = (Vehicle*)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1133,7 +1133,7 @@ private:
         FixRideVehicleLinks(spriteIndexMap);
     }
 
-    void ImportVehicle(rct_vehicle* dst, rct1_vehicle* src)
+    void ImportVehicle(Vehicle* dst, rct1_vehicle* src)
     {
         auto ride = get_ride(src->ride);
         if (ride == nullptr)
@@ -1239,7 +1239,7 @@ private:
         dst->next_free_seat = src->next_free_seat;
     }
 
-    void SetVehicleColours(rct_vehicle* dst, rct1_vehicle* src)
+    void SetVehicleColours(Vehicle* dst, rct1_vehicle* src)
     {
         rct1_ride* srcRide = &_s4.rides[src->ride];
         uint8_t vehicleTypeIndex = srcRide->vehicle_type;
@@ -1287,7 +1287,7 @@ private:
         }
     }
 
-    void FixVehicleLinks(rct_vehicle* vehicle, const uint16_t* spriteIndexMap)
+    void FixVehicleLinks(Vehicle* vehicle, const uint16_t* spriteIndexMap)
     {
         if (vehicle->prev_vehicle_on_ride != SPRITE_INDEX_NULL)
         {
@@ -1303,7 +1303,7 @@ private:
         }
     }
 
-    void FixVehiclePeepLinks(rct_vehicle* vehicle, const uint16_t* spriteIndexMap)
+    void FixVehiclePeepLinks(Vehicle* vehicle, const uint16_t* spriteIndexMap)
     {
         for (auto& peep : vehicle->peep)
         {
@@ -1331,7 +1331,7 @@ private:
             rct_sprite* sprite = get_sprite(i);
             if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
-                rct_vehicle* vehicle = (rct_vehicle*)sprite;
+                Vehicle* vehicle = (Vehicle*)sprite;
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }

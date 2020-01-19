@@ -1012,7 +1012,7 @@ static void ride_remove_cable_lift(Ride* ride)
         uint16_t spriteIndex = ride->cable_lift;
         do
         {
-            rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
+            Vehicle* vehicle = GET_VEHICLE(spriteIndex);
             invalidate_sprite_2((rct_sprite*)vehicle);
             sprite_remove((rct_sprite*)vehicle);
             spriteIndex = vehicle->next_vehicle_on_train;
@@ -1036,7 +1036,7 @@ static void ride_remove_vehicles(Ride* ride)
             uint16_t spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
-                rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
+                Vehicle* vehicle = GET_VEHICLE(spriteIndex);
                 invalidate_sprite_2((rct_sprite*)vehicle);
                 sprite_remove((rct_sprite*)vehicle);
                 spriteIndex = vehicle->next_vehicle_on_train;
@@ -2487,7 +2487,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
 {
     int32_t i;
     uint16_t vehicleSpriteIdx;
-    rct_vehicle* vehicle;
+    Vehicle* vehicle;
 
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
@@ -2839,7 +2839,7 @@ static void ride_music_update(Ride* ride)
         uint16_t vehicleSpriteIdx = ride->vehicles[0];
         if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
         {
-            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
             {
                 ride->music_tune_id = 255;
@@ -4381,7 +4381,7 @@ static constexpr const CoordsXY word_9A2A60[] = {
  *
  *  rct2: 0x006DD90D
  */
-static rct_vehicle* vehicle_create_car(
+static Vehicle* vehicle_create_car(
     ride_id_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, int32_t x, int32_t y, int32_t z,
     int32_t* remainingDistance, TileElement* tileElement)
 {
@@ -4661,9 +4661,9 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
         lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
 }
 
-static void vehicle_unset_update_flag_b1(rct_vehicle* head)
+static void vehicle_unset_update_flag_b1(Vehicle* head)
 {
-    rct_vehicle* vehicle = head;
+    Vehicle* vehicle = head;
     while (true)
     {
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
@@ -4682,7 +4682,7 @@ static void vehicle_unset_update_flag_b1(rct_vehicle* head)
  */
 static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYElement)
 {
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
     auto curTrackPos = CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z };
     auto curTrackElement = map_get_track_element_at(curTrackPos);
 
@@ -4813,7 +4813,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
         {
             for (int32_t i = 0; i < ride->num_vehicles; i++)
             {
-                rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+                Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
 
                 rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
@@ -4836,7 +4836,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
  */
 void loc_6DDF9C(Ride* ride, TileElement* tileElement)
 {
-    rct_vehicle *train, *car;
+    Vehicle *train, *car;
 
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
@@ -5046,8 +5046,8 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     auto tileElement = map_get_track_element_at(cableLiftLoc);
     int32_t direction = tileElement->GetDirection();
 
-    rct_vehicle* head = nullptr;
-    rct_vehicle* tail = nullptr;
+    Vehicle* head = nullptr;
+    Vehicle* tail = nullptr;
     uint32_t ebx = 0;
     for (int32_t i = 0; i < 5; i++)
     {
@@ -5058,7 +5058,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
         int32_t remaining_distance = ebx;
         ebx -= edx;
 
-        rct_vehicle* current = cable_lift_segment_create(
+        Vehicle* current = cable_lift_segment_create(
             *ride, cableLiftLoc.x, cableLiftLoc.y, cableLiftLoc.z / 8, direction, var_44, remaining_distance, i == 0);
         current->next_vehicle_on_train = SPRITE_INDEX_NULL;
         if (i == 0)
@@ -6447,7 +6447,7 @@ void invalidate_test_results(Ride* ride)
             uint16_t spriteIndex = ride->vehicles[i];
             if (spriteIndex != SPRITE_INDEX_NULL)
             {
-                rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
+                Vehicle* vehicle = GET_VEHICLE(spriteIndex);
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
             }
         }
@@ -6476,7 +6476,7 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
             uint16_t spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
-                rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
+                Vehicle* vehicle = GET_VEHICLE(spriteIndex);
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
@@ -6508,7 +6508,7 @@ void ride_update_vehicle_colours(Ride* ride)
 
         while (spriteIndex != SPRITE_INDEX_NULL)
         {
-            rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
+            Vehicle* vehicle = GET_VEHICLE(spriteIndex);
             switch (ride->colour_scheme_type & 3)
             {
                 case RIDE_COLOUR_SCHEME_ALL_SAME:
@@ -7118,7 +7118,7 @@ void Ride::SetToDefaultInspectionInterval()
  */
 void Ride::Crash(uint8_t vehicleIndex)
 {
-    rct_vehicle* vehicle = GET_VEHICLE(vehicles[vehicleIndex]);
+    Vehicle* vehicle = GET_VEHICLE(vehicles[vehicleIndex]);
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
@@ -7191,7 +7191,7 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride)
     return sum;
 }
 
-rct_vehicle* ride_get_broken_vehicle(Ride* ride)
+Vehicle* ride_get_broken_vehicle(Ride* ride)
 {
     uint16_t vehicleIndex = ride->vehicles[ride->broken_vehicle];
 
@@ -7200,7 +7200,7 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride)
         return nullptr;
     }
 
-    rct_vehicle* vehicle = GET_VEHICLE(vehicleIndex);
+    Vehicle* vehicle = GET_VEHICLE(vehicleIndex);
     for (uint8_t i = 0; i < ride->broken_car; i++)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
@@ -7537,7 +7537,7 @@ void fix_invalid_vehicle_sprite_sizes()
             uint16_t rideSpriteIndex = ride.vehicles[j];
             while (rideSpriteIndex != SPRITE_INDEX_NULL)
             {
-                rct_vehicle* vehicle = try_get_vehicle(rideSpriteIndex);
+                Vehicle* vehicle = try_get_vehicle(rideSpriteIndex);
                 if (vehicle == nullptr)
                 {
                     break;

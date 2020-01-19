@@ -1096,7 +1096,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    rct_vehicle *train, *vehicle;
+    Vehicle *train, *vehicle;
     uint16_t train_index, vehicle_index;
 
     for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)

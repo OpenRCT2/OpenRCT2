@@ -120,7 +120,7 @@ union rct_sprite
     SpriteGeneric generic;
     Peep peep;
     Litter litter;
-    rct_vehicle vehicle;
+    Vehicle vehicle;
     Balloon balloon;
     Duck duck;
     JumpingFountain jumping_fountain;

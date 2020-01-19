@@ -21,7 +21,7 @@ struct paint_struct;
 struct rct_drawpixelinfo;
 struct Peep;
 struct TileElement;
-struct rct_vehicle;
+struct Vehicle;
 struct rct_window;
 union paint_entry;
 union rct_sprite;
@@ -94,7 +94,7 @@ struct viewport_interaction_info
         TileElement* tileElement;
         rct_sprite* sprite;
         Peep* peep;
-        rct_vehicle* vehicle;
+        Vehicle* vehicle;
     };
 };
 

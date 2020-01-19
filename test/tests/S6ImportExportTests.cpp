@@ -269,7 +269,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(item_standard_flags);
 }
 
-static void CompareSpriteDataVehicle(const rct_vehicle& left, const rct_vehicle& right)
+static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 {
     COMPARE_FIELD(vehicle_sprite_type);
     COMPARE_FIELD(bank_rotation);

@@ -174,7 +174,7 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
     VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
 };
 
-struct rct_vehicle : SpriteBase
+struct Vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type; // 0x1F
     uint8_t bank_rotation;       // 0x20
@@ -294,9 +294,9 @@ struct rct_vehicle : SpriteBase
     {
         return type == VEHICLE_TYPE_HEAD;
     }
-    rct_vehicle* GetHead();
-    const rct_vehicle* GetHead() const;
-    const rct_vehicle* GetCar(size_t carIndex) const;
+    Vehicle* GetHead();
+    const Vehicle* GetHead() const;
+    const Vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
@@ -310,8 +310,8 @@ private:
 
 struct train_ref
 {
-    rct_vehicle* head;
-    rct_vehicle* tail;
+    Vehicle* head;
+    Vehicle* tail;
 };
 
 // Size: 0x09
@@ -498,26 +498,26 @@ struct GForces
     int32_t LateralG{};
 };
 
-rct_vehicle* try_get_vehicle(uint16_t spriteIndex);
+Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-GForces vehicle_get_g_forces(const rct_vehicle* vehicle);
-void vehicle_set_map_toolbar(const rct_vehicle* vehicle);
-int32_t vehicle_is_used_in_pairs(const rct_vehicle* vehicle);
-int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation);
-rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const rct_vehicle* vehicle);
-int32_t vehicle_get_total_num_peeps(const rct_vehicle* vehicle);
-void vehicle_invalidate_window(rct_vehicle* vehicle);
-void vehicle_update_test_finish(rct_vehicle* vehicle);
-void vehicle_test_reset(rct_vehicle* vehicle);
-void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle);
-rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle);
-rct_vehicle* vehicle_get_tail(const rct_vehicle* vehicle);
+GForces vehicle_get_g_forces(const Vehicle* vehicle);
+void vehicle_set_map_toolbar(const Vehicle* vehicle);
+int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle);
+int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation);
+rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle);
+int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
+void vehicle_invalidate_window(Vehicle* vehicle);
+void vehicle_update_test_finish(Vehicle* vehicle);
+void vehicle_test_reset(Vehicle* vehicle);
+void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle);
+Vehicle* vehicle_get_head(const Vehicle* vehicle);
+Vehicle* vehicle_get_tail(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
-bool vehicle_update_dodgems_collision(rct_vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
+bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
 
-extern rct_vehicle* gCurrentVehicle;
+extern Vehicle* gCurrentVehicle;
 extern uint8_t _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;
@@ -526,7 +526,7 @@ extern int32_t _vehicleUnkF64E10;
 extern uint8_t _vehicleVAngleEndF64E36;
 extern uint8_t _vehicleBankEndF64E37;
 extern uint8_t _vehicleF64E2C;
-extern rct_vehicle* _vehicleFrontVehicle;
+extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;
 
 /** Helper macro until rides are stored in this module. */

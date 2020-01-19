@@ -712,11 +712,11 @@ void lightfx_add_lights_magic_vehicles()
     uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        rct_vehicle* vehicle = &(get_sprite(spriteIndex)->vehicle);
+        Vehicle* vehicle = &(get_sprite(spriteIndex)->vehicle);
         uint16_t vehicleID = spriteIndex;
         spriteIndex = vehicle->next;
 
-        rct_vehicle* mother_vehicle = vehicle;
+        Vehicle* mother_vehicle = vehicle;
 
         if (mother_vehicle->ride_subtype == RIDE_ENTRY_INDEX_NULL)
         {
@@ -789,7 +789,7 @@ void lightfx_add_lights_magic_vehicles()
                 case RIDE_TYPE_SPLASH_BOATS:
                 case RIDE_TYPE_WATER_COASTER:
                 {
-                    rct_vehicle* vehicle_draw = vehicle_get_head(vehicle);
+                    Vehicle* vehicle_draw = vehicle_get_head(vehicle);
                     if (vehicle_draw->next_vehicle_on_train != SPRITE_INDEX_NULL)
                     {
                         vehicle_draw = GET_VEHICLE(vehicle_draw->next_vehicle_on_train);

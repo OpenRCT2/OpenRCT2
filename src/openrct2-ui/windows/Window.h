@@ -18,7 +18,7 @@ using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
 struct TileElement;
-struct rct_vehicle;
+struct Vehicle;
 
 rct_window* window_about_open();
 rct_window* window_changelog_open();
@@ -115,7 +115,7 @@ void window_ride_list_refresh_list(rct_window* w);
 
 rct_window* window_ride_main_open(Ride* ride);
 rct_window* window_ride_open_track(TileElement* tileElement);
-rct_window* window_ride_open_vehicle(rct_vehicle* vehicle);
+rct_window* window_ride_open_vehicle(Vehicle* vehicle);
 void window_ride_measurements_design_cancel();
 
 // rct2: 0x00F635EE

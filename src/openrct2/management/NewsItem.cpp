@@ -211,7 +211,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
 {
     Ride* ride;
     Peep* peep;
-    rct_vehicle* vehicle;
+    Vehicle* vehicle;
 
     switch (type)
     {

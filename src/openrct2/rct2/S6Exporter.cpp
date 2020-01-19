@@ -978,7 +978,7 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->sprite_direction = src->sprite_direction;
 }
 
-void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* src)
+void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
 {
     ExportSpriteCommonProperties(dst, (const SpriteBase*)src);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;

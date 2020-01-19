@@ -37,7 +37,7 @@ static void paint_merry_go_round_structure(
     if (rideEntry == nullptr)
         return;
 
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
     uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
