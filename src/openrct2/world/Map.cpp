@@ -1449,7 +1449,10 @@ bool map_can_construct_with_clear_at(
     GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
     gGameCommandErrorText = res->ErrorMessage;
     std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
-    *price = res->Cost;
+    if (price != nullptr)
+    {
+        *price = res->Cost;
+    }
     gMapGroundFlags = dynamic_cast<ConstructClearResult*>(res.get())->GroundFlags;
     return res->Error == GA_ERROR::OK;
 }
