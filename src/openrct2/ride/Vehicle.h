@@ -153,14 +153,16 @@ struct rct_vehicle_sound_params;
 enum VEHICLE_TRACK_SUBPOSITION : uint8_t
 {
     VEHICLE_TRACK_SUBPOSITION_0,
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_1,
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_2,
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_3,
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_4,
-    VEHICLE_TRACK_SUBPOSITION_GO_KART_5,
-    VEHICLE_TRACK_SUBPOSITION_GO_KART_6,
-    VEHICLE_TRACK_SUBPOSITION_GO_KART_7,
-    VEHICLE_TRACK_SUBPOSITION_GO_KART_8,
+    // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT,
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK,
+    // End and start bullwheel as viewed from Station 1.
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL,
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE,
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9 = 9,
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9 = 9,
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10,
@@ -168,8 +170,8 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12,
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13,
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14,
-    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_15,
-    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_16
+    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE,
+    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
 };
 
 struct rct_vehicle : rct_sprite_common
@@ -266,7 +268,7 @@ struct rct_vehicle : rct_sprite_common
     uint8_t pad_C6[0x2];
     uint16_t var_C8;
     uint16_t var_CA;
-    SoundId scream_sound_id; // 0xCC
+    SoundId scream_sound_id;  // 0xCC
     uint8_t TrackSubposition; // 0xCD
     union
     {
@@ -511,8 +513,8 @@ void vehicle_test_reset(rct_vehicle* vehicle);
 void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle);
 rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle);
 rct_vehicle* vehicle_get_tail(const rct_vehicle* vehicle);
-const rct_vehicle_info* vehicle_get_move_info(int32_t cd, int32_t typeAndDirection, int32_t offset);
-uint16_t vehicle_get_move_info_size(int32_t cd, int32_t typeAndDirection);
+const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
+uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 bool vehicle_update_dodgems_collision(rct_vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
 
 extern rct_vehicle* gCurrentVehicle;

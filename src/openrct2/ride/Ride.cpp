@@ -4484,16 +4484,16 @@ static rct_vehicle* vehicle_create_car(
         VEHICLE_TRACK_SUBPOSITION subposition = VEHICLE_TRACK_SUBPOSITION_0;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
         {
-            subposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_1;
+            subposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT;
         }
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
         {
             // Choose which lane Go Kart should start in
-            subposition = VEHICLE_TRACK_SUBPOSITION_GO_KART_5;
+            subposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE;
             if (vehicleIndex & 1)
             {
-                subposition = VEHICLE_TRACK_SUBPOSITION_GO_KART_6;
+                subposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE;
             }
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
@@ -4507,12 +4507,12 @@ static rct_vehicle* vehicle_create_car(
         {
             if (vehicle->IsHead())
             {
-                subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_15;
+                subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE;
             }
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_5)
         {
-            subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_16;
+            subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE;
         }
         vehicle->TrackSubposition = subposition;
 
