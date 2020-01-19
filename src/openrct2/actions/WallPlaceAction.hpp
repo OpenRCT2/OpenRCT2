@@ -362,7 +362,7 @@ public:
             banner->position.x = _loc.x / 32;
             banner->position.y = _loc.y / 32;
 
-            ride_id_t rideIndex = banner_get_closest_ride_index(_loc.x, _loc.y, targetHeight);
+            ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, targetHeight });
             if (rideIndex != RIDE_ID_NULL)
             {
                 banner->ride_index = rideIndex;

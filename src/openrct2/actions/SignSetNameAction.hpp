@@ -60,9 +60,6 @@ public:
     {
         auto banner = GetBanner(_bannerIndex);
 
-        int32_t x = banner->position.x << 5;
-        int32_t y = banner->position.y << 5;
-
         if (!_name.empty())
         {
             banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
@@ -72,7 +69,7 @@ public:
         else
         {
             // If empty name take closest ride name.
-            ride_id_t rideIndex = banner_get_closest_ride_index(x, y, 16);
+            ride_id_t rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
             if (rideIndex == RIDE_ID_NULL)
             {
                 banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;

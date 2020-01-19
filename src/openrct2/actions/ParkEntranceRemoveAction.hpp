@@ -52,7 +52,7 @@ public:
         res->Position = _loc;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        auto entranceIndex = park_entrance_get_index(_loc.x, _loc.y, _loc.z);
+        auto entranceIndex = park_entrance_get_index(_loc);
         if (entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
@@ -68,7 +68,7 @@ public:
         res->Position = _loc;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        auto entranceIndex = park_entrance_get_index(_loc.x, _loc.y, _loc.z);
+        auto entranceIndex = park_entrance_get_index(_loc);
         if (entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);

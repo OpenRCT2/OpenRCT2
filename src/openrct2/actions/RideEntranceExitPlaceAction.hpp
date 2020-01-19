@@ -221,7 +221,7 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            maze_entrance_hedge_removal(_loc.x, _loc.y, tileElement);
+            maze_entrance_hedge_removal({ _loc, tileElement });
         }
 
         footpath_connect_edges(_loc, tileElement, GetFlags());

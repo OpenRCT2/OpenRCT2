@@ -4271,9 +4271,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
     // Enumerate entrance and exit positions
     for (position = positions; !(*position).isNull(); position++)
     {
-        int32_t x = (*position).x << 5;
-        int32_t y = (*position).y << 5;
-        int32_t z = (*position).z;
+        auto entranceExitMapPos = position->ToCoordsXYZ();
 
         TileElement* tileElement = map_get_first_element_at(position->ToCoordsXY());
         do
@@ -4287,10 +4285,10 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
             {
                 continue;
             }
-            if (tileElement->base_height != z)
+            if (tileElement->GetBaseZ() != entranceExitMapPos.z)
                 continue;
 
-            maze_entrance_hedge_removal(x, y, tileElement);
+            maze_entrance_hedge_removal({ entranceExitMapPos, tileElement });
         } while (!(tileElement++)->IsLastForTile());
     }
 }
@@ -7091,7 +7089,7 @@ void sub_6CB945(Ride* ride)
             if (shouldRemove)
             {
                 footpath_queue_chain_reset();
-                maze_entrance_hedge_replacement(location.x, location.y, tileElement);
+                maze_entrance_hedge_replacement({ location, tileElement });
                 footpath_remove_edges_at(location, tileElement);
                 footpath_update_queue_chains();
                 map_invalidate_tile_full(location);

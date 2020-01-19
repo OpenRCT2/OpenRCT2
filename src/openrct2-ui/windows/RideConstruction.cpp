@@ -3713,8 +3713,7 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
         if (ride != nullptr)
         {
             _currentTrackPrice = ride_entrance_exit_place_ghost(
-                ride, entranceOrExitCoords.x, entranceOrExitCoords.y, entranceOrExitCoords.direction,
-                gRideEntranceExitPlaceType, stationNum);
+                ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();
     }

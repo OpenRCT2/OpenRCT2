@@ -96,7 +96,7 @@ enum
     CREATE_CROSSING_MODE_PATH_OVER_TRACK,
 };
 
-extern const CoordsXY CoordsDirectionDelta[];
+extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
 extern uint16_t gWidePathTileLoopX;

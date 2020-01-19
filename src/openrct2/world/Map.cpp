@@ -63,8 +63,18 @@ using namespace OpenRCT2;
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
-const CoordsXY CoordsDirectionDelta[] = { { -32, 0 },   { 0, +32 },   { +32, 0 },   { 0, -32 },
-                                          { -32, +32 }, { +32, +32 }, { +32, -32 }, { -32, -32 } };
+// clang-format off
+const std::array<CoordsXY, 8> CoordsDirectionDelta = {
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{               0, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, 0 },
+    CoordsXY{               0, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP }
+};
+// clang-format on
 
 const TileCoordsXY TileDirectionDelta[] = { { -1, 0 },  { 0, +1 },  { +1, 0 },  { 0, -1 },
                                             { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
