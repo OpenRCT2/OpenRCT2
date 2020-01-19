@@ -37,7 +37,7 @@ void Balloon::Update()
         frame++;
         if (frame >= 5)
         {
-            sprite_remove((rct_sprite*)this);
+            sprite_remove(this);
         }
     }
     else

@@ -1014,7 +1014,7 @@ static void ride_remove_cable_lift(Ride* ride)
         {
             Vehicle* vehicle = GET_VEHICLE(spriteIndex);
             invalidate_sprite_2((rct_sprite*)vehicle);
-            sprite_remove((rct_sprite*)vehicle);
+            sprite_remove(vehicle);
             spriteIndex = vehicle->next_vehicle_on_train;
         } while (spriteIndex != SPRITE_INDEX_NULL);
     }
@@ -1038,7 +1038,7 @@ static void ride_remove_vehicles(Ride* ride)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
                 invalidate_sprite_2((rct_sprite*)vehicle);
-                sprite_remove((rct_sprite*)vehicle);
+                sprite_remove(vehicle);
                 spriteIndex = vehicle->next_vehicle_on_train;
             }
 

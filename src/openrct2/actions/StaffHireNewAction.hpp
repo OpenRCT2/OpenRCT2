@@ -154,7 +154,7 @@ private:
         if (execute == false)
         {
             // In query we just want to see if we can obtain a sprite slot.
-            sprite_remove((rct_sprite*)newPeep);
+            sprite_remove(newPeep);
         }
         else
         {

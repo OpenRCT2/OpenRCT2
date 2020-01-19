@@ -97,7 +97,7 @@ void Duck::Invalidate()
 void Duck::Remove()
 {
     Invalidate();
-    sprite_remove((rct_sprite*)this);
+    sprite_remove(this);
 }
 
 void Duck::MoveTo(const CoordsXYZ& destination)
@@ -382,7 +382,7 @@ void duck_remove_all()
         if (sprite->type == SPRITE_MISC_DUCK)
         {
             invalidate_sprite_1((rct_sprite*)sprite);
-            sprite_remove((rct_sprite*)sprite);
+            sprite_remove(sprite);
         }
     }
 }

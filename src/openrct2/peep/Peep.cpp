@@ -849,7 +849,7 @@ void peep_sprite_remove(Peep* peep)
 
         news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
     }
-    sprite_remove((rct_sprite*)peep);
+    sprite_remove(peep);
 }
 
 /**

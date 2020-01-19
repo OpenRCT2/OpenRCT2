@@ -490,7 +490,7 @@ static void sprite_steam_particle_update(SteamParticle* steam)
     steam->frame += 64;
     if (steam->frame >= (56 * 64))
     {
-        sprite_remove((rct_sprite*)steam);
+        sprite_remove(steam);
     }
 }
 
@@ -523,7 +523,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
     sprite->generic.frame += 128;
     if (sprite->generic.frame >= (36 * 128))
     {
-        sprite_remove(sprite);
+        sprite_remove(&sprite->generic);
     }
 }
 
@@ -556,7 +556,7 @@ static void sprite_misc_explosion_flare_update(rct_sprite* sprite)
     sprite->generic.frame += 64;
     if (sprite->generic.frame >= (124 * 64))
     {
-        sprite_remove(sprite);
+        sprite_remove(&sprite->generic);
     }
 }
 
@@ -689,26 +689,26 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
  *
  *  rct2: 0x0069EDB6
  */
-void sprite_remove(rct_sprite* sprite)
+void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = sprite->AsPeep();
+    auto peep = ((rct_sprite*)sprite)->AsPeep();
     if (peep != nullptr)
     {
         peep->SetName({});
     }
 
-    move_sprite_to_list(&sprite->generic, SPRITE_LIST_FREE);
-    sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
-    _spriteFlashingList[sprite->generic.sprite_index] = false;
+    move_sprite_to_list(sprite, SPRITE_LIST_FREE);
+    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+    _spriteFlashingList[sprite->sprite_index] = false;
 
-    size_t quadrantIndex = GetSpatialIndexOffset(sprite->generic.x, sprite->generic.y);
+    size_t quadrantIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
     uint16_t* spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
-    rct_sprite* quadrantSprite;
-    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = get_sprite(*spriteIndex)) != sprite)
+    SpriteBase* quadrantSprite;
+    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = &get_sprite(*spriteIndex)->generic) != sprite)
     {
-        spriteIndex = &quadrantSprite->generic.next_in_quadrant;
+        spriteIndex = &quadrantSprite->next_in_quadrant;
     }
-    *spriteIndex = sprite->generic.next_in_quadrant;
+    *spriteIndex = sprite->next_in_quadrant;
 }
 
 static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
@@ -769,7 +769,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
         if (newestLitter != nullptr)
         {
             invalidate_sprite_0((rct_sprite*)newestLitter);
-            sprite_remove((rct_sprite*)newestLitter);
+            sprite_remove(newestLitter);
         }
     }
 

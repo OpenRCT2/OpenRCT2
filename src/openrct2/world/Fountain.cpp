@@ -187,7 +187,7 @@ void JumpingFountain::Update()
 
     if (frame == 16)
     {
-        sprite_remove(reinterpret_cast<rct_sprite*>(this));
+        sprite_remove(this);
     }
 }
 

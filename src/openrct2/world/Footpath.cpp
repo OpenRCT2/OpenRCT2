@@ -401,7 +401,7 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
             if (distanceZ <= 32)
             {
                 invalidate_sprite_0((rct_sprite*)sprite);
-                sprite_remove((rct_sprite*)sprite);
+                sprite_remove(sprite);
             }
         }
         spriteIndex = nextSpriteIndex;

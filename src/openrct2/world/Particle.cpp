@@ -54,7 +54,7 @@ void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
     particle->time_to_live--;
     if (particle->time_to_live == 0)
     {
-        sprite_remove((rct_sprite*)particle);
+        sprite_remove(particle);
         return;
     }
 
@@ -88,7 +88,7 @@ void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
         // Splash
         audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
         crash_splash_create(particle->x, particle->y, waterZ);
-        sprite_remove((rct_sprite*)particle);
+        sprite_remove(particle);
         return;
     }
 
@@ -137,6 +137,6 @@ void crash_splash_update(CrashSplashParticle* splash)
     splash->frame += 85;
     if (splash->frame >= 7168)
     {
-        sprite_remove((rct_sprite*)splash);
+        sprite_remove(splash);
     }
 }

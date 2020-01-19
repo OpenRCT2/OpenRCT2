@@ -422,7 +422,7 @@ private:
         {
             litter = &(get_sprite(spriteIndex)->litter);
             nextSpriteIndex = litter->next;
-            sprite_remove((rct_sprite*)litter);
+            sprite_remove(litter);
         }
 
         tile_element_iterator it;

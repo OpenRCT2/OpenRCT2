@@ -206,7 +206,7 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
 void invalidate_sprite_0(rct_sprite* sprite);
 void invalidate_sprite_1(rct_sprite* sprite);
 void invalidate_sprite_2(rct_sprite* sprite);
-void sprite_remove(rct_sprite* sprite);
+void sprite_remove(SpriteBase* sprite);
 void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z);
