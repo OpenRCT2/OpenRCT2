@@ -635,7 +635,7 @@ private:
                 if (_edge == direction)
                 {
                     auto res = MakeResult(GA_ERROR::NO_CLEARANCE, STR_NONE);
-                    map_obstruction_set_error_text(tileElement, res);
+                    map_obstruction_set_error_text(tileElement, *res);
                     return res;
                 }
                 continue;
@@ -646,12 +646,12 @@ private:
             switch (elementType)
             {
                 case TILE_ELEMENT_TYPE_ENTRANCE:
-                    map_obstruction_set_error_text(tileElement, res);
+                    map_obstruction_set_error_text(tileElement, *res);
                     return res;
                 case TILE_ELEMENT_TYPE_PATH:
                     if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                     {
-                        map_obstruction_set_error_text(tileElement, res);
+                        map_obstruction_set_error_text(tileElement, *res);
                         return res;
                     }
                     break;
@@ -664,7 +664,7 @@ private:
                         int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                         if (!(tile->flags & (1 << direction)))
                         {
-                            map_obstruction_set_error_text(tileElement, res);
+                            map_obstruction_set_error_text(tileElement, *res);
                             return res;
                         }
                     }
@@ -673,7 +673,7 @@ private:
                     entry = tileElement->AsSmallScenery()->GetEntry();
                     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
                     {
-                        map_obstruction_set_error_text(tileElement, res);
+                        map_obstruction_set_error_text(tileElement, *res);
                         return res;
                     }
                     break;

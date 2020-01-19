@@ -85,7 +85,7 @@ public:
                 if (tileElement != nullptr)
                 {
                     auto res = MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
-                    map_obstruction_set_error_text(tileElement, res);
+                    map_obstruction_set_error_text(tileElement, *res);
                     return res;
                 }
             }
@@ -119,7 +119,7 @@ public:
         if (tileElement != nullptr)
         {
             auto res = MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
-            map_obstruction_set_error_text(tileElement, res);
+            map_obstruction_set_error_text(tileElement, *res);
             return res;
         }
 
@@ -146,7 +146,7 @@ public:
             if (tileElement != nullptr)
             {
                 auto res = MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                map_obstruction_set_error_text(tileElement, *res);
                 return res;
             }
         }

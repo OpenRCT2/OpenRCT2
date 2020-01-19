@@ -1255,18 +1255,6 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
     }
 }
 
-bool map_can_construct_with_clear_at(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode)
-{
-    GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
-    gGameCommandErrorText = res->ErrorMessage;
-    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
-    *price = res->Cost;
-    gMapGroundFlags = dynamic_cast<ConstructClearResult*>(res.get())->GroundFlags;
-    return res->Error == GA_ERROR::OK;
-}
-
 /**
  *
  *  rct2: 0x0068B932
@@ -1277,7 +1265,7 @@ bool map_can_construct_with_clear_at(
  *  ebp = clearFunc
  *  bl = bl
  */
-GameActionResult::Ptr map_can_construct_with_clear_at(
+static GameActionResult::Ptr map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
@@ -1289,7 +1277,7 @@ GameActionResult::Ptr map_can_construct_with_clear_at(
     bool canBuildCrossing = false;
     if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
     {
-        res->Error == GA_ERROR::INVALID_PARAMETERS;
+        res->Error = GA_ERROR::INVALID_PARAMETERS;
         res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
@@ -1302,7 +1290,7 @@ GameActionResult::Ptr map_can_construct_with_clear_at(
     TileElement* tileElement = map_get_first_element_at(pos);
     if (tileElement == nullptr)
     {
-        res->Error == GA_ERROR::UNKNOWN;
+        res->Error = GA_ERROR::UNKNOWN;
         res->ErrorMessage = 0;
         return false;
     }
@@ -1452,6 +1440,18 @@ GameActionResult::Ptr map_can_construct_with_clear_at(
         }
     } while (!(tileElement++)->IsLastForTile());
     return res;
+}
+
+bool map_can_construct_with_clear_at(
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
+    uint8_t crossingMode)
+{
+    GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
+    gGameCommandErrorText = res->ErrorMessage;
+    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
+    *price = res->Cost;
+    gMapGroundFlags = dynamic_cast<ConstructClearResult*>(res.get())->GroundFlags;
+    return res->Error == GA_ERROR::OK;
 }
 
 /**
