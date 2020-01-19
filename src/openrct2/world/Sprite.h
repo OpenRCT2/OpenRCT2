@@ -202,7 +202,7 @@ void sprite_clear_all_unused();
 void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newList);
 void sprite_misc_update_all();
 void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
+void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
 void invalidate_sprite_0(rct_sprite* sprite);
 void invalidate_sprite_1(rct_sprite* sprite);
 void invalidate_sprite_2(rct_sprite* sprite);

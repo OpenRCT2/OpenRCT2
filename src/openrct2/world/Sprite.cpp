@@ -667,22 +667,22 @@ void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
     }
     else
     {
-        sprite_set_coordinates(x, y, z, (rct_sprite*)sprite);
+        sprite_set_coordinates(x, y, z, sprite);
     }
 }
 
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
+void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
 {
     CoordsXYZ coords3d = { x, y, z };
     auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
 
-    sprite->generic.sprite_left = screenCoords.x - sprite->generic.sprite_width;
-    sprite->generic.sprite_right = screenCoords.x + sprite->generic.sprite_width;
-    sprite->generic.sprite_top = screenCoords.y - sprite->generic.sprite_height_negative;
-    sprite->generic.sprite_bottom = screenCoords.y + sprite->generic.sprite_height_positive;
-    sprite->generic.x = x;
-    sprite->generic.y = y;
-    sprite->generic.z = z;
+    sprite->sprite_left = screenCoords.x - sprite->sprite_width;
+    sprite->sprite_right = screenCoords.x + sprite->sprite_width;
+    sprite->sprite_top = screenCoords.y - sprite->sprite_height_negative;
+    sprite->sprite_bottom = screenCoords.y + sprite->sprite_height_positive;
+    sprite->x = x;
+    sprite->y = y;
+    sprite->z = z;
 }
 
 /**
@@ -808,7 +808,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
                 if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
                 {
                     invalidate_sprite_0(sprite);
-                    sprite_remove(sprite);
+                    sprite_remove(litter);
                 }
             }
         }
@@ -871,7 +871,7 @@ void sprite_position_tween_all(float alpha)
             }
             sprite_set_coordinates(
                 std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
-                std::round(posB.z * alpha + posA.z * inv), sprite);
+                std::round(posB.z * alpha + posA.z * inv), &sprite->generic);
             invalidate_sprite_2(sprite);
         }
     }
@@ -890,7 +890,7 @@ void sprite_position_tween_restore()
             invalidate_sprite_2(sprite);
 
             LocationXYZ16 pos = _spritelocations2[i];
-            sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
+            sprite_set_coordinates(pos.x, pos.y, pos.z, &sprite->generic);
         }
     }
 }
