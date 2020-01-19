@@ -1244,8 +1244,8 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         case SPRITE_MISC_EXPLOSION_FLARE:
         case SPRITE_MISC_CRASH_SPLASH:
         {
-            auto src = (const RCT12SpriteParticle*)csrc;
-            auto dst = (SpriteGeneric*)cdst;
+            auto src = (const SpriteGeneric*)csrc;
+            auto dst = (RCT12SpriteParticle*)cdst;
             dst->frame = src->frame;
             break;
         }
