@@ -279,8 +279,8 @@ public:
         bool wallAcrossTrack = false;
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
         {
-            if (auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
-                result->Error != GA_ERROR::OK)
+            auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
+            if (result->Error != GA_ERROR::OK)
             {
                 return result;
             }
@@ -380,8 +380,8 @@ public:
         bool wallAcrossTrack = false;
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
         {
-            if (auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
-                result->Error != GA_ERROR::OK)
+            auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
+            if (result->Error != GA_ERROR::OK)
             {
                 return result;
             }
@@ -608,6 +608,7 @@ private:
         int32_t entryType, sequence;
         rct_scenery_entry* entry;
         rct_large_scenery_tile* tile;
+
         *wallAcrossTrack = false;
         gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
         if (map_is_location_at_edge(_loc))
