@@ -303,7 +303,7 @@ rct_sprite_checksum sprite_checksum()
 
 #endif // DISABLE_NETWORK
 
-static void sprite_reset(rct_sprite_generic* sprite)
+static void sprite_reset(SpriteGeneric* sprite)
 {
     // Need to retain how the sprite is linked in lists
     uint8_t llto = sprite->linked_list_index;
@@ -329,7 +329,7 @@ static void sprite_reset(rct_sprite_generic* sprite)
  */
 void sprite_clear_all_unused()
 {
-    rct_sprite_generic* sprite;
+    SpriteGeneric* sprite;
     uint16_t spriteIndex, nextSpriteIndex;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_FREE];
@@ -398,7 +398,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
         }
     }
 
-    rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
+    SpriteGeneric* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
 
     move_sprite_to_list((rct_sprite*)sprite, linkedListIndex);
 
@@ -428,7 +428,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
  */
 void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newListIndex)
 {
-    rct_sprite_generic* unkSprite = &sprite->generic;
+    SpriteGeneric* unkSprite = &sprite->generic;
     int32_t oldListIndex = unkSprite->linked_list_index;
 
     // No need to move if the sprite is already in the desired list
@@ -501,7 +501,7 @@ static void sprite_steam_particle_update(rct_steam_particle* steam)
  */
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
@@ -534,7 +534,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
  */
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;

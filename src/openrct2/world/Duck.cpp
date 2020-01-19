@@ -377,7 +377,7 @@ void duck_remove_all()
     for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;
          spriteIndex = nextSpriteIndex)
     {
-        rct_sprite_generic* sprite = &(get_sprite(spriteIndex)->generic);
+        SpriteGeneric* sprite = &(get_sprite(spriteIndex)->generic);
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {

@@ -1529,7 +1529,7 @@ public:
             case SPRITE_MISC_CRASH_SPLASH:
             {
                 auto src = (const RCT12SpriteParticle*)csrc;
-                auto dst = (rct_sprite_generic*)cdst;
+                auto dst = (SpriteGeneric*)cdst;
                 dst->frame = src->frame;
                 break;
             }

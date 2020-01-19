@@ -31,7 +31,7 @@ struct rct_sprite_common
     uint8_t sprite_direction;
 };
 
-struct rct_sprite_generic : rct_sprite_common
+struct SpriteGeneric : rct_sprite_common
 {
     uint16_t frame;
 };

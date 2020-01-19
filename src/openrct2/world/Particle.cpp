@@ -114,7 +114,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
  */
 void crash_splash_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;

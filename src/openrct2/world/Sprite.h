@@ -44,7 +44,7 @@ struct rct_litter : rct_sprite_common
     uint32_t creationTick;
 };
 
-struct rct_balloon : rct_sprite_generic
+struct rct_balloon : SpriteGeneric
 {
     uint16_t popped;
     uint8_t time_to_move;
@@ -55,7 +55,7 @@ struct rct_balloon : rct_sprite_generic
     void Press();
 };
 
-struct rct_duck : rct_sprite_generic
+struct rct_duck : SpriteGeneric
 {
     int16_t target_x;
     int16_t target_y;
@@ -87,7 +87,7 @@ struct rct_money_effect : rct_sprite_common
     std::pair<rct_string_id, money32> GetStringId() const;
 };
 
-struct rct_crashed_vehicle_particle : rct_sprite_generic
+struct rct_crashed_vehicle_particle : SpriteGeneric
 {
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -100,11 +100,11 @@ struct rct_crashed_vehicle_particle : rct_sprite_generic
     int32_t acceleration_z;
 };
 
-struct rct_crash_splash : rct_sprite_generic
+struct rct_crash_splash : SpriteGeneric
 {
 };
 
-struct rct_steam_particle : rct_sprite_generic
+struct rct_steam_particle : SpriteGeneric
 {
     uint16_t time_to_move;
 };
@@ -112,12 +112,12 @@ struct rct_steam_particle : rct_sprite_generic
 #pragma pack(push, 1)
 /**
  * Sprite structure.
- * size: 0x0100
+ * size: 0x0200
  */
 union rct_sprite
 {
-    uint8_t pad_00[0x100];
-    rct_sprite_generic generic;
+    uint8_t pad_00[0x200];
+    SpriteGeneric generic;
     Peep peep;
     rct_litter litter;
     rct_vehicle vehicle;
@@ -138,7 +138,7 @@ union rct_sprite
     rct_money_effect* AsMoneyEffect();
     Peep* AsPeep();
 };
-assert_struct_size(rct_sprite, 0x100);
+assert_struct_size(rct_sprite, 0x200);
 
 struct rct_sprite_checksum
 {
