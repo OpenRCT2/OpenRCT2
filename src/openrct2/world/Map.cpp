@@ -1292,7 +1292,7 @@ static GameActionResult::Ptr map_can_construct_with_clear_at(
     {
         res->Error = GA_ERROR::UNKNOWN;
         res->ErrorMessage = 0;
-        return false;
+        return res;
     }
     do
     {
