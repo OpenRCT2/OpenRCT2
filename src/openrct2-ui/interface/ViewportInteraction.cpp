@@ -72,7 +72,7 @@ int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
-    sprite = (rct_sprite*)tileElement;
+    sprite = info->sprite;
 
     switch (info->type)
     {

@@ -160,7 +160,7 @@ void reset_sprite_list()
         _spriteFlashingList[i] = false;
     }
 
-    rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
+    rct_sprite* previous_spr = nullptr;
 
     for (int32_t i = 0; i < MAX_SPRITES; ++i)
     {
@@ -170,7 +170,7 @@ void reset_sprite_list()
         spr->generic.next = SPRITE_INDEX_NULL;
         spr->generic.linked_list_index = 0;
 
-        if (previous_spr != (rct_sprite*)SPRITE_INDEX_NULL)
+        if (previous_spr != nullptr)
         {
             spr->generic.previous = previous_spr->generic.sprite_index;
             previous_spr->generic.next = i;

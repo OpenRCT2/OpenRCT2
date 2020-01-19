@@ -33,7 +33,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    switch (misc->steam_particle.type)
+    switch (misc->generic.type)
     {
         case SPRITE_MISC_STEAM_PARTICLE: // 0
         {
