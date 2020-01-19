@@ -1,7 +1,7 @@
 name: CI
 on: [push, pull_request]
 env:
-  BUILD_SERVER: GitHub
+  OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   OPENRCT2_VERSION: 0.2.4
 jobs:
@@ -24,52 +24,37 @@ jobs:
     env:
       CONFIGURATION: Release
       PLATFORM: ${{ matrix.platform }}
-      GIT_COMMIT_SHA1: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v1
         name: Checkout
-      - name: Install NSIS
-        shell: bash
-        run: scripts/install-nsis
-      - name: Prepare environment
-        shell: bash
-        run: dos2unix test/tests/testdata/keys/*
       - name: Build OpenRCT2
-        shell: pwsh
+        shell: bash
+        run: . scripts/setenv && build
+      - name: Build artifacts
+        shell: bash
         run: |
-          $env:GIT_BRANCH = $env:GITHUB_REF -replace "refs/heads/(.*)", '$1'
-          $env:GIT_DESCRIBE = (git describe HEAD | sed -E "s/-g.+$//")
-          $env:BUILD_VERSION = $env:GIT_DESCRIBE | sed "s/v//" | sed "s/-/./"
-          Set-Content -Path 'resources\version.h' -Value "#define OPENRCT2_FILE_VERSION $($env:BUILD_VERSION -replace "\.", ",")"
-          Add-Content -Path 'resources\version.h' -Value "#define OPENRCT2_PRODUCT_VERSION `"$($env:BUILD_VERSION)-$($env:GIT_COMMIT_SHA1.Substring(0,10))`""
-          Remove-Item -Force -Recurse "C:\Program Files (x86)\NSIS"
-          cmd /c 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" && msbuild openrct2.proj'
-      - name: Run Tests
-        shell: cmd
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
-          msbuild openrct2.proj /t:test
+          . scripts/setenv -q
+          build-portable
+          build-symbols
+          build-installer -i
       - uses: actions/upload-artifact@master
         name: Upload artifacts (CI)
         with:
           name: "OpenRCT2-Windows-${{ matrix.platform }}"
           path: artifacts
+      - name: Run Tests
+        shell: bash
+        run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
         shell: bash
         run: |
-          if [[ "$OPENRCT2_ORG_TOKEN" != "" ]]; then
-              if [[ $GITHUB_REF == refs/tags/* ]]; then
-                  GITHUB_BRANCH=
-              else
-                  GITHUB_BRANCH=${GITHUB_REF#refs/heads/}
-                  if [[ ! "$GITHUB_BRANCH" =~ ^(develop|push/) ]]; then
-                      exit 0
-                  fi
-              fi
-
-              scripts/upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM" $OPENRCT2_VERSION $GIT_COMMIT_SHA1 $GITHUB_BRANCH
-              scripts/upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM" $OPENRCT2_VERSION $GIT_COMMIT_SHA1 $GITHUB_BRANCH
-              scripts/upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM" $OPENRCT2_VERSION $GIT_COMMIT_SHA1 $GITHUB_BRANCH
+          . scripts/setenv -q
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+              upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+              upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+              upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+              echo 'Not going to push build'
           fi
   osx:
     name: macOS
@@ -79,6 +64,7 @@ jobs:
         name: Checkout
       - name: Build OpenRCT2
         run: |
+          . scripts/setenv
           xcodebuild
           mkdir -p artifacts
           mv build/Release/OpenRCT2.app artifacts
@@ -88,24 +74,15 @@ jobs:
           name: "OpenRCT2-macOS"
           path: artifacts
       - name: Upload artifacts (openrct2.org)
-        env:
-          GITHUB_SHA1: ${{ github.sha }}
         run: |
-          if [[ "$OPENRCT2_ORG_TOKEN" != "" ]]; then
-              if [[ $GITHUB_REF == refs/tags/* ]]; then
-                  GITHUB_BRANCH=
-              else
-                  GITHUB_BRANCH=${GITHUB_REF#refs/heads/}
-                  if [[ ! "$GITHUB_BRANCH" =~ ^(develop|push/) ]]; then
-                      exit 0
-                  fi
-              fi
-
-              echo -e '\033[0;36mCompressing OpenRCT2.app...'
+          . scripts/setenv
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+              echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
               cd artifacts
               zip -rq openrct2-macos.zip OpenRCT2.app
-
-              ../scripts/upload-build openrct2-macos.zip macos $OPENRCT2_VERSION $GITHUB_SHA1 $GITHUB_BRANCH
+              upload-build openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+              echo 'Not going to push build'
           fi
   build-appimage:
     name: Linux (x64, AppImage)
