@@ -844,7 +844,7 @@ Vehicle* try_get_vehicle(uint16_t spriteIndex)
 
 void Vehicle::Invalidate()
 {
-    invalidate_sprite_2((rct_sprite*)this);
+    invalidate_sprite_2(this);
 }
 
 static int32_t get_train_mass(const Vehicle* first_vehicle)
@@ -3579,7 +3579,7 @@ static void vehicle_update_collision_setup(Vehicle* vehicle)
         train->sprite_height_positive = 5;
 
         sprite_move(train->x, train->y, train->z, train);
-        invalidate_sprite_2((rct_sprite*)train);
+        invalidate_sprite_2(train);
 
         train->var_4E = 0;
     }
@@ -5398,7 +5398,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
-                invalidate_sprite_2((rct_sprite*)curVehicle);
+                invalidate_sprite_2(curVehicle);
             }
             curVehicle->var_C8 += 7281;
             continue;
@@ -5435,7 +5435,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
             continue;
         }
 
-        invalidate_sprite_2((rct_sprite*)curVehicle);
+        invalidate_sprite_2(curVehicle);
 
         CoordsXYZ curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
 
@@ -5453,7 +5453,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
         }
 
         sprite_move(curPosition.x, curPosition.y, curPosition.z, curVehicle);
-        invalidate_sprite_2((rct_sprite*)curVehicle);
+        invalidate_sprite_2(curVehicle);
 
         if (curVehicle->sub_state == 1)
         {
@@ -9640,7 +9640,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
         unk_F64E20.x = car->x;
         unk_F64E20.y = car->y;
         unk_F64E20.z = car->z;
-        invalidate_sprite_2((rct_sprite*)car);
+        invalidate_sprite_2(car);
 
         while (true)
         {
@@ -9686,7 +9686,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
         }
         // loc_6DBF20
         sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, car);
-        invalidate_sprite_2((rct_sprite*)car);
+        invalidate_sprite_2(car);
 
     loc_6DBF3E:
         sub_6DBF3E(car);

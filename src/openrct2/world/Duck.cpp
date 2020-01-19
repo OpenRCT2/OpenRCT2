@@ -91,7 +91,7 @@ Duck* rct_sprite::AsDuck()
 
 void Duck::Invalidate()
 {
-    invalidate_sprite_1((rct_sprite*)this);
+    invalidate_sprite_1(this);
 }
 
 void Duck::Remove()
@@ -381,7 +381,7 @@ void duck_remove_all()
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {
-            invalidate_sprite_1((rct_sprite*)sprite);
+            invalidate_sprite_1(sprite);
             sprite_remove(sprite);
         }
     }

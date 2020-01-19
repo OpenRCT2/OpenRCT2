@@ -1233,7 +1233,7 @@ private:
         dst->mini_golf_flags = src->mini_golf_flags;
 
         sprite_move(src->x, src->y, src->z, dst);
-        invalidate_sprite_2((rct_sprite*)dst);
+        invalidate_sprite_2(dst);
 
         dst->num_peeps = src->num_peeps;
         dst->next_free_seat = src->next_free_seat;
@@ -1392,7 +1392,7 @@ private:
         dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
 
         sprite_move(src->x, src->y, src->z, dst);
-        invalidate_sprite_2((rct_sprite*)dst);
+        invalidate_sprite_2(dst);
 
         dst->sprite_direction = src->sprite_direction;
 
@@ -1637,7 +1637,7 @@ private:
                 litter->sprite_height_negative = srcLitter->sprite_height_negative;
 
                 sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, litter);
-                invalidate_sprite_2((rct_sprite*)litter);
+                invalidate_sprite_2(litter);
             }
         }
     }
@@ -1688,7 +1688,7 @@ private:
                 }
 
                 sprite_move(src->x, src->y, src->z, dst);
-                invalidate_sprite_2((rct_sprite*)dst);
+                invalidate_sprite_2(dst);
             }
         }
     }

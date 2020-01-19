@@ -4091,7 +4091,7 @@ void Guest::UpdateRideEnterVehicle()
             ride->cur_num_customers++;
 
             vehicle->mass += mass;
-            invalidate_sprite_2(reinterpret_cast<rct_sprite*>(vehicle));
+            invalidate_sprite_2(vehicle);
 
             MoveTo(LOCATION_NULL, 0, 0);
 
@@ -4137,7 +4137,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     vehicle->num_peeps--;
     vehicle->mass -= mass;
-    invalidate_sprite_2((rct_sprite*)vehicle);
+    invalidate_sprite_2(vehicle);
 
     if (ride_station >= MAX_STATIONS)
     {

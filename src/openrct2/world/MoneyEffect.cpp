@@ -109,7 +109,7 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
  */
 void MoneyEffect::Update()
 {
-    invalidate_sprite_2((rct_sprite*)this);
+    invalidate_sprite_2(this);
     wiggle++;
     if (wiggle >= 22)
     {

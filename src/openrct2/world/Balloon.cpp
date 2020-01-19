@@ -31,7 +31,7 @@ Balloon* rct_sprite::AsBalloon()
 
 void Balloon::Update()
 {
-    invalidate_sprite_2((rct_sprite*)this);
+    invalidate_sprite_2(this);
     if (popped == 1)
     {
         frame++;

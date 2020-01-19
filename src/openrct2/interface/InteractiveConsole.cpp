@@ -1547,7 +1547,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
                 if (peeps.size() > 1)
                     sprite = peeps[util_rand() % peeps.size() - 1];
                 sprite->peep.tshirt_colour = util_rand() & 0xFF;
-                invalidate_sprite_0(sprite);
+                invalidate_sprite_0(sprite->AsPeep());
             }
             break;
         }

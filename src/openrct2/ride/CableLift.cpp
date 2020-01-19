@@ -421,7 +421,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
             unk_F64E20.x = vehicle->x;
             unk_F64E20.y = vehicle->y;
             unk_F64E20.z = vehicle->z;
-            invalidate_sprite_2((rct_sprite*)vehicle);
+            invalidate_sprite_2(vehicle);
 
             while (true)
             {
@@ -459,7 +459,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
             }
             sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
 
-            invalidate_sprite_2((rct_sprite*)vehicle);
+            invalidate_sprite_2(vehicle);
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)

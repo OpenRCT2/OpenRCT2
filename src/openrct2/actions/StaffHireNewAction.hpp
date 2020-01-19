@@ -229,7 +229,7 @@ private:
                 newPeep->state = PEEP_STATE_PICKED;
 
                 sprite_move(newPeep->x, newPeep->y, newPeep->z, newPeep);
-                invalidate_sprite_2((rct_sprite*)newPeep);
+                invalidate_sprite_2(newPeep);
             }
 
             // Staff uses this
@@ -336,6 +336,6 @@ private:
         }
 
         sprite_move(x, y, z + 16, newPeep);
-        invalidate_sprite_2((rct_sprite*)newPeep);
+        invalidate_sprite_2(newPeep);
     }
 };

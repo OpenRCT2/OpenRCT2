@@ -162,7 +162,7 @@ void JumpingFountain::Update()
         return;
     }
 
-    invalidate_sprite_0(reinterpret_cast<rct_sprite*>(this));
+    invalidate_sprite_0(this);
     frame++;
 
     switch (type)

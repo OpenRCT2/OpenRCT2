@@ -50,7 +50,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
  */
 void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
 {
-    invalidate_sprite_0((rct_sprite*)particle);
+    invalidate_sprite_0(particle);
     particle->time_to_live--;
     if (particle->time_to_live == 0)
     {
@@ -99,7 +99,7 @@ void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
         z = landZ;
     }
     sprite_move(x, y, z, particle);
-    invalidate_sprite_0((rct_sprite*)particle);
+    invalidate_sprite_0(particle);
 
     particle->frame += 85;
     if (particle->frame >= 3072)
@@ -133,7 +133,7 @@ void crash_splash_create(int32_t x, int32_t y, int32_t z)
  */
 void crash_splash_update(CrashSplashParticle* splash)
 {
-    invalidate_sprite_2((rct_sprite*)splash);
+    invalidate_sprite_2(splash);
     splash->frame += 85;
     if (splash->frame >= 7168)
     {

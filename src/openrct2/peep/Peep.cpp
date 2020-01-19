@@ -342,7 +342,7 @@ Staff* Peep::AsStaff()
 
 void Peep::Invalidate()
 {
-    invalidate_sprite_2((rct_sprite*)this);
+    invalidate_sprite_2(this);
 }
 
 void Peep::MoveTo(int16_t destX, int16_t destY, int16_t destZ)

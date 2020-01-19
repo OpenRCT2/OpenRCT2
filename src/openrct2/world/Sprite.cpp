@@ -98,9 +98,9 @@ uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
     return gSpriteSpatialIndex[offset];
 }
 
-static void invalidate_sprite_max_zoom(rct_sprite* sprite, int32_t maxZoom)
+static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
 {
-    if (sprite->generic.sprite_left == LOCATION_NULL)
+    if (sprite->sprite_left == LOCATION_NULL)
         return;
 
     for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
@@ -109,8 +109,8 @@ static void invalidate_sprite_max_zoom(rct_sprite* sprite, int32_t maxZoom)
         if (viewport->width != 0 && viewport->zoom <= maxZoom)
         {
             viewport_invalidate(
-                viewport, sprite->generic.sprite_left, sprite->generic.sprite_top, sprite->generic.sprite_right,
-                sprite->generic.sprite_bottom);
+                viewport, sprite->sprite_left, sprite->sprite_top, sprite->sprite_right,
+                sprite->sprite_bottom);
         }
     }
 }
@@ -119,7 +119,7 @@ static void invalidate_sprite_max_zoom(rct_sprite* sprite, int32_t maxZoom)
  * Invalidate the sprite if at closest zoom.
  *  rct2: 0x006EC60B
  */
-void invalidate_sprite_0(rct_sprite* sprite)
+void invalidate_sprite_0(SpriteBase* sprite)
 {
     invalidate_sprite_max_zoom(sprite, 0);
 }
@@ -128,7 +128,7 @@ void invalidate_sprite_0(rct_sprite* sprite)
  * Invalidate sprite if at closest zoom or next zoom up from closest.
  *  rct2: 0x006EC53F
  */
-void invalidate_sprite_1(rct_sprite* sprite)
+void invalidate_sprite_1(SpriteBase* sprite)
 {
     invalidate_sprite_max_zoom(sprite, 1);
 }
@@ -139,7 +139,7 @@ void invalidate_sprite_1(rct_sprite* sprite)
  *
  * @param sprite (esi)
  */
-void invalidate_sprite_2(rct_sprite* sprite)
+void invalidate_sprite_2(SpriteBase* sprite)
 {
     invalidate_sprite_max_zoom(sprite, 2);
 }
@@ -478,7 +478,7 @@ void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
  */
 static void sprite_steam_particle_update(SteamParticle* steam)
 {
-    invalidate_sprite_2((rct_sprite*)steam);
+    invalidate_sprite_2(steam);
 
     // Move up 1 z every 3 ticks (Starts after 4 ticks)
     steam->time_to_move++;
@@ -519,7 +519,7 @@ void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
  */
 static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
 {
-    invalidate_sprite_2(sprite);
+    invalidate_sprite_2(&sprite->generic);
     sprite->generic.frame += 128;
     if (sprite->generic.frame >= (36 * 128))
     {
@@ -552,7 +552,7 @@ void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
  */
 static void sprite_misc_explosion_flare_update(rct_sprite* sprite)
 {
-    invalidate_sprite_2(sprite);
+    invalidate_sprite_2(&sprite->generic);
     sprite->generic.frame += 64;
     if (sprite->generic.frame >= (124 * 64))
     {
@@ -768,7 +768,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
 
         if (newestLitter != nullptr)
         {
-            invalidate_sprite_0((rct_sprite*)newestLitter);
+            invalidate_sprite_0(newestLitter);
             sprite_remove(newestLitter);
         }
     }
@@ -784,7 +784,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
     litter->type = type;
     sprite_move(x, y, z, litter);
-    invalidate_sprite_0((rct_sprite*)litter);
+    invalidate_sprite_0(litter);
     litter->creationTick = gScenarioTicks;
 }
 
@@ -807,7 +807,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
             {
                 if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
                 {
-                    invalidate_sprite_0(sprite);
+                    invalidate_sprite_0(litter);
                     sprite_remove(litter);
                 }
             }
@@ -872,7 +872,7 @@ void sprite_position_tween_all(float alpha)
             sprite_set_coordinates(
                 std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
                 std::round(posB.z * alpha + posA.z * inv), &sprite->generic);
-            invalidate_sprite_2(sprite);
+            invalidate_sprite_2(&sprite->generic);
         }
     }
 }
@@ -887,7 +887,7 @@ void sprite_position_tween_restore()
         rct_sprite* sprite = get_sprite(i);
         if (sprite_should_tween(sprite))
         {
-            invalidate_sprite_2(sprite);
+            invalidate_sprite_2(&sprite->generic);
 
             LocationXYZ16 pos = _spritelocations2[i];
             sprite_set_coordinates(pos.x, pos.y, pos.z, &sprite->generic);
