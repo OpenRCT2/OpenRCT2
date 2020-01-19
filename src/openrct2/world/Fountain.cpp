@@ -142,7 +142,7 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(newLoc.x, newLoc.y, newLoc.z, reinterpret_cast<rct_sprite*>(jumpingFountain));
+        sprite_move(newLoc.x, newLoc.y, newLoc.z, jumpingFountain);
         jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
                                                                       : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->NumTicksAlive = 0;

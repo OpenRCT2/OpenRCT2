@@ -348,7 +348,7 @@ void Peep::Invalidate()
 void Peep::MoveTo(int16_t destX, int16_t destY, int16_t destZ)
 {
     Invalidate(); // Invalidate current position.
-    sprite_move(destX, destY, destZ, (rct_sprite*)this);
+    sprite_move(destX, destY, destZ, this);
     Invalidate(); // Invalidate new position.
 }
 

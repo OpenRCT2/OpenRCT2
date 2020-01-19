@@ -1138,11 +1138,11 @@ void ride_remove_peeps(Ride* ride)
                 if (peep->GetNextIsSloped())
                     z += 8;
                 z++;
-                sprite_move(x, y, z, (rct_sprite*)peep);
+                sprite_move(x, y, z, peep);
             }
             else
             {
-                sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
+                sprite_move(exitX, exitY, exitZ, peep);
                 peep->sprite_direction = exitDirection;
             }
 
@@ -4475,7 +4475,7 @@ static Vehicle* vehicle_create_car(
             chosenLoc.x = x + (scenario_rand() & 0xFF);
         } while (vehicle_update_dodgems_collision(vehicle, chosenLoc.x, chosenLoc.y, nullptr));
 
-        sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
+        sprite_move(chosenLoc.x, chosenLoc.y, z, vehicle);
     }
     else
     {
@@ -4553,7 +4553,7 @@ static Vehicle* vehicle_create_car(
         z = tileElement->GetBaseZ();
         z += RideData5[ride->type].z_offset;
 
-        sprite_move(x, y, z, (rct_sprite*)vehicle);
+        sprite_move(x, y, z, vehicle);
         vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (vehicle->sprite_direction >> 3);
         vehicle->track_progress = 31;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)

@@ -79,7 +79,7 @@ Vehicle* cable_lift_segment_create(
     current->track_z = z;
     z += RideData5[ride.type].z_offset;
 
-    sprite_move(16, 16, z, (rct_sprite*)current);
+    sprite_move(16, 16, z, current);
     current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_1;
@@ -457,7 +457,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
                     }
                 }
             }
-            sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
+            sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
 
             invalidate_sprite_2((rct_sprite*)vehicle);
         }

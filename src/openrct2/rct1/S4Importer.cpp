@@ -1232,7 +1232,7 @@ private:
         dst->mini_golf_current_animation = src->mini_golf_current_animation;
         dst->mini_golf_flags = src->mini_golf_flags;
 
-        sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
+        sprite_move(src->x, src->y, src->z, dst);
         invalidate_sprite_2((rct_sprite*)dst);
 
         dst->num_peeps = src->num_peeps;
@@ -1391,7 +1391,7 @@ private:
         dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
         dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
 
-        sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
+        sprite_move(src->x, src->y, src->z, dst);
         invalidate_sprite_2((rct_sprite*)dst);
 
         dst->sprite_direction = src->sprite_direction;
@@ -1636,7 +1636,7 @@ private:
                 litter->sprite_height_positive = srcLitter->sprite_height_positive;
                 litter->sprite_height_negative = srcLitter->sprite_height_negative;
 
-                sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, (rct_sprite*)litter);
+                sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, litter);
                 invalidate_sprite_2((rct_sprite*)litter);
             }
         }
@@ -1658,7 +1658,7 @@ private:
                 dst->sprite_height_negative = src->sprite_height_negative;
                 dst->sprite_height_positive = src->sprite_height_positive;
 
-                sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
+                sprite_move(src->x, src->y, src->z, dst);
 
                 switch (src->type)
                 {
@@ -1687,7 +1687,7 @@ private:
                         break;
                 }
 
-                sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
+                sprite_move(src->x, src->y, src->z, dst);
                 invalidate_sprite_2((rct_sprite*)dst);
             }
         }

@@ -3578,7 +3578,7 @@ static void vehicle_update_collision_setup(Vehicle* vehicle)
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
 
-        sprite_move(train->x, train->y, train->z, (rct_sprite*)train);
+        sprite_move(train->x, train->y, train->z, train);
         invalidate_sprite_2((rct_sprite*)train);
 
         train->var_4E = 0;
@@ -4534,7 +4534,7 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
             _vehicleUnkF64E10++;
         }
 
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
+        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
         vehicle->Invalidate();
     }
 
@@ -5300,7 +5300,7 @@ static void vehicle_crash_on_land(Vehicle* vehicle)
     vehicle->sprite_height_negative = 45;
     vehicle->sprite_height_positive = 5;
 
-    sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
+    sprite_move(vehicle->x, vehicle->y, vehicle->z, vehicle);
     vehicle->Invalidate();
 
     vehicle->crash_z = 0;
@@ -5364,7 +5364,7 @@ static void vehicle_crash_on_water(Vehicle* vehicle)
     vehicle->sprite_height_negative = 45;
     vehicle->sprite_height_positive = 5;
 
-    sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
+    sprite_move(vehicle->x, vehicle->y, vehicle->z, vehicle);
     vehicle->Invalidate();
 
     vehicle->crash_z = -1;
@@ -5452,7 +5452,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
             continue;
         }
 
-        sprite_move(curPosition.x, curPosition.y, curPosition.z, (rct_sprite*)curVehicle);
+        sprite_move(curPosition.x, curPosition.y, curPosition.z, curVehicle);
         invalidate_sprite_2((rct_sprite*)curVehicle);
 
         if (curVehicle->sub_state == 1)
@@ -6317,7 +6317,7 @@ static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle)
         if (!vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
         {
             vehicle->Invalidate();
-            sprite_move(location.x, location.y, location.z, (rct_sprite*)vehicle);
+            sprite_move(location.x, location.y, location.z, vehicle);
             vehicle->Invalidate();
         }
     }
@@ -6385,7 +6385,7 @@ static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle)
             }
         }
 
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
+        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
         vehicle->Invalidate();
     }
 
@@ -7226,7 +7226,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
         steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;
-        sprite_move(x, y, z, (rct_sprite*)steam);
+        sprite_move(x, y, z, steam);
     }
 }
 
@@ -7615,7 +7615,7 @@ static void vehicle_update_reverser_car_bogies(Vehicle* vehicle)
     int32_t x = vehicle->track_x + moveInfo->x;
     int32_t y = vehicle->track_y + moveInfo->y;
     int32_t z = vehicle->z;
-    sprite_move(x, y, z, (rct_sprite*)vehicle);
+    sprite_move(x, y, z, vehicle);
 }
 
 /**
@@ -9250,7 +9250,7 @@ loc_6DCD6B:
     goto loc_6DC99A;
 
 loc_6DCDE4:
-    sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
+    sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
     vehicle->Invalidate();
 
 loc_6DCE02:
@@ -9685,7 +9685,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
             }
         }
         // loc_6DBF20
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)car);
+        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, car);
         invalidate_sprite_2((rct_sprite*)car);
 
     loc_6DBF3E:

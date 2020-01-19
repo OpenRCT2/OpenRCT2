@@ -47,7 +47,7 @@ void Balloon::Update()
         {
             time_to_move = 0;
             frame++;
-            sprite_move(x, y, z + 1, (rct_sprite*)this);
+            sprite_move(x, y, z + 1, this);
 
             int32_t maxZ = 1967 - ((x ^ y) & 31);
             if (z >= maxZ)
@@ -72,7 +72,7 @@ void Balloon::Press()
         else
         {
             int16_t shift = ((random & 0x80000000) ? -6 : 6);
-            sprite_move(x + shift, y, z, (rct_sprite*)this);
+            sprite_move(x + shift, y, z, this);
         }
     }
 }
@@ -93,7 +93,7 @@ void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopp
         sprite->balloon.sprite_height_negative = 22;
         sprite->balloon.sprite_height_positive = 11;
         sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z, sprite);
+        sprite_move(x, y, z, &sprite->balloon);
         sprite->balloon.type = SPRITE_MISC_BALLOON;
         sprite->balloon.time_to_move = 0;
         sprite->balloon.frame = 0;

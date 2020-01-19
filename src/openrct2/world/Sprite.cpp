@@ -485,7 +485,7 @@ static void sprite_steam_particle_update(SteamParticle* steam)
     if (steam->time_to_move >= 4)
     {
         steam->time_to_move = 1;
-        sprite_move(steam->x, steam->y, steam->z + 1, (rct_sprite*)steam);
+        sprite_move(steam->x, steam->y, steam->z + 1, steam);
     }
     steam->frame += 64;
     if (steam->frame >= (56 * 64))
@@ -507,7 +507,7 @@ void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z + 4, (rct_sprite*)sprite);
+        sprite_move(x, y, z + 4, sprite);
         sprite->type = SPRITE_MISC_EXPLOSION_CLOUD;
         sprite->frame = 0;
     }
@@ -540,7 +540,7 @@ void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z + 4, (rct_sprite*)sprite);
+        sprite_move(x, y, z + 4, sprite);
         sprite->type = SPRITE_MISC_EXPLOSION_FLARE;
         sprite->frame = 0;
     }
@@ -626,7 +626,7 @@ void sprite_misc_update_all()
  * @param z (dx)
  * @param sprite (esi)
  */
-void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
+void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
 {
     if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)
     {
@@ -634,14 +634,14 @@ void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
     }
 
     size_t newIndex = GetSpatialIndexOffset(x, y);
-    size_t currentIndex = GetSpatialIndexOffset(sprite->generic.x, sprite->generic.y);
+    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
     if (newIndex != currentIndex)
     {
         uint16_t* spriteIndex = &gSpriteSpatialIndex[currentIndex];
         if (*spriteIndex != SPRITE_INDEX_NULL)
         {
             rct_sprite* sprite2 = get_sprite(*spriteIndex);
-            while (sprite != sprite2)
+            while (sprite != &sprite2->generic)
             {
                 spriteIndex = &sprite2->generic.next_in_quadrant;
                 if (*spriteIndex == SPRITE_INDEX_NULL)
@@ -651,23 +651,23 @@ void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
                 sprite2 = get_sprite(*spriteIndex);
             }
         }
-        *spriteIndex = sprite->generic.next_in_quadrant;
+        *spriteIndex = sprite->next_in_quadrant;
 
         int32_t tempSpriteIndex = gSpriteSpatialIndex[newIndex];
-        gSpriteSpatialIndex[newIndex] = sprite->generic.sprite_index;
-        sprite->generic.next_in_quadrant = tempSpriteIndex;
+        gSpriteSpatialIndex[newIndex] = sprite->sprite_index;
+        sprite->next_in_quadrant = tempSpriteIndex;
     }
 
     if (x == LOCATION_NULL)
     {
-        sprite->generic.sprite_left = LOCATION_NULL;
-        sprite->generic.x = x;
-        sprite->generic.y = y;
-        sprite->generic.z = z;
+        sprite->sprite_left = LOCATION_NULL;
+        sprite->x = x;
+        sprite->y = y;
+        sprite->z = z;
     }
     else
     {
-        sprite_set_coordinates(x, y, z, sprite);
+        sprite_set_coordinates(x, y, z, (rct_sprite*)sprite);
     }
 }
 
@@ -783,7 +783,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     litter->sprite_height_positive = 3;
     litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
     litter->type = type;
-    sprite_move(x, y, z, (rct_sprite*)litter);
+    sprite_move(x, y, z, litter);
     invalidate_sprite_0((rct_sprite*)litter);
     litter->creationTick = gScenarioTicks;
 }
