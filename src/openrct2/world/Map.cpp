@@ -1419,6 +1419,7 @@ static GameActionResult::Ptr map_can_construct_with_clear_at(
                 if (tileElement != nullptr)
                 {
                     map_obstruction_set_error_text(tileElement, *res);
+                    res->Error = GA_ERROR::NO_CLEARANCE;
                 }
                 return res;
 
