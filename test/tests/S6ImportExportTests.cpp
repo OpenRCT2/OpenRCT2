@@ -363,8 +363,7 @@ static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEff
     COMPARE_FIELD(wiggle);
 }
 
-static void CompareSpriteDataCrashedVehicleParticle(
-    const VehicleCrashParticle& left, const VehicleCrashParticle& right)
+static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& left, const VehicleCrashParticle& right)
 {
     COMPARE_FIELD(time_to_live);
     for (size_t i = 0; i < std::size(left.colour); i++)

@@ -381,8 +381,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, target_seat_rotation);
     }
 
-    void CompareSpriteDataLitter(
-        const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         COMPARE_FIELD(Litter, creationTick);
     }

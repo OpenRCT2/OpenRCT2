@@ -108,9 +108,7 @@ static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
         rct_viewport* viewport = &g_viewport_list[i];
         if (viewport->width != 0 && viewport->zoom <= maxZoom)
         {
-            viewport_invalidate(
-                viewport, sprite->sprite_left, sprite->sprite_top, sprite->sprite_right,
-                sprite->sprite_bottom);
+            viewport_invalidate(viewport, sprite->sprite_left, sprite->sprite_top, sprite->sprite_right, sprite->sprite_bottom);
         }
     }
 }
@@ -457,7 +455,7 @@ void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
     sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
     sprite->linked_list_index = newListIndex;
 
-    sprite->next = gSpriteListHead[newListIndex]; // This sprite's next sprite is the old head, since we're the new head
+    sprite->next = gSpriteListHead[newListIndex];         // This sprite's next sprite is the old head, since we're the new head
     gSpriteListHead[newListIndex] = sprite->sprite_index; // Store this sprite's index as head of its new list
 
     if (sprite->next != SPRITE_INDEX_NULL)
