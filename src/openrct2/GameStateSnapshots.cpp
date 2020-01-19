@@ -367,7 +367,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(rct_vehicle, var_C8);
         COMPARE_FIELD(rct_vehicle, var_CA);
         COMPARE_FIELD(rct_vehicle, scream_sound_id);
-        COMPARE_FIELD(rct_vehicle, var_CD);
+        COMPARE_FIELD(rct_vehicle, TrackSubposition);
         COMPARE_FIELD(rct_vehicle, num_laps);
         COMPARE_FIELD(rct_vehicle, brake_speed);
         COMPARE_FIELD(rct_vehicle, lost_time_out);

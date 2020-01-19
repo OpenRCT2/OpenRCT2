@@ -4451,7 +4451,7 @@ static rct_vehicle* vehicle_create_car(
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
         // loc_6DDCA4:
-        vehicle->var_CD = 0;
+        vehicle->TrackSubposition = VEHICLE_TRACK_SUBPOSITION_0;
         int32_t direction = tileElement->GetDirection();
         x += word_9A3AB4[direction].x;
         y += word_9A3AB4[direction].y;
@@ -4481,24 +4481,24 @@ static rct_vehicle* vehicle_create_car(
     }
     else
     {
-        int16_t dl = 0;
+        VEHICLE_TRACK_SUBPOSITION subposition = VEHICLE_TRACK_SUBPOSITION_0;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
         {
-            dl = 1;
+            subposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT;
         }
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
         {
             // Choose which lane Go Kart should start in
-            dl = 5;
+            subposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE;
             if (vehicleIndex & 1)
             {
-                dl = 6;
+                subposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE;
             }
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
         {
-            dl = 9;
+            subposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = 0;
             vehicle->mini_golf_flags = 0;
@@ -4507,14 +4507,14 @@ static rct_vehicle* vehicle_create_car(
         {
             if (vehicle->IsHead())
             {
-                dl = 15;
+                subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE;
             }
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_5)
         {
-            dl = 16;
+            subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE;
         }
-        vehicle->var_CD = dl;
+        vehicle->TrackSubposition = subposition;
 
         vehicle->track_x = x;
         vehicle->track_y = y;
