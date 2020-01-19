@@ -187,7 +187,7 @@ public:
 
         auto* surfaceElement = map_get_surface_element_at(_loc);
 
-        if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight())
+        if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
         {
             int32_t water_height = surfaceElement->GetWaterHeight() - 1;
             if (water_height > targetHeight)

@@ -318,7 +318,7 @@ static void mapgen_place_trees()
                 continue;
 
             // Exclude water tiles
-            if (surfaceElement->GetWaterHeight())
+            if (surfaceElement->GetWaterHeight() > 0)
                 continue;
 
             pos.x = x;
