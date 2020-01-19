@@ -279,16 +279,16 @@ public:
         bool wallAcrossTrack = false;
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
         {
-            if (!WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack))
+            auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
+            if (result->Error != GA_ERROR::OK)
             {
-                return std::make_unique<WallPlaceActionResult>(
-                    GA_ERROR::NO_CLEARANCE, gGameCommandErrorText, gCommonFormatArgs);
+                return result;
             }
         }
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS, gGameCommandErrorText);
+            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         res->Cost = wallEntry->wall.price;
@@ -380,16 +380,16 @@ public:
         bool wallAcrossTrack = false;
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
         {
-            if (!WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack))
+            auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
+            if (result->Error != GA_ERROR::OK)
             {
-                return std::make_unique<WallPlaceActionResult>(
-                    GA_ERROR::NO_CLEARANCE, gGameCommandErrorText, gCommonFormatArgs);
+                return result;
             }
         }
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS, gGameCommandErrorText);
+            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0b0000);
@@ -603,7 +603,7 @@ private:
      *
      *  rct2: 0x006E5C1A
      */
-    bool WallCheckObstruction(rct_scenery_entry * wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
+    GameActionResult::Ptr WallCheckObstruction(rct_scenery_entry * wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
     {
         int32_t entryType, sequence;
         rct_scenery_entry* entry;
@@ -613,8 +613,7 @@ private:
         gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
         if (map_is_location_at_edge(_loc))
         {
-            gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
-            return false;
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_OFF_EDGE_OF_MAP);
         }
 
         TileElement* tileElement = map_get_first_element_at(_loc);
@@ -636,24 +635,25 @@ private:
                 int32_t direction = tileElement->GetDirection();
                 if (_edge == direction)
                 {
-                    map_obstruction_set_error_text(tileElement);
-                    return false;
+                    auto res = MakeResult(GA_ERROR::NO_CLEARANCE, STR_NONE);
+                    map_obstruction_set_error_text(tileElement, *res);
+                    return res;
                 }
                 continue;
             }
             if (tileElement->GetOccupiedQuadrants() == 0)
                 continue;
-
+            auto res = MakeResult(GA_ERROR::NO_CLEARANCE, STR_NONE);
             switch (elementType)
             {
                 case TILE_ELEMENT_TYPE_ENTRANCE:
-                    map_obstruction_set_error_text(tileElement);
-                    return false;
+                    map_obstruction_set_error_text(tileElement, *res);
+                    return res;
                 case TILE_ELEMENT_TYPE_PATH:
                     if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                     {
-                        map_obstruction_set_error_text(tileElement);
-                        return false;
+                        map_obstruction_set_error_text(tileElement, *res);
+                        return res;
                     }
                     break;
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -665,8 +665,8 @@ private:
                         int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                         if (!(tile->flags & (1 << direction)))
                         {
-                            map_obstruction_set_error_text(tileElement);
-                            return false;
+                            map_obstruction_set_error_text(tileElement, *res);
+                            return res;
                         }
                     }
                     break;
@@ -674,20 +674,20 @@ private:
                     entry = tileElement->AsSmallScenery()->GetEntry();
                     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
                     {
-                        map_obstruction_set_error_text(tileElement);
-                        return false;
+                        map_obstruction_set_error_text(tileElement, *res);
+                        return res;
                     }
                     break;
                 case TILE_ELEMENT_TYPE_TRACK:
                     if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                     {
-                        return false;
+                        return res;
                     }
                     break;
             }
         } while (!(tileElement++)->IsLastForTile());
 
-        return true;
+        return MakeResult();
     }
 
     /**

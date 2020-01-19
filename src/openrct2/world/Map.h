@@ -251,7 +251,8 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
-void map_obstruction_set_error_text(TileElement* tileElement);
+class GameActionResult;
+void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& res);
 
 uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
 
