@@ -3550,7 +3550,6 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
     z -= bx;
 
     gMapSelectArrowPosition.z = z;
-    bx = 41;
     _currentTrackBegin.x = mapCoords->x;
     _currentTrackBegin.y = mapCoords->y;
     _currentTrackBegin.z = z;
@@ -3561,9 +3560,12 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
     }
 
     _previousTrackPiece = _currentTrackBegin;
+    // search for appropriate z value for ghost, up to max ride height
+    int numAttempts = (z <= (8 * MAX_TRACK_HEIGHT) ? MAX_TRACK_HEIGHT - (z / 8) + 1 : 2);
+
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        for (;;)
+        for (int zAttempts = numAttempts; zAttempts > 1; zAttempts--)
         {
             window_ride_construction_update_state(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z,
@@ -3573,16 +3575,11 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
 
-            bx--;
-            if (bx == 0)
-                break;
-
             _currentTrackBegin.z -= 8;
             if (_currentTrackBegin.z < 0)
                 break;
 
-            if (bx >= 0)
-                _currentTrackBegin.z += 16;
+            _currentTrackBegin.z += 16;
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
@@ -3591,8 +3588,6 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    // search for appropriate z value for ghost, up to max ride height
-    int numAttempts = (z <= (8 * MAX_TRACK_HEIGHT) ? MAX_TRACK_HEIGHT - (z / 8) + 1 : 2);
     for (int zAttempts = numAttempts; zAttempts > 1; zAttempts--)
     {
         window_ride_construction_update_state(
@@ -3793,9 +3788,12 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
         z = _trackPlaceZ;
     }
 
+    // search for z value to build at, up to max ride height
+    int numAttempts = (z <= (8 * MAX_TRACK_HEIGHT) ? MAX_TRACK_HEIGHT - (z / 8) + 1 : 2);
+
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        for (int32_t zAttempts = 41; zAttempts >= 0; zAttempts--)
+        for (int32_t zAttempts = numAttempts; zAttempts > 0; zAttempts--)
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
             _currentTrackBegin.x = mapCoords.x;
@@ -3854,9 +3852,6 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
         }
         return;
     }
-
-    // search for z value to build at, up to max ride height
-    int numAttempts = (z <= (8 * MAX_TRACK_HEIGHT) ? MAX_TRACK_HEIGHT - (z / 8) + 1 : 2);
 
     for (int32_t zAttempts = numAttempts; zAttempts > 0; zAttempts--)
     {
