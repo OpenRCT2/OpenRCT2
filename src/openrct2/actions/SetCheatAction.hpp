@@ -415,7 +415,7 @@ private:
 
     void RemoveLitter() const
     {
-        rct_litter* litter;
+        Litter* litter;
         uint16_t spriteIndex, nextSpriteIndex;
 
         for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)

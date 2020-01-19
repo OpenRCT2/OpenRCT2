@@ -70,7 +70,7 @@ struct GameStateSnapshot_t
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Peep)]>(sprite.peep);
                     break;
                 case SPRITE_IDENTIFIER_LITTER:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(rct_litter)]>(sprite.litter);
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Litter)]>(sprite.litter);
                     break;
                 case SPRITE_IDENTIFIER_MISC:
                 {
@@ -78,19 +78,19 @@ struct GameStateSnapshot_t
                     switch (sprite.generic.type)
                     {
                         case SPRITE_MISC_MONEY_EFFECT:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_money_effect)]>(sprite.money_effect);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
                             break;
                         case SPRITE_MISC_BALLOON:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_balloon)]>(sprite.balloon);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(Balloon)]>(sprite.balloon);
                             break;
                         case SPRITE_MISC_DUCK:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_duck)]>(sprite.duck);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(Duck)]>(sprite.duck);
                             break;
                         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
                             break;
                         case SPRITE_MISC_STEAM_PARTICLE:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_steam_particle)]>(sprite.steam_particle);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
                             break;
                     }
                 }
@@ -175,29 +175,29 @@ struct GameStateSnapshots : public IGameStateSnapshots
     }
 
     void CompareSpriteDataCommon(
-        const rct_sprite_common& spriteBase, const rct_sprite_common& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(rct_sprite_common, sprite_identifier);
-        COMPARE_FIELD(rct_sprite_common, type);
-        COMPARE_FIELD(rct_sprite_common, next_in_quadrant);
-        COMPARE_FIELD(rct_sprite_common, next);
-        COMPARE_FIELD(rct_sprite_common, previous);
-        COMPARE_FIELD(rct_sprite_common, linked_list_index);
-        COMPARE_FIELD(rct_sprite_common, sprite_index);
-        COMPARE_FIELD(rct_sprite_common, flags);
-        COMPARE_FIELD(rct_sprite_common, x);
-        COMPARE_FIELD(rct_sprite_common, y);
-        COMPARE_FIELD(rct_sprite_common, z);
+        COMPARE_FIELD(SpriteBase, sprite_identifier);
+        COMPARE_FIELD(SpriteBase, type);
+        COMPARE_FIELD(SpriteBase, next_in_quadrant);
+        COMPARE_FIELD(SpriteBase, next);
+        COMPARE_FIELD(SpriteBase, previous);
+        COMPARE_FIELD(SpriteBase, linked_list_index);
+        COMPARE_FIELD(SpriteBase, sprite_index);
+        COMPARE_FIELD(SpriteBase, flags);
+        COMPARE_FIELD(SpriteBase, x);
+        COMPARE_FIELD(SpriteBase, y);
+        COMPARE_FIELD(SpriteBase, z);
         /* Only relevant for rendering, does not affect game state.
-        COMPARE_FIELD(rct_sprite_common, sprite_width);
-        COMPARE_FIELD(rct_sprite_common, sprite_height_negative);
-        COMPARE_FIELD(rct_sprite_common, sprite_height_positive);
-        COMPARE_FIELD(rct_sprite_common, sprite_left);
-        COMPARE_FIELD(rct_sprite_common, sprite_top);
-        COMPARE_FIELD(rct_sprite_common, sprite_right);
-        COMPARE_FIELD(rct_sprite_common, sprite_bottom);
+        COMPARE_FIELD(SpriteBase, sprite_width);
+        COMPARE_FIELD(SpriteBase, sprite_height_negative);
+        COMPARE_FIELD(SpriteBase, sprite_height_positive);
+        COMPARE_FIELD(SpriteBase, sprite_left);
+        COMPARE_FIELD(SpriteBase, sprite_top);
+        COMPARE_FIELD(SpriteBase, sprite_right);
+        COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(rct_sprite_common, sprite_direction);
+        COMPARE_FIELD(SpriteBase, sprite_direction);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -382,9 +382,9 @@ struct GameStateSnapshots : public IGameStateSnapshots
     }
 
     void CompareSpriteDataLitter(
-        const rct_litter& spriteBase, const rct_litter& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(rct_litter, creationTick);
+        COMPARE_FIELD(Litter, creationTick);
     }
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const

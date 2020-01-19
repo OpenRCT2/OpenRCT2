@@ -2358,7 +2358,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            rct_money_effect::CreateAt(amount, x, y, z, true);
+            MoneyEffect::CreateAt(amount, x, y, z, true);
         }
     }
 
@@ -3018,7 +3018,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    rct_litter* litter;
+    Litter* litter;
     for (uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next)
     {
         litter = &(get_sprite(sprite_idx)->litter);

@@ -1624,7 +1624,7 @@ private:
             {
                 const auto* srcLitter = &sprite.litter;
 
-                rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
+                Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->type = srcLitter->type;
 
@@ -1663,10 +1663,10 @@ private:
                 switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
-                        ImportSteamParticle((rct_steam_particle*)dst, (rct_steam_particle*)src);
+                        ImportSteamParticle((SteamParticle*)dst, (SteamParticle*)src);
                         break;
                     case SPRITE_MISC_MONEY_EFFECT:
-                        ImportMoneyEffect((rct_money_effect*)dst, (rct_money_effect*)src);
+                        ImportMoneyEffect((MoneyEffect*)dst, (MoneyEffect*)src);
                         break;
                     case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
                         break;
@@ -1680,10 +1680,10 @@ private:
                         ImportJumpingFountainWater((JumpingFountain*)dst, (JumpingFountain*)src);
                         break;
                     case SPRITE_MISC_BALLOON:
-                        ImportBalloon((rct_balloon*)dst, (rct_balloon*)src);
+                        ImportBalloon((Balloon*)dst, (Balloon*)src);
                         break;
                     case SPRITE_MISC_DUCK:
-                        ImportDuck((rct_duck*)dst, (rct_duck*)src);
+                        ImportDuck((Duck*)dst, (Duck*)src);
                         break;
                 }
 
@@ -1693,7 +1693,7 @@ private:
         }
     }
 
-    void ImportMoneyEffect(rct_money_effect* dst, rct_money_effect* src)
+    void ImportMoneyEffect(MoneyEffect* dst, MoneyEffect* src)
     {
         dst->move_delay = src->move_delay;
         dst->num_movements = src->num_movements;
@@ -1702,7 +1702,7 @@ private:
         dst->wiggle = src->wiggle;
     }
 
-    void ImportSteamParticle(rct_steam_particle* dst, rct_steam_particle* src)
+    void ImportSteamParticle(SteamParticle* dst, SteamParticle* src)
     {
         dst->frame = src->frame;
     }
@@ -1715,7 +1715,7 @@ private:
         dst->frame = src->frame;
     }
 
-    void ImportBalloon(rct_balloon* dst, rct_balloon* src)
+    void ImportBalloon(Balloon* dst, Balloon* src)
     {
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
@@ -1728,7 +1728,7 @@ private:
         }
     }
 
-    void ImportDuck(rct_duck* dst, rct_duck* src)
+    void ImportDuck(Duck* dst, Duck* src)
     {
         dst->frame = src->frame;
         dst->state = src->state;

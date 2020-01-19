@@ -20,7 +20,7 @@
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int32_t y, int32_t z)
 {
-    rct_crashed_vehicle_particle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
+    VehicleCrashParticle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -48,7 +48,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
  *
  *  rct2: 0x00673298
  */
-void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
+void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
 {
     invalidate_sprite_0((rct_sprite*)particle);
     particle->time_to_live--;
@@ -131,7 +131,7 @@ void crash_splash_create(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x0067339D
  */
-void crash_splash_update(rct_crash_splash* splash)
+void crash_splash_update(CrashSplashParticle* splash)
 {
     invalidate_sprite_2((rct_sprite*)splash);
     splash->frame += 85;

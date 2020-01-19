@@ -477,7 +477,7 @@ void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newListIndex)
  *
  *  rct2: 0x00673200
  */
-static void sprite_steam_particle_update(rct_steam_particle* steam)
+static void sprite_steam_particle_update(SteamParticle* steam)
 {
     invalidate_sprite_2((rct_sprite*)steam);
 
@@ -570,19 +570,19 @@ static void sprite_misc_update(rct_sprite* sprite)
     switch (sprite->generic.type)
     {
         case SPRITE_MISC_STEAM_PARTICLE:
-            sprite_steam_particle_update((rct_steam_particle*)sprite);
+            sprite_steam_particle_update((SteamParticle*)sprite);
             break;
         case SPRITE_MISC_MONEY_EFFECT:
             sprite->money_effect.Update();
             break;
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
-            crashed_vehicle_particle_update((rct_crashed_vehicle_particle*)sprite);
+            crashed_vehicle_particle_update((VehicleCrashParticle*)sprite);
             break;
         case SPRITE_MISC_EXPLOSION_CLOUD:
             sprite_misc_explosion_cloud_update(sprite);
             break;
         case SPRITE_MISC_CRASH_SPLASH:
-            crash_splash_update((rct_crash_splash*)sprite);
+            crash_splash_update((CrashSplashParticle*)sprite);
             break;
         case SPRITE_MISC_EXPLOSION_FLARE:
             sprite_misc_explosion_flare_update(sprite);
@@ -753,12 +753,12 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
 
     if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500)
     {
-        rct_litter* newestLitter = nullptr;
+        Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;
         for (uint16_t nextSpriteIndex, spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
              spriteIndex = nextSpriteIndex)
         {
-            rct_litter* litter = &get_sprite(spriteIndex)->litter;
+            Litter* litter = &get_sprite(spriteIndex)->litter;
             nextSpriteIndex = litter->next;
             if (newestLitterCreationTick <= litter->creationTick)
             {
@@ -774,7 +774,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
         }
     }
 
-    rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
+    Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
     if (litter == nullptr)
         return;
 
@@ -802,7 +802,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
         uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
         if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
         {
-            rct_litter* litter = &sprite->litter;
+            Litter* litter = &sprite->litter;
 
             if (abs(litter->z - z) <= 16)
             {

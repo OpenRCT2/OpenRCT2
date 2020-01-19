@@ -19,17 +19,17 @@ bool rct_sprite::IsBalloon()
     return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.type == SPRITE_MISC_BALLOON;
 }
 
-rct_balloon* rct_sprite::AsBalloon()
+Balloon* rct_sprite::AsBalloon()
 {
-    rct_balloon* result = nullptr;
+    Balloon* result = nullptr;
     if (IsBalloon())
     {
-        result = (rct_balloon*)this;
+        result = (Balloon*)this;
     }
     return result;
 }
 
-void rct_balloon::Update()
+void Balloon::Update()
 {
     invalidate_sprite_2((rct_sprite*)this);
     if (popped == 1)
@@ -58,7 +58,7 @@ void rct_balloon::Update()
     }
 }
 
-void rct_balloon::Press()
+void Balloon::Press()
 {
     if (popped != 1)
     {
@@ -77,7 +77,7 @@ void rct_balloon::Press()
     }
 }
 
-void rct_balloon::Pop()
+void Balloon::Pop()
 {
     popped = 1;
     frame = 0;
@@ -102,7 +102,7 @@ void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopp
     }
 }
 
-void balloon_update(rct_balloon* balloon)
+void balloon_update(Balloon* balloon)
 {
     balloon->Update();
 }

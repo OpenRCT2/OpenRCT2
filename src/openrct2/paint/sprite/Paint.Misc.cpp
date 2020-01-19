@@ -49,7 +49,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 return;
             }
 
-            const rct_money_effect* moneyEffect = &misc->money_effect;
+            const MoneyEffect* moneyEffect = &misc->money_effect;
             auto [stringId, value] = moneyEffect->GetStringId();
             paint_floating_money_effect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z, (int8_t*)&money_wave[moneyEffect->wiggle % 22],
@@ -64,7 +64,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 return;
             }
 
-            rct_crashed_vehicle_particle particle = misc->crashed_vehicle_particle;
+            VehicleCrashParticle particle = misc->crashed_vehicle_particle;
             uint32_t imageId = vehicle_particle_base_sprites[particle.crashed_sprite_base] + particle.frame / 256;
             imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP
                 | IMAGE_TYPE_REMAP_2_PLUS;
@@ -81,7 +81,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 
         case SPRITE_MISC_CRASH_SPLASH: // 4
         {
-            rct_crash_splash crashSplash = misc->crash_splash;
+            CrashSplashParticle crashSplash = misc->crash_splash;
             uint32_t imageId = 22927 + (crashSplash.frame / 256);
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, crashSplash.z);
             break;
@@ -170,7 +170,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 
         case SPRITE_MISC_BALLOON: // 7
         {
-            rct_balloon balloon = misc->balloon;
+            Balloon balloon = misc->balloon;
 
             uint32_t imageId = 22651 + (balloon.frame & 7);
             if (balloon.popped != 0)
@@ -186,7 +186,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
         case SPRITE_MISC_DUCK:
             if (dpi->zoom_level <= 1)
             {
-                const rct_duck* duck = &misc->duck;
+                const Duck* duck = &misc->duck;
                 uint32_t imageId = duck_get_frame_image(&misc->duck, imageDirection);
                 if (imageId != 0)
                 {

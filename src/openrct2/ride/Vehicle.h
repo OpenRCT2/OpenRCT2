@@ -174,7 +174,7 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
     VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
 };
 
-struct rct_vehicle : rct_sprite_common
+struct rct_vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type; // 0x1F
     uint8_t bank_rotation;       // 0x20

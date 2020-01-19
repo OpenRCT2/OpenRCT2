@@ -18,7 +18,7 @@ struct paint_session;
 void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y);
 
 void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection);
-void litter_paint(paint_session* session, const rct_litter* litter, int32_t imageDirection);
+void litter_paint(paint_session* session, const Litter* litter, int32_t imageDirection);
 void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection);
 
 extern const uint32_t vehicle_particle_base_sprites[5];

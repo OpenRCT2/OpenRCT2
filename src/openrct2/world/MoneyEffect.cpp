@@ -24,12 +24,12 @@ bool rct_sprite::IsMoneyEffect()
         && this->money_effect.type == SPRITE_MISC_MONEY_EFFECT;
 }
 
-rct_money_effect* rct_sprite::AsMoneyEffect()
+MoneyEffect* rct_sprite::AsMoneyEffect()
 {
-    rct_money_effect* result = nullptr;
+    MoneyEffect* result = nullptr;
     if (IsMoneyEffect())
     {
-        result = (rct_money_effect*)this;
+        result = (MoneyEffect*)this;
     }
     return result;
 }
@@ -38,12 +38,12 @@ rct_money_effect* rct_sprite::AsMoneyEffect()
  *
  *  rct2: 0x0067351F
  */
-void rct_money_effect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
+void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
 
-    rct_money_effect* moneyEffect = &create_sprite(SPRITE_IDENTIFIER_MISC)->money_effect;
+    MoneyEffect* moneyEffect = &create_sprite(SPRITE_IDENTIFIER_MISC)->money_effect;
     if (moneyEffect == nullptr)
         return;
 
@@ -75,7 +75,7 @@ void rct_money_effect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, 
  *
  *  rct2: 0x0069C5D0
  */
-void rct_money_effect::Create(money32 value, CoordsXYZ loc)
+void MoneyEffect::Create(money32 value, CoordsXYZ loc)
 {
     if (loc.isNull())
     {
@@ -107,7 +107,7 @@ void rct_money_effect::Create(money32 value, CoordsXYZ loc)
  *
  *  rct2: 0x00673232
  */
-void rct_money_effect::Update()
+void MoneyEffect::Update()
 {
     invalidate_sprite_2((rct_sprite*)this);
     wiggle++;
@@ -145,7 +145,7 @@ void rct_money_effect::Update()
     sprite_remove((rct_sprite*)this);
 }
 
-std::pair<rct_string_id, money32> rct_money_effect::GetStringId() const
+std::pair<rct_string_id, money32> MoneyEffect::GetStringId() const
 {
     rct_string_id spentStringId = vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
     rct_string_id receiveStringId = vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;

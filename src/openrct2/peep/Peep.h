@@ -540,7 +540,7 @@ struct rct_peep_thought
 struct Guest;
 struct Staff;
 
-struct Peep : rct_sprite_common
+struct Peep : SpriteBase
 {
     char* name;
     uint16_t next_x;            // 0x24
