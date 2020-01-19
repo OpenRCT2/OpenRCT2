@@ -61,8 +61,7 @@ rct_vehicle* cable_lift_segment_create(
     current->sound2_id = SoundId::Null;
     current->var_C4 = 0;
     current->animation_frame = 0;
-    current->var_C8 = 0;
-    current->var_CA = 0;
+    current->additional_animation_var = 0;
     current->scream_sound_id = SoundId::Null;
     current->vehicle_sprite_type = 0;
     current->bank_rotation = 0;

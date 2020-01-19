@@ -1481,16 +1481,16 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
         }
         if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
-            if (vehicle->var_C8 + 0x3333 < 0xFFFF)
+            if (vehicle->additional_animation_var + 0x3333 < 0xFFFF)
             {
-                vehicle->var_C8 = vehicle->var_C8 + 0x3333 - 0xFFFF;
+                vehicle->additional_animation_var = vehicle->additional_animation_var + 0x3333 - 0xFFFF;
                 vehicle->animation_frame++;
                 vehicle->animation_frame &= 7;
                 vehicle->Invalidate();
             }
             else
             {
-                vehicle->var_C8 += 0x3333;
+                vehicle->additional_animation_var += 0x3333;
             }
             restraintsOpen = false;
             continue;
@@ -3570,10 +3570,9 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
         }
 
         train->flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
-        train->var_C8 = scenario_rand();
-        train->var_CA = scenario_rand();
+        train->additional_animation_var = scenario_rand();
 
-        train->animation_frame = train->var_CA & 0x7;
+        train->animation_frame = scenario_rand() & 0x7;
         train->sprite_width = 13;
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
@@ -5295,7 +5294,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
 
     vehicle->flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
     vehicle->animation_frame = 0;
-    vehicle->var_C8 = 0;
+    vehicle->additional_animation_var = 0;
     vehicle->sprite_width = 13;
     vehicle->sprite_height_negative = 45;
     vehicle->sprite_height_positive = 5;
@@ -5359,7 +5358,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
 
     vehicle->flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
     vehicle->animation_frame = 0;
-    vehicle->var_C8 = 0;
+    vehicle->additional_animation_var = 0;
     vehicle->sprite_width = 13;
     vehicle->sprite_height_negative = 45;
     vehicle->sprite_height_positive = 5;
@@ -5393,14 +5392,15 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
                     sprite_misc_explosion_cloud_create(curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z);
                 }
             }
-            if (curVehicle->var_C8 + 7281 > 0xFFFF)
+            if (curVehicle->additional_animation_var + 7281 > 0xFFFF)
             {
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
                 invalidate_sprite_2((rct_sprite*)curVehicle);
+                curVehicle->additional_animation_var = 0;
             }
-            curVehicle->var_C8 += 7281;
+            curVehicle->additional_animation_var += 7281;
             continue;
         }
 
@@ -7239,7 +7239,6 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
     uint8_t al, ah;
     uint32_t eax;
 
-    uint32_t* var_C8 = (uint32_t*)&vehicle->var_C8;
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
     if (vehicleEntry == nullptr)
     {
@@ -7248,8 +7247,8 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 20) & 3;
+            vehicle->additional_animation_var += _vehicleVelocityF64E08;
+            al = (vehicle->additional_animation_var >> 20) & 3;
             if (vehicle->animation_frame != al)
             {
                 ah = al;
@@ -7289,8 +7288,8 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 18) & 2;
+            vehicle->additional_animation_var += _vehicleVelocityF64E08;
+            al = (vehicle->additional_animation_var >> 18) & 2;
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
@@ -7298,8 +7297,8 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
-            *var_C8 += _vehicleVelocityF64E08;
-            eax = ((*var_C8 >> 13) & 0xFF) * 6;
+            vehicle->additional_animation_var += _vehicleVelocityF64E08;
+            eax = ((vehicle->additional_animation_var >> 13) & 0xFF) * 6;
             ah = (eax >> 8) & 0xFF;
             if (vehicle->animation_frame != ah)
             {
@@ -7308,8 +7307,8 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
-            *var_C8 += _vehicleVelocityF64E08;
-            eax = ((*var_C8 >> 13) & 0xFF) * 7;
+            vehicle->additional_animation_var += _vehicleVelocityF64E08;
+            eax = ((vehicle->additional_animation_var >> 13) & 0xFF) * 7;
             ah = (eax >> 8) & 0xFF;
             if (vehicle->animation_frame != ah)
             {
@@ -7318,8 +7317,8 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 19) & 1;
+            vehicle->additional_animation_var += _vehicleVelocityF64E08;
+            al = (vehicle->additional_animation_var >> 19) & 1;
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
@@ -7327,21 +7326,21 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
-            if (vehicle->var_C8 <= 0xCCCC)
+            if (vehicle->additional_animation_var <= 0xCCCC)
             {
-                vehicle->var_C8 += 0x3333;
+                vehicle->additional_animation_var += 0x3333;
             }
             else
             {
-                vehicle->var_C8 += 0x3333;
-                vehicle->animation_frame += 1;
+                vehicle->additional_animation_var = 0;
+                vehicle->animation_frame++;
                 vehicle->animation_frame &= 7;
                 vehicle->Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 18) & 3;
+            vehicle->additional_animation_var += _vehicleVelocityF64E08;
+            al = (vehicle->additional_animation_var >> 18) & 3;
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
@@ -7351,8 +7350,8 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
             if (vehicle->num_peeps != 0)
             {
-                *var_C8 += _vehicleVelocityF64E08;
-                eax = ((*var_C8 >> 13) & 0xFF) << 2;
+                vehicle->additional_animation_var += _vehicleVelocityF64E08;
+                eax = ((vehicle->additional_animation_var >> 13) & 0xFF) << 2;
                 ah = (eax >> 8) & 0xFF;
                 if (vehicle->animation_frame != ah)
                 {
@@ -7364,17 +7363,16 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
         case VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
             if (vehicle->seat_rotation != vehicle->target_seat_rotation)
             {
-                if (vehicle->var_C8 <= 0xCCCC)
+                if (vehicle->additional_animation_var <= 0xCCCC)
                 {
-                    vehicle->var_C8 += 0x3333;
+                    vehicle->additional_animation_var += 0x3333;
                 }
                 else
                 {
-                    vehicle->var_C8 += 0x3333;
+                    vehicle->additional_animation_var = 0;
 
                     if (vehicle->seat_rotation >= vehicle->target_seat_rotation)
                         vehicle->seat_rotation--;
-
                     else
                         vehicle->seat_rotation++;
 

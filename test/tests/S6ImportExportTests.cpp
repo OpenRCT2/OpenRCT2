@@ -326,8 +326,7 @@ static void CompareSpriteDataVehicle(const rct_vehicle& left, const rct_vehicle&
     {
         COMPARE_FIELD(pad_C6[i]);
     }
-    COMPARE_FIELD(var_C8);
-    COMPARE_FIELD(var_CA);
+    COMPARE_FIELD(additional_animation_var);
     COMPARE_FIELD(scream_sound_id);
     COMPARE_FIELD(var_CD);
     COMPARE_FIELD(num_laps);
