@@ -1063,7 +1063,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 
         int16_t colour = PALETTE_INDEX_20;
 
-        if (sprite_get_flashing((rct_sprite*)peep))
+        if (sprite_get_flashing(peep))
         {
             if (peep->type == PEEP_TYPE_STAFF)
             {

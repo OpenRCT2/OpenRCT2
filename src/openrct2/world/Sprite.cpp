@@ -303,7 +303,7 @@ rct_sprite_checksum sprite_checksum()
 
 #endif // DISABLE_NETWORK
 
-static void sprite_reset(SpriteGeneric* sprite)
+static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
     uint8_t llto = sprite->linked_list_index;
@@ -906,16 +906,16 @@ void sprite_position_tween_reset()
     }
 }
 
-void sprite_set_flashing(rct_sprite* sprite, bool flashing)
+void sprite_set_flashing(SpriteBase* sprite, bool flashing)
 {
-    assert(sprite->generic.sprite_index < MAX_SPRITES);
-    _spriteFlashingList[sprite->generic.sprite_index] = flashing;
+    assert(sprite->sprite_index < MAX_SPRITES);
+    _spriteFlashingList[sprite->sprite_index] = flashing;
 }
 
-bool sprite_get_flashing(rct_sprite* sprite)
+bool sprite_get_flashing(SpriteBase* sprite)
 {
-    assert(sprite->generic.sprite_index < MAX_SPRITES);
-    return _spriteFlashingList[sprite->generic.sprite_index];
+    assert(sprite->sprite_index < MAX_SPRITES);
+    return _spriteFlashingList[sprite->sprite_index];
 }
 
 static rct_sprite* find_sprite_list_cycle(uint16_t sprite_idx)
