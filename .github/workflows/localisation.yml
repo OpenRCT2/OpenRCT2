@@ -5,6 +5,7 @@ on:
 jobs:
   merge-localisation:
     name: Merge Localisation
+    if: github.repository == 'OpenRCT2/OpenRCT2'
     runs-on: ubuntu-latest
     steps:
       - name: Store private SSH
