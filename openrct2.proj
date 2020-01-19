@@ -2,60 +2,36 @@
 <!-- Main msbuild project for OpenRCT2 -->
 <!-- Inputs (/p: or environment variables)
        - OPENRCT2_BUILD_SERVER
-       - GIT_TAG
-       - GIT_BRANCH
-       - GIT_COMMIT_SHA1
-       - GIT_DESCRIBE
-       - OPENRCT2_ORG_TOKEN
-       - NO_NSIS: set to true to prevent the NSIS installer building
+       - OPENRCT2_BRANCH
+       - OPENRCT2_SHA1
+       - OPENRCT2_SHA1_SHORT
+       - OPENRCT2_DESCRIBE
   -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="PublishAll">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <!-- Import custom build tasks -->
   <Import Project="openrct2.targets" />
 
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
-    <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
-    <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
-
-    <Version>0.2.4</Version>
-    <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
-    <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
-    <TargetLibsVersion>16</TargetLibsVersion>
+    <Platform Condition="'$(Platform)'==''">x64</Platform>
 
     <!-- Set dynamic OpenRCT2 #defines -->
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_BRANCH)'!=''">/D "OPENRCT2_BRANCH=\"$(GIT_BRANCH)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(GIT_COMMIT_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(GIT_COMMIT_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(GIT_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(OPENRCT2_BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_BRANCH)'!=''">/D "OPENRCT2_BRANCH=\"$(OPENRCT2_BRANCH)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(OPENRCT2_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(OPENRCT2_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(OPENRCT2_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
-    <DistDir>$(RootDir)distribution\</DistDir>
-    <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
     <TargetDir>$(RootDir)bin\</TargetDir>
 
-    <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
-
     <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
-    <OutputCom>$(TargetDir)openrct2.com</OutputCom>
-    <OutputDll>$(TargetDir)openrct2.dll</OutputDll>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
-
-    <PublishPostfix>-$(Configuration)-$(Platform)</PublishPostfix>
-    <PublishPostfix Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(PublishPostfix)-$(GIT_COMMIT_SHA1_SHORT)</PublishPostfix>
-    <PublishPostfix>$(PublishPostfix.ToLower())</PublishPostfix>
-    <PublishZip>$(ArtifactsDir)openrct2-portable$(PublishPostfix).zip</PublishZip>
-    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'==''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
-    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
-    <PublishInstallerExe>$(ArtifactsDir)openrct2-installer$(PublishPostfix).exe</PublishInstallerExe>
-
-    <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows-$(Platform.ToLower())</UploadFilename>
 
     <!-- Set openrct2.sln properties -->
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
-    <SlnProperties Condition="'$(BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
+    <SlnProperties Condition="'$(OPENRCT2_BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
@@ -78,43 +54,6 @@
 
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
-  </ItemGroup>
-
-  <ItemGroup Label="Symbol Items">
-    <SymbolItems Include="$(OutputExe)" />
-    <SymbolItems Include="$(OutputCom)" />
-    <SymbolItems Include="$(OutputDll)" />
-    <SymbolItems Include="$(TargetDir)openrct2-dll.pdb" />
-    <SymbolItems Include="$(TargetDir)openrct2-win.pdb" />
-  </ItemGroup>
-
-  <ItemGroup Label="Publish Items">
-    <PublishItems Include="$(OutputExe)" />
-    <PublishItems Include="$(OutputCom)" />
-    <PublishItems Include="$(OutputDll)" />
-    <PublishItems Include="$(TargetDir)data" />
-    <PublishItems Include="$(DistDir)changelog.txt" />
-    <PublishItems Include="$(DistDir)readme.txt" />
-    <PublishItems Include="$(RootDir)contributors.md" />
-    <PublishItems Include="$(RootDir)licence.txt" />
-  </ItemGroup>
-
-  <ItemGroup Label="Upload Artifacts">
-    <UploadArtifacts Include="$(PublishZip)">
-      <Name>$(UploadFilename).zip</Name>
-      <FlavourId Condition="'$(Platform)'=='Win32'">1</FlavourId>
-      <FlavourId Condition="'$(Platform)'=='x64'">6</FlavourId>
-    </UploadArtifacts>
-    <UploadArtifacts Include="$(PublishInstallerExe)">
-      <Name>$(UploadFilename).exe</Name>
-      <FlavourId Condition="'$(Platform)'=='Win32'">2</FlavourId>
-      <FlavourId Condition="'$(Platform)'=='x64'">7</FlavourId>
-    </UploadArtifacts>
-    <UploadArtifacts Include="$(PublishSymbolsZip)">
-      <Name>$(UploadFilename)-symbols.zip</Name>
-      <FlavourId Condition="'$(Platform)'=='Win32'">5</FlavourId>
-      <FlavourId Condition="'$(Platform)'=='x64'">10</FlavourId>
-    </UploadArtifacts>
   </ItemGroup>
 
   <Target Name="DownloadLibs">
@@ -142,13 +81,6 @@
     <PropertyGroup>
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
     </PropertyGroup>
-    <ItemGroup>
-      <CleanItems Include="$(OutputCom)" />
-      <CleanItems Include="$(g2Output)" />
-      <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
-      <CleanItems Include="$(ArtifactsDir)openrct2-portable-$(Configuration)-$(Platform)*.zip" />
-      <CleanItems Include="$(ArtifactsDir)openrct2-symbols-$(Configuration)-$(Platform)*.zip" />
-    </ItemGroup>
     <Delete Files="@(CleanItems)" />
     <RemoveDir Directories="$(TargetDir)data" />
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
@@ -156,9 +88,9 @@
 
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
     <PropertyGroup>
-      <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
-      <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
-      <BuildString Condition="'$(GIT_DESCRIBE)'!=''">$(BuildString) ($(GIT_DESCRIBE))</BuildString>
+      <BuildString Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">$(OPENRCT2_SHA1_SHORT)</BuildString>
+      <BuildString Condition="'$(OPENRCT2_BRANCH)'!=''">$(BuildString) ($(OPENRCT2_BRANCH))</BuildString>
+      <BuildString Condition="'$(OPENRCT2_DESCRIBE)'!=''">$(BuildString) ($(OPENRCT2_DESCRIBE))</BuildString>
     </PropertyGroup>
     <ItemGroup>
       <DataItems Include="$(RootDir)data\**\*" />
@@ -183,31 +115,12 @@
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
 
-  <Target Name="Test">
-    <!-- Scan repositories prior to running tests as it can take a while -->
-    <Message Text="Building OpenRCT2 repository indexes..." Importance="high" />
-    <Exec Command="$(TargetDir)openrct2.exe scan-objects"
-          WorkingDirectory="$(TargetDir)"
-          StandardOutputImportance="normal" />
-
-    <Message Text="Running tests..." Importance="high" />
-    <Exec Command="$(TargetDir)tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;"
-          WorkingDirectory="$(TargetDir)" />
-  </Target>
-
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." Importance="high" />
     <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="normal" />
-  </Target>
-
-  <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
-  <Target Name="CreateGUI" DependsOnTargets="Build" AfterTargets="Build" Inputs="$(OutputExe)" Outputs="$(OutputCom)">
-    <Copy SourceFiles="$(OutputExe)" DestinationFiles="$(OutputCom)" />
-    <Exec Command="editbin /subsystem:console &quot;$(OutputCom)&quot;" />
-    <Exec Command="editbin /subsystem:windows &quot;$(OutputExe)&quot;" />
   </Target>
 
   <!-- Target to download the title sequences -->
@@ -236,70 +149,4 @@
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)testdata\replays" />
   </Target>
-
-  <!-- Target to publish OpenRCT2 as a portable zip -->
-  <Target Name="PublishPortable" DependsOnTargets="Build;g2" Inputs="@(PublishItems)" Outputs="$(PublishZip)"
-          Condition="'$(TestConfig)'!='true'">
-    <MakeDir Directories="$(ArtifactsDir)" />
-    <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishZip)))..." />
-    <_7z Output="$(PublishZip)" Inputs="@(PublishItems)" />
-  </Target>
-
-  <!-- Target to publish the OpenRCT2 debug symbols -->
-  <Target Name="PublishSymbols" DependsOnTargets="Build" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)"
-          Condition="'$(TestConfig)'!='true'">
-    <MakeDir Directories="$(ArtifactsDir)" />
-    <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishSymbolsZip)))..." />
-    <_7z Output="$(PublishSymbolsZip)" Inputs="@(SymbolItems)" />
-  </Target>
-
-  <!-- Target to publish the OpenRCT2 as an NSIS installer -->
-  <Target Name="PublishInstaller"
-          DependsOnTargets="Build;g2"
-          Inputs="@(PublishItems);$(NsisScript)"
-          Outputs="$(PublishInstallerExe)"
-          Condition="'$(NO_NSIS)'!='true' AND '$(TestConfig)'!='true'">
-    <PropertyGroup>
-      <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
-    </PropertyGroup>
-
-    <MakeDir Directories="$(ArtifactsDir)" />
-
-    <!-- Create the installer -->
-    <Message Text="Building Windows Installer (NSIS script)" Importance="high" />
-    <Exec Command="makensis /DOUTFILE=$(PublishInstallerExe) ^
-         /DAPPV_MAIN=$(Version) ^
-         /DAPPV_EXTRA=$(VersionExtra) ^
-         /DPLATFORM=$(Platform) ^
-         $(NsisScript)"
-          StandardOutputImportance="normal" />
-  </Target>
-
-  <Target Name="PublishAll"
-          DependsOnTargets="PublishSymbols;PublishPortable;PublishInstaller" />
-
-  <!-- Target to upload the artifacts to OpenRCT2.org -->
-  <Target Name="UploadArtifacts" DependsOnTargets="PublishAll"
-          Condition="'$(TestConfig)'!='true'">
-    <PropertyGroup>
-      <UploadLink>https://openrct2.org/altapi/?command=push-build</UploadLink>
-      <UploadFileNameShort>%(UploadArtifacts.Filename)%(UploadArtifacts.Extension)</UploadFileNameShort>
-      <UploadGitBranch>master</UploadGitBranch>
-      <UploadGitBranch Condition="'$(GIT_BRANCH)'!=''">$(GIT_BRANCH)</UploadGitBranch>
-    </PropertyGroup>
-    <Message Text="Uploading $(UploadFileNameShort)" Importance="high" />
-    <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
-    <Error Condition="'$(GIT_COMMIT_SHA1)'==''" Text="GIT_COMMIT_SHA1 not set." />
-    <Exec EchoOff="true" Command="curl.exe -s -o - ^
-         --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot; ^
-         --form &quot;fileName=%(UploadArtifacts.Name)&quot; ^
-         --form &quot;version=$(Version)&quot; ^
-         --form &quot;gitHash=$(GIT_COMMIT_SHA1)&quot; ^
-         --form &quot;gitBranch=$(UploadGitBranch)&quot; ^
-         --form &quot;flavourId=%(UploadArtifacts.FlavourId)&quot; ^
-         --form &quot;file=@%(UploadArtifacts.Identity)&quot; ^
-         &quot;$(UploadLink)&quot;"
-          CustomErrorRegularExpression="&quot;error&quot;:1" />
-  </Target>
-
 </Project>
