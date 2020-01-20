@@ -913,7 +913,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     window_close_by_class(WC_SCENARIO_SELECT);
                     break;
                 case WIDX_TITLE_SEQUENCE_RANDOM:
-                    gConfigInterface.random_title_sequence ^=1;
+                    gConfigInterface.random_title_sequence ^= 1;
                     config_save_default();
                     w->Invalidate();
                     break;
@@ -1914,8 +1914,8 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
             widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
             widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
-            
-            //Disable title sequence dropdown if set to random
+
+            // Disable title sequence dropdown if set to random
             if (gConfigInterface.random_title_sequence)
             {
                 w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);

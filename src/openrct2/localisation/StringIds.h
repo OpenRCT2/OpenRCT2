@@ -3893,7 +3893,7 @@ enum
 
     STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS = 6347,
     STR_REMOVE_LEVEL_CROSSING_FIRST = 6348,
-  
+
     STR_OPTIONS_RANDOM_TITLE_SEQUENCE = 6349,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
