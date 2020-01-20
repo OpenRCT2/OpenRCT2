@@ -1063,7 +1063,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 
         int16_t colour = PALETTE_INDEX_20;
 
-        if (sprite_get_flashing((rct_sprite*)peep))
+        if (sprite_get_flashing(peep))
         {
             if (peep->type == PEEP_TYPE_STAFF)
             {
@@ -1096,7 +1096,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    rct_vehicle *train, *vehicle;
+    Vehicle *train, *vehicle;
     uint16_t train_index, vehicle_index;
 
     for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)

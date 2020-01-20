@@ -14,7 +14,7 @@
 
 struct paint_session;
 struct rct_ride_entry_vehicle;
-struct rct_vehicle;
+struct Vehicle;
 
 struct vehicle_boundbox
 {
@@ -28,40 +28,40 @@ struct vehicle_boundbox
 
 extern const vehicle_boundbox VehicleBoundboxes[16][224];
 
-void vehicle_paint(paint_session* session, const rct_vehicle* vehicle, int32_t imageDirection);
+void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t imageDirection);
 
 void vehicle_visual_default(
-    paint_session* session, int32_t imageDirection, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t imageDirection, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_roto_drop(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_observation_tower(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_river_rapids(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_reverser(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_splash_boats_or_water_coaster(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_launched_freefall(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_splash_effect(
-    paint_session* session, int32_t z, const rct_vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry);
+    paint_session* session, int32_t z, const Vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_virginia_reel(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_submarine(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);
 void vehicle_visual_mini_golf_player(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle);
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
 void vehicle_visual_mini_golf_ball(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle);
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
 
 #endif

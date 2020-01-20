@@ -647,7 +647,7 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
         {
-            rct_litter* litter = &(get_sprite(spriteIndex)->litter);
+            Litter* litter = &(get_sprite(spriteIndex)->litter);
             if (litter->type < std::size(litterNames))
             {
                 validSprite = true;

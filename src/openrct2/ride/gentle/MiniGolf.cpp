@@ -1189,7 +1189,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int32_t trackType, int32
  * rct2: 0x006D42F0
  */
 void vehicle_visual_mini_golf_player(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle)
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->num_peeps == 0)
     {
@@ -1229,7 +1229,7 @@ void vehicle_visual_mini_golf_player(
  * rct2: 0x006D43C6
  */
 void vehicle_visual_mini_golf_ball(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle)
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->mini_golf_current_animation != 1)
     {

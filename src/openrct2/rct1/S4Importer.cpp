@@ -1102,7 +1102,7 @@ private:
 
     void ImportVehicles()
     {
-        std::vector<rct_vehicle*> vehicles;
+        std::vector<Vehicle*> vehicles;
         uint16_t spriteIndexMap[RCT1_MAX_SPRITES];
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
@@ -1112,7 +1112,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    rct_vehicle* vehicle = (rct_vehicle*)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
+                    Vehicle* vehicle = (Vehicle*)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1121,7 +1121,7 @@ private:
                     // If vehicle is the first car on a train add to train list
                     if (vehicle->IsHead())
                     {
-                        move_sprite_to_list((rct_sprite*)vehicle, SPRITE_LIST_VEHICLE_HEAD);
+                        move_sprite_to_list(vehicle, SPRITE_LIST_VEHICLE_HEAD);
                     }
                 }
             }
@@ -1133,7 +1133,7 @@ private:
         FixRideVehicleLinks(spriteIndexMap);
     }
 
-    void ImportVehicle(rct_vehicle* dst, rct1_vehicle* src)
+    void ImportVehicle(Vehicle* dst, rct1_vehicle* src)
     {
         auto ride = get_ride(src->ride);
         if (ride == nullptr)
@@ -1232,14 +1232,14 @@ private:
         dst->mini_golf_current_animation = src->mini_golf_current_animation;
         dst->mini_golf_flags = src->mini_golf_flags;
 
-        sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
-        invalidate_sprite_2((rct_sprite*)dst);
+        sprite_move(src->x, src->y, src->z, dst);
+        invalidate_sprite_2(dst);
 
         dst->num_peeps = src->num_peeps;
         dst->next_free_seat = src->next_free_seat;
     }
 
-    void SetVehicleColours(rct_vehicle* dst, rct1_vehicle* src)
+    void SetVehicleColours(Vehicle* dst, rct1_vehicle* src)
     {
         rct1_ride* srcRide = &_s4.rides[src->ride];
         uint8_t vehicleTypeIndex = srcRide->vehicle_type;
@@ -1287,7 +1287,7 @@ private:
         }
     }
 
-    void FixVehicleLinks(rct_vehicle* vehicle, const uint16_t* spriteIndexMap)
+    void FixVehicleLinks(Vehicle* vehicle, const uint16_t* spriteIndexMap)
     {
         if (vehicle->prev_vehicle_on_ride != SPRITE_INDEX_NULL)
         {
@@ -1303,7 +1303,7 @@ private:
         }
     }
 
-    void FixVehiclePeepLinks(rct_vehicle* vehicle, const uint16_t* spriteIndexMap)
+    void FixVehiclePeepLinks(Vehicle* vehicle, const uint16_t* spriteIndexMap)
     {
         for (auto& peep : vehicle->peep)
         {
@@ -1331,7 +1331,7 @@ private:
             rct_sprite* sprite = get_sprite(i);
             if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
-                rct_vehicle* vehicle = (rct_vehicle*)sprite;
+                Vehicle* vehicle = (Vehicle*)sprite;
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
@@ -1391,8 +1391,8 @@ private:
         dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
         dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
 
-        sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
-        invalidate_sprite_2((rct_sprite*)dst);
+        sprite_move(src->x, src->y, src->z, dst);
+        invalidate_sprite_2(dst);
 
         dst->sprite_direction = src->sprite_direction;
 
@@ -1624,7 +1624,7 @@ private:
             {
                 const auto* srcLitter = &sprite.litter;
 
-                rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
+                Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->type = srcLitter->type;
 
@@ -1636,8 +1636,8 @@ private:
                 litter->sprite_height_positive = srcLitter->sprite_height_positive;
                 litter->sprite_height_negative = srcLitter->sprite_height_negative;
 
-                sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, (rct_sprite*)litter);
-                invalidate_sprite_2((rct_sprite*)litter);
+                sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, litter);
+                invalidate_sprite_2(litter);
             }
         }
     }
@@ -1649,7 +1649,7 @@ private:
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                rct_sprite_generic* dst = (rct_sprite_generic*)create_sprite(SPRITE_IDENTIFIER_MISC);
+                SpriteGeneric* dst = (SpriteGeneric*)create_sprite(SPRITE_IDENTIFIER_MISC);
                 dst->sprite_identifier = src->sprite_identifier;
                 dst->type = src->type;
                 dst->flags = src->flags;
@@ -1658,15 +1658,15 @@ private:
                 dst->sprite_height_negative = src->sprite_height_negative;
                 dst->sprite_height_positive = src->sprite_height_positive;
 
-                sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
+                sprite_move(src->x, src->y, src->z, dst);
 
                 switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
-                        ImportSteamParticle((rct_steam_particle*)dst, (rct_steam_particle*)src);
+                        ImportSteamParticle((SteamParticle*)dst, (SteamParticle*)src);
                         break;
                     case SPRITE_MISC_MONEY_EFFECT:
-                        ImportMoneyEffect((rct_money_effect*)dst, (rct_money_effect*)src);
+                        ImportMoneyEffect((MoneyEffect*)dst, (MoneyEffect*)src);
                         break;
                     case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
                         break;
@@ -1680,20 +1680,20 @@ private:
                         ImportJumpingFountainWater((JumpingFountain*)dst, (JumpingFountain*)src);
                         break;
                     case SPRITE_MISC_BALLOON:
-                        ImportBalloon((rct_balloon*)dst, (rct_balloon*)src);
+                        ImportBalloon((Balloon*)dst, (Balloon*)src);
                         break;
                     case SPRITE_MISC_DUCK:
-                        ImportDuck((rct_duck*)dst, (rct_duck*)src);
+                        ImportDuck((Duck*)dst, (Duck*)src);
                         break;
                 }
 
-                sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
-                invalidate_sprite_2((rct_sprite*)dst);
+                sprite_move(src->x, src->y, src->z, dst);
+                invalidate_sprite_2(dst);
             }
         }
     }
 
-    void ImportMoneyEffect(rct_money_effect* dst, rct_money_effect* src)
+    void ImportMoneyEffect(MoneyEffect* dst, MoneyEffect* src)
     {
         dst->move_delay = src->move_delay;
         dst->num_movements = src->num_movements;
@@ -1702,7 +1702,7 @@ private:
         dst->wiggle = src->wiggle;
     }
 
-    void ImportSteamParticle(rct_steam_particle* dst, rct_steam_particle* src)
+    void ImportSteamParticle(SteamParticle* dst, SteamParticle* src)
     {
         dst->frame = src->frame;
     }
@@ -1715,7 +1715,7 @@ private:
         dst->frame = src->frame;
     }
 
-    void ImportBalloon(rct_balloon* dst, rct_balloon* src)
+    void ImportBalloon(Balloon* dst, Balloon* src)
     {
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
@@ -1728,7 +1728,7 @@ private:
         }
     }
 
-    void ImportDuck(rct_duck* dst, rct_duck* src)
+    void ImportDuck(Duck* dst, Duck* src)
     {
         dst->frame = src->frame;
         dst->state = src->state;

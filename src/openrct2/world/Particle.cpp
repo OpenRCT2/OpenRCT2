@@ -20,7 +20,7 @@
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int32_t y, int32_t z)
 {
-    rct_crashed_vehicle_particle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
+    VehicleCrashParticle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -29,7 +29,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
         sprite->sprite_height_negative = 8;
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z, (rct_sprite*)sprite);
+        sprite_move(x, y, z, sprite);
         sprite->type = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
@@ -48,13 +48,13 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
  *
  *  rct2: 0x00673298
  */
-void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
+void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
 {
-    invalidate_sprite_0((rct_sprite*)particle);
+    invalidate_sprite_0(particle);
     particle->time_to_live--;
     if (particle->time_to_live == 0)
     {
-        sprite_remove((rct_sprite*)particle);
+        sprite_remove(particle);
         return;
     }
 
@@ -88,7 +88,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
         // Splash
         audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
         crash_splash_create(particle->x, particle->y, waterZ);
-        sprite_remove((rct_sprite*)particle);
+        sprite_remove(particle);
         return;
     }
 
@@ -98,8 +98,8 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
         particle->acceleration_z *= -1;
         z = landZ;
     }
-    sprite_move(x, y, z, (rct_sprite*)particle);
-    invalidate_sprite_0((rct_sprite*)particle);
+    sprite_move(x, y, z, particle);
+    invalidate_sprite_0(particle);
 
     particle->frame += 85;
     if (particle->frame >= 3072)
@@ -114,14 +114,14 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
  */
 void crash_splash_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;
         sprite->sprite_height_negative = 51;
         sprite->sprite_height_positive = 16;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z + 3, (rct_sprite*)sprite);
+        sprite_move(x, y, z + 3, sprite);
         sprite->type = SPRITE_MISC_CRASH_SPLASH;
         sprite->frame = 0;
     }
@@ -131,12 +131,12 @@ void crash_splash_create(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x0067339D
  */
-void crash_splash_update(rct_crash_splash* splash)
+void crash_splash_update(CrashSplashParticle* splash)
 {
-    invalidate_sprite_2((rct_sprite*)splash);
+    invalidate_sprite_2(splash);
     splash->frame += 85;
     if (splash->frame >= 7168)
     {
-        sprite_remove((rct_sprite*)splash);
+        sprite_remove(splash);
     }
 }

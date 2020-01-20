@@ -55,7 +55,7 @@ int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport
 {
     TileElement* tileElement;
     rct_sprite* sprite;
-    rct_vehicle* vehicle;
+    Vehicle* vehicle;
 
     // No click input for title screen or scenario editor or track manager
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
@@ -72,7 +72,7 @@ int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
-    sprite = (rct_sprite*)tileElement;
+    sprite = info->sprite;
 
     switch (info->type)
     {

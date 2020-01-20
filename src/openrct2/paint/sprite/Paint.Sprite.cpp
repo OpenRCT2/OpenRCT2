@@ -110,7 +110,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         switch (spr->generic.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_VEHICLE:
-                vehicle_paint(session, (rct_vehicle*)spr, image_direction);
+                vehicle_paint(session, (Vehicle*)spr, image_direction);
                 break;
             case SPRITE_IDENTIFIER_PEEP:
                 peep_paint(session, (Peep*)spr, image_direction);
@@ -119,7 +119,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 misc_paint(session, spr, image_direction);
                 break;
             case SPRITE_IDENTIFIER_LITTER:
-                litter_paint(session, (rct_litter*)spr, image_direction);
+                litter_paint(session, (Litter*)spr, image_direction);
                 break;
             default:
                 assert(false);

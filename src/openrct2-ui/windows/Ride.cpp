@@ -1693,9 +1693,9 @@ rct_window* window_ride_open_track(TileElement* tileElement)
  *
  *  rct2: 0x006ACAC2
  */
-rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
+rct_window* window_ride_open_vehicle(Vehicle* vehicle)
 {
-    rct_vehicle* headVehicle = vehicle_get_head(vehicle);
+    Vehicle* headVehicle = vehicle_get_head(vehicle);
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
     auto ride = get_ride(headVehicle->ride);
     if (ride == nullptr)
@@ -1883,7 +1883,7 @@ static void window_ride_init_viewport(rct_window* w)
         rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry && ride_entry->tab_vehicle != 0)
         {
-            rct_vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
+            Vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
             if (vehicle == nullptr)
             {
                 focus.sprite.sprite_id = SPRITE_INDEX_NULL;
@@ -2549,7 +2549,7 @@ static void window_ride_main_update(rct_window* w)
                 if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
                     return;
 
-                rct_vehicle* vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+                Vehicle* vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
                 if (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT)
@@ -2755,7 +2755,7 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
  */
 static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* arguments)
 {
-    rct_vehicle* vehicle;
+    Vehicle* vehicle;
     int32_t vehicleIndex;
     uint16_t vehicleSpriteIndex;
     rct_string_id stringId;
@@ -4094,7 +4094,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
         case WIDX_FORCE_BREAKDOWN:
             if (dropdownIndex == 0)
             {
-                rct_vehicle* vehicle;
+                Vehicle* vehicle;
                 switch (ride->breakdown_reason_pending)
                 {
                     case BREAKDOWN_SAFETY_CUT_OUT:

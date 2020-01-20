@@ -13,7 +13,7 @@
 #include "Map.h"
 #include "SpriteBase.h"
 
-struct JumpingFountain : rct_sprite_generic
+struct JumpingFountain : SpriteGeneric
 {
     uint8_t NumTicksAlive;
     uint8_t FountainFlags;

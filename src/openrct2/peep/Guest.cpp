@@ -2358,7 +2358,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            rct_money_effect::CreateAt(amount, x, y, z, true);
+            MoneyEffect::CreateAt(amount, x, y, z, true);
         }
     }
 
@@ -2458,7 +2458,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
  *
  *  rct2: 0x00691C6E
  */
-static rct_vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<uint8_t>& car_array)
+static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<uint8_t>& car_array)
 {
     uint8_t chosen_car = scenario_rand();
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))
@@ -2472,7 +2472,7 @@ static rct_vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vecto
 
     peep->current_car = car_array[chosen_car];
 
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 
     for (int32_t i = peep->current_car; i > 0; --i)
     {
@@ -2486,7 +2486,7 @@ static rct_vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vecto
  *
  *  rct2: 0x00691CD1
  */
-static void peep_choose_seat_from_car(Peep* peep, Ride* ride, rct_vehicle* vehicle)
+static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 {
     uint8_t chosen_seat = vehicle->next_free_seat;
 
@@ -2568,7 +2568,7 @@ static bool peep_find_vehicle_to_enter(Guest* peep, Ride* ride, std::vector<uint
 
         for (int32_t i = 0; i < ride->num_vehicles; ++i)
         {
-            rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+            Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
 
             if (vehicle->next_free_seat >= vehicle->num_seats)
                 continue;
@@ -2593,7 +2593,7 @@ static bool peep_find_vehicle_to_enter(Guest* peep, Ride* ride, std::vector<uint
     int32_t i = 0;
 
     uint16_t vehicle_id = ride->vehicles[chosen_train];
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
 
     for (; vehicle_id != SPRITE_INDEX_NULL; vehicle_id = vehicle->next_vehicle_on_train, i++)
     {
@@ -3018,7 +3018,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    rct_litter* litter;
+    Litter* litter;
     for (uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next)
     {
         litter = &(get_sprite(sprite_idx)->litter);
@@ -3528,7 +3528,7 @@ void Guest::UpdateRideAtEntrance()
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        rct_vehicle* vehicle = peep_choose_car_from_ride(this, ride, carArray);
+        Vehicle* vehicle = peep_choose_car_from_ride(this, ride, carArray);
         peep_choose_seat_from_car(this, ride, vehicle);
     }
     peep_go_to_ride_entrance(this, ride);
@@ -3739,7 +3739,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         }
     }
 
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
     for (int32_t i = current_car; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
@@ -3960,7 +3960,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
     for (int32_t i = current_car; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
@@ -3981,8 +3981,8 @@ void Guest::UpdateRideFreeVehicleCheck()
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)
                 continue;
 
-            rct_vehicle* train = GET_VEHICLE(ride->vehicles[i]);
-            rct_vehicle* second_vehicle = GET_VEHICLE(train->next_vehicle_on_train);
+            Vehicle* train = GET_VEHICLE(ride->vehicles[i]);
+            Vehicle* second_vehicle = GET_VEHICLE(train->next_vehicle_on_train);
 
             if (second_vehicle->num_peeps == 0)
                 continue;
@@ -4018,7 +4018,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    rct_vehicle* currentTrain = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[current_train]);
     if (ride->status == RIDE_STATUS_OPEN && ++rejoin_queue_timeout != 0
         && !(currentTrain->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
@@ -4091,7 +4091,7 @@ void Guest::UpdateRideEnterVehicle()
             ride->cur_num_customers++;
 
             vehicle->mass += mass;
-            invalidate_sprite_2(reinterpret_cast<rct_sprite*>(vehicle));
+            invalidate_sprite_2(vehicle);
 
             MoveTo(LOCATION_NULL, 0, 0);
 
@@ -4114,7 +4114,7 @@ void Guest::UpdateRideLeaveVehicle()
     if (ride == nullptr)
         return;
 
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
     uint8_t ride_station = vehicle->current_station;
 
     for (int32_t i = current_car; i != 0; --i)
@@ -4137,7 +4137,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     vehicle->num_peeps--;
     vehicle->mass -= mass;
-    invalidate_sprite_2((rct_sprite*)vehicle);
+    invalidate_sprite_2(vehicle);
 
     if (ride_station >= MAX_STATIONS)
     {
@@ -4461,7 +4461,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     // This is incrementing the actual peep waypoint
     var_37++;
 
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
     CoordsXY targetLoc;
     targetLoc.x = ride->stations[current_ride_station].Start.x * 32 + 16;
@@ -4532,7 +4532,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         var_37--;
-        rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+        Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
         CoordsXY targetLoc;
         targetLoc.x = ride->stations[current_ride_station].Start.x * 32 + 16;
         targetLoc.y = ride->stations[current_ride_station].Start.y * 32 + 16;

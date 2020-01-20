@@ -1149,7 +1149,7 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
     return bank;
 }
 
-int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement)
+int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     auto bankStart = TrackDefinitions[trackType].bank_start;

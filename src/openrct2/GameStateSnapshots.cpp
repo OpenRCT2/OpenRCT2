@@ -64,13 +64,13 @@ struct GameStateSnapshot_t
             switch (sprite.generic.sprite_identifier)
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(rct_vehicle)]>(sprite.vehicle);
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Vehicle)]>(sprite.vehicle);
                     break;
                 case SPRITE_IDENTIFIER_PEEP:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Peep)]>(sprite.peep);
                     break;
                 case SPRITE_IDENTIFIER_LITTER:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(rct_litter)]>(sprite.litter);
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Litter)]>(sprite.litter);
                     break;
                 case SPRITE_IDENTIFIER_MISC:
                 {
@@ -78,19 +78,19 @@ struct GameStateSnapshot_t
                     switch (sprite.generic.type)
                     {
                         case SPRITE_MISC_MONEY_EFFECT:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_money_effect)]>(sprite.money_effect);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
                             break;
                         case SPRITE_MISC_BALLOON:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_balloon)]>(sprite.balloon);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(Balloon)]>(sprite.balloon);
                             break;
                         case SPRITE_MISC_DUCK:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_duck)]>(sprite.duck);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(Duck)]>(sprite.duck);
                             break;
                         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
                             break;
                         case SPRITE_MISC_STEAM_PARTICLE:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_steam_particle)]>(sprite.steam_particle);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
                             break;
                     }
                 }
@@ -175,29 +175,29 @@ struct GameStateSnapshots : public IGameStateSnapshots
     }
 
     void CompareSpriteDataCommon(
-        const rct_sprite_common& spriteBase, const rct_sprite_common& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(rct_sprite_common, sprite_identifier);
-        COMPARE_FIELD(rct_sprite_common, type);
-        COMPARE_FIELD(rct_sprite_common, next_in_quadrant);
-        COMPARE_FIELD(rct_sprite_common, next);
-        COMPARE_FIELD(rct_sprite_common, previous);
-        COMPARE_FIELD(rct_sprite_common, linked_list_index);
-        COMPARE_FIELD(rct_sprite_common, sprite_index);
-        COMPARE_FIELD(rct_sprite_common, flags);
-        COMPARE_FIELD(rct_sprite_common, x);
-        COMPARE_FIELD(rct_sprite_common, y);
-        COMPARE_FIELD(rct_sprite_common, z);
+        COMPARE_FIELD(SpriteBase, sprite_identifier);
+        COMPARE_FIELD(SpriteBase, type);
+        COMPARE_FIELD(SpriteBase, next_in_quadrant);
+        COMPARE_FIELD(SpriteBase, next);
+        COMPARE_FIELD(SpriteBase, previous);
+        COMPARE_FIELD(SpriteBase, linked_list_index);
+        COMPARE_FIELD(SpriteBase, sprite_index);
+        COMPARE_FIELD(SpriteBase, flags);
+        COMPARE_FIELD(SpriteBase, x);
+        COMPARE_FIELD(SpriteBase, y);
+        COMPARE_FIELD(SpriteBase, z);
         /* Only relevant for rendering, does not affect game state.
-        COMPARE_FIELD(rct_sprite_common, sprite_width);
-        COMPARE_FIELD(rct_sprite_common, sprite_height_negative);
-        COMPARE_FIELD(rct_sprite_common, sprite_height_positive);
-        COMPARE_FIELD(rct_sprite_common, sprite_left);
-        COMPARE_FIELD(rct_sprite_common, sprite_top);
-        COMPARE_FIELD(rct_sprite_common, sprite_right);
-        COMPARE_FIELD(rct_sprite_common, sprite_bottom);
+        COMPARE_FIELD(SpriteBase, sprite_width);
+        COMPARE_FIELD(SpriteBase, sprite_height_negative);
+        COMPARE_FIELD(SpriteBase, sprite_height_positive);
+        COMPARE_FIELD(SpriteBase, sprite_left);
+        COMPARE_FIELD(SpriteBase, sprite_top);
+        COMPARE_FIELD(SpriteBase, sprite_right);
+        COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(rct_sprite_common, sprite_direction);
+        COMPARE_FIELD(SpriteBase, sprite_direction);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -308,83 +308,82 @@ struct GameStateSnapshots : public IGameStateSnapshots
     }
 
     void CompareSpriteDataVehicle(
-        const rct_vehicle& spriteBase, const rct_vehicle& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(rct_vehicle, vehicle_sprite_type);
-        COMPARE_FIELD(rct_vehicle, bank_rotation);
-        COMPARE_FIELD(rct_vehicle, remaining_distance);
-        COMPARE_FIELD(rct_vehicle, velocity);
-        COMPARE_FIELD(rct_vehicle, acceleration);
-        COMPARE_FIELD(rct_vehicle, ride);
-        COMPARE_FIELD(rct_vehicle, vehicle_type);
-        COMPARE_FIELD(rct_vehicle, colours);
-        COMPARE_FIELD(rct_vehicle, track_progress);
-        COMPARE_FIELD(rct_vehicle, track_direction);
-        COMPARE_FIELD(rct_vehicle, track_x);
-        COMPARE_FIELD(rct_vehicle, track_y);
-        COMPARE_FIELD(rct_vehicle, track_z);
-        COMPARE_FIELD(rct_vehicle, next_vehicle_on_train);
-        COMPARE_FIELD(rct_vehicle, prev_vehicle_on_ride);
-        COMPARE_FIELD(rct_vehicle, next_vehicle_on_ride);
-        COMPARE_FIELD(rct_vehicle, var_44);
-        COMPARE_FIELD(rct_vehicle, mass);
-        COMPARE_FIELD(rct_vehicle, update_flags);
-        COMPARE_FIELD(rct_vehicle, swing_sprite);
-        COMPARE_FIELD(rct_vehicle, current_station);
-        COMPARE_FIELD(rct_vehicle, swinging_car_var_0);
-        COMPARE_FIELD(rct_vehicle, var_4E);
-        COMPARE_FIELD(rct_vehicle, status);
-        COMPARE_FIELD(rct_vehicle, sub_state);
+        COMPARE_FIELD(Vehicle, vehicle_sprite_type);
+        COMPARE_FIELD(Vehicle, bank_rotation);
+        COMPARE_FIELD(Vehicle, remaining_distance);
+        COMPARE_FIELD(Vehicle, velocity);
+        COMPARE_FIELD(Vehicle, acceleration);
+        COMPARE_FIELD(Vehicle, ride);
+        COMPARE_FIELD(Vehicle, vehicle_type);
+        COMPARE_FIELD(Vehicle, colours);
+        COMPARE_FIELD(Vehicle, track_progress);
+        COMPARE_FIELD(Vehicle, track_direction);
+        COMPARE_FIELD(Vehicle, track_x);
+        COMPARE_FIELD(Vehicle, track_y);
+        COMPARE_FIELD(Vehicle, track_z);
+        COMPARE_FIELD(Vehicle, next_vehicle_on_train);
+        COMPARE_FIELD(Vehicle, prev_vehicle_on_ride);
+        COMPARE_FIELD(Vehicle, next_vehicle_on_ride);
+        COMPARE_FIELD(Vehicle, var_44);
+        COMPARE_FIELD(Vehicle, mass);
+        COMPARE_FIELD(Vehicle, update_flags);
+        COMPARE_FIELD(Vehicle, swing_sprite);
+        COMPARE_FIELD(Vehicle, current_station);
+        COMPARE_FIELD(Vehicle, swinging_car_var_0);
+        COMPARE_FIELD(Vehicle, var_4E);
+        COMPARE_FIELD(Vehicle, status);
+        COMPARE_FIELD(Vehicle, sub_state);
         for (int i = 0; i < 32; i++)
         {
-            COMPARE_FIELD(rct_vehicle, peep[i]);
+            COMPARE_FIELD(Vehicle, peep[i]);
         }
         for (int i = 0; i < 32; i++)
         {
-            COMPARE_FIELD(rct_vehicle, peep_tshirt_colours[i]);
+            COMPARE_FIELD(Vehicle, peep_tshirt_colours[i]);
         }
-        COMPARE_FIELD(rct_vehicle, num_seats);
-        COMPARE_FIELD(rct_vehicle, num_peeps);
-        COMPARE_FIELD(rct_vehicle, next_free_seat);
-        COMPARE_FIELD(rct_vehicle, restraints_position);
-        COMPARE_FIELD(rct_vehicle, spin_speed);
-        COMPARE_FIELD(rct_vehicle, sound2_flags);
-        COMPARE_FIELD(rct_vehicle, spin_sprite);
-        COMPARE_FIELD(rct_vehicle, sound1_id);
-        COMPARE_FIELD(rct_vehicle, sound1_volume);
-        COMPARE_FIELD(rct_vehicle, sound2_id);
-        COMPARE_FIELD(rct_vehicle, sound2_volume);
-        COMPARE_FIELD(rct_vehicle, sound_vector_factor);
-        COMPARE_FIELD(rct_vehicle, cable_lift_target);
-        COMPARE_FIELD(rct_vehicle, speed);
-        COMPARE_FIELD(rct_vehicle, powered_acceleration);
-        COMPARE_FIELD(rct_vehicle, var_C4);
-        COMPARE_FIELD(rct_vehicle, animation_frame);
+        COMPARE_FIELD(Vehicle, num_seats);
+        COMPARE_FIELD(Vehicle, num_peeps);
+        COMPARE_FIELD(Vehicle, next_free_seat);
+        COMPARE_FIELD(Vehicle, restraints_position);
+        COMPARE_FIELD(Vehicle, spin_speed);
+        COMPARE_FIELD(Vehicle, sound2_flags);
+        COMPARE_FIELD(Vehicle, spin_sprite);
+        COMPARE_FIELD(Vehicle, sound1_id);
+        COMPARE_FIELD(Vehicle, sound1_volume);
+        COMPARE_FIELD(Vehicle, sound2_id);
+        COMPARE_FIELD(Vehicle, sound2_volume);
+        COMPARE_FIELD(Vehicle, sound_vector_factor);
+        COMPARE_FIELD(Vehicle, cable_lift_target);
+        COMPARE_FIELD(Vehicle, speed);
+        COMPARE_FIELD(Vehicle, powered_acceleration);
+        COMPARE_FIELD(Vehicle, var_C4);
+        COMPARE_FIELD(Vehicle, animation_frame);
         for (int i = 0; i < 2; i++)
         {
-            COMPARE_FIELD(rct_vehicle, pad_C6[i]);
+            COMPARE_FIELD(Vehicle, pad_C6[i]);
         }
-        COMPARE_FIELD(rct_vehicle, var_C8);
-        COMPARE_FIELD(rct_vehicle, var_CA);
-        COMPARE_FIELD(rct_vehicle, scream_sound_id);
-        COMPARE_FIELD(rct_vehicle, TrackSubposition);
-        COMPARE_FIELD(rct_vehicle, num_laps);
-        COMPARE_FIELD(rct_vehicle, brake_speed);
-        COMPARE_FIELD(rct_vehicle, lost_time_out);
-        COMPARE_FIELD(rct_vehicle, vertical_drop_countdown);
-        COMPARE_FIELD(rct_vehicle, var_D3);
-        COMPARE_FIELD(rct_vehicle, mini_golf_current_animation);
-        COMPARE_FIELD(rct_vehicle, mini_golf_flags);
-        COMPARE_FIELD(rct_vehicle, ride_subtype);
-        COMPARE_FIELD(rct_vehicle, colours_extended);
-        COMPARE_FIELD(rct_vehicle, seat_rotation);
-        COMPARE_FIELD(rct_vehicle, target_seat_rotation);
+        COMPARE_FIELD(Vehicle, var_C8);
+        COMPARE_FIELD(Vehicle, var_CA);
+        COMPARE_FIELD(Vehicle, scream_sound_id);
+        COMPARE_FIELD(Vehicle, TrackSubposition);
+        COMPARE_FIELD(Vehicle, num_laps);
+        COMPARE_FIELD(Vehicle, brake_speed);
+        COMPARE_FIELD(Vehicle, lost_time_out);
+        COMPARE_FIELD(Vehicle, vertical_drop_countdown);
+        COMPARE_FIELD(Vehicle, var_D3);
+        COMPARE_FIELD(Vehicle, mini_golf_current_animation);
+        COMPARE_FIELD(Vehicle, mini_golf_flags);
+        COMPARE_FIELD(Vehicle, ride_subtype);
+        COMPARE_FIELD(Vehicle, colours_extended);
+        COMPARE_FIELD(Vehicle, seat_rotation);
+        COMPARE_FIELD(Vehicle, target_seat_rotation);
     }
 
-    void CompareSpriteDataLitter(
-        const rct_litter& spriteBase, const rct_litter& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(rct_litter, creationTick);
+        COMPARE_FIELD(Litter, creationTick);
     }
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const

@@ -319,11 +319,11 @@ void window_staff_list_update(rct_window* w)
             gWindowMapFlashingFlags |= (1 << 2);
             FOR_ALL_STAFF (spriteIndex, peep)
             {
-                sprite_set_flashing((rct_sprite*)peep, false);
+                sprite_set_flashing(peep, false);
 
                 if (peep->staff_type == _windowStaffListSelectedTab)
                 {
-                    sprite_set_flashing((rct_sprite*)peep, true);
+                    sprite_set_flashing(peep, true);
                 }
             }
         }

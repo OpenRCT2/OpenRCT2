@@ -444,8 +444,8 @@ void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
 static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
     uint16_t nearestLitterDist = (uint16_t)-1;
-    rct_litter* nearestLitter = nullptr;
-    rct_litter* litter = nullptr;
+    Litter* nearestLitter = nullptr;
+    Litter* litter = nullptr;
 
     for (uint16_t litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
     {
@@ -2199,7 +2199,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
+        Vehicle* vehicle = ride_get_broken_vehicle(ride);
         if (vehicle == nullptr)
         {
             return true;
@@ -2281,7 +2281,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
         return false;
     }
 
-    rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
+    Vehicle* vehicle = ride_get_broken_vehicle(ride);
     if (vehicle == nullptr)
     {
         return true;
@@ -2322,7 +2322,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
         return false;
     }
 
-    rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
+    Vehicle* vehicle = ride_get_broken_vehicle(ride);
     if (vehicle == nullptr)
     {
         return true;

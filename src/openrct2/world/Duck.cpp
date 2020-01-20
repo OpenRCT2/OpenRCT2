@@ -79,33 +79,33 @@ bool rct_sprite::IsDuck()
     return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->duck.type == SPRITE_MISC_DUCK;
 }
 
-rct_duck* rct_sprite::AsDuck()
+Duck* rct_sprite::AsDuck()
 {
-    rct_duck* result = nullptr;
+    Duck* result = nullptr;
     if (IsDuck())
     {
-        return (rct_duck*)this;
+        return (Duck*)this;
     }
     return result;
 }
 
-void rct_duck::Invalidate()
+void Duck::Invalidate()
 {
-    invalidate_sprite_1((rct_sprite*)this);
+    invalidate_sprite_1(this);
 }
 
-void rct_duck::Remove()
+void Duck::Remove()
 {
     Invalidate();
-    sprite_remove((rct_sprite*)this);
+    sprite_remove(this);
 }
 
-void rct_duck::MoveTo(const CoordsXYZ& destination)
+void Duck::MoveTo(const CoordsXYZ& destination)
 {
-    sprite_move(destination.x, destination.y, destination.z, (rct_sprite*)this);
+    sprite_move(destination.x, destination.y, destination.z, this);
 }
 
-void rct_duck::UpdateFlyToWater()
+void Duck::UpdateFlyToWater()
 {
     if ((gCurrentTicks & 3) != 0)
         return;
@@ -168,7 +168,7 @@ void rct_duck::UpdateFlyToWater()
     }
 }
 
-void rct_duck::UpdateSwim()
+void Duck::UpdateSwim()
 {
     if (((gCurrentTicks + sprite_index) & 3) != 0)
         return;
@@ -234,7 +234,7 @@ void rct_duck::UpdateSwim()
     }
 }
 
-void rct_duck::UpdateDrink()
+void Duck::UpdateDrink()
 {
     frame++;
     if (DuckAnimationDrink[frame] == 0xFF)
@@ -249,7 +249,7 @@ void rct_duck::UpdateDrink()
     }
 }
 
-void rct_duck::UpdateDoubleDrink()
+void Duck::UpdateDoubleDrink()
 {
     frame++;
     if (DuckAnimationDoubleDrink[frame] == 0xFF)
@@ -264,7 +264,7 @@ void rct_duck::UpdateDoubleDrink()
     }
 }
 
-void rct_duck::UpdateFlyAway()
+void Duck::UpdateFlyAway()
 {
     if ((gCurrentTicks & 3) == 0)
     {
@@ -291,7 +291,7 @@ void rct_duck::UpdateFlyAway()
     }
 }
 
-uint32_t rct_duck::GetFrameImage(int32_t direction) const
+uint32_t Duck::GetFrameImage(int32_t direction) const
 {
     uint32_t imageId = 0;
     if (state < DUCK_MAX_STATES)
@@ -339,12 +339,12 @@ void create_duck(const CoordsXY& pos)
             break;
     }
     sprite->duck.sprite_direction = direction << 3;
-    sprite_move(targetPos.x, targetPos.y, 496, sprite);
+    sprite_move(targetPos.x, targetPos.y, 496, &sprite->duck);
     sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
     sprite->duck.frame = 0;
 }
 
-void duck_update(rct_duck* duck)
+void duck_update(Duck* duck)
 {
     switch ((DUCK_STATE)duck->state)
     {
@@ -366,7 +366,7 @@ void duck_update(rct_duck* duck)
     }
 }
 
-void duck_press(rct_duck* duck)
+void duck_press(Duck* duck)
 {
     audio_play_sound_at_location(SoundId::Quack, { duck->x, duck->y, duck->z });
 }
@@ -377,17 +377,17 @@ void duck_remove_all()
     for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;
          spriteIndex = nextSpriteIndex)
     {
-        rct_sprite_generic* sprite = &(get_sprite(spriteIndex)->generic);
+        SpriteGeneric* sprite = &(get_sprite(spriteIndex)->generic);
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {
-            invalidate_sprite_1((rct_sprite*)sprite);
-            sprite_remove((rct_sprite*)sprite);
+            invalidate_sprite_1(sprite);
+            sprite_remove(sprite);
         }
     }
 }
 
-uint32_t duck_get_frame_image(const rct_duck* duck, int32_t direction)
+uint32_t duck_get_frame_image(const Duck* duck, int32_t direction)
 {
     return duck->GetFrameImage(direction);
 }

@@ -342,13 +342,13 @@ Staff* Peep::AsStaff()
 
 void Peep::Invalidate()
 {
-    invalidate_sprite_2((rct_sprite*)this);
+    invalidate_sprite_2(this);
 }
 
 void Peep::MoveTo(int16_t destX, int16_t destY, int16_t destZ)
 {
     Invalidate(); // Invalidate current position.
-    sprite_move(destX, destY, destZ, (rct_sprite*)this);
+    sprite_move(destX, destY, destZ, this);
     Invalidate(); // Invalidate new position.
 }
 
@@ -849,7 +849,7 @@ void peep_sprite_remove(Peep* peep)
 
         news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
     }
-    sprite_remove((rct_sprite*)peep);
+    sprite_remove(peep);
 }
 
 /**
@@ -2703,7 +2703,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
         else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
-            rct_litter* litter = (rct_litter*)sprite;
+            Litter* litter = (Litter*)sprite;
             if (abs(litter->z - peep->next_z * 8) > 16)
                 continue;
 

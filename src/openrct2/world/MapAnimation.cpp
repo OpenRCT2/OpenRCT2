@@ -217,7 +217,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
                     peep->action_frame = 0;
                     peep->action_sprite_image_offset = 0;
                     peep->UpdateCurrentActionSpriteType();
-                    invalidate_sprite_1((rct_sprite*)peep);
+                    invalidate_sprite_1(peep);
                     break;
                 }
             }

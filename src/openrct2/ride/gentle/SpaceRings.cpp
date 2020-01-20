@@ -40,7 +40,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
     if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles)
     {
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        rct_vehicle* vehicle = nullptr;
+        Vehicle* vehicle = nullptr;
 
         int32_t frameNum = direction;
 

@@ -26,11 +26,11 @@
  *  rct2: 0x006D4453
  */
 void vehicle_visual_reverser(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    rct_vehicle* v1 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
-    rct_vehicle* v2 = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+    Vehicle* v1 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+    Vehicle* v2 = GET_VEHICLE(vehicle->next_vehicle_on_ride);
     x = (v1->x + v2->x) / 2;
     y = (v1->y + v2->y) / 2;
     z = (v1->z + v2->z) / 2;

@@ -257,7 +257,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                             uint16_t vehicle_index = ride->vehicles[i];
                             while (vehicle_index != SPRITE_INDEX_NULL)
                             {
-                                rct_vehicle* vehicle = GET_VEHICLE(vehicle_index);
+                                Vehicle* vehicle = GET_VEHICLE(vehicle_index);
                                 vehicle->mass = mass;
                                 vehicle_index = vehicle->next_vehicle_on_train;
                             }
@@ -1518,8 +1518,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         desyncType = atoi(argv[0].c_str());
     }
 
-    std::vector<rct_sprite*> peeps;
-    std::vector<rct_sprite*> vehicles;
+    std::vector<Peep*> peeps;
 
     for (int i = 0; i < MAX_SPRITES; i++)
     {
@@ -1527,10 +1526,9 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
             continue;
 
-        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
-            peeps.push_back(sprite);
-        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
-            vehicles.push_back(sprite);
+        auto peep = sprite->AsPeep();
+        if (peep != nullptr)
+            peeps.push_back(peep);
     }
 
     switch (desyncType)
@@ -1543,11 +1541,11 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
             }
             else
             {
-                rct_sprite* sprite = peeps[0];
+                auto* peep = peeps[0];
                 if (peeps.size() > 1)
-                    sprite = peeps[util_rand() % peeps.size() - 1];
-                sprite->peep.tshirt_colour = util_rand() & 0xFF;
-                invalidate_sprite_0(sprite);
+                    peep = peeps[util_rand() % peeps.size() - 1];
+                peep->tshirt_colour = util_rand() & 0xFF;
+                invalidate_sprite_0(peep);
             }
             break;
         }
@@ -1559,10 +1557,10 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
             }
             else
             {
-                rct_sprite* sprite = peeps[0];
+                auto* peep = peeps[0];
                 if (peeps.size() > 1)
-                    sprite = peeps[util_rand() % peeps.size() - 1];
-                sprite->AsPeep()->Remove();
+                    peep = peeps[util_rand() % peeps.size() - 1];
+                peep->Remove();
             }
             break;
         }

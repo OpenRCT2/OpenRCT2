@@ -62,7 +62,7 @@ static void paint_ferris_wheel_structure(
     if (rideEntry == nullptr)
         return;
 
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
     int8_t xOffset = !(direction & 1) ? axisOffset : 0;
     int8_t yOffset = (direction & 1) ? axisOffset : 0;
 

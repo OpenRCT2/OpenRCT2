@@ -104,7 +104,7 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
             if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
                 continue;
 
-            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
                 continue;
 
@@ -126,7 +126,7 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
             if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
                 continue;
 
-            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
             {
                 ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
@@ -201,7 +201,7 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
             if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
                 continue;
 
-            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps)
             {
                 // Found a winner
@@ -235,7 +235,7 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
             if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
                 continue;
 
-            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
             {
                 if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
@@ -273,7 +273,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
         if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
             continue;
 
-        rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+        Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
         rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);

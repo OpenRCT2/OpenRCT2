@@ -540,162 +540,162 @@ struct rct_peep_thought
 struct Guest;
 struct Staff;
 
-struct Peep : rct_sprite_common
+struct Peep : SpriteBase
 {
     char* name;
-    uint16_t next_x;            // 0x24
-    uint16_t next_y;            // 0x26
-    uint8_t next_z;             // 0x28
-    uint8_t next_flags;         // 0x29
-    uint8_t outside_of_park;    // 0x2A
-    PeepState state;            // 0x2B
-    uint8_t sub_state;          // 0x2C
-    PeepSpriteType sprite_type; // 0x2D
-    PeepType type;              // 0x2E
+    uint16_t next_x;
+    uint16_t next_y;
+    uint8_t next_z;
+    uint8_t next_flags;
+    uint8_t outside_of_park;
+    PeepState state;
+    uint8_t sub_state;
+    PeepSpriteType sprite_type;
+    PeepType type;
     union
     {
-        uint8_t staff_type;  // 0x2F
-        uint8_t no_of_rides; // 0x2F
+        uint8_t staff_type;
+        uint8_t no_of_rides;
     };
-    uint8_t tshirt_colour;         // 0x30
-    uint8_t trousers_colour;       // 0x31
-    uint16_t destination_x;        // 0x32 Location that the peep is trying to get to
-    uint16_t destination_y;        // 0x34
-    uint8_t destination_tolerance; // 0x36 How close to destination before next action/state 0 = exact
+    uint8_t tshirt_colour;
+    uint8_t trousers_colour;
+    uint16_t destination_x; // Location that the peep is trying to get to
+    uint16_t destination_y;
+    uint8_t destination_tolerance; // How close to destination before next action/state 0 = exact
     uint8_t var_37;
-    uint8_t energy;           // 0x38
-    uint8_t energy_target;    // 0x39
-    uint8_t happiness;        // 0x3A
-    uint8_t happiness_target; // 0x3B
-    uint8_t nausea;           // 0x3C
-    uint8_t nausea_target;    // 0x3D
-    uint8_t hunger;           // 0x3E
-    uint8_t thirst;           // 0x3F
-    uint8_t toilet;           // 0x40
-    uint8_t mass;             // 0x41
-    uint8_t time_to_consume;  // 0x42
-    uint8_t intensity; // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
-    uint8_t nausea_tolerance;        // 0x44
-    uint8_t window_invalidate_flags; // 0x45
-    money16 paid_on_drink;           // 0x46
-    uint8_t ride_types_been_on[16];  // 0x48
-    uint32_t item_extra_flags;       // 0x58
-    uint8_t photo2_ride_ref;         // 0x5C
-    uint8_t photo3_ride_ref;         // 0x5D
-    uint8_t photo4_ride_ref;         // 0x5E
-    uint8_t current_ride;            // 0x68
-    uint8_t current_ride_station;    // 0x69
-    uint8_t current_train;           // 0x6A
+    uint8_t energy;
+    uint8_t energy_target;
+    uint8_t happiness;
+    uint8_t happiness_target;
+    uint8_t nausea;
+    uint8_t nausea_target;
+    uint8_t hunger;
+    uint8_t thirst;
+    uint8_t toilet;
+    uint8_t mass;
+    uint8_t time_to_consume;
+    uint8_t intensity; // The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
+    uint8_t nausea_tolerance;
+    uint8_t window_invalidate_flags;
+    money16 paid_on_drink;
+    uint8_t ride_types_been_on[16];
+    uint32_t item_extra_flags;
+    uint8_t photo2_ride_ref;
+    uint8_t photo3_ride_ref;
+    uint8_t photo4_ride_ref;
+    uint8_t current_ride;
+    uint8_t current_ride_station;
+    uint8_t current_train;
     union
     {
         struct
         {
-            uint8_t current_car;  // 0x6B
-            uint8_t current_seat; // 0x6C
+            uint8_t current_car;
+            uint8_t current_seat;
         };
-        uint16_t time_to_sitdown; // 0x6B
+        uint16_t time_to_sitdown;
         struct
         {
-            uint8_t time_to_stand;  // 0x6B
-            uint8_t standing_flags; // 0x6C
+            uint8_t time_to_stand;
+            uint8_t standing_flags;
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;                  // 0x6D
-    PeepActionSpriteType action_sprite_type; // 0x6E
+    uint8_t special_sprite;
+    PeepActionSpriteType action_sprite_type;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    PeepActionSpriteType next_action_sprite_type; // 0x6F
-    uint8_t action_sprite_image_offset;           // 0x70
-    PeepActionType action;                        // 0x71
-    uint8_t action_frame;                         // 0x72
-    uint8_t step_progress;                        // 0x73
+    PeepActionSpriteType next_action_sprite_type;
+    uint8_t action_sprite_image_offset;
+    PeepActionType action;
+    uint8_t action_frame;
+    uint8_t step_progress;
     union
     {
         uint16_t mechanic_time_since_call; // time getting to ride to fix
-        uint16_t next_in_queue;            // 0x74
+        uint16_t next_in_queue;
     };
     union
     {
-        uint8_t maze_last_edge; // 0x78
-        Direction direction;    // Direction ?
+        uint8_t maze_last_edge;
+        Direction direction; // Direction ?
     };
     uint8_t interaction_ride_index;
-    uint16_t time_in_queue;    // 0x7A
-    uint8_t rides_been_on[32]; // 0x7C
+    uint16_t time_in_queue;
+    uint8_t rides_been_on[32];
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32_t id;                                  // 0x9C
-    money32 cash_in_pocket;                       // 0xA0
-    money32 cash_spent;                           // 0xA4
-    int32_t time_in_park;                         // 0xA8
-    int8_t rejoin_queue_timeout;                  // 0xAC whilst waiting for a free vehicle (or pair) in the entrance
-    uint8_t previous_ride;                        // 0xAD
-    uint16_t previous_ride_time_out;              // 0xAE
-    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS]; // 0xB0
-    uint8_t path_check_optimisation;              // 0xC4 see peep.checkForPath
+    uint32_t id;
+    money32 cash_in_pocket;
+    money32 cash_spent;
+    int32_t time_in_park;
+    int8_t rejoin_queue_timeout; // whilst waiting for a free vehicle (or pair) in the entrance
+    uint8_t previous_ride;
+    uint16_t previous_ride_time_out;
+    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];
+    uint8_t path_check_optimisation; // see peep.checkForPath
     union
     {
-        uint8_t staff_id;                 // 0xC5
-        uint8_t guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;
+        uint8_t guest_heading_to_ride_id;
     };
     union
     {
-        uint8_t staff_orders;           // 0xC6
-        uint8_t peep_is_lost_countdown; // 0xC6
+        uint8_t staff_orders;
+        uint8_t peep_is_lost_countdown;
     };
-    uint8_t photo1_ride_ref;         // 0xC7
-    uint32_t peep_flags;             // 0xC8
-    rct12_xyzd8 pathfind_goal;       // 0xCC
-    rct12_xyzd8 pathfind_history[4]; // 0xD0
-    uint8_t no_action_frame_num;     // 0xE0
+    uint8_t photo1_ride_ref;
+    uint32_t peep_flags;
+    rct12_xyzd8 pathfind_goal;
+    rct12_xyzd8 pathfind_history[4];
+    uint8_t no_action_frame_num;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t litter_count; // 0xE1
+    uint8_t litter_count;
     union
     {
-        uint8_t time_on_ride;         // 0xE2
-        uint8_t staff_mowing_timeout; // 0xE2
+        uint8_t time_on_ride;
+        uint8_t staff_mowing_timeout;
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t disgusting_count; // 0xE3
+    uint8_t disgusting_count;
     union
     {
-        money16 paid_to_enter;      // 0xE4
-        uint16_t staff_lawns_mown;  // 0xE4
-        uint16_t staff_rides_fixed; // 0xE4
+        money16 paid_to_enter;
+        uint16_t staff_lawns_mown;
+        uint16_t staff_rides_fixed;
     };
     union
     {
-        money16 paid_on_rides;          // 0xE6
-        uint16_t staff_gardens_watered; // 0xE6
-        uint16_t staff_rides_inspected; // 0xE6
+        money16 paid_on_rides;
+        uint16_t staff_gardens_watered;
+        uint16_t staff_rides_inspected;
     };
     union
     {
-        money16 paid_on_food;        // 0xE8
-        uint16_t staff_litter_swept; // 0xE8
+        money16 paid_on_food;
+        uint16_t staff_litter_swept;
     };
     union
     {
-        money16 paid_on_souvenirs;   // 0xEA
-        uint16_t staff_bins_emptied; // 0xEA
+        money16 paid_on_souvenirs;
+        uint16_t staff_bins_emptied;
     };
-    uint8_t no_of_food;                   // 0xEC
-    uint8_t no_of_drinks;                 // 0xED
-    uint8_t no_of_souvenirs;              // 0xEE
-    uint8_t vandalism_seen;               // 0xEF 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-    uint8_t voucher_type;                 // 0xF0
-    uint8_t voucher_arguments;            // 0xF1 ride_id or string_offset_id
-    uint8_t surroundings_thought_timeout; // 0xF2
-    uint8_t angriness;                    // 0xF3
-    uint8_t time_lost;                    // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8_t days_in_queue;                // 0xF5
-    uint8_t balloon_colour;               // 0xF6
-    uint8_t umbrella_colour;              // 0xF7
-    uint8_t hat_colour;                   // 0xF8
-    uint8_t favourite_ride;               // 0xF9
-    uint8_t favourite_ride_rating;        // 0xFA
-    uint32_t item_standard_flags;         // 0xFC
+    uint8_t no_of_food;
+    uint8_t no_of_drinks;
+    uint8_t no_of_souvenirs;
+    uint8_t vandalism_seen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+    uint8_t voucher_type;
+    uint8_t voucher_arguments; // ride_id or string_offset_id
+    uint8_t surroundings_thought_timeout;
+    uint8_t angriness;
+    uint8_t time_lost; // the time the peep has been lost when it reaches 254 generates the lost thought
+    uint8_t days_in_queue;
+    uint8_t balloon_colour;
+    uint8_t umbrella_colour;
+    uint8_t hat_colour;
+    uint8_t favourite_ride;
+    uint8_t favourite_ride_rating;
+    uint32_t item_standard_flags;
 
 public: // Peep
     Guest* AsGuest();

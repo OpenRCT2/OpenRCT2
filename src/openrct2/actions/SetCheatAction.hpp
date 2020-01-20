@@ -415,14 +415,14 @@ private:
 
     void RemoveLitter() const
     {
-        rct_litter* litter;
+        Litter* litter;
         uint16_t spriteIndex, nextSpriteIndex;
 
         for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
         {
             litter = &(get_sprite(spriteIndex)->litter);
             nextSpriteIndex = litter->next;
-            sprite_remove((rct_sprite*)litter);
+            sprite_remove(litter);
         }
 
         tile_element_iterator it;

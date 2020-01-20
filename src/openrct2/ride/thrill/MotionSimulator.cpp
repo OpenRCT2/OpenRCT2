@@ -43,7 +43,7 @@ static void paint_motionsimulator_vehicle(
 
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
         uint16_t spriteIndex = ride->vehicles[0];

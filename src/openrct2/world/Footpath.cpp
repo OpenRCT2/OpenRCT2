@@ -393,15 +393,15 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        rct_litter* sprite = &get_sprite(spriteIndex)->litter;
+        Litter* sprite = &get_sprite(spriteIndex)->litter;
         uint16_t nextSpriteIndex = sprite->next_in_quadrant;
         if (sprite->linked_list_index == SPRITE_LIST_LITTER)
         {
             int32_t distanceZ = abs(sprite->z - footpathPos.z);
             if (distanceZ <= 32)
             {
-                invalidate_sprite_0((rct_sprite*)sprite);
-                sprite_remove((rct_sprite*)sprite);
+                invalidate_sprite_0(sprite);
+                sprite_remove(sprite);
             }
         }
         spriteIndex = nextSpriteIndex;

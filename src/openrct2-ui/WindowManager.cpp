@@ -263,7 +263,7 @@ public:
                 return window_scenarioselect_open(
                     (scenarioselect_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK), false);
             case WD_VEHICLE:
-                return window_ride_open_vehicle((rct_vehicle*)intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                return window_ride_open_vehicle((Vehicle*)intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
             case WD_TRACK:
                 return window_ride_open_track((TileElement*)intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT));
             case INTENT_ACTION_NEW_RIDE_OF_TYPE:
@@ -374,7 +374,7 @@ public:
 
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
-                auto vehicle = static_cast<rct_vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
                 auto w = window_find_by_number(WC_RIDE, vehicle->ride);
                 if (w == nullptr)
                     return;

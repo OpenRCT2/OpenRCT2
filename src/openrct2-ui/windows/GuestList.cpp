@@ -750,7 +750,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
             // For each guest
             FOR_ALL_GUESTS (spriteIndex, peep)
             {
-                sprite_set_flashing((rct_sprite*)peep, false);
+                sprite_set_flashing(peep, false);
                 if (peep->outside_of_park != 0)
                     continue;
                 if (_window_guest_list_selected_filter != -1)
@@ -758,7 +758,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     if (window_guest_list_is_peep_in_filter(peep))
                         continue;
                     gWindowMapFlashingFlags |= (1 << 0);
-                    sprite_set_flashing((rct_sprite*)peep, true);
+                    sprite_set_flashing(peep, true);
                 }
                 if (!guest_should_be_visible(peep))
                     continue;

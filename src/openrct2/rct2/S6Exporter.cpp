@@ -955,7 +955,7 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
     }
 }
 
-void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const rct_sprite_common* src)
+void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
     dst->type = src->type;
@@ -978,9 +978,9 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const rct_sp
     dst->sprite_direction = src->sprite_direction;
 }
 
-void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* src)
+void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
 {
-    ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
+    ExportSpriteCommonProperties(dst, (const SpriteBase*)src);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
@@ -1048,7 +1048,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* 
 
 void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 {
-    ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
+    ExportSpriteCommonProperties(dst, (const SpriteBase*)src);
 
     auto generateName = true;
     if (src->name != nullptr)
@@ -1197,14 +1197,14 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->item_standard_flags = src->item_standard_flags;
 }
 
-void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common* csrc)
+void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
     switch (cdst->type)
     {
         case SPRITE_MISC_STEAM_PARTICLE:
         {
-            auto src = (const rct_steam_particle*)csrc;
+            auto src = (const SteamParticle*)csrc;
             auto dst = (RCT12SpriteSteamParticle*)cdst;
             dst->time_to_move = src->time_to_move;
             dst->frame = src->frame;
@@ -1212,7 +1212,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         }
         case SPRITE_MISC_MONEY_EFFECT:
         {
-            auto src = (const rct_money_effect*)csrc;
+            auto src = (const MoneyEffect*)csrc;
             auto dst = (RCT12SpriteMoneyEffect*)cdst;
             dst->move_delay = src->move_delay;
             dst->num_movements = src->num_movements;
@@ -1224,7 +1224,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         }
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
         {
-            auto src = (const rct_crashed_vehicle_particle*)csrc;
+            auto src = (const VehicleCrashParticle*)csrc;
             auto dst = (RCT12SpriteCrashedVehicleParticle*)cdst;
             dst->frame = src->frame;
             dst->time_to_live = src->time_to_live;
@@ -1244,8 +1244,8 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         case SPRITE_MISC_EXPLOSION_FLARE:
         case SPRITE_MISC_CRASH_SPLASH:
         {
-            auto src = (const RCT12SpriteParticle*)csrc;
-            auto dst = (rct_sprite_generic*)cdst;
+            auto src = (const SpriteGeneric*)csrc;
+            auto dst = (RCT12SpriteParticle*)cdst;
             dst->frame = src->frame;
             break;
         }
@@ -1265,7 +1265,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         }
         case SPRITE_MISC_BALLOON:
         {
-            auto src = (const rct_balloon*)csrc;
+            auto src = (const Balloon*)csrc;
             auto dst = (RCT12SpriteBalloon*)cdst;
             dst->popped = src->popped;
             dst->time_to_move = src->time_to_move;
@@ -1275,7 +1275,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         }
         case SPRITE_MISC_DUCK:
         {
-            auto src = (const rct_duck*)csrc;
+            auto src = (const Duck*)csrc;
             auto dst = (RCT12SpriteDuck*)cdst;
             dst->frame = src->frame;
             dst->target_x = src->target_x;
@@ -1289,7 +1289,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
     }
 }
 
-void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const rct_litter* src)
+void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src)
 {
     ExportSpriteCommonProperties(dst, src);
     dst->creationTick = src->creationTick;

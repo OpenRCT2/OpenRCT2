@@ -2,7 +2,7 @@
 
 #include "../common.h"
 
-struct rct_sprite_common
+struct SpriteBase
 {
     uint8_t sprite_identifier;
     uint8_t type;
@@ -31,7 +31,7 @@ struct rct_sprite_common
     uint8_t sprite_direction;
 };
 
-struct rct_sprite_generic : rct_sprite_common
+struct SpriteGeneric : SpriteBase
 {
     uint16_t frame;
 };
