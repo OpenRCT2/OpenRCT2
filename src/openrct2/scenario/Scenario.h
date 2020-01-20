@@ -366,6 +366,9 @@ enum
 
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
+
+// Converts a double representing a percentage probability to
+// a uint16_t for compare with scenario_rand() & 0xFFFFF
 constexpr Probability16 GetProbability16(double value)
 {
     return static_cast<Probability16>((value / 100) * 65535);
