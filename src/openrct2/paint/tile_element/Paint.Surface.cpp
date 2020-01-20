@@ -587,7 +587,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
     if (isWater && neighbour.tile_element != nullptr)
     {
-        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
+        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
