@@ -325,10 +325,10 @@ static rct_widget window_ride_music_widgets[] = {
 static rct_widget window_ride_measurements_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_FLATBTN,          1,  288,    311,    194,    217,    SPR_FLOPPY,                     STR_SAVE_TRACK_DESIGN                       },
-    { WWT_BUTTON,           1,  4,      157,    128,    139,    STR_SELECT_NEARBY_SCENERY,      STR_NONE                                    },
-    { WWT_BUTTON,           1,  158,    311,    128,    139,    STR_RESET_SELECTION,            STR_NONE                                    },
-    { WWT_BUTTON,           1,  4,      157,    178,    189,    STR_DESIGN_SAVE,                STR_NONE                                    },
-    { WWT_BUTTON,           1,  158,    311,    178,    189,    STR_DESIGN_CANCEL,              STR_NONE                                    },
+    { WWT_BUTTON,           1,  4,      157,    127,    140,    STR_SELECT_NEARBY_SCENERY,      STR_NONE                                    },
+    { WWT_BUTTON,           1,  158,    311,    127,    140,    STR_RESET_SELECTION,            STR_NONE                                    },
+    { WWT_BUTTON,           1,  4,      157,    177,    190,    STR_DESIGN_SAVE,                STR_NONE                                    },
+    { WWT_BUTTON,           1,  158,    311,    177,    190,    STR_DESIGN_CANCEL,              STR_NONE                                    },
     { WIDGETS_END },
 };
 
