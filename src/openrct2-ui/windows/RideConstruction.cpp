@@ -3565,7 +3565,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        for (int zAttempts = numAttempts; zAttempts > 1; zAttempts--)
+        for (int zAttempts = 1; zAttempts < numAttempts; ++zAttempts)
         {
             window_ride_construction_update_state(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z,
@@ -3588,7 +3588,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    for (int zAttempts = numAttempts; zAttempts > 1; zAttempts--)
+    for (int zAttempts = 1; zAttempts < numAttempts; ++zAttempts)
     {
         window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z, nullptr);
@@ -3793,7 +3793,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        for (int32_t zAttempts = numAttempts; zAttempts > 0; zAttempts--)
+        for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
             _currentTrackBegin.x = mapCoords.x;
@@ -3823,7 +3823,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
                 if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_RIDE_CANT_BUILD_THIS_UNDERWATER
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
-                    || zAttempts == 0 || z < 0)
+                    || zAttempts == (numAttempts - 1) || z < 0)
                 {
                     audio_play_sound(SoundId::Error, 0, state->position.x);
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -3838,7 +3838,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
                     context_broadcast_intent(&intent2);
                     break;
                 }
-                else if (zAttempts >= 0)
+                else if (zAttempts < numAttempts)
                 {
                     z += 16;
                 }
@@ -3853,7 +3853,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    for (int32_t zAttempts = numAttempts; zAttempts > 0; zAttempts--)
+    for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
     {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackBegin.x = mapCoords.x;
@@ -3877,7 +3877,8 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
             if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                 || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND
                 || errorText == STR_TOO_HIGH_FOR_SUPPORTS || errorText == STR_TOO_HIGH
-                || errorText == STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT || zAttempts == 1 || z < 0)
+                || errorText == STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT || zAttempts == (numAttempts - 1)
+                || z < 0)
             {
                 int32_t saveTrackDirection = _currentTrackPieceDirection;
                 int32_t saveCurrentTrackCurve = _currentTrackCurve;
