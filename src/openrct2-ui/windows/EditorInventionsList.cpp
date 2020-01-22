@@ -431,7 +431,7 @@ static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t
         return;
 
     // Disallow picking up always-researched items
-    if (research_item_is_always_researched(researchItem))
+    if (researchItem->IsAlwaysResearched())
         return;
 
     w->Invalidate();
@@ -453,7 +453,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window* w, int32_t
         w->Invalidate();
 
         // Prevent always-researched items from being highlighted when hovered over
-        if (researchItem != nullptr && research_item_is_always_researched(researchItem))
+        if (researchItem != nullptr && researchItem->IsAlwaysResearched())
         {
             w->research_item = nullptr;
         }
@@ -484,7 +484,7 @@ static void window_editor_inventions_list_cursor(
 
     // Use the open hand as cursor for items that can be picked up
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, screenCoords.y);
-    if (researchItem != nullptr && !research_item_is_always_researched(researchItem))
+    if (researchItem != nullptr && !researchItem->IsAlwaysResearched())
     {
         *cursorId = CURSOR_HAND_OPEN;
     }
@@ -669,7 +669,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         utf8* vehicleNamePtr = vehicleNameBuffer;
 
         uint8_t colour;
-        if (research_item_is_always_researched(&researchItem))
+        if (researchItem.IsAlwaysResearched())
         {
             if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsInventedEndMarker())
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
@@ -687,7 +687,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             vehicleNamePtr = utf8_write_codepoint(vehicleNamePtr, colour);
         }
 
-        rct_string_id itemNameId = research_item_get_name(&researchItem);
+        rct_string_id itemNameId = researchItem.GetName();
 
         if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE
             && !RideGroupManager::RideTypeIsIndependent(researchItem.baseRideType))
@@ -731,7 +731,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
 
     window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
     _editorInventionsListDraggedItem = *researchItem;
-    rct_string_id stringId = research_item_get_name(researchItem);
+    rct_string_id stringId = researchItem->GetName();
 
     ptr = buffer;
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
@@ -796,7 +796,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, ScreenCoords
     {
         researchItem = get_research_item_at(screenCoords, &scrollId);
         screenCoords.y += LIST_ROW_HEIGHT;
-    } while (researchItem != nullptr && research_item_is_always_researched(researchItem));
+    } while (researchItem != nullptr && researchItem->IsAlwaysResearched());
 
     if (scrollId != -1)
     {
@@ -826,7 +826,7 @@ static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixe
 static rct_string_id window_editor_inventions_list_prepare_name(const ResearchItem* researchItem, bool withGap)
 {
     rct_string_id drawString;
-    rct_string_id stringId = research_item_get_name(researchItem);
+    rct_string_id stringId = researchItem->GetName();
 
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
     {

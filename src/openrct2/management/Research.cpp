@@ -692,11 +692,11 @@ void set_every_ride_entry_not_invented()
  *
  *  rct2: 0x0068563D
  */
-rct_string_id research_item_get_name(const ResearchItem* researchItem)
+rct_string_id ResearchItem::GetName() const
 {
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+    if (type == RESEARCH_ENTRY_TYPE_RIDE)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(researchItem->entryIndex);
+        rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
         if (rideEntry == nullptr)
         {
             return STR_EMPTY;
@@ -708,7 +708,7 @@ rct_string_id research_item_get_name(const ResearchItem* researchItem)
     }
     else
     {
-        rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(researchItem->entryIndex);
+        rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(entryIndex);
         if (sceneryEntry == nullptr)
         {
             return STR_EMPTY;
@@ -717,22 +717,6 @@ rct_string_id research_item_get_name(const ResearchItem* researchItem)
         {
             return sceneryEntry->name;
         }
-    }
-}
-
-/**
- * This will return the name of the base ride type or ride group, as seen in the research window.
- */
-rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry* rideEntry)
-{
-    if (RideGroupManager::RideTypeHasRideGroups(trackType))
-    {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(trackType, rideEntry);
-        return rideGroup->Naming.name;
-    }
-    else
-    {
-        return RideNaming[trackType].name;
     }
 }
 
@@ -878,11 +862,9 @@ void research_items_shuffle()
     std::shuffle(std::begin(gResearchItemsUninvented), std::end(gResearchItemsUninvented), std::default_random_engine{});
 }
 
-bool research_item_is_always_researched(const ResearchItem* researchItem)
+bool ResearchItem::IsAlwaysResearched() const
 {
-    return (researchItem->flags
-            & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED))
-        != 0;
+    return (flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
 bool ResearchItem::IsInventedEndMarker() const
