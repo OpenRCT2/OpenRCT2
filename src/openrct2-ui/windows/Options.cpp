@@ -157,6 +157,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
     // Misc
     WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
+    WIDX_TITLE_SEQUENCE_RANDOM,
     WIDX_TITLE_SEQUENCE,
     WIDX_TITLE_SEQUENCE_DROPDOWN,
     WIDX_TITLE_SEQUENCE_BUTTON,
@@ -332,22 +333,23 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define TITLE_SEQUENCE_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    TITLE_SEQUENCE_START + 0,       TITLE_SEQUENCE_START + 49,      STR_OPTIONS_TITLE_SEQUENCE,       STR_NONE },
-    { WWT_DROPDOWN,         1,  135,    299,    TITLE_SEQUENCE_START + 15,      TITLE_SEQUENCE_START + 26,      STR_STRING,                       STR_NONE },                             // Title sequence dropdown
-    { WWT_BUTTON,           1,  288,    298,    TITLE_SEQUENCE_START + 16,      TITLE_SEQUENCE_START + 25,      STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
-    { WWT_BUTTON,           1,  135,    299,    TITLE_SEQUENCE_START + 30,      TITLE_SEQUENCE_START + 42,      STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
+    { WWT_GROUPBOX,         1,  5,      304,    TITLE_SEQUENCE_START + 0,       TITLE_SEQUENCE_START + 64,      STR_OPTIONS_TITLE_SEQUENCE,       STR_NONE },
+    { WWT_CHECKBOX,         2,  10,    299,    TITLE_SEQUENCE_START + 15,      TITLE_SEQUENCE_START + 30,  STR_OPTIONS_RANDOM_TITLE_SEQUENCE, STR_NONE},              //Random Title Sequence
+    { WWT_DROPDOWN,         1,  135,    299,    TITLE_SEQUENCE_START + 32,      TITLE_SEQUENCE_START + 43,      STR_STRING,                       STR_NONE },                             // Title sequence dropdown
+    { WWT_BUTTON,           1,  288,    298,    TITLE_SEQUENCE_START + 33,      TITLE_SEQUENCE_START + 44,      STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
+    { WWT_BUTTON,           1,  135,    299,    TITLE_SEQUENCE_START + 48,      TITLE_SEQUENCE_START + 60,      STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
 #undef TITLE_SEQUENCE_START
-#define SCENARIO_START 107
+#define SCENARIO_START 122
     { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_START + 0,             SCENARIO_START + 50,            STR_OPTIONS_SCENARIO_SELECTION,   STR_NONE },
     { WWT_DROPDOWN,         1,  175,    299,    SCENARIO_START + 15,            SCENARIO_START + 26,            STR_NONE,                         STR_NONE },                             // Scenario select mode
     { WWT_BUTTON,           1,  288,    298,    SCENARIO_START + 16,            SCENARIO_START + 25,            STR_DROPDOWN_GLYPH,               STR_SCENARIO_GROUPING_TIP },
     { WWT_CHECKBOX,         2,  25,     299,    SCENARIO_START + 30,            SCENARIO_START + 45,            STR_OPTIONS_SCENARIO_UNLOCKING,   STR_SCENARIO_UNLOCKING_TIP },           // Unlocking of scenarios
 #undef SCENARIO_START
-#define SCENARIO_OPTIONS_START 162
+#define SCENARIO_OPTIONS_START 177
     { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_OPTIONS_START + 0,     SCENARIO_OPTIONS_START + 34,    STR_SCENARIO_OPTIONS,             STR_NONE },
     { WWT_CHECKBOX,         2,  10,     299,    SCENARIO_OPTIONS_START + 15,    SCENARIO_OPTIONS_START + 29,    STR_ALLOW_EARLY_COMPLETION,       STR_EARLY_COMPLETION_TIP },             // Allow early scenario completion
 #undef SCENARIO_OPTIONS_START
-#define TWEAKS_START 201
+#define TWEAKS_START 216
     { WWT_GROUPBOX,         1,  5,      304,    TWEAKS_START + 0,               TWEAKS_START + 80,              STR_OPTIONS_TWEAKS,               STR_NONE },
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 15,              TWEAKS_START + 29,              STR_REAL_NAME,                    STR_REAL_NAME_TIP },                    // Show 'real' names of guests
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,              TWEAKS_START + 44,              STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
@@ -593,6 +595,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_TITLE_SEQUENCE) |
     (1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
     (1 << WIDX_TITLE_SEQUENCE_BUTTON) |
+    (1 << WIDX_TITLE_SEQUENCE_RANDOM) |
     (1 << WIDX_SCENARIO_GROUPING) |
     (1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
     (1 << WIDX_SCENARIO_UNLOCKING) |
@@ -908,6 +911,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     gConfigGeneral.scenario_unlocking_enabled ^= 1;
                     config_save_default();
                     window_close_by_class(WC_SCENARIO_SELECT);
+                    break;
+                case WIDX_TITLE_SEQUENCE_RANDOM:
+                    gConfigInterface.random_title_sequence ^= 1;
+                    config_save_default();
+                    w->Invalidate();
                     break;
                 case WIDX_AUTO_OPEN_SHOPS:
                     gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
@@ -1904,7 +1912,20 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
             widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
             widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+            widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
             widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
+
+            // Disable title sequence dropdown if set to random
+            if (gConfigInterface.random_title_sequence)
+            {
+                w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
+                w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE);
+            }
+            else
+            {
+                w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
+                w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE);
+            }
 
             if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
                 window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;

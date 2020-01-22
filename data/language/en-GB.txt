@@ -3667,6 +3667,7 @@ STR_6345    :Tile Inspector: Increase element height
 STR_6346    :Tile Inspector: Decrease element height
 STR_6347    :Path additions cannot be placed on level crossings!
 STR_6348    :Remove level crossing first!
+STR_6349    :Random title sequence
 
 #############
 # Scenarios #
