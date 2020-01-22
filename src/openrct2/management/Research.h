@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Optional.hpp"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 
@@ -99,8 +100,8 @@ extern uint16_t gResearchProgress;
 extern uint8_t gResearchProgressStage;
 extern uint8_t gResearchExpectedMonth;
 extern uint8_t gResearchExpectedDay;
-extern ResearchItem gResearchLastItem;
-extern ResearchItem gResearchNextItem;
+extern std::optional<ResearchItem> gResearchLastItem;
+extern std::optional<ResearchItem> gResearchNextItem;
 
 extern std::vector<ResearchItem> gResearchItemsUninvented;
 extern std::vector<ResearchItem> gResearchItemsInvented;

@@ -241,11 +241,24 @@ void S6Exporter::Export()
 
     _s6.active_research_types = gResearchPriorities;
     _s6.research_progress_stage = gResearchProgressStage;
-    _s6.last_researched_item_subject = gResearchLastItem.rawValue;
+    if (gResearchLastItem.has_value())
+        _s6.last_researched_item_subject = gResearchLastItem->rawValue;
+    else
+        _s6.last_researched_item_subject = -1;
     // pad_01357CF8
-    _s6.next_research_item = gResearchNextItem.rawValue;
     _s6.research_progress = gResearchProgress;
-    _s6.next_research_category = gResearchNextItem.category;
+
+    if (gResearchNextItem.has_value())
+    {
+        _s6.next_research_item = gResearchNextItem->rawValue;
+        _s6.next_research_category = gResearchNextItem->category;
+    }
+    else
+    {
+        _s6.next_research_item = -1;
+        _s6.next_research_category = 0;
+    }
+
     _s6.next_research_expected_day = gResearchExpectedDay;
     _s6.next_research_expected_month = gResearchExpectedMonth;
     _s6.guest_initial_happiness = gGuestInitialHappiness;

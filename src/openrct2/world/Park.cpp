@@ -268,7 +268,7 @@ void Park::Initialise()
     gParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
-    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    gResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
     research_reset_items();

@@ -162,9 +162,9 @@ struct rct_s6_data
     // SC6[10]
     uint8_t active_research_types;
     uint8_t research_progress_stage;
-    uint32_t last_researched_item_subject;
+    int32_t last_researched_item_subject;
     uint8_t pad_01357CF8[1000];
-    uint32_t next_research_item;
+    int32_t next_research_item;
     uint16_t research_progress;
     uint8_t next_research_category;
     uint8_t next_research_expected_day;

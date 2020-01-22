@@ -2388,13 +2388,29 @@ private:
         gResearchExpectedDay = _s4.next_research_expected_day;
         gResearchExpectedMonth = _s4.next_research_expected_month;
 
-        ConvertResearchEntry(&gResearchNextItem, _s4.next_research_item, _s4.next_research_type);
-        if (gResearchNextItem.IsInventedEndMarker())
+        if (_s4.last_research_flags == 0xFF)
         {
+            gResearchLastItem = std::nullopt;
+        }
+        else
+        {
+            ResearchItem researchItem = {};
+            ConvertResearchEntry(&researchItem, _s4.last_research_item, _s4.last_research_type);
+            gResearchLastItem = researchItem;
+        }
+
+        if (_s4.next_research_flags == 0xFF)
+        {
+            gResearchNextItem = std::nullopt;
             gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
             gResearchProgress = 0;
         }
-        ConvertResearchEntry(&gResearchLastItem, _s4.last_research_item, _s4.last_research_type);
+        else
+        {
+            ResearchItem researchItem = {};
+            ConvertResearchEntry(&researchItem, _s4.next_research_item, _s4.next_research_type);
+            gResearchNextItem = researchItem;
+        }
     }
 
     static std::bitset<RCT1_RIDE_TYPE_COUNT> GetRideTypesPresentInResearchList(

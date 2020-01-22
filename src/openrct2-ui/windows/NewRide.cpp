@@ -705,7 +705,7 @@ static void window_new_ride_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_LAST_DEVELOPMENT_BUTTON:
-            news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItem.rawValue);
+            news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItem->rawValue);
             break;
         case WIDX_RESEARCH_FUNDING_BUTTON:
             context_open_window_view(WV_FINANCES_RESEARCH);
@@ -816,9 +816,9 @@ static void window_new_ride_invalidate(rct_window* w)
     if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
         window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-        if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+        if (gResearchLastItem.has_value())
         {
-            uint8_t type = gResearchLastItem.type;
+            uint8_t type = gResearchLastItem->type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == RESEARCH_ENTRY_TYPE_RIDE) ? SPR_NEW_RIDE
                                                                                                              : SPR_NEW_SCENERY;

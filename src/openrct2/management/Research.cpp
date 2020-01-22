@@ -46,10 +46,10 @@ uint8_t gResearchFundingLevel;
 uint8_t gResearchPriorities;
 uint16_t gResearchProgress;
 uint8_t gResearchProgressStage;
-ResearchItem gResearchLastItem;
+std::optional<ResearchItem> gResearchLastItem;
 uint8_t gResearchExpectedMonth;
 uint8_t gResearchExpectedDay;
-ResearchItem gResearchNextItem;
+std::optional<ResearchItem> gResearchNextItem;
 
 // 0x01358844[500]
 ResearchItem gResearchItems[MAX_RESEARCH_ITEMS];
@@ -368,7 +368,7 @@ void research_update()
                 research_invalidate_related_windows();
                 break;
             case RESEARCH_STAGE_COMPLETING_DESIGN:
-                research_finish_item(&gResearchNextItem);
+                research_finish_item(&*gResearchNextItem);
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
                 research_calculate_expected_date();
@@ -400,7 +400,7 @@ void research_reset_current_item()
         research_finish_item(&researchItem);
     }
 
-    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    gResearchLastItem = std::nullopt;
     gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
     gResearchProgress = 0;
 }

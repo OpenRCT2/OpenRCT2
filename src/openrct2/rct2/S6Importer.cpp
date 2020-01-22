@@ -262,11 +262,18 @@ public:
 
         gResearchPriorities = _s6.active_research_types;
         gResearchProgressStage = _s6.research_progress_stage;
-        gResearchLastItem.rawValue = _s6.last_researched_item_subject;
+        if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
+            gResearchLastItem = std::make_optional(
+                ResearchItem{ _s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT });
+        else
+            gResearchLastItem = std::nullopt;
         // pad_01357CF8
-        gResearchNextItem.rawValue = _s6.next_research_item;
+        if (_s6.next_research_item != RCT12_RESEARCHED_ITEMS_SEPARATOR)
+            gResearchNextItem = std::make_optional(ResearchItem{ _s6.next_research_item, _s6.next_research_category });
+        else
+            gResearchNextItem = std::nullopt;
+
         gResearchProgress = _s6.research_progress;
-        gResearchNextItem.category = _s6.next_research_category;
         gResearchExpectedDay = _s6.next_research_expected_day;
         gResearchExpectedMonth = _s6.next_research_expected_month;
         gGuestInitialHappiness = _s6.guest_initial_happiness;
