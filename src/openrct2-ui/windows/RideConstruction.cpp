@@ -3838,10 +3838,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
                     context_broadcast_intent(&intent2);
                     break;
                 }
-                else if (zAttempts < numAttempts)
-                {
-                    z += 16;
-                }
+                z += 16;
             }
             else
             {
