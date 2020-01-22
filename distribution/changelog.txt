@@ -1,5 +1,6 @@
 0.2.4+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#3154] Use a random title sequence each time it is shown.
 - Feature: [#7865] Transport rides can now be synchronised.
 - Feature: [#9073] Shortcut keys for the Tile Inspector.
 - Feature: [#10305] Add two shortcuts for increasing and decreasing the scaling factor.
