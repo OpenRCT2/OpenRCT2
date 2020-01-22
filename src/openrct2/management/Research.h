@@ -34,6 +34,8 @@ struct ResearchItem
     bool IsInventedEndMarker() const;
     bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
+    bool IsAlwaysResearched() const;
+    rct_string_id GetName() const;
 };
 
 enum
@@ -136,12 +138,9 @@ void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
-rct_string_id research_item_get_name(const ResearchItem* researchItem);
-rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry* rideEntry);
 void research_remove_flags();
 void research_fix();
 
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
-bool research_item_is_always_researched(const ResearchItem* researchItem);
