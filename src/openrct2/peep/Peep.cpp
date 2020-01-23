@@ -323,6 +323,11 @@ const bool gSpriteTypeToSlowWalkMap[] = {
 
 // clang-format on
 
+template<> bool SpriteBase::Is<Peep>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+}
+
 bool rct_sprite::IsPeep() const
 {
     return peep.sprite_identifier == SPRITE_IDENTIFIER_PEEP;

@@ -33,6 +33,16 @@ struct SpriteBase
     uint8_t sprite_direction;
 
     void MoveTo(const CoordsXYZ& newLocation);
+    template<typename T> bool Is() const;
+    template<typename T> T* As()
+    {
+        T* result = nullptr;
+        if (Is<T>())
+        {
+            result = reinterpret_cast<T*>(this);
+        }
+        return result;
+    }
 };
 
 struct SpriteGeneric : SpriteBase
