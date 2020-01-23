@@ -19,6 +19,11 @@ bool rct_sprite::IsBalloon()
     return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.type == SPRITE_MISC_BALLOON;
 }
 
+template<> bool SpriteBase::Is<Balloon>()
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_BALLOON;
+}
+
 Balloon* rct_sprite::AsBalloon()
 {
     Balloon* result = nullptr;

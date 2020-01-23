@@ -18,6 +18,11 @@
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
+template<> bool SpriteBase::Is<MoneyEffect>()
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_MONEY_EFFECT;
+}
+
 bool rct_sprite::IsMoneyEffect()
 {
     return this->money_effect.sprite_identifier == SPRITE_IDENTIFIER_MISC

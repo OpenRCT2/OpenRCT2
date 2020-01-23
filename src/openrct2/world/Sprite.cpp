@@ -51,6 +51,26 @@ static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 
+template<> bool SpriteBase::Is<Litter>()
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_LITTER;
+}
+
+template<> bool SpriteBase::Is<SteamParticle>()
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_STEAM_PARTICLE;
+}
+
+template<> bool SpriteBase::Is<ExplosionFlare>()
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_FLARE;
+}
+
+template<> bool SpriteBase::Is<ExplosionCloud>()
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_CLOUD;
+}
+
 std::string rct_sprite_checksum::ToString() const
 {
     std::string result;

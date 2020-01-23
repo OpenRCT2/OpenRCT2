@@ -101,6 +101,14 @@ struct VehicleCrashParticle : SpriteGeneric
     int32_t acceleration_z;
 };
 
+struct ExplosionFlare : SpriteGeneric
+{
+};
+
+struct ExplosionCloud : SpriteGeneric
+{
+};
+
 struct CrashSplashParticle : SpriteGeneric
 {
 };
