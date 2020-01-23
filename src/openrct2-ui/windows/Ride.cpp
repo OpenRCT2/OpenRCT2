@@ -1357,7 +1357,8 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
             ride->subtype, ride->num_cars_per_train, rideEntry->tab_vehicle);
         rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[vehicle];
 
-        vehicle_colour vehicleColour = ride_get_vehicle_colour(ride, rideEntry->tab_vehicle);
+        auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->tab_vehicle : 0;
+        vehicle_colour vehicleColour = ride_get_vehicle_colour(ride, vehicleId);
         int32_t spriteIndex = 32;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             spriteIndex += w->frame_no;
