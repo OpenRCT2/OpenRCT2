@@ -3668,6 +3668,7 @@ STR_6345    :Kachelinspektor: Elementhöhe erhöhen
 STR_6346    :Kachelinspektor: Elementhöhe verringern
 STR_6347    :Wegextras können nicht auf Bahnübergängen platziert werden!
 STR_6348    :Bahnübergang muss zuerst entfernt werden!
+STR_6349    :Zufällige Titelsequenz
 
 #############
 # Scenarios #
