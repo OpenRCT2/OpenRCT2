@@ -3565,7 +3565,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        for (int zAttempts = 1; zAttempts < numAttempts; ++zAttempts)
+        for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
             window_ride_construction_update_state(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z,
@@ -3588,7 +3588,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    for (int zAttempts = 1; zAttempts < numAttempts; ++zAttempts)
+    for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
     {
         window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z, nullptr);
