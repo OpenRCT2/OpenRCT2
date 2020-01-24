@@ -26,55 +26,6 @@ env:
 matrix:
     include:
         - os: linux
-          name: Ubuntu amd64 GCC MinSizeRel
-          if: type != cron
-          services:
-            - docker
-          env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DCMAKE_CXX_FLAGS=\"-g -gz\"" TARGET=ubuntu_amd64
-            - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
-          after_success:
-            - sudo chown -R $USER build
-            - cd build
-              # make install is done inside docker
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/bin/openrct2-cli OpenRCT2/ && mv OpenRCT2/bin/libopenrct2.so OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc && mv OpenRCT2/bin/libdiscord-rpc.so OpenRCT2/
-            - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
-            - tar cvzf openrct2-linux.tar.gz OpenRCT2/
-            - ls -lR
-            - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
-              export PUSH_BRANCH=master ;
-              else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
-              fi
-            - curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link && echo || echo "Failed transfer.sh upload"
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-linux-x86_64.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=9" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build";
-              fi
-        - os: linux
-          name: Ubuntu i686 GCC Debug m32 no-build-shared-libs
-          if: type != cron
-          services:
-            - docker
-          env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -DFORCE32=ON -DBUILD_SHARED_LIBS=off -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS=\"-coverage -m32 -gz\"" TARGET=ubuntu_i686
-            - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
-            - secure: "JGMzQHmDgpnVzP2uYP5KL7h6SzzGmL4kH7vJmGQRpudKAEzhzB0n7lzjrJOU82hxwmuQQ+RKlE/uxdI32Xbgl+wzZMdfQoZGMWHZfl8Le0Ft5gfZncPuE3poCbiSyPSXok9zU12JHKpEjV/sgqXv/HwhL3jAC68GPGpmxb6xWj8="
-          after_success:
-            - sudo chown -R $USER build
-            - cd build
-              # make install is done inside docker
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
-            - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
-            - tar cvzf openrct2-linux.tar.gz OpenRCT2/
-            - ls -lR
-            - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
-              export PUSH_BRANCH=master ;
-              else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
-              fi
-            - curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link && echo || echo "Failed transfer.sh upload"
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-linux-i686.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=4" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build";
-              fi
-        - os: linux
           name: Ubuntu amd64 Clang
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
