@@ -9,7 +9,6 @@
 
 #include "OpenRCT2.h"
 
-int32_t gExitCode;
 int32_t gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
