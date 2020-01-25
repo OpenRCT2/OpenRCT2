@@ -179,13 +179,18 @@ function (ADD_CHECK_CXX_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
 endfunction ()
 
 if (MSVC)
+    # CMAKE does not have a built-in option for setting the CRT, so override the default flags.
+    # NOTE: doing it this way avoids a linker warning about one directive overriding another
+    set(CMAKE_CXX_FLAGS_DEBUG "/MTd /Zi /Ob0 /Od /RTC1")
+    set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /DNDEBUG")
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8 /permissive- /Zc:externConstexpr /EHsc /WX")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") # C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4068") # C4068: unknown pragma
 
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_definitions(-D_SCL_SECURE_NO_WARNINGS)
-    if ((CMAKE_VS_PLATFORM_NAME STREQUAL "Win32") OR (CMAKE_VS_PLATFORM_NAME STREQUAL "x64"))
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND CMAKE_SYSTEM_PROCESSOR STREQUAL "AMD64")
         add_definitions(-D__SSE4_1__)
         add_definitions(-D__AVX2__)
     endif ()
@@ -280,7 +285,7 @@ install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CUR
 if (DOWNLOAD_TITLE_SEQUENCES)
     # If openrct2.parkseq or data/title/ exists, assume all the title sequences are already present
     install(CODE
-        "if (EXISTS \"\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/openrct2.parkseq\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/title/)\n\
+        "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/openrct2.parkseq\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/title/)\n\
             message(\"Using cached title sequences\")\n\
         else () \n\
             file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)\n\
@@ -291,12 +296,12 @@ endif ()
 if (DOWNLOAD_OBJECTS)
     # If rct2.wtrcyan.json or data/object/ exists, assume all the objects are already present
     install(CODE
-        "if (EXISTS \"\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/rct2/water/rct2.wtrcyan.json\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/object/)\n\
+        "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/rct2/water/rct2.wtrcyan.json\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/object/)\n\
             message(\"Using cached objects\")\n\
         else () \n\
-            file(DOWNLOAD ${OBJECTS_URL} \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip EXPECTED_HASH SHA1=${OBJECTS_SHA1} SHOW_PROGRESS)\n\
-            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/ \"${CMAKE_COMMAND}\" -E tar xf objects.zip)\n\
-            file(REMOVE \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip)\n\
+            file(DOWNLOAD ${OBJECTS_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip EXPECTED_HASH SHA1=${OBJECTS_SHA1} SHOW_PROGRESS)\n\
+            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/ \"${CMAKE_COMMAND}\" -E tar xf objects.zip)\n\
+            file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip)\n\
         endif ()")
 endif ()
 if (DOWNLOAD_REPLAYS)

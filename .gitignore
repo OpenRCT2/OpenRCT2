@@ -16,6 +16,7 @@ bin.*/
 .dependencies
 sequencesversion
 objectsversion
+/out/
 
 #lib
 lib
