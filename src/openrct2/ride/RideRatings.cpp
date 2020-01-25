@@ -220,6 +220,12 @@ static void ride_ratings_update_state_2()
             continue;
         if (tileElement->base_height != z)
             continue;
+        if (tileElement->AsTrack()->GetRideIndex() != ride->id)
+        {
+            // Only check that the track belongs to the same ride if ride does not have buildable track
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+                continue;
+        }
 
         if (trackType == 255
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
@@ -331,6 +337,12 @@ static void ride_ratings_update_state_5()
             continue;
         if (tileElement->base_height != z)
             continue;
+        if (tileElement->AsTrack()->GetRideIndex() != ride->id)
+        {
+            // Only check that the track belongs to the same ride if ride does not have buildable track
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+                continue;
+        }
 
         if (trackType == 255 || trackType == tileElement->AsTrack()->GetTrackType())
         {
