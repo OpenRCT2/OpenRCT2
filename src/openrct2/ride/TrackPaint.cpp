@@ -2176,10 +2176,12 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))
             {
                 uint16_t ax = RideData5[ride->type].z_offset;
-                uint32_t ebx = 0x20381689 + (height + 8) / 16;
-                ebx += get_height_marker_offset();
-                ebx -= gMapBaseZ;
-                sub_98197C(session, ebx, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047);
+                // 0x1689 represents 0 height there are -127 to 128 heights above and below it
+                // There are 3 arrays of 256 heights (units, m, ft) chosen with the get_height_marker_offset()
+                uint32_t imageId = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_LIGHT_BLUE) | (0x1689 + get_height_marker_offset());
+                auto heightNum = (height + 8) / 16 - gMapBaseZ;
+
+                sub_98197C(session, imageId + heightNum, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047);
             }
         }
 
