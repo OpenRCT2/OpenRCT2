@@ -3556,6 +3556,23 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :[{STRING}] letöltése innen: {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Kacsák létrehozása
 STR_6332    :Kacsák törlése
+STR_6333    :Skálázási faktor növelése
+STR_6334    :Skálázási faktor csökkentése
+STR_6335    :Mezővizsgáló: Sérült elem beillesztése
+STR_6336    :Mezővizsgáló: Elem másolása
+STR_6337    :Mezővizsgáló: Elem beillesztése
+STR_6338    :Mezővizsgáló: Elem törlése
+STR_6339    :Mezővizsgáló: Elem mozgatása fel
+STR_6340    :Mezővizsgáló: Elem mozgatása le
+STR_6341    :Mezővizsgáló: X koordináta növelése
+STR_6342    :Mezővizsgáló: X koordináta csökkentése
+STR_6343    :Mezővizsgáló: Y koordináta növelése
+STR_6344    :Mezővizsgáló: Y koordináta csökkentése
+STR_6345    :Mezővizsgáló: Elem magasságának növelése
+STR_6346    :Mezővizsgáló: Elem magasságának csökkentése
+STR_6347    :Úti extrák nem helyezhetőek útátjárókra!
+STR_6348    :Előbb távolítsd el az útátjárót!
+STR_6349    :Véletlenszerű főcím
 
 #############
 # Scenarios #
