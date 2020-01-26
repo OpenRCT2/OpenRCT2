@@ -1081,7 +1081,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             console.WriteLineError("Unable to load object.");
             return 1;
         }
-        int32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        uint32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
         uint8_t objectType = object_entry_get_type(entry);
         if (objectType == OBJECT_TYPE_RIDE)
@@ -1095,8 +1095,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
                 rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
-                    research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | groupIndex, rideEntry->category[0]);
+                research_insert_ride_entry(rideType, groupIndex, rideEntry->category[0], true);
             }
 
             gSilentResearch = true;
@@ -1105,7 +1104,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
         else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
         {
-            research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
+            research_insert_scenery_group_entry(groupIndex, true);
 
             gSilentResearch = true;
             research_reset_current_item();

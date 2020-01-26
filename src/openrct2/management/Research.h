@@ -37,6 +37,13 @@ struct ResearchItem
     bool Exists() const;
     bool IsAlwaysResearched() const;
     rct_string_id GetName() const;
+
+    ResearchItem() = default;
+    constexpr ResearchItem(uint32_t _rawValue, int32_t _category)
+        : rawValue(_rawValue)
+        , category(_category)
+    {
+    }
 };
 
 enum
@@ -112,9 +119,10 @@ void research_populate_list_random();
 void research_populate_list_researched();
 
 void research_finish_item(ResearchItem* researchItem);
-void research_insert(int32_t researched, int32_t rawValue, uint8_t category);
+void research_insert(ResearchItem item, bool researched);
 void research_remove(ResearchItem* researchItem);
 
+bool research_insert_ride_entry(uint8_t rideType, uint8_t entryIndex, uint8_t category, bool researched);
 void research_insert_ride_entry(uint8_t entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
 
