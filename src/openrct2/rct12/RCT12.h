@@ -84,11 +84,11 @@ enum
 };
 
 // Everything before this point has been researched
-#define RCT12_RESEARCHED_ITEMS_SEPARATOR (-1)
+#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
 // Everything before this point and after separator still requires research
-#define RCT12_RESEARCHED_ITEMS_END (-2)
+#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
 // Extra end of list entry. Leftover from RCT1.
-#define RCT12_RESEARCHED_ITEMS_END_2 (-3)
+#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
 
 #pragma pack(push, 1)
 
@@ -696,7 +696,7 @@ struct RCT12ResearchItem
     // Bit 16 (0: scenery entry, 1: ride entry)
     union
     {
-        int32_t rawValue;
+        uint32_t rawValue;
         struct
         {
             uint8_t entryIndex;

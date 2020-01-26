@@ -312,7 +312,7 @@ rct_window* window_editor_inventions_list_open()
     w->var_4AE = 0;
     w->selected_tab = 0;
     w->research_item = nullptr;
-    _editorInventionsListDraggedItem.rawValue = -1;
+    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
 
     w->min_width = WW;
     w->min_height = WH;
@@ -391,13 +391,13 @@ static void window_editor_inventions_list_update(rct_window* w)
     window_event_invalidate_call(w);
     widget_invalidate(w, WIDX_TAB_1);
 
-    if (_editorInventionsListDraggedItem.IsInventedEndMarker())
+    if (_editorInventionsListDraggedItem.IsNull())
         return;
 
     if (window_find_by_class(WC_EDITOR_INVENTION_LIST_DRAG) != nullptr)
         return;
 
-    _editorInventionsListDraggedItem.rawValue = -1;
+    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
     w->Invalidate();
 }
 
@@ -572,10 +572,10 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
         ColourMapA[w->colours[1]].darkest);
 
     researchItem = &_editorInventionsListDraggedItem;
-    if (researchItem->IsInventedEndMarker())
+    if (researchItem->IsNull())
         researchItem = w->research_item;
     // If the research item is null or a list separator.
-    if (researchItem == nullptr || researchItem->rawValue < 0)
+    if (researchItem == nullptr || researchItem->IsNull())
         return;
 
     // Preview image
@@ -645,7 +645,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         if (w->research_item == &researchItem)
         {
             int32_t top, bottom;
-            if (_editorInventionsListDraggedItem.IsInventedEndMarker())
+            if (_editorInventionsListDraggedItem.IsNull())
             {
                 // Highlight
                 top = itemY;
@@ -671,7 +671,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         uint8_t colour;
         if (researchItem.IsAlwaysResearched())
         {
-            if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsInventedEndMarker())
+            if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsNull())
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
             else
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
@@ -804,7 +804,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, ScreenCoords
     }
 
     window_close(w);
-    _editorInventionsListDraggedItem.rawValue = -1;
+    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
     window_invalidate_by_class(WC_EDITOR_INVENTION_LIST);
 }
 

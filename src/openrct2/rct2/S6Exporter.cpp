@@ -244,7 +244,7 @@ void S6Exporter::Export()
     if (gResearchLastItem.has_value())
         _s6.last_researched_item_subject = gResearchLastItem->rawValue;
     else
-        _s6.last_researched_item_subject = -1;
+        _s6.last_researched_item_subject = RCT12_RESEARCHED_ITEMS_SEPARATOR;
     // pad_01357CF8
     _s6.research_progress = gResearchProgress;
 
@@ -255,7 +255,7 @@ void S6Exporter::Export()
     }
     else
     {
-        _s6.next_research_item = -1;
+        _s6.next_research_item = RCT12_RESEARCHED_ITEMS_SEPARATOR;
         _s6.next_research_category = 0;
     }
 

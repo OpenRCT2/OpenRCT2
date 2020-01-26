@@ -409,7 +409,7 @@ void research_reset_current_item()
  *
  *  rct2: 0x006857FA
  */
-static void research_insert_unresearched(int32_t rawValue, uint8_t category)
+static void research_insert_unresearched(uint32_t rawValue, uint8_t category)
 {
     gResearchItemsUninvented.push_back({ rawValue, category });
 }
@@ -418,7 +418,7 @@ static void research_insert_unresearched(int32_t rawValue, uint8_t category)
  *
  *  rct2: 0x00685826
  */
-static void research_insert_researched(int32_t rawValue, uint8_t category)
+static void research_insert_researched(uint32_t rawValue, uint8_t category)
 {
     // First check to make sure that entry is not already accounted for
     ResearchItem item = { rawValue, category };
@@ -867,9 +867,9 @@ bool ResearchItem::IsAlwaysResearched() const
     return (flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
-bool ResearchItem::IsInventedEndMarker() const
+bool ResearchItem::IsNull() const
 {
-    return rawValue == RESEARCHED_ITEMS_SEPARATOR;
+    return rawValue == RESEARCH_ITEM_NULL;
 }
 
 bool ResearchItem::Equals(const ResearchItem* otherItem) const

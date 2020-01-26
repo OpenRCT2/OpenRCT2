@@ -2564,7 +2564,7 @@ private:
 
     void ConvertResearchEntry(ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
     {
-        dst->rawValue = RESEARCHED_ITEMS_SEPARATOR;
+        dst->rawValue = RESEARCH_ITEM_NULL;
         if (srcType == RCT1_RESEARCH_TYPE_RIDE)
         {
             uint8_t entryIndex = _rideTypeToRideEntryMap[srcItem];
