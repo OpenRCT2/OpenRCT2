@@ -116,10 +116,10 @@ STR_0530    :Des voitures suspendues à un câble métallique font des allers-re
 STR_0531    :Montagnes russes compactes dont les voies en acier prennent la forme de tire-bouchons et de boucles
 STR_0532    :Labyrinthe construit à partie de haies ou de murs de 2m de haut duquel les visiteurs ne peuvent sortir que lorsqu'ils en trouvent la sortie
 STR_0533    :Structure en bois constitué d'un escalier intérieur et d'un toboggan extérieur en spirale utilisable avec des tapis de glisse
-STR_0534    :Karts individuels constitués de moteurs à essence
+STR_0534    :Les visiteurs font la course dans des karts sur un terrain en bitume
 STR_0535    :Bateaux en forme de bûches géantes parcourant un tube aquatique dont les pentes abruptes auront pour effet de tremper les passagers
 STR_0536    :Des bateaux de forme circulaire serpentent le long d'un large cours d'eau, puis dévalent des rapides et des chutes d'eau spectaculaires
-STR_0537    :Auto tamponneuses électriques en libre service
+STR_0537    :Les visiteurs se rentrent dedans dans des auto tamponneuses électriques
 STR_0538    :Grand bateau pirate à balancier
 STR_0539    :Bateau attaché à un bras avec contrepoids à l'autre extrémité, capable de se balancer en effectuant une rotation à 360°
 STR_0540    :Échoppe vendant de la nourriture
@@ -158,7 +158,7 @@ STR_0578    :Une voiture fonce dans des anneaux circulaires, des pentes abruptes
 STR_0579    :Un relaxant jeu de golf miniature
 STR_0580    :Roue en acier géante alternant descentes douces et crêtes de 90m de haut
 STR_0581    :Une roue composée de sièges est montée en haut d'une haute tour en tournant lentement avant d'être lâchée en chute libre avant d'être progressivement freinée magnétiquement
-STR_0582    :Véhicules volants en libre-service
+STR_0582    :Les visiteurs voyagent en véhicules volants qu'ils contrôlent
 STR_0583    :Bâtiment composé de pièces déformées et de couloirs coudés visant à désorienter ses visiteurs
 STR_0584    :Des vélos spéciaux parcourent une voie monorail métallique
 STR_0585    :Les passagers sont assis par deux, suspendus à la voie tandis qu'ils zigzaguent et sont chahutés lors d'inversions serrées
@@ -3666,6 +3666,23 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Téléchargement [{STRING}] depuis {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Créer des canards
 STR_6332    :Supprimer des canards
+STR_6333    :Augmenter l'échelle
+STR_6334    :Diminuer l'échelle
+STR_6335    :Inspecteur de tuile : Insérer un élément corrompu
+STR_6336    :Inspecteur de tuile : Copier l'élément
+STR_6337    :Inspecteur de tuile : Coller l'élément
+STR_6338    :Inspecteur de tuile : Supprimer l'élément
+STR_6339    :Inspecteur de tuile : Déplacer l'élément vers le haut
+STR_6340    :Inspecteur de tuile : Déplacer l'élément vers le bas
+STR_6341    :Inspecteur de tuile : Incrémenter la position sur l'axe X
+STR_6342    :Inspecteur de tuile : Décrémenter la position sur l'axe X
+STR_6343    :Inspecteur de tuile : Incrémenter la position sur l'axe Y
+STR_6344    :Inspecteur de tuile : Décrémenter la position sur l'axe Y
+STR_6345    :Inspecteur de tuile : Incrémenter l'hauteur de l'élement
+STR_6346    :Inspecteur de tuile : Décrémenter l'hauteur de l'élement
+STR_6347    :Les ajouts pour les allées ne peuvent pas être placés sur les passages à niveau !
+STR_6348    :Supprimez le passage à niveau d'abord !
+STR_6349    :Séquence d'introduction aléatoire
 
 #############
 # Scenarios #
