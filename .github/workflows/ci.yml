@@ -171,9 +171,7 @@ jobs:
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        env:
-          DESTDIR: AppDir
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON
       - name: Build AppImage
         shell: bash
         run: . scripts/setenv -q && build-appimage
