@@ -263,13 +263,12 @@ public:
         gResearchPriorities = _s6.active_research_types;
         gResearchProgressStage = _s6.research_progress_stage;
         if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-            gResearchLastItem = std::make_optional(
-                ResearchItem{ _s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT });
+            gResearchLastItem = ResearchItem(_s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT);
         else
             gResearchLastItem = std::nullopt;
         // pad_01357CF8
         if (_s6.next_research_item != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-            gResearchNextItem = std::make_optional(ResearchItem{ _s6.next_research_item, _s6.next_research_category });
+            gResearchNextItem = ResearchItem(_s6.next_research_item, _s6.next_research_category);
         else
             gResearchNextItem = std::nullopt;
 
