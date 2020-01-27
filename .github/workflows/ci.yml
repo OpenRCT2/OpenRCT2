@@ -182,6 +182,28 @@ jobs:
         with:
           name: OpenRCT2-AppImage
           path: artifacts
+  linux-docker:
+    name: Linux (docker)
+    if: github.repository == 'OpenRCT2/OpenRCT2'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build image
+        run: |
+          git clone --depth 1 https://github.com/OpenRCT2/openrct2-docker .
+          docker build -t openrct2/openrct2-cli:develop develop/cli
+      - name: Push image
+        env:
+          OPENRCT2_DOCKER_USER: ${{ secrets.OPENRCT2_DOCKER_USER }}
+          OPENRCT2_DOCKER_PASS: ${{ secrets.OPENRCT2_DOCKER_PASS }}
+        run: |
+          OPENRCT2_BRANCH=$(echo "$GITHUB_REF" | sed 's/refs\/heads\///')
+          echo "Current branch is $OPENRCT2_BRANCH"
+          if [ "$OPENRCT2_BRANCH" = 'develop' ]; then
+                  docker login -u "$OPENRCT2_DOCKER_USER" -p "$OPENRCT2_DOCKER_PASS"
+                  docker push openrct2/openrct2-cli:develop
+          else
+                  echo 'Image not pushed'
+          fi
   linux-clang:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
