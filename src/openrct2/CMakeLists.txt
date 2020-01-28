@@ -17,9 +17,11 @@ add_library(${PROJECT_NAME} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES}
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
-# GCC likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT MINGW)
-    target_link_libraries(${PROJECT_NAME} stdc++fs)
+# GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
+if (NOT MINGW)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_link_libraries(${PROJECT_NAME} stdc++fs)
+    endif()
 endif()
 
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
