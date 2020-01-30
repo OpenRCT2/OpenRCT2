@@ -873,7 +873,7 @@ STR_1487    :{SMALLFONT}“Rien que le fait de regarder {STRINGID} me rend malad
 STR_1488    :{SMALLFONT}“Je ne paierai pas si cher pour aller sur {STRINGID}”
 STR_1489    :{SMALLFONT}“Je veux rentrer chez moi”
 STR_1490    :{SMALLFONT}“{STRINGID} est un très bon choix”
-STR_1491    :{SMALLFONT}“J'ai déjà un {STRINGID}”
+STR_1491    :{SMALLFONT}“J'ai déjà {STRINGID}”
 STR_1492    :{SMALLFONT}“Je ne peux pas me payer {STRINGID}”
 STR_1493    :{SMALLFONT}“Je n'ai pas faim”
 STR_1494    :{SMALLFONT}“Je n'ai pas soif”
