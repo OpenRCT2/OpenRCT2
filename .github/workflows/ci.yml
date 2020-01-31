@@ -215,3 +215,19 @@ jobs:
       - name: Build OpenRCT2
         shell: bash
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DDISABLE_OPENGL=ON
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2-build:0.2.4-android
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build OpenRCT2
+        shell: bash
+        run: . scripts/setenv && cd src/openrct2-android && ./gradlew app:assemblePR
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v1
+        with:
+          name: "OpenRCT2-Android"
+          path: src/openrct2-android/app/build/outputs/apk
