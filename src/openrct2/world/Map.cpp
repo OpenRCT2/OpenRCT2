@@ -168,7 +168,7 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
 {
     if (!map_is_location_valid(elementPos))
     {
-        log_error("Trying to access element outside of range");
+        log_verbose("Trying to access element outside of range");
         return nullptr;
     }
     auto tileElementPos = TileCoordsXY{ elementPos };
