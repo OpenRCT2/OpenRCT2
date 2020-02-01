@@ -52,7 +52,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScTile> getTile(int32_t x, int32_t y)
         {
-            auto firstElement = map_get_first_element_at(x, y);
+            auto firstElement = map_get_first_element_at({ x, y });
             return std::make_shared<ScTile>(firstElement);
         }
 

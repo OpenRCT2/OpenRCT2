@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include <array>
-#include <experimental/filesystem>
 #include <stdexcept>
 
 #ifdef _WIN32
@@ -22,9 +21,8 @@
 #endif
 
 #include "../core/String.hpp"
+#include "FileSystem.hpp"
 #include "FileWatcher.h"
-
-namespace fs = std::experimental::filesystem;
 
 #ifndef _WIN32
 FileWatcher::FileDescriptor::~FileDescriptor()

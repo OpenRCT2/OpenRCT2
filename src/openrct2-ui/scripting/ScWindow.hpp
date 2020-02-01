@@ -41,7 +41,7 @@ namespace OpenRCT2::Scripting
         void x_set(int32_t value)
         {
             auto w = GetWindow();
-            window_set_position(w, value, w->y);
+            window_set_position(w, { value, w->y });
         }
         int32_t y_get()
         {
@@ -50,7 +50,7 @@ namespace OpenRCT2::Scripting
         void y_set(int32_t value)
         {
             auto w = GetWindow();
-            window_set_position(w, w->x, value);
+            window_set_position(w, { w->x, value });
         }
         int32_t width_get()
         {

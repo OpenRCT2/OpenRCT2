@@ -237,7 +237,7 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = window_create(
-                desc.X.value(), desc.Y.value(), desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
+                { desc.X.value(), desc.Y.value() }, desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
         }
         else
         {
@@ -298,12 +298,12 @@ namespace OpenRCT2::Ui::Windows
         {
             if (w->width < w->min_width)
             {
-                window_invalidate(w);
+                w->Invalidate();
                 w->width = w->min_width;
             }
             if (w->height < w->min_height)
             {
-                window_invalidate(w);
+                w->Invalidate();
                 w->height = w->min_height;
             }
         }
