@@ -3671,6 +3671,7 @@ STR_6349    :Random title sequence
 STR_6350    :Scatter
 STR_6351    :{BLACK}Size
 STR_6352    :{BLACK}Amount
+STR_6353    :Scenery Scatter Tool
 
 #############
 # Scenarios #

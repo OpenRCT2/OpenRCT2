@@ -36,11 +36,11 @@ static rct_widget window_scenery_scatter_widgets[] = {
     { WWT_CAPTION,  0,  0,  57, 1,  14,  STR_SCENERY_SCATTER,                       STR_WINDOW_TITLE_TIP },        // title bar
     { WWT_CLOSEBOX, 0,  57, 68, 2,  13,  STR_CLOSE_X,                               STR_CLOSE_WINDOW_TIP },        // close x button
 
-    { WWT_IMGBTN,   0,  5, 48, 17, 48,   SPR_LAND_TOOL_SIZE_0,                      STR_NONE },                    // preview box
+    { WWT_IMGBTN,   1,  5, 48, 17, 48,   SPR_LAND_TOOL_SIZE_0,                      STR_NONE },                    // preview box
     { WWT_TRNBTN,   1,  6, 23, 18, 33,   IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_LAND_TIP }, // decrement size
     { WWT_TRNBTN,   1,  32, 49, 32, 47,  IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_LAND_TIP },  // increment size
 
-    { WWT_IMGBTN,   0,  5, 48, 65, 96,   0xFFFFFFFF,                                STR_NONE },                    // preview box
+    { WWT_IMGBTN,   1,  5, 48, 65, 96,   0xFFFFFFFF,                                STR_NONE },                    // preview box
     { WWT_TRNBTN,   1,  6, 23, 66, 81,   IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_LAND_TIP }, // decrement size amount
     { WWT_TRNBTN,   1,  32, 49, 80, 94,  IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_LAND_TIP },  // increment size amount
     { WIDGETS_END },
@@ -106,8 +106,6 @@ rct_window* window_scenery_scatter_open()
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_AINCREMENT) | (1 << WIDX_ADECREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
-
-    window->colours[2] = COLOUR_DARK_GREEN;
 
     return window;
 }
