@@ -225,9 +225,15 @@ jobs:
         uses: actions/checkout@v1
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv && cd src/openrct2-android && ./gradlew app:assemblePR
+        run: |
+          . scripts/setenv
+          pushd src/openrct2-android
+            ./gradlew app:assemblePR
+          popd
+          mkdir -p artifacts
+          mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2.apk
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v1
         with:
           name: "OpenRCT2-Android"
-          path: src/openrct2-android/app/build/outputs/apk
+          path: artifacts
