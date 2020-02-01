@@ -231,9 +231,18 @@ jobs:
             ./gradlew app:assemblePR
           popd
           mkdir -p artifacts
-          mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2.apk
+          mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2-arm.apk
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v1
         with:
           name: "OpenRCT2-Android"
           path: artifacts
+      - name: Upload artifacts (openrct2.org)
+        shell: bash
+        run: |
+          . scripts/setenv -q
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+              upload-build artifacts/openrct2-arm.apk android-arm $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+              echo 'Not going to push build'
+          fi
