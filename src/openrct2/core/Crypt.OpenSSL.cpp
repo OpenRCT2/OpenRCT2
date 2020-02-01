@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef DISABLE_NETWORK
+#if defined(DISABLE_NETWORK) && !defined(__USE_CNG__)
 
 #    include "Crypt.h"
 
