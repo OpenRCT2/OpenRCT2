@@ -356,11 +356,13 @@ void news_item_open_subject(int32_t type, int32_t subject)
             context_open_window(WC_FINANCES);
             break;
         case NEWS_ITEM_RESEARCH:
-            if (subject >= RESEARCH_ENTRY_RIDE_MASK)
+        {
+            auto item = ResearchItem(subject, 0);
+            if (item.type == RESEARCH_ENTRY_TYPE_RIDE)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
-                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, subject >> 8);
-                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, subject & 0xFF);
+                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
+                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
                 context_open_intent(&intent);
                 break;
             }
@@ -386,6 +388,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             if (window != nullptr)
                 window_event_mouse_down_call(window, WC_SCENERY__WIDX_SCENERY_TAB_1 + subject);
             break;
+        }
         case NEWS_ITEM_PEEPS:
         {
             auto intent = Intent(WC_GUEST_LIST);

@@ -1297,11 +1297,11 @@ static void editor_load_selected_objects()
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
                         uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                        research_insert(1, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex, rideEntry->category[0]);
+                        research_insert_ride_entry(rideType, entryIndex, rideEntry->category[0], true);
                     }
                     else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
                     {
-                        research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
+                        research_insert_scenery_group_entry(entryIndex, true);
                     }
                 }
             }

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Optional.hpp"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 
@@ -20,7 +21,7 @@ struct ResearchItem
     // Bit 16 (0: scenery entry, 1: ride entry)
     union
     {
-        int32_t rawValue;
+        uint32_t rawValue;
         struct
         {
             uint8_t entryIndex;
@@ -31,11 +32,18 @@ struct ResearchItem
     };
     uint8_t category;
 
-    bool IsInventedEndMarker() const;
+    bool IsNull() const;
     bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
     bool IsAlwaysResearched() const;
     rct_string_id GetName() const;
+
+    ResearchItem() = default;
+    constexpr ResearchItem(uint32_t _rawValue, int32_t _category)
+        : rawValue(_rawValue)
+        , category(_category)
+    {
+    }
 };
 
 enum
@@ -50,12 +58,8 @@ enum
     RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 6),
 };
 
-// Everything before this point has been researched
-#define RESEARCHED_ITEMS_SEPARATOR (-1)
-// Everything before this point and after separator still requires research
-#define RESEARCHED_ITEMS_END (-2)
-// Extra end of list entry. Leftover from RCT1.
-#define RESEARCHED_ITEMS_END_2 (-3)
+// Only used to mark as null nowadays. Deprecated. TODO: remove.
+#define RESEARCH_ITEM_NULL 0xFFFFFFFF
 
 #define MAX_RESEARCH_ITEMS 500
 #define MAX_RESEARCHED_TRACK_TYPES 128
@@ -99,8 +103,8 @@ extern uint16_t gResearchProgress;
 extern uint8_t gResearchProgressStage;
 extern uint8_t gResearchExpectedMonth;
 extern uint8_t gResearchExpectedDay;
-extern ResearchItem gResearchLastItem;
-extern ResearchItem gResearchNextItem;
+extern std::optional<ResearchItem> gResearchLastItem;
+extern std::optional<ResearchItem> gResearchNextItem;
 
 extern std::vector<ResearchItem> gResearchItemsUninvented;
 extern std::vector<ResearchItem> gResearchItemsInvented;
@@ -115,9 +119,10 @@ void research_populate_list_random();
 void research_populate_list_researched();
 
 void research_finish_item(ResearchItem* researchItem);
-void research_insert(int32_t researched, int32_t rawValue, uint8_t category);
+void research_insert(ResearchItem item, bool researched);
 void research_remove(ResearchItem* researchItem);
 
+bool research_insert_ride_entry(uint8_t rideType, uint8_t entryIndex, uint8_t category, bool researched);
 void research_insert_ride_entry(uint8_t entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
 

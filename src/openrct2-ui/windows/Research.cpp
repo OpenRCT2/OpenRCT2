@@ -280,7 +280,7 @@ static void window_research_development_mouseup(rct_window* w, rct_widgetindex w
             window_research_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_LAST_DEVELOPMENT_BUTTON:
-            news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItem.rawValue);
+            news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItem->rawValue);
             break;
     }
 }
@@ -312,9 +312,9 @@ static void window_research_development_invalidate(rct_window* w)
     window_research_set_pressed_tab(w);
 
     window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-    if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+    if (gResearchLastItem.has_value())
     {
-        uint8_t type = gResearchLastItem.type;
+        uint8_t type = gResearchLastItem->type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == RESEARCH_ENTRY_TYPE_RIDE
             ? SPR_NEW_RIDE
@@ -362,10 +362,10 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         stringId = STR_RESEARCH_UNKNOWN;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
-            stringId = ResearchCategoryNames[gResearchNextItem.category];
+            stringId = ResearchCategoryNames[gResearchNextItem->category];
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
-                stringId = gResearchNextItem.GetName();
+                stringId = gResearchNextItem->GetName();
             }
         }
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
@@ -397,10 +397,10 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
     rct_string_id lastDevelopmentFormat;
-    if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+    if (gResearchLastItem.has_value())
     {
-        stringId = gResearchLastItem.GetName();
-        uint8_t type = gResearchLastItem.type;
+        stringId = gResearchLastItem->GetName();
+        uint8_t type = gResearchLastItem->type;
         lastDevelopmentFormat = (type == RESEARCH_ENTRY_TYPE_RIDE) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
 
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
