@@ -10,9 +10,10 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Optional.hpp"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
+
+#include <optional>
 
 struct rct_ride_entry;
 

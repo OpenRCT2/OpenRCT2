@@ -10,9 +10,9 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Optional.hpp"
 
 #include <future>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -35,7 +35,7 @@ struct ServerListEntry
     int32_t CompareTo(const ServerListEntry& other) const;
     bool IsVersionValid() const;
 
-    static opt::optional<ServerListEntry> FromJson(const json_t* root);
+    static std::optional<ServerListEntry> FromJson(const json_t* root);
 };
 
 class ServerList

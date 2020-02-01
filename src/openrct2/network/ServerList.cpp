@@ -26,6 +26,7 @@
 
 #    include <algorithm>
 #    include <numeric>
+#    include <optional>
 
 using namespace OpenRCT2;
 
@@ -75,7 +76,7 @@ bool ServerListEntry::IsVersionValid() const
     return version.empty() || version == network_get_version();
 }
 
-opt::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
+std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
 {
     auto port = json_object_get(server, "port");
     auto name = json_object_get(server, "name");
