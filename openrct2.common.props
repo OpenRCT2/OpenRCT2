@@ -18,8 +18,8 @@
     <TargetName>$(ProjectName)</TargetName>
     <ShowAllFiles>true</ShowAllFiles>
 
-    <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static-winssl</VcpkgTriplet>
-    <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static-winssl</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static</VcpkgTriplet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -61,7 +61,7 @@
       <AdditionalOptions>/utf-8 /std:c++17 /permissive- /Zc:externConstexpr</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -76,7 +76,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;freetyped.lib;jansson_d.lib;libcurl.lib;libeay32.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;ssleay32.lib;zip.lib;zlibd.lib;libbreakpadd.lib;libbreakpad_clientd.lib;benchmarkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmarkd.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;freetyped.lib;jansson_d.lib;libcrypto.lib;libcurl-d.lib;libpng16d.lib;libspeexdsp.lib;libssl.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -94,7 +94,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>bz2.lib;discord-rpc.lib;freetype.lib;jansson.lib;libcurl.lib;libeay32.lib;libpng16.lib;libspeexdsp.lib;SDL2.lib;ssleay32.lib;zip.lib;zlib.lib;libbreakpad.lib;libbreakpad_client.lib;benchmark.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;libbreakpad.lib;libbreakpad_client.lib;bz2.lib;discord-rpc.lib;freetype.lib;jansson.lib;libcrypto.lib;libcurl.lib;libpng16.lib;libspeexdsp.lib;libssl.lib;SDL2.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 

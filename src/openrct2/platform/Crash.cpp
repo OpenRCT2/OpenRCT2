@@ -79,7 +79,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     }
 
     int timeout = 10000;
-    bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
+    bool success = google_breakpad::HTTPUpload::SendMultipartPostRequest(url, parameters, files, &timeout, &response, &error);
     wprintf(L"Success = %d, error = %d, response = %s\n", success, error, response.c_str());
     return success;
 }
