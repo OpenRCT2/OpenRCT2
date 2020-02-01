@@ -1,8 +1,6 @@
 language: c
 
 before_install:
-    # Android jobs are triggered from cron and overwrite `before_script` part
-    - if [[ "$OPENRCT2_ANDROID" == "true" ]] ; then echo before_install not needed for Android jobs ; exit 0 ; fi
     - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
       echo "This build will get pushed!" ; echo "tag = ${TRAVIS_TAG}" ; echo "branch = ${TRAVIS_BRANCH}" ;
       fi
@@ -53,62 +51,6 @@ matrix:
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
-        - os: linux
-          name: Android
-          if: type = cron OR branch = master OR branch =~ ^android
-          language: android
-          before_install: []
-          env:
-            - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
-            - OPENRCT2_ANDROID="true"
-          addons:
-            apt:
-              sources:
-                - ubuntu-toolchain-r-test
-              packages:
-              - libstdc++6-4.7-dev
-          android:
-            components:
-              - build-tools-25.0.2
-          jdk: oraclejdk8
-          before_script:
-            # Only run Android jobs when triggered from cron or on tag, otherwise skip
-            - if [[ "$OPENRCT2_ANDROID" != "true" ]] && [[ "z${TRAVIS_TAG}" == "z" ]] ; then exit 0 ; fi
-            - pushd ~
-            - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-            - unzip -qo sdk-tools-linux-3859397.zip
-            - rm -Rf "$ANDROID_HOME/tools"
-            - mv tools "$ANDROID_HOME/tools"
-            - popd
-            - 'echo "count=0" >  ~/.android/repositories.cfg'
-            - '"$ANDROID_HOME/tools/bin/sdkmanager" --list'
-            - 'echo y | "$ANDROID_HOME/tools/bin/sdkmanager" platform-tools'
-            - 'echo y | "$ANDROID_HOME/tools/bin/sdkmanager" "platforms;android-25"'
-            - 'echo y | "$ANDROID_HOME/tools/bin/sdkmanager" "cmake;3.6.4111459"'
-            - '"$ANDROID_HOME/tools/bin/sdkmanager" ndk-bundle'
-            - '"$ANDROID_HOME/tools/bin/sdkmanager" --list'
-            - 'export ANDROID_NDK_HOME="$ANDROID_HOME/ndk-bundle"'
-            - 'cd src/openrct2-android'
-            - TERM=dumb # Makes Gradle use 'boring' output
-          script:
-            # Only run Android jobs when triggered from cron or on tag, otherwise skip
-            - if [[ "$OPENRCT2_ANDROID" != "true" ]] && [[ "z${TRAVIS_TAG}" == "z" ]] ; then exit 0 ; fi
-            - './gradlew app:assemblePR'
-          after_success:
-            # Only run Android jobs when triggered from cron or on tag, otherwise skip
-            - if [[ "$OPENRCT2_ANDROID" != "true" ]] && [[ "z${TRAVIS_TAG}" == "z" ]] ; then exit 0 ; fi
-            - curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT --upload-file app/build/outputs/apk/arm/pr/app-arm-pr.apk https://transfer.sh/openrct2-android-arm.apk -o link && cat link && echo|| if [[ $? ]] ; then echo "Failed transfer.sh upload" ; fi;
-            - curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT --upload-file app/build/outputs/apk/x86/pr/app-x86-pr.apk https://transfer.sh/openrct2-android-x86.apk -o link && cat link && echo || if [[ $? ]] ; then echo "Failed transfer.sh upload" ; fi;
-            - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
-              export PUSH_BRANCH=master ;
-              else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
-              fi
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-android-arm.apk" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=11" --form "file=@app/build/outputs/apk/arm/pr/app-arm-pr.apk" "https://openrct2.org/altapi/?command=push-build";
-              fi
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -m $CURL_MAX_TIME --connect-timeout $CURL_CONNECT_TIMEOUT -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-android-x86.apk" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=12" --form "file=@app/build/outputs/apk/x86/pr/app-x86-pr.apk" "https://openrct2.org/altapi/?command=push-build";
-              fi
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux
@@ -127,8 +69,6 @@ matrix:
         #   env: OPENRCT2_CMAKE_OPTS="-DDISABLE_HTTP_TWITCH=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
 
 script:
-    # Android jobs are triggered from cron and overwrite `script` part
-    - if [[ "$OPENRCT2_ANDROID" == "true" ]] ; then exit 0 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
 
 notifications:
