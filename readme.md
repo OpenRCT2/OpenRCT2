@@ -84,13 +84,8 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- 7 / 8 / 10
-- Visual Studio 2017 update 7 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+- Visual Studio 2019 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
   - Desktop development with C++
-  - [Windows 10 SDK (10.0.14393.0)](https://go.microsoft.com/fwlink/p/?LinkId=838916)
-- [7-Zip](http://www.7-zip.org/) (for deployment only)
-- [NSIS](http://nsis.sourceforge.net/) (for deployment only)
-
 
 ### macOS:
 - Xcode 8
