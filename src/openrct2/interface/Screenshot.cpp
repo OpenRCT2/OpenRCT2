@@ -17,7 +17,6 @@
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/Imaging.h"
-#include "../core/Optional.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
@@ -33,6 +32,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <memory>
+#include <optional>
 #include <string>
 
 using namespace std::literals::string_literals;
@@ -135,7 +135,7 @@ static std::string screenshot_get_formatted_date_time()
     return formatted;
 }
 
-static opt::optional<std::string> screenshot_get_next_path()
+static std::optional<std::string> screenshot_get_next_path()
 {
     auto screenshotDirectory = screenshot_get_directory();
     if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
@@ -173,7 +173,7 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
     // Get a free screenshot path
     auto path = screenshot_get_next_path();
 
-    if (path == opt::nullopt)
+    if (path == std::nullopt)
     {
         return "";
     }
@@ -193,7 +193,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
 {
     auto path = screenshot_get_next_path();
 
-    if (path == opt::nullopt)
+    if (path == std::nullopt)
     {
         return "";
     }
@@ -398,7 +398,7 @@ void screenshot_giant()
     try
     {
         auto path = screenshot_get_next_path();
-        if (path == opt::nullopt)
+        if (path == std::nullopt)
         {
             throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
         }

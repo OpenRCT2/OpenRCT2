@@ -50,6 +50,7 @@
 #include <cstring>
 #include <functional>
 #include <iterator>
+#include <optional>
 
 S6Exporter::S6Exporter()
 {
@@ -457,7 +458,7 @@ void S6Exporter::ExportParkName()
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto stringId = AllocateUserString(park.Name);
-    if (stringId != opt::nullopt)
+    if (stringId != std::nullopt)
     {
         _s6.park_name = *stringId;
         _s6.park_name_args = 0;
@@ -517,7 +518,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     {
         // Custom name, allocate user string for ride
         auto stringId = AllocateUserString(src->custom_name);
-        if (stringId != opt::nullopt)
+        if (stringId != std::nullopt)
         {
             dst->name = *stringId;
             dst->name_arguments = 0;
@@ -1067,7 +1068,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     if (src->name != nullptr)
     {
         auto stringId = AllocateUserString(src->name);
-        if (stringId != opt::nullopt)
+        if (stringId != std::nullopt)
         {
             dst->name_string_idx = *stringId;
             generateName = false;
@@ -1338,7 +1339,7 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         }
 
         auto stringId = AllocateUserString(bannerText);
-        if (stringId != opt::nullopt)
+        if (stringId != std::nullopt)
         {
             dst.string_idx = *stringId;
         }
@@ -1551,7 +1552,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
     }
 }
 
-opt::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& value)
+std::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& value)
 {
     auto nextId = _userStrings.size();
     if (nextId < RCT12_MAX_USER_STRINGS)

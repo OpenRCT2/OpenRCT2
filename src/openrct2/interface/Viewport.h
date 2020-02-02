@@ -10,10 +10,10 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
-#include "../core/Optional.hpp"
 #include "../world/Location.hpp"
 #include "Window.h"
 
+#include <optional>
 #include <vector>
 
 struct paint_session;

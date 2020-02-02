@@ -25,7 +25,6 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Optional.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -70,6 +69,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <limits>
+#include <optional>
 
 using namespace OpenRCT2;
 
@@ -6594,9 +6594,9 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
     return supportedPieces;
 }
 
-static opt::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
+static std::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
 {
-    opt::optional<int32_t> result;
+    std::optional<int32_t> result;
     for (const auto& station : ride->stations)
     {
         if (!station.Start.isNull())

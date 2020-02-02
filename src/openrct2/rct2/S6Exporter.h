@@ -10,10 +10,10 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Optional.hpp"
 #include "../object/ObjectList.h"
 #include "../scenario/Scenario.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -72,6 +72,6 @@ private:
     void ExportTileElements();
     void ExportTileElement(RCT12TileElement* dst, TileElement* src);
 
-    opt::optional<uint16_t> AllocateUserString(const std::string_view& value);
+    std::optional<uint16_t> AllocateUserString(const std::string_view& value);
     void ExportUserStrings();
 };
