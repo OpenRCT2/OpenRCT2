@@ -103,7 +103,7 @@ bool NetworkGroups::Save()
     json_t* jsonGroupsCfg = json_object();
     json_t* jsonGroups = json_array();
 
-    auto groups = GetAll(true);
+    auto groups = GetUserGroups();
     for (auto* group : groups)
     {
         json_array_append_new(jsonGroups, group->ToJson());
@@ -144,17 +144,28 @@ NetworkGroup* NetworkGroups::GetByName(const std::string& name) const
     return nullptr;
 }
 
-std::vector<NetworkGroup*> NetworkGroups::GetAll(bool excludeHost) const
+std::vector<NetworkGroup*> NetworkGroups::GetAll() const
 {
     std::vector<NetworkGroup*> res;
     res.reserve(_groups.size());
-
     for (auto& group : _groups)
     {
         if (group != nullptr)
         {
-            if (excludeHost && group->Id == kGroupIdHost)
-                continue;
+            res.push_back(group.get());
+        }
+    }
+    return res;
+}
+
+std::vector<NetworkGroup*> NetworkGroups::GetUserGroups() const
+{
+    std::vector<NetworkGroup*> res;
+    res.reserve(_groups.size());
+    for (auto& group : _groups)
+    {
+        if (group != nullptr && group->Id != kGroupIdHost)
+        {
             res.push_back(group.get());
         }
     }
@@ -178,7 +189,7 @@ void NetworkGroups::Serialise(DataSerialiser& ds)
     uint8_t count = 0;
     if (ds.IsSaving())
     {
-        auto groups = GetAll(false);
+        auto groups = GetAll();
         count = static_cast<uint8_t>(groups.size());
         ds << count;
         for (auto& group : groups)

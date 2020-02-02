@@ -367,7 +367,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
     rct_widget* dropdownWidget = widget - 1;
 
     NetworkGroups* networkGroups = network_get_groups();
-    auto groups = networkGroups->GetAll(true);
+    auto groups = networkGroups->GetUserGroups();
 
     auto numItems = static_cast<int32_t>(groups.size());
 
@@ -812,7 +812,7 @@ static void window_multiplayer_groups_dropdown(rct_window* w, rct_widgetindex wi
     }
 
     NetworkGroups* networkGroups = network_get_groups();
-    auto groups = networkGroups->GetAll(true);
+    auto groups = networkGroups->GetUserGroups();
 
     switch (widgetIndex)
     {
@@ -910,7 +910,7 @@ static void window_multiplayer_groups_invalidate(rct_window* w)
     NetworkGroups* networkGroups = network_get_groups();
     Guard::Assert(networkGroups != nullptr);
 
-    auto groups = networkGroups->GetAll(true);
+    auto groups = networkGroups->GetUserGroups();
     while (_selectedGroupIndex > 0 && static_cast<size_t>(_selectedGroupIndex) >= groups.size())
         _selectedGroupIndex--;
 

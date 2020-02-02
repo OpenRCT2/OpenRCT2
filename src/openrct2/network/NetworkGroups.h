@@ -40,8 +40,14 @@ public:
     NetworkGroup* GetById(NetworkGroupId_t id) const;
     NetworkGroup* GetByName(const std::string& name) const;
 
-    std::vector<NetworkGroup*> GetAll(bool excludeHost) const;
+    // Total count of all groups.
     size_t GetCount() const;
+
+    // Gets all network groups including built-in groups.
+    std::vector<NetworkGroup*> GetAll() const;
+
+    // Gets all groups the user can interact with.
+    std::vector<NetworkGroup*> GetUserGroups() const;
 
     void Serialise(DataSerialiser& ds);
 
