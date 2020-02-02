@@ -10,9 +10,6 @@ echo -e "\033[0;36mBuilding OpenRCT2 repository indexes...\033[0m"
 ./openrct2 scan-objects
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
-    # Ensure test data uses LF
-    dos2unix testdata/keys/*
-
     # Now run all the tests
     echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
     ./tests --gtest_output=xml:../artifacts/test-results.xml

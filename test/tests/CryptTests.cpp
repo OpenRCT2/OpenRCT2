@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "TestData.h"
+#include "helpers/StringHelpers.hpp"
 
 #include <gtest/gtest.h>
 #include <openrct2/core/Crypt.h>
@@ -153,7 +154,7 @@ TEST_F(CryptTests, RSA_VerifyWithPublic)
 
 TEST_F(CryptTests, RSAKey_GetPublic)
 {
-    auto inPem = File::ReadAllText(GetTestPublicKeyPath());
+    auto inPem = NormaliseLineEndings(File::ReadAllText(GetTestPublicKeyPath()));
     auto publicKey = Crypt::CreateRSAKey();
     publicKey->SetPublic(inPem);
     auto outPem = publicKey->GetPublic();

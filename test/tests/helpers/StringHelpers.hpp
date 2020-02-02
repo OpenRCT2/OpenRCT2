@@ -24,3 +24,35 @@ inline std::string StringFromHex(const std::string_view& input)
     }
     return result;
 }
+
+inline std::string NormaliseLineEndings(const std::string_view& input)
+{
+    std::string result;
+    result.reserve(input.size());
+    auto ignoreNextNewLine = false;
+    for (auto c : input)
+    {
+        if (c == '\r')
+        {
+            ignoreNextNewLine = true;
+            result.push_back('\n');
+        }
+        else if (c == '\n')
+        {
+            if (ignoreNextNewLine)
+            {
+                ignoreNextNewLine = false;
+            }
+            else
+            {
+                result.push_back('\n');
+            }
+        }
+        else
+        {
+            ignoreNextNewLine = false;
+            result.push_back(c);
+        }
+    }
+    return result;
+}
