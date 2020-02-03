@@ -33,5 +33,5 @@ else
     if [[ "$TESTPAINT" == "true" ]]; then
         testpaint_target=testpaint
     fi
-    ninja -v $testpaint_target all install
+    ninja -k0 $testpaint_target all install
 fi
