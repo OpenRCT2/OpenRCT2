@@ -79,17 +79,17 @@ bool ServerListEntry::IsVersionValid() const
 std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
 {
     auto port = json_object_get(server, "port");
-    auto name = json_object_get(server, "name");
-    auto description = json_object_get(server, "description");
-    auto requiresPassword = json_object_get(server, "requiresPassword");
-    auto version = json_object_get(server, "version");
-    auto players = json_object_get(server, "players");
-    auto maxPlayers = json_object_get(server, "maxPlayers");
+    auto _name = json_object_get(server, "name");
+    auto _description = json_object_get(server, "description");
+    auto _requiresPassword = json_object_get(server, "requiresPassword");
+    auto _version = json_object_get(server, "version");
+    auto _players = json_object_get(server, "players");
+    auto _maxPlayers = json_object_get(server, "maxPlayers");
     auto ip = json_object_get(server, "ip");
     auto ip4 = json_object_get(ip, "v4");
     auto addressIp = json_array_get(ip4, 0);
 
-    if (name == nullptr || version == nullptr)
+    if (_name == nullptr || _version == nullptr)
     {
         log_verbose("Cowardly refusing to add server without name or version specified.");
         return std::nullopt;
@@ -99,12 +99,12 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
         ServerListEntry entry;
         entry.address = String::StdFormat(
             "%s:%d", json_string_value(addressIp), static_cast<int32_t>(json_integer_value(port)));
-        entry.name = (name == nullptr ? "" : json_string_value(name));
-        entry.description = (description == nullptr ? "" : json_string_value(description));
-        entry.version = json_string_value(version);
-        entry.requiresPassword = json_is_true(requiresPassword);
-        entry.players = static_cast<uint8_t>(json_integer_value(players));
-        entry.maxplayers = static_cast<uint8_t>(json_integer_value(maxPlayers));
+        entry.name = (_name == nullptr ? "" : json_string_value(_name));
+        entry.description = (_description == nullptr ? "" : json_string_value(_description));
+        entry.version = json_string_value(_version);
+        entry.requiresPassword = json_is_true(_requiresPassword);
+        entry.players = static_cast<uint8_t>(json_integer_value(_players));
+        entry.maxplayers = static_cast<uint8_t>(json_integer_value(_maxPlayers));
         return entry;
     }
 }
