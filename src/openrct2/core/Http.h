@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,9 @@
 #    include <functional>
 #    include <map>
 #    include <string>
+#    include <thread>
 
-namespace OpenRCT2::Networking::Http
+namespace Http
 {
     enum class Status
     {
@@ -50,24 +51,25 @@ namespace OpenRCT2::Networking::Http
         bool forceIPv4 = false;
     };
 
-    struct Http
-    {
-        Http();
-        ~Http();
-    };
-
     Response Do(const Request& req);
-    void DoAsync(const Request& req, std::function<void(Response& res)> fn);
 
-    /**
-     * Download a park via HTTP/S from the given URL into a memory buffer. This is
-     * a blocking operation.
-     * @param url The URL to download the park from.
-     * @param outData The data returned.
-     * @returns The size of the data or 0 if the download failed.
-     */
-    size_t DownloadPark(const char* url, void** outData);
-
-} // namespace OpenRCT2::Networking::Http
+    inline void DoAsync(const Request& req, std::function<void(Response& res)> fn)
+    {
+        auto thread = std::thread([=]() {
+            Response res;
+            try
+            {
+                res = Do(req);
+            }
+            catch (std::exception& e)
+            {
+                res.error = e.what();
+                return;
+            }
+            fn(res);
+        });
+        thread.detach();
+    }
+} // namespace Http
 
 #endif // DISABLE_HTTP

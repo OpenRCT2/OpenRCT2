@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,17 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Http.h"
-
-#include <cstring>
-#include <memory>
-#include <stdexcept>
-#include <thread>
-
-#ifndef DISABLE_HTTP
+#if !defined(DISABLE_HTTP) && !defined(_WIN32)
 
 #    include "../Version.h"
 #    include "../core/Console.hpp"
+#    include "Http.h"
+
+#    include <cstring>
+#    include <memory>
+#    include <stdexcept>
+#    include <thread>
 
 #    ifdef _WIN32
 // cURL includes windows.h, but we don't need all of it.
@@ -27,18 +26,8 @@
 
 #    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
-namespace OpenRCT2::Networking::Http
+namespace Http
 {
-    Http::Http()
-    {
-        curl_global_init(CURL_GLOBAL_DEFAULT);
-    }
-
-    Http::~Http()
-    {
-        curl_global_cleanup();
-    }
-
     static size_t writeData(const char* src, size_t size, size_t nmemb, void* userdata)
     {
         size_t realsize = size * nmemb;
@@ -168,59 +157,6 @@ namespace OpenRCT2::Networking::Http
         return res;
     }
 
-    void DoAsync(const Request& req, std::function<void(Response& res)> fn)
-    {
-        auto thread = std::thread([=]() {
-            Response res;
-            try
-            {
-                res = Do(req);
-            }
-            catch (std::exception& e)
-            {
-                res.error = e.what();
-                return;
-            }
-            fn(res);
-        });
-        thread.detach();
-    }
-
-    size_t DownloadPark(const char* url, void** outData)
-    {
-        // Download park to buffer in memory
-        Request request;
-        request.url = url;
-        request.method = Method::GET;
-
-        Response res;
-        try
-        {
-            res = Do(request);
-            if (res.status != Status::OK)
-                std::runtime_error("bad http status");
-        }
-        catch (std::exception& e)
-        {
-            Console::Error::WriteLine("Failed to download '%s', cause %s", request.url.c_str(), e.what());
-            *outData = nullptr;
-            return 0;
-        }
-
-        size_t dataSize = res.body.size() - 1;
-        void* data = malloc(dataSize);
-        if (data == nullptr)
-        {
-            Console::Error::WriteLine("Failed to allocate memory for downloaded park.");
-            return 0;
-        }
-
-        std::memcpy(data, res.body.c_str(), dataSize);
-        *outData = data;
-
-        return dataSize;
-    }
-
-} // namespace OpenRCT2::Networking::Http
+} // namespace Http
 
 #endif

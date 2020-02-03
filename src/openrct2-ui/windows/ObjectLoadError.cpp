@@ -11,10 +11,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/Http.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
@@ -151,7 +151,6 @@ private:
 
     void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string url)
     {
-        using namespace OpenRCT2::Networking;
         try
         {
             std::printf("Downloading %s\n", url.c_str());
@@ -190,8 +189,6 @@ private:
 
     void NextDownload()
     {
-        using namespace OpenRCT2::Networking;
-
         if (!_downloadingObjects || _currentDownloadIndex >= _entries.size())
         {
             // Finished...

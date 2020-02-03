@@ -50,19 +50,18 @@ if (NOT DISABLE_NETWORK AND WIN32)
 endif ()
 
 if (NOT DISABLE_HTTP)
-    if (MSVC)
-        find_package(curl REQUIRED)
-        set(LIBCURL_LIBRARIES ${CURL_LIBRARIES})
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} winhttp)
     else ()
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-    endif ()
-        
-    target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCURL_INCLUDE_DIRS})
-        
-    if (STATIC)
-        target_link_libraries(${PROJECT_NAME} ${LIBCURL_STATIC_LIBRARIES})
-    else ()
-        target_link_libraries(${PROJECT_NAME} ${LIBCURL_LIBRARIES})
+
+        target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCURL_INCLUDE_DIRS})
+
+        if (STATIC)
+            target_link_libraries(${PROJECT_NAME} ${LIBCURL_STATIC_LIBRARIES})
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${LIBCURL_LIBRARIES})
+        endif ()
     endif ()
 endif ()
 
