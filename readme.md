@@ -117,7 +117,7 @@ The program can also be built as a command line program using CMake. This type o
 ## 3.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new Developer Command Prompt for VS 2017, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
+2. Open a new Developer Command Prompt for VS 2019, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
 3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
 
    To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.
