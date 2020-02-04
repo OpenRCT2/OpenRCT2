@@ -46,19 +46,17 @@ namespace Http
         }
     }
 
-    static std::wstring ReadHeader(HINTERNET hRequest, DWORD infoLevel, const wchar_t* name)
-    {
-        wchar_t headerBuffer[256]{};
-        auto headerBufferLen = (DWORD)std::size(headerBuffer);
-        if (!WinHttpQueryHeaders(hRequest, infoLevel, name, headerBuffer, &headerBufferLen, WINHTTP_NO_HEADER_INDEX))
-            ThrowWin32Exception("WinHttpQueryHeaders");
-        return std::wstring(headerBuffer, headerBufferLen);
-    }
-
     static int32_t ReadStatusCode(HINTERNET hRequest)
     {
-        auto wStatusCode = ReadHeader(hRequest, WINHTTP_QUERY_STATUS_CODE, L"StatusCode");
-        return std::stoi(wStatusCode);
+        wchar_t headerBuffer[32]{};
+        auto headerBufferLen = (DWORD)std::size(headerBuffer);
+        if (!WinHttpQueryHeaders(
+                hRequest, WINHTTP_QUERY_STATUS_CODE, L"StatusCode", headerBuffer, &headerBufferLen, WINHTTP_NO_HEADER_INDEX))
+        {
+            ThrowWin32Exception("WinHttpQueryHeaders");
+        }
+        auto statusCode = std::stoi(headerBuffer);
+        return statusCode < 0 || statusCode > 999 ? 0 : statusCode;
     }
 
     static std::map<std::string, std::string> ReadHeaders(HINTERNET hRequest)
@@ -150,8 +148,7 @@ namespace Http
         HINTERNET hSession{}, hConnect{}, hRequest{};
         try
         {
-            URL_COMPONENTS url;
-            ZeroMemory(&url, sizeof(url));
+            URL_COMPONENTS url{};
             url.dwStructSize = sizeof(url);
             url.dwSchemeLength = (DWORD)-1;
             url.dwHostNameLength = (DWORD)-1;
@@ -196,15 +193,22 @@ namespace Http
                 ThrowWin32Exception("WinHttpReceiveResponse");
 
             auto statusCode = ReadStatusCode(hRequest);
-            auto contentType = ReadHeader(hRequest, WINHTTP_QUERY_CONTENT_TYPE, L"Content-Type");
             auto headers = ReadHeaders(hRequest);
             auto body = ReadBody(hRequest);
 
             Response response;
             response.body = std::move(body);
             response.status = (Status)statusCode;
-            response.content_type = String::ToUtf8(contentType);
-            response.header = headers;
+            auto it = headers.find("Content-Type");
+            if (it != headers.end())
+            {
+                response.content_type = it->second;
+            }
+            response.header = std::move(headers);
+
+            WinHttpCloseHandle(hSession);
+            WinHttpCloseHandle(hConnect);
+            WinHttpCloseHandle(hRequest);
             return response;
         }
         catch ([[maybe_unused]] const std::exception& e)
