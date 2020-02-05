@@ -25,19 +25,23 @@ if (NOT MINGW)
 endif()
 
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
-    if (APPLE)
-        # Needed for linking with non-broken OpenSSL on Apple platforms
-        set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
-    endif ()
-        
-    find_package(OpenSSL 1.0.0 REQUIRED)
-        
-    target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR})
-        
-    if(STATIC)
-        target_link_libraries(${PROJECT_NAME} ${SSL_STATIC_LIBRARIES})
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
-        target_link_libraries(${PROJECT_NAME} ${OPENSSL_LIBRARIES})
+        if (APPLE)
+            # Needed for linking with non-broken OpenSSL on Apple platforms
+            set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
+        endif ()
+
+        find_package(OpenSSL 1.0.0 REQUIRED)
+
+        target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR})
+
+        if(STATIC)
+            target_link_libraries(${PROJECT_NAME} ${SSL_STATIC_LIBRARIES})
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${OPENSSL_LIBRARIES})
+        endif()
     endif()
 endif ()
 
