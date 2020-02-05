@@ -498,10 +498,10 @@ public:
     }
 
 private:
-    static constexpr std::string_view SZ_PUBLIC_BEGIN_TOKEN = "-----BEGIN RSA PUBLIC KEY-----";
-    static constexpr std::string_view SZ_PUBLIC_END_TOKEN = "-----END RSA PUBLIC KEY-----";
-    static constexpr std::string_view SZ_PRIVATE_BEGIN_TOKEN = "-----BEGIN RSA PRIVATE KEY-----";
-    static constexpr std::string_view SZ_PRIVATE_END_TOKEN = "-----END RSA PRIVATE KEY-----";
+    static constexpr const char* SZ_PUBLIC_BEGIN_TOKEN = "-----BEGIN RSA PUBLIC KEY-----";
+    static constexpr const char* SZ_PUBLIC_END_TOKEN = "-----END RSA PUBLIC KEY-----";
+    static constexpr const char* SZ_PRIVATE_BEGIN_TOKEN = "-----BEGIN RSA PRIVATE KEY-----";
+    static constexpr const char* SZ_PRIVATE_END_TOKEN = "-----END RSA PRIVATE KEY-----";
 
     BCRYPT_KEY_HANDLE _hKey{};
     BCRYPT_KEY_HANDLE _hAlg{};
