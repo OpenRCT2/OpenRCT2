@@ -25,7 +25,6 @@
 #include <windows.h>
 #include <wincrypt.h>
 #include <bcrypt.h>
-#include <ncrypt.h>
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 // clang-format on
 
@@ -617,12 +616,12 @@ public:
         {
             BCRYPT_PKCS1_PADDING_INFO paddingInfo{ BCRYPT_SHA256_ALGORITHM };
             auto status = BCryptSignHash(hKey, &paddingInfo, pbHash, cbHash, NULL, 0, &cbSignature, BCRYPT_PAD_PKCS1);
-            CngThrowOnBadStatus("NCryptSignHash", status);
+            CngThrowOnBadStatus("BCryptSignHash", status);
             pbSignature = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbSignature);
             ThrowBadAllocOnNull(pbSignature);
             status = BCryptSignHash(
                 hKey, &paddingInfo, pbHash, cbHash, pbSignature, cbSignature, &cbSignature, BCRYPT_PAD_PKCS1);
-            CngThrowOnBadStatus("NCryptSignHash", status);
+            CngThrowOnBadStatus("BCryptSignHash", status);
 
             auto result = std::vector<uint8_t>(pbSignature, pbSignature + cbSignature);
             HeapFree(GetProcessHeap(), 0, pbSignature);
