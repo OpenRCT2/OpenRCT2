@@ -230,17 +230,17 @@ public:
         auto len = ReadLength(_stream);
         auto result = Read<uint8_t>(_stream, len);
 
-        auto v = result[0];
-        auto neg = (v > 127);
-        auto pad = neg ? 255 : 0;
-        for (size_t i = 0; i < result.size(); i++)
-        {
-            if (result[i] != pad)
-            {
-                result.erase(result.begin(), result.begin() + i);
-                break;
-            }
-        }
+        // auto v = result[0];
+        // auto neg = (v > 127);
+        // auto pad = neg ? 255 : 0;
+        // for (size_t i = 0; i < result.size(); i++)
+        // {
+        //     if (result[i] != pad)
+        //     {
+        //         result.erase(result.begin(), result.begin() + i);
+        //         break;
+        //     }
+        // }
         return result;
     }
 };
@@ -260,6 +260,7 @@ public:
 
     void WriteInteger(const std::vector<uint8_t>& data)
     {
+        _buffer.push_back(0x02);
         if (data.size() < 128)
         {
             _buffer.push_back((uint8_t)data.size());
@@ -293,6 +294,10 @@ private:
         std::vector<uint8_t> Exponent;
         std::vector<uint8_t> Prime1;
         std::vector<uint8_t> Prime2;
+        std::vector<uint8_t> Exponent1;
+        std::vector<uint8_t> Exponent2;
+        std::vector<uint8_t> Coefficient;
+        std::vector<uint8_t> PrivateExponent;
     };
 
 public:
@@ -331,7 +336,26 @@ public:
 
     std::string GetPrivate() override
     {
-        return "";
+        auto params = ExportKey(false);
+        DerWriter derWriter;
+        derWriter.WriteSequenceHeader();
+        derWriter.WriteInteger({});
+        derWriter.WriteInteger(params.Modulus);
+        derWriter.WriteInteger(params.Exponent);
+        derWriter.WriteInteger(params.PrivateExponent);
+        derWriter.WriteInteger(params.Prime1);
+        derWriter.WriteInteger(params.Prime2);
+        derWriter.WriteInteger(params.Exponent1);
+        derWriter.WriteInteger(params.Exponent2);
+        derWriter.WriteInteger(params.Coefficient);
+        auto derBytes = derWriter.Complete();
+        auto b64 = EncodeBase64(derBytes);
+
+        std::ostringstream sb;
+        sb << std::string(SZ_PRIVATE_BEGIN_TOKEN) << std::endl;
+        sb << b64;
+        sb << std::string(SZ_PRIVATE_END_TOKEN) << std::endl;
+        return sb.str();
     }
 
     std::string GetPublic() override
@@ -346,7 +370,7 @@ public:
 
         std::ostringstream sb;
         sb << std::string(SZ_PUBLIC_BEGIN_TOKEN) << std::endl;
-        sb << b64 << std::endl;
+        sb << b64;
         sb << std::string(SZ_PUBLIC_END_TOKEN) << std::endl;
         return sb.str();
     }
@@ -386,7 +410,7 @@ private:
                 break;
             }
         }
-        for (size_t i = input.size() - 1; i >= 0; i--)
+        for (size_t i = input.size() - 1; i > 0; i--)
         {
             if (input[i] >= '!')
             {
@@ -399,16 +423,21 @@ private:
 
     static std::string EncodeBase64(const std::vector<uint8_t>& input)
     {
-        DWORD chString;
-        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, NULL, &chString))
+        DWORD flags = CRYPT_STRING_BASE64 | CRYPT_STRING_NOCR;
+        DWORD chString{};
+        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), flags, NULL, &chString))
         {
             throw std::runtime_error("CryptBinaryToStringA failed");
         }
         std::string result(chString, 0);
-        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, result.data(), &chString))
+        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), flags, result.data(), &chString))
         {
             throw std::runtime_error("CryptBinaryToStringA failed");
         }
+
+        // CryptBinaryToStringA returns length that includes null terminator
+        result.resize(result.size() - 1);
+
         return result;
     }
 
@@ -478,15 +507,33 @@ private:
         catch (const std::exception&)
         {
             NCryptFreeObject(hProv);
+            throw;
         }
 
+        size_t offset{};
         RsaKeyParams params;
         const auto& header = *((BCRYPT_RSAKEY_BLOB*)output.data());
-        size_t i = sizeof(BCRYPT_RSAKEY_BLOB);
-        params.Modulus.insert(params.Modulus.end(), output.begin() + i, output.begin() + i + header.cbModulus);
-        i += header.cbModulus;
-        params.Exponent.insert(params.Exponent.end(), output.begin() + i, output.begin() + i + header.cbPublicExp);
+        ReadBytes(output, offset, sizeof(BCRYPT_RSAKEY_BLOB));
+        params.Exponent = ReadBytes(output, offset, header.cbPublicExp);
+        params.Modulus = ReadBytes(output, offset, header.cbModulus);
+        params.Prime1 = ReadBytes(output, offset, header.cbPrime1);
+        params.Prime2 = ReadBytes(output, offset, header.cbPrime2);
+        if (!onlyPublic)
+        {
+            params.Exponent1 = ReadBytes(output, offset, header.cbPrime1);
+            params.Exponent2 = ReadBytes(output, offset, header.cbPrime2);
+            params.Coefficient = ReadBytes(output, offset, header.cbPrime1);
+            params.PrivateExponent = ReadBytes(output, offset, header.cbModulus);
+        }
         return params;
+    }
+
+    static std::vector<uint8_t> ReadBytes(std::vector<uint8_t>& src, size_t& offset, size_t length)
+    {
+        std::vector<uint8_t> result;
+        result.insert(result.end(), src.begin() + offset, src.begin() + offset + length);
+        offset += length;
+        return result;
     }
 };
 
