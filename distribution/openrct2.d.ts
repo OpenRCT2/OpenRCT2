@@ -180,12 +180,15 @@ export type ThingType =
     "car" | "duck" | "peep";
 
 export interface Thing {
-    type: ThingType;
+    readonly type: ThingType;
     x: number;
     y: number;
     z: number;
 
-    // Peep
+    asPeep(): Thing | null;
+}
+
+export interface Peep extends Thing {
     tshirt: number;
     trousers: number;
 }
