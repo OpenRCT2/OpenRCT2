@@ -39,6 +39,16 @@ export interface Context {
     configuration: Configuration;
 
     /**
+     * Shared generic storage for all plugins.
+     */
+    sharedStorage: Configuration;
+
+    /**
+     * Local generic storage for a each plugin.
+     */
+    localStorage: Configuration;
+
+    /**
      * Registers a new intent (command) that can be mapped to a shortcut.
      */
     registerIntent(desc: IntentDesc);
