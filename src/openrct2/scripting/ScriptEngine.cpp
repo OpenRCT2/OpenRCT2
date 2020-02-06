@@ -86,16 +86,19 @@ void ScriptEngine::LoadPlugins()
     while (scanner->Next())
     {
         auto path = std::string(scanner->GetPath());
-        try
+        if (ShouldLoadScript(path))
         {
-            auto plugin = std::make_shared<Plugin>(_context, path);
-            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
-            plugin->Load();
-            _plugins.push_back(std::move(plugin));
-        }
-        catch (const std::exception& e)
-        {
-            _console.WriteLineError(e.what());
+            try
+            {
+                auto plugin = std::make_shared<Plugin>(_context, path);
+                ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+                plugin->Load();
+                _plugins.push_back(std::move(plugin));
+            }
+            catch (const std::exception& e)
+            {
+                _console.WriteLineError(e.what());
+            }
         }
     }
 
@@ -112,6 +115,12 @@ void ScriptEngine::LoadPlugins()
     {
         std::printf("Unable to enable hot reloading of plugins: %s\n", e.what());
     }
+}
+
+bool ScriptEngine::ShouldLoadScript(const std::string& path)
+{
+    // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
+    return path.find("/node_modules/") == std::string::npos && path.find("\\node_modules\\") == std::string::npos;
 }
 
 void ScriptEngine::AutoReloadPlugins()

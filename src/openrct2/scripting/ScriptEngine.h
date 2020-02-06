@@ -127,6 +127,7 @@ namespace OpenRCT2::Scripting
         void Initialise();
         void LoadPlugins();
         void StartPlugins();
+        bool ShouldLoadScript(const std::string& path);
         void AutoReloadPlugins();
     };
 } // namespace OpenRCT2::Scripting
