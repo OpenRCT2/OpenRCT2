@@ -78,6 +78,15 @@ void HookEngine::UnsubscribeAll(std::shared_ptr<const Plugin> owner)
     }
 }
 
+void HookEngine::UnsubscribeAll()
+{
+    for (auto& hookList : _hookMap)
+    {
+        auto& hooks = hookList.Hooks;
+        hooks.clear();
+    }
+}
+
 void HookEngine::Call(HOOK_TYPE type)
 {
     auto& hookList = GetHookList(type);

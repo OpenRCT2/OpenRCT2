@@ -15,6 +15,17 @@
 //   /// <reference path="/path/to/openrct2.d.ts" />
 //
 
+export type PluginType = "server" | "client" | "server_client";
+
+export interface PluginMetadata {
+    name: string;
+    version: string;
+    authors: string | string[];
+    type: PluginType;
+    minApiVersion: number;
+    main: () => void;
+}
+
 export interface Console {
     clear(): void;
     log(message?: any, ...optionalParams: any[]): void;

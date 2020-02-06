@@ -79,6 +79,7 @@ namespace OpenRCT2::Scripting
         uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function);
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
         void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
+        void UnsubscribeAll();
         void Call(HOOK_TYPE type);
         void Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args);
 

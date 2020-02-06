@@ -74,7 +74,7 @@ namespace OpenRCT2::Scripting
     public:
         DukContext();
         DukContext(DukContext&) = delete;
-        DukContext(DukContext&& src)
+        DukContext(DukContext&& src) noexcept
             : _context(std::move(src._context))
         {
         }
@@ -93,6 +93,8 @@ namespace OpenRCT2::Scripting
         IPlatformEnvironment& _env;
         DukContext _context;
         bool _initialised{};
+        bool _pluginsLoaded{};
+        bool _pluginsStarted{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
         std::vector<std::shared_ptr<Plugin>> _plugins;
         uint32_t _lastHotReloadCheckTick{};
@@ -120,14 +122,19 @@ namespace OpenRCT2::Scripting
             return _execInfo;
         }
 
+        void LoadPlugins();
+        void UnloadPlugins();
         void Update();
         std::future<void> Eval(const std::string& s);
 
+        void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message);
+
     private:
         void Initialise();
-        void LoadPlugins();
         void StartPlugins();
+        void StopPlugins();
         bool ShouldLoadScript(const std::string& path);
         void AutoReloadPlugins();
+        void ProcessREPL();
     };
 } // namespace OpenRCT2::Scripting

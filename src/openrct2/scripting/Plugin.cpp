@@ -74,10 +74,24 @@ void Plugin::Start()
         throw std::runtime_error("[" + _metadata.Name + "] " + val);
     }
     duk_pop(_context);
+
+    _hasStarted = true;
+}
+
+void Plugin::Stop()
+{
+    _hasStarted = false;
 }
 
 void Plugin::Update()
 {
+}
+
+static std::string TryGetString(const DukValue& value, const std::string& message)
+{
+    if (value.type() != DukValue::Type::STRING)
+        throw std::runtime_error(message);
+    return value.as_string();
 }
 
 PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
@@ -85,8 +99,15 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
     PluginMetadata metadata;
     if (dukMetadata.type() == DukValue::Type::OBJECT)
     {
-        metadata.Name = dukMetadata["name"].as_string();
-        metadata.Version = dukMetadata["version"].as_string();
+        metadata.Name = TryGetString(dukMetadata["name"], "Plugin name not specified.");
+        metadata.Version = TryGetString(dukMetadata["version"], "Plugin version not specified.");
+        metadata.Type = ParsePluginType(TryGetString(dukMetadata["type"], "Plugin type not specified."));
+
+        auto dukMinApiVersion = dukMetadata["minApiVersion"];
+        if (dukMinApiVersion.type() == DukValue::Type::NUMBER)
+        {
+            metadata.MinApiVersion = dukMinApiVersion.as_int();
+        }
 
         auto dukAuthors = dukMetadata["authors"];
         dukAuthors.push();
@@ -97,11 +118,22 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
                 return v.as_string();
             });
         }
-        else
+        else if (dukAuthors.type() == DukValue::Type::STRING)
         {
             metadata.Authors = { dukAuthors.as_string() };
         }
         metadata.Main = dukMetadata["main"];
     }
     return metadata;
+}
+
+PluginType Plugin::ParsePluginType(const std::string_view& type)
+{
+    if (type == "server")
+        return PluginType::Server;
+    if (type == "client")
+        return PluginType::Server;
+    if (type == "server_client")
+        return PluginType::Server;
+    throw std::invalid_argument("Unknown plugin type.");
 }

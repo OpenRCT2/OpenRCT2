@@ -46,6 +46,7 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
+#include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
@@ -587,6 +588,13 @@ void game_load_init()
 
     audio_stop_title_music();
     gGameSpeed = 1;
+
+    GetContext()->GetScriptEngine().LoadPlugins();
+}
+
+void game_finish()
+{
+    GetContext()->GetScriptEngine().UnloadPlugins();
 }
 
 /**
@@ -801,6 +809,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
 {
     if (result == MODAL_RESULT_OK)
     {
+        game_finish();
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
     }
@@ -843,10 +852,12 @@ void game_load_or_quit_no_save_prompt()
             }
             gGameSpeed = 1;
             gFirstTimeSaving = true;
+            game_finish();
             title_load();
             break;
         }
         default:
+            game_finish();
             openrct2_finish();
             break;
     }

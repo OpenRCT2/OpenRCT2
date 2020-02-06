@@ -32,6 +32,8 @@ using namespace OpenRCT2::Scripting;
 
 static std::string Stringify(duk_context* ctx, duk_idx_t idx);
 
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 1;
+
 DukContext::DukContext()
 {
     _context = duk_create_heap_default();
@@ -74,8 +76,9 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
 
-    LoadPlugins();
-    StartPlugins();
+    _initialised = true;
+    _pluginsLoaded = false;
+    _pluginsStarted = false;
 }
 
 void ScriptEngine::LoadPlugins()
@@ -93,7 +96,17 @@ void ScriptEngine::LoadPlugins()
                 auto plugin = std::make_shared<Plugin>(_context, path);
                 ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
                 plugin->Load();
-                _plugins.push_back(std::move(plugin));
+
+                auto metadata = plugin->GetMetadata();
+                if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+                {
+                    LogPluginInfo(plugin, "Loaded");
+                    _plugins.push_back(std::move(plugin));
+                }
+                else
+                {
+                    LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
+                }
             }
             catch (const std::exception& e)
             {
@@ -115,6 +128,8 @@ void ScriptEngine::LoadPlugins()
     {
         std::printf("Unable to enable hot reloading of plugins: %s\n", e.what());
     }
+
+    _pluginsLoaded = true;
 }
 
 bool ScriptEngine::ShouldLoadScript(const std::string& path)
@@ -142,6 +157,7 @@ void ScriptEngine::AutoReloadPlugins()
 
                     ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
                     plugin->Load();
+                    LogPluginInfo(plugin, "Reloaded");
                     plugin->Start();
                 }
                 catch (const std::exception& e)
@@ -154,20 +170,57 @@ void ScriptEngine::AutoReloadPlugins()
     }
 }
 
+void ScriptEngine::UnloadPlugins()
+{
+    StopPlugins();
+    for (auto& plugin : _plugins)
+    {
+        LogPluginInfo(plugin, "Unloaded");
+    }
+    _plugins.clear();
+    _pluginsLoaded = false;
+    _pluginsStarted = false;
+}
+
 void ScriptEngine::StartPlugins()
 {
     for (auto& plugin : _plugins)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
-        try
+        if (!plugin->HasStarted())
         {
-            plugin->Start();
-        }
-        catch (const std::exception& e)
-        {
-            _console.WriteLineError(e.what());
+            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+            try
+            {
+                plugin->Start();
+            }
+            catch (const std::exception& e)
+            {
+                _console.WriteLineError(e.what());
+            }
         }
     }
+    _pluginsStarted = true;
+}
+
+void ScriptEngine::StopPlugins()
+{
+    _hookEngine.UnsubscribeAll();
+    for (auto& plugin : _plugins)
+    {
+        if (plugin->HasStarted())
+        {
+            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+            try
+            {
+                plugin->Stop();
+            }
+            catch (const std::exception& e)
+            {
+                _console.WriteLineError(e.what());
+            }
+        }
+    }
+    _pluginsStarted = false;
 }
 
 void ScriptEngine::Update()
@@ -175,8 +228,30 @@ void ScriptEngine::Update()
     if (!_initialised)
     {
         Initialise();
-        _initialised = true;
     }
+
+    if (_pluginsLoaded)
+    {
+        if (!_pluginsStarted)
+        {
+            StartPlugins();
+        }
+        else
+        {
+            auto tick = Platform::GetTicks();
+            if (tick - _lastHotReloadCheckTick > 1000)
+            {
+                AutoReloadPlugins();
+                _lastHotReloadCheckTick = tick;
+            }
+        }
+    }
+
+    ProcessREPL();
+}
+
+void ScriptEngine::ProcessREPL()
+{
     while (_evalQueue.size() > 0)
     {
         auto item = std::move(_evalQueue.front());
@@ -197,13 +272,6 @@ void ScriptEngine::Update()
         // Signal the promise so caller can continue
         promise.set_value();
     }
-
-    auto tick = Platform::GetTicks();
-    if (tick - _lastHotReloadCheckTick > 1000)
-    {
-        AutoReloadPlugins();
-        _lastHotReloadCheckTick = tick;
-    }
 }
 
 std::future<void> ScriptEngine::Eval(const std::string& s)
@@ -212,6 +280,12 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
     auto future = barrier.get_future();
     _evalQueue.emplace(std::move(barrier), s);
     return future;
+}
+
+void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message)
+{
+    const auto& pluginName = plugin->GetMetadata().Name;
+    _console.WriteLine("[" + pluginName + "] " + std::string(message));
 }
 
 static std::string Stringify(duk_context* ctx, duk_idx_t idx)
