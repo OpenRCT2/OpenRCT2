@@ -60,6 +60,9 @@
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
 		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
 		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
+		4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BF07623EDD145002D1F7F /* ParkFile.cpp */; };
+		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
+		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
 		4CA39E522513F8A00094066B /* RTL.FriBidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
@@ -1062,6 +1065,8 @@
 		4C8BB68025533D64005C8830 /* StringBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuilder.h; sourceTree = "<group>"; };
 		4C8BB68325533DB9005C8830 /* ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomLevel.h; sourceTree = "<group>"; };
 		4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZoomLevel.cpp; sourceTree = "<group>"; };
+		4C8BF07523EDD108002D1F7F /* OrcaStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OrcaStream.hpp; sourceTree = "<group>"; };
+		4C8BF07623EDD145002D1F7F /* ParkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkFile.cpp; sourceTree = "<group>"; };
 		4C9196ED204FF3E000869A24 /* Location.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Location.hpp; sourceTree = "<group>"; };
 		4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicObject.cpp; sourceTree = "<group>"; };
 		4C91FD5E25AE476700CA5DA4 /* MusicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicObject.h; sourceTree = "<group>"; };
@@ -2367,6 +2372,7 @@
 				4CC4B8EB1FE00C5D00660D62 /* Intro.h */,
 				F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */,
 				F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */,
+				4C8BF07623EDD145002D1F7F /* ParkFile.cpp */,
 				F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */,
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
@@ -2474,6 +2480,7 @@
 				2ADE2F24224418B2002598AF /* Meta.hpp */,
 				F76C838E1EC4E7CC00FA49E2 /* Nullable.hpp */,
 				2ADE2F23224418B1002598AF /* Numerics.hpp */,
+				4C8BF07523EDD108002D1F7F /* OrcaStream.hpp */,
 				F76C838F1EC4E7CC00FA49E2 /* Path.cpp */,
 				F76C83901EC4E7CC00FA49E2 /* Path.hpp */,
 				2ADE2F21224418B1002598AF /* Random.hpp */,
@@ -3735,6 +3742,8 @@
 				4C2BF6C4258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp in Sources */,
 				930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
+				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
+				4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
 				4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */,
 				C68878C020289B710084B384 /* ApplyPaletteShader.cpp in Sources */,
