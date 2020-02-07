@@ -587,7 +587,7 @@ private:
             return false;
         }
 
-        direction = trackElement->GetDirection();
+        direction = (trackElement->GetDirection() + TrackCoordinates[trackType].rotation_end) & TILE_ELEMENT_DIRECTION_MASK;
         if (direction != _edge)
         {
             return false;
