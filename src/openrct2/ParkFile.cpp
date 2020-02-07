@@ -22,6 +22,7 @@
 #include "management/Award.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
+#include "peep/Staff.h"
 #include "object/Object.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -578,10 +579,8 @@ namespace OpenRCT2
                     // Special
                     cs.ReadWrite(ride.boat_hire_return_direction);
                     cs.ReadWrite(ride.boat_hire_return_position);
-                    cs.ReadWrite(ride.chairlift_bullwheel_location[0]);
-                    cs.ReadWrite(ride.chairlift_bullwheel_z[0]);
-                    cs.ReadWrite(ride.chairlift_bullwheel_location[1]);
-                    cs.ReadWrite(ride.chairlift_bullwheel_z[1]);
+                    cs.ReadWrite(ride.ChairliftBullwheelLocation[0]);
+                    cs.ReadWrite(ride.ChairliftBullwheelLocation[1]);
                     cs.ReadWrite(ride.chairlift_bullwheel_rotation);
                     cs.ReadWrite(ride.slide_in_use);
                     cs.ReadWrite(ride.slide_peep);
@@ -589,9 +588,7 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.spiral_slide_progress);
                     cs.ReadWrite(ride.race_winner);
                     cs.ReadWrite(ride.cable_lift);
-                    cs.ReadWrite(ride.cable_lift_x);
-                    cs.ReadWrite(ride.cable_lift_y);
-                    cs.ReadWrite(ride.cable_lift_z);
+                    cs.ReadWrite(ride.CableLiftLoc);
 
                     // Stats
                     if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -629,7 +626,7 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.previous_lateral_g);
 
                     cs.ReadWrite(ride.testing_flags);
-                    cs.ReadWrite(ride.cur_test_track_location);
+                    cs.ReadWrite(ride.CurTestTrackLocation);
 
                     cs.ReadWrite(ride.turn_count_default);
                     cs.ReadWrite(ride.turn_count_banked);
@@ -642,7 +639,6 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.sheltered_length);
                     cs.ReadWrite(ride.var_11C);
                     cs.ReadWrite(ride.num_sheltered_sections);
-                    cs.ReadWrite(ride.cur_test_track_z);
                     cs.ReadWrite(ride.current_test_station);
                     cs.ReadWrite(ride.num_block_brakes);
                     cs.ReadWrite(ride.total_air_time);
