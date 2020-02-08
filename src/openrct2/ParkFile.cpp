@@ -7,12 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Cheats.h"
 #include "Context.h"
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "Version.h"
 #include "core/Crypt.h"
+#include "core/DataSerialiser.h"
 #include "core/OrcaStream.hpp"
 #include "drawing/Drawing.h"
 #include "interface/Viewport.h"
@@ -73,6 +75,7 @@ namespace OpenRCT2
         constexpr uint32_t BANNERS          = 0x33;
         constexpr uint32_t ANIMATIONS       = 0x34;
         constexpr uint32_t STAFF            = 0x35;
+        constexpr uint32_t CHEATS           = 0x36;
 
         constexpr uint32_t DERIVED          = 0x50;
         // clang-format on
@@ -108,6 +111,7 @@ namespace OpenRCT2
             ReadWriteResearchChunk(os);
             ReadWriteNotificationsChunk(os);
             ReadWriteInterfaceChunk(os);
+            ReadWriteCheatsChunk(os);
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
@@ -139,6 +143,7 @@ namespace OpenRCT2
             ReadWriteResearchChunk(os);
             ReadWriteNotificationsChunk(os);
             ReadWriteInterfaceChunk(os);
+            ReadWriteCheatsChunk(os);
         }
 
     private:
@@ -291,6 +296,14 @@ namespace OpenRCT2
                 cs.ReadWrite(gSavedViewZoom);
                 cs.ReadWrite(gSavedViewRotation);
                 cs.ReadWriteAs<uint8_t, uint32_t>(gLastEntranceStyle);
+            });
+        }
+
+        void ReadWriteCheatsChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::CHEATS, [](OrcaStream::ChunkStream& cs) {
+                DataSerialiser ds(cs.GetMode() == OrcaStream::Mode::WRITING, cs.GetStream());
+                CheatsSerialise(ds);
             });
         }
 
