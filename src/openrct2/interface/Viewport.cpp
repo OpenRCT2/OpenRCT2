@@ -656,9 +656,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     {
         viewport_update_smart_vehicle_follow(window);
     }
-    else if (
-        sprite->sprite_identifier == SPRITE_IDENTIFIER_MISC
-        || sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+    else if (sprite->sprite_identifier == SPRITE_IDENTIFIER_MISC || sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
     {
         window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
         window->viewport_target_sprite = window->viewport_smart_follow_sprite;

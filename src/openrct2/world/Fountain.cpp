@@ -82,7 +82,8 @@ const uint8_t _fountainPatternFlags[] = {
 
 template<> bool SpriteBase::Is<JumpingFountain>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC
+        && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
 }
 
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)

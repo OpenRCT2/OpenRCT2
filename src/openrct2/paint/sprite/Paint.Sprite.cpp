@@ -49,8 +49,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
     const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (auto* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL;
-         sprite_idx = spr->next_in_quadrant)
+    for (auto* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->next_in_quadrant)
     {
         spr = get_sprite(sprite_idx);
 
@@ -92,8 +91,8 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
         dpi = &session->DPI;
 
-        if (dpi->y + dpi->height <= spr->sprite_top || spr->sprite_bottom <= dpi->y
-            || dpi->x + dpi->width <= spr->sprite_left || spr->sprite_right <= dpi->x)
+        if (dpi->y + dpi->height <= spr->sprite_top || spr->sprite_bottom <= dpi->y || dpi->x + dpi->width <= spr->sprite_left
+            || spr->sprite_right <= dpi->x)
         {
             continue;
         }

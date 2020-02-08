@@ -269,8 +269,7 @@ rct_sprite_checksum sprite_checksum()
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
             auto sprite = get_sprite(i);
-            if (sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL
-                && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
+            if (sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
                 // We need the full size of the sprite not just the base
                 // so reinterpret the cast up to the full size.
