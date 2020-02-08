@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Crypt.h"
+#include "MemoryStream.h"
 
 #include <algorithm>
 #include <array>
@@ -58,7 +59,7 @@ namespace OpenRCT2
         Mode _mode;
         Header _header;
         std::vector<ChunkEntry> _chunks;
-        std::stringstream _buffer;
+        MemoryStream _buffer;
         ChunkEntry _currentChunk;
 
     public:
@@ -79,8 +80,7 @@ namespace OpenRCT2
                     _chunks.push_back(entry);
                 }
 
-                _buffer = std::stringstream(std::ios::in | std::ios::out | std::ios::binary);
-                _buffer.clear();
+                _buffer = MemoryStream{};
 
                 char temp[2048];
                 size_t read = 0;
@@ -88,7 +88,7 @@ namespace OpenRCT2
                 {
                     fs.read(temp, sizeof(temp));
                     read = fs.gcount();
-                    _buffer.write(temp, read);
+                    _buffer.Write(temp, read);
                 } while (read != 0);
             }
             else
@@ -96,7 +96,7 @@ namespace OpenRCT2
                 _header = {};
                 _header.Compression = COMPRESSION_NONE;
 
-                _buffer = std::stringstream(std::ios::out | std::ios::binary);
+                _buffer = MemoryStream{};
             }
         }
 
@@ -110,11 +110,12 @@ namespace OpenRCT2
             else
             {
                 // TODO avoid copying the buffer
-                auto uncompressedData = _buffer.str();
+                const void* uncompressedData = _buffer.GetData();
+                const uint64_t uncompressedSize = _buffer.GetLength();
 
                 _header.NumChunks = (uint32_t)_chunks.size();
-                _header.UncompressedSize = _buffer.tellp();
-                _header.Sha1 = Crypt::SHA1(uncompressedData.data(), uncompressedData.size());
+                _header.UncompressedSize = uncompressedSize;
+                _header.Sha1 = Crypt::SHA1(uncompressedData, uncompressedSize);
 
                 std::ofstream fs(_path.c_str(), std::ios::binary);
 
@@ -127,7 +128,7 @@ namespace OpenRCT2
                 }
 
                 // Write chunk data
-                fs.write(uncompressedData.data(), uncompressedData.size());
+                fs.write((const char*)uncompressedData, uncompressedSize);
             }
         }
 
@@ -164,11 +165,11 @@ namespace OpenRCT2
             else
             {
                 _currentChunk.Id = chunkId;
-                _currentChunk.Offset = _buffer.tellp();
+                _currentChunk.Offset = _buffer.GetPosition();
                 _currentChunk.Length = 0;
                 ChunkStream stream(_buffer, _mode);
                 f(stream);
-                _currentChunk.Length = (uint64_t)_buffer.tellp() - _currentChunk.Offset;
+                _currentChunk.Length = (uint64_t)_buffer.GetPosition() - _currentChunk.Offset;
                 _chunks.push_back(_currentChunk);
                 return true;
             }
@@ -181,7 +182,7 @@ namespace OpenRCT2
             if (result != _chunks.end())
             {
                 auto offset = result->Offset;
-                _buffer.seekg(offset);
+                _buffer.SetPosition(offset);
                 return true;
             }
             return false;
@@ -199,12 +200,12 @@ namespace OpenRCT2
                 size_t ElementSize{};
             };
 
-            std::stringstream& _buffer;
+            MemoryStream& _buffer;
             Mode _mode;
             std::stack<ArrayState> _arrayStack;
 
         public:
-            ChunkStream(std::stringstream& buffer, Mode mode)
+            ChunkStream(MemoryStream& buffer, Mode mode)
                 : _buffer(buffer)
                 , _mode(mode)
             {
@@ -213,6 +214,11 @@ namespace OpenRCT2
             Mode GetMode() const
             {
                 return _mode;
+            }
+
+            MemoryStream& GetStream()
+            {
+                return _buffer;
             }
 
             void ReadWrite(void* addr, size_t len)
@@ -361,12 +367,12 @@ namespace OpenRCT2
         private:
             void ReadBuffer(void* dst, size_t len)
             {
-                _buffer.read((char*)dst, len);
+                _buffer.Read(dst, len);
             }
 
             void WriteBuffer(const void* buffer, size_t len)
             {
-                _buffer.write((char*)buffer, len);
+                _buffer.Write(buffer, len);
             }
 
             std::string ReadString()
@@ -395,8 +401,8 @@ namespace OpenRCT2
                 {
                     len = s.size();
                 }
-                _buffer.write(s.data(), len);
-                _buffer.write(&nullt, sizeof(nullt));
+                _buffer.Write(s.data(), len);
+                _buffer.Write(&nullt, sizeof(nullt));
             }
 
             size_t BeginArray()
@@ -406,17 +412,17 @@ namespace OpenRCT2
                 {
                     arrayState.Count = Read<uint32_t>();
                     arrayState.ElementSize = Read<uint32_t>();
-                    arrayState.LastPos = _buffer.tellg();
+                    arrayState.LastPos = _buffer.GetPosition();
                     return arrayState.Count;
                 }
                 else
                 {
                     arrayState.Count = 0;
                     arrayState.ElementSize = 0;
-                    arrayState.StartPos = _buffer.tellp();
+                    arrayState.StartPos = _buffer.GetPosition();
                     Write<uint32_t>(0);
                     Write<uint32_t>(0);
-                    arrayState.LastPos = _buffer.tellp();
+                    arrayState.LastPos = _buffer.GetPosition();
                     return 0;
                 }
             }
@@ -433,14 +439,14 @@ namespace OpenRCT2
                     if (arrayState.ElementSize != 0)
                     {
                         arrayState.LastPos += arrayState.ElementSize;
-                        _buffer.seekg(arrayState.LastPos);
+                        _buffer.SetPosition(arrayState.LastPos);
                     }
                     arrayState.Count--;
                     return arrayState.Count == 0;
                 }
                 else
                 {
-                    auto lastElSize = (size_t)_buffer.tellp() - arrayState.LastPos;
+                    auto lastElSize = (size_t)_buffer.GetPosition() - arrayState.LastPos;
                     if (arrayState.Count == 0)
                     {
                         // Set array element size based on first element size
@@ -453,7 +459,7 @@ namespace OpenRCT2
                         arrayState.ElementSize = 0;
                     }
                     arrayState.Count++;
-                    arrayState.LastPos = _buffer.tellp();
+                    arrayState.LastPos = _buffer.GetPosition();
                     return true;
                 }
             }
@@ -466,15 +472,15 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    auto backupPos = _buffer.tellp();
+                    auto backupPos = _buffer.GetPosition();
                     if ((size_t)backupPos != (size_t)arrayState.StartPos + 8 && arrayState.Count == 0)
                     {
                         throw std::runtime_error("Array data was written but no elements were added.");
                     }
-                    _buffer.seekp(arrayState.StartPos);
+                    _buffer.SetPosition(arrayState.StartPos);
                     Write((uint32_t)arrayState.Count);
                     Write((uint32_t)arrayState.ElementSize);
-                    _buffer.seekp(backupPos);
+                    _buffer.SetPosition(backupPos);
                 }
                 _arrayStack.pop();
             }
