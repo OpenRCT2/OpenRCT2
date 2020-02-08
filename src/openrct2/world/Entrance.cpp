@@ -216,13 +216,12 @@ void fix_park_entrance_locations(void)
 
 uint8_t EntranceElement::GetStationIndex() const
 {
-    return (index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return StationIndex;
 }
 
-void EntranceElement::SetStationIndex(uint8_t stationIndex)
+void EntranceElement::SetStationIndex(uint8_t newStationIndex)
 {
-    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    index |= (stationIndex << 4);
+    StationIndex = newStationIndex;
 }
 
 uint8_t EntranceElement::GetEntranceType() const
@@ -235,25 +234,25 @@ void EntranceElement::SetEntranceType(uint8_t newType)
     entranceType = newType;
 }
 
-ride_id_t EntranceElement::GetRideIndex() const
+ride_idnew_t EntranceElement::GetRideIndex() const
 {
     return rideIndex;
 }
 
-void EntranceElement::SetRideIndex(ride_id_t newRideIndex)
+void EntranceElement::SetRideIndex(ride_idnew_t newRideIndex)
 {
     rideIndex = newRideIndex;
 }
 
 uint8_t EntranceElement::GetSequenceIndex() const
 {
-    return index & 0xF;
+    return SequenceIndex & 0xF;
 }
 
 void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    index &= ~0xF;
-    index |= (newSequenceIndex & 0xF);
+    SequenceIndex &= ~0xF;
+    SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
 uint8_t EntranceElement::GetPathType() const

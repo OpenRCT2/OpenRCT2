@@ -465,24 +465,25 @@ assert_struct_size(WallElement, 16);
 struct EntranceElement : TileElementBase
 {
 private:
-    uint8_t entranceType; // 4
-    uint8_t index;        // 5. 0bUSSS????, S = station index.
-    uint8_t pathType;     // 6
-    ride_id_t rideIndex;  // 7
+    uint8_t entranceType;   // 4
+    uint8_t SequenceIndex;  // 5. Only uses the lower nibble.
+    uint8_t StationIndex;   // 6
+    uint8_t pathType;       // 7
+    ride_idnew_t rideIndex; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_0A[6];
 #pragma clang diagnostic pop
 
 public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    ride_idnew_t GetRideIndex() const;
+    void SetRideIndex(ride_idnew_t newRideIndex);
 
     uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t stationIndex);
+    void SetStationIndex(uint8_t newStationIndex);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
