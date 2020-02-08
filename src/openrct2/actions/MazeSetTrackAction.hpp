@@ -233,8 +233,7 @@ public:
 
             if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                auto tileStartLoc = TileCoordsXY{ startLoc };
-                ride->overall_view = tileStartLoc;
+                ride->overall_view = startLoc;
             }
         }
 

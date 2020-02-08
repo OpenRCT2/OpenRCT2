@@ -88,8 +88,7 @@ public:
 
         if (!location.isNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
-                { location.x * 32, location.y * 32 }, _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = GameActions::QueryNested(&rideEntranceExitRemove);
@@ -155,8 +154,7 @@ public:
                                       : ride_get_entrance_location(ride, _stationNum);
         if (!location.isNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
-                { location.x * 32, location.y * 32 }, _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = GameActions::ExecuteNested(&rideEntranceExitRemove);

@@ -203,9 +203,8 @@ public:
         auto res = std::make_unique<GameActionResult>();
         if (!ride->overall_view.isNull())
         {
-            res->Position.x = ride->overall_view.x * 32 + 16;
-            res->Position.y = ride->overall_view.y * 32 + 16;
-            res->Position.z = tile_element_height(res->Position);
+            auto location = ride->overall_view.ToTileCentre();
+            res->Position = { location, tile_element_height(res->Position) };
         }
 
         auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
