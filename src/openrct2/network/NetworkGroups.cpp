@@ -226,7 +226,7 @@ void NetworkGroups::CreateDefaultGroups()
 
     // Admin group
     {
-        NetworkGroup* group = Create("Admin", true, false);
+        NetworkGroup* group = Create("Admin");
         group->ActionsAllowed.fill(0xFF);
     }
 
