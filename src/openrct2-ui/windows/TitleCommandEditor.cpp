@@ -657,12 +657,12 @@ static void window_title_command_editor_tool_down(
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_MISC)
         {
-            if (info.sprite->IsBalloon())
+            if (info.sprite->generic.Is<Balloon>())
             {
                 validSprite = true;
                 format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
             }
-            else if (info.sprite->IsDuck())
+            else if (info.sprite->generic.Is<Duck>())
             {
                 validSprite = true;
                 format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);

@@ -23,22 +23,6 @@ template<> bool SpriteBase::Is<MoneyEffect>() const
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_MONEY_EFFECT;
 }
 
-bool rct_sprite::IsMoneyEffect()
-{
-    return this->money_effect.sprite_identifier == SPRITE_IDENTIFIER_MISC
-        && this->money_effect.type == SPRITE_MISC_MONEY_EFFECT;
-}
-
-MoneyEffect* rct_sprite::AsMoneyEffect()
-{
-    MoneyEffect* result = nullptr;
-    if (IsMoneyEffect())
-    {
-        result = reinterpret_cast<MoneyEffect*>(this);
-    }
-    return result;
-}
-
 /**
  *
  *  rct2: 0x0067351F
