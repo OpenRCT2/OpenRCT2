@@ -143,10 +143,10 @@ rct_ride_entry* Ride::GetRideEntry() const
     return rideEntry;
 }
 
-rct_sprite* get_sprite(size_t sprite_idx)
+SpriteBase* get_sprite(size_t sprite_idx)
 {
     assert(sprite_idx < MAX_SPRITES);
-    return &sprite_list[sprite_idx];
+    return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
 }
 
 bool TileElementBase::IsLastForTile() const
