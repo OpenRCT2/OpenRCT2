@@ -42,7 +42,7 @@ struct Vehicle;
 #define DOWNTIME_HISTORY_SIZE 8
 #define CUSTOMER_HISTORY_SIZE 10
 #define MAX_CARS_PER_TRAIN 255
-#define MAX_STATIONS 4
+#define MAX_STATIONS 8 // Increase to 254 once the tile elements can handle it
 #define MAX_RIDES 255
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5

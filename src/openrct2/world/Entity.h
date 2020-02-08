@@ -11,7 +11,7 @@
 
 #include "SpriteBase.h"
 
-constexpr uint16_t MAX_ENTITIES = 10000;
+constexpr uint16_t MAX_ENTITIES = 65535;
 
 SpriteBase* try_get_sprite(size_t spriteIndex);
 SpriteBase* get_sprite(size_t sprite_idx);
