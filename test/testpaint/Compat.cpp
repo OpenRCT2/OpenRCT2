@@ -149,6 +149,16 @@ SpriteBase* get_sprite(size_t sprite_idx)
     return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
 }
 
+template<> bool SpriteBase::Is<Peep>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+}
+
+template<> bool SpriteBase::Is<Vehicle>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+}
+
 bool TileElementBase::IsLastForTile() const
 {
     return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
