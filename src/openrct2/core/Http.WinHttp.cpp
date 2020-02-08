@@ -74,13 +74,18 @@ namespace Http
 
         std::map<std::string, std::string> headers;
         std::wstring wKey, wValue;
-        int state = 0;
-        int index = 0;
+
+        constexpr int32_t STATE_EXPECT_KEY = 0;
+        constexpr int32_t STATE_EXPECT_WHITESPACE_VALUE = 1;
+        constexpr int32_t STATE_EXPECT_VALUE = 2;
+        int32_t state = STATE_EXPECT_KEY;
+        int32_t index = 0;
         for (auto c : buffer)
         {
             if (c == '\0')
             {
-                state = 0;
+                // Ignore first header as that is the HTTP version which
+                // we don't really count as a header.
                 if (index != 0 && wKey.size() != 0)
                 {
                     auto key = String::ToUtf8(wKey);
@@ -90,23 +95,24 @@ namespace Http
                 wKey.clear();
                 wValue.clear();
                 index++;
+                state = STATE_EXPECT_KEY;
                 continue;
             }
-            if (state == 0 && c == ':')
+            if (state == STATE_EXPECT_KEY && c == ':')
             {
-                state = 1;
+                state = STATE_EXPECT_WHITESPACE_VALUE;
             }
             else if (state == 1 && c == ' ')
             {
-                state = 2;
+                state = STATE_EXPECT_VALUE;
             }
-            else if (state == 0)
+            else if (state == STATE_EXPECT_KEY)
             {
                 wKey.push_back(c);
             }
             else
             {
-                state = 2;
+                state = STATE_EXPECT_VALUE;
                 wValue.push_back(c);
             }
         }
@@ -115,31 +121,32 @@ namespace Http
 
     static std::string ReadBody(HINTERNET hRequest)
     {
-        DWORD dwSize{};
         std::string body;
+        DWORD dwRealSize{};
+        DWORD dwDownloaded{};
         do
         {
             // Check for available data.
-            if (!WinHttpQueryDataAvailable(hRequest, &dwSize))
+            DWORD dwSizeToRead{};
+            if (!WinHttpQueryDataAvailable(hRequest, &dwSizeToRead))
                 ThrowWin32Exception("WinHttpQueryDataAvailable");
 
-            // No more available data.
-            if (dwSize == 0)
-                break;
+            // Apparently some servers may report no bytes left to
+            // download incorrectly, so still attempt to read...
+            if (dwSizeToRead == 0)
+                dwSizeToRead = 4096;
 
-            auto offset = body.size();
-            body.resize(offset + dwSize);
-            auto dst = (LPVOID)&body[offset];
+            body.resize(dwRealSize + dwSizeToRead);
+            auto dst = (LPVOID)&body[dwRealSize];
 
-            DWORD dwDownloaded{};
-            if (!WinHttpReadData(hRequest, dst, dwSize, &dwDownloaded))
+            dwDownloaded = 0;
+            if (!WinHttpReadData(hRequest, dst, dwSizeToRead, &dwDownloaded))
                 ThrowWin32Exception("WinHttpReadData");
 
-            // This condition should never be reached since WinHttpQueryDataAvailable
-            // reported that there are bits to read.
-            if (dwDownloaded == 0)
-                break;
-        } while (dwSize > 0);
+            dwRealSize += dwDownloaded;
+        } while (dwDownloaded > 0);
+        body.resize(dwRealSize);
+        body.shrink_to_fit();
         return body;
     }
 
