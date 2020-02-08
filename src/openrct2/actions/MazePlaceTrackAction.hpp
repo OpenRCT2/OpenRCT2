@@ -193,8 +193,7 @@ public:
 
         if (ride->maze_tiles == 1)
         {
-            auto tileStartLoc = TileCoordsXY{ startLoc };
-            ride->overall_view = tileStartLoc;
+            ride->overall_view = startLoc;
         }
 
         return res;

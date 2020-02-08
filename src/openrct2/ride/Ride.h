@@ -227,7 +227,7 @@ struct Ride
     uint8_t status;
     std::string custom_name;
     uint16_t default_name_number;
-    TileCoordsXY overall_view;
+    CoordsXY overall_view;
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;

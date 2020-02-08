@@ -237,11 +237,10 @@ uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
         if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        auto location = ride.overall_view;
-        if (location.isNull())
+        auto rideCoords = ride.overall_view;
+        if (rideCoords.isNull())
             continue;
 
-        auto rideCoords = location.ToCoordsXY();
         int32_t distance = abs(mapPos.x - rideCoords.x) + abs(mapPos.y - rideCoords.y);
         if (distance < resultDistance)
         {

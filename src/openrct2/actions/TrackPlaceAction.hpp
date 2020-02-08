@@ -580,8 +580,7 @@ public:
 
             if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.isNull())
             {
-                ride->overall_view.x = mapLoc.x / 32;
-                ride->overall_view.y = mapLoc.y / 32;
+                ride->overall_view = mapLoc;
             }
 
             auto tileElement = tile_element_insert(

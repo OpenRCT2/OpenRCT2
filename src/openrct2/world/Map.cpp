@@ -416,14 +416,14 @@ int16_t tile_element_height(const CoordsXY& loc)
 {
     // Off the map
     if (!map_is_location_valid(loc))
-        return 16;
+        return 2 * COORDS_Z_STEP;
 
     // Get the surface element for the tile
     auto surfaceElement = map_get_surface_element_at(loc);
 
     if (surfaceElement == nullptr)
     {
-        return 16;
+        return 2 * COORDS_Z_STEP;
     }
 
     uint16_t height = surfaceElement->GetBaseZ();
@@ -525,7 +525,7 @@ int16_t tile_element_height(const CoordsXY& loc)
             return height;
         }
         // This tile is essentially at the next height level
-        height += 0x10;
+        height += LAND_HEIGHT_STEP;
         // so we move *down* the slope
         if (quad < 0)
         {

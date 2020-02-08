@@ -529,7 +529,8 @@ public:
         }
         else
         {
-            dst->overall_view = { src->overall_view.x, src->overall_view.y };
+            auto tileLoc = TileCoordsXY(src->overall_view.x, src->overall_view.y);
+            dst->overall_view = tileLoc.ToCoordsXY();
         }
 
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)

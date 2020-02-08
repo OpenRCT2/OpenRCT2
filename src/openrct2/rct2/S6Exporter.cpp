@@ -542,7 +542,8 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     }
     else
     {
-        dst->overall_view = { static_cast<uint8_t>(src->overall_view.x), static_cast<uint8_t>(src->overall_view.y) };
+        auto tileLoc = TileCoordsXY(src->overall_view);
+        dst->overall_view = { static_cast<uint8_t>(tileLoc.x), static_cast<uint8_t>(tileLoc.y) };
     }
 
     for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)

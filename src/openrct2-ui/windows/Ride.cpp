@@ -1912,11 +1912,10 @@ static void window_ride_init_viewport(rct_window* w)
             }
         } while (count >= 0);
 
-        auto location = ride->stations[stationIndex].Start;
-
-        focus.coordinate.x = location.x * 32;
-        focus.coordinate.y = location.y * 32;
-        focus.coordinate.z = ride->stations[stationIndex].GetBaseZ();
+        auto location = ride->stations[stationIndex].GetStart();
+        focus.coordinate.x = location.x;
+        focus.coordinate.y = location.y;
+        focus.coordinate.z = location.z;
         focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
     else

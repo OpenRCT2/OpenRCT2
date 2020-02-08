@@ -720,12 +720,11 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
             auto ride = get_ride(peep->current_ride);
             if (ride != nullptr)
             {
-                auto x = (int32_t)ride->overall_view.x * 32 + 16;
-                auto y = (int32_t)ride->overall_view.y * 32 + 16;
+                auto xy = ride->overall_view.ToTileCentre();
                 focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
-                focus.coordinate.x = x;
-                focus.coordinate.y = y;
-                focus.coordinate.z = tile_element_height({ x, y }) + 32;
+                focus.coordinate.x = xy.x;
+                focus.coordinate.y = xy.y;
+                focus.coordinate.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
                 focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
             }
         }

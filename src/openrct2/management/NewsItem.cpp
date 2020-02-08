@@ -222,8 +222,8 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
                 *x = LOCATION_NULL;
                 break;
             }
-            *x = ride->overall_view.x * 32 + 16;
-            *y = ride->overall_view.y * 32 + 16;
+            *x = ride->overall_view.x + 16;
+            *y = ride->overall_view.y + 16;
             *z = tile_element_height({ *x, *y });
             break;
         case NEWS_ITEM_PEEP_ON_RIDE:

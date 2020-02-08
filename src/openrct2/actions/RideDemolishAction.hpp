@@ -241,11 +241,8 @@ private:
 
         if (!ride->overall_view.isNull())
         {
-            int32_t x = (ride->overall_view.x * 32) + 16;
-            int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height({ x, y });
-
-            res->Position = { x, y, z };
+            auto xy = ride->overall_view.ToTileCentre();
+            res->Position = { xy, tile_element_height(xy) };
         }
 
         ride->Delete();
@@ -369,11 +366,8 @@ private:
 
         if (!ride->overall_view.isNull())
         {
-            int32_t x = (ride->overall_view.x * 32) + 16;
-            int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height({ x, y });
-
-            res->Position = { x, y, z };
+            auto location = ride->overall_view.ToTileCentre();
+            res->Position = { location, tile_element_height(location) };
         }
 
         window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
