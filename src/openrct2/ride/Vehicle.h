@@ -573,6 +573,6 @@ extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;
 
 /** Helper macro until rides are stored in this module. */
-#define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)
+#define GET_VEHICLE(sprite_index) (get_sprite(sprite_index)->As<Vehicle>())
 
 #endif

@@ -51,22 +51,22 @@ static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 
-template<> bool SpriteBase::Is<Litter>()
+template<> bool SpriteBase::Is<Litter>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_LITTER;
 }
 
-template<> bool SpriteBase::Is<SteamParticle>()
+template<> bool SpriteBase::Is<SteamParticle>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_STEAM_PARTICLE;
 }
 
-template<> bool SpriteBase::Is<ExplosionFlare>()
+template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_FLARE;
 }
 
-template<> bool SpriteBase::Is<ExplosionCloud>()
+template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_CLOUD;
 }
@@ -86,17 +86,17 @@ std::string rct_sprite_checksum::ToString() const
     return result;
 }
 
-rct_sprite* try_get_sprite(size_t spriteIndex)
+SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    rct_sprite* sprite = nullptr;
+    SpriteBase* sprite = nullptr;
     if (spriteIndex < MAX_SPRITES)
     {
-        sprite = &_spriteList[spriteIndex];
+        sprite = reinterpret_cast<SpriteBase*>(&_spriteList[spriteIndex]);
     }
     return sprite;
 }
 
-rct_sprite* get_sprite(size_t sprite_idx)
+SpriteBase* get_sprite(size_t sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -107,7 +107,7 @@ rct_sprite* get_sprite(size_t sprite_idx)
     {
         return nullptr;
     }
-    return &_spriteList[sprite_idx];
+    return reinterpret_cast<SpriteBase*>(&_spriteList[sprite_idx]);
 }
 
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
@@ -175,24 +175,24 @@ void reset_sprite_list()
         _spriteFlashingList[i] = false;
     }
 
-    rct_sprite* previous_spr = nullptr;
+    SpriteBase* previous_spr = nullptr;
 
     for (int32_t i = 0; i < MAX_SPRITES; ++i)
     {
-        rct_sprite* spr = get_sprite(i);
-        spr->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
-        spr->generic.sprite_index = i;
-        spr->generic.next = SPRITE_INDEX_NULL;
-        spr->generic.linked_list_index = 0;
+        SpriteBase* spr = get_sprite(i);
+        spr->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+        spr->sprite_index = i;
+        spr->next = SPRITE_INDEX_NULL;
+        spr->linked_list_index = 0;
 
         if (previous_spr != nullptr)
         {
-            spr->generic.previous = previous_spr->generic.sprite_index;
-            previous_spr->generic.next = i;
+            spr->previous = previous_spr->sprite_index;
+            previous_spr->next = i;
         }
         else
         {
-            spr->generic.previous = SPRITE_INDEX_NULL;
+            spr->previous = SPRITE_INDEX_NULL;
             gSpriteListHead[SPRITE_LIST_FREE] = i;
         }
         _spriteFlashingList[i] = false;
@@ -215,13 +215,13 @@ void reset_sprite_spatial_index()
     std::fill_n(gSpriteSpatialIndex, std::size(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* spr = get_sprite(i);
-        if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        auto* spr = get_sprite(i);
+        if (spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
-            size_t index = GetSpatialIndexOffset(spr->generic.x, spr->generic.y);
-            uint32_t nextSpriteId = gSpriteSpatialIndex[index];
-            gSpriteSpatialIndex[index] = spr->generic.sprite_index;
-            spr->generic.next_in_quadrant = nextSpriteId;
+            size_t index = GetSpatialIndexOffset(spr->x, spr->y);
+            uint16_t nextSpriteId = gSpriteSpatialIndex[index];
+            gSpriteSpatialIndex[index] = spr->sprite_index;
+            spr->next_in_quadrant = nextSpriteId;
         }
     }
 }
@@ -269,10 +269,12 @@ rct_sprite_checksum sprite_checksum()
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
             auto sprite = get_sprite(i);
-            if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL
-                && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_MISC)
+            if (sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL
+                && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
-                auto copy = *sprite;
+                // We need the full size of the sprite not just the base
+                // so reinterpret the cast up to the full size.
+                auto copy = *(reinterpret_cast<rct_sprite*>(sprite));
 
                 // Only required for rendering/invalidation, has no meaning to the game state.
                 copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
@@ -281,8 +283,8 @@ rct_sprite_checksum sprite_checksum()
                 // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
                 while (auto* nextSprite = get_sprite(copy.generic.next_in_quadrant))
                 {
-                    if (nextSprite->generic.sprite_identifier == SPRITE_IDENTIFIER_MISC)
-                        copy.generic.next_in_quadrant = nextSprite->generic.next_in_quadrant;
+                    if (nextSprite->sprite_identifier == SPRITE_IDENTIFIER_MISC)
+                        copy.generic.next_in_quadrant = nextSprite->next_in_quadrant;
                     else
                         break;
                 }
@@ -347,13 +349,12 @@ static void sprite_reset(SpriteBase* sprite)
  */
 void sprite_clear_all_unused()
 {
-    SpriteGeneric* sprite;
     uint16_t spriteIndex, nextSpriteIndex;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_FREE];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        sprite = &get_sprite(spriteIndex)->generic;
+        auto sprite = get_sprite(spriteIndex);
         nextSpriteIndex = sprite->next;
         sprite_reset(sprite);
         sprite->linked_list_index = SPRITE_LIST_FREE;
@@ -418,7 +419,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
         }
     }
 
-    SpriteGeneric* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
+    auto* sprite = get_sprite(gSpriteListHead[SPRITE_LIST_FREE]);
 
     move_sprite_to_list(sprite, linkedListIndex);
 
@@ -464,13 +465,13 @@ void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
     else
     {
         // Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-        get_sprite(sprite->previous)->generic.next = sprite->next;
+        get_sprite(sprite->previous)->next = sprite->next;
     }
 
     // Similarly, hook up sprite->next->previous to sprite->previous
     if (sprite->next != SPRITE_INDEX_NULL)
     {
-        get_sprite(sprite->next)->generic.previous = sprite->previous;
+        get_sprite(sprite->next)->previous = sprite->previous;
     }
 
     sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
@@ -482,7 +483,7 @@ void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
     if (sprite->next != SPRITE_INDEX_NULL)
     {
         // Fix the chain by settings sprite->next->previous to sprite_index
-        get_sprite(sprite->next)->generic.previous = sprite->sprite_index;
+        get_sprite(sprite->next)->previous = sprite->sprite_index;
     }
 
     // These globals are probably counters for each sprite list?
@@ -624,15 +625,14 @@ static void sprite_misc_update(rct_sprite* sprite)
  */
 void sprite_misc_update_all()
 {
-    rct_sprite* sprite;
     uint16_t spriteIndex;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_MISC];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        sprite = get_sprite(spriteIndex);
-        spriteIndex = sprite->generic.next;
-        sprite_misc_update(sprite);
+        auto* sprite = get_sprite(spriteIndex);
+        spriteIndex = sprite->next;
+        sprite_misc_update(reinterpret_cast<rct_sprite*>(sprite));
     }
 }
 
@@ -644,7 +644,7 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
     auto* next = &gSpriteSpatialIndex[newIndex];
     while (sprite->sprite_index < *next && *next != SPRITE_INDEX_NULL)
     {
-        auto sprite2 = &get_sprite(*next)->generic;
+        auto sprite2 = get_sprite(*next);
         next = &sprite2->next_in_quadrant;
     }
 
@@ -664,7 +664,7 @@ static void SpriteSpatialRemove(SpriteBase* sprite)
         reset_sprite_spatial_index();
     }
 
-    auto* sprite2 = &get_sprite(*index)->generic;
+    auto* sprite2 = get_sprite(*index);
     while (sprite != sprite2)
     {
         index = &sprite2->next_in_quadrant;
@@ -672,7 +672,7 @@ static void SpriteSpatialRemove(SpriteBase* sprite)
         {
             break;
         }
-        sprite2 = &get_sprite(*index)->generic;
+        sprite2 = get_sprite(*index);
     }
     *index = sprite->next_in_quadrant;
 }
@@ -752,7 +752,7 @@ void sprite_remove(SpriteBase* sprite)
     size_t quadrantIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
     uint16_t* spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
     SpriteBase* quadrantSprite;
-    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = &get_sprite(*spriteIndex)->generic) != sprite)
+    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = get_sprite(*spriteIndex)) != sprite)
     {
         spriteIndex = &quadrantSprite->next_in_quadrant;
     }
@@ -805,7 +805,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
         for (uint16_t nextSpriteIndex, spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
              spriteIndex = nextSpriteIndex)
         {
-            Litter* litter = &get_sprite(spriteIndex)->litter;
+            Litter* litter = get_sprite(spriteIndex)->As<Litter>();
             nextSpriteIndex = litter->next;
             if (newestLitterCreationTick <= litter->creationTick)
             {
@@ -845,11 +845,11 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        rct_sprite* sprite = get_sprite(spriteIndex);
-        uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
-        if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
+        auto* sprite = get_sprite(spriteIndex);
+        uint16_t nextSpriteIndex = sprite->next_in_quadrant;
+        if (sprite->linked_list_index == SPRITE_LIST_LITTER)
         {
-            Litter* litter = &sprite->litter;
+            Litter* litter = sprite->As<Litter>();
 
             if (abs(litter->z - z) <= 16)
             {
@@ -943,8 +943,8 @@ void sprite_position_tween_all(float alpha)
 
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* sprite = get_sprite(i);
-        if (sprite_should_tween(sprite))
+        auto* sprite = get_sprite(i);
+        if (sprite_should_tween(reinterpret_cast<rct_sprite*>(sprite)))
         {
             auto posA = _spritelocations1[i];
             auto posB = _spritelocations2[i];
@@ -954,8 +954,8 @@ void sprite_position_tween_all(float alpha)
             }
             sprite_set_coordinates(
                 std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
-                std::round(posB.z * alpha + posA.z * inv), &sprite->generic);
-            invalidate_sprite_2(&sprite->generic);
+                std::round(posB.z * alpha + posA.z * inv), sprite);
+            invalidate_sprite_2(sprite);
         }
     }
 }
@@ -967,13 +967,13 @@ void sprite_position_tween_restore()
 {
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* sprite = get_sprite(i);
-        if (sprite_should_tween(sprite))
+        auto* sprite = get_sprite(i);
+        if (sprite_should_tween(reinterpret_cast<rct_sprite*>(sprite)))
         {
-            invalidate_sprite_2(&sprite->generic);
+            invalidate_sprite_2(sprite);
 
             auto pos = _spritelocations2[i];
-            sprite_set_coordinates(pos.x, pos.y, pos.z, &sprite->generic);
+            sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
         }
     }
 }
@@ -982,10 +982,10 @@ void sprite_position_tween_reset()
 {
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* sprite = get_sprite(i);
-        _spritelocations1[i].x = _spritelocations2[i].x = sprite->generic.x;
-        _spritelocations1[i].y = _spritelocations2[i].y = sprite->generic.y;
-        _spritelocations1[i].z = _spritelocations2[i].z = sprite->generic.z;
+        auto* sprite = get_sprite(i);
+        _spritelocations1[i].x = _spritelocations2[i].x = sprite->x;
+        _spritelocations1[i].y = _spritelocations2[i].y = sprite->y;
+        _spritelocations1[i].z = _spritelocations2[i].z = sprite->z;
     }
 }
 
@@ -1001,72 +1001,72 @@ bool sprite_get_flashing(SpriteBase* sprite)
     return _spriteFlashingList[sprite->sprite_index];
 }
 
-static rct_sprite* find_sprite_list_cycle(uint16_t sprite_idx)
+static SpriteBase* find_sprite_list_cycle(uint16_t sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
         return nullptr;
     }
-    const rct_sprite* fast = get_sprite(sprite_idx);
-    const rct_sprite* slow = fast;
+    const SpriteBase* fast = get_sprite(sprite_idx);
+    const SpriteBase* slow = fast;
     bool increment_slow = false;
-    rct_sprite* cycle_start = nullptr;
-    while (fast->generic.sprite_index != SPRITE_INDEX_NULL)
+    SpriteBase* cycle_start = nullptr;
+    while (fast->sprite_index != SPRITE_INDEX_NULL)
     {
         // increment fast every time, unless reached the end
-        if (fast->generic.next == SPRITE_INDEX_NULL)
+        if (fast->next == SPRITE_INDEX_NULL)
         {
             break;
         }
         else
         {
-            fast = get_sprite(fast->generic.next);
+            fast = get_sprite(fast->next);
         }
         // increment slow only every second iteration
         if (increment_slow)
         {
-            slow = get_sprite(slow->generic.next);
+            slow = get_sprite(slow->next);
         }
         increment_slow = !increment_slow;
         if (fast == slow)
         {
-            cycle_start = get_sprite(slow->generic.sprite_index);
+            cycle_start = get_sprite(slow->sprite_index);
             break;
         }
     }
     return cycle_start;
 }
 
-static rct_sprite* find_sprite_quadrant_cycle(uint16_t sprite_idx)
+static SpriteBase* find_sprite_quadrant_cycle(uint16_t sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
         return nullptr;
     }
-    const rct_sprite* fast = get_sprite(sprite_idx);
-    const rct_sprite* slow = fast;
+    const SpriteBase* fast = get_sprite(sprite_idx);
+    const SpriteBase* slow = fast;
     bool increment_slow = false;
-    rct_sprite* cycle_start = nullptr;
-    while (fast->generic.sprite_index != SPRITE_INDEX_NULL)
+    SpriteBase* cycle_start = nullptr;
+    while (fast->sprite_index != SPRITE_INDEX_NULL)
     {
         // increment fast every time, unless reached the end
-        if (fast->generic.next_in_quadrant == SPRITE_INDEX_NULL)
+        if (fast->next_in_quadrant == SPRITE_INDEX_NULL)
         {
             break;
         }
         else
         {
-            fast = get_sprite(fast->generic.next_in_quadrant);
+            fast = get_sprite(fast->next_in_quadrant);
         }
         // increment slow only every second iteration
         if (increment_slow)
         {
-            slow = get_sprite(slow->generic.next_in_quadrant);
+            slow = get_sprite(slow->next_in_quadrant);
         }
         increment_slow = !increment_slow;
         if (fast == slow)
         {
-            cycle_start = get_sprite(slow->generic.sprite_index);
+            cycle_start = get_sprite(slow->sprite_index);
             break;
         }
     }
@@ -1082,7 +1082,7 @@ static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
         {
             return true;
         }
-        sprite_index = get_sprite(sprite_index)->generic.next;
+        sprite_index = get_sprite(sprite_index)->next;
     }
     return false;
 }
@@ -1091,31 +1091,31 @@ int32_t check_for_sprite_list_cycles(bool fix)
 {
     for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
     {
-        rct_sprite* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
+        auto* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
         if (cycle_start != nullptr)
         {
             if (fix)
             {
                 // Fix head list, but only in reverse order
                 // This is likely not needed, but just in case
-                get_sprite(gSpriteListHead[i])->generic.previous = SPRITE_INDEX_NULL;
+                get_sprite(gSpriteListHead[i])->previous = SPRITE_INDEX_NULL;
 
                 // Store the leftover part of cycle to be fixed
-                uint16_t cycle_next = cycle_start->generic.next;
+                uint16_t cycle_next = cycle_start->next;
 
                 // Break the cycle
-                cycle_start->generic.next = SPRITE_INDEX_NULL;
+                cycle_start->next = SPRITE_INDEX_NULL;
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
                 while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
                 {
-                    rct_sprite* spr = get_sprite(cycle_next);
+                    auto* spr = get_sprite(cycle_next);
 
-                    cycle_start->generic.next = cycle_next;
-                    spr->generic.previous = cycle_start->generic.sprite_index;
-                    cycle_next = spr->generic.next;
-                    spr->generic.next = SPRITE_INDEX_NULL;
+                    cycle_start->next = cycle_next;
+                    spr->previous = cycle_start->sprite_index;
+                    cycle_next = spr->next;
+                    spr->next = SPRITE_INDEX_NULL;
                     cycle_start = spr;
                 }
             }
@@ -1135,13 +1135,13 @@ int32_t fix_disjoint_sprites()
     // Find reachable sprites
     bool reachable[MAX_SPRITES] = { false };
     uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_FREE];
-    rct_sprite* null_list_tail = nullptr;
+    SpriteBase* null_list_tail = nullptr;
     while (sprite_idx != SPRITE_INDEX_NULL)
     {
         reachable[sprite_idx] = true;
         // cache the tail, so we don't have to walk the list twice
         null_list_tail = get_sprite(sprite_idx);
-        sprite_idx = null_list_tail->generic.next;
+        sprite_idx = null_list_tail->next;
     }
 
     int32_t count = 0;
@@ -1149,17 +1149,17 @@ int32_t fix_disjoint_sprites()
     // Find all null sprites
     for (sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
     {
-        rct_sprite* spr = get_sprite(sprite_idx);
-        if (spr->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        auto* spr = get_sprite(sprite_idx);
+        if (spr->sprite_identifier == SPRITE_IDENTIFIER_NULL)
         {
             openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
-            spr->generic.sprite_index = sprite_idx;
+            spr->sprite_index = sprite_idx;
             if (!reachable[sprite_idx])
             {
                 // Add the sprite directly to the list
-                null_list_tail->generic.next = sprite_idx;
-                spr->generic.next = SPRITE_INDEX_NULL;
-                spr->generic.previous = null_list_tail->generic.sprite_index;
+                null_list_tail->next = sprite_idx;
+                spr->next = SPRITE_INDEX_NULL;
+                spr->previous = null_list_tail->sprite_index;
                 null_list_tail = spr;
                 count++;
                 reachable[sprite_idx] = true;
@@ -1173,26 +1173,26 @@ int32_t check_for_spatial_index_cycles(bool fix)
 {
     for (uint32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++)
     {
-        rct_sprite* cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
+        auto* cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
         if (cycle_start != nullptr)
         {
             if (fix)
             {
                 // Store the leftover part of cycle to be fixed
-                uint16_t cycle_next = cycle_start->generic.next_in_quadrant;
+                uint16_t cycle_next = cycle_start->next_in_quadrant;
 
                 // Break the cycle
-                cycle_start->generic.next_in_quadrant = SPRITE_INDEX_NULL;
+                cycle_start->next_in_quadrant = SPRITE_INDEX_NULL;
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
                 while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
                 {
-                    rct_sprite* spr = get_sprite(cycle_next);
+                    auto* spr = get_sprite(cycle_next);
 
-                    cycle_start->generic.next_in_quadrant = cycle_next;
-                    cycle_next = spr->generic.next_in_quadrant;
-                    spr->generic.next_in_quadrant = SPRITE_INDEX_NULL;
+                    cycle_start->next_in_quadrant = cycle_next;
+                    cycle_next = spr->next_in_quadrant;
+                    spr->next_in_quadrant = SPRITE_INDEX_NULL;
                     cycle_start = spr;
                 }
             }

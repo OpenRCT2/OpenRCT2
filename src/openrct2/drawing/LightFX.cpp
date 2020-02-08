@@ -694,7 +694,6 @@ uint32_t lightfx_get_light_polution()
 void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
 {
     uint16_t vehicleID = vehicle->sprite_index;
-
     int16_t place_x, place_y, place_z;
 
     place_x = vehicle->x;

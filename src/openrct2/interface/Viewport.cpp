@@ -175,8 +175,8 @@ void viewport_create(
     if (flags & VIEWPORT_FOCUS_TYPE_SPRITE)
     {
         w->viewport_target_sprite = sprite;
-        rct_sprite* centre_sprite = get_sprite(sprite);
-        centrePos = { centre_sprite->generic.x, centre_sprite->generic.y, centre_sprite->generic.z };
+        auto* centre_sprite = get_sprite(sprite);
+        centrePos = { centre_sprite->x, centre_sprite->y, centre_sprite->z };
     }
     else
     {
@@ -619,14 +619,14 @@ void viewport_update_sprite_follow(rct_window* window)
 {
     if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport)
     {
-        rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
+        auto* sprite = get_sprite(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height({ sprite->generic.x, sprite->generic.y })) - 16;
-        int32_t underground = sprite->generic.z < height;
+        int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
+        int32_t underground = sprite->z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        auto centreLoc = centre_2d_coordinates({ sprite->generic.x, sprite->generic.y, sprite->generic.z }, window->viewport);
+        auto centreLoc = centre_2d_coordinates({ sprite->x, sprite->y, sprite->z }, window->viewport);
         if (centreLoc)
         {
             window->savedViewPos = *centreLoc;
@@ -637,13 +637,13 @@ void viewport_update_sprite_follow(rct_window* window)
 
 void viewport_update_smart_sprite_follow(rct_window* window)
 {
-    rct_sprite* sprite = try_get_sprite(window->viewport_smart_follow_sprite);
+    auto* sprite = try_get_sprite(window->viewport_smart_follow_sprite);
     if (sprite == nullptr)
     {
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
-    else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+    else if (sprite->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
     {
         Peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
 
@@ -652,13 +652,13 @@ void viewport_update_smart_sprite_follow(rct_window* window)
         else if (peep->type == PEEP_TYPE_STAFF)
             viewport_update_smart_staff_follow(window, peep);
     }
-    else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+    else if (sprite->sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
     {
         viewport_update_smart_vehicle_follow(window);
     }
     else if (
-        sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_MISC
-        || sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        sprite->sprite_identifier == SPRITE_IDENTIFIER_MISC
+        || sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
     {
         window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
         window->viewport_target_sprite = window->viewport_smart_follow_sprite;

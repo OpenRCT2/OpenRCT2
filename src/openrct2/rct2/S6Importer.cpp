@@ -1267,7 +1267,7 @@ public:
         for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
         {
             auto src = &_s6.sprites[i];
-            auto dst = get_sprite(i);
+            auto dst = reinterpret_cast<rct_sprite*>(get_sprite(i));
             ImportSprite(dst, src);
         }
 

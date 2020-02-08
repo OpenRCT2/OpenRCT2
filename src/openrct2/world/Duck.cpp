@@ -75,7 +75,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 // clang-format on
 
 template<>
-bool SpriteBase::Is<Duck>()
+bool SpriteBase::Is<Duck>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_DUCK;
 }
@@ -388,9 +388,9 @@ void duck_remove_all()
     for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;
          spriteIndex = nextSpriteIndex)
     {
-        SpriteGeneric* sprite = &(get_sprite(spriteIndex)->generic);
+        auto* sprite = get_sprite(spriteIndex);
         nextSpriteIndex = sprite->next;
-        if (sprite->type == SPRITE_MISC_DUCK)
+        if (sprite->Is<Duck>())
         {
             invalidate_sprite_1(sprite);
             sprite_remove(sprite);

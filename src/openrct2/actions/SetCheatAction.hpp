@@ -420,7 +420,7 @@ private:
 
         for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
         {
-            litter = &(get_sprite(spriteIndex)->litter);
+            litter = get_sprite(spriteIndex)->As<Litter>();
             nextSpriteIndex = litter->next;
             sprite_remove(litter);
         }
@@ -689,9 +689,12 @@ private:
         // will be fetched on a deleted peep.
         for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
         {
-            auto peep = GET_PEEP(spriteIndex);
+            auto peep = get_sprite(spriteIndex)->As<Peep>();
             spriteIndex = peep->next;
-            peep->Remove();
+            if (peep->type == PEEP_TYPE_GUEST)
+            {
+                peep->Remove();
+            }
         }
 
         window_invalidate_by_class(WC_RIDE);

@@ -80,7 +80,7 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-template<> bool SpriteBase::Is<JumpingFountain>()
+template<> bool SpriteBase::Is<JumpingFountain>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
 }

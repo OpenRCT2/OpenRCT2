@@ -14,12 +14,12 @@
 
 #include <iterator>
 
-template<> bool SpriteBase::Is<VehicleCrashParticle>()
+template<> bool SpriteBase::Is<VehicleCrashParticle>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 }
 
-template<> bool SpriteBase::Is<CrashSplashParticle>()
+template<> bool SpriteBase::Is<CrashSplashParticle>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_CRASH_SPLASH;
 }

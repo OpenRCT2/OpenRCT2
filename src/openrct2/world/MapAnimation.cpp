@@ -161,8 +161,6 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
-    rct_sprite* sprite;
-    Peep* peep;
 
     tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
@@ -199,13 +197,13 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                 int32_t y2 = loc.y - CoordsDirectionDelta[direction].y;
 
                 uint16_t spriteIdx = sprite_get_first_in_quadrant(x2, y2);
-                for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->generic.next_in_quadrant)
+                for (SpriteBase* sprite; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->next_in_quadrant)
                 {
                     sprite = get_sprite(spriteIdx);
-                    if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
+                    auto peep = sprite->As<Peep>();
+                    if (peep != nullptr)
                         continue;
 
-                    peep = &sprite->peep;
                     if (peep->state != PEEP_STATE_WALKING)
                         continue;
                     if (peep->z != loc.z)

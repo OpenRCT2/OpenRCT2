@@ -107,11 +107,11 @@ static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& cont
     std::unique_ptr<GameState_t> res = std::make_unique<GameState_t>();
     for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; spriteIdx++)
     {
-        rct_sprite* sprite = get_sprite(spriteIdx);
+        auto* sprite = get_sprite(spriteIdx);
         if (sprite == nullptr)
             res->sprites[spriteIdx].generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         else
-            res->sprites[spriteIdx] = *sprite;
+            res->sprites[spriteIdx] = *(reinterpret_cast<rct_sprite*>(sprite));
     }
     return res;
 }

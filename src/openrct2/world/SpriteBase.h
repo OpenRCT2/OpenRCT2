@@ -2,19 +2,6 @@
 
 #include "../common.h"
 
-struct Peep;
-struct Litter;
-struct Vehicle;
-struct Balloon;
-struct Duck;
-struct JumpingFountain;
-struct MoneyEffect;
-struct VehicleCrashParticle;
-struct CrashSplashParticle;
-struct SteamParticle;
-struct ExplosionFlare;
-struct ExplosionCloud;
-
 struct SpriteBase
 {
     uint8_t sprite_identifier;
@@ -44,7 +31,7 @@ struct SpriteBase
     uint8_t sprite_direction;
 
 public:
-    template<typename T> bool Is();
+    template<typename T> bool Is() const;
     template<typename T> T* As()
     {
         T* result = nullptr;
@@ -54,18 +41,6 @@ public:
         }
         return result;
     }
-    //template<> bool Is<Peep>();
-    //template<> bool Is<Litter>();
-    //template<> bool Is<Vehicle>();
-    //template<> bool Is<Balloon>();
-    //template<> bool Is<Duck>();
-    //template<> bool Is<JumpingFountain>();
-    //template<> bool Is<MoneyEffect>();
-    //template<> bool Is<VehicleCrashParticle>();
-    //template<> bool Is<CrashSplashParticle>();
-    //template<> bool Is<SteamParticle>();
-    //template<> bool Is<ExplosionFlare>();
-    //template<> bool Is<ExplosionCloud>();
 };
 
 struct SpriteGeneric : SpriteBase

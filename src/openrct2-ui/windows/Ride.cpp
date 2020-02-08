@@ -1740,7 +1740,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
                 rct_window* w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
                 if (w2 == nullptr)
                 {
-                    Peep* peep = &(get_sprite(peepSpriteIndex)->peep);
+                    Peep* peep = get_sprite(peepSpriteIndex)->As<Peep>();
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
                     context_open_intent(&intent);
@@ -2552,7 +2552,7 @@ static void window_ride_main_update(rct_window* w)
                 if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
                     return;
 
-                Vehicle* vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+                Vehicle* vehicle = get_sprite(vehicleSpriteIndex)->As<Vehicle>();
                 if (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT)
@@ -2772,7 +2772,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
         return 0;
 
-    vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+    vehicle = get_sprite(vehicleSpriteIndex)->As<Vehicle>();
     if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED)
     {
         int32_t trackType = vehicle->track_type >> 2;
@@ -4129,11 +4129,11 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
                     case BREAKDOWN_DOORS_STUCK_CLOSED:
                     case BREAKDOWN_DOORS_STUCK_OPEN:
-                        vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
+                        vehicle = get_sprite(ride->vehicles[ride->broken_vehicle])->As<Vehicle>();
                         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
                         break;
                     case BREAKDOWN_VEHICLE_MALFUNCTION:
-                        vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
+                        vehicle = get_sprite(ride->vehicles[ride->broken_vehicle])->As<Vehicle>();
                         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
                         break;
                 }
@@ -4353,7 +4353,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
             else
             {
-                auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
+                auto peep = get_sprite(ride->mechanic)->As<Peep>()->AsStaff();
                 if (peep != nullptr && peep->IsMechanic())
                 {
                     peep->FormatNameTo(gCommonFormatArgs);

@@ -315,7 +315,7 @@ const bool gSpriteTypeToSlowWalkMap[] = {
 
 // clang-format on
 
-template<> bool SpriteBase::Is<Peep>()
+template<> bool SpriteBase::Is<Peep>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
 }
@@ -381,14 +381,15 @@ void Peep::SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface)
 
 Peep* try_get_guest(uint16_t spriteIndex)
 {
-    rct_sprite* sprite = try_get_sprite(spriteIndex);
+    auto* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr)
         return nullptr;
-    if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_PEEP)
+    if (sprite->Is<Peep>())
         return nullptr;
-    if (sprite->peep.type != PEEP_TYPE_GUEST)
+    auto peep = sprite->As<Peep>();
+    if (peep->type != PEEP_TYPE_GUEST)
         return nullptr;
-    return &sprite->peep;
+    return peep;
 }
 
 int32_t peep_get_staff_count()
@@ -420,7 +421,7 @@ void peep_update_all()
     // will be fetched on a delted peep if peep leaves the park.
     for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
     {
-        peep = GET_PEEP(spriteIndex);
+        peep = get_sprite(spriteIndex)->As<Peep>();
         spriteIndex = peep->next;
 
         if ((uint32_t)(i & 0x7F) != (gCurrentTicks & 0x7F))
@@ -2683,12 +2684,12 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
     uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    for (SpriteBase* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
-        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
         {
-            Peep* other_peep = (Peep*)sprite;
+            Peep* other_peep = sprite->As<Peep>();
             if (other_peep->state != PEEP_STATE_WALKING)
                 continue;
 
@@ -2697,9 +2698,9 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             crowded++;
             continue;
         }
-        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        else if (sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
-            Litter* litter = (Litter*)sprite;
+            Litter* litter = sprite->As<Litter>();
             if (abs(litter->z - peep->NextLoc.z) > 16)
                 continue;
 

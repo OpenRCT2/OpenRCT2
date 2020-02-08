@@ -48,7 +48,7 @@ static void paint_crooked_house_structure(
     {
         if (ride->vehicles[0] != SPRITE_INDEX_NULL)
         {
-            rct_sprite* sprite = get_sprite(ride->vehicles[0]);
+            auto* sprite = get_sprite(ride->vehicles[0]);
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             session->CurrentlyDrawnItem = sprite;
         }

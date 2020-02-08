@@ -731,7 +731,7 @@ static const struct
 
 // clang-format on
 
-template<> bool SpriteBase::Is<Vehicle>()
+template<> bool SpriteBase::Is<Vehicle>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
 }
@@ -807,12 +807,12 @@ uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDir
 
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
 {
-    rct_sprite* sprite = try_get_sprite(spriteIndex);
+    auto* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr)
         return nullptr;
-    if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+    if (sprite->Is<Vehicle>())
         return nullptr;
-    return &sprite->vehicle;
+    return sprite->As<Vehicle>();
 }
 
 void Vehicle::Invalidate()
@@ -1257,9 +1257,9 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
+    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->next)
     {
-        get_sprite(i)->vehicle.UpdateSoundParams(vehicleSoundParamsList);
+        get_sprite(i)->As<Vehicle>()->UpdateSoundParams(vehicleSoundParamsList);
     }
 
     // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
@@ -5585,7 +5585,7 @@ SoundId Vehicle::UpdateScreamSound()
         spriteIndex = sprite_index;
         do
         {
-            vehicle2 = &(get_sprite(spriteIndex)->vehicle);
+            vehicle2 = get_sprite(spriteIndex)->As<Vehicle>();
             if (vehicle2->vehicle_sprite_type < 1)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 4)
@@ -5604,7 +5604,7 @@ SoundId Vehicle::UpdateScreamSound()
     spriteIndex = sprite_index;
     do
     {
-        vehicle2 = &(get_sprite(spriteIndex)->vehicle);
+        vehicle2 = get_sprite(spriteIndex)->As<Vehicle>();
         if (vehicle2->vehicle_sprite_type < 5)
             continue;
         if (vehicle2->vehicle_sprite_type <= 8)
@@ -9793,7 +9793,7 @@ int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)
         if (spriteIndex == SPRITE_INDEX_NULL)
             break;
 
-        vehicle = &(get_sprite(spriteIndex)->vehicle);
+        vehicle = get_sprite(spriteIndex)->As<Vehicle>();
     }
 
     return numPeeps;

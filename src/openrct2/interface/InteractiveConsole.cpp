@@ -1577,11 +1577,11 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
 
     for (int i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* sprite = get_sprite(i);
-        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        auto* sprite = get_sprite(i);
+        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
             continue;
 
-        auto peep = sprite->AsPeep();
+        auto peep = sprite->As<Peep>();
         if (peep != nullptr)
             peeps.push_back(peep);
     }

@@ -126,7 +126,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
             return;
 
         // Open window for new staff.
-        Peep* peep = &get_sprite(res->peepSriteIndex)->peep;
+        Peep* peep = get_sprite(res->peepSriteIndex)->As<Peep>();
         auto intent = Intent(WC_PEEP);
         intent.putExtra(INTENT_EXTRA_PEEP, peep);
         context_open_intent(&intent);
@@ -447,7 +447,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     for (uint16_t litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
     {
-        litter = &get_sprite(litterIndex)->litter;
+        litter = get_sprite(litterIndex)->As<Litter>();
 
         uint16_t distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
 
@@ -1809,22 +1809,22 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 
     uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
 
-    for (rct_sprite* sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    for (SpriteBase* sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
-
-        if (sprite->generic.linked_list_index != SPRITE_LIST_LITTER)
+        auto* litter = sprite->As<Litter>();
+        if (litter == nullptr)
             continue;
 
-        uint16_t z_diff = abs(peep->z - sprite->litter.z);
+        uint16_t z_diff = abs(peep->z - litter->z);
 
         if (z_diff >= 16)
             continue;
 
         peep->SetState(PEEP_STATE_SWEEPING);
         peep->var_37 = 0;
-        peep->destination_x = sprite->litter.x;
-        peep->destination_y = sprite->litter.y;
+        peep->destination_x = litter->x;
+        peep->destination_y = litter->y;
         peep->destination_tolerance = 5;
         return 1;
     }

@@ -1338,10 +1338,10 @@ private:
         }
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
-            rct_sprite* sprite = get_sprite(i);
-            if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            auto* sprite = get_sprite(i);
+            if (sprite->sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
-                Vehicle* vehicle = reinterpret_cast<Vehicle*>(sprite);
+                Vehicle* vehicle = sprite->As<Vehicle>();
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }

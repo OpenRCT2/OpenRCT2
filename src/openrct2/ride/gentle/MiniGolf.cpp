@@ -1216,13 +1216,13 @@ void vehicle_visual_mini_golf_player(
     if (rideEntry == nullptr)
         return;
 
-    rct_sprite* sprite = get_sprite(vehicle->peep[0]);
+    auto* player = get_sprite(vehicle->peep[0])->As<Peep>();
 
     uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
-    uint32_t peep_palette = sprite->peep.tshirt_colour << 19 | sprite->peep.trousers_colour << 24 | 0x0A0000000;
+    uint32_t peep_palette = player->tshirt_colour << 19 | player->trousers_colour << 24 | 0x0A0000000;
     sub_98197C(session, image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5);
 }
 

@@ -341,7 +341,7 @@ rct_window* window_staff_open(Peep* peep)
     window_staff_disable_widgets(w);
     window_init_scroll_widgets(w);
     window_staff_viewport_init(w);
-    if (get_sprite(w->number)->peep.state == PEEP_STATE_PICKED)
+    if (get_sprite(w->number)->As<Peep>()->state == PEEP_STATE_PICKED)
         window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 
     return w;
@@ -353,7 +353,7 @@ rct_window* window_staff_open(Peep* peep)
  */
 void window_staff_disable_widgets(rct_window* w)
 {
-    Peep* peep = &get_sprite(w->number)->peep;
+    Peep* peep = get_sprite(w->number)->As<Peep>();
     uint64_t disabled_widgets = (1 << WIDX_TAB_4);
 
     if (peep->staff_type == STAFF_TYPE_SECURITY)
@@ -1221,15 +1221,15 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (destCoords.isNull())
             return;
 
-        rct_sprite* sprite = try_get_sprite(w->number);
-        if (sprite == nullptr || !sprite->IsPeep())
+        auto* sprite = try_get_sprite(w->number);
+        if (sprite == nullptr || !sprite->Is<Peep>())
             return;
 
-        Peep& peep = sprite->peep;
-        if (peep.type != PEEP_TYPE_STAFF)
+        auto peep = sprite->As<Peep>();
+        if (peep->type != PEEP_TYPE_STAFF)
             return;
 
-        auto staff = peep.AsStaff();
+        auto staff = peep->AsStaff();
         if (staff->IsPatrolAreaSet(destCoords))
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
@@ -1262,15 +1262,15 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (destCoords.isNull())
         return;
 
-    rct_sprite* sprite = try_get_sprite(w->number);
-    if (sprite == nullptr || !sprite->IsPeep())
+    auto* sprite = try_get_sprite(w->number);
+    if (sprite == nullptr || !sprite->Is<Peep>())
         return;
 
-    Peep& peep = sprite->peep;
-    if (peep.type != PEEP_TYPE_STAFF)
+    Peep* peep = sprite->As<Peep>();
+    if (peep->type != PEEP_TYPE_STAFF)
         return;
 
-    bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet(destCoords);
+    bool patrolAreaValue = peep->AsStaff()->IsPatrolAreaSet(destCoords);
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
         return; // Since area is already the value we want, skip...
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)

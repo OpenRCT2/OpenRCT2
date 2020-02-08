@@ -132,7 +132,8 @@ struct GameStateSnapshots : public IGameStateSnapshots
 
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
-        snapshot.SerialiseSprites(get_sprite(0), MAX_SPRITES, true);
+        // TODO: REFACTOR THIS
+        snapshot.SerialiseSprites(reinterpret_cast<rct_sprite*>(get_sprite(0)), MAX_SPRITES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }

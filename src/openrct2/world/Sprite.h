@@ -200,8 +200,8 @@ enum
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
-rct_sprite* try_get_sprite(size_t spriteIndex);
-rct_sprite* get_sprite(size_t sprite_idx);
+SpriteBase* try_get_sprite(size_t spriteIndex);
+SpriteBase* get_sprite(size_t sprite_idx);
 
 extern uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
 extern uint16_t gSpriteListCount[SPRITE_LIST_COUNT];

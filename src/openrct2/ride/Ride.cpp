@@ -788,9 +788,9 @@ void Ride::FormatStatusTo(void* argsV) const
         && race_winner != SPRITE_INDEX_NULL)
     {
         auto sprite = get_sprite(race_winner);
-        if (sprite != nullptr && sprite->IsPeep())
+        if (sprite != nullptr && sprite->Is<Peep>())
         {
-            auto peep = sprite->AsPeep();
+            auto peep = sprite->As<Peep>();
             set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
             peep->FormatNameTo(args + 2);
         }
@@ -2724,7 +2724,7 @@ Staff* ride_get_mechanic(Ride* ride)
 {
     if (ride->mechanic != SPRITE_INDEX_NULL)
     {
-        auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
+        auto peep = get_sprite(ride->mechanic)->As<Peep>()->AsStaff();
         if (peep != nullptr && peep->IsMechanic())
         {
             return peep;

@@ -393,7 +393,7 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        Litter* sprite = &get_sprite(spriteIndex)->litter;
+        auto* sprite = get_sprite(spriteIndex)->As<Litter>();
         uint16_t nextSpriteIndex = sprite->next_in_quadrant;
         if (sprite->linked_list_index == SPRITE_LIST_LITTER)
         {
@@ -417,7 +417,7 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        Peep* peep = &get_sprite(spriteIndex)->peep;
+        Peep* peep = get_sprite(spriteIndex)->As<Peep>();
         uint16_t nextSpriteIndex = peep->next_in_quadrant;
         if (peep->linked_list_index == SPRITE_LIST_PEEP)
         {
