@@ -417,9 +417,10 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        Peep* peep = get_sprite(spriteIndex)->As<Peep>();
-        uint16_t nextSpriteIndex = peep->next_in_quadrant;
-        if (peep->linked_list_index == SPRITE_LIST_PEEP)
+        auto* sprite = get_sprite(spriteIndex);
+        uint16_t nextSpriteIndex = sprite->next_in_quadrant;
+        Peep* peep = sprite->As<Peep>();
+        if (peep != nullptr && peep->linked_list_index == SPRITE_LIST_PEEP)
         {
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
             {
