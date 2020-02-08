@@ -16,18 +16,12 @@
 #include <map>
 #include <string>
 
-class NetworkUser final
+struct NetworkUser
 {
-public:
     std::string Hash;
     std::string Name;
     Nullable<uint8_t> GroupId;
     bool Remove;
-
-    static NetworkUser* FromJson(json_t* json);
-
-    json_t* ToJson() const;
-    json_t* ToJson(json_t* json) const;
 };
 
 class NetworkUserManager final

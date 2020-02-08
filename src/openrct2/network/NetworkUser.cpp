@@ -16,12 +16,13 @@
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../platform/platform.h"
+#    include "NetworkGroups.h"
 
 #    include <unordered_set>
 
 constexpr const utf8* USER_STORE_FILENAME = "users.json";
 
-NetworkUser* NetworkUser::FromJson(json_t* json)
+static NetworkUser* NetworkUserFromJson(json_t* json)
 {
     const char* hash = json_string_value(json_object_get(json, "hash"));
     const char* name = json_string_value(json_object_get(json, "name"));
@@ -43,20 +44,15 @@ NetworkUser* NetworkUser::FromJson(json_t* json)
     return user;
 }
 
-json_t* NetworkUser::ToJson() const
+static json_t* NetworkUserToJson(const NetworkUser* user, json_t* json)
 {
-    return ToJson(json_object());
-}
-
-json_t* NetworkUser::ToJson(json_t* json) const
-{
-    json_object_set_new(json, "hash", json_string(Hash.c_str()));
-    json_object_set_new(json, "name", json_string(Name.c_str()));
+    json_object_set_new(json, "hash", json_string(user->Hash.c_str()));
+    json_object_set_new(json, "name", json_string(user->Name.c_str()));
 
     json_t* jsonGroupId;
-    if (GroupId.HasValue())
+    if (user->GroupId.HasValue())
     {
-        jsonGroupId = json_integer(GroupId.GetValue());
+        jsonGroupId = json_integer(user->GroupId.GetValue());
     }
     else
     {
@@ -65,6 +61,11 @@ json_t* NetworkUser::ToJson(json_t* json) const
     json_object_set_new(json, "groupId", jsonGroupId);
 
     return json;
+}
+
+static json_t* NetworkUserToJson(const NetworkUser* user)
+{
+    return NetworkUserToJson(user, json_object());
 }
 
 NetworkUserManager::~NetworkUserManager()
@@ -97,7 +98,7 @@ void NetworkUserManager::Load()
             for (size_t i = 0; i < numUsers; i++)
             {
                 json_t* jsonUser = json_array_get(jsonUsers, i);
-                NetworkUser* networkUser = NetworkUser::FromJson(jsonUser);
+                NetworkUser* networkUser = NetworkUserFromJson(jsonUser);
                 if (networkUser != nullptr)
                 {
                     _usersByHash[networkUser->Hash] = networkUser;
@@ -154,7 +155,7 @@ void NetworkUserManager::Save()
                 }
                 else
                 {
-                    networkUser->ToJson(jsonUser);
+                    NetworkUserToJson(networkUser, jsonUser);
                     savedHashes.insert(hashString);
                 }
             }
@@ -167,7 +168,7 @@ void NetworkUserManager::Save()
         const NetworkUser* networkUser = kvp.second;
         if (!networkUser->Remove && savedHashes.find(networkUser->Hash) == savedHashes.end())
         {
-            json_t* jsonUser = networkUser->ToJson();
+            json_t* jsonUser = NetworkUserToJson(networkUser);
             json_array_append_new(jsonUsers, jsonUser);
         }
     }
