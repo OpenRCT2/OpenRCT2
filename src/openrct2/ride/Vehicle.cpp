@@ -6438,13 +6438,14 @@ bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, ui
         uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x, location.y);
         while (spriteIdx != SPRITE_INDEX_NULL)
         {
-            Vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
-            spriteIdx = vehicle2->next_in_quadrant;
+            auto sprite = get_sprite(spriteIdx);
+            spriteIdx = sprite->next_in_quadrant;
 
-            if (vehicle2 == vehicle)
+            auto vehicle2 = sprite->As<Vehicle>();
+            if (vehicle2 == nullptr)
                 continue;
 
-            if (vehicle2->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+            if (vehicle2 == vehicle)
                 continue;
 
             if (vehicle2->ride != rideIndex)
@@ -7663,13 +7664,14 @@ static bool vehicle_update_motion_collision_detection(
         location += xy_offset;
 
         collideId = sprite_get_first_in_quadrant(location.x, location.y);
-        for (; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant)
+        for (SpriteBase* sprite = nullptr; collideId != SPRITE_INDEX_NULL; collideId = sprite->next_in_quadrant)
         {
-            collideVehicle = GET_VEHICLE(collideId);
-            if (collideVehicle == vehicle)
+            sprite = get_sprite(collideId);
+            collideVehicle = sprite->As<Vehicle>();
+            if (collideVehicle == nullptr)
                 continue;
 
-            if (collideVehicle->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+            if (collideVehicle == vehicle)
                 continue;
 
             int32_t z_diff = abs(collideVehicle->z - z);
