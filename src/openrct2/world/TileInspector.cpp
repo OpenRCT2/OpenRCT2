@@ -303,11 +303,11 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
     if (isExecuting)
     {
         // Check if the element to be pasted refers to a banner index
-        BannerIndex bannerIndex = tile_element_get_banner_index(&element);
+        auto bannerIndex = tile_element_get_banner_index(&element);
         if (bannerIndex != BANNER_INDEX_NULL)
         {
             // The element to be pasted refers to a banner index - make a copy of it
-            BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+            auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
             if (newBannerIndex == BANNER_INDEX_NULL)
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);

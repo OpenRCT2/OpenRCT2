@@ -1521,9 +1521,15 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetSecondaryColour(src2->GetSecondaryColour());
             dst2->SetTertiaryColour(src2->GetTertiaryColour());
             dst2->SetAnimationFrame(src2->GetAnimationFrame());
-            dst2->SetBannerIndex(src2->GetBannerIndex());
             dst2->SetAcrossTrack(src2->IsAcrossTrack());
             dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
+
+            auto bannerIndex = src2->GetBannerIndex();
+            if (bannerIndex != BANNER_INDEX_NULL)
+                dst2->SetBannerIndex(bannerIndex);
+            else
+                dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+
             break;
         }
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -1535,7 +1541,13 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
             dst2->SetPrimaryColour(src2->GetPrimaryColour());
             dst2->SetSecondaryColour(src2->GetSecondaryColour());
-            dst2->SetBannerIndex(src2->GetBannerIndex());
+
+            auto bannerIndex = src2->GetBannerIndex();
+            if (bannerIndex != BANNER_INDEX_NULL)
+                dst2->SetBannerIndex(bannerIndex);
+            else
+                dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+
             break;
         }
         case TILE_ELEMENT_TYPE_BANNER:
@@ -1543,9 +1555,13 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             auto dst2 = dst->AsBanner();
             auto src2 = src->AsBanner();
 
-            dst2->SetIndex(src2->GetIndex());
             dst2->SetPosition(src2->GetPosition());
             dst2->SetAllowedEdges(src2->GetAllowedEdges());
+            auto bannerIndex = src2->GetIndex();
+            if (bannerIndex != BANNER_INDEX_NULL)
+                dst2->SetIndex(bannerIndex);
+            else
+                dst2->SetIndex(RCT12_BANNER_INDEX_NULL);
             break;
         }
         default:

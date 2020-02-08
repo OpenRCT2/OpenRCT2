@@ -599,7 +599,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
 
     if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
     {
-        BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
+        auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         context_open_detail_window(WD_SIGN, bannerIndex);
     }
     else

@@ -24,12 +24,12 @@
 DEFINE_GAME_ACTION(SignSetNameAction, GAME_COMMAND_SET_SIGN_NAME, GameActionResult)
 {
 private:
-    int32_t _bannerIndex;
+    BannerIndex _bannerIndex;
     std::string _name;
 
 public:
     SignSetNameAction() = default;
-    SignSetNameAction(int32_t bannerIndex, const std::string& name)
+    SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
         : _bannerIndex(bannerIndex)
         , _name(name)
     {
@@ -48,7 +48,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if ((BannerIndex)_bannerIndex >= MAX_BANNERS || _bannerIndex < 0)
+        if (_bannerIndex >= MAX_BANNERS)
         {
             log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);

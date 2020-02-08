@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
 
@@ -389,9 +390,10 @@ struct LargeSceneryElement : TileElementBase
 {
 private:
     uint32_t EntryIndex;
-    uint32_t BannerIndex;
+    ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
+    uint8_t pad[2];
 
 public:
     uint32_t GetEntryIndex() const;
@@ -426,7 +428,7 @@ private:
     uint8_t animation;        // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0B[5];
+    uint8_t pad_0C[4];
 #pragma clang diagnostic pop
 
 public:
@@ -502,7 +504,7 @@ private:
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t flags;  // 6
     uint8_t unused; // 7
-    uint8_t pad_08[8];
+    uint8_t pad_09[7];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;

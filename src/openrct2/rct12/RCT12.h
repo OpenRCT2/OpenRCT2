@@ -48,6 +48,8 @@ constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
 constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
+constexpr uint8_t RCT12_BANNER_INDEX_NULL = (uint8_t)-1;
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -415,13 +417,13 @@ public:
     uint16_t GetSequenceIndex() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
-    BannerIndex GetBannerIndex() const;
+    uint8_t GetBannerIndex() const;
 
     void SetEntryIndex(uint32_t newIndex);
     void SetSequenceIndex(uint16_t sequence);
     void SetPrimaryColour(colour_t colour);
     void SetSecondaryColour(colour_t colour);
-    void SetBannerIndex(BannerIndex newIndex);
+    void SetBannerIndex(uint8_t newIndex);
 };
 assert_struct_size(RCT12LargeSceneryElement, 8);
 struct RCT12WallElement : RCT12TileElementBase
@@ -430,8 +432,8 @@ private:
     uint8_t entryIndex; // 4
     union
     {
-        uint8_t colour_3;         // 5
-        BannerIndex banner_index; // 5
+        uint8_t colour_3;     // 5
+        uint8_t banner_index; // 5
     };
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
@@ -442,7 +444,7 @@ public:
     colour_t GetSecondaryColour() const;
     colour_t GetTertiaryColour() const;
     uint8_t GetAnimationFrame() const;
-    BannerIndex GetBannerIndex() const;
+    uint8_t GetBannerIndex() const;
     bool IsAcrossTrack() const;
     bool AnimationIsBackwards() const;
     uint32_t GetRawRCT1WallTypeData() const;
@@ -455,7 +457,7 @@ public:
     void SetSecondaryColour(colour_t newColour);
     void SetTertiaryColour(colour_t newColour);
     void SetAnimationFrame(uint8_t frameNum);
-    void SetBannerIndex(BannerIndex newIndex);
+    void SetBannerIndex(uint8_t newIndex);
     void SetAcrossTrack(bool acrossTrack);
     void SetAnimationIsBackwards(bool isBackwards);
 };
@@ -484,19 +486,19 @@ assert_struct_size(RCT12EntranceElement, 8);
 struct RCT12BannerElement : RCT12TileElementBase
 {
 private:
-    BannerIndex index; // 4
-    uint8_t position;  // 5
-    uint8_t flags;     // 6
+    uint8_t index;    // 4
+    uint8_t position; // 5
+    uint8_t flags;    // 6
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t unused; // 7
 #pragma clang diagnostic pop
 public:
-    BannerIndex GetIndex() const;
+    uint8_t GetIndex() const;
     uint8_t GetPosition() const;
     uint8_t GetAllowedEdges() const;
 
-    void SetIndex(BannerIndex newIndex);
+    void SetIndex(uint8_t newIndex);
     void SetPosition(uint8_t newPosition);
     void SetAllowedEdges(uint8_t newEdges);
 };

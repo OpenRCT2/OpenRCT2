@@ -170,7 +170,7 @@ rct_window* window_sign_open(rct_windownumber number)
             rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
             if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
+                auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
 
                 if (bannerIndex == w->number)
                     break;
@@ -227,7 +227,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
                     if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                     {
-                        BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
+                        auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
                         if (bannerIndex == w->number)
                             break;
                     }
