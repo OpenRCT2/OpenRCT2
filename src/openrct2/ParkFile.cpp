@@ -22,10 +22,10 @@
 #include "management/Award.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
-#include "peep/Staff.h"
 #include "object/Object.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "peep/Staff.h"
 #include "ride/ShopItem.h"
 #include "scenario/Scenario.h"
 #include "world/Climate.h"
@@ -68,7 +68,7 @@ namespace OpenRCT2
         constexpr uint32_t EDITOR           = 0x21;
 
         constexpr uint32_t TILES            = 0x30;
-        constexpr uint32_t THINGS           = 0x31;
+        constexpr uint32_t SPRITES          = 0x31;
         constexpr uint32_t RIDES            = 0x32;
         constexpr uint32_t BANNERS          = 0x33;
         constexpr uint32_t ANIMATIONS       = 0x34;
@@ -100,7 +100,7 @@ namespace OpenRCT2
             ReadWriteTilesChunk(os);
             ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
-            ReadWriteThingsChunk(os);
+            ReadWriteSpritesChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -131,7 +131,7 @@ namespace OpenRCT2
             ReadWriteTilesChunk(os);
             ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
-            ReadWriteThingsChunk(os);
+            ReadWriteSpritesChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -721,9 +721,9 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteThingsChunk(OrcaStream& os)
+        void ReadWriteSpritesChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::THINGS, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::SPRITES, [](OrcaStream::ChunkStream& cs) {
                 for (size_t i = 0; i < SPRITE_LIST_COUNT; i++)
                 {
                     cs.ReadWrite(gSpriteListHead[i]);
