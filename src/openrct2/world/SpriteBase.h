@@ -54,18 +54,18 @@ public:
         }
         return result;
     }
-    template<> bool Is<Peep>();
-    template<> bool Is<Litter>();
-    template<> bool Is<Vehicle>();
-    template<> bool Is<Balloon>();
-    template<> bool Is<Duck>();
-    template<> bool Is<JumpingFountain>();
-    template<> bool Is<MoneyEffect>();
-    template<> bool Is<VehicleCrashParticle>();
-    template<> bool Is<CrashSplashParticle>();
-    template<> bool Is<SteamParticle>();
-    template<> bool Is<ExplosionFlare>();
-    template<> bool Is<ExplosionCloud>();
+    //template<> bool Is<Peep>();
+    //template<> bool Is<Litter>();
+    //template<> bool Is<Vehicle>();
+    //template<> bool Is<Balloon>();
+    //template<> bool Is<Duck>();
+    //template<> bool Is<JumpingFountain>();
+    //template<> bool Is<MoneyEffect>();
+    //template<> bool Is<VehicleCrashParticle>();
+    //template<> bool Is<CrashSplashParticle>();
+    //template<> bool Is<SteamParticle>();
+    //template<> bool Is<ExplosionFlare>();
+    //template<> bool Is<ExplosionCloud>();
 };
 
 struct SpriteGeneric : SpriteBase
