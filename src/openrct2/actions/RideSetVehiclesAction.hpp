@@ -33,7 +33,7 @@ enum class RideSetVehicleType : uint8_t
 DEFINE_GAME_ACTION(RideSetVehicleAction, GAME_COMMAND_SET_RIDE_VEHICLES, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     uint8_t _type;
     uint8_t _value;
     uint8_t _colour;

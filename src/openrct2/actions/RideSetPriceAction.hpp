@@ -26,7 +26,7 @@
 DEFINE_GAME_ACTION(RideSetPriceAction, GAME_COMMAND_SET_RIDE_PRICE, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     money16 _price = MONEY16_UNDEFINED;
     bool _primaryPrice = true;
 
