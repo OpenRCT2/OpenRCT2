@@ -1460,7 +1460,7 @@ bool map_can_construct_with_clear_at(
     std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
     if (price != nullptr)
     {
-        *price = res->Cost;
+        *price += res->Cost;
     }
     gMapGroundFlags = dynamic_cast<ConstructClearResult*>(res.get())->GroundFlags;
     return res->Error == GA_ERROR::OK;
