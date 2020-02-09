@@ -21,7 +21,6 @@
 #    include <openrct2/drawing/Drawing.h>
 #    include <openrct2/interface/Colour.h>
 #    include <openrct2/localisation/Localisation.h>
-#    include <openrct2/network/Http.h>
 #    include <openrct2/network/ServerList.h>
 #    include <openrct2/network/network.h>
 #    include <openrct2/platform/platform.h>

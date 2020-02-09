@@ -46,6 +46,7 @@
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
 		4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */; };
+		4C8A6FF323EB5326001A8255 /* Http.cURL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
@@ -452,7 +453,6 @@
 		F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */; };
 		F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
-		F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F61EC4E7CC00FA49E2 /* Http.cpp */; };
 		F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* Network.cpp */; };
 		F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */; };
 		F76C864B1EC4E88300FA49E2 /* NetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FC1EC4E7CC00FA49E2 /* NetworkConnection.cpp */; };
@@ -781,6 +781,8 @@
 		4C7B547E2010DFF700A52E21 /* Crash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crash.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
+		4C8A6FF123EB5325001A8255 /* Http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Http.h; sourceTree = "<group>"; };
+		4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Http.cURL.cpp; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
 		4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X8DrawingEngine.h; sourceTree = "<group>"; };
 		4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardwareDisplayDrawingEngine.cpp; sourceTree = "<group>"; };
@@ -1586,7 +1588,6 @@
 		F76C83871EC4E7CC00FA49E2 /* IStream.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IStream.hpp; sourceTree = "<group>"; };
 		F76C83881EC4E7CC00FA49E2 /* Json.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Json.cpp; sourceTree = "<group>"; };
 		F76C83891EC4E7CC00FA49E2 /* Json.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Json.hpp; sourceTree = "<group>"; };
-		F76C838A1EC4E7CC00FA49E2 /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
 		F76C838B1EC4E7CC00FA49E2 /* Memory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Memory.hpp; sourceTree = "<group>"; };
 		F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryStream.cpp; sourceTree = "<group>"; };
 		F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryStream.h; sourceTree = "<group>"; };
@@ -1615,8 +1616,6 @@
 		F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
 		F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileClassifier.h; sourceTree = "<group>"; };
 		F76C83BA1EC4E7CC00FA49E2 /* input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = input.h; sourceTree = "<group>"; };
-		F76C83F61EC4E7CC00FA49E2 /* Http.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Http.cpp; sourceTree = "<group>"; };
-		F76C83F71EC4E7CC00FA49E2 /* http.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http.h; sourceTree = "<group>"; };
 		F76C83F81EC4E7CC00FA49E2 /* Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		F76C83F91EC4E7CC00FA49E2 /* network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = network.h; sourceTree = "<group>"; };
 		F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAction.cpp; sourceTree = "<group>"; };
@@ -2662,11 +2661,12 @@
 				F76C83831EC4E7CC00FA49E2 /* FileStream.hpp */,
 				F76C83841EC4E7CC00FA49E2 /* Guard.cpp */,
 				F76C83851EC4E7CC00FA49E2 /* Guard.hpp */,
+				4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */,
+				4C8A6FF123EB5325001A8255 /* Http.h */,
 				F76C83861EC4E7CC00FA49E2 /* IStream.cpp */,
 				F76C83871EC4E7CC00FA49E2 /* IStream.hpp */,
 				F76C83881EC4E7CC00FA49E2 /* Json.cpp */,
 				F76C83891EC4E7CC00FA49E2 /* Json.hpp */,
-				F76C838A1EC4E7CC00FA49E2 /* Math.hpp */,
 				F76C838B1EC4E7CC00FA49E2 /* Memory.hpp */,
 				F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */,
 				F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */,
@@ -2798,8 +2798,6 @@
 			children = (
 				2ADE2F3022441905002598AF /* DiscordService.cpp */,
 				2ADE2F2F22441905002598AF /* DiscordService.h */,
-				F76C83F61EC4E7CC00FA49E2 /* Http.cpp */,
-				F76C83F71EC4E7CC00FA49E2 /* http.h */,
 				F76C83F81EC4E7CC00FA49E2 /* Network.cpp */,
 				F76C83F91EC4E7CC00FA49E2 /* network.h */,
 				F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */,
@@ -3904,6 +3902,7 @@
 				932A211E22D73CFA00C57EDB /* GameActionCompat.cpp in Sources */,
 				4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
+				4C8A6FF323EB5326001A8255 /* Http.cURL.cpp in Sources */,
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
 				C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */,
 				C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */,
@@ -4069,7 +4068,6 @@
 				C688790020289B9B0084B384 /* ReverseFreefallCoaster.cpp in Sources */,
 				93F76EF620BFF76E00D4512C /* Paint.Sprite.cpp in Sources */,
 				C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */,
-				F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */,
 				C688789F20289B200084B384 /* Language.cpp in Sources */,
 				C688791620289B9B0084B384 /* MiniGolf.cpp in Sources */,
 				F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */,

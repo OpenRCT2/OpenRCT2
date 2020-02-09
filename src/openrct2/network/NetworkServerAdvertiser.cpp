@@ -13,6 +13,7 @@
 
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
+#    include "../core/Http.h"
 #    include "../core/Json.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
@@ -23,7 +24,6 @@
 #    include "../util/Util.h"
 #    include "../world/Map.h"
 #    include "../world/Park.h"
-#    include "Http.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -164,8 +164,6 @@ private:
 
     void SendRegistration(bool forceIPv4)
     {
-        using namespace OpenRCT2::Networking;
-
         _lastAdvertiseTime = platform_get_ticks();
 
         // Send the registration request
@@ -199,8 +197,6 @@ private:
 
     void SendHeartbeat()
     {
-        using namespace OpenRCT2::Networking;
-
         Http::Request request;
         request.url = GetMasterServerUrl();
         request.method = Http::Method::PUT;

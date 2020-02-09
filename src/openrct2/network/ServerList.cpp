@@ -15,11 +15,11 @@
 #    include "../PlatformEnvironment.h"
 #    include "../config/Config.h"
 #    include "../core/FileStream.hpp"
+#    include "../core/Http.h"
 #    include "../core/Json.hpp"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../network/Http.h"
 #    include "../platform/platform.h"
 #    include "Socket.h"
 #    include "network.h"
@@ -331,7 +331,6 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
 #    ifdef DISABLE_HTTP
     return {};
 #    else
-    using namespace OpenRCT2::Networking;
 
     auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
     auto f = p->get_future();

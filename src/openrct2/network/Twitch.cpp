@@ -29,6 +29,7 @@ namespace Twitch
 #    include "../OpenRCT2.h"
 #    include "../actions/GuestSetFlagsAction.hpp"
 #    include "../config/Config.h"
+#    include "../core/Http.h"
 #    include "../core/Json.hpp"
 #    include "../core/String.hpp"
 #    include "../drawing/Drawing.h"
@@ -39,7 +40,6 @@ namespace Twitch
 #    include "../platform/platform.h"
 #    include "../util/Util.h"
 #    include "../world/Sprite.h"
-#    include "Http.h"
 #    include "Twitch.h"
 
 #    include <jansson.h>
@@ -47,7 +47,6 @@ namespace Twitch
 #    include <vector>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Networking;
 
 bool gTwitchEnable = false;
 
