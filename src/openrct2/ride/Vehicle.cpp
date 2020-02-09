@@ -1979,7 +1979,8 @@ void Vehicle::Update()
     {
         _vehicleBreakdown = curRide->breakdown_reason_pending;
         auto vehicleEntry = &rideEntry->vehicles[vehicle_type];
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) &&
+            curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
                 || (vehicle_sprite_type == 2 && velocity <= 0x20000))
