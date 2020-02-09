@@ -283,7 +283,7 @@ private:
             if (guest->state == PEEP_STATE_WALKING)
             {
                 // Check the walking guest's tile. Only count them if they're on a path tile.
-                guest_tile = map_get_path_element_at({ guest->next_x / 32, guest->next_y / 32, guest->next_z });
+                guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                 if (guest_tile != nullptr)
                     ++count;
             }
@@ -297,7 +297,7 @@ private:
             {
                 if (guest->state == PEEP_STATE_WALKING)
                 {
-                    guest_tile = map_get_path_element_at({ guest->next_x / 32, guest->next_y / 32, guest->next_z });
+                    guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
                     {
                         if (rand == 0)

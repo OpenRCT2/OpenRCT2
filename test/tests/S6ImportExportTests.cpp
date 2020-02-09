@@ -155,9 +155,9 @@ static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& ri
 
 static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
 {
-    COMPARE_FIELD(next_x);
-    COMPARE_FIELD(next_y);
-    COMPARE_FIELD(next_z);
+    COMPARE_FIELD(NextLoc.x);
+    COMPARE_FIELD(NextLoc.y);
+    COMPARE_FIELD(NextLoc.z);
     COMPARE_FIELD(next_flags);
     COMPARE_FIELD(outside_of_park);
     COMPARE_FIELD(state);

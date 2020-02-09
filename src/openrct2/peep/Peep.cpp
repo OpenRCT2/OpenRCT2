@@ -472,7 +472,7 @@ bool Peep::CheckForPath()
         return true;
     }
 
-    TileElement* tile_element = map_get_first_element_at({ next_x, next_y });
+    TileElement* tile_element = map_get_first_element_at(NextLoc);
 
     uint8_t map_type = TILE_ELEMENT_TYPE_PATH;
     if (GetNextIsSurface())
@@ -480,15 +480,13 @@ bool Peep::CheckForPath()
         map_type = TILE_ELEMENT_TYPE_SURFACE;
     }
 
-    int32_t height = next_z;
-
     do
     {
         if (tile_element == nullptr)
             break;
         if (tile_element->GetType() == map_type)
         {
-            if (height == tile_element->base_height)
+            if (NextLoc.z == tile_element->GetBaseZ())
             {
                 // Found a suitable path or surface
                 return true;
@@ -977,9 +975,7 @@ void Peep::UpdateFalling()
 
     MoveTo(x, y, saved_height);
 
-    next_x = x & 0xFFE0;
-    next_y = y & 0xFFE0;
-    next_z = saved_map->base_height;
+    NextLoc = { CoordsXY{ x, y }.ToTileStart(), saved_map->GetBaseZ() };
 
     if (saved_map->GetType() != TILE_ELEMENT_TYPE_PATH)
     {
@@ -2644,9 +2640,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
  */
 static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileElement* tile_element, bool vandalism)
 {
-    peep->next_x = (x & 0xFFE0);
-    peep->next_y = (y & 0xFFE0);
-    peep->next_z = tile_element->base_height;
+    peep->NextLoc = { CoordsXY{ x, y }.ToTileStart(), tile_element->GetBaseZ() };
     peep->SetNextFlags(tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped(), false);
 
     int16_t z = peep->GetZOnSlope(x, y);
@@ -2696,7 +2690,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             if (other_peep->state != PEEP_STATE_WALKING)
                 continue;
 
-            if (abs(other_peep->z - peep->next_z * 8) > 16)
+            if (abs(other_peep->z - peep->NextLoc.z) > 16)
                 continue;
             crowded++;
             continue;
@@ -2704,7 +2698,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             Litter* litter = (Litter*)sprite;
-            if (abs(litter->z - peep->next_z * 8) > 16)
+            if (abs(litter->z - peep->NextLoc.z) > 16)
                 continue;
 
             litter_count++;
@@ -3077,7 +3071,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     auto newLoc = *loc;
     CoordsXY truncatedNewLoc = newLoc.ToTileStart();
-    if (truncatedNewLoc.x == next_x && truncatedNewLoc.y == next_y)
+    if (truncatedNewLoc.x == NextLoc.x && truncatedNewLoc.y == NextLoc.y)
     {
         int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
         MoveTo(newLoc.x, newLoc.y, height);
@@ -3174,9 +3168,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             }
 
             // The peep is on a surface and not on a path
-            next_x = truncatedNewLoc.x;
-            next_y = truncatedNewLoc.y;
-            next_z = surfaceElement->base_height;
+            NextLoc = { truncatedNewLoc, surfaceElement->GetBaseZ() };
             SetNextFlags(0, false, true);
 
             height = GetZOnSlope(newLoc.x, newLoc.y);
@@ -3222,9 +3214,8 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
         return tile_element_height({ tile_x, tile_y });
     }
 
-    int32_t height = next_z * 8;
     uint8_t slope = GetNextDirection();
-    return height + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
+    return NextLoc.z + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
 }
 
 rct_string_id get_real_name_string_id_from_id(uint32_t id)

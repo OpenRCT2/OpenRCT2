@@ -1406,9 +1406,7 @@ private:
 
         dst->state = static_cast<PeepState>(src->state);
         dst->sub_state = src->sub_state;
-        dst->next_x = src->next_x;
-        dst->next_y = src->next_y;
-        dst->next_z = src->next_z / 2;
+        dst->NextLoc = { src->next_x, src->next_y, src->next_z * 4 };
         dst->next_flags = src->next_flags;
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;

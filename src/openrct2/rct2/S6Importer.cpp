@@ -1377,9 +1377,7 @@ public:
         {
             dst->SetName(GetUserString(src->name_string_idx));
         }
-        dst->next_x = src->next_x;
-        dst->next_y = src->next_y;
-        dst->next_z = src->next_z;
+        dst->NextLoc = { src->next_x, src->next_y, src->next_z * 8 };
         dst->next_flags = src->next_flags;
         dst->outside_of_park = src->outside_of_park;
         dst->state = (PeepState)src->state;

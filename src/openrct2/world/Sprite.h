@@ -137,6 +137,10 @@ union rct_sprite
     Duck* AsDuck();
     MoneyEffect* AsMoneyEffect();
     Peep* AsPeep();
+    rct_sprite()
+        : pad_00()
+    {
+    }
 };
 assert_struct_size(rct_sprite, 0x200);
 
