@@ -1364,7 +1364,7 @@ void vehicle_update_all()
         vehicle = GET_VEHICLE(sprite_index);
         sprite_index = vehicle->next;
 
-        vehicle->vehicle_update();
+        vehicle->Update();
     }
 }
 
@@ -1954,42 +1954,42 @@ static SoundIdVolume sub_6D7AC0(SoundId currentSoundId, uint8_t currentVolume, S
  *
  *  rct2: 0x006D77F2
  */
-void Vehicle::vehicle_update()
+void Vehicle::Update()
 {
     // The cable lift uses the ride type of NULL
-    if (this->ride_subtype == RIDE_TYPE_NULL)
+    if (ride_subtype == RIDE_TYPE_NULL)
     {
         cable_lift_update(this);
         return;
     }
 
-    auto rideEntry = get_ride_entry(this->ride_subtype);
+    auto rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
         return;
 
-    auto r = get_ride(ride);
-    if (r == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (this->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+    if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
         vehicle_update_measurements(this);
 
     _vehicleBreakdown = 255;
-    if (r->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        _vehicleBreakdown = r->breakdown_reason_pending;
-        auto vehicleEntry = &rideEntry->vehicles[this->vehicle_type];
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && r->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
+        _vehicleBreakdown = curRide->breakdown_reason_pending;
+        auto vehicleEntry = &rideEntry->vehicles[vehicle_type];
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
-                || (this->vehicle_sprite_type == 2 && this->velocity <= 0x20000))
+                || (vehicle_sprite_type == 2 && velocity <= 0x20000))
             {
-                this->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
             }
         }
     }
 
-    switch (this->status)
+    switch (status)
     {
         case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
             vehicle_update_moving_to_end_of_station(this);
