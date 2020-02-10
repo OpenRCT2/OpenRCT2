@@ -38,7 +38,7 @@ enum class RideSetAppearanceType : uint8_t
 DEFINE_GAME_ACTION(RideSetAppearanceAction, GAME_COMMAND_SET_RIDE_APPEARANCE, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     uint8_t _type;
     uint8_t _value;
     uint32_t _index;

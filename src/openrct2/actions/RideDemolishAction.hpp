@@ -32,7 +32,7 @@ using namespace OpenRCT2;
 DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     uint8_t _modifyType = RIDE_MODIFY_DEMOLISH;
 
 public:

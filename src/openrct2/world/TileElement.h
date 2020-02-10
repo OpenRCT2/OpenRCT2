@@ -289,7 +289,7 @@ private:
     ride_idnew_t RideIndex;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[1];
+    uint8_t pad[3];
 #pragma clang diagnostic pop
 
 public:
@@ -299,8 +299,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    uint32_t GetRideIndex() const;
-    void SetRideIndex(uint32_t newRideIndex);
+    ride_idnew_t GetRideIndex() const;
+    void SetRideIndex(ride_idnew_t newRideIndex);
 
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);

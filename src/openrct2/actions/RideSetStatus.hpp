@@ -31,7 +31,7 @@ static rct_string_id _StatusErrorTitles[] = {
 DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     uint8_t _status = RIDE_STATUS_CLOSED;
 
 public:
