@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../actions/NetworkModifyGroupAction.hpp"
+#include "../actions/PlayerKickAction.hpp"
 #include "../actions/PlayerSetGroupAction.hpp"
 #include "../network/NetworkAction.h"
 #include "../network/network.h"
@@ -271,14 +272,39 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
+        void kickPlayer(int32_t index)
+        {
+            auto numPlayers = network_get_num_players();
+            if (index < numPlayers)
+            {
+                auto playerId = network_get_player_id(index);
+                auto kickPlayerAction = PlayerKickAction(playerId);
+                GameActions::Execute(&kickPlayerAction);
+            }
+        }
+
+        void sendMessage(std::string message, DukValue players)
+        {
+            if (players.is_array())
+            {
+                duk_error(players.context(), DUK_ERR_ERROR, "Not yet supported");
+            }
+            else
+            {
+                network_send_chat(message.c_str());
+            }
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScNetwork::mode_get, nullptr, "mode");
             dukglue_register_property(ctx, &ScNetwork::groups_get, nullptr, "groups");
             dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
             dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");
-            dukglue_register_method(ctx, &ScNetwork::getPlayer, "getPlayer");
             dukglue_register_method(ctx, &ScNetwork::getGroup, "getGroup");
+            dukglue_register_method(ctx, &ScNetwork::getPlayer, "getPlayer");
+            dukglue_register_method(ctx, &ScNetwork::kickPlayer, "kickPlayer");
+            dukglue_register_method(ctx, &ScNetwork::sendMessage, "sendMessage");
         }
     };
 } // namespace OpenRCT2::Scripting

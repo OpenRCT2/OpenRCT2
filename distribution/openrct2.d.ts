@@ -401,8 +401,9 @@ export interface Network {
     getGroup(index: number): PlayerGroup;
     setGroups(groups: PlayerGroup[]): void;
     getPlayer(index: number): Player;
+    kickPlayer(index: number): Player;
     sendMessage(message: string): void;
-    sendMessage(players: number[], message: string): void;
+    sendMessage(message: string, players: number[]): void;
 }
 
 /**
