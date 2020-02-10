@@ -12,6 +12,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
+* Tulio Paschoalin Leao (tupaschoal)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
@@ -135,7 +136,6 @@ The following people are not part of the development team, but have been contrib
 * Jim Armstrong (41northstudios)
 * Kenny Castro-Monroy (kennycastro007)
 * Joseph Atkins-Turkish (Spacerat)
-* Tulio Paschoalin Leao (tupaschoal)
 * Denis Khabenkov (kodmord)
 * Kevin Laframboise (klaframboise)
 
