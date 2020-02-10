@@ -43,6 +43,11 @@ export type HookType =
     "interval.tick" | "interval.day" |
     "network.chat" | "network.action" | "network.join" | "network.leave";
 
+export interface NetworkChatEventArgs {
+    player: number;
+    message: string;
+}
+
 export interface Context {
     /**
      * The user's current configuration.
@@ -68,6 +73,7 @@ export interface Context {
      * Subscribes to the given hook.
      */
     subscribe(hook: HookType, callback: Function): IDisposable;
+    subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
 }
 
 export interface IntentDesc
@@ -401,7 +407,7 @@ export interface Network {
     getGroup(index: number): PlayerGroup;
     setGroups(groups: PlayerGroup[]): void;
     getPlayer(index: number): Player;
-    kickPlayer(index: number): Player;
+    kickPlayer(index: number): void;
     sendMessage(message: string): void;
     sendMessage(message: string, players: number[]): void;
 }

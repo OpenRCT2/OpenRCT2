@@ -2822,6 +2822,10 @@ void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection,
 
 void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
+    auto szText = packet.ReadString();
+    if (szText == nullptr || szText[0] == '\0')
+        return;
+
     if (connection.Player)
     {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -2830,19 +2834,44 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
             return;
         }
     }
-    const char* text = packet.ReadString();
-    if (text)
+
+    std::string text = szText;
+    if (connection.Player != nullptr)
     {
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, {
-            { "player", (int32_t)connection.Player->Id },
-            { "message", std::string(text) }
-        });
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
 
-        const char* formatted = FormatChat(connection.Player, text);
-        chat_history_add(formatted);
-        Server_Send_CHAT(formatted);
+            // Create event args object
+            auto objIdx = duk_push_object(ctx);
+            duk_push_number(ctx, (int32_t)connection.Player->Id);
+            duk_put_prop_string(ctx, objIdx, "player");
+            duk_push_string(ctx, text.c_str());
+            duk_put_prop_string(ctx, objIdx, "message");
+            auto e = DukValue::take_from_stack(ctx);
+
+            // Call the subscriptions
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e);
+
+            // Update text from object if subscriptions changed it
+            if (e["message"].type() != DukValue::Type::STRING)
+            {
+                // Subscription set text to non-string, do not relay message
+                return;
+            }
+            text = e["message"].as_string();
+            if (text.empty())
+            {
+                // Subscription set text to empty string, do not relay message
+                return;
+            }
+        }
     }
+
+    const char* formatted = FormatChat(connection.Player, text.c_str());
+    chat_history_add(formatted);
+    Server_Send_CHAT(formatted);
 }
 
 void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -3582,7 +3611,8 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExe
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
     if (player == nullptr)
     {
-        // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too early.
+        // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
+        // early.
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
     }
 

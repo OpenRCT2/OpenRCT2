@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
 
     struct HookList
     {
-        HOOK_TYPE Type;
+        HOOK_TYPE Type{};
         std::vector<Hook> Hooks;
 
         HookList()
@@ -80,10 +80,13 @@ namespace OpenRCT2::Scripting
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
         void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
         void UnsubscribeAll();
+        bool HasSubscriptions(HOOK_TYPE type) const;
         void Call(HOOK_TYPE type);
+        void Call(HOOK_TYPE type, DukValue args);
         void Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args);
 
     private:
         HookList& GetHookList(HOOK_TYPE type);
+        const HookList& GetHookList(HOOK_TYPE type) const;
     };
 } // namespace OpenRCT2::Scripting

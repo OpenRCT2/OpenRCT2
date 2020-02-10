@@ -87,6 +87,12 @@ void HookEngine::UnsubscribeAll()
     }
 }
 
+bool HookEngine::HasSubscriptions(HOOK_TYPE type) const
+{
+    auto& hookList = GetHookList(type);
+    return !hookList.Hooks.empty();
+}
+
 void HookEngine::Call(HOOK_TYPE type)
 {
     auto& hookList = GetHookList(type);
@@ -98,6 +104,23 @@ void HookEngine::Call(HOOK_TYPE type)
         function.push();
         duk_pcall(function.context(), 0);
         duk_pop(function.context());
+    }
+}
+
+void HookEngine::Call(HOOK_TYPE type, DukValue args)
+{
+    auto& hookList = GetHookList(type);
+    for (auto& hook : hookList.Hooks)
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner);
+
+        const auto& function = hook.Function;
+        auto ctx = function.context();
+        function.push();
+
+        args.push();
+        duk_pcall(ctx, 1);
+        duk_pop(ctx);
     }
 }
 
@@ -137,6 +160,12 @@ void HookEngine::Call(HOOK_TYPE type, const std::initializer_list<std::pair<std:
 }
 
 HookList& HookEngine::GetHookList(HOOK_TYPE type)
+{
+    auto index = static_cast<size_t>(type);
+    return _hookMap[index];
+}
+
+const HookList& HookEngine::GetHookList(HOOK_TYPE type) const
 {
     auto index = static_cast<size_t>(type);
     return _hookMap[index];
