@@ -218,6 +218,19 @@ namespace OpenRCT2::Scripting
         {
         }
 
+        std::string mode_get()
+        {
+            switch (network_get_mode())
+            {
+                default:
+                case NETWORK_MODE_NONE:
+                    return "none";
+                case NETWORK_MODE_SERVER:
+                    return "server";
+                case NETWORK_MODE_CLIENT:
+                    return "client";
+            }
+        }
         int32_t players_get()
         {
             return network_get_num_players();
@@ -260,6 +273,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScNetwork::mode_get, nullptr, "mode");
             dukglue_register_property(ctx, &ScNetwork::groups_get, nullptr, "groups");
             dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
             dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");

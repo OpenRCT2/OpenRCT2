@@ -389,10 +389,10 @@ export interface ServerInfo {
     readonly providerWebsite: string;
 }
 
-export type NetworkStatus = "none" | "server" | "client";
+export type NetworkMode = "none" | "server" | "client";
 
 export interface Network {
-    readonly status: NetworkStatus;
+    readonly mode: NetworkMode;
     readonly groups: number;
     readonly players: number;
     defaultGroup: number;
