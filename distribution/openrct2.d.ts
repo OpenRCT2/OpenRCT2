@@ -41,7 +41,7 @@ export interface Configuration {
 
 export type HookType =
     "interval.tick" | "interval.day" |
-    "network.chat";
+    "network.chat" | "network.action" | "network.join" | "network.leave";
 
 export interface Context {
     /**
@@ -62,7 +62,7 @@ export interface Context {
     /**
      * Registers a new intent (command) that can be mapped to a shortcut.
      */
-    registerIntent(desc: IntentDesc);
+    registerIntent(desc: IntentDesc): void;
 
     /**
      * Subscribes to the given hook.
@@ -83,7 +83,7 @@ export interface IDisposable {
 }
 
 export type TileElementType =
-    "surface" | "footpath";
+    "surface" | "footpath" | "track" | "small_scenery" | "entrance" | "large_scenery" | "banner";
 
 export interface TileElement {
     type: TileElementType;
@@ -232,21 +232,17 @@ export interface Park {
     postMessage(message: ParkMessage): void;
 }
 
-export interface Window {
-    id: number;
-    classification: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    title: string;
-    isSticky: boolean;
+/**
+ * User Interface APIs
+ * These will only be available to servers and clients that are not running headless mode.
+ * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
+ */
 
-    close(): void;
-}
-
+/**
+ * Represents the type of a widget, e.g. button or label.
+ */
 export type WidgetType =
-    "button" | "dropdown";
+    "button" | "dropdown" | "label" | "tabview" | "viewport";
 
 export interface Widget {
     type: WidgetType;
@@ -267,6 +263,49 @@ export interface DropdownWidget extends Widget {
     onChanged: (index: number) => void;
 }
 
+export interface LabelWidget extends Widget {
+    text: string;
+}
+
+export interface Coord3 {
+    x: number;
+    y: number;
+    z: number;
+}
+
+export interface ViewportWidget extends Widget {
+    target: null | number | Coord3;
+    zoom: number;
+}
+
+export interface Tab {
+    image: number;
+    tooltip: string;
+    widgets: Widget[];
+}
+
+export interface Window {
+    id: number;
+    classification: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    isSticky: boolean;
+    colours: number[];
+    title: string;
+    widgets: Widget[];
+
+    close(): void;
+}
+
+export interface TabbedWindow extends Window {
+    tabs: Tab[];
+    activeTabIndex: number;
+
+    onTabChanged: (index: number) => void;
+}
+
 export interface WindowDesc {
     classification: string;
     x?: number;
@@ -278,6 +317,7 @@ export interface WindowDesc {
     minWidth?: number;
     minHeight?: number;
     widgets?: Widget[];
+    tabs?: Tab[];
 }
 
 export interface Ui {
@@ -292,6 +332,14 @@ export interface Ui {
     closeAllWindows(): void;
 }
 
+/**
+ * Network APIs
+ * Use `network.status` to determine whether the current game is a client, server or in single player mode.
+ */
+
+ /**
+ * Represents a player within a network game.
+ */
 export interface Player {
     readonly id: number;
     readonly name: string;
@@ -341,7 +389,10 @@ export interface ServerInfo {
     readonly providerWebsite: string;
 }
 
+export type NetworkStatus = "none" | "server" | "client";
+
 export interface Network {
+    readonly status: NetworkStatus;
     readonly groups: number;
     readonly players: number;
     defaultGroup: number;
@@ -354,6 +405,9 @@ export interface Network {
     sendMessage(players: number[], message: string): void;
 }
 
+/**
+ * Global context for accessing all other APIs.
+ */
 declare global {
     var console: Console;
     var context: Context;
