@@ -10,6 +10,7 @@
 #include "ScriptEngine.h"
 
 #include "../PlatformEnvironment.h"
+#include "../config/Config.h"
 #include "../core/FileScanner.h"
 #include "../core/Path.hpp"
 #include "../interface/InteractiveConsole.h"
@@ -83,59 +84,79 @@ void ScriptEngine::Initialise()
 
 void ScriptEngine::LoadPlugins()
 {
-    auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
-    auto pattern = Path::Combine(base, "*.js");
-    auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(pattern, true));
-    while (scanner->Next())
+    if (!_initialised)
     {
-        auto path = std::string(scanner->GetPath());
-        if (ShouldLoadScript(path))
-        {
-            try
-            {
-                auto plugin = std::make_shared<Plugin>(_context, path);
-                ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
-                plugin->Load();
-
-                auto metadata = plugin->GetMetadata();
-                if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
-                {
-                    LogPluginInfo(plugin, "Loaded");
-                    _plugins.push_back(std::move(plugin));
-                }
-                else
-                {
-                    LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
-                }
-            }
-            catch (const std::exception& e)
-            {
-                _console.WriteLineError(e.what());
-            }
-        }
+        Initialise();
     }
 
+    auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+    if (Path::DirectoryExists(base))
+    {
+        auto pattern = Path::Combine(base, "*.js");
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(pattern, true));
+        while (scanner->Next())
+        {
+            auto path = std::string(scanner->GetPath());
+            if (ShouldLoadScript(path))
+            {
+                LoadPlugin(path);
+            }
+        }
+
+        if (gConfigPlugin.enable_hot_reloading)
+        {
+            SetupHotReloading();
+        }
+    }
+    _pluginsLoaded = true;
+}
+
+void ScriptEngine::LoadPlugin(const std::string& path)
+{
     try
     {
-        // Enable hot reloading
-        _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-        _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
-            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-            _changedPluginFiles.push_back(path);
-        };
+        auto plugin = std::make_shared<Plugin>(_context, path);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+        plugin->Load();
+
+        auto metadata = plugin->GetMetadata();
+        if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+        {
+            LogPluginInfo(plugin, "Loaded");
+            _plugins.push_back(std::move(plugin));
+        }
+        else
+        {
+            LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
+        }
     }
     catch (const std::exception& e)
     {
-        std::printf("Unable to enable hot reloading of plugins: %s\n", e.what());
+        _console.WriteLineError(e.what());
     }
-
-    _pluginsLoaded = true;
 }
 
 bool ScriptEngine::ShouldLoadScript(const std::string& path)
 {
     // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
     return path.find("/node_modules/") == std::string::npos && path.find("\\node_modules\\") == std::string::npos;
+}
+
+void ScriptEngine::SetupHotReloading()
+{
+    try
+    {
+        auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+        _pluginFileWatcher = std::make_unique<FileWatcher>(base);
+        _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
+            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+            _changedPluginFiles.emplace(path);
+        };
+    }
+    catch (const std::exception& e)
+    {
+        std::printf("Unable to enable hot reloading of plugins: %s\n", e.what());
+    }
 }
 
 void ScriptEngine::AutoReloadPlugins()

@@ -203,6 +203,11 @@ struct FontConfiguration
     int32_t hinting_threshold;
 };
 
+struct PluginConfiguration
+{
+    bool enable_hot_reloading;
+};
+
 enum SORT
 {
     SORT_NAME_ASCENDING,
@@ -238,6 +243,7 @@ extern TwitchConfiguration gConfigTwitch;
 extern NetworkConfiguration gConfigNetwork;
 extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
+extern PluginConfiguration gConfigPlugin;
 
 bool config_open(const utf8* path);
 bool config_save(const utf8* path);

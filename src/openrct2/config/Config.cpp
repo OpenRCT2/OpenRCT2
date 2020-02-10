@@ -549,6 +549,22 @@ namespace Config
         writer->WriteInt32("hinting_threshold", model->hinting_threshold);
     }
 
+    static void ReadPlugin(IIniReader* reader)
+    {
+        if (reader->ReadSection("plugin"))
+        {
+            auto model = &gConfigPlugin;
+            model->enable_hot_reloading = reader->GetBoolean("enable_hot_reloading", false);
+        }
+    }
+
+    static void WritePlugin(IIniWriter* writer)
+    {
+        auto model = &gConfigPlugin;
+        writer->WriteSection("plugin");
+        writer->WriteBoolean("enable_hot_reloading", model->enable_hot_reloading);
+    }
+
     static bool SetDefaults()
     {
         try
@@ -561,6 +577,7 @@ namespace Config
             ReadNotifications(reader.get());
             ReadTwitch(reader.get());
             ReadFont(reader.get());
+            ReadPlugin(reader.get());
             return true;
         }
         catch (const std::exception&)
@@ -582,6 +599,7 @@ namespace Config
             ReadNotifications(reader.get());
             ReadTwitch(reader.get());
             ReadFont(reader.get());
+            ReadPlugin(reader.get());
             return true;
         }
         catch (const std::exception&)
@@ -606,6 +624,7 @@ namespace Config
             WriteNotifications(writer.get());
             WriteTwitch(writer.get());
             WriteFont(writer.get());
+            WritePlugin(writer.get());
             return true;
         }
         catch (const std::exception& ex)
@@ -721,6 +740,7 @@ TwitchConfiguration gConfigTwitch;
 NetworkConfiguration gConfigNetwork;
 NotificationConfiguration gConfigNotifications;
 FontConfiguration gConfigFonts;
+PluginConfiguration gConfigPlugin;
 
 void config_set_defaults()
 {

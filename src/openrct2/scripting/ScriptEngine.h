@@ -19,6 +19,7 @@
 #include <mutex>
 #include <queue>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 struct duk_hthread;
@@ -102,7 +103,7 @@ namespace OpenRCT2::Scripting
         ScriptExecutionInfo _execInfo;
 
         std::unique_ptr<FileWatcher> _pluginFileWatcher;
-        std::vector<std::string> _changedPluginFiles;
+        std::unordered_set<std::string> _changedPluginFiles;
         std::mutex _changedPluginFilesMutex;
 
     public:
@@ -133,7 +134,9 @@ namespace OpenRCT2::Scripting
         void Initialise();
         void StartPlugins();
         void StopPlugins();
+        void LoadPlugin(const std::string& path);
         bool ShouldLoadScript(const std::string& path);
+        void SetupHotReloading();
         void AutoReloadPlugins();
         void ProcessREPL();
     };
