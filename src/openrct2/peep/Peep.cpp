@@ -3071,7 +3071,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     auto newLoc = *loc;
     CoordsXY truncatedNewLoc = newLoc.ToTileStart();
-    if (truncatedNewLoc.x == NextLoc.x && truncatedNewLoc.y == NextLoc.y)
+    if (truncatedNewLoc == CoordsXY{ NextLoc })
     {
         int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
         MoveTo(newLoc.x, newLoc.y, height);

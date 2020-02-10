@@ -1274,7 +1274,7 @@ void Staff::UpdateWatering()
             if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
-            if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * 8)
+            if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * COORDS_Z_STEP)
                 continue;
 
             rct_scenery_entry* scenery_entry = tile_element->AsSmallScenery()->GetEntry();
@@ -1665,7 +1665,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
 
             uint8_t z_diff = abs(peep->NextLoc.z - tile_element->GetBaseZ());
 
-            if (z_diff >= 4 * 8)
+            if (z_diff >= 4 * COORDS_Z_STEP)
             {
                 continue;
             }

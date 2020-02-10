@@ -6390,7 +6390,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
         *rideSeatToView = 1;
         if (ride->status != RIDE_STATUS_OPEN)
         {
-            if (tileElement->GetClearanceZ() > peep->NextLoc.z + 8 * COORDS_Z_STEP)
+            if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
                 *rideSeatToView |= (1 << 1);
             }
@@ -6403,7 +6403,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
         *rideSeatToView = 0;
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            if (tileElement->GetClearanceZ() > peep->NextLoc.z + 8 * COORDS_Z_STEP)
+            if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6453,9 +6453,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
-        if (peep->NextLoc.z + 4 * COORDS_Z_STEP <= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (4 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
             continue;
-        if (peep->NextLoc.z + 1 * COORDS_Z_STEP >= tileElement->GetClearanceZ())
+        if (peep->NextLoc.z + (1 * COORDS_Z_STEP) >= tileElement->GetClearanceZ())
             continue;
 
         return false;
@@ -6493,9 +6493,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-        if (peep->NextLoc.z + 4 * COORDS_Z_STEP >= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (4 * COORDS_Z_STEP) >= tileElement->GetBaseZ())
             continue;
-        if (peep->NextLoc.z + 1 * COORDS_Z_STEP >= tileElement->GetClearanceZ())
+        if (peep->NextLoc.z + (1 * COORDS_Z_STEP) >= tileElement->GetClearanceZ())
             continue;
 
         return false;
@@ -6513,9 +6513,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
                 continue;
         }
 
-        if (tileElement->GetClearanceZ() + 1 * COORDS_Z_STEP < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + 6 * COORDS_Z_STEP < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
@@ -6534,7 +6534,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             }
 
             *rideSeatToView = 0;
-            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + 8 * COORDS_Z_STEP)
+            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6556,9 +6556,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + 1 * COORDS_Z_STEP < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + 6 * COORDS_Z_STEP < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             continue;
@@ -6610,7 +6610,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
-        if (peep->NextLoc.z + 6 * COORDS_Z_STEP <= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (6 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
             continue;
         if (peep->NextLoc.z >= tileElement->GetClearanceZ())
             continue;
@@ -6629,9 +6629,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + 1 * COORDS_Z_STEP < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + 8 * COORDS_Z_STEP < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
@@ -6651,7 +6651,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             }
 
             *rideSeatToView = 0;
-            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + 8 * COORDS_Z_STEP)
+            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6673,9 +6673,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + 1 * COORDS_Z_STEP < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + 8 * COORDS_Z_STEP < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             continue;
@@ -6726,7 +6726,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
-        if (peep->NextLoc.z + 8 * COORDS_Z_STEP <= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (8 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
             continue;
         if (peep->NextLoc.z >= tileElement->GetClearanceZ())
             continue;
@@ -6745,9 +6745,9 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + 1 * COORDS_Z_STEP < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + 10 * COORDS_Z_STEP < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (10 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
@@ -6766,7 +6766,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
             }
 
             *rideSeatToView = 0;
-            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + 8 * COORDS_Z_STEP)
+            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
                 *rideSeatToView = 0x02;
             }

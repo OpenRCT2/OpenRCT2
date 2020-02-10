@@ -145,6 +145,16 @@ struct CoordsXY
         return rotatedCoords;
     }
 
+    bool operator==(const CoordsXY& other) const
+    {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const CoordsXY& other) const
+    {
+        return !(*this == other);
+    }
+
     CoordsXY ToTileCentre() const
     {
         return ToTileStart() + CoordsXY{ 16, 16 };

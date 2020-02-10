@@ -28,6 +28,7 @@
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
 #define RCT1_MAX_ANIMATED_OBJECTS 1000
 #define RCT1_MAX_BANNERS 100
+constexpr int32_t RCT1_COORDS_Z_STEP = 4;
 
 struct ParkLoadResult;
 

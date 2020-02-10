@@ -1134,7 +1134,7 @@ void ride_remove_peeps(Ride* ride)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += 8;
+                    newLoc.z += COORDS_Z_STEP;
                 newLoc.z++;
                 sprite_move(newLoc.x, newLoc.y, newLoc.z, peep);
             }
