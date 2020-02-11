@@ -1270,7 +1270,7 @@ public:
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
     {
-        std::memset(dst, 0, sizeof(rct_sprite));
+        std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
         switch (src->unknown.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_NULL:

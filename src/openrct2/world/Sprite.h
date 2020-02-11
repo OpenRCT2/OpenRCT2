@@ -137,6 +137,7 @@ union rct_sprite
     Duck* AsDuck();
     MoneyEffect* AsMoneyEffect();
     Peep* AsPeep();
+    // Default constructor to prevent non trivial construction issues
     rct_sprite()
         : pad_00()
     {
