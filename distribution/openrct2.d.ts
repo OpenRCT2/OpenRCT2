@@ -39,12 +39,62 @@ export interface Configuration {
     has(key: string): boolean;
 }
 
+export interface Coord2 {
+    x: number;
+    y: number;
+}
+
+export interface Coord3 {
+    x: number;
+    y: number;
+    z: number;
+}
+
 export type HookType =
     "interval.tick" | "interval.day" |
     "network.chat" | "network.action" | "network.join" | "network.leave";
 
-export interface NetworkChatEventArgs {
-    player: number;
+export type ExpenditureType =
+    "ride_construction" |
+    "ride_runningcosts" |
+    "land_purchase" |
+    "landscaping" |
+    "park_entrance_tickets" |
+    "park_ride_tickets" |
+    "shop_sales" |
+    "shop_stock" |
+    "food_drink_sales" |
+    "food_drink_stock" |
+    "wages" |
+    "marketing" |
+    "research" |
+    "interest";
+
+export interface GameActionResult {
+    error: string;
+    errorTitle: string;
+    errorMessage: string;
+    position: Coord3;
+    cost: number;
+    expenditureType: ExpenditureType;
+}
+
+export interface GameActionDesc {
+    id: string;
+    query: (args: object) => GameActionResult;
+    execute: (args: object) => GameActionResult;
+}
+
+export interface NetworkEventArgs {
+    readonly player: number;
+}
+
+export interface NetworkActionEventArgs extends NetworkEventArgs {
+    readonly type: string;
+    result: GameActionResult;
+}
+
+export interface NetworkChatEventArgs extends NetworkEventArgs {
     message: string;
 }
 
@@ -70,10 +120,21 @@ export interface Context {
     registerIntent(desc: IntentDesc): void;
 
     /**
+     * Registers a new game action that allows clients to interact with the game.
+     */
+    registerGameAction(desc: GameActionDesc): void;
+
+    /**
      * Subscribes to the given hook.
      */
     subscribe(hook: HookType, callback: Function): IDisposable;
+
+    subscribe(hook: "interval.tick", callback: () => void): IDisposable;
+    subscribe(hook: "interval.day", callback: () => void): IDisposable;
+    subscribe(hook: "network.action", callback: (e: NetworkActionEventArgs) => void): IDisposable;
     subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+    subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
+    subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
 }
 
 export interface IntentDesc
@@ -91,27 +152,29 @@ export interface IDisposable {
 export type TileElementType =
     "surface" | "footpath" | "track" | "small_scenery" | "entrance" | "large_scenery" | "banner";
 
-export interface TileElement {
+export interface BaseTileElement {
     type: TileElementType;
     baseHeight: number;
     clearanceHeight: number;
     broken: boolean;
+}
 
+export interface TileElement extends BaseTileElement {
     /**
      * Gets the element as a specific type to access its properties
      */
-    asSurface(): SurfaceElement;
-    asFootpath(): FootpathElement;
-    asTrack(): TrackElement;
-    asSmallScenery(): SmallSceneryElement;
-    asEntrance(): EntranceElement;
-    asWall(): WallElement;
-    asLargeScenery(): LargeSceneryElement;
-    asBanner(): BannerElement;
-    asCorruptElement(): CorruptElement;
+    asSurface(): SurfaceElement | null;
+    asFootpath(): FootpathElement | null;
+    asTrack(): TrackElement | null;
+    asSmallScenery(): SmallSceneryElement | null;
+    asEntrance(): EntranceElement | null;
+    asWall(): WallElement | null;
+    asLargeScenery(): LargeSceneryElement | null;
+    asBanner(): BannerElement | null;
+    asCorruptElement(): CorruptElement | null;
 }
 
-export interface SurfaceElement extends TileElement {
+export interface SurfaceElement extends BaseTileElement {
     slope: number;
     terrain: number;
     waterHeight: number;
@@ -120,14 +183,14 @@ export interface SurfaceElement extends TileElement {
     parkFences: number;
 }
 
-export interface FootpathAdditionStatus {
+export interface FootpathAdditionStatus extends BaseTileElement {
     north: number;
     east: number;
     south: number;
     west: number;
 }
 
-export interface FootpathAddition {
+export interface FootpathAddition extends BaseTileElement {
     type: number;
     isBin: boolean;
     isBench: boolean;
@@ -146,7 +209,7 @@ export interface FootpathAddition {
     remove(): void;
 }
 
-export interface FootpathElement extends TileElement {
+export interface FootpathElement extends BaseTileElement {
     footpathType: number;
     isSloped: boolean;
     isQueue: boolean;
@@ -156,25 +219,25 @@ export interface FootpathElement extends TileElement {
     rideIndex: number;
 }
 
-export interface TrackElement extends TileElement {
+export interface TrackElement extends BaseTileElement {
 }
 
-export interface SmallSceneryElement extends TileElement {
+export interface SmallSceneryElement extends BaseTileElement {
 }
 
-export interface EntranceElement extends TileElement {
+export interface EntranceElement extends BaseTileElement {
 }
 
-export interface WallElement extends TileElement {
+export interface WallElement extends BaseTileElement {
 }
 
-export interface LargeSceneryElement extends TileElement {
+export interface LargeSceneryElement extends BaseTileElement {
 }
 
-export interface BannerElement extends TileElement {
+export interface BannerElement extends BaseTileElement {
 }
 
-export interface CorruptElement extends TileElement {
+export interface CorruptElement extends BaseTileElement {
 }
 
 export interface Tile {
@@ -273,12 +336,6 @@ export interface LabelWidget extends Widget {
     text: string;
 }
 
-export interface Coord3 {
-    x: number;
-    y: number;
-    z: number;
-}
-
 export interface ViewportWidget extends Widget {
     target: null | number | Coord3;
     zoom: number;
@@ -326,6 +383,50 @@ export interface WindowDesc {
     tabs?: Tab[];
 }
 
+export type ToolCallbackType = "move" | "press" | "release";
+
+export interface ToolCallback {
+    type: ToolCallbackType;
+    tiles: Coord2[];
+}
+
+export type CursorType =
+    "arrow" |
+    "blank" |
+    "up_arrow" |
+    "up_down_arrow" |
+    "hand_point" |
+    "zzz" |
+    "diagonal_arrows" |
+    "picker" |
+    "tree_down" |
+    "fountain_down" |
+    "statue_down" |
+    "bench_down" |
+    "cross_hair" |
+    "bin_down" |
+    "lamppost_down" |
+    "fence_down" |
+    "flower_down" |
+    "path_down" |
+    "dig_down" |
+    "water_down" |
+    "house_down" |
+    "volcano_down" |
+    "walk_down" |
+    "paint_down" |
+    "entrance_down" |
+    "hand_open" |
+    "hand_closed";
+
+export interface ToolDesc {
+    id: string;
+    cursor: CursorType;
+    width: number;
+    height: number;
+    callback: (e: ToolCallback) => void;
+}
+
 export interface Ui {
     readonly width: number;
     readonly height: number;
@@ -336,6 +437,8 @@ export interface Ui {
     openWindow(desc: WindowDesc): Window;
     closeWindows(classification: string, id?: number): void;
     closeAllWindows(): void;
+
+    activateTool(options: ToolDesc): IDisposable;
 }
 
 /**
@@ -410,6 +513,8 @@ export interface Network {
     kickPlayer(index: number): void;
     sendMessage(message: string): void;
     sendMessage(message: string, players: number[]): void;
+    sendQueryAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
+    sendExecuteAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
 }
 
 /**
