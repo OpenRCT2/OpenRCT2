@@ -3683,6 +3683,7 @@ STR_6345    :Vakinspecteur: Elementhoogte vergroten
 STR_6346    :Vakinspecteur: Elementhoogte verkleinen
 STR_6347    :Straatmeubilair kan niet op overwegen worden geplaatst!
 STR_6348    :Verwijder eerst de overweg.
+STR_6349    :Willekeurige titelpresentatie
 
 #############
 # Scenarios #
