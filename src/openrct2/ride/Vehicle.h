@@ -294,6 +294,7 @@ struct Vehicle : SpriteBase
     {
         return type == VEHICLE_TYPE_HEAD;
     }
+    void Update();
     Vehicle* GetHead();
     const Vehicle* GetHead() const;
     const Vehicle* GetCar(size_t carIndex) const;

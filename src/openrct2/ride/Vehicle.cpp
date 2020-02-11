@@ -44,7 +44,6 @@
 #include <algorithm>
 #include <iterator>
 
-static void vehicle_update(Vehicle* vehicle);
 static void vehicle_update_crossings(const Vehicle* vehicle);
 static void vehicle_claxon(const Vehicle* vehicle);
 
@@ -1365,7 +1364,7 @@ void vehicle_update_all()
         vehicle = GET_VEHICLE(sprite_index);
         sprite_index = vehicle->next;
 
-        vehicle_update(vehicle);
+        vehicle->Update();
     }
 }
 
@@ -1955,114 +1954,113 @@ static SoundIdVolume sub_6D7AC0(SoundId currentSoundId, uint8_t currentVolume, S
  *
  *  rct2: 0x006D77F2
  */
-static void vehicle_update(Vehicle* vehicle)
+void Vehicle::Update()
 {
     // The cable lift uses the ride type of NULL
-    if (vehicle->ride_subtype == RIDE_TYPE_NULL)
+    if (ride_subtype == RIDE_TYPE_NULL)
     {
-        cable_lift_update(vehicle);
+        cable_lift_update(this);
         return;
     }
 
-    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
         return;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
-        vehicle_update_measurements(vehicle);
+    if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+        vehicle_update_measurements(this);
 
     _vehicleBreakdown = 255;
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        _vehicleBreakdown = ride->breakdown_reason_pending;
-        auto vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
+        _vehicleBreakdown = curRide->breakdown_reason_pending;
+        auto vehicleEntry = &rideEntry->vehicles[vehicle_type];
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
-                || (vehicle->vehicle_sprite_type == 2 && vehicle->velocity <= 0x20000))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE) || (vehicle_sprite_type == 2 && velocity <= 0x20000))
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
             }
         }
     }
 
-    switch (vehicle->status)
+    switch (status)
     {
         case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
-            vehicle_update_moving_to_end_of_station(vehicle);
+            vehicle_update_moving_to_end_of_station(this);
             break;
         case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
-            vehicle_update_waiting_for_passengers(vehicle);
+            vehicle_update_waiting_for_passengers(this);
             break;
         case VEHICLE_STATUS_WAITING_TO_DEPART:
-            vehicle_update_waiting_to_depart(vehicle);
+            vehicle_update_waiting_to_depart(this);
             break;
         case VEHICLE_STATUS_CRASHING:
         case VEHICLE_STATUS_CRASHED:
-            vehicle_update_crash(vehicle);
+            vehicle_update_crash(this);
             break;
         case VEHICLE_STATUS_TRAVELLING_DODGEMS:
-            vehicle_update_dodgems_mode(vehicle);
+            vehicle_update_dodgems_mode(this);
             break;
         case VEHICLE_STATUS_SWINGING:
-            vehicle_update_swinging(vehicle);
+            vehicle_update_swinging(this);
             break;
         case VEHICLE_STATUS_SIMULATOR_OPERATING:
-            vehicle_update_simulator_operating(vehicle);
+            vehicle_update_simulator_operating(this);
             break;
         case VEHICLE_STATUS_TOP_SPIN_OPERATING:
-            vehicle_update_top_spin_operating(vehicle);
+            vehicle_update_top_spin_operating(this);
             break;
         case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
-            vehicle_update_ferris_wheel_rotating(vehicle);
+            vehicle_update_ferris_wheel_rotating(this);
             break;
         case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
-            vehicle_update_space_rings_operating(vehicle);
+            vehicle_update_space_rings_operating(this);
             break;
         case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
-            vehicle_update_haunted_house_operating(vehicle);
+            vehicle_update_haunted_house_operating(this);
             break;
         case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
-            vehicle_update_crooked_house_operating(vehicle);
+            vehicle_update_crooked_house_operating(this);
             break;
         case VEHICLE_STATUS_ROTATING:
-            vehicle_update_rotating(vehicle);
+            vehicle_update_rotating(this);
             break;
         case VEHICLE_STATUS_DEPARTING:
-            vehicle_update_departing(vehicle);
+            vehicle_update_departing(this);
             break;
         case VEHICLE_STATUS_TRAVELLING:
-            vehicle_update_travelling(vehicle);
+            vehicle_update_travelling(this);
             break;
         case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
-            vehicle_update_travelling_cable_lift(vehicle);
+            vehicle_update_travelling_cable_lift(this);
             break;
         case VEHICLE_STATUS_TRAVELLING_BOAT:
-            vehicle_update_travelling_boat(vehicle);
+            vehicle_update_travelling_boat(this);
             break;
         case VEHICLE_STATUS_ARRIVING:
-            vehicle_update_arriving(vehicle);
+            vehicle_update_arriving(this);
             break;
         case VEHICLE_STATUS_UNLOADING_PASSENGERS:
-            vehicle_update_unloading_passengers(vehicle);
+            vehicle_update_unloading_passengers(this);
             break;
         case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
-            vehicle_update_waiting_for_cable_lift(vehicle);
+            vehicle_update_waiting_for_cable_lift(this);
             break;
         case VEHICLE_STATUS_SHOWING_FILM:
-            vehicle_update_showing_film(vehicle);
+            vehicle_update_showing_film(this);
             break;
         case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
-            vehicle_update_doing_circus_show(vehicle);
+            vehicle_update_doing_circus_show(this);
         default:
             break;
     }
 
-    vehicle_update_sound(vehicle);
+    vehicle_update_sound(this);
 }
 
 /**
