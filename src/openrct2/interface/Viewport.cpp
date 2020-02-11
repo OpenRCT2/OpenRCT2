@@ -827,15 +827,16 @@ void viewport_render(
 #endif
 }
 
-static void viewport_fill_column(paint_session* session, std::vector<paint_session>* sessions, size_t index)
+static void record_session(const paint_session* session, std::vector<paint_session>* recorded_sessions, size_t record_index)
 {
-    paint_session_generate(session);
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
-    if (sessions != nullptr)
+    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy; there
+    // is no column information embedded in the session itself.
+    if (recorded_sessions != nullptr)
     {
-        (*sessions)[index] = (*session);
-        paint_session* session_copy = &sessions->at(index);
+        (*recorded_sessions)[record_index] = (*session);
+        paint_session* session_copy = &recorded_sessions->at(record_index);
 
         // Mind the offset needs to be calculated against the original `session`, not `session_copy`
         for (auto& ps : session_copy->PaintStructs)
@@ -847,6 +848,12 @@ static void viewport_fill_column(paint_session* session, std::vector<paint_sessi
             quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
         }
     }
+}
+
+static void viewport_fill_column(paint_session* session, std::vector<paint_session>* recorded_sessions, size_t record_index)
+{
+    paint_session_generate(session);
+    record_session(session, recorded_sessions, record_index);
     paint_session_arrange(session);
 }
 
@@ -893,7 +900,7 @@ static void viewport_paint_column(paint_session* session)
  */
 void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
-    std::vector<paint_session>* sessions)
+    std::vector<paint_session>* recorded_sessions)
 {
     uint32_t viewFlags = viewport->flags;
     uint16_t width = right - left;
@@ -943,13 +950,15 @@ void viewport_paint(
         _paintJobs.reset();
     }
 
-    // Splits the area into 32 pixel columns and renders them
+    // Create space to record sessions and keep track which index is being drawn
     size_t index = 0;
-    uint16_t column_count = (rightBorder - floor2(dpi1.x, 32)) / 32 + 1;
-    if (sessions != nullptr)
+    if (recorded_sessions != nullptr)
     {
-        sessions->resize(column_count);
+        const uint16_t column_count = (rightBorder - floor2(dpi1.x, 32)) / 32 + 1;
+        recorded_sessions->resize(column_count);
     }
+
+    // Splits the area into 32 pixel columns and renders them
     for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32, index++)
     {
         paint_session* session = paint_session_alloc(&dpi1, viewFlags);
@@ -976,11 +985,12 @@ void viewport_paint(
 
         if (useMultithreading)
         {
-            _paintJobs->AddTask([session, sessions, index]() -> void { viewport_fill_column(session, sessions, index); });
+            _paintJobs->AddTask(
+                [session, recorded_sessions, index]() -> void { viewport_fill_column(session, recorded_sessions, index); });
         }
         else
         {
-            viewport_fill_column(session, sessions, index);
+            viewport_fill_column(session, recorded_sessions, index);
         }
     }
 
