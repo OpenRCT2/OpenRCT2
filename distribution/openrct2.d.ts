@@ -159,20 +159,22 @@ export interface BaseTileElement {
     broken: boolean;
 }
 
-export interface TileElement extends BaseTileElement {
-    /**
-     * Gets the element as a specific type to access its properties
-     */
-    asSurface(): SurfaceElement | null;
-    asFootpath(): FootpathElement | null;
-    asTrack(): TrackElement | null;
-    asSmallScenery(): SmallSceneryElement | null;
-    asEntrance(): EntranceElement | null;
-    asWall(): WallElement | null;
-    asLargeScenery(): LargeSceneryElement | null;
-    asBanner(): BannerElement | null;
-    asCorruptElement(): CorruptElement | null;
-}
+// export interface TileElement extends BaseTileElement {
+//     /**
+//      * Gets the element as a specific type to access its properties
+//      */
+//     asSurface(): SurfaceElement | null;
+//     asFootpath(): FootpathElement | null;
+//     asTrack(): TrackElement | null;
+//     asSmallScenery(): SmallSceneryElement | null;
+//     asEntrance(): EntranceElement | null;
+//     asWall(): WallElement | null;
+//     asLargeScenery(): LargeSceneryElement | null;
+//     asBanner(): BannerElement | null;
+//     asCorruptElement(): CorruptElement | null;
+// }
+
+export type TileElement = SurfaceElement | FootpathElement | TrackElement;
 
 export interface SurfaceElement extends BaseTileElement {
     slope: number;
