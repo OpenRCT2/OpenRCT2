@@ -137,6 +137,11 @@ union rct_sprite
     Duck* AsDuck();
     MoneyEffect* AsMoneyEffect();
     Peep* AsPeep();
+    // Default constructor to prevent non trivial construction issues
+    rct_sprite()
+        : pad_00()
+    {
+    }
 };
 assert_struct_size(rct_sprite, 0x200);
 

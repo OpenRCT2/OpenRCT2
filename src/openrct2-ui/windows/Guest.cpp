@@ -2093,7 +2093,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     y += LIST_ROW_HEIGHT;
     {
-        int32_t args[] = { peep->next_x, peep->next_y, peep->next_z };
+        int32_t args[] = { peep->NextLoc.x, peep->NextLoc.y, peep->NextLoc.z };
         format_string(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, args);
         if (peep->GetNextIsSurface())
         {

@@ -535,11 +535,11 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
 {
     if (!(peep->GetNextIsSurface()))
     {
-        auto surfaceElement = map_get_surface_element_at(CoordsXY{ peep->next_x, peep->next_y });
+        auto surfaceElement = map_get_surface_element_at(peep->NextLoc);
         if (surfaceElement == nullptr)
             return INVALID_DIRECTION;
 
-        if (peep->next_z != surfaceElement->base_height)
+        if (peep->NextLoc.z != surfaceElement->GetBaseZ())
             return INVALID_DIRECTION;
 
         if (peep->GetNextIsSloped())
@@ -561,8 +561,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
             continue;
         }
 
-        CoordsXY chosenTile = { static_cast<int32_t>(peep->next_x + CoordsDirectionDelta[chosenDirection].x),
-                                static_cast<int32_t>(peep->next_y + CoordsDirectionDelta[chosenDirection].y) };
+        CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[chosenDirection];
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
@@ -570,7 +569,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
         auto surfaceElement = map_get_surface_element_at(chosenTile);
         if (surfaceElement != nullptr)
         {
-            if (std::abs(surfaceElement->base_height - peep->next_z) <= 2)
+            if (std::abs(surfaceElement->GetBaseZ() - peep->NextLoc.z) <= 2 * COORDS_Z_STEP)
             {
                 if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                 {
@@ -595,8 +594,7 @@ static int32_t staff_handyman_direction_rand_surface(Peep* peep, uint8_t validDi
         if (!(validDirections & (1 << direction)))
             continue;
 
-        CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
-                                peep->next_y + CoordsDirectionDelta[direction].y };
+        CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
         if (map_surface_is_blocked(chosenTile))
             continue;
@@ -619,7 +617,7 @@ static bool staff_path_finding_handyman(Peep* peep)
     peep->staff_mowing_timeout++;
 
     uint8_t litterDirection = 0xFF;
-    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
 
     if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110)
     {
@@ -640,7 +638,7 @@ static bool staff_path_finding_handyman(Peep* peep)
         }
         else
         {
-            auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ peep->NextLoc });
 
             if (pathElement == nullptr)
                 return true;
@@ -684,14 +682,12 @@ static bool staff_path_finding_handyman(Peep* peep)
     // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
-                            peep->next_y + CoordsDirectionDelta[direction].y };
+    CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
         direction = staff_handyman_direction_rand_surface(peep, validDirections);
-        chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
-        chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
+        chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
     }
 
     peep->direction = direction;
@@ -727,20 +723,14 @@ static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
 
         direction &= 3;
 
-        if (fence_in_the_way(
-                { peep->next_x, peep->next_y, peep->next_z * COORDS_Z_STEP,
-                  (peep->next_z * COORDS_Z_STEP) + PEEP_CLEARANCE_HEIGHT },
-                direction))
+        if (fence_in_the_way({ peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
             continue;
 
         if (fence_in_the_way(
-                { peep->next_x, peep->next_y, peep->next_z * COORDS_Z_STEP,
-                  (peep->next_z * COORDS_Z_STEP) + PEEP_CLEARANCE_HEIGHT },
-                direction_reverse(direction)))
+                { peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction_reverse(direction)))
             continue;
 
-        CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
-                                peep->next_y + CoordsDirectionDelta[direction].y };
+        CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
         if (!map_surface_is_blocked(chosenTile))
         {
@@ -879,8 +869,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         pathfind_logging_enable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = peep_pathfind_choose_direction(
-            { peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+        Direction pathfindDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         pathfind_logging_disable();
@@ -909,7 +898,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
  */
 static bool staff_path_finding_mechanic(Peep* peep)
 {
-    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
     Direction direction = INVALID_DIRECTION;
     if (peep->GetNextIsSurface())
     {
@@ -917,7 +906,7 @@ static bool staff_path_finding_mechanic(Peep* peep)
     }
     else
     {
-        auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ peep->NextLoc });
         if (pathElement == nullptr)
             return true;
 
@@ -927,14 +916,12 @@ static bool staff_path_finding_mechanic(Peep* peep)
     // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
-                            peep->next_y + CoordsDirectionDelta[direction].y };
+    CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
         direction = staff_mechanic_direction_surface(peep);
-        chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
-        chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
+        chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
     }
 
     peep->direction = direction;
@@ -996,7 +983,7 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
  */
 static bool staff_path_finding_misc(Peep* peep)
 {
-    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
 
     Direction direction = INVALID_DIRECTION;
     if (peep->GetNextIsSurface())
@@ -1005,21 +992,19 @@ static bool staff_path_finding_misc(Peep* peep)
     }
     else
     {
-        auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ peep->NextLoc });
         if (pathElement == nullptr)
             return true;
 
         direction = staff_direction_path(peep, validDirections, pathElement);
     }
 
-    CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
-                            peep->next_y + CoordsDirectionDelta[direction].y };
+    CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
         direction = staff_direction_surface(peep, scenario_rand() & 3);
-        chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
-        chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
+        chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
     }
 
     peep->direction = direction;
@@ -1227,17 +1212,17 @@ void Staff::UpdateMowing()
             return;
         }
 
-        destination_x = _MowingWaypoints[var_37].x + next_x;
-        destination_y = _MowingWaypoints[var_37].y + next_y;
+        destination_x = _MowingWaypoints[var_37].x + NextLoc.x;
+        destination_y = _MowingWaypoints[var_37].y + NextLoc.y;
 
         if (var_37 != 7)
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(CoordsXY{ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at(NextLoc);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
-            map_invalidate_tile_zoom0({ next_x, next_y, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
+            map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
         staff_lawns_mown++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1278,10 +1263,9 @@ void Staff::UpdateWatering()
             return;
         }
 
-        int32_t actionX = next_x + CoordsDirectionDelta[var_37].x;
-        int32_t actionY = next_y + CoordsDirectionDelta[var_37].y;
+        auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[var_37];
 
-        TileElement* tile_element = map_get_first_element_at({ actionX, actionY });
+        TileElement* tile_element = map_get_first_element_at(actionLoc);
         if (tile_element == nullptr)
             return;
 
@@ -1290,7 +1274,7 @@ void Staff::UpdateWatering()
             if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
-            if (abs(((int32_t)next_z) - tile_element->base_height) > 4)
+            if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * COORDS_Z_STEP)
                 continue;
 
             rct_scenery_entry* scenery_entry = tile_element->AsSmallScenery()->GetEntry();
@@ -1299,7 +1283,7 @@ void Staff::UpdateWatering()
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
-            map_invalidate_tile_zoom0({ actionX, actionY, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
+            map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
             staff_gardens_watered++;
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
@@ -1348,7 +1332,7 @@ void Staff::UpdateEmptyingBin()
         if (action_frame != 11)
             return;
 
-        TileElement* tile_element = map_get_first_element_at({ next_x, next_y });
+        TileElement* tile_element = map_get_first_element_at(NextLoc);
         if (tile_element == nullptr)
             return;
 
@@ -1356,7 +1340,7 @@ void Staff::UpdateEmptyingBin()
         {
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                if (next_z == tile_element->base_height)
+                if (NextLoc.z == tile_element->GetBaseZ())
                     break;
             }
             if ((tile_element)->IsLastForTile())
@@ -1383,7 +1367,7 @@ void Staff::UpdateEmptyingBin()
         uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << var_37) << var_37);
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
-        map_invalidate_tile_zoom0({ next_x, next_y, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
+        map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
         staff_bins_emptied++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
@@ -1501,8 +1485,8 @@ void Staff::UpdateHeadingToInspect()
 
         direction = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = next_x + 16 + DirectionOffsets[direction].x * 53;
-        int32_t destY = next_y + 16 + DirectionOffsets[direction].y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[direction].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[direction].y * 53;
 
         destination_x = destX;
         destination_y = destY;
@@ -1612,8 +1596,8 @@ void Staff::UpdateAnswering()
 
         direction = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = next_x + 16 + DirectionOffsets[direction].x * 53;
-        int32_t destY = next_y + 16 + DirectionOffsets[direction].y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[direction].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[direction].y * 53;
 
         destination_x = destX;
         destination_y = destY;
@@ -1662,10 +1646,9 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
     {
         chosen_position &= 7;
 
-        int32_t x = peep->next_x + CoordsDirectionDelta[chosen_position].x;
-        int32_t y = peep->next_y + CoordsDirectionDelta[chosen_position].y;
+        auto chosenLoc = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[chosen_position];
 
-        TileElement* tile_element = map_get_first_element_at({ x, y });
+        TileElement* tile_element = map_get_first_element_at(chosenLoc);
 
         // This seems to happen in some SV4 files.
         if (tile_element == nullptr)
@@ -1680,9 +1663,9 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
                 continue;
             }
 
-            uint8_t z_diff = abs(peep->next_z - tile_element->base_height);
+            uint8_t z_diff = abs(peep->NextLoc.z - tile_element->GetBaseZ());
 
-            if (z_diff >= 4)
+            if (z_diff >= 4 * COORDS_Z_STEP)
             {
                 continue;
             }
@@ -1733,13 +1716,13 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     if (peep->GetNextIsSurface())
         return 0;
 
-    TileElement* tileElement = map_get_first_element_at({ peep->next_x, peep->next_y });
+    TileElement* tileElement = map_get_first_element_at(peep->NextLoc);
     if (tileElement == nullptr)
         return 0;
 
     for (;; tileElement++)
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && (tileElement->base_height == peep->next_z))
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && (tileElement->GetBaseZ() == peep->NextLoc.z))
             break;
 
         if (tileElement->IsLastForTile())
@@ -1801,7 +1784,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
     if (!(peep->GetNextIsSurface()))
         return 0;
 
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ peep->next_x, peep->next_y });
+    auto surfaceElement = map_get_surface_element_at(peep->NextLoc);
     if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
     {
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
@@ -1809,8 +1792,8 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
             peep->SetState(PEEP_STATE_MOWING);
             peep->var_37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
-            peep->destination_x = peep->next_x + _MowingWaypoints[0].x;
-            peep->destination_y = peep->next_y + _MowingWaypoints[0].y;
+            peep->destination_x = peep->NextLoc.x + _MowingWaypoints[0].x;
+            peep->destination_y = peep->NextLoc.y + _MowingWaypoints[0].y;
             peep->destination_tolerance = 3;
             return 1;
         }
@@ -1939,7 +1922,7 @@ void Staff::UpdatePatrolling()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at(CoordsXY{ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at(NextLoc);
 
         if (surfaceElement != nullptr)
         {

@@ -109,20 +109,17 @@ static int32_t path_get_permitted_edges(PathElement* pathElement)
 static int32_t peep_move_one_tile(Direction direction, Peep* peep)
 {
     assert(direction_valid(direction));
-    int16_t x = peep->next_x;
-    int16_t y = peep->next_y;
-    x += CoordsDirectionDelta[direction].x;
-    y += CoordsDirectionDelta[direction].y;
+    auto newTile = CoordsXY{ CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
 
-    if (x >= MAXIMUM_MAP_SIZE_BIG || y >= MAXIMUM_MAP_SIZE_BIG)
+    if (newTile.x >= MAXIMUM_MAP_SIZE_BIG || newTile.y >= MAXIMUM_MAP_SIZE_BIG)
     {
         // This could loop!
         return guest_surface_path_finding(peep);
     }
 
     peep->direction = direction;
-    peep->destination_x = x + 16;
-    peep->destination_y = y + 16;
+    peep->destination_x = newTile.x;
+    peep->destination_y = newTile.y;
     peep->destination_tolerance = 2;
     if (peep->state != PEEP_STATE_QUEUING)
     {
@@ -137,8 +134,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
  */
 static int32_t guest_surface_path_finding(Peep* peep)
 {
-    auto pathPos = CoordsXYRangedZ{ peep->next_x, peep->next_y, peep->next_z * COORDS_Z_STEP,
-                                    (peep->next_z * COORDS_Z_STEP) + PATH_HEIGHT };
+    auto pathPos = CoordsXYRangedZ{ peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PATH_HEIGHT };
     Direction randDirection = scenario_rand() & 3;
 
     if (!fence_in_the_way(pathPos, randDirection))
@@ -164,8 +160,8 @@ static int32_t guest_surface_path_finding(Peep* peep)
     }
     randDirection &= 3;
 
-    pathPos.x = peep->next_x;
-    pathPos.y = peep->next_y;
+    pathPos.x = peep->NextLoc.x;
+    pathPos.y = peep->NextLoc.y;
     if (!fence_in_the_way(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
@@ -184,8 +180,8 @@ static int32_t guest_surface_path_finding(Peep* peep)
     randDirection -= 2;
     randDirection &= 3;
 
-    pathPos.x = peep->next_x;
-    pathPos.y = peep->next_y;
+    pathPos.x = peep->NextLoc.x;
+    pathPos.y = peep->NextLoc.y;
     if (!fence_in_the_way(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
@@ -1409,7 +1405,7 @@ Direction peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep)
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the
                  * mechanic is in their patrol area. */
-                inPatrolArea = staff_is_location_in_patrol(peep, peep->next_x, peep->next_y);
+                inPatrolArea = staff_is_location_in_patrol(peep, peep->NextLoc.x, peep->NextLoc.y);
             }
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1569,7 +1565,7 @@ static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
 static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest park entrance.
-    uint8_t chosenEntrance = get_nearest_park_entrance_index(peep->next_x, peep->next_y);
+    uint8_t chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
 
     // If no defined park entrances are found, walk aimlessly.
     if (chosenEntrance == 0xFF)
@@ -1583,7 +1579,7 @@ static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
-    Direction chosenDirection = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+    Direction chosenDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
     if (chosenDirection == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
@@ -1622,7 +1618,7 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
 static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest spawn point.
-    uint8_t chosenSpawn = get_nearest_peep_spawn_index(peep->next_x, peep->next_y);
+    uint8_t chosenSpawn = get_nearest_peep_spawn_index(peep->NextLoc.x, peep->NextLoc.y);
 
     // If no defined spawns were found, walk aimlessly.
     if (chosenSpawn == 0xFF)
@@ -1636,14 +1632,14 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
     Direction direction = peepSpawn->direction;
 
     gPeepPathFindGoalPosition = { x / 32, y / 32, z };
-    if (x == peep->next_x && y == peep->next_y)
+    if (x == peep->NextLoc.x && y == peep->NextLoc.y)
     {
         return peep_move_one_tile(direction, peep);
     }
 
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
-    direction = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+    direction = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
     if (direction == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
     else
@@ -1670,7 +1666,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
         uint8_t entranceNum = 0;
         for (const auto& entrance : gParkEntrances)
         {
-            uint16_t dist = abs(entrance.x - peep->next_x) + abs(entrance.y - peep->next_y);
+            uint16_t dist = abs(entrance.x - peep->NextLoc.x) + abs(entrance.y - peep->NextLoc.y);
             if (dist < nearestDist)
             {
                 nearestDist = dist;
@@ -1699,7 +1695,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
     pathfind_logging_enable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    Direction chosenDirection = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+    Direction chosenDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     pathfind_logging_disable();
@@ -1875,7 +1871,7 @@ int32_t guest_path_finding(Guest* peep)
         return guest_surface_path_finding(peep);
     }
 
-    TileCoordsXYZ loc = { peep->next_x / 32, peep->next_y / 32, peep->next_z };
+    TileCoordsXYZ loc{ peep->NextLoc };
 
     auto* pathElement = map_get_path_element_at(loc);
     if (pathElement == nullptr)
@@ -2081,9 +2077,7 @@ int32_t guest_path_finding(Guest* peep)
         entranceStations |= (1 << stationNum);
 
         TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, stationNum);
-        auto score = CalculateHeuristicPathingScore(
-            { entranceLocation.x, entranceLocation.y, entranceLocation.z },
-            { peep->next_x / 32, peep->next_y / 32, peep->next_z });
+        auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep->NextLoc });
         if (score < bestScore)
         {
             bestScore = score;
@@ -2139,7 +2133,7 @@ int32_t guest_path_finding(Guest* peep)
     gPeepPathFindGoalPosition = loc;
     gPeepPathFindIgnoreForeignQueues = true;
 
-    direction = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+    direction = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
     if (direction == INVALID_DIRECTION)
     {

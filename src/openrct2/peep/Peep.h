@@ -543,9 +543,7 @@ struct Staff;
 struct Peep : SpriteBase
 {
     char* name;
-    uint16_t next_x;
-    uint16_t next_y;
-    uint8_t next_z;
+    CoordsXYZ NextLoc;
     uint8_t next_flags;
     uint8_t outside_of_park;
     PeepState state;
@@ -860,7 +858,7 @@ private:
     void UpdateHeadingToInspect();
 };
 
-static_assert(sizeof(Peep) <= 256);
+static_assert(sizeof(Peep) <= 512);
 
 struct rct_sprite_bounds
 {

@@ -1271,7 +1271,7 @@ public:
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
     {
-        std::memset(dst, 0, sizeof(rct_sprite));
+        std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
         switch (src->unknown.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_NULL:
@@ -1378,9 +1378,7 @@ public:
         {
             dst->SetName(GetUserString(src->name_string_idx));
         }
-        dst->next_x = src->next_x;
-        dst->next_y = src->next_y;
-        dst->next_z = src->next_z;
+        dst->NextLoc = { src->next_x, src->next_y, src->next_z * COORDS_Z_STEP };
         dst->next_flags = src->next_flags;
         dst->outside_of_park = src->outside_of_park;
         dst->state = (PeepState)src->state;
