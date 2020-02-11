@@ -439,6 +439,7 @@ export interface Ui {
     closeAllWindows(): void;
 
     activateTool(options: ToolDesc): IDisposable;
+    registerMenuItem(text: string, callback: () => void): void;
 }
 
 /**

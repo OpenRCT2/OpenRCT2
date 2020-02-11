@@ -9,6 +9,7 @@
 
 #include "UiExtensions.h"
 
+#include "CustomMenu.h"
 #include "ScUi.hpp"
 #include "ScWindow.hpp"
 
@@ -24,4 +25,6 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     ScUi::Register(ctx);
     ScWindow::Register(ctx);
+
+    InitialiseCustomMenuItems(scriptEngine);
 }

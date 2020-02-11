@@ -136,6 +136,28 @@ void ScriptEngine::LoadPlugin(const std::string& path)
     }
 }
 
+void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
+{
+    if (plugin->HasStarted())
+    {
+        _hookEngine.UnsubscribeAll(plugin);
+        for (auto callback : _pluginStoppedSubscriptions)
+        {
+            callback(plugin);
+        }
+
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+        try
+        {
+            plugin->Stop();
+        }
+        catch (const std::exception& e)
+        {
+            _console.WriteLineError(e.what());
+        }
+    }
+}
+
 bool ScriptEngine::ShouldLoadScript(const std::string& path)
 {
     // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
@@ -174,7 +196,7 @@ void ScriptEngine::AutoReloadPlugins()
                 auto& plugin = *findResult;
                 try
                 {
-                    _hookEngine.UnsubscribeAll(plugin);
+                    StopPlugin(plugin);
 
                     ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
                     plugin->Load();
@@ -225,21 +247,9 @@ void ScriptEngine::StartPlugins()
 
 void ScriptEngine::StopPlugins()
 {
-    _hookEngine.UnsubscribeAll();
     for (auto& plugin : _plugins)
     {
-        if (plugin->HasStarted())
-        {
-            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
-            try
-            {
-                plugin->Stop();
-            }
-            catch (const std::exception& e)
-            {
-                _console.WriteLineError(e.what());
-            }
-        }
+        StopPlugin(plugin);
     }
     _pluginsStarted = false;
 }

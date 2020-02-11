@@ -105,6 +105,7 @@ namespace OpenRCT2::Scripting
         std::unique_ptr<FileWatcher> _pluginFileWatcher;
         std::unordered_set<std::string> _changedPluginFiles;
         std::mutex _changedPluginFilesMutex;
+        std::vector<std::function<void(std::shared_ptr<Plugin>)>> _pluginStoppedSubscriptions;
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
@@ -130,11 +131,17 @@ namespace OpenRCT2::Scripting
 
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message);
 
+        void SubscribeToPluginStoppedEvent(std::function<void(std::shared_ptr<Plugin>)> callback)
+        {
+            _pluginStoppedSubscriptions.push_back(callback);
+        }
+
     private:
         void Initialise();
         void StartPlugins();
         void StopPlugins();
         void LoadPlugin(const std::string& path);
+        void StopPlugin(std::shared_ptr<Plugin> plugin);
         bool ShouldLoadScript(const std::string& path);
         void SetupHotReloading();
         void AutoReloadPlugins();

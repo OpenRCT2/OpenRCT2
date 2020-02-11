@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "CustomMenu.h"
 #include "ScWindow.hpp"
 
 #include <memory>
@@ -105,6 +106,13 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
+        void registerMenuItem(std::string text, DukValue callback)
+        {
+            auto& execInfo = _scriptEngine.GetExecInfo();
+            auto owner = execInfo.GetCurrentPlugin();
+            CustomMenuItems.emplace_back(owner, text, callback);
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScUi::height_get, nullptr, "height");
@@ -114,6 +122,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");
             dukglue_register_method(ctx, &ScUi::getWindow, "getWindow");
+            dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
         }
 
     private:
