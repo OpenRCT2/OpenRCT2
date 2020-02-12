@@ -228,7 +228,6 @@ paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
 void paint_session_free(paint_session* session);
 void paint_session_generate(paint_session* session);
 void paint_session_arrange(paint_session* session);
-paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation);
 void paint_draw_structs(paint_session* session);
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 
