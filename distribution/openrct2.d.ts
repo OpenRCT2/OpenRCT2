@@ -250,7 +250,16 @@ export interface Tile {
     getElement(index: number): TileElement;
 }
 
+export interface RideObject {
+    readonly id: number;
+    readonly name: string;
+    readonly description: string;
+    readonly capacity: string;
+}
+
 export interface Ride {
+    readonly object: RideObject;
+    type: string;
     name: string;
     excitement: number;
     intensity: number;
