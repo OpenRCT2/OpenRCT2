@@ -833,27 +833,27 @@ static void record_session(const paint_session* session, std::vector<paint_sessi
     // This is done to extract the session for benchmark.
     // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy; there
     // is no column information embedded in the session itself.
-    if (recorded_sessions != nullptr)
-    {
-        (*recorded_sessions)[record_index] = (*session);
-        paint_session* session_copy = &recorded_sessions->at(record_index);
+    (*recorded_sessions)[record_index] = (*session);
+    paint_session* session_copy = &recorded_sessions->at(record_index);
 
-        // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-        for (auto& ps : session_copy->PaintStructs)
-        {
-            ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
-        }
-        for (auto& quad : session_copy->Quadrants)
-        {
-            quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
-        }
+    // Mind the offset needs to be calculated against the original `session`, not `session_copy`
+    for (auto& ps : session_copy->PaintStructs)
+    {
+        ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
+    }
+    for (auto& quad : session_copy->Quadrants)
+    {
+        quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
     }
 }
 
 static void viewport_fill_column(paint_session* session, std::vector<paint_session>* recorded_sessions, size_t record_index)
 {
     paint_session_generate(session);
-    record_session(session, recorded_sessions, record_index);
+    if (recorded_sessions != nullptr)
+    {
+        record_session(session, recorded_sessions, record_index);
+    }
     paint_session_arrange(session);
 }
 
