@@ -1663,7 +1663,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
                 continue;
             }
 
-            uint8_t z_diff = abs(peep->NextLoc.z - tile_element->GetBaseZ());
+            auto z_diff = abs(peep->NextLoc.z - tile_element->GetBaseZ());
 
             if (z_diff >= 4 * COORDS_Z_STEP)
             {
