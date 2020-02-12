@@ -399,7 +399,7 @@ static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next
     }
 }
 
-paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
+static paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
 {
     switch (rotation)
     {
