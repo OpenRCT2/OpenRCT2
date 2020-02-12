@@ -965,7 +965,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                             break;
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                             continue;
-                        if (tileElement->GetBaseZ() == NextLoc.z)
+                        if (tileElement->GetBaseZ() != NextLoc.z)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
