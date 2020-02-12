@@ -13,6 +13,7 @@
 #include "../ride/Ride.h"
 #include "../world/Map.h"
 #include "Duktape.hpp"
+#include "ScRide.hpp"
 #include "ScThing.hpp"
 #include "ScTile.hpp"
 
@@ -42,12 +43,26 @@ namespace OpenRCT2::Scripting
 
         int32_t rides_get()
         {
-            return MAX_RIDES;
+            return static_cast<int32_t>(GetRideManager().size());
         }
 
         int32_t things_get()
         {
             return MAX_SPRITES;
+        }
+
+        std::shared_ptr<ScRide> getRide(int32_t id)
+        {
+            auto rideManager = GetRideManager();
+            if (id >= 0 && id < rideManager.size())
+            {
+                auto ride = rideManager[static_cast<ride_id_t>(id)];
+                if (ride != nullptr)
+                {
+                    return std::make_shared<ScRide>(ride);
+                }
+            }
+            return nullptr;
         }
 
         std::shared_ptr<ScTile> getTile(int32_t x, int32_t y)
@@ -75,6 +90,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
             dukglue_register_property(ctx, &ScMap::rides_get, nullptr, "rides");
             dukglue_register_property(ctx, &ScMap::things_get, nullptr, "things");
+            dukglue_register_method(ctx, &ScMap::getRide, "getRide");
             dukglue_register_method(ctx, &ScMap::getTile, "getTile");
             dukglue_register_method(ctx, &ScMap::getThing, "getThing");
         }

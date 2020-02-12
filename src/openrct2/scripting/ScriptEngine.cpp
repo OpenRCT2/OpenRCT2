@@ -22,6 +22,7 @@
 #include "ScMap.hpp"
 #include "ScNetwork.hpp"
 #include "ScPark.hpp"
+#include "ScRide.hpp"
 #include "ScThing.hpp"
 #include "ScTile.hpp"
 
@@ -67,6 +68,8 @@ void ScriptEngine::Initialise()
     ScPark::Register(ctx);
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
+    ScRide::Register(ctx);
+    ScRideObject::Register(ctx);
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
     ScThing::Register(ctx);
