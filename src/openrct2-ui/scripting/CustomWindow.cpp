@@ -96,6 +96,24 @@ namespace OpenRCT2::Ui::Windows
         DukValue OnClick;
         DukValue OnChange;
 
+        static std::string ProcessString(const std::string_view& s)
+        {
+            std::string result;
+            result.reserve(s.size());
+            for (char c : s)
+            {
+                if (c == '\n')
+                {
+                    result.push_back(FORMAT_NEWLINE);
+                }
+                else
+                {
+                    result.push_back(c);
+                }
+            }
+            return result;
+        }
+
         static CustomWidgetDesc FromDukValue(DukValue desc)
         {
             CustomWidgetDesc result;
@@ -119,6 +137,10 @@ namespace OpenRCT2::Ui::Windows
                 result.SelectedIndex = desc["selectedIndex"].as_int();
                 result.OnChange = desc["onChange"];
             }
+            else if (result.Type == "label")
+            {
+                result.Text = ProcessString(desc["text"].as_string());
+            }
             return result;
         }
     };
@@ -128,8 +150,8 @@ namespace OpenRCT2::Ui::Windows
         std::string Classification;
         std::optional<int32_t> X;
         std::optional<int32_t> Y;
-        int32_t Width;
-        int32_t Height;
+        int32_t Width{};
+        int32_t Height{};
         std::optional<int32_t> MinWidth;
         std::optional<int32_t> MinHeight;
         std::optional<int32_t> MaxWidth;
@@ -431,6 +453,13 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_DROPDOWN_GLYPH;
             widget.tooltip = STR_NONE;
             widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "label")
+        {
+            widget.type = WWT_LABEL;
+            widget.string = (utf8*)desc.Text.c_str();
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
         }
     }
