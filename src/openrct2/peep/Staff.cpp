@@ -563,7 +563,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
 
         CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[chosenDirection];
 
-        if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
+        if (!map_is_location_valid(chosenTile))
             continue;
 
         auto surfaceElement = map_get_surface_element_at(chosenTile);
@@ -684,7 +684,7 @@ static bool staff_path_finding_handyman(Peep* peep)
 
     CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
-    while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
+    while (!map_is_location_valid(chosenTile))
     {
         direction = staff_handyman_direction_rand_surface(peep, validDirections);
         chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
@@ -918,7 +918,7 @@ static bool staff_path_finding_mechanic(Peep* peep)
 
     CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
-    while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
+    while (!map_is_location_valid(chosenTile))
     {
         direction = staff_mechanic_direction_surface(peep);
         chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
@@ -1001,7 +1001,7 @@ static bool staff_path_finding_misc(Peep* peep)
 
     CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
 
-    while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
+    while (!map_is_location_valid(chosenTile))
     {
         direction = staff_direction_surface(peep, scenario_rand() & 3);
         chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];

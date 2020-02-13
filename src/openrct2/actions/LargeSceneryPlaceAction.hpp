@@ -356,7 +356,7 @@ private:
             curTile.x += _loc.x;
             curTile.y += _loc.y;
 
-            if (curTile.x >= 0x1FFF || curTile.y >= 0x1FFF || curTile.x < 0 || curTile.y < 0)
+            if (!map_is_location_valid(curTile))
             {
                 continue;
             }

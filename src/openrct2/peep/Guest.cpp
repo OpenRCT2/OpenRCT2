@@ -6877,9 +6877,10 @@ void Guest::UpdateSpriteType()
 
     if (climate_is_raining() && (item_standard_flags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)
     {
-        if ((x & 0xFFE0) < 0x1FFF && (y & 0xFFE0) < 0x1FFF)
+        CoordsXY loc = { x, y };
+        if (map_is_location_valid(loc.ToTileStart()))
         {
-            TileElement* tileElement = map_get_first_element_at({ x, y });
+            TileElement* tileElement = map_get_first_element_at(loc);
             while (true)
             {
                 if (tileElement == nullptr)

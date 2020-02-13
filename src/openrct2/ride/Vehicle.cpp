@@ -5444,7 +5444,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
         curVehicle->track_y = (int16_t)(curVehicle->crash_y << 8);
         curVehicle->track_z = (int16_t)(curVehicle->crash_z << 8);
 
-        if (curPosition.x > 0x1FFF || curPosition.y > 0x1FFF)
+        if (!map_is_location_valid(curPosition))
         {
             vehicle_crash_on_land(curVehicle);
             continue;
