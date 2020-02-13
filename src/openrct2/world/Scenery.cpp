@@ -31,28 +31,15 @@
 #include "SmallScenery.h"
 #include "Wall.h"
 
-uint8_t gWindowSceneryActiveTabIndex;
-uint16_t gWindowSceneryTabSelections[20];
-uint8_t gWindowSceneryClusterEnabled;
-uint8_t gWindowSceneryPaintEnabled;
-uint8_t gWindowSceneryRotation;
-colour_t gWindowSceneryPrimaryColour;
-colour_t gWindowScenerySecondaryColour;
-colour_t gWindowSceneryTertiaryColour;
-bool gWindowSceneryEyedropperEnabled;
-
 uint8_t gSceneryQuadrant;
 
 money32 gSceneryPlaceCost;
 int16_t gSceneryPlaceObject;
 int16_t gSceneryPlaceZ;
-uint8_t gSceneryPlacePathType;
-uint8_t gSceneryPlacePathSlope;
 uint8_t gSceneryPlaceRotation;
 
 uint8_t gSceneryGhostType;
 LocationXYZ16 gSceneryGhostPosition;
-uint32_t gSceneryGhostPathObjectType;
 uint8_t gSceneryGhostWallRotation;
 
 int16_t gSceneryShiftPressed;
