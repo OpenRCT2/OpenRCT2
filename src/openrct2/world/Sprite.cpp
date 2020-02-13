@@ -626,7 +626,7 @@ void sprite_misc_update_all()
  */
 void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
 {
-    if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)
+    if (!map_is_location_valid({ x, y }))
     {
         x = LOCATION_NULL;
     }
