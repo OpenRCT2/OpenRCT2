@@ -254,7 +254,7 @@ extern int16_t gSceneryPlaceZ;
 extern uint8_t gSceneryPlaceRotation;
 
 extern uint8_t gSceneryGhostType;
-extern LocationXYZ16 gSceneryGhostPosition;
+extern CoordsXYZ gSceneryGhostPosition;
 extern uint8_t gSceneryGhostWallRotation;
 
 extern int16_t gSceneryShiftPressed;

@@ -3588,7 +3588,7 @@ static void vehicle_update_collision_setup(Vehicle* vehicle)
 }
 
 /** rct2: 0x009A3AC4, 0x009A3AC6 */
-static constexpr const LocationXY16 stru_9A3AC4[] = {
+static constexpr const CoordsXY stru_9A3AC4[] = {
     { -256, 0 }, { -236, 98 }, { -181, 181 }, { -98, 236 }, { 0, 256 },  { 98, 236 },   { 181, 181 },   { 236, 98 },
     { 256, 0 },  { 236, -98 }, { 181, -181 }, { 98, -236 }, { 0, -256 }, { -98, -236 }, { -181, -181 }, { -236, -98 },
 };
@@ -3625,23 +3625,23 @@ static void vehicle_update_crash_setup(Vehicle* vehicle)
         trainVehicle->sub_state = 0;
         int32_t x = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
         int32_t y = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
+        auto z = Unk9A38D4[trainVehicle->vehicle_sprite_type] >> 23;
 
         int32_t ecx = Unk9A37E4[trainVehicle->vehicle_sprite_type] >> 15;
         x *= ecx;
         y *= ecx;
         x >>= 16;
         y >>= 16;
-        ecx = Unk9A38D4[trainVehicle->vehicle_sprite_type] >> 23;
         x *= edx;
         y *= edx;
-        ecx *= edx;
+        z *= edx;
         x >>= 8;
         y >>= 8;
-        ecx >>= 8;
+        z >>= 8;
 
         trainVehicle->crash_x = x;
         trainVehicle->crash_y = y;
-        trainVehicle->crash_z = ecx;
+        trainVehicle->crash_z = z;
         trainVehicle->crash_x += (scenario_rand() & 0xF) - 8;
         trainVehicle->crash_y += (scenario_rand() & 0xF) - 8;
         trainVehicle->crash_z += (scenario_rand() & 0xF) - 8;

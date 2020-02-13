@@ -56,7 +56,7 @@ static uint8_t _footpathQueueChain[64];
 
 // This is the coordinates that a user of the bin should move to
 // rct2: 0x00992A4C
-const LocationXY16 BinUseOffsets[4] = {
+const CoordsXY BinUseOffsets[4] = {
     { 11, 16 },
     { 16, 21 },
     { 21, 16 },
@@ -65,7 +65,7 @@ const LocationXY16 BinUseOffsets[4] = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const LocationXY16 BenchUseOffsets[8] = {
+const CoordsXY BenchUseOffsets[8] = {
     { 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 

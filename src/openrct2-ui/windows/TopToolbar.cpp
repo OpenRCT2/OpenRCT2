@@ -2487,13 +2487,11 @@ static money32 try_place_ghost_scenery(
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
             gSceneryPlaceRotation = (uint16_t)(parameter_3 & 0xFF);
             gSceneryPlaceObject = selected_tab;
 
             tileElement = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->tileElement;
-            gSceneryGhostPosition.z = tileElement->base_height;
+            gSceneryGhostPosition = { map_tile, tileElement->GetBaseZ() };
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
             if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
@@ -2523,10 +2521,7 @@ static money32 try_place_ghost_scenery(
                 {
                     return;
                 }
-                gSceneryGhostPosition.x = map_tile.x;
-                gSceneryGhostPosition.y = map_tile.y;
-                gSceneryGhostPosition.z = (parameter_2 & 0xFF);
-
+                gSceneryGhostPosition = { map_tile, static_cast<int32_t>((parameter_2 & 0xFF) * COORDS_Z_STEP) };
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
@@ -2551,10 +2546,8 @@ static money32 try_place_ghost_scenery(
                 if (result->Error != GA_ERROR::OK)
                     return;
 
-                gSceneryGhostPosition.x = map_tile.x;
-                gSceneryGhostPosition.y = map_tile.y;
+                gSceneryGhostPosition = { map_tile, result->tileElement->GetBaseZ() };
                 gSceneryGhostWallRotation = edges;
-                gSceneryGhostPosition.z = result->tileElement->base_height;
 
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
             });
@@ -2582,12 +2575,10 @@ static money32 try_place_ghost_scenery(
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
             gSceneryPlaceRotation = loc.direction;
 
             tileElement = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->tileElement;
-            gSceneryGhostPosition.z = tileElement->base_height;
+            gSceneryGhostPosition = { map_tile, tileElement->GetBaseZ() };
 
             if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
@@ -2626,9 +2617,8 @@ static money32 try_place_ghost_scenery(
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
-            gSceneryGhostPosition.x = loc.x;
-            gSceneryGhostPosition.y = loc.y;
-            gSceneryGhostPosition.z = loc.z / 8 + 2;
+            gSceneryGhostPosition = loc;
+            gSceneryGhostPosition.z += (2 * COORDS_Z_STEP);
             gSceneryPlaceRotation = direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
             cost = res->Cost;
@@ -2716,9 +2706,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile.x == gSceneryGhostPosition.x
-                && mapTile.y == gSceneryGhostPosition.y && (parameter2 & 0xFF) == _unkF64F0E && gSceneryPlaceZ == _unkF64F0A
-                && gSceneryPlaceObject == selected_tab)
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition
+                && (parameter2 & 0xFF) == _unkF64F0E && gSceneryPlaceZ == _unkF64F0A && gSceneryPlaceObject == selected_tab)
             {
                 return;
             }
@@ -2756,8 +2745,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile.x == gSceneryGhostPosition.x
-                && mapTile.y == gSceneryGhostPosition.y && (int16_t)(parameter2 & 0xFF) == gSceneryGhostPosition.z)
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition
+                && (int16_t)(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z)
             {
                 return;
             }
@@ -2779,9 +2768,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile.x == gSceneryGhostPosition.x
-                && mapTile.y == gSceneryGhostPosition.y && (parameter2 & 0xFF) == gSceneryGhostWallRotation
-                && gSceneryPlaceZ == _unkF64F0A)
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile == gSceneryGhostPosition
+                && (parameter2 & 0xFF) == gSceneryGhostWallRotation && gSceneryPlaceZ == _unkF64F0A)
             {
                 return;
             }
@@ -2830,8 +2818,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             map_invalidate_map_selection_tiles();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile.x == gSceneryGhostPosition.x
-                && mapTile.y == gSceneryGhostPosition.y && gSceneryPlaceZ == _unkF64F0A
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile == gSceneryGhostPosition && gSceneryPlaceZ == _unkF64F0A
                 && (int16_t)(parameter3 & 0xFFFF) == gSceneryPlaceObject)
             {
                 return;
@@ -2872,8 +2859,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile.x == gSceneryGhostPosition.x
-                && mapTile.y == gSceneryGhostPosition.y && (int16_t)(parameter2 & 0xFF) == gSceneryGhostPosition.z
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition
+                && (int16_t)(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z
                 && ((parameter2 >> 8) & 0xFF) == gSceneryPlaceRotation)
             {
                 return;

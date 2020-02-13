@@ -1228,8 +1228,7 @@ void Guest::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        auto loc = CoordsXYZ{ x, y, z }.ToTileStart()
-            + CoordsXYZ{ BenchUseOffsets[var_37 & 0x7].x, BenchUseOffsets[var_37 & 0x7].y, 0 };
+        auto loc = CoordsXYZ{ x, y, z }.ToTileStart() + CoordsXYZ{ BenchUseOffsets[var_37 & 0x7], 0 };
 
         MoveTo(loc.x, loc.y, loc.z);
 
