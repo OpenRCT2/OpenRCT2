@@ -41,7 +41,7 @@ public:
     LandSmoothAction()
     {
     }
-    LandSmoothAction(CoordsXY coords, MapRange range, uint8_t selectionType, bool isLowering)
+    LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)
@@ -105,8 +105,8 @@ private:
     }
 
     money32 SmoothLandRowByEdge(
-        bool isExecuting, CoordsXY loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX, int32_t stepY,
-        int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
+        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
+        int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
     {
         uint8_t shouldContinue = 0xF;
         int32_t landChangePerTile = _isLowering ? 2 : -2;
@@ -249,7 +249,7 @@ private:
     }
 
     money32 SmoothLandRowByCorner(
-        bool isExecuting, CoordsXY loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
+        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
         int32_t checkDirection) const
     {
         bool shouldContinue = true;

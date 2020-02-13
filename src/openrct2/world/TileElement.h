@@ -162,8 +162,8 @@ public:
     bool CanGrassGrow() const;
     uint8_t GetGrassLength() const;
     void SetGrassLength(uint8_t newLength);
-    void SetGrassLengthAndInvalidate(uint8_t newLength, CoordsXY coords);
-    void UpdateGrassLength(CoordsXY coords);
+    void SetGrassLengthAndInvalidate(uint8_t newLength, const CoordsXY& coords);
+    void UpdateGrassLength(const CoordsXY& coords);
 
     uint8_t GetOwnership() const;
     void SetOwnership(uint8_t newOwnership);
@@ -255,7 +255,7 @@ public:
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);
 
-    bool IsLevelCrossing(CoordsXY coords) const;
+    bool IsLevelCrossing(const CoordsXY& coords) const;
 };
 assert_struct_size(PathElement, 16);
 

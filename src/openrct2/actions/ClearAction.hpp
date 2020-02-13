@@ -134,7 +134,7 @@ private:
         return result;
     }
 
-    money32 ClearSceneryFromTile(CoordsXY tilePos, bool executing) const
+    money32 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
     {
         // Pass down all flags.
         TileElement* tileElement = nullptr;

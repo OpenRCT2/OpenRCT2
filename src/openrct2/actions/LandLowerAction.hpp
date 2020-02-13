@@ -36,7 +36,7 @@ public:
     LandLowerAction()
     {
     }
-    LandLowerAction(CoordsXY coords, MapRange range, uint8_t selectionType)
+    LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)

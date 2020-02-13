@@ -72,7 +72,7 @@ void SurfaceElement::SetGrassLength(uint8_t newLength)
     GrassLength = newLength;
 }
 
-void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords)
+void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, const CoordsXY& coords)
 {
     uint8_t oldLength = GrassLength & 0x7;
     uint8_t newLength = length & 0x7;
@@ -100,7 +100,7 @@ void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords
  *
  *  rct2: 0x006647A1
  */
-void SurfaceElement::UpdateGrassLength(CoordsXY coords)
+void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
 {
     // Check if tile is grass
     if (!CanGrassGrow())

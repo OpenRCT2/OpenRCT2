@@ -2244,7 +2244,7 @@ void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)
     edges = newEdgesAndCorners;
 }
 
-bool PathElement::IsLevelCrossing(CoordsXY coords) const
+bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
 {
     auto trackElement = map_get_track_element_at({ coords, GetBaseZ() });
     if (trackElement == nullptr)

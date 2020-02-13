@@ -102,7 +102,7 @@ void park_set_open(bool open)
  *
  *  rct2: 0x00664D05
  */
-void update_park_fences(const CoordsXY coords)
+void update_park_fences(const CoordsXY& coords)
 {
     if (map_is_edge(coords))
         return;
@@ -173,7 +173,7 @@ void update_park_fences(const CoordsXY coords)
     }
 }
 
-void update_park_fences_around_tile(const CoordsXY coords)
+void update_park_fences_around_tile(const CoordsXY& coords)
 {
     update_park_fences(coords);
     update_park_fences({ coords.x + 32, coords.y });

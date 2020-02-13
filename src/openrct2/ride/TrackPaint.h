@@ -279,7 +279,7 @@ extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 extern const size_t mini_golf_peep_animation_lengths[];
 
 bool track_paint_util_has_fence(
-    enum edge_t edge, CoordsXY position, const TileElement* tileElement, Ride* ride, uint8_t rotation);
+    enum edge_t edge, const CoordsXY& position, const TileElement* tileElement, Ride* ride, uint8_t rotation);
 void track_paint_util_paint_floor(
     paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4]);
 void track_paint_util_paint_fences(
@@ -303,7 +303,7 @@ void track_paint_util_draw_station_3(
 void track_paint_util_draw_station_inverted(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
     uint8_t stationVariant);
-bool track_paint_util_should_paint_supports(CoordsXY position);
+bool track_paint_util_should_paint_supports(const CoordsXY& position);
 void track_paint_util_draw_pier(
     paint_session* session, Ride* ride, const StationObject* stationObject, CoordsXY position, uint8_t direction,
     int32_t height, const TileElement* tileElement, uint8_t rotation);

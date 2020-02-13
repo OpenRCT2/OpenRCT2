@@ -35,7 +35,7 @@ public:
     LandSetHeightAction()
     {
     }
-    LandSetHeightAction(CoordsXY coords, uint8_t height, uint8_t style)
+    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
         : _coords(coords)
         , _height(height)
         , _style(style)

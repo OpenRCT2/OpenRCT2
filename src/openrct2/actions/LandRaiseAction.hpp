@@ -37,7 +37,7 @@ public:
     LandRaiseAction()
     {
     }
-    LandRaiseAction(CoordsXY coords, MapRange range, uint8_t selectionType)
+    LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)

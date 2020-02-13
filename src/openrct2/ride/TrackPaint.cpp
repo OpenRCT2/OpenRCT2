@@ -202,7 +202,7 @@ enum
 // clang-format on
 
 bool track_paint_util_has_fence(
-    enum edge_t edge, CoordsXY position, const TileElement* tileElement, Ride* ride, uint8_t rotation)
+    enum edge_t edge, const CoordsXY& position, const TileElement* tileElement, Ride* ride, uint8_t rotation)
 {
     TileCoordsXY offset;
     switch (edge)
@@ -285,7 +285,7 @@ void track_paint_util_paint_fences(
 }
 
 /* Supports are only placed every 2 tiles for flat pieces*/
-bool track_paint_util_should_paint_supports(CoordsXY position)
+bool track_paint_util_should_paint_supports(const CoordsXY& position)
 {
     if ((position.x & (1 << 5)) == (position.y & (1 << 5)))
         return true;

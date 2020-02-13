@@ -130,7 +130,7 @@ extern paint_entry* gNextFreePaintStruct;
 extern uint8_t gCurrentRotation;
 
 void viewport_init_all();
-std::optional<ScreenCoordsXY> centre_2d_coordinates(CoordsXYZ loc, rct_viewport* viewport);
+std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_viewport* viewport);
 void viewport_create(
     rct_window* w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y,
     int32_t centre_z, char flags, uint16_t sprite);
@@ -177,7 +177,7 @@ int32_t viewport_interaction_right_over(ScreenCoordsXY screenCoords);
 int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords);
 
 CoordsXY sub_68A15E(ScreenCoordsXY screenCoords);
-void sub_68B2B7(paint_session* session, CoordsXY mapCoords);
+void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 

@@ -30,7 +30,7 @@ private:
 public:
     RideEntranceExitPlaceAction() = default;
 
-    RideEntranceExitPlaceAction(CoordsXY loc, Direction direction, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
+    RideEntranceExitPlaceAction(const CoordsXY& loc, Direction direction, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
         : _loc(loc)
         , _direction(direction)
         , _rideIndex(rideIndex)

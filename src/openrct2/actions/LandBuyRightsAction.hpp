@@ -43,13 +43,13 @@ private:
 public:
     LandBuyRightsAction() = default;
 
-    LandBuyRightsAction(MapRange range, LandBuyRightSetting setting)
+    LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
         : _range(range)
         , _setting(static_cast<uint8_t>(setting))
     {
     }
 
-    LandBuyRightsAction(CoordsXY coord, LandBuyRightSetting setting)
+    LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting)
         : _range(coord.x, coord.y, coord.x, coord.y)
         , _setting(static_cast<uint8_t>(setting))
     {
