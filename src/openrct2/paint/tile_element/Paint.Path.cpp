@@ -856,9 +856,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         imageFlags |= CONSTRUCTION_MARKER;
     }
 
-    int16_t x = session->MapPosition.x, y = session->MapPosition.y;
-
-    auto surface = map_get_surface_element_at(CoordsXY{ session->MapPosition.x, session->MapPosition.y });
+    auto surface = map_get_surface_element_at(session->MapPosition);
 
     if (surface == nullptr)
     {
@@ -893,15 +891,12 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         int32_t staffIndex = gStaffDrawPatrolAreas;
         uint8_t staffType = staffIndex & 0x7FFF;
         bool is_staff_list = staffIndex & 0x8000;
-        x = session->MapPosition.x;
-        y = session->MapPosition.y;
-
         uint8_t patrolColour = COLOUR_LIGHT_BLUE;
 
         if (!is_staff_list)
         {
             Staff* staff = (GET_PEEP(staffIndex))->AsStaff();
-            if (!staff->IsPatrolAreaSet({ x, y }))
+            if (!staff->IsPatrolAreaSet(session->MapPosition))
             {
                 patrolColour = COLOUR_GREY;
             }

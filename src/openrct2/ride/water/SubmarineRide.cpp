@@ -86,7 +86,6 @@ static void submarine_ride_paint_track_station(
     if (ride == nullptr)
         return;
 
-    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     int32_t heightLower = height - 16;
     uint32_t imageId;
@@ -98,7 +97,7 @@ static void submarine_ride_paint_track_station(
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
         track_paint_util_draw_pier(
-            session, ride, stationObj, position, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, session->MapPosition, direction, height, tileElement, session->CurrentRotation);
     }
     else
     {
@@ -107,7 +106,7 @@ static void submarine_ride_paint_track_station(
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
         track_paint_util_draw_pier(
-            session, ride, stationObj, position, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, session->MapPosition, direction, height, tileElement, session->CurrentRotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -118,7 +117,6 @@ static void submarine_ride_paint_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    CoordsXY position = session->MapPosition;
     int32_t heightLower = height - 16;
     uint32_t imageId;
 
@@ -135,7 +133,7 @@ static void submarine_ride_paint_track_flat(
         paint_util_push_tunnel_left(session, heightLower, TUNNEL_0);
     }
 
-    if (track_paint_util_should_paint_supports(position))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
             session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, heightLower,

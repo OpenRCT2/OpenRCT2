@@ -154,7 +154,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
-    TileElement* tile_element = map_get_first_element_at({ x, y });
+    TileElement* tile_element = map_get_first_element_at(session->MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session->CurrentRotation;

@@ -677,7 +677,6 @@ static void paint_mini_golf_station(
     if (ride == nullptr)
         return;
 
-    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     uint32_t imageId;
     bool hasFence;
@@ -687,14 +686,15 @@ static void paint_mini_golf_station(
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2);
         }
 
-        bool hasSWFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
+        bool hasSWFence = track_paint_util_has_fence(
+            EDGE_SW, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
@@ -709,14 +709,15 @@ static void paint_mini_golf_station(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2);
         }
 
-        bool hasSEFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
+        bool hasSEFence = track_paint_util_has_fence(
+            EDGE_SE, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];

@@ -198,7 +198,6 @@ static void paint_spiral_slide(
     trackSequence = track_map_2x2[direction][trackSequence];
 
     int32_t edges = edges_2x2[trackSequence];
-    CoordsXY position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -210,7 +209,7 @@ static void paint_spiral_slide(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
+            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
             spiral_slide_fence_sprites, session->CurrentRotation);
     }
 

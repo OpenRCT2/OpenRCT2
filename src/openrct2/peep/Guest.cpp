@@ -4636,9 +4636,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             targetLoc.y = ride->stations[current_ride_station].Start.y * 32;
 
             assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-            const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
-
-            targetLoc += slidePlatformDestination;
+            targetLoc += SpiralSlideWalkingPath[var_37];
 
             destination_x = targetLoc.x;
             destination_y = targetLoc.y;
@@ -4655,9 +4653,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     targetLoc.y = ride->stations[current_ride_station].Start.y * 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-    const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
-
-    targetLoc += slidePlatformDestination;
+    targetLoc += SpiralSlideWalkingPath[var_37];
 
     destination_x = targetLoc.x;
     destination_y = targetLoc.y;
@@ -4750,9 +4746,7 @@ void Guest::UpdateRideOnSpiralSlide()
     targetLoc.y = ride->stations[current_ride_station].Start.y * 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-    const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
-
-    targetLoc += slidePlatformDestination;
+    targetLoc += SpiralSlideWalkingPath[var_37];
 
     destination_x = targetLoc.x;
     destination_y = targetLoc.y;
@@ -4795,9 +4789,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         targetLoc.y = ride->stations[current_ride_station].Start.y * 32;
 
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-        const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
-
-        targetLoc += slidePlatformDestination;
+        targetLoc += SpiralSlideWalkingPath[var_37];
 
         destination_x = targetLoc.x;
         destination_y = targetLoc.y;

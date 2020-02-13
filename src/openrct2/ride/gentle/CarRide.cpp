@@ -490,8 +490,6 @@ static void paint_car_ride_track_60_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    CoordsXY position = session->MapPosition;
-
     uint32_t imageId = car_ride_track_pieces_60_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
 
     switch (direction)
@@ -526,7 +524,7 @@ static void paint_car_ride_track_60_deg_up(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(position))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 32, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
@@ -541,8 +539,6 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    CoordsXY position = session->MapPosition;
-
     uint32_t imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2)
@@ -584,7 +580,7 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(position))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 12, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
@@ -599,8 +595,6 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    CoordsXY position = session->MapPosition;
-
     uint32_t imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2)
@@ -642,7 +636,7 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(position))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
