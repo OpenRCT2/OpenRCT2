@@ -20,6 +20,16 @@ struct Peep;
 struct TileElement;
 struct Vehicle;
 
+extern uint16_t gWindowSceneryTabSelections[];
+extern uint8_t gWindowSceneryActiveTabIndex;
+extern uint8_t gWindowSceneryClusterEnabled;
+extern uint8_t gWindowSceneryPaintEnabled;
+extern uint8_t gWindowSceneryRotation;
+extern colour_t gWindowSceneryPrimaryColour;
+extern colour_t gWindowScenerySecondaryColour;
+extern colour_t gWindowSceneryTertiaryColour;
+extern bool gWindowSceneryEyedropperEnabled;
+
 rct_window* window_about_open();
 rct_window* window_changelog_open();
 rct_window* window_cheats_open();

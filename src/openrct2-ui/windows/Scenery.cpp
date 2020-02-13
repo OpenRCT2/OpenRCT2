@@ -56,6 +56,16 @@ enum {
     WINDOW_SCENERY_TAB_20
 };
 
+uint16_t gWindowSceneryTabSelections[SCENERY_WINDOW_TABS];
+uint8_t gWindowSceneryActiveTabIndex;
+uint8_t gWindowSceneryClusterEnabled;
+uint8_t gWindowSceneryPaintEnabled;
+uint8_t gWindowSceneryRotation;
+colour_t gWindowSceneryPrimaryColour;
+colour_t gWindowScenerySecondaryColour;
+colour_t gWindowSceneryTertiaryColour;
+bool gWindowSceneryEyedropperEnabled = false;
+
 static void window_scenery_close(rct_window *w);
 static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenery_resize(rct_window *w);

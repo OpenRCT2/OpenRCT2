@@ -246,28 +246,15 @@ enum
 #define SCENERY_ENTRIES_BY_TAB 1024
 constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
-extern uint8_t gWindowSceneryActiveTabIndex;
-extern uint16_t gWindowSceneryTabSelections[20];
-extern uint8_t gWindowSceneryClusterEnabled;
-extern uint8_t gWindowSceneryPaintEnabled;
-extern uint8_t gWindowSceneryRotation;
-extern colour_t gWindowSceneryPrimaryColour;
-extern colour_t gWindowScenerySecondaryColour;
-extern colour_t gWindowSceneryTertiaryColour;
-extern bool gWindowSceneryEyedropperEnabled;
-
 extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;
 extern int16_t gSceneryPlaceObject;
 extern int16_t gSceneryPlaceZ;
-extern uint8_t gSceneryPlacePathType;
-extern uint8_t gSceneryPlacePathSlope;
 extern uint8_t gSceneryPlaceRotation;
 
 extern uint8_t gSceneryGhostType;
 extern LocationXYZ16 gSceneryGhostPosition;
-extern uint32_t gSceneryGhostPathObjectType;
 extern uint8_t gSceneryGhostWallRotation;
 
 extern int16_t gSceneryShiftPressed;

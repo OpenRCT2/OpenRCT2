@@ -35,6 +35,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
+extern bool gWindowSceneryEyedropperEnabled;
+
 uint8_t gKeyboardShortcutChangeId;
 
 using shortcut_action = void (*)();

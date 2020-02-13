@@ -2526,9 +2526,6 @@ static money32 try_place_ghost_scenery(
                 gSceneryGhostPosition.x = map_tile.x;
                 gSceneryGhostPosition.y = map_tile.y;
                 gSceneryGhostPosition.z = (parameter_2 & 0xFF);
-                gSceneryPlacePathSlope = ((parameter_1 >> 8) & 0xFF);
-                gSceneryPlacePathType = ((parameter_2 >> 8) & 0xFF);
-                gSceneryGhostPathObjectType = parameter_3;
 
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             });
