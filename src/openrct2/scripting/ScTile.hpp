@@ -158,6 +158,16 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        int32_t x_get()
+        {
+            return _coords.x / 32;
+        }
+
+        int32_t y_get()
+        {
+            return _coords.y / 32;
+        }
+
         size_t elements_get()
         {
             return _count;
@@ -172,6 +182,8 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScTile::x_get, nullptr, "x");
+            dukglue_register_property(ctx, &ScTile::y_get, nullptr, "y");
             dukglue_register_property(ctx, &ScTile::elements_get, nullptr, "elements");
             dukglue_register_method(ctx, &ScTile::getElement, "getElement");
         }
