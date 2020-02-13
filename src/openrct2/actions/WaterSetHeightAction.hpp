@@ -25,7 +25,7 @@ public:
     WaterSetHeightAction()
     {
     }
-    WaterSetHeightAction(CoordsXY coords, uint8_t height)
+    WaterSetHeightAction(const CoordsXY& coords, uint8_t height)
         : _coords(coords)
         , _height(height)
     {

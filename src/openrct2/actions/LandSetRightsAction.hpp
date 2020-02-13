@@ -45,14 +45,14 @@ private:
 public:
     LandSetRightsAction() = default;
 
-    LandSetRightsAction(MapRange range, LandSetRightSetting setting, uint8_t ownership = 0)
+    LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0)
         : _range(range)
         , _setting(static_cast<uint8_t>(setting))
         , _ownership(ownership)
     {
     }
 
-    LandSetRightsAction(CoordsXY coord, LandSetRightSetting setting, uint8_t ownership = 0)
+    LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0)
         : _range(coord.x, coord.y, coord.x, coord.y)
         , _setting(static_cast<uint8_t>(setting))
         , _ownership(ownership)

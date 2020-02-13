@@ -67,7 +67,7 @@ void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
  *
  *  rct2: 0x0068B2B7
  */
-void sub_68B2B7(paint_session* session, CoordsXY mapCoords)
+void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords)
 {
     if (mapCoords.x < gMapSizeUnits && mapCoords.y < gMapSizeUnits && mapCoords.x >= 32 && mapCoords.y >= 32)
     {
@@ -154,7 +154,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
-    TileElement* tile_element = map_get_first_element_at({ x, y });
+    TileElement* tile_element = map_get_first_element_at(session->MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session->CurrentRotation;

@@ -395,7 +395,7 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
     return gStaffPatrolAreas[peepOffset + offset] & (((uint32_t)1) << bitIndex);
 }
 
-bool Staff::IsPatrolAreaSet(CoordsXY coords) const
+bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
     return staff_is_patrol_area_set(staff_id, coords.x, coords.y);
 }

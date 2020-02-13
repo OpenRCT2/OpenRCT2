@@ -25,7 +25,7 @@ public:
     StaffSetPatrolAreaAction()
     {
     }
-    StaffSetPatrolAreaAction(uint16_t spriteId, CoordsXY loc)
+    StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
         : _spriteId(spriteId)
         , _loc(loc)
     {

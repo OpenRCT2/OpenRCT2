@@ -25,7 +25,7 @@ private:
 public:
     RideEntranceExitRemoveAction() = default;
 
-    RideEntranceExitRemoveAction(CoordsXY loc, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
+    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
         : _loc(loc)
         , _rideIndex(rideIndex)
         , _stationNum(stationNum)

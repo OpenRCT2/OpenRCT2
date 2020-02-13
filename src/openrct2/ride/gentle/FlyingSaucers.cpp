@@ -39,7 +39,6 @@ static void paint_flying_saucers(
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
     int32_t edges = edges_4x4[relativeTrackSequence];
-    CoordsXY position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -50,7 +49,7 @@ static void paint_flying_saucers(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
+            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
             flying_saucers_fence_sprites, session->CurrentRotation);
     }
 

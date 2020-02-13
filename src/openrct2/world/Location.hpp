@@ -94,14 +94,14 @@ struct CoordsXY
     {
     }
 
-    CoordsXY& operator+=(const CoordsXY rhs)
+    CoordsXY& operator+=(const CoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    CoordsXY& operator-=(const CoordsXY rhs)
+    CoordsXY& operator-=(const CoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
@@ -189,7 +189,7 @@ struct CoordsXYRangedZ : public CoordsXY
     {
     }
 
-    constexpr CoordsXYRangedZ(CoordsXY _c, int32_t _baseZ, int32_t _clearanceZ)
+    constexpr CoordsXYRangedZ(const CoordsXY& _c, int32_t _baseZ, int32_t _clearanceZ)
         : CoordsXY(_c)
         , baseZ(_baseZ)
         , clearanceZ(_clearanceZ)
@@ -209,7 +209,7 @@ struct TileCoordsXY
     {
     }
 
-    explicit TileCoordsXY(CoordsXY c)
+    explicit TileCoordsXY(const CoordsXY& c)
         : x(c.x / 32)
         , y(c.y / 32)
     {
@@ -220,14 +220,14 @@ struct TileCoordsXY
         return { x + rhs.x, y + rhs.y };
     }
 
-    TileCoordsXY& operator+=(const TileCoordsXY rhs)
+    TileCoordsXY& operator+=(const TileCoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    TileCoordsXY& operator-=(const TileCoordsXY rhs)
+    TileCoordsXY& operator-=(const TileCoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
@@ -298,7 +298,7 @@ struct CoordsXYZ : public CoordsXY
     {
     }
 
-    constexpr CoordsXYZ(CoordsXY c, int32_t _z)
+    constexpr CoordsXYZ(const CoordsXY& c, int32_t _z)
         : CoordsXY(c)
         , z(_z)
     {
@@ -341,32 +341,32 @@ struct TileCoordsXYZ : public TileCoordsXY
     {
     }
 
-    TileCoordsXYZ(TileCoordsXY c, int32_t z_)
+    TileCoordsXYZ(const TileCoordsXY& c, int32_t z_)
         : TileCoordsXY(c.x, c.y)
         , z(z_)
     {
     }
 
-    TileCoordsXYZ(CoordsXY c, int32_t z_)
+    TileCoordsXYZ(const CoordsXY& c, int32_t z_)
         : TileCoordsXY(c)
         , z(z_)
     {
     }
 
-    explicit TileCoordsXYZ(CoordsXYZ c)
+    explicit TileCoordsXYZ(const CoordsXYZ& c)
         : TileCoordsXY(c)
         , z(c.z / 8)
     {
     }
 
-    TileCoordsXYZ& operator+=(const TileCoordsXY rhs)
+    TileCoordsXYZ& operator+=(const TileCoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    TileCoordsXYZ& operator-=(const TileCoordsXY rhs)
+    TileCoordsXYZ& operator-=(const TileCoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
@@ -451,13 +451,13 @@ struct CoordsXYZD : public CoordsXYZ
     {
     }
 
-    constexpr CoordsXYZD(CoordsXY _c, int32_t _z, Direction _d)
+    constexpr CoordsXYZD(const CoordsXY& _c, int32_t _z, Direction _d)
         : CoordsXYZ(_c, _z)
         , direction(_d)
     {
     }
 
-    constexpr CoordsXYZD(CoordsXYZ _c, Direction _d)
+    constexpr CoordsXYZD(const CoordsXYZ& _c, Direction _d)
         : CoordsXYZ(_c)
         , direction(_d)
     {
@@ -485,25 +485,25 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     {
     }
 
-    TileCoordsXYZD(TileCoordsXY t_, int32_t z_, Direction d_)
+    TileCoordsXYZD(const TileCoordsXY& t_, int32_t z_, Direction d_)
         : TileCoordsXYZ(t_, z_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(CoordsXY c_, int32_t z_, Direction d_)
+    TileCoordsXYZD(const CoordsXY& c_, int32_t z_, Direction d_)
         : TileCoordsXYZ(c_, z_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(CoordsXYZ c_, Direction d_)
+    TileCoordsXYZD(const CoordsXYZ& c_, Direction d_)
         : TileCoordsXYZ(c_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(CoordsXYZD c_)
+    TileCoordsXYZD(const CoordsXYZD& c_)
         : TileCoordsXYZ(c_)
         , direction(c_.direction)
     {

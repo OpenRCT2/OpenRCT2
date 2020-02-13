@@ -103,10 +103,8 @@ void viewport_init_all()
  * out_x : ax
  * out_y : bx
  */
-std::optional<ScreenCoordsXY> centre_2d_coordinates(CoordsXYZ loc, rct_viewport* viewport)
+std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_viewport* viewport)
 {
-    auto screenCoord = translate_3d_to_2d_with_z(get_current_rotation(), loc);
-
     // If the start location was invalid
     // propagate the invalid location to the output.
     // This fixes a bug that caused the game to enter an infinite loop.
@@ -115,6 +113,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(CoordsXYZ loc, rct_viewport*
         return std::nullopt;
     }
 
+    auto screenCoord = translate_3d_to_2d_with_z(get_current_rotation(), loc);
     screenCoord.x -= viewport->view_width / 2;
     screenCoord.y -= viewport->view_height / 2;
     return { screenCoord };

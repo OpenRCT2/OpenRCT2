@@ -1921,8 +1921,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(
         }
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -1970,8 +1969,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(
         }
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -2195,8 +2193,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
         }
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -2256,8 +2253,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
         }
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -2334,8 +2330,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
         }
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -2396,8 +2391,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
         }
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -2486,8 +2480,7 @@ static void junior_rc_left_bank_paint_setup(
         paint_util_push_tunnel_left(session, height, 0);
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -3672,8 +3665,7 @@ static void junior_rc_brake_paint_setup(
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -3709,8 +3701,7 @@ static void junior_rc_block_brake_paint_setup(
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         int32_t edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -4981,10 +4972,8 @@ void junior_rc_paint_track_60_deg_up(
             break;
     }
 
-    const CoordsXY pos = session->MapPosition;
-
     int8_t support[4] = { 35, 29, 25, 32 };
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height,
@@ -5077,10 +5066,8 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
             break;
     }
 
-    const CoordsXY pos = session->MapPosition;
-
     int8_t support[4] = { 12, 12, 12, 14 };
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height,
@@ -5157,9 +5144,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
             break;
     }
 
-    const CoordsXY pos = session->MapPosition;
-
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height,
@@ -5471,10 +5456,8 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
             break;
     }
 
-    const CoordsXY pos = session->MapPosition;
-
     int8_t support[4] = { 12, 12, 12, 14 };
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height - 7,
@@ -5542,9 +5525,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
             break;
     }
 
-    const CoordsXY pos = session->MapPosition;
-
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height - 5,
@@ -5656,8 +5637,7 @@ static void junior_rc_booster_paint_setup(
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
-    const CoordsXY pos = session->MapPosition;
-    if (track_paint_util_should_paint_supports(pos))
+    if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         uint8_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);

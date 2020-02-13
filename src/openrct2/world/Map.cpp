@@ -1881,7 +1881,7 @@ EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool 
     return nullptr;
 }
 
-SmallSceneryElement* map_get_small_scenery_element_at(CoordsXYZ sceneryCoords, int32_t type, uint8_t quadrant)
+SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant)
 {
     auto sceneryTileCoords = TileCoordsXYZ{ sceneryCoords };
     TileElement* tileElement = map_get_first_element_at(sceneryCoords);
@@ -2092,7 +2092,7 @@ int32_t map_get_tile_quadrant(const CoordsXY& mapPos)
  *
  *  rct2: 0x00693BFF
  */
-bool map_surface_is_blocked(CoordsXY mapCoords)
+bool map_surface_is_blocked(const CoordsXY& mapCoords)
 {
     if (!map_is_location_valid(mapCoords))
         return true;
@@ -2230,7 +2230,7 @@ TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trackType)
+TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32_t trackType)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2253,7 +2253,7 @@ TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trac
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t trackType, int32_t sequence)
+TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, int32_t trackType, int32_t sequence)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2364,7 +2364,7 @@ TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD&
     return nullptr;
 };
 
-WallElement* map_get_wall_element_at(CoordsXYZD wallCoords)
+WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords)
 {
     auto tileWallCoords = TileCoordsXYZ(wallCoords);
     TileElement* tileElement = map_get_first_element_at(wallCoords);
