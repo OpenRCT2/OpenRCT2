@@ -68,7 +68,7 @@ static void vehicle_update_crash(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
-static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location);
+static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static void vehicle_update_arriving(Vehicle* vehicle);
 static void vehicle_update_unloading_passengers(Vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle);
@@ -3137,11 +3137,9 @@ static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
     vehicle->TrackLocation.y = vehicle->y;
     vehicle->TrackLocation = vehicle->TrackLocation.ToTileStart();
 
-    TileCoordsXY location{
-        CoordsXY(vehicle->TrackLocation) + CoordsDirectionDelta[vehicle->sprite_direction >> 3],
-    };
+    CoordsXY location = CoordsXY(vehicle->TrackLocation) + CoordsDirectionDelta[vehicle->sprite_direction >> 3];
 
-    vehicle->boat_location = { static_cast<uint8_t>(location.x), static_cast<uint8_t>(location.y) };
+    vehicle->BoatLocation = location;
     vehicle->var_35 = 0;
     vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
     vehicle->remaining_distance += 27924;
@@ -4309,8 +4307,9 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
         {
             // loc_6DA7A5
             vehicle->var_35++;
-            int32_t x = (vehicle->boat_location.x * 32) + 16;
-            int32_t y = (vehicle->boat_location.y * 32) + 16;
+            auto loc = vehicle->BoatLocation.ToTileCentre();
+            int32_t x = loc.x;
+            int32_t y = loc.y;
             int32_t z;
             uint8_t bl;
 
@@ -4432,7 +4431,7 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
             auto flooredLocation = CoordsXY(x, y).ToTileStart();
             if (flooredLocation != vehicle->TrackLocation)
             {
-                if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{ x, y, vehicle->TrackLocation.z })))
+                if (!vehicle_boat_is_location_accessible(CoordsXYZ{ x, y, vehicle->TrackLocation.z }))
                 {
                     // loc_6DA939:
                     auto ride = get_ride(vehicle->ride);
@@ -4576,12 +4575,12 @@ static void vehicle_update_boat_location(Vehicle* vehicle)
     TileCoordsXY returnPosition = ride->boat_hire_return_position;
     uint8_t returnDirection = ride->boat_hire_return_direction & 3;
 
-    TileCoordsXY location{ CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection] };
+    CoordsXY location = CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection];
 
-    if (location == returnPosition)
+    if (location == returnPosition.ToCoordsXY().ToTileStart())
     {
         vehicle->sub_state = 1;
-        vehicle->boat_location = { static_cast<uint8_t>(location.x), static_cast<uint8_t>(location.y) };
+        vehicle->BoatLocation = location;
         return;
     }
 
@@ -4619,31 +4618,28 @@ static void vehicle_update_boat_location(Vehicle* vehicle)
 
         auto trackLocation = vehicle->TrackLocation;
         trackLocation += CoordsDirectionDelta[(randDirection + rotation) & 3];
-        auto tileTrackLocation = TileCoordsXYZ(trackLocation);
 
-        if (!vehicle_boat_is_location_accessible(tileTrackLocation))
+        if (!vehicle_boat_is_location_accessible(trackLocation))
         {
             continue;
         }
-        vehicle->boat_location.x = tileTrackLocation.x;
-        vehicle->boat_location.y = tileTrackLocation.y;
+
+        vehicle->BoatLocation = trackLocation;
         return;
     }
 
     CoordsXY trackLocation = vehicle->TrackLocation;
     trackLocation += CoordsDirectionDelta[curDirection & 3];
-    auto tileTrackLocation = TileCoordsXY(trackLocation);
-    vehicle->boat_location.x = tileTrackLocation.x;
-    vehicle->boat_location.y = tileTrackLocation.y;
+    vehicle->BoatLocation = trackLocation;
 }
 
 /**
  *
  *  rct2: 0x006DA22A
  */
-static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
+static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
 {
-    TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(location);
     if (tileElement == nullptr)
         return false;
     do
@@ -4653,7 +4649,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
-            int32_t waterZ = tileElement->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
+            int32_t waterZ = tileElement->AsSurface()->GetWaterHeight();
             if (location.z != waterZ)
             {
                 return false;
@@ -4661,7 +4657,8 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
         }
         else
         {
-            if (location.z > tileElement->base_height - 2 && location.z < tileElement->clearance_height + 2)
+            if (location.z > (tileElement->GetBaseZ() - (2 * COORDS_Z_STEP))
+                && location.z < tileElement->GetClearanceZ() + (2 * COORDS_Z_STEP))
             {
                 return false;
             }

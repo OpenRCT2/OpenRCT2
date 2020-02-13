@@ -1297,6 +1297,8 @@ public:
 
     void ImportSpriteVehicle(Vehicle* dst, const RCT2SpriteVehicle* src)
     {
+        const auto& ride = _s6.rides[src->ride];
+
         ImportSpriteCommonProperties((SpriteBase*)dst, src);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
@@ -1308,6 +1310,14 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
+        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE)
+        {
+            dst->BoatLocation.setNull();
+        }
+        else
+        {
+            dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+        }
         dst->track_type = src->track_type;
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
