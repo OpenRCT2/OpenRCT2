@@ -567,7 +567,8 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
 
     mode = NETWORK_MODE_SERVER;
 
-    _userManager.Load();
+    _groups.Load();
+    _userManager.Load(_groups);
 
     log_verbose("Begin listening for clients");
 
@@ -590,7 +591,6 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     ServerProviderEmail = gConfigNetwork.provider_email;
     ServerProviderWebsite = gConfigNetwork.provider_website;
 
-    _groups.Load();
     CheatsReset();
     BeginChatLog();
     BeginServerLog();
@@ -606,7 +606,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
         NetworkUser* networkUser = _userManager.GetOrAddUser(player->KeyHash);
         networkUser->GroupId = player->Group;
         networkUser->Name = player->Name;
-        _userManager.Save();
+        _userManager.Save(_groups);
     }
 
     printf("Ready for clients...\n");
@@ -1057,13 +1057,13 @@ void Network::RemoveGroup(NetworkGroupId_t id)
     if (group == nullptr)
         return;
 
-    _groups.Remove(group);
-
     if (GetMode() == NETWORK_MODE_SERVER)
     {
-        _userManager.UnsetUsersOfGroup(id);
-        _userManager.Save();
+        _userManager.SwitchGroupUsers(id, _groups.GetDefaultId());
+        _userManager.Save(_groups);
     }
+
+    _groups.Remove(group);
 }
 
 NetworkGroupId_t Network::GetGroupIDByHash(const std::string& keyhash)
@@ -1071,20 +1071,19 @@ NetworkGroupId_t Network::GetGroupIDByHash(const std::string& keyhash)
     const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
     uint8_t groupId = _groups.GetDefaultId();
-    if (networkUser != nullptr && networkUser->GroupId.HasValue())
+
+    const uint8_t assignedGroup = networkUser->GroupId;
+    if (_groups.GetById(assignedGroup) != nullptr)
     {
-        const uint8_t assignedGroup = networkUser->GroupId.GetValue();
-        if (_groups.GetById(assignedGroup) != nullptr)
-        {
-            groupId = assignedGroup;
-        }
-        else
-        {
-            log_warning(
-                "User %s is assigned to non-existent group %u. Assigning to default group (%u)", keyhash.c_str(), assignedGroup,
-                groupId);
-        }
+        groupId = assignedGroup;
     }
+    else
+    {
+        log_warning(
+            "User %s is assigned to non-existent group %u. Assigning to default group (%u)", keyhash.c_str(), assignedGroup,
+            groupId);
+    }
+
     return groupId;
 }
 
@@ -1935,7 +1934,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
         if (GetMode() == NETWORK_MODE_SERVER)
         {
             // Load keys host may have added manually
-            _userManager.Load();
+            _userManager.Load(_groups);
 
             // Check if the key is registered
             const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
@@ -1953,7 +1952,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
             }
             else
             {
-                player->Group = networkUser->GroupId.GetValueOrDefault(_groups.GetDefaultId());
+                player->Group = networkUser->GroupId;
                 player->SetName(networkUser->Name);
             }
 
@@ -3234,7 +3233,7 @@ GameActionResult::Ptr network_set_player_group(
             NetworkUser* networkUser = userManager->GetOrAddUser(player->KeyHash);
             networkUser->GroupId = groupId;
             networkUser->Name = player->Name;
-            userManager->Save();
+            userManager->Save(groups);
         }
 
         window_invalidate_by_number(WC_PLAYER, playerId);
@@ -3404,12 +3403,14 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExe
     {
         if (gNetwork.GetMode() == NETWORK_MODE_SERVER)
         {
+            NetworkGroups& groups = gNetwork.GetGroups();
+
             gNetwork.KickPlayer(playerId);
 
             NetworkUserManager* networkUserManager = &gNetwork._userManager;
-            networkUserManager->Load();
+            networkUserManager->Load(groups);
             networkUserManager->RemoveUser(player->KeyHash);
-            networkUserManager->Save();
+            networkUserManager->Save(groups);
         }
     }
     return std::make_unique<GameActionResult>();

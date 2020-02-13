@@ -22,10 +22,11 @@
 
 constexpr const utf8* USER_STORE_FILENAME = "users.json";
 
-static NetworkUser* NetworkUserFromJson(json_t* json)
+static NetworkUser* NetworkUserFromJson(json_t* json, NetworkGroups& groups)
 {
     const char* hash = json_string_value(json_object_get(json, "hash"));
     const char* name = json_string_value(json_object_get(json, "name"));
+    const char* groupName = json_string_value(json_object_get(json, "group"));
     const json_t* jsonGroupId = json_object_get(json, "groupId");
 
     NetworkUser* user = nullptr;
@@ -34,38 +35,52 @@ static NetworkUser* NetworkUserFromJson(json_t* json)
         user = new NetworkUser();
         user->Hash = std::string(hash);
         user->Name = std::string(name);
+        user->GroupId = groups.GetDefaultId();
+
+        // NOTE: This part only exists for importing old configurations.
         if (!json_is_null(jsonGroupId))
         {
-            user->GroupId = (uint8_t)json_integer_value(jsonGroupId);
+            NetworkGroupId_t oldId = static_cast<NetworkGroupId_t>(json_integer_value(jsonGroupId));
+            if (groups.GetById(oldId) != nullptr)
+            {
+                user->GroupId = (uint8_t)json_integer_value(jsonGroupId);
+            }
         }
+        else if (groupName != nullptr)
+        {
+            auto* group = groups.GetByName(groupName);
+            if (group != nullptr)
+            {
+                user->GroupId = group->Id;
+            }
+        }
+
         user->Remove = false;
         return user;
     }
     return user;
 }
 
-static json_t* NetworkUserToJson(const NetworkUser* user, json_t* json)
+static json_t* NetworkUserToJson(const NetworkUser* user, json_t* json, NetworkGroups& groups)
 {
     json_object_set_new(json, "hash", json_string(user->Hash.c_str()));
     json_object_set_new(json, "name", json_string(user->Name.c_str()));
 
-    json_t* jsonGroupId;
-    if (user->GroupId.HasValue())
+    auto* group = groups.GetById(user->GroupId);
+    if (group != nullptr)
     {
-        jsonGroupId = json_integer(user->GroupId.GetValue());
+        const char* groupName = group->GetName().c_str();
+        json_object_set_new(json, "group", json_string(groupName));
     }
-    else
-    {
-        jsonGroupId = json_null();
-    }
-    json_object_set_new(json, "groupId", jsonGroupId);
+
+    json_object_del(json, "groupId");
 
     return json;
 }
 
-static json_t* NetworkUserToJson(const NetworkUser* user)
+static json_t* NetworkUserToJson(const NetworkUser* user, NetworkGroups& groups)
 {
-    return NetworkUserToJson(user, json_object());
+    return NetworkUserToJson(user, json_object(), groups);
 }
 
 NetworkUserManager::~NetworkUserManager()
@@ -82,7 +97,7 @@ void NetworkUserManager::DisposeUsers()
     _usersByHash.clear();
 }
 
-void NetworkUserManager::Load()
+void NetworkUserManager::Load(NetworkGroups& groups)
 {
     utf8 path[MAX_PATH];
     GetStorePath(path, sizeof(path));
@@ -98,7 +113,7 @@ void NetworkUserManager::Load()
             for (size_t i = 0; i < numUsers; i++)
             {
                 json_t* jsonUser = json_array_get(jsonUsers, i);
-                NetworkUser* networkUser = NetworkUserFromJson(jsonUser);
+                NetworkUser* networkUser = NetworkUserFromJson(jsonUser, groups);
                 if (networkUser != nullptr)
                 {
                     _usersByHash[networkUser->Hash] = networkUser;
@@ -113,7 +128,7 @@ void NetworkUserManager::Load()
     }
 }
 
-void NetworkUserManager::Save()
+void NetworkUserManager::Save(NetworkGroups& groups)
 {
     utf8 path[MAX_PATH];
     GetStorePath(path, sizeof(path));
@@ -155,7 +170,7 @@ void NetworkUserManager::Save()
                 }
                 else
                 {
-                    NetworkUserToJson(networkUser, jsonUser);
+                    NetworkUserToJson(networkUser, jsonUser, groups);
                     savedHashes.insert(hashString);
                 }
             }
@@ -168,7 +183,7 @@ void NetworkUserManager::Save()
         const NetworkUser* networkUser = kvp.second;
         if (!networkUser->Remove && savedHashes.find(networkUser->Hash) == savedHashes.end())
         {
-            json_t* jsonUser = NetworkUserToJson(networkUser);
+            json_t* jsonUser = NetworkUserToJson(networkUser, groups);
             json_array_append_new(jsonUsers, jsonUser);
         }
     }
@@ -177,14 +192,14 @@ void NetworkUserManager::Save()
     json_decref(jsonUsers);
 }
 
-void NetworkUserManager::UnsetUsersOfGroup(uint8_t groupId)
+void NetworkUserManager::SwitchGroupUsers(NetworkGroupId_t oldGroupId, NetworkGroupId_t newGroupId)
 {
     for (const auto& kvp : _usersByHash)
     {
         NetworkUser* networkUser = kvp.second;
-        if (networkUser->GroupId.HasValue() && networkUser->GroupId.GetValue() == groupId)
+        if (networkUser->GroupId == oldGroupId)
         {
-            networkUser->GroupId = nullptr;
+            networkUser->GroupId = newGroupId;
         }
     }
 }

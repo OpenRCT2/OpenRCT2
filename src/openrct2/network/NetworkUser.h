@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/Nullable.hpp"
+#include "NetworkGroups.h"
 
 #include <jansson.h>
 #include <map>
@@ -20,7 +21,7 @@ struct NetworkUser
 {
     std::string Hash;
     std::string Name;
-    Nullable<uint8_t> GroupId;
+    NetworkGroupId_t GroupId;
     bool Remove;
 };
 
@@ -29,7 +30,7 @@ class NetworkUserManager final
 public:
     ~NetworkUserManager();
 
-    void Load();
+    void Load(NetworkGroups& groups);
 
     /**
      * @brief NetworkUserManager::Save
@@ -37,9 +38,9 @@ public:
      *
      * Useful for retaining custom entries in JSON file.
      */
-    void Save();
+    void Save(NetworkGroups& groups);
 
-    void UnsetUsersOfGroup(uint8_t groupId);
+    void SwitchGroupUsers(NetworkGroupId_t oldGroupId, NetworkGroupId_t newGroupId);
     void RemoveUser(const std::string& hash);
 
     NetworkUser* GetUserByHash(const std::string& hash);
