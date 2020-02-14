@@ -91,6 +91,10 @@ void ScriptEngine::LoadPlugins()
     {
         Initialise();
     }
+    if (_pluginsLoaded)
+    {
+        UnloadPlugins();
+    }
 
     auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
     if (Path::DirectoryExists(base))
@@ -112,6 +116,7 @@ void ScriptEngine::LoadPlugins()
         }
     }
     _pluginsLoaded = true;
+    _pluginsStarted = false;
 }
 
 void ScriptEngine::LoadPlugin(const std::string& path)
@@ -237,6 +242,7 @@ void ScriptEngine::StartPlugins()
             ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
             try
             {
+                LogPluginInfo(plugin, "Started");
                 plugin->Start();
             }
             catch (const std::exception& e)
@@ -253,6 +259,7 @@ void ScriptEngine::StopPlugins()
     for (auto& plugin : _plugins)
     {
         StopPlugin(plugin);
+        LogPluginInfo(plugin, "Stopped");
     }
     _pluginsStarted = false;
 }
