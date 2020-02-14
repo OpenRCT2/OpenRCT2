@@ -98,6 +98,7 @@
 - Fix: [#7700, #8079, #8969] Crash when unloading buggy custom rides.
 - Fix: [#7829] Rotated information kiosk can cause 'unreachable' messages.
 - Fix: [#7878] Scroll shortcut keys ignore SHIFT/CTRL/ALT modifiers.
+- Fix: [#8064] Ride construction errors shown as (undefined string)
 - Fix: [#8219] Faulty folder recreation in "save" folder.
 - Fix: [#8480, #8535] Crash when mirroring track design.
 - Fix: [#8507] Incorrect change in vehicle rolling direction.

@@ -224,7 +224,7 @@ public:
 
             clearanceZ = (clearanceZ / 8) + baseZ;
 
-            if (clearanceZ >= 255)
+            if (clearanceZ > MAX_TRACK_HEIGHT)
             {
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_HIGH);
             }
