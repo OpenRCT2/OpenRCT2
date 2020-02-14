@@ -1368,7 +1368,7 @@ Direction peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep)
             _peepPathFindNumJunctions = _peepPathFindMaxJunctions;
 
             // Initialise _peepPathFindHistory.
-            std::memset(_peepPathFindHistory, 0xFF, sizeof(_peepPathFindHistory));
+            std::memset(static_cast<void*>(_peepPathFindHistory), 0xFF, sizeof(_peepPathFindHistory));
 
             /* The pathfinding will only use elements
              * 1.._peepPathFindMaxJunctions, so the starting point

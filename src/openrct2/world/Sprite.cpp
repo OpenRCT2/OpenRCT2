@@ -149,7 +149,7 @@ void invalidate_sprite_2(SpriteBase* sprite)
 void reset_sprite_list()
 {
     gSavedAge = 0;
-    std::memset(_spriteList, 0, sizeof(_spriteList));
+    std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
 
     for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
     {
