@@ -442,7 +442,11 @@ export interface ToolDesc {
     callback: (e: ToolCallback) => void;
 }
 
-export interface ViewportInfo {
+export interface Viewport {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
     rotation: number;
     zoom: number;
     visibilityFlags: number;
@@ -456,7 +460,7 @@ export interface Ui {
     readonly width: number;
     readonly height: number;
     readonly windows: number;
-    readonly mainViewport: ViewportInfo;
+    readonly mainViewport: Viewport;
 
     getWindow(id: number): Window;
     getWindow(classification: string, id?: number): Window;

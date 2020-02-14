@@ -10,6 +10,7 @@
 #pragma once
 
 #include "CustomMenu.h"
+#include "ScViewport.hpp"
 #include "ScWindow.hpp"
 
 #include <memory>
@@ -42,6 +43,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
+    private:
         int32_t width_get()
         {
             return context_get_width();
@@ -53,6 +55,11 @@ namespace OpenRCT2::Scripting
         int32_t windows_get()
         {
             return static_cast<int32_t>(g_window_list.size());
+        }
+
+        std::shared_ptr<ScViewport> mainViewport_get()
+        {
+            return std::make_shared<ScViewport>(WC_MAIN_WINDOW);
         }
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
@@ -113,11 +120,13 @@ namespace OpenRCT2::Scripting
             CustomMenuItems.emplace_back(owner, text, callback);
         }
 
+    public:
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScUi::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScUi::width_get, nullptr, "width");
             dukglue_register_property(ctx, &ScUi::windows_get, nullptr, "windows");
+            dukglue_register_property(ctx, &ScUi::mainViewport_get, nullptr, "mainViewport");
             dukglue_register_method(ctx, &ScUi::openWindow, "openWindow");
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");

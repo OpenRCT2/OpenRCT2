@@ -24,6 +24,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
     ScUi::Register(ctx);
+    ScViewport::Register(ctx);
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
