@@ -38,7 +38,7 @@ static NetworkUser* NetworkUserFromJson(json_t* json, NetworkGroups& groups)
         user->GroupId = groups.GetDefaultId();
 
         // NOTE: This part only exists for importing old configurations.
-        if (!json_is_null(jsonGroupId))
+        if (jsonGroupId != nullptr && json_is_integer(jsonGroupId))
         {
             NetworkGroupId_t oldId = static_cast<NetworkGroupId_t>(json_integer_value(jsonGroupId));
             if (groups.GetById(oldId) != nullptr)
@@ -181,7 +181,10 @@ void NetworkUserManager::Save(NetworkGroups& groups)
     for (const auto& kvp : _usersByHash)
     {
         const NetworkUser* networkUser = kvp.second;
-        if (!networkUser->Remove && savedHashes.find(networkUser->Hash) == savedHashes.end())
+        if (!networkUser->Remove)
+            continue;
+
+        if (savedHashes.find(networkUser->Hash) == savedHashes.end())
         {
             json_t* jsonUser = NetworkUserToJson(networkUser, groups);
             json_array_append_new(jsonUsers, jsonUser);

@@ -3355,6 +3355,13 @@ GameActionResult::Ptr network_modify_groups(
                     GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
             }
 
+            // Prevent duplicate names.
+            if (groups.GetByName(name) != nullptr)
+            {
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
+            }
+
             if (isExecuting)
             {
                 group->SetName(name);

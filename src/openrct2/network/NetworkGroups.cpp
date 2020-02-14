@@ -82,10 +82,26 @@ bool NetworkGroups::Load()
     }
 
     json_t* jsonDefaultGroup = json_object_get(json, "default_group");
-    NetworkGroupId_t defaultId = static_cast<NetworkGroupId_t>(json_integer_value(jsonDefaultGroup));
-    if (auto* group = GetById(defaultId))
+    if (json_is_integer(jsonDefaultGroup))
     {
-        SetDefault(group);
+        // NOTE: This part only exists for importing old configurations.
+        NetworkGroupId_t defaultId = static_cast<NetworkGroupId_t>(json_integer_value(jsonDefaultGroup));
+        if (auto* group = GetById(defaultId))
+        {
+            SetDefault(group);
+        }
+    }
+    else if (json_is_string(jsonDefaultGroup))
+    {
+        const char* defaultGroupName = json_string_value(jsonDefaultGroup);
+        if (defaultGroupName != nullptr)
+        {
+            NetworkGroup* group = GetByName(defaultGroupName);
+            if (group != nullptr)
+            {
+                SetDefault(group);
+            }
+        }
     }
 
     json_decref(json);
@@ -108,7 +124,10 @@ bool NetworkGroups::Save()
     {
         json_array_append_new(jsonGroups, group->ToJson());
     }
-    json_object_set_new(jsonGroupsCfg, "default_group", json_integer(_defaultId));
+
+    NetworkGroup* defaultGroup = GetDefault();
+
+    json_object_set_new(jsonGroupsCfg, "default_group", json_string(defaultGroup->GetName().c_str()));
     json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
     try
     {

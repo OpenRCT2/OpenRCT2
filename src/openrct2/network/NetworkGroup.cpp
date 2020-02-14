@@ -56,7 +56,6 @@ NetworkGroup NetworkGroup::FromJson(const json_t* json)
 json_t* NetworkGroup::ToJson() const
 {
     json_t* jsonGroup = json_object();
-    json_object_set_new(jsonGroup, "id", json_integer(Id));
     json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
     json_t* actionsArray = json_array();
     for (size_t i = 0; i < NetworkActions::Actions.size(); i++)

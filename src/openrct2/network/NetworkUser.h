@@ -21,7 +21,7 @@ struct NetworkUser
 {
     std::string Hash;
     std::string Name;
-    NetworkGroupId_t GroupId;
+    NetworkGroupId_t GroupId = 0xFF;
     bool Remove;
 };
 
