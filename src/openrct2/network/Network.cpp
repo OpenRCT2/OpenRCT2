@@ -1068,9 +1068,11 @@ void Network::RemoveGroup(NetworkGroupId_t id)
 
 NetworkGroupId_t Network::GetGroupIDByHash(const std::string& keyhash)
 {
-    const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
-
     uint8_t groupId = _groups.GetDefaultId();
+
+    const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
+    if (networkUser == nullptr)
+        return groupId;
 
     const uint8_t assignedGroup = networkUser->GroupId;
     if (_groups.GetById(assignedGroup) != nullptr)
