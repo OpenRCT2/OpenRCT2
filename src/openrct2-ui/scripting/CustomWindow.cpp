@@ -234,6 +234,11 @@ namespace OpenRCT2::Ui::Windows
             }
             return nullptr;
         }
+
+        CustomWidgetDesc* GetCustomWidgetDesc(size_t widgetIndex)
+        {
+            return const_cast<CustomWidgetDesc*>(std::as_const(*this).GetCustomWidgetDesc(widgetIndex));
+        }
     };
 
     static rct_windownumber _nextWindowNumber;
@@ -529,4 +534,19 @@ namespace OpenRCT2::Ui::Windows
             }
         }
     }
+
+    void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, const std::string& value)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto &customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->Text = CustomWidgetDesc::ProcessString(value);
+                w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
+            }
+        }
+    }
+
 } // namespace OpenRCT2::Ui::Windows

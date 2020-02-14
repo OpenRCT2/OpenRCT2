@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "ScWidget.hpp"
+
 #include <openrct2/common.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/Window_internal.h>
@@ -66,6 +68,22 @@ namespace OpenRCT2::Scripting
             return (flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
         }
 
+        std::vector<std::shared_ptr<ScWidget>> widgets_get()
+        {
+            std::vector<std::shared_ptr<ScWidget>> result;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                rct_widgetindex widgetIndex = 0;
+                for (auto widget = w->widgets; widget->type != WWT_LAST; widget++)
+                {
+                    result.push_back(std::make_shared<ScWidget>(_class, _number, widgetIndex));
+                    widgetIndex++;
+                }
+            }
+            return result;
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScWindow::x_get, &ScWindow::x_set, "x");
@@ -73,6 +91,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::width_get, nullptr, "width");
             dukglue_register_property(ctx, &ScWindow::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
+            dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
         }
 
     private:

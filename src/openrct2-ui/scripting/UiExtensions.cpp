@@ -11,6 +11,7 @@
 
 #include "CustomMenu.h"
 #include "ScUi.hpp"
+#include "ScWidget.hpp"
 #include "ScWindow.hpp"
 
 #include <openrct2/scripting/ScriptEngine.h>
@@ -25,6 +26,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     ScUi::Register(ctx);
     ScViewport::Register(ctx);
+    ScWidget::Register(ctx);
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
