@@ -508,7 +508,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     }
 }
 
-uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
+const uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
 {
     if (!imageId.HasSecondary())
     {
@@ -569,7 +569,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
     if (imageId.HasValue())
     {
         auto palette = gfx_draw_sprite_get_palette(imageId);
-        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette, nullptr);
+        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette);
     }
 }
 
@@ -583,7 +583,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer)
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const uint8_t* palette_pointer)
 {
     const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
@@ -602,8 +602,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
         gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer,
-            unknown_pointer);
+            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer);
         return;
     }
 
