@@ -114,7 +114,7 @@ template<typename T, size_t _TypeID> struct NetworkObjectId_t
 // NOTE: When adding new types make sure to have no duplicate _TypeID's otherwise
 // there is no way to specialize templates if they have the exact symbol.
 using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
-using NetworkRideId_t = NetworkObjectId_t<ride_idnew_t, 1>;
+using NetworkRideId_t = NetworkObjectId_t<ride_id_t, 1>;
 using NetworkCheatType_t = NetworkObjectId_t<int32_t, 2>;
 
 enum NetworkStatisticsGroup

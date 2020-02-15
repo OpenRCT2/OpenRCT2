@@ -234,12 +234,12 @@ void EntranceElement::SetEntranceType(uint8_t newType)
     entranceType = newType;
 }
 
-ride_idnew_t EntranceElement::GetRideIndex() const
+ride_id_t EntranceElement::GetRideIndex() const
 {
     return rideIndex;
 }
 
-void EntranceElement::SetRideIndex(ride_idnew_t newRideIndex)
+void EntranceElement::SetRideIndex(ride_id_t newRideIndex)
 {
     rideIndex = newRideIndex;
 }

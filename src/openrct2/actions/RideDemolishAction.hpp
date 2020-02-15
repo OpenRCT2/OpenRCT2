@@ -297,7 +297,7 @@ private:
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (it.element->AsTrack()->GetRideIndex() != (ride_idnew_t)_rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != (ride_id_t)_rideIndex)
                 continue;
 
             int32_t x = it.x * 32, y = it.y * 32;

@@ -189,7 +189,7 @@ private:
     union
     {
         uint8_t additionStatus; // 7
-        ride_id_t rideIndex;
+        uint8_t rideIndex;
     };
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -287,7 +287,7 @@ private:
         };
     };
     uint8_t Flags2;
-    ride_idnew_t RideIndex;
+    ride_id_t RideIndex;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad[3];
@@ -300,8 +300,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    ride_idnew_t GetRideIndex() const;
-    void SetRideIndex(ride_idnew_t newRideIndex);
+    ride_id_t GetRideIndex() const;
+    void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
@@ -470,11 +470,11 @@ assert_struct_size(WallElement, 16);
 struct EntranceElement : TileElementBase
 {
 private:
-    uint8_t entranceType;   // 4
-    uint8_t SequenceIndex;  // 5. Only uses the lower nibble.
-    uint8_t StationIndex;   // 6
-    uint8_t pathType;       // 7
-    ride_idnew_t rideIndex; // 8
+    uint8_t entranceType;  // 4
+    uint8_t SequenceIndex; // 5. Only uses the lower nibble.
+    uint8_t StationIndex;  // 6
+    uint8_t pathType;      // 7
+    ride_id_t rideIndex;   // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0A[6];
@@ -484,8 +484,8 @@ public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    ride_idnew_t GetRideIndex() const;
-    void SetRideIndex(ride_idnew_t newRideIndex);
+    ride_id_t GetRideIndex() const;
+    void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
