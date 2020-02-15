@@ -32,7 +32,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;5054;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;5054;5055;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <!-- Warnings:
              C4068: unknown pragma
              C4091: 'keyword': ignored on left of 'type' when no variable is declared
@@ -45,6 +45,7 @@
              C4221: nonstandard extension used: 'identifier': cannot be initialized using address of automatic variable 'identifier'
              C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
              C5054: operator '*': deprecated between enumerations of different types
+             C5055: operator '/': deprecated between enumerations and floating-point types
       -->
       <TreatSpecificWarningsAsErrors>4263;4265;4548;4549;4555</TreatSpecificWarningsAsErrors>
       <!-- Warnings, that have to be enabled manually:
@@ -54,7 +55,7 @@
              C4549: 'operator': operator before comma has no effect; did you intend 'operator'?
              C4555: expression has no effect; expected expression with side-effect
       -->
-      <PreprocessorDefinitions>__AVX2__;__SSE4_1__;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AVX2__;__SSE4_1__;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;NOMINMAX;_SILENCE_CXX20_U8PATH_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary Condition="'$(UseSharedLibs)'!='true'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

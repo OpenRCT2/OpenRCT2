@@ -29,7 +29,11 @@
 
 using namespace Numerics;
 
+#if defined(_MSC_VER)
+using utf8 = char8_t;
+#else
 using utf8 = char;
+#endif
 using utf8string = utf8*;
 using const_utf8string = const utf8*;
 
