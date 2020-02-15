@@ -393,7 +393,10 @@ private:
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad[2];
+#pragma clang diagnostic pop
 
 public:
     uint32_t GetEntryIndex() const;
