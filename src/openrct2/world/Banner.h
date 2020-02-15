@@ -18,7 +18,7 @@
 struct TileElement;
 struct WallElement;
 
-typedef uint16_t BannerIndex;
+using BannerIndex = uint16_t;
 
 constexpr uint8_t BANNER_NULL = 255;
 constexpr size_t MAX_BANNERS = 250;
