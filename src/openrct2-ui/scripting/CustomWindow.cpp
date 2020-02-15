@@ -18,6 +18,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/scripting/Plugin.h>
+#include <openrct2/world/Sprite.h>
 #include <optional>
 #include <string>
 #include <vector>
@@ -50,6 +51,7 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
     static void window_custom_invalidate(rct_window* w);
     static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi);
+    static void window_custom_update_viewport(rct_window* w);
 
     static rct_window_event_list window_custom_events = { window_custom_close,
                                                           window_custom_mouseup,
@@ -305,6 +307,7 @@ namespace OpenRCT2::Ui::Windows
         }
         RefreshWidgets(window);
         window_init_scroll_widgets(window);
+        window_custom_update_viewport(window);
         return window;
     }
 
@@ -367,6 +370,7 @@ namespace OpenRCT2::Ui::Windows
                 w->height = w->min_height;
             }
         }
+        window_custom_update_viewport(w);
     }
 
     static void window_custom_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
@@ -435,6 +439,52 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         window_draw_widgets(w, dpi);
+        if (w->viewport != nullptr)
+        {
+            window_draw_viewport(dpi, w);
+        }
+    }
+
+    static std::optional<rct_widgetindex> GetViewportWidgetIndex(rct_window* w)
+    {
+        rct_widgetindex widgetIndex = 0;
+        for (auto widget = w->widgets; widget->type != WWT_LAST; widget++)
+        {
+            if (widget->type == WWT_VIEWPORT)
+            {
+                return widgetIndex;
+            }
+            widgetIndex++;
+        }
+        return 0;
+    }
+
+    static void window_custom_update_viewport(rct_window* w)
+    {
+        auto viewportWidgetIndex = GetViewportWidgetIndex(w);
+        if (viewportWidgetIndex)
+        {
+            auto viewportWidget = &w->widgets[*viewportWidgetIndex];
+            auto& customInfo = GetInfo(w);
+            auto widgetInfo = customInfo.GetCustomWidgetDesc(*viewportWidgetIndex);
+            if (widgetInfo != nullptr)
+            {
+                if (w->viewport == nullptr)
+                {
+                    auto left = w->x + viewportWidget->left + 1;
+                    auto top = w->y + viewportWidget->top + 1;
+                    auto width = (viewportWidget->right - viewportWidget->left) - 1;
+                    auto height = (viewportWidget->bottom - viewportWidget->top) - 1;
+                    auto mapX = 0;
+                    auto mapY = 0;
+                    auto mapZ = 0;
+                    viewport_create(
+                        w, left, top, width, height, 0, mapX, mapY, mapZ, VIEWPORT_FOCUS_TYPE_COORDINATE, SPRITE_INDEX_NULL);
+                    w->flags |= WF_NO_SCROLLING;
+                    w->Invalidate();
+                }
+            }
+        }
     }
 
     static CustomWindowInfo& GetInfo(rct_window* w)
@@ -460,6 +510,7 @@ namespace OpenRCT2::Ui::Windows
         widget.top = desc.Y;
         widget.right = desc.X + desc.Width;
         widget.bottom = desc.Y + desc.Height;
+        widget.content = std::numeric_limits<uint32_t>::max();
         widget.tooltip = STR_NONE;
         widget.flags = WIDGET_FLAGS::IS_ENABLED;
         if (desc.IsDisabled)
@@ -518,6 +569,12 @@ namespace OpenRCT2::Ui::Windows
             widget.type = WWT_LABEL;
             widget.string = (utf8*)desc.Text.c_str();
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "viewport")
+        {
+            widget.type = WWT_VIEWPORT;
+            widget.text = STR_NONE;
             widgetList.push_back(widget);
         }
     }
@@ -602,7 +659,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (w->custom_info != nullptr)
         {
-            auto &customInfo = GetInfo(w);
+            auto& customInfo = GetInfo(w);
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(widgetIndex);
             if (customWidgetInfo != nullptr)
             {

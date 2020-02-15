@@ -12,6 +12,7 @@
 #include "../interface/Widget.h"
 #include "../interface/Window.h"
 #include "CustomWindow.h"
+#include "ScViewport.hpp"
 
 #include <memory>
 #include <openrct2/Context.h>
@@ -224,6 +225,20 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        std::shared_ptr<ScViewport> viewport_get()
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                auto widget = GetWidget();
+                if (widget != nullptr && widget->type == WWT_VIEWPORT)
+                {
+                    return std::make_shared<ScViewport>(w->classification, w->number);
+                }
+            }
+            return {};
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -238,6 +253,7 @@ namespace OpenRCT2::Scripting
             // No so common
             dukglue_register_property(ctx, &text_get, &text_set, "text");
             dukglue_register_property(ctx, &isChecked_get, &isChecked_set, "isChecked");
+            dukglue_register_property(ctx, &viewport_get, nullptr, "viewport");
         }
 
     private:

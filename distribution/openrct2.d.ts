@@ -359,8 +359,7 @@ export interface LabelWidget extends Widget {
 }
 
 export interface ViewportWidget extends Widget {
-    target: null | number | Coord3;
-    zoom: number;
+    viewport: Viewport
 }
 
 export interface Tab {
