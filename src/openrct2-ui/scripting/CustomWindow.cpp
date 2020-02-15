@@ -137,7 +137,7 @@ namespace OpenRCT2::Ui::Windows
                 result.SelectedIndex = desc["selectedIndex"].as_int();
                 result.OnChange = desc["onChange"];
             }
-            else if (result.Type == "label")
+            else if (result.Type == "groupbox" || result.Type == "label")
             {
                 result.Text = ProcessString(desc["text"].as_string());
             }
@@ -458,6 +458,13 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_DROPDOWN_GLYPH;
             widget.tooltip = STR_NONE;
             widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "groupbox")
+        {
+            widget.type = WWT_GROUPBOX;
+            widget.string = (utf8*)desc.Text.c_str();
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "label")

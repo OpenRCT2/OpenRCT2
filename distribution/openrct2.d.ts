@@ -326,7 +326,7 @@ export interface Park {
  * Represents the type of a widget, e.g. button or label.
  */
 export type WidgetType =
-    "button" | "dropdown" | "label" | "tabview" | "viewport";
+    "button" | "dropdown" | "groupbox" | "label" | "tabview" | "viewport";
 
 export interface Widget {
     type: WidgetType;

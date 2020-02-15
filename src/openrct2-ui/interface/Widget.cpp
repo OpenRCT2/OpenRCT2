@@ -455,7 +455,22 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     int32_t textRight = l;
 
     // Text
-    if (widget->text != STR_NONE)
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        if (widget->string == nullptr || widget->string[0] == '\0')
+        {
+            stringId = STR_NONE;
+            formatArgs = nullptr;
+        }
+        else
+        {
+            stringId = STR_STRING;
+            formatArgs = &widget->string;
+        }
+    }
+    if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget->colour] & 0x7F;
         if (widget_is_disabled(w, widgetIndex))
@@ -463,7 +478,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
         utf8 buffer[512] = { 0 };
         uint8_t args[sizeof(uintptr_t)] = { 0 };
-        format_string(buffer, sizeof(buffer), widget->text, gCommonFormatArgs);
+        format_string(buffer, sizeof(buffer), stringId, formatArgs);
         Formatter(args).Add<utf8*>(buffer);
         gfx_draw_string_left(dpi, STR_STRING, args, colour, l, t);
         textRight = l + gfx_get_string_width(buffer) + 1;
