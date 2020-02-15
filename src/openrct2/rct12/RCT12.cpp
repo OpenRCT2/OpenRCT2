@@ -308,7 +308,7 @@ colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
     return colour[1] & TILE_ELEMENT_COLOUR_MASK;
 }
 
-BannerIndex RCT12LargeSceneryElement::GetBannerIndex() const
+uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
 {
     return (type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
@@ -345,7 +345,7 @@ uint8_t RCT12WallElement::GetAnimationFrame() const
     return (animation >> 3) & 0xF;
 }
 
-BannerIndex RCT12WallElement::GetBannerIndex() const
+uint8_t RCT12WallElement::GetBannerIndex() const
 {
     return banner_index;
 }
@@ -413,7 +413,7 @@ uint8_t RCT12EntranceElement::GetPathType() const
     return pathType;
 }
 
-BannerIndex RCT12BannerElement::GetIndex() const
+uint8_t RCT12BannerElement::GetIndex() const
 {
     return index;
 }
@@ -480,19 +480,19 @@ uint8_t RCT12TileElement::GetBannerIndex()
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
             if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
-                return BANNER_INDEX_NULL;
+                return RCT12_BANNER_INDEX_NULL;
 
             return AsLargeScenery()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_WALL:
             sceneryEntry = get_wall_entry(AsWall()->GetEntryIndex());
             if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
-                return BANNER_INDEX_NULL;
+                return RCT12_BANNER_INDEX_NULL;
 
             return AsWall()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_BANNER:
             return AsBanner()->GetIndex();
         default:
-            return BANNER_INDEX_NULL;
+            return RCT12_BANNER_INDEX_NULL;
     }
 }
 
@@ -537,7 +537,7 @@ void RCT12LargeSceneryElement::SetSecondaryColour(colour_t newColour)
     colour[1] |= newColour;
 }
 
-void RCT12LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
+void RCT12LargeSceneryElement::SetBannerIndex(uint8_t newIndex)
 {
     type |= newIndex & 0xC0;
     colour[0] |= (newIndex & 0x38) << 2;
@@ -850,7 +850,7 @@ void RCT12WallElement::SetEntryIndex(uint8_t newIndex)
     entryIndex = newIndex;
 }
 
-void RCT12WallElement::SetBannerIndex(BannerIndex newIndex)
+void RCT12WallElement::SetBannerIndex(uint8_t newIndex)
 {
     banner_index = newIndex;
 }
@@ -929,7 +929,7 @@ void RCT12EntranceElement::SetStationIndex(uint8_t stationIndex)
     index |= (stationIndex << 4);
 }
 
-void RCT12BannerElement::SetIndex(BannerIndex newIndex)
+void RCT12BannerElement::SetIndex(uint8_t newIndex)
 {
     index = newIndex;
 }

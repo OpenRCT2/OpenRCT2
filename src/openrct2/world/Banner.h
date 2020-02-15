@@ -10,7 +10,15 @@
 #pragma once
 
 #include "../common.h"
-#include "TileElement.h"
+#include "../ride/RideTypes.h"
+#include "Location.hpp"
+
+#include <string>
+
+struct TileElement;
+struct WallElement;
+
+using BannerIndex = uint16_t;
 
 constexpr uint8_t BANNER_NULL = 255;
 constexpr size_t MAX_BANNERS = 250;

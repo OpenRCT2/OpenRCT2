@@ -108,41 +108,32 @@ void WallElement::SetSlope(uint8_t newSlope)
 
 colour_t WallElement::GetPrimaryColour() const
 {
-    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+    return colour_1;
 }
 
 colour_t WallElement::GetSecondaryColour() const
 {
-    uint8_t secondaryColour = (colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
-    secondaryColour |= (flags & 0x60) >> 2;
-    return secondaryColour;
+    return colour_2;
 }
 
 colour_t WallElement::GetTertiaryColour() const
 {
-    return colour_3 & TILE_ELEMENT_COLOUR_MASK;
+    return colour_3;
 }
 
 void WallElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
-    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
-    colour_1 |= newColour;
+    colour_1 = newColour;
 }
 
 void WallElement::SetSecondaryColour(colour_t newColour)
 {
-    colour_1 &= TILE_ELEMENT_COLOUR_MASK;
-    colour_1 |= (newColour & 0x7) << 5;
-    flags &= ~0x60;
-    flags |= (newColour & 0x18) << 2;
+    colour_2 = newColour;
 }
 
 void WallElement::SetTertiaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
-    colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
-    colour_3 |= newColour;
+    colour_3 = newColour;
 }
 
 uint8_t WallElement::GetAnimationFrame() const
@@ -156,7 +147,7 @@ void WallElement::SetAnimationFrame(uint8_t frameNum)
     animation |= (frameNum & 0xF) << 3;
 }
 
-uint8_t WallElement::GetEntryIndex() const
+uint16_t WallElement::GetEntryIndex() const
 {
     return entryIndex;
 }
@@ -166,7 +157,7 @@ rct_scenery_entry* WallElement::GetEntry() const
     return get_wall_entry(entryIndex);
 }
 
-void WallElement::SetEntryIndex(uint8_t newIndex)
+void WallElement::SetEntryIndex(uint16_t newIndex)
 {
     entryIndex = newIndex;
 }

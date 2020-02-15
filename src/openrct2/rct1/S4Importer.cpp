@@ -2195,7 +2195,10 @@ private:
                 auto src2 = src->AsBanner();
 
                 uint8_t index = src2->GetIndex();
-                dst2->SetIndex(index);
+                if (index != RCT12_BANNER_INDEX_NULL)
+                    dst2->SetIndex(index);
+                else
+                    dst2->SetIndex(BANNER_INDEX_NULL);
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
 

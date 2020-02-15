@@ -288,7 +288,7 @@ void fix_duplicated_banners()
                                 tileElement->base_height);
 
                             // Banner index is already in use by another banner, so duplicate it
-                            BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                            auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
                             if (newBannerIndex == BANNER_INDEX_NULL)
                             {
                                 log_error("Failed to create new banner.");

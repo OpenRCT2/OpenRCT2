@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
 
@@ -389,9 +390,13 @@ struct LargeSceneryElement : TileElementBase
 {
 private:
     uint32_t EntryIndex;
-    uint32_t BannerIndex;
+    ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad[2];
+#pragma clang diagnostic pop
 
 public:
     uint32_t GetEntryIndex() const;
@@ -418,22 +423,20 @@ assert_struct_size(LargeSceneryElement, 16);
 struct WallElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4
-    union
-    {
-        uint8_t colour_3;         // 5
-        BannerIndex banner_index; // 5
-    };
-    uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
-    uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint16_t entryIndex;      // 04
+    colour_t colour_1;        // 06
+    colour_t colour_2;        // 07
+    colour_t colour_3;        // 08
+    BannerIndex banner_index; // 09
+    uint8_t animation;        // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_0C[4];
 #pragma clang diagnostic pop
 
 public:
-    uint8_t GetEntryIndex() const;
-    void SetEntryIndex(uint8_t newIndex);
+    uint16_t GetEntryIndex() const;
+    void SetEntryIndex(uint16_t newIndex);
     rct_scenery_entry* GetEntry() const;
 
     uint8_t GetSlope() const;
@@ -467,24 +470,25 @@ assert_struct_size(WallElement, 16);
 struct EntranceElement : TileElementBase
 {
 private:
-    uint8_t entranceType; // 4
-    uint8_t index;        // 5. 0bUSSS????, S = station index.
-    uint8_t pathType;     // 6
-    ride_id_t rideIndex;  // 7
+    uint8_t entranceType;   // 4
+    uint8_t SequenceIndex;  // 5. Only uses the lower nibble.
+    uint8_t StationIndex;   // 6
+    uint8_t pathType;       // 7
+    ride_idnew_t rideIndex; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_0A[6];
 #pragma clang diagnostic pop
 
 public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    ride_idnew_t GetRideIndex() const;
+    void SetRideIndex(ride_idnew_t newRideIndex);
 
     uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t stationIndex);
+    void SetStationIndex(uint8_t newStationIndex);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
@@ -503,7 +507,7 @@ private:
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t flags;  // 6
     uint8_t unused; // 7
-    uint8_t pad_08[8];
+    uint8_t pad_09[7];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;

@@ -29,7 +29,7 @@ DEFINE_GAME_ACTION(BannerSetStyleAction, GAME_COMMAND_SET_BANNER_STYLE, GameActi
 {
 private:
     uint8_t _type = static_cast<uint8_t>(BannerSetStyleType::Count);
-    uint8_t _bannerIndex = BANNER_INDEX_NULL;
+    BannerIndex _bannerIndex = BANNER_INDEX_NULL;
     uint8_t _parameter;
 
 public:
