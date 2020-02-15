@@ -48,7 +48,7 @@ constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
 constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
-constexpr uint8_t RCT12_BANNER_INDEX_NULL = (uint8_t)-1;
+constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
