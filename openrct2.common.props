@@ -32,7 +32,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;5054;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <!-- Warnings:
              C4068: unknown pragma
              C4091: 'keyword': ignored on left of 'type' when no variable is declared
@@ -44,6 +44,7 @@
              C4206: nonstandard extension used: translation unit is empty
              C4221: nonstandard extension used: 'identifier': cannot be initialized using address of automatic variable 'identifier'
              C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
+             C5054: operator '*': deprecated between enumerations of different types
       -->
       <TreatSpecificWarningsAsErrors>4263;4265;4548;4549;4555</TreatSpecificWarningsAsErrors>
       <!-- Warnings, that have to be enabled manually:
