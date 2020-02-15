@@ -85,6 +85,19 @@ struct rct_ride_lift_data
     uint8_t maximum_speed;
 };
 
+struct RideTypeDescriptor
+{
+    uint64_t ExtraTrackPieces;
+};
+
+#ifdef _WIN32
+#    define SET_FIELD(fieldname, value) value
+#else
+#    define SET_FIELD(fieldname, value) .fieldname = value
+#endif
+
+extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
+
 enum
 {
     RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK = (1 << 0),

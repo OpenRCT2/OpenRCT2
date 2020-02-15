@@ -18,6 +18,7 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "BolligerMabillardTrack.h"
 
 /** rct2: 0x007C6FF4 */
 static void flying_rc_track_flat(
@@ -6240,6 +6241,22 @@ static void flying_rc_track_brakes(
 
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
         paint_util_set_general_support_height(session, height + 32, 0x20);
+    }
+}
+
+static void flying_rc_track_booster(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    if (!tileElement->AsTrack()->IsInverted())
+    {
+        bolliger_mabillard_track_booster(
+            session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+    }
+    else
+    {
+        // Should not occur, except when converting from other coaster types.
+        flying_rc_track_brakes(session, rideIndex, trackSequence, direction, height, tileElement);
     }
 }
 
@@ -17777,6 +17794,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType, int32
             return flying_rc_track_left_banked_25_deg_down_to_flat;
         case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
             return flying_rc_track_right_banked_25_deg_down_to_flat;
+        case TRACK_ELEM_BOOSTER:
+            return flying_rc_track_booster;
     }
     return nullptr;
 }
