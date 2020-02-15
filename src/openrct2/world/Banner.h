@@ -13,6 +13,8 @@
 #include "../ride/RideTypes.h"
 #include "Location.hpp"
 
+#include <string>
+
 struct TileElement;
 struct WallElement;
 
