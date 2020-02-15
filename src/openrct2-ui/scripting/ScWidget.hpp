@@ -163,6 +163,46 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        bool isDisabled_get()
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return widget_is_disabled(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isDisabled_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto mask = 1ULL << _widgetIndex;
+                if (value)
+                    w->disabled_widgets |= mask;
+                else
+                    w->disabled_widgets &= ~mask;
+            }
+        }
+
+        bool isChecked_get()
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return widget_is_pressed(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isChecked_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+            }
+        }
+
         std::string text_get()
         {
             if (IsCustomWindow())
@@ -193,9 +233,11 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &y_get, &y_set, "y");
             dukglue_register_property(ctx, &width_get, &width_set, "width");
             dukglue_register_property(ctx, &height_get, &height_set, "height");
+            dukglue_register_property(ctx, &isDisabled_get, &isDisabled_set, "isDisabled");
 
             // No so common
             dukglue_register_property(ctx, &text_get, &text_set, "text");
+            dukglue_register_property(ctx, &isChecked_get, &isChecked_set, "isChecked");
         }
 
     private:

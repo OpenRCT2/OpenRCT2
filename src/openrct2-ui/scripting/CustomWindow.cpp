@@ -91,10 +91,19 @@ namespace OpenRCT2::Ui::Windows
         std::string Text;
         std::vector<std::string> Items;
         int32_t SelectedIndex{};
+        bool IsChecked{};
+        bool IsDisabled{};
 
         // Event handlers
         DukValue OnClick;
         DukValue OnChange;
+
+        static std::string ProcessString(const DukValue& value)
+        {
+            if (value.type() == DukValue::Type::STRING)
+                return ProcessString(value.as_string());
+            return {};
+        }
 
         static std::string ProcessString(const std::string_view& s)
         {
@@ -124,22 +133,32 @@ namespace OpenRCT2::Ui::Windows
             result.Height = desc["height"].as_int();
             if (result.Type == "button")
             {
-                result.Text = desc["text"].as_string();
+                result.Text = ProcessString(desc["text"]);
                 result.OnClick = desc["onClick"];
+            }
+            else if (result.Type == "checkbox")
+            {
+                result.Text = ProcessString(desc["text"]);
+                auto dukIsChecked = desc["isChecked"];
+                if (dukIsChecked.type() == DukValue::Type::BOOLEAN)
+                {
+                    result.IsChecked = dukIsChecked.as_bool();
+                }
+                result.OnChange = desc["onChange"];
             }
             else if (result.Type == "dropdown")
             {
                 auto dukItems = desc["items"].as_array();
                 for (const auto& dukItem : dukItems)
                 {
-                    result.Items.push_back(dukItem.as_string());
+                    result.Items.push_back(ProcessString(dukItem));
                 }
                 result.SelectedIndex = desc["selectedIndex"].as_int();
                 result.OnChange = desc["onChange"];
             }
             else if (result.Type == "groupbox" || result.Type == "label")
             {
-                result.Text = ProcessString(desc["text"].as_string());
+                result.Text = ProcessString(desc["text"]);
             }
             return result;
         }
@@ -312,6 +331,20 @@ namespace OpenRCT2::Ui::Windows
                     {
                         InvokeEventHandler(info.Owner, widgetDesc->OnClick);
                     }
+                    else if (widgetDesc->Type == "checkbox")
+                    {
+                        auto& widget = w->widgets[widgetIndex];
+                        widget.flags ^= WIDGET_FLAGS::IS_PRESSED;
+                        bool isChecked = widget.flags & WIDGET_FLAGS::IS_PRESSED;
+
+                        widget_set_checkbox_value(w, widgetIndex, isChecked);
+
+                        std::vector<DukValue> args;
+                        auto ctx = widgetDesc->OnChange.context();
+                        duk_push_boolean(ctx, isChecked);
+                        args.push_back(DukValue::take_from_stack(ctx));
+                        InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
+                    }
                 }
                 break;
             }
@@ -429,12 +462,25 @@ namespace OpenRCT2::Ui::Windows
         widget.bottom = desc.Y + desc.Height;
         widget.tooltip = STR_NONE;
         widget.flags = WIDGET_FLAGS::IS_ENABLED;
+        if (desc.IsDisabled)
+            widget.flags |= WIDGET_FLAGS::IS_DISABLED;
 
         if (desc.Type == "button")
         {
             widget.type = WWT_BUTTON;
             widget.string = (utf8*)desc.Text.c_str();
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "checkbox")
+        {
+            widget.type = WWT_CHECKBOX;
+            widget.string = (utf8*)desc.Text.c_str();
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            if (desc.IsChecked)
+            {
+                widget.flags |= WIDGET_FLAGS::IS_PRESSED;
+            }
             widgetList.push_back(widget);
         }
         else if (desc.Type == "dropdown")
@@ -510,9 +556,19 @@ namespace OpenRCT2::Ui::Windows
         w->enabled_widgets = 1ULL << WIDX_CLOSE;
         for (size_t i = 0; i < std::min<size_t>(widgets.size(), 64); i++)
         {
-            if (widgets[i].flags & WIDGET_FLAGS::IS_ENABLED)
+            auto mask = 1ULL << i;
+            auto flags = widgets[i].flags;
+            if (flags & WIDGET_FLAGS::IS_ENABLED)
             {
-                w->enabled_widgets |= 1ULL << i;
+                w->enabled_widgets |= mask;
+            }
+            if (flags & WIDGET_FLAGS::IS_PRESSED)
+            {
+                w->pressed_widgets |= mask;
+            }
+            if (flags & WIDGET_FLAGS::IS_DISABLED)
+            {
+                w->disabled_widgets |= mask;
             }
         }
     }

@@ -438,6 +438,26 @@ static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     widget_text(dpi, w, widgetIndex);
 }
 
+static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_widget* widget)
+{
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        if (widget->string == nullptr || widget->string[0] == '\0')
+        {
+            stringId = STR_NONE;
+            formatArgs = nullptr;
+        }
+        else
+        {
+            stringId = STR_STRING;
+            formatArgs = (void*)&widget->string;
+        }
+    }
+    return std::make_pair(stringId, formatArgs);
+}
+
 /**
  *
  *  rct2: 0x006EB535
@@ -455,21 +475,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     int32_t textRight = l;
 
     // Text
-    auto stringId = widget->text;
-    void* formatArgs = gCommonFormatArgs;
-    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
-    {
-        if (widget->string == nullptr || widget->string[0] == '\0')
-        {
-            stringId = STR_NONE;
-            formatArgs = nullptr;
-        }
-        else
-        {
-            stringId = STR_STRING;
-            formatArgs = &widget->string;
-        }
-    }
+    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
     if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget->colour] & 0x7F;
@@ -639,7 +645,8 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget->text == STR_NONE)
         return;
 
-    gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
+    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, l + 14, yMid);
 }
 
 /**

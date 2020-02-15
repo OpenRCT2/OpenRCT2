@@ -326,7 +326,7 @@ export interface Park {
  * Represents the type of a widget, e.g. button or label.
  */
 export type WidgetType =
-    "button" | "dropdown" | "groupbox" | "label" | "tabview" | "viewport";
+    "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "tabview" | "viewport";
 
 export interface Widget {
     type: WidgetType;
@@ -334,11 +334,18 @@ export interface Widget {
     y: number;
     width: number;
     height: number;
+    isDisabled: boolean;
 }
 
 export interface ButtonWidget extends Widget {
     text: string;
     onClick: () => void;
+}
+
+export interface CheckboxWidget extends Widget {
+    text: string;
+    isChecked: number;
+    onChanged: (isChecked: boolean) => void;
 }
 
 export interface DropdownWidget extends Widget {

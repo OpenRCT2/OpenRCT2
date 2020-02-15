@@ -69,6 +69,8 @@ namespace WIDGET_FLAGS
 {
     const WidgetFlags TEXT_IS_STRING = 1 << 0;
     const WidgetFlags IS_ENABLED = 1 << 1;
+    const WidgetFlags IS_PRESSED = 1 << 2;
+    const WidgetFlags IS_DISABLED = 1 << 3;
 } // namespace WIDGET_FLAGS
 
 /**
