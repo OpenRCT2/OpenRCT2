@@ -58,7 +58,7 @@
       <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>/utf-8 /std:c++17 /permissive- /Zc:externConstexpr</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /std:c++latest /permissive- /Zc:externConstexpr</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;setupapi.lib;bcrypt.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
