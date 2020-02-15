@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <limits>
 
-typedef uint16_t ride_id_t;
+using ride_id_t = uint16_t;
 struct Ride;
 
 constexpr const ride_id_t RIDE_ID_NULL = 0xFF; // std::numeric_limits<ride_id_t>::max();
