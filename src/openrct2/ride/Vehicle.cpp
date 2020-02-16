@@ -2682,15 +2682,12 @@ static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
     }
 }
 
-#pragma pack(push, 1)
 struct rct_synchronised_vehicle
 {
     ride_id_t ride_id;
     uint8_t station_id;
     uint16_t vehicle_id;
 };
-assert_struct_size(rct_synchronised_vehicle, 4);
-#pragma pack(pop)
 
 constexpr int32_t SYNCHRONISED_VEHICLE_COUNT = 16;
 

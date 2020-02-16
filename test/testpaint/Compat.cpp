@@ -305,12 +305,12 @@ uint8_t TrackElement::GetDoorBState() const
     return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
 }
 
-ride_idnew_t TrackElement::GetRideIndex() const
+ride_id_t TrackElement::GetRideIndex() const
 {
     return RideIndex;
 }
 
-void TrackElement::SetRideIndex(ride_idnew_t newRideIndex)
+void TrackElement::SetRideIndex(ride_id_t newRideIndex)
 {
     RideIndex = newRideIndex;
 }

@@ -1325,12 +1325,12 @@ void TrackElement::SetDoorBState(uint8_t newState)
     ColourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
 }
 
-ride_idnew_t TrackElement::GetRideIndex() const
+ride_id_t TrackElement::GetRideIndex() const
 {
     return RideIndex;
 }
 
-void TrackElement::SetRideIndex(ride_idnew_t newRideIndex)
+void TrackElement::SetRideIndex(ride_id_t newRideIndex)
 {
     RideIndex = newRideIndex;
 }
