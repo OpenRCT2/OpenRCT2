@@ -934,8 +934,6 @@ void viewport_paint(
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
     const int16_t rightBorder = dpi1.x + dpi1.width;
     const int16_t alignedX = floor2(dpi1.x, 32);
-    const uint16_t columSize = rightBorder - alignedX;
-    const uint16_t columnCount = (columSize / 32);
 
     std::vector<paint_session*> columns;
 
@@ -953,9 +951,9 @@ void viewport_paint(
     size_t index = 0;
     if (recorded_sessions != nullptr)
     {
-        const uint16_t colums = rightBorder - floor2(dpi1.x, 32);
-        const uint16_t column_count = (colums / 32) + (colums % 32 > 0 ? 1 : 0);
-        recorded_sessions->resize(column_count);
+        const uint16_t columnSize = rightBorder - alignedX;
+        const uint16_t columnCount = (columnSize / 32);
+        recorded_sessions->resize(columnCount);
     }
 
     // Splits the area into 32 pixel columns and renders them
