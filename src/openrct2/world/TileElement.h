@@ -18,7 +18,7 @@
 struct Banner;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
-typedef uint16_t track_type_t;
+using track_type_t = uint16_t;
 
 #pragma pack(push, 1)
 

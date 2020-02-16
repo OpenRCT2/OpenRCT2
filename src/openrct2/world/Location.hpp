@@ -398,7 +398,7 @@ struct TileCoordsXYZ : public TileCoordsXY
  * 3 is Y-decreasing
  * Direction is not used to model up/down, or diagonal directions.
  */
-typedef uint8_t Direction;
+using Direction = uint8_t;
 
 const Direction INVALID_DIRECTION = 0xFF;
 

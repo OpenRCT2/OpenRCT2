@@ -17,7 +17,7 @@ template<size_t size> struct ByteSwapT
 
 template<> struct ByteSwapT<1>
 {
-    typedef uint8_t UIntType;
+    using UIntType = uint8_t;
     static uint8_t SwapBE(uint8_t value)
     {
         return value;
@@ -26,7 +26,7 @@ template<> struct ByteSwapT<1>
 
 template<> struct ByteSwapT<2>
 {
-    typedef uint16_t UIntType;
+    using UIntType = uint16_t;
     static uint16_t SwapBE(uint16_t value)
     {
         return (uint16_t)((value << 8) | (value >> 8));
@@ -35,7 +35,7 @@ template<> struct ByteSwapT<2>
 
 template<> struct ByteSwapT<4>
 {
-    typedef uint32_t UIntType;
+    using UIntType = uint32_t;
     static uint32_t SwapBE(uint32_t value)
     {
         return (uint32_t)(((value << 24) | ((value << 8) & 0x00FF0000) | ((value >> 8) & 0x0000FF00) | (value >> 24)));
@@ -44,7 +44,7 @@ template<> struct ByteSwapT<4>
 
 template<> struct ByteSwapT<8>
 {
-    typedef uint64_t UIntType;
+    using UIntType = uint64_t;
     static uint64_t SwapBE(uint64_t value)
     {
         value = (value & 0x00000000FFFFFFFF) << 32 | (value & 0xFFFFFFFF00000000) >> 32;
@@ -56,7 +56,7 @@ template<> struct ByteSwapT<8>
 
 template<typename T> static T ByteSwapBE(const T& value)
 {
-    typedef ByteSwapT<sizeof(T)> ByteSwap;
+    using ByteSwap = ByteSwapT<sizeof(T)>;
     typename ByteSwap::UIntType result = ByteSwap::SwapBE(reinterpret_cast<const typename ByteSwap::UIntType&>(value));
     return *reinterpret_cast<T*>(&result);
 }
