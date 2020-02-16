@@ -222,7 +222,8 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
 
     spriteHeader = &spriteFileEntries[spriteIndex];
     pixelBufferSize = spriteHeader->width * spriteHeader->height;
-    pixels = (uint8_t*)malloc(pixelBufferSize);
+    std::unique_ptr<uint8_t[]> pixelBuffer(new uint8_t[pixelBufferSize]);
+    pixels = pixelBuffer.get();
     std::fill_n(pixels, pixelBufferSize, 0x00);
 
     dpi.bits = pixels;
