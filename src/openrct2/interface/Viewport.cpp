@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -932,14 +932,12 @@ void viewport_paint(
 
     // make sure, the compare operation is done in int16_t to avoid the loop becoming an infiniteloop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
-    int16_t rightBorder = dpi1.x + dpi1.width;
+    const int16_t rightBorder = dpi1.x + dpi1.width;
+    const int16_t alignedX = floor2(dpi1.x, 32);
 
     std::vector<paint_session*> columns;
 
     bool useMultithreading = gConfigGeneral.multithreading;
-    if (window_get_main() != nullptr && viewport != window_get_main()->viewport)
-        useMultithreading = false;
-
     if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
@@ -953,12 +951,13 @@ void viewport_paint(
     size_t index = 0;
     if (recorded_sessions != nullptr)
     {
-        const uint16_t column_count = (rightBorder - floor2(dpi1.x, 32)) / 32 + 1;
-        recorded_sessions->resize(column_count);
+        const uint16_t columnSize = rightBorder - alignedX;
+        const uint16_t columnCount = (columnSize / 32);
+        recorded_sessions->resize(columnCount);
     }
 
     // Splits the area into 32 pixel columns and renders them
-    for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32, index++)
+    for (x = alignedX; x < rightBorder; x += 32, index++)
     {
         paint_session* session = paint_session_alloc(&dpi1, viewFlags);
         columns.push_back(session);
