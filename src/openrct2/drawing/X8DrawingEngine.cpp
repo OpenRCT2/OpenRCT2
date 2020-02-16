@@ -712,7 +712,7 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
         const int32_t step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
 
         // Fill the rectangle with the colours from the colour table
-        for (int32_t i = 0; i<height>> dpi->zoom_level; i++)
+        for (int32_t i = 0; i < (height >> dpi->zoom_level); i++)
         {
             uint8_t* nextdst = dst + step * i;
             for (int32_t j = 0; j < scaled_width; j++)
@@ -743,13 +743,12 @@ void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uin
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
     palette[0] = 0;
-    gfx_draw_sprite_palette_set_software(
-        _dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), x, y, palette, nullptr);
+    gfx_draw_sprite_palette_set_software(_dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), x, y, palette);
 }
 
 void X8DrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t* palette)
 {
-    gfx_draw_sprite_palette_set_software(_dpi, ImageId::FromUInt32(image), x, y, palette, nullptr);
+    gfx_draw_sprite_palette_set_software(_dpi, ImageId::FromUInt32(image), x, y, palette);
 }
 
 void X8DrawingContext::SetDPI(rct_drawpixelinfo* dpi)

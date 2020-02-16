@@ -311,8 +311,7 @@ rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, uint8_t* palette)
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_palette_set_software(
-        &dpi, ImageId::FromUInt32(image), -g1Element->x_offset, -g1Element->y_offset, palette, nullptr);
+    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), -g1Element->x_offset, -g1Element->y_offset, palette);
     return dpi;
 }
 
