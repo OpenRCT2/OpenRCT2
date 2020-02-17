@@ -41,7 +41,7 @@ constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
 
-typedef CoordsXYZD PeepSpawn;
+using PeepSpawn = CoordsXYZD;
 
 struct CoordsXYE : public CoordsXY
 {

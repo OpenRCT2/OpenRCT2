@@ -74,36 +74,36 @@
 #    undef glGetTexImage
 
 // 1.1 function signatures
-typedef void(APIENTRYP PFNGLBEGINPROC)(GLenum mode);
-typedef void(APIENTRYP PFNGLBINDTEXTUREPROC)(GLenum target, GLuint texture);
-typedef void(APIENTRYP PFNGLBLENDFUNCPROC)(GLenum sfactor, GLenum dfactor);
-typedef void(APIENTRYP PFNGLCLEARPROC)(GLbitfield mask);
-typedef void(APIENTRYP PFNGLCLEARCOLORPROC)(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
-typedef void(APIENTRYP PFNGLCULLFACEPROC)(GLenum mode);
-typedef void(APIENTRYP PFNGLDELETETEXTURESPROC)(GLsizei n, const GLuint* textures);
-typedef void(APIENTRYP PFNGLDEPTHFUNCPROC)(GLenum func);
-typedef void(APIENTRYP PFNGLDISABLEPROC)(GLenum cap);
-typedef void(APIENTRYP PFNGLDRAWARRAYSPROC)(GLenum mode, GLint first, GLsizei count);
-typedef void(APIENTRYP PFNGLENABLEPROC)(GLenum cap);
-typedef void(APIENTRYP PFNGLENDPROC)(void);
-typedef GLenum(APIENTRYP PFNGLGETERRORPROC)(void);
-typedef void(APIENTRYP PFNGLGENTEXTURESPROC)(GLsizei n, GLuint* textures);
-typedef void(APIENTRYP PFNGLPIXELSTOREIPROC)(GLenum pname, GLint param);
-typedef void(APIENTRYP PFNGLREADPIXELSPROC)(
+using PFNGLBEGINPROC = void(APIENTRYP)(GLenum mode);
+using PFNGLBINDTEXTUREPROC = void(APIENTRYP)(GLenum target, GLuint texture);
+using PFNGLBLENDFUNCPROC = void(APIENTRYP)(GLenum sfactor, GLenum dfactor);
+using PFNGLCLEARPROC = void(APIENTRYP)(GLbitfield mask);
+using PFNGLCLEARCOLORPROC = void(APIENTRYP)(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+using PFNGLCULLFACEPROC = void(APIENTRYP)(GLenum mode);
+using PFNGLDELETETEXTURESPROC = void(APIENTRYP)(GLsizei n, const GLuint* textures);
+using PFNGLDEPTHFUNCPROC = void(APIENTRYP)(GLenum func);
+using PFNGLDISABLEPROC = void(APIENTRYP)(GLenum cap);
+using PFNGLDRAWARRAYSPROC = void(APIENTRYP)(GLenum mode, GLint first, GLsizei count);
+using PFNGLENABLEPROC = void(APIENTRYP)(GLenum cap);
+using PFNGLENDPROC = void(APIENTRYP)(void);
+using PFNGLGETERRORPROC = GLenum(APIENTRYP)(void);
+using PFNGLGENTEXTURESPROC = void(APIENTRYP)(GLsizei n, GLuint* textures);
+using PFNGLPIXELSTOREIPROC = void(APIENTRYP)(GLenum pname, GLint param);
+using PFNGLREADPIXELSPROC = void(APIENTRYP)(
     GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels);
-typedef void(APIENTRYP PFNGLTEXIMAGE2DPROC)(
+using PFNGLTEXIMAGE2DPROC = void(APIENTRYP)(
     GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type,
     const GLvoid* pixels);
-typedef void(APIENTRYP PFNGLTEXPARAMETERIPROC)(GLenum target, GLenum pname, GLint param);
-typedef void(APIENTRYP PFNGLVIEWPORTPROC)(GLint x, GLint y, GLsizei width, GLsizei height);
-typedef void(APIENTRYP PFNGLTEXSUBIMAGE3DPROC)(
+using PFNGLTEXPARAMETERIPROC = void(APIENTRYP)(GLenum target, GLenum pname, GLint param);
+using PFNGLVIEWPORTPROC = void(APIENTRYP)(GLint x, GLint y, GLsizei width, GLsizei height);
+using PFNGLTEXSUBIMAGE3DPROC = void(APIENTRYP)(
     GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth,
     GLenum format, GLenum type, const GLvoid* data);
-typedef void(APIENTRYP PFNGLTEXIMAGE3DPROC)(
+using PFNGLTEXIMAGE3DPROC = void(APIENTRYP)(
     GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format,
     GLenum type, const GLvoid* data);
-typedef void(APIENTRYP PFNGLGETINTERGERVPROC)(GLenum pname, GLint* data);
-typedef void(APIENTRYP PFNGLGETTEXIMAGEPROC)(GLenum target, GLint level, GLenum format, GLenum type, GLvoid* img);
+using PFNGLGETINTERGERVPROC = void(APIENTRYP)(GLenum pname, GLint* data);
+using PFNGLGETTEXIMAGEPROC = void(APIENTRYP)(GLenum target, GLint level, GLenum format, GLenum type, GLvoid* img);
 
 #    define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
 #    include "OpenGLAPIProc.h"

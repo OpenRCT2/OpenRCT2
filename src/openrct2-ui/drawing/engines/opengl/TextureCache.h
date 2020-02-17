@@ -205,12 +205,12 @@ private:
 
 #ifndef __MACOSX__
     std::shared_mutex _mutex;
-    typedef std::shared_lock<std::shared_mutex> shared_lock;
-    typedef std::unique_lock<std::shared_mutex> unique_lock;
+    using shared_lock = std::shared_lock<std::shared_mutex>;
+    using unique_lock = std::unique_lock<std::shared_mutex>;
 #else
     std::mutex _mutex;
-    typedef std::unique_lock<std::mutex> shared_lock;
-    typedef std::unique_lock<std::mutex> unique_lock;
+    using shared_lock = std::unique_lock<std::mutex>;
+    using unique_lock = std::unique_lock<std::mutex>;
 #endif
 
 public:

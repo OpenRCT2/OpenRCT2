@@ -13,7 +13,7 @@
 #include "../object/Object.h"
 #include "Ride.h"
 
-typedef uint16_t track_type_t;
+using track_type_t = uint16_t;
 
 #pragma pack(push, 1)
 struct rct_trackdefinition
