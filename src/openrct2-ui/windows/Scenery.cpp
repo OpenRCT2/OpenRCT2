@@ -492,8 +492,8 @@ rct_window* window_scenery_open()
     gWindowSceneryScatterEnabled = 0; // build cluster tool state
     gWindowSceneryScatterWindow = nullptr;
 
-    gWindowSceneryScatterSize = 2;
-    gWindowSceneryScatterAmount = 10;
+    gWindowSceneryScatterSize = 16;
+    gWindowSceneryScatterAmount = 35;
 
     window->min_width = WINDOW_SCENERY_WIDTH;
     window->max_width = WINDOW_SCENERY_WIDTH;
