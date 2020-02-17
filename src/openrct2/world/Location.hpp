@@ -108,6 +108,16 @@ struct CoordsXY
         return *this;
     }
 
+    bool operator>=(const CoordsXY& rhs) const
+    {
+        return x >= rhs.x && y >= rhs.y;
+    }
+
+    bool operator<=(const CoordsXY& rhs) const
+    {
+        return x <= rhs.x && y <= rhs.y;
+    }
+
     const CoordsXY operator+(const CoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };

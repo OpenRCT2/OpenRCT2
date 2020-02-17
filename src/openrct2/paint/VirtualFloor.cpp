@@ -198,7 +198,7 @@ bool virtual_floor_tile_is_floor(const CoordsXY& loc)
 }
 
 static void virtual_floor_get_tile_properties(
-    CoordsXY loc, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
+    const CoordsXY& loc, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
     bool* aboveGround, bool* outLit)
 {
     *outOccupied = false;
@@ -211,8 +211,7 @@ static void virtual_floor_get_tile_properties(
     // See if we are a selected tile
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
     {
-        if (loc.x >= gMapSelectPositionA.x && loc.y >= gMapSelectPositionA.y && loc.x <= gMapSelectPositionB.x
-            && loc.y <= gMapSelectPositionB.y)
+        if (loc >= gMapSelectPositionA && loc <= gMapSelectPositionB)
         {
             *outLit = true;
         }
