@@ -18,78 +18,61 @@
     "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // Then the rest
+#include <cstdio>
+#include <cstdlib>
 #include <openrct2-ui/Ui.h>
-#include <openrct2-ui/UiContext.h>
-#include <openrct2-ui/audio/AudioContext.h>
-#include <openrct2/Context.h>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/AudioContext.h>
-#include <openrct2/ui/UiContext.h>
-#include <shellapi.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <openrct2/core/String.hpp>
 
-using namespace OpenRCT2;
-using namespace OpenRCT2::Audio;
-using namespace OpenRCT2::Ui;
-
-static char** GetCommandLineArgs(int argc, wchar_t** argvW);
-static void FreeCommandLineArgs(int argc, char** argv);
-static char* ConvertWideChartoUTF8(const wchar_t* src);
+static void ReattachConsole()
+{
+    AttachConsole(MAXDWORD);
+    std::freopen("CONOUT$", "w", stdout);
+    std::freopen("CONOUT$", "w", stderr);
+    std::freopen("CONIN$", "r", stdin);
+}
 
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
 int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 {
-    char** argv = GetCommandLineArgs(argc, argvW);
-    if (argv == nullptr)
+    auto stdoutWanted = false;
+    std::vector<std::string> args;
+    try
     {
-        puts("Unable to fetch command line arguments.");
+        for (int i = 0; i < argc; i++)
+        {
+            std::wstring_view s(argvW[i]);
+            if (s == L"--console")
+            {
+                stdoutWanted = true;
+            }
+            else
+            {
+                args.push_back(String::ToUtf8(s));
+            }
+        }
+    }
+    catch (...)
+    {
+        std::puts("Unable to fetch command line arguments.");
         return -1;
     }
 
-    SetConsoleCP(CP_UTF8);
-    SetConsoleOutputCP(CP_UTF8);
-    int exitCode = NormalisedMain(argc, const_cast<const char**>(argv));
+    if (stdoutWanted)
+    {
+        // Windows subsytem will detach stdin/stdout, so reattach
+        ReattachConsole();
+    }
 
-    FreeCommandLineArgs(argc, argv);
+    SetConsoleCP(CODE_PAGE::CP_UTF8);
+    SetConsoleOutputCP(CODE_PAGE::CP_UTF8);
+
+    std::vector<const char*> argv(args.size());
+    for (int i = 0; i < args.size(); i++)
+    {
+        argv[i] = args[i].c_str();
+    }
+    int exitCode = NormalisedMain(static_cast<int>(argv.size()), argv.data());
     return exitCode;
-}
-
-static char** GetCommandLineArgs(int argc, wchar_t** argvW)
-{
-    // Allocate UTF-8 strings
-    char** argv = (char**)malloc(argc * sizeof(char*));
-    if (argv == nullptr)
-    {
-        return nullptr;
-    }
-
-    // Convert to UTF-8
-    for (int i = 0; i < argc; i++)
-    {
-        argv[i] = ConvertWideChartoUTF8(argvW[i]);
-    }
-
-    return argv;
-}
-
-static void FreeCommandLineArgs(int argc, char** argv)
-{
-    // Free argv
-    for (int i = 0; i < argc; i++)
-    {
-        free(argv[i]);
-    }
-    free(argv);
-}
-
-static char* ConvertWideChartoUTF8(const wchar_t* src)
-{
-    int srcLen = lstrlenW(src);
-    int sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    char* result = (char*)calloc(1, sizeReq + 1);
-    WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
-    return result;
 }
