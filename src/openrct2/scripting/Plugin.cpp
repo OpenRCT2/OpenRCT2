@@ -26,7 +26,7 @@ Plugin::Plugin(duk_context* context, const std::string& path)
 
 void Plugin::Load()
 {
-    std::string projectedVariables = "console,context,map,network,park";
+    std::string projectedVariables = "console,context,date,map,network,park";
     if (!gOpenRCT2Headless)
     {
         projectedVariables += ",ui";

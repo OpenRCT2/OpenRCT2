@@ -18,6 +18,7 @@
 #include "Duktape.hpp"
 #include "ScConsole.hpp"
 #include "ScContext.hpp"
+#include "ScDate.hpp"
 #include "ScDisposable.hpp"
 #include "ScMap.hpp"
 #include "ScNetwork.hpp"
@@ -62,6 +63,7 @@ void ScriptEngine::Initialise()
     auto ctx = (duk_context*)_context;
     ScConsole::Register(ctx);
     ScContext::Register(ctx);
+    ScDate::Register(ctx);
     ScDisposable::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
@@ -76,6 +78,7 @@ void ScriptEngine::Initialise()
 
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
+    dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
