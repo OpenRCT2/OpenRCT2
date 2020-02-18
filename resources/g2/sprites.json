@@ -448,6 +448,11 @@
         "path": "icons/rct1_simulate_on_pressed.png"
     },
     {
+        "path": "tool/normal_selection_6x6.png",
+        "x_offset": 1,
+        "y_offset": 4
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
