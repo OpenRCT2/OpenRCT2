@@ -163,7 +163,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 #ifndef __TESTPAINT__
     if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
     {
-        partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition.x, session->MapPosition.y);
+        partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition);
     }
 #endif // __TESTPAINT__
 

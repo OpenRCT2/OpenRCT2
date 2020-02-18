@@ -172,8 +172,8 @@ extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.
 extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
-extern const LocationXY16 BinUseOffsets[NumOrthogonalDirections];
-extern const LocationXY16 BenchUseOffsets[NumOrthogonalDirections * 2];
+extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
+extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 
 TileElement* map_get_footpath_element(CoordsXYZ coords);
 struct PathElement;

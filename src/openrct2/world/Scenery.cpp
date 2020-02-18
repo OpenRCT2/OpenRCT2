@@ -39,7 +39,7 @@ int16_t gSceneryPlaceZ;
 uint8_t gSceneryPlaceRotation;
 
 uint8_t gSceneryGhostType;
-LocationXYZ16 gSceneryGhostPosition;
+CoordsXYZ gSceneryGhostPosition;
 uint8_t gSceneryGhostWallRotation;
 
 int16_t gSceneryShiftPressed;
@@ -166,17 +166,11 @@ void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement)
  */
 void scenery_remove_ghost_tool_placement()
 {
-    int16_t x, y, z;
-
-    x = gSceneryGhostPosition.x;
-    y = gSceneryGhostPosition.y;
-    z = gSceneryGhostPosition.z;
-
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_0)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
 
-        auto removeSceneryAction = SmallSceneryRemoveAction({ x, y, z * 8 }, gSceneryQuadrant, gSceneryPlaceObject);
+        auto removeSceneryAction = SmallSceneryRemoveAction(gSceneryGhostPosition, gSceneryQuadrant, gSceneryPlaceObject);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
@@ -185,7 +179,7 @@ void scenery_remove_ghost_tool_placement()
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_1)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_1;
-        TileElement* tileElement = map_get_first_element_at({ x, y });
+        TileElement* tileElement = map_get_first_element_at(gSceneryGhostPosition);
 
         do
         {
@@ -195,10 +189,10 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (tileElement->base_height != z)
+            if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)
                 continue;
 
-            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ x, y, z * 8 });
+            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction(gSceneryGhostPosition);
             footpathSceneryRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&footpathSceneryRemoveAction);
             break;
@@ -209,7 +203,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_2;
 
-        CoordsXYZD wallLocation = { x, y, z * 8, gSceneryGhostWallRotation };
+        CoordsXYZD wallLocation = { gSceneryGhostPosition, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
         wallRemoveAction.Execute();
@@ -219,7 +213,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
 
-        auto removeSceneryAction = LargeSceneryRemoveAction({ x, y, z * 8, gSceneryPlaceRotation }, 0);
+        auto removeSceneryAction = LargeSceneryRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation }, 0);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
             | GAME_COMMAND_FLAG_NO_SPEND);
@@ -230,7 +224,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_4;
 
-        auto removeSceneryAction = BannerRemoveAction({ x, y, z * 8, gSceneryPlaceRotation });
+        auto removeSceneryAction = BannerRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation });
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&removeSceneryAction);
