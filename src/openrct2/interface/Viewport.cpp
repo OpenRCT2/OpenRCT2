@@ -952,7 +952,7 @@ void viewport_paint(
     if (recorded_sessions != nullptr)
     {
         const uint16_t columnSize = rightBorder - alignedX;
-        const uint16_t columnCount = (columnSize / 32);
+        const uint16_t columnCount = (columnSize + 31) / 32;
         recorded_sessions->resize(columnCount);
     }
 
