@@ -227,9 +227,6 @@ static void window_scenery_scatter_invalidate(rct_window* w)
 
 static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (gWindowSceneryScatterEnabled == 0)
-        window_close(w);
-
     window_draw_widgets(w, dpi);
 
     int32_t x, y;

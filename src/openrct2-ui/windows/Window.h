@@ -25,7 +25,7 @@ extern uint8_t gWindowSceneryActiveTabIndex;
 extern rct_window* gWindowSceneryScatterWindow;
 extern uint16_t gWindowSceneryScatterSize;
 extern uint16_t gWindowSceneryScatterAmount;
-extern uint8_t gWindowSceneryScatterEnabled;
+extern bool gWindowSceneryScatterEnabled;
 extern uint8_t gWindowSceneryPaintEnabled;
 extern uint8_t gWindowSceneryRotation;
 extern colour_t gWindowSceneryPrimaryColour;

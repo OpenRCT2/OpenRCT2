@@ -61,7 +61,7 @@ uint8_t gWindowSceneryActiveTabIndex;
 rct_window* gWindowSceneryScatterWindow;
 uint16_t gWindowSceneryScatterSize;
 uint16_t gWindowSceneryScatterAmount;
-uint8_t gWindowSceneryScatterEnabled;
+bool gWindowSceneryScatterEnabled;
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
@@ -489,7 +489,7 @@ rct_window* window_scenery_open()
     gSceneryPlaceRotation = 0;
     gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
     gWindowSceneryEyedropperEnabled = false;
-    gWindowSceneryScatterEnabled = 0; // build cluster tool state
+    gWindowSceneryScatterEnabled = false; // build cluster tool state
     gWindowSceneryScatterWindow = nullptr;
 
     gWindowSceneryScatterSize = 16;
@@ -593,13 +593,13 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
             gWindowSceneryPaintEnabled ^= 1;
-            gWindowSceneryScatterEnabled = 0;
+            gWindowSceneryScatterEnabled = false;
             gWindowSceneryEyedropperEnabled = false;
             w->Invalidate();
             break;
         case WIDX_SCENERY_EYEDROPPER_BUTTON:
             gWindowSceneryPaintEnabled = 0;
-            gWindowSceneryScatterEnabled = 0;
+            gWindowSceneryScatterEnabled = false;
             gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
             scenery_remove_ghost_tool_placement();
             w->Invalidate();
@@ -607,15 +607,16 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
             gWindowSceneryPaintEnabled = 0;
             gWindowSceneryEyedropperEnabled = false;
-            if (gWindowSceneryScatterEnabled == 1)
+            if (gWindowSceneryScatterEnabled)
             {
-                gWindowSceneryScatterEnabled = 0;
+                window_close_by_class(WC_SCENERY_SCATTER);
+                gWindowSceneryScatterEnabled = false;
             }
             else if (
                 network_get_mode() != NETWORK_MODE_CLIENT
                 || network_can_perform_command(network_get_current_player_group_index(), -2))
             {
-                gWindowSceneryScatterEnabled = 1;
+                gWindowSceneryScatterEnabled = true;
                 gWindowSceneryScatterWindow = window_scenery_scatter_open();
             }
             else
@@ -990,7 +991,7 @@ void window_scenery_invalidate(rct_window* w)
         w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
     if (gWindowSceneryEyedropperEnabled)
         w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
-    if (gWindowSceneryScatterEnabled == 1)
+    if (gWindowSceneryScatterEnabled)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
