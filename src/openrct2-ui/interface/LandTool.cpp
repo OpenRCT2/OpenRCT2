@@ -31,7 +31,7 @@ static uint16_t toolSizeSpriteIndices[] =
     SPR_LAND_TOOL_SIZE_3,
     SPR_LAND_TOOL_SIZE_4,
     SPR_LAND_TOOL_SIZE_5,
-    SPR_LAND_TOOL_SIZE_6,
+    SPR_G2_LAND_TOOL_SIZE_6,
     SPR_LAND_TOOL_SIZE_7,
 };
 // clang-format on
