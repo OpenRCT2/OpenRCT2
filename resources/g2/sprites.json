@@ -453,6 +453,16 @@
         "y_offset": 4
     },
     {
+        "path": "tool/mountain_tool_even.png",
+        "x_offset": 1,
+        "y_offset": 4
+    },
+    {
+        "path": "tool/mountain_tool_odd.png",
+        "x_offset": 1,
+        "y_offset": 5
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
