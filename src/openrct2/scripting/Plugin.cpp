@@ -44,7 +44,19 @@ void Plugin::Load()
     }
     // Wrap the script in a function and pass the global objects as variables
     // so that if the script modifies them, they are not modified for other scripts.
-    code = "(function(" + projectedVariables + "){" + code + "})(" + projectedVariables + ");";
+
+    // clang-format off
+    code =
+        "     (function(" + projectedVariables + ") {"
+        "         var __metadata__ = null;"
+        "         var registerPlugin = function(m) { __metadata__ = m };"
+        "         (function(__metadata__) {"
+                      + code +
+        "         })();"
+        "         return __metadata__;"
+        "     })(" + projectedVariables + ");";
+    // clang-format on
+
     auto flags = DUK_COMPILE_EVAL | DUK_COMPILE_SAFE | DUK_COMPILE_NOSOURCE | DUK_COMPILE_NOFILENAME;
     auto result = duk_eval_raw(_context, code.c_str(), code.size(), flags);
     if (result != DUK_ERR_NONE)
