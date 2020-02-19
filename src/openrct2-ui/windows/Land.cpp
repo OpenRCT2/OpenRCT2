@@ -356,6 +356,8 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + previewWidget->top;
         int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
         gfx_draw_sprite(dpi, sprite, x, y, 0);
+        widget_draw(dpi, w, WIDX_DECREMENT);
+        widget_draw(dpi, w, WIDX_INCREMENT);
     }
 
     x = w->x + (previewWidget->left + previewWidget->right) / 2;
