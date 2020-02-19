@@ -243,6 +243,13 @@ enum
     BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
 };
 
+enum class ScatterToolDensity : uint8_t
+{
+    LowDensity,
+    MediumDensity,
+    HighDensity
+};
+
 #define SCENERY_ENTRIES_BY_TAB 1024
 constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
 

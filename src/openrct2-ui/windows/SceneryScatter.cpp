@@ -15,8 +15,6 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Scenery.h>
 
-#define MAX_AMOUNT 100
-
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
 {
     WIDX_BACKGROUND,
@@ -25,24 +23,26 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
     WIDX_PREVIEW,
     WIDX_DECREMENT,
     WIDX_INCREMENT,
-    WIDX_AMOUNT,
-    WIDX_ADECREMENT,
-    WIDX_AINCREMENT
+    WIDX_DENSITY,
+    WIDX_DENSITY_LOW,
+    WIDX_DENSITY_MEDIUM,
+    WIDX_DENSITY_HIGH
 };
 
 // clang-format off
 static rct_widget window_scenery_scatter_widgets[] = {
-    { WWT_FRAME,    1,  0,  70, 0,  113, 0xFFFFFFFF,                                STR_NONE },                    // panel / background
-    { WWT_CAPTION,  0,  0,  57, 1,  14,  STR_SCENERY_SCATTER,                       STR_WINDOW_TITLE_TIP },        // title bar
-    { WWT_CLOSEBOX, 0,  57, 68, 2,  13,  STR_CLOSE_X,                               STR_CLOSE_WINDOW_TIP },        // close x button
+    { WWT_FRAME,    1,  0,  85, 0,  99, 0xFFFFFFFF,         STR_NONE },                     // panel / background
+    { WWT_CAPTION,  0,  1,  84, 1,  14, STR_SCENERY_SCATTER, STR_WINDOW_TITLE_TIP },        // title bar
+    { WWT_CLOSEBOX, 0,  73, 83, 2,  13, STR_CLOSE_X,         STR_CLOSE_WINDOW_TIP },        // close x button
 
-    { WWT_IMGBTN,   1,  5, 48, 17, 48,   SPR_LAND_TOOL_SIZE_0,                      STR_NONE },                    // preview box
-    { WWT_TRNBTN,   1,  6, 23, 18, 33,   IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_LAND_TIP }, // decrement size
-    { WWT_TRNBTN,   1,  32, 49, 32, 47,  IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_LAND_TIP },  // increment size
+    { WWT_IMGBTN,   1,  20, 63, 17, 48, SPR_LAND_TOOL_SIZE_0,                      STR_NONE },                         // preview box
+    { WWT_TRNBTN,   1,  21, 36, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
+    { WWT_TRNBTN,   1,  47, 62, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_LAND_TIP },       // increment size
 
-    { WWT_IMGBTN,   1,  5, 48, 65, 96,   0xFFFFFFFF,                                STR_NONE },                    // preview box
-    { WWT_TRNBTN,   1,  6, 23, 66, 81,   IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_LAND_TIP }, // decrement size amount
-    { WWT_TRNBTN,   1,  32, 49, 80, 94,  IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_LAND_TIP },  // increment size amount
+    { WWT_GROUPBOX, 1,  3,  82, 55, 96, STR_SCATTER_TOOL_DENSITY,                         STR_NONE },
+    { WWT_FLATBTN,  1,  7,  30, 68, 91, IMAGE_TYPE_REMAP | SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW },     // low amount
+    { WWT_FLATBTN,  1,  31, 54, 68, 91, IMAGE_TYPE_REMAP | SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM },  // medium amount
+    { WWT_FLATBTN,  1,  55, 78, 68, 91, IMAGE_TYPE_REMAP | SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH },    // high amount
     { WIDGETS_END },
 };
 // clang-format on
@@ -98,12 +98,12 @@ rct_window* window_scenery_scatter_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(
-        ScreenCoordsXY(context_get_width() - 70, 29), 70, 114, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
+    window = window_create_auto_pos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
+
     window->widgets = window_scenery_scatter_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
-        | (1 << WIDX_AINCREMENT) | (1 << WIDX_ADECREMENT) | (1 << WIDX_AMOUNT);
-    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_AINCREMENT) | (1 << WIDX_ADECREMENT);
+        | (1 << WIDX_DENSITY_LOW) | (1 << WIDX_DENSITY_MEDIUM) | (1 << WIDX_DENSITY_HIGH);
+    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -123,8 +123,19 @@ static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widget
             window_close(w);
             break;
         case WIDX_PREVIEW:
-        case WIDX_AMOUNT:
             window_scenery_scatter_inputsize(w, widgetIndex);
+            break;
+
+        case WIDX_DENSITY_LOW:
+            gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
+            break;
+
+        case WIDX_DENSITY_MEDIUM:
+            gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+            break;
+
+        case WIDX_DENSITY_HIGH:
+            gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
             break;
     }
 }
@@ -147,21 +158,6 @@ static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widg
             // Invalidate the window
             w->Invalidate();
             break;
-
-        case WIDX_ADECREMENT:
-            // Decrement land tool size, if it stays within the limit
-            gWindowSceneryScatterAmount = std::max(1, gWindowSceneryScatterAmount - 1);
-
-            // Invalidate the window
-            w->Invalidate();
-            break;
-        case WIDX_AINCREMENT:
-            // Increment land tool size, if it stays within the limit
-            gWindowSceneryScatterAmount = std::min(MAX_AMOUNT, gWindowSceneryScatterAmount + 1);
-
-            // Invalidate the window
-            w->Invalidate();
-            break;
     }
 }
 
@@ -170,7 +166,7 @@ static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widg
     int32_t size;
     char* end;
 
-    if (!(widgetIndex == WIDX_PREVIEW || widgetIndex == WIDX_AMOUNT) || text == nullptr)
+    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);
@@ -182,11 +178,6 @@ static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widg
                 size = std::max(MINIMUM_TOOL_SIZE, size);
                 size = std::min(MAXIMUM_TOOL_SIZE, size);
                 gWindowSceneryScatterSize = size;
-                break;
-            case WIDX_AMOUNT:
-                size = std::max(1, size);
-                size = std::min(MAX_AMOUNT, size);
-                gWindowSceneryScatterAmount = size;
                 break;
         }
         w->Invalidate();
@@ -203,11 +194,6 @@ static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widg
             TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
             maxlen = 3;
             break;
-        case WIDX_AMOUNT:
-            TextInputDescriptionArgs[0] = 1;
-            TextInputDescriptionArgs[1] = MAX_AMOUNT;
-            maxlen = 4; // Catch 100
-            break;
     }
     window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, maxlen);
 }
@@ -220,7 +206,24 @@ static void window_scenery_scatter_update(rct_window* w)
 static void window_scenery_scatter_invalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
-    w->pressed_widgets = (1 << WIDX_PREVIEW) | (1 << WIDX_AMOUNT);
+    w->pressed_widgets = (1 << WIDX_PREVIEW);
+
+    // Set density buttons' pressed state.
+    switch (gWindowSceneryScatterDensity)
+    {
+        case ScatterToolDensity::LowDensity:
+            w->pressed_widgets |= (1 << WIDX_DENSITY_LOW);
+            break;
+
+        case ScatterToolDensity::MediumDensity:
+            w->pressed_widgets |= (1 << WIDX_DENSITY_MEDIUM);
+            break;
+
+        case ScatterToolDensity::HighDensity:
+            w->pressed_widgets |= (1 << WIDX_DENSITY_HIGH);
+            break;
+    }
+
     // Update the preview image (for tool sizes up to 7)
     window_scenery_scatter_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gWindowSceneryScatterSize);
 }
@@ -229,25 +232,12 @@ static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    int32_t x, y;
-    x = w->x + window_scenery_scatter_widgets[WIDX_PREVIEW].left;
-    y = w->y + window_scenery_scatter_widgets[WIDX_PREVIEW].bottom + 2;
-    gfx_draw_string_left(dpi, STR_SMALL_SIZE, nullptr, COLOUR_BLACK, x, y);
-
-    x = w->x + window_scenery_scatter_widgets[WIDX_AMOUNT].left;
-    y = w->y + window_scenery_scatter_widgets[WIDX_AMOUNT].bottom + 2;
-    gfx_draw_string_left(dpi, STR_SMALL_AMOUNT, nullptr, COLOUR_BLACK, x, y);
-
-    // Draw number for tool sizes bigger than 7
-
+    // Draw area as a number for tool sizes bigger than 7
     if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        x = w->x + (window_scenery_scatter_widgets[WIDX_PREVIEW].left + window_scenery_scatter_widgets[WIDX_PREVIEW].right) / 2;
-        y = w->y + (window_scenery_scatter_widgets[WIDX_PREVIEW].top + window_scenery_scatter_widgets[WIDX_PREVIEW].bottom) / 2;
+        auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
+        int32_t x = w->x + (preview.left + preview.right) / 2;
+        int32_t y = w->y + (preview.top + preview.bottom) / 2;
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y, COLOUR_BLACK, &gWindowSceneryScatterSize);
     }
-
-    x = w->x + (window_scenery_scatter_widgets[WIDX_AMOUNT].left + window_scenery_scatter_widgets[WIDX_AMOUNT].right) / 2;
-    y = w->y + (window_scenery_scatter_widgets[WIDX_AMOUNT].top + window_scenery_scatter_widgets[WIDX_AMOUNT].bottom) / 2;
-    gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y, COLOUR_BLACK, &gWindowSceneryScatterAmount);
 }

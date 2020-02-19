@@ -60,7 +60,7 @@ uint16_t gWindowSceneryTabSelections[SCENERY_WINDOW_TABS];
 uint8_t gWindowSceneryActiveTabIndex;
 rct_window* gWindowSceneryScatterWindow;
 uint16_t gWindowSceneryScatterSize;
-uint16_t gWindowSceneryScatterAmount;
+ScatterToolDensity gWindowSceneryScatterDensity;
 bool gWindowSceneryScatterEnabled;
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
@@ -493,7 +493,7 @@ rct_window* window_scenery_open()
     gWindowSceneryScatterWindow = nullptr;
 
     gWindowSceneryScatterSize = 16;
-    gWindowSceneryScatterAmount = 35;
+    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
 
     window->min_width = WINDOW_SCENERY_WIDTH;
     window->max_width = WINDOW_SCENERY_WIDTH;

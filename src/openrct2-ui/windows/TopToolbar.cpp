@@ -1761,14 +1761,27 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             bool isCluster = gWindowSceneryScatterEnabled
                 && (network_get_mode() != NETWORK_MODE_CLIENT
                     || network_can_perform_command(network_get_current_player_group_index(), -2));
+
             if (isCluster)
             {
-                quantity = gWindowSceneryScatterAmount;
+                switch (gWindowSceneryScatterDensity)
+                {
+                    case ScatterToolDensity::LowDensity:
+                        quantity = gWindowSceneryScatterSize;
+                        break;
+
+                    case ScatterToolDensity::MediumDensity:
+                        quantity = gWindowSceneryScatterSize * 2;
+                        break;
+
+                    case ScatterToolDensity::HighDensity:
+                        quantity = gWindowSceneryScatterSize * 3;
+                        break;
+                }
             }
 
             bool forceError = true;
-            uint16_t retry = 0;
-            for (int32_t q = 0; q < quantity + retry; q++)
+            for (int32_t q = 0; q < quantity; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
                 rct_scenery_entry* scenery = get_small_scenery_entry((parameter_1 >> 8) & 0xFF);
@@ -1858,11 +1871,6 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     {
                         break;
                     }
-                }
-                else
-                {
-                    if (retry < gWindowSceneryScatterSize * gWindowSceneryScatterSize)
-                        retry++;
                 }
                 gSceneryPlaceZ = zCoordinate;
             }

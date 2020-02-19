@@ -19,12 +19,13 @@ using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
 struct TileElement;
 struct Vehicle;
+enum class ScatterToolDensity : uint8_t;
 
 extern uint16_t gWindowSceneryTabSelections[];
 extern uint8_t gWindowSceneryActiveTabIndex;
 extern rct_window* gWindowSceneryScatterWindow;
 extern uint16_t gWindowSceneryScatterSize;
-extern uint16_t gWindowSceneryScatterAmount;
+extern ScatterToolDensity gWindowSceneryScatterDensity;
 extern bool gWindowSceneryScatterEnabled;
 extern uint8_t gWindowSceneryPaintEnabled;
 extern uint8_t gWindowSceneryRotation;
