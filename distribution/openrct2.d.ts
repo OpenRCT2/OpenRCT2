@@ -334,7 +334,8 @@ declare global {
         y: number;
         width: number;
         height: number;
-        isDisabled: boolean;
+        name?: string;
+        isDisabled?: boolean;
     }
 
     interface ButtonWidget extends Widget {
@@ -381,6 +382,8 @@ declare global {
         widgets: Widget[];
 
         close(): void;
+        bringToFront(): void;
+        findWidget<T extends Widget>(name: string): T;
     }
 
     interface TabbedWindow extends Window {
@@ -402,6 +405,8 @@ declare global {
         minHeight?: number;
         widgets?: Widget[];
         tabs?: Tab[];
+
+        onClose?: () => void;
     }
 
     type ToolCallbackType = "move" | "press" | "release";
