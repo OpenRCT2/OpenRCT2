@@ -47,7 +47,7 @@ namespace OpenRCT2::Audio
 
         virtual void StopAll() abstract;
         virtual void StopCrowdSound() abstract;
-        virtual void StopRainSound() abstract;
+        virtual void StopWeatherSound() abstract;
         virtual void StopRideMusic() abstract;
         virtual void StopTitleMusic() abstract;
         virtual void StopVehicleSounds() abstract;

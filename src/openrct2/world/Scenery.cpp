@@ -121,7 +121,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    // Check map elements above, presumably to see if map element is blocked from rain
+    // Check map elements above, presumably to see if map element is blocked from weather
     TileElement* tileElementAbove = reinterpret_cast<TileElement*>(this);
     // Change from original: RCT2 only checked for the first three quadrants, which was very likely to be a bug.
     while (!(tileElementAbove->GetOccupiedQuadrants()))

@@ -878,7 +878,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     natLightB *= 1.0f + overExpose;
     overExpose *= 255.0f;
 
-    float targetFogginess = (float)(gClimateCurrent.RainLevel) / 8.0f;
+    float targetFogginess = (float)(gClimateCurrent.WeatherLevel) / 8.0f;
     targetFogginess += (night * night) * 0.15f;
 
     if (gClimateCurrent.Temperature < 10)
@@ -920,7 +920,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     natLightG /= 1.0f + lightPolution;
     natLightB /= 1.0f + lightPolution;
 
-    reduceColourLit += (float)(gClimateCurrent.RainLevel) / 2.0f;
+    reduceColourLit += (float)(gClimateCurrent.WeatherLevel) / 2.0f;
 
     reduceColourNat /= 1.0f + fogginess;
     reduceColourLit /= 1.0f + fogginess;

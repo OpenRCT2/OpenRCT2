@@ -347,7 +347,7 @@ private:
             case CheatType::SetStaffSpeed:
                 return { { 0, 255 }, { 0, 0 } };
             case CheatType::ForceWeather:
-                return { { 0, 5 }, { 0, 0 } };
+                return { { 0, WEATHER_COUNT - 1 }, { 0, 0 } };
             case CheatType::SetForcedParkRating:
                 return { { 0, 999 }, { 0, 0 } };
             case CheatType::CreateDucks:

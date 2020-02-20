@@ -60,6 +60,9 @@ static constexpr const rct_string_id WeatherTypes[] =
     STR_RAIN,
     STR_HEAVY_RAIN,
     STR_THUNDERSTORM,
+    STR_SNOW,
+    STR_HEAVY_SNOW,
+    STR_BLIZZARD,
 };
 
 enum WINDOW_CHEATS_WIDGET_IDX
@@ -723,22 +726,19 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_WEATHER_DROPDOWN_BUTTON:
         {
-            rct_widget* dropdownWidget;
-            int i, currentWeather;
+            rct_widget* dropdownWidget = widget - 1;
 
-            dropdownWidget = widget - 1;
-
-            for (i = 0; i < 6; i++)
+            for (size_t i = 0; i < std::size(WeatherTypes); i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = WeatherTypes[i];
             }
             window_dropdown_show_text_custom_width(
                 w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 6,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN,
+                std::size(WeatherTypes), dropdownWidget->right - dropdownWidget->left - 3);
 
-            currentWeather = gClimateCurrent.Weather;
+            auto currentWeather = gClimateCurrent.Weather;
             dropdown_set_checked(currentWeather, true);
         }
         break;

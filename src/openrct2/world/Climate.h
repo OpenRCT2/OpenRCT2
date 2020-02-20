@@ -29,6 +29,10 @@ enum WEATHER
     WEATHER_RAIN,
     WEATHER_HEAVY_RAIN,
     WEATHER_THUNDER,
+    WEATHER_SNOW,
+    WEATHER_HEAVY_SNOW,
+    WEATHER_BLIZZARD,
+    WEATHER_COUNT,
 };
 
 enum WEATHER_EFFECT
@@ -36,13 +40,15 @@ enum WEATHER_EFFECT
     WEATHER_EFFECT_NONE,
     WEATHER_EFFECT_RAIN,
     WEATHER_EFFECT_STORM,
+    WEATHER_EFFECT_SNOW,
+    WEATHER_EFFECT_BLIZZARD,
 };
 
-enum RAIN_LEVEL
+enum WEATHER_LEVEL
 {
-    RAIN_LEVEL_NONE,
-    RAIN_LEVEL_LIGHT,
-    RAIN_LEVEL_HEAVY,
+    WEATHER_LEVEL_NONE,
+    WEATHER_LEVEL_LIGHT,
+    WEATHER_LEVEL_HEAVY,
 };
 
 struct WeatherState
@@ -50,7 +56,7 @@ struct WeatherState
     int8_t TemperatureDelta;
     int8_t EffectLevel;
     int8_t GloomLevel;
-    int8_t RainLevel;
+    int8_t WeatherLevel;
     uint32_t SpriteId;
 };
 
@@ -60,7 +66,7 @@ struct ClimateState
     int8_t Temperature;
     uint8_t WeatherEffect;
     uint8_t WeatherGloom;
-    uint8_t RainLevel;
+    uint8_t WeatherLevel;
 };
 
 extern uint8_t gClimate;
@@ -76,5 +82,6 @@ void climate_update_sound();
 void climate_force_weather(uint8_t weather);
 
 bool climate_is_raining();
+bool climate_is_snowing();
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state);
 uint32_t climate_get_weather_sprite_id(const ClimateState& state);

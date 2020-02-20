@@ -104,7 +104,7 @@ namespace OpenRCT2::Audio
         void StopCrowdSound() override
         {
         }
-        void StopRainSound() override
+        void StopWeatherSound() override
         {
         }
         void StopRideMusic() override

@@ -410,8 +410,8 @@ public:
         gClimateNext.WeatherEffect = _s6.next_weather_effect;
         gClimateCurrent.WeatherGloom = _s6.current_weather_gloom;
         gClimateNext.WeatherGloom = _s6.next_weather_gloom;
-        gClimateCurrent.RainLevel = _s6.current_rain_level;
-        gClimateNext.RainLevel = _s6.next_rain_level;
+        gClimateCurrent.WeatherLevel = _s6.current_weather_level;
+        gClimateNext.WeatherLevel = _s6.next_weather_level;
 
         // News items
         news_item_init_queue();

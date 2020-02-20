@@ -26,9 +26,9 @@ namespace OpenRCT2
     namespace Drawing
     {
         interface IDrawingEngineFactory;
-        interface IRainDrawer;
-        using DrawRainFunc = void (*)(
-            OpenRCT2::Drawing::IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+        interface IWeatherDrawer;
+        using DrawWeatherFunc = void (*)(
+            OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
@@ -130,9 +130,9 @@ namespace OpenRCT2
 
             // Drawing
             virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;
-            virtual void DrawRainAnimation(
-                OpenRCT2::Drawing::IRainDrawer * rainDrawer, rct_drawpixelinfo * dpi, OpenRCT2::Drawing::DrawRainFunc drawFunc)
-                abstract;
+            virtual void DrawWeatherAnimation(
+                OpenRCT2::Drawing::IWeatherDrawer * weatherDrawer, rct_drawpixelinfo * dpi,
+                OpenRCT2::Drawing::DrawWeatherFunc drawFunc) abstract;
 
             // Text input
             virtual bool IsTextInputActive() abstract;

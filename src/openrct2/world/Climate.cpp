@@ -43,7 +43,7 @@ struct WeatherTransition
 };
 
 extern const WeatherTransition* ClimateTransitions[4];
-extern const WeatherState ClimateWeatherData[6];
+extern const WeatherState ClimateWeatherData[WEATHER_COUNT];
 extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
 // Climate data
@@ -54,7 +54,7 @@ uint16_t gClimateUpdateTimer;
 uint16_t gClimateLightningFlash;
 
 // Sound data
-static int32_t _rainVolume = 1;
+static int32_t _weatherVolume = 1;
 static uint32_t _lightningTimer;
 static uint32_t _thunderTimer;
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
@@ -65,7 +65,7 @@ static int32_t _thunderStereoEcho = 0;
 
 static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
 static void climate_determine_future_weather(int32_t randomDistribution);
-static void climate_update_rain_sound();
+static void climate_update_weather_sound();
 static void climate_update_thunder_sound();
 static void climate_update_lightning();
 static void climate_update_thunder();
@@ -91,14 +91,14 @@ void climate_reset(int32_t climate)
     gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
     gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gClimateCurrent.RainLevel = weatherState->RainLevel;
+    gClimateCurrent.WeatherLevel = weatherState->WeatherLevel;
 
     _lightningTimer = 0;
     _thunderTimer = 0;
-    if (_rainVolume != 1)
+    if (_weatherVolume != 1)
     {
-        audio_stop_rain_sound();
-        _rainVolume = 1;
+        audio_stop_weather_sound();
+        _weatherVolume = 1;
     }
 
     climate_determine_future_weather(scenario_rand());
@@ -135,17 +135,17 @@ void climate_update()
                     _thunderTimer = 0;
                     _lightningTimer = 0;
 
-                    if (gClimateCurrent.RainLevel == gClimateNext.RainLevel)
+                    if (gClimateCurrent.WeatherLevel == gClimateNext.WeatherLevel)
                     {
                         gClimateCurrent.Weather = gClimateNext.Weather;
                         climate_determine_future_weather(scenario_rand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         context_broadcast_intent(&intent);
                     }
-                    else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
+                    else if (gClimateNext.WeatherLevel <= WEATHER_LEVEL_HEAVY)
                     {
-                        gClimateCurrent.RainLevel = climate_step_weather_level(
-                            gClimateCurrent.RainLevel, gClimateNext.RainLevel);
+                        gClimateCurrent.WeatherLevel = climate_step_weather_level(
+                            gClimateCurrent.WeatherLevel, gClimateNext.WeatherLevel);
                     }
                 }
                 else
@@ -169,7 +169,7 @@ void climate_update()
         climate_update_lightning();
         climate_update_thunder();
     }
-    else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
+    else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM || gClimateCurrent.WeatherEffect == WEATHER_EFFECT_BLIZZARD)
     {
         // Create new thunder and lightning
         uint32_t randomNumber = util_rand();
@@ -187,7 +187,7 @@ void climate_force_weather(uint8_t weather)
     const auto weatherState = &ClimateWeatherData[weather];
     gClimateCurrent.Weather = weather;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gClimateCurrent.RainLevel = weatherState->RainLevel;
+    gClimateCurrent.WeatherLevel = weatherState->WeatherLevel;
     gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
     gClimateUpdateTimer = 1920;
 
@@ -208,13 +208,34 @@ void climate_update_sound()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    climate_update_rain_sound();
+    climate_update_weather_sound();
     climate_update_thunder_sound();
 }
 
 bool climate_is_raining()
 {
-    return gClimateCurrent.RainLevel != RAIN_LEVEL_NONE;
+    if (gClimateCurrent.Weather == WEATHER_RAIN || gClimateCurrent.Weather == WEATHER_HEAVY_RAIN
+        || gClimateCurrent.Weather == WEATHER_THUNDER)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool climate_is_snowing()
+{
+    if (gClimateCurrent.Weather == WEATHER_SNOW || gClimateCurrent.Weather == WEATHER_HEAVY_SNOW
+        || gClimateCurrent.Weather == WEATHER_BLIZZARD)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
@@ -270,49 +291,49 @@ static void climate_determine_future_weather(int32_t randomDistribution)
     gClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
     gClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
     gClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
-    gClimateNext.RainLevel = nextWeatherState->RainLevel;
+    gClimateNext.WeatherLevel = nextWeatherState->WeatherLevel;
 
     gClimateUpdateTimer = 1920;
 }
 
-static void climate_update_rain_sound()
+static void climate_update_weather_sound()
 {
     if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_RAIN || gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
     {
-        // Start playing the rain sound
-        if (gRainSoundChannel == nullptr)
+        // Start playing the weather sound
+        if (gWeatherSoundChannel == nullptr)
         {
-            gRainSoundChannel = Mixer_Play_Effect(SoundId::Rain, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+            gWeatherSoundChannel = Mixer_Play_Effect(SoundId::Rain, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
         }
-        if (_rainVolume == 1)
+        if (_weatherVolume == 1)
         {
-            _rainVolume = -4000;
+            _weatherVolume = -4000;
         }
         else
         {
-            // Increase rain sound
-            _rainVolume = std::min(-1400, _rainVolume + 80);
-            if (gRainSoundChannel != nullptr)
+            // Increase weather sound
+            _weatherVolume = std::min(-1400, _weatherVolume + 80);
+            if (gWeatherSoundChannel != nullptr)
             {
-                Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
+                Mixer_Channel_Volume(gWeatherSoundChannel, DStoMixerVolume(_weatherVolume));
             }
         }
     }
-    else if (_rainVolume != 1)
+    else if (_weatherVolume != 1)
     {
-        // Decrease rain sound
-        _rainVolume -= 80;
-        if (_rainVolume > -4000)
+        // Decrease weather sound
+        _weatherVolume -= 80;
+        if (_weatherVolume > -4000)
         {
-            if (gRainSoundChannel != nullptr)
+            if (gWeatherSoundChannel != nullptr)
             {
-                Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
+                Mixer_Channel_Volume(gWeatherSoundChannel, DStoMixerVolume(_weatherVolume));
             }
         }
         else
         {
-            audio_stop_rain_sound();
-            _rainVolume = 1;
+            audio_stop_weather_sound();
+            _weatherVolume = 1;
         }
     }
 }
@@ -410,25 +431,27 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
     PALETTE_DARKEN_3,
 };
 
-// There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const WeatherState ClimateWeatherData[6] = {
-    { 10, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_SUN },         // Sunny
-    { 5, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
-    { 0, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_CLOUD },        // Cloudy
-    { -2, WEATHER_EFFECT_RAIN, 1, RAIN_LEVEL_LIGHT, SPR_WEATHER_LIGHT_RAIN }, // Rain
-    { -4, WEATHER_EFFECT_RAIN, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
-    { 2, WEATHER_EFFECT_STORM, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_STORM },      // Thunderstorm
+const WeatherState ClimateWeatherData[WEATHER_COUNT] = {
+    { 10, WEATHER_EFFECT_NONE, 0, WEATHER_LEVEL_NONE, SPR_WEATHER_SUN },         // Sunny
+    { 5, WEATHER_EFFECT_NONE, 0, WEATHER_LEVEL_NONE, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
+    { 0, WEATHER_EFFECT_NONE, 0, WEATHER_LEVEL_NONE, SPR_WEATHER_CLOUD },        // Cloudy
+    { -2, WEATHER_EFFECT_RAIN, 1, WEATHER_LEVEL_LIGHT, SPR_WEATHER_LIGHT_RAIN }, // Rain
+    { -4, WEATHER_EFFECT_RAIN, 2, WEATHER_LEVEL_HEAVY, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+    { 2, WEATHER_EFFECT_STORM, 2, WEATHER_LEVEL_HEAVY, SPR_WEATHER_STORM },      // Thunderstorm
+    { -10, WEATHER_EFFECT_SNOW, 1, WEATHER_LEVEL_LIGHT, SPR_WEATHER_SNOW },      // Snow
+    { -15, WEATHER_EFFECT_SNOW, 2, WEATHER_LEVEL_HEAVY, SPR_WEATHER_SNOW },      // Heavy Snow
+    { -20, WEATHER_EFFECT_BLIZZARD, 2, WEATHER_LEVEL_HEAVY, SPR_WEATHER_SNOW },  // Blizzard
 };
 
 static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 8, 18, { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
-    { 10, 21, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
+    { 10, 23, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6, 7 } },
     { 14, 17, { 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0 } },
     { 17, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
     { 19, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
     { 20, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5 } },
-    { 16, 19, { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 0, 0, 0, 0 } },
-    { 13, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 16, 21, { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 6, 6, 0, 0 } },
+    { 13, 20, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6, 6, 7, 7, 0, 0, 0 } },
 };
 static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
     { 12, 21, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0 } },
@@ -451,14 +474,14 @@ static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 16, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 static constexpr const WeatherTransition ClimateTransitionsCold[] = {
-    { 4, 18, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
-    { 5, 21, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
-    { 7, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
-    { 9, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
+    { 4, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 6, 6, 6, 7, 8 } },
+    { 5, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 6 } },
+    { 6, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 6, 6, 6, 7, 7, 8 } },
+    { 9, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8 } },
     { 10, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
     { 11, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5 } },
-    { 9, 19, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
-    { 6, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 9, 23, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 6, 7, 8 } },
+    { 6, 23, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6, 6, 6, 6, 6, 7, 8 } },
 };
 
 const WeatherTransition* ClimateTransitions[] = {

@@ -268,7 +268,7 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
-    void DrawRainAnimation(IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi, DrawRainFunc drawFunc) override
+    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
     {
         int32_t left = dpi->x;
         int32_t right = left + dpi->width;
@@ -277,7 +277,7 @@ public:
 
         for (auto& w : g_window_list)
         {
-            DrawRainWindow(rainDrawer, w.get(), left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
     }
 
@@ -780,9 +780,9 @@ private:
         return SDL_GetWindowFlags(_window);
     }
 
-    static void DrawRainWindow(
-        IRainDrawer* rainDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top, int16_t bottom,
-        DrawRainFunc drawFunc)
+    static void DrawWeatherWindow(
+        IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top, int16_t bottom,
+        DrawWeatherFunc drawFunc)
     {
         rct_window* w{};
         auto itStart = window_get_iterator(original_w);
@@ -790,7 +790,7 @@ private:
         {
             if (it == g_window_list.end())
             {
-                // Loop ended, draw rain for original_w
+                // Loop ended, draw weather for original_w
                 auto vp = original_w->viewport;
                 if (vp != nullptr)
                 {
@@ -802,7 +802,7 @@ private:
                     {
                         auto width = right - left;
                         auto height = bottom - top;
-                        drawFunc(rainDrawer, left, top, width, height);
+                        drawFunc(weatherDrawer, left, top, width, height);
                     }
                 }
                 return;
@@ -824,39 +824,39 @@ private:
                 break;
             }
 
-            DrawRainWindow(rainDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
 
             left = w->windowPos.x;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         int16_t w_right = RCT_WINDOW_RIGHT(w);
         if (right > w_right)
         {
-            DrawRainWindow(rainDrawer, original_w, left, w_right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
 
             left = w_right;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         if (top < w->windowPos.y)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
 
             top = w->windowPos.y;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
         if (bottom > w_bottom)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w_bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
 
             top = w_bottom;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
     }
