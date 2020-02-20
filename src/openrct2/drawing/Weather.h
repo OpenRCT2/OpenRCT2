@@ -26,6 +26,15 @@ static constexpr const uint8_t RainPattern[] =
     255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
 };
+
+static constexpr const uint8_t SnowPattern[] =
+{
+    32, 32, 0, 32, 0, 32, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
+    0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+    255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
+    0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
+};
+
 // clang-format on
 
 void DrawWeather(rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

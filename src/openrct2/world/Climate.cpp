@@ -43,7 +43,7 @@ struct WeatherTransition
 };
 
 extern const WeatherTransition* ClimateTransitions[4];
-extern const WeatherState ClimateWeatherData[6];
+extern const WeatherState ClimateWeatherData[WEATHER_COUNT];
 extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
 // Climate data
@@ -169,7 +169,9 @@ void climate_update()
         climate_update_lightning();
         climate_update_thunder();
     }
-    else if (gClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
+    else if (
+        gClimateCurrent.WeatherEffect == WeatherEffectType::Storm
+        || gClimateCurrent.WeatherEffect == WeatherEffectType::Blizzard)
     {
         // Create new thunder and lightning
         uint32_t randomNumber = util_rand();
@@ -214,7 +216,28 @@ void climate_update_sound()
 
 bool climate_is_raining()
 {
-    return gClimateCurrent.Level != WeatherLevel::None;
+    if (gClimateCurrent.Weather == WEATHER_RAIN || gClimateCurrent.Weather == WEATHER_HEAVY_RAIN
+        || gClimateCurrent.Weather == WEATHER_THUNDER)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool climate_is_snowing()
+{
+    if (gClimateCurrent.Weather == WEATHER_SNOW || gClimateCurrent.Weather == WEATHER_HEAVY_SNOW
+        || gClimateCurrent.Weather == WEATHER_BLIZZARD)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
@@ -411,24 +434,27 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
 };
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const WeatherState ClimateWeatherData[6] = {
+const WeatherState ClimateWeatherData[WEATHER_COUNT] = {
     { 10, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN },         // Sunny
     { 5, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
     { 0, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
     { -2, WeatherEffectType::Rain, 1, WeatherLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
     { -4, WeatherEffectType::Rain, 2, WeatherLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
     { 2, WeatherEffectType::Storm, 2, WeatherLevel::Heavy, SPR_WEATHER_STORM },      // Thunderstorm
+    { -10, WeatherEffectType::Snow, 1, WeatherLevel::Light, SPR_WEATHER_SNOW },      // Snow
+    { -15, WeatherEffectType::Snow, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW },      // Heavy Snow
+    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW },  // Blizzard
 };
 
 static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 8, 18, { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
-    { 10, 21, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
+    { 10, 23, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6, 7 } },
     { 14, 17, { 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0 } },
     { 17, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
     { 19, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
     { 20, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5 } },
-    { 16, 19, { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 0, 0, 0, 0 } },
-    { 13, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 16, 21, { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 6, 6, 0, 0 } },
+    { 13, 20, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6, 6, 7, 7, 0, 0, 0 } },
 };
 static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
     { 12, 21, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0 } },
@@ -451,14 +477,14 @@ static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 16, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 static constexpr const WeatherTransition ClimateTransitionsCold[] = {
-    { 4, 18, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
-    { 5, 21, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
-    { 7, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
-    { 9, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
+    { 4, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 6, 6, 6, 7, 8 } },
+    { 5, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 6 } },
+    { 6, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 6, 6, 6, 7, 7, 8 } },
+    { 9, 23, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8 } },
     { 10, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
     { 11, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5 } },
-    { 9, 19, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
-    { 6, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 9, 23, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 6, 7, 8 } },
+    { 6, 23, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6, 6, 6, 6, 6, 7, 8 } },
 };
 
 const WeatherTransition* ClimateTransitions[] = {

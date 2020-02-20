@@ -55,7 +55,9 @@ namespace OpenRCT2
             X8WeatherDrawer();
             ~X8WeatherDrawer();
             void SetDPI(rct_drawpixelinfo* dpi);
-            void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) override;
+            void Draw(
+                int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+                const uint8_t* weatherpattern) override;
             void Restore();
         };
 

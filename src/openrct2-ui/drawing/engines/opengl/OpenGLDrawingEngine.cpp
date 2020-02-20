@@ -35,6 +35,7 @@
 #    include <openrct2/drawing/Weather.h>
 #    include <openrct2/interface/Screenshot.h>
 #    include <openrct2/ui/UiContext.h>
+#    include <openrct2/world/Climate.h>
 #    include <unordered_map>
 
 using namespace OpenRCT2;
@@ -131,10 +132,11 @@ public:
     {
     }
 
-    virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) override
+    virtual void Draw(
+        int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        const uint8_t* weatherpattern) override
     {
-        const uint8_t* pattern = RainPattern;
-
+        const uint8_t* pattern = weatherpattern;
         uint8_t patternXSpace = *pattern++;
         uint8_t patternYSpace = *pattern++;
 

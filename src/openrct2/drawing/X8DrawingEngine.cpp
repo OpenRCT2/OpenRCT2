@@ -17,6 +17,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../ui/UiContext.h"
+#include "../world/Climate.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -45,9 +46,10 @@ void X8WeatherDrawer::SetDPI(rct_drawpixelinfo* dpi)
     _screenDPI = dpi;
 }
 
-void X8WeatherDrawer::Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart)
+void X8WeatherDrawer::Draw(
+    int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart, const uint8_t* weatherpattern)
 {
-    const uint8_t* pattern = RainPattern;
+    const uint8_t* pattern = weatherpattern;
     uint8_t patternXSpace = *pattern++;
     uint8_t patternYSpace = *pattern++;
 
@@ -100,14 +102,14 @@ void X8WeatherDrawer::Restore()
         uint8_t* bits = _screenDPI->bits;
         for (uint32_t i = 0; i < _weatherPixelsCount; i++)
         {
-            WeatherPixel rainPixel = _weatherPixels[i];
-            if (rainPixel.Position >= numPixels)
+            WeatherPixel weatherPixel = _weatherPixels[i];
+            if (weatherPixel.Position >= numPixels)
             {
                 // Pixel out of bounds, bail
                 break;
             }
 
-            bits[rainPixel.Position] = rainPixel.Colour;
+            bits[weatherPixel.Position] = weatherPixel.Colour;
         }
         _weatherPixelsCount = 0;
     }
