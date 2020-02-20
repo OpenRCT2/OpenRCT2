@@ -23,10 +23,9 @@ enum class ScatterToolDensity : uint8_t;
 
 extern uint16_t gWindowSceneryTabSelections[];
 extern uint8_t gWindowSceneryActiveTabIndex;
-extern rct_window* gWindowSceneryScatterWindow;
+extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
-extern bool gWindowSceneryScatterEnabled;
 extern uint8_t gWindowSceneryPaintEnabled;
 extern uint8_t gWindowSceneryRotation;
 extern colour_t gWindowSceneryPrimaryColour;

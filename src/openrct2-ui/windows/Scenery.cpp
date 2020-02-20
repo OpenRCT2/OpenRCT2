@@ -58,10 +58,6 @@ enum {
 
 uint16_t gWindowSceneryTabSelections[SCENERY_WINDOW_TABS];
 uint8_t gWindowSceneryActiveTabIndex;
-rct_window* gWindowSceneryScatterWindow;
-uint16_t gWindowSceneryScatterSize;
-ScatterToolDensity gWindowSceneryScatterDensity;
-bool gWindowSceneryScatterEnabled;
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
@@ -489,11 +485,6 @@ rct_window* window_scenery_open()
     gSceneryPlaceRotation = 0;
     gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
     gWindowSceneryEyedropperEnabled = false;
-    gWindowSceneryScatterEnabled = false; // build cluster tool state
-    gWindowSceneryScatterWindow = nullptr;
-
-    gWindowSceneryScatterSize = 16;
-    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
 
     window->min_width = WINDOW_SCENERY_WIDTH;
     window->max_width = WINDOW_SCENERY_WIDTH;
@@ -513,8 +504,8 @@ void window_scenery_close(rct_window* w)
     hide_gridlines();
     viewport_set_visibility(0);
 
-    if (gWindowSceneryScatterWindow != nullptr)
-        window_close(gWindowSceneryScatterWindow);
+    if (gWindowSceneryScatterEnabled)
+        window_close_by_class(WC_SCENERY_SCATTER);
 
     if (scenery_tool_is_active())
         tool_cancel();
@@ -582,7 +573,8 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_SCENERY_CLOSE:
-            window_close(gWindowSceneryScatterWindow);
+            if (gWindowSceneryScatterEnabled)
+                window_close_by_class(WC_SCENERY_SCATTER);
             window_close(w);
             break;
         case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:
@@ -593,14 +585,16 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
             gWindowSceneryPaintEnabled ^= 1;
-            gWindowSceneryScatterEnabled = false;
             gWindowSceneryEyedropperEnabled = false;
+            if (gWindowSceneryScatterEnabled)
+                window_close_by_class(WC_SCENERY_SCATTER);
             w->Invalidate();
             break;
         case WIDX_SCENERY_EYEDROPPER_BUTTON:
             gWindowSceneryPaintEnabled = 0;
-            gWindowSceneryScatterEnabled = false;
             gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
+            if (gWindowSceneryScatterEnabled)
+                window_close_by_class(WC_SCENERY_SCATTER);
             scenery_remove_ghost_tool_placement();
             w->Invalidate();
             break;
@@ -608,16 +602,12 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             gWindowSceneryPaintEnabled = 0;
             gWindowSceneryEyedropperEnabled = false;
             if (gWindowSceneryScatterEnabled)
-            {
                 window_close_by_class(WC_SCENERY_SCATTER);
-                gWindowSceneryScatterEnabled = false;
-            }
             else if (
                 network_get_mode() != NETWORK_MODE_CLIENT
                 || network_can_perform_command(network_get_current_player_group_index(), -2))
             {
-                gWindowSceneryScatterEnabled = true;
-                gWindowSceneryScatterWindow = window_scenery_scatter_open();
+                window_scenery_scatter_open();
             }
             else
             {

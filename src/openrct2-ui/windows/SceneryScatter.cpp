@@ -29,6 +29,10 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
     WIDX_DENSITY_HIGH
 };
 
+bool gWindowSceneryScatterEnabled = false;
+uint16_t gWindowSceneryScatterSize;
+ScatterToolDensity gWindowSceneryScatterDensity;
+
 // clang-format off
 static rct_widget window_scenery_scatter_widgets[] = {
     { WWT_FRAME,    1,  0,  85, 0,  99, 0xFFFFFFFF,         STR_NONE },                     // panel / background
@@ -106,11 +110,16 @@ rct_window* window_scenery_scatter_open()
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
+    gWindowSceneryScatterEnabled = true;
+    gWindowSceneryScatterSize = 16;
+    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+
     return window;
 }
 
 static void window_scenery_scatter_close([[maybe_unused]] rct_window* w)
 {
+    gWindowSceneryScatterEnabled = false;
 }
 
 static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -118,9 +127,9 @@ static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widget
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            gWindowSceneryScatterEnabled = 0;
             window_close(w);
             break;
+
         case WIDX_PREVIEW:
             window_scenery_scatter_inputsize(w, widgetIndex);
             break;
@@ -146,15 +155,12 @@ static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widg
         case WIDX_DECREMENT:
             // Decrement land tool size, if it stays within the limit
             gWindowSceneryScatterSize = std::max(MINIMUM_TOOL_SIZE, gWindowSceneryScatterSize - 1);
-
-            // Invalidate the window
             w->Invalidate();
             break;
+
         case WIDX_INCREMENT:
             // Increment land tool size, if it stays within the limit
             gWindowSceneryScatterSize = std::min(MAXIMUM_TOOL_SIZE, gWindowSceneryScatterSize + 1);
-
-            // Invalidate the window
             w->Invalidate();
             break;
     }
