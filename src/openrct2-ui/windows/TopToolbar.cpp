@@ -1797,16 +1797,15 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                         parameter_2 |= util_rand() & 3;
                     }
 
-                    if (gWindowSceneryScatterSize % 2 != 0)
+                    int16_t grid_x_offset = (util_rand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    int16_t grid_y_offset = (util_rand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    if (gWindowSceneryScatterSize % 2 == 0)
                     {
-                        cur_grid_x += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2)) << 5;
-                        cur_grid_y += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2)) << 5;
+                        grid_x_offset += 1;
+                        grid_y_offset += 1;
                     }
-                    else
-                    {
-                        cur_grid_x += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2) + 1) << 5;
-                        cur_grid_y += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2) + 1) << 5;
-                    }
+                    cur_grid_x += grid_x_offset * COORDS_XY_STEP;
+                    cur_grid_y += grid_y_offset * COORDS_XY_STEP;
 
                     if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
                     {
@@ -2704,20 +2703,15 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             if (gWindowSceneryScatterEnabled)
             {
-                uint16_t cluster_size = (gWindowSceneryScatterSize - 1) << 5;
-                if (gWindowSceneryScatterSize % 2 != 0)
+                uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * COORDS_XY_STEP;
+                gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
+                gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
+                gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
+                gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
+                if (gWindowSceneryScatterSize % 2 == 0)
                 {
-                    gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
-                    gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
-                    gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
-                    gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
-                }
-                else
-                {
-                    gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
-                    gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
-                    gMapSelectPositionB.x = mapTile.x + (cluster_size / 2) + (1 << 5);
-                    gMapSelectPositionB.y = mapTile.y + (cluster_size / 2) + (1 << 5);
+                    gMapSelectPositionB.x += COORDS_XY_STEP;
+                    gMapSelectPositionB.y += COORDS_XY_STEP;
                 }
             }
             else
