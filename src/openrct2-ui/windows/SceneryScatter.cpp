@@ -50,7 +50,6 @@ static rct_widget window_scenery_scatter_widgets[] = {
 static void window_scenery_scatter_close(rct_window* w);
 static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_scenery_scatter_update(rct_window* w);
 static void window_scenery_scatter_invalidate(rct_window* w);
 static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
@@ -64,7 +63,7 @@ static rct_window_event_list window_clear_scenery_events = {
     window_scenery_scatter_mousedown,
     nullptr,
     nullptr,
-    window_scenery_scatter_update,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,
@@ -196,11 +195,6 @@ static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widg
             break;
     }
     window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, maxlen);
-}
-
-static void window_scenery_scatter_update(rct_window* w)
-{
-    w->frame_no++;
 }
 
 static void window_scenery_scatter_invalidate(rct_window* w)
