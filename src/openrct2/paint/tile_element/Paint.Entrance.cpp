@@ -343,7 +343,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS && dpi->zoom_level == 0)
+    if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS && dpi->zoom_level <= 0)
     {
         if (entrance_get_directions(tile_element) & 0xF)
         {

@@ -147,7 +147,7 @@ static void FASTCALL DrawRLESprite1(
     const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const uint8_t* palette_pointer,
     const rct_drawpixelinfo* dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
-    int32_t zoom_level = dpi->zoom_level;
+    auto zoom_level = static_cast<int8_t>(dpi->zoom_level);
     switch (zoom_level)
     {
         case 0:

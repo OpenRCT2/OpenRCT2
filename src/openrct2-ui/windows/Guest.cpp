@@ -660,11 +660,10 @@ void window_guest_overview_resize(rct_window* w)
         auto reqViewportHeight = w->height - 72;
         if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
         {
-            uint8_t zoom_amount = 1 << viewport->zoom;
             viewport->width = reqViewportWidth;
             viewport->height = reqViewportHeight;
-            viewport->view_width = viewport->width / zoom_amount;
-            viewport->view_height = viewport->height / zoom_amount;
+            viewport->view_width = viewport->width / viewport->zoom;
+            viewport->view_height = viewport->height / viewport->zoom;
         }
     }
     window_guest_viewport_init(w);

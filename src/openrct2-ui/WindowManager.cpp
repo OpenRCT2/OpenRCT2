@@ -488,7 +488,7 @@ public:
         return std::string(buffer);
     }
 
-    void SetMainView(const ScreenCoordsXY& viewPos, int32_t zoom, int32_t rotation) override
+    void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override
     {
         auto mainWindow = window_get_main();
         if (mainWindow != nullptr)
@@ -503,8 +503,8 @@ public:
 
             if (zoomDifference != 0)
             {
-                viewport->view_width <<= zoomDifference;
-                viewport->view_height <<= zoomDifference;
+                viewport->view_width = viewport->view_width * zoomDifference;
+                viewport->view_height = viewport->view_height * zoomDifference;
             }
             mainWindow->savedViewPos.x -= viewport->view_width >> 1;
             mainWindow->savedViewPos.y -= viewport->view_height >> 1;

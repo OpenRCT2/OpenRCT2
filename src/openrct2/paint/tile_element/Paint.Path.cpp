@@ -304,7 +304,7 @@ static void path_bit_benches_paint(
 static void path_bit_jumping_fountains_paint(
     paint_session* session, rct_scenery_entry* pathBitEntry, int32_t height, uint32_t pathBitImageFlags, rct_drawpixelinfo* dpi)
 {
-    if (dpi->zoom_level != 0)
+    if (dpi->zoom_level > 0)
         return;
 
     uint32_t imageId = pathBitEntry->image;

@@ -690,12 +690,11 @@ static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, u
 
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo* dpi)
 {
-    int32_t zoom = dpi->zoom_level;
+    dpi->x = dpi->x / dpi->zoom_level;
+    dpi->y = dpi->y / dpi->zoom_level;
+    dpi->width = dpi->width / dpi->zoom_level;
+    dpi->height = dpi->height / dpi->zoom_level;
     dpi->zoom_level = 0;
-    dpi->x >>= zoom;
-    dpi->y >>= zoom;
-    dpi->width >>= zoom;
-    dpi->height >>= zoom;
 }
 
 paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)

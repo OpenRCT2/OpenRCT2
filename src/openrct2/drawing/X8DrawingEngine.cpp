@@ -471,8 +471,8 @@ void X8DrawingContext::Clear(uint8_t paletteIndex)
 {
     rct_drawpixelinfo* dpi = _dpi;
 
-    int32_t w = dpi->width >> dpi->zoom_level;
-    int32_t h = dpi->height >> dpi->zoom_level;
+    int32_t w = dpi->width / dpi->zoom_level;
+    int32_t h = dpi->height / dpi->zoom_level;
     uint8_t* ptr = dpi->bits;
 
     for (int32_t y = 0; y < h; y++)
@@ -699,8 +699,7 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
     // 00678B7E   00678C83
     // Location in screen buffer?
     uint8_t* dst = dpi->bits
-        + (uint32_t)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch)
-                     + (startX >> dpi->zoom_level));
+        + (uint32_t)((startY / dpi->zoom_level) * ((dpi->width / dpi->zoom_level) + dpi->pitch) + (startX / dpi->zoom_level));
 
     // Find colour in colour table?
     uint16_t g1Index = palette_to_g1_offset[palette];
@@ -708,11 +707,12 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
     if (g1Element != nullptr)
     {
         auto g1Bits = g1Element->offset;
-        const int32_t scaled_width = width >> dpi->zoom_level;
-        const int32_t step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
+        const int32_t scaled_width = width / dpi->zoom_level;
+        const int32_t step = ((dpi->width / dpi->zoom_level) + dpi->pitch);
 
         // Fill the rectangle with the colours from the colour table
-        for (int32_t i = 0; i < (height >> dpi->zoom_level); i++)
+        auto c = height / dpi->zoom_level;
+        for (int32_t i = 0; i < c; i++)
         {
             uint8_t* nextdst = dst + step * i;
             for (int32_t j = 0; j < scaled_width; j++)

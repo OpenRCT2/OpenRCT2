@@ -2148,15 +2148,14 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            constexpr uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32)
-                << MAX_ZOOM_LEVEL;
+            uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
 
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
             if (mainWnd && mainWnd->viewport)
             {
-                _trackPlaceShiftZ <<= mainWnd->viewport->zoom;
+                _trackPlaceShiftZ = _trackPlaceShiftZ * mainWnd->viewport->zoom;
             }
             _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
 

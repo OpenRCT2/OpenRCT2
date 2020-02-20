@@ -544,8 +544,8 @@ void window_staff_overview_resize(rct_window* w)
         {
             viewport->width = new_width;
             viewport->height = new_height;
-            viewport->view_width = new_width << viewport->zoom;
-            viewport->view_height = new_height << viewport->zoom;
+            viewport->view_width = new_width * viewport->zoom;
+            viewport->view_height = new_height * viewport->zoom;
         }
     }
 

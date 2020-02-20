@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
+#include "../interface/ZoomLevel.hpp"
 
 namespace OpenRCT2
 {
@@ -42,7 +43,7 @@ struct rct_drawpixelinfo
     int16_t width{};
     int16_t height{};
     int16_t pitch{}; // note: this is actually (pitch - width)
-    uint16_t zoom_level{};
+    ZoomLevel zoom_level{};
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 };

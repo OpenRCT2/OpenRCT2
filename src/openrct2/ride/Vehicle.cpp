@@ -939,7 +939,7 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
     rct_vehicle_sound_params param;
     param.priority = priority;
     int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
-    panX >>= g_music_tracking_viewport->zoom;
+    panX = panX / g_music_tracking_viewport->zoom;
     panX += g_music_tracking_viewport->pos.x;
 
     uint16_t screenWidth = context_get_width();
@@ -950,7 +950,7 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
     int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->viewPos.y;
-    panY >>= g_music_tracking_viewport->zoom;
+    panY = panY / g_music_tracking_viewport->zoom;
     panY += g_music_tracking_viewport->pos.y;
 
     uint16_t screenHeight = context_get_height();
@@ -1049,8 +1049,12 @@ static void vehicle_sounds_update_window_setup()
 
     g_music_tracking_viewport = viewport;
     gWindowAudioExclusive = window;
-    const uint8_t ZoomToVolume[MAX_ZOOM_LEVEL + 1] = { 0, 35, 70, 70 };
-    gVolumeAdjustZoom = ZoomToVolume[viewport->zoom];
+    if (viewport->zoom <= 0)
+        gVolumeAdjustZoom = 0;
+    else if (viewport->zoom == 1)
+        gVolumeAdjustZoom = 35;
+    else
+        gVolumeAdjustZoom = 70;
 }
 
 static uint8_t vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params* sound_params)

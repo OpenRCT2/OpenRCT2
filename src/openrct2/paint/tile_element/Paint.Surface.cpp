@@ -942,7 +942,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     session->DidPassSurface = true;
     session->SurfaceElement = tileElement;
 
-    const uint16_t zoomLevel = dpi->zoom_level;
+    const auto zoomLevel = dpi->zoom_level;
     const uint8_t rotation = session->CurrentRotation;
     const uint32_t terrain_type = tileElement->AsSurface()->GetSurfaceStyle();
     const uint8_t surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
