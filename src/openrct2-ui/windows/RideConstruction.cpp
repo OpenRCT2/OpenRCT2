@@ -2545,7 +2545,7 @@ void window_ride_construction_update_enabled_track_pieces()
                                                                                      : ride->type;
     if (gCheatsEnableAllDrawableTrackPieces)
     {
-        _enabledRidePieces = RideTypePossibleTrackConfigurations[rideType];
+        _enabledRidePieces = get_available_track_pieces_for_ride_type(rideType);
         return;
     }
 
@@ -2556,7 +2556,7 @@ void window_ride_construction_update_enabled_track_pieces()
     }
     else
     {
-        _enabledRidePieces = RideTypePossibleTrackConfigurations[rideType];
+        _enabledRidePieces = get_available_track_pieces_for_ride_type(rideType);
     }
 }
 

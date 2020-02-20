@@ -149,7 +149,7 @@ public:
             }
             // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
             if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
-                && !(RideTypePossibleTrackConfigurations[ride->type] & (1ULL << TRACK_LIFT_HILL_STEEP))
+                && !track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL_STEEP)
                 && !gCheatsEnableChainLiftOnAllTrack)
             {
                 if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_IS_STEEP_UP)
