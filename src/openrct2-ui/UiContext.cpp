@@ -557,10 +557,10 @@ public:
 
         // Set window position to default display
         int32_t defaultDisplay = std::clamp(gConfigGeneral.default_display, 0, 0xFFFF);
-        int32_t x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
-        int32_t y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
+        auto windowPos = ScreenCoordsXY{ static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)),
+                                         static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)) };
 
-        CreateWindow(x, y);
+        CreateWindow(windowPos);
 
         // Check if steam overlay renderer is loaded into the process
         _steamOverlayActive = _platformUiContext->IsSteamOverlayAttached();
@@ -579,12 +579,12 @@ public:
     void RecreateWindow() override
     {
         // Use the position of the current window for the new window
-        int32_t x, y;
+        ScreenCoordsXY windowPos;
         SDL_SetWindowFullscreen(_window, 0);
-        SDL_GetWindowPosition(_window, &x, &y);
+        SDL_GetWindowPosition(_window, &windowPos.x, &windowPos.y);
 
         CloseWindow();
-        CreateWindow(x, y);
+        CreateWindow(windowPos);
     }
 
     void ShowMessageBox(const std::string& message) override
@@ -629,7 +629,7 @@ public:
     }
 
 private:
-    void CreateWindow(int32_t x, int32_t y)
+    void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
         int32_t width = gConfigGeneral.window_width;
@@ -646,7 +646,7 @@ private:
             flags |= SDL_WINDOW_OPENGL;
         }
 
-        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
+        _window = SDL_CreateWindow(OPENRCT2_NAME, windowPos.x, windowPos.y, width, height, flags);
         if (_window == nullptr)
         {
             SDLException::Throw("SDL_CreateWindow(...)");
