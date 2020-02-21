@@ -136,7 +136,7 @@ static void window_news_mouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 static void window_news_update(rct_window* w)
 {
-    int32_t i, j, x, y, z;
+    int32_t i, j;
 
     if (w->news.var_480 == -1 || --w->news.var_484 != 0)
     {
@@ -165,10 +165,10 @@ static void window_news_update(rct_window* w)
             }
             else if (w->news.var_482 > 1)
             {
-                news_item_get_subject_location(newsItem->Type, newsItem->Assoc, &x, &y, &z);
-                if (x != LOCATION_NULL && (w = window_get_main()) != nullptr)
+                auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
+                if (subjectLoc && (w = window_get_main()) != nullptr)
                 {
-                    window_scroll_to_location(w, x, y, z);
+                    window_scroll_to_location(w, subjectLoc->x, subjectLoc->y, subjectLoc->z);
                 }
                 return;
             }

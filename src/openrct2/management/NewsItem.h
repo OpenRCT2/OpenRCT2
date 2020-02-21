@@ -10,6 +10,9 @@
 #pragma once
 
 #include "../common.h"
+#include "../world/Location.hpp"
+
+#include <optional>
 
 enum
 {
@@ -61,7 +64,7 @@ void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();
 
-void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, int32_t* y, int32_t* z);
+std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t subject);
 
 NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc);
 NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc);

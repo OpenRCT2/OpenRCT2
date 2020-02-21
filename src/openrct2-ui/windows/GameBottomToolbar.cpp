@@ -192,17 +192,15 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
 
             {
                 newsItem = news_item_get(0);
-                int32_t x, y, z;
-                int32_t subject = newsItem->Assoc;
 
-                news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
+                auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
 
-                if (x == LOCATION_NULL)
+                if (!subjectLoc)
                     break;
 
                 rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
-                    window_scroll_to_location(mainWindow, x, y, z);
+                    window_scroll_to_location(mainWindow, subjectLoc->x, subjectLoc->y, subjectLoc->z);
             }
             break;
         case WIDX_RIGHT_OUTSET:
@@ -333,11 +331,9 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
-        int32_t y, z;
-        int32_t subject = newsItem->Assoc;
-        news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
+        auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
 
-        if (x == LOCATION_NULL)
+        if (!subjectLoc)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
         if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT))
