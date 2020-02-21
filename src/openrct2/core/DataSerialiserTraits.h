@@ -141,14 +141,15 @@ template<> struct DataSerializerTraits<NetworkPlayerId_t>
 {
     static void encode(IStream* stream, const NetworkPlayerId_t& val)
     {
-        uint32_t temp = ByteSwapBE(val.id);
+        uint32_t temp = static_cast<uint32_t>(val.id);
+        temp = ByteSwapBE(temp);
         stream->Write(&temp);
     }
     static void decode(IStream* stream, NetworkPlayerId_t& val)
     {
         uint32_t temp;
         stream->Read(&temp);
-        val.id = ByteSwapBE(temp);
+        val.id = static_cast<decltype(val.id)>(ByteSwapBE(temp));
     }
     static void log(IStream* stream, const NetworkPlayerId_t& val)
     {
@@ -175,14 +176,15 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
 {
     static void encode(IStream* stream, const NetworkRideId_t& val)
     {
-        uint32_t temp = ByteSwapBE(val.id);
+        uint32_t temp = static_cast<uint32_t>(val.id);
+        temp = ByteSwapBE(temp);
         stream->Write(&temp);
     }
     static void decode(IStream* stream, NetworkRideId_t& val)
     {
         uint32_t temp;
         stream->Read(&temp);
-        val.id = ByteSwapBE(temp);
+        val.id = static_cast<decltype(val.id)>(ByteSwapBE(temp));
     }
     static void log(IStream* stream, const NetworkRideId_t& val)
     {
