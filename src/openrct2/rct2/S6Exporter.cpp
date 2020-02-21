@@ -360,8 +360,8 @@ void S6Exporter::Export()
     this->ExportRides();
 
     _s6.saved_age = gSavedAge;
-    _s6.saved_view_x = gSavedViewX;
-    _s6.saved_view_y = gSavedViewY;
+    _s6.saved_view_x = gSavedView.x;
+    _s6.saved_view_y = gSavedView.y;
     _s6.saved_view_zoom = gSavedViewZoom;
     _s6.saved_view_rotation = gSavedViewRotation;
 

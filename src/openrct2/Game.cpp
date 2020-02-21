@@ -553,7 +553,7 @@ void game_load_init()
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->SetMainView({ gSavedViewX, gSavedViewY }, gSavedViewZoom, gSavedViewRotation);
+    windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {

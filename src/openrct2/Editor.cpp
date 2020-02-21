@@ -425,7 +425,7 @@ namespace Editor
     static void FinaliseMainView()
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->SetMainView({ gSavedViewX, gSavedViewY }, gSavedViewZoom, gSavedViewRotation);
+        windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
         reset_all_sprite_quadrant_placements();
         scenery_set_default_placement_configuration();

@@ -383,8 +383,7 @@ public:
         ImportRides();
 
         gSavedAge = _s6.saved_age;
-        gSavedViewX = _s6.saved_view_x;
-        gSavedViewY = _s6.saved_view_y;
+        gSavedView = ScreenCoordsXY{ _s6.saved_view_x, _s6.saved_view_y };
         gSavedViewZoom = _s6.saved_view_zoom;
         gSavedViewRotation = _s6.saved_view_rotation;
 
