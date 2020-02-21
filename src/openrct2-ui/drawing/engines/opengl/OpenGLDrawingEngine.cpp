@@ -645,7 +645,6 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
         }
     }
 
-
     int32_t left = x + g1Element->x_offset;
     int32_t top = y + g1Element->y_offset;
 
