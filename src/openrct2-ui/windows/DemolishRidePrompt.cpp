@@ -127,10 +127,9 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
-        int x = w->x;
-        int y = w->y;
+        auto windowPos = ScreenCoordsXY{ w->x, w->y };
         window_close(w);
-        w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = window_create(windowPos, WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
@@ -153,10 +152,9 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
-        int x = w->x;
-        int y = w->y;
+        auto windowPos = ScreenCoordsXY{ w->x, w->y };
         window_close(w);
-        w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = window_create(windowPos, WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
