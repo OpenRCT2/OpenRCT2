@@ -452,7 +452,7 @@ private:
     void PrepareParkForPlayback()
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
+        windowManager->SetMainView({ gSavedViewX, gSavedViewY }, gSavedViewZoom, gSavedViewRotation);
         reset_sprite_spatial_index();
         reset_all_sprite_quadrant_placements();
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
