@@ -1057,26 +1057,24 @@ static void footpath_remove_tile_element(TileElement* tileElement)
 static TileElement* footpath_get_tile_element_to_remove()
 {
     TileElement* tileElement;
-    int32_t x, y, z, zLow;
+    int32_t z, zLow;
 
-    x = gFootpathConstructFromPosition.x / 32;
-    y = gFootpathConstructFromPosition.y / 32;
-    if (x >= 256 || y >= 256)
+    if (map_is_location_valid(gFootpathConstructFromPosition))
     {
         return nullptr;
     }
 
-    z = (gFootpathConstructFromPosition.z >> 3) & 0xFF;
-    zLow = z - 2;
+    z = std::min(255 * COORDS_Z_STEP, gFootpathConstructFromPosition.z);
+    zLow = z - (2 * COORDS_Z_STEP);
 
-    tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    tileElement = map_get_first_element_at(gFootpathConstructFromPosition);
     do
     {
         if (tileElement == nullptr)
             break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (tileElement->base_height == z)
+            if (tileElement->GetBaseZ() == z)
             {
                 if (tileElement->AsPath()->IsSloped())
                 {
@@ -1088,7 +1086,7 @@ static TileElement* footpath_get_tile_element_to_remove()
 
                 return tileElement;
             }
-            else if (tileElement->base_height == zLow)
+            else if (tileElement->GetBaseZ() == zLow)
             {
                 if (!tileElement->AsPath()->IsSloped())
                 {
