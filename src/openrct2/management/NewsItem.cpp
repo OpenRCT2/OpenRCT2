@@ -209,7 +209,7 @@ static int32_t news_item_get_new_history_slot()
  */
 std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t subject)
 {
-    std::optional<CoordsXYZ> subjectLoc { std::nullopt };
+    std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
     switch (type)
     {
