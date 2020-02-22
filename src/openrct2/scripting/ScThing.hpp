@@ -94,7 +94,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_constructor<ScThing, rct_sprite*>(ctx, "Thing");
             dukglue_register_property(ctx, &ScThing::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScThing::x_get, &ScThing::x_set, "x");
-            //dukglue_property_helper(ctx, _sprite->peep.x, "x");
             dukglue_register_property(ctx, &ScThing::y_get, &ScThing::y_set, "y");
             dukglue_register_property(ctx, &ScThing::z_get, &ScThing::z_set, "z");
             dukglue_register_property(ctx, &ScThing::tshirtColour_get, &ScThing::tshirtColour_set, "tshirtColour");
