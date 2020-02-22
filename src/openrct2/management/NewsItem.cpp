@@ -263,7 +263,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
         }
         case NEWS_ITEM_BLANK:
         {
-            auto subjectXY = CoordsXY{ subject & 0xFF, subject >> 16 };
+            auto subjectXY = CoordsXY{ subject & 0xFFFF, subject >> 16 };
             subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
             break;
         }
