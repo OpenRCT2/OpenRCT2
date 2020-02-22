@@ -26,9 +26,39 @@
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
+#include "coaster/meta/AirPoweredVerticalCoaster.hpp"
+#include "coaster/meta/BobsleighCoaster.hpp"
+#include "coaster/meta/CompactInvertedCoaster.hpp"
+#include "coaster/meta/CorkscrewRollerCoaster.hpp"
 #include "coaster/meta/FlyingRollerCoaster.hpp"
+#include "coaster/meta/GigaCoaster.hpp"
+#include "coaster/meta/HeartlineTwisterCoaster.hpp"
+#include "coaster/meta/InvertedHairpinCoaster.hpp"
+#include "coaster/meta/InvertedImpulseCoaster.hpp"
+#include "coaster/meta/InvertedRollerCoaster.hpp"
+#include "coaster/meta/JuniorRollerCoaster.hpp"
+#include "coaster/meta/LIMLaunchedRollerCoaster.hpp"
+#include "coaster/meta/LayDownRollerCoaster.hpp"
+#include "coaster/meta/LoopingRollerCoaster.hpp"
+#include "coaster/meta/MineRide.hpp"
+#include "coaster/meta/MineTrainCoaster.hpp"
 #include "coaster/meta/MiniRollerCoaster.hpp"
+#include "coaster/meta/MiniSuspendedCoaster.hpp"
+#include "coaster/meta/MultiDimensionRollerCoaster.hpp"
+#include "coaster/meta/ReverseFreefallCoaster.hpp"
+#include "coaster/meta/ReverserRollerCoaster.hpp"
+#include "coaster/meta/SideFrictionRollerCoaster.hpp"
 #include "coaster/meta/SpiralRollerCoaster.hpp"
+#include "coaster/meta/StandUpRollerCoaster.hpp"
+#include "coaster/meta/SteelWildMouse.hpp"
+#include "coaster/meta/Steeplechase.hpp"
+#include "coaster/meta/SuspendedSwingingCoaster.hpp"
+#include "coaster/meta/TwisterRollerCoaster.hpp"
+#include "coaster/meta/VerticalDropCoaster.hpp"
+#include "coaster/meta/VirginiaReel.hpp"
+#include "coaster/meta/WaterCoaster.hpp"
+#include "coaster/meta/WoodenRollerCoaster.hpp"
+#include "coaster/meta/WoodenWildMouse.hpp"
 
 #include <iterator>
 
@@ -2935,25 +2965,25 @@ const rct_string_id RideModeNames[] = {
 
 constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */ SpiralRollerCoasterRTD,
-    /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ {},
-    /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ {},
-    /* RIDE_TYPE_INVERTED_ROLLER_COASTER            */ {},
-    /* RIDE_TYPE_JUNIOR_ROLLER_COASTER              */ {},
+    /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ StandUpRollerCoasterRTD,
+    /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ SuspendedSwingingCoasterRTD,
+    /* RIDE_TYPE_INVERTED_ROLLER_COASTER            */ InvertedRollerCoasterRTD,
+    /* RIDE_TYPE_JUNIOR_ROLLER_COASTER              */ JuniorRollerCoasterRTD,
     /* RIDE_TYPE_MINIATURE_RAILWAY                  */ {},
     /* RIDE_TYPE_MONORAIL                           */ {},
-    /* RIDE_TYPE_MINI_SUSPENDED_COASTER             */ {},
+    /* RIDE_TYPE_MINI_SUSPENDED_COASTER             */ MiniSuspendedCoasterRTD,
     /* RIDE_TYPE_BOAT_HIRE                          */ {},
-    /* RIDE_TYPE_WOODEN_WILD_MOUSE                  */ {},
-    /* RIDE_TYPE_STEEPLECHASE                       */ {},
+    /* RIDE_TYPE_WOODEN_WILD_MOUSE                  */ WoodenWildMouseRTD,
+    /* RIDE_TYPE_STEEPLECHASE                       */ SteeplechaseRTD,
     /* RIDE_TYPE_CAR_RIDE                           */ {},
     /* RIDE_TYPE_LAUNCHED_FREEFALL                  */ {},
-    /* RIDE_TYPE_BOBSLEIGH_COASTER                  */ {},
+    /* RIDE_TYPE_BOBSLEIGH_COASTER                  */ BobsleighCoasterRTD,
     /* RIDE_TYPE_OBSERVATION_TOWER                  */ {},
-    /* RIDE_TYPE_LOOPING_ROLLER_COASTER             */ {},
+    /* RIDE_TYPE_LOOPING_ROLLER_COASTER             */ LoopingRollerCoasterRTD,
     /* RIDE_TYPE_DINGHY_SLIDE                       */ {},
-    /* RIDE_TYPE_MINE_TRAIN_COASTER                 */ {},
+    /* RIDE_TYPE_MINE_TRAIN_COASTER                 */ MineTrainCoasterRTD,
     /* RIDE_TYPE_CHAIRLIFT                          */ {},
-    /* RIDE_TYPE_CORKSCREW_ROLLER_COASTER           */ {},
+    /* RIDE_TYPE_CORKSCREW_ROLLER_COASTER           */ CorkscrewRollerCoasterRTD,
     /* RIDE_TYPE_MAZE                               */ {},
     /* RIDE_TYPE_SPIRAL_SLIDE                       */ {},
     /* RIDE_TYPE_GO_KARTS                           */ {},
@@ -2976,41 +3006,41 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_3D_CINEMA                          */ {},
     /* RIDE_TYPE_TOP_SPIN                           */ {},
     /* RIDE_TYPE_SPACE_RINGS                        */ {},
-    /* RIDE_TYPE_REVERSE_FREEFALL_COASTER           */ {},
+    /* RIDE_TYPE_REVERSE_FREEFALL_COASTER           */ ReverseFreefallCoasterRTD,
     /* RIDE_TYPE_LIFT                               */ {},
-    /* RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER       */ {},
+    /* RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER       */ VerticalDropCoasterRTD,
     /* RIDE_TYPE_CASH_MACHINE                       */ {},
     /* RIDE_TYPE_TWIST                              */ {},
     /* RIDE_TYPE_HAUNTED_HOUSE                      */ {},
     /* RIDE_TYPE_FIRST_AID                          */ {},
     /* RIDE_TYPE_CIRCUS                             */ {},
     /* RIDE_TYPE_GHOST_TRAIN                        */ {},
-    /* RIDE_TYPE_TWISTER_ROLLER_COASTER             */ {},
-    /* RIDE_TYPE_WOODEN_ROLLER_COASTER              */ {},
-    /* RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER       */ {},
-    /* RIDE_TYPE_STEEL_WILD_MOUSE                   */ {},
-    /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER     */ {},
-    /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT */ {},
+    /* RIDE_TYPE_TWISTER_ROLLER_COASTER             */ TwisterRollerCoasterRTD,
+    /* RIDE_TYPE_WOODEN_ROLLER_COASTER              */ WoodenRollerCoasterRTD,
+    /* RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER       */ SideFrictionRollerCoasterRTD,
+    /* RIDE_TYPE_STEEL_WILD_MOUSE                   */ SteelWildMouseRTD,
+    /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER     */ MultiDimensionRollerCoasterRTD,
+    /* RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT */ MultiDimensionRollerCoasterAltRTD,
     /* RIDE_TYPE_FLYING_ROLLER_COASTER              */ FlyingRollerCoasterRTD,
-    /* RIDE_TYPE_FLYING_ROLLER_COASTER_ALT          */ {},
-    /* RIDE_TYPE_VIRGINIA_REEL                      */ {},
+    /* RIDE_TYPE_FLYING_ROLLER_COASTER_ALT          */ FlyingRollerCoasterAltRTD,
+    /* RIDE_TYPE_VIRGINIA_REEL                      */ VirginiaReelRTD,
     /* RIDE_TYPE_SPLASH_BOATS                       */ {},
     /* RIDE_TYPE_MINI_HELICOPTERS                   */ {},
-    /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER            */ {},
+    /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER            */ LayDownRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_MONORAIL                 */ {},
-    /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT        */ {},
-    /* RIDE_TYPE_REVERSER_ROLLER_COASTER            */ {},
-    /* RIDE_TYPE_HEARTLINE_TWISTER_COASTER          */ {},
+    /* RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT        */ LayDownRollerCoasterAltRTD,
+    /* RIDE_TYPE_REVERSER_ROLLER_COASTER            */ ReverserRollerCoasterRTD,
+    /* RIDE_TYPE_HEARTLINE_TWISTER_COASTER          */ HeartlineTwisterCoasterRTD,
     /* RIDE_TYPE_MINI_GOLF                          */ {},
-    /* RIDE_TYPE_GIGA_COASTER                       */ {},
+    /* RIDE_TYPE_GIGA_COASTER                       */ GigaCoasterRTD,
     /* RIDE_TYPE_ROTO_DROP                          */ {},
     /* RIDE_TYPE_FLYING_SAUCERS                     */ {},
     /* RIDE_TYPE_CROOKED_HOUSE                      */ {},
     /* RIDE_TYPE_MONORAIL_CYCLES                    */ {},
-    /* RIDE_TYPE_COMPACT_INVERTED_COASTER           */ {},
-    /* RIDE_TYPE_WATER_COASTER                      */ {},
-    /* RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER       */ {},
-    /* RIDE_TYPE_INVERTED_HAIRPIN_COASTER           */ {},
+    /* RIDE_TYPE_COMPACT_INVERTED_COASTER           */ CompactInvertedCoasterRTD,
+    /* RIDE_TYPE_WATER_COASTER                      */ WaterCoasterRTD,
+    /* RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER       */ AirPoweredVerticalCoasterRTD,
+    /* RIDE_TYPE_INVERTED_HAIRPIN_COASTER           */ InvertedHairpinCoasterRTD,
     /* RIDE_TYPE_MAGIC_CARPET                       */ {},
     /* RIDE_TYPE_SUBMARINE_RIDE                     */ {},
     /* RIDE_TYPE_RIVER_RAFTS                        */ {},
@@ -3020,9 +3050,9 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_53                                 */ {},
     /* RIDE_TYPE_54                                 */ {},
     /* RIDE_TYPE_55                                 */ {},
-    /* RIDE_TYPE_INVERTED_IMPULSE_COASTER           */ {},
+    /* RIDE_TYPE_INVERTED_IMPULSE_COASTER           */ InvertedImpulseCoasterRTD,
     /* RIDE_TYPE_MINI_ROLLER_COASTER                */ MiniRollerCoasterRTD,
-    /* RIDE_TYPE_MINE_RIDE                          */ {},
+    /* RIDE_TYPE_MINE_RIDE                          */ MineRideRTD,
     /* RIDE_TYPE_59                                 */ {},
-    /* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER        */ {},
+    /* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER        */ LIMLaunchedRollerCoasterRTD,
 };

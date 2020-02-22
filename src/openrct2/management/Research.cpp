@@ -219,8 +219,7 @@ void research_finish_item(ResearchItem* researchItem)
             }
 
             ride_type_set_invented(base_ride_type);
-            openrct2_assert(
-                base_ride_type < std::size(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
+            openrct2_assert(base_ride_type < RIDE_TYPE_COUNT, "Invalid base_ride_type = %d", base_ride_type);
 
             ride_entry_set_invented(rideEntryIndex);
 
@@ -575,7 +574,7 @@ bool ride_entry_is_invented(int32_t rideEntryIndex)
 
 uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType)
 {
-    uint64_t baseVals = RideTypePossibleTrackConfigurations[rideType];
+    uint64_t baseVals = RideTypePossibleTrackConfigurations[rideType] | RideTypeDescriptors[rideType].EnabledTrackPieces;
     uint64_t extendedVals = 0;
     if (gCheatsEnableAllDrawableTrackPieces)
     {

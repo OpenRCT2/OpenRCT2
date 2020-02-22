@@ -87,6 +87,9 @@ struct rct_ride_lift_data
 
 struct RideTypeDescriptor
 {
+    uint64_t EnabledTrackPieces;
+    // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
+    // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     uint64_t ExtraTrackPieces;
 };
 
