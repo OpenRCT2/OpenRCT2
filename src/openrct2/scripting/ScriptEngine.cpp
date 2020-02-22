@@ -113,7 +113,7 @@ void ScriptEngine::LoadPlugins()
             }
         }
 
-        if (gConfigPlugin.enable_hot_reloading)
+        if (gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
         {
             SetupHotReloading();
         }
@@ -124,9 +124,14 @@ void ScriptEngine::LoadPlugins()
 
 void ScriptEngine::LoadPlugin(const std::string& path)
 {
+    auto plugin = std::make_shared<Plugin>(_context, path);
+    LoadPlugin(plugin);
+}
+
+void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
+{
     try
     {
-        auto plugin = std::make_shared<Plugin>(_context, path);
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
         plugin->Load();
 
@@ -240,7 +245,7 @@ void ScriptEngine::StartPlugins()
 {
     for (auto& plugin : _plugins)
     {
-        if (!plugin->HasStarted())
+        if (!plugin->HasStarted() && ShouldStartPlugin(plugin))
         {
             ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
             try
@@ -257,12 +262,36 @@ void ScriptEngine::StartPlugins()
     _pluginsStarted = true;
 }
 
+bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
+{
+    auto networkMode = network_get_mode();
+    if (networkMode == NETWORK_MODE_CLIENT)
+    {
+        // Only client plugins and plugins downloaded from server should be started
+        const auto& metadata = plugin->GetMetadata();
+        if (metadata.Type == PluginType::Server)
+        {
+            LogPluginInfo(plugin, "Server plugin not started");
+            return false;
+        }
+        else if (metadata.Type == PluginType::ServerClient && plugin->HasPath())
+        {
+            LogPluginInfo(plugin, "Server / client plugin not started");
+            return false;
+        }
+    }
+    return true;
+}
+
 void ScriptEngine::StopPlugins()
 {
     for (auto& plugin : _plugins)
     {
-        StopPlugin(plugin);
-        LogPluginInfo(plugin, "Stopped");
+        if (plugin->HasStarted())
+        {
+            StopPlugin(plugin);
+            LogPluginInfo(plugin, "Stopped");
+        }
     }
     _pluginsStarted = false;
 }
@@ -330,6 +359,13 @@ void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const st
 {
     const auto& pluginName = plugin->GetMetadata().Name;
     _console.WriteLine("[" + pluginName + "] " + std::string(message));
+}
+
+void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
+{
+    auto plugin = std::make_shared<Plugin>(_context, std::string());
+    plugin->SetCode(code);
+    LoadPlugin(plugin);
 }
 
 static std::string Stringify(duk_context* ctx, duk_idx_t idx)

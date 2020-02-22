@@ -24,28 +24,29 @@ Plugin::Plugin(duk_context* context, const std::string& path)
 {
 }
 
+void Plugin::SetCode(const std::string_view& code)
+{
+    _code = code;
+}
+
 void Plugin::Load()
 {
+    if (!_path.empty())
+    {
+        LoadCodeFromFile();
+    }
+
     std::string projectedVariables = "console,context,date,map,network,park";
     if (!gOpenRCT2Headless)
     {
         projectedVariables += ",ui";
     }
-    std::string code;
-    {
-        std::ifstream fs(_path);
-        if (fs.is_open())
-        {
-            fs.seekg(0, std::ios::end);
-            code.reserve(fs.tellg());
-            fs.seekg(0, std::ios::beg);
-            code.assign(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
-        }
-    }
+
     // Wrap the script in a function and pass the global objects as variables
     // so that if the script modifies them, they are not modified for other scripts.
 
     // clang-format off
+    auto code = _code;
     code =
         "     (function(" + projectedVariables + ") {"
         "         var __metadata__ = null;"
@@ -99,6 +100,20 @@ void Plugin::Update()
 {
 }
 
+void Plugin::LoadCodeFromFile()
+{
+    std::string code;
+    std::ifstream fs(_path);
+    if (fs.is_open())
+    {
+        fs.seekg(0, std::ios::end);
+        code.reserve(fs.tellg());
+        fs.seekg(0, std::ios::beg);
+        code.assign(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
+    }
+    _code = std::move(code);
+}
+
 static std::string TryGetString(const DukValue& value, const std::string& message)
 {
     if (value.type() != DukValue::Type::STRING)
@@ -144,8 +159,8 @@ PluginType Plugin::ParsePluginType(const std::string_view& type)
     if (type == "server")
         return PluginType::Server;
     if (type == "client")
-        return PluginType::Server;
+        return PluginType::Client;
     if (type == "server_client")
-        return PluginType::Server;
+        return PluginType::ServerClient;
     throw std::invalid_argument("Unknown plugin type.");
 }

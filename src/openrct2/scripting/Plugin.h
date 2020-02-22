@@ -54,6 +54,7 @@ namespace OpenRCT2::Scripting
         duk_context* _context{};
         std::string _path;
         PluginMetadata _metadata;
+        std::string _code;
         bool _hasStarted{};
 
     public:
@@ -62,9 +63,19 @@ namespace OpenRCT2::Scripting
             return _path;
         };
 
+        bool HasPath() const
+        {
+            return _path.empty();
+        }
+
         const PluginMetadata& GetMetadata() const
         {
             return _metadata;
+        }
+
+        const std::string& GetCode() const
+        {
+            return _code;
         }
 
         bool HasStarted() const
@@ -79,12 +90,15 @@ namespace OpenRCT2::Scripting
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
+        void SetCode(const std::string_view& code);
         void Load();
         void Start();
         void Stop();
         void Update();
 
     private:
+        void LoadCodeFromFile();
+
         static PluginMetadata GetMetadata(const DukValue& dukMetadata);
         static PluginType ParsePluginType(const std::string_view& type);
     };

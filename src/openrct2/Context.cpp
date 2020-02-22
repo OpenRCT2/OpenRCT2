@@ -810,7 +810,11 @@ namespace OpenRCT2
                         }
                         network_begin_server(gNetworkStartPort, gNetworkStartAddress);
                     }
+                    else
 #endif // DISABLE_NETWORK
+                    {
+                        game_load_scripts();
+                    }
                     break;
                 }
                 case STARTUP_ACTION_EDIT:

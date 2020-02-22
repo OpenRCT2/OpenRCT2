@@ -588,7 +588,10 @@ void game_load_init()
 
     audio_stop_title_music();
     gGameSpeed = 1;
+}
 
+void game_load_scripts()
+{
     GetContext()->GetScriptEngine().LoadPlugins();
 }
 
@@ -812,6 +815,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         game_finish();
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
+        game_load_scripts();
     }
 }
 

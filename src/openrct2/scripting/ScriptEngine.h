@@ -123,6 +123,10 @@ namespace OpenRCT2::Scripting
         {
             return _execInfo;
         }
+        std::vector<std::shared_ptr<Plugin>>& GetPlugins()
+        {
+            return _plugins;
+        }
 
         void LoadPlugins();
         void UnloadPlugins();
@@ -136,13 +140,17 @@ namespace OpenRCT2::Scripting
             _pluginStoppedSubscriptions.push_back(callback);
         }
 
+        void AddNetworkPlugin(const std::string_view& code);
+
     private:
         void Initialise();
         void StartPlugins();
         void StopPlugins();
         void LoadPlugin(const std::string& path);
+        void LoadPlugin(std::shared_ptr<Plugin>& plugin);
         void StopPlugin(std::shared_ptr<Plugin> plugin);
         bool ShouldLoadScript(const std::string& path);
+        bool ShouldStartPlugin(const std::shared_ptr<Plugin> &plugin);
         void SetupHotReloading();
         void AutoReloadPlugins();
         void ProcessREPL();

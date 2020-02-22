@@ -194,6 +194,7 @@ public:
     void Client_Send_GAMEINFO();
     void Client_Send_OBJECTS(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    void Server_Send_SCRIPTS(NetworkConnection& connection) const;
 
     NetworkStats_t GetStats() const;
     json_t* GetServerInfoAsJson() const;
@@ -309,6 +310,7 @@ private:
     void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
@@ -344,6 +346,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
     client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
     client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
+    client_command_handlers[NETWORK_COMMAND_SCRIPTS] = &Network::Client_Handle_SCRIPTS;
     client_command_handlers[NETWORK_COMMAND_GAMESTATE] = &Network::Client_Handle_GAMESTATE;
     server_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
@@ -623,6 +626,8 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     listening_port = port;
     _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
     _advertiser = CreateServerAdvertiser(listening_port);
+
+    game_load_scripts();
 
     return true;
 }
@@ -1461,6 +1466,37 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
         log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
         packet->Write(reinterpret_cast<const uint8_t*>(object->ObjectEntry.name), 8);
         *packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
+    }
+    connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
+{
+    using namespace OpenRCT2::Scripting;
+
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    const auto& plugins = scriptEngine.GetPlugins();
+    std::vector<std::shared_ptr<Plugin>> pluginsToSend;
+    for (const auto& plugin : plugins)
+    {
+        const auto& metadata = plugin->GetMetadata();
+        if (metadata.Type == OpenRCT2::Scripting::PluginType::ServerClient)
+        {
+            pluginsToSend.push_back(plugin);
+        }
+    }
+
+    log_verbose("Server sends %u scripts", pluginsToSend.size());
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << (uint32_t)NETWORK_COMMAND_SCRIPTS << (uint32_t)pluginsToSend.size();
+    for (const auto& plugin : pluginsToSend)
+    {
+        const auto& metadata = plugin->GetMetadata();
+        log_verbose("Script %s", metadata.Name.c_str());
+
+        const auto& code = plugin->GetCode();
+        *packet << (uint32_t)code.size();
+        packet->Write((const uint8_t*)code.c_str(), code.size());
     }
     connection.QueuePacket(std::move(packet));
 }
@@ -2339,6 +2375,7 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         auto& objManager = context->GetObjectManager();
         auto objects = objManager.GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
+        Server_Send_SCRIPTS(connection);
 
         // Log player joining event
         std::string playerNameHash = player->Name + " (" + keyhash + ")";
@@ -2396,6 +2433,21 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         }
     }
     Client_Send_OBJECTS(requested_objects);
+}
+
+void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
+{
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+
+    uint32_t numScripts{};
+    packet >> numScripts;
+    for (uint32_t i = 0; i < numScripts; i++)
+    {
+        uint32_t codeLength{};
+        packet >> codeLength;
+        auto code = std::string_view((const char*)packet.Read(codeLength), codeLength);
+        scriptEngine.AddNetworkPlugin(code);
+    }
 }
 
 void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)
@@ -2683,6 +2735,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         if (LoadMap(&ms))
         {
             game_load_init();
+            game_load_scripts();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
