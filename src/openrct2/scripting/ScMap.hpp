@@ -54,7 +54,7 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScRide> getRide(int32_t id)
         {
             auto rideManager = GetRideManager();
-            if (id >= 0 && id < rideManager.size())
+            if (id >= 0 && id < static_cast<int32_t>(rideManager.size()))
             {
                 auto ride = rideManager[static_cast<ride_id_t>(id)];
                 if (ride != nullptr)
