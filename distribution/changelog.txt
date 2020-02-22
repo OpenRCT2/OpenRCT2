@@ -11,6 +11,7 @@
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
 - Fix: [#7784] Vehicle tab takes 1st car colour instead of tab_vehicle's colour.
 - Fix: [#7854] Cannot build a custom spiral roller coaster design.
+- Fix: [#7854] Empty entries in spiral roller coaster designs list.
 - Fix: [#8875] RCT1 competition scenarios are classified incorrectly.
 - Fix: [#10176] Mistake in the sprite for the land tool's 6x6 grid.
 - Fix: [#10196] Doors unable to be placed at end of track corners.
