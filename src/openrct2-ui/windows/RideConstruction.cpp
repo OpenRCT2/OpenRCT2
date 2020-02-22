@@ -2725,7 +2725,7 @@ static void window_ride_construction_update_map_selection()
 static void window_ride_construction_update_possible_ride_configurations()
 {
     int32_t trackType;
-    int32_t edi;
+    int32_t constructionTrackType;
 
     auto ride = get_ride(_currentRideIndex);
     if (ride == nullptr)
@@ -2733,9 +2733,9 @@ static void window_ride_construction_update_possible_ride_configurations()
 
     _currentlyShowingBrakeOrBoosterSpeed = false;
     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
-        edi = RideData4[ride->type].alternate_type;
+        constructionTrackType = RideData4[ride->type].alternate_type;
     else
-        edi = ride->type;
+        constructionTrackType = ride->type;
 
     int32_t currentPossibleRideConfigurationIndex = 0;
     _numCurrentPossibleSpecialTrackPieces = 0;
@@ -2747,10 +2747,10 @@ static void window_ride_construction_update_possible_ride_configurations()
         if (edx == 0)
             continue;
 
-        if (edx & 0x80)
+        if (edx & TRACK_TYPE_FOR_SPECIFIC_RIDE_FLAG)
         {
-            edx &= 0x7F;
-            if (edx != edi)
+            edx &= ~TRACK_TYPE_FOR_SPECIFIC_RIDE_FLAG;
+            if (edx != constructionTrackType)
                 continue;
         }
         else if (!is_track_enabled(edx))
