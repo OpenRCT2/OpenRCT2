@@ -25,6 +25,7 @@
 - Fix: [#10694] The lift hill speed of the flying roller coaster cannot be changed (original bug).
 - Fix: [#10705] Apply multithreaded rendering to all viewports.
 - Fix: [#10739] Mountain tool overlay for even-numbered selections.
+- Fix: [#10752] Mute button state not correctly set at startup.
 - Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
 
 0.2.4 (2019-10-28)
