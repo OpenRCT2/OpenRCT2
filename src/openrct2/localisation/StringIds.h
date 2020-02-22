@@ -3896,6 +3896,13 @@ enum
 
     STR_OPTIONS_RANDOM_TITLE_SEQUENCE = 6349,
 
+    STR_SCENERY_SCATTER = 6350,
+    STR_THEMES_WINDOW_SCENERY_SCATTER = 6351,
+    STR_SCATTER_TOOL_DENSITY = 6352,
+    STR_SCATTER_TOOL_DENSITY_LOW = 6353,
+    STR_SCATTER_TOOL_DENSITY_MEDIUM = 6354,
+    STR_SCATTER_TOOL_DENSITY_HIGH = 6355,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

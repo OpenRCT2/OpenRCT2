@@ -3668,6 +3668,12 @@ STR_6346    :Tile Inspector: Decrease element height
 STR_6347    :Path additions cannot be placed on level crossings!
 STR_6348    :Remove level crossing first!
 STR_6349    :Random title sequence
+STR_6350    :Scatter
+STR_6351    :Scenery Scatter Tool
+STR_6352    :Density
+STR_6353    :{SMALLFONT}{BLACK}Low density
+STR_6354    :{SMALLFONT}{BLACK}Medium density
+STR_6355    :{SMALLFONT}{BLACK}High density
 
 #############
 # Scenarios #

@@ -200,6 +200,7 @@ static rct_windowclass window_themes_tab_3_classes[] = {
     WC_CLEAR_SCENERY,
     WC_LAND_RIGHTS,
     WC_SCENERY,
+    WC_SCENERY_SCATTER,
     WC_FOOTPATH,
     WC_RIDE_CONSTRUCTION,
     WC_TRACK_DESIGN_PLACE,

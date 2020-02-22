@@ -19,10 +19,13 @@ using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
 struct TileElement;
 struct Vehicle;
+enum class ScatterToolDensity : uint8_t;
 
 extern uint16_t gWindowSceneryTabSelections[];
 extern uint8_t gWindowSceneryActiveTabIndex;
-extern uint8_t gWindowSceneryClusterEnabled;
+extern bool gWindowSceneryScatterEnabled;
+extern uint16_t gWindowSceneryScatterSize;
+extern ScatterToolDensity gWindowSceneryScatterDensity;
 extern uint8_t gWindowSceneryPaintEnabled;
 extern uint8_t gWindowSceneryRotation;
 extern colour_t gWindowSceneryPrimaryColour;
@@ -181,3 +184,5 @@ void window_tooltip_reset(ScreenCoordsXY screenCoords);
 void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords);
 void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 void window_tooltip_close();
+
+rct_window* window_scenery_scatter_open();

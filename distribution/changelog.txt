@@ -6,6 +6,7 @@
 - Feature: [#9073] Shortcut keys for the Tile Inspector.
 - Feature: [#10305] Add two shortcuts for increasing and decreasing the scaling factor.
 - Feature: [#10189] Make Track Designs work in multiplayer.
+- Feature: [#10357] Added window for scenery scatter tool, allowing for area and density selection.
 - Change: [#1164] Use available translations for shortcut key bindings.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
 - Fix: [#7784] Vehicle tab takes 1st car colour instead of tab_vehicle's colour.

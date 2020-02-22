@@ -463,6 +463,15 @@
         "y_offset": 5
     },
     {
+        "path": "tool/scenery_scatter_low.png"
+    },
+    {
+        "path": "tool/scenery_scatter_medium.png"
+    },
+    {
+        "path": "tool/scenery_scatter_high.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

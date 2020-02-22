@@ -1758,12 +1758,26 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         case SCENERY_TYPE_SMALL:
         {
             int32_t quantity = 1;
-            bool isCluster = gWindowSceneryClusterEnabled
+            bool isCluster = gWindowSceneryScatterEnabled
                 && (network_get_mode() != NETWORK_MODE_CLIENT
                     || network_can_perform_command(network_get_current_player_group_index(), -2));
+
             if (isCluster)
             {
-                quantity = 35;
+                switch (gWindowSceneryScatterDensity)
+                {
+                    case ScatterToolDensity::LowDensity:
+                        quantity = gWindowSceneryScatterSize;
+                        break;
+
+                    case ScatterToolDensity::MediumDensity:
+                        quantity = gWindowSceneryScatterSize * 2;
+                        break;
+
+                    case ScatterToolDensity::HighDensity:
+                        quantity = gWindowSceneryScatterSize * 3;
+                        break;
+                }
             }
 
             bool forceError = true;
@@ -1783,8 +1797,15 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                         parameter_2 |= util_rand() & 3;
                     }
 
-                    cur_grid_x += ((util_rand() % 16) - 8) * 32;
-                    cur_grid_y += ((util_rand() % 16) - 8) * 32;
+                    int16_t grid_x_offset = (util_rand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    int16_t grid_y_offset = (util_rand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    if (gWindowSceneryScatterSize % 2 == 0)
+                    {
+                        grid_x_offset += 1;
+                        grid_y_offset += 1;
+                    }
+                    cur_grid_x += grid_x_offset * COORDS_XY_STEP;
+                    cur_grid_y += grid_y_offset * COORDS_XY_STEP;
 
                     if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
                     {
@@ -2680,12 +2701,18 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
     {
         case SCENERY_TYPE_SMALL:
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            if (gWindowSceneryClusterEnabled)
+            if (gWindowSceneryScatterEnabled)
             {
-                gMapSelectPositionA.x = mapTile.x - (8 << 5);
-                gMapSelectPositionA.y = mapTile.y - (8 << 5);
-                gMapSelectPositionB.x = mapTile.x + (7 << 5);
-                gMapSelectPositionB.y = mapTile.y + (7 << 5);
+                uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * COORDS_XY_STEP;
+                gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
+                gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
+                gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
+                gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
+                if (gWindowSceneryScatterSize % 2 == 0)
+                {
+                    gMapSelectPositionB.x += COORDS_XY_STEP;
+                    gMapSelectPositionB.y += COORDS_XY_STEP;
+                }
             }
             else
             {
@@ -2698,7 +2725,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             scenery = get_small_scenery_entry(selected_scenery);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryClusterEnabled)
+            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
             {
                 gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + ((parameter2 & 0xFF) ^ 2);
             }
