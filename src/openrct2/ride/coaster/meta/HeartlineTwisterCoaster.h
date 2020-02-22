@@ -17,5 +17,6 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_HEARTLINE_ROLL)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_heartline_twister_rc),
 };
 // clang-format on

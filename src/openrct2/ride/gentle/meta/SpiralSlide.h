@@ -17,5 +17,6 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
 {
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_spiral_slide),
 };
 // clang-format on

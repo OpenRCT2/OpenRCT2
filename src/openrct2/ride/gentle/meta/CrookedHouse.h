@@ -17,5 +17,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
 {
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_crooked_house),
 };
 // clang-format on

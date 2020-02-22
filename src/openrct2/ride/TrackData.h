@@ -35,7 +35,6 @@ struct track_curve_chain
 extern const track_curve_chain gTrackCurveChain[TRACK_ELEM_COUNT];
 extern const track_curve_chain gFlatRideTrackCurveChain[TRACK_ELEM_COUNT];
 
-extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT];
 extern const uint32_t* RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
 
 struct track_descriptor

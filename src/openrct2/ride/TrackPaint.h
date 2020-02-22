@@ -14,7 +14,6 @@
 #include "../paint/Paint.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../world/Map.h"
-#include "RideData.h"
 
 class StationObject;
 
