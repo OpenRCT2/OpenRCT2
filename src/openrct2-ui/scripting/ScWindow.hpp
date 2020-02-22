@@ -18,6 +18,8 @@
 
 namespace OpenRCT2::Scripting
 {
+    using namespace OpenRCT2::Ui::Windows;
+
     class ScWindow
     {
     private:
@@ -84,6 +86,39 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        void close()
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_close(w);
+            }
+        }
+
+        std::shared_ptr<ScWidget> findWidget(std::string name)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                auto widgetIndex = FindWidgetIndexByName(w, name);
+                if (widgetIndex)
+                {
+                    return std::make_shared<ScWidget>(_class, _number, *widgetIndex);
+                }
+            }
+            return {};
+        }
+
+        void bringToFront()
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_bring_to_front(w);
+                w->flags |= WF_WHITE_BORDER_MASK;
+            }
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScWindow::x_get, &ScWindow::x_set, "x");
@@ -92,6 +127,10 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
             dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
+
+            dukglue_register_method(ctx, &close, "close");
+            dukglue_register_method(ctx, &findWidget, "findWidget");
+            dukglue_register_method(ctx, &bringToFront, "bringToFront");
         }
 
     private:

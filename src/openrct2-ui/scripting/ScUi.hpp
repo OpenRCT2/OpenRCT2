@@ -99,18 +99,31 @@ namespace OpenRCT2::Scripting
             window_close_all();
         }
 
-        std::shared_ptr<ScWindow> getWindow(int32_t index)
+        std::shared_ptr<ScWindow> getWindow(DukValue a, DukValue b)
         {
-            int32_t i = 0;
-            for (auto w : g_window_list)
+            if (a.type() == DukValue::Type::NUMBER)
             {
-                if (i == index)
+                auto index = a.as_int();
+                auto i = 0;
+                for (auto w : g_window_list)
                 {
-                    return std::make_shared<ScWindow>(w.get());
+                    if (i == index)
+                    {
+                        return std::make_shared<ScWindow>(w.get());
+                    }
+                    i++;
                 }
-                i++;
             }
-            return nullptr;
+            else if (a.type() == DukValue::Type::STRING)
+            {
+                auto classification = a.as_string();
+                auto w = FindCustomWindowByClassification(classification);
+                if (w != nullptr)
+                {
+                    return std::make_shared<ScWindow>(w);
+                }
+            }
+            return {};
         }
 
         void registerMenuItem(std::string text, DukValue callback)

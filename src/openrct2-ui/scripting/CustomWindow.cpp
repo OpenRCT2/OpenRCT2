@@ -90,6 +90,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t Y{};
         int32_t Width{};
         int32_t Height{};
+        std::string Name;
         std::string Text;
         std::vector<std::string> Items;
         int32_t SelectedIndex{};
@@ -133,6 +134,10 @@ namespace OpenRCT2::Ui::Windows
             result.Y = desc["y"].as_int();
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
+            if (desc["name"].type() == DukValue::Type::STRING)
+            {
+                result.Name = desc["name"].as_string();
+            }
             if (result.Type == "button")
             {
                 result.Text = ProcessString(desc["text"]);
@@ -655,7 +660,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, const std::string& value)
+    void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, const std::string_view& value)
     {
         if (w->custom_info != nullptr)
         {
@@ -667,6 +672,42 @@ namespace OpenRCT2::Ui::Windows
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
             }
         }
+    }
+
+    rct_window* FindCustomWindowByClassification(const std::string_view& classification)
+    {
+        for (auto w : g_window_list)
+        {
+            if (w->classification == WC_CUSTOM)
+            {
+                auto& customInfo = GetInfo(w.get());
+                if (customInfo.Desc.Classification == classification)
+                {
+                    return w.get();
+                }
+            }
+        }
+        return nullptr;
+    }
+
+    std::optional<rct_widgetindex> FindWidgetIndexByName(rct_window* w, const std::string_view& name)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            for (rct_widgetindex i = 0; i < customInfo.Widgets.size(); i++)
+            {
+                auto customWidgetInfo = customInfo.GetCustomWidgetDesc(i);
+                if (customWidgetInfo != nullptr)
+                {
+                    if (customWidgetInfo->Name == name)
+                    {
+                        return i;
+                    }
+                }
+            }
+        }
+        return {};
     }
 
 } // namespace OpenRCT2::Ui::Windows
