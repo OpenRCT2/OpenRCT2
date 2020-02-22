@@ -82,13 +82,6 @@ namespace OpenRCT2::Scripting
             _sprite->peep.trousers_colour = value;
         }
 
-        template<typename T> static void dukglue_property_helper(duk_context* ctx, T& var, const char* name)
-        {
-            auto getter = []() -> const T { return var; };
-            auto setter = [&var](T& value) -> void { var = value; };
-            dukglue_register_property(ctx, getter, setter, name);
-        }
-
         static void Register(duk_context* ctx)
         {
             dukglue_register_constructor<ScThing, rct_sprite*>(ctx, "Thing");

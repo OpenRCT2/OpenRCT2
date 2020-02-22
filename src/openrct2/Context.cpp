@@ -138,8 +138,8 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
-            , _painter(std::make_unique<Painter>(uiContext))
             , _scriptEngine(_stdInOutConsole, *env)
+            , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);

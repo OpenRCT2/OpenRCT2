@@ -216,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
                 });
             }
 
-            return std::move(result);
+            return result;
         }
 
         static std::optional<int32_t> GetOptionalInt(DukValue input)
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
         if (w->custom_info != nullptr)
         {
             auto& customInfo = GetInfo(w);
-            for (rct_widgetindex i = 0; i < customInfo.Widgets.size(); i++)
+            for (size_t i = 0; i < customInfo.Widgets.size(); i++)
             {
                 auto customWidgetInfo = customInfo.GetCustomWidgetDesc(i);
                 if (customWidgetInfo != nullptr)

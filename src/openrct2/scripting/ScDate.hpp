@@ -24,13 +24,13 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &monthsElapsed_get, &monthsElapsed_set, "monthsElapsed");
-            dukglue_register_property(ctx, &monthProgress_get, &monthProgress_set, "monthProgress");
-            dukglue_register_property(ctx, &yearsElapsed_get, nullptr, "yearsElapsed");
-            dukglue_register_property(ctx, &ticksElapsed_get, nullptr, "ticksElapsed");
-            dukglue_register_property(ctx, &day_get, nullptr, "day");
-            dukglue_register_property(ctx, &month_get, nullptr, "month");
-            dukglue_register_property(ctx, &year_get, nullptr, "year");
+            dukglue_register_property(ctx, &ScDate::monthsElapsed_get, &ScDate::monthsElapsed_set, "monthsElapsed");
+            dukglue_register_property(ctx, &ScDate::monthProgress_get, &ScDate::monthProgress_set, "monthProgress");
+            dukglue_register_property(ctx, &ScDate::yearsElapsed_get, nullptr, "yearsElapsed");
+            dukglue_register_property(ctx, &ScDate::ticksElapsed_get, nullptr, "ticksElapsed");
+            dukglue_register_property(ctx, &ScDate::day_get, nullptr, "day");
+            dukglue_register_property(ctx, &ScDate::month_get, nullptr, "month");
+            dukglue_register_property(ctx, &ScDate::year_get, nullptr, "year");
         }
 
     private:

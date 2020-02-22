@@ -128,9 +128,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
             dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
 
-            dukglue_register_method(ctx, &close, "close");
-            dukglue_register_method(ctx, &findWidget, "findWidget");
-            dukglue_register_method(ctx, &bringToFront, "bringToFront");
+            dukglue_register_method(ctx, &ScWindow::close, "close");
+            dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");
+            dukglue_register_method(ctx, &ScWindow::bringToFront, "bringToFront");
         }
 
     private:

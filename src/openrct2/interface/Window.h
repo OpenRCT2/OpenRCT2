@@ -95,7 +95,7 @@ struct rct_widget
     rct_string_id tooltip; // 0x0E
 
     // New properties
-    WidgetFlags flags;
+    WidgetFlags flags{};
 };
 
 /**

@@ -226,16 +226,16 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &left_get, &left_set, "left");
-            dukglue_register_property(ctx, &top_get, &top_set, "top");
-            dukglue_register_property(ctx, &right_get, &right_set, "right");
-            dukglue_register_property(ctx, &bottom_get, &bottom_set, "bottom");
-            dukglue_register_property(ctx, &rotation_get, &rotation_set, "rotation");
-            dukglue_register_property(ctx, &zoom_get, &zoom_set, "zoom");
-            dukglue_register_property(ctx, &visibilityFlags_get, &visibilityFlags_set, "visibilityFlags");
-            dukglue_register_method(ctx, &getCentrePosition, "getCentrePosition");
-            dukglue_register_method(ctx, &moveTo, "moveTo");
-            dukglue_register_method(ctx, &scrollTo, "scrollTo");
+            dukglue_register_property(ctx, &ScViewport::left_get, &ScViewport::left_set, "left");
+            dukglue_register_property(ctx, &ScViewport::top_get, &ScViewport::top_set, "top");
+            dukglue_register_property(ctx, &ScViewport::right_get, &ScViewport::right_set, "right");
+            dukglue_register_property(ctx, &ScViewport::bottom_get, &ScViewport::bottom_set, "bottom");
+            dukglue_register_property(ctx, &ScViewport::rotation_get, &ScViewport::rotation_set, "rotation");
+            dukglue_register_property(ctx, &ScViewport::zoom_get, &ScViewport::zoom_set, "zoom");
+            dukglue_register_property(ctx, &ScViewport::visibilityFlags_get, &ScViewport::visibilityFlags_set, "visibilityFlags");
+            dukglue_register_method(ctx, &ScViewport::getCentrePosition, "getCentrePosition");
+            dukglue_register_method(ctx, &ScViewport::moveTo, "moveTo");
+            dukglue_register_method(ctx, &ScViewport::scrollTo, "scrollTo");
         }
 
     private:

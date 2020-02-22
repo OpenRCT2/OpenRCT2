@@ -29,10 +29,10 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &id_get, nullptr, "identifier");
-            dukglue_register_property(ctx, &name_get, nullptr, "name");
-            dukglue_register_property(ctx, &description_get, nullptr, "description");
-            dukglue_register_property(ctx, &capacity_get, nullptr, "capacity");
+            dukglue_register_property(ctx, &ScRideObject::id_get, nullptr, "identifier");
+            dukglue_register_property(ctx, &ScRideObject::name_get, nullptr, "name");
+            dukglue_register_property(ctx, &ScRideObject::description_get, nullptr, "description");
+            dukglue_register_property(ctx, &ScRideObject::capacity_get, nullptr, "capacity");
         }
 
     private:

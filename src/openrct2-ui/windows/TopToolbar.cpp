@@ -3326,7 +3326,7 @@ static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex)
     else
     {
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
-        auto customIndex = dropdownIndex - customStartIndex;
+        auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
         if (customMenuItems.size() > customIndex)
         {
             customMenuItems[customIndex].Invoke();

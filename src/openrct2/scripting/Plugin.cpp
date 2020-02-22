@@ -9,7 +9,7 @@
 
 #include "Plugin.h"
 
-#include "..\OpenRCT2.h"
+#include "../OpenRCT2.h"
 #include "Duktape.hpp"
 
 #include <algorithm>

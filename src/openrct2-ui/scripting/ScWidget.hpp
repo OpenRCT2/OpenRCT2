@@ -243,17 +243,17 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             // Common
-            dukglue_register_property(ctx, &type_get, nullptr, "type");
-            dukglue_register_property(ctx, &x_get, &x_set, "x");
-            dukglue_register_property(ctx, &y_get, &y_set, "y");
-            dukglue_register_property(ctx, &width_get, &width_set, "width");
-            dukglue_register_property(ctx, &height_get, &height_set, "height");
-            dukglue_register_property(ctx, &isDisabled_get, &isDisabled_set, "isDisabled");
+            dukglue_register_property(ctx, &ScWidget::type_get, nullptr, "type");
+            dukglue_register_property(ctx, &ScWidget::x_get, &ScWidget::x_set, "x");
+            dukglue_register_property(ctx, &ScWidget::y_get, &ScWidget::y_set, "y");
+            dukglue_register_property(ctx, &ScWidget::width_get, &ScWidget::width_set, "width");
+            dukglue_register_property(ctx, &ScWidget::height_get, &ScWidget::height_set, "height");
+            dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
 
             // No so common
-            dukglue_register_property(ctx, &text_get, &text_set, "text");
-            dukglue_register_property(ctx, &isChecked_get, &isChecked_set, "isChecked");
-            dukglue_register_property(ctx, &viewport_get, nullptr, "viewport");
+            dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");
+            dukglue_register_property(ctx, &ScWidget::isChecked_get, &ScWidget::isChecked_set, "isChecked");
+            dukglue_register_property(ctx, &ScWidget::viewport_get, nullptr, "viewport");
         }
 
     private:
