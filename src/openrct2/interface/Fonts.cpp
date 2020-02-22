@@ -49,7 +49,7 @@ TTFFontSetDescriptor TTFFontHeiti = { {
 } };
 
 TTFFontSetDescriptor TTFFontSimSun = { {
-    {   "msyh.ttc",  "YaHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    {   "msyh.ttc",  "Microsoft YaHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "simsun.ttc", "SimSun", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "simsun.ttc", "SimSun", 12,  1, -2, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
