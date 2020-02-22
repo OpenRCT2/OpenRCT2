@@ -174,10 +174,9 @@ rct_window* window_banner_open(rct_windownumber number)
 static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     auto banner = GetBanner(w->number);
-    int32_t x = banner->position.x << 5;
-    int32_t y = banner->position.y << 5;
+    auto bannerPos = banner->position.ToCoordsXY();
 
-    TileElement* tile_element = map_get_first_element_at({ x, y });
+    TileElement* tile_element = map_get_first_element_at(bannerPos);
     if (tile_element == nullptr)
         return;
 
@@ -196,7 +195,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_BANNER_DEMOLISH:
         {
             auto bannerRemoveAction = BannerRemoveAction(
-                { x, y, tile_element->GetBaseZ(), tile_element->AsBanner()->GetPosition() });
+                { bannerPos, tile_element->GetBaseZ(), tile_element->AsBanner()->GetPosition() });
             GameActions::Execute(&bannerRemoveAction);
             break;
         }
