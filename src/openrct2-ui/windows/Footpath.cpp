@@ -1059,7 +1059,7 @@ static TileElement* footpath_get_tile_element_to_remove()
     TileElement* tileElement;
     int32_t z, zLow;
 
-    if (map_is_location_valid(gFootpathConstructFromPosition))
+    if (!map_is_location_valid(gFootpathConstructFromPosition))
     {
         return nullptr;
     }

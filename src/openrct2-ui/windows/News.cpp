@@ -166,7 +166,7 @@ static void window_news_update(rct_window* w)
             else if (w->news.var_482 > 1)
             {
                 auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
-                if (subjectLoc && (w = window_get_main()) != nullptr)
+                if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
                 {
                     window_scroll_to_location(w, subjectLoc->x, subjectLoc->y, subjectLoc->z);
                 }

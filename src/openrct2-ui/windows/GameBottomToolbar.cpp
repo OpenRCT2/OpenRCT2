@@ -195,7 +195,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
 
                 auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
 
-                if (!subjectLoc)
+                if (subjectLoc == std::nullopt)
                     break;
 
                 rct_window* mainWindow = window_get_main();
@@ -333,7 +333,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         // Find out if the news item is no longer valid
         auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
 
-        if (!subjectLoc)
+        if (subjectLoc == std::nullopt)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
         if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT))
