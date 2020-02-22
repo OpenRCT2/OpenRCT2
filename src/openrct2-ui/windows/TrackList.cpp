@@ -239,13 +239,6 @@ static void window_track_list_close(rct_window* w)
  */
 static void window_track_list_select(rct_window* w, int32_t listIndex)
 {
-    // Displays a message if the ride can't load, fix #4080
-    if (_loadedTrackDesign == nullptr)
-    {
-        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
-        return;
-    }
-
     audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
@@ -258,7 +251,14 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
         listIndex--;
     }
 
-    if (_loadedTrackDesign && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE))
+    // Displays a message if the ride can't load, fix #4080
+    if (_loadedTrackDesign == nullptr)
+    {
+        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
+        return;
+    }
+
+    if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
     {
         gTrackDesignSceneryToggle = true;
     }
