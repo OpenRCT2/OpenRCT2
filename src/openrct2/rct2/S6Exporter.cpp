@@ -214,10 +214,10 @@ void S6Exporter::Export()
     ExportResearchedRideTypes();
     ExportResearchedRideEntries();
     // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
-    for (uint8_t i = 0; i < std::size(RideTypePossibleTrackConfigurations); i++)
+    for (uint8_t i = 0; i < std::size(RideTypeDescriptors); i++)
     {
-        researchedTrackPiecesA[i] = (RideTypePossibleTrackConfigurations[i]) & 0xFFFFFFFFULL;
-        researchedTrackPiecesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
+        researchedTrackPiecesA[i] = (RideTypeDescriptors[i].EnabledTrackPieces) & 0xFFFFFFFFULL;
+        researchedTrackPiecesB[i] = (RideTypeDescriptors[i].EnabledTrackPieces >> 32ULL) & 0xFFFFFFFFULL;
     }
     std::memcpy(_s6.researched_track_types_a, researchedTrackPiecesA, sizeof(_s6.researched_track_types_a));
     std::memcpy(_s6.researched_track_types_b, researchedTrackPiecesB, sizeof(_s6.researched_track_types_b));
