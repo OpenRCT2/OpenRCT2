@@ -414,6 +414,7 @@ namespace OpenRCT2
                 audio_init();
                 audio_populate_devices();
                 audio_init_ride_sounds_and_info();
+                gGameSoundsOff = !gConfigSound.master_sound_enabled;
             }
 
             network_set_env(_env);
