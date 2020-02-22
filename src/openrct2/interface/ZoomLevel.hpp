@@ -17,10 +17,7 @@ private:
     int8_t _level{};
 
 public:
-    constexpr ZoomLevel()
-        : _level()
-    {
-    }
+    constexpr ZoomLevel() = default;
 
     constexpr ZoomLevel(int8_t level)
         : _level(level)
