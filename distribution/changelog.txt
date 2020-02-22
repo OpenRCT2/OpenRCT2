@@ -22,6 +22,7 @@
 - Fix: [#10489] Hosts last player action not being synchronized.
 - Fix: [#10543] Secondary shop item prices are not imported correctly from RCT1 saves.
 - Fix: [#10547] RCT1 parks have too many rides available.
+- Fix: [#10694] The lift hill speed of the flying roller coaster cannot be changed (original bug).
 - Fix: [#10705] Apply multithreaded rendering to all viewports.
 - Fix: [#10739] Mountain tool overlay for even-numbered selections.
 - Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
