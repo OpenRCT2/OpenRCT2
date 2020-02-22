@@ -574,7 +574,7 @@ bool ride_entry_is_invented(int32_t rideEntryIndex)
 
 uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType)
 {
-    uint64_t baseVals = RideTypePossibleTrackConfigurations[rideType] | RideTypeDescriptors[rideType].EnabledTrackPieces;
+    uint64_t baseVals = RideTypeDescriptors[rideType].EnabledTrackPieces;
     uint64_t extendedVals = 0;
     if (gCheatsEnableAllDrawableTrackPieces)
     {

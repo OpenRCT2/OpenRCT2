@@ -21,7 +21,6 @@ extern const rct_track_coordinates FlatTrackCoordinates[TRACK_ELEM_COUNT];
 extern const uint8_t TrackSequenceProperties[TRACK_ELEM_COUNT][16];
 extern const uint8_t FlatRideTrackSequenceProperties[TRACK_ELEM_COUNT][16];
 
-extern const uint64_t RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT];
 extern const rct_preview_track* TrackBlocks[TRACK_ELEM_COUNT];
 extern const rct_preview_track* FlatRideTrackBlocks[TRACK_ELEM_COUNT];
 
