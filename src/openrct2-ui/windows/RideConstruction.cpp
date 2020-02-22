@@ -2725,35 +2725,25 @@ static void window_ride_construction_update_map_selection()
 static void window_ride_construction_update_possible_ride_configurations()
 {
     int32_t trackType;
-    int32_t constructionTrackType;
 
     auto ride = get_ride(_currentRideIndex);
     if (ride == nullptr)
         return;
 
     _currentlyShowingBrakeOrBoosterSpeed = false;
-    if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
-        constructionTrackType = RideData4[ride->type].alternate_type;
-    else
-        constructionTrackType = ride->type;
 
     int32_t currentPossibleRideConfigurationIndex = 0;
     _numCurrentPossibleSpecialTrackPieces = 0;
-    for (trackType = 0; trackType < 256; trackType++)
+    for (trackType = 0; trackType < TRACK_ELEM_COUNT; trackType++)
     {
-        int32_t edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackDefinitions[trackType].type
-                                                                               : TrackDefinitions[trackType].type;
+        int32_t trackTypeCategory = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)
+            ? FlatRideTrackDefinitions[trackType].type
+            : TrackDefinitions[trackType].type;
 
-        if (edx == 0)
+        if (trackTypeCategory == TRACK_NONE)
             continue;
 
-        if (edx & TRACK_TYPE_FOR_SPECIFIC_RIDE_FLAG)
-        {
-            edx &= ~TRACK_TYPE_FOR_SPECIFIC_RIDE_FLAG;
-            if (edx != constructionTrackType)
-                continue;
-        }
-        else if (!is_track_enabled(edx))
+        if (!is_track_enabled(trackTypeCategory))
         {
             continue;
         }
