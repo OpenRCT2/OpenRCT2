@@ -81,6 +81,7 @@ The following people are not part of the development team, but have been contrib
 * (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
 * Kevin Strehl (bitman2049) - Tile inspector keybindings
 * Anton Scharnowski (scrapes) - Added Scenery Scatter Options Window.
+* Chad Ian Anderson (pizza2004) - Added New Game option, bug fixes, misc.
 
 ## Bug fixes
 * (halfbro)
