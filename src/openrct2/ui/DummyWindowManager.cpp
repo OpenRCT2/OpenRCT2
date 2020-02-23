@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui
         {
             return std::string();
         }
-        void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) override
+        void SetMainView(const ScreenCoordsXY& viewPos, int32_t zoom, int32_t rotation) override
         {
         }
         void UpdateMouseWheel() override

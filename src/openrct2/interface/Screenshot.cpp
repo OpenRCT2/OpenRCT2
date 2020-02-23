@@ -733,8 +733,8 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             }
             else
             {
-                viewport.view_x = gSavedViewX - (viewport.view_width / 2);
-                viewport.view_y = gSavedViewY - (viewport.view_height / 2);
+                viewport.view_x = gSavedView.x - (viewport.view_width / 2);
+                viewport.view_y = gSavedView.y - (viewport.view_height / 2);
                 viewport.zoom = gSavedViewZoom;
                 gCurrentRotation = gSavedViewRotation;
             }

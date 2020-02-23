@@ -45,8 +45,7 @@ rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
 
-int16_t gSavedViewX;
-int16_t gSavedViewY;
+ScreenCoordsXY gSavedView;
 uint8_t gSavedViewZoom;
 uint8_t gSavedViewRotation;
 
@@ -1922,8 +1921,8 @@ void viewport_set_saved_view()
     {
         rct_viewport* viewport = w->viewport;
 
-        gSavedViewX = viewport->view_width / 2 + viewport->view_x;
-        gSavedViewY = viewport->view_height / 2 + viewport->view_y;
+        gSavedView = ScreenCoordsXY{ viewport->view_width / 2 + viewport->view_x,
+                                     viewport->view_height / 2 + viewport->view_y };
 
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();

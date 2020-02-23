@@ -2680,8 +2680,7 @@ private:
 
     void ImportSavedView()
     {
-        gSavedViewX = _s4.view_x;
-        gSavedViewY = _s4.view_y;
+        gSavedView = ScreenCoordsXY{ _s4.view_x, _s4.view_y };
         gSavedViewZoom = _s4.view_zoom;
         gSavedViewRotation = _s4.view_rotation;
     }
