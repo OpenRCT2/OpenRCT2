@@ -3684,6 +3684,12 @@ STR_6346    :Vakinspecteur: Elementhoogte verkleinen
 STR_6347    :Straatmeubilair kan niet op overwegen worden geplaatst!
 STR_6348    :Verwijder eerst de overweg.
 STR_6349    :Willekeurige titelpresentatie
+STR_6350    :Cluster
+STR_6351    :Cluster van decorobjecten plaatsen
+STR_6352    :Dichtheid
+STR_6353    :{SMALLFONT}{BLACK}Lage dichtheid
+STR_6354    :{SMALLFONT}{BLACK}Gemiddelde dichtheid
+STR_6355    :{SMALLFONT}{BLACK}Hoge dichtheid
 
 #############
 # Scenarios #
