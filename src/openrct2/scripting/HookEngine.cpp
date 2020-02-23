@@ -93,12 +93,12 @@ bool HookEngine::HasSubscriptions(HOOK_TYPE type) const
     return !hookList.Hooks.empty();
 }
 
-void HookEngine::Call(HOOK_TYPE type)
+void HookEngine::Call(HOOK_TYPE type, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner, false);
 
         const auto& function = hook.Function;
         function.push();
@@ -107,12 +107,12 @@ void HookEngine::Call(HOOK_TYPE type)
     }
 }
 
-void HookEngine::Call(HOOK_TYPE type, DukValue args)
+void HookEngine::Call(HOOK_TYPE type, DukValue args, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner, false);
 
         const auto& function = hook.Function;
         auto ctx = function.context();
@@ -124,12 +124,12 @@ void HookEngine::Call(HOOK_TYPE type, DukValue args)
     }
 }
 
-void HookEngine::Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args)
+void HookEngine::Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner, false);
 
         const auto& function = hook.Function;
         auto ctx = function.context();

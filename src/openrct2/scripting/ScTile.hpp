@@ -69,6 +69,7 @@ namespace OpenRCT2::Scripting
         }
         void broken_set(bool value)
         {
+            ThrowIfGameStateNotMutable();
             if (value)
             {
                 _element->flags |= TILE_ELEMENT_FLAG_BROKEN;
@@ -85,6 +86,7 @@ namespace OpenRCT2::Scripting
         }
         void baseHeight_set(uint8_t newBaseHeight)
         {
+            ThrowIfGameStateNotMutable();
             _element->base_height = newBaseHeight;
         }
 
@@ -94,6 +96,7 @@ namespace OpenRCT2::Scripting
         }
         void clearanceHeight_set(uint8_t newClearanceHeight)
         {
+            ThrowIfGameStateNotMutable();
             _element->clearance_height = newClearanceHeight;
         }
 
@@ -106,6 +109,7 @@ namespace OpenRCT2::Scripting
         }
         void grassLength_set(uint8_t value)
         {
+            ThrowIfGameStateNotMutable();
             auto el = _element->AsSurface();
             if (el != nullptr)
             {

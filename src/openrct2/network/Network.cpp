@@ -2905,7 +2905,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
             auto e = DukValue::take_from_stack(ctx);
 
             // Call the subscriptions
-            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e);
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e, false);
 
             // Update text from object if subscriptions changed it
             if (e["message"].type() != DukValue::Type::STRING)

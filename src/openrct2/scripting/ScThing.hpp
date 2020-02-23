@@ -42,7 +42,8 @@ namespace OpenRCT2::Scripting
         }
         void x_set(int32_t value)
         {
-            _sprite->generic.x = value;
+            ThrowIfGameStateNotMutable();
+            sprite_move(value, _sprite->generic.y, _sprite->generic.z, &_sprite->generic);
         }
 
         // y getter and setter
@@ -52,7 +53,8 @@ namespace OpenRCT2::Scripting
         }
         void y_set(int32_t value)
         {
-            _sprite->generic.y = value;
+            ThrowIfGameStateNotMutable();
+            sprite_move(_sprite->generic.x, value, _sprite->generic.z, &_sprite->generic);
         }
 
         // z getter and setter
@@ -62,7 +64,8 @@ namespace OpenRCT2::Scripting
         }
         void z_set(int16_t value)
         {
-            _sprite->generic.z = value;
+            ThrowIfGameStateNotMutable();
+            sprite_move(_sprite->generic.x, _sprite->generic.y, value, &_sprite->generic);
         }
 
         uint8_t tshirtColour_get()
@@ -71,6 +74,7 @@ namespace OpenRCT2::Scripting
         }
         void tshirtColour_set(uint8_t value)
         {
+            ThrowIfGameStateNotMutable();
             _sprite->peep.tshirt_colour = value;
         }
         uint8_t trousersColour_get()
@@ -79,6 +83,7 @@ namespace OpenRCT2::Scripting
         }
         void trousersColour_set(uint8_t value)
         {
+            ThrowIfGameStateNotMutable();
             _sprite->peep.trousers_colour = value;
         }
 

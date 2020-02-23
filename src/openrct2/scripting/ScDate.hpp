@@ -42,6 +42,7 @@ namespace OpenRCT2::Scripting
 
         void monthsElapsed_set(uint32_t value)
         {
+            ThrowIfGameStateNotMutable();
             gDateMonthsElapsed = value;
         }
 
@@ -53,6 +54,7 @@ namespace OpenRCT2::Scripting
 
         void monthProgress_set(int32_t value)
         {
+            ThrowIfGameStateNotMutable();
             gDateMonthTicks = value;
         }
 

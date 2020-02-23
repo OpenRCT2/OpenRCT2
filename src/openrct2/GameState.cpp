@@ -270,7 +270,7 @@ void GameState::UpdateLogic()
     }
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK);
+    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
 
     auto day = _date.GetDay();
 
@@ -279,7 +279,7 @@ void GameState::UpdateLogic()
 
     if (day != _date.GetDay())
     {
-        hookEngine.Call(HOOK_TYPE::INTERVAL_DAY);
+        hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
     }
 
     scenario_update();

@@ -132,7 +132,7 @@ void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
 {
     try
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
         plugin->Load();
 
         auto metadata = plugin->GetMetadata();
@@ -162,7 +162,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
             callback(plugin);
         }
 
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
         try
         {
             plugin->Stop();
@@ -214,7 +214,7 @@ void ScriptEngine::AutoReloadPlugins()
                 {
                     StopPlugin(plugin);
 
-                    ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+                    ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
                     plugin->Load();
                     LogPluginInfo(plugin, "Reloaded");
                     plugin->Start();
@@ -247,7 +247,7 @@ void ScriptEngine::StartPlugins()
     {
         if (!plugin->HasStarted() && ShouldStartPlugin(plugin))
         {
-            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
             try
             {
                 LogPluginInfo(plugin, "Started");
@@ -378,5 +378,23 @@ static std::string Stringify(duk_context* ctx, duk_idx_t idx)
     else
     {
         return duk_safe_to_string(ctx, idx);
+    }
+}
+
+bool OpenRCT2::Scripting::IsGameStateMutable()
+{
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine.GetExecInfo();
+    return execInfo.IsGameStateMutable();
+}
+
+void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
+{
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine.GetExecInfo();
+    if (!execInfo.IsGameStateMutable())
+    {
+        auto ctx = scriptEngine.GetContext();
+        duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
     }
 }

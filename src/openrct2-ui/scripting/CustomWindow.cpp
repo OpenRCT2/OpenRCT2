@@ -648,7 +648,7 @@ namespace OpenRCT2::Ui::Windows
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto& execInfo = scriptEngine.GetExecInfo();
             {
-                ScriptExecutionInfo::PluginScope scope(execInfo, owner);
+                ScriptExecutionInfo::PluginScope scope(execInfo, owner, false);
                 dukHandler.push();
                 for (const auto& arg : args)
                 {

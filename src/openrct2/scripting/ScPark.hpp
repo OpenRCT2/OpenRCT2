@@ -16,6 +16,7 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "Duktape.hpp"
+#include "ScriptEngine.h"
 
 #include <algorithm>
 
@@ -30,6 +31,7 @@ namespace OpenRCT2::Scripting
         }
         void cash_set(money32 value)
         {
+            ThrowIfGameStateNotMutable();
             gCash = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             context_broadcast_intent(&intent);
@@ -41,6 +43,7 @@ namespace OpenRCT2::Scripting
         }
         void rating_set(int32_t value)
         {
+            ThrowIfGameStateNotMutable();
             gParkRating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             context_broadcast_intent(&intent);
@@ -52,6 +55,7 @@ namespace OpenRCT2::Scripting
         }
         void bankLoan_set(money32 value)
         {
+            ThrowIfGameStateNotMutable();
             gBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             context_broadcast_intent(&intent);
@@ -63,6 +67,7 @@ namespace OpenRCT2::Scripting
         }
         void maxBankLoan_set(money32 value)
         {
+            ThrowIfGameStateNotMutable();
             gMaxBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             context_broadcast_intent(&intent);
@@ -70,6 +75,7 @@ namespace OpenRCT2::Scripting
 
         void postMessage(DukValue message)
         {
+            ThrowIfGameStateNotMutable();
             try
             {
                 uint8_t type = NEWS_ITEM_BLANK;

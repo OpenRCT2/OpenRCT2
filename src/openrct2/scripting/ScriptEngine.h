@@ -39,6 +39,7 @@ namespace OpenRCT2::Scripting
     {
     private:
         std::shared_ptr<Plugin> _plugin;
+        bool _isGameStateMutable{};
 
     public:
         class PluginScope
@@ -48,22 +49,29 @@ namespace OpenRCT2::Scripting
             std::shared_ptr<Plugin> _plugin;
 
         public:
-            PluginScope(ScriptExecutionInfo& execInfo, std::shared_ptr<Plugin> plugin)
+            PluginScope(ScriptExecutionInfo& execInfo, std::shared_ptr<Plugin> plugin, bool isGameStateMutable)
                 : _execInfo(execInfo)
                 , _plugin(plugin)
             {
                 _execInfo._plugin = plugin;
+                _execInfo._isGameStateMutable = isGameStateMutable;
             }
             PluginScope(const PluginScope&) = delete;
             ~PluginScope()
             {
                 _execInfo._plugin = nullptr;
+                _execInfo._isGameStateMutable = false;
             }
         };
 
         std::shared_ptr<Plugin> GetCurrentPlugin()
         {
             return _plugin;
+        }
+
+        bool IsGameStateMutable()
+        {
+            return _isGameStateMutable;
         }
     };
 
@@ -150,9 +158,13 @@ namespace OpenRCT2::Scripting
         void LoadPlugin(std::shared_ptr<Plugin>& plugin);
         void StopPlugin(std::shared_ptr<Plugin> plugin);
         bool ShouldLoadScript(const std::string& path);
-        bool ShouldStartPlugin(const std::shared_ptr<Plugin> &plugin);
+        bool ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin);
         void SetupHotReloading();
         void AutoReloadPlugins();
         void ProcessREPL();
     };
+
+    bool IsGameStateMutable();
+    void ThrowIfGameStateNotMutable();
+
 } // namespace OpenRCT2::Scripting

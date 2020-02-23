@@ -38,7 +38,7 @@ namespace OpenRCT2::Scripting
             auto& execInfo = scriptEngine.GetExecInfo();
             auto ctx = scriptEngine.GetContext();
 
-            ScriptExecutionInfo::PluginScope scope(execInfo, Owner);
+            ScriptExecutionInfo::PluginScope scope(execInfo, Owner, false);
             Callback.push();
             duk_pcall(ctx, 0);
             duk_pop(ctx);

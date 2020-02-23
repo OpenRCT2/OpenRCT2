@@ -114,6 +114,7 @@ namespace OpenRCT2::Scripting
         }
         void name_set(std::string value)
         {
+            ThrowIfGameStateNotMutable();
             _ride->custom_name = value;
         }
 
@@ -123,6 +124,7 @@ namespace OpenRCT2::Scripting
         }
         void excitement_set(int32_t value)
         {
+            ThrowIfGameStateNotMutable();
             _ride->excitement = value;
         }
 
@@ -132,6 +134,7 @@ namespace OpenRCT2::Scripting
         }
         void intensity_set(int32_t value)
         {
+            ThrowIfGameStateNotMutable();
             _ride->intensity = value;
         }
 
@@ -141,6 +144,7 @@ namespace OpenRCT2::Scripting
         }
         void nausea_set(int32_t value)
         {
+            ThrowIfGameStateNotMutable();
             _ride->nausea = value;
         }
 
@@ -150,6 +154,7 @@ namespace OpenRCT2::Scripting
         }
         void totalCustomers_set(int32_t value)
         {
+            ThrowIfGameStateNotMutable();
             _ride->total_customers = value;
         }
 
