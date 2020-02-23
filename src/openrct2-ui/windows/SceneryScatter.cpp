@@ -238,6 +238,6 @@ static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
         int32_t x = w->x + (preview.left + preview.right) / 2;
         int32_t y = w->y + (preview.top + preview.bottom) / 2;
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y, COLOUR_BLACK, &gWindowSceneryScatterSize);
+        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gWindowSceneryScatterSize);
     }
 }
