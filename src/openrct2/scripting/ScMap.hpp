@@ -9,13 +9,15 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../ride/Ride.h"
-#include "../world/Map.h"
-#include "Duktape.hpp"
-#include "ScRide.hpp"
-#include "ScThing.hpp"
-#include "ScTile.hpp"
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "../common.h"
+#    include "../ride/Ride.h"
+#    include "../world/Map.h"
+#    include "Duktape.hpp"
+#    include "ScRide.hpp"
+#    include "ScThing.hpp"
+#    include "ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -96,3 +98,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

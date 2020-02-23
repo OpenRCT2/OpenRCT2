@@ -9,14 +9,17 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../world/Footpath.h"
-#include "../world/Scenery.h"
-#include "../world/Sprite.h"
-#include "../world/Surface.h"
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <cstdio>
+#    include "../common.h"
+#    include "../world/Footpath.h"
+#    include "../world/Scenery.h"
+#    include "../world/Sprite.h"
+#    include "../world/Surface.h"
+#    include "Duktape.hpp"
+#    include "ScriptEngine.h"
+
+#    include <cstdio>
 
 namespace OpenRCT2::Scripting
 {
@@ -193,3 +196,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

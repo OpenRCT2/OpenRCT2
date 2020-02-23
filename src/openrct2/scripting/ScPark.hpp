@@ -9,16 +9,18 @@
 
 #pragma once
 
-#include "../Context.h"
-#include "../common.h"
-#include "../management/Finance.h"
-#include "../management/NewsItem.h"
-#include "../windows/Intent.h"
-#include "../world/Park.h"
-#include "Duktape.hpp"
-#include "ScriptEngine.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <algorithm>
+#    include "../Context.h"
+#    include "../common.h"
+#    include "../management/Finance.h"
+#    include "../management/NewsItem.h"
+#    include "../windows/Intent.h"
+#    include "../world/Park.h"
+#    include "Duktape.hpp"
+#    include "ScriptEngine.h"
+
+#    include <algorithm>
 
 namespace OpenRCT2::Scripting
 {
@@ -123,3 +125,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

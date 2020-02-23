@@ -102,7 +102,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\openrct2\thirdparty;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\thirdparty;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)'=='Debug'">$(SolutionDir)lib\$(Platform)\debug\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)'!='Debug'">$(SolutionDir)lib\$(Platform)\lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental />

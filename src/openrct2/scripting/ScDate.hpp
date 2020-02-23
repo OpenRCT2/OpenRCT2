@@ -9,13 +9,16 @@
 
 #pragma once
 
-#include "../Context.h"
-#include "../Date.h"
-#include "../Game.h"
-#include "../GameState.h"
-#include "../common.h"
-#include "../localisation/Date.h"
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "../Context.h"
+#    include "../Date.h"
+#    include "../Game.h"
+#    include "../GameState.h"
+#    include "../common.h"
+#    include "../localisation/Date.h"
+#    include "Duktape.hpp"
+#    include "ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -95,3 +98,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

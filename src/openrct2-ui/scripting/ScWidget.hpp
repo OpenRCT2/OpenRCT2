@@ -9,16 +9,18 @@
 
 #pragma once
 
-#include "../interface/Widget.h"
-#include "../interface/Window.h"
-#include "CustomWindow.h"
-#include "ScViewport.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <memory>
-#include <openrct2/Context.h>
-#include <openrct2/common.h>
-#include <openrct2/scripting/Duktape.hpp>
-#include <openrct2/scripting/ScriptEngine.h>
+#    include "../interface/Widget.h"
+#    include "../interface/Window.h"
+#    include "CustomWindow.h"
+#    include "ScViewport.hpp"
+
+#    include <memory>
+#    include <openrct2/Context.h>
+#    include <openrct2/common.h>
+#    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -291,3 +293,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

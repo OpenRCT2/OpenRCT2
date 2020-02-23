@@ -202,7 +202,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${JANSSON_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PNG_INCLUDE_DIRS}
                                                    ${DUKTAPE_INCLUDE_DIRS}
                                                    ${ZLIB_INCLUDE_DIRS})
-include_directories(${PROJECT_NAME} SYSTEM ${CMAKE_CURRENT_LIST_DIR}/thirdparty)
+include_directories(${PROJECT_NAME} SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these

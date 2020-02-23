@@ -7,10 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Window.h"
+#pragma once
 
-#include <optional>
-#include <string_view>
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "../interface/Window.h"
+
+#    include <optional>
+#    include <string_view>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -18,3 +22,5 @@ namespace OpenRCT2::Ui::Windows
     rct_window* FindCustomWindowByClassification(const std::string_view& classification);
     std::optional<rct_widgetindex> FindWidgetIndexByName(rct_window* w, const std::string_view& name);
 } // namespace OpenRCT2::Ui::Windows
+
+#endif

@@ -9,13 +9,15 @@
 
 #pragma once
 
-#include "Duktape.hpp"
-#include "HookEngine.h"
-#include "ScDisposable.hpp"
-#include "ScriptEngine.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <cstdio>
-#include <memory>
+#    include "Duktape.hpp"
+#    include "HookEngine.h"
+#    include "ScDisposable.hpp"
+#    include "ScriptEngine.h"
+
+#    include <cstdio>
+#    include <memory>
 
 namespace OpenRCT2::Scripting
 {
@@ -66,3 +68,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

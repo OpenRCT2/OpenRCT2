@@ -9,12 +9,14 @@
 
 #pragma once
 
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <memory>
-#include <string>
-#include <string_view>
-#include <vector>
+#    include "Duktape.hpp"
+
+#    include <memory>
+#    include <string>
+#    include <string_view>
+#    include <vector>
 
 namespace OpenRCT2::Scripting
 {
@@ -103,3 +105,5 @@ namespace OpenRCT2::Scripting
         static PluginType ParsePluginType(const std::string_view& type);
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

@@ -9,6 +9,8 @@
 
 #pragma once
 
+#ifdef __ENABLE_SCRIPTING__
+
 namespace OpenRCT2::Scripting
 {
     class ScriptEngine;
@@ -19,3 +21,5 @@ namespace OpenRCT2::Scripting
         static void Extend(ScriptEngine& scriptEngine);
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

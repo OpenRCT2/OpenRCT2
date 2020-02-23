@@ -9,10 +9,13 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../object/RideObject.h"
-#include "../ride/Ride.h"
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "../common.h"
+#    include "../object/RideObject.h"
+#    include "../ride/Ride.h"
+#    include "Duktape.hpp"
+#    include "ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -171,3 +174,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

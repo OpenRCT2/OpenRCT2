@@ -9,14 +9,16 @@
 
 #pragma once
 
-#include "../common.h"
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <any>
-#include <memory>
-#include <string>
-#include <tuple>
-#include <vector>
+#    include "../common.h"
+#    include "Duktape.hpp"
+
+#    include <any>
+#    include <memory>
+#    include <string>
+#    include <tuple>
+#    include <vector>
 
 namespace OpenRCT2::Scripting
 {
@@ -70,7 +72,6 @@ namespace OpenRCT2::Scripting
     private:
         ScriptExecutionInfo& _execInfo;
         std::vector<HookList> _hookMap;
-        size_t _numHooks{};
         uint32_t _nextCookie = 1;
 
     public:
@@ -91,3 +92,5 @@ namespace OpenRCT2::Scripting
         const HookList& GetHookList(HOOK_TYPE type) const;
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

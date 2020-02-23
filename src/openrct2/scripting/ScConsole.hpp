@@ -9,8 +9,10 @@
 
 #pragma once
 
-#include "../interface/InteractiveConsole.h"
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "../interface/InteractiveConsole.h"
+#    include "Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -97,3 +99,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

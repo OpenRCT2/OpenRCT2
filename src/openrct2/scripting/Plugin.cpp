@@ -7,14 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Plugin.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include "../OpenRCT2.h"
-#include "Duktape.hpp"
+#    include "Plugin.h"
 
-#include <algorithm>
-#include <fstream>
-#include <memory>
+#    include "../OpenRCT2.h"
+#    include "Duktape.hpp"
+
+#    include <algorithm>
+#    include <fstream>
+#    include <memory>
 
 using namespace OpenRCT2::Scripting;
 
@@ -164,3 +166,5 @@ PluginType Plugin::ParsePluginType(const std::string_view& type)
         return PluginType::ServerClient;
     throw std::invalid_argument("Unknown plugin type.");
 }
+
+#endif

@@ -65,7 +65,7 @@ endif ()
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
                                               ${SPEEX_INCLUDE_DIRS})
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
-                                                     "${CMAKE_CURRENT_LIST_DIR}/../openrct2/thirdparty")
+                                                     "${CMAKE_CURRENT_LIST_DIR}/../thirdparty")
 
 # Compiler flags
 if (WIN32)

@@ -9,12 +9,14 @@
 
 #pragma once
 
-#include "../actions/NetworkModifyGroupAction.hpp"
-#include "../actions/PlayerKickAction.hpp"
-#include "../actions/PlayerSetGroupAction.hpp"
-#include "../network/NetworkAction.h"
-#include "../network/network.h"
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "../actions/NetworkModifyGroupAction.hpp"
+#    include "../actions/PlayerKickAction.hpp"
+#    include "../actions/PlayerSetGroupAction.hpp"
+#    include "../network/NetworkAction.h"
+#    include "../network/network.h"
+#    include "Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -36,19 +38,26 @@ namespace OpenRCT2::Scripting
 
         std::string name_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_group_index(_id);
             if (index == -1)
                 return {};
             return network_get_group_name(index);
+#    else
+            return {};
+#    endif
         }
         void name_set(std::string value)
         {
+#    ifndef DISABLE_NETWORK
             auto action = NetworkModifyGroupAction(ModifyGroupType::SetName, _id, value);
             GameActions::Execute(&action);
+#    endif
         }
 
         std::vector<std::string> permissions_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_group_index(_id);
             if (index == -1)
                 return {};
@@ -66,9 +75,13 @@ namespace OpenRCT2::Scripting
                 permissionIndex++;
             }
             return result;
+#    else
+            return {};
+#    endif
         }
         void permissions_set(std::vector<std::string> value)
         {
+#    ifndef DISABLE_NETWORK
             auto groupIndex = network_get_group_index(_id);
             if (groupIndex == -1)
                 return;
@@ -105,6 +118,7 @@ namespace OpenRCT2::Scripting
                     GameActions::Execute(&networkAction2);
                 }
             }
+#    endif
         }
 
         static void Register(duk_context* ctx)
@@ -154,47 +168,69 @@ namespace OpenRCT2::Scripting
 
         std::string name_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
             if (index == -1)
                 return {};
             return network_get_player_name(index);
+#    else
+            return {};
+#    endif
         }
 
         int32_t group_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
             if (index == -1)
                 return {};
             return network_get_player_group(index);
+#    else
+            return 0;
+#    endif
         }
         void group_set(int32_t value)
         {
+#    ifndef DISABLE_NETWORK
             auto playerSetGroupAction = PlayerSetGroupAction(_id, value);
             GameActions::Execute(&playerSetGroupAction);
+#    endif
         }
 
         int32_t ping_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
             if (index == -1)
                 return {};
             return network_get_player_ping(index);
+#    else
+            return 0;
+#    endif
         }
 
         int32_t commandsRan_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
             if (index == -1)
                 return {};
             return network_get_player_commands_ran(index);
+#    else
+            return 0;
+#    endif
         }
 
         int32_t moneySpent_get()
         {
+#    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
             if (index == -1)
                 return {};
             return network_get_player_money_spent(index);
+#    else
+            return 0;
+#    endif
         }
 
         static void Register(duk_context* ctx)
@@ -211,6 +247,9 @@ namespace OpenRCT2::Scripting
     class ScNetwork
     {
     private:
+#    ifdef __clang__
+        [[maybe_unused]]
+#    endif
         duk_context* _context;
 
     public:
@@ -221,6 +260,7 @@ namespace OpenRCT2::Scripting
 
         std::string mode_get()
         {
+#    ifndef DISABLE_NETWORK
             switch (network_get_mode())
             {
                 default:
@@ -231,49 +271,71 @@ namespace OpenRCT2::Scripting
                 case NETWORK_MODE_CLIENT:
                     return "client";
             }
+#    else
+            return "none";
+#    endif
         }
         int32_t players_get()
         {
+#    ifndef DISABLE_NETWORK
             return network_get_num_players();
+#    else
+            return 0;
+#    endif
         }
         int32_t groups_get()
         {
+#    ifndef DISABLE_NETWORK
             return network_get_num_groups();
+#    else
+            return 0;
+#    endif
         }
         int32_t defaultGroup_get()
         {
+#    ifndef DISABLE_NETWORK
             return network_get_default_group();
+#    else
+            return 0;
+#    endif
         }
         void defaultGroup_set(int32_t value)
         {
+#    ifndef DISABLE_NETWORK
             auto action = NetworkModifyGroupAction(ModifyGroupType::SetDefault, value);
             GameActions::Execute(&action);
+#    endif
         }
 
         std::shared_ptr<ScPlayer> getPlayer(int32_t index)
         {
+#    ifndef DISABLE_NETWORK
             auto numPlayers = network_get_num_players();
             if (index < numPlayers)
             {
                 auto playerId = network_get_player_id(index);
                 return std::make_shared<ScPlayer>(playerId);
             }
+#    endif
             return nullptr;
         }
 
         std::shared_ptr<ScPlayerGroup> getGroup(int32_t index)
         {
+#    ifndef DISABLE_NETWORK
             auto numGroups = network_get_num_groups();
             if (index < numGroups)
             {
                 auto groupId = network_get_group_id(index);
                 return std::make_shared<ScPlayerGroup>(groupId);
             }
+#    endif
             return nullptr;
         }
 
         void kickPlayer(int32_t index)
         {
+#    ifndef DISABLE_NETWORK
             auto numPlayers = network_get_num_players();
             if (index < numPlayers)
             {
@@ -281,10 +343,12 @@ namespace OpenRCT2::Scripting
                 auto kickPlayerAction = PlayerKickAction(playerId);
                 GameActions::Execute(&kickPlayerAction);
             }
+#    endif
         }
 
         void sendMessage(std::string message, DukValue players)
         {
+#    ifndef DISABLE_NETWORK
             if (players.is_array())
             {
                 duk_error(players.context(), DUK_ERR_ERROR, "Not yet supported");
@@ -293,6 +357,7 @@ namespace OpenRCT2::Scripting
             {
                 network_send_chat(message.c_str());
             }
+#    endif
         }
 
         static void Register(duk_context* ctx)
@@ -308,3 +373,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

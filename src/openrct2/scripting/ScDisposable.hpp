@@ -9,9 +9,11 @@
 
 #pragma once
 
-#include "Duktape.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <functional>
+#    include "Duktape.hpp"
+
+#    include <functional>
 
 namespace OpenRCT2::Scripting
 {
@@ -40,3 +42,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

@@ -9,12 +9,14 @@
 
 #pragma once
 
-#include "ScWidget.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <openrct2/common.h>
-#include <openrct2/interface/Window.h>
-#include <openrct2/interface/Window_internal.h>
-#include <openrct2/scripting/Duktape.hpp>
+#    include "ScWidget.hpp"
+
+#    include <openrct2/common.h>
+#    include <openrct2/interface/Window.h>
+#    include <openrct2/interface/Window_internal.h>
+#    include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
 {
@@ -140,3 +142,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

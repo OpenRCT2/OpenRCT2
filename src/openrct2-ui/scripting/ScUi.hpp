@@ -9,16 +9,18 @@
 
 #pragma once
 
-#include "CustomMenu.h"
-#include "ScViewport.hpp"
-#include "ScWindow.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <memory>
-#include <openrct2/Context.h>
-#include <openrct2/common.h>
-#include <openrct2/scripting/Duktape.hpp>
-#include <openrct2/scripting/ScriptEngine.h>
-#include <string>
+#    include "CustomMenu.h"
+#    include "ScViewport.hpp"
+#    include "ScWindow.hpp"
+
+#    include <memory>
+#    include <openrct2/Context.h>
+#    include <openrct2/common.h>
+#    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/ScriptEngine.h>
+#    include <string>
 
 namespace OpenRCT2::Scripting
 {
@@ -154,3 +156,5 @@ namespace OpenRCT2::Scripting
         }
     };
 } // namespace OpenRCT2::Scripting
+
+#endif

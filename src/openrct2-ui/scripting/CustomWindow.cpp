@@ -229,21 +229,14 @@ namespace OpenRCT2::Ui::Windows
 
     class CustomWindowInfo
     {
-    private:
-        rct_windowclass _class;
-        rct_windownumber _number;
-
     public:
         std::shared_ptr<Plugin> Owner;
         CustomWindowDesc Desc;
         std::vector<rct_widget> Widgets;
         std::vector<size_t> WidgetIndexMap;
 
-        CustomWindowInfo(
-            rct_windowclass cls, rct_windownumber number, std::shared_ptr<Plugin> owner, const CustomWindowDesc& desc)
-            : _class(cls)
-            , _number(number)
-            , Owner(owner)
+        CustomWindowInfo(std::shared_ptr<Plugin> owner, const CustomWindowDesc& desc)
+            : Owner(owner)
             , Desc(desc)
         {
         }
@@ -300,7 +293,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         window->number = GetNewWindowNumber();
-        window->custom_info = new CustomWindowInfo(window->classification, window->number, owner, desc);
+        window->custom_info = new CustomWindowInfo(owner, desc);
         window->enabled_widgets = (1 << WIDX_CLOSE);
         window->colours[0] = COLOUR_GREY;
         window->colours[1] = COLOUR_GREY;
