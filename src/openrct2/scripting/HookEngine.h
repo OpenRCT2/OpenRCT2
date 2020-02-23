@@ -83,7 +83,8 @@ namespace OpenRCT2::Scripting
         bool HasSubscriptions(HOOK_TYPE type) const;
         void Call(HOOK_TYPE type, bool isGameStateMutable);
         void Call(HOOK_TYPE type, DukValue args, bool isGameStateMutable);
-        void Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable);
+        void Call(
+            HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable);
 
     private:
         HookList& GetHookList(HOOK_TYPE type);
