@@ -1281,18 +1281,21 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
-            // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
-            // end new code
+            if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+            {
+                // This wasn't in the original, but the code depended on globals that were only set in a different conditional
+                const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
+                // end new code
 
-            viewport_surface_draw_water_side_top(
-                session, EDGE_TOPLEFT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
-            viewport_surface_draw_water_side_top(
-                session, EDGE_TOPRIGHT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
-            viewport_surface_draw_water_side_bottom(
-                session, EDGE_BOTTOMLEFT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
-            viewport_surface_draw_water_side_bottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
+                viewport_surface_draw_water_side_top(
+                    session, EDGE_TOPLEFT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
+                viewport_surface_draw_water_side_top(
+                    session, EDGE_TOPRIGHT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
+                viewport_surface_draw_water_side_bottom(
+                    session, EDGE_BOTTOMLEFT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
+                viewport_surface_draw_water_side_bottom(
+                    session, EDGE_BOTTOMRIGHT, waterHeight / 16, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
+            }
         }
     }
 
