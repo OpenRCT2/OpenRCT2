@@ -7,28 +7,30 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ScriptEngine.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include "../PlatformEnvironment.h"
-#include "../config/Config.h"
-#include "../core/FileScanner.h"
-#include "../core/Path.hpp"
-#include "../interface/InteractiveConsole.h"
-#include "../platform/Platform2.h"
-#include "Duktape.hpp"
-#include "ScConsole.hpp"
-#include "ScContext.hpp"
-#include "ScDate.hpp"
-#include "ScDisposable.hpp"
-#include "ScMap.hpp"
-#include "ScNetwork.hpp"
-#include "ScPark.hpp"
-#include "ScRide.hpp"
-#include "ScThing.hpp"
-#include "ScTile.hpp"
+#    include "ScriptEngine.h"
 
-#include <iostream>
-#include <stdexcept>
+#    include "../PlatformEnvironment.h"
+#    include "../config/Config.h"
+#    include "../core/FileScanner.h"
+#    include "../core/Path.hpp"
+#    include "../interface/InteractiveConsole.h"
+#    include "../platform/Platform2.h"
+#    include "Duktape.hpp"
+#    include "ScConsole.hpp"
+#    include "ScContext.hpp"
+#    include "ScDate.hpp"
+#    include "ScDisposable.hpp"
+#    include "ScMap.hpp"
+#    include "ScNetwork.hpp"
+#    include "ScPark.hpp"
+#    include "ScRide.hpp"
+#    include "ScThing.hpp"
+#    include "ScTile.hpp"
+
+#    include <iostream>
+#    include <stdexcept>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -398,3 +400,5 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
         duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
     }
 }
+
+#endif

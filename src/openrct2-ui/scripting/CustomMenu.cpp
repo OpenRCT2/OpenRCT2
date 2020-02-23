@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "CustomMenu.h"
+#ifdef __ENABLE_SCRIPTING__
+
+#    include "CustomMenu.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -34,3 +36,5 @@ namespace OpenRCT2::Scripting
         scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> plugin) -> void { RemoveMenuItems(plugin); });
     }
 } // namespace OpenRCT2::Scripting
+
+#endif

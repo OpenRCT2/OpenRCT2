@@ -103,7 +103,9 @@ namespace OpenRCT2
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
+#ifdef __ENABLE_SCRIPTING__
         ScriptEngine _scriptEngine;
+#endif
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -138,7 +140,9 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+#ifdef __ENABLE_SCRIPTING__
             , _scriptEngine(_stdInOutConsole, *env)
+#endif
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -181,10 +185,12 @@ namespace OpenRCT2
             return _uiContext;
         }
 
+#ifdef __ENABLE_SCRIPTING__
         Scripting::ScriptEngine& GetScriptEngine() override
         {
             return _scriptEngine;
         }
+#endif
 
         GameState* GetGameState() override
         {
@@ -1026,7 +1032,10 @@ namespace OpenRCT2
 
             Twitch::Update();
             chat_update();
+#ifdef __ENABLE_SCRIPTING__
             _scriptEngine.Update();
+#endif
+            _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();
         }
 

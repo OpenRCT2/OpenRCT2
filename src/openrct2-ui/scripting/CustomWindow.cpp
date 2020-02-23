@@ -7,21 +7,23 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Dropdown.h"
-#include "ScUi.hpp"
-#include "ScWindow.hpp"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <limits>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
-#include <openrct2/scripting/Plugin.h>
-#include <openrct2/world/Sprite.h>
-#include <optional>
-#include <string>
-#include <vector>
+#    include "../interface/Dropdown.h"
+#    include "ScUi.hpp"
+#    include "ScWindow.hpp"
+
+#    include <limits>
+#    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Window.h>
+#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/localisation/StringIds.h>
+#    include <openrct2/scripting/Plugin.h>
+#    include <openrct2/world/Sprite.h>
+#    include <optional>
+#    include <string>
+#    include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -711,3 +713,5 @@ namespace OpenRCT2::Ui::Windows
     }
 
 } // namespace OpenRCT2::Ui::Windows
+
+#endif

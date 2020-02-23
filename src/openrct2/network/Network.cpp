@@ -1472,6 +1472,9 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
 
 void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
 {
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << (uint32_t)NETWORK_COMMAND_SCRIPTS;
+#    ifdef __ENABLE_SCRIPTING__
     using namespace OpenRCT2::Scripting;
 
     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1487,8 +1490,7 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
     }
 
     log_verbose("Server sends %u scripts", pluginsToSend.size());
-    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_SCRIPTS << (uint32_t)pluginsToSend.size();
+    *packet << (uint32_t)pluginsToSend.size();
     for (const auto& plugin : pluginsToSend)
     {
         const auto& metadata = plugin->GetMetadata();
@@ -1498,6 +1500,9 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
         *packet << (uint32_t)code.size();
         packet->Write((const uint8_t*)code.c_str(), code.size());
     }
+#    else
+    *packet << (uint32_t)0;
+#    endif
     connection.QueuePacket(std::move(packet));
 }
 
@@ -2437,10 +2442,11 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 
 void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-
     uint32_t numScripts{};
     packet >> numScripts;
+
+#    ifdef __ENABLE_SCRIPTING__
+    auto& scriptEngine = GetContext()->GetScriptEngine();
     for (uint32_t i = 0; i < numScripts; i++)
     {
         uint32_t codeLength{};
@@ -2448,6 +2454,13 @@ void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket
         auto code = std::string_view((const char*)packet.Read(codeLength), codeLength);
         scriptEngine.AddNetworkPlugin(code);
     }
+#    else
+    if (numScripts > 0)
+    {
+        connection.SetLastDisconnectReason("The server requires plugin support.");
+        Close();
+    }
+#    endif
 }
 
 void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)
@@ -2891,6 +2904,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     std::string text = szText;
     if (connection.Player != nullptr)
     {
+#    ifdef __ENABLE_SCRIPTING__
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
         {
@@ -2920,6 +2934,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
                 return;
             }
         }
+#    endif
     }
 
     const char* formatted = FormatChat(connection.Player, text.c_str());

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,11 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "HookEngine.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include "ScriptEngine.h"
+#    include "HookEngine.h"
 
-#include <unordered_map>
+#    include "ScriptEngine.h"
+
+#    include <unordered_map>
 
 using namespace OpenRCT2::Scripting;
 
@@ -171,3 +173,5 @@ const HookList& HookEngine::GetHookList(HOOK_TYPE type) const
     auto index = static_cast<size_t>(type);
     return _hookMap[index];
 }
+
+#endif

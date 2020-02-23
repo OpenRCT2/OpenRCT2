@@ -3282,6 +3282,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
         gDropdownItemsFormat[i++] = STR_MAPGEN_WINDOW_TITLE;
     }
 
+#ifdef __ENABLE_SCRIPTING__
     const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
     if (!customMenuItems.empty())
     {
@@ -3293,6 +3294,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
             i++;
         }
     }
+#endif
 
     window_dropdown_show_text(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0,
@@ -3325,12 +3327,14 @@ static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex)
     }
     else
     {
+#ifdef __ENABLE_SCRIPTING__
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
         if (customMenuItems.size() > customIndex)
         {
             customMenuItems[customIndex].Invoke();
         }
+#endif
     }
 }
 

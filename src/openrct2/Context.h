@@ -114,7 +114,9 @@ namespace OpenRCT2
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
         virtual IObjectRepository& GetObjectRepository() abstract;
+#ifdef __ENABLE_SCRIPTING__
         virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
+#endif
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;

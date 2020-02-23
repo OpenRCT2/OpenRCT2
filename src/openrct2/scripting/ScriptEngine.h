@@ -9,18 +9,20 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../core/FileWatcher.h"
-#include "HookEngine.h"
-#include "Plugin.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include <future>
-#include <memory>
-#include <mutex>
-#include <queue>
-#include <string>
-#include <unordered_set>
-#include <vector>
+#    include "../common.h"
+#    include "../core/FileWatcher.h"
+#    include "HookEngine.h"
+#    include "Plugin.h"
+
+#    include <future>
+#    include <memory>
+#    include <mutex>
+#    include <queue>
+#    include <string>
+#    include <unordered_set>
+#    include <vector>
 
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
@@ -168,3 +170,5 @@ namespace OpenRCT2::Scripting
     void ThrowIfGameStateNotMutable();
 
 } // namespace OpenRCT2::Scripting
+
+#endif

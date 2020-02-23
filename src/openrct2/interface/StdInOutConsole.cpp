@@ -55,8 +55,35 @@ void StdInOutConsole::Start()
 
 std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
+#ifdef __ENABLE_SCRIPTING__
     auto& scriptEngine = GetContext()->GetScriptEngine();
     return scriptEngine.Eval(s);
+#else
+    // Push on-demand evaluations onto a queue so that it can be processed deterministically
+    // on the main thead at the right time.
+    std::promise<void> barrier;
+    auto future = barrier.get_future();
+    _evalQueue.emplace(std::move(barrier), s);
+    return future;
+#endif
+}
+
+void StdInOutConsole::ProcessEvalQueue()
+{
+#ifndef __ENABLE_SCRIPTING__
+    while (_evalQueue.size() > 0)
+    {
+        auto item = std::move(_evalQueue.front());
+        _evalQueue.pop();
+        auto promise = std::move(std::get<0>(item));
+        auto command = std::move(std::get<1>(item));
+
+        Execute(command);
+
+        // Signal the promise so caller can continue
+        promise.set_value();
+    }
+#endif
 }
 
 void StdInOutConsole::Clear()

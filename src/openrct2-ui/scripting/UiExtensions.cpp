@@ -7,14 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "UiExtensions.h"
+#ifdef __ENABLE_SCRIPTING__
 
-#include "CustomMenu.h"
-#include "ScUi.hpp"
-#include "ScWidget.hpp"
-#include "ScWindow.hpp"
+#    include "UiExtensions.h"
 
-#include <openrct2/scripting/ScriptEngine.h>
+#    include "CustomMenu.h"
+#    include "ScUi.hpp"
+#    include "ScWidget.hpp"
+#    include "ScWindow.hpp"
+
+#    include <openrct2/scripting/ScriptEngine.h>
 
 using namespace OpenRCT2::Scripting;
 
@@ -31,3 +33,5 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     InitialiseCustomMenuItems(scriptEngine);
 }
+
+#endif

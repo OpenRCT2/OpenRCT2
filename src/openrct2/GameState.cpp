@@ -269,18 +269,22 @@ void GameState::UpdateLogic()
         }
     }
 
+#ifdef __ENABLE_SCRIPTING__
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
 
     auto day = _date.GetDay();
+#endif
 
     date_update();
     _date = Date(gDateMonthsElapsed, gDateMonthTicks);
 
+#ifdef __ENABLE_SCRIPTING__
     if (day != _date.GetDay())
     {
         hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
     }
+#endif
 
     scenario_update();
     climate_update();

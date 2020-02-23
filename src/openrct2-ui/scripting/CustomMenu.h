@@ -9,12 +9,14 @@
 
 #pragma once
 
-#include <memory>
-#include <openrct2/Context.h>
-#include <openrct2/scripting/Duktape.hpp>
-#include <openrct2/scripting/ScriptEngine.h>
-#include <string>
-#include <vector>
+#ifdef __ENABLE_SCRIPTING__
+
+#    include <memory>
+#    include <openrct2/Context.h>
+#    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/ScriptEngine.h>
+#    include <string>
+#    include <vector>
 
 namespace OpenRCT2::Scripting
 {
@@ -50,3 +52,5 @@ namespace OpenRCT2::Scripting
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
 
 } // namespace OpenRCT2::Scripting
+
+#endif
