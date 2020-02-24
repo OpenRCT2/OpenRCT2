@@ -115,6 +115,7 @@ void dukglue_register_property(duk_context* ctx,
 
 	duk_uint_t flags = DUK_DEFPROP_HAVE_GETTER
 		| DUK_DEFPROP_HAVE_SETTER
+		| DUK_DEFPROP_SET_ENUMERABLE
 		| DUK_DEFPROP_HAVE_CONFIGURABLE /* set not configurable (from JS) */
 		| DUK_DEFPROP_FORCE /* allow overriding built-ins and previously defined properties */;
 
