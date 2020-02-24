@@ -158,12 +158,10 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
 
 PluginType Plugin::ParsePluginType(const std::string_view& type)
 {
-    if (type == "server")
-        return PluginType::Server;
-    if (type == "client")
-        return PluginType::Client;
-    if (type == "server_client")
-        return PluginType::ServerClient;
+    if (type == "local")
+        return PluginType::Local;
+    if (type == "remote")
+        return PluginType::Remote;
     throw std::invalid_argument("Unknown plugin type.");
 }
 

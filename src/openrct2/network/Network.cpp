@@ -1483,7 +1483,7 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
     for (const auto& plugin : plugins)
     {
         const auto& metadata = plugin->GetMetadata();
-        if (metadata.Type == OpenRCT2::Scripting::PluginType::ServerClient)
+        if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
         {
             pluginsToSend.push_back(plugin);
         }

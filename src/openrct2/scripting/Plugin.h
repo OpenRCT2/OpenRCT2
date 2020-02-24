@@ -23,21 +23,16 @@ namespace OpenRCT2::Scripting
     enum class PluginType
     {
         /**
-         * Scripts that can run on any client with no impact on the game state.
-         */
-        Client,
-
-        /**
-         * Scripts that can run on servers with no impact on the game state and will not
+         * Scripts that can run on servers or clients with no impact on the game state and will not
          * be uploaded to clients.
          */
-        Server,
+        Local,
 
         /**
          * Scripts that can run on servers and will be uploaded to clients with ability to
          * modify game state in certain contexts.
          */
-        ServerClient,
+        Remote,
     };
 
     struct PluginMetadata
