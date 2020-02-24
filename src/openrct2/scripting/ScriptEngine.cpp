@@ -380,19 +380,31 @@ static std::string Stringify(duk_context* ctx, duk_idx_t idx)
 
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& execInfo = scriptEngine.GetExecInfo();
-    return execInfo.IsGameStateMutable();
+    // Allow single player to alter game state anywhere
+    if (network_get_mode() == NETWORK_MODE_NONE)
+    {
+        return true;
+    }
+    else
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto& execInfo = scriptEngine.GetExecInfo();
+        return execInfo.IsGameStateMutable();
+    }
 }
 
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& execInfo = scriptEngine.GetExecInfo();
-    if (!execInfo.IsGameStateMutable())
+    // Allow single player to alter game state anywhere
+    if (network_get_mode() != NETWORK_MODE_NONE)
     {
-        auto ctx = scriptEngine.GetContext();
-        duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto& execInfo = scriptEngine.GetExecInfo();
+        if (!execInfo.IsGameStateMutable())
+        {
+            auto ctx = scriptEngine.GetContext();
+            duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
+        }
     }
 }
 
