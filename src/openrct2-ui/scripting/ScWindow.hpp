@@ -40,6 +40,16 @@ namespace OpenRCT2::Scripting
         {
         }
 
+        int32_t classification_get()
+        {
+            return static_cast<int32_t>(_class);
+        }
+
+        int32_t number_get()
+        {
+            return static_cast<int32_t>(_number);
+        }
+
         int32_t x_get()
         {
             return GetWindow()->x;
@@ -123,6 +133,8 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScWindow::classification_get, nullptr, "classification");
+            dukglue_register_property(ctx, &ScWindow::number_get, nullptr, "number");
             dukglue_register_property(ctx, &ScWindow::x_get, &ScWindow::x_set, "x");
             dukglue_register_property(ctx, &ScWindow::y_get, &ScWindow::y_set, "y");
             dukglue_register_property(ctx, &ScWindow::width_get, nullptr, "width");

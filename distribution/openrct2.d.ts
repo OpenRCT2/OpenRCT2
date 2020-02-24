@@ -370,8 +370,8 @@ declare global {
     }
 
     interface Window {
-        id: number;
-        classification: string;
+        classification: number;
+        number: number;
         x: number;
         y: number;
         width: number;
