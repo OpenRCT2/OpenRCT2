@@ -902,6 +902,36 @@ static void viewport_surface_draw_water_side_top(
     viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, true);
 }
 
+static std::pair<int32_t, int32_t> surface_get_height_above_water(
+    const SurfaceElement& surfaceElement, const int32_t height, const int32_t surfaceShape)
+{
+    int32_t local_surfaceShape = surfaceShape;
+    int32_t local_height = height;
+
+    if (surfaceElement.GetWaterHeight() > 0)
+    {
+        int32_t waterHeight = surfaceElement.GetWaterHeight();
+        if (waterHeight > height)
+        {
+            local_height += (2 * COORDS_Z_STEP);
+
+            if (waterHeight != local_height || !(local_surfaceShape & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
+            {
+                local_height = waterHeight;
+                local_surfaceShape = 0;
+            }
+            else
+            {
+                int32_t bl = (surfaceShape ^ 0xF) << 2;
+                int32_t bh = bl >> 4;
+                local_surfaceShape = (bh & 0x3) | (bl & 0xC);
+            }
+        }
+    }
+
+    return { local_height, local_surfaceShape };
+}
+
 /**
  *  rct2: 0x0066062C
  */
@@ -920,7 +950,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     const corner_height& cornerHeights = corner_heights[surfaceShape];
 
     tile_descriptor selfDescriptor = {
-        { base.x / 32, base.y / 32 },
+        TileCoordsXY(base),
         tileElement,
         (uint8_t)terrain_type,
         surfaceShape,
@@ -946,7 +976,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         tile_descriptor& descriptor = tileDescriptors[i + 1];
 
         descriptor.tile_element = nullptr;
-        if (position.x > 0x2000 || position.y > 0x2000)
+        if (!map_is_location_valid(position))
         {
             continue;
         }
@@ -1053,9 +1083,14 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         {
             assert(surfaceShape < std::size(byte_97B444));
 
-            image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
+            auto [local_height, local_surfaceShape] = surface_get_height_above_water(
+                *tileElement->AsSurface(), height, surfaceShape);
+            image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[local_surfaceShape];
             image_id |= patrolColour << 19;
-            paint_attach_to_previous_ps(session, image_id, 0, 0);
+
+            paint_struct* backup = session->LastRootPS;
+            sub_98196C(session, image_id, 0, 0, 32, 32, 1, local_height);
+            session->LastRootPS = backup;
         }
     }
 
@@ -1155,31 +1190,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             }
             else
             {
-                int32_t local_surfaceShape = surfaceShape;
-                int32_t local_height = height;
-                // Water tool
-                if (tileElement->AsSurface()->GetWaterHeight() > 0)
-                {
-                    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
-                    if (waterHeight > height)
-                    {
-                        local_height += 16;
-
-                        if (waterHeight != local_height || !(local_surfaceShape & 0x10))
-                        {
-                            local_height = waterHeight;
-                            local_surfaceShape = 0;
-                        }
-                        else
-                        {
-                            int16_t bl, bh;
-
-                            bl = (surfaceShape ^ 0xF) << 2;
-                            bh = bl >> 4;
-                            local_surfaceShape = (bh & 0x3) | (bl & 0xC);
-                        }
-                    }
-                }
+                // The water tool should draw its grid _on_ the water, rather than on the surface under water.
+                auto [local_height, local_surfaceShape] = surface_get_height_above_water(
+                    *tileElement->AsSurface(), height, surfaceShape);
 
                 const int32_t image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 

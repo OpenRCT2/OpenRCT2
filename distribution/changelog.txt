@@ -29,6 +29,7 @@
 - Fix: [#10705] Apply multithreaded rendering to all viewports.
 - Fix: [#10739] Mountain tool overlay for even-numbered selections.
 - Fix: [#10752] Mute button state not correctly set at startup.
+- Improved: [#682] The staff patrol area is now drawn on the water, instead of on the surface under water.
 - Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
 
 0.2.4 (2019-10-28)
