@@ -3690,6 +3690,13 @@ STR_6345    :Felt Undersøger: Forøg element højde
 STR_6346    :Felt Undersøger: Reducer element højde
 STR_6347    :Sti tilføjelse kan ikke placeres på jernbaneoverskæring!
 STR_6348    :Fjern jernbaneoverskæring først!
+STR_6349    :Tilfældig titelsekvens
+STR_6350    :Spredning
+STR_6351    :Sceneri sprednings værktøj
+STR_6352    :Tæthed
+STR_6353    :{SMALLFONT}{BLACK}Lav tæthed
+STR_6354    :{SMALLFONT}{BLACK}Mellem tæthed
+STR_6355    :{SMALLFONT}{BLACK}Høj tæthed
 
 #############
 # Scenarios #
