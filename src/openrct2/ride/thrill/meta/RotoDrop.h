@@ -17,5 +17,6 @@ constexpr const RideTypeDescriptor RotoDropRTD =
 {
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_roto_drop),
 };
 // clang-format on

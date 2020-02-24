@@ -17,5 +17,6 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
 {
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_LOG_FLUME_REVERSER)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_log_flume),
 };
 // clang-format on

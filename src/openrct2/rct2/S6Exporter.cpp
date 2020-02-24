@@ -34,6 +34,7 @@
 #include "../peep/Staff.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/RideRatings.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"

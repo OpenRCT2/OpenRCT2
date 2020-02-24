@@ -240,7 +240,6 @@
 		C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668A1FE14C3A00694CB6 /* SawyerCoding.cpp */; };
 		C688786820289A4A0084B384 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668C1FE14C3A00694CB6 /* Util.cpp */; };
 		C688786920289A660084B384 /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
-		C688786B20289A6F0084B384 /* TrackDataOld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E881F950164005243C2 /* TrackDataOld.cpp */; };
 		C688786C20289A6F0084B384 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
 		C688786D20289A6F0084B384 /* TrackPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540B20060D8100A52E21 /* TrackPaint.cpp */; };
 		C688786E20289A6F0084B384 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E831F90AF41005243C2 /* Vehicle.cpp */; };
@@ -909,7 +908,6 @@
 		4CFE4E841F90AF41005243C2 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
 		4CFE4E861F950164005243C2 /* TrackData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackData.cpp; sourceTree = "<group>"; };
 		4CFE4E871F950164005243C2 /* TrackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackData.h; sourceTree = "<group>"; };
-		4CFE4E881F950164005243C2 /* TrackDataOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDataOld.cpp; sourceTree = "<group>"; };
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		9308D9FA209908080079EE96 /* TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElement.cpp; sourceTree = "<group>"; };
@@ -3040,7 +3038,6 @@
 				4CFE4E8F1F9625B0005243C2 /* Track.h */,
 				4CFE4E861F950164005243C2 /* TrackData.cpp */,
 				4CFE4E871F950164005243C2 /* TrackData.h */,
-				4CFE4E881F950164005243C2 /* TrackDataOld.cpp */,
 				4C4C1E971F58226500560300 /* TrackDesign.cpp */,
 				4C4C1E991F5832AA00560300 /* TrackDesign.h */,
 				F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */,
@@ -4240,7 +4237,6 @@
 				C688792C20289B9B0084B384 /* Monorail.cpp in Sources */,
 				C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */,
 				93F76F0120BFF77B00D4512C /* Paint.LargeScenery.cpp in Sources */,
-				C688786B20289A6F0084B384 /* TrackDataOld.cpp in Sources */,
 				C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */,
 				93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */,
 				C688787520289A780084B384 /* RideData.cpp in Sources */,

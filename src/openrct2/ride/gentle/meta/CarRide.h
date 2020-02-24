@@ -17,5 +17,6 @@ constexpr const RideTypeDescriptor CarRideRTD =
 {
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_SPINNING_TUNNEL) | (1ULL << TRACK_RAPIDS)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_car_ride),
 };
 // clang-format on

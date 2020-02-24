@@ -2208,7 +2208,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             session->TrackColours[SCHEME_3] = ghost_id;
         }
 
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
+        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeDescriptors[ride->type].TrackPaintFunction;
         if (paintFunctionGetter != nullptr)
         {
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);

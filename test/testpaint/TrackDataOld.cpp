@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "TrackData.h"
+#include "../../src/openrct2/ride/Ride.h"
+
+#include <cstdint>
 
 /** rct2: 0x008A42F4 */
 // clang-format off

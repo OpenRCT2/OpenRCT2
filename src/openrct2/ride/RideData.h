@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "Ride.h"
+#include "TrackPaint.h"
 
 struct ride_component_name
 {
@@ -92,6 +93,7 @@ struct RideTypeDescriptor
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     uint64_t ExtraTrackPieces;
+    TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
 };
 
 #ifdef _WIN32

@@ -9,6 +9,7 @@
 
 #include "TestTrack.hpp"
 
+#include "../../src/openrct2/ride/RideData.h"
 #include "FunctionCall.hpp"
 #include "GeneralSupportHeightCall.hpp"
 #include "PaintIntercept.hpp"
@@ -192,7 +193,7 @@ static void CallOriginal(
 static void CallNew(
     uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
 {
-    TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
+    TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeDescriptors[rideType].TrackPaintFunction;
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType, direction);
 
     newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, tileElement);
