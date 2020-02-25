@@ -287,7 +287,7 @@ private:
 
     void StringifyBoolean(const DukValue& val)
     {
-        _ss << val.as_bool() ? "true" : "false";
+        _ss << (val.as_bool() ? "true" : "false");
     }
 
     void StringifyNumber(const DukValue& val)
