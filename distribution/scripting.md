@@ -64,6 +64,10 @@ Scripts can conist of any behaviour and have a large memory pool available to th
 
 The APIs for OpenRCT2 try to mimic the internal data structures as close as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub.
 
+> How do I debug my script?
+
+Debugging has not yet been implemented but is planned. In the meantime, you can use `console.log` to print useful information for diagnosing problems.
+
 > What does the error 'Game state is not mutable in this context' mean?
 
 This means you are attempting to modify the game state (e.g. change the park, map or guests etc.) in a context where you should not be doing so. This might be because your script is defined as `local` meaning it must work independently of other players not having the script enabled, or a remote script attempting to modify the game in the main function or a user interface event.
@@ -124,6 +128,10 @@ if (typeof ui !== 'undefined') {
     });
 }
 ```
+
+> Can I modify the widgets on built-in windows?
+
+Not yet. A lot of the internal code for these windows relies on the widgets existing, and being in a specific order, as well as hard resizing them to certain positions. Modifying them would likely crash the game until the window system is improved to handle such changes.
 
 > Can servers add additional user interface elements to players?
 
