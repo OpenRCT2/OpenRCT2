@@ -3651,6 +3651,29 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Baixando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Criar Patos
 STR_6332    :Remover Patos
+STR_6333    :Aumentar fator de escala
+STR_6334    :Diminuir fator de escala
+STR_6335    :Inspetor de azulejo: Inserir elemento corrupto
+STR_6336    :Inspetor de azulejo: Copiar elemento
+STR_6337    :Inspetor de azulejo: Colar elemento
+STR_6338    :Inspetor de azulejo: Apagar elemento
+STR_6339    :Inspetor de azulejo: Mover elemento pra cima
+STR_6340    :Inspetor de azulejo: Mover elemento pra baixo
+STR_6341    :Inspetor de azulejo: Aumentar coordenada X
+STR_6342    :Inspetor de azulejo: Diminuir coordenada X
+STR_6343    :Inspetor de azulejo: Aumentar coordenada Y
+STR_6344    :Inspetor de azulejo: Diminuir coordenada Y
+STR_6345    :Inspetor de azulejo: Aumentar altura do elemento
+STR_6346    :Inspetor de azulejo: Diminuir altura do elemento
+STR_6347    :Adições de caminho não podem ser feitas em passagens de nível!
+STR_6348    :Remova a passagem de nível primeiro!
+STR_6349    :Sequência de título aleatória
+STR_6350    :Dispersar
+STR_6351    :Ferramenta de Dispersão de Cenário
+STR_6352    :Densidade
+STR_6353    :{SMALLFONT}{BLACK}Densidade baixa
+STR_6354    :{SMALLFONT}{BLACK}Densidade média
+STR_6355    :{SMALLFONT}{BLACK}Densidade alta
 
 #############
 # Scenarios #
