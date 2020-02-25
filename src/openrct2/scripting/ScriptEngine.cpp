@@ -37,6 +37,308 @@ using namespace OpenRCT2::Scripting;
 
 static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 1;
 
+struct ExpressionStringifier final
+{
+private:
+    std::stringstream _ss;
+    duk_context* _context{};
+    int32_t _indent{};
+
+    ExpressionStringifier(duk_context* ctx)
+        : _context(ctx)
+    {
+    }
+
+    void PushIndent(int32_t c = 1)
+    {
+        _indent += c;
+    }
+
+    void PopIndent(int32_t c = 1)
+    {
+        _indent -= c;
+    }
+
+    void LineFeed()
+    {
+        _ss << "\n" << std::string(_indent, ' ');
+    }
+
+    void Stringify(const DukValue& val, bool canStartWithNewLine)
+    {
+        switch (val.type())
+        {
+            case DukValue::Type::UNDEFINED:
+                _ss << "undefined";
+                break;
+            case DukValue::Type::NULLREF:
+                _ss << "null";
+                break;
+            case DukValue::Type::BOOLEAN:
+                StringifyBoolean(val);
+                break;
+            case DukValue::Type::NUMBER:
+                StringifyNumber(val);
+                break;
+            case DukValue::Type::STRING:
+                _ss << "'" << val.as_string() << "'";
+                break;
+            case DukValue::Type::OBJECT:
+                if (val.is_function())
+                {
+                    StringifyFunction(val);
+                }
+                else if (val.is_array())
+                {
+                    StringifyArray(val, canStartWithNewLine);
+                }
+                else
+                {
+                    StringifyObject(val, canStartWithNewLine);
+                }
+                break;
+            case DukValue::Type::BUFFER:
+                _ss << "[Buffer]";
+                break;
+            case DukValue::Type::POINTER:
+                _ss << "[Pointer]";
+                break;
+            case DukValue::Type::LIGHTFUNC:
+                _ss << "[LightFunc]";
+                break;
+        }
+    }
+
+    void StringifyArray(const DukValue& val, bool canStartWithNewLine)
+    {
+        constexpr auto maxItemsToShow = 4;
+
+        val.push();
+        auto arrayLen = duk_get_length(_context, -1);
+        if (arrayLen == 0)
+        {
+            _ss << "[]";
+        }
+        else if (arrayLen == 1)
+        {
+            _ss << "[ ";
+            for (duk_uarridx_t i = 0; i < arrayLen; i++)
+            {
+                if (duk_get_prop_index(_context, -1, i))
+                {
+                    if (i != 0)
+                    {
+                        _ss << ", ";
+                    }
+                    Stringify(DukValue::take_from_stack(_context), false);
+                }
+            }
+            _ss << " ]";
+        }
+        else
+        {
+            if (canStartWithNewLine)
+            {
+                PushIndent();
+                LineFeed();
+            }
+            _ss << "[ ";
+            PushIndent(2);
+            for (duk_uarridx_t i = 0; i < arrayLen; i++)
+            {
+                if (i != 0)
+                {
+                    _ss << ",";
+                    LineFeed();
+                }
+                if (i >= maxItemsToShow)
+                {
+                    auto remainingItemsNotShown = arrayLen - maxItemsToShow;
+                    if (remainingItemsNotShown == 1)
+                    {
+                        _ss << "... 1 more item";
+                    }
+                    else
+                    {
+                        _ss << "... " << std::to_string(remainingItemsNotShown) << " more items";
+                    }
+                    break;
+                }
+                else
+                {
+                    if (duk_get_prop_index(_context, -1, i))
+                    {
+                        Stringify(DukValue::take_from_stack(_context), false);
+                    }
+                }
+            }
+            _ss << " ]";
+            PopIndent(2);
+            if (canStartWithNewLine)
+            {
+                PopIndent();
+            }
+        }
+        duk_pop(_context);
+    }
+
+    void StringifyObject(const DukValue& val, bool canStartWithNewLine)
+    {
+        auto numEnumerables = GetNumEnumerablesOnObject(val);
+        if (numEnumerables == 0)
+        {
+            _ss << "{}";
+        }
+        else if (numEnumerables == 1)
+        {
+            _ss << "{ ";
+
+            val.push();
+            duk_enum(_context, -1, 0);
+            auto index = 0;
+            while (duk_next(_context, -1, 1))
+            {
+                if (index != 0)
+                {
+                    _ss << ", ";
+                }
+                auto value = DukValue::take_from_stack(_context, -1);
+                auto key = DukValue::take_from_stack(_context, -1);
+                if (key.type() == DukValue::Type::STRING)
+                {
+                    _ss << key.as_string() << ": ";
+                }
+                else
+                {
+                    // For some reason the key was not a string
+                    _ss << "?: ";
+                }
+                Stringify(value, true);
+                index++;
+            }
+            duk_pop_2(_context);
+
+            _ss << " }";
+        }
+        else
+        {
+            if (canStartWithNewLine)
+            {
+                PushIndent();
+                LineFeed();
+            }
+
+            _ss << "{ ";
+            PushIndent(2);
+
+            val.push();
+            duk_enum(_context, -1, 0);
+            auto index = 0;
+            while (duk_next(_context, -1, 1))
+            {
+                if (index != 0)
+                {
+                    _ss << ",";
+                    LineFeed();
+                }
+                auto value = DukValue::take_from_stack(_context, -1);
+                auto key = DukValue::take_from_stack(_context, -1);
+                if (key.type() == DukValue::Type::STRING)
+                {
+                    _ss << key.as_string() << ": ";
+                }
+                else
+                {
+                    // For some reason the key was not a string
+                    _ss << "?: ";
+                }
+                Stringify(value, true);
+                index++;
+            }
+            duk_pop_2(_context);
+
+            PopIndent(2);
+            _ss << " }";
+
+            if (canStartWithNewLine)
+            {
+                PopIndent();
+            }
+        }
+    }
+
+    void StringifyFunction(const DukValue& val)
+    {
+        val.push();
+        if (duk_is_c_function(_context, -1))
+        {
+            _ss << "[Native Function]";
+        }
+        else if (duk_is_ecmascript_function(_context, -1))
+        {
+            _ss << "[ECMAScript Function]";
+        }
+        else
+        {
+            _ss << "[Function]";
+        }
+        duk_pop(_context);
+    }
+
+    void StringifyBoolean(const DukValue& val)
+    {
+        _ss << val.as_bool() ? "true" : "false";
+    }
+
+    void StringifyNumber(const DukValue& val)
+    {
+        const auto d = val.as_double();
+        const duk_int_t i = val.as_int();
+        if (AlmostEqual<double>(d, i))
+        {
+            _ss << std::to_string(i);
+        }
+        else
+        {
+            _ss << std::to_string(d);
+        }
+    }
+
+    size_t GetNumEnumerablesOnObject(const DukValue& val)
+    {
+        size_t count = 0;
+        val.push();
+        duk_enum(_context, -1, 0);
+        while (duk_next(_context, -1, 0))
+        {
+            count++;
+            duk_pop(_context);
+        }
+        duk_pop_2(_context);
+        return count;
+    }
+
+    // Taken from http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
+    template<class T>
+    static typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type AlmostEqual(T x, T y, int32_t ulp = 20)
+    {
+        // the machine epsilon has to be scaled to the magnitude of the values used
+        // and multiplied by the desired precision in ULPs (units in the last place)
+        return std::abs(x - y) <= std::numeric_limits<T>::epsilon() * std::abs(x + y) * ulp
+            // unless the result is subnormal
+            || std::abs(x - y)
+            < (std::numeric_limits<T>::min)(); // TODO: Remove parentheses around min once the macro is removed
+    }
+
+public:
+    static std::string StringifyExpression(const DukValue& val)
+    {
+        ExpressionStringifier instance(val.context());
+        instance.Stringify(val, false);
+        return instance._ss.str();
+    }
+};
+
 DukContext::DukContext()
 {
     _context = duk_create_heap_default();
@@ -363,126 +665,9 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
     LoadPlugin(plugin);
 }
 
-// Taken from http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
-template<class T>
-static typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type AlmostEqual(T x, T y, int32_t ulp = 20)
+std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
 {
-    // the machine epsilon has to be scaled to the magnitude of the values used
-    // and multiplied by the desired precision in ULPs (units in the last place)
-    return std::abs(x - y) <= std::numeric_limits<T>::epsilon() * std::abs(x + y) * ulp
-        // unless the result is subnormal
-        || std::abs(x - y) < (std::numeric_limits<T>::min)(); // TODO: Remove parentheses around min once the macro is removed
-}
-
-std::string OpenRCT2::Scripting::Stringify(const DukValue& val, int32_t depth)
-{
-    if (depth >= 3)
-        return "...";
-
-    std::string str;
-    switch (val.type())
-    {
-        case DukValue::Type::UNDEFINED:
-            str = "undefined";
-            break;
-        case DukValue::Type::NULLREF:
-            str = "null";
-            break;
-        case DukValue::Type::BOOLEAN:
-            str = val.as_bool() ? "true" : "false";
-            break;
-        case DukValue::Type::NUMBER:
-        {
-            const auto d = val.as_double();
-            const duk_int_t i = val.as_int();
-            if (AlmostEqual<double>(d, i))
-            {
-                str = std::to_string(i);
-            }
-            else
-            {
-                str = std::to_string(d);
-            }
-            break;
-        }
-        case DukValue::Type::STRING:
-            str = "\"" + val.as_string() + "\"";
-            break;
-        case DukValue::Type::OBJECT:
-            if (val.is_function())
-            {
-                auto ctx = val.context();
-                val.push();
-                if (duk_is_c_function(ctx, -1))
-                {
-                    str = u8"ƒ [native]";
-                }
-                else if (duk_is_ecmascript_function(ctx, -1))
-                {
-                    str = u8"ƒ [ecmascript]";
-                }
-                else
-                {
-                    str = u8"ƒ [javascript]";
-                }
-                duk_pop(ctx);
-            }
-            else if (val.is_array())
-            {
-                str = "[";
-                auto ctx = val.context();
-                val.push();
-                auto arrayLen = duk_get_length(ctx, -1);
-                for (duk_uarridx_t i = 0; i < arrayLen; i++)
-                {
-                    if (i != 0)
-                        str += ", ";
-                    if (duk_get_prop_index(ctx, -1, i))
-                    {
-                        auto arrayVal = DukValue::take_from_stack(ctx);
-                        str += Stringify(arrayVal, depth + 1);
-                    }
-                    if (i >= 4)
-                    {
-                        str += ", ...";
-                        break;
-                    }
-                }
-                duk_pop(ctx);
-                str += "]";
-            }
-            else
-            {
-                str = "{";
-                auto ctx = val.context();
-                val.push();
-                duk_enum(ctx, -1, 0);
-                auto index = 0;
-                while (duk_next(ctx, -1, 1))
-                {
-                    if (index != 0)
-                        str += ", ";
-                    auto value = DukValue::take_from_stack(ctx, -1);
-                    auto key = DukValue::take_from_stack(ctx, -1);
-                    str += Stringify(key, depth + 1);
-                    str += ": ";
-                    str += Stringify(value, depth + 1);
-                    index++;
-                }
-                duk_pop_2(ctx);
-                str += "}";
-            }
-            break;
-        case DukValue::Type::BUFFER:
-            str = "buffer";
-            break;
-        case DukValue::Type::POINTER:
-            str = "pointer";
-            break;
-        case DukValue::Type::LIGHTFUNC:
-            break;
-    }
-    return str;
+    return ExpressionStringifier::StringifyExpression(val);
 }
 
 bool OpenRCT2::Scripting::IsGameStateMutable()

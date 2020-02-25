@@ -168,7 +168,7 @@ namespace OpenRCT2::Scripting
 
     bool IsGameStateMutable();
     void ThrowIfGameStateNotMutable();
-    std::string Stringify(const DukValue& value, int32_t depth = 0);
+    std::string Stringify(const DukValue& value);
 
 } // namespace OpenRCT2::Scripting
 
