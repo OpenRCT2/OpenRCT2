@@ -15,7 +15,7 @@
 //   /// <reference path="/path/to/openrct2.d.ts" />
 //
 
-export type PluginType = "server" | "client" | "server_client";
+export type PluginType = "local" | "remote";
 
 declare global {
     interface PluginMetadata {
@@ -288,7 +288,7 @@ declare global {
         trousers: number;
     }
 
-    interface Map {
+    interface GameMap {
         readonly size: { x: number; y: number; };
         readonly rides: number;
         readonly things: number;
@@ -595,7 +595,7 @@ declare global {
     var console: Console;
     var context: Context;
     var date: GameDate;
-    var map: Map;
+    var map: GameMap;
     var network: Network;
     var park: Park;
     var ui: Ui;
