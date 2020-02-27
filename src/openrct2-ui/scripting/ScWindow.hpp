@@ -16,6 +16,7 @@
 #    include <openrct2/common.h>
 #    include <openrct2/interface/Window.h>
 #    include <openrct2/interface/Window_internal.h>
+#    include <openrct2/localisation/Language.h>
 #    include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
@@ -125,6 +126,24 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        std::string title_get()
+        {
+            auto w = GetWindow();
+            if (w != nullptr && w->classification == WC_CUSTOM)
+            {
+                return GetWindowTitle(w);
+            }
+            return {};
+        }
+        void title_set(std::string value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && w->classification == WC_CUSTOM)
+            {
+                UpdateWindowTitle(w, language_convert_string(value));
+            }
+        }
+
         void close()
         {
             auto w = GetWindow();
@@ -169,6 +188,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
             dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
             dukglue_register_property(ctx, &ScWindow::colours_get, &ScWindow::colours_set, "colours");
+            dukglue_register_property(ctx, &ScWindow::title_get, &ScWindow::title_set, "title");
 
             dukglue_register_method(ctx, &ScWindow::close, "close");
             dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");

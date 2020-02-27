@@ -107,6 +107,7 @@ bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_s
 void language_free_object_string(rct_string_id stringId);
 rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index);
 rct_string_id language_allocate_object_string(const std::string& target);
+std::string language_convert_string(const std::string_view& s);
 
 constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
 {

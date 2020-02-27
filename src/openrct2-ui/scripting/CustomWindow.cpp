@@ -17,6 +17,7 @@
 #    include <openrct2-ui/interface/Widget.h>
 #    include <openrct2-ui/windows/Window.h>
 #    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/localisation/Language.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/scripting/Plugin.h>
@@ -109,26 +110,8 @@ namespace OpenRCT2::Ui::Windows
         static std::string ProcessString(const DukValue& value)
         {
             if (value.type() == DukValue::Type::STRING)
-                return ProcessString(value.as_string());
+                return language_convert_string(value.as_string());
             return {};
-        }
-
-        static std::string ProcessString(const std::string_view& s)
-        {
-            std::string result;
-            result.reserve(s.size());
-            for (char c : s)
-            {
-                if (c == '\n')
-                {
-                    result.push_back(FORMAT_NEWLINE);
-                }
-                else
-                {
-                    result.push_back(c);
-                }
-            }
-            return result;
         }
 
         static CustomWidgetDesc FromDukValue(DukValue desc)
@@ -228,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
             result.MaxWidth = GetOptionalInt(desc["maxWidth"]);
             result.MinHeight = GetOptionalInt(desc["minHeight"]);
             result.MaxHeight = GetOptionalInt(desc["maxHeight"]);
-            result.Title = desc["title"].as_string();
+            result.Title = language_convert_string(desc["title"].as_string());
             result.Id = GetOptionalInt(desc["id"]);
 
             if (desc["widgets"].is_array())
@@ -742,6 +725,25 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    std::string GetWindowTitle(rct_window* w)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            return customInfo.Desc.Title;
+        }
+        return {};
+    }
+
+    void UpdateWindowTitle(rct_window* w, const std::string_view& value)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            customInfo.Desc.Title = value;
+        }
+    }
+
     void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, const std::string_view& value)
     {
         if (w->custom_info != nullptr)
@@ -750,7 +752,7 @@ namespace OpenRCT2::Ui::Windows
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(widgetIndex);
             if (customWidgetInfo != nullptr)
             {
-                customWidgetInfo->Text = CustomWidgetDesc::ProcessString(value);
+                customWidgetInfo->Text = language_convert_string(value);
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
                 widget_invalidate(w, widgetIndex);
             }
