@@ -234,7 +234,7 @@ namespace OpenRCT2::Scripting
                 auto widget = GetWidget();
                 if (widget != nullptr && (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING) && widget->string != nullptr)
                 {
-                    return widget->string;
+                    return language_convert_string_to_tokens(widget->string);
                 }
             }
             return "";

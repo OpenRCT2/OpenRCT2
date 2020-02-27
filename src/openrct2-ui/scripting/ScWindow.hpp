@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
             {
-                return GetWindowTitle(w);
+                return language_convert_string_to_tokens(GetWindowTitle(w));
             }
             return {};
         }

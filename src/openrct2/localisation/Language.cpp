@@ -137,6 +137,41 @@ rct_string_id language_allocate_object_string(const std::string& target)
     return localisationService.AllocateObjectString(target);
 }
 
+std::string language_convert_string_to_tokens(const std::string_view& s)
+{
+    std::string result;
+    result.reserve(s.size() * 4);
+    std::string input = std::string(s);
+    auto readPtr = input.c_str();
+    while (true)
+    {
+        char32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        if (code == 0)
+        {
+            break;
+        }
+        else if (code == '\n')
+        {
+            result.push_back('\n');
+        }
+        else if (utf8_is_format_code(code))
+        {
+            auto token = format_get_token(code);
+            result.push_back('{');
+            result.append(token);
+            result.push_back('}');
+        }
+        else
+        {
+            char buffer[8]{};
+            utf8_write_codepoint(buffer, code);
+            result.append(buffer);
+        }
+    }
+    result.shrink_to_fit();
+    return result;
+}
+
 std::string language_convert_string(const std::string_view& s)
 {
     enum class PARSE_STATE
