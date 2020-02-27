@@ -93,6 +93,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t Width{};
         int32_t Height{};
         std::string Name;
+        ImageId Image;
         std::string Text;
         std::vector<std::string> Items;
         int32_t SelectedIndex{};
@@ -136,13 +137,24 @@ namespace OpenRCT2::Ui::Windows
             result.Y = desc["y"].as_int();
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
+            if (desc["isDisabled"].type() == DukValue::Type::BOOLEAN)
+                result.IsDisabled = desc["isDisabled"].as_bool();
             if (desc["name"].type() == DukValue::Type::STRING)
             {
                 result.Name = desc["name"].as_string();
             }
             if (result.Type == "button")
             {
-                result.Text = ProcessString(desc["text"]);
+                auto dukImage = desc["image"];
+                if (dukImage.type() == DukValue::Type::NUMBER)
+                {
+                    auto img = dukImage.as_uint();
+                    result.Image = ImageId::FromUInt32(img);
+                }
+                else
+                {
+                    result.Text = ProcessString(desc["text"]);
+                }
                 result.OnClick = desc["onClick"];
             }
             else if (result.Type == "checkbox")
@@ -518,9 +530,17 @@ namespace OpenRCT2::Ui::Windows
 
         if (desc.Type == "button")
         {
-            widget.type = WWT_BUTTON;
-            widget.string = (utf8*)desc.Text.c_str();
-            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            if (desc.Image.HasValue())
+            {
+                widget.type = WWT_FLATBTN;
+                widget.image = desc.Image.ToUInt32();
+            }
+            else
+            {
+                widget.type = WWT_BUTTON;
+                widget.string = (utf8*)desc.Text.c_str();
+                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            }
             widgetList.push_back(widget);
         }
         else if (desc.Type == "checkbox")

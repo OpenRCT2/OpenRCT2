@@ -206,12 +206,33 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint32_t image_get()
+        {
+            if (IsCustomWindow())
+            {
+                auto widget = GetWidget();
+                if (widget != nullptr && widget->type == WWT_FLATBTN)
+                {
+                    return widget->image;
+                }
+            }
+            return 0;
+        }
+        void image_set(uint32_t value)
+        {
+            auto widget = GetWidget();
+            if (widget != nullptr && widget->type == WWT_FLATBTN)
+            {
+                widget->image = value;
+            }
+        }
+
         std::string text_get()
         {
             if (IsCustomWindow())
             {
                 auto widget = GetWidget();
-                if (widget != nullptr && widget->string != nullptr)
+                if (widget != nullptr && (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING) && widget->string != nullptr)
                 {
                     return widget->string;
                 }
@@ -253,6 +274,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
 
             // No so common
+            dukglue_register_property(ctx, &ScWidget::image_get, &ScWidget::image_set, "image");
             dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");
             dukglue_register_property(ctx, &ScWidget::isChecked_get, &ScWidget::isChecked_set, "isChecked");
             dukglue_register_property(ctx, &ScWidget::viewport_get, nullptr, "viewport");

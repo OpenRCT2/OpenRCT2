@@ -339,6 +339,7 @@ declare global {
     }
 
     interface ButtonWidget extends Widget {
+        image: number;
         text: string;
         onClick: () => void;
     }
