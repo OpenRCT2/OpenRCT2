@@ -412,6 +412,7 @@ declare global {
         minWidth?: number;
         minHeight?: number;
         widgets?: Widget[];
+        colours?: number[];
         tabs?: Tab[];
 
         onClose?: () => void;

@@ -98,6 +98,33 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        std::vector<int32_t> colours_get()
+        {
+            std::vector<int32_t> result;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                result.reserve(std::size(w->colours));
+                for (auto c : w->colours)
+                {
+                    result.push_back(c);
+                }
+            }
+            return result;
+        }
+        void colours_set(std::vector<int32_t> colours)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                for (int32_t i = 0; i < std::size(w->colours); i++)
+                {
+                    w->colours[i] = i < colours.size() ? std::clamp<int32_t>(colours[i], COLOUR_BLACK, COLOUR_COUNT - 1)
+                                                       : COLOUR_BLACK;
+                }
+            }
+        }
+
         void close()
         {
             auto w = GetWindow();
@@ -141,6 +168,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
             dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
+            dukglue_register_property(ctx, &ScWindow::colours_get, &ScWindow::colours_set, "colours");
 
             dukglue_register_method(ctx, &ScWindow::close, "close");
             dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");

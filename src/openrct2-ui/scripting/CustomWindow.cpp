@@ -207,6 +207,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Title;
         std::optional<int32_t> Id;
         std::vector<CustomWidgetDesc> Widgets;
+        std::vector<colour_t> Colours;
 
         CustomWindowDesc() = default;
 
@@ -235,6 +236,19 @@ namespace OpenRCT2::Ui::Windows
                 auto dukWidgets = desc["widgets"].as_array();
                 std::transform(dukWidgets.begin(), dukWidgets.end(), std::back_inserter(result.Widgets), [](const DukValue& w) {
                     return CustomWidgetDesc::FromDukValue(w);
+                });
+            }
+
+            if (desc["colours"].is_array())
+            {
+                auto dukColours = desc["colours"].as_array();
+                std::transform(dukColours.begin(), dukColours.end(), std::back_inserter(result.Colours), [](const DukValue& w) {
+                    colour_t c = COLOUR_BLACK;
+                    if (w.type() == DukValue::Type::NUMBER)
+                    {
+                        c = static_cast<colour_t>(std::clamp<int32_t>(w.as_int(), COLOUR_BLACK, COLOUR_COUNT - 1));
+                    }
+                    return c;
                 });
             }
 
@@ -315,9 +329,17 @@ namespace OpenRCT2::Ui::Windows
         window->number = GetNewWindowNumber();
         window->custom_info = new CustomWindowInfo(owner, desc);
         window->enabled_widgets = (1 << WIDX_CLOSE);
+
+        // Set window colours
         window->colours[0] = COLOUR_GREY;
         window->colours[1] = COLOUR_GREY;
         window->colours[2] = COLOUR_GREY;
+        auto numColours = std::min(std::size(window->colours), std::size(desc.Colours));
+        for (size_t i = 0; i < numColours; i++)
+        {
+            window->colours[i] = desc.Colours[i];
+        }
+
         if (desc.IsResizable())
         {
             window->min_width = desc.MinWidth.value_or(0);
