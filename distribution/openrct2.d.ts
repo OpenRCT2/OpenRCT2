@@ -326,7 +326,7 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "tabview" | "viewport";
+        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "spinner" | "tabview" | "viewport";
 
     interface Widget {
         type: WidgetType;
@@ -358,6 +358,13 @@ declare global {
 
     interface LabelWidget extends Widget {
         text: string;
+        onChanged: (index: number) => void;
+    }
+
+    interface SpinnerWidget extends Widget {
+        text: string;
+        onDecrement: () => void;
+        onIncrement: () => void;
     }
 
     interface ViewportWidget extends Widget {

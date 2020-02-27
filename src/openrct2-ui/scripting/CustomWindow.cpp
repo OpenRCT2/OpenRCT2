@@ -103,6 +103,8 @@ namespace OpenRCT2::Ui::Windows
         // Event handlers
         DukValue OnClick;
         DukValue OnChange;
+        DukValue OnIncrement;
+        DukValue OnDecrement;
 
         static std::string ProcessString(const DukValue& value)
         {
@@ -180,6 +182,12 @@ namespace OpenRCT2::Ui::Windows
             else if (result.Type == "groupbox" || result.Type == "label")
             {
                 result.Text = ProcessString(desc["text"]);
+            }
+            else if (result.Type == "spinner")
+            {
+                result.Text = ProcessString(desc["text"]);
+                result.OnIncrement = desc["onIncrement"];
+                result.OnDecrement = desc["onDecrement"];
             }
             return result;
         }
@@ -405,6 +413,17 @@ namespace OpenRCT2::Ui::Windows
                     w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[widget->colour], 0,
                     DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
             }
+            else if (widgetDesc->Type == "spinner")
+            {
+                if (widget->text == STR_NUMERIC_DOWN)
+                {
+                    InvokeEventHandler(info.Owner, widgetDesc->OnDecrement);
+                }
+                else if (widget->text == STR_NUMERIC_UP)
+                {
+                    InvokeEventHandler(info.Owner, widgetDesc->OnIncrement);
+                }
+            }
         }
     }
 
@@ -591,6 +610,32 @@ namespace OpenRCT2::Ui::Windows
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
         }
+        else if (desc.Type == "spinner")
+        {
+            widget.type = WWT_SPINNER;
+            widget.string = (utf8*)desc.Text.c_str();
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+
+            // Add the decrement button
+            widget = {};
+            widget.type = WWT_BUTTON;
+            widget.colour = 1;
+            widget.left = desc.X + desc.Width - 25;
+            widget.right = widget.left + 12;
+            widget.top = desc.Y + 1;
+            widget.bottom = desc.Y + desc.Height - 1;
+            widget.text = STR_NUMERIC_DOWN;
+            widget.tooltip = STR_NONE;
+            widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            widgetList.push_back(widget);
+
+            // Add the increment button
+            widget.left = desc.X + desc.Width - 12;
+            widget.right = widget.left + 11;
+            widget.text = STR_NUMERIC_UP;
+            widgetList.push_back(widget);
+        }
         else if (desc.Type == "viewport")
         {
             widget.type = WWT_VIEWPORT;
@@ -685,6 +730,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->Text = CustomWidgetDesc::ProcessString(value);
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
+                widget_invalidate(w, widgetIndex);
             }
         }
     }
