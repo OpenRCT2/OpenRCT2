@@ -118,7 +118,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                for (int32_t i = 0; i < std::size(w->colours); i++)
+                for (size_t i = 0; i < std::size(w->colours); i++)
                 {
                     w->colours[i] = i < colours.size() ? std::clamp<int32_t>(colours[i], COLOUR_BLACK, COLOUR_COUNT - 1)
                                                        : COLOUR_BLACK;
