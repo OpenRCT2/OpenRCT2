@@ -433,7 +433,7 @@ namespace GameActions
 
                     if (!result->Position.isNull())
                     {
-                        network_set_player_last_action_coord(playerId, result->Position);
+                        network_set_player_last_action_coord(playerIndex, result->Position);
                     }
                 }
                 else
