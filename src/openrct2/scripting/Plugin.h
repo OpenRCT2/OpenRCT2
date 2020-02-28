@@ -62,7 +62,7 @@ namespace OpenRCT2::Scripting
 
         bool HasPath() const
         {
-            return _path.empty();
+            return !_path.empty();
         }
 
         const PluginMetadata& GetMetadata() const
