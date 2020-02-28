@@ -66,6 +66,33 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void type_set(std::string value)
+        {
+            auto type = _element->type;
+            if (value == "surface")
+                type = TILE_ELEMENT_TYPE_SURFACE;
+            else if (value == "footpath")
+                type = TILE_ELEMENT_TYPE_PATH;
+            else if (value == "track")
+                type = TILE_ELEMENT_TYPE_TRACK;
+            else if (value == "small-scenery")
+                type = TILE_ELEMENT_TYPE_SMALL_SCENERY;
+            else if (value == "entrance")
+                type = TILE_ELEMENT_TYPE_ENTRANCE;
+            else if (value == "wall")
+                type = TILE_ELEMENT_TYPE_WALL;
+            else if (value == "large-scenery")
+                type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
+            else if (value == "banner")
+                type = TILE_ELEMENT_TYPE_BANNER;
+            else if (value == "openrct2-corrupt")
+                type = TILE_ELEMENT_TYPE_CORRUPT;
+            else
+                return;
+            _element->type = type;
+            map_invalidate_tile_full(_coords);
+        }
+
         bool broken_get() const
         {
             return _element->flags & TILE_ELEMENT_FLAG_BROKEN;
@@ -132,11 +159,12 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScTileElement::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
+            dukglue_register_property(ctx, &ScTileElement::type_get, &ScTileElement::type_set, "type");
             dukglue_register_property(ctx, &ScTileElement::baseHeight_get, &ScTileElement::baseHeight_set, "baseHeight");
             dukglue_register_property(
                 ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
+
+            dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
             dukglue_register_property(ctx, &ScTileElement::grassLength_get, &ScTileElement::grassLength_set, "grassLength");
             dukglue_register_property(ctx, &ScTileElement::hasOwnership_get, nullptr, "hasOwnership");
         }
@@ -146,25 +174,14 @@ namespace OpenRCT2::Scripting
     {
     private:
         CoordsXY _coords;
-        TileElement* _first;
-        size_t _count = 0;
 
     public:
-        ScTile(CoordsXY coords, TileElement* first)
+        ScTile(CoordsXY coords)
             : _coords(coords)
-            , _first(first)
         {
-            _count = 0;
-            if (first != nullptr)
-            {
-                auto element = first;
-                do
-                {
-                    _count++;
-                } while (!(element++)->IsLastForTile());
-            }
         }
 
+    private:
         int32_t x_get()
         {
             return _coords.x / 32;
@@ -175,24 +192,194 @@ namespace OpenRCT2::Scripting
             return _coords.y / 32;
         }
 
-        size_t elements_get()
+        size_t numElements_get()
         {
-            return _count;
+            auto first = GetFirstElement();
+            return GetNumElements(first);
+        }
+
+        std::vector<std::shared_ptr<ScTileElement>> elements_get()
+        {
+            std::vector<std::shared_ptr<ScTileElement>> result;
+            auto first = GetFirstElement();
+            auto currentNumElements = GetNumElements(first);
+            if (currentNumElements != 0)
+            {
+                result.reserve(currentNumElements);
+                for (size_t i = 0; i < currentNumElements; i++)
+                {
+                    result.push_back(std::make_shared<ScTileElement>(_coords, &first[i]));
+                }
+            }
+            return result;
+        }
+
+        DukValue data_get()
+        {
+            auto ctx = GetDukContext();
+            auto first = map_get_first_element_at(_coords);
+            auto dataLen = GetNumElements(first) * sizeof(TileElement);
+            auto data = duk_push_fixed_buffer(ctx, dataLen);
+            if (first != nullptr)
+            {
+                std::memcpy(data, first, dataLen);
+            }
+            duk_push_buffer_object(ctx, -1, 0, dataLen, DUK_BUFOBJ_UINT8ARRAY);
+            return DukValue::take_from_stack(ctx);
+        }
+
+        void data_set(DukValue value)
+        {
+            auto ctx = value.context();
+            value.push();
+            if (duk_is_buffer_data(ctx, -1))
+            {
+                duk_size_t dataLen{};
+                auto data = duk_get_buffer_data(ctx, -1, &dataLen);
+                auto numElements = dataLen / sizeof(TileElement);
+                if (numElements == 0)
+                {
+                    map_set_tile_element(TileCoordsXY(_coords), nullptr);
+                }
+                else
+                {
+                    auto first = GetFirstElement();
+                    auto currentNumElements = GetNumElements(first);
+                    if (numElements > currentNumElements)
+                    {
+                        // Allocate space for the extra tile elements (inefficient but works)
+                        auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0);
+                        auto numToInsert = numElements - currentNumElements;
+                        for (size_t i = 0; i < numToInsert; i++)
+                        {
+                            tile_element_insert(pos, 0);
+                        }
+
+                        // Copy data to element span
+                        first = map_get_first_element_at(_coords);
+                        currentNumElements = GetNumElements(first);
+                        if (currentNumElements != 0)
+                        {
+                            std::memcpy(first, data, currentNumElements * sizeof(TileElement));
+                            // Safely force last tile flag for last element to avoid read overrun
+                            first[numElements - 1].SetLastForTile(true);
+                        }
+                    }
+                    else
+                    {
+                        std::memcpy(first, data, numElements * sizeof(TileElement));
+                        // Safely force last tile flag for last element to avoid read overrun
+                        first[numElements - 1].SetLastForTile(true);
+                    }
+                }
+                map_invalidate_tile_full(_coords);
+            }
         }
 
         std::shared_ptr<ScTileElement> getElement(size_t index)
         {
-            if (index >= _count)
-                return nullptr;
-            return std::make_shared<ScTileElement>(_coords, &_first[index]);
+            auto first = GetFirstElement();
+            if (index < GetNumElements(first))
+            {
+                return std::make_shared<ScTileElement>(_coords, &first[index]);
+            }
+            return {};
         }
 
+        std::shared_ptr<ScTileElement> insertElement(size_t index)
+        {
+            auto first = GetFirstElement();
+            auto origNumElements = GetNumElements(first);
+            if (index >= 0 && index <= origNumElements)
+            {
+                std::vector<TileElement> data(first, first + origNumElements);
+
+                auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0);
+                auto newElement = tile_element_insert(pos, 0);
+                if (newElement == nullptr)
+                {
+                    auto ctx = GetDukContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Unable to allocate element.");
+                }
+                else
+                {
+                    // Inefficient, requires a dedicated method in tile element manager
+                    first = GetFirstElement();
+                    // Copy elements before index
+                    if (index > 0)
+                    {
+                        std::memcpy(first, &data[0], index * sizeof(TileElement));
+                    }
+                    // Zero new element
+                    std::memset(first + index, 0, sizeof(TileElement));
+                    // Copy elements after index
+                    if (index < origNumElements)
+                    {
+                        std::memcpy(first + index + 1, &data[index], (origNumElements - index) * sizeof(TileElement));
+                    }
+                    for (size_t i = 0; i < origNumElements; i++)
+                    {
+                        first[i].SetLastForTile(false);
+                    }
+                    first[origNumElements].SetLastForTile(true);
+                    map_invalidate_tile_full(_coords);
+                    return std::make_shared<ScTileElement>(_coords, &first[index]);
+                }
+            }
+            else
+            {
+                auto ctx = GetDukContext();
+                duk_error(ctx, DUK_ERR_RANGE_ERROR, "Index must be between zero and the number of elements on the tile.");
+            }
+        }
+
+        void removeElement(size_t index)
+        {
+            auto first = GetFirstElement();
+            if (index < GetNumElements(first))
+            {
+                tile_element_remove(&first[index]);
+                map_invalidate_tile_full(_coords);
+            }
+        }
+
+        TileElement* GetFirstElement()
+        {
+            return map_get_first_element_at(_coords);
+        }
+
+        static size_t GetNumElements(const TileElement* first)
+        {
+            size_t count = 0;
+            if (first != nullptr)
+            {
+                auto element = first;
+                do
+                {
+                    count++;
+                } while (!(element++)->IsLastForTile());
+            }
+            return count;
+        }
+
+        duk_context* GetDukContext()
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine.GetContext();
+            return ctx;
+        }
+
+    public:
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScTile::x_get, nullptr, "x");
             dukglue_register_property(ctx, &ScTile::y_get, nullptr, "y");
             dukglue_register_property(ctx, &ScTile::elements_get, nullptr, "elements");
+            dukglue_register_property(ctx, &ScTile::numElements_get, nullptr, "numElements");
+            dukglue_register_property(ctx, &ScTile::data_get, &ScTile::data_set, "data");
             dukglue_register_method(ctx, &ScTile::getElement, "getElement");
+            dukglue_register_method(ctx, &ScTile::insertElement, "insertElement");
+            dukglue_register_method(ctx, &ScTile::removeElement, "removeElement");
         }
     };
 } // namespace OpenRCT2::Scripting

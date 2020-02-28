@@ -70,8 +70,7 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScTile> getTile(int32_t x, int32_t y)
         {
             auto coords = TileCoordsXY(x, y).ToCoordsXY();
-            auto firstElement = map_get_first_element_at(coords);
-            return std::make_shared<ScTile>(coords, firstElement);
+            return std::make_shared<ScTile>(coords);
         }
 
         std::shared_ptr<ScThing> getThing(int32_t id)

@@ -242,12 +242,34 @@ declare global {
     interface CorruptElement extends BaseTileElement {
     }
 
+    /**
+     * Represents a tile containing tile elements on the map. This is a fixed handle
+     * for a given tile position. It can be re-used safely between game ticks.
+     */
     interface Tile {
+        /** The x position in tiles. */
         readonly x: number;
+        /** The y position in tiles. */
         readonly y: number;
-        elements: TileElement[];
+        /** Gets an array of all the tile elements on this tile. */
+        readonly elements: TileElement[];
+        /** Gets the number of tile elements on this tile. */
+        readonly numElements: number;
+        /**
+         * Gets or sets the raw data for this tile.
+         * This can provide more control and efficiency for tile manipulation but requires
+         * knowledge of tile element structures and may change between versions of OpenRCT2.
+         */
+        data: Uint8Array;
 
+        /** Gets the tile element at the given index on this tile. */
         getElement(index: number): TileElement;
+        /** Gets the tile element at the given index on this tile. */
+        getElement<T extends BaseTileElement>(index: number): T;
+        /** Inserts a new tile element at the given index on this tile. */
+        insertElement(index: number): TileElement;
+        /** Removes the tile element at the given index from this tile. */
+        removeElement(index: number): void;
     }
 
     interface Object {
