@@ -111,7 +111,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        auto baseZ_get() const
+        uint8_t baseZ_get() const
         {
             return _element->base_height;
         }
@@ -121,7 +121,7 @@ namespace OpenRCT2::Scripting
             _element->base_height = newBaseHeight;
         }
 
-        auto clearanceZ_get() const
+        uint8_t clearanceZ_get() const
         {
             return _element->clearance_height;
         }
@@ -129,6 +129,23 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             _element->clearance_height = newClearanceHeight;
+        }
+
+        int32_t waterHeight_get() const
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+                return el->GetWaterHeight();
+            return 0;
+        }
+        void waterHeight_set(int32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                el->SetWaterHeight(value);
+            }
         }
 
         uint32_t surfaceStyle_get()
@@ -145,6 +162,23 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetSurfaceStyle(value);
+            }
+        }
+
+        uint32_t edgeStyle_get()
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+                return el->GetEdgeStyle();
+            return 0;
+        }
+        void edgeStyle_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                el->SetEdgeStyle(value);
             }
         }
 
@@ -174,6 +208,51 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
+        bool hasConstructionRights_get()
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                auto ownership = el->GetOwnership();
+                return (ownership & OWNERSHIP_OWNED) || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+            }
+            return false;
+        }
+
+        uint8_t ownership_get()
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+                return el->GetOwnership();
+            return 0;
+        }
+        void ownership_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                el->SetOwnership(value);
+            }
+        }
+
+        uint8_t parkFences_get()
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+                return el->GetParkFences();
+            return 0;
+        }
+        void parkFences_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                el->SetParkFences(value);
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -181,9 +260,14 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::baseZ_get, &ScTileElement::baseZ_set, "baseZ");
             dukglue_register_property(ctx, &ScTileElement::clearanceZ_get, &ScTileElement::clearanceZ_set, "clearanceZ");
 
+            dukglue_register_property(ctx, &ScTileElement::waterHeight_get, &ScTileElement::waterHeight_set, "waterHeight");
             dukglue_register_property(ctx, &ScTileElement::surfaceStyle_get, &ScTileElement::surfaceStyle_set, "surfaceStyle");
+            dukglue_register_property(ctx, &ScTileElement::edgeStyle_get, &ScTileElement::edgeStyle_set, "edgeStyle");
             dukglue_register_property(ctx, &ScTileElement::grassLength_get, &ScTileElement::grassLength_set, "grassLength");
             dukglue_register_property(ctx, &ScTileElement::hasOwnership_get, nullptr, "hasOwnership");
+            dukglue_register_property(ctx, &ScTileElement::hasConstructionRights_get, nullptr, "hasConstructionRights");
+            dukglue_register_property(ctx, &ScTileElement::ownership_get, &ScTileElement::ownership_set, "ownership");
+            dukglue_register_property(ctx, &ScTileElement::parkFences_get, &ScTileElement::parkFences_set, "parkFences");
 
             dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
         }
