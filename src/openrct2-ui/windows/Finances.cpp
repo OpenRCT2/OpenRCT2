@@ -879,6 +879,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     {
         money32 axisValue = axisBase << yAxisScale;
         gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
+        gfx_draw_line(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[0]);
         y += 39;
     }
 
@@ -980,6 +981,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     {
         money32 axisValue = axisBase << yAxisScale;
         gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
+        gfx_draw_line(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[0]);
         y += 39;
     }
 
@@ -1083,7 +1085,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     {
         money32 axisValue = axisBase << yAxisScale;
         gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
-        gfx_draw_line(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[0]);        
+        gfx_draw_line(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[0]);
         y += 39;
     }
 
