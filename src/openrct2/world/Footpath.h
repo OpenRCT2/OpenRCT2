@@ -175,12 +175,12 @@ extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
 extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
 extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 
-TileElement* map_get_footpath_element(CoordsXYZ coords);
+TileElement* map_get_footpath_element(const CoordsXYZ& coords);
 struct PathElement;
 PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
-money32 footpath_remove(CoordsXYZ footpathLoc, int32_t flags);
-money32 footpath_provisional_set(int32_t type, CoordsXYZ footpathLoc, int32_t slope);
+money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
+money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement);

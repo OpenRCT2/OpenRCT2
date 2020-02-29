@@ -23,7 +23,7 @@ private:
 public:
     ParkEntranceRemoveAction() = default;
 
-    ParkEntranceRemoveAction(CoordsXYZ loc)
+    ParkEntranceRemoveAction(const CoordsXYZ& loc)
         : _loc(loc)
     {
     }
@@ -93,7 +93,7 @@ public:
     }
 
 private:
-    void ParkEntranceRemoveSegment(CoordsXYZ loc) const
+    void ParkEntranceRemoveSegment(const CoordsXYZ& loc) const
     {
         auto entranceElement = map_get_park_entrance_element_at(loc, true);
         if (entranceElement == nullptr)

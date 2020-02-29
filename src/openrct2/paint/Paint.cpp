@@ -71,7 +71,8 @@ static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struc
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
 static paint_struct* sub_9819_c(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, CoordsXYZ boundBoxSize, CoordsXYZ boundBoxOffset)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
         return nullptr;
@@ -112,38 +113,40 @@ static paint_struct* sub_9819_c(
     if (bottom >= dpi->y + dpi->height)
         return nullptr;
 
+    auto rotatedBoundBoxSize = boundBoxSize;
+    auto rotatedBoundBoxOffset = boundBoxOffset;
     // This probably rotates the variables so they're relative to rotation 0.
     switch (session->CurrentRotation)
     {
         case 0:
-            boundBoxSize.x--;
-            boundBoxSize.y--;
-            boundBoxOffset = { boundBoxOffset.Rotate(0), boundBoxOffset.z };
-            boundBoxSize = { boundBoxSize.Rotate(0), boundBoxSize.z };
+            rotatedBoundBoxSize.x--;
+            rotatedBoundBoxSize.y--;
+            rotatedBoundBoxOffset = { rotatedBoundBoxOffset.Rotate(0), rotatedBoundBoxOffset.z };
+            rotatedBoundBoxSize = { boundBoxSize.Rotate(0), rotatedBoundBoxSize.z };
             break;
         case 1:
-            boundBoxSize.x--;
-            boundBoxOffset = { boundBoxOffset.Rotate(3), boundBoxOffset.z };
-            boundBoxSize = { boundBoxSize.Rotate(3), boundBoxSize.z };
+            rotatedBoundBoxSize.x--;
+            rotatedBoundBoxOffset = { rotatedBoundBoxOffset.Rotate(3), rotatedBoundBoxOffset.z };
+            rotatedBoundBoxSize = { boundBoxSize.Rotate(3), rotatedBoundBoxSize.z };
             break;
         case 2:
-            boundBoxSize = { boundBoxSize.Rotate(2), boundBoxSize.z };
-            boundBoxOffset = { boundBoxOffset.Rotate(2), boundBoxOffset.z };
+            rotatedBoundBoxSize = { boundBoxSize.Rotate(2), rotatedBoundBoxSize.z };
+            rotatedBoundBoxOffset = { rotatedBoundBoxOffset.Rotate(2), rotatedBoundBoxOffset.z };
             break;
         case 3:
-            boundBoxSize.y--;
-            boundBoxSize = { boundBoxSize.Rotate(1), boundBoxSize.z };
-            boundBoxOffset = { boundBoxOffset.Rotate(1), boundBoxOffset.z };
+            rotatedBoundBoxSize.y--;
+            rotatedBoundBoxSize = { boundBoxSize.Rotate(1), rotatedBoundBoxSize.z };
+            rotatedBoundBoxOffset = { rotatedBoundBoxOffset.Rotate(1), rotatedBoundBoxOffset.z };
             break;
     }
 
-    ps->bounds.x_end = boundBoxSize.x + boundBoxOffset.x + session->SpritePosition.x;
-    ps->bounds.z = boundBoxOffset.z;
-    ps->bounds.z_end = boundBoxOffset.z + boundBoxSize.z;
-    ps->bounds.y_end = boundBoxSize.y + boundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.x_end = rotatedBoundBoxSize.x + rotatedBoundBoxOffset.x + session->SpritePosition.x;
+    ps->bounds.z = rotatedBoundBoxOffset.z;
+    ps->bounds.z_end = rotatedBoundBoxOffset.z + rotatedBoundBoxSize.z;
+    ps->bounds.y_end = rotatedBoundBoxSize.y + rotatedBoundBoxOffset.y + session->SpritePosition.y;
     ps->flags = 0;
-    ps->bounds.x = boundBoxOffset.x + session->SpritePosition.x;
-    ps->bounds.y = boundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.x = rotatedBoundBoxOffset.x + session->SpritePosition.x;
+    ps->bounds.y = rotatedBoundBoxOffset.y + session->SpritePosition.y;
     ps->attached_ps = nullptr;
     ps->children = nullptr;
     ps->sprite_type = session->InteractionType;

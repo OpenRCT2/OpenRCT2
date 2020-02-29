@@ -1610,7 +1610,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
  *
  *  rct2: 0x0069A05D
  */
-Peep* Peep::Generate(const CoordsXYZ coords)
+Peep* Peep::Generate(const CoordsXYZ& coords)
 {
     if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
         return nullptr;

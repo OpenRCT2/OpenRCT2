@@ -111,7 +111,7 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
     return entrance_get_directions(tileElement) & (1 << (direction & 3));
 }
 
-TileElement* map_get_footpath_element(CoordsXYZ coords)
+TileElement* map_get_footpath_element(const CoordsXYZ& coords)
 {
     TileElement* tileElement = map_get_first_element_at(coords);
     do
@@ -125,7 +125,7 @@ TileElement* map_get_footpath_element(CoordsXYZ coords)
     return nullptr;
 }
 
-money32 footpath_remove(CoordsXYZ footpathLoc, int32_t flags)
+money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
 {
     auto action = FootpathRemoveAction(footpathLoc);
     action.SetFlags(flags);
@@ -143,7 +143,7 @@ money32 footpath_remove(CoordsXYZ footpathLoc, int32_t flags)
  *
  *  rct2: 0x006A76FF
  */
-money32 footpath_provisional_set(int32_t type, CoordsXYZ footpathLoc, int32_t slope)
+money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope)
 {
     money32 cost;
 

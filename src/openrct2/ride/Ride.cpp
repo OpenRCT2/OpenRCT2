@@ -3540,7 +3540,8 @@ static int32_t ride_music_params_update_label_58(uint32_t position, uint8_t* tun
  * @param tuneId (bh)
  * @returns new position (ebp)
  */
-int32_t ride_music_params_update(CoordsXYZ rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
+int32_t ride_music_params_update(
+    const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
     {

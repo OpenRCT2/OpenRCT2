@@ -32,7 +32,7 @@ private:
 
 public:
     PeepPickupAction() = default;
-    PeepPickupAction(PeepPickupType type, uint32_t spriteId, CoordsXYZ loc, NetworkPlayerId_t owner)
+    PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
         : _type(static_cast<uint8_t>(type))
         , _spriteId(spriteId)
         , _loc(loc)

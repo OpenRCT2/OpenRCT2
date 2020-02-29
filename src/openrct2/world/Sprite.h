@@ -82,7 +82,7 @@ struct MoneyEffect : SpriteBase
     uint16_t wiggle;
 
     static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
-    static void Create(money32 value, CoordsXYZ loc);
+    static void Create(money32 value, const CoordsXYZ& loc);
     void Update();
     std::pair<rct_string_id, money32> GetStringId() const;
 };

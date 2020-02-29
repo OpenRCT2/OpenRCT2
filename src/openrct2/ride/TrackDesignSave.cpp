@@ -190,7 +190,7 @@ static void track_design_save_push_tile_element(CoordsXY loc, TileElement* tileE
  *  rct2: 0x006D2FA7
  */
 static void track_design_save_push_tile_element_desc(
-    const rct_object_entry* entry, CoordsXYZ loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
     TrackDesignSceneryElement item{};
     item.scenery_object = *entry;
@@ -358,7 +358,7 @@ static void track_design_save_pop_tile_element(CoordsXY loc, TileElement* tileEl
  *
  *  rct2: 0x006D2FDD
  */
-static void track_design_save_pop_tile_element_desc(const rct_object_entry* entry, CoordsXYZ loc, uint8_t flags)
+static void track_design_save_pop_tile_element_desc(const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
     for (size_t i = 0; i < _trackSavedTileElementsDesc.size(); i++)

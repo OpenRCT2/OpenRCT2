@@ -68,7 +68,8 @@ static Vehicle* get_first_vehicle(Ride* ride)
 }
 
 static void paint_magic_carpet_frame(
-    paint_session* session, uint8_t plane, uint8_t direction, CoordsXYZ offset, CoordsXYZ bbOffset, CoordsXYZ bbSize)
+    paint_session* session, uint8_t plane, uint8_t direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
+    const CoordsXYZ& bbSize)
 {
     uint32_t imageId;
     if (direction & 1)
@@ -95,8 +96,8 @@ static void paint_magic_carpet_frame(
 }
 
 static void paint_magic_carpet_pendulum(
-    paint_session* session, uint8_t plane, uint32_t swingImageId, uint8_t direction, CoordsXYZ offset, CoordsXYZ bbOffset,
-    CoordsXYZ bbSize)
+    paint_session* session, uint8_t plane, uint32_t swingImageId, uint8_t direction, const CoordsXYZ& offset,
+    const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
 {
     uint32_t imageId = swingImageId;
     if (direction & 2)
@@ -118,8 +119,8 @@ static void paint_magic_carpet_pendulum(
 }
 
 static void paint_magic_carpet_vehicle(
-    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, CoordsXYZ offset, CoordsXYZ bbOffset,
-    CoordsXYZ bbSize)
+    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, const CoordsXYZ& offset,
+    const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
 {
     rct_ride_entry* rideEntry = ride->GetRideEntry();
     uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
@@ -132,26 +133,27 @@ static void paint_magic_carpet_vehicle(
     }
 
     int8_t directionalOffset = MagicCarpetOscillationXY[swingImageId];
+    auto directedOffset = offset;
     switch (direction)
     {
         case 0:
-            offset.x -= directionalOffset;
+            directedOffset.x -= directionalOffset;
             break;
         case 1:
-            offset.y += directionalOffset;
+            directedOffset.y += directionalOffset;
             break;
         case 2:
-            offset.x += directionalOffset;
+            directedOffset.x += directionalOffset;
             break;
         case 3:
-            offset.y -= directionalOffset;
+            directedOffset.y -= directionalOffset;
             break;
     }
-    offset.z += MagicCarpetOscillationZ[swingImageId];
+    directedOffset.z += MagicCarpetOscillationZ[swingImageId];
 
     sub_98199C(
-        session, vehicleImageId | imageColourFlags, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z,
-        bbOffset.x, bbOffset.y, bbOffset.z);
+        session, vehicleImageId | imageColourFlags, (int8_t)directedOffset.x, (int8_t)directedOffset.y, bbSize.x, bbSize.y, 127,
+        directedOffset.z, bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -167,8 +169,8 @@ static void paint_magic_carpet_vehicle(
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
                 sub_98199C(
-                    session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x,
-                    bbOffset.y, bbOffset.z);
+                    session, imageId, (int8_t)directedOffset.x, (int8_t)directedOffset.y, bbSize.x, bbSize.y, 127,
+                    directedOffset.z, bbOffset.x, bbOffset.y, bbOffset.z);
             }
         }
     }

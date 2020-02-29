@@ -23,7 +23,7 @@ private:
 public:
     MazePlaceTrackAction() = default;
 
-    MazePlaceTrackAction(CoordsXYZ location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
+    MazePlaceTrackAction(const CoordsXYZ& location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
         : _loc(location)
         , _rideIndex(rideIndex)
         , _mazeEntry(mazeEntry)

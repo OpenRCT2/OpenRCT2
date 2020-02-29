@@ -32,7 +32,7 @@ private:
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(CoordsXYZ loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
+    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
         : _loc(loc)
         , _slope(slope)
         , _type(type)

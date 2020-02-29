@@ -21,7 +21,7 @@ private:
 
 public:
     TrackSetBrakeSpeedAction() = default;
-    TrackSetBrakeSpeedAction(CoordsXYZ loc, track_type_t trackType, uint8_t brakeSpeed)
+    TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
         : _loc(loc)
         , _trackType(trackType)
         , _brakeSpeed(brakeSpeed)

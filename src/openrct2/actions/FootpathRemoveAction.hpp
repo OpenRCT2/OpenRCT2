@@ -29,7 +29,7 @@ private:
 
 public:
     FootpathRemoveAction() = default;
-    FootpathRemoveAction(CoordsXYZ location)
+    FootpathRemoveAction(const CoordsXYZ& location)
         : _loc(location)
     {
     }

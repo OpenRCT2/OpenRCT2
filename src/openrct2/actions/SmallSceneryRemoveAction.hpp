@@ -33,7 +33,7 @@ private:
 public:
     SmallSceneryRemoveAction() = default;
 
-    SmallSceneryRemoveAction(CoordsXYZ location, uint8_t quadrant, uint8_t sceneryType)
+    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, uint8_t sceneryType)
         : _loc(location)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)
