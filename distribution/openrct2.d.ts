@@ -159,30 +159,17 @@ declare global {
         clearanceZ: number;
     }
 
-    // interface TileElement extends BaseTileElement {
-    //     /**
-    //      * Gets the element as a specific type to access its properties
-    //      */
-    //     asSurface(): SurfaceElement | null;
-    //     asFootpath(): FootpathElement | null;
-    //     asTrack(): TrackElement | null;
-    //     asSmallScenery(): SmallSceneryElement | null;
-    //     asEntrance(): EntranceElement | null;
-    //     asWall(): WallElement | null;
-    //     asLargeScenery(): LargeSceneryElement | null;
-    //     asBanner(): BannerElement | null;
-    //     asCorruptElement(): CorruptElement | null;
-    // }
-
-    type TileElement = SurfaceElement | FootpathElement | TrackElement;
-
     interface SurfaceElement extends BaseTileElement {
         slope: number;
-        terrain: number;
+        surfaceStyle: number;
+        edgeStyle: number;
         waterHeight: number;
         grassLength: number;
         ownership: number;
         parkFences: number;
+
+        readonly hasOwnership: boolean;
+        readonly hasConstructionRights: boolean;
     }
 
     interface FootpathAdditionStatus extends BaseTileElement {
@@ -221,6 +208,11 @@ declare global {
     }
 
     interface TrackElement extends BaseTileElement {
+        trackType: number;
+        sequence: number;
+        ride: number;
+        station: number;
+        hasChainLift: boolean;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
@@ -240,6 +232,8 @@ declare global {
 
     interface CorruptElement extends BaseTileElement {
     }
+
+    type TileElement = SurfaceElement | FootpathElement | TrackElement;
 
     /**
      * Represents a tile containing tile elements on the map. This is a fixed handle

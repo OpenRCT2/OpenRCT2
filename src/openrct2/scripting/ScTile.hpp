@@ -131,6 +131,23 @@ namespace OpenRCT2::Scripting
             _element->clearance_height = newClearanceHeight;
         }
 
+        uint8_t slope_get() const
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+                return el->GetSlope();
+            return 0;
+        }
+        void slope_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                el->SetSlope(value);
+            }
+        }
+
         int32_t waterHeight_get() const
         {
             auto el = _element->AsSurface();
@@ -253,6 +270,91 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint8_t trackType_get()
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+                return el->GetTrackType();
+            return 0;
+        }
+        void trackType_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetTrackType(value);
+            }
+        }
+
+        uint8_t sequence_get()
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+                return el->GetSequenceIndex();
+            return 0;
+        }
+        void sequence_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetSequenceIndex(value);
+            }
+        }
+
+        uint8_t ride_get()
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+                return el->GetRideIndex();
+            return 0;
+        }
+        void ride_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetRideIndex(value);
+            }
+        }
+
+        uint8_t station_get()
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+                return el->GetStationIndex();
+            return 0;
+        }
+        void station_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetStationIndex(value);
+            }
+        }
+
+        bool hasChainLift_get()
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+                return el->HasChain();
+            return 0;
+        }
+        void hasChainLift_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetHasChain(value);
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -260,6 +362,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::baseZ_get, &ScTileElement::baseZ_set, "baseZ");
             dukglue_register_property(ctx, &ScTileElement::clearanceZ_get, &ScTileElement::clearanceZ_set, "clearanceZ");
 
+            dukglue_register_property(ctx, &ScTileElement::slope_get, &ScTileElement::slope_set, "slope");
             dukglue_register_property(ctx, &ScTileElement::waterHeight_get, &ScTileElement::waterHeight_set, "waterHeight");
             dukglue_register_property(ctx, &ScTileElement::surfaceStyle_get, &ScTileElement::surfaceStyle_set, "surfaceStyle");
             dukglue_register_property(ctx, &ScTileElement::edgeStyle_get, &ScTileElement::edgeStyle_set, "edgeStyle");
@@ -268,6 +371,12 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::hasConstructionRights_get, nullptr, "hasConstructionRights");
             dukglue_register_property(ctx, &ScTileElement::ownership_get, &ScTileElement::ownership_set, "ownership");
             dukglue_register_property(ctx, &ScTileElement::parkFences_get, &ScTileElement::parkFences_set, "parkFences");
+
+            dukglue_register_property(ctx, &ScTileElement::trackType_get, &ScTileElement::trackType_set, "trackType");
+            dukglue_register_property(ctx, &ScTileElement::sequence_get, &ScTileElement::sequence_set, "sequence");
+            dukglue_register_property(ctx, &ScTileElement::ride_get, &ScTileElement::ride_set, "ride");
+            dukglue_register_property(ctx, &ScTileElement::station_get, &ScTileElement::station_set, "station");
+            dukglue_register_property(ctx, &ScTileElement::hasChainLift_get, &ScTileElement::hasChainLift_set, "isChainLift");
 
             dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
         }
