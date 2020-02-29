@@ -32,7 +32,7 @@ private:
 public:
     LargeSceneryRemoveAction() = default;
 
-    LargeSceneryRemoveAction(CoordsXYZD location, uint16_t tileIndex)
+    LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex)
         : _loc(location)
         , _tileIndex(tileIndex)
     {

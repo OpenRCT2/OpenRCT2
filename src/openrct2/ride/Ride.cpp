@@ -3221,7 +3221,7 @@ void ride_check_all_reachable()
  *  rct2: 0x006B7C59
  * @return true if the coordinate is reachable or has no entrance, false otherwise
  */
-static bool ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
+static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
 {
     if (coordinates.isNull())
         return true;

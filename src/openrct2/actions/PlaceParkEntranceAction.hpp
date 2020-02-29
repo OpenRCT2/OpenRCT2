@@ -31,7 +31,7 @@ public:
     PlaceParkEntranceAction()
     {
     }
-    PlaceParkEntranceAction(CoordsXYZD location)
+    PlaceParkEntranceAction(const CoordsXYZD& location)
         : _loc(location)
     {
     }

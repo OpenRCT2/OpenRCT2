@@ -211,7 +211,7 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
 void map_update_tiles();
 int32_t map_get_highest_z(const CoordsXY& loc);
 
-bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved);
+bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
 
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();

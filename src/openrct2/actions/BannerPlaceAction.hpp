@@ -25,7 +25,7 @@ private:
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(CoordsXYZD loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
+    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
         : _loc(loc)
         , _bannerType(bannerType)
         , _bannerIndex(bannerIndex)

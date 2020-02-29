@@ -44,7 +44,7 @@ private:
 public:
     TrackDesignAction() = default;
 
-    TrackDesignAction(CoordsXYZD location, const TrackDesign& td)
+    TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
         : _loc(location)
         , _td(td)
     {

@@ -25,7 +25,7 @@
  *
  *  rct2: 0x00666F4E
  */
-money32 park_entrance_place_ghost(CoordsXYZD entranceLoc)
+money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
 {
     park_entrance_remove_ghost();
 

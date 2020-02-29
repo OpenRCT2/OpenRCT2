@@ -42,7 +42,7 @@ extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern uint8_t gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
-money32 park_entrance_place_ghost(CoordsXYZD entranceLoc);
+money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc);
 
 void reset_park_entrance();
 void maze_entrance_hedge_replacement(const CoordsXYE& entrance);

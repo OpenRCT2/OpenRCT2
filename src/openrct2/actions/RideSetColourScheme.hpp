@@ -30,7 +30,7 @@ private:
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(CoordsXYZD location, int32_t trackType, uint16_t newColourScheme)
+    RideSetColourSchemeAction(const CoordsXYZD& location, int32_t trackType, uint16_t newColourScheme)
         : _loc(location)
         , _trackType(trackType)
         , _newColourScheme(newColourScheme)

@@ -31,7 +31,7 @@ public:
     {
     }
 
-    TrackRemoveAction(int32_t trackType, int32_t sequence, CoordsXYZD origin)
+    TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
         : _trackType(trackType)
         , _sequence(sequence)
         , _origin(origin)

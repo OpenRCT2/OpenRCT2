@@ -24,7 +24,7 @@ private:
 public:
     BannerSetColourAction() = default;
 
-    BannerSetColourAction(CoordsXYZD loc, uint8_t primaryColour)
+    BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
         : _loc(loc)
         , _primaryColour(primaryColour)
     {

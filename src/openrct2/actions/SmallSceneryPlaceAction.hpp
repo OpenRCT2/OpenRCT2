@@ -64,7 +64,7 @@ public:
     SmallSceneryPlaceAction() = default;
 
     SmallSceneryPlaceAction(
-        CoordsXYZD loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+        const CoordsXYZD& loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)

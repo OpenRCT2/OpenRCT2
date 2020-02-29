@@ -1986,7 +1986,7 @@ static void footpath_remove_edges_towards(const CoordsXYRangedZ& footPathPos, in
 
 // Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
 // entrances and exits, shops, paths).
-bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved)
+bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved)
 {
     TileElement* tileElement = map_get_first_element_at(coords.ToCoordsXY());
     if (tileElement == nullptr)
