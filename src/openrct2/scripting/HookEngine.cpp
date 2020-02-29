@@ -28,8 +28,9 @@ HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
     return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;
 }
 
-HookEngine::HookEngine(ScriptExecutionInfo& execInfo)
-    : _execInfo(execInfo)
+HookEngine::HookEngine(ScriptEngine& scriptEngine, ScriptExecutionInfo& execInfo)
+    : _scriptEngine(scriptEngine)
+    , _execInfo(execInfo)
 {
     _hookMap.resize(NUM_HOOK_TYPES);
     for (size_t i = 0; i < NUM_HOOK_TYPES; i++)
@@ -100,29 +101,16 @@ void HookEngine::Call(HOOK_TYPE type, bool isGameStateMutable)
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner, false);
-
-        const auto& function = hook.Function;
-        function.push();
-        duk_pcall(function.context(), 0);
-        duk_pop(function.context());
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, {}, isGameStateMutable);
     }
 }
 
-void HookEngine::Call(HOOK_TYPE type, DukValue args, bool isGameStateMutable)
+void HookEngine::Call(HOOK_TYPE type, const DukValue& arg, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner, false);
-
-        const auto& function = hook.Function;
-        auto ctx = function.context();
-        function.push();
-
-        args.push();
-        duk_pcall(ctx, 1);
-        duk_pop(ctx);
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, { arg }, isGameStateMutable);
     }
 }
 
@@ -132,12 +120,9 @@ void HookEngine::Call(
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner, false);
+        auto ctx = _scriptEngine.GetContext();
 
-        const auto& function = hook.Function;
-        auto ctx = function.context();
-        function.push();
-
+        // Convert key/value pairs into an object
         auto objIdx = duk_push_object(ctx);
         for (const auto& arg : args)
         {
@@ -157,8 +142,10 @@ void HookEngine::Call(
             }
             duk_put_prop_string(ctx, objIdx, arg.first.data());
         }
-        duk_pcall(ctx, 1);
-        duk_pop(ctx);
+
+        std::vector<DukValue> dukArgs;
+        dukArgs.push_back(DukValue::take_from_stack(ctx));
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, dukArgs, isGameStateMutable);
     }
 }
 

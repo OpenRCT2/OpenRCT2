@@ -22,6 +22,7 @@
 
 namespace OpenRCT2::Scripting
 {
+    class ScriptEngine;
     class ScriptExecutionInfo;
     class Plugin;
 
@@ -42,7 +43,7 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<Plugin> Owner;
         DukValue Function;
 
-        Hook();
+        Hook() = default;
         Hook(uint32_t cookie, std::shared_ptr<Plugin> owner, const DukValue& function)
             : Cookie(cookie)
             , Owner(owner)
@@ -56,11 +57,9 @@ namespace OpenRCT2::Scripting
         HOOK_TYPE Type{};
         std::vector<Hook> Hooks;
 
-        HookList()
-        {
-        }
+        HookList() = default;
         HookList(const HookList&) = delete;
-        HookList(HookList&& src)
+        HookList(HookList&& src) noexcept
             : Type(std::move(src.Type))
             , Hooks(std::move(src.Hooks))
         {
@@ -70,12 +69,13 @@ namespace OpenRCT2::Scripting
     class HookEngine
     {
     private:
+        ScriptEngine& _scriptEngine;
         ScriptExecutionInfo& _execInfo;
         std::vector<HookList> _hookMap;
         uint32_t _nextCookie = 1;
 
     public:
-        HookEngine(ScriptExecutionInfo& execInfo);
+        HookEngine(ScriptEngine& scriptEngine, ScriptExecutionInfo& execInfo);
         HookEngine(const HookEngine&) = delete;
         uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function);
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
@@ -83,7 +83,7 @@ namespace OpenRCT2::Scripting
         void UnsubscribeAll();
         bool HasSubscriptions(HOOK_TYPE type) const;
         void Call(HOOK_TYPE type, bool isGameStateMutable);
-        void Call(HOOK_TYPE type, DukValue args, bool isGameStateMutable);
+        void Call(HOOK_TYPE type, const DukValue& arg, bool isGameStateMutable);
         void Call(
             HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable);
 

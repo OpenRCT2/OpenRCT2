@@ -155,9 +155,8 @@ declare global {
 
     interface BaseTileElement {
         type: TileElementType;
-        baseHeight: number;
-        clearanceHeight: number;
-        broken: boolean;
+        baseZ: number;
+        clearanceZ: number;
     }
 
     // interface TileElement extends BaseTileElement {

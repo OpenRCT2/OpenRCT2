@@ -142,6 +142,9 @@ namespace OpenRCT2::Scripting
         void UnloadPlugins();
         void Update();
         std::future<void> Eval(const std::string& s);
+        bool ExecutePluginCall(
+            const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,
+            bool isGameStateMutable);
 
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message);
 

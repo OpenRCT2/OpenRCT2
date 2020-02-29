@@ -37,13 +37,7 @@ namespace OpenRCT2::Scripting
         void Invoke() const
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto& execInfo = scriptEngine.GetExecInfo();
-            auto ctx = scriptEngine.GetContext();
-
-            ScriptExecutionInfo::PluginScope scope(execInfo, Owner, false);
-            Callback.push();
-            duk_pcall(ctx, 0);
-            duk_pop(ctx);
+            scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
         }
     };
 

@@ -356,7 +356,7 @@ DukContext::~DukContext()
 ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env)
     : _console(console)
     , _env(env)
-    , _hookEngine(_execInfo)
+    , _hookEngine(*this, _execInfo)
 {
 }
 
@@ -650,6 +650,34 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
     auto future = barrier.get_future();
     _evalQueue.emplace(std::move(barrier), s);
     return future;
+}
+
+bool ScriptEngine::ExecutePluginCall(
+    const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args, bool isGameStateMutable)
+{
+    if (func.is_function())
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
+        func.push();
+        for (const auto& arg : args)
+        {
+            arg.push();
+        }
+        auto result = duk_pcall(_context, static_cast<duk_idx_t>(args.size()));
+        if (result == DUK_EXEC_SUCCESS)
+        {
+            // TODO allow result to be returned as a DukValue
+            duk_pop(_context);
+            return true;
+        }
+        else
+        {
+            auto message = duk_safe_to_string(_context, -1);
+            LogPluginInfo(plugin, message);
+            duk_pop(_context);
+        }
+    }
+    return false;
 }
 
 void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message)

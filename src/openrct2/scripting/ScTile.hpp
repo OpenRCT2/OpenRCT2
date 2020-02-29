@@ -20,6 +20,7 @@
 #    include "ScriptEngine.h"
 
 #    include <cstdio>
+#    include <cstring>
 
 namespace OpenRCT2::Scripting
 {
@@ -110,24 +111,41 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        auto baseHeight_get() const
+        auto baseZ_get() const
         {
             return _element->base_height;
         }
-        void baseHeight_set(uint8_t newBaseHeight)
+        void baseZ_set(uint8_t newBaseHeight)
         {
             ThrowIfGameStateNotMutable();
             _element->base_height = newBaseHeight;
         }
 
-        auto clearanceHeight_get() const
+        auto clearanceZ_get() const
         {
             return _element->clearance_height;
         }
-        void clearanceHeight_set(uint8_t newClearanceHeight)
+        void clearanceZ_set(uint8_t newClearanceHeight)
         {
             ThrowIfGameStateNotMutable();
             _element->clearance_height = newClearanceHeight;
+        }
+
+        uint32_t surfaceStyle_get()
+        {
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+                return el->GetSurfaceStyle();
+            return 0;
+        }
+        void surfaceStyle_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSurface();
+            if (el != nullptr)
+            {
+                el->SetSurfaceStyle(value);
+            }
         }
 
         uint8_t grassLength_get()
@@ -160,13 +178,14 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScTileElement::type_get, &ScTileElement::type_set, "type");
-            dukglue_register_property(ctx, &ScTileElement::baseHeight_get, &ScTileElement::baseHeight_set, "baseHeight");
-            dukglue_register_property(
-                ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
+            dukglue_register_property(ctx, &ScTileElement::baseZ_get, &ScTileElement::baseZ_set, "baseZ");
+            dukglue_register_property(ctx, &ScTileElement::clearanceZ_get, &ScTileElement::clearanceZ_set, "clearanceZ");
 
-            dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
+            dukglue_register_property(ctx, &ScTileElement::surfaceStyle_get, &ScTileElement::surfaceStyle_set, "surfaceStyle");
             dukglue_register_property(ctx, &ScTileElement::grassLength_get, &ScTileElement::grassLength_set, "grassLength");
             dukglue_register_property(ctx, &ScTileElement::hasOwnership_get, nullptr, "hasOwnership");
+
+            dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
         }
     };
 
@@ -230,6 +249,7 @@ namespace OpenRCT2::Scripting
 
         void data_set(DukValue value)
         {
+            ThrowIfGameStateNotMutable();
             auto ctx = value.context();
             value.push();
             if (duk_is_buffer_data(ctx, -1))
@@ -288,6 +308,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScTileElement> insertElement(size_t index)
         {
+            ThrowIfGameStateNotMutable();
             auto first = GetFirstElement();
             auto origNumElements = GetNumElements(first);
             if (index >= 0 && index <= origNumElements)
@@ -335,6 +356,7 @@ namespace OpenRCT2::Scripting
 
         void removeElement(size_t index)
         {
+            ThrowIfGameStateNotMutable();
             auto first = GetFirstElement();
             if (index < GetNumElements(first))
             {

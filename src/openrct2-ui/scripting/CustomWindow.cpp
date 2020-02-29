@@ -708,21 +708,8 @@ namespace OpenRCT2::Ui::Windows
 
     static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args)
     {
-        if (dukHandler.is_function())
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto& execInfo = scriptEngine.GetExecInfo();
-            {
-                ScriptExecutionInfo::PluginScope scope(execInfo, owner, false);
-                dukHandler.push();
-                for (const auto& arg : args)
-                {
-                    arg.push();
-                }
-                duk_pcall(dukHandler.context(), (duk_idx_t)args.size());
-                duk_pop(dukHandler.context());
-            }
-        }
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine.ExecutePluginCall(owner, dukHandler, args, false);
     }
 
     std::string GetWindowTitle(rct_window* w)
