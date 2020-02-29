@@ -52,7 +52,7 @@ struct CoordsXYE : public CoordsXY
     {
     }
 
-    constexpr CoordsXYE(CoordsXY c, TileElement* _e)
+    constexpr CoordsXYE(const CoordsXY& c, TileElement* _e)
         : CoordsXY(c)
         , element(_e)
     {

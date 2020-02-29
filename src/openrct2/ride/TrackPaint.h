@@ -283,8 +283,8 @@ bool track_paint_util_has_fence(
 void track_paint_util_paint_floor(
     paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4]);
 void track_paint_util_paint_fences(
-    paint_session* session, uint8_t edges, CoordsXY position, const TileElement* tileElement, Ride* ride, uint32_t colourFlags,
-    uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
+    paint_session* session, uint8_t edges, const CoordsXY& position, const TileElement* tileElement, Ride* ride,
+    uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 bool track_paint_util_draw_station_covers(
     paint_session* session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height);
 bool track_paint_util_draw_station_covers_2(
@@ -305,7 +305,7 @@ void track_paint_util_draw_station_inverted(
     uint8_t stationVariant);
 bool track_paint_util_should_paint_supports(const CoordsXY& position);
 void track_paint_util_draw_pier(
-    paint_session* session, Ride* ride, const StationObject* stationObject, CoordsXY position, uint8_t direction,
+    paint_session* session, Ride* ride, const StationObject* stationObject, const CoordsXY& position, uint8_t direction,
     int32_t height, const TileElement* tileElement, uint8_t rotation);
 void track_paint_util_draw_station_metal_supports(paint_session* session, uint8_t direction, uint16_t height, uint32_t colour);
 void track_paint_util_draw_station_metal_supports_2(

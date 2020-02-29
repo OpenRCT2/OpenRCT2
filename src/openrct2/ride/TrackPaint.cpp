@@ -257,8 +257,8 @@ void track_paint_util_paint_floor(
 }
 
 void track_paint_util_paint_fences(
-    paint_session* session, uint8_t edges, CoordsXY position, const TileElement* tileElement, Ride* ride, uint32_t colourFlags,
-    uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
+    paint_session* session, uint8_t edges, const CoordsXY& position, const TileElement* tileElement, Ride* ride,
+    uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
 {
     uint32_t imageId;
 
@@ -885,8 +885,8 @@ void track_paint_util_draw_station_platform(
 }
 
 void track_paint_util_draw_pier(
-    paint_session* session, Ride* ride, const StationObject* stationObj, CoordsXY position, uint8_t direction, int32_t height,
-    const TileElement* tileElement, uint8_t rotation)
+    paint_session* session, Ride* ride, const StationObject* stationObj, const CoordsXY& position, uint8_t direction,
+    int32_t height, const TileElement* tileElement, uint8_t rotation)
 {
     bool hasFence;
     uint32_t imageId;

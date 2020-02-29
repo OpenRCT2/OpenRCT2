@@ -400,7 +400,7 @@ bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
     return staff_is_patrol_area_set(staff_id, coords.x, coords.y);
 }
 
-bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, CoordsXY coords)
+bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)
 {
     return staff_is_patrol_area_set(STAFF_MAX_COUNT + type, coords.x, coords.y);
 }

@@ -289,7 +289,7 @@ static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType
     }
 }
 
-static int32_t GetHighestBaseClearanceZ(CoordsXY location)
+static int32_t GetHighestBaseClearanceZ(const CoordsXY& location)
 {
     int32_t z = 0;
     auto element = map_get_first_element_at(location);

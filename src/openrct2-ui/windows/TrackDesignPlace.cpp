@@ -124,9 +124,9 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max);
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, const CoordsXY& min, const CoordsXY& max);
 static void window_track_place_draw_mini_preview_maze(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max);
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, const CoordsXY& min, const CoordsXY& max);
 static LocationXY16 draw_mini_preview_get_pixel_position(int16_t x, int16_t y);
 static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel);
 static uint8_t* draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
@@ -557,12 +557,15 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 }
 
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max)
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, const CoordsXY& min, const CoordsXY& max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
+    auto mutableOrigin = origin;
+    auto mutableMin = min;
+    auto mutableMax = max;
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
@@ -575,14 +578,14 @@ static void window_track_place_draw_mini_preview_track(
         const rct_preview_track* trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255)
         {
-            auto rotatedAndOffsetTrackBlock = origin + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+            auto rotatedAndOffsetTrackBlock = mutableOrigin + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
 
             if (pass == 0)
             {
-                min.x = std::min(min.x, rotatedAndOffsetTrackBlock.x);
-                max.x = std::max(max.x, rotatedAndOffsetTrackBlock.x);
-                min.y = std::min(min.y, rotatedAndOffsetTrackBlock.y);
-                max.y = std::max(max.y, rotatedAndOffsetTrackBlock.y);
+                mutableMin.x = std::min(mutableMin.x, rotatedAndOffsetTrackBlock.x);
+                mutableMax.x = std::max(mutableMax.x, rotatedAndOffsetTrackBlock.x);
+                mutableMin.y = std::min(mutableMin.y, rotatedAndOffsetTrackBlock.y);
+                mutableMax.y = std::max(mutableMax.y, rotatedAndOffsetTrackBlock.y);
             }
             else
             {
@@ -620,7 +623,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
         trackType *= 10;
-        auto rotatedAndOfffsetTrack = origin + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
+        auto rotatedAndOfffsetTrack = mutableOrigin + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
         rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
         rotation &= 3;
         if (track_coordinate->rotation_end & 4)
@@ -629,21 +632,21 @@ static void window_track_place_draw_mini_preview_track(
         }
         if (!(rotation & 4))
         {
-            origin = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
+            mutableOrigin = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
         }
     }
 
     // Draw entrance and exit preview.
     for (const auto& entrance : td6->entrance_elements)
     {
-        auto rotatedAndOffsetEntrance = origin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
+        auto rotatedAndOffsetEntrance = mutableOrigin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
 
         if (pass == 0)
         {
-            min.x = std::min(min.x, rotatedAndOffsetEntrance.x);
-            max.x = std::max(max.x, rotatedAndOffsetEntrance.x);
-            min.y = std::min(min.y, rotatedAndOffsetEntrance.y);
-            max.y = std::max(max.y, rotatedAndOffsetEntrance.y);
+            mutableMin.x = std::min(mutableMin.x, rotatedAndOffsetEntrance.x);
+            mutableMax.x = std::max(mutableMax.x, rotatedAndOffsetEntrance.x);
+            mutableMin.y = std::min(mutableMin.y, rotatedAndOffsetEntrance.y);
+            mutableMax.y = std::max(mutableMax.y, rotatedAndOffsetEntrance.y);
         }
         else
         {
@@ -666,19 +669,21 @@ static void window_track_place_draw_mini_preview_track(
 }
 
 static void window_track_place_draw_mini_preview_maze(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max)
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, const CoordsXY& min, const CoordsXY& max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    auto mutableMin = min;
+    auto mutableMax = max;
     for (const auto& mazeElement : td6->maze_elements)
     {
         auto rotatedMazeCoords = origin + CoordsXY{ mazeElement.x * 32, mazeElement.y * 32 }.Rotate(rotation);
 
         if (pass == 0)
         {
-            min.x = std::min(min.x, rotatedMazeCoords.x);
-            max.x = std::max(max.x, rotatedMazeCoords.x);
-            min.y = std::min(min.y, rotatedMazeCoords.y);
-            max.y = std::max(max.y, rotatedMazeCoords.y);
+            mutableMin.x = std::min(mutableMin.x, rotatedMazeCoords.x);
+            mutableMax.x = std::max(mutableMax.x, rotatedMazeCoords.x);
+            mutableMin.y = std::min(mutableMin.y, rotatedMazeCoords.y);
+            mutableMax.y = std::max(mutableMax.y, rotatedMazeCoords.y);
         }
         else
         {

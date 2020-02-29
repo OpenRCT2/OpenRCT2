@@ -128,7 +128,7 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY loc, bool isExecuting) const
+    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
     {
         SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)

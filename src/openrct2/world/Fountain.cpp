@@ -80,7 +80,7 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY newLoc, const TileElement* tileElement)
+void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
     int32_t randomIndex;
     auto newZ = tileElement->GetBaseZ();

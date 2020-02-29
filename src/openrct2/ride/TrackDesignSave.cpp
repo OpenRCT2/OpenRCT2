@@ -43,8 +43,8 @@ std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 
 static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
 static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
-static bool track_design_save_add_tile_element(int32_t interactionType, CoordsXY loc, TileElement* tileElement);
-static void track_design_save_remove_tile_element(int32_t interactionType, CoordsXY loc, TileElement* tileElement);
+static bool track_design_save_add_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement);
+static void track_design_save_remove_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement);
 
 void track_design_save_init()
 {
@@ -56,7 +56,7 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(int32_t interactionType, CoordsXY loc, TileElement* tileElement, bool collect)
+void track_design_save_select_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
 {
     if (track_design_save_contains_tile_element(tileElement))
     {
@@ -176,7 +176,7 @@ static bool track_design_save_can_add_tile_element(TileElement* tileElement)
  *
  *  rct2: 0x006D2F4C
  */
-static void track_design_save_push_tile_element(CoordsXY loc, TileElement* tileElement)
+static void track_design_save_push_tile_element(const CoordsXY& loc, TileElement* tileElement)
 {
     if (_trackSavedTileElements.size() < TRACK_MAX_SAVED_TILE_ELEMENTS)
     {
@@ -204,7 +204,7 @@ static void track_design_save_push_tile_element_desc(
     _trackSavedTileElementsDesc.push_back(item);
 }
 
-static void track_design_save_add_scenery(CoordsXY loc, SmallSceneryElement* sceneryElement)
+static void track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     int32_t entryType = sceneryElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
@@ -221,7 +221,7 @@ static void track_design_save_add_scenery(CoordsXY loc, SmallSceneryElement* sce
         entry, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
+static void track_design_save_add_large_scenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t direction, sequence;
@@ -266,7 +266,7 @@ static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElemen
     }
 }
 
-static void track_design_save_add_wall(CoordsXY loc, WallElement* wallElement)
+static void track_design_save_add_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     int32_t entryType = wallElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
@@ -283,7 +283,7 @@ static void track_design_save_add_wall(CoordsXY loc, WallElement* wallElement)
         entry, { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_footpath(CoordsXY loc, PathElement* pathElement)
+static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
     int32_t entryType = pathElement->GetPathEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
@@ -304,7 +304,7 @@ static void track_design_save_add_footpath(CoordsXY loc, PathElement* pathElemen
  *
  *  rct2: 0x006D2B3C
  */
-static bool track_design_save_add_tile_element(int32_t interactionType, CoordsXY loc, TileElement* tileElement)
+static bool track_design_save_add_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     if (!track_design_save_can_add_tile_element(tileElement))
     {
@@ -334,7 +334,7 @@ static bool track_design_save_add_tile_element(int32_t interactionType, CoordsXY
  *
  *  rct2: 0x006D2F78
  */
-static void track_design_save_pop_tile_element(CoordsXY loc, TileElement* tileElement)
+static void track_design_save_pop_tile_element(const CoordsXY& loc, TileElement* tileElement)
 {
     map_invalidate_tile_full(loc);
 
@@ -384,7 +384,7 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry* entr
     }
 }
 
-static void track_design_save_remove_scenery(CoordsXY loc, SmallSceneryElement* sceneryElement)
+static void track_design_save_remove_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     int32_t entryType = sceneryElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
@@ -397,7 +397,7 @@ static void track_design_save_remove_scenery(CoordsXY loc, SmallSceneryElement* 
     track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags);
 }
 
-static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
+static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t direction, sequence;
@@ -439,7 +439,7 @@ static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryEle
     }
 }
 
-static void track_design_save_remove_wall(CoordsXY loc, WallElement* wallElement)
+static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     int32_t entryType = wallElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
@@ -452,7 +452,7 @@ static void track_design_save_remove_wall(CoordsXY loc, WallElement* wallElement
     track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, wallElement->GetBaseZ() }, flags);
 }
 
-static void track_design_save_remove_footpath(CoordsXY loc, PathElement* pathElement)
+static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
     int32_t entryType = pathElement->GetPathEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
@@ -473,7 +473,7 @@ static void track_design_save_remove_footpath(CoordsXY loc, PathElement* pathEle
  *
  *  rct2: 0x006D2B3C
  */
-static void track_design_save_remove_tile_element(int32_t interactionType, CoordsXY loc, TileElement* tileElement)
+static void track_design_save_remove_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     switch (interactionType)
     {

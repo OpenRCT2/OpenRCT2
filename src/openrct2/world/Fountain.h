@@ -22,7 +22,7 @@ struct JumpingFountain : SpriteGeneric
     uint16_t Iteration;
 
     void Update();
-    static void StartAnimation(int32_t newType, const CoordsXY newLoc, const TileElement* tileElement);
+    static void StartAnimation(int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement);
 
 private:
     int32_t GetType() const;
