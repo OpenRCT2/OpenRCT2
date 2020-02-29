@@ -63,7 +63,7 @@ static rct_window_event_list window_tooltip_events = {
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static int16_t _tooltipNumLines;
 
-void window_tooltip_reset(ScreenCoordsXY screenCoords)
+void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursorX = screenCoords.x;
     gTooltipCursorY = screenCoords.y;
@@ -73,7 +73,7 @@ void window_tooltip_reset(ScreenCoordsXY screenCoords)
     input_set_flag(INPUT_FLAG_4, false);
 }
 
-void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
+void window_tooltip_show(rct_string_id id, const ScreenCoordsXY& screenCoords)
 {
     rct_window* w;
     int32_t width, height;
@@ -107,20 +107,22 @@ void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
-    screenCoords.x = std::clamp(screenCoords.x - (width / 2), 0, screenWidth - width);
+    auto dynamicScreenCoords = screenCoords;
+    dynamicScreenCoords.x = std::clamp(dynamicScreenCoords.x - (width / 2), 0, screenWidth - width);
 
     // TODO The cursor size will be relative to the window DPI.
     //      The amount to offset the y should be adjusted.
 
     int32_t max_y = screenHeight - height;
-    screenCoords.y += 26; // Normally, we'd display the tooltip 26 lower
-    if (screenCoords.y > max_y)
+    dynamicScreenCoords.y += 26; // Normally, we'd display the tooltip 26 lower
+    if (dynamicScreenCoords.y > max_y)
         // If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
         // so we'll subtract a bit more
-        screenCoords.y -= height + 40;
-    screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
+        dynamicScreenCoords.y -= height + 40;
+    dynamicScreenCoords.y = std::clamp(dynamicScreenCoords.y, 22, max_y);
 
-    w = window_create(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    w = window_create(
+        dynamicScreenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;
 
     reset_tooltip_not_shown();
@@ -130,7 +132,7 @@ void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCords)
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
 {
     rct_widget* widget;
 

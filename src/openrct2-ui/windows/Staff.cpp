@@ -140,10 +140,10 @@ static void window_staff_overview_update(rct_window* w);
 static void window_staff_overview_invalidate(rct_window *w);
 static void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_staff_overview_viewport_rotate(rct_window *w);
@@ -1137,7 +1137,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006BDFD8
  */
-void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
@@ -1165,10 +1165,8 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
-    screenCoords.x--;
-    screenCoords.y += 16;
-    gPickupPeepX = screenCoords.x;
-    gPickupPeepY = screenCoords.y;
+    gPickupPeepX = screenCoords.x - 1;
+    gPickupPeepY = screenCoords.y + 16;
     w->picked_peep_frame++;
     if (w->picked_peep_frame >= 48)
     {
@@ -1189,7 +1187,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006BDFC3
  */
-void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PICKUP)
     {
@@ -1239,7 +1237,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     }
 }
 
-void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PATROL)
         return;
@@ -1276,7 +1274,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
-void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PATROL)
         return;

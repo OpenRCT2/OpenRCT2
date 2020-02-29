@@ -58,8 +58,8 @@ static void window_track_list_close(rct_window *w);
 static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_list_update(rct_window *w);
 static void window_track_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_track_list_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_track_list_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_track_list_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_track_list_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_track_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -285,7 +285,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     }
 }
 
-static int32_t window_track_list_get_list_item_index_from_position(ScreenCoordsXY screenCoords)
+static int32_t window_track_list_get_list_item_index_from_position(const ScreenCoordsXY& screenCoords)
 {
     size_t maxItems = _filteredTrackIds.size();
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -372,7 +372,7 @@ static void window_track_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
  *
  *  rct2: 0x006CFB39
  */
-static void window_track_list_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_track_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     if (!w->track_list.track_list_being_updated)
     {
@@ -388,7 +388,7 @@ static void window_track_list_scrollmousedown(rct_window* w, int32_t scrollIndex
  *
  *  rct2: 0x006CFAD7
  */
-static void window_track_list_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_track_list_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     if (!w->track_list.track_list_being_updated)
     {

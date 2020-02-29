@@ -45,11 +45,11 @@ static void window_staff_list_resize(rct_window *w);
 static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_staff_list_update(rct_window *w);
-static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_staff_list_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_list_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -334,7 +334,7 @@ void window_staff_list_update(rct_window* w)
  *
  *  rct2: 0x006BD990
  */
-static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
     {
@@ -452,7 +452,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
  *
  *  rct2: 0x006BDC9A
  */
-void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t i, spriteIndex;
     Peep* peep;
@@ -487,7 +487,7 @@ void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, Scree
  *
  *  rct2: 0x006BDC6B
  */
-void window_staff_list_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_staff_list_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t i;
 

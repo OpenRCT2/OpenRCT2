@@ -72,7 +72,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords, int32_t *cursorId);
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t *cursorId);
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -708,7 +708,7 @@ static void window_game_bottom_toolbar_update(rct_window* w)
  *  rct2: 0x0066C644
  */
 static void window_game_bottom_toolbar_cursor(
-    rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords, int32_t* cursorId)
+    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t* cursorId)
 {
     switch (widgetIndex)
     {

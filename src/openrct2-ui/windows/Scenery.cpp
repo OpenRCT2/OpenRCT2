@@ -73,8 +73,8 @@ static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
 static void window_scenery_update(rct_window *w);
 static void window_scenery_periodic_update(rct_window *w);
 static void window_scenery_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_scenery_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_scenery_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_scenery_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_scenery_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -867,7 +867,7 @@ void window_scenery_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* w
     *height = window_scenery_rows_height(rows);
 }
 
-static uint16_t get_scenery_id_by_cursor_pos(ScreenCoordsXY screenCoords)
+static uint16_t get_scenery_id_by_cursor_pos(const ScreenCoordsXY& screenCoords)
 {
     int32_t tabSceneryIndex = screenCoords.x / SCENERY_BUTTON_WIDTH + (screenCoords.y / SCENERY_BUTTON_HEIGHT) * 9;
     uint8_t tabIndex = gWindowSceneryActiveTabIndex;
@@ -890,7 +890,7 @@ static uint16_t get_scenery_id_by_cursor_pos(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006E1C4A
  */
-void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     uint16_t sceneryId = get_scenery_id_by_cursor_pos(screenCoords);
     if (sceneryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
@@ -911,7 +911,7 @@ void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCo
  *
  *  rct2: 0x006E1BB8
  */
-void window_scenery_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_scenery_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     uint16_t sceneryId = get_scenery_id_by_cursor_pos(screenCoords);
     if (sceneryId != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)

@@ -41,8 +41,8 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
 static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_themes_update(rct_window *w);
 static void window_themes_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_themes_invalidate(rct_window *w);
 static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -636,7 +636,7 @@ void window_themes_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wi
     *height = scrollHeight;
 }
 
-void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     if (screenCoords.y / _row_height < get_colour_scheme_tab_count())
     {
@@ -702,7 +702,7 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoo
     }
 }
 
-void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     // if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
     //  return;

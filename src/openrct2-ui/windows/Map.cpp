@@ -125,12 +125,12 @@ static void window_map_resize(rct_window *w);
 static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_map_update(rct_window *w);
-static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_map_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_map_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_map_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_map_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_map_invalidate(rct_window *w);
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -189,16 +189,16 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi);
 static void window_map_inputsize_land(rct_window* w);
 static void window_map_inputsize_map(rct_window* w);
 
-static void window_map_set_land_rights_tool_update(ScreenCoordsXY screenCoords);
-static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoords);
-static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords);
-static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords);
-static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords);
+static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenCoords);
+static void window_map_place_park_entrance_tool_update(const ScreenCoordsXY& screenCoords);
+static void window_map_set_peep_spawn_tool_update(const ScreenCoordsXY& screenCoords);
+static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& screenCoords);
+static void window_map_set_peep_spawn_tool_down(const ScreenCoordsXY& screenCoords);
 static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window* w);
 
-static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords);
+static CoordsXY map_window_screen_to_map(const ScreenCoordsXY& screenCoords);
 
 /**
  *
@@ -464,7 +464,7 @@ static void window_map_update(rct_window* w)
  *
  *  rct2: 0x0068D093
  */
-static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -484,7 +484,7 @@ static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, Sc
  *
  *  rct2: 0x0068D074
  */
-static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -501,7 +501,7 @@ static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, Scre
  *
  *  rct2: 0x0068D088
  */
-static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -563,7 +563,7 @@ static void window_map_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
  *
  *  rct2: 0x0068D726
  */
-static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     CoordsXY c = map_window_screen_to_map(screenCoords);
     int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1);
@@ -1158,7 +1158,7 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x0068D24E
  */
-static void window_map_set_land_rights_tool_update(ScreenCoordsXY screenCoords)
+static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenCoords)
 {
     rct_viewport* viewport;
 
@@ -1189,7 +1189,7 @@ static void window_map_set_land_rights_tool_update(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x00666EEF
  */
-static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoords)
+static CoordsXYZD place_park_entrance_get_map_position(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
     const CoordsXY mapCoords = sub_68A15E(screenCoords);
@@ -1225,7 +1225,7 @@ static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoor
  *
  *  rct2: 0x00666FD0
  */
-static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoords)
+static void window_map_place_park_entrance_tool_update(const ScreenCoordsXY& screenCoords)
 {
     int32_t sideDirection;
 
@@ -1267,7 +1267,7 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
  *
  *  rct2: 0x0068D4E9
  */
-static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
+static void window_map_set_peep_spawn_tool_update(const ScreenCoordsXY& screenCoords)
 {
     int32_t mapZ, direction;
     TileElement* tileElement;
@@ -1302,7 +1302,7 @@ static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006670A4
  */
-static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords)
+static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& screenCoords)
 {
     park_entrance_remove_ghost();
 
@@ -1322,7 +1322,7 @@ static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords
  *
  *  rct2: 0x0068D573
  */
-static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords)
+static void window_map_set_peep_spawn_tool_down(const ScreenCoordsXY& screenCoords)
 {
     TileElement* tileElement;
     int32_t mapZ, direction;
@@ -1688,23 +1688,23 @@ static void map_window_set_pixels(rct_window* w)
         _currentLine = 0;
 }
 
-static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords)
+static CoordsXY map_window_screen_to_map(const ScreenCoordsXY& screenCoords)
 {
-    screenCoords.x = ((screenCoords.x + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
-    screenCoords.y = ((screenCoords.y + 8)) / 2;
-    int32_t x = (screenCoords.y - screenCoords.x) * 32;
-    int32_t y = (screenCoords.x + screenCoords.y) * 32;
+    auto newScreenCoords = screenCoords;
+    newScreenCoords.x = ((screenCoords.x + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
+    newScreenCoords.y = ((screenCoords.y + 8)) / 2;
+    auto location = TileCoordsXY(newScreenCoords.y - newScreenCoords.x, newScreenCoords.x + newScreenCoords.y).ToCoordsXY();
 
     switch (get_current_rotation())
     {
         case 0:
-            return { x, y };
+            return location;
         case 1:
-            return { MAXIMUM_MAP_SIZE_BIG - 1 - y, x };
+            return { MAXIMUM_MAP_SIZE_BIG - 1 - location.y, location.x };
         case 2:
-            return { MAXIMUM_MAP_SIZE_BIG - 1 - x, MAXIMUM_MAP_SIZE_BIG - 1 - y };
+            return { MAXIMUM_MAP_SIZE_BIG - 1 - location.x, MAXIMUM_MAP_SIZE_BIG - 1 - location.y };
         case 3:
-            return { y, MAXIMUM_MAP_SIZE_BIG - 1 - x };
+            return { location.y, MAXIMUM_MAP_SIZE_BIG - 1 - location.x };
     }
 
     return { 0, 0 }; // unreachable

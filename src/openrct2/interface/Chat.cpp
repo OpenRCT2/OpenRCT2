@@ -275,7 +275,7 @@ static void chat_clear_input()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, ScreenCoordsXY screenCoords, int32_t width)
+int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     int32_t fontSpriteBase, lineHeight, lineY, numLines;
 

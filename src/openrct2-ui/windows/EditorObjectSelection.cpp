@@ -176,8 +176,8 @@ static void window_editor_object_selection_mousedown(rct_window *w, rct_widgetin
 static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_editor_object_selection_update(rct_window *w);
 static void window_editor_object_selection_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_editor_object_selection_scroll_mousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_editor_object_selection_scroll_mouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_editor_object_selection_scroll_mousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_editor_object_selection_scroll_mouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_editor_object_selection_invalidate(rct_window *w);
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -680,7 +680,8 @@ static void window_editor_object_selection_scrollgetsize(rct_window* w, int32_t 
  *
  *  rct2: 0x006AB0B6
  */
-static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_editor_object_selection_scroll_mousedown(
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     // Used for in-game object selection cheat to prevent crashing the game
     // when windows attempt to draw objects that don't exist any more
@@ -745,7 +746,8 @@ static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32
  *
  *  rct2: 0x006AB079
  */
-static void window_editor_object_selection_scroll_mouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_editor_object_selection_scroll_mouseover(
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t selectedObject = get_object_from_object_selection(get_selected_object_type(w), screenCoords.y);
     if (selectedObject != -1)

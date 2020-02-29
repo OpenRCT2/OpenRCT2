@@ -147,11 +147,11 @@ void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
     std::vector<paint_session>* sessions = nullptr);
 
-CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY startCoords);
+CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
-ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords);
+ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords);
 CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
-std::optional<CoordsXY> screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction);
+std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -162,31 +162,31 @@ void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
 void get_map_coordinates_from_pos(
-    ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
+    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
     rct_viewport** viewport);
 void get_map_coordinates_from_pos_window(
-    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
+    rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport_interaction_info* info);
-int32_t viewport_interaction_left_over(ScreenCoordsXY screenCoords);
-int32_t viewport_interaction_left_click(ScreenCoordsXY screenCoords);
-int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewport_interaction_info* info);
-int32_t viewport_interaction_right_over(ScreenCoordsXY screenCoords);
-int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords);
+int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
+int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
+int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
+int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
+int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
+int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
 
-CoordsXY sub_68A15E(ScreenCoordsXY screenCoords);
+CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport);
-std::optional<CoordsXY> screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z);
-std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant);
-std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* quadrant);
-std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side);
-std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* side);
+std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport);
+std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z);
+std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant);
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* quadrant);
+std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side);
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* side);
 
 uint8_t get_current_rotation();
 int16_t get_height_marker_offset();

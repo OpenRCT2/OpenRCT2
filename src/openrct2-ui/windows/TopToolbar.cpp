@@ -263,10 +263,10 @@ static rct_widget window_top_toolbar_widgets[] = {
 static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoordsy);
+static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoordsy);
 static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -2906,7 +2906,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
  *
  *  rct2: 0x0066CB25
  */
-static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -2932,7 +2932,7 @@ static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widget
  *
  *  rct2: 0x0066CB73
  */
-static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3135,7 +3135,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
  *
  *  rct2: 0x0066CB4E
  */
-static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3185,7 +3185,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x0066CC5B
  */
-static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {

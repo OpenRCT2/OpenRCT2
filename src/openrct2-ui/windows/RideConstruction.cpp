@@ -139,8 +139,8 @@ static void window_ride_construction_resize(rct_window *w);
 static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static bool track_piece_direction_is_diagonal(const uint8_t direction);
@@ -479,7 +479,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
 static void loc_6C7502(int32_t al);
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
-static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords);
+static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords);
 
 static uint8_t _currentPossibleRideConfigurations[32];
 
@@ -2108,9 +2108,10 @@ static void window_ride_construction_update(rct_window* w)
  *
  *  rct2: 0x006CC538
  */
-static std::optional<CoordsXY> ride_get_place_position_from_screen_position(ScreenCoordsXY screenCoords)
+static std::optional<CoordsXY> ride_get_place_position_from_screen_position(const ScreenCoordsXY& screenCoords)
 {
     CoordsXY mapCoords;
+    auto dynamicScreenCoords = screenCoords;
 
     if (!_trackPlaceCtrlState)
     {
@@ -2119,7 +2120,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             TileElement* tileElement;
             rct_viewport* viewport = nullptr;
             int32_t interactionType;
-            get_map_coordinates_from_pos(screenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
+            get_map_coordinates_from_pos(dynamicScreenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
                 _trackPlaceCtrlZ = tileElement->GetBaseZ();
@@ -2140,7 +2141,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
             _trackPlaceShiftState = true;
-            _trackPlaceShiftStart = screenCoords;
+            _trackPlaceShiftStart = dynamicScreenCoords;
             _trackPlaceShiftZ = 0;
         }
     }
@@ -2151,7 +2152,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             constexpr uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32)
                 << MAX_ZOOM_LEVEL;
 
-            _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
+            _trackPlaceShiftZ = _trackPlaceShiftStart.y - dynamicScreenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
             if (mainWnd && mainWnd->viewport)
@@ -2163,7 +2164,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             // Clamp to maximum possible value of base_height can offer.
             _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
 
-            screenCoords = _trackPlaceShiftStart;
+            dynamicScreenCoords = _trackPlaceShiftStart;
         }
         else
         {
@@ -2173,7 +2174,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
 
     if (!_trackPlaceCtrlState)
     {
-        mapCoords = sub_68A15E(screenCoords);
+        mapCoords = sub_68A15E(dynamicScreenCoords);
         if (mapCoords.isNull())
             return std::nullopt;
 
@@ -2192,7 +2193,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     else
     {
         auto mapZ = _trackPlaceCtrlZ;
-        auto mapXYCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
+        auto mapXYCoords = screen_get_map_xy_with_z(dynamicScreenCoords, mapZ);
         if (mapXYCoords)
         {
             mapCoords = *mapXYCoords;
@@ -2219,7 +2220,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
  *
  *  rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -2237,7 +2238,7 @@ static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3471,7 +3472,7 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
  *
  *  rct2: 0x006CC6A8
  */
-void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
+void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 {
     int32_t z;
     const rct_preview_track* trackBlock;
@@ -3673,7 +3674,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006CD354
  */
-void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
+void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
     uint8_t stationNum;
 
@@ -3716,7 +3717,7 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006CCA73
  */
-void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
+void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = context_get_cursor_state();
     ride_id_t rideIndex;
@@ -3916,7 +3917,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006CCA73
  */
-static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords)
+static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
     ride_construction_invalidate_current_track();
     map_invalidate_selection_rect();

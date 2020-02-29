@@ -131,8 +131,8 @@ static void window_editor_objective_options_rides_mouseup(rct_window *w, rct_wid
 static void window_editor_objective_options_rides_resize(rct_window *w);
 static void window_editor_objective_options_rides_update(rct_window *w);
 static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_editor_objective_options_rides_invalidate(rct_window *w);
 static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -1067,7 +1067,7 @@ static void window_editor_objective_options_rides_scrollgetheight(
  *  rct2: 0x006724FC
  */
 static void window_editor_objective_options_rides_scrollmousedown(
-    rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     auto i = screenCoords.y / 12;
     if (i < 0 || i >= w->no_list_items)
@@ -1086,7 +1086,7 @@ static void window_editor_objective_options_rides_scrollmousedown(
  *  rct2: 0x006724CC
  */
 static void window_editor_objective_options_rides_scrollmouseover(
-    rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t i;
 

@@ -1188,7 +1188,7 @@ ScreenCoordsXY context_get_cursor_position_scaled()
              static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.window_scale)) };
 }
 
-void context_set_cursor_position(ScreenCoordsXY cursorPosition)
+void context_set_cursor_position(const ScreenCoordsXY& cursorPosition)
 {
     GetContext()->GetUiContext()->SetCursorPosition(cursorPosition);
 }

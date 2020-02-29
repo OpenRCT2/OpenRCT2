@@ -6140,7 +6140,7 @@ static int32_t loc_6CD18E(
  *
  *  rct2: 0x006CCF70
  */
-CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsXY screenCoords)
+CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords)
 {
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
     int32_t interactionType, stationDirection;

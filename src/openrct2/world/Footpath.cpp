@@ -244,7 +244,7 @@ void footpath_provisional_update()
  *      direction: ecx
  *      tileElement: edx
  */
-CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement)
+CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
     int32_t z = 0, interactionType;
     TileElement* myTileElement;
@@ -339,7 +339,7 @@ CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t*
  * direction: cl
  * tileElement: edx
  */
-CoordsXY footpath_bridge_get_info_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement)
+CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
     int32_t interactionType;

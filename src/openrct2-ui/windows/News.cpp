@@ -40,7 +40,7 @@ static rct_widget window_news_widgets[] = {
 static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
@@ -199,37 +199,39 @@ static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_
  *
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t itemHeight = window_news_get_item_height();
     int32_t i, buttonIndex;
 
     buttonIndex = 0;
+    auto mutableScreenCoords = screenCoords;
     for (i = 11; i < 61; i++)
     {
         if (news_item_is_empty(i))
             break;
 
-        if (screenCoords.y < itemHeight)
+        if (mutableScreenCoords.y < itemHeight)
         {
             NewsItem* const newsItem = news_item_get(i);
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || screenCoords.y < 14 || screenCoords.y >= 38 || screenCoords.x < 328)
+            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
+                || mutableScreenCoords.x < 328)
             {
                 buttonIndex = 0;
                 break;
             }
-            else if (screenCoords.x < 351 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)
+            else if (mutableScreenCoords.x < 351 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)
             {
                 buttonIndex = 1;
                 break;
             }
-            else if (screenCoords.x < 376 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION)
+            else if (mutableScreenCoords.x < 376 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION)
             {
                 buttonIndex = 2;
                 break;
             }
         }
-        screenCoords.y -= itemHeight;
+        mutableScreenCoords.y -= itemHeight;
     }
 
     if (buttonIndex != 0)
