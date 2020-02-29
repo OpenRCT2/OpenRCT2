@@ -289,52 +289,106 @@ namespace OpenRCT2::Scripting
 
         uint8_t sequence_get()
         {
-            auto el = _element->AsTrack();
-            if (el != nullptr)
-                return el->GetSequenceIndex();
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    auto el = _element->AsTrack();
+                    return el->GetSequenceIndex();
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    return el->GetSequenceIndex();
+                }
+            }
             return 0;
         }
         void sequence_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto el = _element->AsTrack();
-            if (el != nullptr)
+            switch (_element->GetType())
             {
-                el->SetSequenceIndex(value);
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    auto el = _element->AsTrack();
+                    el->SetSequenceIndex(value);
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetSequenceIndex(value);
+                }
             }
         }
 
         uint8_t ride_get()
         {
-            auto el = _element->AsTrack();
-            if (el != nullptr)
-                return el->GetRideIndex();
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    auto el = _element->AsTrack();
+                    return el->GetRideIndex();
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    return el->GetRideIndex();
+                }
+            }
             return 0;
         }
         void ride_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto el = _element->AsTrack();
-            if (el != nullptr)
+            switch (_element->GetType())
             {
-                el->SetRideIndex(value);
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    auto el = _element->AsTrack();
+                    el->SetRideIndex(value);
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetRideIndex(value);
+                }
             }
         }
 
         uint8_t station_get()
         {
-            auto el = _element->AsTrack();
-            if (el != nullptr)
-                return el->GetStationIndex();
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    auto el = _element->AsTrack();
+                    return el->GetStationIndex();
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    return el->GetStationIndex();
+                }
+            }
             return 0;
         }
         void station_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto el = _element->AsTrack();
-            if (el != nullptr)
+            switch (_element->GetType())
             {
-                el->SetStationIndex(value);
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    auto el = _element->AsTrack();
+                    el->SetStationIndex(value);
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetStationIndex(value);
+                }
             }
         }
 
@@ -355,13 +409,198 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint32_t object_get()
+        {
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
+                    auto el = _element->AsPath();
+                    return el->GetPathEntryIndex();
+                }
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                {
+                    auto el = _element->AsSmallScenery();
+                    return el->GetEntryIndex();
+                }
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                {
+                    auto el = _element->AsLargeScenery();
+                    return el->GetEntryIndex();
+                }
+                case TILE_ELEMENT_TYPE_WALL:
+                {
+                    auto el = _element->AsWall();
+                    return el->GetEntryIndex();
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    return el->GetEntranceType();
+                }
+            }
+            return 0;
+        }
+        void object_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
+                    auto el = _element->AsPath();
+                    el->SetPathEntryIndex(value & 0xFF);
+                }
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                {
+                    auto el = _element->AsSmallScenery();
+                    el->SetEntryIndex(value & 0xFF);
+                }
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                {
+                    auto el = _element->AsLargeScenery();
+                    el->SetEntryIndex(value);
+                }
+                case TILE_ELEMENT_TYPE_WALL:
+                {
+                    auto el = _element->AsWall();
+                    el->SetEntryIndex(value & 0xFFFF);
+                }
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetEntranceType(value & 0xFF);
+                }
+            }
+        }
+
+        uint8_t age_get()
+        {
+            auto el = _element->AsSmallScenery();
+            if (el != nullptr)
+                return el->GetAge();
+            return 0;
+        }
+        void age_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSmallScenery();
+            if (el != nullptr)
+            {
+                el->SetAge(value);
+            }
+        }
+
+        uint8_t primaryColour_get()
+        {
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                {
+                    auto el = _element->AsSmallScenery();
+                    return el->GetPrimaryColour();
+                }
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                {
+                    auto el = _element->AsLargeScenery();
+                    return el->GetPrimaryColour();
+                }
+            }
+            return 0;
+        }
+        void primaryColour_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                {
+                    auto el = _element->AsSmallScenery();
+                    el->SetPrimaryColour(value);
+                }
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                {
+                    auto el = _element->AsLargeScenery();
+                    el->SetPrimaryColour(value);
+                }
+            }
+        }
+
+        uint8_t secondaryColour_get()
+        {
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                {
+                    auto el = _element->AsSmallScenery();
+                    return el->GetSecondaryColour();
+                }
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                {
+                    auto el = _element->AsLargeScenery();
+                    return el->GetSecondaryColour();
+                }
+            }
+            return 0;
+        }
+        void secondaryColour_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            switch (_element->GetType())
+            {
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                {
+                    auto el = _element->AsSmallScenery();
+                    el->SetSecondaryColour(value);
+                }
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                {
+                    auto el = _element->AsLargeScenery();
+                    el->SetSecondaryColour(value);
+                }
+            }
+        }
+
+        uint8_t footpathObject_get()
+        {
+            auto el = _element->AsEntrance();
+            if (el != nullptr)
+                return el->GetPathType();
+            return 0;
+        }
+        void footpathObject_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsEntrance();
+            if (el != nullptr)
+            {
+                el->SetPathType(value);
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
+            // All
             dukglue_register_property(ctx, &ScTileElement::type_get, &ScTileElement::type_set, "type");
             dukglue_register_property(ctx, &ScTileElement::baseZ_get, &ScTileElement::baseZ_set, "baseZ");
             dukglue_register_property(ctx, &ScTileElement::clearanceZ_get, &ScTileElement::clearanceZ_set, "clearanceZ");
 
+            // Some
+            dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
+
+            // Small Scenery | Large Scenery
+            dukglue_register_property(
+                ctx, &ScTileElement::primaryColour_get, &ScTileElement::primaryColour_set, "primaryColour");
+            dukglue_register_property(
+                ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
+
+            // Ride | entrance
+            dukglue_register_property(ctx, &ScTileElement::sequence_get, &ScTileElement::sequence_set, "sequence");
+            dukglue_register_property(ctx, &ScTileElement::ride_get, &ScTileElement::ride_set, "ride");
+            dukglue_register_property(ctx, &ScTileElement::station_get, &ScTileElement::station_set, "station");
+
+            // Surface only
             dukglue_register_property(ctx, &ScTileElement::slope_get, &ScTileElement::slope_set, "slope");
             dukglue_register_property(ctx, &ScTileElement::waterHeight_get, &ScTileElement::waterHeight_set, "waterHeight");
             dukglue_register_property(ctx, &ScTileElement::surfaceStyle_get, &ScTileElement::surfaceStyle_set, "surfaceStyle");
@@ -372,13 +611,19 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::ownership_get, &ScTileElement::ownership_set, "ownership");
             dukglue_register_property(ctx, &ScTileElement::parkFences_get, &ScTileElement::parkFences_set, "parkFences");
 
+            // Track only
             dukglue_register_property(ctx, &ScTileElement::trackType_get, &ScTileElement::trackType_set, "trackType");
-            dukglue_register_property(ctx, &ScTileElement::sequence_get, &ScTileElement::sequence_set, "sequence");
-            dukglue_register_property(ctx, &ScTileElement::ride_get, &ScTileElement::ride_set, "ride");
-            dukglue_register_property(ctx, &ScTileElement::station_get, &ScTileElement::station_set, "station");
             dukglue_register_property(ctx, &ScTileElement::hasChainLift_get, &ScTileElement::hasChainLift_set, "isChainLift");
 
+            // Small Scenery only
+            dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");
+
+            // Footpath only
             dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
+
+            // Entrance only
+            dukglue_register_property(
+                ctx, &ScTileElement::footpathObject_get, &ScTileElement::footpathObject_set, "footpathObject");
         }
     };
 

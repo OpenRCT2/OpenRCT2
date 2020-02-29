@@ -216,15 +216,26 @@ declare global {
     }
 
     interface SmallSceneryElement extends BaseTileElement {
+        object: number;
+        primaryColour: number;
+        secondaryColour: number;
     }
 
     interface EntranceElement extends BaseTileElement {
+        object: number;
+        sequence: number;
+        ride: number;
+        station: number;
     }
 
     interface WallElement extends BaseTileElement {
+        object: number;
     }
 
     interface LargeSceneryElement extends BaseTileElement {
+        object: number;
+        primaryColour: number;
+        secondaryColour: number;
     }
 
     interface BannerElement extends BaseTileElement {
