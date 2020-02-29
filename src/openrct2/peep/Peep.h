@@ -715,7 +715,7 @@ public: // Peep
     void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
     void Pickup();
     void PickupAbort(int32_t old_x);
-    bool Place(TileCoordsXYZ location, bool apply);
+    bool Place(const TileCoordsXYZ& location, bool apply);
     static Peep* Generate(const CoordsXYZ& coords);
     void RemoveFromQueue();
     void RemoveFromRide();
@@ -985,7 +985,7 @@ void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
 
-Direction peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
+Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
 void peep_reset_pathfind_goal(Peep* peep);
 
 bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);

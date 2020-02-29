@@ -757,7 +757,7 @@ void Peep::PickupAbort(int32_t old_x)
 }
 
 // Returns true when a peep can be dropped at the given location. When apply is set to true the peep gets dropped.
-bool Peep::Place(TileCoordsXYZ location, bool apply)
+bool Peep::Place(const TileCoordsXYZ& location, bool apply)
 {
     auto* pathElement = map_get_path_element_at(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
