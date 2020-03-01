@@ -336,7 +336,7 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
         vehicle->track_progress = trackProgress;
 
         moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
-        auto unk = { moveInfo->x, moveInfo->y, moveInfo->z } + vehicle->TrackLocation;
+        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + vehicle->TrackLocation;
 
         uint8_t bx = 0;
         unk.z += RideData5[ride->type].z_offset;
