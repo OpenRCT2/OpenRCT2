@@ -101,7 +101,7 @@ static rct_widget window_map_widgets[] = {
 
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
-static constexpr const LocationXY16 MiniMapOffsets[] = {
+static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8,                              0 },
     { 2 * MAXIMUM_MAP_SIZE_TECHNICAL - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8, 2 * MAXIMUM_MAP_SIZE_TECHNICAL },
@@ -922,7 +922,7 @@ static void window_map_centre_on_view_point()
     if (w_map == nullptr)
         return;
 
-    LocationXY16 offset = MiniMapOffsets[get_current_rotation()];
+    auto offset = MiniMapOffsets[get_current_rotation()];
 
     // calculate centre view point of viewport and transform it to minimap coordinates
 
@@ -1131,7 +1131,7 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi)
     if (viewport == nullptr)
         return;
 
-    LocationXY16 offset = MiniMapOffsets[get_current_rotation()];
+    auto offset = MiniMapOffsets[get_current_rotation()];
     int16_t left = (viewport->view_x >> 5) + offset.x;
     int16_t right = ((viewport->view_x + viewport->view_width) >> 5) + offset.x;
     int16_t top = (viewport->view_y >> 4) + offset.y;
@@ -1629,8 +1629,7 @@ static void map_window_set_pixels(rct_window* w)
     int32_t x = 0, y = 0, dx = 0, dy = 0;
 
     int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-    LocationXY16 destinationPosition = { static_cast<int16_t>(pos % MAP_WINDOW_MAP_SIZE),
-                                         static_cast<int16_t>(pos / MAP_WINDOW_MAP_SIZE) };
+    auto destinationPosition = ScreenCoordsXY{ pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE };
     auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
     switch (get_current_rotation())
     {

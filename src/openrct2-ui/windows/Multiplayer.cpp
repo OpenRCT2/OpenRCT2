@@ -300,7 +300,7 @@ static void window_multiplayer_draw_tab_images(rct_window* w, rct_drawpixelinfo*
 static void window_multiplayer_set_page(rct_window* w, int32_t page);
 
 static bool _windowInformationSizeDirty;
-static LocationXY16 _windowInformationSize;
+static ScreenCoordsXY _windowInformationSize;
 
 rct_window* window_multiplayer_open()
 {
@@ -406,7 +406,7 @@ static void window_multiplayer_information_mouseup(rct_window* w, rct_widgetinde
     }
 }
 
-static LocationXY16 window_multiplayer_information_get_size()
+static ScreenCoordsXY window_multiplayer_information_get_size()
 {
     if (!_windowInformationSizeDirty)
     {
@@ -462,7 +462,7 @@ static LocationXY16 window_multiplayer_information_get_size()
 
 static void window_multiplayer_information_resize(rct_window* w)
 {
-    LocationXY16 size = window_multiplayer_information_get_size();
+    auto size = window_multiplayer_information_get_size();
     window_set_resize(w, size.x, size.y, size.x, size.y);
 }
 
