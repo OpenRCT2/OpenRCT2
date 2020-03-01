@@ -139,8 +139,8 @@ static void window_ride_construction_resize(rct_window *w);
 static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static bool track_piece_direction_is_diagonal(const uint8_t direction);
@@ -479,7 +479,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
 static void loc_6C7502(int32_t al);
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
-static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords);
+static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords);
 
 static uint8_t _currentPossibleRideConfigurations[32];
 
@@ -2219,7 +2219,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
  *
  *  rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -2237,7 +2237,7 @@ static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3461,7 +3461,7 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
  *
  *  rct2: 0x006CC6A8
  */
-void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
+void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 {
     int32_t z;
     const rct_preview_track* trackBlock;
@@ -3663,7 +3663,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006CD354
  */
-void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
+void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
     uint8_t stationNum;
 
@@ -3706,7 +3706,7 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006CCA73
  */
-void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
+void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = context_get_cursor_state();
     ride_id_t rideIndex;
@@ -3906,7 +3906,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006CCA73
  */
-static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords)
+static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
     ride_construction_invalidate_current_track();
     map_invalidate_selection_rect();

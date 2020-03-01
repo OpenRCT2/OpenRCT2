@@ -42,6 +42,6 @@ void chat_history_add(const char* src);
 void chat_input(CHAT_INPUT input);
 
 int32_t chat_string_wrapped_get_height(void* args, int32_t width);
-int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, ScreenCoordsXY screenCoords, int32_t width);
+int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& screenCoords, int32_t width);
 
 #endif

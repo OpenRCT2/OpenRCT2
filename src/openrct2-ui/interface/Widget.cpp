@@ -869,7 +869,7 @@ bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex)
  *  edi: widget
  */
 void widget_scroll_get_part(
-    rct_window* w, rct_widget* widget, ScreenCoordsXY screenCoords, ScreenCoordsXY& retScreenCoords,
+    rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id)
 {
     *scroll_id = 0;

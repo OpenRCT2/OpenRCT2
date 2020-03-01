@@ -86,8 +86,8 @@ static bool window_fits_on_screen(int32_t x, int32_t y, int32_t width, int32_t h
 }
 
 rct_window* window_create(
-    ScreenCoordsXY screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
-    uint16_t flags)
+    const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
+    rct_windowclass cls, uint16_t flags)
 {
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.

@@ -75,8 +75,8 @@ static void window_server_list_resize(rct_window *w);
 static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_server_list_update(rct_window *w);
 static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -264,7 +264,7 @@ static void window_server_list_scroll_getsize(rct_window* w, int32_t scrollIndex
     *height = w->no_list_items * ITEM_HEIGHT;
 }
 
-static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t serverIndex = w->selected_list_item;
     if (serverIndex >= 0 && serverIndex < (int32_t)_serverList.GetCount())
@@ -288,7 +288,7 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
     }
 }
 
-static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     // Item
     int32_t index = screenCoords.y / ITEM_HEIGHT;

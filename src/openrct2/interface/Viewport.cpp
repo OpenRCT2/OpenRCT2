@@ -204,7 +204,7 @@ void viewport_create(
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY startCoords)
+CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 {
     int16_t height = 0;
 
@@ -1015,7 +1015,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x0068958D
  */
-std::optional<CoordsXY> screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
+std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
     if (!mapCoords)
@@ -1061,7 +1061,7 @@ std::optional<CoordsXY> screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32
     return { mapCoords->ToTileStart() };
 }
 
-ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords)
+ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords)
 {
     ScreenCoordsXY ret;
     ret.x = ((screenCoords.x - viewport->x) << viewport->zoom) + viewport->view_x;
@@ -1638,7 +1638,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
  * viewport: edi
  */
 void get_map_coordinates_from_pos(
-    ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
+    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
     rct_viewport** viewport)
 {
     rct_window* window = window_find_from_point(screenCoords);
@@ -1740,7 +1740,7 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
     }
 }
 
-static rct_viewport* viewport_find_from_point(ScreenCoordsXY screenCoords)
+static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords)
 {
     rct_window* w = window_find_from_point(screenCoords);
     if (w == nullptr)
@@ -1770,7 +1770,7 @@ static rct_viewport* viewport_find_from_point(ScreenCoordsXY screenCoords)
  *      tile_element: edx ?
  *      viewport: edi
  */
-std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
+std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport)
 {
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
@@ -1805,7 +1805,7 @@ std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewp
  *
  *  rct2: 0x006894D4
  */
-std::optional<CoordsXY> screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z)
+std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z)
 {
     rct_viewport* viewport = viewport_find_from_point(screenCoords);
     if (viewport == nullptr)
@@ -1827,7 +1827,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, in
  *
  *  rct2: 0x00689604
  */
-std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant)
+std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
     if (!mapCoords)
@@ -1841,7 +1841,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, 
  *
  *  rct2: 0x0068964B
  */
-std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* quadrant)
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
     if (!mapCoords)
@@ -1855,7 +1855,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenC
  *
  *  rct2: 0x00689692
  */
-std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side)
+std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
     if (!mapCoords)
@@ -1869,7 +1869,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint
  *
  *  rct2: 0x006896DC
  */
-std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* side)
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
     if (!mapCoords)

@@ -122,7 +122,7 @@ namespace OpenRCT2
             virtual void SetCursorScale(uint8_t scale) abstract;
             virtual void SetCursorVisible(bool value) abstract;
             virtual ScreenCoordsXY GetCursorPosition() abstract;
-            virtual void SetCursorPosition(ScreenCoordsXY cursorPosition) abstract;
+            virtual void SetCursorPosition(const ScreenCoordsXY& cursorPosition) abstract;
             virtual void SetCursorTrap(bool value) abstract;
             virtual const uint8_t* GetKeysState() abstract;
             virtual const uint8_t* GetKeysPressed() abstract;

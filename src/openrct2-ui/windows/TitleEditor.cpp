@@ -47,8 +47,8 @@ static void window_title_editor_mousedown(rct_window * w, rct_widgetindex widget
 static void window_title_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_title_editor_update(rct_window * w);
 static void window_title_editor_scrollgetsize(rct_window * w, int32_t scrollIndex, int32_t * width, int32_t * height);
-static void window_title_editor_scrollmousedown(rct_window * w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_title_editor_scrollmouseover(rct_window * w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_title_editor_scrollmousedown(rct_window * w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_title_editor_scrollmouseover(rct_window * w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_title_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
 static void window_title_editor_invalidate(rct_window * w);
 static void window_title_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
@@ -616,7 +616,7 @@ static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex
     *width = SCROLL_WIDTH;
 }
 
-static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     w->selected_list_item = -1;
@@ -639,7 +639,7 @@ static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollInd
     }
 }
 
-static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     switch (w->selected_tab)

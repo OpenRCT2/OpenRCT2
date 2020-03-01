@@ -1222,7 +1222,7 @@ void window_ride_construction_update_active_elements();
 void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(
     Ride* ride, const CoordsXY& entranceExitCoords, int32_t direction, int32_t placeType, int32_t stationNum);
-CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsXY screenCoords);
+CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
 
 bool ride_select_backwards_from_front();
 bool ride_select_forwards_from_back();

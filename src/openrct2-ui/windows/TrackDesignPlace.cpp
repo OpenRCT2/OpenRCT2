@@ -66,8 +66,8 @@ static rct_widget window_track_place_widgets[] = {
 static void window_track_place_close(rct_window *w);
 static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
@@ -262,7 +262,7 @@ static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uin
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     int16_t mapZ;
 
@@ -334,7 +334,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     window_track_place_clear_provisional();
     map_invalidate_map_selection_tiles();

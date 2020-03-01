@@ -63,7 +63,7 @@ static rct_window_event_list window_tooltip_events = {
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static int16_t _tooltipNumLines;
 
-void window_tooltip_reset(ScreenCoordsXY screenCoords)
+void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursorX = screenCoords.x;
     gTooltipCursorY = screenCoords.y;
@@ -130,7 +130,7 @@ void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCords)
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
 {
     rct_widget* widget;
 

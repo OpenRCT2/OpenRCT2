@@ -51,7 +51,7 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
  *
  *  rct2: 0x006ED9D0
  */
-int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport_interaction_info* info)
+int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info)
 {
     TileElement* tileElement;
     rct_sprite* sprite;
@@ -124,7 +124,7 @@ int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport
     return info->type;
 }
 
-int32_t viewport_interaction_left_over(ScreenCoordsXY screenCoords)
+int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
 
@@ -139,7 +139,7 @@ int32_t viewport_interaction_left_over(ScreenCoordsXY screenCoords)
     }
 }
 
-int32_t viewport_interaction_left_click(ScreenCoordsXY screenCoords)
+int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
 
@@ -200,7 +200,7 @@ int32_t viewport_interaction_left_click(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006EDE88
  */
-int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewport_interaction_info* info)
+int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info)
 {
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
@@ -436,7 +436,7 @@ int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewpor
     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 }
 
-int32_t viewport_interaction_right_over(ScreenCoordsXY screenCoords)
+int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
 
@@ -447,7 +447,7 @@ int32_t viewport_interaction_right_over(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006E8A62
  */
-int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords)
+int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYE tileElement;
     viewport_interaction_info info;
@@ -656,7 +656,7 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
  *
  *  rct2: 0x0068A15E
  */
-CoordsXY sub_68A15E(ScreenCoordsXY screenCoords)
+CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
 {
     CoordsXY mapCoords;
     CoordsXY initialPos{};

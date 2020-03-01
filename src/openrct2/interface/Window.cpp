@@ -396,7 +396,7 @@ void window_close_all_except_flags(uint16_t flags)
  *
  *  rct2: 0x006EA845
  */
-rct_window* window_find_from_point(ScreenCoordsXY screenCoords)
+rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
@@ -426,7 +426,7 @@ rct_window* window_find_from_point(ScreenCoordsXY screenCoords)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window* w, ScreenCoordsXY screenCoords)
+rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     // Invalidate the window
     window_event_invalidate_call(w);
@@ -1256,12 +1256,12 @@ void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w)
     viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
 
-void window_set_position(rct_window* w, ScreenCoordsXY screenCoords)
+void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     window_move_position(w, ScreenCoordsXY(screenCoords.x - w->x, screenCoords.y - w->y));
 }
 
-void window_move_position(rct_window* w, ScreenCoordsXY deltaCoords)
+void window_move_position(rct_window* w, const ScreenCoordsXY& deltaCoords)
 {
     if (deltaCoords.x == 0 && deltaCoords.y == 0)
         return;
@@ -1448,25 +1448,25 @@ void window_event_unknown_08_call(rct_window* w)
         w->event_handlers->unknown_08(w);
 }
 
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->tool_update != nullptr)
         w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->tool_down != nullptr)
         w->event_handlers->tool_down(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->tool_drag != nullptr)
         w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->tool_up != nullptr)
         w->event_handlers->tool_up(w, widgetIndex, screenCoords);
@@ -1492,19 +1492,19 @@ void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, 
     }
 }
 
-void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->scroll_mousedown != nullptr)
         w->event_handlers->scroll_mousedown(w, scrollIndex, screenCoords);
 }
 
-void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->scroll_mousedrag != nullptr)
         w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
 }
 
-void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->scroll_mouseover != nullptr)
         w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
@@ -1536,7 +1536,7 @@ rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetInd
     return result;
 }
 
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t cursorId = CURSOR_ARROW;
     if (w->event_handlers->cursor != nullptr)
@@ -1544,7 +1544,7 @@ int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, Scr
     return cursorId;
 }
 
-void window_event_moved_call(rct_window* w, ScreenCoordsXY screenCoords)
+void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers->moved != nullptr)
         w->event_handlers->moved(w, screenCoords);

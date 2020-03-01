@@ -559,8 +559,8 @@ static void window_ride_colour_resize(rct_window *w);
 static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_colour_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_colour_update(rct_window *w);
-static void window_ride_colour_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_ride_colour_tooldrag(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_colour_tooldown(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_colour_tooldrag(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_ride_colour_invalidate(rct_window *w);
 static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -579,8 +579,8 @@ static void window_ride_measurements_resize(rct_window *w);
 static void window_ride_measurements_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_measurements_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_measurements_update(rct_window *w);
-static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_ride_measurements_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_measurements_invalidate(rct_window *w);
 static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -4725,7 +4725,7 @@ static void window_ride_colour_update(rct_window* w)
  *
  *  rct2: 0x006B04EC
  */
-static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
         window_ride_set_track_colour_scheme(w, screenCoords.x, screenCoords.y);
@@ -4735,7 +4735,7 @@ static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006B04F3
  */
-static void window_ride_colour_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_colour_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
         window_ride_set_track_colour_scheme(w, screenCoords.x, screenCoords.y);
@@ -5573,7 +5573,7 @@ static void window_ride_measurements_update(rct_window* w)
  *
  *  rct2: 0x006D2AE7
  */
-static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     TileElement* tileElement;
     CoordsXY mapCoords;
@@ -5596,7 +5596,7 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
     }
 }
 
-static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (screenCoords.x == _lastSceneryX && screenCoords.y == _lastSceneryY)
         return;

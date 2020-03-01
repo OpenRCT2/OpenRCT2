@@ -102,8 +102,8 @@ static void window_scenarioselect_close(rct_window *w);
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_scenarioselect_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_scenarioselect_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_scenarioselect_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_scenarioselect_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_scenarioselect_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_scenarioselect_invalidate(rct_window *w);
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -325,20 +325,21 @@ static void window_scenarioselect_scrollgetsize(rct_window* w, int32_t scrollInd
  *
  *  rct2: 0x6780FE
  */
-static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
+    auto mutableScreenCoords = screenCoords;
     for (const auto& listItem : _listItems)
     {
         switch (listItem.type)
         {
             case LIST_ITEM_TYPE::HEADING:
-                screenCoords.y -= 18;
+                mutableScreenCoords.y -= 18;
                 break;
             case LIST_ITEM_TYPE::SCENARIO:
-                screenCoords.y -= scenarioItemHeight;
-                if (screenCoords.y < 0 && !listItem.scenario.is_locked)
+                mutableScreenCoords.y -= scenarioItemHeight;
+                if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                 {
                     audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
                     gFirstTimeSaving = true;
@@ -350,7 +351,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                 }
                 break;
         }
-        if (screenCoords.y < 0)
+        if (mutableScreenCoords.y < 0)
         {
             break;
         }
@@ -361,23 +362,24 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
  *
  *  rct2: 0x678162
  */
-static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
     const scenario_index_entry* selected = nullptr;
+    auto mutableScreenCoords = screenCoords;
     for (const auto& listItem : _listItems)
     {
         switch (listItem.type)
         {
             case LIST_ITEM_TYPE::HEADING:
-                screenCoords.y -= 18;
+                mutableScreenCoords.y -= 18;
                 break;
             case LIST_ITEM_TYPE::SCENARIO:
-                screenCoords.y -= scenarioItemHeight;
-                if (screenCoords.y < 0)
+                mutableScreenCoords.y -= scenarioItemHeight;
+                if (mutableScreenCoords.y < 0)
                 {
                     if (listItem.scenario.is_locked)
                     {
@@ -390,7 +392,7 @@ static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollI
                 }
                 break;
         }
-        if (screenCoords.y < 0)
+        if (mutableScreenCoords.y < 0)
         {
             break;
         }

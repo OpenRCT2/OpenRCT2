@@ -151,8 +151,8 @@ static void window_guest_overview_invalidate(rct_window *w);
 static void window_guest_overview_viewport_rotate(rct_window *w);
 static void window_guest_overview_update(rct_window* w);
 static void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
-static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 
 static void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
@@ -162,8 +162,8 @@ static void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_guest_rides_update(rct_window *w);
 static void window_guest_rides_scroll_get_size(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_guest_rides_scroll_mouse_down(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
-static void window_guest_rides_scroll_mouse_over(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_guest_rides_scroll_mouse_down(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_guest_rides_scroll_mouse_over(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_guest_rides_invalidate(rct_window *w);
 static void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -1221,7 +1221,7 @@ void window_guest_overview_text_input(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x696A5F
  */
-void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
@@ -1249,10 +1249,8 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
-    screenCoords.x--;
-    screenCoords.y += 16;
-    gPickupPeepX = screenCoords.x;
-    gPickupPeepY = screenCoords.y;
+    gPickupPeepX = screenCoords.x - 1;
+    gPickupPeepY = screenCoords.y + 16;
     w->picked_peep_frame++;
     if (w->picked_peep_frame >= 48)
     {
@@ -1273,7 +1271,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x696A54
  */
-void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
+void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
@@ -1628,7 +1626,7 @@ void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int3
  *
  *  rct2: 0x006978CC
  */
-void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
@@ -1645,7 +1643,7 @@ void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, Sc
  *
  *  rct2: 0x0069789C
  */
-void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
+void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 

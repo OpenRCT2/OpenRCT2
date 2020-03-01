@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui
         {
             return {};
         }
-        void SetCursorPosition(ScreenCoordsXY /*cursorPosition*/) override
+        void SetCursorPosition(const ScreenCoordsXY& /*cursorPosition*/) override
         {
         }
         void SetCursorTrap(bool /*value*/) override

@@ -180,9 +180,9 @@ void window_tile_inspector_clear_clipboard();
 
 rct_window* window_editor_object_selection_open();
 
-void window_tooltip_reset(ScreenCoordsXY screenCoords);
+void window_tooltip_reset(const ScreenCoordsXY& screenCoords);
 void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords);
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_tooltip_close();
 
 rct_window* window_scenery_scatter_open();

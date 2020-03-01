@@ -221,7 +221,7 @@ void context_hide_cursor();
 void context_show_cursor();
 ScreenCoordsXY context_get_cursor_position();
 ScreenCoordsXY context_get_cursor_position_scaled();
-void context_set_cursor_position(ScreenCoordsXY cursorPosition);
+void context_set_cursor_position(const ScreenCoordsXY& cursorPosition);
 const CursorState* context_get_cursor_state();
 const uint8_t* context_get_keys_state();
 const uint8_t* context_get_keys_pressed();

@@ -246,7 +246,7 @@ public:
         return cursorPosition;
     }
 
-    void SetCursorPosition(ScreenCoordsXY cursorPosition) override
+    void SetCursorPosition(const ScreenCoordsXY& cursorPosition) override
     {
         SDL_WarpMouseInWindow(nullptr, cursorPosition.x, cursorPosition.y);
     }
