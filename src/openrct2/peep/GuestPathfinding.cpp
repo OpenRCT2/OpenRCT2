@@ -2115,7 +2115,7 @@ int32_t guest_path_finding(Guest* peep)
     if (numEntranceStations == 0)
     {
         // closestStationNum is always 0 here.
-        auto entranceXY = ride->stations[closestStationNum].Start;
+        auto entranceXY = TileCoordsXY(ride->stations[closestStationNum].Start);
         loc.x = entranceXY.x;
         loc.y = entranceXY.y;
         loc.z = ride->stations[closestStationNum].Height;

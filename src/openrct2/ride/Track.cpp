@@ -661,8 +661,8 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
             int8_t stationIndex = ride_get_first_empty_station_start(ride);
             assert(stationIndex != -1);
 
-            ride->stations[stationIndex].Start.x = (x >> 5);
-            ride->stations[stationIndex].Start.y = (y >> 5);
+            ride->stations[stationIndex].Start.x = x;
+            ride->stations[stationIndex].Start.y = y;
             ride->stations[stationIndex].Height = z;
             ride->stations[stationIndex].Depart = 1;
             ride->stations[stationIndex].Length = 0;
@@ -754,8 +754,8 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
                     int8_t stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
-                    ride->stations[stationIndex].Start.x = (x >> 5);
-                    ride->stations[stationIndex].Start.y = (y >> 5);
+                    ride->stations[stationIndex].Start.x = x;
+                    ride->stations[stationIndex].Start.y = y;
                     ride->stations[stationIndex].Height = z;
                     ride->stations[stationIndex].Depart = 1;
                     ride->stations[stationIndex].Length = stationLength;
@@ -901,8 +901,8 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
                     int8_t stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
-                    ride->stations[stationIndex].Start.x = (x >> 5);
-                    ride->stations[stationIndex].Start.y = (y >> 5);
+                    ride->stations[stationIndex].Start.x = x;
+                    ride->stations[stationIndex].Start.y = y;
                     ride->stations[stationIndex].Height = z;
                     ride->stations[stationIndex].Depart = 1;
                     ride->stations[stationIndex].Length = stationLength != 0 ? stationLength : byte_F441D1;

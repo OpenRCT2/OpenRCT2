@@ -757,9 +757,10 @@ private:
             }
             else
             {
-                dst->stations[i].Start = { src->station_starts[i].x, src->station_starts[i].y };
+                auto tileStartLoc = TileCoordsXY{ src->station_starts[i].x, src->station_starts[i].y };
+                dst->stations[i].Start = tileStartLoc.ToCoordsXY();
             }
-            dst->stations[i].SetBaseZ(src->station_height[i] * 4);
+            dst->stations[i].SetBaseZ(src->station_height[i] * RCT1_COORDS_Z_STEP);
             dst->stations[i].Length = src->station_length[i];
             dst->stations[i].Depart = src->station_light[i];
 

@@ -406,17 +406,15 @@ static void ride_ratings_begin_proximity_loop()
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
-            int32_t x = ride->stations[i].Start.x * 32;
-            int32_t y = ride->stations[i].Start.y * 32;
-            int32_t z = ride->stations[i].GetBaseZ();
+            auto location = ride->stations[i].GetStart();
 
-            gRideRatingsCalcData.proximity_x = x;
-            gRideRatingsCalcData.proximity_y = y;
-            gRideRatingsCalcData.proximity_z = z;
+            gRideRatingsCalcData.proximity_x = location.x;
+            gRideRatingsCalcData.proximity_y = location.y;
+            gRideRatingsCalcData.proximity_z = location.z;
             gRideRatingsCalcData.proximity_track_type = 255;
-            gRideRatingsCalcData.proximity_start_x = x;
-            gRideRatingsCalcData.proximity_start_y = y;
-            gRideRatingsCalcData.proximity_start_z = z;
+            gRideRatingsCalcData.proximity_start_x = location.x;
+            gRideRatingsCalcData.proximity_start_y = location.y;
+            gRideRatingsCalcData.proximity_start_z = location.z;
             return;
         }
     }
@@ -1430,7 +1428,7 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
 static int32_t ride_ratings_get_scenery_score(Ride* ride)
 {
     int8_t i = ride_get_first_valid_station_start(ride);
-    int32_t x, y;
+    CoordsXY location;
 
     if (i == -1)
     {
@@ -1439,18 +1437,14 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        TileCoordsXYZD location = ride_get_entrance_location(ride, 0);
-        x = location.x;
-        y = location.y;
+        location = ride_get_entrance_location(ride, 0).ToCoordsXY();
     }
     else
     {
-        auto location = ride->stations[i].Start;
-        x = location.x;
-        y = location.y;
+        location = ride->stations[i].Start;
     }
 
-    int32_t z = tile_element_height({ x * 32, y * 32 });
+    int32_t z = tile_element_height(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
     if (z > ride->stations[i].GetBaseZ())
@@ -1460,9 +1454,11 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
 
     // Count surrounding scenery items
     int32_t numSceneryItems = 0;
-    for (int32_t yy = std::max(y - 5, 0); yy <= std::min(y + 5, 255); yy++)
+    auto tileLocation = TileCoordsXY(location);
+    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1); yy++)
     {
-        for (int32_t xx = std::max(x - 5, 0); xx <= std::min(x + 5, 255); xx++)
+        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+             xx++)
         {
             // Count scenery items on this tile
             TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy }.ToCoordsXY());

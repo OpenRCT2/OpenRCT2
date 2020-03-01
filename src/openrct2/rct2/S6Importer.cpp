@@ -540,7 +540,8 @@ public:
             }
             else
             {
-                dst->stations[i].Start = { src->station_starts[i].x, src->station_starts[i].y };
+                auto tileStartLoc = TileCoordsXY(src->station_starts[i].x, src->station_starts[i].y);
+                dst->stations[i].Start = tileStartLoc.ToCoordsXY();
             }
             dst->stations[i].Height = src->station_heights[i];
             dst->stations[i].Length = src->station_length[i];
