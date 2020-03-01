@@ -133,8 +133,6 @@ rct_window* window_create(
 
     // Setup window
     w->classification = cls;
-    w->var_4B8 = -1;
-    w->var_4B9 = -1;
     w->flags = flags;
 
     // Play sounds and flash the window

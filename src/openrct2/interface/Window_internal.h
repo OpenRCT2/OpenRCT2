@@ -80,18 +80,14 @@ struct rct_window
         const scenario_index_entry* highlighted_scenario;
         struct
         {
-            uint16_t var_494;
             uint16_t var_496;
         };
     };
-    uint8_t var_498[0x14];
     int16_t selected_tab;
     int16_t var_4AE;
     uint16_t viewport_target_sprite;
     ScreenCoordsXY savedViewPos;
     rct_windowclass classification;
-    int8_t var_4B8;
-    int8_t var_4B9;
     uint8_t colours[6];
     uint8_t visibility;
     uint16_t viewport_smart_follow_sprite; // Handles setting viewport target sprite etc
