@@ -93,8 +93,9 @@ namespace OpenRCT2::Scripting
                 }
                 news_item_add_to_queue_raw(type, text.c_str(), static_cast<uint32_t>(-1));
             }
-            catch (const std::exception&)
+            catch (const DukException&)
             {
+                duk_error(message.context(), DUK_ERR_ERROR, "Invalid message argument.");
             }
         }
 

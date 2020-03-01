@@ -22,12 +22,12 @@ namespace OpenRCT2::Scripting
     class ScRideObject
     {
     private:
-        rct_ride_entry* _entry;
+        rct_ride_entry* _entry{};
 
     public:
         ScRideObject(rct_ride_entry* entry)
+            : _entry(entry)
         {
-            _entry = entry;
         }
 
         static void Register(duk_context* ctx)
@@ -83,84 +83,121 @@ namespace OpenRCT2::Scripting
     class ScRide
     {
     private:
-        Ride* _ride;
+        ride_id_t _rideId = RIDE_ID_NULL;
 
     public:
-        ScRide(Ride* ride)
-            : _ride(ride)
+        ScRide(ride_id_t rideId)
+            : _rideId(rideId)
         {
         }
 
+    private:
         int32_t id_get()
         {
-            return _ride->id;
+            return _rideId;
         }
 
         std::shared_ptr<ScRideObject> object_get()
         {
-            auto rideEntry = _ride->GetRideEntry();
-            if (rideEntry != nullptr)
+            auto ride = GetRide();
+            if (ride != nullptr)
             {
-                return std::make_shared<ScRideObject>(rideEntry);
+                auto rideEntry = ride->GetRideEntry();
+                if (rideEntry != nullptr)
+                {
+                    return std::make_shared<ScRideObject>(rideEntry);
+                }
             }
             return nullptr;
         }
 
         int32_t type_get()
         {
-            return _ride->type;
+            auto ride = GetRide();
+            return ride != nullptr ? ride->type : 0;
         }
 
         std::string name_get()
         {
-            return _ride->GetName();
+            auto ride = GetRide();
+            return ride != nullptr ? ride->GetName() : std::string();
         }
         void name_set(std::string value)
         {
             ThrowIfGameStateNotMutable();
-            _ride->custom_name = value;
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->custom_name = value;
+            }
         }
 
         int32_t excitement_get()
         {
-            return _ride->excitement;
+            auto ride = GetRide();
+            return ride != nullptr ? ride->excitement : 0;
         }
         void excitement_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            _ride->excitement = value;
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->excitement = value;
+            }
         }
 
         int32_t intensity_get()
         {
-            return _ride->intensity;
+            auto ride = GetRide();
+            return ride != nullptr ? ride->intensity : 0;
         }
         void intensity_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            _ride->intensity = value;
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->intensity = value;
+            }
         }
 
         int32_t nausea_get()
         {
-            return _ride->nausea;
+            auto ride = GetRide();
+            return ride != nullptr ? ride->nausea : 0;
         }
         void nausea_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            _ride->nausea = value;
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->nausea = value;
+            }
         }
 
         int32_t totalCustomers_get()
         {
-            return _ride->total_customers;
+            auto ride = GetRide();
+            return ride != nullptr ? ride->total_customers : 0;
         }
         void totalCustomers_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            _ride->total_customers = value;
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->total_customers = value;
+            }
         }
 
+        Ride* GetRide()
+        {
+            return get_ride(_rideId);
+        }
+
+    public:
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");

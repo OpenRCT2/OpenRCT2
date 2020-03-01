@@ -21,19 +21,38 @@ namespace OpenRCT2::Scripting
     class ScThing
     {
     private:
-        rct_sprite* _sprite;
+        uint16_t _id = SPRITE_INDEX_NULL;
 
     public:
-        ScThing(rct_sprite* sprite)
-            : _sprite(sprite)
+        ScThing(uint16_t id)
+            : _id(id)
         {
         }
 
+    private:
         std::string type_get()
         {
-            if (_sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            auto thing = GetThing();
+            if (thing != nullptr)
             {
-                return "peep";
+                switch (thing->sprite_identifier)
+                {
+                    case SPRITE_IDENTIFIER_VEHICLE:
+                        return "car";
+                    case SPRITE_IDENTIFIER_PEEP:
+                        return "peep";
+                    case SPRITE_IDENTIFIER_MISC:
+                        switch (thing->type)
+                        {
+                            case SPRITE_MISC_BALLOON:
+                                return "balloon";
+                            case SPRITE_MISC_DUCK:
+                                return "duck";
+                        }
+                        break;
+                    case SPRITE_IDENTIFIER_LITTER:
+                        return "litter";
+                }
             }
             return "unknown";
         }
@@ -41,58 +60,93 @@ namespace OpenRCT2::Scripting
         // x getter and setter
         int32_t x_get()
         {
-            return _sprite->generic.x;
+            auto thing = GetThing();
+            return thing != nullptr ? thing->x : 0;
         }
         void x_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            sprite_move(value, _sprite->generic.y, _sprite->generic.z, &_sprite->generic);
+            auto thing = GetThing();
+            if (thing != nullptr)
+            {
+                sprite_move(value, thing->y, thing->z, thing);
+            }
         }
 
         // y getter and setter
         int32_t y_get()
         {
-            return _sprite->generic.y;
+            auto thing = GetThing();
+            return thing != nullptr ? thing->y : 0;
         }
         void y_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            sprite_move(_sprite->generic.x, value, _sprite->generic.z, &_sprite->generic);
+            auto thing = GetThing();
+            if (thing != nullptr)
+            {
+                sprite_move(thing->x, value, thing->z, thing);
+            }
         }
 
         // z getter and setter
         int16_t z_get()
         {
-            return _sprite->generic.z;
+            auto thing = GetThing();
+            return thing != nullptr ? thing->z : 0;
         }
         void z_set(int16_t value)
         {
             ThrowIfGameStateNotMutable();
-            sprite_move(_sprite->generic.x, _sprite->generic.y, value, &_sprite->generic);
+            auto thing = GetThing();
+            if (thing != nullptr)
+            {
+                sprite_move(thing->x, thing->y, value, thing);
+            }
         }
 
         uint8_t tshirtColour_get()
         {
-            return _sprite->peep.tshirt_colour;
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->tshirt_colour : 0;
         }
         void tshirtColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            _sprite->peep.tshirt_colour = value;
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                peep->tshirt_colour = value;
+            }
         }
         uint8_t trousersColour_get()
         {
-            return _sprite->peep.trousers_colour;
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->trousers_colour : 0;
         }
         void trousersColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            _sprite->peep.trousers_colour = value;
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                peep->trousers_colour = value;
+            }
         }
 
+        SpriteBase* GetThing()
+        {
+            return &get_sprite(_id)->generic;
+        }
+
+        Peep* GetPeep()
+        {
+            return get_sprite(_id)->AsPeep();
+        }
+
+    public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_constructor<ScThing, rct_sprite*>(ctx, "Thing");
             dukglue_register_property(ctx, &ScThing::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScThing::x_get, &ScThing::x_set, "x");
             dukglue_register_property(ctx, &ScThing::y_get, &ScThing::y_set, "y");

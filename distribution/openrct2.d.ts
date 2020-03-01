@@ -151,7 +151,7 @@ declare global {
     }
 
     type TileElementType =
-        "surface" | "footpath" | "track" | "small_scenery" | "entrance" | "large_scenery" | "banner";
+        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
 
     interface BaseTileElement {
         type: TileElementType;
@@ -276,52 +276,125 @@ declare global {
         removeElement(index: number): void;
     }
 
+    /**
+     * Represents the definition of a loaded object (.DAT or .json) such a ride type or scenery item.
+     */
     interface Object {
+        /**
+         * The unique name identifier of the object, e.g. "BURGB   ".
+         * This may have trailing spaces if the name is shorter than 8 characters.
+         */
         readonly identifier: string;
+        /**
+         * The name in the user's current language.
+         */
         readonly name: string;
     }
 
+    /**
+     * Represents the object definition of a ride or stall.
+     */
     interface RideObject extends Object {
+        /**
+         * The description of the ride / stall in the player's current language.
+         */
         readonly description: string;
+        /**
+         * A text description describing the capacity of the ride in the player's current language.
+         */
         readonly capacity: string;
     }
 
+    /**
+     * Represents a ride or stall within the park.
+     */
     interface Ride {
+        /**
+         * The object metadata for this ride.
+         */
         readonly object: RideObject;
+        /**
+         * The unique ID / index of the ride.
+         */
         readonly id: number;
+        /**
+         * The type of the ride represented as the internal built-in ride type ID.
+         */
         type: number;
+        /**
+         * The generated or custom name of the ride.
+         */
         name: string;
+        /**
+         * The excitement metric of the ride represented as a 2 decimal point fixed integer.
+         * For example, `652` equates to `6.52`.
+         */
         excitement: number;
+        /**
+         * The intensity metric of the ride represented as a 2 decimal point fixed integer.
+         * For example, `652` equates to `6.52`.
+         */
         intensity: number;
+        /**
+         * The nausea metric of the ride represented as a 2 decimal point fixed integer.
+         * For example, `652` equates to `6.52`.
+         */
         nausea: number;
+        /**
+         * The total number of customers the ride has served since it was built.
+         */
         totalCustomers: number;
     }
 
     type ThingType =
         "car" | "duck" | "peep";
 
+    /**
+     * Represents an object "thing" on the map that can typically moves and has a sub-tile coordinate.
+     */
     interface Thing {
+        /**
+         * The type of thing, e.g. car, duck, litter, or peep.
+         */
         readonly type: ThingType;
+        /**
+         * The x-coordinate of the thing in game units.
+         */
         x: number;
+        /**
+         * The y-coordinate of the thing in game units.
+         */
         y: number;
+        /**
+         * The z-coordinate of the thing in game units.
+         */
         z: number;
-
-        asPeep(): Thing | null;
     }
 
+    /**
+     * Represents a guest or staff member.
+     */
     interface Peep extends Thing {
+        /**
+         * Colour of the peep's t-shirt.
+         */
         tshirt: number;
+        /**
+         * Colour of the peep's trousers.
+         */
         trousers: number;
     }
 
     interface GameMap {
-        readonly size: { x: number; y: number; };
-        readonly rides: number;
-        readonly things: number;
+        readonly size: Coord2;
+        readonly numRides: number;
+        readonly numThings: number;
+        readonly rides: Ride[];
 
         getRide(id: number): Ride;
         getTile(x: number, y: number): Tile;
         getThing(id: number): Thing;
+        getAllThings(type: ThingType);
     }
 
     type ParkMessageType =
