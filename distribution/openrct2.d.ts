@@ -73,8 +73,8 @@ declare global {
 
     interface GameActionResult {
         error: string;
-        errorTitle: string;
-        errorMessage: string;
+        errorTitle?: string;
+        errorMessage?: string;
         position: Coord3;
         cost: number;
         expenditureType: ExpenditureType;
@@ -124,6 +124,24 @@ declare global {
          * Registers a new game action that allows clients to interact with the game.
          */
         registerGameAction(desc: GameActionDesc): void;
+
+        /**
+         * Query the result of running a game action. This allows you to check the outcome and validity of
+         * an action without actually executing it.
+         * @param action The name of the action.
+         * @param args The action parameters.
+         * @param callback The function to be called with the result of the action.
+         */
+        queryAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
+
+        /**
+         * Executes a game action. In a network game, this will send a request to the server and wait
+         * for the server to reply.
+         * @param action The name of the action.
+         * @param args The action parameters.
+         * @param callback The function to be called with the result of the action.
+         */
+        executeAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
 
         /**
          * Subscribes to the given hook.
@@ -663,8 +681,6 @@ declare global {
         kickPlayer(index: number): void;
         sendMessage(message: string): void;
         sendMessage(message: string, players: number[]): void;
-        sendQueryAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
-        sendExecuteAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
     }
 
     interface GameDate {
