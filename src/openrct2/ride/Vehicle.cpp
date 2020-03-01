@@ -880,8 +880,8 @@ bool Vehicle::SoundCanPlay() const
     if (g_music_tracking_viewport == nullptr)
         return false;
 
-    int16_t left = g_music_tracking_viewport->view_x;
-    int16_t bottom = g_music_tracking_viewport->view_y;
+    int16_t left = g_music_tracking_viewport->viewPos.x;
+    int16_t bottom = g_music_tracking_viewport->viewPos.y;
     int16_t quarter_w = g_music_tracking_viewport->view_width / 4;
     int16_t quarter_h = g_music_tracking_viewport->view_height / 4;
 
@@ -937,9 +937,9 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
 {
     rct_vehicle_sound_params param;
     param.priority = priority;
-    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->view_x;
+    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
     panX >>= g_music_tracking_viewport->zoom;
-    panX += g_music_tracking_viewport->x;
+    panX += g_music_tracking_viewport->pos.x;
 
     uint16_t screenWidth = context_get_width();
     if (screenWidth < 64)
@@ -948,9 +948,9 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
     }
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->view_y;
+    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->viewPos.y;
     panY >>= g_music_tracking_viewport->zoom;
-    panY += g_music_tracking_viewport->y;
+    panY += g_music_tracking_viewport->pos.y;
 
     uint16_t screenHeight = context_get_height();
     if (screenHeight < 64)

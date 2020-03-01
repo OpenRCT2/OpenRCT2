@@ -89,16 +89,14 @@ struct rct_widget
  */
 struct rct_viewport
 {
-    int16_t width;       // 0x00
-    int16_t height;      // 0x02
-    int16_t x;           // 0x04
-    int16_t y;           // 0x06
-    int16_t view_x;      // 0x08
-    int16_t view_y;      // 0x0A
-    int16_t view_width;  // 0x0C
-    int16_t view_height; // 0x0E
-    uint32_t flags;      // 0x12
-    uint8_t zoom;        // 0x10
+    int16_t width;
+    int16_t height;
+    ScreenCoordsXY pos;
+    ScreenCoordsXY viewPos;
+    int16_t view_width;
+    int16_t view_height;
+    uint32_t flags;
+    uint8_t zoom;
     uint8_t var_11;
     uint8_t visibility; // VISIBILITY_CACHE
 };

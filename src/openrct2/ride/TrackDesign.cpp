@@ -2017,8 +2017,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     view.height = 217;
     view.view_width = size_x;
     view.view_height = size_y;
-    view.x = 0;
-    view.y = 0;
+    view.pos = { 0, 0 };
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
 
@@ -2048,8 +2047,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
         int32_t right = left + size_x;
         int32_t bottom = top + size_y;
 
-        view.view_x = left;
-        view.view_y = top;
+        view.viewPos = { left, top };
         viewport_paint(&view, &dpi, left, top, right, bottom);
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;

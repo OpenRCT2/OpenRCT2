@@ -3549,8 +3549,8 @@ int32_t ride_music_params_update(
         rct_viewport* viewport = g_music_tracking_viewport;
         int16_t view_width = viewport->view_width;
         int16_t view_width2 = view_width * 2;
-        int16_t view_x = viewport->view_x - view_width2;
-        int16_t view_y = viewport->view_y - view_width;
+        int16_t view_x = viewport->viewPos.x - view_width2;
+        int16_t view_y = viewport->viewPos.y - view_width;
         int16_t view_x2 = view_width2 + view_width2 + viewport->view_width + view_x;
         int16_t view_y2 = view_width + view_width + viewport->view_height + view_y;
 
@@ -3559,7 +3559,7 @@ int32_t ride_music_params_update(
             return ride_music_params_update_label_58(position, tuneId);
         }
 
-        int32_t x2 = viewport->x + ((rotatedCoords.x - viewport->view_x) >> viewport->zoom);
+        int32_t x2 = viewport->pos.x + ((rotatedCoords.x - viewport->viewPos.x) >> viewport->zoom);
         x2 *= 0x10000;
         uint16_t screenwidth = context_get_width();
         if (screenwidth < 64)
@@ -3568,7 +3568,7 @@ int32_t ride_music_params_update(
         }
         int32_t pan_x = ((x2 / screenwidth) - 0x8000) >> 4;
 
-        int32_t y2 = viewport->y + ((rotatedCoords.y - viewport->view_y) >> viewport->zoom);
+        int32_t y2 = viewport->pos.y + ((rotatedCoords.y - viewport->viewPos.y) >> viewport->zoom);
         y2 *= 0x10000;
         uint16_t screenheight = context_get_height();
         if (screenheight < 64)

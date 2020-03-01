@@ -53,6 +53,25 @@ struct ScreenCoordsXY
     {
         return { x - rhs.x, y - rhs.y };
     }
+
+    ScreenCoordsXY& operator+=(const ScreenCoordsXY& rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+
+    ScreenCoordsXY& operator-=(const ScreenCoordsXY& rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    const ScreenCoordsXY operator+(const ScreenCoordsXY& rhs) const
+    {
+        return { x + rhs.x, y + rhs.y };
+    }
 };
 
 /**

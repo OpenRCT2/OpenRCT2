@@ -92,8 +92,7 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
         resolutionHeight += 128;
 
         rct_viewport viewport;
-        viewport.x = 0;
-        viewport.y = 0;
+        viewport.pos = { 0, 0 };
         viewport.width = resolutionWidth;
         viewport.height = resolutionHeight;
         viewport.view_width = viewport.width;
@@ -109,8 +108,7 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
         x = customY - customX;
         y = ((customX + customY) / 2) - z;
 
-        viewport.view_x = x - ((viewport.view_width) / 2);
-        viewport.view_y = y - ((viewport.view_height) / 2);
+        viewport.viewPos = { x - ((viewport.view_width) / 2), y - ((viewport.view_height) / 2) };
         viewport.zoom = 0;
         gCurrentRotation = 0;
 

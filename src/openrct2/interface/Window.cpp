@@ -666,7 +666,7 @@ rct_window* window_bring_to_front(rct_window* w)
                 int32_t i = 20 - w->x;
                 w->x += i;
                 if (w->viewport != nullptr)
-                    w->viewport->x += i;
+                    w->viewport->pos.x += i;
                 w->Invalidate();
             }
         }
@@ -742,7 +742,7 @@ void window_push_others_right(rct_window* window)
         w->x += push_amount;
         w->Invalidate();
         if (w->viewport != nullptr)
-            w->viewport->x += push_amount;
+            w->viewport->pos.x += push_amount;
     });
 }
 
@@ -780,7 +780,7 @@ void window_push_others_below(rct_window* w1)
 
         // Update viewport position if necessary
         if (w2->viewport != nullptr)
-            w2->viewport->y += push_amount;
+            w2->viewport->pos.y += push_amount;
     });
 }
 
@@ -844,8 +844,8 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             bool found = false;
             while (!found)
             {
-                int16_t x2 = w->viewport->x + (int16_t)(w->viewport->width * window_scroll_locations[i][0]);
-                int16_t y2 = w->viewport->y + (int16_t)(w->viewport->height * window_scroll_locations[i][1]);
+                int16_t x2 = w->viewport->pos.x + (int16_t)(w->viewport->width * window_scroll_locations[i][0]);
+                int16_t y2 = w->viewport->pos.y + (int16_t)(w->viewport->height * window_scroll_locations[i][1]);
 
                 auto it = window_get_iterator(w);
                 for (; it != g_window_list.end(); it++)
@@ -910,22 +910,20 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     if (viewport == nullptr)
         return;
 
-    int16_t x = (viewport->width >> 1) + viewport->x;
-    int16_t y = (viewport->height >> 1) + viewport->y;
+    auto windowPos = ScreenCoordsXY{ (viewport->width >> 1), (viewport->height >> 1) } + viewport->pos;
 
     // has something to do with checking if middle of the viewport is obstructed
     rct_viewport* other;
-    auto mapXYCoords = screen_get_map_xy({ x, y }, &other);
+    auto mapXYCoords = screen_get_map_xy(windowPos, &other);
     CoordsXYZ coords{};
 
     // other != viewport probably triggers on viewports in ride or guest window?
     // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
     if (!mapXYCoords || other != viewport)
     {
-        int16_t view_x = (viewport->view_width >> 1) + viewport->view_x;
-        int16_t view_y = (viewport->view_height >> 1) + viewport->view_y;
+        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
-        coords = viewport_adjust_for_map_height({ view_x, view_y });
+        coords = viewport_adjust_for_map_height(viewPos);
     }
     else
     {
@@ -942,8 +940,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     {
         w->saved_view_x = centreLoc->x;
         w->saved_view_y = centreLoc->y;
-        viewport->view_x = centreLoc->x;
-        viewport->view_y = centreLoc->y;
+        viewport->viewPos = *centreLoc;
     }
 
     w->Invalidate();
@@ -1274,8 +1271,8 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& deltaCoords)
     w->y += deltaCoords.y;
     if (w->viewport != nullptr)
     {
-        w->viewport->x += deltaCoords.x;
-        w->viewport->y += deltaCoords.y;
+        w->viewport->pos.x += deltaCoords.x;
+        w->viewport->pos.y += deltaCoords.y;
     }
 
     // Invalidate new region
@@ -1618,8 +1615,8 @@ void window_relocate_windows(int32_t width, int32_t height)
         // Adjust the viewport if required.
         if (w->viewport != nullptr)
         {
-            w->viewport->x -= x - w->x;
-            w->viewport->y -= y - w->y;
+            w->viewport->pos.x -= x - w->x;
+            w->viewport->pos.y -= y - w->y;
         }
     });
 }

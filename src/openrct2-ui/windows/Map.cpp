@@ -926,8 +926,8 @@ static void window_map_centre_on_view_point()
 
     // calculate centre view point of viewport and transform it to minimap coordinates
 
-    cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
-    dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
+    cx = ((w->viewport->view_width >> 1) + w->viewport->viewPos.x) >> 5;
+    dx = ((w->viewport->view_height >> 1) + w->viewport->viewPos.y) >> 4;
     cx += offset.x;
     dx += offset.y;
 
@@ -1132,10 +1132,10 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi)
         return;
 
     auto offset = MiniMapOffsets[get_current_rotation()];
-    int16_t left = (viewport->view_x >> 5) + offset.x;
-    int16_t right = ((viewport->view_x + viewport->view_width) >> 5) + offset.x;
-    int16_t top = (viewport->view_y >> 4) + offset.y;
-    int16_t bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset.y;
+    int16_t left = (viewport->viewPos.x >> 5) + offset.x;
+    int16_t right = ((viewport->viewPos.x + viewport->view_width) >> 5) + offset.x;
+    int16_t top = (viewport->viewPos.y >> 4) + offset.y;
+    int16_t bottom = ((viewport->viewPos.y + viewport->view_height) >> 4) + offset.y;
 
     // top horizontal lines
     gfx_fill_rect(dpi, left, top, left + 3, top, PALETTE_INDEX_56);

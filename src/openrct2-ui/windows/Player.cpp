@@ -456,8 +456,7 @@ void window_player_overview_invalidate(rct_window* w)
     {
         rct_widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
 
-        viewport->x = w->x + viewportWidget->left;
-        viewport->y = w->y + viewportWidget->top;
+        viewport->pos = { w->x + viewportWidget->left, w->y + viewportWidget->top };
         viewport->width = viewportWidget->right - viewportWidget->left;
         viewport->height = viewportWidget->bottom - viewportWidget->top;
         viewport->view_width = viewport->width << viewport->zoom;
@@ -667,8 +666,7 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
                 w->saved_view_y = centreLoc->y;
                 if (!scroll)
                 {
-                    w->viewport->view_x = centreLoc->x;
-                    w->viewport->view_y = centreLoc->y;
+                    w->viewport->viewPos = *centreLoc;
                 }
                 widget_invalidate(w, WIDX_VIEWPORT);
             }

@@ -154,8 +154,7 @@ void viewport_create(
         return;
     }
 
-    viewport->x = screenCoords.x;
-    viewport->y = screenCoords.y;
+    viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
 
@@ -192,8 +191,7 @@ void viewport_create(
     }
     w->saved_view_x = centreLoc->x;
     w->saved_view_y = centreLoc->y;
-    viewport->view_x = centreLoc->x;
-    viewport->view_y = centreLoc->y;
+    viewport->viewPos = *centreLoc;
 }
 
 /**
@@ -237,9 +235,9 @@ static void viewport_redraw_after_shift(
     if (window != nullptr)
     {
         // skip current window and non-intersecting windows
-        if (viewport == window->viewport || viewport->x + viewport->width <= window->x
-            || viewport->x >= window->x + window->width || viewport->y + viewport->height <= window->y
-            || viewport->y >= window->y + window->height)
+        if (viewport == window->viewport || viewport->pos.x + viewport->width <= window->x
+            || viewport->pos.x >= window->x + window->width || viewport->pos.y + viewport->height <= window->y
+            || viewport->pos.y >= window->y + window->height)
         {
             auto itWindowPos = window_get_iterator(window);
             auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
@@ -252,50 +250,50 @@ static void viewport_redraw_after_shift(
         rct_viewport view_copy;
         std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
 
-        if (viewport->x < window->x)
+        if (viewport->pos.x < window->x)
         {
-            viewport->width = window->x - viewport->x;
+            viewport->width = window->x - viewport->pos.x;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
-            viewport->x += viewport->width;
-            viewport->view_x += viewport->width << viewport->zoom;
+            viewport->pos.x += viewport->width;
+            viewport->viewPos.x += viewport->width << viewport->zoom;
             viewport->width = view_copy.width - viewport->width;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
         }
-        else if (viewport->x + viewport->width > window->x + window->width)
+        else if (viewport->pos.x + viewport->width > window->x + window->width)
         {
-            viewport->width = window->x + window->width - viewport->x;
+            viewport->width = window->x + window->width - viewport->pos.x;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
-            viewport->x += viewport->width;
-            viewport->view_x += viewport->width << viewport->zoom;
+            viewport->pos.x += viewport->width;
+            viewport->viewPos.x += viewport->width << viewport->zoom;
             viewport->width = view_copy.width - viewport->width;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
         }
-        else if (viewport->y < window->y)
+        else if (viewport->pos.y < window->y)
         {
-            viewport->height = window->y - viewport->y;
+            viewport->height = window->y - viewport->pos.y;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
-            viewport->y += viewport->height;
-            viewport->view_y += viewport->height << viewport->zoom;
+            viewport->pos.y += viewport->height;
+            viewport->viewPos.y += viewport->height << viewport->zoom;
             viewport->height = view_copy.height - viewport->height;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
         }
-        else if (viewport->y + viewport->height > window->y + window->height)
+        else if (viewport->pos.y + viewport->height > window->y + window->height)
         {
-            viewport->height = window->y + window->height - viewport->y;
+            viewport->height = window->y + window->height - viewport->pos.y;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
-            viewport->y += viewport->height;
-            viewport->view_y += viewport->height << viewport->zoom;
+            viewport->pos.y += viewport->height;
+            viewport->viewPos.y += viewport->height << viewport->zoom;
             viewport->height = view_copy.height - viewport->height;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
@@ -306,28 +304,28 @@ static void viewport_redraw_after_shift(
     }
     else
     {
-        int16_t left = viewport->x;
-        int16_t right = viewport->x + viewport->width;
-        int16_t top = viewport->y;
-        int16_t bottom = viewport->y + viewport->height;
+        int16_t left = viewport->pos.x;
+        int16_t right = viewport->pos.x + viewport->width;
+        int16_t top = viewport->pos.y;
+        int16_t bottom = viewport->pos.y + viewport->height;
 
         // if moved more than the viewport size
         if (abs(x) < viewport->width && abs(y) < viewport->height)
         {
             // update whole block ?
-            drawing_engine_copy_rect(viewport->x, viewport->y, viewport->width, viewport->height, x, y);
+            drawing_engine_copy_rect(viewport->pos.x, viewport->pos.y, viewport->width, viewport->height, x, y);
 
             if (x > 0)
             {
                 // draw left
-                int16_t _right = viewport->x + x;
+                int16_t _right = viewport->pos.x + x;
                 window_draw_all(dpi, left, top, _right, bottom);
                 left += x;
             }
             else if (x < 0)
             {
                 // draw right
-                int16_t _left = viewport->x + viewport->width + x;
+                int16_t _left = viewport->pos.x + viewport->width + x;
                 window_draw_all(dpi, _left, top, right, bottom);
                 right += x;
             }
@@ -335,13 +333,13 @@ static void viewport_redraw_after_shift(
             if (y > 0)
             {
                 // draw top
-                bottom = viewport->y + y;
+                bottom = viewport->pos.y + y;
                 window_draw_all(dpi, left, top, right, bottom);
             }
             else if (y < 0)
             {
                 // draw bottom
-                top = viewport->y + viewport->height + y;
+                top = viewport->pos.y + viewport->height + y;
                 window_draw_all(dpi, left, top, right, bottom);
             }
         }
@@ -365,14 +363,14 @@ static void viewport_shift_pixels(
         if (w->viewport == viewport)
             continue;
 
-        if (viewport->x + viewport->width <= w->x)
+        if (viewport->pos.x + viewport->width <= w->x)
             continue;
-        if (w->x + w->width <= viewport->x)
+        if (w->x + w->width <= viewport->pos.x)
             continue;
 
-        if (viewport->y + viewport->height <= w->y)
+        if (viewport->pos.y + viewport->height <= w->y)
             continue;
-        if (w->y + w->height <= viewport->y)
+        if (w->y + w->height <= viewport->pos.y)
             continue;
 
         auto left = w->x;
@@ -380,15 +378,15 @@ static void viewport_shift_pixels(
         auto top = w->y;
         auto bottom = w->y + w->height;
 
-        if (left < viewport->x)
-            left = viewport->x;
-        if (right > viewport->x + viewport->width)
-            right = viewport->x + viewport->width;
+        if (left < viewport->pos.x)
+            left = viewport->pos.x;
+        if (right > viewport->pos.x + viewport->width)
+            right = viewport->pos.x + viewport->width;
 
-        if (top < viewport->y)
-            top = viewport->y;
-        if (bottom > viewport->y + viewport->height)
-            bottom = viewport->y + viewport->height;
+        if (top < viewport->pos.y)
+            top = viewport->pos.y;
+        if (bottom > viewport->pos.y + viewport->height)
+            bottom = viewport->pos.y + viewport->height;
 
         if (left >= right)
             continue;
@@ -408,11 +406,10 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
     // Note: do not do the subtraction and then divide!
     // Note: Due to arithmetic shift != /zoom a shift will have to be used
     // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
-    int16_t x_diff = (viewport->view_x >> viewport->zoom) - (x >> viewport->zoom);
-    int16_t y_diff = (viewport->view_y >> viewport->zoom) - (y >> viewport->zoom);
+    int16_t x_diff = (viewport->viewPos.x >> viewport->zoom) - (x >> viewport->zoom);
+    int16_t y_diff = (viewport->viewPos.y >> viewport->zoom) - (y >> viewport->zoom);
 
-    viewport->view_x = x;
-    viewport->view_y = y;
+    viewport->viewPos = { x, y };
 
     // If no change in viewing area
     if ((!x_diff) && (!y_diff))
@@ -420,10 +417,10 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
 
     if (w->flags & WF_7)
     {
-        int32_t left = std::max<int32_t>(viewport->x, 0);
-        int32_t top = std::max<int32_t>(viewport->y, 0);
-        int32_t right = std::min<int32_t>(viewport->x + viewport->width, context_get_width());
-        int32_t bottom = std::min<int32_t>(viewport->y + viewport->height, context_get_height());
+        int32_t left = std::max<int32_t>(viewport->pos.x, 0);
+        int32_t top = std::max<int32_t>(viewport->pos.y, 0);
+        int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, context_get_width());
+        int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, context_get_height());
 
         if (left >= right)
             return;
@@ -441,15 +438,15 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
     rct_viewport view_copy;
     std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
 
-    if (viewport->x < 0)
+    if (viewport->pos.x < 0)
     {
-        viewport->width += viewport->x;
-        viewport->view_width += viewport->x * zoom;
-        viewport->view_x -= viewport->x * zoom;
-        viewport->x = 0;
+        viewport->width += viewport->pos.x;
+        viewport->view_width += viewport->pos.x * zoom;
+        viewport->viewPos.x -= viewport->pos.x * zoom;
+        viewport->pos.x = 0;
     }
 
-    int32_t eax = viewport->x + viewport->width - context_get_width();
+    int32_t eax = viewport->pos.x + viewport->width - context_get_width();
     if (eax > 0)
     {
         viewport->width -= eax;
@@ -462,15 +459,15 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
         return;
     }
 
-    if (viewport->y < 0)
+    if (viewport->pos.y < 0)
     {
-        viewport->height += viewport->y;
-        viewport->view_height += viewport->y * zoom;
-        viewport->view_y -= viewport->y * zoom;
-        viewport->y = 0;
+        viewport->height += viewport->pos.y;
+        viewport->view_height += viewport->pos.y * zoom;
+        viewport->viewPos.y -= viewport->pos.y * zoom;
+        viewport->pos.y = 0;
     }
 
-    eax = viewport->y + viewport->height - context_get_height();
+    eax = viewport->pos.y + viewport->height - context_get_height();
     if (eax > 0)
     {
         viewport->height -= eax;
@@ -586,13 +583,13 @@ void viewport_update_position(rct_window* window)
     {
         // Moves the viewport if focusing in on an item
         uint8_t flags = 0;
-        x -= viewport->view_x;
+        x -= viewport->viewPos.x;
         if (x < 0)
         {
             x = -x;
             flags |= 1;
         }
-        y -= viewport->view_y;
+        y -= viewport->viewPos.y;
         if (y < 0)
         {
             y = -y;
@@ -614,8 +611,8 @@ void viewport_update_position(rct_window* window)
         {
             y = -y;
         }
-        x += viewport->view_x;
-        y += viewport->view_y;
+        x += viewport->viewPos.x;
+        y += viewport->viewPos.y;
     }
 
     viewport_move(x, y, window, viewport);
@@ -784,33 +781,33 @@ void viewport_render(
     rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
     std::vector<paint_session>* sessions)
 {
-    if (right <= viewport->x)
+    if (right <= viewport->pos.x)
         return;
-    if (bottom <= viewport->y)
+    if (bottom <= viewport->pos.y)
         return;
-    if (left >= viewport->x + viewport->width)
+    if (left >= viewport->pos.x + viewport->width)
         return;
-    if (top >= viewport->y + viewport->height)
+    if (top >= viewport->pos.y + viewport->height)
         return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
     int32_t l = left, t = top, r = right, b = bottom;
 #endif
 
-    left = std::max<int32_t>(left - viewport->x, 0);
-    right = std::min<int32_t>(right - viewport->x, viewport->width);
-    top = std::max<int32_t>(top - viewport->y, 0);
-    bottom = std::min<int32_t>(bottom - viewport->y, viewport->height);
+    left = std::max<int32_t>(left - viewport->pos.x, 0);
+    right = std::min<int32_t>(right - viewport->pos.x, viewport->width);
+    top = std::max<int32_t>(top - viewport->pos.y, 0);
+    bottom = std::min<int32_t>(bottom - viewport->pos.y, viewport->height);
 
     left <<= viewport->zoom;
     right <<= viewport->zoom;
     top <<= viewport->zoom;
     bottom <<= viewport->zoom;
 
-    left += viewport->view_x;
-    right += viewport->view_x;
-    top += viewport->view_y;
-    bottom += viewport->view_y;
+    left += viewport->viewPos.x;
+    right += viewport->viewPos.x;
+    top += viewport->viewPos.y;
+    bottom += viewport->viewPos.y;
 
     viewport_paint(viewport, dpi, left, top, right, bottom, sessions);
 
@@ -910,13 +907,13 @@ void viewport_paint(
     right = left + width;
     bottom = top + height;
 
-    int16_t x = (int16_t)(left - (int16_t)(viewport->view_x & bitmask));
+    int16_t x = (int16_t)(left - (int16_t)(viewport->viewPos.x & bitmask));
     x >>= viewport->zoom;
-    x += viewport->x;
+    x += viewport->pos.x;
 
-    int16_t y = (int16_t)(top - (int16_t)(viewport->view_y & bitmask));
+    int16_t y = (int16_t)(top - (int16_t)(viewport->viewPos.y & bitmask));
     y >>= viewport->zoom;
-    y += viewport->y;
+    y += viewport->pos.y;
 
     rct_drawpixelinfo dpi1 = *dpi;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
@@ -1062,8 +1059,8 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
 ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords)
 {
     ScreenCoordsXY ret;
-    ret.x = ((screenCoords.x - viewport->x) << viewport->zoom) + viewport->view_x;
-    ret.y = ((screenCoords.y - viewport->y) << viewport->zoom) + viewport->view_y;
+    ret.x = ((screenCoords.x - viewport->pos.x) << viewport->zoom) + viewport->viewPos.x;
+    ret.y = ((screenCoords.y - viewport->pos.y) << viewport->zoom) + viewport->viewPos.y;
     return ret;
 }
 
@@ -1651,15 +1648,13 @@ void get_map_coordinates_from_pos_window(
     if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
-        screenCoords.x -= (int32_t)myviewport->x;
-        screenCoords.y -= (int32_t)myviewport->y;
+        screenCoords -= myviewport->pos;
         if (screenCoords.x >= 0 && screenCoords.x < (int32_t)myviewport->width && screenCoords.y >= 0
             && screenCoords.y < (int32_t)myviewport->height)
         {
             screenCoords.x <<= myviewport->zoom;
             screenCoords.y <<= myviewport->zoom;
-            screenCoords.x += (int32_t)myviewport->view_x;
-            screenCoords.y += (int32_t)myviewport->view_y;
+            screenCoords += myviewport->viewPos;
             screenCoords.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             screenCoords.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             rct_drawpixelinfo dpi;
@@ -1710,10 +1705,10 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
     if (viewport->visibility == VC_COVERED)
         return;
 
-    int32_t viewportLeft = viewport->view_x;
-    int32_t viewportTop = viewport->view_y;
-    int32_t viewportRight = viewport->view_x + viewport->view_width;
-    int32_t viewportBottom = viewport->view_y + viewport->view_height;
+    int32_t viewportLeft = viewport->viewPos.x;
+    int32_t viewportTop = viewport->viewPos.y;
+    int32_t viewportRight = viewport->viewPos.x + viewport->view_width;
+    int32_t viewportBottom = viewport->viewPos.y + viewport->view_height;
     if (right > viewportLeft && bottom > viewportTop)
     {
         left = std::max(left, viewportLeft);
@@ -1730,10 +1725,10 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
         top /= zoom;
         right /= zoom;
         bottom /= zoom;
-        left += viewport->x;
-        top += viewport->y;
-        right += viewport->x;
-        bottom += viewport->y;
+        left += viewport->pos.x;
+        top += viewport->pos.y;
+        right += viewport->pos.x;
+        bottom += viewport->pos.y;
         gfx_set_dirty_blocks(left, top, right, bottom);
     }
 }
@@ -1748,9 +1743,9 @@ static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords
     if (viewport == nullptr)
         return nullptr;
 
-    if (screenCoords.x < viewport->x || screenCoords.y < viewport->y)
+    if (screenCoords.x < viewport->pos.x || screenCoords.y < viewport->pos.y)
         return nullptr;
-    if (screenCoords.x >= viewport->x + viewport->width || screenCoords.y >= viewport->y + viewport->height)
+    if (screenCoords.x >= viewport->pos.x + viewport->width || screenCoords.y >= viewport->pos.y + viewport->height)
         return nullptr;
 
     return viewport;
@@ -1919,8 +1914,8 @@ void viewport_set_saved_view()
     {
         rct_viewport* viewport = w->viewport;
 
-        gSavedView = ScreenCoordsXY{ viewport->view_width / 2 + viewport->view_x,
-                                     viewport->view_height / 2 + viewport->view_y };
+        gSavedView = ScreenCoordsXY{ viewport->view_width / 2 + viewport->viewPos.x,
+                                     viewport->view_height / 2 + viewport->viewPos.y };
 
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();

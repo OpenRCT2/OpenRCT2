@@ -99,8 +99,8 @@ rct_window* window_viewport_open()
     if (mainWindow != nullptr)
     {
         rct_viewport* mainViewport = mainWindow->viewport;
-        int32_t x = mainViewport->view_x + (mainViewport->view_width / 2);
-        int32_t y = mainViewport->view_y + (mainViewport->view_height / 2);
+        int32_t x = mainViewport->viewPos.x + (mainViewport->view_width / 2);
+        int32_t y = mainViewport->viewPos.y + (mainViewport->view_height / 2);
         w->saved_view_x = x - (w->viewport->view_width / 2);
         w->saved_view_y = y - (w->viewport->view_height / 2);
     }
@@ -211,8 +211,7 @@ static void window_viewport_invalidate(rct_window* w)
     if (viewport->zoom >= 3)
         w->disabled_widgets |= 1 << WIDX_ZOOM_OUT;
 
-    viewport->x = w->x + viewportWidget->left;
-    viewport->y = w->y + viewportWidget->top;
+    viewport->pos = ScreenCoordsXY{ w->x + viewportWidget->left, w->y + viewportWidget->top };
     viewport->width = viewportWidget->right - viewportWidget->left;
     viewport->height = viewportWidget->bottom - viewportWidget->top;
     viewport->view_width = viewport->width << viewport->zoom;

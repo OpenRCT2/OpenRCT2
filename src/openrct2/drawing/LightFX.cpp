@@ -441,8 +441,8 @@ void lightfx_update_viewport_settings()
     if (mainWindow)
     {
         rct_viewport* viewport = window_get_viewport(mainWindow);
-        _current_view_x_back = viewport->view_x;
-        _current_view_y_back = viewport->view_y;
+        _current_view_x_back = viewport->viewPos.x;
+        _current_view_y_back = viewport->viewPos.y;
         _current_view_rotation_back = get_current_rotation();
         _current_view_zoom_back = viewport->zoom;
     }

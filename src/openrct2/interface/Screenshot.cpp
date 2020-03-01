@@ -367,8 +367,7 @@ static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, int32_t 
     int32_t bottom = translate_3d_to_2d_with_z(rotation, CoordsXYZ(bottomTileCoords, 0)).y;
 
     rct_viewport viewport{};
-    viewport.view_x = left;
-    viewport.view_y = top;
+    viewport.viewPos = { left, top };
     viewport.view_width = right - left;
     viewport.view_height = bottom - top;
     viewport.width = viewport.view_width >> zoom;
@@ -726,15 +725,15 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
                 auto coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
 
-                viewport.view_x = coords2d.x - ((viewport.view_width << customZoom) / 2);
-                viewport.view_y = coords2d.y - ((viewport.view_height << customZoom) / 2);
+                viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
+                                     coords2d.y - ((viewport.view_height << customZoom) / 2) };
                 viewport.zoom = customZoom;
                 gCurrentRotation = customRotation;
             }
             else
             {
-                viewport.view_x = gSavedView.x - (viewport.view_width / 2);
-                viewport.view_y = gSavedView.y - (viewport.view_height / 2);
+                viewport.viewPos = { gSavedView.x - (viewport.view_width / 2), gSavedView.y - (viewport.view_height / 2) };
+
                 viewport.zoom = gSavedViewZoom;
                 gCurrentRotation = gSavedViewRotation;
             }

@@ -794,10 +794,10 @@ private:
                 auto vp = original_w->viewport;
                 if (vp != nullptr)
                 {
-                    left = std::max<int16_t>(left, vp->x);
-                    right = std::min<int16_t>(right, vp->x + vp->width);
-                    top = std::max<int16_t>(top, vp->y);
-                    bottom = std::min<int16_t>(bottom, vp->y + vp->height);
+                    left = std::max<int16_t>(left, vp->pos.x);
+                    right = std::min<int16_t>(right, vp->pos.x + vp->width);
+                    top = std::max<int16_t>(top, vp->pos.y);
+                    bottom = std::min<int16_t>(bottom, vp->pos.y + vp->height);
                     if (left < right && top < bottom)
                     {
                         auto width = right - left;
