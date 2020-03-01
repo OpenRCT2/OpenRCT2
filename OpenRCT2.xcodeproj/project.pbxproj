@@ -61,6 +61,7 @@
 		9308DA03209908090079EE96 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FB209908080079EE96 /* Surface.cpp */; };
 		9308DA04209908090079EE96 /* TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FC209908080079EE96 /* TileElement.h */; };
 		9308DA05209908090079EE96 /* Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FD209908090079EE96 /* Surface.h */; };
+		93151F45240C185F007161FB /* BenchLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93151F44240C185F007161FB /* BenchLogic.cpp */; };
 		932A211E22D73CFA00C57EDB /* GameActionCompat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */; };
 		932A211F22D73CFA00C57EDB /* GameActionRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */; };
 		932A212022D73CFA00C57EDB /* GameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A211C22D73CFA00C57EDB /* GameAction.cpp */; };
@@ -914,6 +915,7 @@
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		93151F44240C185F007161FB /* BenchLogic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchLogic.cpp; sourceTree = "<group>"; };
 		932A20CD22D73CEE00C57EDB /* GuestSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GuestSetNameAction.hpp; sourceTree = "<group>"; };
 		932A20CE22D73CEE00C57EDB /* RideSetVehiclesAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetVehiclesAction.hpp; sourceTree = "<group>"; };
 		932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameActionCompat.cpp; sourceTree = "<group>"; };
@@ -2605,6 +2607,7 @@
 			isa = PBXGroup;
 			children = (
 				D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */,
+				93151F44240C185F007161FB /* BenchLogic.cpp */,
 				4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */,
 				F76C83631EC4E7CC00FA49E2 /* CommandLine.cpp */,
 				F76C83641EC4E7CC00FA49E2 /* CommandLine.hpp */,
@@ -4005,6 +4008,7 @@
 				933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */,
 				F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */,
 				C688792920289B9B0084B384 /* Chairlift.cpp in Sources */,
+				93151F45240C185F007161FB /* BenchLogic.cpp in Sources */,
 				C68878A020289B200084B384 /* LanguagePack.cpp in Sources */,
 				F76C85C71EC4E88300FA49E2 /* IniReader.cpp in Sources */,
 				93F76F0020BFF77B00D4512C /* Paint.Path.cpp in Sources */,
