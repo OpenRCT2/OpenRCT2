@@ -72,6 +72,16 @@ struct ScreenCoordsXY
     {
         return { x + rhs.x, y + rhs.y };
     }
+
+    bool operator==(const ScreenCoordsXY& other) const
+    {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const ScreenCoordsXY& other) const
+    {
+        return !(*this == other);
+    }
 };
 
 /**

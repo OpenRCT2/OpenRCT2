@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2/interface/InteractiveConsole.h>
+#include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2::Ui
 {
@@ -25,7 +26,7 @@ namespace OpenRCT2::Ui
 
         bool _isOpen = false;
         int32_t _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-        int32_t _lastMainViewportX, _lastMainViewportY;
+        ScreenCoordsXY _lastMainViewport;
         std::deque<std::string> _consoleLines;
         utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};
         int32_t _consoleCaretTicks;
