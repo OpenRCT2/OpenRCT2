@@ -7,6 +7,7 @@
 - Feature: [#10305] Add two shortcuts for increasing and decreasing the scaling factor.
 - Feature: [#10189] Make Track Designs work in multiplayer.
 - Feature: [#10357] Added window for scenery scatter tool, allowing for area and density selection.
+- Feature: [#10858] Finance charts horizontal lines
 - Change: [#1164] Use available translations for shortcut key bindings.
 - Fix: [#2485] Hide Vertical Faces not applied to the edges of water.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
