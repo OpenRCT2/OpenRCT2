@@ -27,6 +27,7 @@
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
+class GameActionResult;
 class FileWatcher;
 class InteractiveConsole;
 
@@ -154,6 +155,8 @@ namespace OpenRCT2::Scripting
         }
 
         void AddNetworkPlugin(const std::string_view& code);
+
+        std::unique_ptr<GameActionResult> QueryOrExecuteCustomGameAction(const std::string_view& id, const std::string_view& args, bool isExecute);
 
     private:
         void Initialise();

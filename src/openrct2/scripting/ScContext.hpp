@@ -11,6 +11,7 @@
 
 #ifdef __ENABLE_SCRIPTING__
 
+#    include "../actions/CustomAction.hpp"
 #    include "../actions/ParkSetNameAction.hpp"
 #    include "../actions/SmallSceneryPlaceAction.hpp"
 #    include "Duktape.hpp"
@@ -91,7 +92,7 @@ namespace OpenRCT2::Scripting
                             if (isExecute)
                             {
                                 action->SetCallback(
-                                    [this, &plugin, &callback](const GameAction*, const GameActionResult* res) -> void {
+                                    [this, plugin, callback](const GameAction*, const GameActionResult* res) -> void {
                                         HandleGameActionResult(plugin, *res, callback);
                                     });
                                 GameActions::Execute(action.get());
@@ -143,7 +144,16 @@ namespace OpenRCT2::Scripting
                 uint8_t secondaryColour = args["secondaryColour"].as_int();
                 return std::make_unique<SmallSceneryPlaceAction>(loc, quadrant, sceneryType, primaryColour, secondaryColour);
             }
-            return {};
+            else
+            {
+                // Serialise args to json so that it can be sent
+                auto ctx = args.context();
+                args.push();
+                auto jsonz = duk_json_encode(ctx, -1);
+                auto json = std::string(jsonz);
+                duk_pop(ctx);
+                return std::make_unique<CustomAction>(actionid, json);
+            }
         }
 
         void HandleGameActionResult(

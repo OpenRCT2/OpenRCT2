@@ -2997,12 +2997,15 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
         return;
     }
 
-    // Check if player's group permission allows command to run
-    NetworkGroup* group = GetGroupByID(connection.Player->Group);
-    if (group == nullptr || group->CanPerformCommand(actionType) == false)
+    if (actionType != GAME_COMMAND_CUSTOM)
     {
-        Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
-        return;
+        // Check if player's group permission allows command to run
+        NetworkGroup* group = GetGroupByID(connection.Player->Group);
+        if (group == nullptr || group->CanPerformCommand(actionType) == false)
+        {
+            Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+            return;
+        }
     }
 
     // Create and enqueue the action.

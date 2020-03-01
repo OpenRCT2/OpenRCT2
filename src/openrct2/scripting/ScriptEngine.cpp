@@ -694,6 +694,30 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
     LoadPlugin(plugin);
 }
 
+std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
+    const std::string_view& id,
+    const std::string_view& args,
+    bool isExecute)
+{
+    // Deserialise the JSON args
+    std::string argsz(args);
+    duk_push_string(_context, argsz.c_str());
+    duk_json_decode(_context, -1);
+    auto dukArgs = DukValue::take_from_stack(_context);
+
+    // Ready to call plugin handler
+    if (isExecute)
+    {
+        std::printf("EXECUTE: %s(%s)\n", std::string(id).c_str(), std::string(args).c_str());
+    }
+    else
+    {
+        std::printf("QUERY: %s(%s)\n", std::string(id).c_str(), std::string(args).c_str());
+    }
+
+    return std::make_unique<GameActionResult>();
+}
+
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
 {
     return ExpressionStringifier::StringifyExpression(val);

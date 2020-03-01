@@ -98,6 +98,7 @@ enum GAME_COMMAND
     GAME_COMMAND_REMOVE_FOOTPATH_SCENERY,      // GA
     GAME_COMMAND_GUEST_SET_FLAGS,              // GA
     GAME_COMMAND_SET_DATE,                     // GA
+    GAME_COMMAND_CUSTOM,                       // GA
     GAME_COMMAND_COUNT,
 };
 
