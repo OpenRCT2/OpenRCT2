@@ -422,12 +422,12 @@ void ride_clear_exit_location(Ride* ride, const int32_t stationIndex)
     ride->stations[stationIndex].Exit.setNull();
 }
 
-void ride_set_entrance_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD location)
+void ride_set_entrance_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD& location)
 {
     ride->stations[stationIndex].Entrance = location;
 }
 
-void ride_set_exit_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD location)
+void ride_set_exit_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD& location)
 {
     ride->stations[stationIndex].Exit = location;
 }

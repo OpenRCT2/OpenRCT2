@@ -28,7 +28,7 @@ private:
 
 public:
     FootpathSceneryRemoveAction() = default;
-    FootpathSceneryRemoveAction(CoordsXYZ loc)
+    FootpathSceneryRemoveAction(const CoordsXYZ& loc)
         : _loc(loc)
     {
     }

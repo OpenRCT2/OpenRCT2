@@ -32,7 +32,7 @@ private:
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(CoordsXYZ loc, uint8_t slope, uint8_t type, uint8_t edges)
+    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, uint8_t edges)
         : _loc(loc)
         , _slope(slope)
         , _type(type)

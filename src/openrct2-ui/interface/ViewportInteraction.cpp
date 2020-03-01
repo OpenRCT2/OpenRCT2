@@ -39,11 +39,11 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
-static void viewport_interaction_remove_scenery(TileElement* tileElement, CoordsXY mapCoords);
-static void viewport_interaction_remove_footpath(TileElement* tileElement, CoordsXY mapCoords);
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, CoordsXY mapCoords);
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, CoordsXY mapCoords);
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, CoordsXY mapCoords);
+static void viewport_interaction_remove_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_footpath(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
 static void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords);
 static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance);
 
@@ -503,7 +503,7 @@ int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(TileElement* tileElement, CoordsXY mapCoords)
+static void viewport_interaction_remove_scenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
         { mapCoords.x, mapCoords.y, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
@@ -516,7 +516,7 @@ static void viewport_interaction_remove_scenery(TileElement* tileElement, Coords
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(TileElement* tileElement, CoordsXY mapCoords)
+static void viewport_interaction_remove_footpath(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_window* w;
     TileElement* tileElement2;
@@ -544,7 +544,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, Coord
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, CoordsXY mapCoords)
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&footpathSceneryRemoveAction);
@@ -574,7 +574,7 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsX
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, CoordsXY mapCoords)
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
     if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
@@ -593,7 +593,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, Coor
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, CoordsXY mapCoords)
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 

@@ -65,7 +65,7 @@ void network_add_player_money_spent(uint32_t index, money32 cost);
 int32_t network_get_player_last_action(uint32_t index, int32_t time);
 void network_set_player_last_action(uint32_t index, int32_t command);
 CoordsXYZ network_get_player_last_action_coord(uint32_t index);
-void network_set_player_last_action_coord(uint32_t index, CoordsXYZ coord);
+void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord);
 uint32_t network_get_player_commands_ran(uint32_t index);
 int32_t network_get_player_index(uint32_t id);
 uint8_t network_get_player_group(uint32_t index);

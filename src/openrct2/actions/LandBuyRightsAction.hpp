@@ -117,7 +117,7 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY loc, bool isExecuting) const
+    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
     {
         if (_setting >= static_cast<uint8_t>(LandBuyRightSetting::Count))
         {

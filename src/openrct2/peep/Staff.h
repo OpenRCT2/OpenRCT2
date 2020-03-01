@@ -82,7 +82,7 @@ bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y);
 bool staff_can_ignore_wide_flag(Peep* mechanic, int32_t x, int32_t y, uint8_t z, TileElement* path);
 int32_t staff_path_finding(Staff* peep);
 void staff_reset_stats();
-bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, CoordsXY coords);
+bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords);
 void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value);
 void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y);
 colour_t staff_get_colour(uint8_t staffType);

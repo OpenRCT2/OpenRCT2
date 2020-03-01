@@ -28,7 +28,7 @@ public:
     PlacePeepSpawnAction()
     {
     }
-    PlacePeepSpawnAction(CoordsXYZD location)
+    PlacePeepSpawnAction(const CoordsXYZD& location)
         : _location(location)
     {
     }

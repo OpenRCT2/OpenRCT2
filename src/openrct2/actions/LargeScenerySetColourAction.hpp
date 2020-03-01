@@ -25,7 +25,7 @@ private:
 public:
     LargeScenerySetColourAction() = default;
 
-    LargeScenerySetColourAction(CoordsXYZD loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
+    LargeScenerySetColourAction(const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _tileIndex(tileIndex)
         , _primaryColour(primaryColour)

@@ -30,7 +30,7 @@ private:
 
 public:
     FootpathSceneryPlaceAction() = default;
-    FootpathSceneryPlaceAction(CoordsXYZ loc, uint8_t pathItemType)
+    FootpathSceneryPlaceAction(const CoordsXYZ& loc, uint8_t pathItemType)
         : _loc(loc)
         , _pathItemType(pathItemType)
     {

@@ -64,7 +64,8 @@ public:
     WallPlaceAction() = default;
 
     WallPlaceAction(
-        int32_t wallType, CoordsXYZ loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
+        int32_t wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
+        int32_t tertiaryColour)
         : _wallType(wallType)
         , _loc(loc)
         , _edge(edge)

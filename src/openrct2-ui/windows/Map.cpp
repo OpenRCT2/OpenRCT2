@@ -1537,7 +1537,7 @@ static constexpr const uint8_t RideColourKey[] = {
     COLOUR_KEY_RIDE,         //
 };
 
-static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
+static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
 {
     auto* surfaceElement = map_get_surface_element_at(c);
     if (surfaceElement == nullptr)
@@ -1571,7 +1571,7 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
     return colour;
 }
 
-static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
+static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 {
     Ride* ride;
     uint16_t colourA = 0;                            // highlight colour

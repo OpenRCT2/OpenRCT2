@@ -40,7 +40,7 @@ public:
     SmallScenerySetColourAction() = default;
 
     SmallScenerySetColourAction(
-        CoordsXYZ loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+        const CoordsXYZ& loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)

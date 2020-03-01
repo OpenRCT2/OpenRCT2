@@ -25,7 +25,7 @@
 #include "SmallScenery.h"
 #include "Sprite.h"
 
-using map_animation_invalidate_event_handler = bool (*)(CoordsXYZ loc);
+using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 
 static std::vector<MapAnimation> _mapAnimations;
 
@@ -46,7 +46,7 @@ static bool DoesAnimationExist(int32_t type, const CoordsXYZ& location)
     return false;
 }
 
-void map_animation_create(int32_t type, const CoordsXYZ loc)
+void map_animation_create(int32_t type, const CoordsXYZ& loc)
 {
     if (!DoesAnimationExist(type, loc))
     {
@@ -87,7 +87,7 @@ void map_animation_invalidate_all()
  *
  *  rct2: 0x00666670
  */
-static bool map_animation_invalidate_ride_entrance(CoordsXYZ loc)
+static bool map_animation_invalidate_ride_entrance(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     auto tileElement = map_get_first_element_at(loc);
@@ -122,7 +122,7 @@ static bool map_animation_invalidate_ride_entrance(CoordsXYZ loc)
  *
  *  rct2: 0x006A7BD4
  */
-static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
+static bool map_animation_invalidate_queue_banner(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -156,7 +156,7 @@ static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
  *
  *  rct2: 0x006E32C9
  */
-static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
+static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -233,7 +233,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
  *
  *  rct2: 0x00666C63
  */
-static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
+static bool map_animation_invalidate_park_entrance(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -263,7 +263,7 @@ static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
  *
  *  rct2: 0x006CE29E
  */
-static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
+static bool map_animation_invalidate_track_waterfall(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -292,7 +292,7 @@ static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
  *
  *  rct2: 0x006CE2F3
  */
-static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
+static bool map_animation_invalidate_track_rapids(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -321,7 +321,7 @@ static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
  *
  *  rct2: 0x006CE39D
  */
-static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
+static bool map_animation_invalidate_track_onridephoto(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -362,7 +362,7 @@ static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
  *
  *  rct2: 0x006CE348
  */
-static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
+static bool map_animation_invalidate_track_whirlpool(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -391,7 +391,7 @@ static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
  *
  *  rct2: 0x006CE3FA
  */
-static bool map_animation_invalidate_track_spinningtunnel(CoordsXYZ loc)
+static bool map_animation_invalidate_track_spinningtunnel(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -420,7 +420,7 @@ static bool map_animation_invalidate_track_spinningtunnel(CoordsXYZ loc)
  *
  *  rct2: 0x0068DF8F
  */
-static bool map_animation_invalidate_remove([[maybe_unused]] CoordsXYZ loc)
+static bool map_animation_invalidate_remove([[maybe_unused]] const CoordsXYZ& loc)
 {
     return true;
 }
@@ -429,7 +429,7 @@ static bool map_animation_invalidate_remove([[maybe_unused]] CoordsXYZ loc)
  *
  *  rct2: 0x006BA2BB
  */
-static bool map_animation_invalidate_banner(CoordsXYZ loc)
+static bool map_animation_invalidate_banner(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -454,7 +454,7 @@ static bool map_animation_invalidate_banner(CoordsXYZ loc)
  *
  *  rct2: 0x006B94EB
  */
-static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
+static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -486,7 +486,7 @@ static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
  *
  *  rct2: 0x006E5B50
  */
-static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
+static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -551,7 +551,7 @@ static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
  *
  *  rct2: 0x006E5EE4
  */
-static bool map_animation_invalidate_wall(CoordsXYZ loc)
+static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;

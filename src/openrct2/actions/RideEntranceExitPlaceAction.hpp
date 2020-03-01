@@ -230,7 +230,7 @@ public:
         return res;
     }
 
-    static GameActionResult::Ptr TrackPlaceQuery(const CoordsXYZ loc, const bool isExit)
+    static GameActionResult::Ptr TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
     {
         auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                  : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;

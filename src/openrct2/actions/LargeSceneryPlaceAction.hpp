@@ -56,7 +56,7 @@ private:
 public:
     LargeSceneryPlaceAction() = default;
 
-    LargeSceneryPlaceAction(CoordsXYZD loc, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    LargeSceneryPlaceAction(const CoordsXYZD& loc, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _sceneryType(sceneryType)
         , _primaryColour(primaryColour)

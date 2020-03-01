@@ -35,7 +35,7 @@ public:
     {
     }
 
-    WallSetColourAction(CoordsXYZD loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
+    WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
         : _loc(loc)
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)

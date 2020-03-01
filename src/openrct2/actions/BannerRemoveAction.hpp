@@ -22,7 +22,7 @@ private:
 
 public:
     BannerRemoveAction() = default;
-    BannerRemoveAction(CoordsXYZD loc)
+    BannerRemoveAction(const CoordsXYZD& loc)
         : _loc(loc)
     {
     }

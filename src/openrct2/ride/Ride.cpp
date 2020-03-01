@@ -3221,7 +3221,7 @@ void ride_check_all_reachable()
  *  rct2: 0x006B7C59
  * @return true if the coordinate is reachable or has no entrance, false otherwise
  */
-static bool ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
+static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
 {
     if (coordinates.isNull())
         return true;
@@ -3540,7 +3540,8 @@ static int32_t ride_music_params_update_label_58(uint32_t position, uint8_t* tun
  * @param tuneId (bh)
  * @returns new position (ebp)
  */
-int32_t ride_music_params_update(CoordsXYZ rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
+int32_t ride_music_params_update(
+    const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
     {

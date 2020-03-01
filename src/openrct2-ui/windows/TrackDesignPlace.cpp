@@ -124,9 +124,9 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max);
+    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max);
 static void window_track_place_draw_mini_preview_maze(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max);
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
 static LocationXY16 draw_mini_preview_get_pixel_position(int16_t x, int16_t y);
 static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel);
 static uint8_t* draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
@@ -557,7 +557,7 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 }
 
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max)
+    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
@@ -666,7 +666,7 @@ static void window_track_place_draw_mini_preview_track(
 }
 
 static void window_track_place_draw_mini_preview_maze(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max)
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     for (const auto& mazeElement : td6->maze_elements)

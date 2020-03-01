@@ -132,7 +132,7 @@ static const TileElement* chairlift_paint_util_map_get_track_element_at_from_rid
 };
 
 static bool chairlift_paint_util_is_first_track(
-    ride_id_t rideIndex, const TileElement* tileElement, CoordsXY pos, uint8_t trackType)
+    ride_id_t rideIndex, const TileElement* tileElement, const CoordsXY& pos, uint8_t trackType)
 {
     if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_BEGIN_STATION)
     {
@@ -152,7 +152,7 @@ static bool chairlift_paint_util_is_first_track(
 }
 
 static bool chairlift_paint_util_is_last_track(
-    ride_id_t rideIndex, const TileElement* tileElement, CoordsXY pos, uint8_t trackType)
+    ride_id_t rideIndex, const TileElement* tileElement, const CoordsXY& pos, uint8_t trackType)
 {
     if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_END_STATION)
     {

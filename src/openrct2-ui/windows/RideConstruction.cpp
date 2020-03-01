@@ -468,13 +468,13 @@ static void window_ride_construction_draw_track_piece(
     rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
     int32_t width, int32_t height);
 static void sub_6CBCE2(
-    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, CoordsXY originCoords,
-    int32_t originZ);
+    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx,
+    const CoordsXY& originCoords, int32_t originZ);
 static void window_ride_construction_update_map_selection();
 static void window_ride_construction_update_possible_ride_configurations();
 static void window_ride_construction_update_widgets(rct_window* w);
 static void window_ride_construction_select_map_tiles(
-    Ride* ride, int32_t trackType, int32_t trackDirection, CoordsXY tileCoords);
+    Ride* ride, int32_t trackType, int32_t trackDirection, const CoordsXY& tileCoords);
 static void window_ride_construction_show_special_track_dropdown(rct_window* w, rct_widget* widget);
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
 static void loc_6C7502(int32_t al);
@@ -2406,7 +2406,7 @@ static TileElement* _backupTileElementArrays[5];
  */
 static void sub_6CBCE2(
     rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
-    CoordsXY originCoords, int32_t originZ)
+    const CoordsXY& originCoords, int32_t originZ)
 {
     paint_session* session = paint_session_alloc(dpi, 0);
     trackDirection &= 3;
@@ -3332,7 +3332,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
 }
 
 static void window_ride_construction_select_map_tiles(
-    Ride* ride, int32_t trackType, int32_t trackDirection, CoordsXY tileCoords)
+    Ride* ride, int32_t trackType, int32_t trackDirection, const CoordsXY& tileCoords)
 {
     // If the scenery tool is active, we do not display our tiles as it
     // will conflict with larger scenery objects selecting tiles

@@ -28,33 +28,36 @@ enum TILE_INSPECTOR_ELEMENT_TYPE
 
 class GameActionResult;
 using GameActionResultPtr = std::unique_ptr<GameActionResult>;
-GameActionResultPtr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t elementIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_remove_element_at(CoordsXY loc, int16_t elementIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_swap_elements_at(CoordsXY loc, int16_t first, int16_t second, bool isExecuting);
-GameActionResultPtr tile_inspector_rotate_element_at(CoordsXY loc, int32_t elementIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_paste_element_at(CoordsXY loc, TileElement element, bool isExecuting);
-GameActionResultPtr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecuting);
+GameActionResultPtr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_remove_element_at(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_swap_elements_at(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
+GameActionResultPtr tile_inspector_rotate_element_at(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_paste_element_at(const CoordsXY& loc, TileElement element, bool isExecuting);
+GameActionResultPtr tile_inspector_sort_elements_at(const CoordsXY& loc, bool isExecuting);
 GameActionResultPtr tile_inspector_any_base_height_offset(
-    CoordsXY loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
-GameActionResultPtr tile_inspector_surface_show_park_fences(CoordsXY loc, bool enabled, bool isExecuting);
-GameActionResultPtr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t cornerIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool isExecuting);
-GameActionResultPtr tile_inspector_path_set_sloped(CoordsXY loc, int32_t elementIndex, bool sloped, bool isExecuting);
-GameActionResultPtr tile_inspector_path_set_broken(CoordsXY loc, int32_t elementIndex, bool broken, bool isExecuting);
-GameActionResultPtr tile_inspector_path_toggle_edge(CoordsXY loc, int32_t elementIndex, int32_t cornerIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_entrance_make_usable(CoordsXY loc, int32_t elementIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_wall_set_slope(CoordsXY loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting);
+    const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
+GameActionResultPtr tile_inspector_surface_show_park_fences(const CoordsXY& loc, bool enabled, bool isExecuting);
+GameActionResultPtr tile_inspector_surface_toggle_corner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_surface_toggle_diagonal(const CoordsXY& loc, bool isExecuting);
+GameActionResultPtr tile_inspector_path_set_sloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting);
+GameActionResultPtr tile_inspector_path_set_broken(const CoordsXY& loc, int32_t elementIndex, bool broken, bool isExecuting);
+GameActionResultPtr tile_inspector_path_toggle_edge(
+    const CoordsXY& loc, int32_t elementIndex, int32_t cornerIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_entrance_make_usable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_wall_set_slope(
+    const CoordsXY& loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting);
 GameActionResultPtr tile_inspector_track_base_height_offset(
-    CoordsXY loc, int32_t elementIndex, int8_t offset, bool isExecuting);
-GameActionResultPtr tile_inspector_track_set_block_brake(CoordsXY loc, int32_t elementIndex, bool blockBrake, bool isExecuting);
+    const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting);
+GameActionResultPtr tile_inspector_track_set_block_brake(
+    const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting);
 GameActionResultPtr tile_inspector_track_set_indestructible(
-    CoordsXY loc, int32_t elementIndex, bool isIndestructible, bool isExecuting);
+    const CoordsXY& loc, int32_t elementIndex, bool isIndestructible, bool isExecuting);
 GameActionResultPtr tile_inspector_track_set_chain(
-    CoordsXY loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting);
+    const CoordsXY& loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting);
 GameActionResultPtr tile_inspector_scenery_set_quarter_location(
-    CoordsXY loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
+    const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
 GameActionResultPtr tile_inspector_scenery_set_quarter_collision(
-    CoordsXY loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
+    const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
 GameActionResultPtr tile_inspector_banner_toggle_blocking_edge(
-    CoordsXY loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting);
-GameActionResultPtr tile_inspector_corrupt_clamp(CoordsXY loc, int32_t elementIndex, bool isExecuting);
+    const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting);
+GameActionResultPtr tile_inspector_corrupt_clamp(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
