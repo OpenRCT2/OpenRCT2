@@ -41,11 +41,8 @@ struct rct_window
     uint16_t flags;
     rct_scroll scrolls[3];
     uint8_t list_item_positions[1024];
-    uint16_t no_list_items; // 0 for no items
-    int16_t pad_478;
+    uint16_t no_list_items;     // 0 for no items
     int16_t selected_list_item; // -1 for none selected
-    int16_t pad_47C;
-    int16_t pad_47E;
     union
     {
         coordinate_focus viewport_focus_coordinates;
@@ -93,7 +90,6 @@ struct rct_window
     uint16_t viewport_target_sprite;
     ScreenCoordsXY savedViewPos;
     rct_windowclass classification;
-    uint8_t pad_4B7;
     int8_t var_4B8;
     int8_t var_4B9;
     uint8_t colours[6];
