@@ -748,7 +748,7 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
 void invalidate_all_windows_after_input();
 void textinput_cancel();
 
-void window_move_and_snap(rct_window* w, const ScreenCoordsXY& newWindowCoords, int32_t snapProximity);
+void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
 int32_t window_can_resize(rct_window* w);
 
 void window_start_textbox(

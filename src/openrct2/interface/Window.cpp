@@ -1876,19 +1876,18 @@ static void window_snap_bottom(rct_window* w, int32_t proximity)
         w->y = topMost - w->height;
 }
 
-void window_move_and_snap(rct_window* w, const ScreenCoordsXY& newWindowCoords, int32_t snapProximity)
+void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
     int32_t originalX = w->x;
     int32_t originalY = w->y;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    auto destinationCords = newWindowCoords;
-    destinationCords.y = std::clamp(destinationCords.y, minY, context_get_height() - 34);
+    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
 
     if (snapProximity > 0)
     {
-        w->x = destinationCords.x;
-        w->y = destinationCords.y;
+        w->x = newWindowCoords.x;
+        w->y = newWindowCoords.y;
 
         window_snap_right(w, snapProximity);
         window_snap_bottom(w, snapProximity);
@@ -1898,13 +1897,13 @@ void window_move_and_snap(rct_window* w, const ScreenCoordsXY& newWindowCoords, 
         if (w->x == originalX && w->y == originalY)
             return;
 
-        destinationCords.x = w->x;
-        destinationCords.y = w->y;
+        newWindowCoords.x = w->x;
+        newWindowCoords.y = w->y;
         w->x = originalX;
         w->y = originalY;
     }
 
-    window_set_position(w, destinationCords);
+    window_set_position(w, newWindowCoords);
 }
 
 int32_t window_can_resize(rct_window* w)

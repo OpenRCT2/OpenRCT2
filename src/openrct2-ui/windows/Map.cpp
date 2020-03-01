@@ -198,7 +198,7 @@ static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window* w);
 
-static CoordsXY map_window_screen_to_map(const ScreenCoordsXY& screenCoords);
+static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords);
 
 /**
  *
@@ -1688,12 +1688,11 @@ static void map_window_set_pixels(rct_window* w)
         _currentLine = 0;
 }
 
-static CoordsXY map_window_screen_to_map(const ScreenCoordsXY& screenCoords)
+static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords)
 {
-    auto newScreenCoords = screenCoords;
-    newScreenCoords.x = ((screenCoords.x + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
-    newScreenCoords.y = ((screenCoords.y + 8)) / 2;
-    auto location = TileCoordsXY(newScreenCoords.y - newScreenCoords.x, newScreenCoords.x + newScreenCoords.y).ToCoordsXY();
+    screenCoords.x = ((screenCoords.x + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
+    screenCoords.y = ((screenCoords.y + 8)) / 2;
+    auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
     switch (get_current_rotation())
     {

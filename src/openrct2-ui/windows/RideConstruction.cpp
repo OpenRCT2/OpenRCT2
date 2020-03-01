@@ -2108,10 +2108,9 @@ static void window_ride_construction_update(rct_window* w)
  *
  *  rct2: 0x006CC538
  */
-static std::optional<CoordsXY> ride_get_place_position_from_screen_position(const ScreenCoordsXY& screenCoords)
+static std::optional<CoordsXY> ride_get_place_position_from_screen_position(ScreenCoordsXY screenCoords)
 {
     CoordsXY mapCoords;
-    auto dynamicScreenCoords = screenCoords;
 
     if (!_trackPlaceCtrlState)
     {
@@ -2120,7 +2119,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(cons
             TileElement* tileElement;
             rct_viewport* viewport = nullptr;
             int32_t interactionType;
-            get_map_coordinates_from_pos(dynamicScreenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
+            get_map_coordinates_from_pos(screenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
                 _trackPlaceCtrlZ = tileElement->GetBaseZ();
@@ -2141,7 +2140,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(cons
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
             _trackPlaceShiftState = true;
-            _trackPlaceShiftStart = dynamicScreenCoords;
+            _trackPlaceShiftStart = screenCoords;
             _trackPlaceShiftZ = 0;
         }
     }
@@ -2152,7 +2151,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(cons
             constexpr uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32)
                 << MAX_ZOOM_LEVEL;
 
-            _trackPlaceShiftZ = _trackPlaceShiftStart.y - dynamicScreenCoords.y + 4;
+            _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
             if (mainWnd && mainWnd->viewport)
@@ -2164,7 +2163,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(cons
             // Clamp to maximum possible value of base_height can offer.
             _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
 
-            dynamicScreenCoords = _trackPlaceShiftStart;
+            screenCoords = _trackPlaceShiftStart;
         }
         else
         {
@@ -2174,7 +2173,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(cons
 
     if (!_trackPlaceCtrlState)
     {
-        mapCoords = sub_68A15E(dynamicScreenCoords);
+        mapCoords = sub_68A15E(screenCoords);
         if (mapCoords.isNull())
             return std::nullopt;
 
@@ -2193,7 +2192,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(cons
     else
     {
         auto mapZ = _trackPlaceCtrlZ;
-        auto mapXYCoords = screen_get_map_xy_with_z(dynamicScreenCoords, mapZ);
+        auto mapXYCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
         if (mapXYCoords)
         {
             mapCoords = *mapXYCoords;

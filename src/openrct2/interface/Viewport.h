@@ -165,7 +165,7 @@ void get_map_coordinates_from_pos(
     const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
     rct_viewport** viewport);
 void get_map_coordinates_from_pos_window(
-    rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
+    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);

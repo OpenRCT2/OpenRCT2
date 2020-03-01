@@ -1647,28 +1647,27 @@ void get_map_coordinates_from_pos(
 }
 
 void get_map_coordinates_from_pos_window(
-    rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
+    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
     InteractionInfo info{};
-    auto dynamicScreenCoords = screenCoords;
     if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
-        dynamicScreenCoords.x -= (int32_t)myviewport->x;
-        dynamicScreenCoords.y -= (int32_t)myviewport->y;
-        if (dynamicScreenCoords.x >= 0 && dynamicScreenCoords.x < (int32_t)myviewport->width && dynamicScreenCoords.y >= 0
-            && dynamicScreenCoords.y < (int32_t)myviewport->height)
+        screenCoords.x -= (int32_t)myviewport->x;
+        screenCoords.y -= (int32_t)myviewport->y;
+        if (screenCoords.x >= 0 && screenCoords.x < (int32_t)myviewport->width && screenCoords.y >= 0
+            && screenCoords.y < (int32_t)myviewport->height)
         {
-            dynamicScreenCoords.x <<= myviewport->zoom;
-            dynamicScreenCoords.y <<= myviewport->zoom;
-            dynamicScreenCoords.x += (int32_t)myviewport->view_x;
-            dynamicScreenCoords.y += (int32_t)myviewport->view_y;
-            dynamicScreenCoords.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            dynamicScreenCoords.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            screenCoords.x <<= myviewport->zoom;
+            screenCoords.y <<= myviewport->zoom;
+            screenCoords.x += (int32_t)myviewport->view_x;
+            screenCoords.y += (int32_t)myviewport->view_y;
+            screenCoords.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            screenCoords.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             rct_drawpixelinfo dpi;
-            dpi.x = dynamicScreenCoords.x;
-            dpi.y = dynamicScreenCoords.y;
+            dpi.x = screenCoords.x;
+            dpi.y = screenCoords.y;
             dpi.height = 1;
             dpi.zoom_level = myviewport->zoom;
             dpi.width = 1;
