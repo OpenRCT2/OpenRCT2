@@ -1217,9 +1217,7 @@ private:
         }
         dst->status = statusSrc;
         dst->TrackSubposition = src->TrackSubposition;
-        dst->track_x = src->track_x;
-        dst->track_y = src->track_y;
-        dst->track_z = src->track_z;
+        dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
         dst->track_type = src->track_type;
         dst->track_progress = src->track_progress;

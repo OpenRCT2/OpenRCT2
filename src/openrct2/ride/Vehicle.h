@@ -199,9 +199,7 @@ struct Vehicle : SpriteBase
         int16_t track_type;      // (0000 0011 1111 1100)
         LocationXY8 boat_location;
     };
-    uint16_t track_x;
-    uint16_t track_y;
-    uint16_t track_z;
+    CoordsXYZ TrackLocation;
     uint16_t next_vehicle_on_train;
 
     // The previous vehicle on the same train or the last vehicle on the previous or only train.

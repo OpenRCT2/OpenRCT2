@@ -4445,9 +4445,7 @@ static Vehicle* vehicle_create_car(
         x += word_9A3AB4[direction].x;
         y += word_9A3AB4[direction].y;
         z = tileElement->GetBaseZ();
-        vehicle->track_x = x;
-        vehicle->track_y = y;
-        vehicle->track_z = z;
+        vehicle->TrackLocation = { x, y, z };
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
 
         z += RideData5[ride->type].z_offset;
@@ -4504,9 +4502,7 @@ static Vehicle* vehicle_create_car(
             subposition = VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE;
         }
         vehicle->TrackSubposition = subposition;
-
-        vehicle->track_x = x;
-        vehicle->track_y = y;
+        vehicle->TrackLocation = { x, y, tileElement->GetBaseZ() };
 
         int32_t direction = tileElement->GetDirection();
         vehicle->sprite_direction = direction << 3;
@@ -4538,7 +4534,6 @@ static Vehicle* vehicle_create_car(
 
         x += word_9A2A60[direction].x;
         y += word_9A2A60[direction].y;
-        vehicle->track_z = tileElement->GetBaseZ();
 
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
         z = tileElement->GetBaseZ();
@@ -4674,7 +4669,7 @@ static void vehicle_unset_update_flag_b1(Vehicle* head)
 static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYElement)
 {
     Vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
-    auto curTrackPos = CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z };
+    auto curTrackPos = vehicle->TrackLocation;
     auto curTrackElement = map_get_track_element_at(curTrackPos);
 
     assert(curTrackElement != nullptr);

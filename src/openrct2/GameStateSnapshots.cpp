@@ -320,9 +320,9 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, colours);
         COMPARE_FIELD(Vehicle, track_progress);
         COMPARE_FIELD(Vehicle, track_direction);
-        COMPARE_FIELD(Vehicle, track_x);
-        COMPARE_FIELD(Vehicle, track_y);
-        COMPARE_FIELD(Vehicle, track_z);
+        COMPARE_FIELD(Vehicle, TrackLocation.x);
+        COMPARE_FIELD(Vehicle, TrackLocation.y);
+        COMPARE_FIELD(Vehicle, TrackLocation.z);
         COMPARE_FIELD(Vehicle, next_vehicle_on_train);
         COMPARE_FIELD(Vehicle, prev_vehicle_on_ride);
         COMPARE_FIELD(Vehicle, next_vehicle_on_ride);
