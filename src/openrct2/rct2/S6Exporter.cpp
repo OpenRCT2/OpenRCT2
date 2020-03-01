@@ -1008,9 +1008,9 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->track_progress = src->track_progress;
     dst->track_direction = src->track_direction;
     dst->track_type = src->track_type;
-    dst->track_x = src->track_x;
-    dst->track_y = src->track_y;
-    dst->track_z = src->track_z;
+    dst->track_x = src->TrackLocation.x;
+    dst->track_y = src->TrackLocation.y;
+    dst->track_z = src->TrackLocation.z;
     dst->next_vehicle_on_train = src->next_vehicle_on_train;
     dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
     dst->next_vehicle_on_ride = src->next_vehicle_on_ride;

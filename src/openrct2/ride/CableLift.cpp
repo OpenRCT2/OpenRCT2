@@ -72,11 +72,9 @@ Vehicle* cable_lift_segment_create(
     }
     current->TrackSubposition = VEHICLE_TRACK_SUBPOSITION_0;
     current->sprite_direction = direction << 3;
-    current->track_x = x;
-    current->track_y = y;
 
-    z = z * 8;
-    current->track_z = z;
+    z = z * COORDS_Z_STEP;
+    current->TrackLocation = { x, y, z };
     z += RideData5[ride.type].z_offset;
 
     sprite_move(16, 16, z, current);
@@ -242,17 +240,13 @@ static bool sub_6DF01A_loop(Vehicle* vehicle)
         {
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
             _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(
-                { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
+            TileElement* trackElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
 
-            CoordsXYE input;
             CoordsXYE output;
             int32_t outputZ;
             int32_t outputDirection;
 
-            input.x = vehicle->track_x;
-            input.y = vehicle->track_y;
-            input.element = trackElement;
+            auto input = CoordsXYE{ vehicle->TrackLocation, trackElement };
 
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
                 return false;
@@ -261,9 +255,7 @@ static bool sub_6DF01A_loop(Vehicle* vehicle)
                 || TrackDefinitions[output.element->AsTrack()->GetTrackType()].bank_start != _vehicleBankEndF64E37)
                 return false;
 
-            vehicle->track_x = output.x;
-            vehicle->track_y = output.y;
-            vehicle->track_z = outputZ;
+            vehicle->TrackLocation = { output, outputZ };
             vehicle->track_direction = outputDirection;
             vehicle->track_type |= output.element->AsTrack()->GetTrackType() << 2;
             trackProgress = 0;
@@ -271,11 +263,7 @@ static bool sub_6DF01A_loop(Vehicle* vehicle)
 
         vehicle->track_progress = trackProgress;
         moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
-        CoordsXYZ unk = { moveInfo->x, moveInfo->y, moveInfo->z };
-
-        unk.x += vehicle->track_x;
-        unk.y += vehicle->track_y;
-        unk.z += vehicle->track_z;
+        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + vehicle->TrackLocation;
 
         uint8_t bx = 0;
         unk.z += RideData5[ride->type].z_offset;
@@ -320,14 +308,9 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
             _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
 
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(
-                { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
+            TileElement* trackElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
 
-            CoordsXYE input;
-
-            input.x = vehicle->track_x;
-            input.y = vehicle->track_y;
-            input.element = trackElement;
+            auto input = CoordsXYE{ vehicle->TrackLocation, trackElement };
             track_begin_end output;
 
             if (!track_block_get_previous(input.x, input.y, input.element, &output))
@@ -337,9 +320,7 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
                 || TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].bank_end != _vehicleBankEndF64E37)
                 return false;
 
-            vehicle->track_x = output.begin_x;
-            vehicle->track_y = output.begin_y;
-            vehicle->track_z = output.begin_z;
+            vehicle->TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
             vehicle->track_direction = output.begin_direction;
             vehicle->track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
 
@@ -355,11 +336,7 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
         vehicle->track_progress = trackProgress;
 
         moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
-        CoordsXYZ unk = { moveInfo->x, moveInfo->y, moveInfo->z };
-
-        unk.x += vehicle->track_x;
-        unk.y += vehicle->track_y;
-        unk.z += vehicle->track_z;
+        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + vehicle->TrackLocation;
 
         uint8_t bx = 0;
         unk.z += RideData5[ride->type].z_offset;

@@ -4174,14 +4174,14 @@ void Guest::UpdateRideLeaveVehicle()
                 if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
                     continue;
 
-                TileElement* inner_map = map_get_first_element_at({ vehicle->track_x, vehicle->track_y });
+                TileElement* inner_map = map_get_first_element_at(vehicle->TrackLocation);
                 if (inner_map == nullptr)
                     continue;
                 for (;; inner_map++)
                 {
                     if (inner_map->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
-                    if (inner_map->GetBaseZ() == vehicle->track_z)
+                    if (inner_map->GetBaseZ() == vehicle->TrackLocation.z)
                         break;
                 }
 
