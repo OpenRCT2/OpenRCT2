@@ -1135,7 +1135,7 @@ private:
 
     void ImportVehicle(Vehicle* dst, rct1_vehicle* src)
     {
-        auto ride = get_ride(src->ride);
+        const auto* ride = get_ride(src->ride);
         if (ride == nullptr)
             return;
 
@@ -1220,6 +1220,14 @@ private:
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
         dst->track_type = src->track_type;
+        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE)
+        {
+            dst->BoatLocation.setNull();
+        }
+        else
+        {
+            dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+        }
         dst->track_progress = src->track_progress;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
         dst->sub_state = src->sub_state;

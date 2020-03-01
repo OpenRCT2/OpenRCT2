@@ -996,6 +996,8 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const Sprite
 
 void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
 {
+    const auto* ride = get_ride(src->ride);
+
     ExportSpriteCommonProperties(dst, (const SpriteBase*)src);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;
     dst->bank_rotation = src->bank_rotation;
@@ -1006,7 +1008,22 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
-    dst->track_direction = src->track_direction;
+    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE)
+    {
+        if (src->BoatLocation.isNull())
+        {
+            dst->boat_location.setNull();
+        }
+        else
+        {
+            dst->boat_location = { static_cast<uint8_t>(src->BoatLocation.x / COORDS_XY_STEP),
+                                   static_cast<uint8_t>(src->BoatLocation.y / COORDS_XY_STEP) };
+        }
+    }
+    else
+    {
+        dst->track_direction = src->track_direction;
+    }
     dst->track_type = src->track_type;
     dst->track_x = src->TrackLocation.x;
     dst->track_y = src->TrackLocation.y;

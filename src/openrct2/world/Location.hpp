@@ -14,7 +14,6 @@
 #include <algorithm>
 
 #define LOCATION_NULL ((int16_t)(uint16_t)0x8000)
-#define RCT_XY8_UNDEFINED 0xFFFF
 
 constexpr const int32_t COORDS_XY_STEP = 32;
 constexpr const int32_t COORDS_Z_STEP = 8;
@@ -22,28 +21,6 @@ constexpr const int32_t COORDS_Z_STEP = 8;
 constexpr const auto NumOrthogonalDirections = 4;
 
 #pragma pack(push, 1)
-struct LocationXY8
-{
-    union
-    {
-        struct
-        {
-            uint8_t x, y;
-        };
-        uint16_t xy;
-    };
-
-    bool isNull() const
-    {
-        return xy == RCT_XY8_UNDEFINED;
-    }
-
-    void setNull()
-    {
-        xy = RCT_XY8_UNDEFINED;
-    }
-};
-assert_struct_size(LocationXY8, 2);
 
 struct LocationXY16
 {

@@ -50,6 +50,15 @@ constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
 
+constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
+
+// Everything before this point has been researched
+#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
+// Everything before this point and after separator still requires research
+#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
+// Extra end of list entry. Leftover from RCT1.
+#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -85,14 +94,30 @@ enum
     RCT12_TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
 };
 
-// Everything before this point has been researched
-#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
-// Everything before this point and after separator still requires research
-#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
-// Extra end of list entry. Leftover from RCT1.
-#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
-
 #pragma pack(push, 1)
+
+struct RCT12xy8
+{
+    union
+    {
+        struct
+        {
+            uint8_t x, y;
+        };
+        uint16_t xy;
+    };
+
+    bool isNull() const
+    {
+        return xy == RCT12_XY8_UNDEFINED;
+    }
+
+    void setNull()
+    {
+        xy = RCT12_XY8_UNDEFINED;
+    }
+};
+assert_struct_size(RCT12xy8, 2);
 
 /* Maze Element entry   size: 0x04 */
 struct rct_td46_maze_element

@@ -197,7 +197,6 @@ struct Vehicle : SpriteBase
     {
         int16_t track_direction; // (0000 0000 0000 0011)
         int16_t track_type;      // (0000 0011 1111 1100)
-        LocationXY8 boat_location;
     };
     CoordsXYZ TrackLocation;
     uint16_t next_vehicle_on_train;
@@ -287,6 +286,7 @@ struct Vehicle : SpriteBase
     uint8_t colours_extended;
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
+    CoordsXY BoatLocation;
 
     constexpr bool IsHead() const
     {
