@@ -732,8 +732,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             }
             else
             {
-                viewport.viewPos = { gSavedView.x - (viewport.view_width / 2), gSavedView.y - (viewport.view_height / 2) };
-
+                viewport.viewPos = { gSavedView - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
                 viewport.zoom = gSavedViewZoom;
                 gCurrentRotation = gSavedViewRotation;
             }

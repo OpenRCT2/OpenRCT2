@@ -1914,8 +1914,7 @@ void viewport_set_saved_view()
     {
         rct_viewport* viewport = w->viewport;
 
-        gSavedView = ScreenCoordsXY{ viewport->view_width / 2 + viewport->viewPos.x,
-                                     viewport->view_height / 2 + viewport->viewPos.y };
+        gSavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();
