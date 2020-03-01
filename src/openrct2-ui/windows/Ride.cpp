@@ -1389,7 +1389,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         rct_widget* widget = &w->widgets[widgetIndex];
         int32_t spriteIndex = 0;
         if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
-            spriteIndex = w->var_492 & ~3;
+            spriteIndex = w->picked_peep_frame & ~3;
 
         spriteIndex += g_peep_animation_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_animation->base_image;
         spriteIndex += 1;
@@ -1560,7 +1560,7 @@ static rct_window* window_ride_open(Ride* ride)
     w->vehicleIndex = 0;
     w->frame_no = 0;
     w->list_information_type = 0;
-    w->var_492 = 0;
+    w->picked_peep_frame = 0;
     w->ride_colour = 0;
     window_ride_disable_tabs(w);
     w->min_width = 316;
@@ -1801,7 +1801,7 @@ static void window_ride_set_page(rct_window* w, int32_t page)
 
     w->page = page;
     w->frame_no = 0;
-    w->var_492 = 0;
+    w->picked_peep_frame = 0;
 
     // There doesn't seem to be any need for this call, and it can sometimes modify the reported number of cars per train, so
     // I've removed it if (page == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(ride);
@@ -6908,9 +6908,9 @@ static void window_ride_customer_resize(rct_window* w)
  */
 static void window_ride_customer_update(rct_window* w)
 {
-    w->var_492++;
-    if (w->var_492 >= 24)
-        w->var_492 = 0;
+    w->picked_peep_frame++;
+    if (w->picked_peep_frame >= 24)
+        w->picked_peep_frame = 0;
 
     window_event_invalidate_call(w);
     widget_invalidate(w, WIDX_TAB_10);

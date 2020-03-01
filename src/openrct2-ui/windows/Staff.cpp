@@ -623,13 +623,13 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
  */
 void window_staff_overview_update(rct_window* w)
 {
-    int32_t var_496 = w->var_496;
-    var_496++;
-    if (var_496 >= 24)
+    int32_t newAnimationFrame = w->var_496;
+    newAnimationFrame++;
+    if (newAnimationFrame >= 24)
     {
-        var_496 = 0;
+        newAnimationFrame = 0;
     }
-    w->var_496 = var_496;
+    w->var_496 = newAnimationFrame;
     widget_invalidate(w, WIDX_TAB_1);
 }
 

@@ -183,7 +183,7 @@ rct_window* window_sign_open(rct_windownumber number)
 
     w->list_information_type = tile_element->AsLargeScenery()->GetPrimaryColour();
     w->var_492 = tile_element->AsLargeScenery()->GetSecondaryColour();
-    w->var_48C = tile_element->AsLargeScenery()->GetEntryIndex();
+    w->SceneryEntry = tile_element->AsLargeScenery()->GetEntryIndex();
 
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
@@ -316,7 +316,7 @@ static void window_sign_invalidate(rct_window* w)
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->var_48C);
+    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->SceneryEntry);
 
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;
@@ -426,7 +426,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
 
     w->list_information_type = tile_element->AsWall()->GetPrimaryColour();
     w->var_492 = tile_element->AsWall()->GetSecondaryColour();
-    w->var_48C = tile_element->AsWall()->GetEntryIndex();
+    w->SceneryEntry = tile_element->AsWall()->GetEntryIndex();
 
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
@@ -527,7 +527,7 @@ static void window_sign_small_invalidate(rct_window* w)
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
-    rct_scenery_entry* scenery_entry = get_wall_entry(w->var_48C);
+    rct_scenery_entry* scenery_entry = get_wall_entry(w->SceneryEntry);
 
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;

@@ -402,7 +402,6 @@ rct_window* window_editor_object_selection_open()
     }
     window_init_scroll_widgets(window);
 
-    window->var_4AE = 0;
     window->selected_tab = 0;
     window->selected_list_item = -1;
     window->object_entry = nullptr;

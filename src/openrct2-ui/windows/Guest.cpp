@@ -875,42 +875,42 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
         y++;
 
-    int32_t ebx = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;
+    int32_t animationFrame = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;
 
-    int32_t eax = 0;
+    int32_t animationFrameOffset = 0;
 
     if (w->page == WINDOW_GUEST_OVERVIEW)
     {
-        eax = w->var_496;
-        eax &= 0xFFFC;
+        animationFrameOffset = w->var_496;
+        animationFrameOffset &= 0xFFFC;
     }
-    ebx += eax;
+    animationFrame += animationFrameOffset;
 
-    int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
+    int32_t sprite_id = animationFrame | SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
-    if (ebx >= 0x2A1D && ebx < 0x2A3D)
+    if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
     {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        animationFrame += 32;
+        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
+        gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
     }
 
     // If holding umbrella
-    if (ebx >= 0x2BBD && ebx < 0x2BDD)
+    if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
     {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        animationFrame += 32;
+        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
+        gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
     }
 
     // If wearing hat
-    if (ebx >= 0x29DD && ebx < 0x29FD)
+    if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
     {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        animationFrame += 32;
+        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
+        gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
     }
 }
 
@@ -1166,10 +1166,10 @@ void window_guest_overview_invalidate(rct_window* w)
  */
 void window_guest_overview_update(rct_window* w)
 {
-    int32_t var_496 = w->var_496;
-    var_496++;
-    var_496 %= 24;
-    w->var_496 = var_496;
+    int32_t newAnimationFrame = w->var_496;
+    newAnimationFrame++;
+    newAnimationFrame %= 24;
+    w->var_496 = newAnimationFrame;
 
     widget_invalidate(w, WIDX_TAB_1);
     widget_invalidate(w, WIDX_TAB_2);

@@ -399,7 +399,6 @@ rct_window* window_editor_scenario_options_open()
     w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
     window_init_scroll_widgets(w);
-    w->var_4AE = 0;
     w->page = 0;
 
     return w;

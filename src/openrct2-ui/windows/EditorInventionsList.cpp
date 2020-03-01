@@ -309,7 +309,6 @@ rct_window* window_editor_inventions_list_open()
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESIZE) | (1 << WIDX_TAB_1) | (1 << WIDX_RANDOM_SHUFFLE)
         | (1 << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1 << WIDX_MOVE_ITEMS_TO_TOP);
     window_init_scroll_widgets(w);
-    w->var_4AE = 0;
     w->selected_tab = 0;
     w->research_item = nullptr;
     _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
