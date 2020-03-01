@@ -1974,13 +1974,13 @@ static void window_ride_init_viewport(rct_window* w)
     {
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
-        int32_t x = view_widget->left + 1 + w->x;
-        int32_t y = view_widget->top + 1 + w->y;
+        auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->x, view_widget->top + 1 + w->y };
         int32_t width = view_widget->right - view_widget->left - 1;
         int32_t height = view_widget->bottom - view_widget->top - 1;
         viewport_create(
-            w, x, y, width, height, focus.coordinate.zoom, focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK,
-            focus.coordinate.z, focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+            w, screenPos, width, height, focus.coordinate.zoom,
+            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
+            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();

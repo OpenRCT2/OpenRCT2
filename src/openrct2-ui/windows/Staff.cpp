@@ -1380,12 +1380,12 @@ void window_staff_viewport_init(rct_window* w)
         {
             rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
-            int32_t x = view_widget->left + 1 + w->x;
-            int32_t y = view_widget->top + 1 + w->y;
+            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->x, view_widget->top + 1 + w->y };
             int32_t width = view_widget->right - view_widget->left - 1;
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
-            viewport_create(w, x, y, width, height, 0, 0, 0, 0, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
+            viewport_create(
+                w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }

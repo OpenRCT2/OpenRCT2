@@ -94,7 +94,7 @@ rct_window* window_viewport_open()
     w->number = _viewportNumber++;
 
     // Create viewport
-    viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, SPRITE_INDEX_NULL);
+    viewport_create(w, { w->x, w->y }, w->width, w->height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
     {

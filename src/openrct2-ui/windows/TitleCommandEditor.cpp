@@ -249,8 +249,8 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
-        window, window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1,
-        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0,
+        window, { window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1 },
+        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, { 0, 0, 0 }, 0,
         SPRITE_INDEX_NULL);
 
     _window_title_command_editor_index = index;

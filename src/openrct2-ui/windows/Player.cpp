@@ -581,7 +581,8 @@ static void window_player_set_page(rct_window* w, int32_t page)
     {
         if (w->viewport == nullptr)
         {
-            viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, SPRITE_INDEX_NULL);
+            viewport_create(
+                w, { w->x, w->y }, w->width, w->height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);

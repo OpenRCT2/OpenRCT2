@@ -931,9 +931,9 @@ static void window_park_init_viewport(rct_window* w)
         {
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
-                w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1,
-                (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, x, y,
-                z, w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
+                w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+                (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+                { x, y, z }, w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
             w->flags |= (1 << 2);
             w->Invalidate();
         }

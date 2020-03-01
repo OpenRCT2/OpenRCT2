@@ -156,10 +156,9 @@ rct_window* window_sign_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
+    TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;
 
@@ -186,14 +185,12 @@ rct_window* window_sign_open(rct_windownumber number)
     w->var_492 = tile_element->AsLargeScenery()->GetSecondaryColour();
     w->var_48C = tile_element->AsLargeScenery()->GetEntryIndex();
 
-    view_x += 16;
-    view_y += 16;
-
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -365,15 +362,14 @@ static void window_sign_viewport_rotate(rct_window* w)
 
     auto banner = GetBanner(w->number);
 
-    int32_t view_x = (banner->position.x << 5) + 16;
-    int32_t view_y = (banner->position.y << 5) + 16;
-    int32_t view_z = w->frame_no;
+    auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport
     rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, signViewPos,
+        0, SPRITE_INDEX_NULL);
     if (w->viewport != nullptr)
         w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -405,10 +401,9 @@ rct_window* window_sign_small_open(rct_windownumber number)
     w->colours[2] = COLOUR_DARK_BROWN;
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
+    TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;
 
@@ -433,14 +428,12 @@ rct_window* window_sign_small_open(rct_windownumber number)
     w->var_492 = tile_element->AsWall()->GetSecondaryColour();
     w->var_48C = tile_element->AsWall()->GetEntryIndex();
 
-    view_x += 16;
-    view_y += 16;
-
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->flags |= WF_NO_SCROLLING;

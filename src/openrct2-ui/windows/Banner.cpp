@@ -133,10 +133,9 @@ rct_window* window_banner_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto bannerViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
+    TileElement* tile_element = map_get_first_element_at(bannerViewPos);
     if (tile_element == nullptr)
         return nullptr;
     while (1)
@@ -152,14 +151,12 @@ rct_window* window_banner_open(rct_windownumber number)
     int32_t view_z = tile_element->GetBaseZ();
     w->frame_no = view_z;
 
-    view_x += 16;
-    view_y += 16;
-
     // Create viewport
     viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 2,
-        (viewportWidget->bottom - viewportWidget->top) - 2, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 2, (viewportWidget->bottom - viewportWidget->top) - 2, 0,
+        { bannerViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -347,15 +344,14 @@ static void window_banner_viewport_rotate(rct_window* w)
 
     auto banner = GetBanner(w->number);
 
-    int32_t view_x = (banner->position.x << 5) + 16;
-    int32_t view_y = (banner->position.y << 5) + 16;
-    int32_t view_z = w->frame_no;
+    auto bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        bannerViewPos, 0, SPRITE_INDEX_NULL);
 
     if (w->viewport != nullptr)
         w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;

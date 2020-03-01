@@ -136,8 +136,8 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
  *  w:      esi
  */
 void viewport_create(
-    rct_window* w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y,
-    int32_t centre_z, char flags, uint16_t sprite)
+    rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, int32_t zoom, CoordsXYZ centrePos,
+    char flags, uint16_t sprite)
 {
     rct_viewport* viewport = nullptr;
     for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
@@ -154,8 +154,8 @@ void viewport_create(
         return;
     }
 
-    viewport->x = x;
-    viewport->y = y;
+    viewport->x = screenCoords.x;
+    viewport->y = screenCoords.y;
     viewport->width = width;
     viewport->height = height;
 
@@ -177,16 +177,14 @@ void viewport_create(
     {
         w->viewport_target_sprite = sprite;
         rct_sprite* centre_sprite = get_sprite(sprite);
-        centre_x = centre_sprite->generic.x;
-        centre_y = centre_sprite->generic.y;
-        centre_z = centre_sprite->generic.z;
+        centrePos = { centre_sprite->generic.x, centre_sprite->generic.y, centre_sprite->generic.z };
     }
     else
     {
         w->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
 
-    auto centreLoc = centre_2d_coordinates({ centre_x, centre_y, centre_z }, viewport);
+    auto centreLoc = centre_2d_coordinates(centrePos, viewport);
     if (!centreLoc)
     {
         log_error("Invalid location for viewport.");
