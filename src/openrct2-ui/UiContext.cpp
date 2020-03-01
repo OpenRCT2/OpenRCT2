@@ -809,7 +809,7 @@ private:
             }
 
             w = it->get();
-            if (right <= w->x || bottom <= w->y)
+            if (right <= w->windowPos.x || bottom <= w->windowPos.y)
             {
                 continue;
             }
@@ -819,14 +819,14 @@ private:
                 continue;
             }
 
-            if (left >= w->x)
+            if (left >= w->windowPos.x)
             {
                 break;
             }
 
-            DrawRainWindow(rainDrawer, original_w, left, w->x, top, bottom, drawFunc);
+            DrawRainWindow(rainDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
 
-            left = w->x;
+            left = w->windowPos.x;
             DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
@@ -841,11 +841,11 @@ private:
             return;
         }
 
-        if (top < w->y)
+        if (top < w->windowPos.y)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w->y, drawFunc);
+            DrawRainWindow(rainDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
 
-            top = w->y;
+            top = w->windowPos.y;
             DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }

@@ -38,13 +38,13 @@ static bool window_fits_between_others(int32_t x, int32_t y, int32_t width, int3
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        if (x + width <= w->x)
+        if (x + width <= w->windowPos.x)
             continue;
-        if (x >= w->x + w->width)
+        if (x >= w->windowPos.x + w->width)
             continue;
-        if (y + height <= w->y)
+        if (y + height <= w->windowPos.y)
             continue;
-        if (y >= w->y + w->height)
+        if (y >= w->windowPos.y + w->height)
             continue;
         return false;
     }
@@ -145,8 +145,7 @@ rct_window* window_create(
     }
 
     w->number = 0;
-    w->x = screenCoords.x;
-    w->y = screenCoords.y;
+    w->windowPos = screenCoords;
     w->width = width;
     w->height = height;
     w->viewport = nullptr;
@@ -227,43 +226,43 @@ rct_window* window_create_auto_pos(
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        x = w->x + w->width + 2;
-        y = w->y;
+        x = w->windowPos.x + w->width + 2;
+        y = w->windowPos.y;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x - w->width - 2;
-        y = w->y;
+        x = w->windowPos.x - w->width - 2;
+        y = w->windowPos.y;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x;
-        y = w->y + w->height + 2;
+        x = w->windowPos.x;
+        y = w->windowPos.y + w->height + 2;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x;
-        y = w->y - w->height - 2;
+        x = w->windowPos.x;
+        y = w->windowPos.y - w->height - 2;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x + w->width + 2;
-        y = w->y - w->height - 2;
+        x = w->windowPos.x + w->width + 2;
+        y = w->windowPos.y - w->height - 2;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x - w->width - 2;
-        y = w->y - w->height - 2;
+        x = w->windowPos.x - w->width - 2;
+        y = w->windowPos.y - w->height - 2;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x + w->width + 2;
-        y = w->y + w->height + 2;
+        x = w->windowPos.x + w->width + 2;
+        y = w->windowPos.y + w->height + 2;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
 
-        x = w->x - w->width - 2;
-        y = w->y + w->height + 2;
+        x = w->windowPos.x - w->width - 2;
+        y = w->windowPos.y + w->height + 2;
         if (window_fits_within_space(x, y, width, height))
             goto foundSpace;
     }
@@ -274,23 +273,23 @@ rct_window* window_create_auto_pos(
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        x = w->x + w->width + 2;
-        y = w->y;
+        x = w->windowPos.x + w->width + 2;
+        y = w->windowPos.y;
         if (window_fits_on_screen(x, y, width, height))
             goto foundSpace;
 
-        x = w->x - w->width - 2;
-        y = w->y;
+        x = w->windowPos.x - w->width - 2;
+        y = w->windowPos.y;
         if (window_fits_on_screen(x, y, width, height))
             goto foundSpace;
 
-        x = w->x;
-        y = w->y + w->height + 2;
+        x = w->windowPos.x;
+        y = w->windowPos.y + w->height + 2;
         if (window_fits_on_screen(x, y, width, height))
             goto foundSpace;
 
-        x = w->x;
-        y = w->y - w->height - 2;
+        x = w->windowPos.x;
+        y = w->windowPos.y - w->height - 2;
         if (window_fits_on_screen(x, y, width, height))
             goto foundSpace;
     }
@@ -300,7 +299,7 @@ rct_window* window_create_auto_pos(
     y = 30;
     for (auto& w : g_window_list)
     {
-        if (x == w->x && y == w->y)
+        if (x == w->windowPos.x && y == w->windowPos.y)
         {
             x += 5;
             y += 5;
@@ -639,7 +638,8 @@ void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widgetindex widgetIndex;
 
     if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
-        gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, PALETTE_51);
+        gfx_filter_rect(
+            dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + w->height - 1, PALETTE_51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
 
@@ -647,8 +647,8 @@ void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
     for (widget = w->widgets; widget->type != WWT_LAST; widget++)
     {
         // Check if widget is outside the draw region
-        if (w->x + widget->left < dpi->x + dpi->width && w->x + widget->right >= dpi->x)
-            if (w->y + widget->top < dpi->y + dpi->height && w->y + widget->bottom >= dpi->y)
+        if (w->windowPos.x + widget->left < dpi->x + dpi->width && w->windowPos.x + widget->right >= dpi->x)
+            if (w->windowPos.y + widget->top < dpi->y + dpi->height && w->windowPos.y + widget->bottom >= dpi->y)
                 widget_draw(dpi, w, widgetIndex);
 
         widgetIndex++;
@@ -659,7 +659,8 @@ void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->flags & WF_WHITE_BORDER_MASK)
     {
         gfx_fill_rect_inset(
-            dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, COLOUR_WHITE, INSET_RECT_FLAG_FILL_NONE);
+            dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + w->height - 1, COLOUR_WHITE,
+            INSET_RECT_FLAG_FILL_NONE);
     }
 }
 
@@ -679,7 +680,7 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
             continue;
 
         if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
-            gfx_set_dirty_blocks(w->x, w->y, w->x + w->width, w->y + w->height);
+            gfx_set_dirty_blocks(w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width, w->windowPos.y + w->height);
     }
 }
 

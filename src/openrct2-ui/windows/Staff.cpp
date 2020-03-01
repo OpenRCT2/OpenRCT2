@@ -567,8 +567,8 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
     gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
     int32_t extray = widget->bottom - widget->top + 1;
     window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
@@ -947,7 +947,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
         }
     }
 
@@ -955,8 +955,8 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
     peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
-    int32_t x = (widget->left + widget->right) / 2 + w->x;
-    int32_t y = w->y + widget->top;
+    int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
+    int32_t y = w->windowPos.y + widget->top;
     int32_t width = widget->right - widget->left;
     gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 }
@@ -971,8 +971,8 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
 
@@ -994,8 +994,8 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STATS_0;
 
@@ -1018,8 +1018,8 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
     int32_t width = widget->right - widget->left - 1;
     int32_t height = widget->bottom - widget->top - 1;
-    int32_t x = widget->left + 1 + w->x;
-    int32_t y = widget->top + 1 + w->y;
+    int32_t x = widget->left + 1 + w->windowPos.x;
+    int32_t y = widget->top + 1 + w->windowPos.y;
     if (w->page == WINDOW_STAFF_OVERVIEW)
         height++;
 
@@ -1101,8 +1101,8 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     Peep* peep = GET_PEEP(w->number);
 
-    int32_t x = w->x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
-    int32_t y = w->y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
+    int32_t x = w->windowPos.x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
+    int32_t y = w->windowPos.y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
@@ -1380,7 +1380,7 @@ void window_staff_viewport_init(rct_window* w)
         {
             rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
-            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->x, view_widget->top + 1 + w->y };
+            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
             int32_t width = view_widget->right - view_widget->left - 1;
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
@@ -1427,8 +1427,8 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     // Get the dropdown box widget instead of button.
     widget--;
 
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
     int32_t extray = widget->bottom - widget->top + 1;
     int32_t width = widget->right - widget->left - 3;
     window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);

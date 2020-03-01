@@ -415,7 +415,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             widget = &w->widgets[widgetIndex - 1];
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, _window_guest_list_num_pages, widget->right - widget->left - 3);
 
             for (i = 0; i < _window_guest_list_num_pages; i++)
@@ -435,7 +435,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
 
             dropdown_set_checked(_window_guest_list_selected_view, true);
@@ -679,18 +679,18 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_animation->base_image + 1;
     i |= 0xA1600000;
     gfx_draw_sprite(
-        dpi, i, (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2 + w->x,
-        window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->y, 0);
+        dpi, i, (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2 + w->windowPos.x,
+        window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->windowPos.y, 0);
 
     // Tab 2 image
     i = (_window_guest_list_selected_tab == 1 ? w->list_information_type / 4 : 0);
     gfx_draw_sprite(
-        dpi, SPR_TAB_GUESTS_0 + i, window_guest_list_widgets[WIDX_TAB_2].left + w->x,
-        window_guest_list_widgets[WIDX_TAB_2].top + w->y, 0);
+        dpi, SPR_TAB_GUESTS_0 + i, window_guest_list_widgets[WIDX_TAB_2].left + w->windowPos.x,
+        window_guest_list_widgets[WIDX_TAB_2].top + w->windowPos.y, 0);
 
     // Filter description
-    x = w->x + 6;
-    y = w->y + window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3;
+    x = w->windowPos.x + 6;
+    y = w->windowPos.y + window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3;
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
     {
         if (_window_guest_list_selected_filter != -1)
@@ -718,8 +718,8 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Number of guests (list items)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
     {
-        x = w->x + 4;
-        y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
+        x = w->windowPos.x + 4;
+        y = w->windowPos.y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
         set_format_arg(0, int16_t, w->var_492);
         gfx_draw_string_left(
             dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,

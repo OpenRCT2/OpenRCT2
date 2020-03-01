@@ -503,8 +503,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
 #endif
             }
             window_dropdown_show_text(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
-                DROPDOWN_FLAG_STAY_OPEN, numItems);
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                w->colours[0] | 0x80, DROPDOWN_FLAG_STAY_OPEN, numItems);
 
 #ifndef DISABLE_TWITCH
             if (_menuDropdownIncludesTwitch && gTwitchEnable)
@@ -531,7 +531,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0, numItems);
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                w->colours[1] | 0x80, 0, numItems);
             gDropdownDefaultIndex = DDIDX_SHOW_MAP;
             break;
         case WIDX_FASTFORWARD:
@@ -896,8 +897,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw staff button image (setting masks to the staff colours)
     if (window_top_toolbar_widgets[WIDX_STAFF].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_STAFF].left;
-        y = w->y + window_top_toolbar_widgets[WIDX_STAFF].top;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_STAFF].left;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_STAFF].top;
         imgId = SPR_TOOLBAR_STAFF;
         if (widget_is_pressed(w, WIDX_STAFF))
             imgId++;
@@ -908,8 +909,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw fast forward button
     if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0;
-        y = w->y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0;
         if (widget_is_pressed(w, WIDX_FASTFORWARD))
             y++;
         imgId = SPR_G2_FASTFORWARD;
@@ -928,8 +929,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw cheats button
     if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1;
-        y = w->y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
         if (widget_is_pressed(w, WIDX_CHEATS))
             y++;
         imgId = SPR_G2_SANDBOX;
@@ -939,8 +940,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw chat button
     if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_CHAT].left;
-        y = w->y + window_top_toolbar_widgets[WIDX_CHAT].top - 2;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_CHAT].left;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_CHAT].top - 2;
         if (widget_is_pressed(w, WIDX_CHAT))
             y++;
         imgId = SPR_G2_CHAT;
@@ -950,8 +951,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw debug button
     if (window_top_toolbar_widgets[WIDX_DEBUG].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_DEBUG].left;
-        y = w->y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_DEBUG].left;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1;
         if (widget_is_pressed(w, WIDX_DEBUG))
             y++;
         imgId = SPR_TAB_GEARS_0;
@@ -961,8 +962,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw research button
     if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
-        y = w->y + window_top_toolbar_widgets[WIDX_RESEARCH].top;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_RESEARCH].top;
         if (widget_is_pressed(w, WIDX_RESEARCH))
             y++;
         imgId = SPR_TAB_FINANCES_RESEARCH_0;
@@ -972,8 +973,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw finances button
     if (window_top_toolbar_widgets[WIDX_FINANCES].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3;
-        y = w->y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1;
         if (widget_is_pressed(w, WIDX_FINANCES))
             y++;
         imgId = SPR_FINANCE;
@@ -983,8 +984,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw news button
     if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_NEWS].left + 3;
-        y = w->y + window_top_toolbar_widgets[WIDX_NEWS].top + 0;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_NEWS].left + 3;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_NEWS].top + 0;
         if (widget_is_pressed(w, WIDX_NEWS))
             y++;
         imgId = SPR_G2_TAB_NEWS;
@@ -994,8 +995,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw network button
     if (window_top_toolbar_widgets[WIDX_NETWORK].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3;
-        y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
+        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3;
+        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
         if (widget_is_pressed(w, WIDX_NETWORK))
             y++;
 
@@ -3244,7 +3245,8 @@ static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[3] = STR_SPEED_TURBO;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, num_items);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        num_items);
 
     // Set checkmarks
     if (gGameSpeed <= 4)
@@ -3291,7 +3293,8 @@ static void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0, 2);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0,
+        2);
 
     gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
 }
@@ -3343,7 +3346,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
@@ -3421,7 +3424,7 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
         DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
 
     dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
@@ -3434,7 +3437,7 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_NETWORK_COUNT);
 
     dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
@@ -3527,7 +3530,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0,
         TOP_TOOLBAR_VIEW_MENU_COUNT);
 
     // Set checkmarks

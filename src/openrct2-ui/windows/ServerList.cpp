@@ -272,8 +272,8 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         const auto& server = _serverList.GetServer(serverIndex);
 
         auto listWidget = &w->widgets[WIDX_LIST];
-        int32_t ddx = w->x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left;
-        int32_t ddy = w->y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top;
+        int32_t ddx = w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left;
+        int32_t ddy = w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top;
 
         gDropdownItemsFormat[0] = STR_JOIN_GAME;
         if (server.favourite)
@@ -405,15 +405,19 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    gfx_draw_string_left(dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE, w->windowPos.x + 6,
+        w->windowPos.y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
 
     // Draw version number
     std::string version = network_get_version();
     const char* versionCStr = version.c_str();
     gfx_draw_string_left(
-        dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top + 1);
+        dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->windowPos.x + 324,
+        w->windowPos.y + w->widgets[WIDX_START_SERVER].top + 1);
 
-    gfx_draw_string_left(dpi, _statusText, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
+    gfx_draw_string_left(
+        dpi, _statusText, (void*)&_numPlayersOnline, COLOUR_WHITE, w->windowPos.x + 8, w->windowPos.y + w->height - 15);
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

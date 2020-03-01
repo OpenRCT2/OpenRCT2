@@ -154,7 +154,7 @@ rct_window* window_banner_open(rct_windownumber number)
     // Create viewport
     viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
         (viewportWidget->right - viewportWidget->left) - 2, (viewportWidget->bottom - viewportWidget->top) - 2, 0,
         { bannerViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
@@ -236,7 +236,7 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             widget--;
 
             window_dropdown_show_text_custom_width(
-                widget->left + w->x, widget->top + w->y, widget->bottom - widget->top + 1, w->colours[1], 0,
+                widget->left + w->windowPos.x, widget->top + w->windowPos.y, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, 13, widget->right - widget->left - 3);
 
             dropdown_set_checked(banner->text_colour - 1, true);
@@ -349,7 +349,7 @@ static void window_banner_viewport_rotate(rct_window* w)
     // Create viewport
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, { w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1 },
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
         (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
         bannerViewPos, 0, SPRITE_INDEX_NULL);
 

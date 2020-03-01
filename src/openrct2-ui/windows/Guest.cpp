@@ -824,7 +824,7 @@ void window_guest_viewport_init(rct_window* w)
         if (peep->state != PEEP_STATE_PICKED && w->viewport == nullptr)
         {
             auto view_widget = &w->widgets[WIDX_VIEWPORT];
-            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->x, view_widget->top + 1 + w->y };
+            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
             int32_t width = view_widget->right - view_widget->left - 1;
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
@@ -856,8 +856,8 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
     int32_t width = widget->right - widget->left - 1;
     int32_t height = widget->bottom - widget->top - 1;
-    int32_t x = widget->left + 1 + w->x;
-    int32_t y = widget->top + 1 + w->y;
+    int32_t x = widget->left + 1 + w->windowPos.x;
+    int32_t y = widget->top + 1 + w->windowPos.y;
     if (w->page == WINDOW_GUEST_OVERVIEW)
         height++;
 
@@ -924,8 +924,8 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     Peep* peep = GET_PEEP(w->number);
     int32_t image_id = get_peep_face_sprite_large(peep);
@@ -959,8 +959,8 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_RIDE_0;
 
@@ -982,8 +982,8 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_4];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_FINANCES_SUMMARY_0;
 
@@ -1005,8 +1005,8 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_5];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_THOUGHTS_0;
 
@@ -1028,8 +1028,8 @@ static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* d
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_6];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_GUEST_INVENTORY;
 
@@ -1042,8 +1042,8 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_7];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_GEARS_0;
     if (w->page == WINDOW_GUEST_DEBUG)
@@ -1076,7 +1076,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
         }
     }
 
@@ -1084,16 +1084,16 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
     peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
-    int32_t x = (widget->left + widget->right) / 2 + w->x;
-    int32_t y = w->y + widget->top - 1;
+    int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
+    int32_t y = w->windowPos.y + widget->top - 1;
     int32_t width = widget->right - widget->left;
     gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Draw the marquee thought
     widget = &w->widgets[WIDX_MARQUEE];
     width = widget->right - widget->left - 3;
-    int32_t left = widget->left + 2 + w->x;
-    int32_t top = widget->top + w->y;
+    int32_t left = widget->left + 2 + w->windowPos.x;
+    int32_t top = widget->top + w->windowPos.y;
     int32_t height = widget->bottom - widget->top;
     rct_drawpixelinfo dpi_marquee;
     if (!clip_drawpixelinfo(&dpi_marquee, dpi, left, top, width, height))
@@ -1396,9 +1396,9 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Not sure why this is not stats widgets
     // cx
-    int32_t x = w->x + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    int32_t x = w->windowPos.x + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     // dx
-    int32_t y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    int32_t y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Happiness
     gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1688,13 +1688,13 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
 
     // cx
-    int32_t x = w->x + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2;
+    int32_t x = w->windowPos.x + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2;
     // dx
-    int32_t y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
+    int32_t y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
 
     gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, nullptr, COLOUR_BLACK, x, y);
 
-    y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
+    y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
     set_format_arg(0, rct_string_id, STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
     if (peep->favourite_ride != RIDE_ID_NULL)
@@ -1771,9 +1771,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
 
     // cx
-    int32_t x = w->x + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    int32_t x = w->windowPos.x + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     // dx
-    int32_t y = w->y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    int32_t y = w->windowPos.y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Cash in pocket
     set_format_arg(0, money32, peep->cash_in_pocket);
@@ -1881,9 +1881,9 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
 
     // cx
-    int32_t x = w->x + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    int32_t x = w->windowPos.x + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     // dx
-    int32_t y = w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    int32_t y = w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, x, y);
 
@@ -1902,7 +1902,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
 
         // If this is the last visible line end drawing.
-        if (y > w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
+        if (y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
             return;
     }
 }
@@ -2024,11 +2024,11 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (guest != nullptr)
     {
         rct_widget* pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
-        int32_t x = w->x + pageBackgroundWidget->left + 4;
-        int32_t y = w->y + pageBackgroundWidget->top + 2;
+        int32_t x = w->windowPos.x + pageBackgroundWidget->left + 4;
+        int32_t y = w->windowPos.y + pageBackgroundWidget->top + 2;
         int32_t itemNameWidth = pageBackgroundWidget->right - pageBackgroundWidget->left - 8;
 
-        int32_t maxY = w->y + w->height - 22;
+        int32_t maxY = w->windowPos.y + w->height - 22;
         int32_t numItems = 0;
 
         gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, x, y);
@@ -2078,8 +2078,8 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_debug_tab_paint(w, dpi);
 
     auto peep = GET_PEEP(w->number);
-    auto x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    auto y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    auto x = w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    auto y = w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
     {
         set_format_arg(0, uint32_t, peep->sprite_index);
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, x, y);

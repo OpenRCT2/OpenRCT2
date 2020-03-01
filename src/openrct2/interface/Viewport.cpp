@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -189,8 +189,7 @@ void viewport_create(
         log_error("Invalid location for viewport.");
         return;
     }
-    w->saved_view_x = centreLoc->x;
-    w->saved_view_y = centreLoc->y;
+    w->savedViewPos = *centreLoc;
     viewport->viewPos = *centreLoc;
 }
 
@@ -235,9 +234,10 @@ static void viewport_redraw_after_shift(
     if (window != nullptr)
     {
         // skip current window and non-intersecting windows
-        if (viewport == window->viewport || viewport->pos.x + viewport->width <= window->x
-            || viewport->pos.x >= window->x + window->width || viewport->pos.y + viewport->height <= window->y
-            || viewport->pos.y >= window->y + window->height)
+        if (viewport == window->viewport || viewport->pos.x + viewport->width <= window->windowPos.x
+            || viewport->pos.x >= window->windowPos.x + window->width
+            || viewport->pos.y + viewport->height <= window->windowPos.y
+            || viewport->pos.y >= window->windowPos.y + window->height)
         {
             auto itWindowPos = window_get_iterator(window);
             auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
@@ -250,9 +250,9 @@ static void viewport_redraw_after_shift(
         rct_viewport view_copy;
         std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
 
-        if (viewport->pos.x < window->x)
+        if (viewport->pos.x < window->windowPos.x)
         {
-            viewport->width = window->x - viewport->pos.x;
+            viewport->width = window->windowPos.x - viewport->pos.x;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
@@ -262,9 +262,9 @@ static void viewport_redraw_after_shift(
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
         }
-        else if (viewport->pos.x + viewport->width > window->x + window->width)
+        else if (viewport->pos.x + viewport->width > window->windowPos.x + window->width)
         {
-            viewport->width = window->x + window->width - viewport->pos.x;
+            viewport->width = window->windowPos.x + window->width - viewport->pos.x;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
@@ -274,9 +274,9 @@ static void viewport_redraw_after_shift(
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
         }
-        else if (viewport->pos.y < window->y)
+        else if (viewport->pos.y < window->windowPos.y)
         {
-            viewport->height = window->y - viewport->pos.y;
+            viewport->height = window->windowPos.y - viewport->pos.y;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
@@ -286,9 +286,9 @@ static void viewport_redraw_after_shift(
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
         }
-        else if (viewport->pos.y + viewport->height > window->y + window->height)
+        else if (viewport->pos.y + viewport->height > window->windowPos.y + window->height)
         {
-            viewport->height = window->y + window->height - viewport->pos.y;
+            viewport->height = window->windowPos.y + window->height - viewport->pos.y;
             viewport->view_width = viewport->width << viewport->zoom;
             viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
@@ -363,20 +363,20 @@ static void viewport_shift_pixels(
         if (w->viewport == viewport)
             continue;
 
-        if (viewport->pos.x + viewport->width <= w->x)
+        if (viewport->pos.x + viewport->width <= w->windowPos.x)
             continue;
-        if (w->x + w->width <= viewport->pos.x)
-            continue;
-
-        if (viewport->pos.y + viewport->height <= w->y)
-            continue;
-        if (w->y + w->height <= viewport->pos.y)
+        if (w->windowPos.x + w->width <= viewport->pos.x)
             continue;
 
-        auto left = w->x;
-        auto right = w->x + w->width;
-        auto top = w->y;
-        auto bottom = w->y + w->height;
+        if (viewport->pos.y + viewport->height <= w->windowPos.y)
+            continue;
+        if (w->windowPos.y + w->height <= viewport->pos.y)
+            continue;
+
+        auto left = w->windowPos.x;
+        auto right = w->windowPos.x + w->width;
+        auto top = w->windowPos.y;
+        auto bottom = w->windowPos.y + w->height;
 
         if (left < viewport->pos.x)
             left = viewport->pos.x;
@@ -537,8 +537,8 @@ void viewport_update_position(rct_window* window)
 
     viewport_set_underground_flag(0, window, viewport);
 
-    int16_t x = window->saved_view_x + viewport->view_width / 2;
-    int16_t y = window->saved_view_y + viewport->view_height / 2;
+    int16_t x = window->savedViewPos.x + viewport->view_width / 2;
+    int16_t y = window->savedViewPos.y + viewport->view_height / 2;
 
     auto mapCoord = viewport_coord_to_map_coord(x, y, 0);
 
@@ -572,13 +572,12 @@ void viewport_update_position(rct_window* window)
         auto centreLoc = centre_2d_coordinates({ mapCoord, 0 }, viewport);
         if (centreLoc)
         {
-            window->saved_view_x = centreLoc->x;
-            window->saved_view_y = centreLoc->y;
+            window->savedViewPos = *centreLoc;
         }
     }
 
-    x = window->saved_view_x;
-    y = window->saved_view_y;
+    x = window->savedViewPos.x;
+    y = window->savedViewPos.y;
     if (window->flags & WF_SCROLLING_TO_LOCATION)
     {
         // Moves the viewport if focusing in on an item
@@ -632,8 +631,7 @@ void viewport_update_sprite_follow(rct_window* window)
         auto centreLoc = centre_2d_coordinates({ sprite->generic.x, sprite->generic.y, sprite->generic.z }, window->viewport);
         if (centreLoc)
         {
-            window->saved_view_x = centreLoc->x;
-            window->saved_view_y = centreLoc->y;
+            window->savedViewPos = *centreLoc;
             viewport_move(centreLoc->x, centreLoc->y, window, window->viewport);
         }
     }

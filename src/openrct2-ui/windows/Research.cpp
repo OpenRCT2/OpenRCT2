@@ -338,8 +338,8 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
-    int32_t x = w->x + 10;
-    int32_t y = w->y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    int32_t x = w->windowPos.x + 10;
+    int32_t y = w->windowPos.y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
     rct_string_id stringId;
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
@@ -393,8 +393,8 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     }
 
     // Last development
-    x = w->x + 10;
-    y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    x = w->windowPos.x + 10;
+    y = w->windowPos.y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
     rct_string_id lastDevelopmentFormat;
     if (gResearchLastItem.has_value())
@@ -463,8 +463,9 @@ static void window_research_funding_mousedown(rct_window* w, rct_widgetindex wid
         gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->right - dropdownWidget->left - 3);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4,
+        dropdownWidget->right - dropdownWidget->left - 3);
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     dropdown_set_checked(currentResearchLevel, true);
@@ -570,7 +571,8 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
-    gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->x + 10, w->y + 77);
+    gfx_draw_string_left(
+        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos.x + 10, w->windowPos.y + 77);
 }
 
 #pragma endregion
@@ -638,7 +640,8 @@ static void window_research_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
             spriteIndex += frame;
         }
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+        gfx_draw_sprite(
+            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
     }
 }
 

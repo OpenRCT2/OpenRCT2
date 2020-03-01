@@ -702,7 +702,8 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw path text
     set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(buffer));
-    gfx_draw_string_left_clipped(dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 4, w->y + 20, w->width - 8);
+    gfx_draw_string_left_clipped(
+        dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 4, w->windowPos.y + 20, w->width - 8);
 
     // Name button text
     rct_string_id id = STR_NONE;
@@ -713,7 +714,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw name button indicator.
     rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
-    gfx_draw_string_left(dpi, STR_NAME, &id, COLOUR_GREY, w->x + sort_name_widget.left + 11, w->y + sort_name_widget.top + 1);
+    gfx_draw_string_left(
+        dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos.x + sort_name_widget.left + 11,
+        w->windowPos.y + sort_name_widget.top + 1);
 
     // Date button text
     if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
@@ -724,7 +727,8 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         id = STR_NONE;
 
     rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
-    gfx_draw_string_left(dpi, STR_DATE, &id, COLOUR_GREY, w->x + sort_date_widget.left + 5, w->y + sort_date_widget.top + 1);
+    gfx_draw_string_left(
+        dpi, STR_DATE, &id, COLOUR_GREY, w->windowPos.x + sort_date_widget.left + 5, w->windowPos.y + sort_date_widget.top + 1);
 }
 
 static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -1221,8 +1225,8 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, char*, _window_overwrite_prompt_name);
 
-    int32_t x = w->x + w->width / 2;
-    int32_t y = w->y + (w->height / 2) - 3;
+    int32_t x = w->windowPos.x + w->width / 2;
+    int32_t y = w->windowPos.y + (w->height / 2) - 3;
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 

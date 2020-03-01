@@ -775,28 +775,33 @@ static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     const uint8_t textColour = w->colours[1];
 
-    gfx_draw_string_left(dpi, STR_MAP_SIZE, nullptr, textColour, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE].top + 1);
     gfx_draw_string_left(
-        dpi, STR_BASE_HEIGHT_LABEL, nullptr, textColour, w->x + 4, w->y + w->widgets[WIDX_BASE_HEIGHT].top + 1);
+        dpi, STR_MAP_SIZE, nullptr, textColour, w->windowPos.x + 4, w->windowPos.y + w->widgets[WIDX_MAP_SIZE].top + 1);
     gfx_draw_string_left(
-        dpi, STR_WATER_LEVEL_LABEL, nullptr, textColour, w->x + 4, w->y + w->widgets[WIDX_WATER_LEVEL].top + 1);
-    gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, nullptr, textColour, w->x + 4, w->y + w->widgets[WIDX_FLOOR_TEXTURE].top + 1);
+        dpi, STR_BASE_HEIGHT_LABEL, nullptr, textColour, w->windowPos.x + 4,
+        w->windowPos.y + w->widgets[WIDX_BASE_HEIGHT].top + 1);
+    gfx_draw_string_left(
+        dpi, STR_WATER_LEVEL_LABEL, nullptr, textColour, w->windowPos.x + 4,
+        w->windowPos.y + w->widgets[WIDX_WATER_LEVEL].top + 1);
+    gfx_draw_string_left(
+        dpi, STR_TERRAIN_LABEL, nullptr, textColour, w->windowPos.x + 4,
+        w->windowPos.y + w->widgets[WIDX_FLOOR_TEXTURE].top + 1);
 
     // The practical map size is 2 lower than the technical map size
     TileCoordsXY mapSizeArgs = { _mapSize - 2, _mapSize - 2 };
     gfx_draw_string_left(
-        dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, w->colours[1], w->x + w->widgets[WIDX_MAP_SIZE].left + 1,
-        w->y + w->widgets[WIDX_MAP_SIZE].top + 1);
+        dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_MAP_SIZE].left + 1,
+        w->windowPos.y + w->widgets[WIDX_MAP_SIZE].top + 1);
 
     arg = (_baseHeight - 12) / 2;
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &arg, w->colours[1], w->x + w->widgets[WIDX_BASE_HEIGHT].left + 1,
-        w->y + w->widgets[WIDX_BASE_HEIGHT].top + 1);
+        dpi, STR_COMMA16, &arg, w->colours[1], w->windowPos.x + w->widgets[WIDX_BASE_HEIGHT].left + 1,
+        w->windowPos.y + w->widgets[WIDX_BASE_HEIGHT].top + 1);
 
     arg = (_waterLevel - 12) / 2;
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &arg, w->colours[1], w->x + w->widgets[WIDX_WATER_LEVEL].left + 1,
-        w->y + w->widgets[WIDX_WATER_LEVEL].top + 1);
+        dpi, STR_COMMA16, &arg, w->colours[1], w->windowPos.x + w->widgets[WIDX_WATER_LEVEL].left + 1,
+        w->windowPos.y + w->widgets[WIDX_WATER_LEVEL].top + 1);
 }
 
 #pragma endregion
@@ -1089,46 +1094,53 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
     const uint8_t textColour = w->colours[1];
 
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SIMPLEX_NOISE_LOW_, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
+        dpi, STR_MAPGEN_SIMPLEX_NOISE_LOW_, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SIMPLEX_NOISE_HIGH, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
+        dpi, STR_MAPGEN_SIMPLEX_NOISE_HIGH, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, nullptr, textColour, w->x + 5,
-        w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
+        dpi, STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
-    gfx_draw_string_left(dpi, STR_MAP_SIZE, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
+        dpi, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
     gfx_draw_string_left(
-        dpi, STR_WATER_LEVEL_LABEL, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
+        dpi, STR_MAP_SIZE, nullptr, textColour, w->windowPos.x + 5, w->windowPos.y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
+    gfx_draw_string_left(
+        dpi, STR_WATER_LEVEL_LABEL, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
 
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &_simplex_low, textColour, w->x + w->widgets[WIDX_SIMPLEX_LOW].left + 1,
-        w->y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
+        dpi, STR_COMMA16, &_simplex_low, textColour, w->windowPos.x + w->widgets[WIDX_SIMPLEX_LOW].left + 1,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &_simplex_high, textColour, w->x + w->widgets[WIDX_SIMPLEX_HIGH].left + 1,
-        w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
+        dpi, STR_COMMA16, &_simplex_high, textColour, w->windowPos.x + w->widgets[WIDX_SIMPLEX_HIGH].left + 1,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
     gfx_draw_string_left(
         dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour,
-        w->x + w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
+        w->windowPos.x + w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &_simplex_octaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1,
-        w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
+        dpi, STR_COMMA16, &_simplex_octaves, textColour, w->windowPos.x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
     gfx_draw_string_left(
-        dpi, STR_TERRAIN_LABEL, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
+        dpi, STR_TERRAIN_LABEL, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_OPTION_PLACE_TREES, nullptr, textColour, w->x + 5,
-        w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
+        dpi, STR_MAPGEN_OPTION_PLACE_TREES, nullptr, textColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
 
     // The practical map size is 2 lower than the technical map size
     TileCoordsXY mapSizeArgs = { _mapSize - 2, _mapSize - 2 };
     gfx_draw_string_left(
-        dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, textColour, w->x + w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1,
-        w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
+        dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, textColour, w->windowPos.x + w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
 
     arg = (_waterLevel - 12) / 2;
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1,
-        w->y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
+        dpi, STR_COMMA16, &arg, textColour, w->windowPos.x + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1,
+        w->windowPos.y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
 }
 
 #pragma endregion
@@ -1283,35 +1295,39 @@ static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
     const uint8_t strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
     int16_t strength = _heightmapSmoothStrength;
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SMOOTH_STRENGTH, nullptr, strengthColour, w->x + 5, w->y + w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1);
+        dpi, STR_MAPGEN_SMOOTH_STRENGTH, nullptr, strengthColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1);
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &strength, strengthColour, w->x + w->widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1,
-        w->y + w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1);
+        dpi, STR_COMMA16, &strength, strengthColour, w->windowPos.x + w->widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1);
 
     // Low label and value
     const uint8_t labelColour = _heightmapLoaded ? enabledColour : disabledColour;
     int16_t low = _heightmapLow;
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SIMPLEX_NOISE_LOW_, nullptr, labelColour, w->x + 5, w->y + w->widgets[WIDX_HEIGHTMAP_LOW].top + 1);
+        dpi, STR_MAPGEN_SIMPLEX_NOISE_LOW_, nullptr, labelColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_LOW].top + 1);
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &low, labelColour, w->x + w->widgets[WIDX_HEIGHTMAP_LOW].left + 1,
-        w->y + w->widgets[WIDX_HEIGHTMAP_LOW].top + 1);
+        dpi, STR_COMMA16, &low, labelColour, w->windowPos.x + w->widgets[WIDX_HEIGHTMAP_LOW].left + 1,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_LOW].top + 1);
 
     // High label and value
     int16_t high = _heightmapHigh;
     gfx_draw_string_left(
-        dpi, STR_MAPGEN_SIMPLEX_NOISE_HIGH, nullptr, labelColour, w->x + 5, w->y + w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1);
+        dpi, STR_MAPGEN_SIMPLEX_NOISE_HIGH, nullptr, labelColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1);
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &high, labelColour, w->x + w->widgets[WIDX_HEIGHTMAP_HIGH].left + 1,
-        w->y + w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1);
+        dpi, STR_COMMA16, &high, labelColour, w->windowPos.x + w->widgets[WIDX_HEIGHTMAP_HIGH].left + 1,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1);
 
     // Water level label and value
     int16_t waterLevel = _waterLevel;
     gfx_draw_string_left(
-        dpi, STR_WATER_LEVEL_LABEL, nullptr, labelColour, w->x + 5, w->y + w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1);
+        dpi, STR_WATER_LEVEL_LABEL, nullptr, labelColour, w->windowPos.x + 5,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1);
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &waterLevel, labelColour, w->x + w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1,
-        w->y + w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1);
+        dpi, STR_COMMA16, &waterLevel, labelColour, w->windowPos.x + w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1,
+        w->windowPos.y + w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1);
 }
 
 #pragma endregion
@@ -1379,7 +1395,8 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, 
             spriteIndex += (frame % TabAnimationFrames[w->page]);
         }
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+        gfx_draw_sprite(
+            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
     }
 }
 

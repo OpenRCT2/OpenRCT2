@@ -447,7 +447,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _inputState = INPUT_STATE_POSITIONING_WINDOW;
-    gInputDragLast = screenCoords - ScreenCoordsXY{ w->x, w->y };
+    gInputDragLast = screenCoords - w->windowPos;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
     _dragWidget.widget_index = widgetIndex;
@@ -559,13 +559,11 @@ static void input_viewport_drag_continue()
             differentialCoords.y *= 1 << (viewport->zoom + 1);
             if (gConfigGeneral.invert_viewport_drag)
             {
-                w->saved_view_x -= differentialCoords.x;
-                w->saved_view_y -= differentialCoords.y;
+                w->savedViewPos -= differentialCoords;
             }
             else
             {
-                w->saved_view_x += differentialCoords.x;
-                w->saved_view_y += differentialCoords.y;
+                w->savedViewPos += differentialCoords;
             }
         }
     }
@@ -1026,7 +1024,8 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
     {
         case WWT_FRAME:
         case WWT_RESIZE:
-            if (window_can_resize(w) && (screenCoords.x >= w->x + w->width - 19 && screenCoords.y >= w->y + w->height - 19))
+            if (window_can_resize(w)
+                && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
                 input_window_resize_begin(w, widgetIndex, screenCoords);
             break;
         case WWT_VIEWPORT:
@@ -1053,7 +1052,7 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
         default:
             if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex))
             {
-                audio_play_sound(SoundId::Click1, 0, w->x + ((widget->left + widget->right) / 2));
+                audio_play_sound(SoundId::Click1, 0, w->windowPos.x + ((widget->left + widget->right) / 2));
 
                 // Set new cursor down widget
                 gPressedWidget.window_classification = windowClass;
@@ -1131,10 +1130,10 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     if (window->min_width == window->max_width && window->min_height == window->max_height)
                         break;
 
-                    if (screenCoords.x < window->x + window->width - 0x13)
+                    if (screenCoords.x < window->windowPos.x + window->width - 0x13)
                         break;
 
-                    if (screenCoords.y < window->y + window->height - 0x13)
+                    if (screenCoords.y < window->windowPos.y + window->height - 0x13)
                         break;
 
                     cursorId = CURSOR_DIAGONAL_ARROWS;
@@ -1334,7 +1333,7 @@ void input_state_widget_pressed(
                 break;
 
             {
-                int32_t mid_point_x = (widget->left + widget->right) / 2 + w->x;
+                int32_t mid_point_x = (widget->left + widget->right) / 2 + w->windowPos.x;
                 audio_play_sound(SoundId::Click2, 0, mid_point_x);
             }
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
@@ -1599,9 +1598,9 @@ void input_scroll_viewport(const ScreenCoordsXY& scrollScreenCoords)
     {
         // Speed up scrolling horizontally when at the edge of the map
         // so that the speed is consistent with vertical edge scrolling.
-        int32_t x = mainWindow->saved_view_x + viewport->view_width / 2 + dx;
-        int32_t y = mainWindow->saved_view_y + viewport->view_height / 2;
-        int32_t y_dy = mainWindow->saved_view_y + viewport->view_height / 2 + dy;
+        int32_t x = mainWindow->savedViewPos.x + viewport->view_width / 2 + dx;
+        int32_t y = mainWindow->savedViewPos.y + viewport->view_height / 2;
+        int32_t y_dy = mainWindow->savedViewPos.y + viewport->view_height / 2 + dy;
 
         auto mapCoord = viewport_coord_to_map_coord(x, y, 0);
         auto mapCoord_dy = viewport_coord_to_map_coord(x, y_dy, 0);
@@ -1635,12 +1634,12 @@ void input_scroll_viewport(const ScreenCoordsXY& scrollScreenCoords)
             dx *= 2;
         }
 
-        mainWindow->saved_view_x += dx;
+        mainWindow->savedViewPos.x += dx;
         _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
     }
     if (scrollScreenCoords.y != 0)
     {
-        mainWindow->saved_view_y += dy;
+        mainWindow->savedViewPos.y += dy;
         _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
     }
 }

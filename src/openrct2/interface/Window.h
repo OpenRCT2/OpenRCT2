@@ -260,8 +260,8 @@ struct error_variables
 
 struct rct_window;
 
-#define RCT_WINDOW_RIGHT(w) ((w)->x + (w)->width)
-#define RCT_WINDOW_BOTTOM(w) ((w)->y + (w)->height)
+#define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
+#define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
 
 enum WINDOW_EVENTS
 {

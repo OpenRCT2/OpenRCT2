@@ -677,7 +677,8 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
 
         spriteIndex |= w->colours[1] << 19;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+        gfx_draw_sprite(
+            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
     }
 }
 
@@ -774,7 +775,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     w->new_ride.selected_ride_id = item.ride_type_and_entry;
 
-    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     w->new_ride.selected_ride_countdown = 8;
     w->Invalidate();
 }
@@ -840,7 +841,8 @@ static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ride_list_item item;
         item.ride_type_and_entry = static_cast<uint16_t>(w->new_ride.highlighted_ride_id);
         if (item.type != RIDE_TYPE_NULL || item.entry_index != RIDE_ENTRY_INDEX_NULL)
-            window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 64, w->width - 6);
+            window_new_ride_paint_ride_information(
+                w, dpi, item, w->windowPos.x + 3, w->windowPos.y + w->height - 64, w->width - 6);
     }
     else
     {

@@ -341,7 +341,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                 mutableScreenCoords.y -= scenarioItemHeight;
                 if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                 {
-                    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
+                    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
@@ -450,8 +450,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget->type == WWT_EMPTY)
             continue;
 
-        int32_t x = (widget->left + widget->right) / 2 + w->x;
-        int32_t y = (widget->top + widget->bottom) / 2 + w->y - 3;
+        int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
+        int32_t y = (widget->top + widget->bottom) / 2 + w->windowPos.y - 3;
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
@@ -471,8 +471,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (_showLockedInformation)
         {
             // Show locked information
-            int32_t x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-            int32_t y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+            int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+            int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
             gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, x + 85, y, 170);
             y += 15;
             y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
@@ -489,12 +489,13 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
         const utf8* pathPtr = path;
-        gfx_draw_string_left(dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+        gfx_draw_string_left(
+            dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->windowPos.x + 3, w->windowPos.y + w->height - 3 - 11);
     }
 
     // Scenario name
-    int32_t x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-    int32_t y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+    int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+    int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char*, scenario->name);
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);

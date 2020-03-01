@@ -264,8 +264,8 @@ static ResearchItem* window_editor_inventions_list_get_item_from_scroll_y_includ
 static ResearchItem* get_research_item_at(const ScreenCoordsXY& screenCoords, int32_t* outScrollId)
 {
     rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
-    if (w != nullptr && w->x <= screenCoords.x && w->y < screenCoords.y && w->x + w->width > screenCoords.x
-        && w->y + w->height > screenCoords.y)
+    if (w != nullptr && w->windowPos.x <= screenCoords.x && w->windowPos.y < screenCoords.y
+        && w->windowPos.x + w->width > screenCoords.x && w->windowPos.y + w->height > screenCoords.y)
     {
         rct_widgetindex widgetIndex = window_find_widget_from_point(w, screenCoords);
         rct_widget* widget = &w->widgets[widgetIndex];
@@ -553,25 +553,25 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     window_draw_widgets(w, dpi);
 
     // Tab image
-    x = w->x + w->widgets[WIDX_TAB_1].left;
-    y = w->y + w->widgets[WIDX_TAB_1].top;
+    x = w->windowPos.x + w->widgets[WIDX_TAB_1].left;
+    y = w->windowPos.y + w->widgets[WIDX_TAB_1].top;
     gfx_draw_sprite(dpi, SPR_TAB_FINANCES_RESEARCH_0 + (w->frame_no / 2) % 8, x, y, 0);
 
     // Pre-researched items label
-    x = w->x + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left;
-    y = w->y + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11;
+    x = w->windowPos.x + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left;
+    y = w->windowPos.y + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11;
     gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, x, y - 1);
 
     // Research order label
-    x = w->x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left;
-    y = w->y + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11;
+    x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left;
+    y = w->windowPos.y + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11;
     gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, x, y - 1);
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
     gfx_fill_rect(
-        dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1,
-        ColourMapA[w->colours[1]].darkest);
+        dpi, w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1, w->windowPos.x + widget->right - 1,
+        w->windowPos.y + widget->bottom - 1, ColourMapA[w->colours[1]].darkest);
 
     researchItem = &_editorInventionsListDraggedItem;
     if (researchItem->IsNull())
@@ -598,8 +598,8 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     if (object != nullptr)
     {
         rct_drawpixelinfo clipDPI;
-        x = w->x + widget->left + 1;
-        y = w->y + widget->top + 1;
+        x = w->windowPos.x + widget->left + 1;
+        y = w->windowPos.y + widget->top + 1;
         width = widget->right - widget->left - 1;
         int32_t height = widget->bottom - widget->top - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height))
@@ -609,8 +609,8 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     }
 
     // Item name
-    x = w->x + ((widget->left + widget->right) / 2) + 1;
-    y = w->y + widget->bottom + 3;
+    x = w->windowPos.x + ((widget->left + widget->right) / 2) + 1;
+    y = w->windowPos.y + widget->bottom + 3;
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
     rct_string_id drawString = window_editor_inventions_list_prepare_name(researchItem, false);
@@ -618,7 +618,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     y += 15;
 
     // Item category
-    x = w->x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
+    x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
     stringId = EditorInventionsResearchCategories[researchItem->category];
     gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, x, y);
 }
@@ -820,8 +820,8 @@ static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixe
     rct_string_id drawString;
     int32_t x, y;
 
-    x = w->x;
-    y = w->y + 2;
+    x = w->windowPos.x;
+    y = w->windowPos.y + 2;
     drawString = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
     gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
 }

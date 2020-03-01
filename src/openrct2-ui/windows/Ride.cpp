@@ -1255,7 +1255,8 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
             spriteIndex += (frame % window_ride_tab_animation_frames[w->page]);
         }
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+        gfx_draw_sprite(
+            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
     }
 }
 
@@ -1290,7 +1291,9 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
                         spriteIndex += (w->frame_no / 4) % 8;
                     break;
             }
-            gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+            gfx_draw_sprite(
+                dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top,
+                0);
         }
     }
 }
@@ -1313,8 +1316,8 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             height += 4;
 
-        x += w->x;
-        y += w->y;
+        x += w->windowPos.x;
+        y += w->windowPos.y;
 
         rct_drawpixelinfo clipDPI;
         if (!clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height))
@@ -1392,7 +1395,8 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex += 1;
         spriteIndex |= 0xA9E00000;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + (widget->left + widget->right) / 2, w->y + widget->bottom - 6, 0);
+        gfx_draw_sprite(
+            dpi, spriteIndex, w->windowPos.x + (widget->left + widget->right) / 2, w->windowPos.y + widget->bottom - 6, 0);
     }
 }
 
@@ -1974,7 +1978,7 @@ static void window_ride_init_viewport(rct_window* w)
     {
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
-        auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->x, view_widget->top + 1 + w->y };
+        auto screenPos = w->windowPos + ScreenCoordsXY{ view_widget->left + 1, view_widget->top + 1 };
         int32_t width = view_widget->right - view_widget->left - 1;
         int32_t height = view_widget->bottom - view_widget->top - 1;
         viewport_create(
@@ -2139,8 +2143,8 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     }
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     // First item
     gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -2254,7 +2258,8 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
     window_ride_set_dropdown(info, RIDE_STATUS_TESTING, STR_TEST_RIDE);
     window_ride_set_dropdown(info, RIDE_STATUS_OPEN, STR_OPEN_RIDE);
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, info.NumItems);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+        info.NumItems);
     dropdown_set_checked(info.CheckedIndex, true);
     gDropdownDefaultIndex = info.DefaultIndex;
 }
@@ -2296,8 +2301,8 @@ static void window_ride_show_ride_type_dropdown(rct_window* w, rct_widget* widge
 
     rct_widget* dropdownWidget = widget - 1;
     window_dropdown_show_text(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], DROPDOWN_FLAG_STAY_OPEN, RIDE_TYPE_COUNT);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, RIDE_TYPE_COUNT);
 
     // Find the current ride type in the ordered list.
     uint8_t pos = 0;
@@ -2407,8 +2412,9 @@ static void window_ride_show_vehicle_type_dropdown(rct_window* w, rct_widget* wi
 
     rct_widget* dropdownWidget = widget - 1;
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - dropdownWidget->left);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+        widget->right - dropdownWidget->left);
 
     // Find the current vehicle type in the ordered list.
     uint8_t pos = 0;
@@ -2890,7 +2896,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         window_draw_viewport(dpi, w);
         if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
     }
 
     // View dropdown
@@ -2916,15 +2922,15 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     widget = &window_ride_main_widgets[WIDX_VIEW];
     gfx_draw_string_centred(
-        dpi, STR_WINDOW_COLOUR_2_STRINGID, w->x + (widget->left + widget->right - 11) / 2, w->y + widget->top, COLOUR_BLACK,
-        gCommonFormatArgs);
+        dpi, STR_WINDOW_COLOUR_2_STRINGID, w->windowPos.x + (widget->left + widget->right - 11) / 2,
+        w->windowPos.y + widget->top, COLOUR_BLACK, gCommonFormatArgs);
 
     // Status
     widget = &window_ride_main_widgets[WIDX_STATUS];
     rct_string_id ride_status = window_ride_get_status(w, gCommonFormatArgs);
     gfx_draw_string_centred_clipped(
-        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK, w->x + (widget->left + widget->right) / 2, w->y + widget->top,
-        widget->right - widget->left);
+        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right) / 2,
+        w->windowPos.y + widget->top, widget->right - widget->left);
 }
 
 #pragma endregion
@@ -3158,8 +3164,8 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (rideEntry == nullptr)
         return;
 
-    int32_t x = w->x + 8;
-    int32_t y = w->y + 64;
+    int32_t x = w->windowPos.x + 8;
+    int32_t y = w->windowPos.y + 64;
 
     // Description
     y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
@@ -3384,8 +3390,9 @@ static void window_ride_mode_dropdown(rct_window* w, rct_widget* widget)
         gDropdownItemsArgs[i] = RideModeNames[availableModes[i]];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numAvailableModes, widget->right - dropdownWidget->left);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numAvailableModes,
+        widget->right - dropdownWidget->left);
 
     // Set checked item
     for (i = 0; i < numAvailableModes; i++)
@@ -3414,8 +3421,9 @@ static void window_ride_load_dropdown(rct_window* w, rct_widget* widget)
         gDropdownItemsArgs[i] = VehicleLoadNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, widget->right - dropdownWidget->left);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5,
+        widget->right - dropdownWidget->left);
 
     dropdown_set_checked(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
 }
@@ -3858,8 +3866,8 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Horizontal rule between mode settings and depart settings
     gfx_fill_rect_inset(
-        dpi, w->x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].left + 4, w->y + 103,
-        w->x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].right - 5, w->y + 104, w->colours[1],
+        dpi, w->windowPos.x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].left + 4, w->windowPos.y + 103,
+        w->windowPos.x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].right - 5, w->windowPos.y + 104, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Number of block sections
@@ -3867,8 +3875,8 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto blockSections = ride->num_block_brakes + ride->num_stations;
         gfx_draw_string_left(
-            dpi, STR_BLOCK_SECTIONS, &blockSections, COLOUR_BLACK, w->x + 21,
-            ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED ? w->y + 89 : w->y + 61);
+            dpi, STR_BLOCK_SECTIONS, &blockSections, COLOUR_BLACK, w->windowPos.x + 21,
+            ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED ? w->windowPos.y + 89 : w->windowPos.y + 61);
     }
 }
 
@@ -3993,8 +4001,9 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
             }
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 7, widget->right - dropdownWidget->left);
+                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 7,
+                widget->right - dropdownWidget->left);
 
             dropdown_set_checked(ride->inspection_interval, true);
             break;
@@ -4032,8 +4041,8 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             else
             {
                 window_dropdown_show_text(
-                    w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                    w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
+                    w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                    dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
 
                 num_items = 1;
                 int32_t breakdownReason = ride->breakdown_reason_pending;
@@ -4254,20 +4263,20 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Locate mechanic button image
     rct_widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
-    int32_t x = w->x + widget->left;
-    int32_t y = w->y + widget->top;
+    int32_t x = w->windowPos.x + widget->left;
+    int32_t y = w->windowPos.y + widget->top;
     gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, x, y, 0);
 
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
-    x = w->x + 4;
-    y = w->y + widget->top + 1;
+    x = w->windowPos.x + 4;
+    y = w->windowPos.y + widget->top + 1;
     gfx_draw_string_left(dpi, STR_INSPECTION, nullptr, COLOUR_BLACK, x, y);
 
     // Reliability
     widget = &window_ride_maintenance_widgets[WIDX_PAGE_BACKGROUND];
-    x = w->x + widget->left + 4;
-    y = w->y + widget->top + 4;
+    x = w->windowPos.x + widget->left + 4;
+    y = w->windowPos.y + widget->top + 4;
 
     uint16_t reliability = ride->reliability_percentage;
     gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
@@ -4508,8 +4517,9 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, widget->right - dropdownWidget->left);
+                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4,
+                widget->right - dropdownWidget->left);
 
             dropdown_set_checked(colourSchemeIndex, true);
             break;
@@ -4530,8 +4540,9 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, widget->right - dropdownWidget->left);
+                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4,
+                widget->right - dropdownWidget->left);
 
             dropdown_set_checked(ride->track_colour[colourSchemeIndex].supports, true);
             break;
@@ -4555,8 +4566,9 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, ddIndex, widget->right - dropdownWidget->left);
+                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, ddIndex,
+                widget->right - dropdownWidget->left);
             break;
         }
         case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
@@ -4568,9 +4580,9 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, rideEntry->max_cars_in_train > 1 ? 3 : 2,
-                widget->right - dropdownWidget->left);
+                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN,
+                rideEntry->max_cars_in_train > 1 ? 3 : 2, widget->right - dropdownWidget->left);
 
             dropdown_set_checked(ride->colour_scheme_type & 3, true);
             break;
@@ -4589,8 +4601,9 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - dropdownWidget->left);
+                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+                widget->right - dropdownWidget->left);
 
             dropdown_set_checked(w->vehicleIndex, true);
             break;
@@ -4989,8 +5002,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     widget = &window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
     if (widget->type != WWT_EMPTY)
         gfx_fill_rect(
-            dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1,
-            PALETTE_INDEX_12);
+            dpi, w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1, w->windowPos.x + widget->right - 1,
+            w->windowPos.y + widget->bottom - 1, PALETTE_INDEX_12);
 
     auto trackColour = ride_get_track_colour(ride, w->ride_colour);
 
@@ -4998,8 +5011,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr || rideEntry->shop_item == SHOP_ITEM_NONE)
     {
-        int32_t x = w->x + widget->left;
-        int32_t y = w->y + widget->top;
+        int32_t x = w->windowPos.x + widget->left;
+        int32_t y = w->windowPos.y + widget->top;
 
         // Track
         if (ride->type == RIDE_TYPE_MAZE)
@@ -5027,8 +5040,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else
     {
-        int32_t x = w->x + (widget->left + widget->right) / 2 - 8;
-        int32_t y = w->y + (widget->bottom + widget->top) / 2 - 6;
+        int32_t x = w->windowPos.x + (widget->left + widget->right) / 2 - 8;
+        int32_t y = w->windowPos.y + (widget->bottom + widget->top) / 2 - 6;
 
         uint8_t shopItem = rideEntry->shop_item_secondary == SHOP_ITEM_NONE ? rideEntry->shop_item
                                                                             : rideEntry->shop_item_secondary;
@@ -5044,8 +5057,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (widget->type != WWT_EMPTY)
     {
         if (clip_drawpixelinfo(
-                &clippedDpi, dpi, w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left,
-                widget->bottom - widget->top))
+                &clippedDpi, dpi, w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1,
+                widget->right - widget->left, widget->bottom - widget->top))
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 
@@ -5073,7 +5086,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        gfx_draw_string_left_clipped(dpi, STR_STATION_STYLE, gCommonFormatArgs, COLOUR_BLACK, w->x + 3, w->y + 103, 97);
+        gfx_draw_string_left_clipped(
+            dpi, STR_STATION_STYLE, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 3, w->windowPos.y + 103, 97);
     }
 }
 
@@ -5225,8 +5239,9 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
     }
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - dropdownWidget->left);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+        widget->right - dropdownWidget->left);
 
     for (auto i = 0; i < numItems; i++)
     {
@@ -5524,7 +5539,8 @@ static void window_ride_measurements_mousedown(rct_window* w, rct_widgetindex wi
     gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, 2);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1],
+        DROPDOWN_FLAG_STAY_OPEN, 2);
     gDropdownDefaultIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
@@ -5697,13 +5713,13 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
     {
         rct_widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
-        int32_t x = w->x + (widget->right - widget->left) / 2;
-        int32_t y = w->y + widget->top + 40;
+        int32_t x = w->windowPos.x + (widget->right - widget->left) / 2;
+        int32_t y = w->windowPos.y + widget->top + 40;
         gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
 
-        x = w->x + 4;
-        y = w->y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
-        gfx_fill_rect_inset(dpi, x, y, w->x + 312, y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+        x = w->windowPos.x + 4;
+        y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
+        gfx_fill_rect_inset(dpi, x, y, w->windowPos.x + 312, y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
     else
     {
@@ -5711,8 +5727,8 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
         if (ride == nullptr)
             return;
 
-        int32_t x = w->x + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-        int32_t y = w->y + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+        int32_t x = w->windowPos.x + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+        int32_t y = w->windowPos.y + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
         {
@@ -6755,8 +6771,8 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (rideEntry == nullptr)
         return;
 
-    x = w->x + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 33;
+    x = w->windowPos.x + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    y = w->windowPos.y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 33;
 
     // Primary item profit / loss per item sold
     primaryItem = rideEntry->shop_item;
@@ -6963,8 +6979,8 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride == nullptr)
         return;
 
-    x = w->x + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    x = w->windowPos.x + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    y = w->windowPos.y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Customers currently on ride
     if (ride->IsRide())
