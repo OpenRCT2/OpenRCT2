@@ -905,31 +905,29 @@ static void viewport_surface_draw_water_side_top(
 static std::pair<int32_t, int32_t> surface_get_height_above_water(
     const SurfaceElement& surfaceElement, const int32_t height, const int32_t surfaceShape)
 {
-    int32_t local_surfaceShape = surfaceShape;
-    int32_t local_height = height;
+    int32_t localSurfaceShape = surfaceShape;
+    int32_t localHeight = height;
 
     if (surfaceElement.GetWaterHeight() > 0)
     {
         int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
-            local_height += (2 * COORDS_Z_STEP);
+            localHeight += (2 * COORDS_Z_STEP);
 
-            if (waterHeight != local_height || !(local_surfaceShape & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
+            if (waterHeight != localHeight || !(localSurfaceShape & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
             {
-                local_height = waterHeight;
-                local_surfaceShape = 0;
+                localHeight = waterHeight;
+                localSurfaceShape = TILE_ELEMENT_SLOPE_FLAT;
             }
             else
             {
-                int32_t bl = (surfaceShape ^ 0xF) << 2;
-                int32_t bh = bl >> 4;
-                local_surfaceShape = (bh & 0x3) | (bl & 0xC);
+                localSurfaceShape = ror4(surfaceShape ^ TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK, 2);
             }
         }
     }
 
-    return { local_height, local_surfaceShape };
+    return { localHeight, localSurfaceShape };
 }
 
 /**
