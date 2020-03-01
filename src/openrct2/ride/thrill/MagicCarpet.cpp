@@ -119,8 +119,8 @@ static void paint_magic_carpet_pendulum(
 }
 
 static void paint_magic_carpet_vehicle(
-    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, const CoordsXYZ& offset,
-    const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
+    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, CoordsXYZ offset, const CoordsXYZ& bbOffset,
+    const CoordsXYZ& bbSize)
 {
     rct_ride_entry* rideEntry = ride->GetRideEntry();
     uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
@@ -133,27 +133,26 @@ static void paint_magic_carpet_vehicle(
     }
 
     int8_t directionalOffset = MagicCarpetOscillationXY[swingImageId];
-    auto directedOffset = offset;
     switch (direction)
     {
         case 0:
-            directedOffset.x -= directionalOffset;
+            offset.x -= directionalOffset;
             break;
         case 1:
-            directedOffset.y += directionalOffset;
+            offset.y += directionalOffset;
             break;
         case 2:
-            directedOffset.x += directionalOffset;
+            offset.x += directionalOffset;
             break;
         case 3:
-            directedOffset.y -= directionalOffset;
+            offset.y -= directionalOffset;
             break;
     }
-    directedOffset.z += MagicCarpetOscillationZ[swingImageId];
+    offset.z += MagicCarpetOscillationZ[swingImageId];
 
     sub_98199C(
-        session, vehicleImageId | imageColourFlags, (int8_t)directedOffset.x, (int8_t)directedOffset.y, bbSize.x, bbSize.y, 127,
-        directedOffset.z, bbOffset.x, bbOffset.y, bbOffset.z);
+        session, vehicleImageId | imageColourFlags, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z,
+        bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -169,8 +168,8 @@ static void paint_magic_carpet_vehicle(
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
                 sub_98199C(
-                    session, imageId, (int8_t)directedOffset.x, (int8_t)directedOffset.y, bbSize.x, bbSize.y, 127,
-                    directedOffset.z, bbOffset.x, bbOffset.y, bbOffset.z);
+                    session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x,
+                    bbOffset.y, bbOffset.z);
             }
         }
     }

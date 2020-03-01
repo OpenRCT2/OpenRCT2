@@ -44,7 +44,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, const
 static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords);
 static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords);
 static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
-static void viewport_interaction_remove_park_entrance(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords);
 static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance);
 
 /**
@@ -554,21 +554,19 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(TileElement* tileElement, const CoordsXY& mapCoords)
+void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords)
 {
     int32_t rotation = tileElement->GetDirectionWithOffset(1);
-    auto directedMapCoords = mapCoords;
     switch (tileElement->AsEntrance()->GetSequenceIndex())
     {
         case 1:
-            directedMapCoords += CoordsDirectionDelta[rotation];
+            mapCoords += CoordsDirectionDelta[rotation];
             break;
         case 2:
-            directedMapCoords -= CoordsDirectionDelta[rotation];
+            mapCoords -= CoordsDirectionDelta[rotation];
             break;
     }
-    auto parkEntranceRemoveAction = ParkEntranceRemoveAction(
-        { directedMapCoords.x, directedMapCoords.y, tileElement->GetBaseZ() });
+    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&parkEntranceRemoveAction);
 }
 
