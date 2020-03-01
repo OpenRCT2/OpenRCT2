@@ -98,7 +98,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        std::vector<std::shared_ptr<ScThing>> getAllThings(const std::string& type)
+        std::vector<DukValue> getAllThings(const std::string& type)
         {
             SPRITE_LIST targetList{};
             uint8_t targetType{};
@@ -109,7 +109,7 @@ namespace OpenRCT2::Scripting
             }
             if (type == "car")
             {
-                targetList = SPRITE_LIST_VEHICLE;
+                targetList = SPRITE_LIST_VEHICLE_HEAD;
             }
             else if (type == "litter")
             {
@@ -129,17 +129,45 @@ namespace OpenRCT2::Scripting
                 duk_error(_context, DUK_ERR_ERROR, "Invalid thing type.");
             }
 
-            std::vector<std::shared_ptr<ScThing>> result;
+            std::vector<DukValue> result;
             auto spriteId = gSpriteListHead[targetList];
             while (spriteId != SPRITE_INDEX_NULL)
             {
                 auto sprite = get_sprite(spriteId);
-                if (sprite != nullptr)
+                if (sprite == nullptr)
+                {
+                    break;
+                }
+                else
                 {
                     // Only the misc list checks the type property
                     if (targetList != SPRITE_LIST_MISC || sprite->generic.type == targetType)
                     {
-                        result.push_back(std::make_shared<ScThing>(spriteId));
+                        if (targetList == SPRITE_LIST_PEEP)
+                        {
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScPeep>(spriteId)));
+                        }
+                        else if (targetList == SPRITE_LIST_VEHICLE_HEAD)
+                        {
+                            auto carId = spriteId;
+                            while (carId != SPRITE_INDEX_NULL)
+                            {
+                                auto car = get_sprite(carId);
+                                if (car == nullptr)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScThing>(carId)));
+                                    carId = car->vehicle.next_vehicle_on_train;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScThing>(spriteId)));
+                        }
                     }
                     spriteId = sprite->generic.next;
                 }

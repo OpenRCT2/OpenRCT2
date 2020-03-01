@@ -20,7 +20,7 @@ namespace OpenRCT2::Scripting
 {
     class ScThing
     {
-    private:
+    protected:
         uint16_t _id = SPRITE_INDEX_NULL;
 
     public:
@@ -105,6 +105,30 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        SpriteBase* GetThing()
+        {
+            return &get_sprite(_id)->generic;
+        }
+
+    public:
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScThing::type_get, nullptr, "type");
+            dukglue_register_property(ctx, &ScThing::x_get, &ScThing::x_set, "x");
+            dukglue_register_property(ctx, &ScThing::y_get, &ScThing::y_set, "y");
+            dukglue_register_property(ctx, &ScThing::z_get, &ScThing::z_set, "z");
+        }
+    };
+
+    class ScPeep : public ScThing
+    {
+    public:
+        ScPeep(uint16_t id)
+            : ScThing(id)
+        {
+        }
+
+    private:
         uint8_t tshirtColour_get()
         {
             auto peep = GetPeep();
@@ -134,11 +158,6 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        SpriteBase* GetThing()
-        {
-            return &get_sprite(_id)->generic;
-        }
-
         Peep* GetPeep()
         {
             return get_sprite(_id)->AsPeep();
@@ -147,14 +166,12 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScThing::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScThing::x_get, &ScThing::x_set, "x");
-            dukglue_register_property(ctx, &ScThing::y_get, &ScThing::y_set, "y");
-            dukglue_register_property(ctx, &ScThing::z_get, &ScThing::z_set, "z");
-            dukglue_register_property(ctx, &ScThing::tshirtColour_get, &ScThing::tshirtColour_set, "tshirtColour");
-            dukglue_register_property(ctx, &ScThing::trousersColour_get, &ScThing::trousersColour_set, "trousersColour");
+            dukglue_set_base_class<ScThing, ScPeep>(ctx);
+            dukglue_register_property(ctx, &ScPeep::tshirtColour_get, &ScPeep::tshirtColour_set, "tshirtColour");
+            dukglue_register_property(ctx, &ScPeep::trousersColour_get, &ScPeep::trousersColour_set, "trousersColour");
         }
     };
+
 } // namespace OpenRCT2::Scripting
 
 #endif

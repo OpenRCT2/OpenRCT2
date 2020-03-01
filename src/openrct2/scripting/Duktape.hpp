@@ -14,4 +14,10 @@
 #    include <dukglue/dukglue.h>
 #    include <duktape.h>
 
+template<typename T> DukValue GetObjectAsDukValue(duk_context* ctx, const std::shared_ptr<T>& value)
+{
+    dukglue::types::DukType<std::shared_ptr<T>>::template push<T>(ctx, value);
+    return DukValue::take_from_stack(ctx);
+}
+
 #endif
