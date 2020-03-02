@@ -127,7 +127,7 @@ static void window_track_place_draw_mini_preview_track(
     TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max);
 static void window_track_place_draw_mini_preview_maze(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
-static ScreenCoordsXY draw_mini_preview_get_pixel_position(CoordsXY location);
+static ScreenCoordsXY draw_mini_preview_get_pixel_position(const CoordsXY& location);
 static bool draw_mini_preview_is_pixel_in_bounds(const ScreenCoordsXY& pixel);
 static uint8_t* draw_mini_preview_get_pixel_ptr(const ScreenCoordsXY& pixel);
 
@@ -705,7 +705,7 @@ static void window_track_place_draw_mini_preview_maze(
     }
 }
 
-static ScreenCoordsXY draw_mini_preview_get_pixel_position(CoordsXY location)
+static ScreenCoordsXY draw_mini_preview_get_pixel_position(const CoordsXY& location)
 {
     auto tilePos = TileCoordsXY(location);
     return { (80 + (tilePos.y - tilePos.x) * 4), (38 + (tilePos.y + tilePos.x) * 2) };
