@@ -82,6 +82,7 @@ The following people are not part of the development team, but have been contrib
 * Kevin Strehl (bitman2049) - Tile inspector keybindings
 * Anton Scharnowski (scrapes) - Added Scenery Scatter Options Window.
 * Chad Ian Anderson (pizza2004) - Added New Game option, bug fixes, misc.
+* Peter Ryszkiewicz (pRizz) - Added horizontal grid lines to finance charts.
 
 ## Bug fixes
 * (halfbro)
