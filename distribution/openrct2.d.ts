@@ -80,12 +80,6 @@ declare global {
         expenditureType: ExpenditureType;
     }
 
-    interface GameActionDesc {
-        id: string;
-        query: (args: object) => GameActionResult;
-        execute: (args: object) => GameActionResult;
-    }
-
     interface NetworkEventArgs {
         readonly player: number;
     }
@@ -122,8 +116,15 @@ declare global {
 
         /**
          * Registers a new game action that allows clients to interact with the game.
+         * @param action The unique name of the action.
+         * @param query Logic for validating and returning a price for an action.
+         * @param execute Logic for validating and executing the action.
+         * @throws An error if the action has already been registered by this or another plugin.
          */
-        registerGameAction(desc: GameActionDesc): void;
+        registerGameAction(
+            action: string,
+            query: (args: object) => GameActionResult,
+            execute: (args: object) => GameActionResult): void;
 
         /**
          * Query the result of running a game action. This allows you to check the outcome and validity of
@@ -156,8 +157,7 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
     }
 
-    interface IntentDesc
-    {
+    interface IntentDesc {
         key: string;
         title?: string;
         shortcut?: string;

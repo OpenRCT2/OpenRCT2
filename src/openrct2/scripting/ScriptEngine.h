@@ -21,6 +21,7 @@
 #    include <mutex>
 #    include <queue>
 #    include <string>
+#    include <unordered_map>
 #    include <unordered_set>
 #    include <vector>
 
@@ -118,6 +119,16 @@ namespace OpenRCT2::Scripting
         std::mutex _changedPluginFilesMutex;
         std::vector<std::function<void(std::shared_ptr<Plugin>)>> _pluginStoppedSubscriptions;
 
+        struct CustomAction
+        {
+            std::shared_ptr<Plugin> Plugin;
+            std::string Name;
+            DukValue Query;
+            DukValue Execute;
+        };
+
+        std::unordered_map<std::string, CustomAction> _customActions;
+
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
@@ -143,7 +154,7 @@ namespace OpenRCT2::Scripting
         void UnloadPlugins();
         void Update();
         std::future<void> Eval(const std::string& s);
-        bool ExecutePluginCall(
+        DukValue ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,
             bool isGameStateMutable);
 
@@ -156,7 +167,11 @@ namespace OpenRCT2::Scripting
 
         void AddNetworkPlugin(const std::string_view& code);
 
-        std::unique_ptr<GameActionResult> QueryOrExecuteCustomGameAction(const std::string_view& id, const std::string_view& args, bool isExecute);
+        std::unique_ptr<GameActionResult> QueryOrExecuteCustomGameAction(
+            const std::string_view& id, const std::string_view& args, bool isExecute);
+        bool RegisterCustomAction(
+            const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query,
+            const DukValue& execute);
 
     private:
         void Initialise();
@@ -170,6 +185,8 @@ namespace OpenRCT2::Scripting
         void SetupHotReloading();
         void AutoReloadPlugins();
         void ProcessREPL();
+        void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
+        std::unique_ptr<GameActionResult> DukToGameActionResult(const DukValue& d);
     };
 
     bool IsGameStateMutable();

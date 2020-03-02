@@ -459,6 +459,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
 {
     if (plugin->HasStarted())
     {
+        RemoveCustomGameActions(plugin);
         _hookEngine.UnsubscribeAll(plugin);
         for (auto callback : _pluginStoppedSubscriptions)
         {
@@ -653,7 +654,7 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
     return future;
 }
 
-bool ScriptEngine::ExecutePluginCall(
+DukValue ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args, bool isGameStateMutable)
 {
     if (func.is_function())
@@ -667,9 +668,7 @@ bool ScriptEngine::ExecutePluginCall(
         auto result = duk_pcall(_context, static_cast<duk_idx_t>(args.size()));
         if (result == DUK_EXEC_SUCCESS)
         {
-            // TODO allow result to be returned as a DukValue
-            duk_pop(_context);
-            return true;
+            return DukValue::take_from_stack(_context);
         }
         else
         {
@@ -678,7 +677,7 @@ bool ScriptEngine::ExecutePluginCall(
             duk_pop(_context);
         }
     }
-    return false;
+    return DukValue();
 }
 
 void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message)
@@ -695,27 +694,82 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
 }
 
 std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
-    const std::string_view& id,
-    const std::string_view& args,
-    bool isExecute)
+    const std::string_view& id, const std::string_view& args, bool isExecute)
 {
-    // Deserialise the JSON args
-    std::string argsz(args);
-    duk_push_string(_context, argsz.c_str());
-    duk_json_decode(_context, -1);
-    auto dukArgs = DukValue::take_from_stack(_context);
-
-    // Ready to call plugin handler
-    if (isExecute)
+    std::string actionz = std::string(id);
+    auto kvp = _customActions.find(actionz);
+    if (kvp != _customActions.end())
     {
-        std::printf("EXECUTE: %s(%s)\n", std::string(id).c_str(), std::string(args).c_str());
+        const auto& customAction = kvp->second;
+
+        // Deserialise the JSON args
+        std::string argsz(args);
+        duk_push_string(_context, argsz.c_str());
+        duk_json_decode(_context, -1);
+        auto dukArgs = DukValue::take_from_stack(_context);
+
+        // Ready to call plugin handler
+        DukValue dukResult;
+        if (!isExecute)
+        {
+            dukResult = ExecutePluginCall(customAction.Plugin, customAction.Query, { dukArgs }, false);
+        }
+        else
+        {
+            dukResult = ExecutePluginCall(customAction.Plugin, customAction.Execute, { dukArgs }, true);
+        }
+        return DukToGameActionResult(dukResult);
     }
     else
     {
-        std::printf("QUERY: %s(%s)\n", std::string(id).c_str(), std::string(args).c_str());
+        auto action = std::make_unique<GameActionResult>();
+        action->Error = GA_ERROR::UNKNOWN;
+        action->ErrorTitle = OBJECT_ERROR_UNKNOWN;
+        return action;
+    }
+}
+
+std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukValue& d)
+{
+    auto result = std::make_unique<GameActionResult>();
+    result->Error = d["error"].type() == DukValue::Type::NUMBER ? static_cast<GA_ERROR>(d["error"].as_int()) : GA_ERROR::OK;
+    auto errorTitle = d["errorTitle"].type() == DukValue::Type::STRING ? d["errorTitle"].as_string() : std::string();
+    auto errorMessage = d["errorMessage"].type() == DukValue::Type::STRING ? d["errorMessage"].as_string() : std::string();
+    result->Cost = d["cost"].type() == DukValue::Type::NUMBER ? d["cost"].as_int() : 0;
+    return result;
+}
+
+bool ScriptEngine::RegisterCustomAction(
+    const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query, const DukValue& execute)
+{
+    std::string actionz = std::string(action);
+    if (_customActions.find(actionz) != _customActions.end())
+    {
+        return false;
     }
 
-    return std::make_unique<GameActionResult>();
+    CustomAction customAction;
+    customAction.Plugin = plugin;
+    customAction.Name = std::move(actionz);
+    customAction.Query = query;
+    customAction.Execute = execute;
+    _customActions[customAction.Name] = std::move(customAction);
+    return true;
+}
+
+void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin)
+{
+    for (auto it = _customActions.begin(); it != _customActions.end();)
+    {
+        if (it->second.Plugin == plugin)
+        {
+            it = _customActions.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
 }
 
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)

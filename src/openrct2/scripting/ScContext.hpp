@@ -79,46 +79,31 @@ namespace OpenRCT2::Scripting
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();
-            if (args.type() == DukValue::Type::OBJECT)
+            try
             {
-                if (callback.is_function())
+                auto action = CreateGameAction(actionid, args);
+                if (action != nullptr)
                 {
-                    try
+                    auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+                    if (isExecute)
                     {
-                        auto action = CreateGameAction(actionid, args);
-                        if (action != nullptr)
-                        {
-                            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-                            if (isExecute)
-                            {
-                                action->SetCallback(
-                                    [this, plugin, callback](const GameAction*, const GameActionResult* res) -> void {
-                                        HandleGameActionResult(plugin, *res, callback);
-                                    });
-                                GameActions::Execute(action.get());
-                            }
-                            else
-                            {
-                                auto res = GameActions::Query(action.get());
-                                HandleGameActionResult(plugin, *res, callback);
-                            }
-                        }
-                        else
-                        {
-                            duk_error(ctx, DUK_ERR_ERROR, "Unknown action.");
-                        }
+                        action->SetCallback([this, plugin, callback](const GameAction*, const GameActionResult* res) -> void {
+                            HandleGameActionResult(plugin, *res, callback);
+                        });
+                        GameActions::Execute(action.get());
                     }
-                    catch (DukException&)
+                    else
                     {
-                        duk_error(ctx, DUK_ERR_ERROR, "Invalid action parameters.");
+                        auto res = GameActions::Query(action.get());
+                        HandleGameActionResult(plugin, *res, callback);
                     }
                 }
                 else
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Callback was not a function.");
+                    duk_error(ctx, DUK_ERR_ERROR, "Unknown action.");
                 }
             }
-            else
+            catch (DukException&)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Invalid action parameters.");
             }
@@ -148,7 +133,14 @@ namespace OpenRCT2::Scripting
             {
                 // Serialise args to json so that it can be sent
                 auto ctx = args.context();
-                args.push();
+                if (args.type() == DukValue::Type::OBJECT)
+                {
+                    args.push();
+                }
+                else
+                {
+                    duk_push_object(ctx);
+                }
                 auto jsonz = duk_json_encode(ctx, -1);
                 auto json = std::string(jsonz);
                 duk_pop(ctx);
@@ -185,8 +177,30 @@ namespace OpenRCT2::Scripting
 
             auto args = DukValue::take_from_stack(ctx);
 
-            // Call the plugin callback and pass the result object
-            scriptEngine.ExecutePluginCall(plugin, callback, { args }, false);
+            if (callback.is_function())
+            {
+                // Call the plugin callback and pass the result object
+                scriptEngine.ExecutePluginCall(plugin, callback, { args }, false);
+            }
+        }
+
+        void registerGameAction(const std::string& action, const DukValue& query, const DukValue& execute)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto ctx = scriptEngine.GetContext();
+            if (!query.is_function())
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "query was not a function.");
+            }
+            else if (!execute.is_function())
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "execute was not a function.");
+            }
+            else if (!scriptEngine.RegisterCustomAction(plugin, action, query, execute))
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "action has already been registered.");
+            }
         }
 
     public:
@@ -196,6 +210,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
             dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");
             dukglue_register_method(ctx, &ScContext::executeAction, "executeAction");
+            dukglue_register_method(ctx, &ScContext::registerGameAction, "registerGameAction");
         }
     };
 } // namespace OpenRCT2::Scripting
