@@ -48,8 +48,8 @@ const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
 
-static LocationXYZ16 _spritelocations1[MAX_SPRITES];
-static LocationXYZ16 _spritelocations2[MAX_SPRITES];
+static CoordsXYZ _spritelocations1[MAX_SPRITES];
+static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 
@@ -829,7 +829,7 @@ static bool sprite_should_tween(rct_sprite* sprite)
     return false;
 }
 
-static void store_sprite_locations(LocationXYZ16* sprite_locations)
+static void store_sprite_locations(CoordsXYZ* sprite_locations)
 {
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
@@ -861,9 +861,9 @@ void sprite_position_tween_all(float alpha)
         rct_sprite* sprite = get_sprite(i);
         if (sprite_should_tween(sprite))
         {
-            LocationXYZ16 posA = _spritelocations1[i];
-            LocationXYZ16 posB = _spritelocations2[i];
-            if (posA.x == posB.x && posA.y == posB.y && posA.z == posB.z)
+            auto posA = _spritelocations1[i];
+            auto posB = _spritelocations2[i];
+            if (posA == posB)
             {
                 continue;
             }
@@ -887,7 +887,7 @@ void sprite_position_tween_restore()
         {
             invalidate_sprite_2(&sprite->generic);
 
-            LocationXYZ16 pos = _spritelocations2[i];
+            auto pos = _spritelocations2[i];
             sprite_set_coordinates(pos.x, pos.y, pos.z, &sprite->generic);
         }
     }
