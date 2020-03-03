@@ -3674,6 +3674,8 @@ STR_6352    :Density
 STR_6353    :{SMALLFONT}{BLACK}Low density
 STR_6354    :{SMALLFONT}{BLACK}Medium density
 STR_6355    :{SMALLFONT}{BLACK}High density
+STR_6356    :{SMALLFONT}{BLACK}Spawns ducks if park contains water
+STR_6357    :{SMALLFONT}{BLACK}Removes all ducks from the map
 
 #############
 # Scenarios #

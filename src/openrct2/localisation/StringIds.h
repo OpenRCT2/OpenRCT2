@@ -3903,6 +3903,9 @@ enum
     STR_SCATTER_TOOL_DENSITY_MEDIUM = 6354,
     STR_SCATTER_TOOL_DENSITY_HIGH = 6355,
 
+    STR_CREATE_DUCKS_TIP = 6356,
+    STR_REMOVE_DUCKS_TIP = 6357,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
