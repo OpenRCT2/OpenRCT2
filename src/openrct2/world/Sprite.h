@@ -68,6 +68,7 @@ struct Duck : SpriteGeneric
     void UpdateFlyAway();
     uint32_t GetFrameImage(int32_t direction) const;
     void Invalidate();
+    bool IsFlying();
     void Remove();
     void MoveTo(const CoordsXYZ& destination);
 };
@@ -214,6 +215,7 @@ void invalidate_sprite_2(SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
 void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);
+uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z);
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z);
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y);
