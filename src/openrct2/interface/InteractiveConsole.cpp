@@ -1202,7 +1202,7 @@ static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arg
     uint16_t result = remove_floating_sprites();
     console.WriteFormatLine("Removed %d flying objects", result);
     return 0;
-} 
+}
 
 static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
