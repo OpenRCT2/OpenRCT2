@@ -30,6 +30,10 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
+        rct_window* ShowError(const std::string_view& /*title*/, const std::string_view& /*message*/) override
+        {
+            return nullptr;
+        }
         rct_window* OpenIntent(Intent* /*intent*/) override
         {
             return nullptr;

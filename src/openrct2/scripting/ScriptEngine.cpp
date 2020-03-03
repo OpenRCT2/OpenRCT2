@@ -732,10 +732,10 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
 std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukValue& d)
 {
     auto result = std::make_unique<GameActionResult>();
-    result->Error = d["error"].type() == DukValue::Type::NUMBER ? static_cast<GA_ERROR>(d["error"].as_int()) : GA_ERROR::OK;
-    auto errorTitle = d["errorTitle"].type() == DukValue::Type::STRING ? d["errorTitle"].as_string() : std::string();
-    auto errorMessage = d["errorMessage"].type() == DukValue::Type::STRING ? d["errorMessage"].as_string() : std::string();
-    result->Cost = d["cost"].type() == DukValue::Type::NUMBER ? d["cost"].as_int() : 0;
+    result->Error = static_cast<GA_ERROR>(AsOrDefault<int32_t>(d["error"]));
+    result->ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
+    result->ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
+    result->Cost = AsOrDefault<int32_t>(d["cost"]);
     return result;
 }
 

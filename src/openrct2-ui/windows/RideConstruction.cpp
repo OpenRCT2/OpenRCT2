@@ -1824,7 +1824,10 @@ static void window_ride_construction_construct(rct_window* w)
     // Used by some functions
     if (res->Error != GA_ERROR::OK)
     {
-        gGameCommandErrorText = res->ErrorMessage;
+        if (auto error = std::get_if<rct_string_id>(&res->ErrorMessage))
+            gGameCommandErrorText = *error;
+        else
+            gGameCommandErrorText = STR_NONE;
         _trackPlaceCost = MONEY32_UNDEFINED;
     }
     else

@@ -1947,9 +1947,12 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     break;
                 }
 
-                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                if (auto message = std::get_if<rct_string_id>(&res->ErrorMessage))
                 {
-                    break;
+                    if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
                 }
 
                 if (zAttemptRange != 1)
@@ -1997,9 +2000,12 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     break;
                 }
 
-                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                if (auto message = std::get_if<rct_string_id>(&res->ErrorMessage))
                 {
-                    break;
+                    if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
                 }
 
                 if (zAttemptRange != 1)

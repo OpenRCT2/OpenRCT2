@@ -1481,7 +1481,10 @@ bool map_can_construct_with_clear_at(
     uint8_t crossingMode)
 {
     GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
-    gGameCommandErrorText = res->ErrorMessage;
+    if (auto message = std::get_if<rct_string_id>(&res->ErrorMessage))
+        gGameCommandErrorText = *message;
+    else
+        gGameCommandErrorText = STR_NONE;
     std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
     if (price != nullptr)
     {

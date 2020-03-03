@@ -160,11 +160,11 @@ namespace OpenRCT2::Scripting
 
             if (res.Error != GA_ERROR::OK)
             {
-                auto title = format_string(res.ErrorTitle, nullptr);
+                auto title = res.GetErrorTitle();
                 duk_push_string(ctx, title.c_str());
                 duk_put_prop_string(ctx, objIdx, "errorTitle");
 
-                auto message = format_string(res.ErrorMessage, res.ErrorMessageArgs.data());
+                auto message = res.GetErrorMessage();
                 duk_push_string(ctx, message.c_str());
                 duk_put_prop_string(ctx, objIdx, "errorMessage");
             }

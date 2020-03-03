@@ -18,11 +18,15 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
 
 GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
 {
@@ -43,6 +47,34 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
     ErrorTitle = title;
     ErrorMessage = message;
     std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
+}
+
+std::string GameActionResult::GetErrorTitle() const
+{
+    std::string titlez;
+    if (auto title = std::get_if<std::string>(&ErrorTitle))
+    {
+        titlez = *title;
+    }
+    else
+    {
+        titlez = format_string(std::get<rct_string_id>(ErrorTitle), nullptr);
+    }
+    return titlez;
+}
+
+std::string GameActionResult::GetErrorMessage() const
+{
+    std::string messagez;
+    if (auto message = std::get_if<std::string>(&ErrorMessage))
+    {
+        messagez = *message;
+    }
+    else
+    {
+        messagez = format_string(std::get<rct_string_id>(ErrorMessage), ErrorMessageArgs.data());
+    }
+    return messagez;
 }
 
 namespace GameActions
@@ -486,9 +518,8 @@ namespace GameActions
 
         if (result->Error != GA_ERROR::OK && shouldShowError)
         {
-            // Show the error box
-            std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);
-            context_show_error(result->ErrorTitle, result->ErrorMessage);
+            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            windowManager->ShowError(result->GetErrorTitle(), result->GetErrorMessage());
         }
 
         return result;

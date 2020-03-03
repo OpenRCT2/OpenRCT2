@@ -20,4 +20,19 @@ template<typename T> DukValue GetObjectAsDukValue(duk_context* ctx, const std::s
     return DukValue::take_from_stack(ctx);
 }
 
+template<typename T>
+const T AsOrDefault(const DukValue& value, const T& defaultValue = {}) = delete;
+
+template<>
+inline const std::string AsOrDefault(const DukValue& value, const std::string& defaultValue)
+{
+    return value.type() == DukValue::STRING ? value.as_string() : defaultValue;
+}
+
+template<>
+inline const int32_t AsOrDefault(const DukValue& value, const int32_t& defaultValue)
+{
+    return value.type() == DukValue::NUMBER ? value.as_int() : defaultValue;
+}
+
 #endif

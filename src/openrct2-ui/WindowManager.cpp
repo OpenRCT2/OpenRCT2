@@ -207,6 +207,11 @@ public:
         return window_error_open(title, message);
     }
 
+    rct_window* ShowError(const std::string_view& title, const std::string_view& message) override
+    {
+        return window_error_open(title, message);
+    }
+
     rct_window* OpenIntent(Intent* intent) override
     {
         switch (intent->GetWindowClass())

@@ -20,6 +20,7 @@
 #include <functional>
 #include <memory>
 #include <utility>
+#include <variant>
 
 /**
  * Common error codes for game actions.
@@ -69,8 +70,8 @@ public:
     using Ptr = std::unique_ptr<GameActionResult>;
 
     GA_ERROR Error = GA_ERROR::OK;
-    rct_string_id ErrorTitle = STR_NONE;
-    rct_string_id ErrorMessage = STR_NONE;
+    std::variant<rct_string_id, std::string> ErrorTitle = STR_NONE;
+    std::variant<rct_string_id, std::string> ErrorMessage = STR_NONE;
     std::array<uint8_t, 32> ErrorMessageArgs;
     CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
     money32 Cost = 0;
@@ -82,6 +83,9 @@ public:
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args);
     GameActionResult(const GameActionResult&) = delete;
     virtual ~GameActionResult(){};
+
+    std::string GetErrorTitle() const;
+    std::string GetErrorMessage() const;
 };
 
 struct GameAction
