@@ -313,11 +313,13 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsTrack();
                     el->SetSequenceIndex(value);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetSequenceIndex(value);
+                    break;
                 }
             }
         }
@@ -348,11 +350,13 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsTrack();
                     el->SetRideIndex(value);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetRideIndex(value);
+                    break;
                 }
             }
         }
@@ -383,11 +387,13 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsTrack();
                     el->SetStationIndex(value);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetStationIndex(value);
+                    break;
                 }
             }
         }
@@ -450,26 +456,31 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsPath();
                     el->SetPathEntryIndex(value & 0xFF);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 {
                     auto el = _element->AsSmallScenery();
                     el->SetEntryIndex(value & 0xFF);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
                     el->SetEntryIndex(value);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_WALL:
                 {
                     auto el = _element->AsWall();
                     el->SetEntryIndex(value & 0xFFFF);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetEntranceType(value & 0xFF);
+                    break;
                 }
             }
         }
@@ -517,11 +528,13 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsSmallScenery();
                     el->SetPrimaryColour(value);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
                     el->SetPrimaryColour(value);
+                    break;
                 }
             }
         }
@@ -552,11 +565,13 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsSmallScenery();
                     el->SetSecondaryColour(value);
+                    break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
                     el->SetSecondaryColour(value);
+                    break;
                 }
             }
         }
@@ -747,9 +762,10 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScTileElement> insertElement(size_t index)
         {
             ThrowIfGameStateNotMutable();
+            std::shared_ptr<ScTileElement> result;
             auto first = GetFirstElement();
             auto origNumElements = GetNumElements(first);
-            if (index >= 0 && index <= origNumElements)
+            if (index <= origNumElements)
             {
                 std::vector<TileElement> data(first, first + origNumElements);
 
@@ -782,7 +798,7 @@ namespace OpenRCT2::Scripting
                     }
                     first[origNumElements].SetLastForTile(true);
                     map_invalidate_tile_full(_coords);
-                    return std::make_shared<ScTileElement>(_coords, &first[index]);
+                    result = std::make_shared<ScTileElement>(_coords, &first[index]);
                 }
             }
             else
@@ -790,6 +806,7 @@ namespace OpenRCT2::Scripting
                 auto ctx = GetDukContext();
                 duk_error(ctx, DUK_ERR_RANGE_ERROR, "Index must be between zero and the number of elements on the tile.");
             }
+            return result;
         }
 
         void removeElement(size_t index)

@@ -712,11 +712,11 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
         DukValue dukResult;
         if (!isExecute)
         {
-            dukResult = ExecutePluginCall(customAction.Plugin, customAction.Query, { dukArgs }, false);
+            dukResult = ExecutePluginCall(customAction.Owner, customAction.Query, { dukArgs }, false);
         }
         else
         {
-            dukResult = ExecutePluginCall(customAction.Plugin, customAction.Execute, { dukArgs }, true);
+            dukResult = ExecutePluginCall(customAction.Owner, customAction.Execute, { dukArgs }, true);
         }
         return DukToGameActionResult(dukResult);
     }
@@ -749,7 +749,7 @@ bool ScriptEngine::RegisterCustomAction(
     }
 
     CustomAction customAction;
-    customAction.Plugin = plugin;
+    customAction.Owner = plugin;
     customAction.Name = std::move(actionz);
     customAction.Query = query;
     customAction.Execute = execute;
@@ -761,7 +761,7 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
 {
     for (auto it = _customActions.begin(); it != _customActions.end();)
     {
-        if (it->second.Plugin == plugin)
+        if (it->second.Owner == plugin)
         {
             it = _customActions.erase(it);
         }

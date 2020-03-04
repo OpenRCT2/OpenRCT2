@@ -121,7 +121,7 @@ namespace OpenRCT2::Scripting
 
         struct CustomAction
         {
-            std::shared_ptr<Plugin> Plugin;
+            std::shared_ptr<Plugin> Owner;
             std::string Name;
             DukValue Query;
             DukValue Execute;
