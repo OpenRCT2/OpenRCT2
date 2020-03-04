@@ -827,6 +827,7 @@ uint16_t remove_floating_sprites()
         if (rctSprite->IsBalloon())
         {
             sprite_remove(rctSprite->AsBalloon());
+            sprite_misc_update(rctSprite);
             removed++;
         }
         if (rctSprite->IsDuck())
@@ -834,12 +835,14 @@ uint16_t remove_floating_sprites()
             if (rctSprite->AsDuck()->IsFlying())
             {
                 rctSprite->duck.Remove();
+                sprite_misc_update(rctSprite);
                 removed++;
             }
         }
         if (rctSprite->IsMoneyEffect())
         {
             sprite_remove(rctSprite->AsMoneyEffect());
+            sprite_misc_update(rctSprite);
             removed++;
         }
     }
