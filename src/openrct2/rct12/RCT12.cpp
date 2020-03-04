@@ -87,7 +87,7 @@ bool RCT12SurfaceElement::HasTrackThatNeedsWater() const
 
 uint8_t RCT12PathElement::GetEntryIndex() const
 {
-    return (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
+    return (entryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
 }
 
 uint8_t RCT12PathElement::GetQueueBannerDirection() const
@@ -97,12 +97,12 @@ uint8_t RCT12PathElement::GetQueueBannerDirection() const
 
 bool RCT12PathElement::IsSloped() const
 {
-    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
+    return (entryIndex & RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
 }
 
 uint8_t RCT12PathElement::GetSlopeDirection() const
 {
-    return entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    return entryIndex & RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
 uint8_t RCT12PathElement::GetRideIndex() const
@@ -112,7 +112,7 @@ uint8_t RCT12PathElement::GetRideIndex() const
 
 uint8_t RCT12PathElement::GetStationIndex() const
 {
-    return (additions & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
+    return (additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
 }
 
 bool RCT12PathElement::IsWide() const
@@ -127,7 +127,7 @@ bool RCT12PathElement::IsQueue() const
 
 bool RCT12PathElement::HasQueueBanner() const
 {
-    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
+    return (entryIndex & RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
 }
 uint8_t RCT12PathElement::GetEdges() const
 {
@@ -141,12 +141,12 @@ uint8_t RCT12PathElement::GetCorners() const
 
 uint8_t RCT12PathElement::GetAddition() const
 {
-    return additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    return additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
 }
 
 bool RCT12PathElement::AdditionIsGhost() const
 {
-    return (additions & FOOTPATH_ADDITION_FLAG_IS_GHOST) != 0;
+    return (additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST) != 0;
 }
 
 uint8_t RCT12PathElement::GetAdditionStatus() const
@@ -157,7 +157,7 @@ uint8_t RCT12PathElement::GetAdditionStatus() const
 uint8_t RCT12PathElement::GetRCT1PathType() const
 {
     uint8_t pathColour = type & 3;
-    uint8_t pathType2 = (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
+    uint8_t pathType2 = (entryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
     pathType2 = pathType2 | pathColour;
     return pathType2;
@@ -610,7 +610,7 @@ void RCT12SurfaceElement::SetHasTrackThatNeedsWater(bool on)
 
 void RCT12PathElement::SetPathEntryIndex(uint8_t newEntryIndex)
 {
-    entryIndex &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
+    entryIndex &= ~RCT12_FOOTPATH_PROPERTIES_TYPE_MASK;
     entryIndex |= (newEntryIndex << 4);
 }
 
@@ -644,21 +644,21 @@ void RCT12PathElement::SetCorners(uint8_t newCorners)
 
 void RCT12PathElement::SetSloped(bool isSloped)
 {
-    entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+    entryIndex &= ~RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
     if (isSloped)
-        entryIndex |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+        entryIndex |= RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 }
 
 void RCT12PathElement::SetSlopeDirection(uint8_t newSlope)
 {
-    entryIndex &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-    entryIndex |= newSlope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    entryIndex &= ~RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    entryIndex |= newSlope & RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
 void RCT12PathElement::SetStationIndex(uint8_t newStationIndex)
 {
-    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
-    additions |= ((newStationIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK);
+    additions &= ~RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
+    additions |= ((newStationIndex << 4) & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK);
 }
 
 void RCT12PathElement::SetWide(bool isWide)
@@ -677,22 +677,22 @@ void RCT12PathElement::SetIsQueue(bool isQueue)
 
 void RCT12PathElement::SetHasQueueBanner(bool hasQueueBanner)
 {
-    entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
+    entryIndex &= ~RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
     if (hasQueueBanner)
-        entryIndex |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
+        entryIndex |= RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
 }
 
 void RCT12PathElement::SetAddition(uint8_t newAddition)
 {
-    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    additions &= ~RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
     additions |= newAddition;
 }
 
 void RCT12PathElement::SetAdditionIsGhost(bool isGhost)
 {
-    additions &= ~FOOTPATH_ADDITION_FLAG_IS_GHOST;
+    additions &= ~RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST;
     if (isGhost)
-        additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
+        additions |= RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST;
 }
 
 void RCT12TrackElement::SetTrackType(uint8_t newType)

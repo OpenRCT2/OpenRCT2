@@ -655,12 +655,12 @@ void map_update_path_wide_flags()
  *
  *  rct2: 0x006A7B84
  */
-int32_t map_height_from_slope(const CoordsXY& coords, int32_t slope, bool isSloped)
+int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped)
 {
     if (!isSloped)
         return 0;
 
-    switch (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+    switch (slopeDirection % NumOrthogonalDirections)
     {
         case TILE_ELEMENT_DIRECTION_WEST:
             return (31 - (coords.x & 31)) / 2;

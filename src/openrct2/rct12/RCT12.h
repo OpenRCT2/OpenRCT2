@@ -94,6 +94,24 @@ enum
     RCT12_TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
 };
 
+// Masks and flags for values stored in TileElement.properties.path.type
+enum
+{
+    RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
+    RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
+    RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
+    RCT12_FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+};
+
+// Masks and flags for values stored in in RCT12TileElement.properties.path.additions
+enum
+{
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+    // The most significant bit in this mask will always be zero, since rides can only have 4 stations
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
+};
+
 #pragma pack(push, 1)
 
 struct RCT12xy8

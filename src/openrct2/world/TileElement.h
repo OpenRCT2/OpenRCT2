@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "../ride/Station.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
@@ -183,27 +184,31 @@ assert_struct_size(SurfaceElement, 16);
 struct PathElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
-    uint8_t additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
-    uint8_t edges;      // 6
+    PathSurfaceIndex SurfaceIndex;   // 4
+    PathRailingsIndex RailingsIndex; // 6
+    uint8_t Additions;               // 7 (0 means no addition)
+    uint8_t Edges;                   // 8
+    uint8_t Flags2;                  // 9
+    uint8_t SlopeDirection;          // 10
     union
     {
-        uint8_t additionStatus; // 7
-        uint8_t rideIndex;
+        uint8_t AdditionStatus; // 11, only used for litter bins
+        ride_id_t rideIndex;    // 11
     };
+    ::StationIndex StationIndex; // 13
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_0E[2];
 #pragma clang diagnostic pop
 
 public:
-    uint8_t GetPathEntryIndex() const;
-    PathSurfaceEntry* GetPathEntry() const;
-    void SetPathEntryIndex(uint8_t newIndex);
+    PathSurfaceIndex GetSurfaceEntryIndex() const;
+    PathSurfaceEntry* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(PathSurfaceIndex newIndex);
 
-    uint8_t GetRailingEntryIndex() const;
+    PathRailingsIndex GetRailingEntryIndex() const;
     PathRailingsEntry* GetRailingEntry() const;
-    void SetRailingEntryIndex(uint8_t newIndex);
+    void SetRailingEntryIndex(PathRailingsIndex newIndex);
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
@@ -217,8 +222,8 @@ public:
     ride_id_t GetRideIndex() const;
     void SetRideIndex(ride_id_t newRideIndex);
 
-    uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t newStationIndex);
+    ::StationIndex GetStationIndex() const;
+    void SetStationIndex(::StationIndex newStationIndex);
 
     bool IsWide() const;
     void SetWide(bool isWide);
@@ -474,11 +479,11 @@ private:
     uint8_t entranceType;  // 4
     uint8_t SequenceIndex; // 5. Only uses the lower nibble.
     uint8_t StationIndex;  // 6
-    uint8_t pathType;      // 7
+    PathSurfaceIndex PathType; // 7
     ride_id_t rideIndex;   // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0A[6];
+    uint8_t pad_0B[5];
 #pragma clang diagnostic pop
 
 public:
@@ -494,8 +499,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    uint8_t GetPathType() const;
-    void SetPathType(uint8_t newPathType);
+    PathSurfaceIndex GetPathType() const;
+    void SetPathType(PathSurfaceIndex newPathType);
 };
 assert_struct_size(EntranceElement, 16);
 

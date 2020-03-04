@@ -10,7 +10,11 @@
 #pragma once
 
 #include "../common.h"
-#include "Ride.h"
+#include "../world/Location.hpp"
+
+struct Ride;
+
+using StationIndex = uint8_t;
 
 void ride_update_station(Ride* ride, int32_t stationIndex);
 int8_t ride_get_first_valid_station_exit(Ride* ride);

@@ -250,7 +250,7 @@ private:
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
             pathElement->clearance_height = zHigh;
-            pathElement->SetPathEntryIndex(_type);
+            pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
             pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
             {

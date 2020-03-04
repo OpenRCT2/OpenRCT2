@@ -157,7 +157,7 @@ private:
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
-        if (pathElement->GetPathEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+        if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
         {
             res->Cost += MONEY(6, 00);
         }
@@ -173,7 +173,7 @@ private:
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
-        if (pathElement->GetPathEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+        if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
         {
             res->Cost += MONEY(6, 00);
         }
@@ -185,8 +185,8 @@ private:
             footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
 
-        pathElement->SetPathEntryIndex(_type);
-        if (_type & (1 << 7))
+        pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
         {
             pathElement->SetIsQueue(true);
         }
@@ -336,7 +336,7 @@ private:
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
             pathElement->clearance_height = zHigh;
-            pathElement->SetPathEntryIndex(_type);
+            pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
             pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
             {

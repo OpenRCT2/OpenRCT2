@@ -2036,7 +2036,7 @@ private:
                 dst2->SetIsBroken(false);
                 dst2->SetIsBlockedByVehicle(false);
 
-                dst2->SetPathEntryIndex(entryIndex);
+                dst2->SetSurfaceEntryIndex(entryIndex);
                 dst2->SetShouldDrawPathOverSupports(true);
                 if (RCT1::PathIsQueue(pathType))
                 {
