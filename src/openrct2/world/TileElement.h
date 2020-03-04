@@ -383,6 +383,7 @@ public:
     void SetSecondaryColour(colour_t colour);
     bool NeedsSupports() const;
     void SetNeedsSupports();
+    void UpdateAge(const CoordsXY& sceneryPos);
 };
 assert_struct_size(SmallSceneryElement, 16);
 

@@ -74,7 +74,7 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
         {
-            scenery_update_age(sceneryPos, tileElement);
+            tileElement->AsSmallScenery()->UpdateAge(sceneryPos);
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
@@ -101,12 +101,9 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
  *
  *  rct2: 0x006E33D9
  */
-void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement)
+void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 {
-    TileElement* tileElementAbove;
-    rct_scenery_entry* sceneryEntry;
-
-    sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+    auto* sceneryEntry = GetEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -118,14 +115,14 @@ void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement)
     }
 
     if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)
-        || (gClimateCurrent.Weather < WEATHER_RAIN) || (tileElement->AsSmallScenery()->GetAge() < 5))
+        || (gClimateCurrent.Weather < WEATHER_RAIN) || GetAge() < 5)
     {
-        tileElement->AsSmallScenery()->IncreaseAge(sceneryPos);
+        IncreaseAge(sceneryPos);
         return;
     }
 
     // Check map elements above, presumably to see if map element is blocked from rain
-    tileElementAbove = tileElement;
+    TileElement* tileElementAbove = reinterpret_cast<TileElement*>(this);
     // Change from original: RCT2 only checked for the first three quadrants, which was very likely to be a bug.
     while (!(tileElementAbove->GetOccupiedQuadrants()))
     {
@@ -142,13 +139,13 @@ void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement)
             case TILE_ELEMENT_TYPE_ENTRANCE:
             case TILE_ELEMENT_TYPE_PATH:
                 map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
-                tileElement->AsSmallScenery()->IncreaseAge(sceneryPos);
+                IncreaseAge(sceneryPos);
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
-                    tileElement->AsSmallScenery()->IncreaseAge(sceneryPos);
+                    IncreaseAge(sceneryPos);
                     return;
                 }
                 break;
@@ -156,8 +153,8 @@ void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement)
     }
 
     // Reset age / water plant
-    tileElement->AsSmallScenery()->SetAge(0);
-    map_invalidate_tile_zoom1({ sceneryPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    SetAge(0);
+    map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
 }
 
 /**
