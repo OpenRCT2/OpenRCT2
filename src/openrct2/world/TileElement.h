@@ -64,24 +64,30 @@ struct CorruptElement;
 struct TileElementBase
 {
     uint8_t type;             // 0
-    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t Flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
+    void Remove();
+
     uint8_t GetType() const;
     void SetType(uint8_t newType);
+
     Direction GetDirection() const;
     void SetDirection(Direction direction);
     Direction GetDirectionWithOffset(uint8_t offset) const;
+
     bool IsLastForTile() const;
     void SetLastForTile(bool on);
     bool IsGhost() const;
     void SetGhost(bool isGhost);
-    void Remove();
+
     uint8_t GetOccupiedQuadrants() const;
     void SetOccupiedQuadrants(uint8_t quadrants);
+
     int32_t GetBaseZ() const;
     void SetBaseZ(int32_t newZ);
+
     int32_t GetClearanceZ() const;
     void SetClearanceZ(int32_t newZ);
 };
@@ -149,7 +155,7 @@ private:
     uint8_t EdgeStyle;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[6];
+    uint8_t pad_0A[6];
 #pragma clang diagnostic pop
 
 public:
@@ -399,9 +405,10 @@ private:
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
+    uint8_t Flags2;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[4];
+    uint8_t pad[3];
 #pragma clang diagnostic pop
 
 public:
@@ -593,11 +600,6 @@ enum
 enum
 {
     TILE_ELEMENT_FLAG_GHOST = (1 << 4),
-    TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
-    TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
-    TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
-    TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
-    TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
     TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 

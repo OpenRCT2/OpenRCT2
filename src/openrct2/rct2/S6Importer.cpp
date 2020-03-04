@@ -1025,9 +1025,13 @@ public:
         uint8_t tileElementType = src->GetType();
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
-        dst->flags = src->flags;
         dst->base_height = src->base_height;
         dst->clearance_height = src->clearance_height;
+
+        // All saved in "flags"
+        dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
+        dst->SetGhost(src->IsGhost());
+        dst->SetLastForTile(src->IsLastForTile());
 
         switch (tileElementType)
         {
@@ -1066,6 +1070,8 @@ public:
                 dst2->SetAddition(src2->GetAddition());
                 dst2->SetAdditionIsGhost(src2->AdditionIsGhost());
                 dst2->SetAdditionStatus(src2->GetAdditionStatus());
+                dst2->SetIsBroken(src2->IsBroken());
+                dst2->SetIsBlockedByVehicle(src2->IsBlockedByVehicle());
 
                 break;
             }
@@ -1083,6 +1089,8 @@ public:
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
+                dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
+                dst2->SetIsIndestructible(src2->IsIndestructible());
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))

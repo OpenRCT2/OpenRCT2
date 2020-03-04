@@ -29,6 +29,17 @@ uint8_t RCT12TileElementBase::GetDirection() const
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
+uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
+{
+    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+}
+
+void RCT12TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
+{
+    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+}
+
 bool RCT12TileElementBase::IsLastForTile() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
@@ -37,6 +48,26 @@ bool RCT12TileElementBase::IsLastForTile() const
 bool RCT12TileElementBase::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+}
+
+void RCT12TileElementBase::SetLastForTile(bool on)
+{
+    if (on)
+        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    else
+        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
+void RCT12TileElementBase::SetGhost(bool isGhost)
+{
+    if (isGhost)
+    {
+        this->flags |= TILE_ELEMENT_FLAG_GHOST;
+    }
+    else
+    {
+        this->flags &= ~TILE_ELEMENT_FLAG_GHOST;
+    }
 }
 
 uint8_t RCT12SurfaceElement::GetSlope() const
@@ -257,6 +288,23 @@ uint8_t RCT12TrackElement::GetDoorAState() const
 uint8_t RCT12TrackElement::GetDoorBState() const
 {
     return (colour & RCT12_TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+}
+
+bool RCT12TrackElement::IsIndestructible() const
+{
+    return (flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+}
+
+void RCT12TrackElement::SetIsIndestructible(bool isIndestructible)
+{
+    if (isIndestructible)
+    {
+        flags |= RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+    }
+    else
+    {
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+    }
 }
 
 uint8_t RCT12SmallSceneryElement::GetEntryIndex() const
@@ -695,6 +743,40 @@ void RCT12PathElement::SetAdditionIsGhost(bool isGhost)
         additions |= RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST;
 }
 
+bool RCT12PathElement::IsBroken() const
+{
+    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+}
+
+void RCT12PathElement::SetIsBroken(bool isBroken)
+{
+    if (isBroken)
+    {
+        flags |= RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+    else
+    {
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+}
+
+bool RCT12PathElement::IsBlockedByVehicle() const
+{
+    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+}
+
+void RCT12PathElement::SetIsBlockedByVehicle(bool isBlocked)
+{
+    if (isBlocked)
+    {
+        flags |= RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+    else
+    {
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+}
+
 void RCT12TrackElement::SetTrackType(uint8_t newType)
 {
     trackType = newType;
@@ -754,15 +836,20 @@ void RCT12TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
     }
 }
 
+bool RCT12TrackElement::BlockBrakeClosed() const
+{
+    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+}
+
 void RCT12TrackElement::SetBlockBrakeClosed(bool isClosed)
 {
     if (isClosed)
     {
-        flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+        flags |= RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
     }
     else
     {
-        flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
     }
 }
 

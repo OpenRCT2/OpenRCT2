@@ -1988,7 +1988,12 @@ private:
         uint8_t tileElementType = src->GetType();
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
-        dst->flags = src->flags;
+
+        // All saved in "flags"
+        dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
+        dst->SetGhost(src->IsGhost());
+        dst->SetLastForTile(src->IsLastForTile());
+
         dst->SetBaseZ(src->base_height * 4);
         dst->SetClearanceZ(src->clearance_height * 4);
 
@@ -2097,6 +2102,7 @@ private:
                 dst2->SetDoorBState(src2->GetDoorBState());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
+                dst2->SetIsIndestructible(src2->IsIndestructible());
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))

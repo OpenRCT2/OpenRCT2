@@ -1174,7 +1174,7 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
     insertedElement = newTileElement;
     newTileElement->type = 0;
     newTileElement->base_height = loc.z;
-    newTileElement->flags = 0;
+    newTileElement->Flags = 0;
     newTileElement->SetLastForTile(isLastForTile);
     newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
     newTileElement->clearance_height = loc.z;

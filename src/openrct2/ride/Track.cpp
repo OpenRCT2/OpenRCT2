@@ -1377,35 +1377,35 @@ void TrackElement::SetInverted(bool inverted)
 
 bool TrackElement::BlockBrakeClosed() const
 {
-    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAG2_BLOCK_BRAKE_CLOSED) != 0;
 }
 
 void TrackElement::SetBlockBrakeClosed(bool isClosed)
 {
     if (isClosed)
     {
-        flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+        Flags2 |= TRACK_ELEMENT_FLAG2_BLOCK_BRAKE_CLOSED;
     }
     else
     {
-        flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+        Flags2 &= ~TRACK_ELEMENT_FLAG2_BLOCK_BRAKE_CLOSED;
     }
 }
 
 bool TrackElement::IsIndestructible() const
 {
-    return (flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAG2_INDESTRUCTIBLE_TRACK_PIECE) != 0;
 }
 
 void TrackElement::SetIsIndestructible(bool isIndestructible)
 {
     if (isIndestructible)
     {
-        flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+        Flags2 |= TRACK_ELEMENT_FLAG2_INDESTRUCTIBLE_TRACK_PIECE;
     }
     else
     {
-        flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+        Flags2 &= ~TRACK_ELEMENT_FLAG2_INDESTRUCTIBLE_TRACK_PIECE;
     }
 }
 

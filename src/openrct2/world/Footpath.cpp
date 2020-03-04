@@ -1470,35 +1470,35 @@ void PathElement::SetHasQueueBanner(bool hasQueueBanner)
 
 bool PathElement::IsBroken() const
 {
-    return (flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
+    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN) != 0;
 }
 
 void PathElement::SetIsBroken(bool isBroken)
 {
     if (isBroken)
     {
-        flags |= TILE_ELEMENT_FLAG_BROKEN;
+        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN;
     }
     else
     {
-        flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN;
     }
 }
 
 bool PathElement::IsBlockedByVehicle() const
 {
-    return (flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE) != 0;
 }
 
 void PathElement::SetIsBlockedByVehicle(bool isBlocked)
 {
     if (isBlocked)
     {
-        flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE;
     }
     else
     {
-        flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+        Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE;
     }
 }
 
