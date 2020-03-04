@@ -28,6 +28,8 @@ namespace OpenRCT2::Scripting
 
     enum class HOOK_TYPE
     {
+        ACTION_QUERY,
+        ACTION_EXECUTE,
         INTERVAL_TICK,
         INTERVAL_DAY,
         NETWORK_CHAT,

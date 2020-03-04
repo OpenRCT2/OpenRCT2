@@ -18,6 +18,7 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
@@ -399,6 +400,15 @@ namespace GameActions
         }
 
         GameActionResult::Ptr result = QueryInternal(action, topLevel);
+#ifdef __ENABLE_SCRIPTING__
+        if (result->Error == GA_ERROR::OK
+            && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.RunGameActionHooks(*action, result, false);
+            // Script hooks may now have changed the game action result...
+        }
+#endif
         if (result->Error == GA_ERROR::OK)
         {
             if (topLevel)
@@ -434,6 +444,14 @@ namespace GameActions
 
             // Execute the action, changing the game state
             result = action->Execute();
+#ifdef __ENABLE_SCRIPTING__
+            if (result->Error == GA_ERROR::OK)
+            {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.RunGameActionHooks(*action, result, true);
+                // Script hooks may now have changed the game action result...
+            }
+#endif
 
             LogActionFinish(logContext, action, result);
 

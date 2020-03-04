@@ -13,6 +13,7 @@
 
 #    include "../common.h"
 #    include "../core/FileWatcher.h"
+#    include "../world/Location.hpp"
 #    include "HookEngine.h"
 #    include "Plugin.h"
 
@@ -28,6 +29,7 @@
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
+struct GameAction;
 class GameActionResult;
 class FileWatcher;
 class InteractiveConsole;
@@ -172,6 +174,7 @@ namespace OpenRCT2::Scripting
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query,
             const DukValue& execute);
+        void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute);
 
     private:
         void Initialise();
@@ -187,6 +190,8 @@ namespace OpenRCT2::Scripting
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
         std::unique_ptr<GameActionResult> DukToGameActionResult(const DukValue& d);
+        DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result);
+        DukValue PositionToDuk(const CoordsXYZ& position);
     };
 
     bool IsGameStateMutable();

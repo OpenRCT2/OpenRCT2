@@ -12,6 +12,7 @@
 #    include "ScriptEngine.h"
 
 #    include "../PlatformEnvironment.h"
+#    include "../actions/GameAction.h"
 #    include "../config/Config.h"
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
@@ -739,6 +740,42 @@ std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukV
     return result;
 }
 
+DukValue ScriptEngine::PositionToDuk(const CoordsXYZ& position)
+{
+    duk_context* ctx = _context;
+    auto obj = duk_push_object(ctx);
+    duk_push_int(ctx, position.x);
+    duk_put_prop_string(ctx, obj, "x");
+    duk_push_int(ctx, position.y);
+    duk_put_prop_string(ctx, obj, "y");
+    duk_push_int(ctx, position.z);
+    duk_put_prop_string(ctx, obj, "z");
+    return DukValue::take_from_stack(ctx);
+}
+
+DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result)
+{
+    duk_context* ctx = _context;
+    auto obj = duk_push_object(ctx);
+    auto player = action.GetPlayer();
+    if (player != -1)
+    {
+        duk_push_int(ctx, action.GetPlayer());
+        duk_put_prop_string(ctx, obj, "player");
+    }
+    if (result->Cost != MONEY32_UNDEFINED)
+    {
+        duk_push_int(ctx, result->Cost);
+        duk_put_prop_string(ctx, obj, "cost");
+    }
+    if (!result->Position.isNull())
+    {
+        PositionToDuk(result->Position).push();
+        duk_put_prop_string(ctx, obj, "position");
+    }
+    return DukValue::take_from_stack(ctx);
+}
+
 bool ScriptEngine::RegisterCustomAction(
     const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query, const DukValue& execute)
 {
@@ -768,6 +805,38 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
         else
         {
             it++;
+        }
+    }
+}
+
+void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
+{
+    auto hookType = isExecute ? HOOK_TYPE::ACTION_EXECUTE : HOOK_TYPE::ACTION_QUERY;
+    if (_hookEngine.HasSubscriptions(hookType))
+    {
+        duk_context* ctx = _context;
+        auto obj = duk_push_object(ctx);
+        duk_push_uint(ctx, action.GetType());
+        duk_put_prop_string(ctx, obj, "type");
+
+        auto flags = action.GetActionFlags();
+        duk_push_boolean(ctx, (flags & GA_FLAGS::CLIENT_ONLY) != 0);
+        duk_put_prop_string(ctx, obj, "isClientOnly");
+
+        GameActionResultToDuk(action, result).push();
+        duk_put_prop_string(ctx, obj, "result");
+        auto dukEventArgs = DukValue::take_from_stack(ctx);
+        _hookEngine.Call(hookType, dukEventArgs, false);
+
+        if (!isExecute)
+        {
+            auto error = AsOrDefault<int32_t>(dukEventArgs["error"]);
+            if (error != 0)
+            {
+                result->Error = static_cast<GA_ERROR>(error);
+                result->ErrorTitle = AsOrDefault<std::string>(dukEventArgs["errorTitle"]);
+                result->ErrorMessage = AsOrDefault<std::string>(dukEventArgs["errorMessage"]);
+            }
         }
     }
 }

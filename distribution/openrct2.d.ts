@@ -72,21 +72,23 @@ declare global {
         "interest";
 
     interface GameActionResult {
-        error: string;
+        error?: string;
         errorTitle?: string;
         errorMessage?: string;
-        position: Coord3;
-        cost: number;
-        expenditureType: ExpenditureType;
+        position?: Coord3;
+        cost?: number;
+        expenditureType?: ExpenditureType;
+    }
+
+    interface ActionEventArgs {
+        readonly player: number;
+        readonly type: string;
+        readonly isClientOnly: boolean;
+        result: GameActionResult;
     }
 
     interface NetworkEventArgs {
         readonly player: number;
-    }
-
-    interface NetworkActionEventArgs extends NetworkEventArgs {
-        readonly type: string;
-        result: GameActionResult;
     }
 
     interface NetworkChatEventArgs extends NetworkEventArgs {
@@ -149,9 +151,10 @@ declare global {
          */
         subscribe(hook: HookType, callback: Function): IDisposable;
 
+        subscribe(hook: "action.query", callback: (e: ActionEventArgs) => void): IDisposable;
+        subscribe(hook: "action.execute", callback: (e: ActionEventArgs) => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
-        subscribe(hook: "network.action", callback: (e: NetworkActionEventArgs) => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
