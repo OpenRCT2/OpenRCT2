@@ -6,13 +6,16 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Duncan Frost (duncanspumpkin)
 * Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur) - CI, Linux management
-* Lewis Fox (LRFLEW) - macOS management
-* (zsilencer)
-* Richard Jenkins (rwjuk)
 * Hielke Morsink (Broxzier)
 * Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
 * Tulio Paschoalin Leao (tupaschoal)
+
+## Former development team members
+* Lewis Fox (LRFLEW)
+* Marijn van der Werf (marijnvdwerf)
+* (zsilencer)
+* Richard Jenkins (rwjuk)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
