@@ -22,7 +22,9 @@
 #        define __USE_SHGETKNOWNFOLDERPATH__
 #        define __USE_GETDATEFORMATEX__
 #    else
-#        define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#        ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#            define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#        endif
 #    endif
 
 #    include "../OpenRCT2.h"
