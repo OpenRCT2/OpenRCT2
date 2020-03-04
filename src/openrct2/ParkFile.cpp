@@ -291,8 +291,7 @@ namespace OpenRCT2
         void ReadWriteInterfaceChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gSavedViewX);
-                cs.ReadWrite(gSavedViewY);
+                cs.ReadWrite(gSavedView);
                 cs.ReadWrite(gSavedViewZoom);
                 cs.ReadWrite(gSavedViewRotation);
                 cs.ReadWriteAs<uint8_t, uint32_t>(gLastEntranceStyle);
