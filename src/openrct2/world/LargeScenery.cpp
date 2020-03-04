@@ -69,7 +69,7 @@ void LargeSceneryElement::SetIsAccounted(bool isAccounted)
     }
 }
 
-uint32_t LargeSceneryElement::GetEntryIndex() const
+uint16_t LargeSceneryElement::GetEntryIndex() const
 {
     return EntryIndex;
 }
@@ -84,7 +84,7 @@ uint8_t LargeSceneryElement::GetSequenceIndex() const
     return SequenceIndex;
 }
 
-void LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
+void LargeSceneryElement::SetEntryIndex(uint16_t newIndex)
 {
     EntryIndex = newIndex;
 }

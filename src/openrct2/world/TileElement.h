@@ -359,18 +359,18 @@ assert_struct_size(TrackElement, 16);
 struct SmallSceneryElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4
+    uint16_t entryIndex; // 4
     uint8_t age;        // 5
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_09[7];
 #pragma clang diagnostic pop
 
 public:
-    uint8_t GetEntryIndex() const;
-    void SetEntryIndex(uint8_t newIndex);
+    uint16_t GetEntryIndex() const;
+    void SetEntryIndex(uint16_t newIndex);
     rct_scenery_entry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
@@ -390,18 +390,18 @@ assert_struct_size(SmallSceneryElement, 16);
 struct LargeSceneryElement : TileElementBase
 {
 private:
-    uint32_t EntryIndex;
+    uint16_t EntryIndex;
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[2];
+    uint8_t pad[4];
 #pragma clang diagnostic pop
 
 public:
-    uint32_t GetEntryIndex() const;
-    void SetEntryIndex(uint32_t newIndex);
+    uint16_t GetEntryIndex() const;
+    void SetEntryIndex(uint16_t newIndex);
     rct_scenery_entry* GetEntry() const;
 
     uint8_t GetSequenceIndex() const;

@@ -92,12 +92,12 @@ void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
     type |= (newQuadrant << 6);
 }
 
-uint8_t SmallSceneryElement::GetEntryIndex() const
+uint16_t SmallSceneryElement::GetEntryIndex() const
 {
     return this->entryIndex;
 }
 
-void SmallSceneryElement::SetEntryIndex(uint8_t newIndex)
+void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
 {
     this->entryIndex = newIndex;
 }

@@ -56,7 +56,7 @@ DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSce
 private:
     CoordsXYZD _loc;
     uint8_t _quadrant;
-    uint8_t _sceneryType;
+    uint16_t _sceneryType;
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
 
