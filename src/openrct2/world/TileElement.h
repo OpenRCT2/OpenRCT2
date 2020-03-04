@@ -190,12 +190,15 @@ assert_struct_size(SurfaceElement, 16);
 struct PathElement : TileElementBase
 {
 private:
-    PathSurfaceIndex SurfaceIndex;   // 4
+    PathSurfaceIndex SurfaceIndex; // 4
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
     PathRailingsIndex RailingsIndex; // 6
-    uint8_t Additions;               // 7 (0 means no addition)
-    uint8_t Edges;                   // 8
-    uint8_t Flags2;                  // 9
-    uint8_t SlopeDirection;          // 10
+#pragma clang diagnostic pop
+    uint8_t Additions;      // 7 (0 means no addition)
+    uint8_t Edges;          // 8
+    uint8_t Flags2;         // 9
+    uint8_t SlopeDirection; // 10
     union
     {
         uint8_t AdditionStatus; // 11, only used for litter bins
@@ -371,9 +374,9 @@ struct SmallSceneryElement : TileElementBase
 {
 private:
     uint16_t entryIndex; // 4
-    uint8_t age;        // 5
-    uint8_t colour_1;   // 6
-    uint8_t colour_2;   // 7
+    uint8_t age;         // 5
+    uint8_t colour_1;    // 6
+    uint8_t colour_2;    // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_09[7];
@@ -483,11 +486,11 @@ assert_struct_size(WallElement, 16);
 struct EntranceElement : TileElementBase
 {
 private:
-    uint8_t entranceType;  // 4
-    uint8_t SequenceIndex; // 5. Only uses the lower nibble.
-    uint8_t StationIndex;  // 6
+    uint8_t entranceType;      // 4
+    uint8_t SequenceIndex;     // 5. Only uses the lower nibble.
+    uint8_t StationIndex;      // 6
     PathSurfaceIndex PathType; // 7
-    ride_id_t rideIndex;   // 8
+    ride_id_t rideIndex;       // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0B[5];

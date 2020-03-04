@@ -42,31 +42,31 @@ void RCT12TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 
 bool RCT12TileElementBase::IsLastForTile() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->flags & RCT12_TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 bool RCT12TileElementBase::IsGhost() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->flags & RCT12_TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 void RCT12TileElementBase::SetLastForTile(bool on)
 {
     if (on)
-        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        flags |= RCT12_TILE_ELEMENT_FLAG_LAST_TILE;
     else
-        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
 void RCT12TileElementBase::SetGhost(bool isGhost)
 {
     if (isGhost)
     {
-        this->flags |= TILE_ELEMENT_FLAG_GHOST;
+        this->flags |= RCT12_TILE_ELEMENT_FLAG_GHOST;
     }
     else
     {
-        this->flags &= ~TILE_ELEMENT_FLAG_GHOST;
+        this->flags &= ~RCT12_TILE_ELEMENT_FLAG_GHOST;
     }
 }
 
@@ -745,18 +745,18 @@ void RCT12PathElement::SetAdditionIsGhost(bool isGhost)
 
 bool RCT12PathElement::IsBroken() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+    return (flags & RCT12_TILE_ELEMENT_FLAG_BROKEN) != 0;
 }
 
 void RCT12PathElement::SetIsBroken(bool isBroken)
 {
     if (isBroken)
     {
-        flags |= RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+        flags |= RCT12_TILE_ELEMENT_FLAG_BROKEN;
     }
     else
     {
-        flags &= ~RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_BROKEN;
     }
 }
 

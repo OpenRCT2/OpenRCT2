@@ -1563,7 +1563,7 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
 
 PathSurfaceIndex PathElement::GetSurfaceEntryIndex() const
 {
-    return (SurfaceIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
+    return SurfaceIndex;
 }
 
 PathRailingsIndex PathElement::GetRailingEntryIndex() const

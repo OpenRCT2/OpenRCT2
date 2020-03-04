@@ -759,7 +759,7 @@ private:
             {
                 dst->stations[i].Start = { src->station_starts[i].x, src->station_starts[i].y };
             }
-            dst->stations[i].SetBaseZ(src->station_height[i] * 4);
+            dst->stations[i].SetBaseZ(src->station_height[i] * RCT1_COORDS_Z_STEP);
             dst->stations[i].Length = src->station_length[i];
             dst->stations[i].Depart = src->station_light[i];
 
@@ -1994,8 +1994,8 @@ private:
         dst->SetGhost(src->IsGhost());
         dst->SetLastForTile(src->IsLastForTile());
 
-        dst->SetBaseZ(src->base_height * 4);
-        dst->SetClearanceZ(src->clearance_height * 4);
+        dst->SetBaseZ(src->base_height * RCT1_COORDS_Z_STEP);
+        dst->SetClearanceZ(src->clearance_height * RCT1_COORDS_Z_STEP);
 
         switch (tileElementType)
         {

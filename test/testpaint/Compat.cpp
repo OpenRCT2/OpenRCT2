@@ -157,15 +157,15 @@ rct_sprite* get_sprite(size_t sprite_idx)
 
 bool TileElementBase::IsLastForTile() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 void TileElementBase::SetLastForTile(bool on)
 {
     if (on)
-        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     else
-        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
 uint8_t TileElementBase::GetType() const
@@ -175,12 +175,12 @@ uint8_t TileElementBase::GetType() const
 
 bool TileElementBase::IsGhost() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 bool TrackElement::BlockBrakeClosed() const
 {
-    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
 }
 
 TileElement* map_get_first_element_at(const CoordsXY& elementPos)
@@ -439,7 +439,7 @@ bool TrackElement::IsHighlighted() const
 
 uint8_t PathElement::GetEdges() const
 {
-    return edges & 0xF;
+    return Edges & 0xF;
 }
 
 StationObject* ride_get_station_object(const Ride* ride)
@@ -455,13 +455,13 @@ bool Vehicle::IsGhost() const
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const
 {
-    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
 }
 
 void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 {
-    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
-    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+    Flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    Flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }
 
 int32_t TileElementBase::GetBaseZ() const
