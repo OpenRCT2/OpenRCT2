@@ -2226,20 +2226,16 @@ void Ride::UpdateSpiralSlide()
         if (stations[i].Start.isNull())
             continue;
 
-        int32_t x = stations[i].Start.x;
-        int32_t y = stations[i].Start.y;
+        auto startLoc = stations[i].Start;
 
         TileElement* tileElement = ride_get_station_start_track_element(this, i);
         if (tileElement == nullptr)
             continue;
 
         int32_t rotation = tileElement->GetDirection();
-        x *= 32;
-        y *= 32;
-        x += ride_spiral_slide_main_tile_offset[rotation][current_rotation].x;
-        y += ride_spiral_slide_main_tile_offset[rotation][current_rotation].y;
+        startLoc += ride_spiral_slide_main_tile_offset[rotation][current_rotation];
 
-        map_invalidate_tile_zoom0({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        map_invalidate_tile_zoom0({ startLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
     }
 }
 
@@ -3268,7 +3264,7 @@ static void ride_entrance_exit_connected(Ride* ride)
 
 static void ride_shop_connected(Ride* ride)
 {
-    TileCoordsXY shopLoc = ride->stations[0].Start;
+    auto shopLoc = TileCoordsXY(ride->stations[0].Start);
     if (shopLoc.isNull())
         return;
 
@@ -4888,11 +4884,11 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
  */
 static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
-    TileCoordsXY location;
+    CoordsXYZ location;
     int32_t stationIndex;
     for (stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
     {
-        location = ride->stations[stationIndex].Start;
+        location = ride->stations[stationIndex].GetStart();
         if (!location.isNull())
             break;
         if (stationIndex == (MAX_STATIONS - 1))
@@ -4902,19 +4898,15 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         }
     }
 
-    int32_t x = location.x * 32;
-    int32_t y = location.y * 32;
-    int32_t z = ride->stations[stationIndex].GetBaseZ();
-
     bool success = false;
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(location);
     if (tileElement == nullptr)
         return success;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->GetBaseZ() != z)
+        if (tileElement->GetBaseZ() != location.z)
             continue;
 
         if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
@@ -4937,7 +4929,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     int32_t state = STATE_FIND_CABLE_LIFT;
 
     track_circuit_iterator it;
-    track_circuit_iterator_begin(&it, { x, y, tileElement });
+    track_circuit_iterator_begin(&it, { location, tileElement });
     while (track_circuit_iterator_previous(&it))
     {
         tileElement = it.current.element;
@@ -4979,12 +4971,10 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         }
         if (isApplying)
         {
-            z = tileElement->GetBaseZ();
+            auto tmpLoc = CoordsXYZ{ it.current, tileElement->GetBaseZ() };
             int32_t direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
-            x = it.current.x;
-            y = it.current.y;
-            sub_6C683D(&x, &y, &z, direction, trackType, 0, &tileElement, flags);
+            sub_6C683D(&tmpLoc.x, &tmpLoc.y, &tmpLoc.z, direction, trackType, 0, &tileElement, flags);
         }
     }
     return true;
@@ -5102,10 +5092,8 @@ static void loc_6B51C0(const Ride* ride)
 
     if (ride->type != RIDE_TYPE_MAZE)
     {
-        int32_t x = ride->stations[i].Start.x * 32;
-        int32_t y = ride->stations[i].Start.y * 32;
-        int32_t z = ride->stations[i].GetBaseZ();
-        window_scroll_to_location(w, x, y, z);
+        auto location = ride->stations[i].GetStart();
+        window_scroll_to_location(w, location.x, location.y, location.z);
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(ride, &trackElement);
@@ -5208,8 +5196,9 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
     }
 
     // z = ride->stations[i].GetBaseZ();
-    trackElement.x = ride->stations[stationIndex].Start.x * 32;
-    trackElement.y = ride->stations[stationIndex].Start.y * 32;
+    auto startLoc = ride->stations[stationIndex].Start;
+    trackElement.x = startLoc.x;
+    trackElement.y = startLoc.y;
     trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
     if (trackElement.element == nullptr)
     {
@@ -5344,8 +5333,9 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
     }
 
     // z = ride->stations[i].GetBaseZ();
-    trackElement.x = ride->stations[stationIndex].Start.x * 32;
-    trackElement.y = ride->stations[stationIndex].Start.y * 32;
+    auto startLoc = ride->stations[stationIndex].Start;
+    trackElement.x = startLoc.x;
+    trackElement.y = startLoc.y;
     trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
     if (trackElement.element == nullptr)
     {
@@ -6260,8 +6250,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     }
     else
     {
-        auto mapX = stationStart.x * 32;
-        auto mapY = stationStart.y * 32;
+        auto mapX = stationStart.x;
+        auto mapY = stationStart.y;
         entranceMinX = mapX;
         entranceMinY = mapY;
 
@@ -6615,19 +6605,16 @@ static int32_t ride_get_track_length(Ride* ride)
     track_circuit_iterator it, slowIt;
     ride_id_t rideIndex;
     int32_t trackType, result;
-    CoordsXY trackStart;
+    CoordsXYZ trackStart;
     bool foundTrack = false;
 
     for (int32_t i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
-        const auto& stationTileLoc = ride->stations[i].Start;
-        if (stationTileLoc.isNull())
+        trackStart = ride->stations[i].GetStart();
+        if (trackStart.isNull())
             continue;
 
-        trackStart = stationTileLoc.ToCoordsXY();
-        auto z = ride->stations[i].GetBaseZ();
-
-        tileElement = map_get_first_element_at(stationTileLoc.ToCoordsXY());
+        tileElement = map_get_first_element_at(trackStart);
         if (tileElement == nullptr)
             continue;
         do
@@ -6639,7 +6626,7 @@ static int32_t ride_get_track_length(Ride* ride)
             if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
 
-            if (tileElement->GetBaseZ() != z)
+            if (tileElement->GetBaseZ() != trackStart.z)
                 continue;
 
             foundTrack = true;
@@ -6876,8 +6863,7 @@ void sub_6CB945(Ride* ride)
             if (ride->stations[stationId].Start.isNull())
                 continue;
 
-            CoordsXYZ location = { ride->stations[stationId].Start.x * 32, ride->stations[stationId].Start.y * 32,
-                                   ride->stations[stationId].GetBaseZ() };
+            CoordsXYZ location = ride->stations[stationId].GetStart();
             auto tileHeight = TileCoordsXYZ(location).z;
             uint8_t direction = INVALID_DIRECTION;
 
@@ -7331,7 +7317,7 @@ bool ride_has_adjacent_station(Ride* ride)
      * adjacent station on either side. */
     for (int32_t stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
     {
-        auto stationStart = ride->stations[stationNum].GetStart();
+        auto stationStart = ride->stations[stationNum].Start;
         if (!stationStart.isNull())
         {
             /* Get the map element for the station start. */

@@ -161,7 +161,7 @@ struct rct_ride_entry
 
 struct RideStation
 {
-    TileCoordsXY Start;
+    CoordsXY Start;
     uint8_t Height;
     uint8_t Length;
     uint8_t Depart;

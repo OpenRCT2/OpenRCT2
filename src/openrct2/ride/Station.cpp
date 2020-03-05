@@ -318,7 +318,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
  */
 static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool greenLight)
 {
-    auto startPos = ride->stations[stationIndex].GetStart();
+    auto startPos = ride->stations[stationIndex].Start;
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
@@ -434,16 +434,15 @@ void ride_set_exit_location(Ride* ride, const int32_t stationIndex, const TileCo
 
 int32_t RideStation::GetBaseZ() const
 {
-    return Height * 8;
+    return Height * COORDS_Z_STEP;
 }
 
 void RideStation::SetBaseZ(int32_t newZ)
 {
-    Height = newZ / 8;
+    Height = newZ / COORDS_Z_STEP;
 }
 
 CoordsXYZ RideStation::GetStart() const
 {
-    TileCoordsXYZ stationTileCoords{ Start.x, Start.y, Height };
-    return stationTileCoords.ToCoordsXYZ();
+    return { Start, GetBaseZ() };
 }
