@@ -277,7 +277,7 @@ void window_scenery_init()
     }
 
     // small scenery
-    for (uint16_t sceneryId = SCENERY_SMALL_SCENERY_ID_MIN; sceneryId < SCENERY_SMALL_SCENERY_ID_MAX; sceneryId++)
+    for (uint16_t sceneryId = SCENERY_SMALL_SCENERY_ID_MIN; sceneryId <= SCENERY_SMALL_SCENERY_ID_MAX; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -287,7 +287,7 @@ void window_scenery_init()
     }
 
     // large scenery
-    for (int32_t sceneryId = SCENERY_LARGE_SCENERY_ID_MIN; sceneryId < SCENERY_LARGE_SCENERY_ID_MAX; sceneryId++)
+    for (int32_t sceneryId = SCENERY_LARGE_SCENERY_ID_MIN; sceneryId <= SCENERY_LARGE_SCENERY_ID_MAX; sceneryId++)
     {
         int32_t largeSceneryIndex = sceneryId - SCENERY_LARGE_SCENERY_ID_MIN;
 
@@ -299,7 +299,7 @@ void window_scenery_init()
     }
 
     // walls
-    for (int32_t sceneryId = SCENERY_WALLS_ID_MIN; sceneryId < SCENERY_WALLS_ID_MAX; sceneryId++)
+    for (int32_t sceneryId = SCENERY_WALLS_ID_MIN; sceneryId <= SCENERY_WALLS_ID_MAX; sceneryId++)
     {
         int32_t wallSceneryIndex = sceneryId - SCENERY_WALLS_ID_MIN;
 
@@ -311,7 +311,7 @@ void window_scenery_init()
     }
 
     // banners
-    for (int32_t sceneryId = SCENERY_BANNERS_ID_MIN; sceneryId < SCENERY_BANNERS_ID_MAX; sceneryId++)
+    for (int32_t sceneryId = SCENERY_BANNERS_ID_MIN; sceneryId <= SCENERY_BANNERS_ID_MAX; sceneryId++)
     {
         int32_t bannerIndex = sceneryId - SCENERY_BANNERS_ID_MIN;
 
@@ -323,7 +323,7 @@ void window_scenery_init()
     }
 
     // path bits
-    for (int32_t sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
+    for (int32_t sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId <= SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
     {
         int32_t pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
 
@@ -832,22 +832,24 @@ static void window_scenery_update(rct_window* w)
 
         if (tabSelectedSceneryId != -1)
         {
-            if (tabSelectedSceneryId >= 0x400)
+            if (tabSelectedSceneryId >= SCENERY_BANNERS_ID_MIN)
             { // banner
                 gCurrentToolId = TOOL_ENTRANCE_DOWN;
             }
-            else if (tabSelectedSceneryId >= 0x300)
+            else if (tabSelectedSceneryId >= SCENERY_LARGE_SCENERY_ID_MIN)
             { // large scenery
                 gCurrentToolId = static_cast<TOOL_IDX>(
-                    get_large_scenery_entry(tabSelectedSceneryId - 0x300)->large_scenery.tool_id);
+                    get_large_scenery_entry(tabSelectedSceneryId - SCENERY_LARGE_SCENERY_ID_MIN)->large_scenery.tool_id);
             }
-            else if (tabSelectedSceneryId >= 0x200)
+            else if (tabSelectedSceneryId >= SCENERY_WALLS_ID_MIN)
             { // wall
-                gCurrentToolId = static_cast<TOOL_IDX>(get_wall_entry(tabSelectedSceneryId - 0x200)->wall.tool_id);
+                gCurrentToolId = static_cast<TOOL_IDX>(
+                    get_wall_entry(tabSelectedSceneryId - SCENERY_WALLS_ID_MIN)->wall.tool_id);
             }
-            else if (tabSelectedSceneryId >= 0x100)
+            else if (tabSelectedSceneryId >= SCENERY_PATH_SCENERY_ID_MIN)
             { // path bit
-                gCurrentToolId = static_cast<TOOL_IDX>(get_footpath_item_entry(tabSelectedSceneryId - 0x100)->path_bit.tool_id);
+                gCurrentToolId = static_cast<TOOL_IDX>(
+                    get_footpath_item_entry(tabSelectedSceneryId - SCENERY_PATH_SCENERY_ID_MIN)->path_bit.tool_id);
             }
             else
             { // small scenery
@@ -996,7 +998,7 @@ void window_scenery_invalidate(rct_window* w)
     int16_t tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
     if (tabSelectedSceneryId != -1)
     {
-        if (tabSelectedSceneryId < 0x100)
+        if (tabSelectedSceneryId <= SCENERY_SMALL_SCENERY_ID_MAX)
         {
             if (!(gWindowSceneryPaintEnabled & 1))
             {
@@ -1009,7 +1011,7 @@ void window_scenery_invalidate(rct_window* w)
                 window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
             }
         }
-        else if (tabSelectedSceneryId >= 0x300)
+        else if (tabSelectedSceneryId >= SCENERY_LARGE_SCENERY_ID_MIN)
         {
             window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
         }
@@ -1038,26 +1040,26 @@ void window_scenery_invalidate(rct_window* w)
     {
         rct_scenery_entry* sceneryEntry = nullptr;
 
-        if (tabSelectedSceneryId >= 0x400)
+        if (tabSelectedSceneryId >= SCENERY_BANNERS_ID_MIN)
         {
-            sceneryEntry = get_banner_entry(tabSelectedSceneryId - 0x400);
+            sceneryEntry = get_banner_entry(tabSelectedSceneryId - SCENERY_BANNERS_ID_MIN);
             if (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
             }
         }
-        else if (tabSelectedSceneryId >= 0x300)
+        else if (tabSelectedSceneryId >= SCENERY_LARGE_SCENERY_ID_MIN)
         {
-            sceneryEntry = get_large_scenery_entry(tabSelectedSceneryId - 0x300);
+            sceneryEntry = get_large_scenery_entry(tabSelectedSceneryId - SCENERY_LARGE_SCENERY_ID_MIN);
 
             if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
             if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
                 window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
         }
-        else if (tabSelectedSceneryId >= 0x200)
+        else if (tabSelectedSceneryId >= SCENERY_WALLS_ID_MIN)
         {
-            sceneryEntry = get_wall_entry(tabSelectedSceneryId - 0x200);
+            sceneryEntry = get_wall_entry(tabSelectedSceneryId - SCENERY_WALLS_ID_MIN);
             if (sceneryEntry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS))
             {
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
@@ -1073,7 +1075,7 @@ void window_scenery_invalidate(rct_window* w)
                 }
             }
         }
-        else if (tabSelectedSceneryId < 0x100)
+        else if (tabSelectedSceneryId <= SCENERY_SMALL_SCENERY_ID_MAX)
         {
             sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 
@@ -1148,24 +1150,24 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint32_t price = 0;
 
     rct_scenery_entry* sceneryEntry = nullptr;
-    if (selectedSceneryEntryId >= 0x400)
+    if (selectedSceneryEntryId >= SCENERY_BANNERS_ID_MIN)
     {
-        sceneryEntry = get_banner_entry(selectedSceneryEntryId - 0x400);
+        sceneryEntry = get_banner_entry(selectedSceneryEntryId - SCENERY_BANNERS_ID_MIN);
         price = sceneryEntry->banner.price;
     }
-    else if (selectedSceneryEntryId >= 0x300)
+    else if (selectedSceneryEntryId >= SCENERY_LARGE_SCENERY_ID_MIN)
     {
-        sceneryEntry = get_large_scenery_entry(selectedSceneryEntryId - 0x300);
+        sceneryEntry = get_large_scenery_entry(selectedSceneryEntryId - SCENERY_LARGE_SCENERY_ID_MIN);
         price = sceneryEntry->large_scenery.price * 10;
     }
-    else if (selectedSceneryEntryId >= 0x200)
+    else if (selectedSceneryEntryId >= SCENERY_WALLS_ID_MIN)
     {
-        sceneryEntry = get_wall_entry(selectedSceneryEntryId - 0x200);
+        sceneryEntry = get_wall_entry(selectedSceneryEntryId - SCENERY_WALLS_ID_MIN);
         price = sceneryEntry->wall.price;
     }
-    else if (selectedSceneryEntryId >= 0x100)
+    else if (selectedSceneryEntryId >= SCENERY_PATH_SCENERY_ID_MIN)
     {
-        sceneryEntry = get_footpath_item_entry(selectedSceneryEntryId - 0x100);
+        sceneryEntry = get_footpath_item_entry(selectedSceneryEntryId - SCENERY_PATH_SCENERY_ID_MIN);
         price = sceneryEntry->path_bit.price;
     }
     else
