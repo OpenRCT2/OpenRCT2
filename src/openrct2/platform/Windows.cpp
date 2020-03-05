@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef __MINGW32__
+#if defined(__MINGW32__) && !defined(WINVER) && !defined(_WIN32_WINNT)
 // 0x0600 == vista
 #    define WINVER 0x0600
 #    define _WIN32_WINNT 0x0600
@@ -49,6 +49,10 @@
 #    define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
 #    define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
+
+#    if _WIN32_WINNT < 0x600
+#        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
+#    endif
 
 static HMODULE _dllModule = nullptr;
 
