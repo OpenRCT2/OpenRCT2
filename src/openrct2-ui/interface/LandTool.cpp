@@ -71,7 +71,7 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
             gDropdownItemsArgs[itemIndex] = surfaceObj->IconImageId;
             if (surfaceObj->Colour != 255)
             {
-                gDropdownItemsArgs[itemIndex] |= surfaceObj->Colour << 19 | IMAGE_TYPE_REMAP;
+                gDropdownItemsArgs[itemIndex] |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
             }
             if (i == currentSurfaceType)
             {

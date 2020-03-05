@@ -355,9 +355,9 @@ void virtual_floor_paint(paint_session* session)
         }
     }
 
-    uint32_t remap_base = COLOUR_DARK_PURPLE << 19 | IMAGE_TYPE_REMAP;
-    uint32_t remap_edge = COLOUR_WHITE << 19 | IMAGE_TYPE_REMAP;
-    uint32_t remap_lit = COLOUR_DARK_BROWN << 19 | IMAGE_TYPE_REMAP;
+    uint32_t remap_base = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_PURPLE);
+    uint32_t remap_edge = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_WHITE);
+    uint32_t remap_lit = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_BROWN);
 
     // Edges which are internal to objects (i.e., the tile on both sides
     //  is occupied/lit) are not rendered to provide visual clarity.

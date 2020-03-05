@@ -305,7 +305,7 @@ static void window_land_invalidate(rct_window* w)
         surfaceImage = surfaceObj->IconImageId;
         if (surfaceObj->Colour != 255)
         {
-            surfaceImage |= surfaceObj->Colour << 19 | IMAGE_TYPE_REMAP;
+            surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
         }
     }
     const auto edgeObj = static_cast<TerrainEdgeObject*>(
