@@ -91,22 +91,22 @@ void SceneryGroupObject::UpdateEntryIndexes()
             case OBJECT_TYPE_SMALL_SCENERY:
                 break;
             case OBJECT_TYPE_PATH_BITS:
-                sceneryEntry |= 0x100;
+                sceneryEntry += SCENERY_PATH_SCENERY_ID_MIN;
                 break;
             case OBJECT_TYPE_WALLS:
-                sceneryEntry |= 0x200;
+                sceneryEntry += SCENERY_WALLS_ID_MIN;
                 break;
             case OBJECT_TYPE_LARGE_SCENERY:
-                sceneryEntry |= 0x300;
+                sceneryEntry += SCENERY_LARGE_SCENERY_ID_MIN;
                 break;
             case OBJECT_TYPE_BANNERS:
-                sceneryEntry |= 0x400;
+                sceneryEntry += SCENERY_BANNERS_ID_MIN;
                 break;
             default:
-                sceneryEntry = 0xFFFF;
+                sceneryEntry = UINT16_MAX;
                 break;
         }
-        if (sceneryEntry != 0xFFFF)
+        if (sceneryEntry != UINT16_MAX)
         {
             _legacyType.scenery_entries[_legacyType.entry_count] = sceneryEntry;
             _legacyType.entry_count++;
