@@ -315,7 +315,7 @@ static uint32_t get_surface_image(
             { session->MapPosition.x >> 5, session->MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground);
         if (obj->Colour != 255)
         {
-            image |= obj->Colour << 19 | IMAGE_TYPE_REMAP;
+            image |= SPRITE_ID_PALETTE_COLOUR_1(obj->Colour);
         }
     }
     return image;
@@ -330,7 +330,7 @@ static uint32_t get_surface_pattern(uint8_t index, int32_t offset)
         image = obj->PatternBaseImageId + offset;
         if (obj->Colour != 255)
         {
-            image |= obj->Colour << 19 | IMAGE_TYPE_REMAP;
+            image |= SPRITE_ID_PALETTE_COLOUR_1(obj->Colour);
         }
     }
     return image;

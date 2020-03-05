@@ -616,7 +616,7 @@ static bool staff_path_finding_handyman(Peep* peep)
 {
     peep->staff_mowing_timeout++;
 
-    uint8_t litterDirection = 0xFF;
+    uint8_t litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
 
     if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110)
@@ -625,7 +625,7 @@ static bool staff_path_finding_handyman(Peep* peep)
     }
 
     Direction direction = INVALID_DIRECTION;
-    if (litterDirection == 0xFF && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->staff_mowing_timeout >= 12)
+    if (litterDirection == INVALID_DIRECTION && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->staff_mowing_timeout >= 12)
     {
         direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
     }
@@ -651,7 +651,7 @@ static bool staff_path_finding_handyman(Peep* peep)
             else
             {
                 bool chooseRandom = true;
-                if (litterDirection != 0xFF && pathDirections & (1 << litterDirection))
+                if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
                 {
                     if ((scenario_rand() & 0xFFFF) >= 0x1999)
                     {
