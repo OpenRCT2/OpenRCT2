@@ -3682,6 +3682,8 @@ STR_6352    :밀도
 STR_6353    :{SMALLFONT}{BLACK}듬성하게
 STR_6354    :{SMALLFONT}{BLACK}적당히
 STR_6355    :{SMALLFONT}{BLACK}빽빽하게
+STR_6356    :{SMALLFONT}{BLACK}공원에 물이 있을 경우 오리를 생성합니다
+STR_6357    :{SMALLFONT}{BLACK}공원에 있는 모든 오리를 제거합니다
 
 
 #############
@@ -3747,7 +3749,7 @@ STR_DTLS    :버려져있는 커다란 탄광을 관광시설에서 놀이공원
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :카트 & 코스터
-STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터만이 숲속에 숨겨져 있는 대형 놀이공원입니다.
+STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터가 숲속에 숨겨진 대형 놀이공원입니다.
 
 <Mel's World>
 STR_SCNR    :Mel's World

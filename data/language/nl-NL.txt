@@ -3690,6 +3690,8 @@ STR_6352    :Dichtheid
 STR_6353    :{SMALLFONT}{BLACK}Lage dichtheid
 STR_6354    :{SMALLFONT}{BLACK}Gemiddelde dichtheid
 STR_6355    :{SMALLFONT}{BLACK}Hoge dichtheid
+STR_6356    :{SMALLFONT}{BLACK}Maakt eenden aan, mits er water op de kaart is.
+STR_6357    :{SMALLFONT}{BLACK}Verwijdert alle eenden van de kaart.
 
 #############
 # Scenarios #
