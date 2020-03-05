@@ -3769,9 +3769,9 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
         z -= bx;
 
         // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable clearance
-        if (!gCheatsDisableClearanceChecks && z > 16)
+        if (!gCheatsDisableClearanceChecks && z > MINIMUM_LAND_HEIGHT_BIG)
         {
-            z -= 16;
+            z -= LAND_HEIGHT_STEP;
         }
     }
     else

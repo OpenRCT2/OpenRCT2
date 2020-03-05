@@ -907,7 +907,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
         return true;
     }
 
-    int32_t z = (scenery.z * 8 + originZ) / 8;
+    int32_t z = (scenery.z * COORDS_Z_STEP) + originZ;
     uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
@@ -929,17 +929,17 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z * 8 }, quadrant, entry_index);
+            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entry_index);
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
-            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z * 8, sceneryRotation }, 0);
+            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
             break;
         case OBJECT_TYPE_WALLS:
-            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z * 8, sceneryRotation });
+            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case OBJECT_TYPE_PATHS:
-            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z * 8 });
+            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
             return true;
@@ -1058,7 +1058,7 @@ static bool TrackDesignPlaceSceneryElement(
                 rotation += scenery.flags;
                 rotation &= 3;
 
-                z = scenery.z * 8 + originZ;
+                z = scenery.z * COORDS_Z_STEP + originZ;
 
                 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
                 if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1096,7 +1096,7 @@ static bool TrackDesignPlaceSceneryElement(
                     return true;
                 }
 
-                z = scenery.z * 8 + originZ;
+                z = scenery.z * COORDS_Z_STEP + originZ;
                 rotation += scenery.flags;
                 rotation &= 3;
 
@@ -1132,7 +1132,7 @@ static bool TrackDesignPlaceSceneryElement(
                     return true;
                 }
 
-                z = (scenery.z * 8 + originZ) / 8;
+                z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
                     if (scenery.flags & (1 << 7))
@@ -1167,7 +1167,7 @@ static bool TrackDesignPlaceSceneryElement(
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * 8 }, slope, entry_index, edges);
+                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges);
                     footpathPlaceAction.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);
@@ -1429,10 +1429,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
             int16_t surfaceZ = surfaceElement->GetBaseZ();
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
-                surfaceZ += 16;
+                surfaceZ += LAND_HEIGHT_STEP;
                 if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
-                    surfaceZ += 16;
+                    surfaceZ += LAND_HEIGHT_STEP;
                 }
             }
 
@@ -1593,10 +1593,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
                     if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
-                        surfaceZ += 16;
+                        surfaceZ += LAND_HEIGHT_STEP;
                         if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                         {
-                            surfaceZ += 16;
+                            surfaceZ += LAND_HEIGHT_STEP;
                         }
                     }
 
@@ -1660,7 +1660,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 {
                     auto tile = CoordsXY{ x, y } + CoordsDirectionDelta[rotation];
                     TileElement* tile_element = map_get_first_element_at(tile);
-                    z = gTrackPreviewOrigin.z / 8;
+                    z = gTrackPreviewOrigin.z / COORDS_Z_STEP;
                     z += entrance.z;
                     if (tile_element == nullptr)
                     {
@@ -1716,7 +1716,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 }
                 else
                 {
-                    z = entrance.z * 8;
+                    z = entrance.z * COORDS_Z_STEP;
                     z += gTrackPreviewOrigin.z;
 
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ x, y, z }, false);

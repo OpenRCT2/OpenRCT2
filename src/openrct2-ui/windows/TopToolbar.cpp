@@ -1879,7 +1879,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         case SCENERY_TYPE_PATH_ITEM:
         {
             auto pathItemType = parameter_3 & 0xFF;
-            int32_t z = (parameter_2 & 0xFF) * 8;
+            int32_t z = (parameter_2 & 0xFF) * COORDS_Z_STEP;
             auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridPos, z }, pathItemType);
 
             footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
@@ -2535,7 +2535,7 @@ static money32 try_place_ghost_scenery(
             // Path Bits
             // 6e265b
             auto pathItemType = parameter_3 & 0xFF;
-            int32_t z = (parameter_2 & 0xFF) * 8;
+            int32_t z = (parameter_2 & 0xFF) * COORDS_Z_STEP;
             auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ map_tile.x, map_tile.y, z }, pathItemType);
             footpathSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             footpathSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
@@ -2640,7 +2640,7 @@ static money32 try_place_ghost_scenery(
                 return MONEY32_UNDEFINED;
 
             gSceneryGhostPosition = loc;
-            gSceneryGhostPosition.z += (2 * COORDS_Z_STEP);
+            gSceneryGhostPosition.z += PATH_HEIGHT_STEP;
             gSceneryPlaceRotation = direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
             cost = res->Cost;

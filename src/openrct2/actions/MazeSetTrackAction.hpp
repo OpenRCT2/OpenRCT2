@@ -108,13 +108,13 @@ public:
             return res;
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
+        auto baseHeight = _loc.z;
+        auto clearanceHeight = _loc.z + 32;
 
-        int8_t heightDifference = baseHeight - surfaceElement->base_height;
+        auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
-            heightDifference = heightDifference >> 1;
+            heightDifference /= (2 * COORDS_Z_STEP);
 
             if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
             {
@@ -134,7 +134,7 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, { 0b1111, 0 }))
+            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 }))
             {
                 return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
             }
@@ -200,8 +200,8 @@ public:
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
+        auto baseHeight = _loc.z / 8;
+        auto clearanceHeight = (_loc.z + 32) / 8;
 
         auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)

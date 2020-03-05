@@ -654,13 +654,9 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 get_map_coordinates_from_pos(
                     { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
                     &interactionType, &tileElement, nullptr);
-                mapCoord.x -= 16;
-                mapCoord.x /= 32;
-                mapCoord.y -= 16;
-                mapCoord.y /= 32;
-                mapCoord.x++;
-                mapCoord.y++;
-                console.WriteFormatLine("location %d %d", mapCoord.x, mapCoord.y);
+
+                auto tileMapCoord = TileCoordsXY(mapCoord);
+                console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
             }
         }
         else if (argv[0] == "window_scale")

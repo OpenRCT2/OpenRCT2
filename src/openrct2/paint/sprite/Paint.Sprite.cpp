@@ -75,15 +75,15 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         // height of the slope element, and consequently clipped.
         if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
-            if (spr->generic.z > (gClipHeight * 8))
+            if (spr->generic.z > (gClipHeight * COORDS_Z_STEP))
             {
                 continue;
             }
-            if (spr->generic.x / 32 < gClipSelectionA.x || spr->generic.x / 32 > gClipSelectionB.x)
+            if (spr->generic.x < gClipSelectionA.x || spr->generic.x > gClipSelectionB.x)
             {
                 continue;
             }
-            if (spr->generic.y / 32 < gClipSelectionA.y || spr->generic.y / 32 > gClipSelectionB.y)
+            if (spr->generic.y < gClipSelectionA.y || spr->generic.y > gClipSelectionB.y)
             {
                 continue;
             }

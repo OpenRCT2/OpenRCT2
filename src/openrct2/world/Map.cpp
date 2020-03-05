@@ -416,14 +416,14 @@ int16_t tile_element_height(const CoordsXY& loc)
 {
     // Off the map
     if (!map_is_location_valid(loc))
-        return 2 * COORDS_Z_STEP;
+        return MINIMUM_LAND_HEIGHT_BIG;
 
     // Get the surface element for the tile
     auto surfaceElement = map_get_surface_element_at(loc);
 
     if (surfaceElement == nullptr)
     {
-        return 2 * COORDS_Z_STEP;
+        return MINIMUM_LAND_HEIGHT_BIG;
     }
 
     uint16_t height = surfaceElement->GetBaseZ();
@@ -1679,8 +1679,8 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
     switch (element->GetType())
     {
         case TILE_ELEMENT_TYPE_SURFACE:
-            element->base_height = 2;
-            element->clearance_height = 2;
+            element->base_height = MINIMUM_LAND_HEIGHT;
+            element->clearance_height = MINIMUM_LAND_HEIGHT;
             element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);

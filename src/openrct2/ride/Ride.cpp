@@ -1088,28 +1088,22 @@ void ride_remove_peeps(Ride* ride)
     int8_t stationIndex = ride_get_first_valid_station_start(ride);
 
     // Get exit position and direction
-    int32_t exitX = 0;
-    int32_t exitY = 0;
-    int32_t exitZ = 0;
-    int32_t exitDirection = INVALID_DIRECTION;
+    auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
     if (stationIndex != -1)
     {
-        TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
+        auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
         if (!location.isNull())
         {
-            exitX = location.x;
-            exitY = location.y;
-            exitZ = location.z;
-            exitDirection = location.direction;
-
-            exitX = (exitX * 32) - (DirectionOffsets[exitDirection].x * 20) + 16;
-            exitY = (exitY * 32) - (DirectionOffsets[exitDirection].y * 20) + 16;
-            exitZ = (exitZ * 8) + 2;
+            exitPosition = location;
+            exitPosition.x += (DirectionOffsets[exitPosition.direction].x * 20);
+            exitPosition.y += (DirectionOffsets[exitPosition.direction].y * 20);
+            exitPosition = exitPosition.ToTileCentre();
+            exitPosition.z += 2;
 
             // Reverse direction
-            exitDirection = direction_reverse(exitDirection);
+            exitPosition.direction = direction_reverse(exitPosition.direction);
 
-            exitDirection *= 8;
+            exitPosition.direction *= 8;
         }
     }
 
@@ -1130,7 +1124,7 @@ void ride_remove_peeps(Ride* ride)
 
             peep->Invalidate();
 
-            if (exitDirection == INVALID_DIRECTION)
+            if (exitPosition.direction == INVALID_DIRECTION)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
@@ -1140,8 +1134,8 @@ void ride_remove_peeps(Ride* ride)
             }
             else
             {
-                sprite_move(exitX, exitY, exitZ, peep);
-                peep->sprite_direction = exitDirection;
+                sprite_move(exitPosition.x, exitPosition.y, exitPosition.z, peep);
+                peep->sprite_direction = exitPosition.direction;
             }
 
             peep->Invalidate();

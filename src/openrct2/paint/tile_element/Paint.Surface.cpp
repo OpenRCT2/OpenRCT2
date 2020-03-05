@@ -913,7 +913,7 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
         int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
-            localHeight += (2 * COORDS_Z_STEP);
+            localHeight += LAND_HEIGHT_STEP;
 
             if (waterHeight != localHeight || !(localSurfaceShape & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
             {
