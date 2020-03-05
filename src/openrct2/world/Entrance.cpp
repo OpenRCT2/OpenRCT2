@@ -225,11 +225,7 @@ void UpdateParkEntranceLocations()
         if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
-            CoordsXYZD entrance;
-            entrance.x = it.x * 32;
-            entrance.y = it.y * 32;
-            entrance.z = it.element->base_height * 8;
-            entrance.direction = it.element->GetDirection();
+            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->base_height, it.element->GetDirection()).ToCoordsXYZD();
             gParkEntrances.push_back(entrance);
         }
     }

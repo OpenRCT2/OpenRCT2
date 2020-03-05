@@ -207,7 +207,7 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
             return isSave ? "*.park" : "*.park;*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea";
 
         case LOADSAVETYPE_SCENARIO:
-            return "*.park";
+            return isSave ? "*.park" : "*.park;*.sc6;*.sc4";
 
         case LOADSAVETYPE_TRACK:
             return isSave ? "*.td6" : "*.td6;*.td4";
