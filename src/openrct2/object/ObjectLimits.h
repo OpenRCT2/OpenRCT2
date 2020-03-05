@@ -11,21 +11,21 @@
 
 #include <cstdint>
 
-#define MAX_RIDE_OBJECTS 128
-#define MAX_SMALL_SCENERY_OBJECTS 252
-#define MAX_LARGE_SCENERY_OBJECTS 128
-#define MAX_WALL_SCENERY_OBJECTS 128
-#define MAX_BANNER_OBJECTS 32
-#define MAX_PATH_OBJECTS 16
-#define MAX_PATH_ADDITION_OBJECTS 15
-#define MAX_SCENERY_GROUP_OBJECTS 19
-#define MAX_PARK_ENTRANCE_OBJECTS 1
-#define MAX_WATER_OBJECTS 1
-#define MAX_SCENARIO_TEXT_OBJECTS 1
-#define MAX_TERRAIN_SURFACE_OBJECTS 14
-#define MAX_TERRAIN_EDGE_OBJECTS 255
-#define MAX_STATION_OBJECTS 255
-#define MAX_MUSIC_OBJECTS 0
+constexpr const uint16_t MAX_RIDE_OBJECTS = 128;
+constexpr const uint16_t MAX_SMALL_SCENERY_OBJECTS = 252;
+constexpr const uint16_t MAX_LARGE_SCENERY_OBJECTS = 128;
+constexpr const uint16_t MAX_WALL_SCENERY_OBJECTS = 128;
+constexpr const uint16_t MAX_BANNER_OBJECTS = 32;
+constexpr const uint16_t MAX_PATH_OBJECTS = 16;
+constexpr const uint16_t MAX_PATH_ADDITION_OBJECTS = 15;
+constexpr const uint16_t MAX_SCENERY_GROUP_OBJECTS = 19;
+constexpr const uint16_t MAX_PARK_ENTRANCE_OBJECTS = 1;
+constexpr const uint16_t MAX_WATER_OBJECTS = 1;
+constexpr const uint16_t MAX_SCENARIO_TEXT_OBJECTS = 1;
+constexpr const uint16_t MAX_TERRAIN_SURFACE_OBJECTS = 14;
+constexpr const uint16_t MAX_TERRAIN_EDGE_OBJECTS = 255;
+constexpr const uint16_t MAX_STATION_OBJECTS = 255;
+constexpr const uint16_t MAX_MUSIC_OBJECTS = 0;
 
 // clang-format off
 constexpr const uint16_t OBJECT_ENTRY_COUNT =
@@ -42,4 +42,4 @@ constexpr const uint16_t OBJECT_ENTRY_COUNT =
     MAX_SCENARIO_TEXT_OBJECTS;
 // clang-format on
 
-#define DAT_NAME_LENGTH 8
+constexpr const uint8_t DAT_NAME_LENGTH = 8;
