@@ -373,18 +373,18 @@ assert_struct_size(TrackElement, 16);
 struct SmallSceneryElement : TileElementBase
 {
 private:
-    uint16_t entryIndex; // 4
-    uint8_t age;         // 5
-    uint8_t colour_1;    // 6
-    uint8_t colour_2;    // 7
+    ObjectEntryIndex entryIndex; // 4
+    uint8_t age;                 // 5
+    uint8_t colour_1;            // 6
+    uint8_t colour_2;            // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_09[7];
 #pragma clang diagnostic pop
 
 public:
-    uint16_t GetEntryIndex() const;
-    void SetEntryIndex(uint16_t newIndex);
+    ObjectEntryIndex GetEntryIndex() const;
+    void SetEntryIndex(ObjectEntryIndex newIndex);
     rct_scenery_entry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
@@ -439,12 +439,12 @@ assert_struct_size(LargeSceneryElement, 16);
 struct WallElement : TileElementBase
 {
 private:
-    uint16_t entryIndex;      // 04
-    colour_t colour_1;        // 06
-    colour_t colour_2;        // 07
-    colour_t colour_3;        // 08
-    BannerIndex banner_index; // 09
-    uint8_t animation;        // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    ObjectEntryIndex entryIndex; // 04
+    colour_t colour_1;           // 06
+    colour_t colour_2;           // 07
+    colour_t colour_3;           // 08
+    BannerIndex banner_index;    // 09
+    uint8_t animation;           // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0C[4];

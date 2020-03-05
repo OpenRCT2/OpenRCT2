@@ -121,9 +121,9 @@ void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem item, bool researched);
 void research_remove(ResearchItem* researchItem);
 
-bool research_insert_ride_entry(uint8_t rideType, uint8_t entryIndex, uint8_t category, bool researched);
-void research_insert_ride_entry(uint8_t entryIndex, bool researched);
-void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
+bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched);
+void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
+void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
 void ride_entry_set_invented(int32_t rideEntryIndex);

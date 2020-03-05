@@ -534,7 +534,7 @@ void research_populate_list_researched()
     }
 }
 
-bool research_insert_ride_entry(uint8_t rideType, uint8_t entryIndex, uint8_t category, bool researched)
+bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched)
 {
     if (rideType != RIDE_TYPE_NULL)
     {
@@ -546,7 +546,7 @@ bool research_insert_ride_entry(uint8_t rideType, uint8_t entryIndex, uint8_t ca
     return false;
 }
 
-void research_insert_ride_entry(uint8_t entryIndex, bool researched)
+void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 {
     rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
     uint8_t category = rideEntry->category[0];
@@ -556,7 +556,7 @@ void research_insert_ride_entry(uint8_t entryIndex, bool researched)
     }
 }
 
-void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched)
+void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched)
 {
     research_insert({ entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP }, researched);
 }
@@ -827,7 +827,7 @@ void research_fix()
     // For good measure, also include scenery groups.
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
-        for (uint8_t i = 0; i < MAX_RIDE_OBJECTS; i++)
+        for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
         {
             const rct_ride_entry* rideEntry = get_ride_entry(i);
 

@@ -203,7 +203,8 @@ void setup_in_use_selection_flags()
         const ObjectRepositoryItem* item = &items[i];
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-        uint8_t entryType, entryIndex;
+        uint8_t entryType;
+        ObjectEntryIndex entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex))
         {
             auto flags = Editor::GetSelectedObjectFlags(entryType, entryIndex);
@@ -282,7 +283,8 @@ void editor_object_flags_free()
  */
 static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
 {
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
         return;
 

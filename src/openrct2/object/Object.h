@@ -17,7 +17,8 @@
 #include <string_view>
 #include <vector>
 
-constexpr const uint16_t OBJECT_ENTRY_INDEX_NULL = 255;
+using ObjectEntryIndex = uint16_t;
+constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = 255;
 
 // First 0xF of rct_object_entry->flags
 enum OBJECT_TYPE
@@ -265,7 +266,7 @@ extern int32_t object_entry_group_encoding[];
 bool object_entry_is_empty(const rct_object_entry* entry);
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index);
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry* object_list_find(rct_object_entry* entry);

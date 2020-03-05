@@ -656,8 +656,9 @@ static void track_design_mirror_scenery(TrackDesign* td6)
 {
     for (auto& scenery : td6->scenery_elements)
     {
-        uint8_t entry_type{ 0 }, entry_index{ 0 };
-        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
+        uint8_t entry_type{ 0 };
+        ObjectEntryIndex entryIndex{ 0 };
+        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entryIndex))
         {
             entry_type = scenery.scenery_object.GetType();
             if (entry_type != OBJECT_TYPE_PATHS)
@@ -665,10 +666,10 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 continue;
             }
 
-            entry_index = 0;
+            entryIndex = 0;
         }
 
-        rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entry_index);
+        rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entryIndex);
         switch (entry_type)
         {
             case OBJECT_TYPE_LARGE_SCENERY:
@@ -855,7 +856,7 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
 }
 
 static bool TrackDesignPlaceSceneryElementGetEntry(
-    uint8_t& entry_type, uint8_t& entry_index, const TrackDesignSceneryElement& scenery)
+    uint8_t& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
 {
     if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
     {
@@ -898,7 +899,8 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
     {
         return true;
@@ -959,7 +961,8 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElem
         _trackDesignPlaceSceneryZ = z;
     }
 
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
 
     return true;
@@ -988,7 +991,8 @@ static bool TrackDesignPlaceSceneryElement(
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        uint8_t entry_type, entry_index;
+        uint8_t entry_type;
+        ObjectEntryIndex entry_index;
         if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
         {
             return true;
@@ -1852,7 +1856,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     *outRide = nullptr;
     *flags = 0;
 
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
     {
         entry_index = RIDE_ENTRY_INDEX_NULL;

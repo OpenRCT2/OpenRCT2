@@ -2537,7 +2537,7 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
  */
 static money32 try_place_ghost_scenery(
     CoordsXY map_tile, uint32_t parameter_1, uint32_t parameter_2, uint32_t parameter_3, uint8_t scenery_type,
-    uint16_t entryIndex)
+    ObjectEntryIndex entryIndex)
 {
     scenery_remove_ghost_tool_placement();
 

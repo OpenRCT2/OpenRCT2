@@ -59,6 +59,8 @@
 #include <memory>
 #include <vector>
 
+static constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_IGNORE = 254;
+
 using namespace OpenRCT2;
 
 class EntryList
@@ -77,7 +79,7 @@ public:
         return _entries;
     }
 
-    uint16_t GetOrAddEntry(const char* entryName)
+    ObjectEntryIndex GetOrAddEntry(const char* entryName)
     {
         auto entryIndex = Collections::IndexOf(_entries, entryName, true);
         if (entryIndex == SIZE_MAX)
@@ -85,7 +87,7 @@ public:
             entryIndex = _entries.size();
             _entries.push_back(entryName);
         }
-        return static_cast<uint16_t>(entryIndex);
+        return static_cast<ObjectEntryIndex>(entryIndex);
     }
 
     void AddRange(std::initializer_list<const char*> initializerList)
@@ -117,18 +119,18 @@ private:
     EntryList _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
-    uint16_t _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
-    uint16_t _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
-    uint16_t _smallSceneryTypeToEntryMap[256]{};
-    uint16_t _largeSceneryTypeToEntryMap[256]{};
-    uint16_t _wallTypeToEntryMap[256]{};
-    uint16_t _pathTypeToEntryMap[24]{};
-    uint16_t _pathAdditionTypeToEntryMap[16]{};
-    uint16_t _sceneryThemeTypeToEntryMap[24]{};
+    ObjectEntryIndex _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
+    ObjectEntryIndex _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
+    ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
+    ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
+    ObjectEntryIndex _wallTypeToEntryMap[256]{};
+    ObjectEntryIndex _pathTypeToEntryMap[24]{};
+    ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
+    ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
 
     // Research
-    uint16_t _researchRideEntryUsed[MAX_RIDE_OBJECTS]{};
-    uint16_t _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT]{};
+    std::bitset<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
+    std::bitset<RCT1_RIDE_TYPE_COUNT> _researchRideTypeUsed{};
 
     // Scenario repository - used for determining scenario name
     IScenarioRepository* _scenarioRepository = GetScenarioRepository();
@@ -583,7 +585,7 @@ private:
         }
     }
 
-    void AddEntryForSmallScenery(uint16_t smallSceneryType)
+    void AddEntryForSmallScenery(ObjectEntryIndex smallSceneryType)
     {
         assert(smallSceneryType < std::size(_smallSceneryTypeToEntryMap));
         if (_smallSceneryTypeToEntryMap[smallSceneryType] == OBJECT_ENTRY_INDEX_NULL)
@@ -595,7 +597,7 @@ private:
         }
     }
 
-    void AddEntryForLargeScenery(uint16_t largeSceneryType)
+    void AddEntryForLargeScenery(ObjectEntryIndex largeSceneryType)
     {
         assert(largeSceneryType < std::size(_largeSceneryTypeToEntryMap));
         if (_largeSceneryTypeToEntryMap[largeSceneryType] == OBJECT_ENTRY_INDEX_NULL)
@@ -607,7 +609,7 @@ private:
         }
     }
 
-    void AddEntryForWall(uint16_t wallType)
+    void AddEntryForWall(ObjectEntryIndex wallType)
     {
         assert(wallType < std::size(_wallTypeToEntryMap));
         if (_wallTypeToEntryMap[wallType] == OBJECT_ENTRY_INDEX_NULL)
@@ -619,7 +621,7 @@ private:
         }
     }
 
-    void AddEntryForPath(uint16_t pathType)
+    void AddEntryForPath(ObjectEntryIndex pathType)
     {
         assert(pathType < std::size(_pathTypeToEntryMap));
         if (_pathTypeToEntryMap[pathType] == OBJECT_ENTRY_INDEX_NULL)
@@ -633,7 +635,7 @@ private:
         }
     }
 
-    void AddEntryForPathAddition(uint16_t pathAdditionType)
+    void AddEntryForPathAddition(ObjectEntryIndex pathAdditionType)
     {
         if (pathAdditionType == RCT1_PATH_ADDITION_NONE)
             return;
@@ -653,12 +655,12 @@ private:
         }
     }
 
-    void AddEntriesForSceneryTheme(uint16_t sceneryThemeType)
+    void AddEntriesForSceneryTheme(ObjectEntryIndex sceneryThemeType)
     {
         if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL || sceneryThemeType == RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
             || sceneryThemeType == RCT1_SCENERY_THEME_GARDEN_CLOCK)
         {
-            _sceneryThemeTypeToEntryMap[sceneryThemeType] = 254;
+            _sceneryThemeTypeToEntryMap[sceneryThemeType] = OBJECT_ENTRY_INDEX_IGNORE;
         }
         else
         {
@@ -2035,7 +2037,7 @@ private:
 
                 // Type
                 uint8_t pathType = src2->GetRCT1PathType();
-                uint8_t entryIndex = _pathTypeToEntryMap[pathType];
+                auto entryIndex = _pathTypeToEntryMap[pathType];
 
                 dst2->SetDirection(0);
                 dst2->SetIsBroken(false);
@@ -2238,8 +2240,8 @@ private:
         const rct1_research_item* researchList = GetResearchList(&researchListCount);
 
         // Initialise the "seen" tables
-        std::fill(std::begin(_researchRideEntryUsed), std::end(_researchRideEntryUsed), 0);
-        std::fill(std::begin(_researchRideTypeUsed), std::end(_researchRideTypeUsed), 0);
+        _researchRideEntryUsed.reset();
+        _researchRideTypeUsed.reset();
 
         // The first six scenery groups are always available
         for (uint8_t i = 0; i < 6; i++)
@@ -2274,7 +2276,8 @@ private:
                 {
                     uint8_t rct1SceneryTheme = researchItem->item;
                     auto sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
-                    if (sceneryGroupEntryIndex != 254 && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                    if (sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_IGNORE
+                        && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                     {
                         research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
                     }
@@ -2618,7 +2621,7 @@ private:
         {
             auto entryIndex = _sceneryThemeTypeToEntryMap[srcItem];
 
-            if (entryIndex != 254 && entryIndex != OBJECT_ENTRY_INDEX_NULL)
+            if (entryIndex != OBJECT_ENTRY_INDEX_IGNORE && entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 dst->entryIndex = entryIndex;
                 dst->type = RESEARCH_ENTRY_TYPE_SCENERY;
