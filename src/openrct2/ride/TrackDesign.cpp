@@ -246,9 +246,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             break;
         }
 
-        // TODO move to RCT2 limit
-        constexpr auto TD6MaxTrackElements = 8192;
-
         if (track_elements.size() > TD6MaxTrackElements)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;

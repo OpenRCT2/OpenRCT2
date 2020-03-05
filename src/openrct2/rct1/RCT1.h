@@ -19,15 +19,14 @@
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
-#define RCT1_MAX_TILE_ELEMENTS 0xC000
-#define RCT1_MAX_SPRITES 5000
-#define RCT1_MAX_TRAINS_PER_RIDE 12
-#define RCT1_MAX_MAP_SIZE 128
-#define RCT1_MAX_RIDES_IN_PARK 128
-#define RCT1_MAX_STAFF 116
-#define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
-#define RCT1_MAX_ANIMATED_OBJECTS 1000
-#define RCT1_MAX_BANNERS 100
+constexpr const uint16_t RCT1_MAX_TILE_ELEMENTS = 0xC000;
+constexpr const uint16_t RCT1_MAX_SPRITES = 5000;
+constexpr const uint8_t RCT1_MAX_TRAINS_PER_RIDE = 12;
+constexpr const uint8_t RCT1_MAX_MAP_SIZE = 128;
+constexpr const uint8_t RCT1_MAX_STAFF = 116;
+constexpr const uint8_t RCT1_RESEARCH_FLAGS_SEPARATOR = 0xFF;
+constexpr const uint16_t RCT1_MAX_ANIMATED_OBJECTS = 1000;
+constexpr const uint8_t RCT1_MAX_BANNERS = 100;
 constexpr int32_t RCT1_COORDS_Z_STEP = 4;
 
 struct ParkLoadResult;
