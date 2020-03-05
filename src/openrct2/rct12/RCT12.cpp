@@ -72,7 +72,7 @@ uint8_t RCT12SurfaceElement::GetOwnership() const
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
 {
-    return (terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * 16;
+    return (terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * 16;
 }
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
@@ -566,7 +566,7 @@ void RCT12SurfaceElement::SetEdgeStyle(uint32_t newStyle)
         type &= ~128;
 
     // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
+    slope &= ~RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
     slope |= (newStyle & 7) << 5;
 }
 
@@ -574,7 +574,7 @@ void RCT12SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
 {
     newWaterHeight >>= 4;
     newWaterHeight &= 0x1F;
-    terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    terrain &= ~RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
     terrain |= newWaterHeight;
 }
 

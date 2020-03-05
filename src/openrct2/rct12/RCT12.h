@@ -17,38 +17,42 @@
 #include <string>
 #include <string_view>
 
-#define RCT12_MAX_RIDES_IN_PARK 255
-#define RCT12_MAX_AWARDS 4
-#define RCT12_MAX_NEWS_ITEMS 61
-#define RCT12_MAX_STATIONS_PER_RIDE 4
-#define RCT12_MAX_PEEP_SPAWNS 2
-#define RCT12_MAX_PARK_ENTRANCES 4
+constexpr const uint8_t RCT12_MAX_RIDES_IN_PARK = 255;
+constexpr const uint8_t RCT12_MAX_AWARDS = 4;
+constexpr const uint8_t RCT12_MAX_NEWS_ITEMS = 61;
+constexpr const uint8_t RCT12_MAX_STATIONS_PER_RIDE = 4;
+constexpr const uint8_t RCT12_MAX_PEEP_SPAWNS = 2;
+constexpr const uint8_t RCT12_MAX_PARK_ENTRANCES = 4;
 // The number of elements in the patrol_areas array per staff member. Every bit in the array represents a 4x4 square.
 // In RCT1, that's an 8-bit array. 8 * 128 = 1024 bits, which is also the number of 4x4 squares on a 128x128 map.
 // For RCT2, it's a 32-bit array. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
-#define RCT12_PATROL_AREA_SIZE 128
-#define RCT12_STAFF_TYPE_COUNT 4
-#define RCT12_NUM_COLOUR_SCHEMES 4
-#define RCT12_MAX_VEHICLE_COLOURS 32
-#define RCT12_SOUND_ID_NULL 0xFF
+constexpr const uint8_t RCT12_PATROL_AREA_SIZE = 128;
+constexpr const uint8_t RCT12_STAFF_TYPE_COUNT = 4;
+constexpr const uint8_t RCT12_NUM_COLOUR_SCHEMES = 4;
+constexpr const uint8_t RCT12_MAX_VEHICLE_COLOURS = 32;
+constexpr const uint8_t RCT12_SOUND_ID_NULL = 0xFF;
 
-#define RCT12_EXPENDITURE_TABLE_MONTH_COUNT 16
-#define RCT12_EXPENDITURE_TYPE_COUNT 14
-#define RCT12_FINANCE_GRAPH_SIZE 128
+constexpr const uint8_t RCT12_EXPENDITURE_TABLE_MONTH_COUNT = 16;
+constexpr const uint8_t RCT12_EXPENDITURE_TYPE_COUNT = 14;
+constexpr const uint8_t RCT12_FINANCE_GRAPH_SIZE = 128;
 
-#define RCT12_MAX_USER_STRINGS 1024
-#define RCT12_USER_STRING_MAX_LENGTH 32
+constexpr const uint16_t RCT12_MAX_USER_STRINGS = 1024;
+constexpr const uint8_t RCT12_USER_STRING_MAX_LENGTH = 32;
 
-#define RCT12_PEEP_MAX_THOUGHTS 5
+constexpr const uint8_t RCT12_PEEP_MAX_THOUGHTS = 5;
 
-#define RCT12_RIDE_ID_NULL 255
-#define RCT12_RIDE_MEASUREMENT_MAX_ITEMS 4800
+constexpr const uint8_t RCT12_RIDE_ID_NULL = 255;
+constexpr const uint16_t RCT12_RIDE_MEASUREMENT_MAX_ITEMS = 4800;
 
 constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
 constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
+
+constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
+constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
+constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
