@@ -4898,19 +4898,15 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         }
     }
 
-    int32_t x = location.x;
-    int32_t y = location.y;
-    int32_t z = location.z;
-
     bool success = false;
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(location);
     if (tileElement == nullptr)
         return success;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->GetBaseZ() != z)
+        if (tileElement->GetBaseZ() != location.z)
             continue;
 
         if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
@@ -4933,7 +4929,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     int32_t state = STATE_FIND_CABLE_LIFT;
 
     track_circuit_iterator it;
-    track_circuit_iterator_begin(&it, { x, y, tileElement });
+    track_circuit_iterator_begin(&it, { location, tileElement });
     while (track_circuit_iterator_previous(&it))
     {
         tileElement = it.current.element;
@@ -4975,12 +4971,10 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         }
         if (isApplying)
         {
-            z = tileElement->GetBaseZ();
+            auto tmpLoc = CoordsXYZ{ it.current, tileElement->GetBaseZ() };
             int32_t direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
-            x = it.current.x;
-            y = it.current.y;
-            sub_6C683D(&x, &y, &z, direction, trackType, 0, &tileElement, flags);
+            sub_6C683D(&tmpLoc.x, &tmpLoc.y, &tmpLoc.z, direction, trackType, 0, &tileElement, flags);
         }
     }
     return true;
