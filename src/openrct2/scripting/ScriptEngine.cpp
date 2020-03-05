@@ -13,6 +13,7 @@
 
 #    include "../PlatformEnvironment.h"
 #    include "../actions/GameAction.h"
+#    include "../actions/RideCreateAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
@@ -658,6 +659,7 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
 DukValue ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args, bool isGameStateMutable)
 {
+    DukStackFrame frame(_context);
     if (func.is_function())
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
@@ -742,6 +744,7 @@ std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukV
 
 DukValue ScriptEngine::PositionToDuk(const CoordsXYZ& position)
 {
+    DukStackFrame frame(_context);
     duk_context* ctx = _context;
     auto obj = duk_push_object(ctx);
     duk_push_int(ctx, position.x);
@@ -755,25 +758,33 @@ DukValue ScriptEngine::PositionToDuk(const CoordsXYZ& position)
 
 DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result)
 {
-    duk_context* ctx = _context;
-    auto obj = duk_push_object(ctx);
+    DukStackFrame frame(_context);
+    DukObject obj(_context);
+
     auto player = action.GetPlayer();
     if (player != -1)
     {
-        duk_push_int(ctx, action.GetPlayer());
-        duk_put_prop_string(ctx, obj, "player");
+        obj.Set("player", action.GetPlayer());
     }
     if (result->Cost != MONEY32_UNDEFINED)
     {
-        duk_push_int(ctx, result->Cost);
-        duk_put_prop_string(ctx, obj, "cost");
+        obj.Set("cost", result->Cost);
     }
     if (!result->Position.isNull())
     {
-        PositionToDuk(result->Position).push();
-        duk_put_prop_string(ctx, obj, "position");
+        obj.Set("position", PositionToDuk(result->Position));
     }
-    return DukValue::take_from_stack(ctx);
+
+    if (action.GetType() == GAME_COMMAND_CREATE_RIDE)
+    {
+        auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
+        if (rideCreateResult.rideIndex != RIDE_ID_NULL)
+        {
+            obj.Set("ride", rideCreateResult.rideIndex);
+        }
+    }
+
+    return obj.Take();
 }
 
 bool ScriptEngine::RegisterCustomAction(
@@ -809,23 +820,30 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
+#    pragma warning(disable : 4189)
 void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
 {
+    DukStackFrame frame(_context);
+
     auto hookType = isExecute ? HOOK_TYPE::ACTION_EXECUTE : HOOK_TYPE::ACTION_QUERY;
     if (_hookEngine.HasSubscriptions(hookType))
     {
-        duk_context* ctx = _context;
-        auto obj = duk_push_object(ctx);
-        duk_push_uint(ctx, action.GetType());
-        duk_put_prop_string(ctx, obj, "type");
+        DukObject obj(_context);
+        obj.Set("type", action.GetType());
 
         auto flags = action.GetActionFlags();
-        duk_push_boolean(ctx, (flags & GA_FLAGS::CLIENT_ONLY) != 0);
-        duk_put_prop_string(ctx, obj, "isClientOnly");
+        obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
 
-        GameActionResultToDuk(action, result).push();
-        duk_put_prop_string(ctx, obj, "result");
-        auto dukEventArgs = DukValue::take_from_stack(ctx);
+        if (action.GetType() == GAME_COMMAND_CREATE_RIDE)
+        {
+            auto& rideCreateAction = static_cast<const RideCreateAction&>(action);
+            obj.Set("rideType", rideCreateAction.GetRideType());
+            obj.Set("rideObject", rideCreateAction.GetRideObject());
+        }
+
+        obj.Set("result", GameActionResultToDuk(action, result));
+        auto dukEventArgs = obj.Take();
+
         _hookEngine.Call(hookType, dukEventArgs, false);
 
         if (!isExecute)

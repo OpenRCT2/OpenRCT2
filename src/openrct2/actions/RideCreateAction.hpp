@@ -60,6 +60,16 @@ public:
     {
     }
 
+    int32_t GetRideType() const
+    {
+        return _rideType;
+    }
+
+    int32_t GetRideObject() const
+    {
+        return _subType;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;

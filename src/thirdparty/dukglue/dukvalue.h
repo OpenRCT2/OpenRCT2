@@ -593,7 +593,9 @@ public:
 	{
 		push();
 		duk_get_prop_string(mContext, -1, key.c_str());
-		return DukValue::take_from_stack(mContext);
+		auto result = DukValue::take_from_stack(mContext);
+		duk_pop(mContext);
+        return result;
 	}
 
 	bool is_array() const
