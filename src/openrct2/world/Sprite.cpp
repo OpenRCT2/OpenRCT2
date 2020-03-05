@@ -830,7 +830,7 @@ uint16_t remove_floating_sprites()
             sprite_misc_update(rctSprite);
             removed++;
         }
-        if (rctSprite->IsDuck())
+        else if (rctSprite->IsDuck())
         {
             if (rctSprite->AsDuck()->IsFlying())
             {
@@ -839,7 +839,7 @@ uint16_t remove_floating_sprites()
                 removed++;
             }
         }
-        if (rctSprite->IsMoneyEffect())
+        else if (rctSprite->IsMoneyEffect())
         {
             sprite_remove(rctSprite->AsMoneyEffect());
             sprite_misc_update(rctSprite);
