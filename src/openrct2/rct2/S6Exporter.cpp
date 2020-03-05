@@ -173,7 +173,7 @@ void S6Exporter::Export()
     uint32_t researchedTrackPiecesA[128] = {};
     uint32_t researchedTrackPiecesB[128] = {};
 
-    for (int32_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+    for (int32_t i = 0; i < RCT2_OBJECT_ENTRY_COUNT; i++)
     {
         const rct_object_entry* entry = get_loaded_object_entry(i);
         void* entryData = get_loaded_object_chunk(i);

@@ -65,8 +65,6 @@ enum OBJECT_SOURCE_GAME
     OBJECT_SOURCE_RCT2 = 8
 };
 
-#define OBJECT_ENTRY_COUNT 721
-
 #pragma pack(push, 1)
 /**
  * Object entry structure.

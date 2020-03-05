@@ -34,6 +34,8 @@
 #define RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS 56
 #define RCT2_MAX_RESEARCHED_SCENERY_ITEMS (RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS * 32) // There are 32 bits per quad.
 
+constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT = 721;
+
 struct rct2_install_info
 {
     uint32_t installLevel;

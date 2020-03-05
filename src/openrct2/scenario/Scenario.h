@@ -97,7 +97,7 @@ struct rct_s6_data
     // packed objects
 
     // SC6[3]
-    rct_object_entry objects[OBJECT_ENTRY_COUNT];
+    rct_object_entry objects[RCT2_OBJECT_ENTRY_COUNT];
 
     // SC6[4]
     uint16_t elapsed_months;
