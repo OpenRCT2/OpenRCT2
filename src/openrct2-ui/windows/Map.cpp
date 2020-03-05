@@ -812,21 +812,21 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_map_draw_tab_images(w, dpi);
 
-    int32_t x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
-    int32_t y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
+    int32_t x = w->windowPos.x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
+    int32_t y = w->windowPos.y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
     // Draw land tool size
     if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &_landRightsToolSize);
     }
-    y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
+    y = w->windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
     // People starting position (scenario editor only)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
     {
-        x = w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
-        y = w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
+        x = w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
+        y = w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
         gfx_draw_sprite(
             dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
             x, y, 0);
@@ -837,8 +837,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Render the map legend
         if (w->selected_tab == PAGE_RIDES)
         {
-            x = w->x + 4;
-            y = w->y + w->widgets[WIDX_MAP].bottom + 2;
+            x = w->windowPos.x + 4;
+            y = w->windowPos.y + w->widgets[WIDX_MAP].bottom + 2;
 
             static rct_string_id mapLabels[] = {
                 STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
@@ -861,7 +861,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
         gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+            dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->windowPos.x + 4,
+            w->windowPos.y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
     }
 }
 
@@ -926,8 +927,8 @@ static void window_map_centre_on_view_point()
 
     // calculate centre view point of viewport and transform it to minimap coordinates
 
-    cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
-    dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
+    cx = ((w->viewport->view_width >> 1) + w->viewport->viewPos.x) >> 5;
+    dx = ((w->viewport->view_height >> 1) + w->viewport->viewPos.y) >> 4;
     cx += offset.x;
     dx += offset.y;
 
@@ -999,14 +1000,16 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->selected_tab == PAGE_PEEPS)
         image += w->list_information_type / 4;
 
-    gfx_draw_sprite(dpi, image, w->x + w->widgets[WIDX_PEOPLE_TAB].left, w->y + w->widgets[WIDX_PEOPLE_TAB].top, 0);
+    gfx_draw_sprite(
+        dpi, image, w->windowPos.x + w->widgets[WIDX_PEOPLE_TAB].left, w->windowPos.y + w->widgets[WIDX_PEOPLE_TAB].top, 0);
 
     // Ride/stall tab image (animated)
     image = SPR_TAB_RIDE_0;
     if (w->selected_tab == PAGE_RIDES)
         image += w->list_information_type / 4;
 
-    gfx_draw_sprite(dpi, image, w->x + w->widgets[WIDX_RIDES_TAB].left, w->y + w->widgets[WIDX_RIDES_TAB].top, 0);
+    gfx_draw_sprite(
+        dpi, image, w->windowPos.x + w->widgets[WIDX_RIDES_TAB].left, w->windowPos.y + w->widgets[WIDX_RIDES_TAB].top, 0);
 }
 
 /**
@@ -1132,10 +1135,10 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi)
         return;
 
     auto offset = MiniMapOffsets[get_current_rotation()];
-    int16_t left = (viewport->view_x >> 5) + offset.x;
-    int16_t right = ((viewport->view_x + viewport->view_width) >> 5) + offset.x;
-    int16_t top = (viewport->view_y >> 4) + offset.y;
-    int16_t bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset.y;
+    int16_t left = (viewport->viewPos.x >> 5) + offset.x;
+    int16_t right = ((viewport->viewPos.x + viewport->view_width) >> 5) + offset.x;
+    int16_t top = (viewport->viewPos.y >> 4) + offset.y;
+    int16_t bottom = ((viewport->viewPos.y + viewport->view_height) >> 4) + offset.y;
 
     // top horizontal lines
     gfx_fill_rect(dpi, left, top, left + 3, top, PALETTE_INDEX_56);

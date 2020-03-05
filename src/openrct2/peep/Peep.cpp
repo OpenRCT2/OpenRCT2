@@ -1376,13 +1376,13 @@ void peep_update_crowd_noise()
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
-        if (viewport->view_x > peep->sprite_right)
+        if (viewport->viewPos.x > peep->sprite_right)
             continue;
-        if (viewport->view_x + viewport->view_width < peep->sprite_left)
+        if (viewport->viewPos.x + viewport->view_width < peep->sprite_left)
             continue;
-        if (viewport->view_y > peep->sprite_bottom)
+        if (viewport->viewPos.y > peep->sprite_bottom)
             continue;
-        if (viewport->view_y + viewport->view_height < peep->sprite_top)
+        if (viewport->viewPos.y + viewport->view_height < peep->sprite_top)
             continue;
 
         visiblePeeps += peep->state == PEEP_STATE_QUEUING ? 1 : 2;

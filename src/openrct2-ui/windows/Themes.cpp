@@ -316,8 +316,8 @@ static void window_themes_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         if (_selected_tab == i)
             sprite_idx += w->frame_no / window_themes_tab_animation_divisor[_selected_tab];
         gfx_draw_sprite(
-            dpi, sprite_idx, w->x + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
-            w->y + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top, 0);
+            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
+            w->windowPos.y + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top, 0);
     }
 }
 
@@ -523,7 +523,7 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
             dropdown_set_checked((int32_t)theme_manager_get_active_available_theme_index(), true);
@@ -838,13 +838,14 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
         const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
         set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
         gfx_draw_string_left(
-            dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10,
-            w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
+            dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->windowPos.x + 10,
+            w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
         gfx_draw_string_left_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
-            w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
-            w->x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - window_themes_widgets[WIDX_THEMES_PRESETS].left
-                - 4);
+            dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
+            w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
+            w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
+            w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
+                - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4);
     }
 }
 

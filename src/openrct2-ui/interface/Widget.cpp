@@ -116,10 +116,10 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     //
     uint8_t press = ((w->flags & WF_10) ? INSET_RECT_FLAG_FILL_MID_LIGHT : 0);
@@ -137,8 +137,8 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Draw the resize sprite at the bottom right corner
-    l = w->x + widget->right - 18;
-    t = w->y + widget->bottom - 18;
+    l = w->windowPos.x + widget->right - 18;
+    t = w->windowPos.y + widget->bottom - 18;
     gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), l, t, 0);
 }
 
@@ -152,10 +152,10 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -170,8 +170,8 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
         return;
 
     // Draw the resize sprite at the bottom right corner
-    l = w->x + widget->right - 18;
-    t = w->y + widget->bottom - 18;
+    l = w->windowPos.x + widget->right - 18;
+    t = w->windowPos.y + widget->bottom - 18;
     gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), l, t, 0);
 }
 
@@ -185,10 +185,10 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Check if the button is pressed down
     uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
@@ -240,8 +240,8 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     }
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
 
     // Get the colour and disabled image
     uint8_t colour = w->colours[widget->colour] & 0x7F;
@@ -267,10 +267,10 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -303,10 +303,10 @@ static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -346,20 +346,20 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t r = w->x + widget->right;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t r = w->windowPos.x + widget->right;
     int32_t t;
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
     {
         int32_t height = (widget->bottom - widget->top);
         if (height >= 10)
-            t = w->y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+            t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
         else
-            t = w->y + widget->top - 1;
+            t = w->windowPos.y + widget->top - 1;
     }
     else
-        t = w->y + widget->top;
+        t = w->windowPos.y + widget->top;
 
     gfx_draw_string_centred_clipped(
         dpi, widget->text, gCommonFormatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
@@ -383,20 +383,20 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t r = w->x + widget->right;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t r = w->windowPos.x + widget->right;
     int32_t t;
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
     {
         int32_t height = (widget->bottom - widget->top);
         if (height >= 10)
-            t = w->y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+            t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
         else
-            t = w->y + widget->top - 1;
+            t = w->windowPos.y + widget->top - 1;
     }
     else
-        t = w->y + widget->top;
+        t = w->windowPos.y + widget->top;
 
     gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
 }
@@ -411,10 +411,10 @@ static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -433,10 +433,10 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left + 5;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left + 5;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
     int32_t textRight = l;
 
     // Text
@@ -456,10 +456,10 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
     // Border
     // Resolve the absolute ltrb
-    l = w->x + widget->left;
-    t = w->y + widget->top + 4;
-    r = w->x + widget->right;
-    b = w->y + widget->bottom;
+    l = w->windowPos.x + widget->left;
+    t = w->windowPos.y + widget->top + 4;
+    r = w->windowPos.x + widget->right;
+    b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour] & 0x7F;
@@ -495,10 +495,10 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -519,8 +519,8 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     if (widget->text == STR_NONE)
         return;
 
-    l = widget->left + w->x + 2;
-    t = widget->top + w->y + 1;
+    l = widget->left + w->windowPos.x + 2;
+    t = widget->top + w->windowPos.y + 1;
     int32_t width = widget->right - widget->left - 4;
     if ((widget + 1)->type == WWT_CLOSEBOX)
     {
@@ -542,10 +542,10 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Check if the button is pressed down
     uint8_t press = 0;
@@ -563,8 +563,8 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget->text == STR_NONE)
         return;
 
-    l = w->x + (widget->left + widget->right) / 2 - 1;
-    t = w->y + std::max<int32_t>(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    l = w->windowPos.x + (widget->left + widget->right) / 2 - 1;
+    t = w->windowPos.y + std::max<int32_t>(widget->top, (widget->top + widget->bottom) / 2 - 5);
 
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
@@ -582,9 +582,9 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t b = w->windowPos.y + widget->bottom;
     int32_t yMid = (b + t) / 2;
 
     // Get the colour
@@ -624,10 +624,10 @@ static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_scroll* scroll = &w->scrolls[scrollIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -764,8 +764,8 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
 
     // Get the colour
     uint8_t colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
@@ -881,12 +881,12 @@ void widget_scroll_get_part(
         }
     }
 
-    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w->y + widget->bottom - 11))
+    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w->windowPos.y + widget->bottom - 11))
     {
         // horizontal scrollbar
         int32_t rightOffset = 0;
-        int32_t iteratorLeft = widget->left + w->x + 10;
-        int32_t iteratorRight = widget->right + w->x - 10;
+        int32_t iteratorLeft = widget->left + w->windowPos.x + 10;
+        int32_t iteratorRight = widget->right + w->windowPos.x - 10;
         if (!(w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE))
         {
             rightOffset = 11;
@@ -904,11 +904,11 @@ void widget_scroll_get_part(
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
         }
-        else if (screenCoords.x < (widget->left + w->x + w->scrolls[*scroll_id].h_thumb_left))
+        else if (screenCoords.x < (widget->left + w->windowPos.x + w->scrolls[*scroll_id].h_thumb_left))
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT_TROUGH;
         }
-        else if (screenCoords.x > (widget->left + w->x + w->scrolls[*scroll_id].h_thumb_right))
+        else if (screenCoords.x > (widget->left + w->windowPos.x + w->scrolls[*scroll_id].h_thumb_right))
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH;
         }
@@ -917,12 +917,12 @@ void widget_scroll_get_part(
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
         }
     }
-    else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w->x + widget->right - 11))
+    else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w->windowPos.x + widget->right - 11))
     {
         // vertical scrollbar
         int32_t bottomOffset = 0;
-        int32_t iteratorTop = widget->top + w->y + 10;
-        int32_t iteratorBottom = widget->bottom + w->y;
+        int32_t iteratorTop = widget->top + w->windowPos.y + 10;
+        int32_t iteratorBottom = widget->bottom + w->windowPos.y;
         if (w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE)
         {
             bottomOffset = 11;
@@ -940,11 +940,11 @@ void widget_scroll_get_part(
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
         }
-        else if (screenCoords.y < (widget->top + w->y + w->scrolls[*scroll_id].v_thumb_top))
+        else if (screenCoords.y < (widget->top + w->windowPos.y + w->scrolls[*scroll_id].v_thumb_top))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP_TROUGH;
         }
-        else if (screenCoords.y > (widget->top + w->y + w->scrolls[*scroll_id].v_thumb_bottom))
+        else if (screenCoords.y > (widget->top + w->windowPos.y + w->scrolls[*scroll_id].v_thumb_bottom))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH;
         }
@@ -959,8 +959,7 @@ void widget_scroll_get_part(
         *output_scroll_area = SCROLL_PART_VIEW;
         retScreenCoords.x = screenCoords.x - widget->left;
         retScreenCoords.y = screenCoords.y - widget->top;
-        retScreenCoords.x -= w->x;
-        retScreenCoords.y -= w->y;
+        retScreenCoords -= w->windowPos;
         if (retScreenCoords.x <= 0 || retScreenCoords.y <= 0)
         {
             *output_scroll_area = SCROLL_PART_NONE;
@@ -1005,10 +1004,10 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->x + widget->left;
-    int32_t t = w->y + widget->top;
-    int32_t r = w->x + widget->right;
-    int32_t b = w->y + widget->bottom;
+    int32_t l = w->windowPos.x + widget->left;
+    int32_t t = w->windowPos.y + widget->top;
+    int32_t r = w->windowPos.x + widget->right;
+    int32_t b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];

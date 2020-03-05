@@ -318,7 +318,8 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
     {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
         gDropdownItemsFormat[1] = STR_OPEN_ALL;
-        window_dropdown_show_text(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0, 2);
+        window_dropdown_show_text(
+            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[1], 0, 2);
     }
     else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
     {
@@ -353,8 +354,8 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
         }
 
         window_dropdown_show_text_custom_width(
-            w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN,
-            numItems, widget->right - widget->left - 3);
+            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[1], 0,
+            DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
         if (selectedIndex != -1)
         {
             dropdown_set_checked(selectedIndex, true);
@@ -569,8 +570,8 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw number of attractions on bottom
     gfx_draw_string_left(
-        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->x + 4,
-        w->widgets[WIDX_LIST].bottom + w->y + 2);
+        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->windowPos.x + 4,
+        w->widgets[WIDX_LIST].bottom + w->windowPos.y + 2);
 }
 
 /**
@@ -754,19 +755,22 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
     sprite_idx = SPR_TAB_RIDE_0;
     if (w->page == PAGE_RIDES)
         sprite_idx += w->frame_no / 4;
-    gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top, 0);
+    gfx_draw_sprite(
+        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_1].left, w->windowPos.y + w->widgets[WIDX_TAB_1].top, 0);
 
     // Shops and stalls tab
     sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
     if (w->page == PAGE_SHOPS_AND_STALLS)
         sprite_idx += w->frame_no / 4;
-    gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top, 0);
+    gfx_draw_sprite(
+        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_2].left, w->windowPos.y + w->widgets[WIDX_TAB_2].top, 0);
 
     // Information kiosks and facilities tab
     sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
     if (w->page == PAGE_KIOSKS_AND_FACILITIES)
         sprite_idx += (w->frame_no / 4) % 8;
-    gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
+    gfx_draw_sprite(
+        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_3].left, w->windowPos.y + w->widgets[WIDX_TAB_3].top, 0);
 }
 
 /**

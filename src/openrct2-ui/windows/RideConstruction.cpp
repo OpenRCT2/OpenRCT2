@@ -2332,8 +2332,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     // Draw track piece
-    x = w->x + widget->left + 1;
-    y = w->y + widget->top + 1;
+    x = w->windowPos.x + widget->left + 1;
+    y = w->windowPos.y + widget->top + 1;
     width = widget->right - widget->left - 1;
     height = widget->bottom - widget->top - 1;
     if (clip_drawpixelinfo(&clipdpi, dpi, x, y, width, height))
@@ -2343,8 +2343,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     }
 
     // Draw cost
-    x = w->x + (widget->left + widget->right) / 2;
-    y = w->y + widget->bottom - 23;
+    x = w->windowPos.x + (widget->left + widget->right) / 2;
+    y = w->windowPos.y + widget->bottom - 23;
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, w);
 
@@ -3387,7 +3387,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     }
 
     window_dropdown_show_text_custom_width(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, 0,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, 0,
         _numCurrentPossibleRideConfigurations, widget->right - widget->left);
 
     for (int32_t i = 0; i < 32; i++)

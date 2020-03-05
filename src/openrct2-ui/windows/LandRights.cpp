@@ -271,8 +271,8 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y;
 
-    x = w->x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
-    y = w->y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
+    x = w->windowPos.x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
+    y = w->windowPos.y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
 
     window_draw_widgets(w, dpi);
     // Draw number for tool sizes bigger than 7
@@ -284,8 +284,9 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw cost amount
     if (_landRightsCost != MONEY32_UNDEFINED && _landRightsCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-        y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->y + 32;
+        x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2
+            + w->windowPos.x;
+        y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32;
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &_landRightsCost);
     }
 }

@@ -192,12 +192,12 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    int32_t y = w->y + 25;
+    int32_t y = w->windowPos.y + 25;
 
     int32_t no_lines = 0;
     int32_t font_height = 0;
 
-    gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
+    gfx_draw_string_centred(dpi, input_text_description, w->windowPos.x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
 
     y += 25;
 
@@ -211,7 +211,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-    gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
+    gfx_fill_rect_inset(
+        dpi, w->windowPos.x + 10, y, w->windowPos.x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
 
     y += 1;
 
@@ -223,7 +224,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t cursorY = 0;
     for (int32_t line = 0; line <= no_lines; line++)
     {
-        gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
+        gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->windowPos.x + 12, y);
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -232,7 +233,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             // Make a copy of the string for measuring the width.
             char temp_string[TEXT_INPUT_SIZE] = { 0 };
             std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-            cursorX = w->x + 13 + gfx_get_string_width(temp_string);
+            cursorX = w->windowPos.x + 13 + gfx_get_string_width(temp_string);
             cursorY = y;
 
             int32_t width = 6;

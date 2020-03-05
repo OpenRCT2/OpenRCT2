@@ -239,8 +239,8 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
     numItems = network_get_num_groups();
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
@@ -377,13 +377,13 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         set_format_arg(0, const char*, buffer);
 
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + (widget->left + widget->right - 11) / 2,
-            w->y + widget->top, widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
+            w->windowPos.y + widget->top, widget->right - widget->left - 8);
     }
 
     // Draw ping
-    int32_t x = w->x + 90;
-    int32_t y = w->y + 24;
+    int32_t x = w->windowPos.x + 90;
+    int32_t y = w->windowPos.y + 24;
 
     set_format_arg(0, rct_string_id, STR_PING);
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
@@ -392,8 +392,8 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
 
     // Draw last action
-    x = w->x + (w->width / 2);
-    y = w->y + w->height - 13;
+    x = w->windowPos.x + (w->width / 2);
+    y = w->windowPos.y + w->height - 13;
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
     set_format_arg(0, rct_string_id, STR_ACTION_NA);
@@ -456,8 +456,7 @@ void window_player_overview_invalidate(rct_window* w)
     {
         rct_widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
 
-        viewport->x = w->x + viewportWidget->left;
-        viewport->y = w->y + viewportWidget->top;
+        viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
         viewport->width = viewportWidget->right - viewportWidget->left;
         viewport->height = viewportWidget->bottom - viewportWidget->top;
         viewport->view_width = viewport->width << viewport->zoom;
@@ -545,8 +544,8 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    int32_t x = w->x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    int32_t y = w->y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    int32_t x = w->windowPos.x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    int32_t y = w->windowPos.y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     set_format_arg(0, uint32_t, network_get_player_commands_ran(player));
     gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -581,7 +580,8 @@ static void window_player_set_page(rct_window* w, int32_t page)
     {
         if (w->viewport == nullptr)
         {
-            viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, SPRITE_INDEX_NULL);
+            viewport_create(
+                w, w->windowPos, w->width, w->height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);
@@ -611,8 +611,8 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
     if (!widget_is_disabled(w, WIDX_TAB_1))
     {
         widget = &w->widgets[WIDX_TAB_1];
-        x = widget->left + w->x;
-        y = widget->top + w->y;
+        x = widget->left + w->windowPos.x;
+        y = widget->top + w->windowPos.y;
         imageId = SPR_PEEP_LARGE_FACE_NORMAL;
         gfx_draw_sprite(dpi, imageId, x, y, 0);
     }
@@ -621,8 +621,8 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
     if (!widget_is_disabled(w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
-        x = widget->left + w->x;
-        y = widget->top + w->y;
+        x = widget->left + w->windowPos.x;
+        y = widget->top + w->windowPos.y;
         imageId = SPR_TAB_FINANCES_SUMMARY_0;
 
         if (w->page == WINDOW_PLAYER_PAGE_STATISTICS)
@@ -659,15 +659,13 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
                 scroll = false;
             }
 
-            if (!scroll || w->saved_view_x != centreLoc->x || w->saved_view_y != centreLoc->y)
+            if (!scroll || w->savedViewPos != centreLoc)
             {
                 w->flags |= WF_SCROLLING_TO_LOCATION;
-                w->saved_view_x = centreLoc->x;
-                w->saved_view_y = centreLoc->y;
+                w->savedViewPos = *centreLoc;
                 if (!scroll)
                 {
-                    w->viewport->view_x = centreLoc->x;
-                    w->viewport->view_y = centreLoc->y;
+                    w->viewport->viewPos = *centreLoc;
                 }
                 widget_invalidate(w, WIDX_VIEWPORT);
             }

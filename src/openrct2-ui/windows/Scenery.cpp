@@ -764,7 +764,7 @@ static void window_scenery_update(rct_window* w)
     rct_window* other = window_find_from_point(state->position);
     if (other == w)
     {
-        ScreenCoordsXY window = state->position - ScreenCoordsXY{ w->x - 26, w->y };
+        ScreenCoordsXY window = state->position - ScreenCoordsXY{ w->windowPos.x - 26, w->windowPos.y };
 
         if (window.y < 44 || window.x <= w->width)
         {
@@ -901,7 +901,7 @@ void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, const Sc
 
     gWindowSceneryPaintEnabled &= 0xFE;
     gWindowSceneryEyedropperEnabled = false;
-    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     w->scenery.hover_counter = -16;
     gSceneryPlaceCost = MONEY32_UNDEFINED;
     w->Invalidate();
@@ -1128,8 +1128,8 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint32_t imageId = ((w->colours[1] << 19) | window_scenery_widgets[selectedWidgetId].image) + 1ul;
 
     gfx_draw_sprite(
-        dpi, imageId, w->x + window_scenery_widgets[selectedWidgetId].left, w->y + window_scenery_widgets[selectedWidgetId].top,
-        selectedWidgetId);
+        dpi, imageId, w->windowPos.x + window_scenery_widgets[selectedWidgetId].left,
+        w->windowPos.y + window_scenery_widgets[selectedWidgetId].top, selectedWidgetId);
 
     uint16_t selectedSceneryEntryId = w->scenery.selected_scenery_id;
     if (selectedSceneryEntryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
@@ -1185,12 +1185,14 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         // -14
         gfx_draw_string_right(
-            dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 0x1A, w->y + w->height - 13);
+            dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 0x1A,
+            w->windowPos.y + w->height - 13);
     }
 
     set_format_arg(0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE);
     gfx_draw_string_left_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 3, w->y + w->height - 13, w->width - 19);
+        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 3, w->windowPos.y + w->height - 13,
+        w->width - 19);
 }
 
 /**

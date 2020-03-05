@@ -83,8 +83,8 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
     auto surfaceCount = itemIndex;
 
     window_dropdown_show_image(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[2], 0, surfaceCount, 47, 36,
-        gAppropriateImageDropdownItemsPerRow[surfaceCount]);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[2], 0,
+        surfaceCount, 47, 36, gAppropriateImageDropdownItemsPerRow[surfaceCount]);
 
     gDropdownDefaultIndex = defaultIndex;
 }
@@ -112,8 +112,8 @@ void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8
     auto edgeCount = itemIndex;
 
     window_dropdown_show_image(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[2], 0, edgeCount, 47, 36,
-        gAppropriateImageDropdownItemsPerRow[edgeCount]);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[2], 0, edgeCount,
+        47, 36, gAppropriateImageDropdownItemsPerRow[edgeCount]);
 
     gDropdownDefaultIndex = defaultIndex;
 }

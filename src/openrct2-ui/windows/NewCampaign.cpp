@@ -271,7 +271,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                     }
 
                     window_dropdown_show_text_custom_width(
-                        w->x + dropdownWidget->left, w->y + dropdownWidget->top,
+                        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
                         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
                         dropdownWidget->right - dropdownWidget->left - 3);
                 }
@@ -301,8 +301,9 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                 }
 
                 window_dropdown_show_text_custom_width(
-                    w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->right - dropdownWidget->left - 3);
+                    w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                    dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+                    dropdownWidget->right - dropdownWidget->left - 3);
             }
             break;
         // In RCT2, the maximum was 6 weeks
@@ -404,10 +405,10 @@ static void window_new_campaign_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* spinnerWidget = &window_new_campaign_widgets[WIDX_WEEKS_SPINNER];
     gfx_draw_string_left(
         dpi, w->campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, &w->campaign.no_weeks, w->colours[0],
-        w->x + spinnerWidget->left + 1, w->y + spinnerWidget->top);
+        w->windowPos.x + spinnerWidget->left + 1, w->windowPos.y + spinnerWidget->top);
 
-    x = w->x + 14;
-    y = w->y + 60;
+    x = w->windowPos.x + 14;
+    y = w->windowPos.y + 60;
 
     // Price per week
     money32 pricePerWeek = AdvertisingCampaignPricePerWeek[w->campaign.campaign_type];

@@ -396,12 +396,12 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
 
     // Clip height value
-    int32_t x = w->x + 8;
-    int32_t y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+    int32_t x = w->windowPos.x + 8;
+    int32_t y = w->windowPos.y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
     gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], x, y);
 
-    x = w->x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
-    y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+    x = w->windowPos.x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
+    y = w->windowPos.y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
 
     fixed16_1dp clipHeightValueInUnits;
     fixed32_2dp clipHeightValueInMeters;

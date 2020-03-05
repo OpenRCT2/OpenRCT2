@@ -616,19 +616,21 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image += pathType->image;
 
         // Draw construction image
-        int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        int32_t y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
+        int32_t x = w->windowPos.x
+            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+        int32_t y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
         gfx_draw_sprite(dpi, image, x, y, 0);
 
         // Draw build this... label
-        x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
+        x = w->windowPos.x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+        y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, nullptr);
     }
 
     // Draw cost
-    int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-    int32_t y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
+    int32_t x = w->windowPos.x
+        + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+    int32_t y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
     if (_window_footpath_cost != MONEY32_UNDEFINED)
     {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -676,8 +678,8 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
     }
 
     window_dropdown_show_image(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, numPathTypes, 47, 36,
-        gAppropriateImageDropdownItemsPerRow[numPathTypes]);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+        numPathTypes, 47, 36, gAppropriateImageDropdownItemsPerRow[numPathTypes]);
 }
 
 /**

@@ -497,8 +497,7 @@ public:
             auto zoomDifference = zoom - viewport->zoom;
 
             mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
-            mainWindow->saved_view_x = viewPos.x;
-            mainWindow->saved_view_y = viewPos.y;
+            mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             gCurrentRotation = rotation;
 
@@ -507,8 +506,8 @@ public:
                 viewport->view_width <<= zoomDifference;
                 viewport->view_height <<= zoomDifference;
             }
-            mainWindow->saved_view_x -= viewport->view_width >> 1;
-            mainWindow->saved_view_y -= viewport->view_height >> 1;
+            mainWindow->savedViewPos.x -= viewport->view_width >> 1;
+            mainWindow->savedViewPos.y -= viewport->view_height >> 1;
 
             // Make sure the viewport has correct coordinates set.
             viewport_update_position(mainWindow);

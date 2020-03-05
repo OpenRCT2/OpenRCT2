@@ -249,8 +249,8 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
-        window, window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1,
-        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0,
+        window, window->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, { 0, 0, 0 }, 0,
         SPRITE_INDEX_NULL);
 
     _window_title_command_editor_index = index;
@@ -394,7 +394,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
 
             dropdown_set_checked(get_command_info_index(command.Type), true);
@@ -411,8 +411,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 }
 
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
 
                 dropdown_set_checked(command.Speed - 1, true);
             }
@@ -426,8 +426,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 }
 
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
 
                 dropdown_set_checked(command.SaveIndex, true);
             }
@@ -747,21 +747,25 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     TITLE_COMMAND_ORDER command_info = get_command_info(command.Type);
 
     // "Command:" label
-    gfx_draw_string_left(dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->x + WS, w->y + BY - 14);
+    gfx_draw_string_left(
+        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY - 14);
 
     // Command dropdown name
     gfx_draw_string_left_clipped(
-        dpi, command_info.nameStringId, nullptr, w->colours[1], w->x + w->widgets[WIDX_COMMAND].left + 1,
-        w->y + w->widgets[WIDX_COMMAND].top, w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
+        dpi, command_info.nameStringId, nullptr, w->colours[1], w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1,
+        w->windowPos.y + w->widgets[WIDX_COMMAND].top,
+        w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
 
     // Label (e.g. "Location:")
-    gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->x + WS, w->y + BY2 - 14);
+    gfx_draw_string_left(
+        dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY2 - 14);
 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {
         gfx_draw_string_left_clipped(
-            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-            w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
+            w->windowPos.y + w->widgets[WIDX_INPUT].top,
+            w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
@@ -779,26 +783,29 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         }
 
         gfx_set_dirty_blocks(
-            w->x + w->widgets[WIDX_VIEWPORT].left, w->y + w->widgets[WIDX_VIEWPORT].top, w->x + w->widgets[WIDX_VIEWPORT].right,
-            w->y + w->widgets[WIDX_VIEWPORT].bottom);
+            w->windowPos.x + w->widgets[WIDX_VIEWPORT].left, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top,
+            w->windowPos.x + w->widgets[WIDX_VIEWPORT].right, w->windowPos.y + w->widgets[WIDX_VIEWPORT].bottom);
         gfx_draw_string_left_clipped(
-            dpi, spriteString, gCommonFormatArgs, colour, w->x + w->widgets[WIDX_VIEWPORT].left + 2,
-            w->y + w->widgets[WIDX_VIEWPORT].top + 1, w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
+            dpi, spriteString, gCommonFormatArgs, colour, w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2,
+            w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1,
+            w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {
         if (command.SaveIndex == SAVE_INDEX_INVALID)
         {
             gfx_draw_string_left_clipped(
-                dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-                w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+                dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1],
+                w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
         else
         {
             set_format_arg(0, uintptr_t, (uintptr_t)_sequence->Saves[command.SaveIndex]);
             gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-                w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
+                w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
     else if (command.Type == TITLE_SCRIPT_LOADSC)
@@ -807,7 +814,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         {
             gfx_draw_string_left_clipped(
                 dpi, STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, nullptr, w->colours[1],
-                w->x + w->widgets[WIDX_INPUT].left + 1, w->y + w->widgets[WIDX_INPUT].top,
+                w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top,
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
         else
@@ -825,8 +832,9 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             }
             set_format_arg(0, uintptr_t, name);
             gfx_draw_string_left_clipped(
-                dpi, nameString, gCommonFormatArgs, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-                w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+                dpi, nameString, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
+                w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
 }

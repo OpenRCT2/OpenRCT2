@@ -508,7 +508,7 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
-    if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78))
+    if (clip_drawpixelinfo(&clippedDpi, dpi, w->windowPos.x + 4, w->windowPos.y + 18, 168, 78))
     {
         rct_g1_element g1temp = {};
         g1temp.offset = _window_track_place_mini_preview.data();
@@ -521,7 +521,8 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Price
     if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, COLOUR_BLACK, &_window_track_place_last_cost);
+        gfx_draw_string_centred(
+            dpi, STR_COST_LABEL, w->windowPos.x + 88, w->windowPos.y + 94, COLOUR_BLACK, &_window_track_place_last_cost);
     }
 }
 

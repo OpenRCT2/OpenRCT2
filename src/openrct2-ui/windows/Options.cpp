@@ -1286,8 +1286,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text_custom_width(
-                        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
                     dropdown_set_checked((int32_t)theme_manager_get_active_available_theme_index(), true);
                     widget_invalidate(w, WIDX_THEMES_DROPDOWN);
@@ -1307,8 +1307,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text(
-                        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1],
-                        DROPDOWN_FLAG_STAY_OPEN, num_items);
+                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
 
                     dropdown_set_checked((int32_t)title_get_current_sequence(), true);
                     break;
@@ -1321,8 +1321,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
                     window_dropdown_show_text_custom_width(
-                        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
                     dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
                     break;
@@ -2037,8 +2037,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case WINDOW_OPTIONS_PAGE_DISPLAY:
         {
             gfx_draw_string_left(
-                dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10,
-                w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
+                dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
             int32_t colour = w->colours[1];
@@ -2047,20 +2047,20 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 colour |= COLOUR_FLAG_INSET;
             }
             gfx_draw_string_left(
-                dpi, STR_DISPLAY_RESOLUTION, w, colour, w->x + 10 + 15,
-                w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
+                dpi, STR_DISPLAY_RESOLUTION, w, colour, w->windowPos.x + 10 + 15,
+                w->windowPos.y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
 
             gfx_draw_string_left(
-                dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10,
-                w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
+                dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_display_widgets[WIDX_SCALE].top + 1);
             gfx_draw_string_left(
-                dpi, STR_DRAWING_ENGINE, w, w->colours[1], w->x + 10,
-                w->y + window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1);
+                dpi, STR_DRAWING_ENGINE, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1);
 
             int32_t scale = (int32_t)(gConfigGeneral.window_scale * 100);
             gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1,
-                w->y + w->widgets[WIDX_SCALE].top + 1);
+                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->windowPos.x + w->widgets[WIDX_SCALE].left + 1,
+                w->windowPos.y + w->widgets[WIDX_SCALE].top + 1);
 
             colour = w->colours[1];
             if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE
@@ -2069,72 +2069,74 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 colour |= COLOUR_FLAG_INSET;
             }
             gfx_draw_string_left(
-                dpi, STR_SCALING_QUALITY, w, colour, w->x + 25,
-                w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
+                dpi, STR_SCALING_QUALITY, w, colour, w->windowPos.x + 25,
+                w->windowPos.y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
             break;
         }
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
             gfx_draw_string_left(
-                dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1], w->x + 10,
-                w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
+                dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
             gfx_draw_string_left(
-                dpi, STR_CURRENCY, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_CURRENCY].top + 1);
+                dpi, STR_CURRENCY, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_culture_widgets[WIDX_CURRENCY].top + 1);
             gfx_draw_string_left(
-                dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1], w->x + 10,
-                w->y + window_options_culture_widgets[WIDX_DISTANCE].top + 1);
+                dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_culture_widgets[WIDX_DISTANCE].top + 1);
             gfx_draw_string_left(
-                dpi, STR_TEMPERATURE, w, w->colours[1], w->x + 10,
-                w->y + window_options_culture_widgets[WIDX_TEMPERATURE].top + 1);
+                dpi, STR_TEMPERATURE, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_culture_widgets[WIDX_TEMPERATURE].top + 1);
             gfx_draw_string_left(
-                dpi, STR_HEIGHT_LABELS, w, w->colours[1], w->x + 10,
-                w->y + window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1);
+                dpi, STR_HEIGHT_LABELS, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1);
             gfx_draw_string_left(
-                dpi, STR_DATE_FORMAT, w, w->colours[1], w->x + 10,
-                w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1);
+                dpi, STR_DATE_FORMAT, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1);
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
             gfx_draw_string_left(
-                dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->x + 10,
-                w->y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
+                dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
             gfx_draw_string_left(
-                dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10,
-                w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
+                dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
             break;
         }
 
         case WINDOW_OPTIONS_PAGE_MISC:
         {
             gfx_draw_string_left(
-                dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10,
-                w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
+                dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
             gfx_draw_string_left(
-                dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1], w->x + 10,
-                w->y + window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1);
+                dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1);
             gfx_draw_string_left(
-                dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1], w->x + 10,
-                w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1);
+                dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1);
             break;
         }
 
         case WINDOW_OPTIONS_PAGE_ADVANCED:
         {
             gfx_draw_string_left(
-                dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1], w->x + 24,
-                w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1);
+                dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1], w->windowPos.x + 24,
+                w->windowPos.y + window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1);
             gfx_draw_string_left(
                 dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
-                w->x + window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
-                w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top);
+                w->windowPos.x + window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
+                w->windowPos.y + window_options_advanced_widgets[WIDX_AUTOSAVE].top);
             gfx_draw_string_left(
-                dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1], w->x + 24,
-                w->y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
+                dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1], w->windowPos.x + 24,
+                w->windowPos.y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
             int32_t autosavesToKeep = (int32_t)(gConfigGeneral.autosave_amount);
             gfx_draw_string_left(
                 dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
-                w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
+                w->windowPos.x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
+                w->windowPos.y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
             set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
@@ -2146,8 +2148,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->x + pathWidget.left + 1, w->y + pathWidget.top + padding,
-                277);
+                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->windowPos.x + pathWidget.left + 1,
+                w->windowPos.y + pathWidget.top + padding, 277);
             break;
         }
     }
@@ -2157,8 +2159,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
 {
     window_dropdown_show_text_custom_width(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN,
-        num_items, widget->right - widget->left - 3);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 }
 
 static void window_options_update_height_markers()
@@ -2248,8 +2250,8 @@ static void window_options_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w,
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    int16_t l = w->x + widget->left;
-    int16_t t = w->y + widget->top;
+    int16_t l = w->windowPos.x + widget->left;
+    int16_t t = w->windowPos.y + widget->top;
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {

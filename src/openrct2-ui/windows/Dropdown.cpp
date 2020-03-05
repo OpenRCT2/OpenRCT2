@@ -331,8 +331,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR)
         {
-            l = w->x + 2 + (cell_x * _dropdown_item_width);
-            t = w->y + 2 + (cell_y * _dropdown_item_height);
+            l = w->windowPos.x + 2 + (cell_x * _dropdown_item_width);
+            t = w->windowPos.y + 2 + (cell_y * _dropdown_item_height);
             r = l + _dropdown_item_width - 1;
             t += (_dropdown_item_height / 2);
             b = t;
@@ -354,8 +354,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
             //
             if (i == highlightedIndex)
             {
-                l = w->x + 2 + (cell_x * _dropdown_item_width);
-                t = w->y + 2 + (cell_y * _dropdown_item_height);
+                l = w->windowPos.x + 2 + (cell_x * _dropdown_item_width);
+                t = w->windowPos.y + 2 + (cell_y * _dropdown_item_height);
                 r = l + _dropdown_item_width - 1;
                 b = t + _dropdown_item_height - 1;
                 gfx_filter_rect(dpi, l, t, r, b, PALETTE_DARKEN_3);
@@ -370,7 +370,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     image++;
 
                 gfx_draw_sprite(
-                    dpi, image, w->x + 2 + (cell_x * _dropdown_item_width), w->y + 2 + (cell_y * _dropdown_item_height), 0);
+                    dpi, image, w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
+                    w->windowPos.y + 2 + (cell_y * _dropdown_item_height), 0);
             }
             else
             {
@@ -393,8 +394,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Draw item string
                 gfx_draw_string_left_clipped(
-                    dpi, item, (void*)(&gDropdownItemsArgs[i]), colour, w->x + 2 + (cell_x * _dropdown_item_width),
-                    w->y + 2 + (cell_y * _dropdown_item_height), w->width - 5);
+                    dpi, item, (void*)(&gDropdownItemsArgs[i]), colour, w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
+                    w->windowPos.y + 2 + (cell_y * _dropdown_item_height), w->width - 5);
             }
         }
     }
@@ -406,11 +407,11 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window* w)
 {
-    int32_t top = y - w->y - 2;
+    int32_t top = y - w->windowPos.y - 2;
     if (top < 0)
         return -1;
 
-    int32_t left = x - w->x;
+    int32_t left = x - w->windowPos.x;
     if (left >= w->width)
         return -1;
     left -= 2;
@@ -455,8 +456,8 @@ void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t drop
 
     // Show dropdown
     window_dropdown_show_image(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, dropdownColour, DROPDOWN_FLAG_STAY_OPEN,
-        COLOUR_COUNT, 12, 12, gAppropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, dropdownColour,
+        DROPDOWN_FLAG_STAY_OPEN, COLOUR_COUNT, 12, 12, gAppropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;

@@ -402,7 +402,6 @@ rct_window* window_editor_object_selection_open()
     }
     window_init_scroll_widgets(window);
 
-    window->var_4AE = 0;
     window->selected_tab = 0;
     window->selected_list_item = -1;
     window->object_entry = nullptr;
@@ -613,8 +612,8 @@ void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex wid
             }
 
             window_dropdown_show_text(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[widget->colour],
-                DROPDOWN_FLAG_STAY_OPEN, _numSourceGameItems + numSelectionItems);
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                w->colours[widget->colour], DROPDOWN_FLAG_STAY_OPEN, _numSourceGameItems + numSelectionItems);
 
             for (int32_t i = 0; i < _numSourceGameItems; i++)
             {
@@ -967,8 +966,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         if (widget->type != WWT_EMPTY)
         {
             auto image = ObjectSelectionPages[i].Image;
-            x = w->x + widget->left;
-            y = w->y + widget->top;
+            x = w->windowPos.x + widget->left;
+            y = w->windowPos.y + widget->top;
             gfx_draw_sprite(dpi, image, x, y, 0);
         }
     }
@@ -996,8 +995,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
             }
             spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
-            x = w->x + widget->left;
-            y = w->y + widget->top;
+            x = w->windowPos.x + widget->left;
+            y = w->windowPos.y + widget->top;
             gfx_draw_sprite(dpi, spriteIndex | (w->colours[1] << 19), x, y, 0);
         }
     }
@@ -1005,14 +1004,14 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
     gfx_fill_rect(
-        dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1,
-        ColourMapA[w->colours[1]].darkest);
+        dpi, w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1, w->windowPos.x + widget->right - 1,
+        w->windowPos.y + widget->bottom - 1, ColourMapA[w->colours[1]].darkest);
 
     // Draw number of selected items
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
-        x = w->x + 3;
-        y = w->y + w->height - 13;
+        x = w->windowPos.x + 3;
+        y = w->windowPos.y + w->height - 13;
 
         int32_t numSelected = _numSelectedObjectsForType[get_selected_object_type(w)];
         int32_t totalSelectable = object_entry_group_counts[get_selected_object_type(w)];
@@ -1031,8 +1030,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         stringId = _listSortType == RIDE_SORT_TYPE ? (rct_string_id)(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : (rct_string_id)STR_NONE;
         gfx_draw_string_left_clipped(
-            dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1,
-            widget->right - widget->left);
+            dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
+            w->windowPos.y + widget->top + 1, widget->right - widget->left);
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
@@ -1040,8 +1039,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         stringId = _listSortType == RIDE_SORT_RIDE ? (rct_string_id)(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : (rct_string_id)STR_NONE;
         gfx_draw_string_left_clipped(
-            dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1,
-            widget->right - widget->left);
+            dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
+            w->windowPos.y + widget->top + 1, widget->right - widget->left);
     }
 
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
@@ -1053,8 +1052,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     widget = &w->widgets[WIDX_PREVIEW];
     {
         rct_drawpixelinfo clipDPI;
-        x = w->x + widget->left + 1;
-        y = w->y + widget->top + 1;
+        x = w->windowPos.x + widget->left + 1;
+        y = w->windowPos.y + widget->top + 1;
         width = widget->right - widget->left - 1;
         int32_t height = widget->bottom - widget->top - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height))
@@ -1064,8 +1063,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     }
 
     // Draw name of object
-    x = w->x + (widget->left + widget->right) / 2 + 1;
-    y = w->y + widget->bottom + 3;
+    x = w->windowPos.x + (widget->left + widget->right) / 2 + 1;
+    y = w->windowPos.y + widget->bottom + 3;
     width = w->width - w->widgets[WIDX_LIST].right - 6;
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char*, listItem->repositoryItem->Name.c_str());
@@ -1078,34 +1077,34 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, const char*, description.c_str());
 
-        x = w->x + w->widgets[WIDX_LIST].right + 4;
+        x = w->windowPos.x + w->widgets[WIDX_LIST].right + 4;
         y += 15;
-        width = w->x + w->width - x - 4;
+        width = w->windowPos.x + w->width - x - 4;
 
         gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
-    y = w->y + w->height - (12 * 4);
+    y = w->windowPos.y + w->height - (12 * 4);
 
     // Draw ride type.
     if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
     {
         stringId = get_ride_type_string_id(listItem->repositoryItem);
-        gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
+        gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->windowPos.x + w->width - 5, y);
     }
 
     y += 12;
 
     // Draw object source
     stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
+    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->windowPos.x + w->width - 5, y);
     y += 12;
 
     // Draw object dat name
     const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char*, path);
-    gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, y);
+    gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 5, y);
 }
 
 /**
