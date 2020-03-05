@@ -237,7 +237,7 @@ private:
             newPeep->pathfind_goal.x = 0xFF;
             newPeep->pathfind_goal.y = 0xFF;
             newPeep->pathfind_goal.z = 0xFF;
-            newPeep->pathfind_goal.direction = 0xFF;
+            newPeep->pathfind_goal.direction = INVALID_DIRECTION;
 
             uint8_t colour = staff_get_colour(_staffType);
             newPeep->tshirt_colour = colour;

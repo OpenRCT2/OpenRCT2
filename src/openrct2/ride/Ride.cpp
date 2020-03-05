@@ -119,7 +119,7 @@ uint8_t gRideEntranceExitPlaceType;
 ride_id_t gRideEntranceExitPlaceRideIndex;
 uint8_t gRideEntranceExitPlaceStationIndex;
 uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
-uint8_t gRideEntranceExitPlaceDirection;
+Direction gRideEntranceExitPlaceDirection;
 
 uint8_t gLastEntranceStyle;
 
@@ -1091,7 +1091,7 @@ void ride_remove_peeps(Ride* ride)
     int32_t exitX = 0;
     int32_t exitY = 0;
     int32_t exitZ = 0;
-    int32_t exitDirection = 255;
+    int32_t exitDirection = INVALID_DIRECTION;
     if (stationIndex != -1)
     {
         TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
@@ -1130,7 +1130,7 @@ void ride_remove_peeps(Ride* ride)
 
             peep->Invalidate();
 
-            if (exitDirection == 255)
+            if (exitDirection == INVALID_DIRECTION)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
@@ -6145,7 +6145,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     Ride* ride;
     CoordsXYZD entranceExitCoords{};
 
-    gRideEntranceExitPlaceDirection = 255;
+    gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     CoordsXY unusedCoords;
     get_map_coordinates_from_pos(screenCoords, 0xFFFB, unusedCoords, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
@@ -6256,7 +6256,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             }
             entranceExitCoords.direction = (entranceExitCoords.direction + 1) & 3;
         }
-        gRideEntranceExitPlaceDirection = 0xFF;
+        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     }
     else
     {
@@ -6879,14 +6879,14 @@ void sub_6CB945(Ride* ride)
             CoordsXYZ location = { ride->stations[stationId].Start.x * 32, ride->stations[stationId].Start.y * 32,
                                    ride->stations[stationId].GetBaseZ() };
             auto tileHeight = TileCoordsXYZ(location).z;
-            uint8_t direction = 0xFF;
+            uint8_t direction = INVALID_DIRECTION;
 
             bool specialTrack = false;
             TileElement* tileElement = nullptr;
 
             while (true)
             {
-                if (direction != 0xFF)
+                if (direction != INVALID_DIRECTION)
                 {
                     location.x -= CoordsDirectionDelta[direction].x;
                     location.y -= CoordsDirectionDelta[direction].y;

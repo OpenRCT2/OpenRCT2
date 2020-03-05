@@ -951,7 +951,7 @@ static void window_footpath_start_bridge_at_point(const ScreenCoordsXY& screenCo
     _window_footpath_provisional_path_arrow_timer = 0;
     gFootpathConstructSlope = 0;
     gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
-    gFootpathConstructValidDirections = 255;
+    gFootpathConstructValidDirections = INVALID_DIRECTION;
     window_footpath_set_enabled_and_pressed_widgets();
 }
 
@@ -977,7 +977,7 @@ static void window_footpath_construct()
 
             if (gFootpathConstructSlope == 0)
             {
-                gFootpathConstructValidDirections = 0xFF;
+                gFootpathConstructValidDirections = INVALID_DIRECTION;
             }
             else
             {
@@ -1049,7 +1049,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
     gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
     gFootpathConstructFromPosition.z = z;
     gFootpathConstructDirection = edge;
-    gFootpathConstructValidDirections = 255;
+    gFootpathConstructValidDirections = INVALID_DIRECTION;
 }
 
 /**
@@ -1179,7 +1179,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
         // Enable / disable directional widgets
         direction = gFootpathConstructValidDirections;
-        if (direction != 255)
+        if (direction != INVALID_DIRECTION)
         {
             disabledWidgets |= (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW)
                 | (1 << WIDX_DIRECTION_SE);

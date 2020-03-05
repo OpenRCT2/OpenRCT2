@@ -1749,7 +1749,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->pathfind_goal.x = 0xFF;
     peep->pathfind_goal.y = 0xFF;
     peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = 0xFF;
+    peep->pathfind_goal.direction = INVALID_DIRECTION;
     peep->item_standard_flags = 0;
     peep->item_extra_flags = 0;
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
@@ -3196,7 +3196,7 @@ void peep_reset_pathfind_goal(Peep* peep)
     peep->pathfind_goal.x = 0xFF;
     peep->pathfind_goal.y = 0xFF;
     peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = 0xFF;
+    peep->pathfind_goal.direction = INVALID_DIRECTION;
 }
 
 /**

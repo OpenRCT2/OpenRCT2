@@ -3673,7 +3673,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (gRideEntranceExitPlaceDirection == 255)
+    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
     {
         ride_construction_invalidate_current_track();
         return;
@@ -3914,7 +3914,7 @@ static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& scree
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (gRideEntranceExitPlaceDirection == 255)
+    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
         return;
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
