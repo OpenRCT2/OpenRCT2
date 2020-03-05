@@ -33,15 +33,28 @@ namespace OpenRCT2::Scripting
             _console.Clear();
         }
 
-        void log(DukValue val)
+        duk_ret_t log(duk_context* ctx)
         {
-            _console.WriteLine(Stringify(val));
+            std::string line;
+            auto nargs = duk_get_top(ctx);
+            for (duk_idx_t i = 0; i < nargs; i++)
+            {
+                auto arg = DukValue::copy_from_stack(ctx, i);
+                auto argsz = Stringify(arg);
+                if (i != 0)
+                {
+                    line.push_back(' ');
+                }
+                line += argsz;
+            }
+            _console.WriteLine(line);
+            return 0;
         }
 
         static void Register(duk_context* ctx)
         {
             dukglue_register_method(ctx, &ScConsole::clear, "clear");
-            dukglue_register_method(ctx, &ScConsole::log, "log");
+            dukglue_register_method_varargs(ctx, &ScConsole::log, "log");
         }
     };
 } // namespace OpenRCT2::Scripting
