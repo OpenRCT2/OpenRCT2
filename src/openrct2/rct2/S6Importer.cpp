@@ -35,6 +35,7 @@
 #include "../peep/Staff.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../ride/ShopItem.h"
@@ -170,7 +171,7 @@ public:
 
         _s6Path = path;
 
-        return ParkLoadResult(std::vector<rct_object_entry>(std::begin(_s6.objects), std::end(_s6.objects)));
+        return ParkLoadResult(GetRequiredObjects());
     }
 
     bool GetDetails(scenario_index_entry* dst) override
@@ -1619,6 +1620,28 @@ public:
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
         auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
         return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    }
+
+    std::vector<rct_object_entry> GetRequiredObjects()
+    {
+        std::vector<rct_object_entry> result;
+        rct_object_entry nullEntry = {};
+        std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
+
+        int objectIt = 0;
+        for (int16_t objectType = OBJECT_TYPE_RIDE; objectType <= OBJECT_TYPE_WATER; objectType++)
+        {
+            for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
+            {
+                result.push_back(_s6.objects[objectIt]);
+            }
+            for (int16_t i = rct2_object_entry_group_counts[objectType]; i < object_entry_group_counts[objectType]; i++)
+            {
+                result.push_back(nullEntry);
+            }
+        }
+
+        return result;
     }
 };
 

@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RCT2_H_
-#define _RCT2_H_
+#pragma once
 
 #include "../common.h"
 #include "../object/Object.h"
@@ -34,7 +33,49 @@
 #define RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS 56
 #define RCT2_MAX_RESEARCHED_SCENERY_ITEMS (RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS * 32) // There are 32 bits per quad.
 
-constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT = 721;
+constexpr const uint8_t RCT2_MAX_RIDE_OBJECTS = 128;
+constexpr const uint8_t RCT2_MAX_SMALL_SCENERY_OBJECTS = 252;
+constexpr const uint8_t RCT2_MAX_LARGE_SCENERY_OBJECTS = 128;
+constexpr const uint8_t RCT2_MAX_WALL_SCENERY_OBJECTS = 128;
+constexpr const uint8_t RCT2_MAX_BANNER_OBJECTS = 32;
+constexpr const uint8_t RCT2_MAX_PATH_OBJECTS = 16;
+constexpr const uint8_t RCT2_MAX_PATH_ADDITION_OBJECTS = 15;
+constexpr const uint8_t RCT2_MAX_SCENERY_GROUP_OBJECTS = 19;
+constexpr const uint8_t RCT2_MAX_PARK_ENTRANCE_OBJECTS = 1;
+constexpr const uint8_t RCT2_MAX_WATER_OBJECTS = 1;
+constexpr const uint8_t RCT2_MAX_SCENARIO_TEXT_OBJECTS = 1;
+
+// clang-format off
+constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
+    RCT2_MAX_RIDE_OBJECTS +
+    RCT2_MAX_SMALL_SCENERY_OBJECTS +
+    RCT2_MAX_LARGE_SCENERY_OBJECTS +
+    RCT2_MAX_WALL_SCENERY_OBJECTS +
+    RCT2_MAX_BANNER_OBJECTS +
+    RCT2_MAX_PATH_OBJECTS +
+    RCT2_MAX_PATH_ADDITION_OBJECTS +
+    RCT2_MAX_SCENERY_GROUP_OBJECTS +
+    RCT2_MAX_PARK_ENTRANCE_OBJECTS +
+    RCT2_MAX_WATER_OBJECTS +
+    RCT2_MAX_SCENARIO_TEXT_OBJECTS;
+// clang-format on
+static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
+
+// clang-format off
+constexpr const int32_t rct2_object_entry_group_counts[] = {
+    RCT2_MAX_RIDE_OBJECTS,
+    RCT2_MAX_SMALL_SCENERY_OBJECTS,
+    RCT2_MAX_LARGE_SCENERY_OBJECTS,
+    RCT2_MAX_WALL_SCENERY_OBJECTS,
+    RCT2_MAX_BANNER_OBJECTS,
+    RCT2_MAX_PATH_OBJECTS,
+    RCT2_MAX_PATH_ADDITION_OBJECTS,
+    RCT2_MAX_SCENERY_GROUP_OBJECTS,
+    RCT2_MAX_PARK_ENTRANCE_OBJECTS,
+    RCT2_MAX_WATER_OBJECTS,
+    RCT2_MAX_SCENARIO_TEXT_OBJECTS,
+};
+// clang-format on
 
 struct rct2_install_info
 {
@@ -715,5 +756,3 @@ struct RCT2RideRatingCalculationData
 assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 #pragma pack(pop)
-
-#endif
