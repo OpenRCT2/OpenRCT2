@@ -41,6 +41,5 @@ constexpr const uint16_t OBJECT_ENTRY_COUNT =
     MAX_WATER_OBJECTS +
     MAX_SCENARIO_TEXT_OBJECTS;
 // clang-format on
-static_assert(OBJECT_ENTRY_COUNT == 721);
 
 #define DAT_NAME_LENGTH 8
