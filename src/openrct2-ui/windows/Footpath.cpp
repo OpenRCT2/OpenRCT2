@@ -646,10 +646,10 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues)
 {
-    int32_t i, numPathTypes, image;
+    int32_t i, image;
     PathSurfaceEntry* pathType;
 
-    numPathTypes = 0;
+    uint32_t numPathTypes = 0;
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
 
@@ -677,9 +677,10 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         numPathTypes++;
     }
 
+    auto itemsPerRow = dropdown_get_appropriate_image_dropdown_items_per_row(numPathTypes);
     window_dropdown_show_image(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-        numPathTypes, 47, 36, gAppropriateImageDropdownItemsPerRow[numPathTypes]);
+        numPathTypes, 47, 36, itemsPerRow);
 }
 
 /**

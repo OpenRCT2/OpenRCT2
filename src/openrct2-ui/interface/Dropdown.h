@@ -23,8 +23,6 @@ enum
     DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
 };
 
-extern int32_t gAppropriateImageDropdownItemsPerRow[];
-
 extern int32_t gDropdownNumItems;
 extern rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
 extern int64_t gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
@@ -50,3 +48,4 @@ int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w);
 void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
 void window_dropdown_show_colour_available(
     rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
+uint32_t dropdown_get_appropriate_image_dropdown_items_per_row(uint32_t numItems);
