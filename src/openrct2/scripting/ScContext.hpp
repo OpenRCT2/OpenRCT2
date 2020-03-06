@@ -14,6 +14,7 @@
 #    include "../actions/CustomAction.hpp"
 #    include "../actions/ParkSetNameAction.hpp"
 #    include "../actions/SmallSceneryPlaceAction.hpp"
+#    include "../scenario/Scenario.h"
 #    include "Duktape.hpp"
 #    include "HookEngine.h"
 #    include "ScDisposable.hpp"
@@ -40,6 +41,15 @@ namespace OpenRCT2::Scripting
     private:
         void registerIntent(const DukValue& desc)
         {
+        }
+
+        int32_t getRandom(int32_t min, int32_t max)
+        {
+            ThrowIfGameStateNotMutable();
+            if (min >= max)
+                return min;
+            int32_t range = max - min;
+            return min + scenario_rand_max(range);
         }
 
         std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
@@ -206,6 +216,7 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
+            dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
             dukglue_register_method(ctx, &ScContext::registerIntent, "registerIntent");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
             dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");

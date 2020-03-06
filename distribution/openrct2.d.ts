@@ -87,6 +87,16 @@ declare global {
         result: GameActionResult;
     }
 
+    interface RideCreateGameActionResult extends GameActionResult {
+        readonly ride: number;
+    }
+
+    interface RideCreateActionEventArgs extends ActionEventArgs {
+        readonly rideType: number;
+        readonly rideObject: number;
+        result: RideCreateGameActionResult;
+    }
+
     interface NetworkEventArgs {
         readonly player: number;
     }
@@ -110,6 +120,17 @@ declare global {
          * Local generic storage for a each plugin.
          */
         localStorage: Configuration;
+
+        /**
+         * Gets a random integer within the specified range using the game's pseudo-
+         * random number generator. This is part of the game state and shared across
+         * all clients, you therefore must be in a context that can mutate the game
+         * state. Use this to generate random numbers instead of Math.Random during
+         * game logic routines such as hooks and game actions.
+         * @param min The minimum value inclusive.
+         * @param max The maximum value exclusive.
+         */
+        getRandom(min: number, max: number): number;
 
         /**
          * Registers a new intent (command) that can be mapped to a shortcut.
