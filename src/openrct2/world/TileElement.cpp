@@ -46,31 +46,31 @@ Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 
 bool TileElementBase::IsLastForTile() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 void TileElementBase::SetLastForTile(bool on)
 {
     if (on)
-        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     else
-        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
 bool TileElementBase::IsGhost() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 void TileElementBase::SetGhost(bool isGhost)
 {
     if (isGhost)
     {
-        this->flags |= TILE_ELEMENT_FLAG_GHOST;
+        this->Flags |= TILE_ELEMENT_FLAG_GHOST;
     }
     else
     {
-        this->flags &= ~TILE_ELEMENT_FLAG_GHOST;
+        this->Flags &= ~TILE_ELEMENT_FLAG_GHOST;
     }
 }
 
@@ -158,7 +158,7 @@ uint8_t tile_element_get_ride_index(const TileElement* tileElement)
 void TileElement::ClearAs(uint8_t newType)
 {
     type = newType;
-    flags = 0;
+    Flags = 0;
     base_height = 2;
     clearance_height = 2;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
@@ -216,13 +216,13 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const
 {
-    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
 }
 
 void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 {
-    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
-    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+    Flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    Flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }
 
 int32_t TileElementBase::GetBaseZ() const

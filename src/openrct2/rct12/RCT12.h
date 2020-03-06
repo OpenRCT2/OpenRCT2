@@ -73,6 +73,17 @@ enum class RCT12TrackDesignVersion : uint8_t
 
 enum
 {
+    RCT12_TILE_ELEMENT_FLAG_GHOST = (1 << 4),
+    RCT12_TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
+    RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
+    RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
+    RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
+    RCT12_TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
+    RCT12_TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
+};
+
+enum
+{
     RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT = 1 << 7,
 };
 
@@ -96,6 +107,24 @@ enum
 
     RCT12_TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
     RCT12_TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
+};
+
+// Masks and flags for values stored in TileElement.properties.path.type
+enum
+{
+    RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
+    RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
+    RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
+    RCT12_FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+};
+
+// Masks and flags for values stored in in RCT12TileElement.properties.path.additions
+enum
+{
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+    // The most significant bit in this mask will always be zero, since rides can only have 4 stations
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
 };
 
 #pragma pack(push, 1)
@@ -228,9 +257,15 @@ struct RCT12TileElementBase
     uint8_t clearance_height; // 3
     uint8_t GetType() const;
     uint8_t GetDirection() const;
-    bool IsLastForTile() const;
-    bool IsGhost() const;
     void SetDirection(uint8_t direction);
+
+    uint8_t GetOccupiedQuadrants() const;
+    void SetOccupiedQuadrants(uint8_t quadrants);
+
+    bool IsLastForTile() const;
+    void SetLastForTile(bool on);
+    bool IsGhost() const;
+    void SetGhost(bool isGhost);
 };
 /**
  * Map element structure
@@ -351,6 +386,12 @@ public:
     void SetAddition(uint8_t newAddition);
     void SetAdditionIsGhost(bool isGhost);
     void SetAdditionStatus(uint8_t newStatus);
+
+    bool IsBroken() const;
+    void SetIsBroken(bool isBroken);
+
+    bool IsBlockedByVehicle() const;
+    void SetIsBlockedByVehicle(bool isBlocked);
 };
 assert_struct_size(RCT12PathElement, 8);
 struct RCT12TrackElement : RCT12TileElementBase
@@ -405,12 +446,16 @@ public:
     void SetHasChain(bool on);
     void SetHasCableLift(bool on);
     void SetInverted(bool inverted);
+    bool BlockBrakeClosed() const;
     void SetBlockBrakeClosed(bool isClosed);
     void SetBrakeBoosterSpeed(uint8_t speed);
     void SetHasGreenLight(uint8_t greenLight);
     void SetSeatRotation(uint8_t newSeatRotation);
     void SetMazeEntry(uint16_t newMazeEntry);
     void SetPhotoTimeout(uint8_t newValue);
+
+    bool IsIndestructible() const;
+    void SetIsIndestructible(bool isIndestructible);
 };
 assert_struct_size(RCT12TrackElement, 8);
 struct RCT12SmallSceneryElement : RCT12TileElementBase

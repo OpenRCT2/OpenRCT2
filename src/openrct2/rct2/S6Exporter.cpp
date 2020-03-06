@@ -1423,9 +1423,13 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
     uint8_t tileElementType = src->GetType();
     dst->ClearAs(tileElementType);
     dst->SetDirection(src->GetDirection());
-    dst->flags = src->flags;
     dst->base_height = src->base_height;
     dst->clearance_height = src->clearance_height;
+
+    // All saved in "flags"
+    dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
+    dst->SetGhost(src->IsGhost());
+    dst->SetLastForTile(src->IsLastForTile());
 
     switch (tileElementType)
     {
@@ -1450,7 +1454,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             auto dst2 = dst->AsPath();
             auto src2 = src->AsPath();
 
-            dst2->SetPathEntryIndex(src2->GetPathEntryIndex());
+            dst2->SetPathEntryIndex(src2->GetSurfaceEntryIndex());
             dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
             dst2->SetSloped(src2->IsSloped());
             dst2->SetSlopeDirection(src2->GetSlopeDirection());
@@ -1464,6 +1468,8 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetAddition(src2->GetAddition());
             dst2->SetAdditionIsGhost(src2->AdditionIsGhost());
             dst2->SetAdditionStatus(src2->GetAdditionStatus());
+            dst2->SetIsBroken(src2->IsBroken());
+            dst2->SetIsBlockedByVehicle(src2->IsBlockedByVehicle());
 
             break;
         }
@@ -1483,6 +1489,8 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetInverted(src2->IsInverted());
             dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
             dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+            dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
+            dst2->SetIsIndestructible(src2->IsIndestructible());
 
             auto ride = get_ride(dst2->GetRideIndex());
             if (ride)

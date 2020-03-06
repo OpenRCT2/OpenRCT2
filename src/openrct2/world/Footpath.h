@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WORLD_FOOTPATH_H_
-#define _WORLD_FOOTPATH_H_
+#pragma once
 
 #include "../common.h"
 #include "../interface/Viewport.h"
@@ -27,6 +26,12 @@ constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr auto PATH_HEIGHT = 4 * COORDS_Z_STEP;
 
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
+
+using PathSurfaceIndex = uint16_t;
+constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = (PathSurfaceIndex)-1;
+
+using PathRailingsIndex = uint8_t;
+constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = (PathRailingsIndex)-1;
 
 enum class RailingEntrySupportType : uint8_t
 {
@@ -91,13 +96,13 @@ enum
     FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in in TileElement.properties.path.additions
 enum
 {
-    FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
-    // The most significant bit in this mask will always be zero, since rides can only have 4 stations
-    FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
-    FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
+    FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED = 1 << 0,
+    FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER = (1 << 1),
+    FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST = (1 << 2),
+    FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
+    FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
 };
 
 enum
@@ -118,16 +123,6 @@ enum
     FOOTPATH_SEARCH_NOT_FOUND,
     FOOTPATH_SEARCH_INCOMPLETE,
     FOOTPATH_SEARCH_TOO_COMPLEX
-};
-
-enum
-{
-    FOOTPATH_ADDITION_FLAG_IS_GHOST = (1 << 7),
-};
-
-enum
-{
-    FOOTPATH_CLEAR_DIRECTIONAL = (1 << 8), // Flag set when direction is used.
 };
 
 enum
@@ -198,10 +193,8 @@ int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t 
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 int32_t entrance_get_directions(const TileElement* tileElement);
 
-PathSurfaceEntry* get_path_surface_entry(int32_t entryIndex);
-PathRailingsEntry* get_path_railings_entry(int32_t entryIndex);
+PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex);
+PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);
-
-#endif

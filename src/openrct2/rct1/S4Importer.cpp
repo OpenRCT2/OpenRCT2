@@ -1989,9 +1989,14 @@ private:
         uint8_t tileElementType = src->GetType();
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
-        dst->flags = src->flags;
-        dst->SetBaseZ(src->base_height * 4);
-        dst->SetClearanceZ(src->clearance_height * 4);
+
+        // All saved in "flags"
+        dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
+        dst->SetGhost(src->IsGhost());
+        dst->SetLastForTile(src->IsLastForTile());
+
+        dst->SetBaseZ(src->base_height * RCT1_COORDS_Z_STEP);
+        dst->SetClearanceZ(src->clearance_height * RCT1_COORDS_Z_STEP);
 
         switch (tileElementType)
         {
@@ -2037,7 +2042,7 @@ private:
                 dst2->SetIsBroken(false);
                 dst2->SetIsBlockedByVehicle(false);
 
-                dst2->SetPathEntryIndex(entryIndex);
+                dst2->SetSurfaceEntryIndex(entryIndex);
                 dst2->SetShouldDrawPathOverSupports(true);
                 if (RCT1::PathIsQueue(pathType))
                 {
@@ -2098,6 +2103,7 @@ private:
                 dst2->SetDoorBState(src2->GetDoorBState());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
+                dst2->SetIsIndestructible(src2->IsIndestructible());
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))

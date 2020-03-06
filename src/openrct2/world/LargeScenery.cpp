@@ -54,22 +54,22 @@ void LargeSceneryElement::SetBannerIndex(::BannerIndex newIndex)
 
 bool LargeSceneryElement::IsAccounted() const
 {
-    return (flags & TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED) != 0;
+    return (Flags2 & LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED) != 0;
 }
 
 void LargeSceneryElement::SetIsAccounted(bool isAccounted)
 {
     if (isAccounted)
     {
-        flags |= TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+        Flags2 |= LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED;
     }
     else
     {
-        flags &= ~TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+        Flags2 &= ~LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED;
     }
 }
 
-uint32_t LargeSceneryElement::GetEntryIndex() const
+uint16_t LargeSceneryElement::GetEntryIndex() const
 {
     return EntryIndex;
 }
@@ -84,7 +84,7 @@ uint8_t LargeSceneryElement::GetSequenceIndex() const
     return SequenceIndex;
 }
 
-void LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
+void LargeSceneryElement::SetEntryIndex(uint16_t newIndex)
 {
     EntryIndex = newIndex;
 }
