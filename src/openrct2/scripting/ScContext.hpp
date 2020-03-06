@@ -17,6 +17,7 @@
 #    include "../scenario/Scenario.h"
 #    include "Duktape.hpp"
 #    include "HookEngine.h"
+#    include "ScConfiguration.hpp"
 #    include "ScDisposable.hpp"
 #    include "ScriptEngine.h"
 
@@ -39,6 +40,17 @@ namespace OpenRCT2::Scripting
         }
 
     private:
+        std::shared_ptr<ScConfiguration> configuration_get()
+        {
+            return std::make_shared<ScConfiguration>();
+        }
+
+        std::shared_ptr<ScConfiguration> sharedStorage_get()
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            return std::make_shared<ScConfiguration>(scriptEngine.GetSharedStorage());
+        }
+
         void registerIntent(const DukValue& desc)
         {
         }
@@ -216,6 +228,8 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
+            dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
             dukglue_register_method(ctx, &ScContext::registerIntent, "registerIntent");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");

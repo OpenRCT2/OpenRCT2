@@ -15,6 +15,7 @@
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.hpp"
 #    include "../config/Config.h"
+#    include "../core/File.h"
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
 #    include "../interface/InteractiveConsole.h"
@@ -365,6 +366,7 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
 void ScriptEngine::Initialise()
 {
     auto ctx = (duk_context*)_context;
+    ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);
     ScContext::Register(ctx);
     ScDate::Register(ctx);
@@ -391,6 +393,10 @@ void ScriptEngine::Initialise()
     _initialised = true;
     _pluginsLoaded = false;
     _pluginsStarted = false;
+
+    duk_push_object(ctx);
+    _sharedStorage = std::move(DukValue::take_from_stack(ctx));
+    LoadSharedStorage();
 }
 
 void ScriptEngine::LoadPlugins()
@@ -820,7 +826,6 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
-#    pragma warning(disable : 4189)
 void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
 {
     DukStackFrame frame(_context);
@@ -856,6 +861,38 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
                 result->ErrorMessage = AsOrDefault<std::string>(dukEventArgs["errorMessage"]);
             }
         }
+    }
+}
+
+void ScriptEngine::LoadSharedStorage()
+{
+    std::string path = "C:\\Users\\Ted\\Documents\\OpenRCT2\\plugin.json";
+    try
+    {
+        auto data = File::ReadAllBytes(path);
+        duk_push_lstring(_context, (const char*)data.data(), data.size());
+        duk_json_decode(_context, -1);
+        _sharedStorage = std::move(DukValue::take_from_stack(_context));
+    }
+    catch (const std::exception&)
+    {
+    }
+}
+
+void ScriptEngine::SaveSharedStorage()
+{
+    _sharedStorage.push();
+    auto json = std::string(duk_json_encode(_context, -1));
+    duk_pop(_context);
+
+    std::string path = "C:\\Users\\Ted\\Documents\\OpenRCT2\\plugin.json";
+    try
+    {
+        File::WriteAllBytes(path, json.c_str(), json.size());
+    }
+    catch (const std::exception&)
+    {
+        fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
     }
 }
 

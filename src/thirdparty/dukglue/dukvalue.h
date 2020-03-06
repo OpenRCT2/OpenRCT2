@@ -589,10 +589,10 @@ private:
 	int* mRefCount;  // if mType == OBJECT and we're sharing, this will point to our ref counter
 
 public:
-	DukValue operator [](const std::string &key) const
+	DukValue operator [](const std::string_view &key) const
 	{
 		push();
-		duk_get_prop_string(mContext, -1, key.c_str());
+		duk_get_prop_lstring(mContext, -1, key.data(), key.size());
 		auto result = DukValue::take_from_stack(mContext);
 		duk_pop(mContext);
         return result;

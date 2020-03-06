@@ -33,7 +33,7 @@ declare global {
     }
 
     interface Configuration {
-        getAll(pattern: string): { [name: string]: any };
+        getAll(namespace: string): { [name: string]: any };
         get<T>(key: string): T | undefined;
         get<T>(key: string, defaultValue: T): T;
         set<T>(key: string, value: T): void;

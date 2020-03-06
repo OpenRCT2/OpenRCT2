@@ -115,6 +115,7 @@ namespace OpenRCT2::Scripting
         uint32_t _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
+        DukValue _sharedStorage;
 
         std::unique_ptr<FileWatcher> _pluginFileWatcher;
         std::unordered_set<std::string> _changedPluginFiles;
@@ -147,6 +148,10 @@ namespace OpenRCT2::Scripting
         {
             return _execInfo;
         }
+        DukValue GetSharedStorage()
+        {
+            return _sharedStorage;
+        }
         std::vector<std::shared_ptr<Plugin>>& GetPlugins()
         {
             return _plugins;
@@ -176,6 +181,8 @@ namespace OpenRCT2::Scripting
             const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute);
 
+        void SaveSharedStorage();
+
     private:
         void Initialise();
         void StartPlugins();
@@ -192,6 +199,8 @@ namespace OpenRCT2::Scripting
         std::unique_ptr<GameActionResult> DukToGameActionResult(const DukValue& d);
         DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result);
         DukValue PositionToDuk(const CoordsXYZ& position);
+
+        void LoadSharedStorage();
     };
 
     bool IsGameStateMutable();
