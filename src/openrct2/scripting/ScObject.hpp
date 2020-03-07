@@ -11,6 +11,7 @@
 
 #ifdef __ENABLE_SCRIPTING__
 
+#    include "../Context.h"
 #    include "../common.h"
 #    include "../object/ObjectManager.h"
 #    include "../object/RideObject.h"

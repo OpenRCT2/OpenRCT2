@@ -30,9 +30,8 @@ HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
     return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;
 }
 
-HookEngine::HookEngine(ScriptEngine& scriptEngine, ScriptExecutionInfo& execInfo)
+HookEngine::HookEngine(ScriptEngine& scriptEngine)
     : _scriptEngine(scriptEngine)
-    , _execInfo(execInfo)
 {
     _hookMap.resize(NUM_HOOK_TYPES);
     for (size_t i = 0; i < NUM_HOOK_TYPES; i++)

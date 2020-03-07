@@ -11,6 +11,7 @@
 
 #ifdef __ENABLE_SCRIPTING__
 
+#    include "../Context.h"
 #    include "../common.h"
 #    include "../world/Footpath.h"
 #    include "../world/Scenery.h"

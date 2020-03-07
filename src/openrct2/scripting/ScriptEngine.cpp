@@ -360,7 +360,7 @@ DukContext::~DukContext()
 ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env)
     : _console(console)
     , _env(env)
-    , _hookEngine(*this, _execInfo)
+    , _hookEngine(*this)
 {
 }
 

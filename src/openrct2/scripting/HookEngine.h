@@ -72,12 +72,11 @@ namespace OpenRCT2::Scripting
     {
     private:
         ScriptEngine& _scriptEngine;
-        ScriptExecutionInfo& _execInfo;
         std::vector<HookList> _hookMap;
         uint32_t _nextCookie = 1;
 
     public:
-        HookEngine(ScriptEngine& scriptEngine, ScriptExecutionInfo& execInfo);
+        HookEngine(ScriptEngine& scriptEngine);
         HookEngine(const HookEngine&) = delete;
         uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function);
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
