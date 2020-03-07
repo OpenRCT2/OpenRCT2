@@ -3676,6 +3676,7 @@ STR_6354    :{SMALLFONT}{BLACK}Medium density
 STR_6355    :{SMALLFONT}{BLACK}High density
 STR_6356    :{SMALLFONT}{BLACK}Spawns ducks if park contains water
 STR_6357    :{SMALLFONT}{BLACK}Removes all ducks from the map
+STR_6358    :{SMALLFONT}A tile must have at least one surface element
 
 #############
 # Scenarios #

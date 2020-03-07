@@ -142,7 +142,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int1
 }
 
 /**
- * Forcefully removes an element for a given tile
+ * Forcefully removes an element for a given tile that contains at least 1 surface element
  * @param x The x coordinate of the tile
  * @param y The y coordinate of the tile
  * @param elementIndex The nth element on this tile
@@ -154,7 +154,8 @@ GameActionResult::Ptr tile_inspector_remove_element_at(const CoordsXY& loc, int1
         // At least one surface element must exist on a tile
         if (1 >= windowTileInspectorElementCount)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS, STR_TILE_NEEDS_ATLEAST_ONE_ELEMENT);
         }
 
         // Forcefully remove the element
