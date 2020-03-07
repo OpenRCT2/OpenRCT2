@@ -3482,8 +3482,8 @@ void Guest::UpdateRideAtEntrance()
             int16_t actionZ = z;
             if (xy_distance < 16)
             {
-                auto entrance = ride_get_entrance_location(ride, current_ride_station);
-                actionZ = entrance.z * 8 + 2;
+                auto entrance = ride_get_entrance_location(ride, current_ride_station).ToCoordsXYZ();
+                actionZ = entrance.z + 2;
             }
             MoveTo((*loc).x, (*loc).y, actionZ);
         }

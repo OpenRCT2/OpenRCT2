@@ -554,8 +554,8 @@ void RCT12TileElement::ClearAs(uint8_t newType)
 {
     type = newType;
     flags = 0;
-    base_height = 2;
-    clearance_height = 2;
+    base_height = MINIMUM_LAND_HEIGHT;
+    clearance_height = MINIMUM_LAND_HEIGHT;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
 }
 

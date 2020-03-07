@@ -67,8 +67,8 @@ static rct_widget window_view_clipping_widgets[] = {
 #pragma region Members
 
 static CoordsXY _selectionStart;
-static TileCoordsXY _previousClipSelectionA;
-static TileCoordsXY _previousClipSelectionB;
+static CoordsXY _previousClipSelectionA;
+static CoordsXY _previousClipSelectionB;
 static bool _toolActive;
 static bool _dragging;
 
@@ -364,8 +364,8 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
 
 static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&)
 {
-    gClipSelectionA = TileCoordsXY{ gMapSelectPositionA };
-    gClipSelectionB = TileCoordsXY{ gMapSelectPositionB };
+    gClipSelectionA = gMapSelectPositionA;
+    gClipSelectionB = gMapSelectPositionB;
     _toolActive = false;
     tool_cancel();
     gfx_invalidate_screen();

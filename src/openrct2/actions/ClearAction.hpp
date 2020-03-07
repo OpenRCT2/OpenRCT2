@@ -102,7 +102,7 @@ private:
         {
             for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
             {
-                if (MapCanClearAt(x, y))
+                if (MapCanClearAt({ x, y }))
                 {
                     auto cost = ClearSceneryFromTile({ x, y }, executing);
                     if (cost != MONEY32_UNDEFINED)
@@ -252,9 +252,9 @@ private:
         }
     }
 
-    static bool MapCanClearAt(int32_t x, int32_t y)
+    static bool MapCanClearAt(const CoordsXY& location)
     {
         return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode
-            || map_is_location_owned_or_has_rights({ x, y });
+            || map_is_location_owned_or_has_rights(location);
     }
 };

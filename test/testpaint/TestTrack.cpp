@@ -270,7 +270,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
-    surfaceElement.base_height = 2;
+    surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
@@ -433,7 +433,7 @@ static uint8_t TestTrackElementSegmentSupportHeight(
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
-    surfaceElement.base_height = 2;
+    surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
@@ -520,7 +520,7 @@ static uint8_t TestTrackElementGeneralSupportHeight(
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
-    surfaceElement.base_height = 2;
+    surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
@@ -621,7 +621,7 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
-    surfaceElement.base_height = 2;
+    surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
@@ -749,7 +749,7 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
-    surfaceElement.base_height = 2;
+    surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 

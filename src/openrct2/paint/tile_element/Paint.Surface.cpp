@@ -520,9 +520,11 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
 
     if (tile.tile_element->base_height > gClipHeight)
         return false;
-    if (tile.tile_coords.x < gClipSelectionA.x || tile.tile_coords.x > gClipSelectionB.x)
+
+    auto coords = tile.tile_coords.ToCoordsXY();
+    if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
         return false;
-    if (tile.tile_coords.y < gClipSelectionA.y || tile.tile_coords.y > gClipSelectionB.y)
+    if (coords.y < gClipSelectionA.y || coords.y > gClipSelectionB.y)
         return false;
 
     return true;
@@ -913,7 +915,7 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
         int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
-            localHeight += (2 * COORDS_Z_STEP);
+            localHeight += LAND_HEIGHT_STEP;
 
             if (waterHeight != localHeight || !(localSurfaceShape & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
             {

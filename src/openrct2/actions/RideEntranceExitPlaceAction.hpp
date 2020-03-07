@@ -104,10 +104,10 @@ public:
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
 
-        auto clear_z = (z / 8) + (_isExit ? 5 : 7);
+        auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
-                { _loc, z, clear_z * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(), &cost,
+                { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(), &cost,
                 CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
@@ -118,15 +118,13 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if (z / 8 > MaxRideEntranceOrExitHeight)
+        if (z > MaxRideEntranceOrExitHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_TOO_HIGH);
         }
 
         auto res = MakeResult();
-        res->Position.x = _loc.x + 16;
-        res->Position.y = _loc.y + 16;
-        res->Position.z = z;
+        res->Position = { _loc.ToTileCentre(), z };
         res->Expenditure = ExpenditureType::RideConstruction;
         return res;
     }
@@ -171,26 +169,24 @@ public:
             wall_remove_at_z({ _loc, z });
         }
 
-        auto clear_z = (z / 8) + (_isExit ? 5 : 7);
+        auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
-                { _loc, z, clear_z * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
-                GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, CREATE_CROSSING_MODE_NONE))
+                { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+                &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         auto res = MakeResult();
-        res->Position.x = _loc.x + 16;
-        res->Position.y = _loc.y + 16;
-        res->Position.z = z;
+        res->Position = { _loc.ToTileCentre(), z };
         res->Expenditure = ExpenditureType::RideConstruction;
 
-        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, z / 8 }, 0b1111);
+        TileElement* tileElement = tile_element_insert(TileCoordsXYZ(CoordsXYZ{ _loc, z }), 0b1111);
         assert(tileElement != nullptr);
         tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
         tileElement->SetDirection(_direction);
-        tileElement->clearance_height = clear_z;
+        tileElement->SetClearanceZ(clear_z);
         tileElement->AsEntrance()->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
         tileElement->AsEntrance()->SetStationIndex(_stationNum);
         tileElement->AsEntrance()->SetRideIndex(_rideIndex);
@@ -203,12 +199,12 @@ public:
         if (_isExit)
         {
             ride_set_exit_location(
-                ride, _stationNum, { _loc.x / 32, _loc.y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
+                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, (uint8_t)tileElement->GetDirection() }));
         }
         else
         {
             ride_set_entrance_location(
-                ride, _stationNum, { _loc.x / 32, _loc.y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
+                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, (uint8_t)tileElement->GetDirection() }));
             ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
             ride->stations[_stationNum].QueueLength = 0;
 
@@ -244,12 +240,11 @@ public:
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
 
-        int16_t baseZ = loc.z / 8;
-        int16_t clearZ = baseZ + (isExit ? 5 : 7);
+        int16_t baseZ = loc.z;
+        int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
-                { loc, baseZ * 8, clearZ * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0, &cost,
-                CREATE_CROSSING_MODE_NONE))
+                { loc, baseZ, clearZ }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -264,9 +259,7 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_TOO_HIGH);
         }
         auto res = MakeResult();
-        res->Position.x = loc.x + 16;
-        res->Position.y = loc.y + 16;
-        res->Position.z = tile_element_height(loc);
+        res->Position = { loc.ToTileCentre(), tile_element_height(loc) };
         res->Expenditure = ExpenditureType::RideConstruction;
         return res;
     }

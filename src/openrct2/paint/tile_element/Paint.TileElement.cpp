@@ -140,9 +140,9 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
-        if (x / 32 < gClipSelectionA.x || x / 32 > gClipSelectionB.x)
+        if (x < gClipSelectionA.x || x > gClipSelectionB.x)
             return;
-        if (y / 32 < gClipSelectionA.y || y / 32 > gClipSelectionB.y)
+        if (y < gClipSelectionA.y || y > gClipSelectionB.y)
             return;
     }
 

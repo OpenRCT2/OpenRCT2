@@ -159,8 +159,8 @@ void TileElement::ClearAs(uint8_t newType)
 {
     type = newType;
     Flags = 0;
-    base_height = 2;
-    clearance_height = 2;
+    base_height = MINIMUM_LAND_HEIGHT;
+    clearance_height = MINIMUM_LAND_HEIGHT;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
     std::fill_n(pad_08, sizeof(pad_08), 0x00);
 }

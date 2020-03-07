@@ -164,8 +164,8 @@ public:
 
             QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
             if (!map_can_construct_with_clear_at(
-                    { curTile, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
-                    CREATE_CROSSING_MODE_NONE))
+                    { curTile, zLow * COORDS_Z_STEP, zHigh * COORDS_Z_STEP }, &map_place_scenery_clear_func, quarterTile,
+                    GetFlags(), &supportsCost, CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(
                     GA_ERROR::NO_CLEARANCE, gGameCommandErrorText, gCommonFormatArgs);
@@ -193,7 +193,7 @@ public:
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow * 8 })
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow * COORDS_Z_STEP })
                 && !gCheatsSandboxMode)
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
@@ -288,12 +288,12 @@ public:
             curTile.x += _loc.x;
             curTile.y += _loc.y;
 
-            int32_t zLow = (tile->z_offset + maxHeight) / 8;
-            int32_t zHigh = (tile->z_clearance / 8) + zLow;
+            int32_t zLow = tile->z_offset + maxHeight;
+            int32_t zHigh = tile->z_clearance + zLow;
 
             QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
             if (!map_can_construct_with_clear_at(
-                    { curTile, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
+                    { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
                     CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(
@@ -304,19 +304,19 @@ public:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                footpath_remove_litter({ curTile, zLow * COORDS_Z_STEP });
+                footpath_remove_litter({ curTile, zLow });
                 if (!gCheatsDisableClearanceChecks)
                 {
-                    wall_remove_at({ curTile, zLow * 8, zHigh * 8 });
+                    wall_remove_at({ curTile, zLow, zHigh });
                 }
             }
 
             TileElement* newTileElement = tile_element_insert(
-                { curTile.x / 32, curTile.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
+                TileCoordsXYZ(CoordsXYZ{ curTile.x, curTile.y, zLow }), quarterTile.GetBaseQuarterOccupied());
             Guard::Assert(newTileElement != nullptr);
-            map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow * 8 });
+            map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
             newTileElement->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
-            newTileElement->clearance_height = zHigh;
+            newTileElement->SetClearanceZ(zHigh);
             auto newSceneryElement = newTileElement->AsLargeScenery();
 
             SetNewLargeSceneryElement(*newSceneryElement, tileNum);

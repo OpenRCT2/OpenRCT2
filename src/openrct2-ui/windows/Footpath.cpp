@@ -1067,7 +1067,7 @@ static TileElement* footpath_get_tile_element_to_remove()
     }
 
     z = std::min(255 * COORDS_Z_STEP, gFootpathConstructFromPosition.z);
-    zLow = z - (2 * COORDS_Z_STEP);
+    zLow = z - PATH_HEIGHT_STEP;
 
     tileElement = map_get_first_element_at(gFootpathConstructFromPosition);
     do

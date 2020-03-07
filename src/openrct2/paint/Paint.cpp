@@ -27,8 +27,8 @@ using namespace OpenRCT2;
 
 // Globals for paint clipping
 uint8_t gClipHeight = 128; // Default to middle value
-TileCoordsXY gClipSelectionA = { 0, 0 };
-TileCoordsXY gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+CoordsXY gClipSelectionA = { 0, 0 };
+CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
 
 static constexpr const uint8_t BoundBoxDebugColours[] = {
     0,   // NONE
