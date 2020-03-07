@@ -546,8 +546,8 @@ int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank);
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);
 int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement);
 
-bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
-bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
+bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags);
+bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags);
 
 money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,

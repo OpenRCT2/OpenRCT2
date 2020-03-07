@@ -348,7 +348,7 @@ public:
             }
             if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
             {
-                if (!track_add_station_element(mapLoc.x, mapLoc.y, baseZ / COORDS_Z_STEP, _origin.direction, _rideIndex, 0))
+                if (!track_add_station_element({ mapLoc, baseZ / COORDS_Z_STEP, _origin.direction }, _rideIndex, 0))
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorText);
                 }
@@ -665,8 +665,7 @@ public:
             {
                 if (trackBlock->index == 0)
                 {
-                    track_add_station_element(
-                        mapLoc.x, mapLoc.y, mapLoc.z / COORDS_Z_STEP, _origin.direction, _rideIndex, GAME_COMMAND_FLAG_APPLY);
+                    track_add_station_element({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY);
                 }
                 sub_6CB945(ride);
                 ride->UpdateMaxVehicles();
