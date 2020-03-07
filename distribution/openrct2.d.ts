@@ -117,11 +117,6 @@ declare global {
         sharedStorage: Configuration;
 
         /**
-         * Local generic storage for a each plugin.
-         */
-        localStorage: Configuration;
-
-        /**
          * Gets a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
          * all clients, you therefore must be in a context that can mutate the game

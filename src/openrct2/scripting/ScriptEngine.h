@@ -200,6 +200,7 @@ namespace OpenRCT2::Scripting
         DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result);
         DukValue PositionToDuk(const CoordsXYZ& position);
 
+        void InitSharedStorage();
         void LoadSharedStorage();
     };
 

@@ -240,6 +240,7 @@ const char * PlatformEnvironment::FileNames[] =
     "highscores.dat",       // SCORES
     "scores.dat",           // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
-    "changelog.txt"         // CHANGELOG
+    "changelog.txt",        // CHANGELOG
+    "plugin.store.json"     // PLUGIN_STORE
 };
 // clang-format on

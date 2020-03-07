@@ -394,9 +394,7 @@ void ScriptEngine::Initialise()
     _pluginsLoaded = false;
     _pluginsStarted = false;
 
-    duk_push_object(ctx);
-    _sharedStorage = std::move(DukValue::take_from_stack(ctx));
-    LoadSharedStorage();
+    InitSharedStorage();
 }
 
 void ScriptEngine::LoadPlugins()
@@ -505,7 +503,7 @@ void ScriptEngine::SetupHotReloading()
     }
     catch (const std::exception& e)
     {
-        std::printf("Unable to enable hot reloading of plugins: %s\n", e.what());
+        std::fprintf(stderr, "Unable to enable hot reloading of plugins: %s\n", e.what());
     }
 }
 
@@ -555,6 +553,8 @@ void ScriptEngine::UnloadPlugins()
 
 void ScriptEngine::StartPlugins()
 {
+    LoadSharedStorage();
+
     for (auto& plugin : _plugins)
     {
         if (!plugin->HasStarted() && ShouldStartPlugin(plugin))
@@ -713,19 +713,25 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
 
         // Deserialise the JSON args
         std::string argsz(args);
-        duk_push_string(_context, argsz.c_str());
-        duk_json_decode(_context, -1);
-        auto dukArgs = DukValue::take_from_stack(_context);
+
+        auto dukArgs = DuktapeTryParseJson(_context, argsz);
+        if (!dukArgs)
+        {
+            auto action = std::make_unique<GameActionResult>();
+            action->Error = GA_ERROR::INVALID_PARAMETERS;
+            action->ErrorTitle = "Invalid JSON";
+            return action;
+        }
 
         // Ready to call plugin handler
         DukValue dukResult;
         if (!isExecute)
         {
-            dukResult = ExecutePluginCall(customAction.Owner, customAction.Query, { dukArgs }, false);
+            dukResult = ExecutePluginCall(customAction.Owner, customAction.Query, { *dukArgs }, false);
         }
         else
         {
-            dukResult = ExecutePluginCall(customAction.Owner, customAction.Execute, { dukArgs }, true);
+            dukResult = ExecutePluginCall(customAction.Owner, customAction.Execute, { *dukArgs }, true);
         }
         return DukToGameActionResult(dukResult);
     }
@@ -733,7 +739,7 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
     {
         auto action = std::make_unique<GameActionResult>();
         action->Error = GA_ERROR::UNKNOWN;
-        action->ErrorTitle = OBJECT_ERROR_UNKNOWN;
+        action->ErrorTitle = "Unknown custom action";
         return action;
     }
 }
@@ -864,15 +870,25 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
     }
 }
 
+void ScriptEngine::InitSharedStorage()
+{
+    duk_push_object(_context);
+    _sharedStorage = std::move(DukValue::take_from_stack(_context));
+}
+
 void ScriptEngine::LoadSharedStorage()
 {
-    std::string path = "C:\\Users\\Ted\\Documents\\OpenRCT2\\plugin.json";
+    InitSharedStorage();
+
+    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
     try
     {
         auto data = File::ReadAllBytes(path);
-        duk_push_lstring(_context, (const char*)data.data(), data.size());
-        duk_json_decode(_context, -1);
-        _sharedStorage = std::move(DukValue::take_from_stack(_context));
+        auto result = DuktapeTryParseJson(_context, std::string_view((const char*)data.data(), data.size()));
+        if (result)
+        {
+            _sharedStorage = std::move(*result);
+        }
     }
     catch (const std::exception&)
     {
@@ -881,13 +897,13 @@ void ScriptEngine::LoadSharedStorage()
 
 void ScriptEngine::SaveSharedStorage()
 {
-    _sharedStorage.push();
-    auto json = std::string(duk_json_encode(_context, -1));
-    duk_pop(_context);
-
-    std::string path = "C:\\Users\\Ted\\Documents\\OpenRCT2\\plugin.json";
+    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
     try
     {
+        _sharedStorage.push();
+        auto json = std::string(duk_json_encode(_context, -1));
+        duk_pop(_context);
+
         File::WriteAllBytes(path, json.c_str(), json.size());
     }
     catch (const std::exception&)
