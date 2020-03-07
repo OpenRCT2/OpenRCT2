@@ -1283,7 +1283,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     PeepPickupAction pickupAction{
-        PeepPickupType::Place, w->number, { destCoords, tileElement->base_height }, network_get_current_player_id()
+        PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
     };
     pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
         if (result->Error != GA_ERROR::OK)
