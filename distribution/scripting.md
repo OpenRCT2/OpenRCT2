@@ -137,6 +137,19 @@ Not yet. A lot of the internal code for these windows relies on the widgets exis
 
 Yes, remote scripts are uploaded to every client and run as-is. Even if the server is running in headless mode, the script can still contain UI calls for the benefit of the players that are not running in headless mode. Be sure to check if the UI is available first before executing UI calls.
 
+> Can plugins persist data across multiple OpenRCT2 instances?
+
+Yes, use `context.sharedStorage` to read or write data to an external JSON file: `plugin.store.json` in the OpenRCT2 suer directory. It is recommended that you namespace all your plugin's data under a common name.
+
+```js
+var h = context.sharedStorage.get('IntelOrca.MagicLift.Height');
+if (!h) {
+    context.sharedStorage.set('IntelOrca.MagicLift.Height', 2);
+}
+```
+
+All plugins have access to the same shared storage.
+
 > Can I use third party JavaScript libraries?
 
 Absolutely, just embed the library in your JavaScript file. There are a number of tools to help you do this.

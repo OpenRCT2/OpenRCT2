@@ -206,7 +206,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void registerGameAction(const std::string& action, const DukValue& query, const DukValue& execute)
+        void registerAction(const std::string& action, const DukValue& query, const DukValue& execute)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
@@ -235,7 +235,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
             dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");
             dukglue_register_method(ctx, &ScContext::executeAction, "executeAction");
-            dukglue_register_method(ctx, &ScContext::registerGameAction, "registerGameAction");
+            dukglue_register_method(ctx, &ScContext::registerAction, "registerAction");
         }
     };
 } // namespace OpenRCT2::Scripting

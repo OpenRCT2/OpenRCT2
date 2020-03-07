@@ -18,6 +18,63 @@
 export type PluginType = "local" | "remote";
 
 declare global {
+    /**
+     * Global context for accessing all other APIs.
+     */
+    /** APIs for interacting with the stdout console. */
+    var console: Console;
+    /** Core APIs for plugins. */
+    var context: Context;
+    /** APIs for getting or setting the in-game date. */
+    var date: GameDate;
+    /** APIs for manipulating the map. */
+    var map: GameMap;
+    /** APIs for managing the server or interacting with the server or clients. */
+    var network: Network;
+    /** APIs for the park and management of it. */
+    var park: Park;
+    /** 
+     * APIs for controlling the user interface.
+     * These will only be available to servers and clients that are not running headless mode.
+     * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
+    */
+    var ui: Ui;
+
+    /**
+     * Registers the plugin. This only only be called once.
+     * @param metadata Information about the plugin and the entry point.
+     */
+    function registerPlugin(metadata: PluginMetadata): void;
+
+    /**
+     * Represents a JavaScript object that can or should be disposed when no longer needed.
+     */
+    interface IDisposable {
+        dispose(): void;
+    }
+
+    /**
+     * A coordinate within the game.
+     * Each in-game tile is a size of 32x32.
+     */
+    interface Coord2 {
+        x: number;
+        y: number;
+    }
+
+    /**
+     * A coordinate within the game.
+     * Each in-game tile is a size of 32x32.
+     * The z-coordinate raises 16 per land increment. A full-height wall is 32 in height.
+     */
+    interface Coord3 extends Coord2 {
+        z: number;
+    }
+
+    /**
+     * Represents information about the plugin such as type, name, author and version.
+     * It also includes the entry point.
+     */
     interface PluginMetadata {
         name: string;
         version: string;
@@ -27,84 +84,18 @@ declare global {
         main: () => void;
     }
 
+    /**
+     * Console APIs
+     * Currently interact with stdout.
+     */
     interface Console {
         clear(): void;
         log(message?: any, ...optionalParams: any[]): void;
     }
 
-    interface Configuration {
-        getAll(namespace: string): { [name: string]: any };
-        get<T>(key: string): T | undefined;
-        get<T>(key: string, defaultValue: T): T;
-        set<T>(key: string, value: T): void;
-        has(key: string): boolean;
-    }
-
-    interface Coord2 {
-        x: number;
-        y: number;
-    }
-
-    interface Coord3 {
-        x: number;
-        y: number;
-        z: number;
-    }
-
-    type HookType =
-        "interval.tick" | "interval.day" |
-        "network.chat" | "network.action" | "network.join" | "network.leave";
-
-    type ExpenditureType =
-        "ride_construction" |
-        "ride_runningcosts" |
-        "land_purchase" |
-        "landscaping" |
-        "park_entrance_tickets" |
-        "park_ride_tickets" |
-        "shop_sales" |
-        "shop_stock" |
-        "food_drink_sales" |
-        "food_drink_stock" |
-        "wages" |
-        "marketing" |
-        "research" |
-        "interest";
-
-    interface GameActionResult {
-        error?: string;
-        errorTitle?: string;
-        errorMessage?: string;
-        position?: Coord3;
-        cost?: number;
-        expenditureType?: ExpenditureType;
-    }
-
-    interface ActionEventArgs {
-        readonly player: number;
-        readonly type: string;
-        readonly isClientOnly: boolean;
-        result: GameActionResult;
-    }
-
-    interface RideCreateGameActionResult extends GameActionResult {
-        readonly ride: number;
-    }
-
-    interface RideCreateActionEventArgs extends ActionEventArgs {
-        readonly rideType: number;
-        readonly rideObject: number;
-        result: RideCreateGameActionResult;
-    }
-
-    interface NetworkEventArgs {
-        readonly player: number;
-    }
-
-    interface NetworkChatEventArgs extends NetworkEventArgs {
-        message: string;
-    }
-
+    /**
+     * Core APIs for storage and subscriptions.
+     */
     interface Context {
         /**
          * The user's current configuration.
@@ -112,7 +103,12 @@ declare global {
         configuration: Configuration;
 
         /**
-         * Shared generic storage for all plugins.
+         * Shared generic storage for all plugins. Data is persistant across instances
+         * of OpenRCT2 and is stored externally as a single JSON file in the OpenRCT2
+         * user directory. Internally it is a JavaScript object. Objects and arrays
+         * are only copied by reference. The external file is only written when using
+         * the `set` method, do not rely on the file being saved by modifying your own
+         * objects. Functions and other internal structures will not be persisted.
          */
         sharedStorage: Configuration;
 
@@ -128,18 +124,13 @@ declare global {
         getRandom(min: number, max: number): number;
 
         /**
-         * Registers a new intent (command) that can be mapped to a shortcut.
-         */
-        registerIntent(desc: IntentDesc): void;
-
-        /**
          * Registers a new game action that allows clients to interact with the game.
          * @param action The unique name of the action.
          * @param query Logic for validating and returning a price for an action.
          * @param execute Logic for validating and executing the action.
          * @throws An error if the action has already been registered by this or another plugin.
          */
-        registerGameAction(
+        registerAction(
             action: string,
             query: (args: object) => GameActionResult,
             execute: (args: object) => GameActionResult): void;
@@ -167,8 +158,8 @@ declare global {
          */
         subscribe(hook: HookType, callback: Function): IDisposable;
 
-        subscribe(hook: "action.query", callback: (e: ActionEventArgs) => void): IDisposable;
-        subscribe(hook: "action.execute", callback: (e: ActionEventArgs) => void): IDisposable;
+        subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
+        subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
@@ -176,15 +167,114 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
     }
 
-    interface IntentDesc {
-        key: string;
-        title?: string;
-        shortcut?: string;
-        action: Function;
+    interface Configuration {
+        getAll(namespace: string): { [name: string]: any };
+        get<T>(key: string): T | undefined;
+        get<T>(key: string, defaultValue: T): T;
+        set<T>(key: string, value: T): void;
+        has(key: string): boolean;
     }
 
-    interface IDisposable {
-        dispose(): void;
+    type HookType =
+        "interval.tick" | "interval.day" |
+        "network.chat" | "network.action" | "network.join" | "network.leave";
+
+    type ExpenditureType =
+        "ride_construction" |
+        "ride_runningcosts" |
+        "land_purchase" |
+        "landscaping" |
+        "park_entrance_tickets" |
+        "park_ride_tickets" |
+        "shop_sales" |
+        "shop_stock" |
+        "food_drink_sales" |
+        "food_drink_stock" |
+        "wages" |
+        "marketing" |
+        "research" |
+        "interest";
+
+    interface GameActionEventArgs {
+        readonly player: number;
+        readonly type: string;
+        readonly isClientOnly: boolean;
+        result: GameActionResult;
+    }
+
+    interface GameActionResult {
+        error?: string;
+        errorTitle?: string;
+        errorMessage?: string;
+        position?: Coord3;
+        cost?: number;
+        expenditureType?: ExpenditureType;
+    }
+
+    interface RideCreateGameActionResult extends GameActionResult {
+        readonly ride: number;
+    }
+
+    interface RideCreateActionEventArgs extends GameActionEventArgs {
+        readonly rideType: number;
+        readonly rideObject: number;
+        result: RideCreateGameActionResult;
+    }
+
+    interface NetworkEventArgs {
+        readonly player: number;
+    }
+
+    interface NetworkChatEventArgs extends NetworkEventArgs {
+        message: string;
+    }
+
+    /**
+     * APIs for the in-game date.
+     */
+    interface GameDate {
+        /**
+         * The total number of ticks that have elapsed since the beginning of the game / scenario. This
+         * should never reset.
+         */
+        readonly ticksElapsed: number;
+        /**
+         * The total number of months that have elapsed. This will equate to 16 on 1st March, Year 2.
+         * Note: this represents the current date and may be reset by cheats or scripts.
+         */
+        monthsElapsed: number;
+        /**
+         * The total number of years that have elapsed. This always equates to (monthsElapsed / 8).
+         */
+        readonly yearsElapsed: number;
+
+        /**
+         * How far through the month we are between 0 and 65536. This is incremented by 4 each tick, so
+         * every month takes ~6.8 minutes to complete making a year take just under an hour.
+         */
+        monthProgress: number;
+
+        /** The day of the month from 1 to 31. */
+        readonly day: number;
+        /** The current month of the year from 0 to 7, where 0 is March and 7 is October. */
+        readonly month: number;
+        /** The current year starting from 1. */
+        readonly year: number;
+    }
+
+    /**
+     * APIs for the map.
+     */
+    interface GameMap {
+        readonly size: Coord2;
+        readonly numRides: number;
+        readonly numThings: number;
+        readonly rides: Ride[];
+
+        getRide(id: number): Ride;
+        getTile(x: number, y: number): Tile;
+        getThing(id: number): Thing;
+        getAllThings(type: ThingType);
     }
 
     type TileElementType =
@@ -422,19 +512,87 @@ declare global {
         trousers: number;
     }
 
-    interface GameMap {
-        readonly size: Coord2;
-        readonly numRides: number;
-        readonly numThings: number;
-        readonly rides: Ride[];
+    /**
+     * Network APIs
+     * Use `network.status` to determine whether the current game is a client, server or in single player mode.
+     */
+    interface Network {
+        readonly mode: NetworkMode;
+        readonly groups: number;
+        readonly players: number;
+        defaultGroup: number;
 
-        getRide(id: number): Ride;
-        getTile(x: number, y: number): Tile;
-        getThing(id: number): Thing;
-        getAllThings(type: ThingType);
+        getServerInfo(): ServerInfo;
+        getGroup(index: number): PlayerGroup;
+        setGroups(groups: PlayerGroup[]): void;
+        getPlayer(index: number): Player;
+        kickPlayer(index: number): void;
+        sendMessage(message: string): void;
+        sendMessage(message: string, players: number[]): void;
     }
 
-    type ParkMessageType =
+    type NetworkMode = "none" | "server" | "client";
+
+    /**
+     * Represents a player within a network game.
+     */
+    interface Player {
+        readonly id: number;
+        readonly name: string;
+        group: number;
+        readonly ping: number;
+        readonly commandsRan: number;
+        readonly moneySpent: number;
+    }
+
+    interface PlayerGroup {
+        readonly id: number;
+        name: string;
+        permissions: PermissionType[];
+    }
+
+    interface ServerInfo {
+        readonly name: string;
+        readonly description: string;
+        readonly greeting: string;
+        readonly providerName: string;
+        readonly providerEmail: string;
+        readonly providerWebsite: string;
+    }
+
+    type PermissionType =
+        "chat" |
+        "terraform" |
+        "set_water_level" |
+        "toggle_pause" |
+        "create_ride" |
+        "remove_ride" |
+        "build_ride" |
+        "ride_properties" |
+        "scenery" |
+        "path" |
+        "clear_landscape" |
+        "guest" |
+        "staff" |
+        "park_properties" |
+        "park_funding" |
+        "kick_player" |
+        "modify_groups" |
+        "set_player_group" |
+        "cheat" |
+        "toggle_scenery_cluster" |
+        "passwordless_login" |
+        "modify_tile" |
+        "edit_scenario_options";
+
+    /**
+     * Park APIs
+     */
+
+     /**
+      * The type of park message, including icon and behaviour.
+      */
+     type ParkMessageType =
         "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart";
 
     interface ParkMessage {
@@ -457,6 +615,20 @@ declare global {
      * These will only be available to servers and clients that are not running headless mode.
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
      */
+    interface Ui {
+        readonly width: number;
+        readonly height: number;
+        readonly windows: number;
+        readonly mainViewport: Viewport;
+
+        getWindow(id: number): Window;
+        getWindow(classification: string, id?: number): Window;
+        openWindow(desc: WindowDesc): Window;
+        closeWindows(classification: string, id?: number): void;
+        closeAllWindows(): void;
+
+        registerMenuItem(text: string, callback: () => void): void;
+    }
 
     /**
      * Represents the type of a widget, e.g. button or label.
@@ -554,50 +726,6 @@ declare global {
         onClose?: () => void;
     }
 
-    type ToolCallbackType = "move" | "press" | "release";
-
-    interface ToolCallback {
-        type: ToolCallbackType;
-        tiles: Coord2[];
-    }
-
-    type CursorType =
-        "arrow" |
-        "blank" |
-        "up_arrow" |
-        "up_down_arrow" |
-        "hand_point" |
-        "zzz" |
-        "diagonal_arrows" |
-        "picker" |
-        "tree_down" |
-        "fountain_down" |
-        "statue_down" |
-        "bench_down" |
-        "cross_hair" |
-        "bin_down" |
-        "lamppost_down" |
-        "fence_down" |
-        "flower_down" |
-        "path_down" |
-        "dig_down" |
-        "water_down" |
-        "house_down" |
-        "volcano_down" |
-        "walk_down" |
-        "paint_down" |
-        "entrance_down" |
-        "hand_open" |
-        "hand_closed";
-
-    interface ToolDesc {
-        id: string;
-        cursor: CursorType;
-        width: number;
-        height: number;
-        callback: (e: ToolCallback) => void;
-    }
-
     interface Viewport {
         left: number;
         top: number;
@@ -611,141 +739,4 @@ declare global {
         moveTo(position: Coord2 | Coord3): void;
         scrollTo(position: Coord2 | Coord3): void;
     }
-
-    interface Ui {
-        readonly width: number;
-        readonly height: number;
-        readonly windows: number;
-        readonly mainViewport: Viewport;
-
-        getWindow(id: number): Window;
-        getWindow(classification: string, id?: number): Window;
-        openWindow(desc: WindowDesc): Window;
-        closeWindows(classification: string, id?: number): void;
-        closeAllWindows(): void;
-
-        activateTool(options: ToolDesc): IDisposable;
-        registerMenuItem(text: string, callback: () => void): void;
-    }
-
-    /**
-     * Network APIs
-     * Use `network.status` to determine whether the current game is a client, server or in single player mode.
-     */
-
-    /**
-     * Represents a player within a network game.
-     */
-    interface Player {
-        readonly id: number;
-        readonly name: string;
-        group: number;
-        readonly ping: number;
-        readonly commandsRan: number;
-        readonly moneySpent: number;
-    }
-
-    type PermissionType =
-        "chat" |
-        "terraform" |
-        "set_water_level" |
-        "toggle_pause" |
-        "create_ride" |
-        "remove_ride" |
-        "build_ride" |
-        "ride_properties" |
-        "scenery" |
-        "path" |
-        "clear_landscape" |
-        "guest" |
-        "staff" |
-        "park_properties" |
-        "park_funding" |
-        "kick_player" |
-        "modify_groups" |
-        "set_player_group" |
-        "cheat" |
-        "toggle_scenery_cluster" |
-        "passwordless_login" |
-        "modify_tile" |
-        "edit_scenario_options";
-
-    interface PlayerGroup {
-        readonly id: number;
-        name: string;
-        permissions: PermissionType[];
-    }
-
-    interface ServerInfo {
-        readonly name: string;
-        readonly description: string;
-        readonly greeting: string;
-        readonly providerName: string;
-        readonly providerEmail: string;
-        readonly providerWebsite: string;
-    }
-
-    type NetworkMode = "none" | "server" | "client";
-
-    interface Network {
-        readonly mode: NetworkMode;
-        readonly groups: number;
-        readonly players: number;
-        defaultGroup: number;
-
-        getServerInfo(): ServerInfo;
-        getGroup(index: number): PlayerGroup;
-        setGroups(groups: PlayerGroup[]): void;
-        getPlayer(index: number): Player;
-        kickPlayer(index: number): void;
-        sendMessage(message: string): void;
-        sendMessage(message: string, players: number[]): void;
-    }
-
-    interface GameDate {
-        /**
-         * The total number of ticks that have elapsed since the beginning of the game / scenario. This
-         * should never reset.
-         */
-        readonly ticksElapsed: number;
-        /**
-         * The total number of months that have elapsed. This will equate to 16 on 1st March, Year 2.
-         * Note: this represents the current date and may be reset by cheats or scripts.
-         */
-        monthsElapsed: number;
-        /**
-         * The total number of years that have elapsed. This always equates to (monthsElapsed / 8).
-         */
-        readonly yearsElapsed: number;
-
-        /**
-         * How far through the month we are between 0 and 65536. This is incremented by 4 each tick, so
-         * every month takes ~6.8 minutes to complete making a year take just under an hour.
-         */
-        monthProgress: number;
-
-        /** The day of the month from 1 to 31. */
-        readonly day: number;
-        /** The current month of the year from 0 to 7, where 0 is March and 7 is October. */
-        readonly month: number;
-        /** The current year starting from 1. */
-        readonly year: number;
-    }
-
-    /**
-     * Global context for accessing all other APIs.
-     */
-    var console: Console;
-    var context: Context;
-    var date: GameDate;
-    var map: GameMap;
-    var network: Network;
-    var park: Park;
-    var ui: Ui;
-
-    /**
-     * Registers the plugin. This only only be called once.
-     * @param metadata Information about the plugin and the entry point.
-     */
-    function registerPlugin(metadata: PluginMetadata): void;
 }
