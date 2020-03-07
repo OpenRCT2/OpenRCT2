@@ -3904,6 +3904,8 @@ enum
     STR_PAGE_X = 6358,
     STR_ARG_4_PAGE_X = 6359,
 
+    STR_GRAPH_AXIS_LABEL = 6360,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
