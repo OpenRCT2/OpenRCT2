@@ -299,7 +299,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(const CoordsXY& loc, TileE
     {
         return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
     }
-    
+
     auto tileLoc = TileCoordsXY(loc);
 
     if (isExecuting)

@@ -237,7 +237,7 @@ static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
     {
         return;
     }
-    
+
     auto loc = CoordsXY(x, y);
 
     int32_t surfaceZ = tile_element_height(loc.ToTileCentre());

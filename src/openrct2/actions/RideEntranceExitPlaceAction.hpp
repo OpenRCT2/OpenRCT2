@@ -182,7 +182,7 @@ public:
         res->Position = { _loc.ToTileCentre(), z };
         res->Expenditure = ExpenditureType::RideConstruction;
 
-        TileElement* tileElement = tile_element_insert((CoordsXYZ{ _loc, z }), 0b1111);
+        TileElement* tileElement = tile_element_insert(CoordsXYZ{ _loc, z }, 0b1111);
         assert(tileElement != nullptr);
         tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
         tileElement->SetDirection(_direction);

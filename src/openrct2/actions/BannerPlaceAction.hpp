@@ -121,7 +121,7 @@ public:
             log_error("No free map elements.");
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
         }
-        
+
         if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
         {
             log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);

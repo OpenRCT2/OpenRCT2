@@ -392,7 +392,6 @@ public:
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
-        
         TileElement* tileElement = tile_element_insert(targetLoc, 0b0000);
         assert(tileElement != nullptr);
 

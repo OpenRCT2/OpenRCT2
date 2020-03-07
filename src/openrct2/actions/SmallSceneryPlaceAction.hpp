@@ -428,8 +428,7 @@ public:
         res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-        TileElement* newElement = tile_element_insert(
-            CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
+        TileElement* newElement = tile_element_insert(CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
         res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);

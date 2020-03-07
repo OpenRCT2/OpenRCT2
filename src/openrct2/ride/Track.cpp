@@ -619,7 +619,7 @@ static TileElement* find_station_element(const CoordsXYZD& loc, ride_id_t rideIn
     return nullptr;
 }
 
-static void ride_remove_station(Ride* ride, CoordsXYZ location)
+static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
