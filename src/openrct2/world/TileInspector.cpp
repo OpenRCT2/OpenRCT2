@@ -152,7 +152,7 @@ GameActionResult::Ptr tile_inspector_remove_element_at(const CoordsXY& loc, int1
     if (isExecuting)
     {
         // At least one surface element must exist on a tile
-        if (1 >= windowTileInspectorElementCount)
+        if (windowTileInspectorElementCount <= 1)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS, STR_TILE_NEEDS_ATLEAST_ONE_ELEMENT);
         }
