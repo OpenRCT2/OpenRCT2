@@ -147,7 +147,7 @@ public:
         banner->position.y = _loc.y / 32;
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         BannerElement* bannerElement = newTileElement->AsBanner();
-        bannerElement->clearance_height = newTileElement->base_height + 2;
+        bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
         bannerElement->SetPosition(_loc.direction);
         bannerElement->ResetAllowedEdges();
         bannerElement->SetIndex(_bannerIndex);

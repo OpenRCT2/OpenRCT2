@@ -6858,7 +6858,6 @@ void sub_6CB945(Ride* ride)
                 continue;
 
             CoordsXYZ location = ride->stations[stationId].GetStart();
-            auto tileHeight = TileCoordsXYZ(location).z;
             uint8_t direction = INVALID_DIRECTION;
 
             bool specialTrack = false;
@@ -6878,7 +6877,7 @@ void sub_6CB945(Ride* ride)
                 bool trackFound = false;
                 do
                 {
-                    if (tileElement->base_height != tileHeight)
+                    if (tileElement->GetBaseZ() != location.z)
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;

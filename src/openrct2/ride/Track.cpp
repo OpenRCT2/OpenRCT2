@@ -596,14 +596,14 @@ const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, int3
     return get_track_def_from_ride(get_ride(rideIndex), trackType);
 }
 
-static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
+static TileElement* find_station_element(const CoordsXYZ& loc, int32_t direction, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return nullptr;
     do
     {
-        if (z != tileElement->base_height)
+        if (loc.z != tileElement->GetBaseZ())
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
@@ -681,7 +681,7 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
         x -= CoordsDirectionDelta[direction].x;
         y -= CoordsDirectionDelta[direction].y;
 
-        stationElement = find_station_element(x, y, z, direction, rideIndex);
+        stationElement = find_station_element({ x, y, z * COORDS_Z_STEP }, direction, rideIndex);
         if (stationElement != nullptr)
         {
             if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
@@ -706,7 +706,7 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
 
-        stationElement = find_station_element(x, y, z, direction, rideIndex);
+        stationElement = find_station_element({ x, y, z * COORDS_Z_STEP }, direction, rideIndex);
         if (stationElement != nullptr)
         {
             if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
@@ -745,7 +745,7 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
         {
             finaliseStationDone = true;
 
-            stationElement = find_station_element(x, y, z, direction, rideIndex);
+            stationElement = find_station_element({ x, y, z * COORDS_Z_STEP }, direction, rideIndex);
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
@@ -825,7 +825,7 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
     // Search backwards for more station
     x = stationX0;
     y = stationY0;
-    while ((stationElement = find_station_element(x, y, z, direction, rideIndex)) != nullptr)
+    while ((stationElement = find_station_element({ x, y, z * COORDS_Z_STEP }, direction, rideIndex)) != nullptr)
     {
         if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
         {
@@ -851,7 +851,7 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
 
-        stationElement = find_station_element(x, y, z, direction, rideIndex);
+        stationElement = find_station_element({ x, y, z * COORDS_Z_STEP }, direction, rideIndex);
         if (stationElement != nullptr)
         {
             if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
@@ -891,7 +891,7 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
 
         if (x != removeX || y != removeY)
         {
-            stationElement = find_station_element(x, y, z, direction, rideIndex);
+            stationElement = find_station_element({ x, y, z * COORDS_Z_STEP }, direction, rideIndex);
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
