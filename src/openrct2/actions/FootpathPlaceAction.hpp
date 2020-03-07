@@ -127,7 +127,7 @@ public:
             {
                 // It is possible, let's remove walls between the old and new piece of path
                 auto zLow = _loc.z;
-                auto zHigh = zLow + PATH_HEIGHT;
+                auto zHigh = zLow + PATH_CLEARANCE;
                 wall_remove_intersecting_walls(
                     { _loc, zLow, zHigh + (_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0 },
                     direction_reverse(_direction));
@@ -210,7 +210,7 @@ private:
 
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
-        auto zHigh = zLow + PATH_HEIGHT;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
@@ -274,7 +274,7 @@ private:
 
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
-        auto zHigh = zLow + PATH_HEIGHT;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
@@ -326,7 +326,7 @@ private:
         }
         else
         {
-            auto tileElement = tile_element_insert(TileCoordsXYZ(CoordsXYZ{ _loc.x, _loc.y, zLow }), 0b1111);
+            auto tileElement = tile_element_insert(TileCoordsXYZ(_loc), 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();

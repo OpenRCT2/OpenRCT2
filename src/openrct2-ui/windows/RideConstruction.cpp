@@ -3551,8 +3551,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     _previousTrackPiece = _currentTrackBegin;
     // search for appropriate z value for ghost, up to max ride height
-    const auto smallZ = z / COORDS_Z_STEP;
-    int numAttempts = (smallZ <= MAX_TRACK_HEIGHT ? (MAX_TRACK_HEIGHT - smallZ + 1) : 2);
+    int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
@@ -3780,8 +3779,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     }
 
     // search for z value to build at, up to max ride height
-    const auto smallZ = z / COORDS_Z_STEP;
-    int numAttempts = (smallZ <= MAX_TRACK_HEIGHT ? (MAX_TRACK_HEIGHT - smallZ + 1) : 2);
+    int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
     if (ride->type == RIDE_TYPE_MAZE)
     {

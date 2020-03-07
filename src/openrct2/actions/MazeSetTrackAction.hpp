@@ -114,7 +114,7 @@ public:
         auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
-            heightDifference /= (2 * COORDS_Z_STEP);
+            heightDifference /= COORDS_Z_PER_TINY_Z;
 
             if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
             {
@@ -200,9 +200,6 @@ public:
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        auto baseHeight = _loc.z / 8;
-        auto clearanceHeight = (_loc.z + 32) / 8;
-
         auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
@@ -211,10 +208,10 @@ public:
 
             auto startLoc = _loc.ToTileStart();
 
-            tileElement = tile_element_insert({ TileCoordsXY{ _loc }, baseHeight }, 0b1111);
+            tileElement = tile_element_insert({ TileCoordsXYZ{ _loc } }, 0b1111);
             assert(tileElement != nullptr);
 
-            tileElement->clearance_height = clearanceHeight;
+            tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
             tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);

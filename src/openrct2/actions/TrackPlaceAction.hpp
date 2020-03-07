@@ -315,7 +315,7 @@ public:
                 if (surfaceElement == nullptr)
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-                uint8_t waterHeight = surfaceElement->GetWaterHeight();
+                auto waterHeight = surfaceElement->GetWaterHeight();
                 if (waterHeight == 0)
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
@@ -380,7 +380,7 @@ public:
                         maxHeight = RideData5[ride->type].max_height;
                     }
 
-                    ride_height /= (2 * COORDS_Z_STEP);
+                    ride_height /= COORDS_Z_PER_TINY_Z;
                     if (ride_height > maxHeight && !byte_9D8150)
                     {
                         return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_TOO_HIGH_FOR_SUPPORTS);
@@ -452,7 +452,6 @@ public:
 
             auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
-            int32_t baseZ = mapLoc.z;
             int32_t clearanceZ = trackBlock->var_07;
             if (trackBlock->var_09 & (1 << 2) && RideData5[ride->type].clearance_height > 24)
             {
@@ -463,14 +462,15 @@ public:
                 clearanceZ += RideData5[ride->type].clearance_height;
             }
 
-            clearanceZ = clearanceZ + baseZ;
+            clearanceZ = clearanceZ + mapLoc.z;
+            const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, mapLoc.z, clearanceZ);
 
             uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
-                    { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile,
-                    GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
+                    mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+                    &cost, crossingMode))
             {
                 return std::make_unique<TrackPlaceActionResult>(
                     GA_ERROR::NO_CLEARANCE, gGameCommandErrorText, gCommonFormatArgs);
@@ -481,7 +481,7 @@ public:
                 footpath_remove_litter(mapLoc);
                 if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
                 {
-                    wall_remove_at({ mapLoc, baseZ, clearanceZ });
+                    wall_remove_at(mapLocWithClearance);
                 }
                 else
                 {
@@ -493,7 +493,7 @@ public:
                     {
                         if (intersectingDirections & (1 << i))
                         {
-                            wall_remove_intersecting_walls({ mapLoc, baseZ, clearanceZ }, i);
+                            wall_remove_intersecting_walls(mapLocWithClearance, i);
                         }
                     }
                 }
@@ -513,7 +513,7 @@ public:
             if (surfaceElement == nullptr)
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-            int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
+            int32_t supportHeight = mapLoc.z - surfaceElement->GetBaseZ();
             if (supportHeight < 0)
             {
                 supportHeight = (10 * COORDS_Z_STEP);
@@ -531,7 +531,7 @@ public:
                     if (trackBlock->index != 0)
                         break;
                     ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                    ride->CableLiftLoc = { mapLoc, baseZ };
+                    ride->CableLiftLoc = mapLoc;
                     break;
                 case TRACK_ELEM_BLOCK_BRAKES:
                     ride->num_block_brakes++;
@@ -582,8 +582,7 @@ public:
                 ride->overall_view = mapLoc;
             }
 
-            auto tileElement = tile_element_insert(
-                TileCoordsXYZ(CoordsXYZ{ mapLoc, baseZ }), quarterTile.GetBaseQuarterOccupied());
+            auto tileElement = tile_element_insert(TileCoordsXYZ(mapLoc), quarterTile.GetBaseQuarterOccupied());
             assert(tileElement != nullptr);
             tileElement->SetClearanceZ(clearanceZ);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
@@ -656,7 +655,7 @@ public:
                             tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                             tempLoc.y += CoordsDirectionDelta[tempDirection].y;
                             tempDirection = direction_reverse(tempDirection);
-                            wall_remove_intersecting_walls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
+                            wall_remove_intersecting_walls(mapLocWithClearance, tempDirection & 3);
                         }
                     }
                 }
@@ -667,7 +666,7 @@ public:
                 if (trackBlock->index == 0)
                 {
                     track_add_station_element(
-                        mapLoc.x, mapLoc.y, baseZ / COORDS_Z_STEP, _origin.direction, _rideIndex, GAME_COMMAND_FLAG_APPLY);
+                        mapLoc.x, mapLoc.y, mapLoc.z / COORDS_Z_STEP, _origin.direction, _rideIndex, GAME_COMMAND_FLAG_APPLY);
                 }
                 sub_6CB945(ride);
                 ride->UpdateMaxVehicles();

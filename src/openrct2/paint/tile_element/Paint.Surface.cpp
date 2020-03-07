@@ -520,9 +520,11 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
 
     if (tile.tile_element->base_height > gClipHeight)
         return false;
-    if (tile.tile_coords.x < gClipSelectionA.x || tile.tile_coords.x > gClipSelectionB.x)
+
+    auto coords = tile.tile_coords.ToCoordsXY();
+    if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
         return false;
-    if (tile.tile_coords.y < gClipSelectionA.y || tile.tile_coords.y > gClipSelectionB.y)
+    if (coords.y < gClipSelectionA.y || coords.y > gClipSelectionB.y)
         return false;
 
     return true;

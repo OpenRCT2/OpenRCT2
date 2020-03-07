@@ -134,7 +134,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
  */
 static int32_t guest_surface_path_finding(Peep* peep)
 {
-    auto pathPos = CoordsXYRangedZ{ peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PATH_HEIGHT };
+    auto pathPos = CoordsXYRangedZ{ peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PATH_CLEARANCE };
     Direction randDirection = scenario_rand() & 3;
 
     if (!fence_in_the_way(pathPos, randDirection))

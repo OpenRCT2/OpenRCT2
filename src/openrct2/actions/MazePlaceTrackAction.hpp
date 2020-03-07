@@ -72,12 +72,12 @@ public:
         }
 
         auto baseHeight = _loc.z;
-        auto clearanceHeight = _loc.z + (4 * COORDS_Z_STEP);
+        auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
         auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
-            heightDifference = heightDifference / (2 * COORDS_Z_STEP);
+            heightDifference /= COORDS_Z_PER_TINY_Z;
 
             if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
             {
@@ -155,7 +155,7 @@ public:
         }
 
         auto baseHeight = _loc.z;
-        auto clearanceHeight = _loc.z + (4 * COORDS_Z_STEP);
+        auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
         money32 clearCost = 0;
         if (!map_can_construct_with_clear_at(
@@ -170,10 +170,10 @@ public:
 
         auto startLoc = _loc.ToTileStart();
 
-        auto tileElement = tile_element_insert(TileCoordsXYZ(CoordsXYZ{ _loc, baseHeight }), 0b1111);
+        auto tileElement = tile_element_insert(TileCoordsXYZ(_loc), 0b1111);
         assert(tileElement != nullptr);
 
-        tileElement->SetClearanceZ(clearanceHeight + (4 * COORDS_Z_STEP));
+        tileElement->SetClearanceZ(clearanceHeight + MAZE_CLEARANCE_HEIGHT);
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);

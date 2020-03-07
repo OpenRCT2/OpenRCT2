@@ -17,6 +17,7 @@
 
 constexpr const int32_t COORDS_XY_STEP = 32;
 constexpr const int32_t COORDS_Z_STEP = 8;
+constexpr const int32_t COORDS_Z_PER_TINY_Z = 16;
 
 constexpr const auto NumOrthogonalDirections = 4;
 
