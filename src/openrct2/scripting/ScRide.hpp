@@ -12,74 +12,13 @@
 #ifdef __ENABLE_SCRIPTING__
 
 #    include "../common.h"
-#    include "../object/RideObject.h"
 #    include "../ride/Ride.h"
 #    include "Duktape.hpp"
+#    include "ScObject.hpp"
 #    include "ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScRideObject
-    {
-    private:
-        rct_ride_entry* _entry{};
-
-    public:
-        ScRideObject(rct_ride_entry* entry)
-            : _entry(entry)
-        {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScRideObject::id_get, nullptr, "identifier");
-            dukglue_register_property(ctx, &ScRideObject::name_get, nullptr, "name");
-            dukglue_register_property(ctx, &ScRideObject::description_get, nullptr, "description");
-            dukglue_register_property(ctx, &ScRideObject::capacity_get, nullptr, "capacity");
-        }
-
-    private:
-        std::string id_get()
-        {
-            auto obj = static_cast<Object*>(_entry->obj);
-            if (obj != nullptr)
-            {
-                return obj->GetIdentifier();
-            }
-            return {};
-        }
-
-        std::string name_get()
-        {
-            auto obj = static_cast<Object*>(_entry->obj);
-            if (obj != nullptr)
-            {
-                return obj->GetName();
-            }
-            return {};
-        }
-
-        std::string description_get()
-        {
-            auto obj = static_cast<RideObject*>(_entry->obj);
-            if (obj != nullptr)
-            {
-                return obj->GetDescription();
-            }
-            return {};
-        }
-
-        std::string capacity_get()
-        {
-            auto obj = static_cast<RideObject*>(_entry->obj);
-            if (obj != nullptr)
-            {
-                return obj->GetCapacity();
-            }
-            return {};
-        }
-    };
-
     class ScRide
     {
     private:
@@ -102,10 +41,10 @@ namespace OpenRCT2::Scripting
             auto ride = GetRide();
             if (ride != nullptr)
             {
-                auto rideEntry = ride->GetRideEntry();
-                if (rideEntry != nullptr)
+                auto rideObject = GetContext()->GetObjectManager().GetLoadedObject(OBJECT_TYPE_RIDE, ride->subtype);
+                if (rideObject != nullptr)
                 {
-                    return std::make_shared<ScRideObject>(rideEntry);
+                    return std::make_shared<ScRideObject>(OBJECT_TYPE_RIDE, ride->subtype);
                 }
             }
             return nullptr;

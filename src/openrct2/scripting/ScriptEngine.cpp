@@ -27,6 +27,7 @@
 #    include "ScDisposable.hpp"
 #    include "ScMap.hpp"
 #    include "ScNetwork.hpp"
+#    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
 #    include "ScThing.hpp"
@@ -373,6 +374,7 @@ void ScriptEngine::Initialise()
     ScDisposable::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
+    ScObject::Register(ctx);
     ScPark::Register(ctx);
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);

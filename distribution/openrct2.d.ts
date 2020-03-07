@@ -113,6 +113,17 @@ declare global {
         sharedStorage: Configuration;
 
         /**
+         * Gets the loaded object at the given index.
+         * @param type The object type.
+         * @param index The index.
+         */
+        getObject(type: ObjectType, index: number): Object;
+        getObject(type: "ride", index: number): RideObject;
+
+        getAllObjects(type: ObjectType): Object[];
+        getAllObjects(type: "ride"): RideObject[];
+
+        /**
          * Gets a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
          * all clients, you therefore must be in a context that can mutate the game
@@ -174,6 +185,22 @@ declare global {
         set<T>(key: string, value: T): void;
         has(key: string): boolean;
     }
+
+    type ObjectType =
+        "ride" |
+        "small_scenery" |
+        "large_scenery" |
+        "wall" |
+        "banner" |
+        "footpath" |
+        "footpath_addition" |
+        "scenery_group" |
+        "park_entrance" |
+        "water" |
+        "terrain_surface" |
+        "terrain_edge" |
+        "station" |
+        "music";
 
     type HookType =
         "interval.tick" | "interval.day" |
@@ -407,6 +434,16 @@ declare global {
      * Represents the definition of a loaded object (.DAT or .json) such a ride type or scenery item.
      */
     interface Object {
+        /**
+         * The object type.
+         */
+        readonly type: ObjectType;
+
+        /**
+         * The index of the loaded object for the object type.
+         */
+        readonly index: number;
+
         /**
          * The unique name identifier of the object, e.g. "BURGB   ".
          * This may have trailing spaces if the name is shorter than 8 characters.

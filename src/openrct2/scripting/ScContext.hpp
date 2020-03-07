@@ -14,11 +14,13 @@
 #    include "../actions/CustomAction.hpp"
 #    include "../actions/ParkSetNameAction.hpp"
 #    include "../actions/SmallSceneryPlaceAction.hpp"
+#    include "../object/ObjectManager.h"
 #    include "../scenario/Scenario.h"
 #    include "Duktape.hpp"
 #    include "HookEngine.h"
 #    include "ScConfiguration.hpp"
 #    include "ScDisposable.hpp"
+#    include "ScObject.hpp"
 #    include "ScriptEngine.h"
 
 #    include <cstdio>
@@ -51,8 +53,64 @@ namespace OpenRCT2::Scripting
             return std::make_shared<ScConfiguration>(scriptEngine.GetSharedStorage());
         }
 
-        void registerIntent(const DukValue& desc)
+        static DukValue CreateScObject(duk_context* ctx, uint8_t type, int32_t index)
         {
+            switch (type)
+            {
+                case OBJECT_TYPE_RIDE:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
+                    break;
+                default:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
+                    break;
+            }
+        }
+
+        DukValue getObject(const std::string& typez, int32_t index)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto& objManager = GetContext()->GetObjectManager();
+
+            auto type = ScObject::StringToObjectType(typez);
+            if (type)
+            {
+                auto obj = objManager.GetLoadedObject(*type, index);
+                if (obj != nullptr)
+                {
+                    return CreateScObject(ctx, *type, index);
+                }
+            }
+            else
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
+            }
+            return {};
+        }
+
+        std::vector<DukValue> getAllObjects(const std::string& typez)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto& objManager = GetContext()->GetObjectManager();
+
+            std::vector<DukValue> result;
+            auto type = ScObject::StringToObjectType(typez);
+            if (type)
+            {
+                auto count = object_entry_group_counts[*type];
+                for (int32_t i = 0; i < count; i++)
+                {
+                    auto obj = objManager.GetLoadedObject(*type, i);
+                    if (obj != nullptr)
+                    {
+                        result.push_back(CreateScObject(ctx, *type, i));
+                    }
+                }
+            }
+            else
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
+            }
+            return result;
         }
 
         int32_t getRandom(int32_t min, int32_t max)
@@ -230,8 +288,9 @@ namespace OpenRCT2::Scripting
         {
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
+            dukglue_register_method(ctx, &ScContext::getObject, "getObject");
+            dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
-            dukglue_register_method(ctx, &ScContext::registerIntent, "registerIntent");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
             dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");
             dukglue_register_method(ctx, &ScContext::executeAction, "executeAction");
