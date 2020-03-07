@@ -1135,8 +1135,9 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadrants)
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
+    const auto& tileLoc = TileCoordsXYZ(loc);
     TileElement *originalTileElement, *newTileElement, *insertedElement;
     bool isLastForTile = false;
 
@@ -1147,13 +1148,13 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
     }
 
     newTileElement = gNextFreeTileElement;
-    originalTileElement = gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x];
+    originalTileElement = gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x];
 
     // Set tile index pointer to point to new element block
-    gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x] = newTileElement;
+    gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x] = newTileElement;
 
     // Copy all elements that are below the insert height
-    while (loc.z >= originalTileElement->base_height)
+    while (loc.z >= originalTileElement->GetBaseZ())
     {
         // Copy over map element
         *newTileElement = *originalTileElement;
@@ -1173,11 +1174,11 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
     // Insert new map element
     insertedElement = newTileElement;
     newTileElement->type = 0;
-    newTileElement->base_height = loc.z;
+    newTileElement->SetBaseZ(loc.z);
     newTileElement->Flags = 0;
     newTileElement->SetLastForTile(isLastForTile);
     newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
-    newTileElement->clearance_height = loc.z;
+    newTileElement->SetClearanceZ(loc.z);
     std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
     std::memset(&newTileElement->pad_08, 0, sizeof(newTileElement->pad_08));
     newTileElement++;

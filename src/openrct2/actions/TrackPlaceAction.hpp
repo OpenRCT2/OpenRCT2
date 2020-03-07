@@ -582,7 +582,7 @@ public:
                 ride->overall_view = mapLoc;
             }
 
-            auto tileElement = tile_element_insert(TileCoordsXYZ(mapLoc), quarterTile.GetBaseQuarterOccupied());
+            auto tileElement = tile_element_insert(mapLoc, quarterTile.GetBaseQuarterOccupied());
             assert(tileElement != nullptr);
             tileElement->SetClearanceZ(clearanceZ);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);

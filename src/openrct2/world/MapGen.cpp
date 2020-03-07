@@ -232,18 +232,18 @@ void mapgen_generate(mapgen_settings* settings)
 
 static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
 {
-    int32_t surfaceZ;
-    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
+    
+    auto loc = CoordsXY(x, y);
 
-    surfaceZ = tile_element_height({ x * 32 + 16, y * 32 + 16 }) / 8;
-    tileElement = tile_element_insert({ x, y, surfaceZ }, 0b1111);
+    int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
+    TileElement* tileElement = tile_element_insert({ loc, surfaceZ }, 0b1111);
     assert(tileElement != nullptr);
-    tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
+    tileElement->SetClearanceZ(surfaceZ + sceneryEntry->small_scenery.height);
     tileElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
     tileElement->SetDirection(util_rand() & 3);
     SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();

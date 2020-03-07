@@ -89,7 +89,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int1
     {
         // Create new corrupt element
         TileElement* corruptElement = tile_element_insert(
-            { loc.x / 32, loc.y / 32, -1 }, 0b0000); // Ugly hack: -1 guarantees this to be placed first
+            { loc, (-1 * COORDS_Z_STEP) }, 0b0000); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -299,6 +299,8 @@ GameActionResult::Ptr tile_inspector_paste_element_at(const CoordsXY& loc, TileE
     {
         return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
     }
+    
+    auto tileLoc = TileCoordsXY(loc);
 
     if (isExecuting)
     {
@@ -314,7 +316,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(const CoordsXY& loc, TileE
             }
             auto& newBanner = *GetBanner(newBannerIndex);
             newBanner = *GetBanner(bannerIndex);
-            newBanner.position = TileCoordsXY(loc);
+            newBanner.position = tileLoc;
 
             // Use the new banner index
             tile_element_set_banner_index(&element, newBannerIndex);
@@ -322,7 +324,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(const CoordsXY& loc, TileE
 
         // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set them
         // correctly _here_.
-        TileElement* const pastedElement = tile_element_insert({ loc.x / 32, loc.y / 32, element.base_height }, 0b0000);
+        TileElement* const pastedElement = tile_element_insert({ loc, element.GetBaseZ() }, 0b0000);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
@@ -331,8 +333,8 @@ GameActionResult::Ptr tile_inspector_paste_element_at(const CoordsXY& loc, TileE
         map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
-            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)tileLoc.x == windowTileInspectorTileX
+            && (uint32_t)tileLoc.y == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount++;
 

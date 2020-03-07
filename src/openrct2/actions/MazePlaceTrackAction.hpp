@@ -170,7 +170,7 @@ public:
 
         auto startLoc = _loc.ToTileStart();
 
-        auto tileElement = tile_element_insert(TileCoordsXYZ(_loc), 0b1111);
+        auto tileElement = tile_element_insert(_loc, 0b1111);
         assert(tileElement != nullptr);
 
         tileElement->SetClearanceZ(clearanceHeight + MAZE_CLEARANCE_HEIGHT);

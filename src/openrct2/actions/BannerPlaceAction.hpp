@@ -121,9 +121,7 @@ public:
             log_error("No free map elements.");
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
         }
-
-        uint8_t baseHeight = _loc.z / 8 + 2;
-
+        
         if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
         {
             log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);
@@ -137,7 +135,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        TileElement* newTileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b0000);
+        TileElement* newTileElement = tile_element_insert({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
         assert(newTileElement != nullptr);
 
         banner->flags = 0;
