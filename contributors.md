@@ -137,6 +137,7 @@ The following people are not part of the development team, but have been contrib
 * Denis Khabenkov (kodmord)
 * Kevin Laframboise (klaframboise)
 * Tushar Sariya (TusharSariya)
+* Kyle Garza (kylegarza21)
 
 ## Toolchain
 * (Balletie) - macOS
