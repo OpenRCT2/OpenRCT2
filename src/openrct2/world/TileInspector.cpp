@@ -142,7 +142,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int1
 }
 
 /**
- * Forcefully removes an element for a given tile that contains at least 1 surface element
+ * Forcefully removes an element for a given tile containing more than 1 element
  * @param x The x coordinate of the tile
  * @param y The y coordinate of the tile
  * @param elementIndex The nth element on this tile
