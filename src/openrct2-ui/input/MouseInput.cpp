@@ -1255,7 +1255,7 @@ void input_state_widget_pressed(
 
                     if (w->classification == WC_DROPDOWN)
                     {
-                        dropdown_index = dropdown_index_from_point(screenCoords.x, screenCoords.y, w);
+                        dropdown_index = dropdown_index_from_point(screenCoords, w);
                         if (dropdown_index == -1)
                         {
                             goto dropdown_cleanup;
@@ -1371,7 +1371,7 @@ void input_state_widget_pressed(
 
     if (w->classification == WC_DROPDOWN)
     {
-        int32_t dropdown_index = dropdown_index_from_point(screenCoords.x, screenCoords.y, w);
+        int32_t dropdown_index = dropdown_index_from_point(screenCoords, w);
         if (dropdown_index == -1)
         {
             return;

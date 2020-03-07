@@ -405,13 +405,13 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window* w)
+int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w)
 {
-    int32_t top = y - w->windowPos.y - 2;
+    int32_t top = loc.y - w->windowPos.y - 2;
     if (top < 0)
         return -1;
 
-    int32_t left = x - w->windowPos.x;
+    int32_t left = loc.x - w->windowPos.x;
     if (left >= w->width)
         return -1;
     left -= 2;
