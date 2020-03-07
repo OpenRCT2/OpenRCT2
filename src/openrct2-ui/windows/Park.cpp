@@ -1170,15 +1170,12 @@ static void window_park_guests_invalidate(rct_window* w)
  */
 static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y;
-    rct_widget* widget;
-
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    x = w->windowPos.x;
-    y = w->windowPos.y;
-    widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
+    int32_t x = w->windowPos.x;
+    int32_t y = w->windowPos.y;
+    rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
     gfx_draw_string_left(
@@ -1189,9 +1186,20 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1],
         INSET_RECT_F_30);
 
+    // Y axis labels
+    x = x + widget->left + 23;
+    y = y + widget->top + 23;
+    for (int i = 5; i >= 0; i--)
+    {
+        uint16_t axisValue = i * 1000;
+        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, x + 10, y);
+        gfx_fill_rect_inset(dpi, x + 15, y + 5, x + w->width - 28, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
+        y += 20;
+    }
+
     // Graph
-    x += widget->left + 22;
-    y += widget->top + 26;
+    x = w->windowPos.x + widget->left + 47;
+    y = w->windowPos.y + widget->top + 26;
 
     graph_draw_uint8_t(dpi, gGuestsInParkHistory, 32, x, y);
 }
