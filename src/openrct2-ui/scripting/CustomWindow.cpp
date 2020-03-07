@@ -415,8 +415,8 @@ namespace OpenRCT2::Ui::Windows
                     set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char*, items[i].c_str());
                 }
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[widget->colour], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                    w->colours[widget->colour], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
             }
             else if (widgetDesc->Type == "spinner")
             {
@@ -507,15 +507,16 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (w->viewport == nullptr)
                 {
-                    auto left = w->x + viewportWidget->left + 1;
-                    auto top = w->y + viewportWidget->top + 1;
+                    auto left = w->windowPos.x + viewportWidget->left + 1;
+                    auto top = w->windowPos.y + viewportWidget->top + 1;
                     auto width = (viewportWidget->right - viewportWidget->left) - 1;
                     auto height = (viewportWidget->bottom - viewportWidget->top) - 1;
                     auto mapX = 0;
                     auto mapY = 0;
                     auto mapZ = 0;
                     viewport_create(
-                        w, left, top, width, height, 0, mapX, mapY, mapZ, VIEWPORT_FOCUS_TYPE_COORDINATE, SPRITE_INDEX_NULL);
+                        w, { left, top }, width, height, 0, { mapX, mapY, mapZ }, VIEWPORT_FOCUS_TYPE_COORDINATE,
+                        SPRITE_INDEX_NULL);
                     w->flags |= WF_NO_SCROLLING;
                     w->Invalidate();
                 }

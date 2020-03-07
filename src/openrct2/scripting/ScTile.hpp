@@ -96,18 +96,16 @@ namespace OpenRCT2::Scripting
 
         bool broken_get() const
         {
-            return _element->flags & TILE_ELEMENT_FLAG_BROKEN;
+            auto el = _element->AsPath();
+            return el != nullptr ? el->IsBroken() : false;
         }
         void broken_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            if (value)
+            auto el = _element->AsPath();
+            if (el != nullptr)
             {
-                _element->flags |= TILE_ELEMENT_FLAG_BROKEN;
-            }
-            else
-            {
-                _element->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+                el->SetIsBroken(value);
             }
         }
 
@@ -422,7 +420,7 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     auto el = _element->AsPath();
-                    return el->GetPathEntryIndex();
+                    return el->GetSurfaceEntryIndex();
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 {
@@ -455,7 +453,7 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     auto el = _element->AsPath();
-                    el->SetPathEntryIndex(value & 0xFF);
+                    el->SetSurfaceEntryIndex(value & 0xFF);
                     break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
