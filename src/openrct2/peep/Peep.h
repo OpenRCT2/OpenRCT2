@@ -833,6 +833,8 @@ public:
     void Tick128UpdateStaff();
     bool IsMechanic() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
+    bool IsLocationInPatrol(const CoordsXY& loc) const;
+    bool DoPathFinding();
 
 private:
     void UpdatePatrolling();
@@ -856,6 +858,13 @@ private:
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride);
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
+
+    bool DoHandymanPathFinding();
+    bool DoMechanicPathFinding();
+    bool DoEntertainerPathFinding();
+    bool DoMiscPathFinding();
+
+    int32_t HandymanDirectionRandSurface(uint8_t validDirections);
 };
 
 static_assert(sizeof(Peep) <= 512);

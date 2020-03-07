@@ -2755,7 +2755,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
         }
 
         if (map_is_location_in_park({ x, y }))
-            if (!staff_is_location_in_patrol(peep, x & 0xFFE0, y & 0xFFE0))
+            if (!peep->AsStaff()->IsLocationInPatrol({ x & 0xFFE0, y & 0xFFE0 }))
                 continue;
 
         if (peep->x == LOCATION_NULL)

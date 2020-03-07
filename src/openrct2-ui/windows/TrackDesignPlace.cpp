@@ -119,7 +119,7 @@ static money32 _window_track_place_last_cost;
 static std::unique_ptr<TrackDesign> _trackDesign;
 
 static void window_track_place_clear_provisional();
-static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
+static int32_t window_track_place_get_base_z(const CoordsXY& loc);
 
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
@@ -290,7 +290,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     money32 cost = MONEY32_UNDEFINED;
 
     // Get base Z position
-    mapZ = window_track_place_get_base_z(mapCoords.x, mapCoords.y);
+    mapZ = window_track_place_get_base_z(mapCoords);
     CoordsXYZ trackLoc = { mapCoords, mapZ };
 
     if (game_is_not_paused() || gCheatsBuildInPauseMode)
@@ -347,7 +347,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
         return;
 
     // Try increasing Z until a feasible placement is found
-    int16_t mapZ = window_track_place_get_base_z(mapCoords.x, mapCoords.y);
+    int16_t mapZ = window_track_place_get_base_z(mapCoords);
     CoordsXYZ trackLoc = { mapCoords, mapZ };
 
     auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
@@ -472,9 +472,9 @@ void TrackPlaceRestoreProvisional()
  *
  *  rct2: 0x006D17C6
  */
-static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
+static int32_t window_track_place_get_base_z(const CoordsXY& loc)
 {
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
         return 0;
 
@@ -494,7 +494,7 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
     if (surfaceElement->GetWaterHeight() > 0)
         z = std::max(z, surfaceElement->GetWaterHeight());
 
-    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), x, y, z);
+    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), loc.x, loc.y, z);
 }
 
 /**
