@@ -151,12 +151,14 @@ GameActionResult::Ptr tile_inspector_remove_element_at(const CoordsXY& loc, int1
 {
     if (isExecuting)
     {
+        // At least one surface element must exist on a tile
+        if (1 >= windowTileInspectorElementCount)
+        {
+            return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);
+        }
+
         // Forcefully remove the element
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
-        if (tileElement == nullptr)
-        {
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
-        }
         tile_element_remove(tileElement);
         map_invalidate_tile_full(loc);
 
