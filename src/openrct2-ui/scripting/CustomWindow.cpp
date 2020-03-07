@@ -407,11 +407,13 @@ namespace OpenRCT2::Ui::Windows
             if (widgetDesc->Type == "dropdown")
             {
                 widget--;
+                auto selectedIndex = widgetDesc->SelectedIndex;
                 const auto& items = widgetDesc->Items;
                 const auto numItems = std::min<size_t>(items.size(), DROPDOWN_ITEMS_MAX_SIZE);
                 for (size_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_STRING;
+                    gDropdownItemsFormat[i] = selectedIndex == i ? STR_OPTIONS_DROPDOWN_ITEM_SELECTED
+                                                                 : STR_OPTIONS_DROPDOWN_ITEM;
                     set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char*, items[i].c_str());
                 }
                 window_dropdown_show_text_custom_width(
@@ -437,8 +439,8 @@ namespace OpenRCT2::Ui::Windows
         if (dropdownIndex == -1)
             return;
 
-        const auto& info = GetInfo(w);
-        const auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
+        auto& info = GetInfo(w);
+        auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
         if (widgetDesc != nullptr)
         {
             if (widgetDesc->Type == "dropdown")
@@ -453,6 +455,8 @@ namespace OpenRCT2::Ui::Windows
 
                     auto& widget = w->widgets[widgetIndex - 1];
                     widget.string = (utf8*)widgetDesc->Items[dropdownIndex].c_str();
+
+                    widgetDesc->SelectedIndex = dropdownIndex;
                 }
             }
         }
