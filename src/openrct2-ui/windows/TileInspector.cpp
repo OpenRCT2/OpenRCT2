@@ -2116,7 +2116,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     uint8_t args[32]{};
                     banner->FormatTextTo(args);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, x, y + 22);
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, x, y);
                 }
 
                 // Properties
