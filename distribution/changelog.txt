@@ -27,6 +27,7 @@
 - Fix: [#10547] RCT1 parks have too many rides available.
 - Fix: [#10587] Update last action coordinates on correct player.
 - Fix: [#10662] Duck cheat tooltips look odd and do not explain anything.
+- Fix: [#10691] Improved tile inspector delete functionality.
 - Fix: [#10694] The lift hill speed of the flying roller coaster cannot be changed (original bug).
 - Fix: [#10705] Apply multithreaded rendering to all viewports.
 - Fix: [#10739] Mountain tool overlay for even-numbered selections.

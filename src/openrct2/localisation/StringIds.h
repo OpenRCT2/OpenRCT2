@@ -3905,6 +3905,7 @@ enum
 
     STR_CREATE_DUCKS_TIP = 6356,
     STR_REMOVE_DUCKS_TIP = 6357,
+
     STR_TILE_NEEDS_ATLEAST_ONE_ELEMENT = 6358,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
