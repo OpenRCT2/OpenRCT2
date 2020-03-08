@@ -3908,7 +3908,7 @@ enum
     STR_TILE_NEEDS_ATLEAST_ONE_ELEMENT = 6358,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
-    STR_COUNT = 32769
+    STR_COUNT = 32768
 };
 
 #endif
