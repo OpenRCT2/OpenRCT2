@@ -95,21 +95,6 @@ namespace OpenRCT2::Scripting
             map_invalidate_tile_full(_coords);
         }
 
-        bool broken_get() const
-        {
-            auto el = _element->AsPath();
-            return el != nullptr ? el->IsBroken() : false;
-        }
-        void broken_set(bool value)
-        {
-            ThrowIfGameStateNotMutable();
-            auto el = _element->AsPath();
-            if (el != nullptr)
-            {
-                el->SetIsBroken(value);
-            }
-        }
-
         uint8_t baseZ_get() const
         {
             return _element->base_height;
@@ -327,6 +312,11 @@ namespace OpenRCT2::Scripting
         {
             switch (_element->GetType())
             {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
+                    auto el = _element->AsPath();
+                    return el->GetRideIndex();
+                }
                 case TILE_ELEMENT_TYPE_TRACK:
                 {
                     auto el = _element->AsTrack();
@@ -345,6 +335,12 @@ namespace OpenRCT2::Scripting
             ThrowIfGameStateNotMutable();
             switch (_element->GetType())
             {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
+                    auto el = _element->AsPath();
+                    el->SetRideIndex(value);
+                    break;
+                }
                 case TILE_ELEMENT_TYPE_TRACK:
                 {
                     auto el = _element->AsTrack();
@@ -364,6 +360,11 @@ namespace OpenRCT2::Scripting
         {
             switch (_element->GetType())
             {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
+                    auto el = _element->AsPath();
+                    return el->GetStationIndex();
+                }
                 case TILE_ELEMENT_TYPE_TRACK:
                 {
                     auto el = _element->AsTrack();
@@ -382,6 +383,12 @@ namespace OpenRCT2::Scripting
             ThrowIfGameStateNotMutable();
             switch (_element->GetType())
             {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
+                    auto el = _element->AsPath();
+                    el->SetStationIndex(value);
+                    break;
+                }
                 case TILE_ELEMENT_TYPE_TRACK:
                 {
                     auto el = _element->AsTrack();
@@ -575,6 +582,226 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        bool railings_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->GetRailingEntryIndex() : false;
+        }
+        void railings_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetRailingEntryIndex(value);
+            }
+        }
+
+        uint8_t edgesAndCorners_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->GetEdgesAndCorners() : 0;
+        }
+        void edgesAndCorners_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetEdgesAndCorners(value);
+            }
+        }
+
+        DukValue slopeDirection_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto el = _element->AsPath();
+            if (el != nullptr && el->IsSloped())
+            {
+                auto slope = static_cast<uint8_t>(el->GetSlopeDirection());
+                duk_push_int(ctx, slope);
+                return DukValue::take_from_stack(ctx);
+            }
+            duk_push_null(ctx);
+            return DukValue::take_from_stack(ctx);
+        }
+        void slopeDirection_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    el->SetSloped(true);
+                    el->SetSlopeDirection(value.as_int());
+                }
+                else
+                {
+                    el->SetSloped(false);
+                    el->SetSlopeDirection(0);
+                }
+            }
+        }
+
+        bool isQueue_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->IsQueue() : false;
+        }
+        void isQueue_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetIsQueue(value);
+            }
+        }
+
+        DukValue queueBannerDirection_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto el = _element->AsPath();
+            if (el != nullptr && el->HasQueueBanner())
+            {
+                duk_push_int(ctx, el->GetQueueBannerDirection());
+                return DukValue::take_from_stack(ctx);
+            }
+            duk_push_null(ctx);
+            return DukValue::take_from_stack(ctx);
+        }
+        void queueBannerDirection_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    el->SetHasQueueBanner(true);
+                    el->SetQueueBannerDirection(value.as_int());
+                }
+                else
+                {
+                    el->SetHasQueueBanner(false);
+                    el->SetQueueBannerDirection(0);
+                }
+            }
+        }
+
+        bool isBlockedByVehicle_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->IsBlockedByVehicle() : false;
+        }
+        void isBlockedByVehicle_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetIsBlockedByVehicle(value);
+            }
+        }
+
+        bool isWide_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->IsWide() : false;
+        }
+        void isWide_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetWide(value);
+            }
+        }
+
+        DukValue addition_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                auto addition = el->GetAddition();
+                if (addition != 0)
+                {
+                    duk_push_int(ctx, addition - 1);
+                    return DukValue::take_from_stack(ctx);
+                }
+            }
+            duk_push_null(ctx);
+            return DukValue::take_from_stack(ctx);
+        }
+        void addition_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    auto addition = value.as_int();
+                    if (addition >= 0 && addition <= 254)
+                    {
+                        el->SetAddition(addition + 1);
+                    }
+                }
+                else
+                {
+                    el->SetAddition(0);
+                }
+            }
+        }
+
+        uint8_t additionStatus_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->GetAdditionStatus() : 0;
+        }
+        void additionStatus_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetAdditionStatus(value);
+            }
+        }
+
+        bool isAdditionBroken_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->IsBroken() : false;
+        }
+        void isAdditionBroken_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetIsBroken(value);
+            }
+        }
+
+        bool isAdditionGhost_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->AdditionIsGhost() : false;
+        }
+        void isAdditionGhost_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetAdditionIsGhost(value);
+            }
+        }
+
         uint8_t footpathObject_get()
         {
             auto el = _element->AsEntrance();
@@ -609,10 +836,12 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
 
-            // Ride | entrance
-            dukglue_register_property(ctx, &ScTileElement::sequence_get, &ScTileElement::sequence_set, "sequence");
+            // Path | track | entrance
             dukglue_register_property(ctx, &ScTileElement::ride_get, &ScTileElement::ride_set, "ride");
             dukglue_register_property(ctx, &ScTileElement::station_get, &ScTileElement::station_set, "station");
+
+            // Track | entrance
+            dukglue_register_property(ctx, &ScTileElement::sequence_get, &ScTileElement::sequence_set, "sequence");
 
             // Surface only
             dukglue_register_property(ctx, &ScTileElement::slope_get, &ScTileElement::slope_set, "slope");
@@ -633,7 +862,27 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");
 
             // Footpath only
-            dukglue_register_property(ctx, &ScTileElement::broken_get, &ScTileElement::broken_set, "broken");
+            dukglue_register_property(ctx, &ScTileElement::railings_get, &ScTileElement::railings_set, "railings");
+            dukglue_register_property(
+                ctx, &ScTileElement::edgesAndCorners_get, &ScTileElement::edgesAndCorners_set, "edgesAndCorners");
+            dukglue_register_property(
+                ctx, &ScTileElement::slopeDirection_get, &ScTileElement::slopeDirection_set, "slopeDirection");
+            dukglue_register_property(ctx, &ScTileElement::isQueue_get, &ScTileElement::isQueue_set, "isQueue");
+            dukglue_register_property(
+                ctx, &ScTileElement::queueBannerDirection_get, &ScTileElement::queueBannerDirection_set,
+                "queueBannerDirection");
+
+            dukglue_register_property(
+                ctx, &ScTileElement::isBlockedByVehicle_get, &ScTileElement::isBlockedByVehicle_set, "isBlockedByVehicle");
+            dukglue_register_property(ctx, &ScTileElement::isWide_get, &ScTileElement::isWide_set, "isWide");
+
+            dukglue_register_property(ctx, &ScTileElement::addition_get, &ScTileElement::addition_set, "addition");
+            dukglue_register_property(
+                ctx, &ScTileElement::additionStatus_get, &ScTileElement::additionStatus_set, "additionStatus");
+            dukglue_register_property(
+                ctx, &ScTileElement::isAdditionBroken_get, &ScTileElement::isAdditionBroken_set, "isAdditionBroken");
+            dukglue_register_property(
+                ctx, &ScTileElement::isAdditionGhost_get, &ScTileElement::isAdditionGhost_set, "isAdditionGhost");
 
             // Entrance only
             dukglue_register_property(

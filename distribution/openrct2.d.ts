@@ -326,39 +326,20 @@ declare global {
         readonly hasConstructionRights: boolean;
     }
 
-    interface FootpathAdditionStatus extends BaseTileElement {
-        north: number;
-        east: number;
-        south: number;
-        west: number;
-    }
-
-    interface FootpathAddition extends BaseTileElement {
-        isBin: boolean;
-        isBench: boolean;
-        isLamp: boolean;
-        isBreakable: boolean;
-        isJumpingFountainWater: boolean;
-        isJumpingFountainSnow: boolean;
-        allowedOnQueue: boolean;
-        allowedOnSlope: boolean;
-        isQueueScreen: boolean;
-        status: FootpathAdditionStatus;
-
-        /**
-         * Remove the path addition
-         */
-        remove(): void;
-    }
-
     interface FootpathElement extends BaseTileElement {
         footpathType: number;
-        isSloped: boolean;
+        edgesAndCorners: number;
+        slopeDirection: number | null;
+        isBlockedByVehicle: boolean;
+        isWide: boolean;
+
         isQueue: boolean;
-        addition: FootpathAddition;
-        edges: number;
-        corners: number;
-        rideIndex: number;
+        queueBannerDirection: number | null;
+        ride: number;
+        station: number;
+
+        addition: number | null;
+        isAdditionBroken: boolean;
     }
 
     interface TrackElement extends BaseTileElement {
