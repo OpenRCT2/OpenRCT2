@@ -250,7 +250,7 @@ bool window_ride_construction_update_state(
 {
     ride_id_t rideIndex;
     uint8_t trackType, trackDirection;
-    uint16_t z, x, y, liftHillAndInvertedState, properties;
+    uint16_t x, y, liftHillAndInvertedState, properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();
     if (!std::get<0>(updated_element))
@@ -323,7 +323,7 @@ bool window_ride_construction_update_state(
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
-    z = _currentTrackBegin.z;
+    auto z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         z -= trackCoordinates->z_end;
