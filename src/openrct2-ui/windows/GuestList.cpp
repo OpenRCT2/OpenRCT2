@@ -50,14 +50,6 @@ enum {
     VIEW_COUNT
 };
 
-static constexpr const rct_string_id pageNames[] = {
-    STR_PAGE_1,
-    STR_PAGE_2,
-    STR_PAGE_3,
-    STR_PAGE_4,
-    STR_PAGE_5,
-};
-
 static constexpr const rct_string_id filterNames[] = {
     STR_GUESTS_FILTER,
     STR_GUESTS_FILTER_THINKING,
@@ -74,7 +66,7 @@ static rct_widget window_guest_list_widgets[] = {
     { WWT_CAPTION,          0,  1,      348,    1,  14,     STR_GUESTS,             STR_WINDOW_TITLE_TIP },         // title bar
     { WWT_CLOSEBOX,         0,  337,    347,    2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },         // close x button
     { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
-    { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_PAGE_1,             STR_NONE },                     // page dropdown
+    { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_ARG_4_PAGE_X,       STR_NONE },                     // page dropdown
     { WWT_BUTTON,           1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button
     { WWT_DROPDOWN,         1,  120,    261,    59, 70,     0xFFFFFFFF,             STR_INFORMATION_TYPE_TIP },     // information type dropdown
     { WWT_BUTTON,           1,  250,    260,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
@@ -165,7 +157,7 @@ static int32_t _window_guest_list_selected_tab;      // 0x00F1EE12
 static int32_t _window_guest_list_selected_filter;   // 0x00F1EE06
 static int32_t _window_guest_list_selected_page;     // 0x00F1EE07
 static uint32_t _window_guest_list_selected_view;    // 0x00F1EE13
-static int32_t _window_guest_list_num_pages;         // 0x00F1EE08
+static uint16_t _window_guest_list_num_pages;        // 0x00F1EE08
 static int32_t _window_guest_list_num_groups;        // 0x00F1AF22
 static bool _window_guest_list_tracking_only;
 static FilterArguments _window_guest_list_filter_arguments;
@@ -421,7 +413,9 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             for (i = 0; i < _window_guest_list_num_pages; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = pageNames[i];
+                uint16_t* args = (uint16_t*)&gDropdownItemsArgs[i];
+                args[0] = STR_PAGE_X;
+                args[1] = i + 1;
             }
             dropdown_set_checked(_window_guest_list_selected_page, true);
             break;
@@ -643,7 +637,6 @@ static void window_guest_list_invalidate(rct_window* w)
     window_guest_list_widgets[WIDX_CLOSE].right = w->width - 3;
     window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
     window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
-    window_guest_list_widgets[WIDX_PAGE_DROPDOWN].text = pageNames[_window_guest_list_selected_page];
     window_guest_list_widgets[WIDX_MAP].left = 273 - 350 + w->width;
     window_guest_list_widgets[WIDX_MAP].right = 296 - 350 + w->width;
     window_guest_list_widgets[WIDX_FILTER_BY_NAME].left = 297 - 350 + w->width;
@@ -655,6 +648,7 @@ static void window_guest_list_invalidate(rct_window* w)
     {
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_DROPDOWN;
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_BUTTON;
+        set_format_arg(4, uint16_t, _window_guest_list_selected_page + 1);
     }
     else
     {
