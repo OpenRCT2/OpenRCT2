@@ -343,7 +343,7 @@ struct CoordsXYZ : public CoordsXY
 
     CoordsXYZ ToTileCentre() const
     {
-        return ToTileStart() + CoordsXYZ{ (COORDS_XY_STEP / 2), (COORDS_XY_STEP / 2), z };
+        return ToTileStart() + CoordsXYZ{ (COORDS_XY_STEP / 2), (COORDS_XY_STEP / 2), 0 };
     }
 };
 
@@ -519,7 +519,7 @@ struct CoordsXYZD : public CoordsXYZ
 
     CoordsXYZD ToTileCentre() const
     {
-        return ToTileStart() + CoordsXYZD{ (COORDS_XY_STEP / 2), (COORDS_XY_STEP / 2), z, direction };
+        return ToTileStart() + CoordsXYZD{ (COORDS_XY_STEP / 2), (COORDS_XY_STEP / 2), 0, 0 };
     }
 };
 
