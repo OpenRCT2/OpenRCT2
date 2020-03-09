@@ -1850,7 +1850,7 @@ private:
                 "BN9     ",
             }));
         LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        LoadObjects(OBJECT_TYPE_WATER, std::vector<const char*>( { _waterEntry } ));
+        LoadObjects(OBJECT_TYPE_WATER, std::vector<const char*>({ _waterEntry }));
     }
 
     void LoadObjects(uint8_t objectType, const EntryList& entries)
