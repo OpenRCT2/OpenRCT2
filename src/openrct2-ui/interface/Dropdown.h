@@ -12,10 +12,10 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 
-#define DROPDOWN_SEPARATOR 0
-#define DROPDOWN_FORMAT_COLOUR_PICKER 0xFFFE
-#define DROPDOWN_FORMAT_LAND_PICKER 0xFFFF
-#define DROPDOWN_ITEMS_MAX_SIZE 128
+constexpr const rct_string_id DROPDOWN_SEPARATOR = 0;
+constexpr const rct_string_id DROPDOWN_FORMAT_COLOUR_PICKER = 0xFFFE;
+constexpr const rct_string_id DROPDOWN_FORMAT_LAND_PICKER = 0xFFFF;
+constexpr const int32_t DROPDOWN_ITEMS_MAX_SIZE = 512;
 
 enum
 {

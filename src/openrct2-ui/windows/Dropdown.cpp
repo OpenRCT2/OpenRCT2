@@ -45,8 +45,8 @@ static bool _dropdown_list_vertically;
 int32_t gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
 int64_t gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
-static bool _dropdownItemsChecked[DROPDOWN_ITEMS_MAX_SIZE];
-static bool _dropdownItemsDisabled[DROPDOWN_ITEMS_MAX_SIZE];
+static std::bitset<DROPDOWN_ITEMS_MAX_SIZE> _dropdownItemsChecked = {};
+static std::bitset<DROPDOWN_ITEMS_MAX_SIZE> _dropdownItemsDisabled = {};
 bool gDropdownIsColour;
 int32_t gDropdownLastColourHover;
 int32_t gDropdownHighlightedIndex;
@@ -217,8 +217,8 @@ void window_dropdown_show_text_custom_width(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    std::fill_n(_dropdownItemsDisabled, sizeof(_dropdownItemsDisabled), false);
-    std::fill_n(_dropdownItemsChecked, sizeof(_dropdownItemsChecked), false);
+    _dropdownItemsDisabled.reset();
+    _dropdownItemsChecked.reset();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -297,8 +297,8 @@ void window_dropdown_show_image(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    std::fill_n(_dropdownItemsDisabled, sizeof(_dropdownItemsDisabled), false);
-    std::fill_n(_dropdownItemsChecked, sizeof(_dropdownItemsChecked), false);
+    _dropdownItemsDisabled.reset();
+    _dropdownItemsChecked.reset();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
