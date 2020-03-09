@@ -114,7 +114,7 @@ private:
     EntryList _pathEntries;
     EntryList _pathAdditionEntries;
     EntryList _sceneryGroupEntries;
-    EntryList _waterEntry;
+    const char* _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
     uint8_t _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
@@ -539,18 +539,14 @@ private:
 
     void AddEntryForWater()
     {
-        const char* entryName;
-
         if (_gameVersion < FILE_VERSION_RCT1_LL)
         {
-            entryName = RCT1::GetWaterObject(RCT1_WATER_CYAN);
+            _waterEntry = RCT1::GetWaterObject(RCT1_WATER_CYAN);
         }
         else
         {
-            entryName = RCT1::GetWaterObject(_s4.water_colour);
+            _waterEntry = RCT1::GetWaterObject(_s4.water_colour);
         }
-
-        _waterEntry.GetOrAddEntry(entryName);
     }
 
     void AddEntryForRideType(uint8_t rideType)
@@ -1854,7 +1850,7 @@ private:
                 "BN9     ",
             }));
         LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        LoadObjects(OBJECT_TYPE_WATER, _waterEntry);
+        LoadObjects(OBJECT_TYPE_WATER, std::vector<const char*>( { _waterEntry } ));
     }
 
     void LoadObjects(uint8_t objectType, const EntryList& entries)
@@ -1926,7 +1922,7 @@ private:
                 "BN9     ",
             }));
         AppendRequiredObjects(result, OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        AppendRequiredObjects(result, OBJECT_TYPE_WATER, _waterEntry);
+        AppendRequiredObjects(result, OBJECT_TYPE_WATER, std::vector<const char*>({ _waterEntry }));
         return result;
     }
 
@@ -2906,8 +2902,6 @@ private:
                 return &_pathAdditionEntries;
             case OBJECT_TYPE_SCENERY_GROUP:
                 return &_sceneryGroupEntries;
-            case OBJECT_TYPE_WATER:
-                return &_waterEntry;
         }
         return nullptr;
     }
