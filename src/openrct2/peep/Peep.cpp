@@ -55,9 +55,9 @@ utf8 gPathFindDebugPeepName[256];
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 uint8_t gGuestChangeModifier;
-uint16_t gNumGuestsInPark;
-uint16_t gNumGuestsInParkLastWeek;
-uint16_t gNumGuestsHeadingForPark;
+uint32_t gNumGuestsInPark;
+uint32_t gNumGuestsInParkLastWeek;
+uint32_t gNumGuestsHeadingForPark;
 
 money16 gGuestInitialCash;
 uint8_t gGuestInitialHappiness;
@@ -1184,9 +1184,8 @@ void peep_problem_warnings_update()
     Peep* peep;
     Ride* ride;
     uint16_t spriteIndex;
-    uint16_t guests_in_park = gNumGuestsInPark;
-    int32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
-            disgust_counter = 0, bathroom_counter = 0, vandalism_counter = 0;
+    uint32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
+             disgust_counter = 0, bathroom_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
     FOR_ALL_GUESTS (spriteIndex, peep)
@@ -1252,7 +1251,7 @@ void peep_problem_warnings_update()
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warning_throttle[0])
         --warning_throttle[0];
-    else if (hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= guests_in_park / 16)
+    else if (hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[0] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1263,7 +1262,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[1])
         --warning_throttle[1];
-    else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= guests_in_park / 16)
+    else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[1] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1274,7 +1273,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[2])
         --warning_throttle[2];
-    else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= guests_in_park / 16)
+    else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1285,7 +1284,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[3])
         --warning_throttle[3];
-    else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= guests_in_park / 32)
+    else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= gNumGuestsInPark / 32)
     {
         warning_throttle[3] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1296,7 +1295,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[4])
         --warning_throttle[4];
-    else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= guests_in_park / 32)
+    else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= gNumGuestsInPark / 32)
     {
         warning_throttle[4] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1307,7 +1306,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[5])
         --warning_throttle[5];
-    else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= guests_in_park / 32)
+    else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= gNumGuestsInPark / 32)
     {
         warning_throttle[5] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -3449,7 +3448,7 @@ void pathfind_logging_disable()
 
 void increment_guests_in_park()
 {
-    if (gNumGuestsInPark < UINT16_MAX)
+    if (gNumGuestsInPark < UINT32_MAX)
     {
         gNumGuestsInPark++;
     }
@@ -3461,7 +3460,7 @@ void increment_guests_in_park()
 
 void increment_guests_heading_for_park()
 {
-    if (gNumGuestsHeadingForPark < UINT16_MAX)
+    if (gNumGuestsHeadingForPark < UINT32_MAX)
     {
         gNumGuestsHeadingForPark++;
     }

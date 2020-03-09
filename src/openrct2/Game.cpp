@@ -429,7 +429,7 @@ void game_fix_save_vars()
     // Recalculates peep count after loading a save to fix corrupted files
     Peep* peep;
     uint16_t spriteIndex;
-    uint16_t peepCount = 0;
+    uint32_t peepCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (!peep->outside_of_park)

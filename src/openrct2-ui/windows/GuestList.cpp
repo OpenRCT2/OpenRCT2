@@ -155,13 +155,13 @@ static uint32_t _window_guest_list_last_find_groups_tick;
 static uint32_t _window_guest_list_last_find_groups_selected_view;
 static uint32_t _window_guest_list_last_find_groups_wait;
 
-static int32_t _window_guest_list_highlighted_index; // 0x00F1EE10
-static int32_t _window_guest_list_selected_tab;      // 0x00F1EE12
-static int32_t _window_guest_list_selected_filter;   // 0x00F1EE06
-static int32_t _window_guest_list_selected_page;     // 0x00F1EE07
-static uint32_t _window_guest_list_selected_view;    // 0x00F1EE13
-static uint16_t _window_guest_list_num_pages;        // 0x00F1EE08
-static int32_t _window_guest_list_num_groups;        // 0x00F1AF22
+static uint32_t _window_guest_list_highlighted_index; // 0x00F1EE10
+static int32_t _window_guest_list_selected_tab;       // 0x00F1EE12
+static int32_t _window_guest_list_selected_filter;    // 0x00F1EE06
+static int32_t _window_guest_list_selected_page;      // 0x00F1EE07
+static uint32_t _window_guest_list_selected_view;     // 0x00F1EE13
+static uint16_t _window_guest_list_num_pages;         // 0x00F1EE08
+static uint32_t _window_guest_list_num_groups;        // 0x00F1AF22
 static bool _window_guest_list_tracking_only;
 static FilterArguments _window_guest_list_filter_arguments;
 
@@ -208,7 +208,7 @@ rct_window* window_guest_list_open()
         | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_FILTER_BY_NAME);
 
     window_init_scroll_widgets(window);
-    _window_guest_list_highlighted_index = -1;
+    _window_guest_list_highlighted_index = 0xFFFF;
     window->list_information_type = 0;
     _window_guest_list_selected_tab = PAGE_INDIVIDUAL;
     _window_guest_list_selected_filter = -1;
@@ -522,7 +522,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
     {
         case PAGE_INDIVIDUAL:
             // Count the number of guests
-            y = static_cast<int16_t>(GuestList.size()) * SCROLLABLE_ROW_HEIGHT;
+            y = static_cast<int32_t>(GuestList.size()) * SCROLLABLE_ROW_HEIGHT;
             _window_guest_list_num_pages = 1 + (static_cast<int16_t>(GuestList.size()) - 1) / GUESTS_PER_PAGE;
             if (_window_guest_list_num_pages == 0)
                 _window_guest_list_selected_page = 0;
@@ -542,9 +542,9 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
     y -= GUEST_PAGE_HEIGHT * _window_guest_list_selected_page;
     y = std::max(0, std::min(y, GUEST_PAGE_HEIGHT));
 
-    if (_window_guest_list_highlighted_index != -1)
+    if (_window_guest_list_highlighted_index != 0xFFFF)
     {
-        _window_guest_list_highlighted_index = -1;
+        _window_guest_list_highlighted_index = 0xFFFF;
         w->Invalidate();
     }
 
@@ -567,7 +567,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
  */
 static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t i = 0;
+    uint32_t i = 0;
 
     switch (_window_guest_list_selected_tab)
     {
@@ -605,7 +605,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
  */
 static void window_guest_list_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t i;
+    uint32_t i;
 
     i = screenCoords.y
         / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
@@ -718,7 +718,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         x = w->windowPos.x + 4;
         y = w->windowPos.y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
-        set_format_arg(0, int16_t, static_cast<int16_t>(GuestList.size()));
+        set_format_arg(0, int32_t, static_cast<int32_t>(GuestList.size()));
         gfx_draw_string_left(
             dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
             COLOUR_BLACK, x, y);
@@ -731,7 +731,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t numGuests, i, j, y;
+    int32_t y;
     rct_string_id format;
     rct_peep_thought* thought;
 
@@ -740,7 +740,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
-            i = 0;
+        {
+            uint32_t i = 0;
             y = _window_guest_list_selected_page * -GUEST_PAGE_HEIGHT;
 
             // For each guest
@@ -779,7 +780,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             break;
                         case VIEW_THOUGHTS:
                             // For each thought
-                            for (j = 0; j < PEEP_MAX_THOUGHTS; j++)
+                            for (uint32_t j = 0; j < PEEP_MAX_THOUGHTS; j++)
                             {
                                 thought = &peep->thoughts[j];
                                 if (thought->type == PEEP_THOUGHT_TYPE_NONE)
@@ -802,11 +803,12 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                 y += SCROLLABLE_ROW_HEIGHT;
             }
             break;
+        }
         case PAGE_SUMMARISED:
             y = 0;
 
             // For each group of guests
-            for (i = 0; i < _window_guest_list_num_groups; i++)
+            for (uint32_t i = 0; i < _window_guest_list_num_groups; i++)
             {
                 // Check if y is beyond the scroll control
                 if (y + SUMMARISED_GUEST_ROW_HEIGHT + 1 >= dpi->y)
@@ -824,8 +826,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     }
 
                     // Draw guest faces
-                    numGuests = _window_guest_list_groups_num_guests[i];
-                    for (j = 0; j < 56 && j < numGuests; j++)
+                    uint32_t numGuests = _window_guest_list_groups_num_guests[i];
+                    for (uint32_t j = 0; j < 56 && j < numGuests; j++)
                         gfx_draw_sprite(
                             dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
                             j * 8, y + 12, 0);
