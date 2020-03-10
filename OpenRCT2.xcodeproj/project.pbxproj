@@ -73,6 +73,10 @@
 		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
+		933F32EA24183CBB008376CE /* libicuuc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E824183CBB008376CE /* libicuuc.dylib */; };
+		933F32EB24183CBB008376CE /* libicuuc.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E824183CBB008376CE /* libicuuc.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		933F32EC24183CBB008376CE /* libicudata.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E924183CBB008376CE /* libicudata.dylib */; };
+		933F32ED24183CBB008376CE /* libicudata.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E924183CBB008376CE /* libicudata.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9344BEF920C1E6180047D165 /* Crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 9344BEF720C1E6180047D165 /* Crypt.h */; };
 		9344BEFA20C1E6180047D165 /* Crypt.OpenSSL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */; };
 		9346F9D8208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
@@ -87,10 +91,6 @@
 		939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359D20C12FDD00630B3F /* Paint.Surface.h */; };
 		939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359E20C12FDE00630B3F /* Paint.TileElement.h */; };
 		939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A35A120C12FFD00630B3F /* InteractiveConsole.h */; };
-		93AF4A6520B462F8006489A5 /* libicuuc.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; };
-		93AF4A6720B462F8006489A5 /* libicudata.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; };
-		93AF4A6820B46400006489A5 /* libicudata.61.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		93AF4A6920B46400006489A5 /* libicuuc.61.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -119,8 +119,6 @@
 		93F76F0420BFF77B00D4512C /* Paint.Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EFC20BFF77A00D4512C /* Paint.Banner.cpp */; };
 		93F76F0520BFF77B00D4512C /* Paint.TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EFD20BFF77A00D4512C /* Paint.TileElement.cpp */; };
 		93F76F0620BFF77B00D4512C /* Paint.Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EFE20BFF77A00D4512C /* Paint.Entrance.cpp */; };
-		93F9DA3620B46F3100D1BE92 /* libicudata.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; };
-		93F9DA3720B46F3100D1BE92 /* libicuuc.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; };
 		93F9DA3820B46F9D00D1BE92 /* ShopItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CDCB0BC20A9902E00321367 /* ShopItem.cpp */; };
 		93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
@@ -581,14 +579,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				93AF4A6820B46400006489A5 /* libicudata.61.1.dylib in Embed Frameworks */,
-				93AF4A6920B46400006489A5 /* libicuuc.61.1.dylib in Embed Frameworks */,
+				933F32EB24183CBB008376CE /* libicuuc.dylib in Embed Frameworks */,
 				C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */,
 				D45A39591CF300AF00659A24 /* libcrypto.dylib in Embed Frameworks */,
 				D45A395A1CF300AF00659A24 /* libfreetype.dylib in Embed Frameworks */,
 				D45A395B1CF300AF00659A24 /* libjansson.dylib in Embed Frameworks */,
 				D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */,
 				D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */,
+				933F32ED24183CBB008376CE /* libicudata.dylib in Embed Frameworks */,
 				D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1004,6 +1002,8 @@
 		933CBDBE20CB1BCA00134678 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
 		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
+		933F32E824183CBB008376CE /* libicuuc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.dylib; sourceTree = "<group>"; };
+		933F32E924183CBB008376CE /* libicudata.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.dylib; sourceTree = "<group>"; };
 		9344BEF720C1E6180047D165 /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
 		9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crypt.OpenSSL.cpp; sourceTree = "<group>"; };
 		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
@@ -1242,8 +1242,6 @@
 		939A359D20C12FDD00630B3F /* Paint.Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Surface.h; sourceTree = "<group>"; };
 		939A359E20C12FDE00630B3F /* Paint.TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.TileElement.h; sourceTree = "<group>"; };
 		939A35A120C12FFD00630B3F /* InteractiveConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveConsole.h; sourceTree = "<group>"; };
-		93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.61.1.dylib; sourceTree = "<group>"; };
-		93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.61.1.dylib; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -1787,10 +1785,10 @@
 				D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */,
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
 				D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */,
-				93F9DA3620B46F3100D1BE92 /* libicudata.61.1.dylib in Frameworks */,
-				93F9DA3720B46F3100D1BE92 /* libicuuc.61.1.dylib in Frameworks */,
 				D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */,
+				933F32EC24183CBB008376CE /* libicudata.dylib in Frameworks */,
 				D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */,
+				933F32EA24183CBB008376CE /* libicuuc.dylib in Frameworks */,
 				D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */,
 				D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */,
 				C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */,
@@ -1808,8 +1806,6 @@
 				F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */,
 				F7D774901EC66FB000BE6EBC /* libz.tbd in Frameworks */,
 				F7D7748F1EC66FA900BE6EBC /* libcurl.tbd in Frameworks */,
-				93AF4A6720B462F8006489A5 /* libicudata.61.1.dylib in Frameworks */,
-				93AF4A6520B462F8006489A5 /* libicuuc.61.1.dylib in Frameworks */,
 				F7D7748E1EC66FA000BE6EBC /* libiconv.tbd in Frameworks */,
 				F7D774911EC66FBA00BE6EBC /* libcrypto.dylib in Frameworks */,
 				F7D774921EC66FBA00BE6EBC /* libfreetype.dylib in Frameworks */,
@@ -2482,10 +2478,10 @@
 			children = (
 				D45A38B31CF3006400659A24 /* libcrypto.dylib */,
 				D45A38B41CF3006400659A24 /* libfreetype.dylib */,
+				933F32E924183CBB008376CE /* libicudata.dylib */,
+				933F32E824183CBB008376CE /* libicuuc.dylib */,
 				D45A38B51CF3006400659A24 /* libjansson.dylib */,
 				D4A8B4B31DB41873007A2F29 /* libpng16.dylib */,
-				93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */,
-				93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */,
 				D45A38B81CF3006400659A24 /* libSDL2.dylib */,
 				D45A38B91CF3006400659A24 /* libspeexdsp.dylib */,
 				C6E96E351E0408B40076A04F /* libzip.dylib */,
