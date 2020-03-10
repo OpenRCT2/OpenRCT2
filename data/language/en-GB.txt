@@ -2475,11 +2475,6 @@ STR_3390    :Too many items selected
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Clear Scenery
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
@@ -3676,6 +3671,8 @@ STR_6354    :{SMALLFONT}{BLACK}Medium density
 STR_6355    :{SMALLFONT}{BLACK}High density
 STR_6356    :{SMALLFONT}{BLACK}Spawns ducks if park contains water
 STR_6357    :{SMALLFONT}{BLACK}Removes all ducks from the map
+STR_6358    :Page {UINT16}
+STR_6359    :{POP16}{POP16}Page {UINT16}
 
 #############
 # Scenarios #
