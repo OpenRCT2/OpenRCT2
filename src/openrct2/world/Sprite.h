@@ -204,8 +204,10 @@ extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 extern const rct_string_id litterNames[12];
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
+SpriteBase* CreateSpriteAt(SPRITE_IDENTIFIER spriteIdentifier, uint16_t spriteId);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
+void ResetFreeSpriteList();
 void sprite_clear_all_unused();
 void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newList);
 void sprite_misc_update_all();
