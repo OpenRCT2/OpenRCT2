@@ -3675,6 +3675,8 @@ STR_6352    :Dichte
 STR_6353    :{SMALLFONT}{BLACK}Niedgrige Dichte
 STR_6354    :{SMALLFONT}{BLACK}Mittlere Dichte
 STR_6355    :{SMALLFONT}{BLACK}Hohe Dichte
+STR_6356    :{SMALLFONT}{BLACK}Erzeugt Enten, falls der Park Wasser enthält
+STR_6357    :{SMALLFONT}{BLACK}Entfernt alle Enten aus der Karte
 
 #############
 # Scenarios #
