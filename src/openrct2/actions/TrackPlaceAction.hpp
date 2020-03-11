@@ -213,7 +213,7 @@ public:
             int32_t baseZ = mapLoc.z;
 
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->var_09 & (1 << 2) && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
             {
                 clearanceZ += 24;
             }
@@ -453,7 +453,7 @@ public:
             auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->var_09 & (1 << 2) && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
             {
                 clearanceZ += 24;
             }

@@ -1134,10 +1134,10 @@ static constexpr const rct_preview_track TrackBlocks015[] = {
 
 static constexpr const rct_preview_track TrackBlocks016[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1145,10 +1145,10 @@ static constexpr const rct_preview_track TrackBlocks016[] = {
 
 static constexpr const rct_preview_track TrackBlocks017[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1176,10 +1176,10 @@ static constexpr const rct_preview_track TrackBlocks021[] = {
 
 static constexpr const rct_preview_track TrackBlocks022[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1187,10 +1187,10 @@ static constexpr const rct_preview_track TrackBlocks022[] = {
 
 static constexpr const rct_preview_track TrackBlocks023[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1248,10 +1248,10 @@ static constexpr const rct_preview_track TrackBlocks033[] = {
 
 static constexpr const rct_preview_track TrackBlocks034[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 48, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
     { 6, -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -1259,10 +1259,10 @@ static constexpr const rct_preview_track TrackBlocks034[] = {
 
 static constexpr const rct_preview_track TrackBlocks035[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 48, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
     { 6, -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -1270,10 +1270,10 @@ static constexpr const rct_preview_track TrackBlocks035[] = {
 
 static constexpr const rct_preview_track TrackBlocks036[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, -32, 48, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 16, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
     { 6, -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -1281,10 +1281,10 @@ static constexpr const rct_preview_track TrackBlocks036[] = {
 
 static constexpr const rct_preview_track TrackBlocks037[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, 32, 48, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 16, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
     { 6, -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -1336,7 +1336,7 @@ static constexpr const rct_preview_track TrackBlocks041[] = {
 
 static constexpr const rct_preview_track TrackBlocks042[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1344,7 +1344,7 @@ static constexpr const rct_preview_track TrackBlocks042[] = {
 
 static constexpr const rct_preview_track TrackBlocks043[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1352,7 +1352,7 @@ static constexpr const rct_preview_track TrackBlocks043[] = {
 
 static constexpr const rct_preview_track TrackBlocks044[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1360,7 +1360,7 @@ static constexpr const rct_preview_track TrackBlocks044[] = {
 
 static constexpr const rct_preview_track TrackBlocks045[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1368,7 +1368,7 @@ static constexpr const rct_preview_track TrackBlocks045[] = {
 
 static constexpr const rct_preview_track TrackBlocks046[] = {
     { 0, 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -1376,7 +1376,7 @@ static constexpr const rct_preview_track TrackBlocks046[] = {
 
 static constexpr const rct_preview_track TrackBlocks047[] = {
     { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -1384,7 +1384,7 @@ static constexpr const rct_preview_track TrackBlocks047[] = {
 
 static constexpr const rct_preview_track TrackBlocks048[] = {
     { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
     TRACK_BLOCK_END
@@ -1392,7 +1392,7 @@ static constexpr const rct_preview_track TrackBlocks048[] = {
 
 static constexpr const rct_preview_track TrackBlocks049[] = {
     { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
     TRACK_BLOCK_END
@@ -1509,13 +1509,13 @@ static constexpr const rct_preview_track TrackBlocks066[] = {
     { 5, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 6, 32, -32, 0, 0, { 0b1111, 0 }, 0 },
     { 7, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-    { 8, 32, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks067[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 3 },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -1586,10 +1586,10 @@ static constexpr const rct_preview_track TrackBlocks080[] = {
 
 static constexpr const rct_preview_track TrackBlocks081[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1597,10 +1597,10 @@ static constexpr const rct_preview_track TrackBlocks081[] = {
 
 static constexpr const rct_preview_track TrackBlocks082[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1624,7 +1624,7 @@ static constexpr const rct_preview_track TrackBlocks084[] = {
 
 static constexpr const rct_preview_track TrackBlocks085[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1632,7 +1632,7 @@ static constexpr const rct_preview_track TrackBlocks085[] = {
 
 static constexpr const rct_preview_track TrackBlocks086[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1640,11 +1640,11 @@ static constexpr const rct_preview_track TrackBlocks086[] = {
 
 static constexpr const rct_preview_track TrackBlocks087[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 4, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 4, { 0b0111, 0 }, 0 },
     { 4, -32, -64, 8, 0, { 0b1011, 0 }, 0 },
-    { 5, 0, -64, 8, 0, { 0b0100, 0b0000 }, 1 },
+    { 5, 0, -64, 8, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, -96, 8, 4, { 0b0001, 0 }, 0 },
     { 7, 0, -96, 8, 4, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1652,11 +1652,11 @@ static constexpr const rct_preview_track TrackBlocks087[] = {
 
 static constexpr const rct_preview_track TrackBlocks088[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0b0000 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 4, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 4, { 0b1011, 0 }, 0 },
     { 4, -32, 64, 8, 0, { 0b0111, 0 }, 0 },
-    { 5, 0, 64, 8, 0, { 0b1000, 0 }, 1 },
+    { 5, 0, 64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, 96, 8, 4, { 0b0010, 0 }, 0 },
     { 7, 0, 96, 8, 4, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1664,11 +1664,11 @@ static constexpr const rct_preview_track TrackBlocks088[] = {
 
 static constexpr const rct_preview_track TrackBlocks089[] = {
     { 0, 0, 0, 8, 4, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 8, 4, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 8, 0, { 0b0111, 0 }, 0 },
     { 4, -32, -64, 0, 4, { 0b1011, 0 }, 0 },
-    { 5, 0, -64, 0, 4, { 0b0100, 0 }, 1 },
+    { 5, 0, -64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, -96, 0, 0, { 0b0001, 0 }, 0 },
     { 7, 0, -96, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1676,11 +1676,11 @@ static constexpr const rct_preview_track TrackBlocks089[] = {
 
 static constexpr const rct_preview_track TrackBlocks090[] = {
     { 0, 0, 0, 8, 4, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 8, 4, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 8, 0, { 0b1011, 0 }, 0 },
     { 4, -32, 64, 0, 4, { 0b0111, 0 }, 0 },
-    { 5, 0, 64, 0, 4, { 0b1000, 0 }, 1 },
+    { 5, 0, 64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, 96, 0, 0, { 0b0010, 0 }, 0 },
     { 7, 0, 96, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1688,17 +1688,17 @@ static constexpr const rct_preview_track TrackBlocks090[] = {
 
 static constexpr const rct_preview_track TrackBlocks091[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 4, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 4, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 4, { 0b1111, 0 }, 0 },
     { 7, -64, -96, 8, 0, { 0b1111, 0 }, 0 },
-    { 8, -32, -96, 8, 0, { 0b0100, 0 }, 1 },
+    { 8, -32, -96, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, -128, 8, 0, { 0b1011, 0 }, 0 },
     { 10, -32, -128, 8, 0, { 0b1110, 0 }, 0 },
-    { 11, 0, -128, 8, 4, { 0b0100, 0 }, 1 },
+    { 11, 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, -160, 8, 4, { 0b1011, 0 }, 0 },
     { 13, 0, -160, 8, 4, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1706,17 +1706,17 @@ static constexpr const rct_preview_track TrackBlocks091[] = {
 
 static constexpr const rct_preview_track TrackBlocks092[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 4, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 4, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 4, { 0b1111, 0 }, 0 },
     { 7, -64, 96, 8, 0, { 0b1111, 0 }, 0 },
-    { 8, -32, 96, 8, 0, { 0b1000, 0 }, 1 },
+    { 8, -32, 96, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, 128, 8, 0, { 0b0111, 0 }, 0 },
     { 10, -32, 128, 8, 0, { 0b1101, 0 }, 0 },
-    { 11, 0, 128, 8, 4, { 0b1000, 0 }, 1 },
+    { 11, 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, 160, 8, 4, { 0b0111, 0 }, 0 },
     { 13, 0, 160, 8, 4, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1724,17 +1724,17 @@ static constexpr const rct_preview_track TrackBlocks092[] = {
 
 static constexpr const rct_preview_track TrackBlocks093[] = {
     { 0, 0, 0, 8, 4, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 8, 4, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 4, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 8, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 8, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 8, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 8, 0, { 0b1111, 0 }, 0 },
     { 7, -64, -96, 0, 4, { 0b1111, 0 }, 0 },
-    { 8, -32, -96, 0, 4, { 0b0100, 0 }, 1 },
+    { 8, -32, -96, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, -128, 0, 4, { 0b1011, 0 }, 0 },
     { 10, -32, -128, 0, 0, { 0b1110, 0 }, 0 },
-    { 11, 0, -128, 0, 0, { 0b0100, 0b0000 }, 1 },
+    { 11, 0, -128, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, -160, 0, 0, { 0b1011, 0 }, 0 },
     { 13, 0, -160, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1742,17 +1742,17 @@ static constexpr const rct_preview_track TrackBlocks093[] = {
 
 static constexpr const rct_preview_track TrackBlocks094[] = {
     { 0, 0, 0, 8, 4, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 8, 4, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 4, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 8, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 8, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 8, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 8, 0, { 0b1111, 0 }, 0 },
     { 7, -64, 96, 0, 4, { 0b1111, 0 }, 0 },
-    { 8, -32, 96, 0, 4, { 0b1000, 0 }, 1 },
+    { 8, -32, 96, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, 128, 0, 4, { 0b0111, 0 }, 0 },
     { 10, -32, 128, 0, 0, { 0b1101, 0 }, 0 },
-    { 11, 0, 128, 0, 0, { 0b1000, 0 }, 1 },
+    { 11, 0, 128, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, 160, 0, 0, { 0b0111, 0 }, 0 },
     { 13, 0, 160, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1795,10 +1795,10 @@ static constexpr const rct_preview_track TrackBlocks101[] = {
 
 static constexpr const rct_preview_track TrackBlocks102[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 12, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 12, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1806,10 +1806,10 @@ static constexpr const rct_preview_track TrackBlocks102[] = {
 
 static constexpr const rct_preview_track TrackBlocks103[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 12, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 12, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1817,10 +1817,10 @@ static constexpr const rct_preview_track TrackBlocks103[] = {
 
 static constexpr const rct_preview_track TrackBlocks104[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 12, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1828,10 +1828,10 @@ static constexpr const rct_preview_track TrackBlocks104[] = {
 
 static constexpr const rct_preview_track TrackBlocks105[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 12, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1839,10 +1839,10 @@ static constexpr const rct_preview_track TrackBlocks105[] = {
 
 static constexpr const rct_preview_track TrackBlocks106[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 12, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 12, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1850,10 +1850,10 @@ static constexpr const rct_preview_track TrackBlocks106[] = {
 
 static constexpr const rct_preview_track TrackBlocks107[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 12, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 12, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1861,10 +1861,10 @@ static constexpr const rct_preview_track TrackBlocks107[] = {
 
 static constexpr const rct_preview_track TrackBlocks108[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 12, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1872,10 +1872,10 @@ static constexpr const rct_preview_track TrackBlocks108[] = {
 
 static constexpr const rct_preview_track TrackBlocks109[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 12, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -1988,36 +1988,36 @@ static constexpr const rct_preview_track TrackBlocks125[] = {
 };
 
 static constexpr const rct_preview_track TrackBlocks126[] = {
-    { 0, 0, 0, 0, 8, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks127[] = {
-    { 0, 0, 0, 0, 8, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks128[] = {
-    { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks129[] = {
-    { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, 4 },
+    { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks130[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks131[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
@@ -2030,7 +2030,7 @@ static constexpr const rct_preview_track TrackBlocks133[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, -32, 0, 0, { 0b1000, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0010, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, -32, 0, 0, { 0b0001, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -2039,7 +2039,7 @@ static constexpr const rct_preview_track TrackBlocks134[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -2047,7 +2047,7 @@ static constexpr const rct_preview_track TrackBlocks134[] = {
 static constexpr const rct_preview_track TrackBlocks135[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-    { 2, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 2, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -2056,7 +2056,7 @@ static constexpr const rct_preview_track TrackBlocks135[] = {
 static constexpr const rct_preview_track TrackBlocks136[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, 0, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -32, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -2066,7 +2066,7 @@ static constexpr const rct_preview_track TrackBlocks137[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, -32, 0, 0, { 0b1000, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0010, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, -32, 0, 0, { 0b0001, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -2075,7 +2075,7 @@ static constexpr const rct_preview_track TrackBlocks138[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -2083,7 +2083,7 @@ static constexpr const rct_preview_track TrackBlocks138[] = {
 static constexpr const rct_preview_track TrackBlocks139[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-    { 2, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 2, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -2092,7 +2092,7 @@ static constexpr const rct_preview_track TrackBlocks139[] = {
 static constexpr const rct_preview_track TrackBlocks140[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, 0, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -32, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -2100,248 +2100,248 @@ static constexpr const rct_preview_track TrackBlocks140[] = {
 
 static constexpr const rct_preview_track TrackBlocks141[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks142[] = {
     { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 16, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 16, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks143[] = {
     { 0, 0, 0, 0, 64, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 64, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 64, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 64, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks144[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks145[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks146[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks147[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks148[] = {
     { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 16, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 16, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks149[] = {
     { 0, 0, 0, 0, 64, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 64, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 64, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 64, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks150[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks151[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks152[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks153[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks154[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks155[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks156[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks157[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks158[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks159[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks160[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks161[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks162[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks163[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks164[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks165[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks166[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks167[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks168[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks169[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks170[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks171[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -2386,7 +2386,7 @@ static constexpr const rct_preview_track TrackBlocks177[] = {
 
 static constexpr const rct_preview_track TrackBlocks178[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0b0100 }, 0 },
-    { 1, 0, -32, 0, 16, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -2394,7 +2394,7 @@ static constexpr const rct_preview_track TrackBlocks178[] = {
 
 static constexpr const rct_preview_track TrackBlocks179[] = {
     { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -2402,7 +2402,7 @@ static constexpr const rct_preview_track TrackBlocks179[] = {
 
 static constexpr const rct_preview_track TrackBlocks180[] = {
     { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-    { 1, 0, -32, 0, 16, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0b0001 }, 0 },
     TRACK_BLOCK_END
@@ -2410,7 +2410,7 @@ static constexpr const rct_preview_track TrackBlocks180[] = {
 
 static constexpr const rct_preview_track TrackBlocks181[] = {
     { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0b0010 }, 0 },
     TRACK_BLOCK_END
@@ -2606,31 +2606,31 @@ static constexpr const rct_preview_track TrackBlocks205[] = {
 };
 
 static constexpr const rct_preview_track TrackBlocks206[] = {
-    { 0, 0, 0, 0, 16, { 0b1111, 0 }, 4 },
-    { 1, -32, 0, -40, 32, { 0b1111, 0 }, 4 },
-    { 2, -64, 0, -96, 56, { 0b1111, 0 }, 4 },
-    { 3, -96, 0, -96, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, -32, 0, -40, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, -64, 0, -96, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 3, -96, 0, -96, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks207[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 56, 32, { 0b1111, 0 }, 4 },
-    { 2, 64, 0, 96, 16, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks208[] = {
-    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 4 },
-    { 1, -32, 0, -72, 32, { 0b1111, 0 }, 4 },
-    { 2, -64, 0, -128, 56, { 0b1111, 0 }, 4 },
-    { 3, -96, 0, -128, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 3, -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks209[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 8, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 8, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -2638,7 +2638,7 @@ static constexpr const rct_preview_track TrackBlocks209[] = {
 
 static constexpr const rct_preview_track TrackBlocks210[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 8, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 8, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -2696,7 +2696,7 @@ static constexpr const rct_preview_track TrackBlocks216[] = {
 
 static constexpr const rct_preview_track TrackBlocks217[] = {
     { 0, 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -2704,7 +2704,7 @@ static constexpr const rct_preview_track TrackBlocks217[] = {
 
 static constexpr const rct_preview_track TrackBlocks218[] = {
     { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -2712,7 +2712,7 @@ static constexpr const rct_preview_track TrackBlocks218[] = {
 
 static constexpr const rct_preview_track TrackBlocks219[] = {
     { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
     TRACK_BLOCK_END
@@ -2720,7 +2720,7 @@ static constexpr const rct_preview_track TrackBlocks219[] = {
 
 static constexpr const rct_preview_track TrackBlocks220[] = {
     { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
     TRACK_BLOCK_END
@@ -2728,10 +2728,10 @@ static constexpr const rct_preview_track TrackBlocks220[] = {
 
 static constexpr const rct_preview_track TrackBlocks221[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 48, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
     { 6, -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -2739,10 +2739,10 @@ static constexpr const rct_preview_track TrackBlocks221[] = {
 
 static constexpr const rct_preview_track TrackBlocks222[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 48, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
     { 6, -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -2750,10 +2750,10 @@ static constexpr const rct_preview_track TrackBlocks222[] = {
 
 static constexpr const rct_preview_track TrackBlocks223[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, -32, 48, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 16, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
     { 6, -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -2761,10 +2761,10 @@ static constexpr const rct_preview_track TrackBlocks223[] = {
 
 static constexpr const rct_preview_track TrackBlocks224[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, 32, 48, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 16, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
     { 6, -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -2891,48 +2891,48 @@ static constexpr const rct_preview_track TrackBlocks248[] = {
 };
 
 static constexpr const rct_preview_track TrackBlocks249[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, 32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks250[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, -32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks251[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, 32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks252[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, -32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks253[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 56, 32, { 0b1111, 0 }, 4 },
-    { 2, 64, 0, 96, 16, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks254[] = {
-    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 4 },
-    { 1, -32, 0, -72, 32, { 0b1111, 0 }, 4 },
-    { 2, -64, 0, -128, 56, { 0b1111, 0 }, 4 },
-    { 3, -96, 0, -128, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 3, -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track TrackBlocks255[] = {
-    { 0, 0, 0, 32, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 88, 32, { 0b1111, 0 }, 4 },
-    { 2, 64, 0, 128, 16, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 32, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 88, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, 64, 0, 128, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
@@ -3278,10 +3278,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks015[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks016[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3289,10 +3289,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks016[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks017[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3320,10 +3320,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks021[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks022[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3331,10 +3331,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks022[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks023[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3392,10 +3392,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks033[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks034[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 48, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
     { 6, -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -3403,10 +3403,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks034[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks035[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 48, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
     { 6, -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -3414,10 +3414,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks035[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks036[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, -32, 48, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 16, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
     { 6, -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -3425,10 +3425,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks036[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks037[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, 32, 48, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 16, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
     { 6, -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -3480,7 +3480,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks041[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks042[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3488,7 +3488,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks042[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks043[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3496,7 +3496,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks043[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks044[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3504,7 +3504,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks044[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks045[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3512,7 +3512,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks045[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks046[] = {
     { 0, 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -3520,7 +3520,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks046[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks047[] = {
     { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -3528,7 +3528,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks047[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks048[] = {
     { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
     TRACK_BLOCK_END
@@ -3536,7 +3536,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks048[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks049[] = {
     { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
     TRACK_BLOCK_END
@@ -3653,13 +3653,13 @@ static constexpr const rct_preview_track FlatRideTrackBlocks066[] = {
     { 5, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 6, 32, -32, 0, 0, { 0b1111, 0 }, 0 },
     { 7, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-    { 8, 32, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks067[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 3 },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -3730,10 +3730,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks080[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks081[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3741,10 +3741,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks081[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks082[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3768,7 +3768,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks084[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks085[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3776,7 +3776,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks085[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks086[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3784,11 +3784,11 @@ static constexpr const rct_preview_track FlatRideTrackBlocks086[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks087[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 4, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 4, { 0b0111, 0 }, 0 },
     { 4, -32, -64, 8, 0, { 0b1011, 0 }, 0 },
-    { 5, 0, -64, 8, 0, { 0b0100, 0 }, 1 },
+    { 5, 0, -64, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, -96, 8, 4, { 0b0001, 0 }, 0 },
     { 7, 0, -96, 8, 4, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3796,11 +3796,11 @@ static constexpr const rct_preview_track FlatRideTrackBlocks087[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks088[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 4, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 4, { 0b1011, 0 }, 0 },
     { 4, -32, 64, 8, 0, { 0b0111, 0 }, 0 },
-    { 5, 0, 64, 8, 0, { 0b1000, 0 }, 1 },
+    { 5, 0, 64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, 96, 8, 4, { 0b0010, 0 }, 0 },
     { 7, 0, 96, 8, 4, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3808,11 +3808,11 @@ static constexpr const rct_preview_track FlatRideTrackBlocks088[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks089[] = {
     { 0, 0, 0, 8, 4, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 8, 4, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 8, 0, { 0b0111, 0 }, 0 },
     { 4, -32, -64, 0, 4, { 0b1011, 0 }, 0 },
-    { 5, 0, -64, 0, 4, { 0b0100, 0 }, 1 },
+    { 5, 0, -64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, -96, 0, 0, { 0b0001, 0 }, 0 },
     { 7, 0, -96, 0, 0, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3820,11 +3820,11 @@ static constexpr const rct_preview_track FlatRideTrackBlocks089[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks090[] = {
     { 0, 0, 0, 8, 4, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 8, 4, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 8, 0, { 0b1011, 0 }, 0 },
     { 4, -32, 64, 0, 4, { 0b0111, 0 }, 0 },
-    { 5, 0, 64, 0, 4, { 0b1000, 0 }, 1 },
+    { 5, 0, 64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 6, -32, 96, 0, 0, { 0b0010, 0 }, 0 },
     { 7, 0, 96, 0, 0, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3832,17 +3832,17 @@ static constexpr const rct_preview_track FlatRideTrackBlocks090[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks091[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 4, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 4, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 4, { 0b1111, 0 }, 0 },
     { 7, -64, -96, 8, 0, { 0b1111, 0 }, 0 },
-    { 8, -32, -96, 8, 0, { 0b0100, 0 }, 1 },
+    { 8, -32, -96, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, -128, 8, 0, { 0b1011, 0 }, 0 },
     { 10, -32, -128, 8, 0, { 0b1110, 0 }, 0 },
-    { 11, 0, -128, 8, 4, { 0b0100, 0 }, 1 },
+    { 11, 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, -160, 8, 4, { 0b1011, 0 }, 0 },
     { 13, 0, -160, 8, 4, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3850,17 +3850,17 @@ static constexpr const rct_preview_track FlatRideTrackBlocks091[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks092[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 4, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 4, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 4, { 0b1111, 0 }, 0 },
     { 7, -64, 96, 8, 0, { 0b1111, 0 }, 0 },
-    { 8, -32, 96, 8, 0, { 0b1000, 0 }, 1 },
+    { 8, -32, 96, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, 128, 8, 0, { 0b0111, 0 }, 0 },
     { 10, -32, 128, 8, 0, { 0b1101, 0 }, 0 },
-    { 11, 0, 128, 8, 4, { 0b1000, 0 }, 1 },
+    { 11, 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, 160, 8, 4, { 0b0111, 0 }, 0 },
     { 13, 0, 160, 8, 4, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3868,17 +3868,17 @@ static constexpr const rct_preview_track FlatRideTrackBlocks092[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks093[] = {
     { 0, 0, 0, 8, 4, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 8, 4, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 4, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 8, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 8, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 8, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 8, 0, { 0b1111, 0 }, 0 },
     { 7, -64, -96, 0, 4, { 0b1111, 0 }, 0 },
-    { 8, -32, -96, 0, 4, { 0b0100, 0 }, 1 },
+    { 8, -32, -96, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, -128, 0, 4, { 0b1011, 0 }, 0 },
     { 10, -32, -128, 0, 0, { 0b1110, 0 }, 0 },
-    { 11, 0, -128, 0, 0, { 0b0100, 0b0000 }, 1 },
+    { 11, 0, -128, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, -160, 0, 0, { 0b1011, 0 }, 0 },
     { 13, 0, -160, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3886,17 +3886,17 @@ static constexpr const rct_preview_track FlatRideTrackBlocks093[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks094[] = {
     { 0, 0, 0, 8, 4, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 8, 4, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 8, 4, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 8, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 8, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 8, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 8, 0, { 0b1111, 0 }, 0 },
     { 7, -64, 96, 0, 4, { 0b1111, 0 }, 0 },
-    { 8, -32, 96, 0, 4, { 0b1000, 0 }, 1 },
+    { 8, -32, 96, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 9, -64, 128, 0, 4, { 0b0111, 0 }, 0 },
     { 10, -32, 128, 0, 0, { 0b1101, 0 }, 0 },
-    { 11, 0, 128, 0, 0, { 0b1000, 0 }, 1 },
+    { 11, 0, 128, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 12, -32, 160, 0, 0, { 0b0111, 0 }, 0 },
     { 13, 0, 160, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3906,7 +3906,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks095[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 3, 32, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 3, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -3942,10 +3942,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks101[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks102[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 12, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 12, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3953,10 +3953,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks102[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks103[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 12, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 12, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3964,10 +3964,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks103[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks104[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 12, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3975,10 +3975,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks104[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks105[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 12, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3986,10 +3986,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks105[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks106[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 12, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 12, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -3997,10 +3997,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks106[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks107[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 12, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 12, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 12, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4008,10 +4008,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks107[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks108[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, -32, 0, 12, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b0111, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 0, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
     { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4019,10 +4019,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks108[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks109[] = {
     { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-    { 1, 0, 32, 0, 12, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 12, { 0b1011, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 0, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
     { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4079,7 +4079,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks115[] = {
     { 4, 32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 5, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 6, 32, 64, 0, 0, { 0b1111, 0 }, 0 },
-    { 7, 32, 96, 0, 0, { 0b1111, 0 }, 2 },
+    { 7, 32, 96, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -4088,7 +4088,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks116[] = {
     { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 3, 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 4, 64, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 4, 64, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -4110,7 +4110,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks119[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 3, 32, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 3, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -4128,7 +4128,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks122[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-    { 3, 32, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 3, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -4141,7 +4141,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks123[] = {
     { 5, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 6, 32, -32, 0, 0, { 0b1111, 0 }, 0 },
     { 7, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-    { 8, 32, 0, 0, 0, { 0b1111, 0 }, 2 },
+    { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
     TRACK_BLOCK_END
 };
 
@@ -4163,36 +4163,36 @@ static constexpr const rct_preview_track FlatRideTrackBlocks125[] = {
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks126[] = {
-    { 0, 0, 0, 0, 8, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks127[] = {
-    { 0, 0, 0, 0, 8, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks128[] = {
-    { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks129[] = {
-    { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, 4 },
+    { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks130[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks131[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
@@ -4205,7 +4205,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks133[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, -32, 0, 0, { 0b1000, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0010, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, -32, 0, 0, { 0b0001, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -4214,7 +4214,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks134[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -4222,7 +4222,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks134[] = {
 static constexpr const rct_preview_track FlatRideTrackBlocks135[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-    { 2, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 2, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4231,7 +4231,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks135[] = {
 static constexpr const rct_preview_track FlatRideTrackBlocks136[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, 0, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -32, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4241,7 +4241,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks137[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, -32, 0, 0, { 0b1000, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0010, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, -32, 0, 0, { 0b0001, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -4250,7 +4250,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks138[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
     { 2, -32, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 3, -64, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 3, -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 4, -64, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -4258,7 +4258,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks138[] = {
 static constexpr const rct_preview_track FlatRideTrackBlocks139[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-    { 2, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 2, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4267,7 +4267,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks139[] = {
 static constexpr const rct_preview_track FlatRideTrackBlocks140[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
     { 1, 0, 32, 0, 0, { 0b0100, 0 }, 0 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
     { 4, -32, 64, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4275,248 +4275,248 @@ static constexpr const rct_preview_track FlatRideTrackBlocks140[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks141[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks142[] = {
     { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 16, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 16, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks143[] = {
     { 0, 0, 0, 0, 64, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 64, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 64, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 64, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks144[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks145[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks146[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks147[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks148[] = {
     { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 16, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 16, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks149[] = {
     { 0, 0, 0, 0, 64, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 64, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 64, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 64, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks150[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks151[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks152[] = {
     { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 32, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 32, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks153[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks154[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks155[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks156[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks157[] = {
     { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 24, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 24, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks158[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks159[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks160[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks161[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks162[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks163[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks164[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks165[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks166[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks167[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks168[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks169[] = {
     { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 8, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 8, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks170[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks171[] = {
     { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
-    { 2, -32, 0, 0, 0, { 0b0001, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+    { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -4561,7 +4561,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks177[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks178[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0b0100 }, 0 },
-    { 1, 0, -32, 0, 16, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -4569,7 +4569,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks178[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks179[] = {
     { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -4577,7 +4577,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks179[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks180[] = {
     { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-    { 1, 0, -32, 0, 16, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 0, { 0b0111, 0b0001 }, 0 },
     TRACK_BLOCK_END
@@ -4585,7 +4585,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks180[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks181[] = {
     { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-    { 1, 0, 32, 0, 16, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 0, { 0b1011, 0b0010 }, 0 },
     TRACK_BLOCK_END
@@ -4781,31 +4781,31 @@ static constexpr const rct_preview_track FlatRideTrackBlocks205[] = {
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks206[] = {
-    { 0, 0, 0, 0, 16, { 0b1111, 0 }, 4 },
-    { 1, -32, 0, -40, 32, { 0b1111, 0 }, 4 },
-    { 2, -64, 0, -96, 56, { 0b1111, 0 }, 4 },
-    { 3, -96, 0, -96, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, -32, 0, -40, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, -64, 0, -96, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 3, -96, 0, -96, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks207[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 56, 32, { 0b1111, 0 }, 4 },
-    { 2, 64, 0, 96, 16, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks208[] = {
-    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 4 },
-    { 1, -32, 0, -72, 32, { 0b1111, 0 }, 4 },
-    { 2, -64, 0, -128, 56, { 0b1111, 0 }, 4 },
-    { 3, -96, 0, -128, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 3, -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks209[] = {
     { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-    { 1, 0, -32, 0, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 8, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 8, { 0b0111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4813,7 +4813,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks209[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks210[] = {
     { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-    { 1, 0, 32, 0, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 0, 8, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 8, { 0b1011, 0 }, 0 },
     TRACK_BLOCK_END
@@ -4871,7 +4871,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks216[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks217[] = {
     { 0, 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -4879,7 +4879,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks217[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks218[] = {
     { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -4887,7 +4887,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks218[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks219[] = {
     { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
     { 3, -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
     TRACK_BLOCK_END
@@ -4895,7 +4895,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks219[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks220[] = {
     { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
     { 3, -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
     TRACK_BLOCK_END
@@ -4903,10 +4903,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks220[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks221[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, -32, 16, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 48, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
     { 6, -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -4914,10 +4914,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks221[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks222[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-    { 1, 0, 32, 16, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 48, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
     { 6, -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -4925,10 +4925,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks222[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks223[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, -32, 48, 0, { 0b1000, 0 }, 1 },
+    { 1, 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
     { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-    { 4, -32, -64, 16, 0, { 0b1000, 0 }, 1 },
+    { 4, -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
     { 6, -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
     TRACK_BLOCK_END
@@ -4936,10 +4936,10 @@ static constexpr const rct_preview_track FlatRideTrackBlocks223[] = {
 
 static constexpr const rct_preview_track FlatRideTrackBlocks224[] = {
     { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-    { 1, 0, 32, 48, 0, { 0b0100, 0 }, 1 },
+    { 1, 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 2, -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
     { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-    { 4, -32, 64, 16, 0, { 0b0100, 0 }, 1 },
+    { 4, -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
     { 5, -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
     { 6, -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
     TRACK_BLOCK_END
@@ -5066,41 +5066,41 @@ static constexpr const rct_preview_track FlatRideTrackBlocks248[] = {
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks249[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, 32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks250[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, -32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks251[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, 32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks252[] = {
-    { 0, 0, 0, 0, 72, { 0b1111, 0 }, 4 },
-    { 1, 0, -32, 0, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks253[] = {
-    { 0, 0, 0, 0, 56, { 0b1111, 0 }, 4 },
-    { 1, 32, 0, 56, 32, { 0b1111, 0 }, 4 },
-    { 2, 64, 0, 96, 16, { 0b1111, 0 }, 4 },
+    { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
 static constexpr const rct_preview_track FlatRideTrackBlocks254[] = {
-    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 4 },
-    { 1, -32, 0, -72, 32, { 0b1111, 0 }, 4 },
-    { 2, -64, 0, -128, 56, { 0b1111, 0 }, 4 },
-    { 3, -96, 0, -128, 0, { 0b0000, 0 }, 5 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 1, -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 2, -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    { 3, -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
     TRACK_BLOCK_END
 };
 
