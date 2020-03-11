@@ -51,6 +51,7 @@
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
+		4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */; };
 		4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -874,6 +875,8 @@
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
 		4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulateCommands.cpp; sourceTree = "<group>"; };
+		4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VehicleSubpositionData.cpp; sourceTree = "<group>"; };
+		4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VehicleSubpositionData.h; sourceTree = "<group>"; };
 		4CB832AA1EFFB8D100B88761 /* ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf.h; sourceTree = "<group>"; };
 		4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdlineSprite.cpp; sourceTree = "<group>"; };
 		4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdlineSprite.h; sourceTree = "<group>"; };
@@ -3038,6 +3041,8 @@
 				4C7B540920060D7000A52E21 /* VehicleData.h */,
 				4C7B54072005736700A52E21 /* VehiclePaint.cpp */,
 				4C7B540A20060D7900A52E21 /* VehiclePaint.h */,
+				4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */,
+				4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */,
 			);
 			path = ride;
 			sourceTree = "<group>";
@@ -3804,6 +3809,7 @@
 				C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */,
 				4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
+				4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
 				C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */,

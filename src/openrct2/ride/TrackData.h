@@ -50,14 +50,6 @@ struct track_descriptor
 
 extern const track_descriptor gTrackDescriptors[142];
 
-struct rct_vehicle_info_list
-{
-    uint16_t size;
-    const rct_vehicle_info* info;
-};
-
-extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[17];
-
 extern const int16_t AlternativeTrackTypes[256];
 
 extern const money32 TrackPricing[256];
