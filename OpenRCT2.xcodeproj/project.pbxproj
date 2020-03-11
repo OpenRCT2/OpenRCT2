@@ -129,6 +129,10 @@
 		93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
 		93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
+		93FC08FF2418F3ED00CA3054 /* duktape.h in Headers */ = {isa = PBXBuildFile; fileRef = 93FC08FD2418F3ED00CA3054 /* duktape.h */; };
+		93FC09002418F3ED00CA3054 /* duk_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 93FC08FE2418F3ED00CA3054 /* duk_config.h */; };
+		93FC09022418F3F500CA3054 /* libduktape.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93FC09012418F3F500CA3054 /* libduktape.dylib */; };
+		93FC09032418F41700CA3054 /* libduktape.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93FC09012418F3F500CA3054 /* libduktape.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -587,6 +591,7 @@
 				933F32EB24183CBB008376CE /* libicuuc.dylib in Embed Frameworks */,
 				C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */,
 				D45A39591CF300AF00659A24 /* libcrypto.dylib in Embed Frameworks */,
+				93FC09032418F41700CA3054 /* libduktape.dylib in Embed Frameworks */,
 				D45A395A1CF300AF00659A24 /* libfreetype.dylib in Embed Frameworks */,
 				D45A395B1CF300AF00659A24 /* libjansson.dylib in Embed Frameworks */,
 				D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */,
@@ -1309,6 +1314,9 @@
 		93F76EFC20BFF77A00D4512C /* Paint.Banner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Banner.cpp; sourceTree = "<group>"; };
 		93F76EFD20BFF77A00D4512C /* Paint.TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.TileElement.cpp; sourceTree = "<group>"; };
 		93F76EFE20BFF77A00D4512C /* Paint.Entrance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Entrance.cpp; sourceTree = "<group>"; };
+		93FC08FD2418F3ED00CA3054 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
+		93FC08FE2418F3ED00CA3054 /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
+		93FC09012418F3F500CA3054 /* libduktape.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libduktape.dylib; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
@@ -1824,6 +1832,7 @@
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
 				D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */,
 				D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */,
+				93FC09022418F3F500CA3054 /* libduktape.dylib in Frameworks */,
 				933F32EC24183CBB008376CE /* libicudata.dylib in Frameworks */,
 				D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */,
 				933F32EA24183CBB008376CE /* libicuuc.dylib in Frameworks */,
@@ -2549,6 +2558,8 @@
 				D45A39161CF3007A00659A24 /* SDL2 */,
 				D45A39521CF3007A00659A24 /* speex */,
 				9350B44320B46E0800897BC5 /* unicode */,
+				93FC08FE2418F3ED00CA3054 /* duk_config.h */,
+				93FC08FD2418F3ED00CA3054 /* duktape.h */,
 				D45A38C41CF3007A00659A24 /* jansson_config.h */,
 				D45A38C51CF3007A00659A24 /* jansson.h */,
 				C6E96E331E0408A80076A04F /* zip.h */,
@@ -2561,6 +2572,7 @@
 			isa = PBXGroup;
 			children = (
 				D45A38B31CF3006400659A24 /* libcrypto.dylib */,
+				93FC09012418F3F500CA3054 /* libduktape.dylib */,
 				D45A38B41CF3006400659A24 /* libfreetype.dylib */,
 				933F32E924183CBB008376CE /* libicudata.dylib */,
 				933F32E824183CBB008376CE /* libicuuc.dylib */,
@@ -3587,9 +3599,11 @@
 				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
 				2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */,
 				2ADE2F3622441960002598AF /* RideTypes.h in Headers */,
+				93FC08FF2418F3ED00CA3054 /* duktape.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
 				93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */,
 				2ADE2F2A224418B2002598AF /* Meta.hpp in Headers */,
+				93FC09002418F3ED00CA3054 /* duk_config.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
 				939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */,
 				C67B28162002D67A00109C93 /* Window.h in Headers */,
