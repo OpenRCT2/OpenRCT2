@@ -54,8 +54,8 @@ struct rct_track_coordinates
 
 enum
 {
-    RCT_PREVIEW_TRACK_FLAG_1 = (1 << 0),
-    RCT_PREVIEW_TRACK_FLAG_2 = (1 << 1),
+    RCT_PREVIEW_TRACK_FLAG_0 = (1 << 0),
+    RCT_PREVIEW_TRACK_FLAG_1 = (1 << 1),
     RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL = (1 << 2),
 };
 

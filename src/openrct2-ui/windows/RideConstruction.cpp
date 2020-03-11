@@ -2368,7 +2368,7 @@ static void window_ride_construction_draw_track_piece(
         trackBlock++;
 
     CoordsXYZ mapCoords{ trackBlock->x, trackBlock->y, trackBlock->z };
-    if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_2)
+    if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_1)
     {
         mapCoords.x = 0;
         mapCoords.y = 0;
