@@ -528,7 +528,9 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
             }
         }
 
-        CoordsXY sceneryMapPos{ scenery.x * 32 - gTrackPreviewOrigin.x, scenery.y * 32 - gTrackPreviewOrigin.y };
+        // Cast the value into a uint8_t as this value is not signed yet.
+        CoordsXY sceneryMapPos{ ((uint8_t)scenery.x) * 32 - gTrackPreviewOrigin.x,
+                                ((uint8_t)scenery.y) * 32 - gTrackPreviewOrigin.y };
         CoordsXY rotatedSceneryMapPos = sceneryMapPos.Rotate(0 - _saveDirection);
         TileCoordsXY sceneryTilePos{ rotatedSceneryMapPos };
 
