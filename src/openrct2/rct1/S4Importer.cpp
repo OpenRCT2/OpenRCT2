@@ -171,6 +171,7 @@ public:
         _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;
         _isScenario = isScenario;
+        _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
 
         // Only determine what objects we required to import this saved game
         InitialiseEntryMaps();
@@ -321,11 +322,9 @@ private:
 
     void Initialise()
     {
-        _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
         // Avoid reusing the value used for last import
         _parkValueConversionFactor = 0;
 
-        InitialiseEntryMaps();
         uint16_t mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
