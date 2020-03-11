@@ -3673,7 +3673,7 @@ STR_6356    :{SMALLFONT}{BLACK}Spawns ducks if park contains water
 STR_6357    :{SMALLFONT}{BLACK}Removes all ducks from the map
 STR_6358    :Page {UINT16}
 STR_6359    :{POP16}{POP16}Page {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #
