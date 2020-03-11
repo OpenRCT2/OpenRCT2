@@ -114,7 +114,7 @@ private:
     EntryList _pathEntries;
     EntryList _pathAdditionEntries;
     EntryList _sceneryGroupEntries;
-    const char* _waterEntry;
+    EntryList _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
     uint8_t _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
@@ -171,6 +171,7 @@ public:
         _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;
         _isScenario = isScenario;
+        _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
 
         // Only determine what objects we required to import this saved game
         InitialiseEntryMaps();
@@ -321,11 +322,9 @@ private:
 
     void Initialise()
     {
-        _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
         // Avoid reusing the value used for last import
         _parkValueConversionFactor = 0;
 
-        InitialiseEntryMaps();
         uint16_t mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
@@ -539,14 +538,18 @@ private:
 
     void AddEntryForWater()
     {
+        const char* entryName;
+
         if (_gameVersion < FILE_VERSION_RCT1_LL)
         {
-            _waterEntry = RCT1::GetWaterObject(RCT1_WATER_CYAN);
+            entryName = RCT1::GetWaterObject(RCT1_WATER_CYAN);
         }
         else
         {
-            _waterEntry = RCT1::GetWaterObject(_s4.water_colour);
+            entryName = RCT1::GetWaterObject(_s4.water_colour);
         }
+
+        _waterEntry.GetOrAddEntry(entryName);
     }
 
     void AddEntryForRideType(uint8_t rideType)
@@ -1850,7 +1853,7 @@ private:
                 "BN9     ",
             }));
         LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        LoadObjects(OBJECT_TYPE_WATER, std::vector<const char*>({ _waterEntry }));
+        LoadObjects(OBJECT_TYPE_WATER, _waterEntry);
     }
 
     void LoadObjects(uint8_t objectType, const EntryList& entries)
@@ -1922,7 +1925,7 @@ private:
                 "BN9     ",
             }));
         AppendRequiredObjects(result, OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        AppendRequiredObjects(result, OBJECT_TYPE_WATER, std::vector<const char*>({ _waterEntry }));
+        AppendRequiredObjects(result, OBJECT_TYPE_WATER, _waterEntry);
         return result;
     }
 
@@ -2902,6 +2905,8 @@ private:
                 return &_pathAdditionEntries;
             case OBJECT_TYPE_SCENERY_GROUP:
                 return &_sceneryGroupEntries;
+            case OBJECT_TYPE_WATER:
+                return &_waterEntry;
         }
         return nullptr;
     }
