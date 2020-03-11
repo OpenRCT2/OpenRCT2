@@ -3782,7 +3782,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"22\"\nzipname=\"openrct2-libs-v22-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
+			shellScript = "version=\"23\"\nzipname=\"openrct2-libs-v23-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
 		};
 		D42C09D21C254F4E00309751 /* Build g2.dat */ = {
 			isa = PBXShellScriptBuildPhase;
