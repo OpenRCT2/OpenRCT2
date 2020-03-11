@@ -33,6 +33,7 @@
 - Fix: [#10752] Mute button state not correctly set at startup.
 - Fix: [#10822] Can place too many peep spawns.
 - Fix: [#10898] Banner text has an offset in tile inspector window.
+- Fix: [#10904] RCT1/LL-scenarios with red water won't open.
 - Improved: [#682] The staff patrol area is now drawn on the water, instead of on the surface under water.
 - Improved: [#10858] Added horizontal grid lines to finance charts.
 - Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
