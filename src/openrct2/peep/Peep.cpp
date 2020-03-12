@@ -3059,7 +3059,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         else
         {
             auto staff = AsStaff();
-            result = staff_path_finding(staff);
+            result = staff->DoPathFinding();
         }
 
         if (result != 0)

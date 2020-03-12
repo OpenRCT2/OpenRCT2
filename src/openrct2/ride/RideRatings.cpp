@@ -201,12 +201,11 @@ static void ride_ratings_update_state_2()
         return;
     }
 
-    int32_t x = gRideRatingsCalcData.proximity_x / 32;
-    int32_t y = gRideRatingsCalcData.proximity_y / 32;
-    int32_t z = gRideRatingsCalcData.proximity_z / 8;
+    auto loc = CoordsXYZ{ gRideRatingsCalcData.proximity_x, gRideRatingsCalcData.proximity_y,
+                          gRideRatingsCalcData.proximity_z };
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
-    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -218,7 +217,7 @@ static void ride_ratings_update_state_2()
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->GetBaseZ() != loc.z)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
@@ -254,19 +253,17 @@ static void ride_ratings_update_state_2()
                 return;
             }
 
-            x = nextTrackElement.x;
-            y = nextTrackElement.y;
-            z = nextTrackElement.element->GetBaseZ();
+            loc = { nextTrackElement, nextTrackElement.element->GetBaseZ() };
             tileElement = nextTrackElement.element;
-            if (x == gRideRatingsCalcData.proximity_start_x && y == gRideRatingsCalcData.proximity_start_y
-                && z == gRideRatingsCalcData.proximity_start_z)
+            if (loc.x == gRideRatingsCalcData.proximity_start_x && loc.y == gRideRatingsCalcData.proximity_start_y
+                && loc.z == gRideRatingsCalcData.proximity_start_z)
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
             }
-            gRideRatingsCalcData.proximity_x = x;
-            gRideRatingsCalcData.proximity_y = y;
-            gRideRatingsCalcData.proximity_z = z;
+            gRideRatingsCalcData.proximity_x = loc.x;
+            gRideRatingsCalcData.proximity_y = loc.y;
+            gRideRatingsCalcData.proximity_z = loc.z;
             gRideRatingsCalcData.proximity_track_type = tileElement->AsTrack()->GetTrackType();
             return;
         }
@@ -318,12 +315,11 @@ static void ride_ratings_update_state_5()
         return;
     }
 
-    int32_t x = gRideRatingsCalcData.proximity_x / 32;
-    int32_t y = gRideRatingsCalcData.proximity_y / 32;
-    int32_t z = gRideRatingsCalcData.proximity_z / 8;
+    auto loc = CoordsXYZ{ gRideRatingsCalcData.proximity_x, gRideRatingsCalcData.proximity_y,
+                          gRideRatingsCalcData.proximity_z };
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
-    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -335,7 +331,7 @@ static void ride_ratings_update_state_5()
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->GetBaseZ() != loc.z)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
@@ -348,27 +344,27 @@ static void ride_ratings_update_state_5()
         {
             ride_ratings_score_close_proximity(tileElement);
 
-            x = gRideRatingsCalcData.proximity_x;
-            y = gRideRatingsCalcData.proximity_y;
+            loc.x = gRideRatingsCalcData.proximity_x;
+            loc.y = gRideRatingsCalcData.proximity_y;
             track_begin_end trackBeginEnd;
-            if (!track_block_get_previous(x, y, tileElement, &trackBeginEnd))
+            if (!track_block_get_previous(loc.x, loc.y, tileElement, &trackBeginEnd))
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
             }
 
-            x = trackBeginEnd.begin_x;
-            y = trackBeginEnd.begin_y;
-            z = trackBeginEnd.begin_z;
-            if (x == gRideRatingsCalcData.proximity_start_x && y == gRideRatingsCalcData.proximity_start_y
-                && z == gRideRatingsCalcData.proximity_start_z)
+            loc.x = trackBeginEnd.begin_x;
+            loc.y = trackBeginEnd.begin_y;
+            loc.z = trackBeginEnd.begin_z;
+            if (loc.x == gRideRatingsCalcData.proximity_start_x && loc.y == gRideRatingsCalcData.proximity_start_y
+                && loc.z == gRideRatingsCalcData.proximity_start_z)
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
             }
-            gRideRatingsCalcData.proximity_x = x;
-            gRideRatingsCalcData.proximity_y = y;
-            gRideRatingsCalcData.proximity_z = z;
+            gRideRatingsCalcData.proximity_x = loc.x;
+            gRideRatingsCalcData.proximity_y = loc.y;
+            gRideRatingsCalcData.proximity_z = loc.z;
             gRideRatingsCalcData.proximity_track_type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             return;
         }
@@ -613,11 +609,11 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 // Bonus for normal path
                 if (tileElement->AsPath()->GetSurfaceEntryIndex() != 0)
                 {
-                    if (tileElement->clearance_height == inputTileElement->base_height)
+                    if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {
                         proximity_score_increment(PROXIMITY_PATH_TOUCH_ABOVE);
                     }
-                    if (tileElement->base_height == inputTileElement->clearance_height)
+                    if (tileElement->GetBaseZ() == inputTileElement->GetClearanceZ())
                     {
                         proximity_score_increment(PROXIMITY_PATH_TOUCH_UNDER);
                     }
@@ -625,15 +621,15 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 else
                 {
                     // Bonus for path in first object entry
-                    if (tileElement->clearance_height <= inputTileElement->base_height)
+                    if (tileElement->GetClearanceZ() <= inputTileElement->GetBaseZ())
                     {
                         proximity_score_increment(PROXIMITY_PATH_ZERO_OVER);
                     }
-                    if (tileElement->clearance_height == inputTileElement->base_height)
+                    if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {
                         proximity_score_increment(PROXIMITY_PATH_ZERO_TOUCH_ABOVE);
                     }
-                    if (tileElement->base_height == inputTileElement->clearance_height)
+                    if (tileElement->GetBaseZ() == inputTileElement->GetClearanceZ())
                     {
                         proximity_score_increment(PROXIMITY_PATH_ZERO_TOUCH_UNDER);
                     }
@@ -656,7 +652,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW);
-                    if (tileElement->clearance_height == inputTileElement->base_height)
+                    if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
                     }
@@ -705,7 +701,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                         }
                     }
 
-                    if (inputTileElement->clearance_height == tileElement->base_height)
+                    if (inputTileElement->GetClearanceZ() == tileElement->GetBaseZ())
                     {
                         proximity_score_increment(PROXIMITY_OWN_TRACK_TOUCH_ABOVE);
                         if (isStation)

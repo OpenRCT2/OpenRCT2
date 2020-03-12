@@ -1027,8 +1027,8 @@ public:
         uint8_t tileElementType = src->GetType();
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
-        dst->base_height = src->base_height;
-        dst->clearance_height = src->clearance_height;
+        dst->SetBaseZ(src->base_height * COORDS_Z_STEP);
+        dst->SetClearanceZ(src->clearance_height * COORDS_Z_STEP);
 
         // All saved in "flags"
         dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());

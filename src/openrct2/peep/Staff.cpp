@@ -173,17 +173,17 @@ void staff_update_greyed_patrol_areas()
  *
  *  rct2: 0x006C0905
  */
-bool staff_is_location_in_patrol(Peep* staff, int32_t x, int32_t y)
+bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
 {
     // Check if location is in the park
-    if (!map_is_location_owned_or_has_rights({ x, y }))
+    if (!map_is_location_owned_or_has_rights(loc))
         return false;
 
     // Check if staff has patrol area
-    if (!(gStaffModes[staff->staff_id] & 2))
+    if (!(gStaffModes[staff_id] & 2))
         return true;
 
-    return staff->AsStaff()->IsPatrolAreaSet({ x, y });
+    return IsPatrolAreaSet(loc);
 }
 
 bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y)
@@ -196,7 +196,7 @@ bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y)
     {
         int32_t neighbourX = x + CoordsDirectionDelta[neighbourDir].x;
         int32_t neighbourY = y + CoordsDirectionDelta[neighbourDir].y;
-        onZoneEdge = !staff_is_location_in_patrol(mechanic, neighbourX, neighbourY);
+        onZoneEdge = !mechanic->AsStaff()->IsLocationInPatrol({ neighbourX, neighbourY });
         neighbourDir++;
     }
     return onZoneEdge;
@@ -245,7 +245,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
         uint8_t adjac_z = z;
 
         /* Ignore adjacent tiles outside the patrol zone. */
-        if (!staff_is_location_in_patrol(staff, adjac_x, adjac_y))
+        if (!staff->AsStaff()->IsLocationInPatrol({ adjac_x, adjac_y }))
             continue;
 
         /* Ignore adjacent tiles on the patrol zone edge. */
@@ -325,26 +325,26 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
  *  rct2: 0x006C095B
  *  returns 0xF if not in a valid patrol area
  */
-static uint8_t staff_get_valid_patrol_directions(Peep* peep, int16_t x, int16_t y)
+static uint8_t staff_get_valid_patrol_directions(Staff* staff, const CoordsXY& loc)
 {
     uint8_t directions = 0;
 
-    if (staff_is_location_in_patrol(peep, x - 32, y))
+    if (staff->IsLocationInPatrol({ loc.x - COORDS_XY_STEP, loc.y }))
     {
         directions |= (1 << 0);
     }
 
-    if (staff_is_location_in_patrol(peep, x, y + 32))
+    if (staff->IsLocationInPatrol({ loc.x, loc.y + COORDS_XY_STEP }))
     {
         directions |= (1 << 1);
     }
 
-    if (staff_is_location_in_patrol(peep, x + 32, y))
+    if (staff->IsLocationInPatrol({ loc.x + COORDS_XY_STEP, loc.y }))
     {
         directions |= (1 << 2);
     }
 
-    if (staff_is_location_in_patrol(peep, x, y - 32))
+    if (staff->IsLocationInPatrol({ loc.x, loc.y - COORDS_XY_STEP }))
     {
         directions |= (1 << 3);
     }
@@ -439,7 +439,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
  *
  *  rct2: 0x006BFBE8
  *
- * Returns 0xFF when no nearby litter or unpathable litter
+ * Returns INVALID_DIRECTION when no nearby litter or unpathable litter
  */
 static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
@@ -462,18 +462,17 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     if (nearestLitterDist > 0x60)
     {
-        return 0xFF;
+        return INVALID_DIRECTION;
     }
 
     auto litterTile = CoordsXY{ nearestLitter->x, nearestLitter->y }.ToTileStart();
 
-    if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y))
+    if (!peep->AsStaff()->IsLocationInPatrol(litterTile))
     {
-        return 0xFF;
+        return INVALID_DIRECTION;
     }
 
-    litterTile.x += 16;
-    litterTile.y += 16;
+    litterTile = litterTile.ToTileCentre();
 
     int16_t x_diff = litterTile.x - peep->x;
     int16_t y_diff = litterTile.y - peep->y;
@@ -496,14 +495,14 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     TileElement* tileElement = map_get_first_element_at(nextTile);
     if (tileElement == nullptr)
-        return 0xFF;
+        return INVALID_DIRECTION;
     do
     {
         if (tileElement->base_height != nextZ)
             continue;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            return 0xFF;
+            return INVALID_DIRECTION;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -512,7 +511,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     tileElement = map_get_first_element_at(nextTile);
     if (tileElement == nullptr)
-        return 0xFF;
+        return INVALID_DIRECTION;
 
     do
     {
@@ -520,7 +519,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
             continue;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            return 0xFF;
+            return INVALID_DIRECTION;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -585,16 +584,16 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
  *
  *  rct2: 0x006BFD9C
  */
-static int32_t staff_handyman_direction_rand_surface(Peep* peep, uint8_t validDirections)
+int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
 {
-    uint8_t direction = scenario_rand() & 3;
-    for (int32_t i = 0; i < 4; ++i, ++direction)
+    uint8_t newDirection = scenario_rand() % NumOrthogonalDirections;
+    for (int32_t i = 0; i < NumOrthogonalDirections; ++i, ++newDirection)
     {
-        direction &= 3;
-        if (!(validDirections & (1 << direction)))
+        newDirection %= NumOrthogonalDirections;
+        if (!(validDirections & (1 << newDirection)))
             continue;
 
-        CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+        CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
         if (map_surface_is_blocked(chosenTile))
             continue;
@@ -604,41 +603,41 @@ static int32_t staff_handyman_direction_rand_surface(Peep* peep, uint8_t validDi
     // If it tries all directions this is required
     // to make it back to the first direction and
     // override validDirections
-    direction &= 3;
-    return direction;
+    newDirection %= NumOrthogonalDirections;
+    return newDirection;
 }
 
 /**
  *
  *  rct2: 0x006BFBA8
  */
-static bool staff_path_finding_handyman(Peep* peep)
+bool Staff::DoHandymanPathFinding()
 {
-    peep->staff_mowing_timeout++;
+    staff_mowing_timeout++;
 
     uint8_t litterDirection = INVALID_DIRECTION;
-    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
+    uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
 
-    if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110)
+    if ((staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
     {
-        litterDirection = staff_handyman_direction_to_nearest_litter(peep);
+        litterDirection = staff_handyman_direction_to_nearest_litter(this);
     }
 
-    Direction direction = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->staff_mowing_timeout >= 12)
+    Direction newDirection = INVALID_DIRECTION;
+    if (litterDirection == INVALID_DIRECTION && (staff_orders & STAFF_ORDERS_MOWING) && staff_mowing_timeout >= 12)
     {
-        direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
+        newDirection = staff_handyman_direction_to_uncut_grass(this, validDirections);
     }
 
-    if (direction == INVALID_DIRECTION)
+    if (newDirection == INVALID_DIRECTION)
     {
-        if (peep->GetNextIsSurface())
+        if (GetNextIsSurface())
         {
-            direction = staff_handyman_direction_rand_surface(peep, validDirections);
+            newDirection = HandymanDirectionRandSurface(validDirections);
         }
         else
         {
-            auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ peep->NextLoc });
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
 
             if (pathElement == nullptr)
                 return true;
@@ -646,7 +645,7 @@ static bool staff_path_finding_handyman(Peep* peep)
             uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
             if (pathDirections == 0)
             {
-                direction = staff_handyman_direction_rand_surface(peep, validDirections);
+                newDirection = HandymanDirectionRandSurface(validDirections);
             }
             else
             {
@@ -656,15 +655,15 @@ static bool staff_path_finding_handyman(Peep* peep)
                     if ((scenario_rand() & 0xFFFF) >= 0x1999)
                     {
                         chooseRandom = false;
-                        direction = litterDirection;
+                        newDirection = litterDirection;
                     }
                 }
                 else
                 {
-                    pathDirections &= ~(1 << direction_reverse(peep->direction));
+                    pathDirections &= ~(1 << direction_reverse(direction));
                     if (pathDirections == 0)
                     {
-                        pathDirections |= 1 << direction_reverse(peep->direction);
+                        pathDirections |= 1 << direction_reverse(direction);
                     }
                 }
 
@@ -672,31 +671,31 @@ static bool staff_path_finding_handyman(Peep* peep)
                 {
                     do
                     {
-                        direction = scenario_rand() & 3;
-                    } while ((pathDirections & (1 << direction)) == 0);
+                        newDirection = scenario_rand() & 3;
+                    } while ((pathDirections & (1 << newDirection)) == 0);
                 }
             }
         }
     }
 
     // countof(CoordsDirectionDelta)
-    assert(direction < 8);
+    assert(newDirection < 8);
 
-    CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+    CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
     while (!map_is_location_valid(chosenTile))
     {
-        direction = staff_handyman_direction_rand_surface(peep, validDirections);
-        chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+        newDirection = HandymanDirectionRandSurface(validDirections);
+        chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    peep->direction = direction;
-    peep->destination_x = chosenTile.x + 16;
-    peep->destination_y = chosenTile.y + 16;
-    peep->destination_tolerance = 3;
-    if (peep->state == PEEP_STATE_QUEUING)
+    direction = newDirection;
+    destination_x = chosenTile.x + 16;
+    destination_y = chosenTile.y + 16;
+    destination_tolerance = 3;
+    if (state == PEEP_STATE_QUEUING)
     {
-        peep->destination_tolerance = (scenario_rand() & 7) + 2;
+        destination_tolerance = (scenario_rand() & 7) + 2;
     }
     return false;
 }
@@ -896,38 +895,38 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
  *
  *  rct2: 0x006BFF2C
  */
-static bool staff_path_finding_mechanic(Peep* peep)
+bool Staff::DoMechanicPathFinding()
 {
-    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
-    Direction direction = INVALID_DIRECTION;
-    if (peep->GetNextIsSurface())
+    uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
+    Direction newDirection = INVALID_DIRECTION;
+    if (GetNextIsSurface())
     {
-        direction = staff_mechanic_direction_surface(peep);
+        newDirection = staff_mechanic_direction_surface(this);
     }
     else
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ peep->NextLoc });
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
         if (pathElement == nullptr)
             return true;
 
-        direction = staff_mechanic_direction_path(peep, validDirections, pathElement);
+        newDirection = staff_mechanic_direction_path(this, validDirections, pathElement);
     }
 
     // countof(CoordsDirectionDelta)
-    assert(direction < 8);
+    assert(newDirection < 8);
 
-    CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+    CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
     while (!map_is_location_valid(chosenTile))
     {
-        direction = staff_mechanic_direction_surface(peep);
-        chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+        newDirection = staff_mechanic_direction_surface(this);
+        chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    peep->direction = direction;
-    peep->destination_x = chosenTile.x + 16;
-    peep->destination_y = chosenTile.y + 16;
-    peep->destination_tolerance = (scenario_rand() & 7) + 2;
+    direction = newDirection;
+    destination_x = chosenTile.x + 16;
+    destination_y = chosenTile.y + 16;
+    destination_tolerance = (scenario_rand() & 7) + 2;
 
     return false;
 }
@@ -981,36 +980,36 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
  *
  *  rct2: 0x006C0351
  */
-static bool staff_path_finding_misc(Peep* peep)
+bool Staff::DoMiscPathFinding()
 {
-    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->NextLoc.x, peep->NextLoc.y);
+    uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
 
-    Direction direction = INVALID_DIRECTION;
-    if (peep->GetNextIsSurface())
+    Direction newDirection = INVALID_DIRECTION;
+    if (GetNextIsSurface())
     {
-        direction = staff_direction_surface(peep, scenario_rand() & 3);
+        newDirection = staff_direction_surface(this, scenario_rand() & 3);
     }
     else
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ peep->NextLoc });
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
         if (pathElement == nullptr)
             return true;
 
-        direction = staff_direction_path(peep, validDirections, pathElement);
+        newDirection = staff_direction_path(this, validDirections, pathElement);
     }
 
-    CoordsXY chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+    CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
     while (!map_is_location_valid(chosenTile))
     {
-        direction = staff_direction_surface(peep, scenario_rand() & 3);
-        chosenTile = CoordsXY{ peep->NextLoc } + CoordsDirectionDelta[direction];
+        newDirection = staff_direction_surface(this, scenario_rand() & 3);
+        chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    peep->direction = direction;
-    peep->destination_x = chosenTile.x + 16;
-    peep->destination_y = chosenTile.y + 16;
-    peep->destination_tolerance = (scenario_rand() & 7) + 2;
+    direction = newDirection;
+    destination_x = chosenTile.x + 16;
+    destination_y = chosenTile.y + 16;
+    destination_tolerance = (scenario_rand() & 7) + 2;
 
     return false;
 }
@@ -1065,37 +1064,37 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
  *
  *  rct2: 0x006C05AE
  */
-static int32_t staff_path_finding_entertainer(Peep* peep)
+bool Staff::DoEntertainerPathFinding()
 {
-    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2))
+    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2))
     {
-        peep->action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
-        peep->action_frame = 0;
-        peep->action_sprite_image_offset = 0;
+        action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
+        action_frame = 0;
+        action_sprite_image_offset = 0;
 
-        peep->UpdateCurrentActionSpriteType();
-        staff_entertainer_update_nearby_peeps(peep);
+        UpdateCurrentActionSpriteType();
+        staff_entertainer_update_nearby_peeps(this);
     }
 
-    return staff_path_finding_misc(peep);
+    return DoMiscPathFinding();
 }
 
 /**
  *
  *  rct2: 0x006BF926
  */
-int32_t staff_path_finding(Staff* peep)
+bool Staff::DoPathFinding()
 {
-    switch (peep->staff_type)
+    switch (staff_type)
     {
         case STAFF_TYPE_HANDYMAN:
-            return staff_path_finding_handyman(peep);
+            return DoHandymanPathFinding();
         case STAFF_TYPE_MECHANIC:
-            return staff_path_finding_mechanic(peep);
+            return DoMechanicPathFinding();
         case STAFF_TYPE_SECURITY:
-            return staff_path_finding_misc(peep);
+            return DoMiscPathFinding();
         case STAFF_TYPE_ENTERTAINER:
-            return staff_path_finding_entertainer(peep);
+            return DoEntertainerPathFinding();
 
         default:
             assert(false);

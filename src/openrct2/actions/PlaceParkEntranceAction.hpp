@@ -148,8 +148,7 @@ public:
                 }
             }
 
-            TileElement* newElement = tile_element_insert(
-                TileCoordsXYZ(CoordsXYZ{ entranceLoc.x, entranceLoc.y, zLow }), 0b1111);
+            TileElement* newElement = tile_element_insert(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
             Guard::Assert(newElement != nullptr);
             newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             auto entranceElement = newElement->AsEntrance();

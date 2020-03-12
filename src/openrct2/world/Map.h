@@ -184,7 +184,7 @@ void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
-TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadrants);
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants);
 
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 

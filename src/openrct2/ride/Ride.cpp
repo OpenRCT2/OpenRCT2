@@ -2754,8 +2754,9 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
                 continue;
         }
 
-        if (map_is_location_in_park({ x, y }))
-            if (!staff_is_location_in_patrol(peep, x & 0xFFE0, y & 0xFFE0))
+        auto location = CoordsXY(x, y).ToTileStart();
+        if (map_is_location_in_park(location))
+            if (!peep->AsStaff()->IsLocationInPatrol(location))
                 continue;
 
         if (peep->x == LOCATION_NULL)
@@ -6858,7 +6859,6 @@ void sub_6CB945(Ride* ride)
                 continue;
 
             CoordsXYZ location = ride->stations[stationId].GetStart();
-            auto tileHeight = TileCoordsXYZ(location).z;
             uint8_t direction = INVALID_DIRECTION;
 
             bool specialTrack = false;
@@ -6878,7 +6878,7 @@ void sub_6CB945(Ride* ride)
                 bool trackFound = false;
                 do
                 {
-                    if (tileElement->base_height != tileHeight)
+                    if (tileElement->GetBaseZ() != location.z)
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;

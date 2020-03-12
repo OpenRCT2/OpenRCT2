@@ -46,7 +46,7 @@ void window_dropdown_show_image(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns);
 void window_dropdown_close();
-int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window* w);
+int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w);
 void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
 void window_dropdown_show_colour_available(
     rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);

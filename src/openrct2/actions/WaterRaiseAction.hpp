@@ -73,7 +73,7 @@ private:
         res->Position.z = z;
         res->Expenditure = ExpenditureType::Landscaping;
 
-        uint8_t maxHeight = GetHighestHeight(validRange);
+        auto maxHeight = GetHighestHeight(validRange) / COORDS_Z_STEP;
         bool hasChanged = false;
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
@@ -125,10 +125,10 @@ private:
     }
 
 private:
-    uint8_t GetHighestHeight(MapRange validRange) const
+    uint16_t GetHighestHeight(MapRange validRange) const
     {
         // The highest height to raise the water to is the lowest water level in the selection
-        uint8_t maxHeight{ 255 };
+        uint16_t maxHeight = 255 * COORDS_Z_STEP;
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
@@ -137,10 +137,10 @@ private:
                 if (surfaceElement == nullptr)
                     continue;
 
-                uint8_t height = surfaceElement->base_height;
+                auto height = surfaceElement->GetBaseZ();
                 if (surfaceElement->GetWaterHeight() > 0)
                 {
-                    height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
+                    height = surfaceElement->GetWaterHeight();
                 }
 
                 if (maxHeight > height)

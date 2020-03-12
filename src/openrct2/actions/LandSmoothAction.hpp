@@ -73,7 +73,7 @@ public:
 
 private:
     GameActionResult::Ptr SmoothLandTile(
-        int32_t direction, bool isExecuting, int32_t x, int32_t y, SurfaceElement* surfaceElement) const
+        int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->base_height;
         int32_t slope = surfaceElement->GetSlope();
@@ -96,7 +96,7 @@ private:
             }
         }
 
-        auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
+        auto landSetHeightAction = LandSetHeightAction(loc, targetBaseZ, slope);
         landSetHeightAction.SetFlags(GetFlags());
         auto res = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                : GameActions::QueryNested(&landSetHeightAction);
@@ -327,7 +327,7 @@ private:
             }
             expectedLandHeight += landChangePerTile;
             // change land of current tile
-            auto result = SmoothLandTile(direction, isExecuting, nextLoc.x, nextLoc.y, surfaceElement);
+            auto result = SmoothLandTile(direction, isExecuting, nextLoc, surfaceElement);
             if (result->Error == GA_ERROR::OK)
             {
                 totalCost += result->Cost;

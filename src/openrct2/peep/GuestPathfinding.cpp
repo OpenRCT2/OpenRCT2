@@ -627,7 +627,7 @@ static void peep_pathfind_heuristic_search(
     bool nextInPatrolArea = inPatrolArea;
     if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)
     {
-        nextInPatrolArea = staff_is_location_in_patrol(peep, loc.x * 32, loc.y * 32);
+        nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
         {
 /* The mechanic will leave his patrol area by taking
@@ -1405,7 +1405,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the
                  * mechanic is in their patrol area. */
-                inPatrolArea = staff_is_location_in_patrol(peep, peep->NextLoc.x, peep->NextLoc.y);
+                inPatrolArea = peep->AsStaff()->IsLocationInPatrol(peep->NextLoc);
             }
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2

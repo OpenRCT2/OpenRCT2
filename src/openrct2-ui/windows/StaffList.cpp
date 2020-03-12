@@ -362,7 +362,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
                 {
                     continue;
                 }
-                if (!staff_is_location_in_patrol(peep, footpathCoords.x, footpathCoords.y))
+                if (!peep->AsStaff()->IsLocationInPatrol(footpathCoords))
                 {
                     continue;
                 }

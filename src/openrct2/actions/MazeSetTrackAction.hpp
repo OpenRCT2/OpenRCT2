@@ -208,7 +208,7 @@ public:
 
             auto startLoc = _loc.ToTileStart();
 
-            tileElement = tile_element_insert({ TileCoordsXYZ{ _loc } }, 0b1111);
+            tileElement = tile_element_insert(_loc, 0b1111);
             assert(tileElement != nullptr);
 
             tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
