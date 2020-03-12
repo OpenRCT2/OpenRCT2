@@ -2479,11 +2479,6 @@ STR_3390    :Zu viele Objekte ausgewählt
 STR_3437    :{SMALLFONT}{BLACK}Bäume, Mauern und kleinere Szenerieobjekte aus der Landschaft entfernen
 STR_3438    :Es konnten nicht alle Szenerieobjekte entfernt werden...
 STR_3439    :Szenerie entf.
-STR_3440    :Seite 1
-STR_3441    :Seite 2
-STR_3442    :Seite 3
-STR_3443    :Seite 4
-STR_3444    :Seite 5
 STR_3445    :Patrouillenbereich festlegen
 STR_3446    :Patrouillenbereich verwerfen
 # New strings, cleaner
@@ -3677,6 +3672,8 @@ STR_6354    :{SMALLFONT}{BLACK}Mittlere Dichte
 STR_6355    :{SMALLFONT}{BLACK}Hohe Dichte
 STR_6356    :{SMALLFONT}{BLACK}Erzeugt Enten, falls der Park Wasser enthält
 STR_6357    :{SMALLFONT}{BLACK}Entfernt alle Enten aus der Karte
+STR_6358    :Seite {UINT16}
+STR_6359    :{POP16}{POP16}Seite {UINT16}
 
 #############
 # Scenarios #

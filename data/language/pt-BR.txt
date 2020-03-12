@@ -2475,11 +2475,6 @@ STR_3390    :Muitos itens selecionados
 STR_3437    :{SMALLFONT}{BLACK}Limpar grandes áreas de cenário na paisagem
 STR_3438    :Impossível remover todos os cenários a partir daqui...
 STR_3439    :Limpar Cenário
-STR_3440    :Página 1
-STR_3441    :Página 2
-STR_3442    :Página 3
-STR_3443    :Página 4
-STR_3444    :Página 5
 STR_3445    :Definir a Área de Patrulha
 STR_3446    :Cancelar a Área de Patrulha
 
@@ -3676,6 +3671,8 @@ STR_6354    :{SMALLFONT}{BLACK}Densidade média
 STR_6355    :{SMALLFONT}{BLACK}Densidade alta
 STR_6356    :{SMALLFONT}{BLACK}Gerar patos se o parque tiver água
 STR_6357    :{SMALLFONT}{BLACK}Remover todos os patos do mapa
+STR_6358    :Página {UINT16}
+STR_6359    :{POP16}{POP16}Página {UINT16}
 
 #############
 # Scenarios #

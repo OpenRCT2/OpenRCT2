@@ -2481,11 +2481,6 @@ STR_3390    :항목을 너무 많이 선택하였습니다
 STR_3437    :{SMALLFONT}{BLACK}조형물을 한꺼번에 제거
 STR_3438    :여기에 있는 모든 조형물을 다 제거하지 못했습니다...
 STR_3439    :조형물 제거
-STR_3440    :1쪽
-STR_3441    :2쪽
-STR_3442    :3쪽
-STR_3443    :4쪽
-STR_3444    :5쪽
 STR_3445    :순찰 영역 설정
 STR_3446    :순찰 영역 해제
 
@@ -3684,6 +3679,8 @@ STR_6354    :{SMALLFONT}{BLACK}적당히
 STR_6355    :{SMALLFONT}{BLACK}빽빽하게
 STR_6356    :{SMALLFONT}{BLACK}공원에 물이 있을 경우 오리를 생성합니다
 STR_6357    :{SMALLFONT}{BLACK}공원에 있는 모든 오리를 제거합니다
+STR_6358    :{UINT16}쪽
+STR_6359    :{POP16}{POP16}{UINT16}쪽
 
 
 #############

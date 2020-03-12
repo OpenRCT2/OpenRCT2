@@ -2488,11 +2488,6 @@ STR_3390    :Te veel items geselecteerd
 STR_3437    :{SMALLFONT}{BLACK}Grote gebieden met decor van het landschap verwijderen
 STR_3438    :Kan hier niet al het decor verwijderen…
 STR_3439    :Decor verwijderen
-STR_3440    :Pagina 1
-STR_3441    :Pagina 2
-STR_3442    :Pagina 3
-STR_3443    :Pagina 4
-STR_3444    :Pagina 5
 STR_3445    :Werkgebied instellen
 STR_3446    :Werkgebied wissen
 
@@ -3692,6 +3687,8 @@ STR_6354    :{SMALLFONT}{BLACK}Gemiddelde dichtheid
 STR_6355    :{SMALLFONT}{BLACK}Hoge dichtheid
 STR_6356    :{SMALLFONT}{BLACK}Maakt eenden aan, mits er water op de kaart is.
 STR_6357    :{SMALLFONT}{BLACK}Verwijdert alle eenden van de kaart.
+STR_6358    :Pagina {UINT16}
+STR_6359    :{POP16}{POP16}Pagina {UINT16}
 
 #############
 # Scenarios #
