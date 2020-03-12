@@ -2754,8 +2754,9 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
                 continue;
         }
 
-        if (map_is_location_in_park({ x, y }))
-            if (!peep->AsStaff()->IsLocationInPatrol({ x & 0xFFE0, y & 0xFFE0 }))
+        auto location = CoordsXY(x, y).ToTileStart();
+        if (map_is_location_in_park(location))
+            if (!peep->AsStaff()->IsLocationInPatrol(location))
                 continue;
 
         if (peep->x == LOCATION_NULL)
