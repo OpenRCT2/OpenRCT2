@@ -512,17 +512,17 @@ static constexpr const unk_9a36c4 Unk9A36C4[] =
 };
 
 /** rct2: 0x009A37C4 */
-static constexpr const TileCoordsXY Unk9A37C4[] =
+static constexpr const CoordsXY SurroundingTiles[] =
 {
-    { 0,  0},
-    { 0, +1},
-    {+1,  0},
-    { 0, -1},
-    { 0, -1},
-    {-1,  0},
-    {-1,  0},
-    { 0, +1},
-    { 0, +1},
+    {  0,           0          },
+    {  0,          +COORDS_XY_STEP },
+    { +COORDS_XY_STEP,  0          },
+    {  0,          -COORDS_XY_STEP },
+    {  0,          -COORDS_XY_STEP },
+    { -COORDS_XY_STEP,  0          },
+    { -COORDS_XY_STEP,  0          },
+    {  0,          +COORDS_XY_STEP },
+    {  0,          +COORDS_XY_STEP },
 };
 
 /** rct2: 0x009A37E4 */
@@ -6432,14 +6432,14 @@ bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, ui
         return true;
     }
 
-    TileCoordsXY location{ CoordsXY{ x, y } };
+    auto location = CoordsXY{ x, y };
 
     ride_id_t rideIndex = vehicle->ride;
-    for (auto xy_offset : Unk9A37C4)
+    for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;
 
-        uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
+        uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x, location.y);
         while (spriteIdx != SPRITE_INDEX_NULL)
         {
             Vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
@@ -7658,16 +7658,16 @@ static bool vehicle_update_motion_collision_detection(
         return direction < 0xF;
     }
 
-    TileCoordsXY location{ CoordsXY{ x, y } };
+    auto location = CoordsXY{ x, y };
 
     bool mayCollide = false;
     uint16_t collideId = SPRITE_INDEX_NULL;
     Vehicle* collideVehicle = nullptr;
-    for (auto xy_offset : Unk9A37C4)
+    for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;
 
-        collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
+        collideId = sprite_get_first_in_quadrant(location.x, location.y);
         for (; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant)
         {
             collideVehicle = GET_VEHICLE(collideId);
