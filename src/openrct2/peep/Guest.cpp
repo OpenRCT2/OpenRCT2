@@ -2511,7 +2511,11 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 static void peep_go_to_ride_entrance(Guest* peep, Ride* ride)
 {
     TileCoordsXYZD location = ride_get_entrance_location(ride, peep->current_ride_station);
-    Guard::Assert(!location.isNull());
+    if (location.isNull())
+    {
+        peep->RemoveFromQueue();
+        return;
+    }
     int32_t x = location.x;
     int32_t y = location.y;
 
