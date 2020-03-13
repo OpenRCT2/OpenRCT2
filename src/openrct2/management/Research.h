@@ -129,15 +129,15 @@ void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
 void ride_entry_set_invented(int32_t rideEntryIndex);
-void scenery_set_invented(uint16_t sceneryItem);
-void scenery_set_not_invented(uint16_t sceneryItem);
+void scenery_set_invented(ScenerySelection sceneryItem);
+void scenery_set_not_invented(ScenerySelection sceneryItem);
 bool ride_type_is_invented(uint32_t rideType);
 bool ride_entry_is_invented(int32_t rideEntryIndex);
 uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType);
 bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType);
 bool scenery_group_is_invented(int32_t sgIndex);
 void scenery_group_set_invented(int32_t sgIndex);
-bool scenery_is_invented(uint16_t sceneryItem);
+bool scenery_is_invented(ScenerySelection sceneryItem);
 void set_all_scenery_items_invented();
 void set_all_scenery_items_not_invented();
 void set_all_scenery_groups_not_invented();

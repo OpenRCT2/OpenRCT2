@@ -18,17 +18,6 @@
 
 #include <limits>
 
-constexpr const uint16_t SCENERY_SMALL_SCENERY_ID_MIN = 0;
-constexpr const uint16_t SCENERY_SMALL_SCENERY_ID_MAX = MAX_SMALL_SCENERY_OBJECTS - 1;
-constexpr const uint16_t SCENERY_PATH_SCENERY_ID_MIN = 0x100;
-constexpr const uint16_t SCENERY_PATH_SCENERY_ID_MAX = SCENERY_PATH_SCENERY_ID_MIN + MAX_PATH_ADDITION_OBJECTS - 1;
-constexpr const uint16_t SCENERY_WALLS_ID_MIN = 0x200;
-constexpr const uint16_t SCENERY_WALLS_ID_MAX = SCENERY_WALLS_ID_MIN + MAX_WALL_SCENERY_OBJECTS - 1;
-constexpr const uint16_t SCENERY_LARGE_SCENERY_ID_MIN = 0x300;
-constexpr const uint16_t SCENERY_LARGE_SCENERY_ID_MAX = SCENERY_LARGE_SCENERY_ID_MIN + MAX_LARGE_SCENERY_OBJECTS - 1;
-constexpr const uint16_t SCENERY_BANNERS_ID_MIN = 0x400;
-constexpr const uint16_t SCENERY_BANNERS_ID_MAX = SCENERY_BANNERS_ID_MIN + MAX_BANNER_OBJECTS - 1;
-
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
 
@@ -187,19 +176,17 @@ struct rct_scenery_entry
 assert_struct_size(rct_scenery_entry, 6 + 21);
 #endif
 
+#pragma pack(pop)
+
 struct rct_scenery_group_entry
 {
-    rct_string_id name;             // 0x00
-    uint32_t image;                 // 0x02
-    uint16_t scenery_entries[0x80]; // 0x06
-    uint8_t entry_count;            // 0x106
-    uint8_t pad_107;
-    uint8_t priority; // 0x108
-    uint8_t pad_109;
-    uint32_t entertainer_costumes; // 0x10A
+    rct_string_id name;
+    uint32_t image;
+    ScenerySelection scenery_entries[0x80];
+    uint8_t entry_count;
+    uint8_t priority;
+    uint32_t entertainer_costumes;
 };
-assert_struct_size(rct_scenery_group_entry, 14 + 2 * 0x80);
-#pragma pack(pop)
 
 enum
 {
@@ -228,7 +215,27 @@ enum
     SCENERY_TYPE_PATH_ITEM,
     SCENERY_TYPE_WALL,
     SCENERY_TYPE_LARGE,
-    SCENERY_TYPE_BANNER
+    SCENERY_TYPE_BANNER,
+
+    SCENERY_TYPE_COUNT,
+};
+
+constexpr const int8_t ObjectTypeToSceneryType[OBJECT_TYPE_COUNT] = {
+    -1,                     // OBJECT_TYPE_RIDE,
+    SCENERY_TYPE_SMALL,     // OBJECT_TYPE_SMALL_SCENERY,
+    SCENERY_TYPE_LARGE,     // OBJECT_TYPE_LARGE_SCENERY,
+    SCENERY_TYPE_WALL,      // OBJECT_TYPE_WALLS,
+    SCENERY_TYPE_BANNER,    // OBJECT_TYPE_BANNERS,
+    -1,                     // OBJECT_TYPE_PATHS,
+    SCENERY_TYPE_PATH_ITEM, // OBJECT_TYPE_PATH_BITS,
+    -1,                     // OBJECT_TYPE_SCENERY_GROUP,
+    -1,                     // OBJECT_TYPE_PARK_ENTRANCE,
+    -1,                     // OBJECT_TYPE_WATER,
+    -1,                     // OBJECT_TYPE_SCENARIO_TEXT,
+    -1,                     // OBJECT_TYPE_TERRAIN_SURFACE,
+    -1,                     // OBJECT_TYPE_TERRAIN_EDGE,
+    -1,                     // OBJECT_TYPE_STATION,
+    -1,                     // OBJECT_TYPE_MUSIC,
 };
 
 enum
@@ -252,13 +259,11 @@ enum class ScatterToolDensity : uint8_t
     HighDensity
 };
 
-#define SCENERY_ENTRIES_BY_TAB 1024
-constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
-
 extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;
-extern int16_t gSceneryPlaceObject;
+extern ScenerySelection gSceneryPlaceObject;
+extern uint16_t gSceneryPlaceObjectEntryIndex;
 extern int16_t gSceneryPlaceZ;
 extern uint8_t gSceneryPlaceRotation;
 
@@ -288,7 +293,6 @@ rct_scenery_entry* get_banner_entry(int32_t entryIndex);
 rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex);
 
-int32_t get_scenery_id_from_entry_index(uint8_t objectType, int32_t entryIndex);
 int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
 
 #endif

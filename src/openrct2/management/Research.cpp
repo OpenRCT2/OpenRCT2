@@ -61,7 +61,7 @@ uint8_t gResearchUncompletedCategories;
 
 static bool _researchedRideTypes[RIDE_TYPE_COUNT];
 static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
-static bool _researchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
+static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
 bool gSilentResearch = false;
 
@@ -599,19 +599,19 @@ void ride_entry_set_invented(int32_t rideEntryIndex)
     _researchedRideEntries[rideEntryIndex] = true;
 }
 
-bool scenery_is_invented(uint16_t sceneryItem)
+bool scenery_is_invented(ScenerySelection sceneryItem)
 {
-    return _researchedSceneryItems[sceneryItem];
+    return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
 }
 
-void scenery_set_invented(uint16_t sceneryItem)
+void scenery_set_invented(ScenerySelection sceneryItem)
 {
-    _researchedSceneryItems[sceneryItem] = true;
+    _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = true;
 }
 
-void scenery_set_not_invented(uint16_t sceneryItem)
+void scenery_set_not_invented(ScenerySelection sceneryItem)
 {
-    _researchedSceneryItems[sceneryItem] = false;
+    _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = false;
 }
 
 bool scenery_group_is_invented(int32_t sgIndex)
@@ -628,8 +628,8 @@ bool scenery_group_is_invented(int32_t sgIndex)
         {
             for (auto i = 0; i < sgEntry->entry_count; i++)
             {
-                auto sceneryEntryIndex = sgEntry->scenery_entries[i];
-                if (scenery_is_invented(sceneryEntryIndex))
+                auto sceneryEntry = sgEntry->scenery_entries[i];
+                if (scenery_is_invented(sceneryEntry))
                 {
                     invented = true;
                     break;
@@ -672,12 +672,18 @@ void set_all_scenery_groups_not_invented()
 
 void set_all_scenery_items_invented()
 {
-    std::fill(std::begin(_researchedSceneryItems), std::end(_researchedSceneryItems), true);
+    for (auto sceneryType = 0; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
+    {
+        std::fill(std::begin(_researchedSceneryItems[sceneryType]), std::end(_researchedSceneryItems[sceneryType]), true);
+    }
 }
 
 void set_all_scenery_items_not_invented()
 {
-    std::fill(std::begin(_researchedSceneryItems), std::end(_researchedSceneryItems), false);
+    for (auto sceneryType = 0; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
+    {
+        std::fill(std::begin(_researchedSceneryItems[sceneryType]), std::end(_researchedSceneryItems[sceneryType]), true);
+    }
 }
 
 void set_every_ride_type_invented()

@@ -31,9 +31,9 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
     _legacyType.entry_count = stream->ReadValue<uint8_t>();
-    _legacyType.pad_107 = stream->ReadValue<uint8_t>();
+    stream->Seek(1, STREAM_SEEK_CURRENT); // pad_107;
     _legacyType.priority = stream->ReadValue<uint8_t>();
-    _legacyType.pad_109 = stream->ReadValue<uint8_t>();
+    stream->Seek(1, STREAM_SEEK_CURRENT); // pad_109;
     _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
@@ -82,33 +82,15 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori->LoadedObject == nullptr)
             continue;
 
-        uint16_t sceneryEntry = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
-        Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
+        uint16_t entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
+        Guard::Assert(entryIndex != UINT8_MAX, GUARD_LINE);
 
         auto objectType = ori->ObjectEntry.GetType();
-        switch (objectType)
+        auto sceneryType = ObjectTypeToSceneryType[objectType];
+
+        if (sceneryType != -1)
         {
-            case OBJECT_TYPE_SMALL_SCENERY:
-                break;
-            case OBJECT_TYPE_PATH_BITS:
-                sceneryEntry += SCENERY_PATH_SCENERY_ID_MIN;
-                break;
-            case OBJECT_TYPE_WALLS:
-                sceneryEntry += SCENERY_WALLS_ID_MIN;
-                break;
-            case OBJECT_TYPE_LARGE_SCENERY:
-                sceneryEntry += SCENERY_LARGE_SCENERY_ID_MIN;
-                break;
-            case OBJECT_TYPE_BANNERS:
-                sceneryEntry += SCENERY_BANNERS_ID_MIN;
-                break;
-            default:
-                sceneryEntry = UINT16_MAX;
-                break;
-        }
-        if (sceneryEntry != UINT16_MAX)
-        {
-            _legacyType.scenery_entries[_legacyType.entry_count] = sceneryEntry;
+            _legacyType.scenery_entries[_legacyType.entry_count] = { static_cast<uint8_t>(sceneryType), entryIndex };
             _legacyType.entry_count++;
         }
     }

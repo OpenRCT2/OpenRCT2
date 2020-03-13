@@ -874,7 +874,11 @@ public:
             bool invented = (_s6.researched_scenery_items[quadIndex] & ((uint32_t)1 << bitIndex));
 
             if (invented)
-                scenery_set_invented(sceneryEntryIndex);
+            {
+                ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
+                                                      static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
+                scenery_set_invented(scenerySelection);
+            }
         }
     }
 

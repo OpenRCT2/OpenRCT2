@@ -880,7 +880,9 @@ void S6Exporter::ExportResearchedSceneryItems()
 
     for (uint16_t sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
     {
-        if (scenery_is_invented(sceneryEntryIndex))
+        ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
+                                              static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
+        if (scenery_is_invented(scenerySelection))
         {
             int32_t quadIndex = sceneryEntryIndex >> 5;
             int32_t bitIndex = sceneryEntryIndex & 0x1F;
