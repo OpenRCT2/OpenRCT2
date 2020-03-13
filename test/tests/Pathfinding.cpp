@@ -68,7 +68,7 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the center of the tile.
-        Peep* peep = Peep::Generate({ pos->x * 32 + 16, pos->y * 32 + 16, pos->z * 8 });
+        Peep* peep = Peep::Generate(pos->ToCoordsXYZ().ToTileCentre());
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
@@ -109,7 +109,7 @@ protected:
             peep->PerformNextAction(pathingResult);
             ++step;
 
-            pos = TileCoordsXYZ(CoordsXYZ(peep->x, peep->y, peep->z));
+            *pos = TileCoordsXYZ(CoordsXYZ(peep->x, peep->y, peep->z));
 
             EXPECT_PRED_FORMAT1(AssertIsNotForbiddenPosition, *pos);
 
