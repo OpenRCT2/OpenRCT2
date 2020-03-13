@@ -306,7 +306,7 @@ static void visible_list_refresh(rct_window* w)
     {
         uint8_t selectionFlags = _objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t objectType = item->ObjectEntry.flags & 0x0F;
+        uint8_t objectType = item->ObjectEntry.GetType();
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
             && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
@@ -1292,7 +1292,7 @@ static void editor_load_selected_objects()
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {
                     // Defaults selected items to researched (if in-game)
-                    uint8_t objectType = object_entry_get_type(entry);
+                    uint8_t objectType = entry->GetType();
                     uint8_t entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == OBJECT_TYPE_RIDE)
                     {
@@ -1405,7 +1405,7 @@ static bool filter_string(const ObjectRepositoryItem* item)
 
     // Check if the searched string exists in the name, ride type, or filename
     bool inName = strstr(name_lower, filter_lower) != nullptr;
-    bool inRideType = ((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != nullptr;
+    bool inRideType = (item->ObjectEntry.GetType() == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != nullptr;
     bool inPath = strstr(object_path, filter_lower) != nullptr;
 
     return inName || inRideType || inPath;
@@ -1448,7 +1448,7 @@ static bool filter_source(const ObjectRepositoryItem* item)
 
 static bool filter_chunks(const ObjectRepositoryItem* item)
 {
-    switch (item->ObjectEntry.flags & 0x0F)
+    switch (item->ObjectEntry.GetType())
     {
         case OBJECT_TYPE_RIDE:
 
@@ -1480,7 +1480,7 @@ static void filter_update_counts()
             const ObjectRepositoryItem* item = &items[i];
             if (filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags[i]))
             {
-                uint8_t objectType = item->ObjectEntry.flags & 0xF;
+                uint8_t objectType = item->ObjectEntry.GetType();
                 _filter_object_counts[objectType]++;
             }
         }

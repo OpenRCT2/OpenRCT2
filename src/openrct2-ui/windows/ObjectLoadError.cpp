@@ -346,8 +346,7 @@ static bool _updatedListAfterDownload;
 static rct_string_id get_object_type_string(const rct_object_entry* entry)
 {
     rct_string_id result;
-    uint8_t objectType = object_entry_get_type(entry);
-    switch (objectType)
+    switch (entry->GetType())
     {
         case OBJECT_TYPE_RIDE:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;

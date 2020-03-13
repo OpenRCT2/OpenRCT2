@@ -135,7 +135,7 @@ protected:
             stream->WriteValue(source);
         }
 
-        switch (object_entry_get_type(&item.ObjectEntry))
+        switch (item.ObjectEntry.GetType())
         {
             case OBJECT_TYPE_RIDE:
                 stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
@@ -173,7 +173,7 @@ protected:
             item.Sources.push_back(value);
         }
 
-        switch (object_entry_get_type(&item.ObjectEntry))
+        switch (item.ObjectEntry.GetType())
         {
             case OBJECT_TYPE_RIDE:
                 item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
@@ -520,7 +520,7 @@ private:
         }
 
         // Encode data
-        uint8_t objectType = object_entry_get_type(entry);
+        uint8_t objectType = entry->GetType();
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
         chunkHeader.length = (uint32_t)dataSize;
@@ -650,7 +650,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     // Do not count our new object types as custom yet, otherwise the game
     // will try to pack them into saved games.
-    auto type = object_entry_get_type(&object->ObjectEntry);
+    auto type = object->ObjectEntry.GetType();
     if (type > OBJECT_TYPE_SCENARIO_TEXT)
     {
         return false;
@@ -749,7 +749,7 @@ bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)
     // If an official object don't bother checking checksum
     if ((a->flags & 0xF0) || (b->flags & 0xF0))
     {
-        if (object_entry_get_type(a) != object_entry_get_type(b))
+        if (a->GetType() != b->GetType())
         {
             return false;
         }

@@ -105,6 +105,11 @@ struct rct_object_entry
             name[i] = dc;
         }
     }
+
+    uint8_t GetType() const
+    {
+        return flags & 0x0F;
+    }
 };
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -214,7 +219,7 @@ public:
 
     virtual uint8_t GetObjectType() const final
     {
-        return _objectEntry.flags & 0x0F;
+        return _objectEntry.GetType();
     }
     virtual std::string GetName() const;
     virtual std::string GetName(int32_t language) const;

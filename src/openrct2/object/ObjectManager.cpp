@@ -105,7 +105,7 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8_t objectType = object_entry_get_type(&ori->ObjectEntry);
+                uint8_t objectType = ori->ObjectEntry.GetType();
                 int32_t slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
@@ -479,7 +479,7 @@ private:
             ori = _objectRepository.FindObject(&entry);
             if (ori == nullptr)
             {
-                if (object_entry_get_type(&entry) != OBJECT_TYPE_SCENARIO_TEXT)
+                if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
                 {
                     invalidEntries.push_back(entry);
                     ReportMissingObject(&entry);
@@ -521,7 +521,7 @@ private:
             if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && object_entry_get_type(entry) != OBJECT_TYPE_SCENARIO_TEXT)
+                if (ori == nullptr && entry->GetType() != OBJECT_TYPE_SCENARIO_TEXT)
                 {
                     missingObjects.push_back(*entry);
                     ReportMissingObject(entry);

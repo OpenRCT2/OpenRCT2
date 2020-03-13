@@ -513,7 +513,7 @@ private:
                 auto foundObject = objectRepository.FindObject(objectName);
                 if (foundObject != nullptr)
                 {
-                    uint8_t objectType = object_entry_get_type(&foundObject->ObjectEntry);
+                    uint8_t objectType = foundObject->ObjectEntry.GetType();
                     switch (objectType)
                     {
                         case OBJECT_TYPE_SMALL_SCENERY:

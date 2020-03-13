@@ -486,7 +486,7 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
     // Run an element loop
     for (auto& scenery : scenery_elements)
     {
-        switch (object_entry_get_type(&scenery.scenery_object))
+        switch (scenery.scenery_object.GetType())
         {
             case OBJECT_TYPE_PATHS:
             {
@@ -659,7 +659,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
         uint8_t entry_type{ 0 }, entry_index{ 0 };
         if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
         {
-            entry_type = object_entry_get_type(&scenery.scenery_object);
+            entry_type = scenery.scenery_object.GetType();
             if (entry_type != OBJECT_TYPE_PATHS)
             {
                 continue;
@@ -859,7 +859,7 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
 {
     if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
     {
-        entry_type = object_entry_get_type(&scenery.scenery_object);
+        entry_type = scenery.scenery_object.GetType();
         if (entry_type != OBJECT_TYPE_PATHS)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
