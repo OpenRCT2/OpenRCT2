@@ -109,9 +109,7 @@ protected:
             peep->PerformNextAction(pathingResult);
             ++step;
 
-            pos->x = peep->x / 32;
-            pos->y = peep->y / 32;
-            pos->z = peep->z / 8;
+            pos = TileCoordsXYZ(CoordsXYZ(peep->x, peep->y, peep->z));
 
             EXPECT_PRED_FORMAT1(AssertIsNotForbiddenPosition, *pos);
 

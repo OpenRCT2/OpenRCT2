@@ -20,8 +20,8 @@ enum
     PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
-constexpr auto FootpathMaxHeight = 248;
-constexpr auto FootpathMinHeight = 2;
+constexpr auto FootpathMaxHeight = 248 * COORDS_Z_STEP;
+constexpr auto FootpathMinHeight = 2 * COORDS_Z_STEP;
 constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
 

@@ -4447,8 +4447,8 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
                     }
                     else
                     {
-                        if (ride->boat_hire_return_position.x != (flooredLocation.x / 32)
-                            || ride->boat_hire_return_position.y != (flooredLocation.y / 32))
+                        auto flooredTileLoc = TileCoordsXY(flooredLocation);
+                        if (ride->boat_hire_return_position != flooredTileLoc)
                         {
                             do_loc_6DAA97 = true;
                         }
@@ -9867,7 +9867,7 @@ void vehicle_update_crossings(const Vehicle* vehicle)
 
         while (true)
         {
-            auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
             auto ride = get_ride(vehicle->ride);
 
             // Many New Element parks have invisible rides hacked into the path.
@@ -9940,7 +9940,7 @@ void vehicle_update_crossings(const Vehicle* vehicle)
                 }
             }
 
-            auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
             if (pathElement)
             {
                 pathElement->SetIsBlockedByVehicle(false);

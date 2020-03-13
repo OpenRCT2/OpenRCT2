@@ -466,32 +466,32 @@ void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 
 int32_t TileElementBase::GetBaseZ() const
 {
-    return base_height * 8;
+    return base_height * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetBaseZ(int32_t newZ)
 {
-    base_height = (newZ / 8);
+    base_height = (newZ / COORDS_Z_STEP);
 }
 
 int32_t TileElementBase::GetClearanceZ() const
 {
-    return clearance_height * 8;
+    return clearance_height * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetClearanceZ(int32_t newZ)
 {
-    clearance_height = (newZ / 8);
+    clearance_height = (newZ / COORDS_Z_STEP);
 }
 
 int32_t RideStation::GetBaseZ() const
 {
-    return Height * 8;
+    return Height * COORDS_Z_STEP;
 }
 
 void RideStation::SetBaseZ(int32_t newZ)
 {
-    Height = newZ / 8;
+    Height = newZ / COORDS_Z_STEP;
 }
 
 CoordsXYZ RideStation::GetStart() const

@@ -372,7 +372,7 @@ struct TileCoordsXYZ : public TileCoordsXY
 
     explicit TileCoordsXYZ(const CoordsXYZ& c)
         : TileCoordsXY(c)
-        , z(c.z / 8)
+        , z(c.z / COORDS_Z_STEP)
     {
     }
 

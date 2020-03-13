@@ -300,16 +300,13 @@ private:
             if (it.element->AsTrack()->GetRideIndex() != (ride_id_t)_rideIndex)
                 continue;
 
-            int32_t x = it.x * 32, y = it.y * 32;
-            int32_t z = it.element->GetBaseZ();
-
-            uint8_t rotation = it.element->GetDirection();
+            auto location = CoordsXYZD(
+                TileCoordsXY(it.x, it.y).ToCoordsXY(), it.element->GetBaseZ(), it.element->GetDirection());
             auto type = it.element->AsTrack()->GetTrackType();
 
             if (type != TRACK_ELEM_MAZE)
             {
-                auto trackRemoveAction = TrackRemoveAction(
-                    type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });
+                auto trackRemoveAction = TrackRemoveAction(type, it.element->AsTrack()->GetSequenceIndex(), location);
                 trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
                 auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
@@ -337,7 +334,7 @@ private:
             for (Direction dir : ALL_DIRECTIONS)
             {
                 const CoordsXY& off = DirOffsets[dir];
-                money32 removePrice = MazeRemoveTrack(x + off.x, y + off.y, z, dir);
+                money32 removePrice = MazeRemoveTrack(location.x + off.x, location.y + off.y, location.z, dir);
                 if (removePrice != MONEY32_UNDEFINED)
                     refundPrice += removePrice;
                 else

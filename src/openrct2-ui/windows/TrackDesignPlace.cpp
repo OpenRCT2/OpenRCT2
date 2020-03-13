@@ -542,8 +542,8 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
         CoordsXY origin = { 0, 0 };
         if (pass == 1)
         {
-            origin.x -= ((max.x + min.x) >> 6) * 32;
-            origin.y -= ((max.y + min.y) >> 6) * 32;
+            origin.x -= ((max.x + min.x) >> 6) * COORDS_XY_STEP;
+            origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
         }
 
         if (td6->type == RIDE_TYPE_MAZE)
@@ -670,7 +670,7 @@ static void window_track_place_draw_mini_preview_maze(
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     for (const auto& mazeElement : td6->maze_elements)
     {
-        auto rotatedMazeCoords = origin + CoordsXY{ mazeElement.x * 32, mazeElement.y * 32 }.Rotate(rotation);
+        auto rotatedMazeCoords = origin + TileCoordsXY{ mazeElement.x, mazeElement.y }.ToCoordsXY().Rotate(rotation);
 
         if (pass == 0)
         {

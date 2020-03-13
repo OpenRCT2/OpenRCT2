@@ -230,15 +230,13 @@ void mapgen_generate(mapgen_settings* settings)
     map_reorganise_elements();
 }
 
-static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
+static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
 {
     rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
-
-    auto loc = CoordsXY(x, y);
 
     int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
     TileElement* tileElement = tile_element_insert({ loc, surfaceZ }, 0b1111);
@@ -382,7 +380,7 @@ static void mapgen_place_trees()
         }
 
         if (type != -1)
-            mapgen_place_tree(type, pos.x, pos.y);
+            mapgen_place_tree(type, pos.ToCoordsXY());
     }
 }
 

@@ -143,8 +143,7 @@ public:
         banner->text_colour = 2;
         banner->type = _bannerType;
         banner->colour = _primaryColour;
-        banner->position.x = _loc.x / 32;
-        banner->position.y = _loc.y / 32;
+        banner->position = TileCoordsXY(_loc);
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         BannerElement* bannerElement = newTileElement->AsBanner();
         bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);

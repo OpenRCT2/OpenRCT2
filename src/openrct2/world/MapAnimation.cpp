@@ -634,7 +634,7 @@ void AutoCreateMapAnimations()
     while (tile_element_iterator_next(&it))
     {
         auto el = it.element;
-        auto loc = CoordsXYZ{ it.x * 32, it.y * 32, el->GetBaseZ() };
+        auto loc = CoordsXYZ{ TileCoordsXY(it.x, it.y).ToCoordsXY(), el->GetBaseZ() };
         switch (el->GetType())
         {
             case TILE_ELEMENT_TYPE_BANNER:

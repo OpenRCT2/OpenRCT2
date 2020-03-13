@@ -4539,9 +4539,8 @@ void Guest::UpdateRideApproachExitWaypoints()
 
     var_37 |= 3;
 
-    auto exit = ride_get_exit_location(ride, current_ride_station);
-    CoordsXY targetLoc = { exit.x * 32 + 16, exit.y * 32 + 16 };
-    uint8_t exit_direction = direction_reverse(exit.direction);
+    auto targetLoc = ride_get_exit_location(ride, current_ride_station).ToCoordsXYZD().ToTileCentre();
+    uint8_t exit_direction = direction_reverse(targetLoc.direction);
 
     int16_t x_shift = DirectionOffsets[exit_direction].x;
     int16_t y_shift = DirectionOffsets[exit_direction].y;
@@ -4772,11 +4771,10 @@ void Guest::UpdateRideLeaveSpiralSlide()
     // Actually force the final waypoint
     var_37 |= 3;
 
-    auto exit = ride_get_exit_location(ride, current_ride_station);
-    CoordsXY targetLoc{ exit.x * 32 + 16, exit.y * 32 + 16 };
+    auto targetLoc = ride_get_exit_location(ride, current_ride_station).ToCoordsXYZD().ToTileCentre();
 
-    int16_t xShift = DirectionOffsets[direction_reverse(exit.direction)].x;
-    int16_t yShift = DirectionOffsets[direction_reverse(exit.direction)].y;
+    int16_t xShift = DirectionOffsets[direction_reverse(targetLoc.direction)].x;
+    int16_t yShift = DirectionOffsets[direction_reverse(targetLoc.direction)].y;
 
     int16_t shiftMultiplier = 20;
 
@@ -6428,7 +6426,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
     uint16_t x = peep->NextLoc.x + CoordsDirectionDelta[edge].x;
     uint16_t y = peep->NextLoc.y + CoordsDirectionDelta[edge].y;
-    if (x > 255 * 32 || y > 255 * 32)
+    if (!map_is_location_valid({ x, y }))
     {
         return false;
     }
@@ -6544,7 +6542,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (x > 255 * 32 || y > 255 * 32)
+    if (!map_is_location_valid({ x, y }))
     {
         return false;
     }
@@ -6661,7 +6659,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (x > 255 * 32 || y > 255 * 32)
+    if (!map_is_location_valid({ x, y }))
     {
         return false;
     }

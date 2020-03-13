@@ -2788,8 +2788,8 @@ private:
 
                                 type = _wallTypeToEntryMap[type];
 
-                                auto wallPlaceAction = WallPlaceAction(
-                                    type, { x * 32, y * 32, 0 }, edge, colourA, colourB, colourC);
+                                auto location = TileCoordsXYZ(x, y, 0).ToCoordsXYZ();
+                                auto wallPlaceAction = WallPlaceAction(type, location, edge, colourA, colourB, colourC);
                                 wallPlaceAction.SetFlags(
                                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                     | GAME_COMMAND_FLAG_PATH_SCENERY);
@@ -2878,11 +2878,7 @@ private:
             if ((element->AsEntrance()->GetSequenceIndex()) != 0)
                 continue;
 
-            CoordsXYZD entrance;
-            entrance.x = it.x * 32;
-            entrance.y = it.y * 32;
-            entrance.z = element->GetBaseZ();
-            entrance.direction = element->GetDirection();
+            CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
             gParkEntrances.push_back(entrance);
         }
     }

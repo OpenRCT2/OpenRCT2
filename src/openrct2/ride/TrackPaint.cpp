@@ -221,14 +221,13 @@ bool track_paint_util_has_fence(
             break;
     }
 
-    int32_t entranceX = (position.x / 32) + offset.x;
-    int32_t entranceY = (position.y / 32) + offset.y;
+    auto entranceLoc = TileCoordsXY(position) + offset;
 
     int32_t entranceId = tileElement->AsTrack()->GetStationIndex();
     const TileCoordsXYZD entrance = ride_get_entrance_location(ride, entranceId);
     const TileCoordsXYZD exit = ride_get_exit_location(ride, entranceId);
 
-    return ((entrance.x != entranceX || entrance.y != entranceY) && (exit.x != entranceX || exit.y != entranceY));
+    return (entranceLoc != entrance && entranceLoc != exit);
 }
 
 void track_paint_util_paint_floor(

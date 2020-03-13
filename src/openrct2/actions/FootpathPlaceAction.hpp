@@ -76,12 +76,12 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
-        if (_loc.z / 8 < FootpathMinHeight)
+        if (_loc.z < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > FootpathMaxHeight)
+        if (_loc.z > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
