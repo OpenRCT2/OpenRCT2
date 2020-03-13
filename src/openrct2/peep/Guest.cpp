@@ -2508,26 +2508,18 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
  *
  *  rct2: 0x00691D27
  */
-static void peep_go_to_ride_entrance(Guest* peep, Ride* ride)
+void Guest::GoToRideEntrance(Ride* ride)
 {
-    TileCoordsXYZD location = ride_get_entrance_location(ride, peep->current_ride_station);
-    if (location.isNull())
+    TileCoordsXYZD tileLocation = ride_get_entrance_location(ride, current_ride_station);
+    if (tileLocation.isNull())
     {
-        peep->RemoveFromQueue();
+        RemoveFromQueue();
         return;
     }
-    int32_t x = location.x;
-    int32_t y = location.y;
 
-    uint8_t direction = location.direction;
-
-    x *= 32;
-    y *= 32;
-    x += 16;
-    y += 16;
-
-    int16_t x_shift = DirectionOffsets[direction].x;
-    int16_t y_shift = DirectionOffsets[direction].y;
+    auto location = tileLocation.ToCoordsXYZD().ToTileCentre();
+    int16_t x_shift = DirectionOffsets[location.direction].x;
+    int16_t y_shift = DirectionOffsets[location.direction].y;
 
     uint8_t shift_multiplier = 21;
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -2544,23 +2536,23 @@ static void peep_go_to_ride_entrance(Guest* peep, Ride* ride)
     x_shift *= shift_multiplier;
     y_shift *= shift_multiplier;
 
-    x += x_shift;
-    y += y_shift;
+    location.x += x_shift;
+    location.y += y_shift;
 
-    peep->destination_x = x;
-    peep->destination_y = y;
-    peep->destination_tolerance = 2;
+    destination_x = location.x;
+    destination_y = location.y;
+    destination_tolerance = 2;
 
-    peep->SetState(PEEP_STATE_ENTERING_RIDE);
-    peep->sub_state = PEEP_RIDE_IN_ENTRANCE;
+    SetState(PEEP_STATE_ENTERING_RIDE);
+    sub_state = PEEP_RIDE_IN_ENTRANCE;
 
-    peep->rejoin_queue_timeout = 0;
-    peep->time_on_ride = 0;
+    rejoin_queue_timeout = 0;
+    time_on_ride = 0;
 
-    peep->RemoveFromQueue();
+    RemoveFromQueue();
 }
 
-static bool peep_find_vehicle_to_enter(Guest* peep, Ride* ride, std::vector<uint8_t>& car_array)
+bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 {
     uint8_t chosen_train = RideStation::NO_TRAIN;
 
@@ -2584,14 +2576,14 @@ static bool peep_find_vehicle_to_enter(Guest* peep, Ride* ride, std::vector<uint
     }
     else
     {
-        chosen_train = ride->stations[peep->current_ride_station].TrainAtStation;
+        chosen_train = ride->stations[current_ride_station].TrainAtStation;
     }
     if (chosen_train == RideStation::NO_TRAIN || chosen_train >= MAX_VEHICLES_PER_RIDE)
     {
         return false;
     }
 
-    peep->current_train = chosen_train;
+    current_train = chosen_train;
 
     int32_t i = 0;
 
@@ -2608,9 +2600,9 @@ static bool peep_find_vehicle_to_enter(Guest* peep, Ride* ride, std::vector<uint
             num_seats &= VEHICLE_SEAT_NUM_MASK;
             if (vehicle->next_free_seat & 1)
             {
-                peep->current_car = i;
-                peep_choose_seat_from_car(peep, ride, vehicle);
-                peep_go_to_ride_entrance(peep, ride);
+                current_car = i;
+                peep_choose_seat_from_car(this, ride, vehicle);
+                GoToRideEntrance(ride);
                 return false;
             }
         }
@@ -3508,7 +3500,7 @@ void Guest::UpdateRideAtEntrance()
     }
     else
     {
-        if (!peep_find_vehicle_to_enter(this, ride, carArray))
+        if (!FindVehicleToEnter(ride, carArray))
             return;
     }
 
@@ -3533,7 +3525,7 @@ void Guest::UpdateRideAtEntrance()
         Vehicle* vehicle = peep_choose_car_from_ride(this, ride, carArray);
         peep_choose_seat_from_car(this, ride, vehicle);
     }
-    peep_go_to_ride_entrance(this, ride);
+    GoToRideEntrance(ride);
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
