@@ -138,7 +138,7 @@ public:
 
     static constexpr ZoomLevel min()
     {
-        return -2;
+        return 0;
     }
 
     static constexpr ZoomLevel max()
