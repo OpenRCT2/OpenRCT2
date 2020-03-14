@@ -89,11 +89,11 @@ class UnexpectedError(Exception):
 
 def run_clang_format_version(args):
     invocation = [args.clang_format_executable, "--version"]
-	
+
     encoding_py3 = {}
     if sys.version_info[0] >= 3:
         encoding_py3['encoding'] = 'utf-8'
-		
+
     try:
 	    proc = subprocess.Popen(
             invocation,
@@ -139,6 +139,8 @@ def run_clang_format_diff(args, file):
     except IOError as exc:
         raise DiffError(str(exc))
     invocation = [args.clang_format_executable, file]
+    if args.in_place:
+        invocation += ["-i"]
 
     # Use of utf-8 to decode the process output.
     #
@@ -277,11 +279,17 @@ def main():
         default=[],
         help='exclude paths matching the given glob-like pattern(s)'
         ' from recursive search')
+    parser.add_argument(
+        '-i',
+        '--in-place',
+        help='format files in place (default: False)',
+        action='store_true'
+    )
 
     args = parser.parse_args()
 
     run_clang_format_version(args)
-		
+
     # use default signal handling, like diff return SIGINT value on ^C
     # https://bugs.python.org/issue14229#msg156446
     signal.signal(signal.SIGINT, signal.SIG_DFL)
