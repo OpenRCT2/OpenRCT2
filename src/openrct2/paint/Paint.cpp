@@ -1151,7 +1151,6 @@ void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
             forceSpriteFont = true;
         }
 
-        // std::printf("%d, %d\n", (int)ps->x, (int)ps->y);
         gfx_draw_string_with_y_offsets(&dpi2, buffer, COLOUR_BLACK, ps->x, ps->y, (int8_t*)ps->y_offsets, forceSpriteFont);
     } while ((ps = ps->next) != nullptr);
 }
