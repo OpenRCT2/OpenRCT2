@@ -1078,7 +1078,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
         uint32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8_t objectType = object_entry_get_type(entry);
+        uint8_t objectType = entry->GetType();
         if (objectType == OBJECT_TYPE_RIDE)
         {
             // Automatically research the ride so it's supported by the game.

@@ -69,11 +69,6 @@ bool object_entry_is_empty(const rct_object_entry* entry)
     return false;
 }
 
-uint8_t object_entry_get_type(const rct_object_entry* objectEntry)
-{
-    return (objectEntry->flags & 0x0F);
-}
-
 uint8_t object_entry_get_source_game_legacy(const rct_object_entry* objectEntry)
 {
     return (objectEntry->flags & 0xF0) >> 4;
@@ -96,7 +91,7 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  */
 bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index)
 {
-    int32_t objectType = object_entry_get_type(entry);
+    int32_t objectType = entry->GetType();
     if (objectType >= OBJECT_TYPE_COUNT)
     {
         return false;
