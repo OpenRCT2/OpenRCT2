@@ -368,8 +368,8 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
                 TrackDesignMazeElement maze{};
 
                 maze.maze_entry = tileElement->AsTrack()->GetMazeEntry();
-                maze.x = (x - startLoc.x) / 32;
-                maze.y = (y - startLoc.y) / 32;
+                maze.x = (x - startLoc.x) / COORDS_XY_STEP;
+                maze.y = (y - startLoc.y) / COORDS_XY_STEP;
                 _saveDirection = tileElement->GetDirection();
                 maze_elements.push_back(maze);
 
@@ -542,8 +542,8 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
         scenery.x = static_cast<int8_t>(sceneryTilePos.x);
         scenery.y = static_cast<int8_t>(sceneryTilePos.y);
 
-        int32_t z = scenery.z * 8 - gTrackPreviewOrigin.z;
-        z /= 8;
+        int32_t z = scenery.z * COORDS_Z_STEP - gTrackPreviewOrigin.z;
+        z /= COORDS_Z_STEP;
         if (z > 127 || z < -126)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -953,7 +953,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
 
 static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElement& scenery)
 {
-    int32_t z = scenery.z * 8 + _trackDesignPlaceZ;
+    int32_t z = scenery.z * COORDS_Z_STEP + _trackDesignPlaceZ;
     if (z < _trackDesignPlaceSceneryZ)
     {
         _trackDesignPlaceSceneryZ = z;
@@ -1014,7 +1014,7 @@ static bool TrackDesignPlaceSceneryElement(
 
                 rotation += scenery.flags;
                 rotation &= 3;
-                z = scenery.z * 8 + originZ;
+                z = scenery.z * COORDS_Z_STEP + originZ;
                 quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
 
                 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
@@ -1256,11 +1256,11 @@ static int32_t track_design_place_all_scenery(
         for (const auto& scenery : sceneryList)
         {
             uint8_t rotation = _currentTrackPieceDirection;
-            TileCoordsXY tileCoords = { originX / 32, originY / 32 };
+            TileCoordsXY tileCoords = { originX / COORDS_XY_STEP, originY / COORDS_XY_STEP };
             TileCoordsXY offsets = { scenery.x, scenery.y };
             tileCoords += offsets.Rotate(rotation);
 
-            CoordsXY mapCoord = { tileCoords.x * 32, tileCoords.y * 32 };
+            CoordsXY mapCoord = tileCoords.ToCoordsXY();
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
             if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, originZ))
@@ -1287,7 +1287,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
     for (const auto& maze_element : td6->maze_elements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        CoordsXY mazeMapPos{ maze_element.x * 32, maze_element.y * 32 };
+        CoordsXY mazeMapPos = TileCoordsXY(maze_element.x, maze_element.y).ToCoordsXY();
         auto mapCoord = mazeMapPos.Rotate(rotation);
         mapCoord.x += x;
         mapCoord.y += y;
@@ -2102,7 +2102,7 @@ static void track_design_preview_clear_map()
 {
     // These values were previously allocated in backup map but
     // it seems more fitting to place in this function
-    gMapSizeUnits = 255 * 32;
+    gMapSizeUnits = 255 * COORDS_XY_STEP;
     gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 

@@ -2574,10 +2574,10 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        TileCoordsXYZD stationPosition = ride_get_exit_location(ride, current_ride_station);
+        auto stationPosition = ride_get_exit_location(ride, current_ride_station).ToCoordsXY();
         if (stationPosition.isNull())
         {
-            stationPosition = ride_get_entrance_location(ride, current_ride_station);
+            stationPosition = ride_get_entrance_location(ride, current_ride_station).ToCoordsXY();
 
             if (stationPosition.isNull())
             {
@@ -2585,18 +2585,14 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
             }
         }
 
-        uint16_t stationX = stationPosition.x * 32;
-        uint16_t stationY = stationPosition.y * 32;
-
-        stationX += 16;
-        stationY += 16;
+        stationPosition = stationPosition.ToTileCentre();
 
         CoordsXY stationPlatformDirection = DirectionOffsets[direction];
-        stationX += stationPlatformDirection.x * 20;
-        stationY += stationPlatformDirection.y * 20;
+        stationPosition.x += stationPlatformDirection.x * 20;
+        stationPosition.y += stationPlatformDirection.y * 20;
 
-        destination_x = stationX;
-        destination_y = stationY;
+        destination_x = stationPosition.x;
+        destination_y = stationPosition.y;
         destination_tolerance = 2;
     }
 
@@ -2664,10 +2660,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        TileCoordsXYZD exitPosition = ride_get_exit_location(ride, current_ride_station);
+        auto exitPosition = ride_get_exit_location(ride, current_ride_station).ToCoordsXY();
         if (exitPosition.isNull())
         {
-            exitPosition = ride_get_entrance_location(ride, current_ride_station);
+            exitPosition = ride_get_entrance_location(ride, current_ride_station).ToCoordsXY();
 
             if (exitPosition.isNull())
             {
@@ -2676,18 +2672,14 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
             }
         }
 
-        uint16_t exitX = exitPosition.x * 32;
-        uint16_t exitY = exitPosition.y * 32;
-
-        exitX += 16;
-        exitY += 16;
+        exitPosition = exitPosition.ToTileCentre();
 
         CoordsXY ebx_direction = DirectionOffsets[direction];
-        exitX -= ebx_direction.x * 19;
-        exitY -= ebx_direction.y * 19;
+        exitPosition.x -= ebx_direction.x * 19;
+        exitPosition.y -= ebx_direction.y * 19;
 
-        destination_x = exitX;
-        destination_y = exitY;
+        destination_x = exitPosition.x;
+        destination_y = exitPosition.y;
         destination_tolerance = 2;
     }
 

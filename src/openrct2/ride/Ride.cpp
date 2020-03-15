@@ -471,8 +471,8 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
             if (output != nullptr)
             {
                 output->element = resultTileElement;
-                output->x = it.x * 32;
-                output->y = it.y * 32;
+                output->x = it.x * COORDS_XY_STEP;
+                output->y = it.y * COORDS_XY_STEP;
             }
         }
 
@@ -6984,7 +6984,7 @@ void sub_6CB945(Ride* ride)
             continue;
         }
 
-        CoordsXY location = { locationCoords.x * 32, locationCoords.y * 32 };
+        CoordsXY location = locationCoords.ToCoordsXY();
 
         TileElement* tileElement = map_get_first_element_at(location);
         if (tileElement == nullptr)

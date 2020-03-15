@@ -106,7 +106,7 @@ public:
 
         if (_sequence == nullptr)
         {
-            SetViewLocation(75 * 32, 75 * 32);
+            SetViewLocation(TileCoordsXY(75, 75).ToCoordsXY());
             return false;
         }
 
@@ -254,9 +254,8 @@ private:
                 break;
             case TITLE_SCRIPT_LOCATION:
             {
-                int32_t x = command->X * 32 + 16;
-                int32_t y = command->Y * 32 + 16;
-                SetViewLocation(x, y);
+                auto loc = TileCoordsXY(command->X, command->Y).ToCoordsXY().ToTileCentre();
+                SetViewLocation(loc);
                 break;
             }
             case TITLE_SCRIPT_ROTATE:
@@ -465,22 +464,21 @@ private:
     }
 
     /**
-     * Sets the map location to the given tile coordinates. Z is automatic.
-     * @param x X position in map tiles.
-     * @param y Y position in map tiles.
+     * Sets the map location to the given (big) coordinates. Z is automatic.
+     * @param loc X and Y position in big coordinates.
      */
-    void SetViewLocation(int32_t x, int32_t y)
+    void SetViewLocation(const CoordsXY& loc)
     {
         // Update viewport
         rct_window* w = window_get_main();
         if (w != nullptr)
         {
-            int32_t z = tile_element_height({ x, y });
+            int32_t z = tile_element_height(loc);
 
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;
             gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            w->SetLocation(x, y, z);
+            w->SetLocation(loc.x, loc.y, z);
             gScreenFlags = oldScreenFlags;
 
             viewport_update_position(w);
@@ -488,8 +486,7 @@ private:
             // Save known tile position in case of window resize
             _lastScreenWidth = w->width;
             _lastScreenHeight = w->height;
-            _viewCentreLocation.x = x;
-            _viewCentreLocation.y = y;
+            _viewCentreLocation = loc;
         }
     }
 
@@ -503,7 +500,7 @@ private:
         {
             if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
             {
-                SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
+                SetViewLocation(_viewCentreLocation);
             }
         }
     }

@@ -159,13 +159,13 @@ public:
             curTile.x += _loc.x;
             curTile.y += _loc.y;
 
-            int32_t zLow = (tile->z_offset + maxHeight) / 8;
-            int32_t zHigh = (tile->z_clearance / 8) + zLow;
+            int32_t zLow = tile->z_offset + maxHeight;
+            int32_t zHigh = tile->z_clearance + zLow;
 
             QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
             if (!map_can_construct_with_clear_at(
-                    { curTile, zLow * COORDS_Z_STEP, zHigh * COORDS_Z_STEP }, &map_place_scenery_clear_func, quarterTile,
-                    GetFlags(), &supportsCost, CREATE_CROSSING_MODE_NONE))
+                    { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
+                    CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(
                     GA_ERROR::NO_CLEARANCE, gGameCommandErrorText, gCommonFormatArgs);
@@ -193,7 +193,7 @@ public:
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow * COORDS_Z_STEP })
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow })
                 && !gCheatsSandboxMode)
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
@@ -263,8 +263,7 @@ public:
             banner->text_colour = 2;
             banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
             banner->type = 0;
-            banner->position.x = _loc.x / 32;
-            banner->position.y = _loc.y / 32;
+            banner->position = TileCoordsXY(_loc);
 
             ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
             if (rideIndex != RIDE_ID_NULL)

@@ -192,11 +192,12 @@ static void track_design_save_push_tile_element(const CoordsXY& loc, TileElement
 static void track_design_save_push_tile_element_desc(
     const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
+    auto tileLoc = TileCoordsXYZ(loc);
     TrackDesignSceneryElement item{};
     item.scenery_object = *entry;
-    item.x = loc.x / 32;
-    item.y = loc.y / 32;
-    item.z = loc.z / 8;
+    item.x = tileLoc.x;
+    item.y = tileLoc.y;
+    item.z = tileLoc.z;
     item.flags = flags;
     item.primary_colour = primaryColour;
     item.secondary_colour = secondaryColour;
@@ -361,14 +362,15 @@ static void track_design_save_pop_tile_element(const CoordsXY& loc, TileElement*
 static void track_design_save_pop_tile_element_desc(const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
+    auto tileLoc = TileCoordsXYZ(loc);
     for (size_t i = 0; i < _trackSavedTileElementsDesc.size(); i++)
     {
         TrackDesignSceneryElement* item = &_trackSavedTileElementsDesc[i];
-        if (item->x != loc.x / 32)
+        if (item->x != tileLoc.x)
             continue;
-        if (item->y != loc.y / 32)
+        if (item->y != tileLoc.y)
             continue;
-        if (item->z != loc.z / 8)
+        if (item->z != tileLoc.z)
             continue;
         if (item->flags != flags)
             continue;
@@ -554,7 +556,7 @@ static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex
                 {
                     if (!track_design_save_contains_tile_element(tileElement))
                     {
-                        track_design_save_add_tile_element(interactionType, { x * 32, y * 32 }, tileElement);
+                        track_design_save_add_tile_element(interactionType, TileCoordsXY(x, y).ToCoordsXY(), tileElement);
                     }
                 }
             } while (!(tileElement++)->IsLastForTile());

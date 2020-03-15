@@ -824,6 +824,8 @@ private:
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
     std::bitset<MAX_RIDES> FindRidesToGoOn();
+    bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
+    void GoToRideEntrance(Ride* ride);
 };
 
 struct Staff : Peep

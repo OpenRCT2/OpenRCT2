@@ -57,10 +57,6 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto banner = GetBanner(_bannerIndex);
-
-        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
-
         if (_isLarge)
         {
             TileElement* tileElement = banner_get_tile_element(_bannerIndex);
@@ -93,7 +89,7 @@ public:
     {
         auto banner = GetBanner(_bannerIndex);
 
-        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
+        CoordsXY coords = banner->position.ToCoordsXY();
 
         if (_isLarge)
         {

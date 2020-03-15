@@ -1640,7 +1640,7 @@ static void footpath_clear_wide(const CoordsXY& footpathPos)
  *  returns footpath element if it can be made wide
  *  returns NULL if it can not be made wide
  */
-static TileElement* footpath_can_be_wide(const CoordsXY& footpathPos, uint8_t height)
+static TileElement* footpath_can_be_wide(const CoordsXYZ& footpathPos)
 {
     TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
@@ -1649,7 +1649,7 @@ static TileElement* footpath_can_be_wide(const CoordsXY& footpathPos, uint8_t he
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (height != tileElement->base_height)
+        if (footpathPos.z != tileElement->GetBaseZ())
             continue;
         if (tileElement->AsPath()->IsQueue())
             continue;
@@ -1706,7 +1706,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         if (tileElement->AsPath()->GetEdges() == 0)
             continue;
 
-        uint8_t height = tileElement->base_height;
+        auto height = tileElement->GetBaseZ();
 
         // pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
@@ -1714,7 +1714,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
 
         for (int32_t direction = 0; direction < 8; ++direction)
         {
-            pathList[direction] = footpath_can_be_wide(footpathPos + CoordsDirectionDelta[direction], height);
+            auto footpathLoc = CoordsXYZ(footpathPos + CoordsDirectionDelta[direction], height);
+            pathList[direction] = footpath_can_be_wide(footpathLoc);
         }
 
         uint8_t pathConnections = 0;

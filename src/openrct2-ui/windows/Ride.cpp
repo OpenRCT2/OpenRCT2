@@ -1498,17 +1498,16 @@ static void window_ride_update_overall_view(Ride* ride)
         if (it.element->AsTrack()->GetRideIndex() != ride->id)
             continue;
 
-        int32_t x = it.x * 32;
-        int32_t y = it.y * 32;
+        auto location = TileCoordsXY(it.x, it.y).ToCoordsXY();
         int32_t baseZ = it.element->GetBaseZ();
         int32_t clearZ = it.element->GetClearanceZ();
 
-        minx = std::min(minx, x);
-        miny = std::min(miny, y);
+        minx = std::min(minx, location.x);
+        miny = std::min(miny, location.y);
         minz = std::min(minz, baseZ);
 
-        maxx = std::max(maxx, x);
-        maxy = std::max(maxy, y);
+        maxx = std::max(maxx, location.x);
+        maxy = std::max(maxy, location.y);
         maxz = std::max(maxz, clearZ);
     }
 

@@ -518,7 +518,7 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
     if (tile.tile_element == nullptr)
         return false;
 
-    if (tile.tile_element->base_height > gClipHeight)
+    if (tile.tile_element->GetBaseZ() > gClipHeight / COORDS_Z_STEP)
         return false;
 
     auto coords = tile.tile_coords.ToCoordsXY();
