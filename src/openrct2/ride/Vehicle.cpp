@@ -40,6 +40,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleData.h"
+#include "VehicleSubpositionData.h"
 
 #include <algorithm>
 #include <iterator>
