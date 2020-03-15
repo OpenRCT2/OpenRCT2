@@ -2482,11 +2482,6 @@ STR_3390    :Trop d'objets sélectionnés
 STR_3437    :{SMALLFONT}{BLACK}Nettoyer grande zone de décor du paysage
 STR_3438    :Impossible d'effacer tout le décor de cette zone...
 STR_3439    :Effacer décor
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
 STR_3445    :Définir zone de Patrouille
 STR_3446    :Annuler zone de Patrouille
 
@@ -3683,6 +3678,16 @@ STR_6346    :Inspecteur de tuile : Décrémenter l'hauteur de l'élement
 STR_6347    :Les ajouts pour les allées ne peuvent pas être placés sur les passages à niveau !
 STR_6348    :Supprimez le passage à niveau d'abord !
 STR_6349    :Séquence d'introduction aléatoire
+STR_6350    :Eparpillement
+STR_6351    :Outil d'éparpillement de décor
+STR_6352    :Densité
+STR_6353    :{SMALLFONT}{BLACK}Densité faible
+STR_6354    :{SMALLFONT}{BLACK}Densité moyenne
+STR_6355    :{SMALLFONT}{BLACK}Densité élevée
+STR_6356    :{SMALLFONT}{BLACK}Fait apparaitre des cannards si le parc contient de l'eau
+STR_6357    :{SMALLFONT}{BLACK}Supprime tous les cannards de la carte
+STR_6358    :Page {UINT16}
+STR_6359    :{POP16}{POP16}Page {UINT16}
 
 #############
 # Scenarios #
