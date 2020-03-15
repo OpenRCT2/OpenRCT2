@@ -599,17 +599,17 @@ void ride_entry_set_invented(int32_t rideEntryIndex)
     _researchedRideEntries[rideEntryIndex] = true;
 }
 
-bool scenery_is_invented(ScenerySelection sceneryItem)
+bool scenery_is_invented(const ScenerySelection& sceneryItem)
 {
     return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
 }
 
-void scenery_set_invented(ScenerySelection sceneryItem)
+void scenery_set_invented(const ScenerySelection& sceneryItem)
 {
     _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = true;
 }
 
-void scenery_set_not_invented(ScenerySelection sceneryItem)
+void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 {
     _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = false;
 }

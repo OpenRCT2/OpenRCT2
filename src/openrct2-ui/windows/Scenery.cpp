@@ -197,7 +197,7 @@ static ScenerySelection window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_
  * Was part of 0x006DFA00
  * The same code repeated five times for every scenery entry type
  */
-static void init_scenery_entry(rct_scenery_entry* sceneryEntry, ScenerySelection index, uint8_t sceneryTabId)
+static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySelection& index, uint8_t sceneryTabId)
 {
     Guard::ArgumentInRange<int32_t>(index.EntryIndex, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
     if (scenery_is_invented(index) || gCheatsIgnoreResearchStatus)
@@ -1353,7 +1353,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
     }
 }
 
-static int32_t window_scenery_find_tab_with_scenery(ScenerySelection scenery)
+static int32_t window_scenery_find_tab_with_scenery(const ScenerySelection& scenery)
 {
     for (int32_t i = 0; i < SCENERY_WINDOW_TABS; i++)
     {
@@ -1369,7 +1369,7 @@ static int32_t window_scenery_find_tab_with_scenery(ScenerySelection scenery)
     return -1;
 }
 
-bool window_scenery_set_selected_item(ScenerySelection scenery)
+bool window_scenery_set_selected_item(const ScenerySelection& scenery)
 {
     bool result = false;
     rct_window* w = window_bring_to_front_by_class(WC_SCENERY);
