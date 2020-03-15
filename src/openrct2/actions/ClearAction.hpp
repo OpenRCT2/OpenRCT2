@@ -148,6 +148,9 @@ private:
                 return totalCost;
             do
             {
+                if (tileElement->IsGhost())
+                    continue;
+
                 auto type = tileElement->GetType();
                 switch (type)
                 {
