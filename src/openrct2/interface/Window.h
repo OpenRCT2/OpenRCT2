@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "../world/ScenerySelection.h"
 
 #include <functional>
 #include <limits>
@@ -26,7 +27,6 @@ struct track_design_file_ref;
 struct TitleSequence;
 struct TextInputSession;
 struct scenario_index_entry;
-struct ScenerySelection;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -243,18 +243,6 @@ struct ride_variables
 };
 
 #define SCENERY_ENTRIES_BY_TAB 1024
-constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
-
-struct ScenerySelection
-{
-    uint8_t SceneryType;
-    uint16_t EntryIndex;
-
-    inline bool operator==(const ScenerySelection& rhs)
-    {
-        return SceneryType == rhs.SceneryType && EntryIndex == rhs.EntryIndex;
-    }
-};
 
 struct scenery_variables
 {

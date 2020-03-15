@@ -1792,7 +1792,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
 
-    if (selectedTab.EntryIndex == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
+    if (selectedTab.IsUndefined())
         return;
 
     CoordsXY gridPos;
@@ -2723,7 +2723,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
 
     ScenerySelection selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 
-    if (selectedTab.EntryIndex == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
+    if (selectedTab.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();
         return;
