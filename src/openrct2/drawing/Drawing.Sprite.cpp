@@ -404,7 +404,8 @@ bool gfx_load_csg()
  *  rct2: 0x0067A690
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_bmp_sprite_to_buffer(
+template<bool with_checks>
+static bool FASTCALL gfx_bmp_sprite_to_buffer_internal(
     const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
     rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
 {
@@ -437,7 +438,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
             source_pointer = next_source_pointer;
             dest_pointer = next_dest_pointer;
         }
-        return;
+        return true;
     }
 
     // Image is transparent. It only uses source pointer for
@@ -466,7 +467,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
             source_pointer = next_source_pointer;
             dest_pointer = next_dest_pointer;
         }
-        return;
+        return true;
     }
 
     // Basic bitmap no fancy stuff
@@ -486,7 +487,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
             dest_pointer = next_dest_pointer;
             source_pointer = next_source_pointer;
         }
-        return;
+        return true;
     }
 
     // Basic bitmap with no draw pixels
@@ -506,6 +507,23 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
         dest_pointer = next_dest_pointer;
         source_pointer = next_source_pointer;
     }
+    return true;
+}
+
+void FASTCALL gfx_bmp_sprite_to_buffer(
+    const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
+{
+    gfx_bmp_sprite_to_buffer_internal<false>(
+        palette_pointer, source_pointer, dest_pointer, source_image, dest_dpi, height, width, imageId);
+}
+
+bool FASTCALL test_gfx_bmp_sprite_to_buffer(
+    const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
+{
+    return gfx_bmp_sprite_to_buffer_internal<true>(
+        palette_pointer, source_pointer, dest_pointer, source_image, dest_dpi, height, width, imageId);
 }
 
 const uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
@@ -573,6 +591,16 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
     }
 }
 
+bool FASTCALL test_gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
+{
+    if (imageId.HasValue())
+    {
+        auto palette = gfx_draw_sprite_get_palette(imageId);
+        return test_gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette);
+    }
+    return false;
+}
+
 /*
  * rct: 0x0067A46E
  * image_id (ebx) and also (0x00EDF81C)
@@ -582,13 +610,14 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * x (cx)
  * y (dx)
  */
-void FASTCALL gfx_draw_sprite_palette_set_software(
+template<bool with_checks>
+static bool FASTCALL gfx_draw_sprite_palette_set_software_internal(
     rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const uint8_t* palette_pointer)
 {
     const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
-        return;
+        return true;
     }
 
     if (dpi->zoom_level != 0 && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
@@ -601,14 +630,13 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.width = dpi->width >> 1;
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
-        gfx_draw_sprite_palette_set_software(
+        return gfx_draw_sprite_palette_set_software_internal<with_checks>(
             &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer);
-        return;
     }
 
     if (dpi->zoom_level != 0 && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
     {
-        return;
+        return true;
     }
 
     // Its used super often so we will define it to a separate variable.
@@ -647,7 +675,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         // If the image is no longer visible nothing to draw
         if (height <= 0)
         {
-            return;
+            // Test draw would place sprite at (0,0), which should always draw.
+            return false;
         }
         // The source image will start a further up the image
         source_start_y -= dest_start_y;
@@ -673,7 +702,10 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     }
     // If the image no longer has anything to draw
     if (height <= 0)
-        return;
+    {
+        // Test draw would place sprite at (0,0), which should always draw.
+        return false;
+    }
 
     dest_start_y >>= zoom_level;
 
@@ -692,7 +724,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         // If there is no image to draw
         if (width <= 0)
         {
-            return;
+            // Test draw would place sprite at (0,0), which should always draw.
+            return false;
         }
         // The source start will also need to cut off the side
         source_start_x -= dest_start_x;
@@ -716,7 +749,10 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         width -= dest_end_x - dpi->width;
         // If there is no image to draw.
         if (width <= 0)
-            return;
+        {
+            // Test draw would place sprite at (0,0), which should always draw.
+            return false;
+        }
     }
 
     dest_start_x >>= zoom_level;
@@ -729,16 +765,37 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     {
         // We have to use a different method to move the source pointer for
         // rle encoded sprites so that will be handled within this function
-        gfx_rle_sprite_to_buffer(
-            g1->offset, dest_pointer, palette_pointer, dpi, imageId, source_start_y, height, source_start_x, width);
-        return;
+        if constexpr (with_checks)
+        {
+            return test_gfx_rle_sprite_to_buffer(
+                g1->offset, dest_pointer, palette_pointer, dpi, imageId, source_start_y, height, source_start_x, width);
+        }
+        else
+        {
+            gfx_rle_sprite_to_buffer(
+                g1->offset, dest_pointer, palette_pointer, dpi, imageId, source_start_y, height, source_start_x, width);
+        }
     }
     else if (!(g1->flags & G1_FLAG_1))
     {
         // Move the pointer to the start point of the source
         auto source_pointer = g1->offset + (((size_t)g1->width * source_start_y) + source_start_x);
-        gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
+        return gfx_bmp_sprite_to_buffer_internal<with_checks>(
+            palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
     }
+    return false;
+}
+
+void FASTCALL gfx_draw_sprite_palette_set_software(
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const uint8_t* palette_pointer)
+{
+    gfx_draw_sprite_palette_set_software_internal<false>(dpi, imageId, x, y, palette_pointer);
+}
+
+bool FASTCALL test_gfx_draw_sprite_palette_set_software(
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const uint8_t* palette_pointer)
+{
+    return gfx_draw_sprite_palette_set_software_internal<true>(dpi, imageId, x, y, palette_pointer);
 }
 
 /**

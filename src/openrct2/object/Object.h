@@ -212,6 +212,11 @@ public:
     {
     }
 
+    virtual bool ValidateObject() const
+    {
+        return true;
+    }
+
     virtual uint8_t GetObjectType() const final
     {
         return _objectEntry.flags & 0x0F;

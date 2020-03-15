@@ -13,8 +13,8 @@
 
 #include <cstring>
 
-template<int32_t image_type, int32_t zoom_level>
-static void FASTCALL DrawRLESprite2(
+template<int32_t image_type, int32_t zoom_level, bool with_checks>
+static bool FASTCALL DrawRLESprite2(
     const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
     const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
@@ -31,6 +31,18 @@ static void FASTCALL DrawRLESprite2(
         source_y_start += zoom_amount;
         height -= zoom_amount;
         dest_bits_pointer += line_width;
+    }
+
+    if constexpr (with_checks)
+    {
+        if (height <= 0)
+        {
+            return false;
+        }
+        if (width <= 0)
+        {
+            return false;
+        }
     }
 
     // For every line in the image
@@ -136,14 +148,16 @@ static void FASTCALL DrawRLESprite2(
             }
         }
     }
+
+    return true;
 }
 
 #define DrawRLESpriteHelper2(image_type, zoom_level)                                                                           \
-    DrawRLESprite2<image_type, zoom_level>(                                                                                    \
+    DrawRLESprite2<image_type, zoom_level, with_checks>(                                                                       \
         source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
 
-template<int32_t image_type>
-static void FASTCALL DrawRLESprite1(
+template<int32_t image_type, bool with_checks>
+static bool FASTCALL DrawRLESprite1(
     const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const uint8_t* palette_pointer,
     const rct_drawpixelinfo* dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
@@ -151,25 +165,25 @@ static void FASTCALL DrawRLESprite1(
     switch (zoom_level)
     {
         case 0:
-            DrawRLESpriteHelper2(image_type, 0);
+            return DrawRLESpriteHelper2(image_type, 0);
             break;
         case 1:
-            DrawRLESpriteHelper2(image_type, 1);
+            return DrawRLESpriteHelper2(image_type, 1);
             break;
         case 2:
-            DrawRLESpriteHelper2(image_type, 2);
+            return DrawRLESpriteHelper2(image_type, 2);
             break;
         case 3:
-            DrawRLESpriteHelper2(image_type, 3);
+            return DrawRLESpriteHelper2(image_type, 3);
             break;
         default:
             assert(false);
-            break;
+            return false;
     }
 }
 
-#define DrawRLESpriteHelper1(image_type)                                                                                       \
-    DrawRLESprite1<image_type>(                                                                                                \
+#define DrawRLESpriteHelper1(image_type, with_checks)                                                                          \
+    DrawRLESprite1<image_type, with_checks>(                                                                                   \
         source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
 
 /**
@@ -187,19 +201,48 @@ void FASTCALL gfx_rle_sprite_to_buffer(
     {
         if (imageId.IsBlended())
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
+            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT, false);
         }
         else
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
+            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP, false);
         }
     }
     else if (imageId.IsBlended())
     {
-        DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
+        DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT, false);
     }
     else
     {
-        DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT);
+        DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT, false);
+    }
+}
+
+// As drawing is extremely hot path, duplicate the function above with altered return type rather than have it branch on passed
+// argument. Hopefully the compilers are smart enough to optimise out the constant, unconsumed return value from the regular
+// version.
+bool FASTCALL test_gfx_rle_sprite_to_buffer(
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
+    int32_t width)
+{
+    if (imageId.HasPrimary())
+    {
+        if (imageId.IsBlended())
+        {
+            return DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT, true);
+        }
+        else
+        {
+            return DrawRLESpriteHelper1(IMAGE_TYPE_REMAP, true);
+        }
+    }
+    else if (imageId.IsBlended())
+    {
+        return DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT, true);
+    }
+    else
+    {
+        return DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT, true);
     }
 }

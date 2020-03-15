@@ -147,6 +147,10 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
     GetImageTable().Read(context, stream);
 
+    if (!ValidateObject())
+    {
+        context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Object failed to validate");
+    }
     // Validate properties
     if (_legacyType.excitement_multiplier > 75)
     {
@@ -368,6 +372,53 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
     }
 
     gfx_draw_sprite(dpi, imageId, 0, 0, 0);
+}
+
+bool RideObject::ValidateObject() const
+{
+    int16_t max_height = std::numeric_limits<int16_t>::min();
+    int16_t max_width = std::numeric_limits<int16_t>::min();
+    for (uint32_t i = 0; i < GetImageTable().GetCount(); i++)
+    {
+        if (GetImageTable().GetImages()[i].height > max_height)
+        {
+            max_height = GetImageTable().GetImages()[i].height;
+        }
+        if (GetImageTable().GetImages()[i].width > max_width)
+        {
+            max_width = GetImageTable().GetImages()[i].width;
+        }
+    }
+    if (max_width < 0 || max_height < 0)
+    {
+        return false;
+    }
+    size_t numPixels = max_width * max_height;
+    auto pixels8 = new uint8_t[numPixels];
+    std::fill_n(pixels8, numPixels, 0);
+
+    rct_drawpixelinfo dpi;
+    dpi.bits = pixels8;
+    dpi.pitch = 0;
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = max_width;
+    dpi.height = max_height;
+    dpi.zoom_level = 0;
+
+    uint32_t imageId = _legacyType.images_offset;
+
+    for (auto rideType : _legacyType.ride_type)
+    {
+        if (rideType != RIDE_TYPE_NULL)
+            break;
+        else
+            imageId++;
+    }
+
+    delete[] pixels8;
+    // Always use software engine
+    return test_gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(imageId, 0), 0, 0);
 }
 
 std::string RideObject::GetDescription() const
