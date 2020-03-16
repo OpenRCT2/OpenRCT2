@@ -387,7 +387,8 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     int32_t r = w->windowPos.x + widget->right;
     int32_t t;
 
-    if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
+    if (widget->type == WWT_BUTTON || widget->type == WWT_DROPDOWN || widget->type == WWT_SPINNER
+        || widget->type == WWT_TABLE_HEADER)
     {
         int32_t height = (widget->bottom - widget->top);
         if (height >= 10)
