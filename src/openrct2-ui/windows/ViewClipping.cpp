@@ -242,7 +242,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             _previousClipSelectionA = gClipSelectionA;
             _previousClipSelectionB = gClipSelectionB;
             gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+            gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
             gfx_invalidate_screen();
             break;
         case WIDX_CLIP_CLEAR:
@@ -252,7 +252,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
                 tool_cancel();
             }
             gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+            gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
             gfx_invalidate_screen();
             break;
     }

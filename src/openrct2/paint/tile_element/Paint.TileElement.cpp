@@ -245,7 +245,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     do
     {
         // Only paint tile_elements below the clip height.
-        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight / COORDS_Z_STEP))
+        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
