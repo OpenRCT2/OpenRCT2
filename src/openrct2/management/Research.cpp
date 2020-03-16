@@ -606,11 +606,13 @@ bool scenery_is_invented(const ScenerySelection& sceneryItem)
 
 void scenery_set_invented(const ScenerySelection& sceneryItem)
 {
+    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
     _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = true;
 }
 
 void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 {
+    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
     _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = false;
 }
 

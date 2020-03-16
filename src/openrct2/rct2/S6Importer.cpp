@@ -877,7 +877,13 @@ public:
             {
                 ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
                                                       static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
-                scenery_set_invented(scenerySelection);
+
+                // SV6 has room for 8 types of scenery, and sometimes scenery of non-existing types 5 and 6 is marked as
+                // "invented".
+                if (scenerySelection.SceneryType < SCENERY_TYPE_COUNT)
+                {
+                    scenery_set_invented(scenerySelection);
+                }
             }
         }
     }
