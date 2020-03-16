@@ -637,16 +637,16 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
 
 static void window_loadsave_compute_max_date_width()
 {
-    // Generate a time object for a relatively wide time: 2000-10-20 00:00:00
+    // Generate a time object for a relatively wide time: 2000-02-20 00:00:00
     std::tm tm;
     tm.tm_sec = 0;
     tm.tm_min = 0;
     tm.tm_hour = 0;
     tm.tm_mday = 20;
-    tm.tm_mon = 9;
+    tm.tm_mon = 2;
     tm.tm_year = 100;
     tm.tm_wday = 5;
-    tm.tm_yday = 294;
+    tm.tm_yday = 51;
     tm.tm_isdst = -1;
 
     std::time_t long_time = mktime(&tm);
