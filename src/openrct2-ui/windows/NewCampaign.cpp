@@ -44,8 +44,8 @@ static rct_widget window_new_campaign_widgets[] = {
     { WWT_LABEL,            0,      14,     139,    24,     35,         0,                                              STR_NONE },             // ride label
     { WWT_DROPDOWN,         0,      100,    341,    24,     35,         0,                                              STR_NONE },             // ride dropdown
     { WWT_BUTTON,           0,      330,    340,    25,     34,         STR_DROPDOWN_GLYPH,                             STR_NONE },             // ride dropdown button
-    { WWT_LABEL,            0,      14,     139,    41,     52,         STR_LENGTH_OF_TIME,                             STR_NONE },             // weeks label
-      SPINNER_WIDGETS      (0,      120,    219,    41,     52,         0,                                              STR_NONE),              // weeks (3 widgets)
+    { WWT_LABEL,            0,      14,     139,    41,     54,         STR_LENGTH_OF_TIME,                             STR_NONE },             // weeks label
+      SPINNER_WIDGETS      (0,      120,    219,    41,     54,         0,                                              STR_NONE),              // weeks (3 widgets)
     { WWT_BUTTON,           0,      14,     335,    89,     100,        STR_MARKETING_START_THIS_MARKETING_CAMPAIGN,    STR_NONE },             // start button
     { WIDGETS_END }
 };
