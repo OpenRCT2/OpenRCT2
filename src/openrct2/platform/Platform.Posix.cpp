@@ -13,6 +13,7 @@
 #    include "Platform2.h"
 #    include "platform.h"
 
+#    include <clocale>
 #    include <cstdlib>
 #    include <cstring>
 #    include <ctime>
@@ -72,6 +73,7 @@ namespace Platform
 
     std::string FormatShortDate(std::time_t timestamp)
     {
+        setlocale(LC_TIME, "");
         char date[20];
         std::strftime(date, sizeof(date), "%x", std::localtime(&timestamp));
         return std::string(date);
@@ -79,6 +81,7 @@ namespace Platform
 
     std::string FormatTime(std::time_t timestamp)
     {
+        setlocale(LC_TIME, "");
         char time[20];
         std::strftime(time, sizeof(time), "%X", std::localtime(&timestamp));
         return std::string(time);
