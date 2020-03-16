@@ -815,6 +815,41 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
 }
 
 /**
+ * Loops through all sprites, finds floating objects and removes them.
+ * Returns the amount of removed objects as feedback.
+ */
+uint16_t remove_floating_sprites()
+{
+    uint16_t removed = 0;
+    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+    {
+        rct_sprite* rctSprite = get_sprite(i);
+        if (rctSprite->IsBalloon())
+        {
+            sprite_remove(rctSprite->AsBalloon());
+            sprite_misc_update(rctSprite);
+            removed++;
+        }
+        else if (rctSprite->IsDuck())
+        {
+            if (rctSprite->AsDuck()->IsFlying())
+            {
+                rctSprite->duck.Remove();
+                sprite_misc_update(rctSprite);
+                removed++;
+            }
+        }
+        else if (rctSprite->IsMoneyEffect())
+        {
+            sprite_remove(rctSprite->AsMoneyEffect());
+            sprite_misc_update(rctSprite);
+            removed++;
+        }
+    }
+    return removed;
+}
+
+/**
  * Determines whether it's worth tweening a sprite or not when frame smoothing is on.
  */
 static bool sprite_should_tween(rct_sprite* sprite)

@@ -1192,6 +1192,13 @@ static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unu
     return 0;
 }
 
+static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arguments_t& argv)
+{
+    uint16_t result = remove_floating_sprites();
+    console.WriteFormatLine("Removed %d flying objects", result);
+    return 0;
+}
+
 static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     tile_element_iterator it;
@@ -1675,6 +1682,7 @@ static constexpr const console_command console_command_table[] = {
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
+    { "remove_floating_objects", cc_remove_floating_objects, "Removes floating objects", "remove_floating_objects"},
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },
