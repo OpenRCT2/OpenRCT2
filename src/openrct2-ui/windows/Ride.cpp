@@ -346,11 +346,11 @@ static rct_widget window_ride_graphs_widgets[] = {
 // 0x009AE844
 static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_LABEL,            1,  19,     144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
-      SPINNER_WIDGETS      (1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
+    { WWT_LABEL,            1,  19,     144,    50,     63,     0xFFFFFFFF,                                 STR_NONE                                                    },
+      SPINNER_WIDGETS      (1,  147,    308,    50,     63,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
     { WWT_CHECKBOX,         1,  5,      310,    62,     74,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
-    { WWT_LABEL,            1,  19,     144,    94,     105,    0xFFFFFFFF,                                 STR_NONE                                                    },
-      SPINNER_WIDGETS      (1,  147,    308,    94,     105,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
+    { WWT_LABEL,            1,  19,     144,    94,     107,    0xFFFFFFFF,                                 STR_NONE                                                    },
+      SPINNER_WIDGETS      (1,  147,    308,    94,     107,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
     { WWT_CHECKBOX,         1,  5,      310,    106,    118,    STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
     { WIDGETS_END },
 };

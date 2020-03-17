@@ -39,12 +39,12 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
-        { WWT_FRAME, 1, 0, WW - 1, 0, WH - 1, STR_NONE, STR_NONE },
-        { WWT_CAPTION, 1, 1, WW - 2, 1, 14, STR_OPTIONS, STR_WINDOW_TITLE_TIP },
-        { WWT_CLOSEBOX, 1, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
-        { WWT_BUTTON,          1, WW - 80, WW - 10, WH - 21, WH - 10, STR_CANCEL, STR_NONE },
-        { WWT_BUTTON,          1, 10, 80, WH - 21, WH - 10, STR_OK, STR_NONE },
-        { WIDGETS_END }
+    { WWT_FRAME,     1,  0,        WW - 1,   0,        WH - 1,  STR_NONE,     STR_NONE },
+    { WWT_CAPTION,   1,  1,        WW - 2,   1,        14,      STR_OPTIONS,  STR_WINDOW_TITLE_TIP },
+    { WWT_CLOSEBOX,  1,  WW - 13,  WW - 3,   2,        13,      STR_CLOSE_X,  STR_CLOSE_WINDOW_TIP },
+    { WWT_BUTTON,    1,  WW - 80,  WW - 10,  WH - 22,  WH - 9,  STR_CANCEL,   STR_NONE },
+    { WWT_BUTTON,    1,  10,       80,       WH - 22,  WH - 9,  STR_OK,       STR_NONE },
+    { WIDGETS_END }
 };
 
 static void window_text_input_close(rct_window *w);
@@ -349,11 +349,11 @@ static void window_text_input_invalidate(rct_window* w)
         window_set_resize(w, WW, height, WW, height);
     }
 
-    window_text_input_widgets[WIDX_OKAY].top = height - 21;
-    window_text_input_widgets[WIDX_OKAY].bottom = height - 10;
+    window_text_input_widgets[WIDX_OKAY].top = height - 22;
+    window_text_input_widgets[WIDX_OKAY].bottom = height - 9;
 
-    window_text_input_widgets[WIDX_CANCEL].top = height - 21;
-    window_text_input_widgets[WIDX_CANCEL].bottom = height - 10;
+    window_text_input_widgets[WIDX_CANCEL].top = height - 22;
+    window_text_input_widgets[WIDX_CANCEL].bottom = height - 9;
 
     window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
 }
