@@ -42,11 +42,6 @@ namespace Platform
         }
     }
 
-    std::string GetDocsPath()
-    {
-        return GetBundlePath();
-    }
-
     static std::string GetBundlePath()
     {
         @autoreleasepool {
@@ -61,6 +56,11 @@ namespace Platform
             }
             return std::string();
         }
+    }
+
+    std::string GetDocsPath()
+    {
+        return GetBundlePath();
     }
 
     std::string GetInstallPath()
