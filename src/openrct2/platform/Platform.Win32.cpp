@@ -159,7 +159,7 @@ namespace Platform
 
     std::string GetDocsPath()
     {
-        return GetInstallPath();
+        return GetCurrentExecutablePath();
     }
 
     static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
