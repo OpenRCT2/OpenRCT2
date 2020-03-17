@@ -651,9 +651,20 @@ static void window_loadsave_compute_max_date_width()
 
     std::time_t long_time = mktime(&tm);
 
+    // Check how how this date is represented (e.g. 2000-02-20, or 00/02/20)
     std::string date = Platform::FormatShortDate(long_time);
     maxDateWidth = gfx_get_string_width(date.c_str());
 
+    // Some locales do not use leading zeros for months and days, so let's try October, too.
+    tm.tm_mon = 10;
+    tm.tm_yday = 294;
+    long_time = mktime(&tm);
+
+    // Again, check how how this date is represented (e.g. 2000-10-20, or 00/10/20)
+    date = Platform::FormatShortDate(long_time);
+    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str()));
+
+    // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be representable.
     std::string time = Platform::FormatTime(long_time);
     maxTimeWidth = gfx_get_string_width(time.c_str());
 }
