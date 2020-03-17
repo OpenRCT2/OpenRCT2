@@ -44,7 +44,7 @@ namespace Platform
 
     std::string GetDocsPath()
     {
-        return std::string();
+        return GetBundlePath();
     }
 
     static std::string GetBundlePath()
