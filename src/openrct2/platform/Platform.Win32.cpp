@@ -136,6 +136,13 @@ namespace Platform
         }
     }
 
+    static std::string GetCurrentExecutableDirectory()
+    {
+        auto exePath = GetCurrentExecutablePath();
+        auto exeDirectory = Path::GetDirectory(exePath);
+        return exeDirectory;
+    }
+
     std::string GetInstallPath()
     {
         auto path = std::string(gCustomOpenrctDataPath);
@@ -145,8 +152,7 @@ namespace Platform
         }
         else
         {
-            auto exePath = GetCurrentExecutablePath();
-            auto exeDirectory = Path::GetDirectory(exePath);
+            auto exeDirectory = GetCurrentExecutableDirectory();
             path = Path::Combine(exeDirectory, "data");
         }
         return path;
@@ -159,7 +165,7 @@ namespace Platform
 
     std::string GetDocsPath()
     {
-        return std::string();
+        return GetCurrentExecutableDirectory();
     }
 
     static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
