@@ -11,6 +11,7 @@
 - Change: [#1164] Use available translations for shortcut key bindings.
 - Fix: [#2485] Hide Vertical Faces not applied to the edges of water.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
+- Fix: [#6766] Changelog window doesn't open on some platforms.
 - Fix: [#7784] Vehicle tab takes 1st car colour instead of tab_vehicle's colour.
 - Fix: [#7854] Cannot build a custom spiral roller coaster design.
 - Fix: [#7854] Empty entries in spiral roller coaster designs list.
