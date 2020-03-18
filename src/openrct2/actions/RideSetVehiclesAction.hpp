@@ -17,6 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -247,11 +248,10 @@ private:
                     continue;
             }
 
-            uint8_t* rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
-            for (uint8_t* currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL;
-                 currentRideEntryIndex++)
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+            for (auto rideEntryIndex : rideEntries)
             {
-                uint8_t rideEntryIndex = *currentRideEntryIndex;
                 if (rideEntryIndex == _value)
                 {
                     if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)

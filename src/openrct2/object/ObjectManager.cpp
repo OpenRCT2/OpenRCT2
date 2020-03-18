@@ -19,6 +19,7 @@
 #include "Object.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
+#include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
 #include "WallObject.h"
@@ -35,6 +36,10 @@ class ObjectManager final : public IObjectManager
 private:
     IObjectRepository& _objectRepository;
     std::vector<Object*> _loadedObjects;
+    std::array<std::vector<uint16_t>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
+
+    // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
+    std::vector<uint16_t> _nullRideTypeEntries;
 
 public:
     explicit ObjectManager(IObjectRepository& objectRepository)
@@ -285,6 +290,16 @@ public:
             default:
                 return STR_OBJECT_FILTER_CUSTOM;
         }
+    }
+
+    const std::vector<uint16_t>& GetAllRideEntries(uint8_t rideType) override
+    {
+        if (rideType >= RIDE_TYPE_COUNT)
+        {
+            // Return an empty vector
+            return _nullRideTypeEntries;
+        }
+        return _rideTypeToObjectMap[rideType];
     }
 
 private:
@@ -642,7 +657,33 @@ private:
 
     void ResetTypeToRideEntryIndexMap()
     {
-        reset_type_to_ride_entry_index_map(*this);
+        // Clear all ride objects
+        for (auto& v : _rideTypeToObjectMap)
+        {
+            v.clear();
+        }
+
+        // Build object lists
+        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[OBJECT_TYPE_RIDE]);
+        for (size_t i = 0; i < maxRideObjects; i++)
+        {
+            auto rideObject = static_cast<RideObject*>(GetLoadedObject(OBJECT_TYPE_RIDE, i));
+            if (rideObject != nullptr)
+            {
+                const auto entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+                if (entry != nullptr)
+                {
+                    for (auto rideType : entry->ride_type)
+                    {
+                        if (rideType < _rideTypeToObjectMap.size())
+                        {
+                            auto& v = _rideTypeToObjectMap[rideType];
+                            v.push_back(static_cast<uint16_t>(i));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     static void ReportMissingObject(const rct_object_entry* entry)

@@ -73,7 +73,6 @@
 
 using namespace OpenRCT2;
 
-uint8_t gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 static constexpr const int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
@@ -242,64 +241,6 @@ std::string_view get_ride_entry_name(size_t index)
 rct_ride_entry* Ride::GetRideEntry() const
 {
     return get_ride_entry(subtype);
-}
-
-/**
- *
- *  rct2: 0x006DED68
- */
-void reset_type_to_ride_entry_index_map(IObjectManager& objectManager)
-{
-    size_t stride = MAX_RIDE_OBJECTS + 1;
-    uint8_t* entryTypeTable = (uint8_t*)malloc(RIDE_TYPE_COUNT * stride);
-    std::fill_n(entryTypeTable, RIDE_TYPE_COUNT * stride, 0xFF);
-
-    for (uint8_t i = 0; i < MAX_RIDE_OBJECTS; i++)
-    {
-        auto obj = objectManager.GetLoadedObject(OBJECT_TYPE_RIDE, i);
-        if (obj != nullptr)
-        {
-            for (uint8_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
-            {
-                auto rideEntry = (rct_ride_entry*)obj->GetLegacyData();
-                uint8_t rideType = rideEntry->ride_type[j];
-                if (rideType < RIDE_TYPE_COUNT)
-                {
-                    uint8_t* entryArray = &entryTypeTable[rideType * stride];
-                    uint8_t* nextEntry = (uint8_t*)memchr(entryArray, 0xFF, stride);
-                    *nextEntry = i;
-                }
-            }
-        }
-    }
-
-    uint8_t* dst = gTypeToRideEntryIndexMap;
-    for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
-    {
-        uint8_t* entryArray = &entryTypeTable[i * stride];
-        uint8_t* entry = entryArray;
-        while (*entry != 0xFF)
-        {
-            *dst++ = *entry++;
-        }
-        *dst++ = 0xFF;
-    }
-
-    free(entryTypeTable);
-}
-
-uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType)
-{
-    uint8_t* entryIndexList = gTypeToRideEntryIndexMap;
-    while (rideType > 0)
-    {
-        do
-        {
-            entryIndexList++;
-        } while (*(entryIndexList - 1) != RIDE_ENTRY_INDEX_NULL);
-        rideType--;
-    }
-    return entryIndexList;
 }
 
 int32_t ride_get_count()
@@ -7552,30 +7493,31 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
 
     if (subType == RIDE_ENTRY_INDEX_NULL)
     {
-        uint8_t* availableRideEntries = get_ride_entry_indices_for_ride_type(rideType);
-        for (uint8_t* rideEntryIndex = availableRideEntries; *rideEntryIndex != RIDE_ENTRY_INDEX_NULL; rideEntryIndex++)
+        auto& objManager = GetContext()->GetObjectManager();
+        auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        if (rideEntries.size() > 0)
         {
-            rct_ride_entry* rideEntry = get_ride_entry(*rideEntryIndex);
-            if (rideEntry == nullptr)
+            subType = rideEntries[0];
+            for (auto rideEntryIndex : rideEntries)
             {
-                return RIDE_ENTRY_INDEX_NULL;
-            }
+                auto rideEntry = get_ride_entry(rideEntryIndex);
+                if (rideEntry == nullptr)
+                {
+                    return RIDE_ENTRY_INDEX_NULL;
+                }
 
-            // Can happen in select-by-track-type mode
-            if (!ride_entry_is_invented(*rideEntryIndex) && !gCheatsIgnoreResearchStatus)
-            {
-                continue;
-            }
+                // Can happen in select-by-track-type mode
+                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                {
+                    continue;
+                }
 
-            if (!RideGroupManager::RideTypeIsIndependent(rideType))
-            {
-                subType = *rideEntryIndex;
-                break;
+                if (!RideGroupManager::RideTypeIsIndependent(rideType))
+                {
+                    subType = rideEntryIndex;
+                    break;
+                }
             }
-        }
-        if (subType == RIDE_ENTRY_INDEX_NULL)
-        {
-            subType = availableRideEntries[0];
         }
     }
 

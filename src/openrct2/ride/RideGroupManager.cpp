@@ -9,10 +9,12 @@
 
 #include "RideGroupManager.h"
 
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
+#include "../object/ObjectManager.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -169,23 +171,20 @@ bool RideGroup::IsInvented() const
     if (!ride_type_is_invented(this->RideType))
         return false;
 
-    uint8_t* rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(this->RideType);
-
-    while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& rideEntries = objManager.GetAllRideEntries(this->RideType);
+    for (auto rideEntryIndex : rideEntries)
     {
-        uint8_t rideEntryIndex = *rideEntryIndexPtr++;
-
-        if (!ride_entry_is_invented(rideEntryIndex))
-            continue;
-
-        rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
-        const RideGroup* rideEntryRideGroup = RideGroupManager::GetRideGroup(this->RideType, rideEntry);
-
-        if (!this->Equals(rideEntryRideGroup))
-            continue;
-
-        // The ride entry is invented and belongs to the same ride group. This means the ride group is invented.
-        return true;
+        if (ride_entry_is_invented(rideEntryIndex))
+        {
+            auto rideEntry = get_ride_entry(rideEntryIndex);
+            auto rideEntryRideGroup = RideGroupManager::GetRideGroup(this->RideType, rideEntry);
+            if (this->Equals(rideEntryRideGroup))
+            {
+                // The ride entry is invented and belongs to the same ride group. This means the ride group is invented.
+                return true;
+            }
+        }
     }
 
     return false;
