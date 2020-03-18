@@ -13,6 +13,7 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #    include "../common.h"
+#    include "../ride/Ride.h"
 
 struct CoordsXY;
 struct rct_drawpixelinfo;
@@ -44,6 +45,7 @@ enum LIGHTFX_LIGHT_QUALIFIER
 
 void lightfx_set_available(bool available);
 bool lightfx_is_available();
+bool lightfx_for_vehicles_is_available();
 
 void lightfx_init();
 
@@ -62,7 +64,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType);
 
-void lightfx_add_lights_magic_vehicles();
+void lightfx_add_lights_magic_vehicles(const Vehicle* vehicle, uint16_t spriteIndex);
 
 uint32_t lightfx_get_light_polution();
 

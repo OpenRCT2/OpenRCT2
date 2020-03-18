@@ -41,6 +41,7 @@ struct GeneralConfiguration
     int32_t virtual_floor_style;
     bool day_night_cycle;
     bool enable_light_fx;
+    bool enable_light_fx_for_vehicles;
     bool upper_case_banners;
     bool render_weather_effects;
     bool render_weather_gloom;
