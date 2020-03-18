@@ -674,30 +674,8 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType)
 {
-    int16_t x = mapPosition.x + offsetX;
-    int16_t y = mapPosition.y + offsetY;
-
-    switch (get_current_rotation())
-    {
-        case 0:
-            x += 16;
-            y += 16;
-            break;
-        case 1:
-            x += 16;
-            y += 16;
-            break;
-        case 2:
-            x += 16;
-            y -= 16;
-            break;
-        case 3:
-            x += 16;
-            y -= 16;
-            break;
-        default:
-            return;
-    }
+    int16_t x = mapPosition.x + offsetX + 16;
+    int16_t y = mapPosition.y + offsetY + 16;
 
     lightfx_add_3d_light((x << 16) | y, (offsetZ << 8) | LIGHTFX_LIGHT_QUALIFIER_MAP, x, y, offsetZ, lightType);
 }
