@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "../world/ScenerySelection.h"
 
 #include <functional>
 #include <limits>
@@ -243,7 +244,7 @@ struct ride_variables
 
 struct scenery_variables
 {
-    uint16_t selected_scenery_id;
+    ScenerySelection SelectedScenery;
     int16_t hover_counter;
 };
 

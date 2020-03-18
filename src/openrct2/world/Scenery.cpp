@@ -34,7 +34,7 @@
 uint8_t gSceneryQuadrant;
 
 money32 gSceneryPlaceCost;
-int16_t gSceneryPlaceObject;
+ScenerySelection gSceneryPlaceObject;
 int16_t gSceneryPlaceZ;
 uint8_t gSceneryPlaceRotation;
 
@@ -167,7 +167,8 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
 
-        auto removeSceneryAction = SmallSceneryRemoveAction(gSceneryGhostPosition, gSceneryQuadrant, gSceneryPlaceObject);
+        auto removeSceneryAction = SmallSceneryRemoveAction(
+            gSceneryGhostPosition, gSceneryQuadrant, gSceneryPlaceObject.EntryIndex);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
@@ -274,25 +275,6 @@ rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex)
         result = (rct_scenery_group_entry*)obj->GetLegacyData();
     }
     return result;
-}
-
-int32_t get_scenery_id_from_entry_index(uint8_t objectType, int32_t entryIndex)
-{
-    switch (objectType)
-    {
-        case OBJECT_TYPE_SMALL_SCENERY:
-            return entryIndex + SCENERY_SMALL_SCENERY_ID_MIN;
-        case OBJECT_TYPE_PATH_BITS:
-            return entryIndex + SCENERY_PATH_SCENERY_ID_MIN;
-        case OBJECT_TYPE_WALLS:
-            return entryIndex + SCENERY_WALLS_ID_MIN;
-        case OBJECT_TYPE_LARGE_SCENERY:
-            return entryIndex + SCENERY_LARGE_SCENERY_ID_MIN;
-        case OBJECT_TYPE_BANNERS:
-            return entryIndex + SCENERY_BANNERS_ID_MIN;
-        default:
-            return -1;
-    }
 }
 
 int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry)
