@@ -128,6 +128,11 @@ bool lightfx_is_available()
     return _lightfxAvailable && gConfigGeneral.enable_light_fx != 0;
 }
 
+bool lightfx_for_vehicles_is_available()
+{
+    return lightfx_is_available() && gConfigGeneral.enable_light_fx_for_vehicles != 0;
+}
+
 void lightfx_init()
 {
     _LightListBack = _LightListA;
@@ -713,20 +718,16 @@ uint32_t lightfx_get_light_polution()
     return _lightPolution_front;
 }
 
-void lightfx_add_lights_magic_vehicles()
+void lightfx_add_lights_magic_vehicles(const Vehicle* vehicle, uint16_t spriteIndex)
 {
-    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
-    while (spriteIndex != SPRITE_INDEX_NULL)
+    if (spriteIndex != SPRITE_INDEX_NULL)
     {
-        Vehicle* vehicle = &(get_sprite(spriteIndex)->vehicle);
         uint16_t vehicleID = spriteIndex;
-        spriteIndex = vehicle->next;
-
-        Vehicle* mother_vehicle = vehicle;
+        const Vehicle* mother_vehicle = vehicle;
 
         if (mother_vehicle->ride_subtype == RIDE_ENTRY_INDEX_NULL)
         {
-            continue;
+            return;
         }
 
         for (uint16_t q = vehicleID; q != SPRITE_INDEX_NULL;)

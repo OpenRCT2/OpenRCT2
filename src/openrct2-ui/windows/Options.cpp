@@ -105,6 +105,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_EFFECTS_GROUP,
     WIDX_DAY_NIGHT_CHECKBOX,
     WIDX_ENABLE_LIGHT_FX_CHECKBOX,
+    WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX,
     WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
     WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX,
 
@@ -259,11 +260,12 @@ static rct_widget window_options_rendering_widgets[] = {
     { WWT_BUTTON,           1,  288,    298,    FRAME_RENDERING_START + 91,     FRAME_RENDERING_START + 100,    STR_DROPDOWN_GLYPH,             STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
 #undef FRAME_RENDERING_START
 #define FRAME_EFFECTS_START 163
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_EFFECTS_START + 0,        FRAME_EFFECTS_START + 78,       STR_EFFECTS_GROUP,              STR_NONE },                             // Rendering group
+    { WWT_GROUPBOX,         1,  5,      304,    FRAME_EFFECTS_START + 0,        FRAME_EFFECTS_START + 93,       STR_EFFECTS_GROUP,              STR_NONE },                             // Rendering group
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 15,       FRAME_EFFECTS_START + 26,       STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 30,       FRAME_EFFECTS_START + 41,       STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 45,       FRAME_EFFECTS_START + 56,       STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
-    { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 60,       FRAME_EFFECTS_START + 71,       STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
+    { WWT_CHECKBOX,         1,  30,     290,    FRAME_EFFECTS_START + 45,       FRAME_EFFECTS_START + 56,       STR_ENABLE_LIGHTING_VEHICLES,   STR_ENABLE_LIGHTING_VEHICLES_TIP },     // Enable light fx for vehicles
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 60,       FRAME_EFFECTS_START + 71,       STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
+    { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 75,       FRAME_EFFECTS_START + 86,       STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
 #undef FRAME_EFFECTS_START
     { WIDGETS_END },
 };
@@ -546,6 +548,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_VIRTUAL_FLOOR_DROPDOWN) |
     (1 << WIDX_DAY_NIGHT_CHECKBOX) |
     (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
+    (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX) |
     (1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
     (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
 
@@ -746,6 +749,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
                 case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
                     gConfigGeneral.enable_light_fx ^= 1;
+                    config_save_default();
+                    w->Invalidate();
+                    break;
+                case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
+                    gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
                     config_save_default();
                     w->Invalidate();
                     break;
@@ -1768,6 +1776,18 @@ static void window_options_invalidate(rct_window* w)
             else
             {
                 w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+            }
+
+            widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+            if (gConfigGeneral.day_night_cycle
+                && gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY
+                && gConfigGeneral.enable_light_fx)
+            {
+                w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+            }
+            else
+            {
+                w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
             }
 
             widget_set_checkbox_value(
