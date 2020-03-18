@@ -679,7 +679,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
 <<<<<<< HEAD
 =======
 
-    //switch (get_current_rotation())
+    // switch (get_current_rotation())
     //{
     //    case 0:
     //        x += 16;
