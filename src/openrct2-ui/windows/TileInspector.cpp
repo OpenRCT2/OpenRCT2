@@ -1652,7 +1652,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->AsWall()->GetSlope()];
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
-            const uint8_t wallType = tileElement->AsWall()->GetEntryIndex();
+            const auto wallType = tileElement->AsWall()->GetEntryIndex();
             const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
             const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
             // Wall slope dropdown
@@ -1838,7 +1838,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Path addition
                 if (tileElement->AsPath()->HasAddition())
                 {
-                    const uint8_t pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
+                    const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
                     const auto* sceneryElement = get_footpath_item_entry(pathAdditionType);
                     rct_string_id additionNameId = sceneryElement != nullptr ? sceneryElement->name
                                                                              : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE;

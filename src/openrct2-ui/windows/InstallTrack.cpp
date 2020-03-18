@@ -272,7 +272,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     void* objectEntry = object_manager_load_object(&td6->vehicle_object);
     if (objectEntry != nullptr)
     {
-        int32_t groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
+        auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
         rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
         friendlyTrackName = rideName.name;
     }

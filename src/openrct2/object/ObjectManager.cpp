@@ -85,9 +85,9 @@ public:
         return loadedObject;
     }
 
-    uint8_t GetLoadedObjectEntryIndex(const Object* object) override
+    uint16_t GetLoadedObjectEntryIndex(const Object* object) override
     {
-        uint8_t result = UINT8_MAX;
+        uint16_t result = OBJECT_ENTRY_INDEX_NULL;
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
@@ -439,13 +439,13 @@ private:
         window_close_by_class(WC_SCENERY);
     }
 
-    uint8_t GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
+    uint16_t GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
     {
         auto sceneryObject = dynamic_cast<SceneryObject*>(loadedObject);
         const rct_object_entry* primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
-        uint8_t entryIndex = 255;
+        auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
         if (sgObject != nullptr)
         {
             entryIndex = GetLoadedObjectEntryIndex(sgObject);
@@ -690,11 +690,11 @@ void* object_manager_get_loaded_object(const rct_object_entry* entry)
     return (void*)loadedObject;
 }
 
-uint8_t object_manager_get_loaded_object_entry_index(const void* loadedObject)
+uint16_t object_manager_get_loaded_object_entry_index(const void* loadedObject)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object* object = static_cast<const Object*>(loadedObject);
-    uint8_t entryIndex = objectManager.GetLoadedObjectEntryIndex(object);
+    auto entryIndex = objectManager.GetLoadedObjectEntryIndex(object);
     return entryIndex;
 }
 

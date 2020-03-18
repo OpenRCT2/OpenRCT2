@@ -31,7 +31,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
     stream->Seek(5, STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.scenery_tab_id = 0xFF;
+    _legacyType.large_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
 

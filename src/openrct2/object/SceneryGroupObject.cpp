@@ -82,8 +82,8 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori->LoadedObject == nullptr)
             continue;
 
-        uint16_t entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
-        Guard::Assert(entryIndex != UINT8_MAX, GUARD_LINE);
+        auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
+        Guard::Assert(entryIndex != OBJECT_ENTRY_INDEX_NULL, GUARD_LINE);
 
         auto sceneryType = ori->ObjectEntry.GetSceneryType();
         if (sceneryType != std::nullopt)

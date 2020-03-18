@@ -17,6 +17,8 @@
 #include <string_view>
 #include <vector>
 
+constexpr const uint16_t OBJECT_ENTRY_INDEX_NULL = 255;
+
 // First 0xF of rct_object_entry->flags
 enum OBJECT_TYPE
 {
