@@ -677,7 +677,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
     int16_t x = mapPosition.x + offsetX + 16;
     int16_t y = mapPosition.y + offsetY + 16;
 
-    //switch (get_current_rotation())
+    // switch (get_current_rotation())
     //{
     //    case 0:
     //        x += 16;
