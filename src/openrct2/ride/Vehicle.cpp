@@ -4580,7 +4580,7 @@ static void vehicle_update_boat_location(Vehicle* vehicle)
 
     CoordsXY location = CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection];
 
-    if (location == returnPosition.ToCoordsXY())
+    if (location.ToTileStart() == returnPosition.ToCoordsXY())
     {
         vehicle->sub_state = 1;
         vehicle->BoatLocation = location;
