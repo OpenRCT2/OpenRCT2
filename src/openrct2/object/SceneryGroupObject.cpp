@@ -85,12 +85,10 @@ void SceneryGroupObject::UpdateEntryIndexes()
         uint16_t entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(entryIndex != UINT8_MAX, GUARD_LINE);
 
-        auto objectType = ori->ObjectEntry.GetType();
-        auto sceneryType = ObjectTypeToSceneryType[objectType];
-
-        if (sceneryType != -1)
+        auto sceneryType = ori->ObjectEntry.GetSceneryType();
+        if (sceneryType != std::nullopt)
         {
-            _legacyType.scenery_entries[_legacyType.entry_count] = { static_cast<uint8_t>(sceneryType), entryIndex };
+            _legacyType.scenery_entries[_legacyType.entry_count] = { *sceneryType, entryIndex };
             _legacyType.entry_count++;
         }
     }

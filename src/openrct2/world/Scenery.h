@@ -11,9 +11,8 @@
 #define _SCENERY_H_
 
 #include "../common.h"
-#include "../object/Object.h"
-#include "../object/ObjectLimits.h"
 #include "../world/Location.hpp"
+#include "../world/ScenerySelection.h"
 #include "TileElement.h"
 
 #include <limits>
@@ -218,24 +217,6 @@ enum
     SCENERY_TYPE_BANNER,
 
     SCENERY_TYPE_COUNT,
-};
-
-constexpr const int8_t ObjectTypeToSceneryType[OBJECT_TYPE_COUNT] = {
-    -1,                     // OBJECT_TYPE_RIDE,
-    SCENERY_TYPE_SMALL,     // OBJECT_TYPE_SMALL_SCENERY,
-    SCENERY_TYPE_LARGE,     // OBJECT_TYPE_LARGE_SCENERY,
-    SCENERY_TYPE_WALL,      // OBJECT_TYPE_WALLS,
-    SCENERY_TYPE_BANNER,    // OBJECT_TYPE_BANNERS,
-    -1,                     // OBJECT_TYPE_PATHS,
-    SCENERY_TYPE_PATH_ITEM, // OBJECT_TYPE_PATH_BITS,
-    -1,                     // OBJECT_TYPE_SCENERY_GROUP,
-    -1,                     // OBJECT_TYPE_PARK_ENTRANCE,
-    -1,                     // OBJECT_TYPE_WATER,
-    -1,                     // OBJECT_TYPE_SCENARIO_TEXT,
-    -1,                     // OBJECT_TYPE_TERRAIN_SURFACE,
-    -1,                     // OBJECT_TYPE_TERRAIN_EDGE,
-    -1,                     // OBJECT_TYPE_STATION,
-    -1,                     // OBJECT_TYPE_MUSIC,
 };
 
 enum

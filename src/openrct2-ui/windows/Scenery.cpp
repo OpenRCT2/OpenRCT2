@@ -31,6 +31,7 @@ constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 constexpr int32_t SCENERY_WINDOW_TABS = MAX_SCENERY_GROUP_OBJECTS + 1; // The + 1 is for the 'Miscellaneous' tab
+constexpr uint16_t SCENERY_ENTRIES_PER_TAB = 1024;
 
 // clang-format off
 enum {
@@ -191,24 +192,24 @@ static rct_widget window_scenery_widgets[] = {
 void window_scenery_update_scroll(rct_window* w);
 
 // rct2: 0x00F64F2C
-static ScenerySelection window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
+static ScenerySelection window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_PER_TAB + 1];
 
 /**
  * Was part of 0x006DFA00
  * The same code repeated five times for every scenery entry type
  */
-static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySelection& index, uint8_t sceneryTabId)
+static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySelection& selection, uint8_t sceneryTabId)
 {
-    Guard::ArgumentInRange<int32_t>(index.EntryIndex, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
-    if (scenery_is_invented(index) || gCheatsIgnoreResearchStatus)
+    Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
+    if (scenery_is_invented(selection) || gCheatsIgnoreResearchStatus)
     {
         if (sceneryTabId != 0xFF)
         {
-            for (int32_t i = 0; i < SCENERY_ENTRIES_BY_TAB; i++)
+            for (int32_t i = 0; i < SCENERY_ENTRIES_PER_TAB; i++)
             {
                 if (window_scenery_tab_entries[sceneryTabId][i].IsUndefined())
                 {
-                    window_scenery_tab_entries[sceneryTabId][i] = index;
+                    window_scenery_tab_entries[sceneryTabId][i] = selection;
                     window_scenery_tab_entries[sceneryTabId][i + 1].SetUndefined();
                     return;
                 }
@@ -221,7 +222,7 @@ static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySel
 
             while (!window_scenery_tab_entries[i][counter].IsUndefined())
             {
-                if (window_scenery_tab_entries[i][counter] == index)
+                if (window_scenery_tab_entries[i][counter] == selection)
                 {
                     return;
                 }
@@ -230,11 +231,11 @@ static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySel
             }
         }
 
-        for (int32_t i = 0; i < SCENERY_ENTRIES_BY_TAB; i++)
+        for (int32_t i = 0; i < SCENERY_ENTRIES_PER_TAB; i++)
         {
             if (window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i].IsUndefined())
             {
-                window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] = index;
+                window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] = selection;
                 window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i + 1].SetUndefined();
                 break;
             }
@@ -1357,7 +1358,7 @@ static int32_t window_scenery_find_tab_with_scenery(const ScenerySelection& scen
 {
     for (int32_t i = 0; i < SCENERY_WINDOW_TABS; i++)
     {
-        for (int32_t j = 0; j < SCENERY_ENTRIES_BY_TAB; j++)
+        for (int32_t j = 0; j < SCENERY_ENTRIES_PER_TAB; j++)
         {
             ScenerySelection entry = window_scenery_tab_entries[i][j];
             if (entry.IsUndefined())

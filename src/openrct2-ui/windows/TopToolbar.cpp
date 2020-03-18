@@ -1117,7 +1117,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         {
             SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
-            uint16_t entryIndex = sceneryElement->GetEntryIndex();
+            auto entryIndex = sceneryElement->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
@@ -1133,7 +1133,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
         {
-            uint16_t entryIndex = tileElement->AsWall()->GetEntryIndex();
+            auto entryIndex = tileElement->AsWall()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
@@ -1149,7 +1149,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         {
-            uint16_t entryIndex = tileElement->AsLargeScenery()->GetEntryIndex();
+            auto entryIndex = tileElement->AsLargeScenery()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
@@ -1181,7 +1181,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         {
-            uint16_t entryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
+            auto entryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
@@ -1206,8 +1206,8 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
  * edi : parameter_3
  */
 static void sub_6E1F34(
-    int16_t x, int16_t y, uint8_t sceneryType, uint16_t sceneryIndex, CoordsXY& gridPos, uint32_t* parameter_1,
-    uint32_t* parameter_2, uint32_t* parameter_3)
+    int16_t x, int16_t y, ScenerySelection selection, CoordsXY& gridPos, uint32_t* parameter_1, uint32_t* parameter_2,
+    uint32_t* parameter_3)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
@@ -1220,27 +1220,27 @@ static void sub_6E1F34(
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) << MAX_ZOOM_LEVEL;
     bool can_raise_item = false;
 
-    if (sceneryType == SCENERY_TYPE_SMALL)
+    if (selection.SceneryType == SCENERY_TYPE_SMALL)
     {
-        rct_scenery_entry* scenery_entry = get_small_scenery_entry(sceneryIndex);
+        rct_scenery_entry* scenery_entry = get_small_scenery_entry(selection.EntryIndex);
         maxPossibleHeight -= scenery_entry->small_scenery.height;
         if (scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_STACKABLE))
         {
             can_raise_item = true;
         }
     }
-    else if (sceneryType == SCENERY_TYPE_WALL)
+    else if (selection.SceneryType == SCENERY_TYPE_WALL)
     {
-        rct_scenery_entry* scenery_entry = get_wall_entry(sceneryIndex);
+        rct_scenery_entry* scenery_entry = get_wall_entry(selection.EntryIndex);
         if (scenery_entry)
         {
             maxPossibleHeight -= scenery_entry->wall.height;
         }
         can_raise_item = true;
     }
-    else if (sceneryType == SCENERY_TYPE_LARGE)
+    else if (selection.SceneryType == SCENERY_TYPE_LARGE)
     {
-        rct_scenery_entry* scenery_entry = get_large_scenery_entry(sceneryIndex);
+        rct_scenery_entry* scenery_entry = get_large_scenery_entry(selection.EntryIndex);
         if (scenery_entry)
         {
             int16_t maxClearZ = 0;
@@ -1325,12 +1325,12 @@ static void sub_6E1F34(
         }
     }
 
-    switch (sceneryType)
+    switch (selection.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
         {
             // Small scenery
-            rct_scenery_entry* scenery = get_small_scenery_entry(sceneryIndex);
+            rct_scenery_entry* scenery = get_small_scenery_entry(selection.EntryIndex);
             if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 uint8_t quadrant = 0;
@@ -1404,7 +1404,7 @@ static void sub_6E1F34(
                 rotation &= 0x3;
 
                 // Also places it in lower but think thats for clobbering
-                *parameter_1 = sceneryIndex << 8;
+                *parameter_1 = selection.EntryIndex << 8;
                 *parameter_2 = (quadrant ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
                 *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
 
@@ -1493,7 +1493,7 @@ static void sub_6E1F34(
             rotation &= 0x3;
 
             // Also places it in lower but think thats for clobbering
-            *parameter_1 = sceneryIndex << 8;
+            *parameter_1 = selection.EntryIndex << 8;
             *parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
             break;
@@ -1524,7 +1524,7 @@ static void sub_6E1F34(
             {
                 *parameter_2 |= LOCATION_NULL;
             }
-            *parameter_3 = sceneryIndex + 1;
+            *parameter_3 = selection.EntryIndex + 1;
             break;
         }
         case SCENERY_TYPE_WALL:
@@ -1591,7 +1591,7 @@ static void sub_6E1F34(
             _secondaryColour = gWindowScenerySecondaryColour;
             _tertiaryColour = gWindowSceneryTertiaryColour;
             // Also places it in lower but think thats for clobbering
-            *parameter_1 = sceneryIndex << 8;
+            *parameter_1 = selection.EntryIndex << 8;
             *parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = 0;
             break;
@@ -1664,7 +1664,7 @@ static void sub_6E1F34(
 
             *parameter_1 = (rotation << 8);
             *parameter_2 = gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8);
-            *parameter_3 = sceneryIndex;
+            *parameter_3 = selection.EntryIndex;
             break;
         }
         case SCENERY_TYPE_BANNER:
@@ -1701,7 +1701,7 @@ static void sub_6E1F34(
             z /= 2;
 
             // Also places it in lower but think thats for clobbering
-            *parameter_1 = sceneryIndex << 8;
+            *parameter_1 = selection.EntryIndex << 8;
             *parameter_2 = z | (rotation << 8);
             *parameter_3 = gWindowSceneryPrimaryColour;
             break;
@@ -1720,7 +1720,7 @@ static void sub_6E1F34_small_scenery(
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
     sub_6E1F34(
-        screenCoords.x, screenCoords.y, SCENERY_TYPE_SMALL, sceneryIndex, gridPos, &parameter1, &parameter2, &parameter3);
+        screenCoords.x, screenCoords.y, { SCENERY_TYPE_SMALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outQuadrant = parameter2 & 0xFF;
     *outPrimaryColour = (parameter2 >> 8) & 0xFF;
@@ -1731,7 +1731,8 @@ static void sub_6E1F34_path_item(const ScreenCoordsXY& screenCoords, uint16_t sc
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
     sub_6E1F34(
-        screenCoords.x, screenCoords.y, SCENERY_TYPE_PATH_ITEM, sceneryIndex, gridPos, &parameter1, &parameter2, &parameter3);
+        screenCoords.x, screenCoords.y, { SCENERY_TYPE_PATH_ITEM, sceneryIndex }, gridPos, &parameter1, &parameter2,
+        &parameter3);
 
     *outZ = (parameter2 & 0xFF) * COORDS_Z_STEP;
 }
@@ -1740,7 +1741,8 @@ static void sub_6E1F34_wall(
     const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour, uint8_t* outEdges)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(screenCoords.x, screenCoords.y, SCENERY_TYPE_WALL, sceneryIndex, gridPos, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(
+        screenCoords.x, screenCoords.y, { SCENERY_TYPE_WALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outPrimaryColour = (parameter2 >> 8) & 0xFF;
     *outEdges = parameter2 & 0xFF;
@@ -1752,7 +1754,7 @@ static void sub_6E1F34_large_scenery(
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
     sub_6E1F34(
-        screenCoords.x, screenCoords.y, SCENERY_TYPE_LARGE, sceneryIndex, gridPos, &parameter1, &parameter2, &parameter3);
+        screenCoords.x, screenCoords.y, { SCENERY_TYPE_LARGE, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outPrimaryColour = parameter2 & 0xFF;
     *outSecondaryColour = (parameter2 >> 8) & 0xFF;
@@ -1764,7 +1766,7 @@ static void sub_6E1F34_banner(
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
     sub_6E1F34(
-        screenCoords.x, screenCoords.y, SCENERY_TYPE_BANNER, sceneryIndex, gridPos, &parameter1, &parameter2, &parameter3);
+        screenCoords.x, screenCoords.y, { SCENERY_TYPE_BANNER, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outDirection = (parameter2 >> 8) & 0xFF;
     *outZ = (parameter2 & 0xFF) * COORDS_Z_PER_TINY_Z;
@@ -2721,20 +2723,20 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    ScenerySelection selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    ScenerySelection selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 
-    if (selectedTab.IsUndefined())
+    if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();
         return;
     }
 
-    uint8_t sceneryType = selectedTab.SceneryType;
-    uint16_t selectedScenery = selectedTab.EntryIndex;
+    uint8_t sceneryType = selection.SceneryType;
+    uint16_t selectedScenery = selection.EntryIndex;
     CoordsXY mapTile = {};
     uint32_t parameter1, parameter2, parameter3;
 
-    sub_6E1F34(x, y, sceneryType, selectedScenery, mapTile, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(x, y, selection, mapTile, &parameter1, &parameter2, &parameter3);
 
     if (mapTile.isNull())
     {

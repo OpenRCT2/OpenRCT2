@@ -242,8 +242,6 @@ struct ride_variables
     int32_t var_486;
 };
 
-#define SCENERY_ENTRIES_BY_TAB 1024
-
 struct scenery_variables
 {
     ScenerySelection SelectedScenery;
