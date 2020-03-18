@@ -1293,7 +1293,7 @@ static void editor_load_selected_objects()
                 {
                     // Defaults selected items to researched (if in-game)
                     uint8_t objectType = entry->GetType();
-                    uint8_t entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+                    auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == OBJECT_TYPE_RIDE)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);

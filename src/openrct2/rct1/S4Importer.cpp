@@ -77,15 +77,15 @@ public:
         return _entries;
     }
 
-    size_t GetOrAddEntry(const char* entryName)
+    uint16_t GetOrAddEntry(const char* entryName)
     {
-        size_t entryIndex = Collections::IndexOf(_entries, entryName, true);
+        auto entryIndex = Collections::IndexOf(_entries, entryName, true);
         if (entryIndex == SIZE_MAX)
         {
             entryIndex = _entries.size();
             _entries.push_back(entryName);
         }
-        return entryIndex;
+        return static_cast<uint16_t>(entryIndex);
     }
 
     void AddRange(std::initializer_list<const char*> initializerList)
@@ -117,18 +117,18 @@ private:
     EntryList _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
-    uint8_t _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
-    uint8_t _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
-    uint8_t _smallSceneryTypeToEntryMap[256]{};
-    uint8_t _largeSceneryTypeToEntryMap[256]{};
-    uint8_t _wallTypeToEntryMap[256]{};
-    uint8_t _pathTypeToEntryMap[24]{};
-    uint8_t _pathAdditionTypeToEntryMap[16]{};
-    uint8_t _sceneryThemeTypeToEntryMap[24]{};
+    uint16_t _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
+    uint16_t _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
+    uint16_t _smallSceneryTypeToEntryMap[256]{};
+    uint16_t _largeSceneryTypeToEntryMap[256]{};
+    uint16_t _wallTypeToEntryMap[256]{};
+    uint16_t _pathTypeToEntryMap[24]{};
+    uint16_t _pathAdditionTypeToEntryMap[16]{};
+    uint16_t _sceneryThemeTypeToEntryMap[24]{};
 
     // Research
-    uint8_t _researchRideEntryUsed[MAX_RIDE_OBJECTS]{};
-    uint8_t _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT]{};
+    uint16_t _researchRideEntryUsed[MAX_RIDE_OBJECTS]{};
+    uint16_t _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT]{};
 
     // Scenario repository - used for determining scenario name
     IScenarioRepository* _scenarioRepository = GetScenarioRepository();
@@ -353,14 +353,14 @@ private:
 
     void InitialiseEntryMaps()
     {
-        std::fill(std::begin(_rideTypeToRideEntryMap), std::end(_rideTypeToRideEntryMap), 255);
-        std::fill(std::begin(_vehicleTypeToRideEntryMap), std::end(_vehicleTypeToRideEntryMap), 255);
-        std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), 255);
-        std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), 255);
-        std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), 255);
-        std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), 255);
-        std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), 255);
-        std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), 255);
+        std::fill(std::begin(_rideTypeToRideEntryMap), std::end(_rideTypeToRideEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_vehicleTypeToRideEntryMap), std::end(_vehicleTypeToRideEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
     }
 
     /**
@@ -503,7 +503,7 @@ private:
     {
         for (int32_t sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
         {
-            if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == 255)
+            if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == OBJECT_ENTRY_INDEX_NULL)
                 continue;
 
             std::vector<const char*> objects = RCT1::GetSceneryObjects(sceneryTheme);
@@ -560,8 +560,8 @@ private:
             const char* entryName = RCT1::GetRideTypeObject(rideType);
             if (!String::Equals(entryName, "        "))
             {
-                size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
-                _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+                uint16_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+                _rideTypeToRideEntryMap[rideType] = entryIndex;
             }
         }
     }
@@ -574,8 +574,8 @@ private:
             const char* entryName = RCT1::GetVehicleObject(vehicleType);
             if (!String::Equals(entryName, "        "))
             {
-                size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
-                _vehicleTypeToRideEntryMap[vehicleType] = (uint8_t)entryIndex;
+                auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
+                _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
 
                 if (rideType != RIDE_TYPE_NULL)
                     AddEntryForRideType(rideType);
@@ -583,77 +583,77 @@ private:
         }
     }
 
-    void AddEntryForSmallScenery(uint8_t smallSceneryType)
+    void AddEntryForSmallScenery(uint16_t smallSceneryType)
     {
         assert(smallSceneryType < std::size(_smallSceneryTypeToEntryMap));
-        if (_smallSceneryTypeToEntryMap[smallSceneryType] == 255)
+        if (_smallSceneryTypeToEntryMap[smallSceneryType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
-            size_t entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
+            auto entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
 
-            _smallSceneryTypeToEntryMap[smallSceneryType] = (uint8_t)entryIndex;
+            _smallSceneryTypeToEntryMap[smallSceneryType] = entryIndex;
         }
     }
 
-    void AddEntryForLargeScenery(uint8_t largeSceneryType)
+    void AddEntryForLargeScenery(uint16_t largeSceneryType)
     {
         assert(largeSceneryType < std::size(_largeSceneryTypeToEntryMap));
-        if (_largeSceneryTypeToEntryMap[largeSceneryType] == 255)
+        if (_largeSceneryTypeToEntryMap[largeSceneryType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
-            size_t entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
+            auto entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
 
-            _largeSceneryTypeToEntryMap[largeSceneryType] = (uint8_t)entryIndex;
+            _largeSceneryTypeToEntryMap[largeSceneryType] = entryIndex;
         }
     }
 
-    void AddEntryForWall(uint8_t wallType)
+    void AddEntryForWall(uint16_t wallType)
     {
         assert(wallType < std::size(_wallTypeToEntryMap));
-        if (_wallTypeToEntryMap[wallType] == 255)
+        if (_wallTypeToEntryMap[wallType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetWallObject(wallType);
-            size_t entryIndex = _wallEntries.GetOrAddEntry(entryName);
+            auto entryIndex = _wallEntries.GetOrAddEntry(entryName);
 
-            _wallTypeToEntryMap[wallType] = (uint8_t)entryIndex;
+            _wallTypeToEntryMap[wallType] = entryIndex;
         }
     }
 
-    void AddEntryForPath(uint8_t pathType)
+    void AddEntryForPath(uint16_t pathType)
     {
         assert(pathType < std::size(_pathTypeToEntryMap));
-        if (_pathTypeToEntryMap[pathType] == 255)
+        if (_pathTypeToEntryMap[pathType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetPathObject(pathType);
             if (!String::Equals(entryName, "        "))
             {
-                size_t entryIndex = _pathEntries.GetOrAddEntry(entryName);
-                _pathTypeToEntryMap[pathType] = (uint8_t)entryIndex;
+                auto entryIndex = _pathEntries.GetOrAddEntry(entryName);
+                _pathTypeToEntryMap[pathType] = entryIndex;
             }
         }
     }
 
-    void AddEntryForPathAddition(uint8_t pathAdditionType)
+    void AddEntryForPathAddition(uint16_t pathAdditionType)
     {
         if (pathAdditionType == RCT1_PATH_ADDITION_NONE)
             return;
 
-        if (_pathAdditionTypeToEntryMap[pathAdditionType] == 255)
+        if (_pathAdditionTypeToEntryMap[pathAdditionType] == OBJECT_ENTRY_INDEX_NULL)
         {
             uint8_t normalisedPathAdditionType = RCT1::NormalisePathAddition(pathAdditionType);
-            if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == 255)
+            if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == OBJECT_ENTRY_INDEX_NULL)
             {
                 const char* entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
-                size_t entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
+                auto entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
 
-                _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = (uint8_t)entryIndex;
+                _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = entryIndex;
             }
 
             _pathAdditionTypeToEntryMap[pathAdditionType] = _pathAdditionTypeToEntryMap[normalisedPathAdditionType];
         }
     }
 
-    void AddEntriesForSceneryTheme(uint8_t sceneryThemeType)
+    void AddEntriesForSceneryTheme(uint16_t sceneryThemeType)
     {
         if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL || sceneryThemeType == RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
             || sceneryThemeType == RCT1_SCENERY_THEME_GARDEN_CLOCK)
@@ -670,8 +670,8 @@ private:
             }
             else
             {
-                size_t entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
-                _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8_t)entryIndex;
+                auto entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
+                _sceneryThemeTypeToEntryMap[sceneryThemeType] = entryIndex;
             }
         }
     }
@@ -2127,7 +2127,7 @@ private:
                 auto dst2 = dst->AsSmallScenery();
                 auto src2 = src->AsSmallScenery();
 
-                uint8_t entryIndex = _smallSceneryTypeToEntryMap[src2->GetEntryIndex()];
+                auto entryIndex = _smallSceneryTypeToEntryMap[src2->GetEntryIndex()];
                 dst2->SetEntryIndex(entryIndex);
                 dst2->SetAge(src2->GetAge());
                 dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
@@ -2165,12 +2165,12 @@ private:
 
                 if (src2->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
-                    uint8_t pathType = src2->GetPathType();
+                    auto pathType = src2->GetPathType();
                     if (pathType == 0)
                     {
                         pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                     }
-                    uint8_t entryIndex = _pathTypeToEntryMap[pathType];
+                    auto entryIndex = _pathTypeToEntryMap[pathType];
                     dst2->SetPathType(entryIndex & 0x7F);
                 }
 
@@ -2193,7 +2193,7 @@ private:
                 auto dst2 = dst->AsLargeScenery();
                 auto src2 = src->AsLargeScenery();
 
-                uint8_t type = src2->GetEntryIndex();
+                auto type = src2->GetEntryIndex();
                 dst2->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
@@ -2206,7 +2206,7 @@ private:
                 auto dst2 = dst->AsBanner();
                 auto src2 = src->AsBanner();
 
-                uint8_t index = src2->GetIndex();
+                auto index = src2->GetIndex();
                 if (index != RCT12_BANNER_INDEX_NULL)
                     dst2->SetIndex(index);
                 else
@@ -2273,8 +2273,8 @@ private:
                 case RCT1_RESEARCH_TYPE_THEME:
                 {
                     uint8_t rct1SceneryTheme = researchItem->item;
-                    uint8_t sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
-                    if (sceneryGroupEntryIndex != 254 && sceneryGroupEntryIndex != 255)
+                    auto sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
+                    if (sceneryGroupEntryIndex != 254 && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                     {
                         research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
                     }
@@ -2458,7 +2458,7 @@ private:
     void InsertResearchVehicle(const rct1_research_item* researchItem, bool researched)
     {
         uint8_t vehicle = researchItem->item;
-        uint8_t rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
+        auto rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
 
         if (!_researchRideEntryUsed[rideEntryIndex])
         {
@@ -2580,7 +2580,7 @@ private:
         dst->rawValue = RESEARCH_ITEM_NULL;
         if (srcType == RCT1_RESEARCH_TYPE_RIDE)
         {
-            uint8_t entryIndex = _rideTypeToRideEntryMap[srcItem];
+            auto entryIndex = _rideTypeToRideEntryMap[srcItem];
 
             if (entryIndex != RIDE_ENTRY_INDEX_NULL)
             {
@@ -2598,7 +2598,7 @@ private:
         }
         else if (srcType == RCT1_RESEARCH_TYPE_VEHICLE)
         {
-            uint8_t entryIndex = _vehicleTypeToRideEntryMap[srcItem];
+            auto entryIndex = _vehicleTypeToRideEntryMap[srcItem];
 
             if (entryIndex != RIDE_ENTRY_INDEX_NULL)
             {
@@ -2616,9 +2616,9 @@ private:
         }
         else if (srcType == RCT1_RESEARCH_TYPE_THEME)
         {
-            uint8_t entryIndex = _sceneryThemeTypeToEntryMap[srcItem];
+            auto entryIndex = _sceneryThemeTypeToEntryMap[srcItem];
 
-            if (entryIndex != 254 && entryIndex != 255)
+            if (entryIndex != 254 && entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 dst->entryIndex = entryIndex;
                 dst->type = RESEARCH_ENTRY_TYPE_SCENERY;

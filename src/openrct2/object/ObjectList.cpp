@@ -116,7 +116,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_ty
     return false;
 }
 
-void get_type_entry_index(size_t index, uint8_t* outObjectType, uint8_t* outEntryIndex)
+void get_type_entry_index(size_t index, uint8_t* outObjectType, uint16_t* outEntryIndex)
 {
     uint8_t objectType = OBJECT_TYPE_RIDE;
     for (size_t groupCount : object_entry_group_counts)
@@ -140,7 +140,8 @@ void get_type_entry_index(size_t index, uint8_t* outObjectType, uint8_t* outEntr
 
 const rct_object_entry* get_loaded_object_entry(size_t index)
 {
-    uint8_t objectType, entryIndex;
+    uint8_t objectType;
+    uint16_t entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
     return object_entry_get_entry(objectType, entryIndex);
@@ -148,7 +149,8 @@ const rct_object_entry* get_loaded_object_entry(size_t index)
 
 void* get_loaded_object_chunk(size_t index)
 {
-    uint8_t objectType, entryIndex;
+    uint8_t objectType;
+    uint16_t entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
     return object_entry_get_chunk(objectType, entryIndex);
 }

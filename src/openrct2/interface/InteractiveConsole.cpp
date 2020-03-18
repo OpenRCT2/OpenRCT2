@@ -1076,7 +1076,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             console.WriteLineError("Unable to load object.");
             return 1;
         }
-        uint32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
         uint8_t objectType = entry->GetType();
         if (objectType == OBJECT_TYPE_RIDE)
