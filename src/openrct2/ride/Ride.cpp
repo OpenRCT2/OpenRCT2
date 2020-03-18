@@ -1094,10 +1094,10 @@ void ride_remove_peeps(Ride* ride)
         auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
         if (!location.isNull())
         {
+            auto direction = direction_reverse(location.direction);
             exitPosition = location;
-            exitPosition.x += (DirectionOffsets[exitPosition.direction].x * 20);
-            exitPosition.y += (DirectionOffsets[exitPosition.direction].y * 20);
-            exitPosition = exitPosition.ToTileCentre();
+            exitPosition.x += (DirectionOffsets[direction].x * 20) + (COORDS_XY_STEP / 2);
+            exitPosition.y += (DirectionOffsets[direction].y * 20) + (COORDS_XY_STEP / 2);
             exitPosition.z += 2;
 
             // Reverse direction
