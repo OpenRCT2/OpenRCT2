@@ -679,6 +679,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
     // switch (get_current_rotation())
     //{
     //    case 0:
@@ -702,6 +703,8 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
     //}
 >>>>>>> Update LightFX.cpp
 
+=======
+>>>>>>> Update LightFX.cpp
     lightfx_add_3d_light((x << 16) | y, (offsetZ << 8) | LIGHTFX_LIGHT_QUALIFIER_MAP, x, y, offsetZ, lightType);
 }
 
