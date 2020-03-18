@@ -560,7 +560,7 @@ private:
             const char* entryName = RCT1::GetRideTypeObject(rideType);
             if (!String::Equals(entryName, "        "))
             {
-                uint16_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+                auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                 _rideTypeToRideEntryMap[rideType] = entryIndex;
             }
         }
