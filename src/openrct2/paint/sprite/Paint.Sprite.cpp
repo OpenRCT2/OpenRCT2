@@ -10,6 +10,7 @@
 #include "Paint.Sprite.h"
 
 #include "../../drawing/Drawing.h"
+#include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../peep/Staff.h"
 #include "../../ride/RideData.h"
@@ -17,8 +18,6 @@
 #include "../../ride/VehiclePaint.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
-
-#include <openrct2/drawing/LightFX.h>
 
 /**
  * Paint Quadrant
