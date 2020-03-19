@@ -69,8 +69,8 @@ jobs:
         run: |
           sudo su
           mkdir bin && cd bin
-          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DFORCE32=on -DBUILD_SHARED_LIBS=ON
-          ninja -v
+          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DFORCE32=on -DBUILD_SHARED_LIBS=ON
+          ninja -k0
   macos:
     name: macOS
     runs-on: macos-latest
