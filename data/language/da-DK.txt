@@ -3697,6 +3697,10 @@ STR_6352    :Tæthed
 STR_6353    :{SMALLFONT}{BLACK}Lav tæthed
 STR_6354    :{SMALLFONT}{BLACK}Mellem tæthed
 STR_6355    :{SMALLFONT}{BLACK}Høj tæthed
+STR_6356    :{SMALLFONT}{BLACK}Generer ænder hvis parken indeholder vand
+STR_6357    :{SMALLFONT}{BLACK}Fjern alle ænder fra kortet
+STR_6358    :Side {UINT16}
+STR_6359    :{POP16}{POP16}Side {UINT16}
 
 #############
 # Scenarios #
