@@ -61,7 +61,7 @@ jobs:
     name: Windows (win32) using mingw
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2-build:0.2.4-mingw
+      image: janisozaur/openrct2:mingw-arch
     steps:
       - name: Checkout
         uses: actions/checkout@v2
