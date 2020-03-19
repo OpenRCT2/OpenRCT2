@@ -681,35 +681,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
 {
     int16_t x = mapPosition.x + offsetX + 16;
     int16_t y = mapPosition.y + offsetY + 16;
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
-    // switch (get_current_rotation())
-    //{
-    //    case 0:
-    //        x += 16;
-    //        y += 16;
-    //        break;
-    //    case 1:
-    //        x += 16;
-    //        y += 16;
-    //        break;
-    //    case 2:
-    //        x += 16;
-    //        y -= 16;
-    //        break;
-    //    case 3:
-    //        x += 16;
-    //        y -= 16;
-    //        break;
-    //    default:
-    //        return;
-    //}
->>>>>>> Update LightFX.cpp
-
-=======
->>>>>>> Update LightFX.cpp
     lightfx_add_3d_light((x << 16) | y, (offsetZ << 8) | LIGHTFX_LIGHT_QUALIFIER_MAP, x, y, offsetZ, lightType);
 }
 
