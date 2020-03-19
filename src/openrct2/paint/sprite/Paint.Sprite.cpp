@@ -17,6 +17,7 @@
 #include "../../ride/VehiclePaint.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
+
 #include <openrct2\drawing\LightFX.h>
 
 /**
@@ -112,12 +113,12 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         {
             case SPRITE_IDENTIFIER_VEHICLE:
                 vehicle_paint(session, (Vehicle*)spr, image_direction);
-                #ifdef __ENABLE_LIGHTFX__
-                                if (lightfx_for_vehicles_is_available())
-                                {
-                                    lightfx_add_lights_magic_vehicles((Vehicle*)spr, sprite_idx);
-                                }
-                #endif
+#ifdef __ENABLE_LIGHTFX__
+                if (lightfx_for_vehicles_is_available())
+                {
+                    lightfx_add_lights_magic_vehicles((Vehicle*)spr, sprite_idx);
+                }
+#endif
                 break;
             case SPRITE_IDENTIFIER_PEEP:
                 peep_paint(session, (Peep*)spr, image_direction);
