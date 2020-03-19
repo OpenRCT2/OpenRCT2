@@ -64,7 +64,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType);
 
-void lightfx_add_lights_magic_vehicles(const Vehicle* vehicle, uint16_t spriteIndex);
+void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle);
 
 uint32_t lightfx_get_light_polution();
 
