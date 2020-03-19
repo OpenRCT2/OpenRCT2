@@ -12,31 +12,28 @@ RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring \
     && pacman -Syyu --noconfirm --noprogressbar \
     && (echo -e "y\ny\n" | pacman -Scc)
 
-# Install yaourt
-RUN echo "[archlinuxfr]" >> /etc/pacman.conf && \
-    echo "SigLevel = Never" >> /etc/pacman.conf && \
-    echo "Server = http://repo.archlinux.fr/x86_64" >> /etc/pacman.conf &&\
-    pacman -Sy
-
 # Add some useful packages to the base system
-RUN pacman -S --noconfirm --noprogressbar \
+RUN pacman -S --needed --noconfirm --noprogressbar \
         make \
         git \
         sudo \
         wget \
-        yaourt \
+        base-devel \
         awk \
         sudo \
         fakeroot \
         file \
         patch \
         ninja \
+        python \
+        pyalpm \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Add mingw-repo
-RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
+RUN    echo "[ownstuff]" >> /etc/pacman.conf \
     && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
-    && echo "Server = http://downloads.sourceforge.net/project/mingw-w64-archlinux/\$arch" >> /etc/pacman.conf \
+    && echo "Server = https://ftp.f3l.de/~martchus/\$repo/os/\$arch" >> /etc/pacman.conf \
+    && echo "Server = https://martchus.no-ip.biz/repo/arch/\$repo/os/\$arch" >> /etc/pacman.conf \
     && pacman -Sy
 
 # Install MingW packages
@@ -65,13 +62,17 @@ RUN useradd --create-home --comment "Arch Build User" build && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers; \
     echo 'Defaults:nobody !requiretty' >> /etc/sudoers; \
     gpasswd -a build sudo
+
 USER build
 WORKDIR /tmp
 # Overrides from arch-base
 ENV HOME /home/build
 
-RUN yaourt -S --noconfirm --noprogressbar \
+# Install pikaur
+RUN git clone https://aur.archlinux.org/pikaur.git && cd pikaur && makepkg -frs && sudo pacman -U --noconfirm pikaur*xz && cd ../ && rm -rf pikaur
+
+RUN pikaur -S --noconfirm --noprogressbar \
         mingw-w64-jansson \
-        aur/mingw-w64-libzip \
-        aur/mingw-w64-speexdsp \
+        mingw-w64-libzip \
+        mingw-w64-speexdsp \
     && (echo -e "y\ny\n" | sudo pacman -Scc)
