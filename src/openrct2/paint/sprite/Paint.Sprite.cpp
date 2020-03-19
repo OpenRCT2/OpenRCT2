@@ -18,7 +18,7 @@
 #include "../../world/Sprite.h"
 #include "../Paint.h"
 
-#include <openrct2\drawing\LightFX.h>
+#include <openrct2/drawing/LightFX.h>
 
 /**
  * Paint Quadrant
