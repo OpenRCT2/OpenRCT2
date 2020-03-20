@@ -22,8 +22,8 @@ constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
 constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
-int32_t gAppropriateImageDropdownItemsPerRow[] = {
-    1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 0,
+static int32_t _appropriateImageDropdownItemsPerRow[34] = {
+    1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 8,
 };
 
 enum
@@ -45,8 +45,8 @@ static bool _dropdown_list_vertically;
 int32_t gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
 int64_t gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
-static bool _dropdownItemsChecked[DROPDOWN_ITEMS_MAX_SIZE];
-static bool _dropdownItemsDisabled[DROPDOWN_ITEMS_MAX_SIZE];
+static std::bitset<DROPDOWN_ITEMS_MAX_SIZE> _dropdownItemsChecked = {};
+static std::bitset<DROPDOWN_ITEMS_MAX_SIZE> _dropdownItemsDisabled = {};
 bool gDropdownIsColour;
 int32_t gDropdownLastColourHover;
 int32_t gDropdownHighlightedIndex;
@@ -217,8 +217,8 @@ void window_dropdown_show_text_custom_width(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    std::fill_n(_dropdownItemsDisabled, sizeof(_dropdownItemsDisabled), false);
-    std::fill_n(_dropdownItemsChecked, sizeof(_dropdownItemsChecked), false);
+    _dropdownItemsDisabled.reset();
+    _dropdownItemsChecked.reset();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -297,8 +297,8 @@ void window_dropdown_show_image(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    std::fill_n(_dropdownItemsDisabled, sizeof(_dropdownItemsDisabled), false);
-    std::fill_n(_dropdownItemsChecked, sizeof(_dropdownItemsChecked), false);
+    _dropdownItemsDisabled.reset();
+    _dropdownItemsChecked.reset();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -457,9 +457,14 @@ void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t drop
     // Show dropdown
     window_dropdown_show_image(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, dropdownColour,
-        DROPDOWN_FLAG_STAY_OPEN, COLOUR_COUNT, 12, 12, gAppropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        DROPDOWN_FLAG_STAY_OPEN, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
     gDropdownDefaultIndex = defaultIndex;
+}
+
+uint32_t dropdown_get_appropriate_image_dropdown_items_per_row(uint32_t numItems)
+{
+    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
 }
