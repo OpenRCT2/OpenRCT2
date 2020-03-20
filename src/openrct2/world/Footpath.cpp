@@ -1741,16 +1741,6 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
 
         uint8_t pathConnections = 0;
 
-        // Default Order: N_SE (initialGroupTile_primaryGroupDirection)
-        // N_SE = 0
-        // N_SW = 1
-        // W_NE = 2
-        // W_SE = 3
-        // S_NE = 4
-        // S_NW = 5
-        // E_SW = 6
-        // E_NW = 7
-
         static const uint8_t relativeDirections[][8] = { { 2, 1, 0, 3, 7, 6, 5, 4 }, { 1, 2, 3, 0, 7, 4, 5, 6 },
                                                          { 3, 2, 1, 0, 4, 7, 6, 5 }, { 2, 3, 0, 1, 4, 5, 6, 7 },
                                                          { 0, 3, 2, 1, 5, 4, 7, 6 }, { 3, 0, 1, 2, 5, 6, 7, 4 },
@@ -1771,20 +1761,16 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         const uint8_t wideGroupFirstTileCardinal = relativeDirections[wideGroup][WIDE_GROUP_FIRST_TILE_CARDINAL];
         const uint8_t wideGroupFirstLoopEndCardinal = relativeDirections[wideGroup][WIDE_GROUP_FIRST_LOOP_END_CARDIAL];
         const uint8_t wideGroupFinalTileCardinal = relativeDirections[wideGroup][WIDE_GROUP_FINAL_TILE_CARDINAL];
-        const uint8_t wideGroupFinalLoopStartCardinal = relativeDirections[wideGroup]
-                                                                          [WIDE_GROUP_FINAL_LOOP_START_CARDINAL];
+        const uint8_t wideGroupFinalLoopStartCardinal = relativeDirections[wideGroup][WIDE_GROUP_FINAL_LOOP_START_CARDINAL];
 
         const uint8_t wideGroupPrimaryDirectionConnection = relativeConnections[wideGroup][WIDE_GROUP_PRIMARY_DIRECTION];
-        const uint8_t wideGroupSecondaryDirectionConnection = relativeConnections[wideGroup]
-                                                                                 [WIDE_GROUP_SECONDARY_DIRECTION];
+        const uint8_t wideGroupSecondaryDirectionConnection = relativeConnections[wideGroup][WIDE_GROUP_SECONDARY_DIRECTION];
         const uint8_t wideGroupPrimaryReverseConnection = relativeConnections[wideGroup][WIDE_GROUP_PRIMARY_REVERSE];
         const uint8_t wideGroupSecondaryReverseConnection = relativeConnections[wideGroup][WIDE_GROUP_SECONDARY_REVERSE];
-        const uint8_t wideGroupFirstTileCardinalConnection = relativeConnections[wideGroup]
-                                                                                [WIDE_GROUP_FIRST_TILE_CARDINAL];
+        const uint8_t wideGroupFirstTileCardinalConnection = relativeConnections[wideGroup][WIDE_GROUP_FIRST_TILE_CARDINAL];
         const uint8_t wideGroupFirstLoopEndCardinalConnection = relativeConnections[wideGroup]
                                                                                    [WIDE_GROUP_FIRST_LOOP_END_CARDIAL];
-        const uint8_t wideGroupFinalTileCardinalConnection = relativeConnections[wideGroup]
-                                                                                [WIDE_GROUP_FINAL_TILE_CARDINAL];
+        const uint8_t wideGroupFinalTileCardinalConnection = relativeConnections[wideGroup][WIDE_GROUP_FINAL_TILE_CARDINAL];
         const uint8_t wideGroupFinalLoopStartCardinalConnection = relativeConnections[wideGroup]
                                                                                      [WIDE_GROUP_FINAL_LOOP_START_CARDINAL];
 
