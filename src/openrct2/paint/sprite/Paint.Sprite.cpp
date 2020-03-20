@@ -115,7 +115,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
                 {
-                    lightfx_add_lights_magic_vehicle(reinterpret_cast<Vehicle*>((const_cast<rct_sprite*>(spr))));
+                    lightfx_add_lights_magic_vehicle(reinterpret_cast<Vehicle*>(const_cast<rct_sprite*>(spr)));
                 }
 #endif
                 break;
