@@ -10,6 +10,7 @@
 #include "Paint.Sprite.h"
 
 #include "../../drawing/Drawing.h"
+#include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../peep/Staff.h"
 #include "../../ride/RideData.h"
@@ -111,6 +112,12 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         {
             case SPRITE_IDENTIFIER_VEHICLE:
                 vehicle_paint(session, (Vehicle*)spr, image_direction);
+#ifdef __ENABLE_LIGHTFX__
+                if (lightfx_for_vehicles_is_available())
+                {
+                    lightfx_add_lights_magic_vehicle(reinterpret_cast<Vehicle*>(const_cast<rct_sprite*>(spr)));
+                }
+#endif
                 break;
             case SPRITE_IDENTIFIER_PEEP:
                 peep_paint(session, (Peep*)spr, image_direction);
