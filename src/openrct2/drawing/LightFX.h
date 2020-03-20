@@ -13,9 +13,9 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #    include "../common.h"
-#    include "../ride/Ride.h"
 
 struct CoordsXY;
+struct Vehicle;
 struct rct_drawpixelinfo;
 struct rct_palette;
 
