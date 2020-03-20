@@ -89,7 +89,7 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * bl = entry_index
  * ecx = entry_type
  */
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index)
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex)
 {
     int32_t objectType = entry->GetType();
     if (objectType >= OBJECT_TYPE_COUNT)
@@ -108,7 +108,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_ty
             if (object_entry_compare(thisEntry, entry))
             {
                 *entry_type = objectType;
-                *entry_index = i;
+                *entryIndex = i;
                 return true;
             }
         }
@@ -116,7 +116,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_ty
     return false;
 }
 
-void get_type_entry_index(size_t index, uint8_t* outObjectType, uint16_t* outEntryIndex)
+void get_type_entry_index(size_t index, uint8_t* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
     uint8_t objectType = OBJECT_TYPE_RIDE;
     for (size_t groupCount : object_entry_group_counts)
@@ -135,13 +135,13 @@ void get_type_entry_index(size_t index, uint8_t* outObjectType, uint16_t* outEnt
     if (outObjectType != nullptr)
         *outObjectType = objectType;
     if (outEntryIndex != nullptr)
-        *outEntryIndex = (uint8_t)index;
+        *outEntryIndex = static_cast<ObjectEntryIndex>(index);
 }
 
 const rct_object_entry* get_loaded_object_entry(size_t index)
 {
     uint8_t objectType;
-    uint16_t entryIndex;
+    ObjectEntryIndex entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
     return object_entry_get_entry(objectType, entryIndex);
@@ -150,7 +150,7 @@ const rct_object_entry* get_loaded_object_entry(size_t index)
 void* get_loaded_object_chunk(size_t index)
 {
     uint8_t objectType;
-    uint16_t entryIndex;
+    ObjectEntryIndex entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
     return object_entry_get_chunk(objectType, entryIndex);
 }
