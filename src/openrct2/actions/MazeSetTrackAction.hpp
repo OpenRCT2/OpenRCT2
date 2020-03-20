@@ -86,7 +86,7 @@ public:
             res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
-        if ((_loc.z & 0xF) != 0)
+        if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
         {
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
