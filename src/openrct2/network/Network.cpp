@@ -2726,7 +2726,7 @@ bool Network::LoadMap(IStream* stream)
         [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
 
         // Read other data not in normal save files
-        stream->Read(gSpriteSpatialIndex, 0x10001 * sizeof(uint16_t));
+        stream->Read(gSpriteSpatialIndex, SPATIAL_INDEX_SIZE * sizeof(uint16_t));
         gGamePaused = stream->ReadValue<uint32_t>();
         _guestGenerationProbability = stream->ReadValue<uint32_t>();
         _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
@@ -2775,7 +2775,7 @@ bool Network::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryI
         s6exporter->SaveGame(stream);
 
         // Write other data not in normal save files
-        stream->Write(gSpriteSpatialIndex, 0x10001 * sizeof(uint16_t));
+        stream->Write(gSpriteSpatialIndex, SPATIAL_INDEX_SIZE * sizeof(uint16_t));
         stream->WriteValue<uint32_t>(gGamePaused);
         stream->WriteValue<uint32_t>(_guestGenerationProbability);
         stream->WriteValue<uint32_t>(_suggestedGuestMaximum);

@@ -31,9 +31,7 @@ static rct_sprite _spriteList[MAX_SPRITES];
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
-#define SPATIAL_INDEX_LOCATION_NULL 0x10000
-
-uint16_t gSpriteSpatialIndex[0x10001];
+uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_LITTER_VOMIT,
@@ -202,7 +200,7 @@ void reset_sprite_spatial_index()
         if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
             size_t index = GetSpatialIndexOffset(spr->generic.x, spr->generic.y);
-            uint16_t nextSpriteId = gSpriteSpatialIndex[index];
+            uint32_t nextSpriteId = gSpriteSpatialIndex[index];
             gSpriteSpatialIndex[index] = spr->generic.sprite_index;
             spr->generic.next_in_quadrant = nextSpriteId;
         }
@@ -1121,7 +1119,7 @@ int32_t fix_disjoint_sprites()
 
 int32_t check_for_spatial_index_cycles(bool fix)
 {
-    for (int32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++)
+    for (uint32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++)
     {
         rct_sprite* cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
         if (cycle_start != nullptr)
