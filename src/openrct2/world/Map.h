@@ -116,7 +116,6 @@ extern const TileCoordsXY TileDirectionDelta[];
 
 extern uint16_t gWidePathTileLoopX;
 extern uint16_t gWidePathTileLoopY;
-extern uint32_t cycleCount;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
 extern int16_t gMapSizeUnits;
