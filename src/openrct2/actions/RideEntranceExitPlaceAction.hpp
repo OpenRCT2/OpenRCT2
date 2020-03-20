@@ -67,7 +67,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
-        if (_stationNum > MAX_STATIONS)
+        if (_stationNum >= MAX_STATIONS)
         {
             log_warning("Invalid station number for ride. stationNum: %u", _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
