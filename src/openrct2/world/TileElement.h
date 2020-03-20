@@ -199,6 +199,8 @@ private:
     uint8_t Edges;          // 8
     uint8_t Flags2;         // 9
     uint8_t SlopeDirection; // 10
+    uint8_t isWideFlags;
+
     union
     {
         uint8_t AdditionStatus; // 11, only used for litter bins
@@ -235,7 +237,10 @@ public:
     void SetStationIndex(::StationIndex newStationIndex);
 
     bool IsWide() const;
+    bool IsWideForGroup(uint8_t wideGroup) const;
+    uint8_t GetWideFlags() const;
     void SetWide(bool isWide);
+    void SetWideForGroup(uint8_t wideGroup, bool isWide);
 
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
@@ -272,7 +277,7 @@ public:
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
 };
-assert_struct_size(PathElement, 16);
+assert_struct_size(PathElement, 17);
 
 struct TrackElement : TileElementBase
 {

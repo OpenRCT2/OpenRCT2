@@ -1517,11 +1517,28 @@ bool PathElement::IsWide() const
     return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
 }
 
+bool PathElement::IsWideForGroup(uint8_t wideGroup) const
+{
+    return (isWideFlags & 1 << wideGroup) != 0;
+}
+
+uint8_t PathElement::GetWideFlags() const
+{
+    return isWideFlags;
+}
+
 void PathElement::SetWide(bool isWide)
 {
     type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
     if (isWide)
         type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+}
+
+void PathElement::SetWideForGroup(uint8_t wideGroup, bool isWide)
+{
+    isWideFlags &= ~(1 << wideGroup);
+    if (isWide)
+        isWideFlags |= 1 << wideGroup;
 }
 
 bool PathElement::HasAddition() const
@@ -1621,7 +1638,7 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
  *  clears the wide footpath flag for all footpaths
  *  at location
  */
-static void footpath_clear_wide(const CoordsXY& footpathPos)
+static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
 {
     TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
@@ -1630,7 +1647,11 @@ static void footpath_clear_wide(const CoordsXY& footpathPos)
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        tileElement->AsPath()->SetWide(false);
+        tileElement->AsPath()->SetWideForGroup(wideGroup, false);
+
+        if (!(tileElement->AsPath()->IsWideForGroup(0b00000001)))
+            tileElement->AsPath()->SetWide(false);
+
     } while (!(tileElement++)->IsLastForTile());
 }
 
@@ -1665,18 +1686,18 @@ static TileElement* footpath_can_be_wide(const CoordsXYZ& footpathPos)
  *
  *  rct2: 0x006A87BB
  */
-void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
+void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGroup)
 {
     if (map_is_location_at_edge(footpathPos))
         return;
 
-    footpath_clear_wide(footpathPos);
+    footpath_clear_wide(footpathPos, wideGroup);
     /* Rather than clearing the wide flag of the following tiles and
      * checking the state of them later, leave them intact and assume
      * they were cleared. Consequently only the wide flag for this single
-     * tile is modified by this update.
+     * tile is modified by this wideGroup.
      * This is important for avoiding glitches in pathfinding that occurs
-     * between the batches of updates to the path wide flags.
+     * between the batches of wideGroups to the path wide flags.
      * Corresponding pathList[] indexes for the following tiles
      * are: 2, 3, 4, 5.
      * Note: indexes 3, 4, 5 are reset in the current call;
@@ -1719,132 +1740,202 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         }
 
         uint8_t pathConnections = 0;
-        if (tileElement->AsPath()->GetEdges() & EDGE_NW)
+
+        // Default Order: N_SE (initialGroupTile_primaryGroupDirection)
+        // N_SE = 0
+        // N_SW = 1
+        // W_NE = 2
+        // W_SE = 3
+        // S_NE = 4
+        // S_NW = 5
+        // E_SW = 6
+        // E_NW = 7
+
+        static const uint8_t relativeDirections[][8] = { { 2, 1, 0, 3, 7, 6, 5, 4 }, { 1, 2, 3, 0, 7, 4, 5, 6 },
+                                                         { 3, 2, 1, 0, 4, 7, 6, 5 }, { 2, 3, 0, 1, 4, 5, 6, 7 },
+                                                         { 0, 3, 2, 1, 5, 4, 7, 6 }, { 3, 0, 1, 2, 5, 6, 7, 4 },
+                                                         { 1, 0, 3, 2, 6, 5, 4, 7 }, { 0, 1, 2, 3, 6, 7, 4, 5 } };
+
+        static const uint8_t relativeConnections[][8] = { { 32, 8, 2, 128, 16, 4, 1, 64 }, { 8, 32, 128, 2, 16, 64, 1, 4 },
+                                                          { 128, 32, 8, 2, 64, 16, 4, 1 }, { 32, 128, 2, 8, 64, 1, 4, 16 },
+                                                          { 2, 128, 32, 8, 1, 64, 16, 4 }, { 128, 2, 8, 32, 1, 4, 16, 64 },
+                                                          { 8, 2, 128, 32, 4, 1, 64, 16 }, { 2, 8, 32, 128, 4, 16, 64, 1 } };
+
+        static const uint8_t relativeEdges[][4] = { { 4, 2, 1, 8 }, { 2, 4, 8, 1 }, { 8, 4, 2, 1 }, { 4, 8, 1, 2 },
+                                                    { 1, 8, 4, 2 }, { 8, 1, 2, 4 }, { 2, 1, 8, 4 }, { 1, 2, 4, 8 } };
+
+        const uint8_t wideGroupPrimaryDirection = relativeDirections[wideGroup][WIDE_GROUP_PRIMARY_DIRECTION];
+        const uint8_t wideGroupSecondaryDirection = relativeDirections[wideGroup][WIDE_GROUP_SECONDARY_DIRECTION];
+        const uint8_t wideGroupPrimaryReverse = relativeDirections[wideGroup][WIDE_GROUP_PRIMARY_REVERSE];
+        const uint8_t wideGroupSecondaryReverse = relativeDirections[wideGroup][WIDE_GROUP_SECONDARY_REVERSE];
+        const uint8_t wideGroupFirstTileCardinal = relativeDirections[wideGroup][WIDE_GROUP_FIRST_TILE_CARDINAL];
+        const uint8_t wideGroupFirstLoopEndCardinal = relativeDirections[wideGroup][WIDE_GROUP_FIRST_LOOP_END_CARDIAL];
+        const uint8_t wideGroupFinalTileCardinal = relativeDirections[wideGroup][WIDE_GROUP_FINAL_TILE_CARDINAL];
+        const uint8_t wideGroupFinalLoopStartCardinal = relativeDirections[wideGroup]
+                                                                          [WIDE_GROUP_FINAL_LOOP_START_CARDINAL];
+
+        const uint8_t wideGroupPrimaryDirectionConnection = relativeConnections[wideGroup][WIDE_GROUP_PRIMARY_DIRECTION];
+        const uint8_t wideGroupSecondaryDirectionConnection = relativeConnections[wideGroup]
+                                                                                 [WIDE_GROUP_SECONDARY_DIRECTION];
+        const uint8_t wideGroupPrimaryReverseConnection = relativeConnections[wideGroup][WIDE_GROUP_PRIMARY_REVERSE];
+        const uint8_t wideGroupSecondaryReverseConnection = relativeConnections[wideGroup][WIDE_GROUP_SECONDARY_REVERSE];
+        const uint8_t wideGroupFirstTileCardinalConnection = relativeConnections[wideGroup]
+                                                                                [WIDE_GROUP_FIRST_TILE_CARDINAL];
+        const uint8_t wideGroupFirstLoopEndCardinalConnection = relativeConnections[wideGroup]
+                                                                                   [WIDE_GROUP_FIRST_LOOP_END_CARDIAL];
+        const uint8_t wideGroupFinalTileCardinalConnection = relativeConnections[wideGroup]
+                                                                                [WIDE_GROUP_FINAL_TILE_CARDINAL];
+        const uint8_t wideGroupFinalLoopStartCardinalConnection = relativeConnections[wideGroup]
+                                                                                     [WIDE_GROUP_FINAL_LOOP_START_CARDINAL];
+
+        const uint8_t wideGroupPrimaryDirectionEdge = relativeEdges[wideGroup][WIDE_GROUP_PRIMARY_DIRECTION];
+        const uint8_t wideGroupSecondaryDirectionEdge = relativeEdges[wideGroup][WIDE_GROUP_SECONDARY_DIRECTION];
+        const uint8_t wideGroupPrimaryReverseEdge = relativeEdges[wideGroup][WIDE_GROUP_PRIMARY_REVERSE];
+        const uint8_t wideGroupSecondaryReverseEdge = relativeEdges[wideGroup][WIDE_GROUP_SECONDARY_REVERSE];
+
+        if (tileElement->AsPath()->GetEdges() & wideGroupSecondaryReverseEdge)
         {
-            pathConnections |= FOOTPATH_CONNECTION_NW;
-            if (pathList[3] != nullptr && pathList[3]->AsPath()->IsWide())
+            pathConnections |= wideGroupSecondaryReverseConnection;
+            if (pathList[wideGroupSecondaryReverse] != nullptr
+                && pathList[wideGroupSecondaryReverse]->AsPath()->IsWideForGroup(wideGroup))
             {
-                pathConnections &= ~FOOTPATH_CONNECTION_NW;
+                pathConnections &= ~wideGroupSecondaryReverseConnection;
             }
         }
 
-        if (tileElement->AsPath()->GetEdges() & EDGE_NE)
+        if (tileElement->AsPath()->GetEdges() & wideGroupPrimaryReverseEdge)
         {
-            pathConnections |= FOOTPATH_CONNECTION_NE;
-            if (pathList[0] != nullptr && pathList[0]->AsPath()->IsWide())
+            pathConnections |= wideGroupPrimaryReverseConnection;
+            if (pathList[wideGroupPrimaryReverse] != nullptr
+                && pathList[wideGroupPrimaryReverse]->AsPath()->IsWideForGroup(wideGroup))
             {
-                pathConnections &= ~FOOTPATH_CONNECTION_NE;
+                pathConnections &= ~wideGroupPrimaryReverseConnection;
             }
         }
 
-        if (tileElement->AsPath()->GetEdges() & EDGE_SE)
+        if (tileElement->AsPath()->GetEdges() & wideGroupSecondaryDirectionEdge)
         {
-            pathConnections |= FOOTPATH_CONNECTION_SE;
+            pathConnections |= wideGroupSecondaryDirectionConnection;
             /* In the following:
-             * footpath_element_is_wide(pathList[1])
-             * is always false due to the tile update order
+             * footpath_element_is_wide(pathList[wideGroupSecondaryDirection])
+             * is always false due to the tile wideGroup order
              * in combination with reset tiles.
              * Commented out since it will never occur. */
-            // if (pathList[1] != nullptr) {
-            //  if (footpath_element_is_wide(pathList[1])) {
-            //      pathConnections &= ~FOOTPATH_CONNECTION_SE;
+            // if (pathList[wideGroupSecondaryDirection] != nullptr) {
+            //  if (footpath_element_is_wide(pathList[wideGroupSecondaryDirection])) {
+            //      pathConnections &= ~wideGroupSecondaryDirectionConnection;
             //  }
             //}
         }
 
-        if (tileElement->AsPath()->GetEdges() & EDGE_SW)
+        if (tileElement->AsPath()->GetEdges() & wideGroupPrimaryDirectionEdge)
         {
-            pathConnections |= FOOTPATH_CONNECTION_SW;
+            pathConnections |= wideGroupPrimaryDirectionConnection;
             /* In the following:
-             * footpath_element_is_wide(pathList[2])
-             * is always false due to the tile update order
+             * footpath_element_is_wide(pathList[wideGroupPrimaryDirection])
+             * is always false due to the tile wideGroup order
              * in combination with reset tiles.
              * Commented out since it will never occur. */
-            // if (pathList[2] != nullptr) {
-            //  if (footpath_element_is_wide(pathList[2])) {
-            //      pathConnections &= ~FOOTPATH_CONNECTION_SW;
+            // if (pathList[wideGroupPrimaryDirection] != nullptr) {
+            //  if (footpath_element_is_wide(pathList[wideGroupPrimaryDirection])) {
+            //      pathConnections &= ~wideGroupPrimaryDirectionConnection;
             //  }
             //}
         }
 
-        if ((pathConnections & FOOTPATH_CONNECTION_NW) && pathList[3] != nullptr && !pathList[3]->AsPath()->IsWide())
+        if ((pathConnections & wideGroupSecondaryReverseConnection) && pathList[wideGroupSecondaryReverse] != nullptr
+            && !pathList[wideGroupSecondaryReverse]->AsPath()->IsWideForGroup(wideGroup))
         {
-            constexpr uint8_t edgeMask1 = EDGE_SE | EDGE_SW;
-            if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathList[7] != nullptr && !pathList[7]->AsPath()->IsWide()
-                && (pathList[7]->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathList[0] != nullptr
-                && !pathList[0]->AsPath()->IsWide())
+            uint8_t edgeMask1 = wideGroupSecondaryDirectionEdge | wideGroupPrimaryDirectionEdge;
+            if ((pathConnections & wideGroupPrimaryReverseConnection) && pathList[wideGroupFirstTileCardinal] != nullptr
+                && !pathList[wideGroupFirstTileCardinal]->AsPath()->IsWideForGroup(wideGroup)
+                && (pathList[wideGroupFirstTileCardinal]->AsPath()->GetEdges() & edgeMask1) == edgeMask1
+                && pathList[wideGroupPrimaryReverse] != nullptr
+                && !pathList[wideGroupPrimaryReverse]->AsPath()->IsWideForGroup(wideGroup))
             {
-                pathConnections |= FOOTPATH_CONNECTION_S;
+                pathConnections |= wideGroupFinalTileCardinalConnection;
             }
 
             /* In the following:
-             * footpath_element_is_wide(pathList[2])
-             * is always false due to the tile update order
+             * footpath_element_is_wide(pathList[wideGroupPrimaryDirection])
+             * is always false due to the tile wideGroup order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[6] != nullptr && !(pathList[6])->AsPath()->IsWide()
-                && (pathList[6]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[2] != nullptr)
+            uint8_t edgeMask2 = wideGroupPrimaryReverseEdge | wideGroupSecondaryDirectionEdge;
+            if ((pathConnections & wideGroupPrimaryDirectionConnection) && pathList[wideGroupFirstLoopEndCardinal] != nullptr
+                && !(pathList[wideGroupFirstLoopEndCardinal])->AsPath()->IsWideForGroup(wideGroup)
+                && (pathList[wideGroupFirstLoopEndCardinal]->AsPath()->GetEdges() & edgeMask2) == edgeMask2
+                && pathList[wideGroupPrimaryDirection] != nullptr)
             {
-                pathConnections |= FOOTPATH_CONNECTION_E;
+                pathConnections |= wideGroupFinalLoopStartCardinalConnection;
             }
         }
 
         /* In the following:
-         * footpath_element_is_wide(pathList[4])
-         * footpath_element_is_wide(pathList[1])
-         * are always false due to the tile update order
+         * footpath_element_is_wide(pathList[wideGroupFinalLoopStartCardinal])
+         * footpath_element_is_wide(pathList[wideGroupSecondaryDirection])
+         * are always false due to the tile wideGroup order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
-        if ((pathConnections & FOOTPATH_CONNECTION_SE) && pathList[1] != nullptr)
+        if ((pathConnections & wideGroupSecondaryDirectionConnection) && pathList[wideGroupSecondaryDirection] != nullptr)
         {
-            constexpr uint8_t edgeMask1 = EDGE_SW | EDGE_NW;
-            if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathList[4] != nullptr)
-                && (pathList[4]->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathList[0] != nullptr
-                && !pathList[0]->AsPath()->IsWide())
+            uint8_t edgeMask1 = wideGroupPrimaryDirectionEdge | wideGroupSecondaryReverseEdge;
+            if ((pathConnections & wideGroupPrimaryReverseConnection) && (pathList[wideGroupFinalLoopStartCardinal] != nullptr)
+                && (pathList[wideGroupFinalLoopStartCardinal]->AsPath()->GetEdges() & edgeMask1) == edgeMask1
+                && pathList[wideGroupPrimaryReverse] != nullptr
+                && !pathList[wideGroupPrimaryReverse]->AsPath()->IsWideForGroup(wideGroup))
             {
-                pathConnections |= FOOTPATH_CONNECTION_W;
+                pathConnections |= wideGroupFirstLoopEndCardinalConnection;
             }
 
             /* In the following:
-             * footpath_element_is_wide(pathList[5])
-             * footpath_element_is_wide(pathList[2])
-             * are always false due to the tile update order
+             * footpath_element_is_wide(pathList[wideGroupFinalTileCardinal])
+             * footpath_element_is_wide(pathList[wideGroupPrimaryDirection])
+             * are always false due to the tile wideGroup order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_NW;
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[5] != nullptr
-                && (pathList[5]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[2] != nullptr)
+            uint8_t edgeMask2 = wideGroupPrimaryReverseEdge | wideGroupSecondaryReverseEdge;
+            if ((pathConnections & wideGroupPrimaryDirectionConnection) && pathList[wideGroupFinalTileCardinal] != nullptr
+                && (pathList[wideGroupFinalTileCardinal]->AsPath()->GetEdges() & edgeMask2) == edgeMask2
+                && pathList[wideGroupPrimaryDirection] != nullptr)
             {
-                pathConnections |= FOOTPATH_CONNECTION_N;
+                pathConnections |= wideGroupFirstTileCardinalConnection;
             }
         }
 
-        if ((pathConnections & FOOTPATH_CONNECTION_NW) && (pathConnections & (FOOTPATH_CONNECTION_E | FOOTPATH_CONNECTION_S)))
+        if ((pathConnections & wideGroupSecondaryReverseConnection)
+            && (pathConnections & (wideGroupFinalLoopStartCardinalConnection | wideGroupFinalTileCardinalConnection)))
         {
-            pathConnections &= ~FOOTPATH_CONNECTION_NW;
+            pathConnections &= ~wideGroupSecondaryReverseConnection;
         }
 
-        if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathConnections & (FOOTPATH_CONNECTION_W | FOOTPATH_CONNECTION_S)))
+        if ((pathConnections & wideGroupPrimaryReverseConnection)
+            && (pathConnections & (wideGroupFirstLoopEndCardinalConnection | wideGroupFinalTileCardinalConnection)))
         {
-            pathConnections &= ~FOOTPATH_CONNECTION_NE;
+            pathConnections &= ~wideGroupPrimaryReverseConnection;
         }
 
-        if ((pathConnections & FOOTPATH_CONNECTION_SE) && (pathConnections & (FOOTPATH_CONNECTION_N | FOOTPATH_CONNECTION_W)))
+        if ((pathConnections & wideGroupSecondaryDirectionConnection)
+            && (pathConnections & (wideGroupFirstTileCardinalConnection | wideGroupFirstLoopEndCardinalConnection)))
         {
-            pathConnections &= ~FOOTPATH_CONNECTION_SE;
+            pathConnections &= ~wideGroupSecondaryDirectionConnection;
         }
 
-        if ((pathConnections & FOOTPATH_CONNECTION_SW) && (pathConnections & (FOOTPATH_CONNECTION_E | FOOTPATH_CONNECTION_N)))
+        if ((pathConnections & wideGroupPrimaryDirectionConnection)
+            && (pathConnections & (wideGroupFinalLoopStartCardinalConnection | wideGroupFirstTileCardinalConnection)))
         {
-            pathConnections &= ~FOOTPATH_CONNECTION_SW;
+            pathConnections &= ~wideGroupPrimaryDirectionConnection;
         }
 
         if (!(pathConnections
-              & (FOOTPATH_CONNECTION_NE | FOOTPATH_CONNECTION_SE | FOOTPATH_CONNECTION_SW | FOOTPATH_CONNECTION_NW)))
+              & (wideGroupPrimaryReverseConnection | wideGroupSecondaryDirectionConnection | wideGroupPrimaryDirectionConnection
+                 | wideGroupSecondaryReverseConnection)))
         {
             uint8_t e = tileElement->AsPath()->GetEdgesAndCorners();
-            if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
+            if ((e != 0b10101111) && (e != 0b01011111) && (e != wideGroupPrimaryReverseEdge << 4))
+                tileElement->AsPath()->SetWideForGroup(wideGroup, true);
+
+            if (tileElement->AsPath()->IsWideForGroup(0b00000001))
                 tileElement->AsPath()->SetWide(true);
         }
     } while (!(tileElement++)->IsLastForTile());

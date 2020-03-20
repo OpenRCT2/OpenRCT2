@@ -629,26 +629,35 @@ void map_update_path_wide_flags()
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    uint16_t x = gWidePathTileLoopX;
-    uint16_t y = gWidePathTileLoopY;
+    uint16_t primary = gWidePathTileLoopX;
+    uint16_t secondary = gWidePathTileLoopY;
     for (int32_t i = 0; i < 128; i++)
     {
-        footpath_update_path_wide_flags({ x, y });
+        footpath_update_path_wide_flags({ primary, secondary }, WIDE_GROUP_N_SW);
+        footpath_update_path_wide_flags({ secondary, primary }, WIDE_GROUP_N_SE);
+        footpath_update_path_wide_flags({ secondary, MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_E_NW);
+        footpath_update_path_wide_flags({ primary, MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_E_SW);
+        footpath_update_path_wide_flags(
+            { MAXIMUM_MAP_SIZE_BIG - (primary + 1), MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_S_NE);
+        footpath_update_path_wide_flags(
+            { MAXIMUM_MAP_SIZE_BIG - (secondary + 1), MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_S_NW);
+        footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (secondary + 1), primary }, WIDE_GROUP_W_SE);
+        footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
 
         // Next x, y tile
-        x += COORDS_XY_STEP;
-        if (x >= MAXIMUM_MAP_SIZE_BIG)
+        primary += COORDS_XY_STEP;
+        if (primary >= MAXIMUM_MAP_SIZE_BIG)
         {
-            x = 0;
-            y += COORDS_XY_STEP;
-            if (y >= MAXIMUM_MAP_SIZE_BIG)
+            primary = 0;
+            secondary += COORDS_XY_STEP;
+            if (secondary >= MAXIMUM_MAP_SIZE_BIG)
             {
-                y = 0;
+                secondary = 0;
             }
         }
     }
-    gWidePathTileLoopX = x;
-    gWidePathTileLoopY = y;
+    gWidePathTileLoopX = primary;
+    gWidePathTileLoopY = secondary;
 }
 
 /**

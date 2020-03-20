@@ -151,6 +151,17 @@ enum
     FOOTPATH_CONNECTION_NW = (1 << 7),
 };
 
+enum
+{
+    WIDE_GROUP_PRIMARY_DIRECTION,
+    WIDE_GROUP_SECONDARY_DIRECTION,
+    WIDE_GROUP_PRIMARY_REVERSE,
+    WIDE_GROUP_SECONDARY_REVERSE,
+    WIDE_GROUP_FIRST_TILE_CARDINAL,
+    WIDE_GROUP_FIRST_LOOP_END_CARDIAL,
+    WIDE_GROUP_FINAL_TILE_CARDINAL,
+    WIDE_GROUP_FINAL_LOOP_START_CARDINAL,
+};
 extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;
@@ -186,7 +197,7 @@ void footpath_update_queue_chains();
 bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
 void footpath_chain_ride_queue(
     ride_id_t rideIndex, int32_t entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
-void footpath_update_path_wide_flags(const CoordsXY& footpathPos);
+void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGroup);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);

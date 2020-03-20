@@ -219,7 +219,8 @@ static int32_t guest_surface_path_finding(Peep* peep)
  * Returns the type of the next footpath tile a peep can get to from x,y,z /
  * inputTileElement in the given direction.
  */
-static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection)
+static uint8_t footpath_element_next_in_direction(
+    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, uint8_t peepWideGroup)
 {
     TileElement* nextTileElement;
 
@@ -243,7 +244,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
             continue;
         if (!is_valid_path_z_and_direction(nextTileElement, loc.z, chosenDirection))
             continue;
-        if (nextTileElement->AsPath()->IsWide())
+        if (nextTileElement->AsPath()->IsWideForGroup(peepWideGroup))
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
         if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != 0xFF)
@@ -274,7 +275,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
 static uint8_t footpath_element_dest_in_dir(
-    TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level)
+    TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level, uint8_t peepWideGroup)
 {
     TileElement* tileElement;
     Direction direction;
@@ -336,7 +337,7 @@ static uint8_t footpath_element_dest_in_dir(
             case TILE_ELEMENT_TYPE_PATH:
                 if (!is_valid_path_z_and_direction(tileElement, loc.z, chosenDirection))
                     continue;
-                if (tileElement->AsPath()->IsWide())
+                if (tileElement->AsPath()->IsWideForGroup(peepWideGroup))
                     return PATH_SEARCH_WIDE;
 
                 uint8_t edges = path_get_permitted_edges(tileElement->AsPath());
@@ -359,7 +360,7 @@ static uint8_t footpath_element_dest_in_dir(
                             loc.z += 2;
                         }
                     }
-                    return footpath_element_dest_in_dir(loc, dir, outRideIndex, level + 1);
+                    return footpath_element_dest_in_dir(loc, dir, outRideIndex, level + 1, peepWideGroup);
                 }
                 return PATH_SEARCH_DEAD_END;
         }
@@ -392,7 +393,7 @@ static uint8_t footpath_element_dest_in_dir(
  * width path, for example that leads from a ride exit back to the main path.
  */
 static uint8_t footpath_element_destination_in_direction(
-    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, ride_id_t* outRideIndex)
+    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, ride_id_t* outRideIndex, uint8_t peepWideGroup)
 {
     if (pathElement->IsSloped())
     {
@@ -402,7 +403,7 @@ static uint8_t footpath_element_destination_in_direction(
         }
     }
 
-    return footpath_element_dest_in_dir(loc, chosenDirection, outRideIndex, 0);
+    return footpath_element_dest_in_dir(loc, chosenDirection, outRideIndex, 0, peepWideGroup);
 }
 
 /**
@@ -471,7 +472,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
  * since entrances and ride queues coming off a path should not result in
  * the path being considered a junction.
  */
-static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc)
+static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc, uint8_t peepWideGroup)
 {
     uint8_t edges = path->GetEdges();
 
@@ -483,7 +484,7 @@ static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc)
     int32_t thin_count = 0;
     do
     {
-        int32_t fp_result = footpath_element_next_in_direction(loc, path, test_edge);
+        int32_t fp_result = footpath_element_next_in_direction(loc, path, test_edge, peepWideGroup);
 
         /* Ignore non-paths (e.g. ride entrances, shops), wide paths
          * and ride queues (per ignoreQueues) when counting
@@ -599,9 +600,9 @@ static void peep_pathfind_heuristic_search(
     TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
     uint8_t searchResult = PATH_SEARCH_FAILED;
-
+    uint8_t peepWideGroup = (peep->id) % 8;
     bool currentElementIsWide
-        = (currentTileElement->AsPath()->IsWide()
+        = (currentTileElement->AsPath()->IsWideForGroup(peepWideGroup)
            && !staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, currentTileElement));
 
     loc += TileDirectionDelta[test_edge];
@@ -733,7 +734,7 @@ static void peep_pathfind_heuristic_search(
                 // Path may be sloped, so set z to path base height.
                 loc.z = tileElement->base_height;
 
-                if (tileElement->AsPath()->IsWide())
+                if (tileElement->AsPath()->IsWideForGroup(peepWideGroup))
                 {
                     /* Check if staff can ignore this wide flag. */
                     if (!staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, tileElement))
@@ -963,7 +964,7 @@ static void peep_pathfind_heuristic_search(
         {
             /* Check if this is a thin junction. And perform additional
              * necessary checks. */
-            thin_junction = path_is_thin_junction(tileElement->AsPath(), loc);
+            thin_junction = path_is_thin_junction(tileElement->AsPath(), loc, peepWideGroup);
 
             if (thin_junction)
             {
@@ -1205,6 +1206,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     bool found = false;
     uint8_t permitted_edges = 0;
     bool isThin = false;
+    uint8_t peepWideGroup = (peep->id) % 8;
     do
     {
         if (dest_tile_element == nullptr)
@@ -1225,7 +1227,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
          * check if the combination is 'thin'!
          * The junction is considered 'thin' simply if any of the
          * overlaid path elements there is a 'thin junction'. */
-        isThin = isThin || path_is_thin_junction(dest_tile_element->AsPath(), loc);
+        isThin = isThin || path_is_thin_junction(dest_tile_element->AsPath(), loc, peepWideGroup);
 
         // Collect the permitted edges of ALL matching path elements at this location.
         permitted_edges |= path_get_permitted_edges(dest_tile_element->AsPath());
@@ -1913,7 +1915,7 @@ int32_t guest_path_finding(Guest* peep)
     {
         return guest_surface_path_finding(peep);
     }
-
+    uint8_t peepWideGroup = (peep->id) % 8;
     if (peep->outside_of_park == 0 && peep->HeadingForRideOrParkExit())
     {
         /* If this tileElement is adjacent to any non-wide paths,
@@ -1927,7 +1929,7 @@ int32_t guest_path_finding(Guest* peep)
 
             /* If there is a wide path in that direction,
                 remove that edge and try another */
-            if (footpath_element_next_in_direction(loc, pathElement, chosenDirection) == PATH_SEARCH_WIDE)
+            if (footpath_element_next_in_direction(loc, pathElement, chosenDirection, peepWideGroup) == PATH_SEARCH_WIDE)
             {
                 adjustedEdges &= ~(1 << chosenDirection);
             }
@@ -2008,7 +2010,8 @@ int32_t guest_path_finding(Guest* peep)
                 continue;
 
             ride_id_t rideIndex, pathSearchResult;
-            pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
+            pathSearchResult = footpath_element_destination_in_direction(
+                loc, pathElement, chosenDirection, &rideIndex, peepWideGroup);
             switch (pathSearchResult)
             {
                 case PATH_SEARCH_DEAD_END:
