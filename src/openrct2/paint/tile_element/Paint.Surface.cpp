@@ -1317,19 +1317,14 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         // Owned land boundary fences
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
-        registers regs = {};
-        regs.al = tileElement->AsSurface()->GetParkFences();
-        regs.ax = regs.ax << rotation;
-        regs.ah = regs.al >> 4;
-
-        uint8_t al = regs.al | regs.ah;
+        uint8_t rotatedFences = rol4(tileElement->AsSurface()->GetParkFences(), rotation);
 
         for (const auto& fenceData : _tileSurfaceBoundaries)
         {
-            const int32_t bit = al & 1;
-            al >>= 1;
+            const int32_t edgeHasFence = rotatedFences & 1;
+            rotatedFences >>= 1;
 
-            if (bit == 0)
+            if (edgeHasFence == 0)
                 continue;
 
             int32_t local_height = height;

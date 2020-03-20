@@ -7923,7 +7923,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
 static bool vehicle_update_track_motion_forwards_get_new_track(
     Vehicle* vehicle, uint16_t trackType, Ride* ride, rct_ride_entry* rideEntry)
 {
-    registers regs = {};
+    CoordsXYZD location = {};
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
@@ -7985,10 +7985,10 @@ loc_6DB32A:
     {
         return false;
     }
-    regs.eax = trackBeginEnd.begin_x;
-    regs.ecx = trackBeginEnd.begin_y;
-    regs.edx = trackBeginEnd.begin_z;
-    regs.bl = trackBeginEnd.begin_direction;
+    location.x = trackBeginEnd.begin_x;
+    location.y = trackBeginEnd.begin_y;
+    location.z = trackBeginEnd.begin_z;
+    location.direction = trackBeginEnd.begin_direction;
     tileElement = trackBeginEnd.begin_element;
 }
     goto loc_6DB41D;
@@ -8002,10 +8002,7 @@ loc_6DB358:
         return false;
     }
     tileElement = xyElement.element;
-    regs.eax = xyElement.x;
-    regs.ecx = xyElement.y;
-    regs.edx = z;
-    regs.bl = direction;
+    location = { xyElement, z, static_cast<Direction>(direction) };
 }
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_REVERSER
         || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_REVERSER)
@@ -8035,7 +8032,7 @@ loc_6DB358:
     }
 
 loc_6DB41D:
-    vehicle->TrackLocation = { regs.ax, regs.cx, regs.dx };
+    vehicle->TrackLocation = location;
 
     // TODO check if getting the vehicle entry again is necessary
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
@@ -8088,7 +8085,7 @@ loc_6DB41D:
     {
         vehicle->target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
-    vehicle->track_direction = regs.bl & 3;
+    vehicle->track_direction = location.direction % NumOrthogonalDirections;
     vehicle->track_type |= trackType << 2;
     vehicle->brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
