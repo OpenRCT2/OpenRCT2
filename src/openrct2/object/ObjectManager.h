@@ -39,6 +39,7 @@ interface IObjectManager
     virtual void ResetObjects() abstract;
 
     virtual std::vector<const ObjectRepositoryItem*> GetPackableObjects() abstract;
+    virtual const std::vector<uint16_t>& GetAllRideEntries(uint8_t rideType) abstract;
 };
 
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);

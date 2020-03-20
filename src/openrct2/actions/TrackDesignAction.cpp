@@ -9,8 +9,10 @@
 
 #include "TrackDesignAction.h"
 
+#include "../Context.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackDesign.h"
@@ -57,20 +59,20 @@ GameActionResult::Ptr TrackDesignAction::Query() const
             uint8_t rideGroupIndex = ori->RideInfo.RideGroupIndex;
             const RideGroup* td6RideGroup = RideGroupManager::RideGroupFind(_td.type, rideGroupIndex);
 
-            uint8_t* availableRideEntries = get_ride_entry_indices_for_ride_type(_td.type);
-            for (uint8_t* rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& rideEntries = objManager.GetAllRideEntries(_td.type);
+            for (auto rideEntryIndex : rideEntries)
             {
-                rct_ride_entry* ire = get_ride_entry(*rei);
-
-                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
+                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 {
                     continue;
                 }
 
-                const RideGroup* irg = RideGroupManager::GetRideGroup(_td.type, ire);
-                if (td6RideGroup->Equals(irg))
+                auto rideEntry = get_ride_entry(rideEntryIndex);
+                auto rideGroup = RideGroupManager::GetRideGroup(_td.type, rideEntry);
+                if (td6RideGroup->Equals(rideGroup))
                 {
-                    entryIndex = *rei;
+                    entryIndex = rideEntryIndex;
                     break;
                 }
             }
@@ -148,20 +150,20 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
             uint8_t rideGroupIndex = ori->RideInfo.RideGroupIndex;
             const RideGroup* td6RideGroup = RideGroupManager::RideGroupFind(_td.type, rideGroupIndex);
 
-            uint8_t* availableRideEntries = get_ride_entry_indices_for_ride_type(_td.type);
-            for (uint8_t* rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& rideEntries = objManager.GetAllRideEntries(_td.type);
+            for (auto rideEntryIndex : rideEntries)
             {
-                rct_ride_entry* ire = get_ride_entry(*rei);
-
-                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
+                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 {
                     continue;
                 }
 
-                const RideGroup* irg = RideGroupManager::GetRideGroup(_td.type, ire);
-                if (td6RideGroup->Equals(irg))
+                auto rideEntry = get_ride_entry(rideEntryIndex);
+                auto rideGroup = RideGroupManager::GetRideGroup(_td.type, rideEntry);
+                if (td6RideGroup->Equals(rideGroup))
                 {
-                    entryIndex = *rei;
+                    entryIndex = rideEntryIndex;
                     break;
                 }
             }

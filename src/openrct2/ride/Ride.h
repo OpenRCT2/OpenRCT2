@@ -474,15 +474,6 @@ assert_struct_size(ride_name_args, 4);
 
 #pragma pack(pop)
 
-/*
- * This array should probably be only 91 + 128 * 3 = 475 bytes long.
- * It was originally stored at address 0x009E32F8 and continued until 0x009E34E3
- * (inclusive). 0x009E34E4 is the address of s6 header, so it's likely it had
- * some padding at the end as well.
- */
-#define TYPE_TO_RIDE_ENTRY_SLOTS 492
-extern uint8_t gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
-
 // Constants used by the lifecycle_flags property at 0x1D0
 enum
 {
@@ -1157,8 +1148,6 @@ TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
-uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType);
-void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurements_update();
 std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride);
 void ride_breakdown_add_news_item(Ride* ride);
