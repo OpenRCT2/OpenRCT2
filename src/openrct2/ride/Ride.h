@@ -1165,7 +1165,7 @@ int32_t ride_music_params_update(
     const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
 void ride_music_update_final();
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
-TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex);
+TileElement* ride_get_station_start_track_element(Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
 void ride_set_status(Ride* ride, int32_t status);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);

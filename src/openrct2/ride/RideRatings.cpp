@@ -1423,10 +1423,10 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
  */
 static int32_t ride_ratings_get_scenery_score(Ride* ride)
 {
-    int8_t i = ride_get_first_valid_station_start(ride);
+    auto i = ride_get_first_valid_station_start(ride);
     CoordsXY location;
 
-    if (i == -1)
+    if (i == STATION_INDEX_NULL)
     {
         return 0;
     }

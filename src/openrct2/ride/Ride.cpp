@@ -1026,11 +1026,11 @@ void ride_clear_for_construction(Ride* ride)
 void ride_remove_peeps(Ride* ride)
 {
     // Find first station
-    int8_t stationIndex = ride_get_first_valid_station_start(ride);
+    auto stationIndex = ride_get_first_valid_station_start(ride);
 
     // Get exit position and direction
     auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
-    if (stationIndex != -1)
+    if (stationIndex != STATION_INDEX_NULL)
     {
         auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
         if (!location.isNull())
@@ -2227,8 +2227,8 @@ static void ride_inspection_update(Ride* ride)
     ride->lifecycle_flags |= RIDE_LIFECYCLE_DUE_INSPECTION;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 
-    int8_t stationIndex = ride_get_first_valid_station_exit(ride);
-    ride->inspection_station = (stationIndex != -1) ? stationIndex : 0;
+    auto stationIndex = ride_get_first_valid_station_exit(ride);
+    ride->inspection_station = (stationIndex != STATION_INDEX_NULL) ? stationIndex : 0;
 }
 
 static int32_t get_age_penalty(Ride* ride)
@@ -2414,7 +2414,7 @@ static void choose_random_train_to_breakdown_safe(Ride* ride)
  */
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
 {
-    int32_t i;
+    StationIndex i;
     uint16_t vehicleSpriteIdx;
     Vehicle* vehicle;
 
@@ -2433,7 +2433,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
         case BREAKDOWN_CONTROL_FAILURE:
             // Inspect first station with an exit
             i = ride_get_first_valid_station_exit(ride);
-            if (i != -1)
+            if (i != STATION_INDEX_NULL)
             {
                 ride->inspection_station = i;
             }
@@ -2488,7 +2488,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
             // Original code generates a random number but does not use it
             // Unsure if this was supposed to choose a random station (or random station with an exit)
             i = ride_get_first_valid_station_exit(ride);
-            if (i != -1)
+            if (i != STATION_INDEX_NULL)
             {
                 ride->inspection_station = i;
             }
@@ -3772,21 +3772,21 @@ static int32_t ride_mode_check_valid_station_numbers(Ride* ride)
  * returns stationIndex of first station on success
  * -1 on failure.
  */
-static int32_t ride_mode_check_station_present(Ride* ride)
+static StationIndex ride_mode_check_station_present(Ride* ride)
 {
-    int32_t stationIndex = ride_get_first_valid_station_start(ride);
+    auto stationIndex = ride_get_first_valid_station_start(ride);
 
-    if (stationIndex == -1)
+    if (stationIndex == STATION_INDEX_NULL)
     {
         gGameCommandErrorText = STR_NOT_YET_CONSTRUCTED;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
-            return -1;
+            return STATION_INDEX_NULL;
 
         if (ride->type == RIDE_TYPE_MAZE)
-            return -1;
+            return STATION_INDEX_NULL;
 
         gGameCommandErrorText = STR_REQUIRES_A_STATION_PLATFORM;
-        return -1;
+        return STATION_INDEX_NULL;
     }
 
     return stationIndex;

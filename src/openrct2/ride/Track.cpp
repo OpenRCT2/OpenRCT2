@@ -656,8 +656,8 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
         }
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            int8_t stationIndex = ride_get_first_empty_station_start(ride);
-            assert(stationIndex != -1);
+            auto stationIndex = ride_get_first_empty_station_start(ride);
+            assert(stationIndex != STATION_INDEX_NULL);
 
             ride->stations[stationIndex].Start.x = loc.x;
             ride->stations[stationIndex].Start.y = loc.y;
@@ -742,8 +742,8 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
                 int32_t targetTrackType;
                 if (stationLoc1 == loc)
                 {
-                    int8_t stationIndex = ride_get_first_empty_station_start(ride);
-                    assert(stationIndex != -1);
+                    auto stationIndex = ride_get_first_empty_station_start(ride);
+                    assert(stationIndex != STATION_INDEX_NULL);
 
                     ride->stations[stationIndex].Start = loc;
                     ride->stations[stationIndex].Height = loc.z / COORDS_Z_STEP;
@@ -886,8 +886,8 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                 if (x == stationX1 && y == stationY1)
                 {
                 loc_6C4BF5:;
-                    int8_t stationIndex = ride_get_first_empty_station_start(ride);
-                    assert(stationIndex != -1);
+                    auto stationIndex = ride_get_first_empty_station_start(ride);
+                    assert(stationIndex != STATION_INDEX_NULL);
 
                     ride->stations[stationIndex].Start.x = x;
                     ride->stations[stationIndex].Start.y = y;

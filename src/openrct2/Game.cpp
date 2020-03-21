@@ -459,8 +459,8 @@ void game_fix_save_vars()
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
-            int8_t station = ride_get_first_valid_station_exit(ride);
-            if (station == -1)
+            auto station = ride_get_first_valid_station_exit(ride);
+            if (station == STATION_INDEX_NULL)
             {
                 log_warning("Couldn't find station, removing peep %u", spriteIndex);
                 peepsToRemove.push_back(peep);

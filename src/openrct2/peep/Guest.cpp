@@ -4130,8 +4130,8 @@ void Guest::UpdateRideLeaveVehicle()
     if (ride_station >= MAX_STATIONS)
     {
         // HACK #5658: Some parks have hacked rides which end up in this state
-        int8_t bestStationIndex = ride_get_first_valid_station_exit(ride);
-        if (bestStationIndex == -1)
+        auto bestStationIndex = ride_get_first_valid_station_exit(ride);
+        if (bestStationIndex == STATION_INDEX_NULL)
         {
             bestStationIndex = 0;
         }
