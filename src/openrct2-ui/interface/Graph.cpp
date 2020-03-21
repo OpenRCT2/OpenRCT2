@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Graph.h>
+#include <openrct2/Context.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 
@@ -182,10 +183,128 @@ static void graph_draw_line_b_money32(
     }
 }
 
+struct FinancialTooltipInfo
+{
+    const ScreenCoordsXY coords;
+    const money32 money{};
+};
+
+struct ScreenRect
+{
+    const ScreenCoordsXY LeftTop;
+    const ScreenCoordsXY RightBottom;
+
+    int32_t GetLeft() const
+    {
+        return LeftTop.x;
+    }
+    int32_t GetTop() const
+    {
+        return LeftTop.y;
+    }
+    int32_t GetRight() const
+    {
+        return RightBottom.x;
+    }
+    int32_t GetBottom() const
+    {
+        return RightBottom.y;
+    }
+    int32_t GetWidth() const
+    {
+        return RightBottom.x - LeftTop.x;
+    }
+    int32_t GetHeight() const
+    {
+        return RightBottom.y - LeftTop.y;
+    }
+    bool Contains(const ScreenCoordsXY& coords) const
+    {
+        return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
+    }
+};
+
+static constexpr auto CHART_MAX_DATA_COUNT = 64;
+static constexpr auto CHART_MAX_INDEX = CHART_MAX_DATA_COUNT - 1;
+static constexpr auto CHART_DATA_WIDTH = 6;
+static constexpr auto CHART_MAX_WIDTH = CHART_MAX_INDEX * CHART_DATA_WIDTH;
+static constexpr auto CHART_MAX_HEIGHT = 164;
+static constexpr auto CURSOR_X_OFFSET = 3;
+static constexpr auto DEFAULT_DASHED_LENGTH = 2;
+
+static int32_t IndexForCursorAndHistory(const int32_t historyCount, const int32_t cursorX, const int32_t chartX)
+{
+    const auto offsettedCursorX = cursorX + CURSOR_X_OFFSET;
+    return (historyCount - 1) - (offsettedCursorX - chartX) / CHART_DATA_WIDTH;
+}
+
+static const ScreenCoordsXY ScreenCoordsForHistoryIndex(
+    const int32_t index, const money32* history, const int32_t chartX, const int32_t chartY, const int32_t modifier,
+    const int32_t offset)
+{
+    ScreenCoordsXY coords;
+    coords.x = chartX + CHART_DATA_WIDTH * (CHART_MAX_INDEX - index);
+    coords.y = chartY + CHART_MAX_HEIGHT - ((((history[index] >> modifier) + offset) * 170) / 256);
+    return coords;
+}
+
+static const FinancialTooltipInfo finance_tooltip_info_from_money(
+    const money32* history, const int32_t historyCount, const int32_t modifier, const int32_t offset,
+    const ScreenRect& chartFrame, const ScreenCoordsXY& cursorPosition)
+{
+    if (!chartFrame.Contains(cursorPosition))
+    {
+        return { {}, MONEY32_UNDEFINED };
+    }
+
+    const auto historyIndex = IndexForCursorAndHistory(historyCount, cursorPosition.x, chartFrame.GetLeft());
+    const auto coords = ScreenCoordsForHistoryIndex(
+        historyIndex, history, chartFrame.GetLeft(), chartFrame.GetTop(), modifier, offset);
+
+    return { { coords.x, coords.y }, history[historyIndex] };
+}
+
+static void graph_draw_hovered_value(
+    rct_drawpixelinfo* dpi, const money32* history, const int32_t historyCount, const int32_t baseX, const int32_t baseY,
+    const int32_t modifier, const int32_t offset)
+{
+    const auto cursorPosition = context_get_cursor_position_scaled();
+    const ScreenRect chartFrame{ { baseX, baseY }, { baseX + CHART_MAX_WIDTH, baseY + CHART_MAX_HEIGHT } };
+
+    if (!chartFrame.Contains(cursorPosition))
+    {
+        return;
+    }
+
+    const auto info = finance_tooltip_info_from_money(
+        history, CHART_MAX_DATA_COUNT, modifier, offset, chartFrame, cursorPosition);
+
+    if (info.money == MONEY32_UNDEFINED)
+    {
+        return;
+    }
+
+    gfx_draw_dashed_line(dpi, info.coords.x, chartFrame.GetTop(), info.coords.x, info.coords.y, DEFAULT_DASHED_LENGTH, 0);
+    gfx_draw_dashed_line(dpi, chartFrame.GetLeft() - 10, info.coords.y, info.coords.x, info.coords.y, DEFAULT_DASHED_LENGTH, 0);
+
+    if (cursorPosition.y > info.coords.y)
+    {
+        gfx_draw_dashed_line(dpi, info.coords.x, info.coords.y, info.coords.x, cursorPosition.y, DEFAULT_DASHED_LENGTH, 0);
+    }
+
+    gfx_draw_string_centred(
+        dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, info.coords.x, info.coords.y - 16, COLOUR_BLACK, &info.money);
+
+    gfx_fill_rect(dpi, info.coords.x - 2, info.coords.y - 2, info.coords.x + 2, info.coords.y + 2, PALETTE_INDEX_10);
+    gfx_fill_rect(dpi, info.coords.x - 1, info.coords.y - 1, info.coords.x + 1, info.coords.y + 1, PALETTE_INDEX_21);
+}
+
 void graph_draw_money32(
-    rct_drawpixelinfo* dpi, money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier, int32_t offset)
+    rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
+    const int32_t modifier, const int32_t offset)
 {
     graph_draw_months_money32(dpi, history, count, baseX, baseY);
     graph_draw_line_a_money32(dpi, history, count, baseX, baseY, modifier, offset);
     graph_draw_line_b_money32(dpi, history, count, baseX, baseY, modifier, offset);
+    graph_draw_hovered_value(dpi, history, count, baseX, baseY, modifier, offset);
 }
