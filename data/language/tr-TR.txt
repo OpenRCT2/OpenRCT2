@@ -3601,7 +3601,7 @@ STR_6266    :Özel içerik klasörünü aç
 STR_6267    :Zemin deneticisini aç		
 STR_6268    :Bir sonraki tick'e atla		
 STR_6269    :Geçersiz hava ID'si
-
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

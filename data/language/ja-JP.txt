@@ -3607,6 +3607,7 @@ STR_6273    :音楽
 STR_6274    :配色の設定できません…
 STR_6275    :{WINDOW_COLOUR_2}乗り場スタイル:
 STR_6308    :「{STRINGID}{OUTLINE}{TOPAZ}」{NEWLINE}{STRINGID}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

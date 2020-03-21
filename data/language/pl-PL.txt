@@ -3600,6 +3600,7 @@ STR_6258    :Clear (transparent)
 STR_6259    :Wyłączone
 STR_6260    :Show blocked tiles
 STR_6261    :Show wide paths
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

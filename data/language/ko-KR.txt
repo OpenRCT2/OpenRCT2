@@ -3681,7 +3681,9 @@ STR_6356    :{SMALLFONT}{BLACK}공원에 물이 있을 경우 오리를 생성�
 STR_6357    :{SMALLFONT}{BLACK}공원에 있는 모든 오리를 제거합니다
 STR_6358    :{UINT16}쪽
 STR_6359    :{POP16}{POP16}{UINT16}쪽
-
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :차량 조명 효과 (실험적 기능)
+STR_6362    :{SMALLFONT}{BLACK}이 설정을 켜면, 밤에 트랙형 놀이기구의 차량에 조명이 들어옵니다.
 
 #############
 # Scenarios #

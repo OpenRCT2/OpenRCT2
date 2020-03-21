@@ -3673,6 +3673,7 @@ STR_6356    :{SMALLFONT}{BLACK}Gerar patos se o parque tiver água
 STR_6357    :{SMALLFONT}{BLACK}Remover todos os patos do mapa
 STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

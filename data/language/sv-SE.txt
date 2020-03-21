@@ -3650,8 +3650,7 @@ STR_6325    :{SMALLFONT}{BLACK}Simulera åktur eller attraktion
 STR_6326    :Kan inte simulera {POP16}{POP16}{POP16}{STRINGID} …
 STR_6327    :Genomskinlig bakgrund för stora skärmdumpar
 STR_6328    :{SMALLFONT}{BLACK}Med det här alernativet aktiverat kommer stora skärmdumpar ha genomskinlig bakgrund istället för den vanliga svarta.
-
-
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarion #

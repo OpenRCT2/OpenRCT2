@@ -3330,7 +3330,7 @@ STR_5997    :Geld toevoegen/instellen
 STR_5998    :Toevoegen
 STR_5999    :Instellen
 STR_6000    :Voer een bedrag in
-STR_6001    :Belichtingeffecten inschakelen (experimenteel)
+STR_6001    :Belichtingseffecten inschakelen (experimenteel)
 STR_6002    :{SMALLFONT}{BLACK}Lampen zullen 's nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
 STR_6003    :Opengewerkte weergave
 STR_6004    :Opengewerkte weergave
@@ -3689,6 +3689,9 @@ STR_6356    :{SMALLFONT}{BLACK}Maakt eenden aan, mits er water op de kaart is.
 STR_6357    :{SMALLFONT}{BLACK}Verwijdert alle eenden van de kaart.
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Belichtingseffecten op attracties (experimenteel)
+STR_6362    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben 's nachts verlicht worden.
 
 #############
 # Scenarios #

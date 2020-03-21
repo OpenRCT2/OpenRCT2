@@ -3688,6 +3688,7 @@ STR_6356    :{SMALLFONT}{BLACK}Fait apparaitre des cannards si le parc contient 
 STR_6357    :{SMALLFONT}{BLACK}Supprime tous les cannards de la carte
 STR_6358    :Page {UINT16}
 STR_6359    :{POP16}{POP16}Page {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #
