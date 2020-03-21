@@ -1739,19 +1739,6 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             pathList[direction] = footpath_can_be_wide(footpathLoc);
         }
 
-        //if (wideGroup == 0b00000001)
-        //{
-        //    tileElement->AsPath()->SetWideForGroup(0b00000001, tileElement->AsPath()->IsWide());
-        //    for (int32_t direction = 0; direction < 8; direction++)
-        //    {
-        //        if (pathList[direction] == NULL)
-        //        {
-        //        }
-        //        else
-        //            pathList[direction]->AsPath()->SetWideForGroup(0b00000001, pathList[direction]->AsPath()->IsWide());
-        //    }
-        //}
-
         uint8_t pathConnections = 0;
 
         static const uint8_t relativeDirections[][8] = { { 2, 1, 0, 3, 7, 6, 5, 4 }, { 1, 2, 3, 0, 7, 4, 5, 6 },
