@@ -2405,7 +2405,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         }
 
         peep->time_lost = 0;
-        uint8_t stationNum = tile_element->AsEntrance()->GetStationIndex();
+        auto stationNum = tile_element->AsEntrance()->GetStationIndex();
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
@@ -2832,7 +2832,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
         {
             // Peep is not queuing.
             peep->time_lost = 0;
-            uint8_t stationNum = tile_element->AsPath()->GetStationIndex();
+            auto stationNum = tile_element->AsPath()->GetStationIndex();
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()

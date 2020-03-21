@@ -19,13 +19,13 @@ DEFINE_GAME_ACTION(RideEntranceExitRemoveAction, GAME_COMMAND_REMOVE_RIDE_ENTRAN
 private:
     CoordsXY _loc;
     NetworkRideId_t _rideIndex;
-    uint8_t _stationNum;
+    StationIndex _stationNum;
     bool _isExit;
 
 public:
     RideEntranceExitRemoveAction() = default;
 
-    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
+    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
         : _loc(loc)
         , _rideIndex(rideIndex)
         , _stationNum(stationNum)

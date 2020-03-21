@@ -2689,7 +2689,7 @@ static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
 struct rct_synchronised_vehicle
 {
     ride_id_t ride_id;
-    uint8_t station_id;
+    StationIndex stationIndex;
     uint16_t vehicle_id;
 };
 
@@ -2733,11 +2733,11 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    int32_t stationIndex = tileElement->AsTrack()->GetStationIndex();
+    auto stationIndex = tileElement->AsTrack()->GetStationIndex();
 
     rct_synchronised_vehicle* sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
-    sv->station_id = stationIndex;
+    sv->stationIndex = stationIndex;
     sv->vehicle_id = SPRITE_INDEX_NULL;
     _lastSynchronisedVehicle++;
 
@@ -2810,7 +2810,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
     if (ride == nullptr)
         return false;
 
-    int32_t station = vehicle->current_station;
+    StationIndex station = vehicle->current_station;
     auto location = ride->stations[station].GetStart();
     int32_t x = location.x;
     int32_t y = location.y;
@@ -2888,7 +2888,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
             {
                 if (sv_ride->IsBlockSectioned())
                 {
-                    if (!(sv_ride->stations[sv->station_id].Depart & STATION_DEPART_FLAG))
+                    if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
                         uint8_t rideId = RIDE_ID_NULL;
@@ -2943,7 +2943,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
 
                     int32_t numTrainsAtStation = 0;
                     int32_t numTravelingTrains = 0;
-                    int32_t currentStation = sv->station_id;
+                    auto currentStation = sv->stationIndex;
                     for (int32_t i = 0; i < sv_ride->num_vehicles; i++)
                     {
                         uint16_t spriteIndex = sv_ride->vehicles[i];

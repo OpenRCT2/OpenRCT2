@@ -332,7 +332,7 @@ struct Ride
     uint8_t breakdown_reason_pending;
     uint8_t mechanic_status;
     uint16_t mechanic;
-    uint8_t inspection_station;
+    StationIndex inspection_station;
     uint8_t broken_vehicle;
     uint8_t broken_car;
     uint8_t breakdown_reason;
@@ -393,7 +393,7 @@ private:
     void Update();
     void UpdateChairlift();
     void UpdateSpiralSlide();
-    void UpdateQueueLength(int32_t stationIndex);
+    void UpdateQueueLength(StationIndex stationIndex);
     money32 CalculateIncomePerHour() const;
 
 public:
@@ -434,8 +434,8 @@ public:
     int32_t GetTotalQueueLength() const;
     int32_t GetMaxQueueTime() const;
 
-    void QueueInsertGuestAtFront(int32_t stationIndex, Peep* peep);
-    Peep* GetQueueHeadGuest(int32_t stationIndex) const;
+    void QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep);
+    Peep* GetQueueHeadGuest(StationIndex stationIndex) const;
 
     void SetNameToDefault();
     std::string GetName() const;
@@ -1118,7 +1118,7 @@ extern CoordsXYZD _unkF440C5;
 
 extern uint8_t gRideEntranceExitPlaceType;
 extern ride_id_t gRideEntranceExitPlaceRideIndex;
-extern uint8_t gRideEntranceExitPlaceStationIndex;
+extern StationIndex gRideEntranceExitPlaceStationIndex;
 extern uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
 extern uint8_t gRideEntranceExitPlaceDirection;
 
@@ -1215,7 +1215,7 @@ void ride_get_start_of_track(CoordsXYE* output);
 void window_ride_construction_update_active_elements();
 void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(
-    Ride* ride, const CoordsXY& entranceExitCoords, int32_t direction, int32_t placeType, int32_t stationNum);
+    Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
 
 bool ride_select_backwards_from_front();

@@ -2051,19 +2051,19 @@ int32_t guest_path_finding(Guest* peep)
      * At the same time, count how many entrance stations there are and
      * which stations are entrance stations. */
     auto bestScore = std::numeric_limits<int32_t>::max();
-    uint8_t closestStationNum = 0;
+    StationIndex closestStationNum = 0;
 
     int32_t numEntranceStations = 0;
-    uint8_t entranceStations = 0;
+    std::bitset<MAX_STATIONS> entranceStations = {};
 
-    for (uint8_t stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
+    for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
         if (ride_get_entrance_location(ride, stationNum).isNull())
             continue;
 
         numEntranceStations++;
-        entranceStations |= (1 << stationNum);
+        entranceStations[stationNum] = true;
 
         TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, stationNum);
         auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep->NextLoc });
@@ -2094,11 +2094,24 @@ int32_t guest_path_finding(Guest* peep)
         int32_t select = peep->no_of_rides % numEntranceStations;
         while (select > 0)
         {
-            closestStationNum = bitscanforward(entranceStations);
-            entranceStations &= ~(1 << closestStationNum);
-            select--;
+            for (size_t i = 0; i < entranceStations.size(); i++)
+            {
+                if (entranceStations[i])
+                {
+                    entranceStations[i] = false;
+                    select--;
+                    break;
+                }
+            }
         }
-        closestStationNum = bitscanforward(entranceStations);
+        for (size_t i = 0; i < entranceStations.size(); i++)
+        {
+            if (entranceStations[i])
+            {
+                closestStationNum = i;
+                break;
+            }
+        }
     }
 
     if (numEntranceStations == 0)

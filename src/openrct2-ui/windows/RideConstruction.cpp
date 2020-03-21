@@ -3664,8 +3664,6 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
  */
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
-    uint8_t stationNum;
-
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -3687,7 +3685,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     map_invalidate_selection_rect();
 
     entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
-    stationNum = gRideEntranceExitPlaceStationIndex;
+    StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
     if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
         || entranceOrExitCoords != gRideEntranceExitGhostPosition || stationNum != gRideEntranceExitGhostStationIndex)
     {

@@ -4174,7 +4174,7 @@ void Guest::UpdateRideLeaveVehicle()
                         break;
                 }
 
-                uint8_t stationIndex = inner_map->AsTrack()->GetStationIndex();
+                auto stationIndex = inner_map->AsTrack()->GetStationIndex();
                 if (stationIndex == current_ride_station)
                     break;
             }
@@ -4260,7 +4260,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, current_ride_station);
 
-    uint8_t station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
+    Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
     vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
