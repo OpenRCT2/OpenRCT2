@@ -199,7 +199,6 @@ private:
     uint8_t Edges;          // 8
     uint8_t Flags2;         // 9
     uint8_t SlopeDirection; // 10
-    uint8_t isWideFlags;
 
     union
     {
@@ -207,9 +206,10 @@ private:
         ride_id_t rideIndex;    // 11
     };
     ::StationIndex StationIndex; // 13
+    uint8_t isWideFlags;         // 14
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0E[2];
+    uint8_t pad_0E[1];
 #pragma clang diagnostic pop
 
 public:
@@ -277,7 +277,7 @@ public:
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
 };
-assert_struct_size(PathElement, 17);
+assert_struct_size(PathElement, 16);
 
 struct TrackElement : TileElementBase
 {

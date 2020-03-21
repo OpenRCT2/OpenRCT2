@@ -631,6 +631,7 @@ void map_update_path_wide_flags()
     // progress. A maximum of 128 calls is done per update.
     uint16_t primary = gWidePathTileLoopX;
     uint16_t secondary = gWidePathTileLoopY;
+
     for (int32_t i = 0; i < 128; i++)
     {
         footpath_update_path_wide_flags({ primary, secondary }, WIDE_GROUP_N_SW);

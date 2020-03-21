@@ -1519,7 +1519,7 @@ bool PathElement::IsWide() const
 
 bool PathElement::IsWideForGroup(uint8_t wideGroup) const
 {
-    return (isWideFlags & 1 << wideGroup) != 0;
+    return (isWideFlags & (1 << wideGroup)) != 0;
 }
 
 uint8_t PathElement::GetWideFlags() const
@@ -1538,7 +1538,7 @@ void PathElement::SetWideForGroup(uint8_t wideGroup, bool isWide)
 {
     isWideFlags &= ~(1 << wideGroup);
     if (isWide)
-        isWideFlags |= 1 << wideGroup;
+        isWideFlags |= (1 << wideGroup);
 }
 
 bool PathElement::HasAddition() const
@@ -1649,7 +1649,7 @@ static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
             continue;
         tileElement->AsPath()->SetWideForGroup(wideGroup, false);
 
-        if (!(tileElement->AsPath()->IsWideForGroup(0b00000001)))
+        if (wideGroup == 0 && !(tileElement->AsPath()->IsWideForGroup(0)))
             tileElement->AsPath()->SetWide(false);
 
     } while (!(tileElement++)->IsLastForTile());
@@ -1695,9 +1695,9 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
     /* Rather than clearing the wide flag of the following tiles and
      * checking the state of them later, leave them intact and assume
      * they were cleared. Consequently only the wide flag for this single
-     * tile is modified by this wideGroup.
+     * tile is modified by this update.
      * This is important for avoiding glitches in pathfinding that occurs
-     * between the batches of wideGroups to the path wide flags.
+     * between the batches of updates to the path wide flags.
      * Corresponding pathList[] indexes for the following tiles
      * are: 2, 3, 4, 5.
      * Note: indexes 3, 4, 5 are reset in the current call;
@@ -1738,6 +1738,19 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             auto footpathLoc = CoordsXYZ(footpathPos + CoordsDirectionDelta[direction], height);
             pathList[direction] = footpath_can_be_wide(footpathLoc);
         }
+
+        //if (wideGroup == 0b00000001)
+        //{
+        //    tileElement->AsPath()->SetWideForGroup(0b00000001, tileElement->AsPath()->IsWide());
+        //    for (int32_t direction = 0; direction < 8; direction++)
+        //    {
+        //        if (pathList[direction] == NULL)
+        //        {
+        //        }
+        //        else
+        //            pathList[direction]->AsPath()->SetWideForGroup(0b00000001, pathList[direction]->AsPath()->IsWide());
+        //    }
+        //}
 
         uint8_t pathConnections = 0;
 
@@ -1804,7 +1817,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             pathConnections |= wideGroupSecondaryDirectionConnection;
             /* In the following:
              * footpath_element_is_wide(pathList[wideGroupSecondaryDirection])
-             * is always false due to the tile wideGroup order
+             * is always false due to the tile update order
              * in combination with reset tiles.
              * Commented out since it will never occur. */
             // if (pathList[wideGroupSecondaryDirection] != nullptr) {
@@ -1819,7 +1832,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             pathConnections |= wideGroupPrimaryDirectionConnection;
             /* In the following:
              * footpath_element_is_wide(pathList[wideGroupPrimaryDirection])
-             * is always false due to the tile wideGroup order
+             * is always false due to the tile update order
              * in combination with reset tiles.
              * Commented out since it will never occur. */
             // if (pathList[wideGroupPrimaryDirection] != nullptr) {
@@ -1844,7 +1857,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
 
             /* In the following:
              * footpath_element_is_wide(pathList[wideGroupPrimaryDirection])
-             * is always false due to the tile wideGroup order
+             * is always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             uint8_t edgeMask2 = wideGroupPrimaryReverseEdge | wideGroupSecondaryDirectionEdge;
@@ -1860,7 +1873,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         /* In the following:
          * footpath_element_is_wide(pathList[wideGroupFinalLoopStartCardinal])
          * footpath_element_is_wide(pathList[wideGroupSecondaryDirection])
-         * are always false due to the tile wideGroup order
+         * are always false due to the tile update order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
         if ((pathConnections & wideGroupSecondaryDirectionConnection) && pathList[wideGroupSecondaryDirection] != nullptr)
@@ -1877,7 +1890,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             /* In the following:
              * footpath_element_is_wide(pathList[wideGroupFinalTileCardinal])
              * footpath_element_is_wide(pathList[wideGroupPrimaryDirection])
-             * are always false due to the tile wideGroup order
+             * are always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             uint8_t edgeMask2 = wideGroupPrimaryReverseEdge | wideGroupSecondaryReverseEdge;
@@ -1918,10 +1931,10 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
                  | wideGroupSecondaryReverseConnection)))
         {
             uint8_t e = tileElement->AsPath()->GetEdgesAndCorners();
-            if ((e != 0b10101111) && (e != 0b01011111) && (e != wideGroupPrimaryReverseEdge << 4))
+            if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
                 tileElement->AsPath()->SetWideForGroup(wideGroup, true);
 
-            if (tileElement->AsPath()->IsWideForGroup(0b00000001))
+            if (wideGroup == 0 && tileElement->AsPath()->IsWideForGroup(0))
                 tileElement->AsPath()->SetWide(true);
         }
     } while (!(tileElement++)->IsLastForTile());
