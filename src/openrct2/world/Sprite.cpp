@@ -369,31 +369,11 @@ void ResetFreeSpriteList()
     }
 }
 
-SpriteBase* CreateSpriteAt(SPRITE_IDENTIFIER spriteIdentifier, uint16_t spriteId)
+// Create a sprite without touching the linked lists
+// It is up to the caller to fix the linked lists
+SpriteBase* CreateSpriteAt(uint16_t spriteId)
 {
-    SPRITE_LIST linkedListIndex;
-    switch (spriteIdentifier)
-    {
-        case SPRITE_IDENTIFIER_VEHICLE:
-            linkedListIndex = SPRITE_LIST_VEHICLE;
-            break;
-        case SPRITE_IDENTIFIER_PEEP:
-            linkedListIndex = SPRITE_LIST_PEEP;
-            break;
-        case SPRITE_IDENTIFIER_MISC:
-            linkedListIndex = SPRITE_LIST_MISC;
-            break;
-        case SPRITE_IDENTIFIER_LITTER:
-            linkedListIndex = SPRITE_LIST_LITTER;
-            break;
-        default:
-            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
-            return nullptr;
-    }
-
     SpriteBase* sprite = &(get_sprite(spriteId))->generic;
-
-    move_sprite_to_list(sprite, linkedListIndex);
 
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -433,8 +413,32 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
             return nullptr;
         }
     }
+
     _freeSprites.pop_back();
-    return (rct_sprite*)CreateSpriteAt(spriteIdentifier, gSpriteListHead[SPRITE_LIST_FREE]);
+    auto sprite = CreateSpriteAt(gSpriteListHead[SPRITE_LIST_FREE]);
+
+    SPRITE_LIST linkedListIndex;
+    switch (spriteIdentifier)
+    {
+        case SPRITE_IDENTIFIER_VEHICLE:
+            linkedListIndex = SPRITE_LIST_VEHICLE;
+            break;
+        case SPRITE_IDENTIFIER_PEEP:
+            linkedListIndex = SPRITE_LIST_PEEP;
+            break;
+        case SPRITE_IDENTIFIER_MISC:
+            linkedListIndex = SPRITE_LIST_MISC;
+            break;
+        case SPRITE_IDENTIFIER_LITTER:
+            linkedListIndex = SPRITE_LIST_LITTER;
+            break;
+        default:
+            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
+            return nullptr;
+    }
+    move_sprite_to_list(sprite, linkedListIndex);
+
+    return (rct_sprite*)sprite;
 }
 
 /*

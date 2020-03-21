@@ -1269,8 +1269,8 @@ public:
         for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
         {
             auto src = &_s6.sprites[i];
-            auto dst = get_sprite(i);
-            ImportSprite(dst, src);
+            auto dst = CreateSpriteAt(i);
+            ImportSprite((rct_sprite*)dst, src);
         }
 
         for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
@@ -1285,6 +1285,7 @@ public:
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
     {
+        // Todo: linked_list_index == FREE should be special cased to load a null
         std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
         switch (src->unknown.sprite_identifier)
         {
