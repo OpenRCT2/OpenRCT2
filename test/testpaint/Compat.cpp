@@ -61,8 +61,8 @@ const TileCoordsXY TileDirectionDelta[] = {
 };
 // clang-format on
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex);
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex);
+TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex);
+TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex);
 
 uint8_t get_current_rotation()
 {
@@ -396,12 +396,12 @@ void TrackElement::SetHasChain(bool on)
     }
 }
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex)
 {
     return ride->stations[stationIndex].Entrance;
 }
 
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
+TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex)
 {
     return ride->stations[stationIndex].Exit;
 }
