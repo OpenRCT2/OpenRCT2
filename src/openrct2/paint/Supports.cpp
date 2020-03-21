@@ -11,6 +11,7 @@
 
 #include "../interface/Viewport.h"
 #include "../world/Surface.h"
+#include "../sprites.h"
 #include "Paint.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -213,6 +214,21 @@ static constexpr const uint16_t WoodenCurveSupportImageIds[] = {
     0,
 };
 
+static constexpr const uint16_t WoodenCurveSupportImageIdsG2[] = {
+    SPR_G2_SUPPORT_BEGIN,
+    SPR_G2_SUPPORT_BEGIN,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+};
+
 struct unk_supports_desc_bound_box {
     struct {
         uint8_t x, y, z;
@@ -230,39 +246,39 @@ struct unk_supports_desc {
 
 /* 0x0097B23C */
 static constexpr const unk_supports_desc byte_97B23C[] = {
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Gentle to flat
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Gentle slope
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Gentle to steep
     {{{10, 0,  0}, {10, 32, 44}}, 1, 1},
     {{{0,  10, 0}, {32, 10, 44}}, 1, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep to gentle
     {{{10, 0,  0}, {10, 32, 44}}, 1, 1},
     {{{0,  10, 0}, {32, 10, 44}}, 1, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep slope
     {{{10, 0,  2}, {10, 32, 76}}, 1, 1},
     {{{0,  10, 2}, {32, 10, 76}}, 1, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  4}},  0, 1},//Slope
     {{{0,  0,  0}, {1,  1,  4}},  0, 1},
     {{{0,  0,  0}, {1,  1,  4}},  0, 1},
     {{{0,  0,  0}, {1,  1,  4}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  4}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Flat to steep small
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep to flat small
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -279,6 +295,38 @@ static constexpr const unk_supports_desc byte_97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{2,  2,  1}, {28, 28, 2}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Flat to steep large 1
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Flat to steep large 2
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Flat to steep large 3
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Flat to steep large 4
+    {{{10, 0,  2}, {10, 32, 76}}, 0, 1},
+    {{{0,  10, 2}, {32, 10, 76}}, 0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep to flat large 1
+    {{{10, 0,  2}, {10, 32, 76}}, 0, 1},
+    {{{0,  10, 2}, {32, 10, 76}}, 0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep to flat large 2
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep to flat large 3
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},//Steep to flat large 4
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}
 };
 
 /* 0x0098D8D4 */
@@ -473,10 +521,13 @@ bool wooden_a_supports_paint_setup(
     {
         special = (special - 1) & 0xFFFF;
 
-        int32_t imageId = WoodenCurveSupportImageIds[supportType];
+        int32_t imageId;
+		if(special <= 48)imageId = WoodenCurveSupportImageIds[supportType];
+		else imageId = WoodenCurveSupportImageIdsG2[supportType];
+
         if (imageId != 0 && byte_97B23C[special].var_7 != 0)
         {
-            imageId += special;
+            imageId += special % 49;
             imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
@@ -653,12 +704,16 @@ bool wooden_b_supports_paint_setup(
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        uint32_t imageId = WoodenCurveSupportImageIds[supportType];
+        int32_t imageId;
+		if(special <= 48)imageId = WoodenCurveSupportImageIds[supportType];
+		else imageId = WoodenCurveSupportImageIdsG2[supportType];
+
         unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
 
         if (imageId != 0 && supportsDesc.var_7 != 0)
         { // byte_97B23C[special].var_7 is never 0
-            imageId = (imageId + specialIndex) | imageColourFlags;
+            imageId += specialIndex % 49;
+            imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
