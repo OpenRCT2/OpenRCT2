@@ -437,8 +437,8 @@ namespace OpenRCT2::Audio
 
             for (int32_t i = 0; i < length * 2; i += 2)
             {
-                data[i] = static_cast<float>(data[i]) * volumeL;
-                data[i + 1] = static_cast<float>(data[i + 1]) * volumeR;
+                data[i + 0] = volumeL * static_cast<float>(data[i + 0]);
+                data[i + 1] = volumeR * static_cast<float>(data[i + 1]);
                 volumeL += d_left;
                 volumeR += d_right;
             }
