@@ -184,6 +184,7 @@ public:
 
     bool HasTrackThatNeedsWater() const;
     void SetHasTrackThatNeedsWater(bool on);
+
 };
 assert_struct_size(SurfaceElement, 16);
 
@@ -206,7 +207,7 @@ private:
         ride_id_t rideIndex;    // 11
     };
     ::StationIndex StationIndex; // 13
-    uint8_t isWideFlags;         // 14
+    uint8_t WideFlags;         // 14
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0E[1];
@@ -239,6 +240,7 @@ public:
     bool IsWide() const;
     bool IsWideForGroup(uint8_t wideGroup) const;
     uint8_t GetWideFlags() const;
+    void SetWideFlags(uint8_t flags);
     void SetWide(bool isWide);
     void SetWideForGroup(uint8_t wideGroup, bool isWide);
 
@@ -276,6 +278,7 @@ public:
     void SetShouldDrawPathOverSupports(bool on);
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
+
 };
 assert_struct_size(PathElement, 16);
 

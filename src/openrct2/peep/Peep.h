@@ -42,6 +42,8 @@
 #define PEEP_MAX_NAUSEA 255
 #define PEEP_MAX_THIRST 255
 
+#define NUMBER_OF_WIDEGROUPS 8
+
 constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
 struct TileElement;

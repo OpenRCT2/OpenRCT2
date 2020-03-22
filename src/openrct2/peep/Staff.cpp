@@ -293,6 +293,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
                 pathfound = true;
                 pathcount++;
             }
+
             if (test_element->AsPath()->IsWide())
             {
                 if (!widefound)

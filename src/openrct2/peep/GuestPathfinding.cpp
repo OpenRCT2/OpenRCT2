@@ -600,7 +600,7 @@ static void peep_pathfind_heuristic_search(
     TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
     uint8_t searchResult = PATH_SEARCH_FAILED;
-    uint8_t peepWideGroup = (peep->id) % 8;
+    uint8_t peepWideGroup = (peep->id) % NUMBER_OF_WIDEGROUPS;
     bool currentElementIsWide
         = (currentTileElement->AsPath()->IsWideForGroup(peepWideGroup)
            && !staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, currentTileElement));
@@ -1206,7 +1206,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     bool found = false;
     uint8_t permitted_edges = 0;
     bool isThin = false;
-    uint8_t peepWideGroup = (peep->id) % 8;
+    uint8_t peepWideGroup = (peep->id) % NUMBER_OF_WIDEGROUPS;
     do
     {
         if (dest_tile_element == nullptr)
@@ -1915,7 +1915,7 @@ int32_t guest_path_finding(Guest* peep)
     {
         return guest_surface_path_finding(peep);
     }
-    uint8_t peepWideGroup = (peep->id) % 8;
+    uint8_t peepWideGroup = (peep->id) % NUMBER_OF_WIDEGROUPS;
     if (peep->outside_of_park == 0 && peep->HeadingForRideOrParkExit())
     {
         /* If this tileElement is adjacent to any non-wide paths,

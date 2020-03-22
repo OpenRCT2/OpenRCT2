@@ -28,7 +28,7 @@
 #include "Paint.TileElement.h"
 
 bool gPaintWidePathsAsGhost = false;
-
+int8_t gPaintWideGroupAsGhost = -3;
 // clang-format off
 const uint8_t PathSlopeToLandSlope[] =
 {
@@ -850,10 +850,31 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
-    if (gPaintWidePathsAsGhost && tile_element->AsPath()->IsWideForGroup(gDateMonthTicks / 8192))
+
+    switch (gPaintWideGroupAsGhost)
     {
-        imageFlags &= 0x7FFFF;
-        imageFlags |= CONSTRUCTION_MARKER;
+        case -3:
+            break;
+        case -2:
+            if (tile_element->AsPath()->GetWideFlags() & 0b11111111)
+            {
+                imageFlags &= 0x7FFFF;
+                imageFlags |= CONSTRUCTION_MARKER;
+            }
+            break;
+        case -1:
+            if (tile_element->AsPath()->GetWideFlags() == 0b11111111)
+            {
+                imageFlags &= 0x7FFFF;
+                imageFlags |= CONSTRUCTION_MARKER;
+            }
+            break;
+        default:
+            if (tile_element->AsPath()->IsWideForGroup((gPaintWideGroupAsGhost)))
+            {
+                imageFlags &= 0x7FFFF;
+                imageFlags |= CONSTRUCTION_MARKER;
+            }
     }
 
     auto surface = map_get_surface_element_at(session->MapPosition);

@@ -8,6 +8,8 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <charconv>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -25,7 +27,8 @@ static int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 {
     WIDX_BACKGROUND,
-    WIDX_TOGGLE_SHOW_WIDE_PATHS,
+    WIDX_WIDE_PATH,
+    WIDX_WIDE_PATH_DROPDOWN,
     WIDX_TOGGLE_SHOW_BLOCKED_TILES,
     WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS,
     WIDX_TOGGLE_SHOW_BOUND_BOXES,
@@ -36,25 +39,30 @@ constexpr int32_t WINDOW_WIDTH = 200;
 constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
 
 static rct_widget window_debug_paint_widgets[] = {
-    { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,              WINDOW_HEIGHT - 1,  STR_NONE,                               STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 0,     8 + 15 * 0 + 11,    STR_DEBUG_PAINT_SHOW_WIDE_PATHS,        STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 1,     8 + 15 * 1 + 11,    STR_DEBUG_PAINT_SHOW_BLOCKED_TILES,     STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 2,     8 + 15 * 2 + 11,    STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS,   STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 3,     8 + 15 * 3 + 11,    STR_DEBUG_PAINT_SHOW_BOUND_BOXES,       STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 4,     8 + 15 * 4 + 11,    STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS,     STR_NONE },
+    { WWT_FRAME,    0,  0,                  WINDOW_WIDTH - 1,   0,              WINDOW_HEIGHT - 1,  STR_NONE,                               STR_NONE },
+    { WWT_DROPDOWN, 1,  8,                  WINDOW_WIDTH - 8,   8 + 15 * 0,     8 + 15 * 0 + 11,    STR_DEBUG_PAINT_SHOW_WIDE_PATHS,        STR_NONE }, // Wide Paths
+    { WWT_BUTTON,   1,  WINDOW_WIDTH - 10,  WINDOW_WIDTH - 9,   8 + 15 * 0 + 1, 8 + 15 * 0 + 10,    STR_DROPDOWN_GLYPH, STR_DEBUG_PAINT_SHOW_WIDE_PATHS},
+    { WWT_CHECKBOX, 1,  8,                  WINDOW_WIDTH - 8,   8 + 15 * 1,     8 + 15 * 1 + 11,    STR_DEBUG_PAINT_SHOW_BLOCKED_TILES,     STR_NONE },
+    { WWT_CHECKBOX, 1,  8,                  WINDOW_WIDTH - 8,   8 + 15 * 2,     8 + 15 * 2 + 11,    STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS,   STR_NONE },
+    { WWT_CHECKBOX, 1,  8,                  WINDOW_WIDTH - 8,   8 + 15 * 3,     8 + 15 * 3 + 11,    STR_DEBUG_PAINT_SHOW_BOUND_BOXES,       STR_NONE },
+    { WWT_CHECKBOX, 1,  8,                  WINDOW_WIDTH - 8,   8 + 15 * 4,     8 + 15 * 4 + 11,    STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS,     STR_NONE },
     { WIDGETS_END },
 };
 
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int32_t num_items);
 static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetIndex);
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_debug_paint_invalidate(rct_window * w);
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi);
+static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+
 
 static rct_window_event_list window_debug_paint_events = {
     nullptr,
     window_debug_paint_mouseup,
     nullptr,
-    nullptr,
-    nullptr,
+    window_options_mousedown,
+    window_options_dropdown,
     nullptr,
     nullptr,
     nullptr,
@@ -91,11 +99,11 @@ rct_window* window_debug_paint_open()
         return window;
 
     window = window_create(
-        ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
+        ScreenCoordsXY(16, context_get_height() - ((NUMBER_OF_WIDEGROUPS + 3) * 15 + 8)), WINDOW_WIDTH, WINDOW_HEIGHT,
         &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
-    window->enabled_widgets = (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
+    window->enabled_widgets = (1 << WIDX_WIDE_PATH) | (1 << WIDX_WIDE_PATH_DROPDOWN) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
         | (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) | (1 << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
@@ -107,15 +115,28 @@ rct_window* window_debug_paint_open()
     return window;
 }
 
+static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_WIDE_PATH_DROPDOWN:
+            gPaintWideGroupAsGhost = dropdownIndex - 3;
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
+{
+    window_dropdown_show_text_custom_width(
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+}
+
 static void window_debug_paint_mouseup([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
-        case WIDX_TOGGLE_SHOW_WIDE_PATHS:
-            gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
-            gfx_invalidate_screen();
-            break;
-
         case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
             gPaintBlockedTiles = !gPaintBlockedTiles;
             gfx_invalidate_screen();
@@ -138,6 +159,30 @@ static void window_debug_paint_mouseup([[maybe_unused]] rct_window* w, rct_widge
     }
 }
 
+static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+    switch (widgetIndex)
+    {
+        case WIDX_WIDE_PATH_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_STRINGID;
+            gDropdownItemsArgs[0] = STR_SHOW_WIDE_PATH_NONE;
+            gDropdownItemsFormat[1] = STR_STRINGID;
+            gDropdownItemsArgs[1] = STR_SHOW_WIDE_PATH_ANY;
+            gDropdownItemsFormat[2] = STR_STRINGID;
+            gDropdownItemsArgs[2] = STR_SHOW_WIDE_PATH_ALL;
+            for (uint16_t i = 3; i < NUMBER_OF_WIDEGROUPS + 3; i++)
+            {
+                //         std::array<char, 2> WideGroupChar;
+                //         std::to_chars(WideGroupChar.data(), WideGroupChar.data() + WideGroupChar.size(), i);
+                gDropdownItemsFormat[i] = STR_SHOW_WIDE_PATH_GROUP;
+                gDropdownItemsArgs[i] = i - 3;
+            }
+            window_options_show_dropdown(w, widget, NUMBER_OF_WIDEGROUPS + 3);
+            break;
+    }
+}
+
 static void window_debug_paint_invalidate(rct_window* w)
 {
     const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
@@ -149,7 +194,7 @@ static void window_debug_paint_invalidate(rct_window* w)
 
         // Find the width of the longest string
         int16_t newWidth = 0;
-        for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
+        for (size_t widgetIndex = WIDX_WIDE_PATH; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
         {
             auto stringIdx = w->widgets[widgetIndex].text;
             auto string = ls.GetString(stringIdx);
@@ -158,6 +203,11 @@ static void window_debug_paint_invalidate(rct_window* w)
             newWidth = std::max<int16_t>(width, newWidth);
         }
 
+        newWidth = std::max<int16_t>(gfx_get_string_width(ls.GetString(STR_SHOW_WIDE_PATH_NONE)), newWidth);
+        newWidth = std::max<int16_t>(gfx_get_string_width(ls.GetString(STR_SHOW_WIDE_PATH_ANY)), newWidth);
+        newWidth = std::max<int16_t>(gfx_get_string_width(ls.GetString(STR_SHOW_WIDE_PATH_ALL)), newWidth);
+        newWidth = std::max<int16_t>(gfx_get_string_width(ls.GetString(STR_SHOW_WIDE_PATH_GROUP) + 2), newWidth);
+
         // Add padding for both sides (8) and the offset for the text after the checkbox (15)
         newWidth += 8 * 2 + 15;
 
@@ -165,16 +215,35 @@ static void window_debug_paint_invalidate(rct_window* w)
         w->max_width = newWidth;
         w->min_width = newWidth;
         w->widgets[WIDX_BACKGROUND].right = newWidth - 1;
-        w->widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
+        w->widgets[WIDX_WIDE_PATH].right = newWidth - 8;
+        w->widgets[WIDX_WIDE_PATH_DROPDOWN].right = newWidth - 8;
         w->widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;
         w->widgets[WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS].right = newWidth - 8;
         w->widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
         w->widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
-
-        w->Invalidate();
     }
 
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+    rct_string_id wideGroupStringId = STR_NONE;
+    if (gPaintWideGroupAsGhost == -3)
+    {
+        wideGroupStringId = STR_SHOW_WIDE_PATH_NONE;
+    }
+    else if (gPaintWideGroupAsGhost == -2)
+    {
+        wideGroupStringId = STR_SHOW_WIDE_PATH_ANY;
+    }
+    else if (gPaintWideGroupAsGhost == -1)
+    {
+        wideGroupStringId = STR_SHOW_WIDE_PATH_ALL;
+    }
+    else if (gPaintWideGroupAsGhost >= 0)
+    {
+        wideGroupStringId = STR_SHOW_WIDE_PATH_GROUP;
+    }
+
+    w->widgets[WIDX_WIDE_PATH].text = wideGroupStringId;
+    set_format_arg(0, uint16_t, gPaintWideGroupAsGhost);
+
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
