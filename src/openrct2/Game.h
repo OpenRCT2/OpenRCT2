@@ -145,6 +145,7 @@ extern std::string gCurrentLoadedPath;
 
 extern bool gLoadKeepWindowsOpen;
 
+void game_reset_speed();
 void game_increase_game_speed();
 void game_reduce_game_speed();
 

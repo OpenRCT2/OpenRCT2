@@ -9,6 +9,7 @@
 - Feature: [#10357] Added window for scenery scatter tool, allowing for area and density selection.
 - Feature: [#10637] Console command to remove all floating objects.
 - Change: [#1164] Use available translations for shortcut key bindings.
+- Change: [#10997] Speed is automatically reset to normal upon scenario completion.
 - Fix: [#2485] Hide Vertical Faces not applied to the edges of water.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
 - Fix: [#6766] Changelog window doesn't open on some platforms.

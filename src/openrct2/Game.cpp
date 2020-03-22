@@ -85,6 +85,12 @@ rct_string_id gGameCommandErrorText;
 
 using namespace OpenRCT2;
 
+void game_reset_speed()
+{
+    gGameSpeed = 1;
+    window_invalidate_by_class(WC_TOP_TOOLBAR);
+}
+
 void game_increase_game_speed()
 {
     gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
