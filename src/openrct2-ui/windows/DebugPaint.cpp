@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include <algorithm>
-#include <charconv>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
