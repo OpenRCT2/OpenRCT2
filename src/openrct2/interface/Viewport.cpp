@@ -247,8 +247,7 @@ static void viewport_redraw_after_shift(
         }
 
         // save viewport
-        rct_viewport view_copy;
-        std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
+        rct_viewport view_copy = *viewport;
 
         if (viewport->pos.x < window->windowPos.x)
         {
@@ -300,7 +299,7 @@ static void viewport_redraw_after_shift(
         }
 
         // restore viewport
-        std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
+        *viewport = view_copy;
     }
     else
     {
