@@ -434,8 +434,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
         }
     }
 
-    rct_viewport view_copy;
-    std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
+    rct_viewport view_copy = *viewport;
 
     if (viewport->pos.x < 0)
     {
@@ -454,7 +453,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
 
     if (viewport->width <= 0)
     {
-        std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
+        *viewport = view_copy;
         return;
     }
 
@@ -475,7 +474,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
 
     if (viewport->height <= 0)
     {
-        std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
+        *viewport = view_copy;
         return;
     }
 
@@ -485,7 +484,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
         viewport_shift_pixels(dpi, w, viewport, x_diff, y_diff);
     }
 
-    std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
+    *viewport = view_copy;
 }
 
 // rct2: 0x006E7A15
