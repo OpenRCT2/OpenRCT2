@@ -127,7 +127,7 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
-        auto windowPos = ScreenCoordsXY{ w->x, w->y };
+        auto windowPos = w->windowPos;
         window_close(w);
         w = window_create(windowPos, WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
@@ -152,7 +152,7 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
-        auto windowPos = ScreenCoordsXY{ w->x, w->y };
+        auto windowPos = w->windowPos;
         window_close(w);
         w = window_create(windowPos, WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
@@ -223,8 +223,8 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
         set_format_arg(nameArgLen, money32, _demolishRideCost);
 
-        int32_t x = w->x + WW / 2;
-        int32_t y = w->y + (WH / 2) - 3;
+        int32_t x = w->windowPos.x + WW / 2;
+        int32_t y = w->windowPos.y + (WH / 2) - 3;
         gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
     }
 }
@@ -240,8 +240,8 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
         set_format_arg(nameArgLen, money32, _demolishRideCost / 2);
 
-        int32_t x = w->x + WW / 2;
-        int32_t y = w->y + (WH / 2) - 3;
+        int32_t x = w->windowPos.x + WW / 2;
+        int32_t y = w->windowPos.y + (WH / 2) - 3;
         gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
     }
 }

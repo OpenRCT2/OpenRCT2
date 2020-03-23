@@ -242,10 +242,9 @@ void InGameConsole::Update()
             rct_viewport* mainViewport = window_get_viewport(mainWindow);
             if (mainViewport != nullptr)
             {
-                if (_lastMainViewportX != mainViewport->view_x || _lastMainViewportY != mainViewport->view_y)
+                if (_lastMainViewport != mainViewport->viewPos)
                 {
-                    _lastMainViewportX = mainViewport->view_x;
-                    _lastMainViewportY = mainViewport->view_y;
+                    _lastMainViewport = mainViewport->viewPos;
 
                     gfx_invalidate_screen();
                 }

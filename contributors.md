@@ -6,13 +6,16 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Duncan Frost (duncanspumpkin)
 * Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur) - CI, Linux management
-* Lewis Fox (LRFLEW) - macOS management
-* (zsilencer)
-* Richard Jenkins (rwjuk)
 * Hielke Morsink (Broxzier)
 * Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
 * Tulio Paschoalin Leao (tupaschoal)
+
+## Former development team members
+* Lewis Fox (LRFLEW)
+* Marijn van der Werf (marijnvdwerf)
+* (zsilencer)
+* Richard Jenkins (rwjuk)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
@@ -123,18 +126,10 @@ The following people are not part of the development team, but have been contrib
 * Øystein Dale (oystedal)
 * Christian Schubert (Osmodium)
 * James Lord (RCTMASTA)
-* Brian Massino (Nazey)
-* Lauren Watson (lwatson2016)
-* Jason Myre (jmyre1999)
-* Nicole Wright (nicolewright)
-* Josh Tucker (joshtucker132)
-* Hussein Okasha (Hokasha2016)
-* Brandon Dupree (Bdupree5)
-* Zetao Ye (ZbrettonYe)
-* Jordan Arevalos (Jarevalos2017)
+* Brian Massino (Nazey), Lauren Watson (lwatson2016), Jason Myre (jmyre1999), Nicole Wright (nicolewright), Josh Tucker (joshtucker132)
+* Hussein Okasha (Hokasha2016), Brandon Dupree (Bdupree5), Zetao Ye (ZbrettonYe), Jordan Arevalos (Jarevalos2017)
 * Florian Will (w-flo)
-* Trevor Harkness (tharkne)
-* Steve Xu (stevexu-umich)
+* Trevor Harkness (tharkne), Steve Xu (stevexu-umich)
 * (aw20368)
 * Jim Armstrong (41northstudios)
 * Kenny Castro-Monroy (kennycastro007)
@@ -142,6 +137,7 @@ The following people are not part of the development team, but have been contrib
 * Denis Khabenkov (kodmord)
 * Kevin Laframboise (klaframboise)
 * Tushar Sariya (TusharSariya)
+* (WantDiscussion)
 
 ## Toolchain
 * (Balletie) - macOS

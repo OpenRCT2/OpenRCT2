@@ -49,7 +49,7 @@ static void setup_track_manager_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t object_type = object_entry_get_type(&item->ObjectEntry);
+        uint8_t object_type = item->ObjectEntry.GetType();
         if (object_type == OBJECT_TYPE_RIDE)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
@@ -78,7 +78,7 @@ static void setup_track_designer_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
+        uint8_t objectType = item->ObjectEntry.GetType();
         if (objectType == OBJECT_TYPE_RIDE)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
@@ -133,7 +133,7 @@ void setup_in_use_selection_flags()
             case TILE_ELEMENT_TYPE_TRACK:
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                type = iter.element->AsPath()->GetPathEntryIndex();
+                type = iter.element->AsPath()->GetSurfaceEntryIndex();
                 assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
 
@@ -203,7 +203,8 @@ void setup_in_use_selection_flags()
         const ObjectRepositoryItem* item = &items[i];
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-        uint8_t entryType, entryIndex;
+        uint8_t entryType;
+        ObjectEntryIndex entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex))
         {
             auto flags = Editor::GetSelectedObjectFlags(entryType, entryIndex);
@@ -237,7 +238,7 @@ void sub_6AB211()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = object_entry_get_type(&items[i].ObjectEntry);
+        uint8_t objectType = items[i].ObjectEntry.GetType();
         _numAvailableObjectsForType[objectType]++;
     }
 
@@ -282,7 +283,8 @@ void editor_object_flags_free()
  */
 static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
 {
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
         return;
 
@@ -365,7 +367,7 @@ void reset_selected_object_count_and_size()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = object_entry_get_type(&items[i].ObjectEntry);
+        uint8_t objectType = items[i].ObjectEntry.GetType();
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
             _numSelectedObjectsForType[objectType]++;
@@ -430,7 +432,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
             return 0;
         }
 
-        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
+        uint8_t objectType = item->ObjectEntry.GetType();
         if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2)))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
@@ -457,7 +459,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
             return 1;
         }
 
-        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
+        uint8_t objectType = item->ObjectEntry.GetType();
         uint16_t maxObjects = object_entry_group_counts[objectType];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         {
@@ -510,7 +512,7 @@ bool editor_check_object_group_at_least_one_selected(int32_t checkObjectType)
 
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = object_entry_get_type(&items[i].ObjectEntry);
+        uint8_t objectType = items[i].ObjectEntry.GetType();
         if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
         {
             return true;
@@ -536,7 +538,7 @@ int32_t editor_remove_unused_objects()
                 && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
             {
                 const ObjectRepositoryItem* item = &items[i];
-                uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
+                uint8_t objectType = item->ObjectEntry.GetType();
 
                 if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
                 {

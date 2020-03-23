@@ -331,6 +331,7 @@ public:
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
         }
+        auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
         rct_scenery_entry* wallEntry = get_wall_entry(_wallType);
 
@@ -356,14 +357,13 @@ public:
             }
 
             banner->text = {};
-            banner->colour = 2;
-            banner->text_colour = 2;
+            banner->colour = COLOUR_WHITE;
+            banner->text_colour = COLOUR_WHITE;
             banner->flags = BANNER_FLAG_IS_WALL;
             banner->type = 0;
-            banner->position.x = _loc.x / 32;
-            banner->position.y = _loc.y / 32;
+            banner->position = TileCoordsXY(_loc);
 
-            ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, targetHeight });
+            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
             if (rideIndex != RIDE_ID_NULL)
             {
                 banner->ride_index = rideIndex;
@@ -371,7 +371,7 @@ public:
             }
         }
 
-        uint8_t clearanceHeight = targetHeight / 8;
+        uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
             clearanceHeight += 2;
@@ -381,7 +381,7 @@ public:
         bool wallAcrossTrack = false;
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
         {
-            auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
+            auto result = WallCheckObstruction(wallEntry, targetHeight / COORDS_Z_STEP, clearanceHeight, &wallAcrossTrack);
             if (result->Error != GA_ERROR::OK)
             {
                 return result;
@@ -392,11 +392,10 @@ public:
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
-
-        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0b0000);
+        TileElement* tileElement = tile_element_insert(targetLoc, 0b0000);
         assert(tileElement != nullptr);
 
-        map_animation_create(MAP_ANIMATION_TYPE_WALL, CoordsXYZ{ _loc, targetHeight });
+        map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
 
         tileElement->SetType(TILE_ELEMENT_TYPE_WALL);
         WallElement* wallElement = tileElement->AsWall();

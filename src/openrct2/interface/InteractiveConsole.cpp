@@ -654,13 +654,9 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 get_map_coordinates_from_pos(
                     { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
                     &interactionType, &tileElement, nullptr);
-                mapCoord.x -= 16;
-                mapCoord.x /= 32;
-                mapCoord.y -= 16;
-                mapCoord.y /= 32;
-                mapCoord.x++;
-                mapCoord.y++;
-                console.WriteFormatLine("location %d %d", mapCoord.x, mapCoord.y);
+
+                auto tileMapCoord = TileCoordsXY(mapCoord);
+                console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
             }
         }
         else if (argv[0] == "window_scale")
@@ -905,10 +901,9 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             rct_window* w = window_get_main();
             if (w != nullptr)
             {
-                int32_t x = (int16_t)(int_val[0] * 32 + 16);
-                int32_t y = (int16_t)(int_val[1] * 32 + 16);
-                int32_t z = tile_element_height({ x, y });
-                w->SetLocation(x, y, z);
+                auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
+                location.z = tile_element_height(location);
+                w->SetLocation(location.x, location.y, location.z);
                 viewport_update_position(w);
                 console.Execute("get location");
             }
@@ -1081,9 +1076,9 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             console.WriteLineError("Unable to load object.");
             return 1;
         }
-        uint32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8_t objectType = object_entry_get_type(entry);
+        uint8_t objectType = entry->GetType();
         if (objectType == OBJECT_TYPE_RIDE)
         {
             // Automatically research the ride so it's supported by the game.
@@ -1194,6 +1189,13 @@ static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unu
 {
     int32_t result = editor_remove_unused_objects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
+    return 0;
+}
+
+static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arguments_t& argv)
+{
+    uint16_t result = remove_floating_sprites();
+    console.WriteFormatLine("Removed %d flying objects", result);
     return 0;
 }
 
@@ -1680,6 +1682,7 @@ static constexpr const console_command console_command_table[] = {
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
+    { "remove_floating_objects", cc_remove_floating_objects, "Removes floating objects", "remove_floating_objects"},
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },

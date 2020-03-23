@@ -83,6 +83,8 @@ if (WIN32)
         else ()
             find_library(SDL2_LDFLAGS sdl2)
         endif ()
+        # Hardcode some of the libraries used by mingw builds
+        target_link_libraries(${PROJECT} imm32 winmm setupapi version)
     endif ()
 endif ()
 if (MSVC)

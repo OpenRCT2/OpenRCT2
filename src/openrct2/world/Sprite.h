@@ -68,6 +68,7 @@ struct Duck : SpriteGeneric
     void UpdateFlyAway();
     uint32_t GetFrameImage(int32_t direction) const;
     void Invalidate();
+    bool IsFlying();
     void Remove();
     void MoveTo(const CoordsXYZ& destination);
 };
@@ -194,9 +195,11 @@ enum
 rct_sprite* try_get_sprite(size_t spriteIndex);
 rct_sprite* get_sprite(size_t sprite_idx);
 
-extern uint16_t gSpriteListHead[6];
-extern uint16_t gSpriteListCount[6];
-extern uint16_t gSpriteSpatialIndex[0x10001];
+extern uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
+extern uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
+constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
+constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
+extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 extern const rct_string_id litterNames[12];
 
@@ -214,6 +217,7 @@ void invalidate_sprite_2(SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
 void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);
+uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z);
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z);
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y);

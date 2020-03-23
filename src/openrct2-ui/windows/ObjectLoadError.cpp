@@ -346,8 +346,7 @@ static bool _updatedListAfterDownload;
 static rct_string_id get_object_type_string(const rct_object_entry* entry)
 {
     rct_string_id result;
-    uint8_t objectType = object_entry_get_type(entry);
-    switch (objectType)
+    switch (entry->GetType())
     {
         case OBJECT_TYPE_RIDE:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
@@ -560,12 +559,14 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
 
     // Draw explanatory message
     set_format_arg(0, rct_string_id, STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, w->x + 5, w->y + 18, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
+    gfx_draw_string_left_wrapped(
+        dpi, gCommonFormatArgs, w->windowPos.x + 5, w->windowPos.y + 18, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Draw file name
     set_format_arg(0, rct_string_id, STR_OBJECT_ERROR_WINDOW_FILE);
     set_format_arg(2, utf8*, file_path.c_str());
-    gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 5, w->y + 43, WW - 5);
+    gfx_draw_string_left_clipped(
+        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 5, w->windowPos.y + 43, WW - 5);
 }
 
 static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

@@ -3657,6 +3657,7 @@ STR_6325    :{SMALLFONT}{BLACK}Simula l'atracció
 STR_6326    :No es pot simular {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :{SMALLFONT}{BLACK}Si s'activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

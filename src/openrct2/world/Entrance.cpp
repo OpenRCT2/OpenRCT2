@@ -255,12 +255,12 @@ void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
     SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
-uint8_t EntranceElement::GetPathType() const
+PathSurfaceIndex EntranceElement::GetPathType() const
 {
-    return pathType;
+    return PathType;
 }
 
-void EntranceElement::SetPathType(uint8_t newPathType)
+void EntranceElement::SetPathType(PathSurfaceIndex newPathType)
 {
-    pathType = newPathType;
+    PathType = newPathType;
 }

@@ -794,10 +794,10 @@ private:
                 auto vp = original_w->viewport;
                 if (vp != nullptr)
                 {
-                    left = std::max<int16_t>(left, vp->x);
-                    right = std::min<int16_t>(right, vp->x + vp->width);
-                    top = std::max<int16_t>(top, vp->y);
-                    bottom = std::min<int16_t>(bottom, vp->y + vp->height);
+                    left = std::max<int16_t>(left, vp->pos.x);
+                    right = std::min<int16_t>(right, vp->pos.x + vp->width);
+                    top = std::max<int16_t>(top, vp->pos.y);
+                    bottom = std::min<int16_t>(bottom, vp->pos.y + vp->height);
                     if (left < right && top < bottom)
                     {
                         auto width = right - left;
@@ -809,7 +809,7 @@ private:
             }
 
             w = it->get();
-            if (right <= w->x || bottom <= w->y)
+            if (right <= w->windowPos.x || bottom <= w->windowPos.y)
             {
                 continue;
             }
@@ -819,14 +819,14 @@ private:
                 continue;
             }
 
-            if (left >= w->x)
+            if (left >= w->windowPos.x)
             {
                 break;
             }
 
-            DrawRainWindow(rainDrawer, original_w, left, w->x, top, bottom, drawFunc);
+            DrawRainWindow(rainDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
 
-            left = w->x;
+            left = w->windowPos.x;
             DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
@@ -841,11 +841,11 @@ private:
             return;
         }
 
-        if (top < w->y)
+        if (top < w->windowPos.y)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w->y, drawFunc);
+            DrawRainWindow(rainDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
 
-            top = w->y;
+            top = w->windowPos.y;
             DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }

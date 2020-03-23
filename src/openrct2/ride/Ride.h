@@ -32,7 +32,6 @@ struct Staff;
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
 #define MAX_VEHICLES_PER_RIDE 31
-#define RIDE_ENTRY_INDEX_NULL 255
 #define NUM_COLOUR_SCHEMES 4
 #define MAX_CATEGORIES_PER_RIDE 2
 #define DOWNTIME_HISTORY_SIZE 8
@@ -46,6 +45,10 @@ struct Staff;
 constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
 constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
 constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
+
+constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
+
+constexpr const ObjectEntryIndex RIDE_ENTRY_INDEX_NULL = OBJECT_ENTRY_INDEX_NULL;
 
 #pragma pack(push, 1)
 
@@ -161,7 +164,7 @@ struct rct_ride_entry
 
 struct RideStation
 {
-    TileCoordsXY Start;
+    CoordsXY Start;
     uint8_t Height;
     uint8_t Length;
     uint8_t Depart;
@@ -471,15 +474,6 @@ struct ride_name_args
 assert_struct_size(ride_name_args, 4);
 
 #pragma pack(pop)
-
-/*
- * This array should probably be only 91 + 128 * 3 = 475 bytes long.
- * It was originally stored at address 0x009E32F8 and continued until 0x009E34E3
- * (inclusive). 0x009E34E4 is the address of s6 header, so it's likely it had
- * some padding at the end as well.
- */
-#define TYPE_TO_RIDE_ENTRY_SLOTS 492
-extern uint8_t gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 
 // Constants used by the lifecycle_flags property at 0x1D0
 enum
@@ -851,7 +845,7 @@ enum ride_type_flags : uint32_t
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,
-    RIDE_TYPE_FLAG_3 = 1 << 3,
+    RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION = 1 << 3, // Set by flat rides, tower rides and shops/stalls.
     RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
     RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
     RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6, // used only by boat Hire and submarine ride
@@ -867,7 +861,8 @@ enum ride_type_flags : uint32_t
     RIDE_TYPE_FLAG_NO_VEHICLES = 1 << 13, // used only by maze, spiral slide and shops
     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
     RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
-    RIDE_TYPE_FLAG_16 = 1 << 16, // something to do with vehicle colour scheme
+    RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = 1 << 16, // Set by flat rides where the vehicle is integral to the structure, like
+                                                  // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
     RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
     RIDE_TYPE_FLAG_TRACK_NO_WALLS = 1 << 18, // if set, wall scenery can not share a tile with the ride's track
     RIDE_TYPE_FLAG_FLAT_RIDE = 1 << 19,
@@ -882,8 +877,8 @@ enum ride_type_flags : uint32_t
     RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = 1 << 26, // whether or not vehicle colours can be set
     RIDE_TYPE_FLAG_CHECK_FOR_STALLING = 1 << 27,
     RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
-    RIDE_TYPE_FLAG_29 = 1 << 29,               // used only by lift
-    RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30, // whether the ride supports large (45 degree turn) curves
+    RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = 1 << 29, // Only set by lift
+    RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30,        // whether the ride supports large (45 degree turn) curves
     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
 };
 // Hack for MSVC which thinks RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31 is signed and generates narrowing
@@ -1154,8 +1149,6 @@ TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
-uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType);
-void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurements_update();
 std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride);
 void ride_breakdown_add_news_item(Ride* ride);
@@ -1172,7 +1165,7 @@ int32_t ride_music_params_update(
     const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
 void ride_music_update_final();
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
-TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex);
+TileElement* ride_get_station_start_track_element(Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
 void ride_set_status(Ride* ride, int32_t status);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);

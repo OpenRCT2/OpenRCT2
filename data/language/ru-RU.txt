@@ -2605,6 +2605,7 @@ STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6164    :{WHITE}❌
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 # This language is unmaintained. All untranslated strings have been removed. 
 # If you intend to become the maintainer, please copy the missing strings from en-GB.txt and translate them.

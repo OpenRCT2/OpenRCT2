@@ -248,23 +248,23 @@ static void virtual_floor_get_tile_properties(
 
         if (elementType == TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (height < tileElement->clearance_height)
+            if (height < tileElement->GetClearanceZ())
             {
                 *outBelowGround = true;
             }
-            else if (height < tileElement->base_height + 2 && tileElement->AsSurface()->GetSlope() != 0)
+            else if (height < (tileElement->GetBaseZ() + LAND_HEIGHT_STEP) && tileElement->AsSurface()->GetSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;
             }
-            if (height > tileElement->base_height)
+            if (height > tileElement->GetBaseZ())
             {
                 *aboveGround = true;
             }
             continue;
         }
 
-        if (height >= tileElement->clearance_height || height < tileElement->base_height)
+        if (height >= tileElement->GetClearanceZ() || height < tileElement->GetBaseZ())
         {
             continue;
         }
@@ -289,10 +289,10 @@ static void virtual_floor_get_tile_properties(
 void virtual_floor_paint(paint_session* session)
 {
     static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
-        { -32, 0 },
-        { 0, 32 },
-        { 32, 0 },
-        { 0, -32 },
+        { -COORDS_XY_STEP, 0 },
+        { 0, COORDS_XY_STEP },
+        { COORDS_XY_STEP, 0 },
+        { 0, -COORDS_XY_STEP },
     };
 
     if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
@@ -303,7 +303,7 @@ void virtual_floor_paint(paint_session* session)
     // This is a virtual floor, so no interactions
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    int16_t virtualFloorClipHeight = _virtualFloorHeight / 8;
+    int16_t virtualFloorClipHeight = _virtualFloorHeight;
 
     // Check for occupation and walls
     bool weAreOccupied;
@@ -325,9 +325,9 @@ void virtual_floor_paint(paint_session* session)
 
     // Try the four tiles next to us for the same parameters as above,
     //  if our parameters differ we set an edge towards that tile
-    for (uint8_t i = 0; i < 4; i++)
+    for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
     {
-        uint8_t effectiveRotation = (4 + i - direction) % 4;
+        uint8_t effectiveRotation = (NumOrthogonalDirections + i - direction) % NumOrthogonalDirections;
         CoordsXY theirLocation = session->MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
@@ -341,7 +341,7 @@ void virtual_floor_paint(paint_session* session)
             theirLocation, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges, &theyAreBelowGround,
             &theyAreAboveGround, &theyAreLit);
 
-        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % 4)) && (weAreOwned && !theyAreOwned))
+        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % NumOrthogonalDirections)) && (weAreOwned && !theyAreOwned))
         {
             occupiedEdges |= 1 << i;
         }
@@ -355,9 +355,9 @@ void virtual_floor_paint(paint_session* session)
         }
     }
 
-    uint32_t remap_base = COLOUR_DARK_PURPLE << 19 | IMAGE_TYPE_REMAP;
-    uint32_t remap_edge = COLOUR_WHITE << 19 | IMAGE_TYPE_REMAP;
-    uint32_t remap_lit = COLOUR_DARK_BROWN << 19 | IMAGE_TYPE_REMAP;
+    uint32_t remap_base = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_PURPLE);
+    uint32_t remap_edge = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_WHITE);
+    uint32_t remap_lit = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_BROWN);
 
     // Edges which are internal to objects (i.e., the tile on both sides
     //  is occupied/lit) are not rendered to provide visual clarity.

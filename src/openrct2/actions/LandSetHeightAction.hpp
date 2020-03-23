@@ -135,8 +135,8 @@ public:
                 }
             }
             if (!map_can_construct_with_clear_at(
-                    { _coords, _height * 8, zCorner * 8 }, &map_set_land_height_clear_func, { 0b1111, 0 }, 0, nullptr,
-                    CREATE_CROSSING_MODE_NONE))
+                    { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func,
+                    { 0b1111, 0 }, 0, nullptr, CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);

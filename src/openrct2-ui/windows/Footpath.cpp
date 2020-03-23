@@ -616,19 +616,21 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image += pathType->image;
 
         // Draw construction image
-        int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        int32_t y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
+        int32_t x = w->windowPos.x
+            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+        int32_t y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
         gfx_draw_sprite(dpi, image, x, y, 0);
 
         // Draw build this... label
-        x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
+        x = w->windowPos.x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+        y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, nullptr);
     }
 
     // Draw cost
-    int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-    int32_t y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
+    int32_t x = w->windowPos.x
+        + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+    int32_t y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
     if (_window_footpath_cost != MONEY32_UNDEFINED)
     {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -644,10 +646,10 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues)
 {
-    int32_t i, numPathTypes, image;
+    int32_t i, image;
     PathSurfaceEntry* pathType;
 
-    numPathTypes = 0;
+    uint32_t numPathTypes = 0;
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
 
@@ -675,9 +677,10 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         numPathTypes++;
     }
 
+    auto itemsPerRow = dropdown_get_appropriate_image_dropdown_items_per_row(numPathTypes);
     window_dropdown_show_image(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, numPathTypes, 47, 36,
-        gAppropriateImageDropdownItemsPerRow[numPathTypes]);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+        numPathTypes, 47, 36, itemsPerRow);
 }
 
 /**
@@ -949,7 +952,7 @@ static void window_footpath_start_bridge_at_point(const ScreenCoordsXY& screenCo
     _window_footpath_provisional_path_arrow_timer = 0;
     gFootpathConstructSlope = 0;
     gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
-    gFootpathConstructValidDirections = 255;
+    gFootpathConstructValidDirections = INVALID_DIRECTION;
     window_footpath_set_enabled_and_pressed_widgets();
 }
 
@@ -975,7 +978,7 @@ static void window_footpath_construct()
 
             if (gFootpathConstructSlope == 0)
             {
-                gFootpathConstructValidDirections = 0xFF;
+                gFootpathConstructValidDirections = INVALID_DIRECTION;
             }
             else
             {
@@ -1047,7 +1050,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
     gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
     gFootpathConstructFromPosition.z = z;
     gFootpathConstructDirection = edge;
-    gFootpathConstructValidDirections = 255;
+    gFootpathConstructValidDirections = INVALID_DIRECTION;
 }
 
 /**
@@ -1065,7 +1068,7 @@ static TileElement* footpath_get_tile_element_to_remove()
     }
 
     z = std::min(255 * COORDS_Z_STEP, gFootpathConstructFromPosition.z);
-    zLow = z - (2 * COORDS_Z_STEP);
+    zLow = z - PATH_HEIGHT_STEP;
 
     tileElement = map_get_first_element_at(gFootpathConstructFromPosition);
     do
@@ -1177,7 +1180,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
         // Enable / disable directional widgets
         direction = gFootpathConstructValidDirections;
-        if (direction != 255)
+        if (direction != INVALID_DIRECTION)
         {
             disabledWidgets |= (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW)
                 | (1 << WIDX_DIRECTION_SE);

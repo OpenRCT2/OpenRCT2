@@ -17,38 +17,42 @@
 #include <string>
 #include <string_view>
 
-#define RCT12_MAX_RIDES_IN_PARK 255
-#define RCT12_MAX_AWARDS 4
-#define RCT12_MAX_NEWS_ITEMS 61
-#define RCT12_MAX_STATIONS_PER_RIDE 4
-#define RCT12_MAX_PEEP_SPAWNS 2
-#define RCT12_MAX_PARK_ENTRANCES 4
+constexpr const uint8_t RCT12_MAX_RIDES_IN_PARK = 255;
+constexpr const uint8_t RCT12_MAX_AWARDS = 4;
+constexpr const uint8_t RCT12_MAX_NEWS_ITEMS = 61;
+constexpr const uint8_t RCT12_MAX_STATIONS_PER_RIDE = 4;
+constexpr const uint8_t RCT12_MAX_PEEP_SPAWNS = 2;
+constexpr const uint8_t RCT12_MAX_PARK_ENTRANCES = 4;
 // The number of elements in the patrol_areas array per staff member. Every bit in the array represents a 4x4 square.
 // In RCT1, that's an 8-bit array. 8 * 128 = 1024 bits, which is also the number of 4x4 squares on a 128x128 map.
 // For RCT2, it's a 32-bit array. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
-#define RCT12_PATROL_AREA_SIZE 128
-#define RCT12_STAFF_TYPE_COUNT 4
-#define RCT12_NUM_COLOUR_SCHEMES 4
-#define RCT12_MAX_VEHICLE_COLOURS 32
-#define RCT12_SOUND_ID_NULL 0xFF
+constexpr const uint8_t RCT12_PATROL_AREA_SIZE = 128;
+constexpr const uint8_t RCT12_STAFF_TYPE_COUNT = 4;
+constexpr const uint8_t RCT12_NUM_COLOUR_SCHEMES = 4;
+constexpr const uint8_t RCT12_MAX_VEHICLE_COLOURS = 32;
+constexpr const uint8_t RCT12_SOUND_ID_NULL = 0xFF;
 
-#define RCT12_EXPENDITURE_TABLE_MONTH_COUNT 16
-#define RCT12_EXPENDITURE_TYPE_COUNT 14
-#define RCT12_FINANCE_GRAPH_SIZE 128
+constexpr const uint8_t RCT12_EXPENDITURE_TABLE_MONTH_COUNT = 16;
+constexpr const uint8_t RCT12_EXPENDITURE_TYPE_COUNT = 14;
+constexpr const uint8_t RCT12_FINANCE_GRAPH_SIZE = 128;
 
-#define RCT12_MAX_USER_STRINGS 1024
-#define RCT12_USER_STRING_MAX_LENGTH 32
+constexpr const uint16_t RCT12_MAX_USER_STRINGS = 1024;
+constexpr const uint8_t RCT12_USER_STRING_MAX_LENGTH = 32;
 
-#define RCT12_PEEP_MAX_THOUGHTS 5
+constexpr const uint8_t RCT12_PEEP_MAX_THOUGHTS = 5;
 
-#define RCT12_RIDE_ID_NULL 255
-#define RCT12_RIDE_MEASUREMENT_MAX_ITEMS 4800
+constexpr const uint8_t RCT12_RIDE_ID_NULL = 255;
+constexpr const uint16_t RCT12_RIDE_MEASUREMENT_MAX_ITEMS = 4800;
 
 constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
 constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
+
+constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
+constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
+constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
@@ -65,6 +69,17 @@ enum class RCT12TrackDesignVersion : uint8_t
     TD4_AA,
     TD6,
     unknown
+};
+
+enum
+{
+    RCT12_TILE_ELEMENT_FLAG_GHOST = (1 << 4),
+    RCT12_TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
+    RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
+    RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
+    RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
+    RCT12_TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
+    RCT12_TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 
 enum
@@ -92,6 +107,24 @@ enum
 
     RCT12_TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
     RCT12_TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
+};
+
+// Masks and flags for values stored in TileElement.properties.path.type
+enum
+{
+    RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
+    RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
+    RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
+    RCT12_FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+};
+
+// Masks and flags for values stored in in RCT12TileElement.properties.path.additions
+enum
+{
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+    // The most significant bit in this mask will always be zero, since rides can only have 4 stations
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
+    RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
 };
 
 #pragma pack(push, 1)
@@ -224,9 +257,15 @@ struct RCT12TileElementBase
     uint8_t clearance_height; // 3
     uint8_t GetType() const;
     uint8_t GetDirection() const;
-    bool IsLastForTile() const;
-    bool IsGhost() const;
     void SetDirection(uint8_t direction);
+
+    uint8_t GetOccupiedQuadrants() const;
+    void SetOccupiedQuadrants(uint8_t quadrants);
+
+    bool IsLastForTile() const;
+    void SetLastForTile(bool on);
+    bool IsGhost() const;
+    void SetGhost(bool isGhost);
 };
 /**
  * Map element structure
@@ -347,6 +386,12 @@ public:
     void SetAddition(uint8_t newAddition);
     void SetAdditionIsGhost(bool isGhost);
     void SetAdditionStatus(uint8_t newStatus);
+
+    bool IsBroken() const;
+    void SetIsBroken(bool isBroken);
+
+    bool IsBlockedByVehicle() const;
+    void SetIsBlockedByVehicle(bool isBlocked);
 };
 assert_struct_size(RCT12PathElement, 8);
 struct RCT12TrackElement : RCT12TileElementBase
@@ -401,12 +446,16 @@ public:
     void SetHasChain(bool on);
     void SetHasCableLift(bool on);
     void SetInverted(bool inverted);
+    bool BlockBrakeClosed() const;
     void SetBlockBrakeClosed(bool isClosed);
     void SetBrakeBoosterSpeed(uint8_t speed);
     void SetHasGreenLight(uint8_t greenLight);
     void SetSeatRotation(uint8_t newSeatRotation);
     void SetMazeEntry(uint16_t newMazeEntry);
     void SetPhotoTimeout(uint8_t newValue);
+
+    bool IsIndestructible() const;
+    void SetIsIndestructible(bool isIndestructible);
 };
 assert_struct_size(RCT12TrackElement, 8);
 struct RCT12SmallSceneryElement : RCT12TileElementBase

@@ -246,9 +246,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             break;
         }
 
-        // TODO move to RCT2 limit
-        constexpr auto TD6MaxTrackElements = 8192;
-
         if (track_elements.size() > TD6MaxTrackElements)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -371,8 +368,8 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
                 TrackDesignMazeElement maze{};
 
                 maze.maze_entry = tileElement->AsTrack()->GetMazeEntry();
-                maze.x = (x - startLoc.x) / 32;
-                maze.y = (y - startLoc.y) / 32;
+                maze.x = (x - startLoc.x) / COORDS_XY_STEP;
+                maze.y = (y - startLoc.y) / COORDS_XY_STEP;
                 _saveDirection = tileElement->GetDirection();
                 maze_elements.push_back(maze);
 
@@ -489,7 +486,7 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
     // Run an element loop
     for (auto& scenery : scenery_elements)
     {
-        switch (object_entry_get_type(&scenery.scenery_object))
+        switch (scenery.scenery_object.GetType())
         {
             case OBJECT_TYPE_PATHS:
             {
@@ -531,7 +528,9 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
             }
         }
 
-        CoordsXY sceneryMapPos{ scenery.x * 32 - gTrackPreviewOrigin.x, scenery.y * 32 - gTrackPreviewOrigin.y };
+        // Cast the value into a uint8_t as this value is not signed yet.
+        auto sceneryPos = TileCoordsXY(static_cast<uint8_t>(scenery.x), static_cast<uint8_t>(scenery.y)).ToCoordsXY();
+        CoordsXY sceneryMapPos = sceneryPos - gTrackPreviewOrigin;
         CoordsXY rotatedSceneryMapPos = sceneryMapPos.Rotate(0 - _saveDirection);
         TileCoordsXY sceneryTilePos{ rotatedSceneryMapPos };
 
@@ -543,8 +542,8 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
         scenery.x = static_cast<int8_t>(sceneryTilePos.x);
         scenery.y = static_cast<int8_t>(sceneryTilePos.y);
 
-        int32_t z = scenery.z * 8 - gTrackPreviewOrigin.z;
-        z /= 8;
+        int32_t z = scenery.z * COORDS_Z_STEP - gTrackPreviewOrigin.z;
+        z /= COORDS_Z_STEP;
         if (z > 127 || z < -126)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -657,19 +656,20 @@ static void track_design_mirror_scenery(TrackDesign* td6)
 {
     for (auto& scenery : td6->scenery_elements)
     {
-        uint8_t entry_type{ 0 }, entry_index{ 0 };
-        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
+        uint8_t entry_type{ 0 };
+        ObjectEntryIndex entryIndex{ 0 };
+        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entryIndex))
         {
-            entry_type = object_entry_get_type(&scenery.scenery_object);
+            entry_type = scenery.scenery_object.GetType();
             if (entry_type != OBJECT_TYPE_PATHS)
             {
                 continue;
             }
 
-            entry_index = 0;
+            entryIndex = 0;
         }
 
-        rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entry_index);
+        rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entryIndex);
         switch (entry_type)
         {
             case OBJECT_TYPE_LARGE_SCENERY:
@@ -856,11 +856,11 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
 }
 
 static bool TrackDesignPlaceSceneryElementGetEntry(
-    uint8_t& entry_type, uint8_t& entry_index, const TrackDesignSceneryElement& scenery)
+    uint8_t& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
 {
     if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
     {
-        entry_type = object_entry_get_type(&scenery.scenery_object);
+        entry_type = scenery.scenery_object.GetType();
         if (entry_type != OBJECT_TYPE_PATHS)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
@@ -899,7 +899,8 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
     {
         return true;
@@ -910,7 +911,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
         return true;
     }
 
-    int32_t z = (scenery.z * 8 + originZ) / 8;
+    int32_t z = (scenery.z * COORDS_Z_STEP) + originZ;
     uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
@@ -932,17 +933,17 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z * 8 }, quadrant, entry_index);
+            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entry_index);
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
-            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z * 8, sceneryRotation }, 0);
+            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
             break;
         case OBJECT_TYPE_WALLS:
-            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z * 8, sceneryRotation });
+            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case OBJECT_TYPE_PATHS:
-            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z * 8 });
+            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
             return true;
@@ -954,13 +955,14 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
 
 static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElement& scenery)
 {
-    int32_t z = scenery.z * 8 + _trackDesignPlaceZ;
+    int32_t z = scenery.z * COORDS_Z_STEP + _trackDesignPlaceZ;
     if (z < _trackDesignPlaceSceneryZ)
     {
         _trackDesignPlaceSceneryZ = z;
     }
 
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
 
     return true;
@@ -989,7 +991,8 @@ static bool TrackDesignPlaceSceneryElement(
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        uint8_t entry_type, entry_index;
+        uint8_t entry_type;
+        ObjectEntryIndex entry_index;
         if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
         {
             return true;
@@ -1015,7 +1018,7 @@ static bool TrackDesignPlaceSceneryElement(
 
                 rotation += scenery.flags;
                 rotation &= 3;
-                z = scenery.z * 8 + originZ;
+                z = scenery.z * COORDS_Z_STEP + originZ;
                 quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
 
                 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
@@ -1061,7 +1064,7 @@ static bool TrackDesignPlaceSceneryElement(
                 rotation += scenery.flags;
                 rotation &= 3;
 
-                z = scenery.z * 8 + originZ;
+                z = scenery.z * COORDS_Z_STEP + originZ;
 
                 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
                 if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1099,7 +1102,7 @@ static bool TrackDesignPlaceSceneryElement(
                     return true;
                 }
 
-                z = scenery.z * 8 + originZ;
+                z = scenery.z * COORDS_Z_STEP + originZ;
                 rotation += scenery.flags;
                 rotation &= 3;
 
@@ -1135,7 +1138,7 @@ static bool TrackDesignPlaceSceneryElement(
                     return true;
                 }
 
-                z = (scenery.z * 8 + originZ) / 8;
+                z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
                     if (scenery.flags & (1 << 7))
@@ -1170,7 +1173,7 @@ static bool TrackDesignPlaceSceneryElement(
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * 8 }, slope, entry_index, edges);
+                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges);
                     footpathPlaceAction.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);
@@ -1257,11 +1260,11 @@ static int32_t track_design_place_all_scenery(
         for (const auto& scenery : sceneryList)
         {
             uint8_t rotation = _currentTrackPieceDirection;
-            TileCoordsXY tileCoords = { originX / 32, originY / 32 };
+            TileCoordsXY tileCoords = { originX / COORDS_XY_STEP, originY / COORDS_XY_STEP };
             TileCoordsXY offsets = { scenery.x, scenery.y };
             tileCoords += offsets.Rotate(rotation);
 
-            CoordsXY mapCoord = { tileCoords.x * 32, tileCoords.y * 32 };
+            CoordsXY mapCoord = tileCoords.ToCoordsXY();
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
             if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, originZ))
@@ -1288,7 +1291,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
     for (const auto& maze_element : td6->maze_elements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        CoordsXY mazeMapPos{ maze_element.x * 32, maze_element.y * 32 };
+        CoordsXY mazeMapPos = TileCoordsXY(maze_element.x, maze_element.y).ToCoordsXY();
         auto mapCoord = mazeMapPos.Rotate(rotation);
         mapCoord.x += x;
         mapCoord.y += y;
@@ -1432,10 +1435,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
             int16_t surfaceZ = surfaceElement->GetBaseZ();
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
-                surfaceZ += 16;
+                surfaceZ += LAND_HEIGHT_STEP;
                 if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
-                    surfaceZ += 16;
+                    surfaceZ += LAND_HEIGHT_STEP;
                 }
             }
 
@@ -1596,10 +1599,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
                     if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
-                        surfaceZ += 16;
+                        surfaceZ += LAND_HEIGHT_STEP;
                         if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                         {
-                            surfaceZ += 16;
+                            surfaceZ += LAND_HEIGHT_STEP;
                         }
                     }
 
@@ -1663,7 +1666,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 {
                     auto tile = CoordsXY{ x, y } + CoordsDirectionDelta[rotation];
                     TileElement* tile_element = map_get_first_element_at(tile);
-                    z = gTrackPreviewOrigin.z / 8;
+                    z = gTrackPreviewOrigin.z / COORDS_Z_STEP;
                     z += entrance.z;
                     if (tile_element == nullptr)
                     {
@@ -1719,7 +1722,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 }
                 else
                 {
-                    z = entrance.z * 8;
+                    z = entrance.z * COORDS_Z_STEP;
                     z += gTrackPreviewOrigin.z;
 
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ x, y, z }, false);
@@ -1853,7 +1856,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     *outRide = nullptr;
     *flags = 0;
 
-    uint8_t entry_type, entry_index;
+    uint8_t entry_type;
+    ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
     {
         entry_index = RIDE_ENTRY_INDEX_NULL;
@@ -2017,8 +2021,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     view.height = 217;
     view.view_width = size_x;
     view.view_height = size_y;
-    view.x = 0;
-    view.y = 0;
+    view.pos = { 0, 0 };
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
 
@@ -2048,8 +2051,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
         int32_t right = left + size_x;
         int32_t bottom = top + size_y;
 
-        view.view_x = left;
-        view.view_y = top;
+        view.viewPos = { left, top };
         viewport_paint(&view, &dpi, left, top, right, bottom);
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
@@ -2105,7 +2107,7 @@ static void track_design_preview_clear_map()
 {
     // These values were previously allocated in backup map but
     // it seems more fitting to place in this function
-    gMapSizeUnits = 255 * 32;
+    gMapSizeUnits = 255 * COORDS_XY_STEP;
     gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 

@@ -156,10 +156,9 @@ rct_window* window_sign_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
+    TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;
 
@@ -184,16 +183,14 @@ rct_window* window_sign_open(rct_windownumber number)
 
     w->list_information_type = tile_element->AsLargeScenery()->GetPrimaryColour();
     w->var_492 = tile_element->AsLargeScenery()->GetSecondaryColour();
-    w->var_48C = tile_element->AsLargeScenery()->GetEntryIndex();
-
-    view_x += 16;
-    view_y += 16;
+    w->SceneryEntry = tile_element->AsLargeScenery()->GetEntryIndex();
 
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -319,7 +316,7 @@ static void window_sign_invalidate(rct_window* w)
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->var_48C);
+    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->SceneryEntry);
 
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;
@@ -365,15 +362,14 @@ static void window_sign_viewport_rotate(rct_window* w)
 
     auto banner = GetBanner(w->number);
 
-    int32_t view_x = (banner->position.x << 5) + 16;
-    int32_t view_y = (banner->position.y << 5) + 16;
-    int32_t view_z = w->frame_no;
+    auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport
     rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, signViewPos,
+        0, SPRITE_INDEX_NULL);
     if (w->viewport != nullptr)
         w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -405,10 +401,9 @@ rct_window* window_sign_small_open(rct_windownumber number)
     w->colours[2] = COLOUR_DARK_BROWN;
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
+    TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;
 
@@ -431,16 +426,14 @@ rct_window* window_sign_small_open(rct_windownumber number)
 
     w->list_information_type = tile_element->AsWall()->GetPrimaryColour();
     w->var_492 = tile_element->AsWall()->GetSecondaryColour();
-    w->var_48C = tile_element->AsWall()->GetEntryIndex();
-
-    view_x += 16;
-    view_y += 16;
+    w->SceneryEntry = tile_element->AsWall()->GetEntryIndex();
 
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->flags |= WF_NO_SCROLLING;
@@ -534,7 +527,7 @@ static void window_sign_small_invalidate(rct_window* w)
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
-    rct_scenery_entry* scenery_entry = get_wall_entry(w->var_48C);
+    rct_scenery_entry* scenery_entry = get_wall_entry(w->SceneryEntry);
 
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;

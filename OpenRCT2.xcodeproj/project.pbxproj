@@ -51,6 +51,7 @@
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
+		4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */; };
 		4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -73,6 +74,10 @@
 		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
+		933F32EA24183CBB008376CE /* libicuuc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E824183CBB008376CE /* libicuuc.dylib */; };
+		933F32EB24183CBB008376CE /* libicuuc.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E824183CBB008376CE /* libicuuc.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		933F32EC24183CBB008376CE /* libicudata.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E924183CBB008376CE /* libicudata.dylib */; };
+		933F32ED24183CBB008376CE /* libicudata.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 933F32E924183CBB008376CE /* libicudata.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9344BEF920C1E6180047D165 /* Crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 9344BEF720C1E6180047D165 /* Crypt.h */; };
 		9344BEFA20C1E6180047D165 /* Crypt.OpenSSL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */; };
 		9346F9D8208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
@@ -87,10 +92,6 @@
 		939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359D20C12FDD00630B3F /* Paint.Surface.h */; };
 		939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359E20C12FDE00630B3F /* Paint.TileElement.h */; };
 		939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A35A120C12FFD00630B3F /* InteractiveConsole.h */; };
-		93AF4A6520B462F8006489A5 /* libicuuc.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; };
-		93AF4A6720B462F8006489A5 /* libicudata.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; };
-		93AF4A6820B46400006489A5 /* libicudata.61.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		93AF4A6920B46400006489A5 /* libicuuc.61.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -119,8 +120,6 @@
 		93F76F0420BFF77B00D4512C /* Paint.Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EFC20BFF77A00D4512C /* Paint.Banner.cpp */; };
 		93F76F0520BFF77B00D4512C /* Paint.TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EFD20BFF77A00D4512C /* Paint.TileElement.cpp */; };
 		93F76F0620BFF77B00D4512C /* Paint.Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EFE20BFF77A00D4512C /* Paint.Entrance.cpp */; };
-		93F9DA3620B46F3100D1BE92 /* libicudata.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; };
-		93F9DA3720B46F3100D1BE92 /* libicuuc.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; };
 		93F9DA3820B46F9D00D1BE92 /* ShopItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CDCB0BC20A9902E00321367 /* ShopItem.cpp */; };
 		93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
@@ -581,14 +580,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				93AF4A6820B46400006489A5 /* libicudata.61.1.dylib in Embed Frameworks */,
-				93AF4A6920B46400006489A5 /* libicuuc.61.1.dylib in Embed Frameworks */,
+				933F32EB24183CBB008376CE /* libicuuc.dylib in Embed Frameworks */,
 				C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */,
 				D45A39591CF300AF00659A24 /* libcrypto.dylib in Embed Frameworks */,
 				D45A395A1CF300AF00659A24 /* libfreetype.dylib in Embed Frameworks */,
 				D45A395B1CF300AF00659A24 /* libjansson.dylib in Embed Frameworks */,
 				D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */,
 				D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */,
+				933F32ED24183CBB008376CE /* libicudata.dylib in Embed Frameworks */,
 				D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -876,6 +875,8 @@
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
 		4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulateCommands.cpp; sourceTree = "<group>"; };
+		4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VehicleSubpositionData.cpp; sourceTree = "<group>"; };
+		4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VehicleSubpositionData.h; sourceTree = "<group>"; };
 		4CB832AA1EFFB8D100B88761 /* ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf.h; sourceTree = "<group>"; };
 		4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdlineSprite.cpp; sourceTree = "<group>"; };
 		4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdlineSprite.h; sourceTree = "<group>"; };
@@ -1004,6 +1005,8 @@
 		933CBDBE20CB1BCA00134678 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
 		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
+		933F32E824183CBB008376CE /* libicuuc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.dylib; sourceTree = "<group>"; };
+		933F32E924183CBB008376CE /* libicudata.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.dylib; sourceTree = "<group>"; };
 		9344BEF720C1E6180047D165 /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
 		9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crypt.OpenSSL.cpp; sourceTree = "<group>"; };
 		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
@@ -1242,8 +1245,6 @@
 		939A359D20C12FDD00630B3F /* Paint.Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Surface.h; sourceTree = "<group>"; };
 		939A359E20C12FDE00630B3F /* Paint.TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.TileElement.h; sourceTree = "<group>"; };
 		939A35A120C12FFD00630B3F /* InteractiveConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveConsole.h; sourceTree = "<group>"; };
-		93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.61.1.dylib; sourceTree = "<group>"; };
-		93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.61.1.dylib; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -1787,10 +1788,10 @@
 				D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */,
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
 				D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */,
-				93F9DA3620B46F3100D1BE92 /* libicudata.61.1.dylib in Frameworks */,
-				93F9DA3720B46F3100D1BE92 /* libicuuc.61.1.dylib in Frameworks */,
 				D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */,
+				933F32EC24183CBB008376CE /* libicudata.dylib in Frameworks */,
 				D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */,
+				933F32EA24183CBB008376CE /* libicuuc.dylib in Frameworks */,
 				D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */,
 				D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */,
 				C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */,
@@ -1808,8 +1809,6 @@
 				F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */,
 				F7D774901EC66FB000BE6EBC /* libz.tbd in Frameworks */,
 				F7D7748F1EC66FA900BE6EBC /* libcurl.tbd in Frameworks */,
-				93AF4A6720B462F8006489A5 /* libicudata.61.1.dylib in Frameworks */,
-				93AF4A6520B462F8006489A5 /* libicuuc.61.1.dylib in Frameworks */,
 				F7D7748E1EC66FA000BE6EBC /* libiconv.tbd in Frameworks */,
 				F7D774911EC66FBA00BE6EBC /* libcrypto.dylib in Frameworks */,
 				F7D774921EC66FBA00BE6EBC /* libfreetype.dylib in Frameworks */,
@@ -2211,13 +2210,6 @@
 			path = interface;
 			sourceTree = "<group>";
 		};
-		C685E5131F8907440090598F /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		C688783C202893590084B384 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2428,7 +2420,6 @@
 				D497D07A1C20FD52002BF46A /* Resources */,
 				D41B73ED1C21017D0080A7B9 /* Libraries */,
 				D497D0791C20FD52002BF46A /* Products */,
-				C685E5131F8907440090598F /* Recovered References */,
 				C688783C202893590084B384 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -2490,10 +2481,10 @@
 			children = (
 				D45A38B31CF3006400659A24 /* libcrypto.dylib */,
 				D45A38B41CF3006400659A24 /* libfreetype.dylib */,
+				933F32E924183CBB008376CE /* libicudata.dylib */,
+				933F32E824183CBB008376CE /* libicuuc.dylib */,
 				D45A38B51CF3006400659A24 /* libjansson.dylib */,
 				D4A8B4B31DB41873007A2F29 /* libpng16.dylib */,
-				93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */,
-				93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */,
 				D45A38B81CF3006400659A24 /* libSDL2.dylib */,
 				D45A38B91CF3006400659A24 /* libspeexdsp.dylib */,
 				C6E96E351E0408B40076A04F /* libzip.dylib */,
@@ -2514,12 +2505,6 @@
 		F76C83551EC4E7CC00FA49E2 /* libopenrct2 */ = {
 			isa = PBXGroup;
 			children = (
-				01C6F0C022FD519E0057E2F7 /* TrackImporter.cpp */,
-				01C6F0C122FD519E0057E2F7 /* TrackImporter.h */,
-				C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */,
-				C9C630B42235A22C009AD16E /* GameStateSnapshots.h */,
-				4C358E5021C445F700ADE6BC /* ReplayManager.cpp */,
-				4C358E5121C445F700ADE6BC /* ReplayManager.h */,
 				C6352B871F477032006CCEE3 /* actions */,
 				F76C83561EC4E7CC00FA49E2 /* audio */,
 				F76C83621EC4E7CC00FA49E2 /* cmdline */,
@@ -2535,8 +2520,8 @@
 				F76C84531EC4E7CC00FA49E2 /* peep */,
 				F76C84591EC4E7CC00FA49E2 /* platform */,
 				F76C84661EC4E7CC00FA49E2 /* rct1 */,
-				F76C846C1EC4E7CC00FA49E2 /* rct12 */,
 				F76C84761EC4E7CC00FA49E2 /* rct2 */,
+				F76C846C1EC4E7CC00FA49E2 /* rct12 */,
 				F76C84831EC4E7CC00FA49E2 /* ride */,
 				F76C84F31EC4E7CD00FA49E2 /* scenario */,
 				4C04D69E2056AA5C00F82EBA /* thirdparty */,
@@ -2550,8 +2535,6 @@
 				4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */,
 				4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */,
 				F76C836C1EC4E7CC00FA49E2 /* common.h */,
-				93DE974E209C3C0F00FB1CC8 /* GameState.cpp */,
-				93DE974F209C3C0F00FB1CC8 /* GameState.h */,
 				F76C83761EC4E7CC00FA49E2 /* Context.cpp */,
 				F76C83771EC4E7CC00FA49E2 /* Context.h */,
 				4C5DFF401FAC69D200CB093A /* Date.cpp */,
@@ -2566,19 +2549,27 @@
 				F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */,
 				4CE4623F1FD0710E0001CD98 /* Game.cpp */,
 				4CE462401FD0710E0001CD98 /* Game.h */,
+				93DE974E209C3C0F00FB1CC8 /* GameState.cpp */,
+				93DE974F209C3C0F00FB1CC8 /* GameState.h */,
+				C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */,
+				C9C630B42235A22C009AD16E /* GameStateSnapshots.h */,
+				C68313C51FDB4EBA006DB3D8 /* input.cpp */,
 				4CC4B8E81FE00C5D00660D62 /* Input.cpp */,
+				F76C83BA1EC4E7CC00FA49E2 /* input.h */,
 				4CC4B8E91FE00C5D00660D62 /* Input.h */,
 				4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */,
 				4CC4B8EB1FE00C5D00660D62 /* Intro.h */,
-				C68313C51FDB4EBA006DB3D8 /* input.cpp */,
-				F76C83BA1EC4E7CC00FA49E2 /* input.h */,
 				F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */,
 				F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */,
 				F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */,
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
 				F76C84651EC4E7CC00FA49E2 /* PlatformEnvironment.h */,
+				4C358E5021C445F700ADE6BC /* ReplayManager.cpp */,
+				4C358E5121C445F700ADE6BC /* ReplayManager.h */,
 				F76C84FA1EC4E7CD00FA49E2 /* sprites.h */,
+				01C6F0C022FD519E0057E2F7 /* TrackImporter.cpp */,
+				01C6F0C122FD519E0057E2F7 /* TrackImporter.h */,
 				F76C850B1EC4E7CD00FA49E2 /* Version.cpp */,
 				F76C850C1EC4E7CD00FA49E2 /* Version.h */,
 			);
@@ -2588,7 +2579,6 @@
 		F76C83561EC4E7CC00FA49E2 /* audio */ = {
 			isa = PBXGroup;
 			children = (
-				F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */,
 				F76C83571EC4E7CC00FA49E2 /* Audio.cpp */,
 				F76C83581EC4E7CC00FA49E2 /* audio.h */,
 				F76C83591EC4E7CC00FA49E2 /* AudioChannel.h */,
@@ -2596,6 +2586,7 @@
 				F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */,
 				F76C835C1EC4E7CC00FA49E2 /* AudioMixer.h */,
 				F76C835D1EC4E7CC00FA49E2 /* AudioSource.h */,
+				F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */,
 				F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */,
 			);
 			path = audio;
@@ -2635,27 +2626,21 @@
 		F76C83781EC4E7CC00FA49E2 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				2ADE2F22224418B1002598AF /* DataSerialiserTag.h */,
-				2ADE2F26224418B2002598AF /* FileIndex.hpp */,
-				2ADE2F25224418B2002598AF /* JobPool.hpp */,
-				2ADE2F24224418B2002598AF /* Meta.hpp */,
-				2ADE2F23224418B1002598AF /* Numerics.hpp */,
-				2ADE2F21224418B1002598AF /* Random.hpp */,
 				2A5354EA22099C7200A5440F /* CircularBuffer.h */,
 				F76C83791EC4E7CC00FA49E2 /* Collections.hpp */,
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
+				F76C837B1EC4E7CC00FA49E2 /* Console.hpp */,
 				9344BEF720C1E6180047D165 /* Crypt.h */,
 				9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */,
-				93CBA4C220A7502E00867D56 /* Imaging.cpp */,
-				93CBA4C120A7502D00867D56 /* Imaging.h */,
-				F76C837B1EC4E7CC00FA49E2 /* Console.hpp */,
 				C6352B811F477022006CCEE3 /* DataSerialiser.h */,
+				2ADE2F22224418B1002598AF /* DataSerialiserTag.h */,
 				C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */,
 				F76C837C1EC4E7CC00FA49E2 /* Diagnostics.cpp */,
 				F76C837D1EC4E7CC00FA49E2 /* Diagnostics.hpp */,
 				C6352B831F477022006CCEE3 /* Endianness.h */,
 				F76C837F1EC4E7CC00FA49E2 /* File.cpp */,
 				F76C83801EC4E7CC00FA49E2 /* File.h */,
+				2ADE2F26224418B2002598AF /* FileIndex.hpp */,
 				F76C83811EC4E7CC00FA49E2 /* FileScanner.cpp */,
 				F76C83821EC4E7CC00FA49E2 /* FileScanner.h */,
 				F76C83831EC4E7CC00FA49E2 /* FileStream.hpp */,
@@ -2663,16 +2648,22 @@
 				F76C83851EC4E7CC00FA49E2 /* Guard.hpp */,
 				4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */,
 				4C8A6FF123EB5325001A8255 /* Http.h */,
+				93CBA4C220A7502E00867D56 /* Imaging.cpp */,
+				93CBA4C120A7502D00867D56 /* Imaging.h */,
 				F76C83861EC4E7CC00FA49E2 /* IStream.cpp */,
 				F76C83871EC4E7CC00FA49E2 /* IStream.hpp */,
+				2ADE2F25224418B2002598AF /* JobPool.hpp */,
 				F76C83881EC4E7CC00FA49E2 /* Json.cpp */,
 				F76C83891EC4E7CC00FA49E2 /* Json.hpp */,
 				F76C838B1EC4E7CC00FA49E2 /* Memory.hpp */,
 				F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */,
 				F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */,
+				2ADE2F24224418B2002598AF /* Meta.hpp */,
 				F76C838E1EC4E7CC00FA49E2 /* Nullable.hpp */,
+				2ADE2F23224418B1002598AF /* Numerics.hpp */,
 				F76C838F1EC4E7CC00FA49E2 /* Path.cpp */,
 				F76C83901EC4E7CC00FA49E2 /* Path.hpp */,
+				2ADE2F21224418B1002598AF /* Random.hpp */,
 				F76C83911EC4E7CC00FA49E2 /* Registration.hpp */,
 				F76C83921EC4E7CC00FA49E2 /* String.cpp */,
 				F76C83931EC4E7CC00FA49E2 /* String.hpp */,
@@ -2724,7 +2715,6 @@
 		F76C83BB1EC4E7CC00FA49E2 /* interface */ = {
 			isa = PBXGroup;
 			children = (
-				01DDFE6422FD608500221318 /* Window_internal.cpp */,
 				4C7B53DD200143C200A52E21 /* Chat.cpp */,
 				4C7B53DE200143C200A52E21 /* Chat.h */,
 				4C7B53DF200143C200A52E21 /* Colour.cpp */,
@@ -2742,6 +2732,7 @@
 				4C7B53EC200143C200A52E21 /* Viewport.cpp */,
 				4C7B53ED200143C200A52E21 /* Viewport.h */,
 				4C7B53F0200143C200A52E21 /* Widget.h */,
+				01DDFE6422FD608500221318 /* Window_internal.cpp */,
 				C67B28182002D7F200109C93 /* Window_internal.h */,
 				4C7B53F1200143C200A52E21 /* Window.cpp */,
 				4C7B53F2200143C200A52E21 /* Window.h */,
@@ -2752,8 +2743,8 @@
 		F76C83D71EC4E7CC00FA49E2 /* localisation */ = {
 			isa = PBXGroup;
 			children = (
-				2ADE2F2D224418E7002598AF /* ConversionTables.h */,
 				4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */,
+				2ADE2F2D224418E7002598AF /* ConversionTables.h */,
 				4C7B53AA1FFF935B00A52E21 /* Convert.cpp */,
 				4C7B53AB1FFF935B00A52E21 /* Currency.cpp */,
 				4C7B53AC1FFF935B00A52E21 /* Currency.h */,
@@ -2762,13 +2753,13 @@
 				4C7B53B01FFF935B00A52E21 /* FormatCodes.h */,
 				4C7B53B11FFF935B00A52E21 /* Language.cpp */,
 				4C7B53C91FFF991000A52E21 /* Language.h */,
-				93F76EF120BFF74200D4512C /* Localisation.Date.cpp */,
-				933F2CB620935653001B33FD /* LocalisationService.cpp */,
-				933F2CBA20935668001B33FD /* LocalisationService.h */,
 				4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */,
 				4C7B53B41FFF935B00A52E21 /* LanguagePack.h */,
 				4C7B53B51FFF935B00A52E21 /* Localisation.cpp */,
+				93F76EF120BFF74200D4512C /* Localisation.Date.cpp */,
 				4C7B53B61FFF935B00A52E21 /* Localisation.h */,
+				933F2CB620935653001B33FD /* LocalisationService.cpp */,
+				933F2CBA20935668001B33FD /* LocalisationService.h */,
 				4C7B53B71FFF935B00A52E21 /* RealNames.cpp */,
 				4C7B53B81FFF935B00A52E21 /* StringIds.h */,
 				4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */,
@@ -2830,10 +2821,10 @@
 		F76C84111EC4E7CC00FA49E2 /* object */ = {
 			isa = PBXGroup;
 			children = (
-				F7B2048D2024E8A90000AD7E /* DefaultObjects.h */,
-				F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */,
 				F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */,
 				F76C84131EC4E7CC00FA49E2 /* BannerObject.h */,
+				F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */,
+				F7B2048D2024E8A90000AD7E /* DefaultObjects.h */,
 				F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */,
 				F76C84151EC4E7CC00FA49E2 /* EntranceObject.h */,
 				F76C84161EC4E7CC00FA49E2 /* FootpathItemObject.cpp */,
@@ -2848,11 +2839,11 @@
 				F76C841F1EC4E7CC00FA49E2 /* Object.h */,
 				F76C84201EC4E7CC00FA49E2 /* ObjectFactory.cpp */,
 				F76C84211EC4E7CC00FA49E2 /* ObjectFactory.h */,
+				4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */,
+				4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */,
 				4C7B53A21FFC15ED00A52E21 /* ObjectLimits.h */,
 				4C7B53A31FFC180400A52E21 /* ObjectList.cpp */,
 				4C7B53A41FFC180400A52E21 /* ObjectList.h */,
-				4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */,
-				4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */,
 				F76C84221EC4E7CC00FA49E2 /* ObjectManager.cpp */,
 				F76C84231EC4E7CC00FA49E2 /* ObjectManager.h */,
 				F76C84241EC4E7CC00FA49E2 /* ObjectRepository.cpp */,
@@ -2884,7 +2875,6 @@
 		F76C843A1EC4E7CC00FA49E2 /* paint */ = {
 			isa = PBXGroup;
 			children = (
-				2ADE2F332244191E002598AF /* VirtualFloor.h */,
 				F76C84491EC4E7CC00FA49E2 /* sprite */,
 				F76C843B1EC4E7CC00FA49E2 /* tile_element */,
 				4C6A66AE1FE278C900694CB6 /* Paint.cpp */,
@@ -2895,6 +2885,7 @@
 				4C6A66B31FE278C900694CB6 /* Supports.cpp */,
 				4C6A66B41FE278C900694CB6 /* Supports.h */,
 				4C7B540020015AC600A52E21 /* VirtualFloor.cpp */,
+				2ADE2F332244191E002598AF /* VirtualFloor.h */,
 			);
 			path = paint;
 			sourceTree = "<group>";
@@ -2967,9 +2958,9 @@
 		F76C84661EC4E7CC00FA49E2 /* rct1 */ = {
 			isa = PBXGroup;
 			children = (
-				01C6F0C322FD51B70057E2F7 /* T4Importer.cpp */,
 				4C7B54022004C57400A52E21 /* RCT1.h */,
 				F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */,
+				01C6F0C322FD51B70057E2F7 /* T4Importer.cpp */,
 				F76C84681EC4E7CC00FA49E2 /* Tables.cpp */,
 				F76C84691EC4E7CC00FA49E2 /* Tables.h */,
 			);
@@ -2996,13 +2987,13 @@
 		F76C84761EC4E7CC00FA49E2 /* rct2 */ = {
 			isa = PBXGroup;
 			children = (
-				01C6F0C522FD51FC0057E2F7 /* T6Exporter.cpp */,
-				01C6F0C722FD51FC0057E2F7 /* T6Exporter.h */,
-				01C6F0C622FD51FC0057E2F7 /* T6Importer.cpp */,
 				4C7B54042004C58200A52E21 /* RCT2.h */,
 				F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */,
 				F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */,
 				F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */,
+				01C6F0C522FD51FC0057E2F7 /* T6Exporter.cpp */,
+				01C6F0C722FD51FC0057E2F7 /* T6Exporter.h */,
+				01C6F0C622FD51FC0057E2F7 /* T6Importer.cpp */,
 			);
 			path = rct2;
 			sourceTree = "<group>";
@@ -3010,7 +3001,6 @@
 		F76C84831EC4E7CC00FA49E2 /* ride */ = {
 			isa = PBXGroup;
 			children = (
-				2ADE2F352244195F002598AF /* RideTypes.h */,
 				F76C84861EC4E7CC00FA49E2 /* coaster */,
 				F76C84A91EC4E7CC00FA49E2 /* gentle */,
 				F76C84C01EC4E7CC00FA49E2 /* shops */,
@@ -3019,17 +3009,17 @@
 				F76C84EA1EC4E7CD00FA49E2 /* water */,
 				4C6AC2101F9E1CB3004324AA /* CableLift.cpp */,
 				4C6AC2111F9E1CB3004324AA /* CableLift.h */,
-				4C6A66BF1FF9322A00694CB6 /* Ride.cpp */,
-				4C6A66C01FF9322A00694CB6 /* Ride.h */,
 				F73E320F2011589F00C4D975 /* MusicList.cpp */,
 				F73E320D2011589F00C4D975 /* MusicList.h */,
-				F73E320B2011589E00C4D975 /* RideRatings.cpp */,
-				F73E320C2011589F00C4D975 /* RideRatings.h */,
-				F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */,
+				4C6A66BF1FF9322A00694CB6 /* Ride.cpp */,
+				4C6A66C01FF9322A00694CB6 /* Ride.h */,
 				4C7B541420060D8E00A52E21 /* RideData.cpp */,
 				4C7B541520060D8E00A52E21 /* RideData.h */,
 				4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */,
 				4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */,
+				F73E320B2011589E00C4D975 /* RideRatings.cpp */,
+				F73E320C2011589F00C4D975 /* RideRatings.h */,
+				2ADE2F352244195F002598AF /* RideTypes.h */,
 				4CDCB0BC20A9902E00321367 /* ShopItem.cpp */,
 				4CDCB0BD20A9902F00321367 /* ShopItem.h */,
 				4C6AC20D1F9E1693004324AA /* Station.cpp */,
@@ -3042,6 +3032,7 @@
 				4C4C1E991F5832AA00560300 /* TrackDesign.h */,
 				F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */,
 				F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */,
+				F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */,
 				4C7B540B20060D8100A52E21 /* TrackPaint.cpp */,
 				4C7B540C20060D8100A52E21 /* TrackPaint.h */,
 				4CFE4E831F90AF41005243C2 /* Vehicle.cpp */,
@@ -3050,6 +3041,8 @@
 				4C7B540920060D7000A52E21 /* VehicleData.h */,
 				4C7B54072005736700A52E21 /* VehiclePaint.cpp */,
 				4C7B540A20060D7900A52E21 /* VehiclePaint.h */,
+				4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */,
+				4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */,
 			);
 			path = ride;
 			sourceTree = "<group>";
@@ -3201,10 +3194,10 @@
 		F76C85041EC4E7CD00FA49E2 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */,
-				F7CB864C1EEDA1A80030C877 /* WindowManager.h */,
 				F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */,
+				F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */,
 				F76C85051EC4E7CD00FA49E2 /* UiContext.h */,
+				F7CB864C1EEDA1A80030C877 /* WindowManager.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -3234,7 +3227,6 @@
 		F76C855B1EC4E7CD00FA49E2 /* world */ = {
 			isa = PBXGroup;
 			children = (
-				2ADE2F372244198A002598AF /* SpriteBase.h */,
 				4C7B541D2007646A00A52E21 /* Balloon.cpp */,
 				4C7B541E2007646A00A52E21 /* Banner.cpp */,
 				4C7B541F2007646A00A52E21 /* Banner.h */,
@@ -3265,13 +3257,14 @@
 				4C7B54382007646A00A52E21 /* Scenery.cpp */,
 				4C7B54392007646A00A52E21 /* Scenery.h */,
 				4C7B543A2007646A00A52E21 /* SmallScenery.cpp */,
+				4C7B543B2007646A00A52E21 /* SmallScenery.h */,
+				4C7B543C2007646A00A52E21 /* Sprite.cpp */,
+				4C7B543D2007646A00A52E21 /* Sprite.h */,
+				2ADE2F372244198A002598AF /* SpriteBase.h */,
 				9308D9FB209908080079EE96 /* Surface.cpp */,
 				9308D9FD209908090079EE96 /* Surface.h */,
 				9308D9FA209908080079EE96 /* TileElement.cpp */,
 				9308D9FC209908080079EE96 /* TileElement.h */,
-				4C7B543B2007646A00A52E21 /* SmallScenery.h */,
-				4C7B543C2007646A00A52E21 /* Sprite.cpp */,
-				4C7B543D2007646A00A52E21 /* Sprite.h */,
 				4C7B543E2007646A00A52E21 /* TileInspector.cpp */,
 				4C7B543F2007646A00A52E21 /* TileInspector.h */,
 				4C7B54402007646A00A52E21 /* Wall.cpp */,
@@ -3305,15 +3298,15 @@
 				F76C85A81EC4E82600FA49E2 /* SDLException.h */,
 				F76C85A91EC4E82600FA49E2 /* TextComposition.cpp */,
 				F76C85AA1EC4E82600FA49E2 /* TextComposition.h */,
-				F775F5321EE35A48001F00E7 /* Ui.h */,
 				F76C85AB1EC4E82600FA49E2 /* Ui.cpp */,
+				F775F5321EE35A48001F00E7 /* Ui.h */,
 				F76C85AC1EC4E82600FA49E2 /* UiContext.cpp */,
 				F76C85AD1EC4E82600FA49E2 /* UiContext.h */,
 				F76C85AE1EC4E82600FA49E2 /* UiContext.Linux.cpp */,
 				F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */,
 				F76C85AF1EC4E82600FA49E2 /* UiContext.Win32.cpp */,
-				F7CB863E1EEDA0B50030C877 /* WindowManager.h */,
 				F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */,
+				F7CB863E1EEDA0B50030C877 /* WindowManager.h */,
 			);
 			name = "openrct2-ui";
 			path = "src/openrct2-ui";
@@ -3336,9 +3329,9 @@
 		F76C858D1EC4E82600FA49E2 /* drawing */ = {
 			isa = PBXGroup;
 			children = (
+				F76C858E1EC4E82600FA49E2 /* engines */,
 				93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */,
 				93CBA4BE20A74FF200867D56 /* BitmapReader.h */,
-				F76C858E1EC4E82600FA49E2 /* engines */,
 			);
 			path = drawing;
 			sourceTree = "<group>";
@@ -3388,8 +3381,6 @@
 		F7CB86401EEDA0E20030C877 /* windows */ = {
 			isa = PBXGroup;
 			children = (
-				304FE94F23A2996600470197 /* SceneryScatter.cpp */,
-				2A5354E822099C4F00A5440F /* Network.cpp */,
 				C666EE551F37ACB10061AA04 /* About.cpp */,
 				C654DF1C1F69C0430040F43D /* Banner.cpp */,
 				C666EE561F37ACB10061AA04 /* Changelog.cpp */,
@@ -3422,6 +3413,7 @@
 				C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */,
 				C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */,
 				C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */,
+				2A5354E822099C4F00A5440F /* Network.cpp */,
 				C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */,
 				C654DF231F69C0430040F43D /* NewCampaign.cpp */,
 				C685E5141F8907840090598F /* NewRide.cpp */,
@@ -3437,6 +3429,7 @@
 				C632C81E1F8A445700781F6D /* RideList.cpp */,
 				C666EE611F37ACB10061AA04 /* SavePrompt.cpp */,
 				C61ADB201FB7DC060024F2EF /* Scenery.cpp */,
+				304FE94F23A2996600470197 /* SceneryScatter.cpp */,
 				C666EE621F37ACB10061AA04 /* ServerList.cpp */,
 				C666EE631F37ACB10061AA04 /* ServerStart.cpp */,
 				C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */,
@@ -3692,7 +3685,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"19\"\nzipname=\"openrct2-libs-v19-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
+			shellScript = "version=\"22\"\nzipname=\"openrct2-libs-v22-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
 		};
 		D42C09D21C254F4E00309751 /* Build g2.dat */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3816,6 +3809,7 @@
 				C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */,
 				4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
+				4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
 				C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */,

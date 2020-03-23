@@ -552,8 +552,8 @@ STR_1167    :ここでは水位を高くすることはできません…
 STR_1168    :設定
 STR_1169    :(なし)
 STR_1170    :{STRING}
-STR_1171    :{RED}閉鎖中 - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}閉鎖中
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}歩道と行列歩道を敷設
 STR_1174    :バナーがあります
 STR_1175    :これは傾斜のある歩道には設置できません
@@ -878,7 +878,7 @@ STR_1493    :{SMALLFONT}「お腹は空いてないよ」
 STR_1494    :{SMALLFONT}「喉は渇いてないよ]
 STR_1495    :{SMALLFONT}「助けて！溺れている！」
 STR_1496    :{SMALLFONT}「迷っちゃった！」
-STR_1497    :{SMALLFONT}「{STRINGID}はすごいだった！」
+STR_1497    :{SMALLFONT}「{STRINGID}はすごかった！」
 STR_1498    :{SMALLFONT}「{STRINGID}にもう何年も並んでるよ」
 STR_1499    :{SMALLFONT}「疲れた」
 STR_1500    :{SMALLFONT}「お腹が減った」
@@ -933,32 +933,32 @@ STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}「すごい!」
 STR_1551    :{SMALLFONT}「不思議な気持ちがある…誰かが私を見ているというかも？」
-STR_1518    :{SMALLFONT}「{STRINGID}の風船にそんなに払えないよ！」
-STR_1519    :{SMALLFONT}「{STRINGID}の縫い包みにそんなに払えないよ！」
-STR_1520    :{SMALLFONT}「{STRINGID}の地図にそんなに払えないよ！」
-STR_1521    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
-STR_1522    :{SMALLFONT}「{STRINGID}の傘にそんなに払えないよ！」
-STR_1523    :{SMALLFONT}「{STRINGID}の飲み物にそんなに払えないよ！」
-STR_1524    :{SMALLFONT}「{STRINGID}のハンバーガーにそんなに払えないよ！」
-STR_1525    :{SMALLFONT}「{STRINGID}のポテトフライにそんなに払えないよ！」
-STR_1526    :{SMALLFONT}「{STRINGID}のソフトクリームにそんなに払えないよ！」
-STR_1527    :{SMALLFONT}「{STRINGID}の綿菓子にそんなに払えないよ！」
-STR_1528    :
-STR_1529    :
-STR_1530    :
-STR_1531    :{SMALLFONT}「{STRINGID}のピザにそんなに払えないよ！」
-STR_1532    :
-STR_1533    :{SMALLFONT}「{STRINGID}のポップコーンにそんなに払えないよ！」
-STR_1534    :{SMALLFONT}「{STRINGID}のホットドッグにそんなに払えないよ！」
-STR_1535    :{SMALLFONT}「{STRINGID}の触手にそんなに払えないよ！」
-STR_1536    :{SMALLFONT}「{STRINGID}の帽子にそんなに払えないよ！」
-STR_1537    :{SMALLFONT}「{STRINGID}のリンゴ飴にそんなに払えないよ！」
-STR_1538    :{SMALLFONT}「{STRINGID}のTシャツにそんなに払えないよ！」
-STR_1539    :{SMALLFONT}「{STRINGID}のドーナツにそんなに払えないよ！」
-STR_1540    :{SMALLFONT}「{STRINGID}のコーヒにそんなに払えないよ！」
-STR_1541    :
-STR_1542    :{SMALLFONT}「{STRINGID}のフライドチキンにそんなに払えないよ！」
-STR_1543    :{SMALLFONT}「{STRINGID}のレモネードにそんなに払えないよ！」
+STR_1552    :{SMALLFONT}「{STRINGID}の風船にそんなに払えないよ！」
+STR_1553    :{SMALLFONT}「{STRINGID}の縫い包みにそんなに払えないよ！」
+STR_1554    :{SMALLFONT}「{STRINGID}の地図にそんなに払えないよ！」
+STR_1555    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1556    :{SMALLFONT}「{STRINGID}の傘にそんなに払えないよ！」
+STR_1557    :{SMALLFONT}「{STRINGID}の飲み物にそんなに払えないよ！」
+STR_1558    :{SMALLFONT}「{STRINGID}のハンバーガーにそんなに払えないよ！」
+STR_1559    :{SMALLFONT}「{STRINGID}のポテトフライにそんなに払えないよ！」
+STR_1560    :{SMALLFONT}「{STRINGID}のソフトクリームにそんなに払えないよ！」
+STR_1561    :{SMALLFONT}「{STRINGID}の綿菓子にそんなに払えないよ！」
+STR_1562    :
+STR_1563    :
+STR_1564    :
+STR_1565    :{SMALLFONT}「{STRINGID}のピザにそんなに払えないよ！」
+STR_1566    :
+STR_1567    :{SMALLFONT}「{STRINGID}のポップコーンにそんなに払えないよ！」
+STR_1568    :{SMALLFONT}「{STRINGID}のホットドッグにそんなに払えないよ！」
+STR_1569    :{SMALLFONT}「{STRINGID}の触手にそんなに払えないよ！」
+STR_1570    :{SMALLFONT}「{STRINGID}の帽子にそんなに払えないよ！」
+STR_1571    :{SMALLFONT}「{STRINGID}のリンゴ飴にそんなに払えないよ！」
+STR_1572    :{SMALLFONT}「{STRINGID}のTシャツにそんなに払えないよ！」
+STR_1573    :{SMALLFONT}「{STRINGID}のドーナツにそんなに払えないよ！」
+STR_1574    :{SMALLFONT}「{STRINGID}のコーヒにそんなに払えないよ！」
+STR_1575    :
+STR_1576    :{SMALLFONT}「{STRINGID}のフライドチキンにそんなに払えないよ！」
+STR_1577    :{SMALLFONT}「{STRINGID}のレモネードにそんなに払えないよ！」
 STR_1578    :
 STR_1579    :
 STR_1580    :
@@ -1109,7 +1109,7 @@ STR_1726    :土地は売りに出ていません!
 STR_1727    :建設権は売りに出ていません!
 STR_1728    :ここの建設権を購入できません…
 STR_1729    :この土地は遊園地のものではありません!
-STR_1730    :{RED}閉鎖中 - - 
+STR_1730    :{RED}閉鎖中
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :建設
 STR_1733    :モード
@@ -2115,7 +2115,7 @@ STR_2977    :スタッフの名前
 STR_2978    :新しい名前を入力してください:
 STR_2979    :スタッフに名前を付けられません
 STR_2980    :ゲーム中に看板が多すぎます
-STR_2981    :{RED}立入り禁止 - - 
+STR_2981    :{RED}立入り禁止
 STR_2982    :バナーのテキト
 STR_2983    :テキトを入力してください:
 STR_2984    :看板に新しい文字を設定することができません...
@@ -3606,6 +3606,8 @@ STR_6272    :乗り場
 STR_6273    :音楽
 STR_6274    :配色の設定できません…
 STR_6275    :{WINDOW_COLOUR_2}乗り場スタイル:
+STR_6308    :「{STRINGID}{OUTLINE}{TOPAZ}」{NEWLINE}{STRINGID}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

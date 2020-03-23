@@ -171,7 +171,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 
     int32_t primaryColour = tile_element->AsWall()->GetPrimaryColour();
-    uint32_t imageColourFlags = primaryColour << 19 | IMAGE_TYPE_REMAP;
+    uint32_t imageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(primaryColour);
     uint32_t dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)

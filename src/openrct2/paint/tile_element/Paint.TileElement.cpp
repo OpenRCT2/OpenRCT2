@@ -140,9 +140,9 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
-        if (x / 32 < gClipSelectionA.x || x / 32 > gClipSelectionB.x)
+        if (x < gClipSelectionA.x || x > gClipSelectionB.x)
             return;
-        if (y / 32 < gClipSelectionA.y || y / 32 > gClipSelectionB.y)
+        if (y < gClipSelectionA.y || y > gClipSelectionB.y)
             return;
     }
 
@@ -245,7 +245,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     do
     {
         // Only paint tile_elements below the clip height.
-        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
+        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);

@@ -10,6 +10,7 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
+#include "../audio/audio.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
@@ -299,7 +300,7 @@ struct Vehicle : SpriteBase
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
-    void UpdateSoundParams() const;
+    void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
 
 private:
     bool SoundCanPlay() const;

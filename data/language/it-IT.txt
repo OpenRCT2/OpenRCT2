@@ -3660,6 +3660,7 @@ STR_6327    :Sfondo trasparente per schermata gigante
 STR_6328    :{SMALLFONT}{BLACK}Con questa opzione attivata, le schermate giganti avranno uno sfondo trasparente invece di quello nero
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Scaricamento [{STRING}] da {STRING} ({COMMA16} / {COMMA16})
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

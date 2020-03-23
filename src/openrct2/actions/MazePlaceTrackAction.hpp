@@ -71,13 +71,13 @@ public:
             return res;
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
+        auto baseHeight = _loc.z;
+        auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
-        int8_t heightDifference = baseHeight - surfaceElement->base_height;
+        auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
-            heightDifference = heightDifference >> 1;
+            heightDifference /= COORDS_Z_PER_TINY_Z;
 
             if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
             {
@@ -90,7 +90,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                { _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+                { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags(), &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
@@ -154,12 +154,12 @@ public:
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
+        auto baseHeight = _loc.z;
+        auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
         money32 clearCost = 0;
         if (!map_can_construct_with_clear_at(
-                { _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+                { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
@@ -170,10 +170,10 @@ public:
 
         auto startLoc = _loc.ToTileStart();
 
-        auto tileElement = tile_element_insert({ TileCoordsXY{ _loc }, baseHeight }, 0b1111);
+        auto tileElement = tile_element_insert(_loc, 0b1111);
         assert(tileElement != nullptr);
 
-        tileElement->clearance_height = clearanceHeight + 4;
+        tileElement->SetClearanceZ(clearanceHeight + MAZE_CLEARANCE_HEIGHT);
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);

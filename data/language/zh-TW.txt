@@ -3588,6 +3588,7 @@ STR_6239    :垂直切割
 STR_6240    :縱橫切割
 STR_6241    :選擇範圍
 STR_6242    :清除選擇
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

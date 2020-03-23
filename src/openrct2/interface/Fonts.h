@@ -19,6 +19,7 @@ namespace OpenRCT2::Localisation
 
 #ifndef NO_TTF
 extern TTFFontSetDescriptor TTFFontMSGothic;
+extern TTFFontSetDescriptor TTFFontNotoSansMono;
 extern TTFFontSetDescriptor TTFFontHiragano;
 extern TTFFontSetDescriptor TTFFontMingLiu;
 extern TTFFontSetDescriptor TTFFontHeiti;

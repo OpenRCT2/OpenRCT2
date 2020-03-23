@@ -141,7 +141,7 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
-        audio_play_sound(SoundId::Error, 0, w->x + (w->width / 2));
+        audio_play_sound(SoundId::Error, 0, w->windowPos.x + (w->width / 2));
     }
 
     return w;
@@ -166,10 +166,10 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t t, l, r, b;
 
-    l = w->x;
-    t = w->y;
-    r = w->x + w->width - 1;
-    b = w->y + w->height - 1;
+    l = w->windowPos.x;
+    t = w->windowPos.y;
+    r = w->windowPos.x + w->width - 1;
+    b = w->windowPos.y + w->height - 1;
 
     gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_45);
     gfx_filter_rect(dpi, l, t, r, b, PALETTE_GLASS_SATURATED_RED);
@@ -184,7 +184,7 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_filter_rect(dpi, l + 1, b - 1, l + 1, b - 1, PALETTE_DARKEN_3);
     gfx_filter_rect(dpi, r - 1, b - 1, r - 1, b - 1, PALETTE_DARKEN_3);
 
-    l = w->x + (w->width + 1) / 2 - 1;
-    t = w->y + 1;
+    l = w->windowPos.x + (w->width + 1) / 2 - 1;
+    t = w->windowPos.y + 1;
     draw_string_centred_raw(dpi, l, t, _window_error_num_lines, _window_error_text);
 }

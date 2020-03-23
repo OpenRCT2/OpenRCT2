@@ -57,9 +57,7 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
+        res->Position = _loc.ToTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -78,12 +76,12 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
-        if (_loc.z / 8 < FootpathMinHeight)
+        if (_loc.z < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > FootpathMaxHeight)
+        if (_loc.z > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
@@ -111,9 +109,7 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
+        res->Position = _loc.ToTileCentre();
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
@@ -131,7 +127,7 @@ public:
             {
                 // It is possible, let's remove walls between the old and new piece of path
                 auto zLow = _loc.z;
-                auto zHigh = zLow + (4 * 8);
+                auto zHigh = zLow + PATH_CLEARANCE;
                 wall_remove_intersecting_walls(
                     { _loc, zLow, zHigh + (_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0 },
                     direction_reverse(_direction));
@@ -157,7 +153,7 @@ private:
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
-        if (pathElement->GetPathEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+        if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
         {
             res->Cost += MONEY(6, 00);
         }
@@ -173,7 +169,7 @@ private:
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
-        if (pathElement->GetPathEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+        if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
         {
             res->Cost += MONEY(6, 00);
         }
@@ -185,8 +181,8 @@ private:
             footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
 
-        pathElement->SetPathEntryIndex(_type);
-        if (_type & (1 << 7))
+        pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
         {
             pathElement->SetIsQueue(true);
         }
@@ -213,12 +209,12 @@ private:
         res->Cost = MONEY(12, 00);
 
         QuarterTile quarterTile{ 0b1111, 0 };
-        auto zLow = _loc.z / 8;
-        auto zHigh = zLow + 4;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
-            zHigh += 2;
+            zHigh += PATH_HEIGHT_STEP;
         }
 
         auto entranceElement = map_get_park_entrance_element_at(_loc, false);
@@ -239,8 +235,7 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                { _loc, zLow * 8, zHigh * 8 }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
-                crossingMode))
+                { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -256,8 +251,8 @@ private:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        int32_t supportHeight = zLow - surfaceElement->base_height;
-        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
         // Prevent the place sound from being spammed
         if (entranceIsSamePath)
@@ -278,12 +273,12 @@ private:
         res->Cost = MONEY(12, 00);
 
         QuarterTile quarterTile{ 0b1111, 0 };
-        auto zLow = _loc.z / 8;
-        auto zHigh = zLow + 4;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
-            zHigh += 2;
+            zHigh += PATH_HEIGHT_STEP;
         }
 
         auto entranceElement = map_get_park_entrance_element_at(_loc, false);
@@ -304,8 +299,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                { _loc, zLow * 8, zHigh * 8 }, &map_place_non_scenery_clear_func, quarterTile,
-                GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost, crossingMode))
+                { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+                &res->Cost, crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -317,8 +312,8 @@ private:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        int32_t supportHeight = zLow - surfaceElement->base_height;
-        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
         if (entrancePath)
         {
@@ -331,12 +326,12 @@ private:
         }
         else
         {
-            auto tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, 0b1111);
+            auto tileElement = tile_element_insert(_loc, 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
-            pathElement->clearance_height = zHigh;
-            pathElement->SetPathEntryIndex(_type);
+            pathElement->SetClearanceZ(zHigh);
+            pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
             pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
             {

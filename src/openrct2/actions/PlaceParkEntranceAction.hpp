@@ -77,8 +77,8 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        int8_t zLow = _loc.z / 8;
-        int8_t zHigh = zLow + 12;
+        int8_t zLow = _loc.z;
+        int8_t zHigh = zLow + ParkEntranceHeight;
         CoordsXYZ entranceLoc = _loc;
         for (uint8_t index = 0; index < 3; index++)
         {
@@ -92,7 +92,7 @@ public:
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (!map_can_construct_at({ entranceLoc, zLow * 8, zHigh * 8 }, { 0b1111, 0 }))
+            if (!map_can_construct_at({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }))
             {
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, gGameCommandErrorText, gCommonFormatArgs);
@@ -123,8 +123,8 @@ public:
 
         gParkEntrances.push_back(parkEntrance);
 
-        int8_t zLow = _loc.z / 8;
-        int8_t zHigh = zLow + 12;
+        int8_t zLow = _loc.z;
+        int8_t zHigh = zLow + ParkEntranceHeight;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
         for (uint8_t index = 0; index < 3; index++)
         {
@@ -148,7 +148,7 @@ public:
                 }
             }
 
-            TileElement* newElement = tile_element_insert({ entranceLoc.x / 32, entranceLoc.y / 32, zLow }, 0b1111);
+            TileElement* newElement = tile_element_insert(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
             Guard::Assert(newElement != nullptr);
             newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             auto entranceElement = newElement->AsEntrance();
@@ -157,7 +157,7 @@ public:
                 Guard::Assert(false);
                 return nullptr;
             }
-            entranceElement->clearance_height = zHigh;
+            entranceElement->SetClearanceZ(zHigh);
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
@@ -175,16 +175,16 @@ public:
             }
 
             update_park_fences(entranceLoc);
-            update_park_fences({ entranceLoc.x - 32, entranceLoc.y });
-            update_park_fences({ entranceLoc.x + 32, entranceLoc.y });
-            update_park_fences({ entranceLoc.x, entranceLoc.y - 32 });
-            update_park_fences({ entranceLoc.x, entranceLoc.y + 32 });
+            update_park_fences({ entranceLoc.x - COORDS_XY_STEP, entranceLoc.y });
+            update_park_fences({ entranceLoc.x + COORDS_XY_STEP, entranceLoc.y });
+            update_park_fences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
+            update_park_fences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
 
             map_invalidate_tile({ entranceLoc, newElement->GetBaseZ(), newElement->GetClearanceZ() });
 
             if (index == 0)
             {
-                map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, { entranceLoc, zLow * 8 });
+                map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, { entranceLoc, zLow });
             }
         }
 

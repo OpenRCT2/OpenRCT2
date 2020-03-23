@@ -29,12 +29,16 @@ assert_struct_size(rct_entrance_type, 8);
 
 struct TileElement;
 
+constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
+constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
+constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
+
 extern bool gParkEntranceGhostExists;
 extern CoordsXYZD gParkEntranceGhostPosition;
 
 #define MAX_PARK_ENTRANCES 4
 
-constexpr int32_t MaxRideEntranceOrExitHeight = 244;
+constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
 
 extern std::vector<CoordsXYZD> gParkEntrances;
 

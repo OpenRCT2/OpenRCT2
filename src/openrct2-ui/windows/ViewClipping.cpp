@@ -67,8 +67,8 @@ static rct_widget window_view_clipping_widgets[] = {
 #pragma region Members
 
 static CoordsXY _selectionStart;
-static TileCoordsXY _previousClipSelectionA;
-static TileCoordsXY _previousClipSelectionB;
+static CoordsXY _previousClipSelectionA;
+static CoordsXY _previousClipSelectionB;
 static bool _toolActive;
 static bool _dragging;
 
@@ -242,7 +242,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             _previousClipSelectionA = gClipSelectionA;
             _previousClipSelectionB = gClipSelectionB;
             gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+            gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
             gfx_invalidate_screen();
             break;
         case WIDX_CLIP_CLEAR:
@@ -252,7 +252,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
                 tool_cancel();
             }
             gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+            gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
             gfx_invalidate_screen();
             break;
     }
@@ -364,8 +364,8 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
 
 static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&)
 {
-    gClipSelectionA = TileCoordsXY{ gMapSelectPositionA };
-    gClipSelectionB = TileCoordsXY{ gMapSelectPositionB };
+    gClipSelectionA = gMapSelectPositionA;
+    gClipSelectionB = gMapSelectPositionB;
     _toolActive = false;
     tool_cancel();
     gfx_invalidate_screen();
@@ -396,12 +396,12 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
 
     // Clip height value
-    int32_t x = w->x + 8;
-    int32_t y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+    int32_t x = w->windowPos.x + 8;
+    int32_t y = w->windowPos.y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
     gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], x, y);
 
-    x = w->x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
-    y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+    x = w->windowPos.x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
+    y = w->windowPos.y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
 
     fixed16_1dp clipHeightValueInUnits;
     fixed32_2dp clipHeightValueInMeters;

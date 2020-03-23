@@ -27,7 +27,7 @@ interface IObjectManager
     virtual Object* GetLoadedObject(size_t index) abstract;
     virtual Object* GetLoadedObject(int32_t objectType, size_t index) abstract;
     virtual Object* GetLoadedObject(const rct_object_entry* entry) abstract;
-    virtual uint8_t GetLoadedObjectEntryIndex(const Object* object) abstract;
+    virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) abstract;
     virtual std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry* entries) abstract;
 
     virtual Object* LoadObject(const rct_object_entry* entry) abstract;
@@ -39,13 +39,14 @@ interface IObjectManager
     virtual void ResetObjects() abstract;
 
     virtual std::vector<const ObjectRepositoryItem*> GetPackableObjects() abstract;
+    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) abstract;
 };
 
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
 
 void* object_manager_get_loaded_object_by_index(size_t index);
 void* object_manager_get_loaded_object(const rct_object_entry* entry);
-uint8_t object_manager_get_loaded_object_entry_index(const void* loadedObject);
+ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject);
 void* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const rct_object_entry* entries, size_t count);
 void object_manager_unload_all_objects();

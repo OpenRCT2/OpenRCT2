@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "../ride/Station.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
@@ -63,24 +64,30 @@ struct CorruptElement;
 struct TileElementBase
 {
     uint8_t type;             // 0
-    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t Flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
+    void Remove();
+
     uint8_t GetType() const;
     void SetType(uint8_t newType);
+
     Direction GetDirection() const;
     void SetDirection(Direction direction);
     Direction GetDirectionWithOffset(uint8_t offset) const;
+
     bool IsLastForTile() const;
     void SetLastForTile(bool on);
     bool IsGhost() const;
     void SetGhost(bool isGhost);
-    void Remove();
+
     uint8_t GetOccupiedQuadrants() const;
     void SetOccupiedQuadrants(uint8_t quadrants);
+
     int32_t GetBaseZ() const;
     void SetBaseZ(int32_t newZ);
+
     int32_t GetClearanceZ() const;
     void SetClearanceZ(int32_t newZ);
 };
@@ -148,7 +155,7 @@ private:
     uint8_t EdgeStyle;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[6];
+    uint8_t pad_0A[6];
 #pragma clang diagnostic pop
 
 public:
@@ -183,27 +190,34 @@ assert_struct_size(SurfaceElement, 16);
 struct PathElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
-    uint8_t additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
-    uint8_t edges;      // 6
-    union
-    {
-        uint8_t additionStatus; // 7
-        uint8_t rideIndex;
-    };
+    PathSurfaceIndex SurfaceIndex; // 4
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    PathRailingsIndex RailingsIndex; // 6
+#pragma clang diagnostic pop
+    uint8_t Additions;      // 7 (0 means no addition)
+    uint8_t Edges;          // 8
+    uint8_t Flags2;         // 9
+    uint8_t SlopeDirection; // 10
+    union
+    {
+        uint8_t AdditionStatus; // 11, only used for litter bins
+        ride_id_t rideIndex;    // 11
+    };
+    ::StationIndex StationIndex; // 13
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_0E[2];
 #pragma clang diagnostic pop
 
 public:
-    uint8_t GetPathEntryIndex() const;
-    PathSurfaceEntry* GetPathEntry() const;
-    void SetPathEntryIndex(uint8_t newIndex);
+    PathSurfaceIndex GetSurfaceEntryIndex() const;
+    PathSurfaceEntry* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(PathSurfaceIndex newIndex);
 
-    uint8_t GetRailingEntryIndex() const;
+    PathRailingsIndex GetRailingEntryIndex() const;
     PathRailingsEntry* GetRailingEntry() const;
-    void SetRailingEntryIndex(uint8_t newIndex);
+    void SetRailingEntryIndex(PathRailingsIndex newIndex);
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
@@ -217,8 +231,8 @@ public:
     ride_id_t GetRideIndex() const;
     void SetRideIndex(ride_id_t newRideIndex);
 
-    uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t newStationIndex);
+    ::StationIndex GetStationIndex() const;
+    void SetStationIndex(::StationIndex newStationIndex);
 
     bool IsWide() const;
     void SetWide(bool isWide);
@@ -359,18 +373,18 @@ assert_struct_size(TrackElement, 16);
 struct SmallSceneryElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4
-    uint8_t age;        // 5
-    uint8_t colour_1;   // 6
-    uint8_t colour_2;   // 7
+    ObjectEntryIndex entryIndex; // 4
+    uint8_t age;                 // 5
+    uint8_t colour_1;            // 6
+    uint8_t colour_2;            // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_09[7];
 #pragma clang diagnostic pop
 
 public:
-    uint8_t GetEntryIndex() const;
-    void SetEntryIndex(uint8_t newIndex);
+    ObjectEntryIndex GetEntryIndex() const;
+    void SetEntryIndex(ObjectEntryIndex newIndex);
     rct_scenery_entry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
@@ -383,24 +397,26 @@ public:
     void SetSecondaryColour(colour_t colour);
     bool NeedsSupports() const;
     void SetNeedsSupports();
+    void UpdateAge(const CoordsXY& sceneryPos);
 };
 assert_struct_size(SmallSceneryElement, 16);
 
 struct LargeSceneryElement : TileElementBase
 {
 private:
-    uint32_t EntryIndex;
+    uint16_t EntryIndex;
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
+    uint8_t Flags2;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[2];
+    uint8_t pad[3];
 #pragma clang diagnostic pop
 
 public:
-    uint32_t GetEntryIndex() const;
-    void SetEntryIndex(uint32_t newIndex);
+    uint16_t GetEntryIndex() const;
+    void SetEntryIndex(uint16_t newIndex);
     rct_scenery_entry* GetEntry() const;
 
     uint8_t GetSequenceIndex() const;
@@ -423,12 +439,12 @@ assert_struct_size(LargeSceneryElement, 16);
 struct WallElement : TileElementBase
 {
 private:
-    uint16_t entryIndex;      // 04
-    colour_t colour_1;        // 06
-    colour_t colour_2;        // 07
-    colour_t colour_3;        // 08
-    BannerIndex banner_index; // 09
-    uint8_t animation;        // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    ObjectEntryIndex entryIndex; // 04
+    colour_t colour_1;           // 06
+    colour_t colour_2;           // 07
+    colour_t colour_3;           // 08
+    BannerIndex banner_index;    // 09
+    uint8_t animation;           // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0C[4];
@@ -470,14 +486,14 @@ assert_struct_size(WallElement, 16);
 struct EntranceElement : TileElementBase
 {
 private:
-    uint8_t entranceType;  // 4
-    uint8_t SequenceIndex; // 5. Only uses the lower nibble.
-    uint8_t StationIndex;  // 6
-    uint8_t pathType;      // 7
-    ride_id_t rideIndex;   // 8
+    uint8_t entranceType;      // 4
+    uint8_t SequenceIndex;     // 5. Only uses the lower nibble.
+    uint8_t StationIndex;      // 6
+    PathSurfaceIndex PathType; // 7
+    ride_id_t rideIndex;       // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0A[6];
+    uint8_t pad_0B[5];
 #pragma clang diagnostic pop
 
 public:
@@ -493,8 +509,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    uint8_t GetPathType() const;
-    void SetPathType(uint8_t newPathType);
+    PathSurfaceIndex GetPathType() const;
+    void SetPathType(PathSurfaceIndex newPathType);
 };
 assert_struct_size(EntranceElement, 16);
 
@@ -587,11 +603,6 @@ enum
 enum
 {
     TILE_ELEMENT_FLAG_GHOST = (1 << 4),
-    TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
-    TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
-    TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
-    TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
-    TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
     TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 

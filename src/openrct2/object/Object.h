@@ -13,8 +13,12 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <optional>
 #include <string_view>
 #include <vector>
+
+using ObjectEntryIndex = uint16_t;
+constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = 255;
 
 // First 0xF of rct_object_entry->flags
 enum OBJECT_TYPE
@@ -65,8 +69,6 @@ enum OBJECT_SOURCE_GAME
     OBJECT_SOURCE_RCT2 = 8
 };
 
-#define OBJECT_ENTRY_COUNT 721
-
 #pragma pack(push, 1)
 /**
  * Object entry structure.
@@ -107,6 +109,13 @@ struct rct_object_entry
             name[i] = dc;
         }
     }
+
+    uint8_t GetType() const
+    {
+        return flags & 0x0F;
+    }
+
+    std::optional<uint8_t> GetSceneryType() const;
 };
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -216,7 +225,7 @@ public:
 
     virtual uint8_t GetObjectType() const final
     {
-        return _objectEntry.flags & 0x0F;
+        return _objectEntry.GetType();
     }
     virtual std::string GetName() const;
     virtual std::string GetName(int32_t language) const;
@@ -257,7 +266,7 @@ extern int32_t object_entry_group_encoding[];
 bool object_entry_is_empty(const rct_object_entry* entry);
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index);
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry* object_list_find(rct_object_entry* entry);

@@ -3662,6 +3662,7 @@ STR_6327    :Gjennomsiktig bakgrunn for gigantiske skjermbilder
 STR_6328    :{SMALLFONT}{BLACK}Gigantiske skjermbilder blir lagret med gjennomsiktig bakgrunn istedenfor vanlig svart.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Laster ned [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

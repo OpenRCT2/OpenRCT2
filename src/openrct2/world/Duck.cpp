@@ -94,6 +94,11 @@ void Duck::Invalidate()
     invalidate_sprite_1(this);
 }
 
+bool Duck::IsFlying()
+{
+    return this->state == DUCK_STATE::FLY_AWAY || this->state == DUCK_STATE::FLY_TO_WATER;
+}
+
 void Duck::Remove()
 {
     Invalidate();

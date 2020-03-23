@@ -113,7 +113,7 @@ rct_window* window_title_menu_open()
         i++;
     }
     window->width = x;
-    window->x = (context_get_width() - window->width) / 2;
+    window->windowPos.x = (context_get_width() - window->width) / 2;
 
     window_init_scroll_widgets(window);
 
@@ -184,8 +184,8 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
         window_dropdown_show_text(
-            w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, TRANSLUCENT(w->colours[0]),
-            DROPDOWN_FLAG_STAY_OPEN, 5);
+            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+            TRANSLUCENT(w->colours[0]), DROPDOWN_FLAG_STAY_OPEN, 5);
     }
 }
 
@@ -225,6 +225,6 @@ static void window_title_menu_cursor(
 
 static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, PALETTE_51);
+    gfx_filter_rect(dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + 82 - 1, PALETTE_51);
     window_draw_widgets(w, dpi);
 }

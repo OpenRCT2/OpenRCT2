@@ -366,7 +366,7 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
     if (entranceOrExitCoords.isNull())
         return;
 
-    if (gRideEntranceExitPlaceDirection == 0xFF)
+    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
         return;
 
     ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;

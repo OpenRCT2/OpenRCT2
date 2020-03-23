@@ -2332,8 +2332,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     // Draw track piece
-    x = w->x + widget->left + 1;
-    y = w->y + widget->top + 1;
+    x = w->windowPos.x + widget->left + 1;
+    y = w->windowPos.y + widget->top + 1;
     width = widget->right - widget->left - 1;
     height = widget->bottom - widget->top - 1;
     if (clip_drawpixelinfo(&clipdpi, dpi, x, y, width, height))
@@ -2343,8 +2343,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     }
 
     // Draw cost
-    x = w->x + (widget->left + widget->right) / 2;
-    y = w->y + widget->bottom - 23;
+    x = w->windowPos.x + (widget->left + widget->right) / 2;
+    y = w->windowPos.y + widget->bottom - 23;
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, w);
 
@@ -2368,7 +2368,7 @@ static void window_ride_construction_draw_track_piece(
         trackBlock++;
 
     CoordsXYZ mapCoords{ trackBlock->x, trackBlock->y, trackBlock->z };
-    if (trackBlock->var_09 & 2)
+    if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_1)
     {
         mapCoords.x = 0;
         mapCoords.y = 0;
@@ -2801,7 +2801,7 @@ static void window_ride_construction_update_possible_ride_configurations()
         _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
         _currentDisabledSpecialTrackPieces |= (1 << currentPossibleRideConfigurationIndex);
         if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
-            && (trackType != TRACK_ELEM_TOWER_BASE || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_29)))
+            && (trackType != TRACK_ELEM_TOWER_BASE || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
         {
             _currentDisabledSpecialTrackPieces &= ~(1 << currentPossibleRideConfigurationIndex);
             _numCurrentPossibleSpecialTrackPieces++;
@@ -3387,7 +3387,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     }
 
     window_dropdown_show_text_custom_width(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, 0,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, 0,
         _numCurrentPossibleRideConfigurations, widget->right - widget->left);
 
     for (int32_t i = 0; i < 32; i++)
@@ -3551,8 +3551,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     _previousTrackPiece = _currentTrackBegin;
     // search for appropriate z value for ghost, up to max ride height
-    const auto smallZ = z / COORDS_Z_STEP;
-    int numAttempts = (smallZ <= MAX_TRACK_HEIGHT ? (MAX_TRACK_HEIGHT - smallZ + 1) : 2);
+    int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
@@ -3673,7 +3672,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (gRideEntranceExitPlaceDirection == 255)
+    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
     {
         ride_construction_invalidate_current_track();
         return;
@@ -3769,9 +3768,9 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
         z -= bx;
 
         // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable clearance
-        if (!gCheatsDisableClearanceChecks && z > 16)
+        if (!gCheatsDisableClearanceChecks && z > MINIMUM_LAND_HEIGHT_BIG)
         {
-            z -= 16;
+            z -= LAND_HEIGHT_STEP;
         }
     }
     else
@@ -3780,8 +3779,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     }
 
     // search for z value to build at, up to max ride height
-    const auto smallZ = z / COORDS_Z_STEP;
-    int numAttempts = (smallZ <= MAX_TRACK_HEIGHT ? (MAX_TRACK_HEIGHT - smallZ + 1) : 2);
+    int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
@@ -3914,7 +3912,7 @@ static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& scree
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (gRideEntranceExitPlaceDirection == 255)
+    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
         return;
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(

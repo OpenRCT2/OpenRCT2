@@ -93,7 +93,7 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
 
         rct_viewport* mainViewport = window_get_viewport(mainWindow);
         auto mapPositionXY = screen_get_map_xy(
-            { mainViewport->x + (mainViewport->width / 2), mainViewport->y + (mainViewport->height / 2) }, nullptr);
+            { mainViewport->pos.x + (mainViewport->width / 2), mainViewport->pos.y + (mainViewport->height / 2) }, nullptr);
         if (!mapPositionXY)
             return;
 

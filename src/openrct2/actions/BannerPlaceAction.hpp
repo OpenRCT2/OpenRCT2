@@ -122,8 +122,6 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        uint8_t baseHeight = _loc.z / 8 + 2;
-
         if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
         {
             log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);
@@ -137,7 +135,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        TileElement* newTileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b0000);
+        TileElement* newTileElement = tile_element_insert({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
         assert(newTileElement != nullptr);
 
         banner->flags = 0;
@@ -145,11 +143,10 @@ public:
         banner->text_colour = 2;
         banner->type = _bannerType;
         banner->colour = _primaryColour;
-        banner->position.x = _loc.x / 32;
-        banner->position.y = _loc.y / 32;
+        banner->position = TileCoordsXY(_loc);
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         BannerElement* bannerElement = newTileElement->AsBanner();
-        bannerElement->clearance_height = newTileElement->base_height + 2;
+        bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
         bannerElement->SetPosition(_loc.direction);
         bannerElement->ResetAllowedEdges();
         bannerElement->SetIndex(_bannerIndex);

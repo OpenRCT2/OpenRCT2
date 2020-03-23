@@ -33,6 +33,7 @@ set(REPLAYS_SHA1 "3309db1a932709312150124b1e3bbe57c7fb45d0")
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
+option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
@@ -60,6 +61,10 @@ endif ()
 if (PORTABLE OR WIN32)
     set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_BINDIR}")
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif ()
+
+if (APPIMAGE)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
 endif ()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.

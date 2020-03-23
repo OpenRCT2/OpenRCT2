@@ -85,6 +85,12 @@ rct_string_id gGameCommandErrorText;
 
 using namespace OpenRCT2;
 
+void game_reset_speed()
+{
+    gGameSpeed = 1;
+    window_invalidate_by_class(WC_TOP_TOOLBAR);
+}
+
 void game_increase_game_speed()
 {
     gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
@@ -459,8 +465,8 @@ void game_fix_save_vars()
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
-            int8_t station = ride_get_first_valid_station_exit(ride);
-            if (station == -1)
+            auto station = ride_get_first_valid_station_exit(ride);
+            if (station == STATION_INDEX_NULL)
             {
                 log_warning("Couldn't find station, removing peep %u", spriteIndex);
                 peepsToRemove.push_back(peep);
@@ -495,7 +501,7 @@ void game_fix_save_vars()
             if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                auto tileElement = tile_element_insert({ x, y, 14 }, 0b0000);
+                auto tileElement = tile_element_insert(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
                 if (tileElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
@@ -508,8 +514,8 @@ void game_fix_save_vars()
             // At this point, we can be sure that surfaceElement is not NULL.
             if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
             {
-                surfaceElement->SetBaseZ(2 * COORDS_Z_STEP);
-                surfaceElement->SetClearanceZ(2 * COORDS_Z_STEP);
+                surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
+                surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
             }

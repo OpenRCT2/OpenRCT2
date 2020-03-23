@@ -134,7 +134,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
  */
 static int32_t guest_surface_path_finding(Peep* peep)
 {
-    auto pathPos = CoordsXYRangedZ{ peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PATH_HEIGHT };
+    auto pathPos = CoordsXYRangedZ{ peep->NextLoc, peep->NextLoc.z, peep->NextLoc.z + PATH_CLEARANCE };
     Direction randDirection = scenario_rand() & 3;
 
     if (!fence_in_the_way(pathPos, randDirection))
@@ -627,7 +627,7 @@ static void peep_pathfind_heuristic_search(
     bool nextInPatrolArea = inPatrolArea;
     if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)
     {
-        nextInPatrolArea = staff_is_location_in_patrol(peep, loc.x * 32, loc.y * 32);
+        nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
         {
 /* The mechanic will leave his patrol area by taking
@@ -1405,7 +1405,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the
                  * mechanic is in their patrol area. */
-                inPatrolArea = staff_is_location_in_patrol(peep, peep->NextLoc.x, peep->NextLoc.y);
+                inPatrolArea = peep->AsStaff()->IsLocationInPatrol(peep->NextLoc);
             }
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1571,11 +1571,7 @@ static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
     if (chosenEntrance == 0xFF)
         return guest_path_find_aimless(peep, edges);
 
-    int16_t x = gParkEntrances[chosenEntrance].x;
-    int16_t y = gParkEntrances[chosenEntrance].y;
-    int16_t z = gParkEntrances[chosenEntrance].z;
-
-    gPeepPathFindGoalPosition = { x / 32, y / 32, z >> 3 };
+    gPeepPathFindGoalPosition = TileCoordsXYZ(gParkEntrances[chosenEntrance]);
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
@@ -1624,15 +1620,11 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
     if (chosenSpawn == 0xFF)
         return guest_path_find_aimless(peep, edges);
 
-    PeepSpawn* peepSpawn = &gPeepSpawns[chosenSpawn];
+    const auto peepSpawnLoc = gPeepSpawns[chosenSpawn].ToTileStart();
+    Direction direction = peepSpawnLoc.direction;
 
-    int16_t x = peepSpawn->x & 0xFFE0;
-    int16_t y = peepSpawn->y & 0xFFE0;
-    uint8_t z = peepSpawn->z / 8;
-    Direction direction = peepSpawn->direction;
-
-    gPeepPathFindGoalPosition = { x / 32, y / 32, z };
-    if (x == peep->NextLoc.x && y == peep->NextLoc.y)
+    gPeepPathFindGoalPosition = TileCoordsXYZ(peepSpawnLoc);
+    if (peepSpawnLoc.x == peep->NextLoc.x && peepSpawnLoc.y == peep->NextLoc.y)
     {
         return peep_move_one_tile(direction, peep);
     }
@@ -1683,11 +1675,8 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
     }
 
     const auto& entrance = gParkEntrances[peep->current_ride];
-    int16_t x = entrance.x;
-    int16_t y = entrance.y;
-    int16_t z = entrance.z;
 
-    gPeepPathFindGoalPosition = { x / 32, y / 32, z >> 3 };
+    gPeepPathFindGoalPosition = TileCoordsXYZ(entrance);
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
@@ -2115,7 +2104,7 @@ int32_t guest_path_finding(Guest* peep)
     if (numEntranceStations == 0)
     {
         // closestStationNum is always 0 here.
-        auto entranceXY = ride->stations[closestStationNum].Start;
+        auto entranceXY = TileCoordsXY(ride->stations[closestStationNum].Start);
         loc.x = entranceXY.x;
         loc.y = entranceXY.y;
         loc.z = ride->stations[closestStationNum].Height;

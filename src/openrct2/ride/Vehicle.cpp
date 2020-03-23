@@ -40,6 +40,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleData.h"
+#include "VehicleSubpositionData.h"
 
 #include <algorithm>
 #include <iterator>
@@ -512,17 +513,17 @@ static constexpr const unk_9a36c4 Unk9A36C4[] =
 };
 
 /** rct2: 0x009A37C4 */
-static constexpr const TileCoordsXY Unk9A37C4[] =
+static constexpr const CoordsXY SurroundingTiles[] =
 {
-    { 0,  0},
-    { 0, +1},
-    {+1,  0},
-    { 0, -1},
-    { 0, -1},
-    {-1,  0},
-    {-1,  0},
-    { 0, +1},
-    { 0, +1},
+    {  0,           0          },
+    {  0,          +COORDS_XY_STEP },
+    { +COORDS_XY_STEP,  0          },
+    {  0,          -COORDS_XY_STEP },
+    {  0,          -COORDS_XY_STEP },
+    { -COORDS_XY_STEP,  0          },
+    { -COORDS_XY_STEP,  0          },
+    {  0,          +COORDS_XY_STEP },
+    {  0,          +COORDS_XY_STEP },
 };
 
 /** rct2: 0x009A37E4 */
@@ -880,8 +881,8 @@ bool Vehicle::SoundCanPlay() const
     if (g_music_tracking_viewport == nullptr)
         return false;
 
-    int16_t left = g_music_tracking_viewport->view_x;
-    int16_t bottom = g_music_tracking_viewport->view_y;
+    int16_t left = g_music_tracking_viewport->viewPos.x;
+    int16_t bottom = g_music_tracking_viewport->viewPos.y;
     int16_t quarter_w = g_music_tracking_viewport->view_width / 4;
     int16_t quarter_h = g_music_tracking_viewport->view_height / 4;
 
@@ -937,9 +938,9 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
 {
     rct_vehicle_sound_params param;
     param.priority = priority;
-    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->view_x;
+    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
     panX >>= g_music_tracking_viewport->zoom;
-    panX += g_music_tracking_viewport->x;
+    panX += g_music_tracking_viewport->pos.x;
 
     uint16_t screenWidth = context_get_width();
     if (screenWidth < 64)
@@ -948,9 +949,9 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
     }
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->view_y;
+    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->viewPos.y;
     panY >>= g_music_tracking_viewport->zoom;
-    panY += g_music_tracking_viewport->y;
+    panY += g_music_tracking_viewport->pos.y;
 
     uint16_t screenHeight = context_get_height();
     if (screenHeight < 64)
@@ -998,34 +999,36 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
  *
  *  rct2: 0x006BB9FF
  */
-void Vehicle::UpdateSoundParams() const
+void Vehicle::UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const
 {
     if (!SoundCanPlay())
         return;
 
     uint16_t soundPriority = GetSoundPriority();
-    rct_vehicle_sound_params* soundParam;
     // Find a sound param of lower priority to use
-    for (soundParam = &gVehicleSoundParamsList[0];
-         soundParam < gVehicleSoundParamsListEnd && soundPriority <= soundParam->priority; soundParam++)
-        ;
+    auto soundParamIter = std::find_if(
+        vehicleSoundParamsList.begin(), vehicleSoundParamsList.end(),
+        [soundPriority](rct_vehicle_sound_params param) { return soundPriority > param.priority; });
 
-    if (soundParam >= &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
-        return;
-
-    if (gVehicleSoundParamsListEnd < &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
+    if (soundParamIter == std::end(vehicleSoundParamsList))
     {
-        gVehicleSoundParamsListEnd++;
+        if (vehicleSoundParamsList.size() < AUDIO_MAX_VEHICLE_SOUNDS)
+        {
+            vehicleSoundParamsList.push_back(CreateSoundParam(soundPriority));
+        }
     }
-
-    // Shift all sound params down one if using a free space
-    if (soundParam != gVehicleSoundParamsListEnd)
+    else
     {
-        std::memmove(
-            soundParam + 1, soundParam, ((gVehicleSoundParamsListEnd - soundParam) - 1) * sizeof(rct_vehicle_sound_params));
+        if (vehicleSoundParamsList.size() < AUDIO_MAX_VEHICLE_SOUNDS)
+        {
+            // Shift all sound params down one if using a free space
+            vehicleSoundParamsList.insert(soundParamIter, CreateSoundParam(soundPriority));
+        }
+        else
+        {
+            *soundParamIter = CreateSoundParam(soundPriority);
+        }
     }
-
-    *soundParam = CreateSoundParam(soundPriority);
 }
 
 static void vehicle_sounds_update_window_setup()
@@ -1272,12 +1275,14 @@ void vehicle_sounds_update()
     if (gAudioCurrentDevice == -1 || gGameSoundsOff || !gConfigSound.sound_enabled || gOpenRCT2Headless)
         return;
 
+    std::vector<rct_vehicle_sound_params> vehicleSoundParamsList;
+    vehicleSoundParamsList.reserve(AUDIO_MAX_VEHICLE_SOUNDS);
+
     vehicle_sounds_update_window_setup();
 
-    gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
     for (uint16_t i = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
-        get_sprite(i)->vehicle.UpdateSoundParams();
+        get_sprite(i)->vehicle.UpdateSoundParams(vehicleSoundParamsList);
     }
 
     // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
@@ -1286,10 +1291,9 @@ void vehicle_sounds_update()
         if (vehicle_sound.id != SOUND_ID_NULL)
         {
             bool keepPlaying = false;
-            for (rct_vehicle_sound_params* vehicle_sound_params = &gVehicleSoundParamsList[0];
-                 vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++)
+            for (auto vehicleSoundParams : vehicleSoundParamsList)
             {
-                if (vehicle_sound.id == vehicle_sound_params->id)
+                if (vehicle_sound.id == vehicleSoundParams.id)
                 {
                     keepPlaying = true;
                     break;
@@ -1311,21 +1315,20 @@ void vehicle_sounds_update()
         }
     }
 
-    for (rct_vehicle_sound_params* vehicleSoundParams = &gVehicleSoundParamsList[0];
-         vehicleSoundParams < gVehicleSoundParamsListEnd; vehicleSoundParams++)
+    for (auto& vehicleSoundParams : vehicleSoundParamsList)
     {
-        uint8_t panVol = vehicle_sounds_update_get_pan_volume(vehicleSoundParams);
+        uint8_t panVol = vehicle_sounds_update_get_pan_volume(&vehicleSoundParams);
 
-        rct_vehicle_sound* vehicleSound = vehicle_sounds_update_get_vehicle_sound(vehicleSoundParams);
+        rct_vehicle_sound* vehicleSound = vehicle_sounds_update_get_vehicle_sound(&vehicleSoundParams);
         // No free vehicle sound slots (RCT2 corrupts the pointer here)
         if (vehicleSound == nullptr)
             continue;
 
         // Move the Sound Volume towards the SoundsParam Volume
         int32_t tempvolume = vehicleSound->volume;
-        if (tempvolume != vehicleSoundParams->volume)
+        if (tempvolume != vehicleSoundParams.volume)
         {
-            if (tempvolume < vehicleSoundParams->volume)
+            if (tempvolume < vehicleSoundParams.volume)
             {
                 tempvolume += 4;
             }
@@ -1337,9 +1340,9 @@ void vehicle_sounds_update()
         vehicleSound->volume = tempvolume;
         panVol = std::max(0, panVol - tempvolume);
 
-        Vehicle* vehicle = GET_VEHICLE(vehicleSoundParams->id);
-        vehicle_sounds_update_sound_1(vehicle, vehicleSoundParams, vehicleSound, panVol);
-        vehicle_sounds_update_sound_2(vehicle, vehicleSoundParams, vehicleSound, panVol);
+        Vehicle* vehicle = GET_VEHICLE(vehicleSoundParams.id);
+        vehicle_sounds_update_sound_1(vehicle, &vehicleSoundParams, vehicleSound, panVol);
+        vehicle_sounds_update_sound_2(vehicle, &vehicleSoundParams, vehicleSound, panVol);
     }
 }
 
@@ -4445,8 +4448,8 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
                     }
                     else
                     {
-                        if (ride->boat_hire_return_position.x != (flooredLocation.x / 32)
-                            || ride->boat_hire_return_position.y != (flooredLocation.y / 32))
+                        auto flooredTileLoc = TileCoordsXY(flooredLocation);
+                        if (ride->boat_hire_return_position != flooredTileLoc)
                         {
                             do_loc_6DAA97 = true;
                         }
@@ -4577,7 +4580,7 @@ static void vehicle_update_boat_location(Vehicle* vehicle)
 
     CoordsXY location = CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection];
 
-    if (location == returnPosition.ToCoordsXY().ToTileStart())
+    if (location.ToTileStart() == returnPosition.ToCoordsXY())
     {
         vehicle->sub_state = 1;
         vehicle->BoatLocation = location;
@@ -6430,14 +6433,14 @@ bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, ui
         return true;
     }
 
-    TileCoordsXY location{ CoordsXY{ x, y } };
+    auto location = CoordsXY{ x, y };
 
     ride_id_t rideIndex = vehicle->ride;
-    for (auto xy_offset : Unk9A37C4)
+    for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;
 
-        uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
+        uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x, location.y);
         while (spriteIdx != SPRITE_INDEX_NULL)
         {
             Vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
@@ -7656,16 +7659,16 @@ static bool vehicle_update_motion_collision_detection(
         return direction < 0xF;
     }
 
-    TileCoordsXY location{ CoordsXY{ x, y } };
+    auto location = CoordsXY{ x, y };
 
     bool mayCollide = false;
     uint16_t collideId = SPRITE_INDEX_NULL;
     Vehicle* collideVehicle = nullptr;
-    for (auto xy_offset : Unk9A37C4)
+    for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;
 
-        collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
+        collideId = sprite_get_first_in_quadrant(location.x, location.y);
         for (; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant)
         {
             collideVehicle = GET_VEHICLE(collideId);
@@ -7901,7 +7904,8 @@ static void sub_6DBF3E(Vehicle* vehicle)
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
         {
             // Determine the stop positions for the karts. If in left lane it's further along the track than the right lane.
-            // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and 8).
+            // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and
+            // 8).
             cx = vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE ? 18 : 20;
         }
 
@@ -7919,7 +7923,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
 static bool vehicle_update_track_motion_forwards_get_new_track(
     Vehicle* vehicle, uint16_t trackType, Ride* ride, rct_ride_entry* rideEntry)
 {
-    registers regs = {};
+    CoordsXYZD location = {};
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
@@ -7981,10 +7985,10 @@ loc_6DB32A:
     {
         return false;
     }
-    regs.eax = trackBeginEnd.begin_x;
-    regs.ecx = trackBeginEnd.begin_y;
-    regs.edx = trackBeginEnd.begin_z;
-    regs.bl = trackBeginEnd.begin_direction;
+    location.x = trackBeginEnd.begin_x;
+    location.y = trackBeginEnd.begin_y;
+    location.z = trackBeginEnd.begin_z;
+    location.direction = trackBeginEnd.begin_direction;
     tileElement = trackBeginEnd.begin_element;
 }
     goto loc_6DB41D;
@@ -7998,10 +8002,7 @@ loc_6DB358:
         return false;
     }
     tileElement = xyElement.element;
-    regs.eax = xyElement.x;
-    regs.ecx = xyElement.y;
-    regs.edx = z;
-    regs.bl = direction;
+    location = { xyElement, z, static_cast<Direction>(direction) };
 }
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_REVERSER
         || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_REVERSER)
@@ -8031,7 +8032,7 @@ loc_6DB358:
     }
 
 loc_6DB41D:
-    vehicle->TrackLocation = { regs.ax, regs.cx, regs.dx };
+    vehicle->TrackLocation = location;
 
     // TODO check if getting the vehicle entry again is necessary
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
@@ -8084,7 +8085,7 @@ loc_6DB41D:
     {
         vehicle->target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
-    vehicle->track_direction = regs.bl & 3;
+    vehicle->track_direction = location.direction % NumOrthogonalDirections;
     vehicle->track_type |= trackType << 2;
     vehicle->brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
@@ -9255,8 +9256,7 @@ loc_6DCE68:
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        auto trackLoc = TileCoordsXY(vehicle->TrackLocation);
-        if (trackLoc != ride->stations[i].Start)
+        if (vehicle->TrackLocation != ride->stations[i].Start)
         {
             continue;
         }
@@ -9865,7 +9865,7 @@ void vehicle_update_crossings(const Vehicle* vehicle)
 
         while (true)
         {
-            auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
             auto ride = get_ride(vehicle->ride);
 
             // Many New Element parks have invisible rides hacked into the path.
@@ -9938,7 +9938,7 @@ void vehicle_update_crossings(const Vehicle* vehicle)
                 }
             }
 
-            auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
             if (pathElement)
             {
                 pathElement->SetIsBlockedByVehicle(false);

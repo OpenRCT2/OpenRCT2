@@ -391,7 +391,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
     const int32_t graphHeight = (totalHeight - totalHeightText - heightTab) / 2;
 
     rct_drawpixelinfo clippedDPI;
-    if (clip_drawpixelinfo(&clippedDPI, dpi, w->x, w->y, w->width, w->height))
+    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos.x, w->windowPos.y, w->width, w->height))
     {
         dpi = &clippedDPI;
 
@@ -470,7 +470,8 @@ static void window_network_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi,
             }
         }
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+        gfx_draw_sprite(
+            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
     }
 }
 

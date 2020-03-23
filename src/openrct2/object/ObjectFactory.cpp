@@ -203,7 +203,7 @@ namespace ObjectFactory
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
 
-            if (object_entry_get_type(&entry) != OBJECT_TYPE_SCENARIO_TEXT)
+            if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
             {
                 result = CreateObject(entry);
 
@@ -265,8 +265,7 @@ namespace ObjectFactory
     Object* CreateObject(const rct_object_entry& entry)
     {
         Object* result;
-        uint8_t objectType = object_entry_get_type(&entry);
-        switch (objectType)
+        switch (entry.GetType())
         {
             case OBJECT_TYPE_RIDE:
                 result = new RideObject(entry);

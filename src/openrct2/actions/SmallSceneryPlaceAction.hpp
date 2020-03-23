@@ -56,7 +56,7 @@ DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSce
 private:
     CoordsXYZD _loc;
     uint8_t _quadrant;
-    uint8_t _sceneryType;
+    uint16_t _sceneryType;
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
 
@@ -147,20 +147,18 @@ public:
         }
 
         // Check if sub tile height is any different compared to actual surface tile height
-        int32_t x2 = _loc.x;
-        int32_t y2 = _loc.y;
+        auto loc2 = _loc;
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
         {
-            x2 += 16;
-            y2 += 16;
+            loc2 = loc2.ToTileCentre();
         }
         else
         {
-            x2 += SceneryQuadrantOffsets[quadrant & 3].x - 1;
-            y2 += SceneryQuadrantOffsets[quadrant & 3].y - 1;
+            loc2.x += SceneryQuadrantOffsets[quadrant & 3].x - 1;
+            loc2.y += SceneryQuadrantOffsets[quadrant & 3].y - 1;
         }
-        landHeight = tile_element_height({ x2, y2 });
-        waterHeight = tile_element_water_height({ x2, y2 });
+        landHeight = tile_element_height(loc2);
+        waterHeight = tile_element_water_height(loc2);
 
         surfaceHeight = landHeight;
         // If on water
@@ -239,8 +237,8 @@ public:
             }
         }
 
-        int32_t zLow = targetHeight / 8;
-        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
+        int32_t zLow = targetHeight;
+        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, COORDS_Z_STEP);
         uint8_t collisionQuadrants = 0b1111;
         auto quadRotation{ 0 };
         if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -280,7 +278,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                { _loc, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
+                { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
                 CREATE_CROSSING_MODE_NONE))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(
@@ -377,8 +375,8 @@ public:
             }
         }
 
-        int32_t zLow = targetHeight / 8;
-        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
+        int32_t zLow = targetHeight;
+        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8);
         uint8_t collisionQuadrants = 0b1111;
         auto quadRotation{ 0 };
         if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -418,7 +416,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                { _loc, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+                { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
                 &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(
@@ -430,7 +428,7 @@ public:
         res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-        TileElement* newElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
+        TileElement* newElement = tile_element_insert(CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
         res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);

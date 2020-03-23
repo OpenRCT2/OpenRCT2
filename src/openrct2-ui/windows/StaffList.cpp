@@ -362,7 +362,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
                 {
                     continue;
                 }
-                if (!staff_is_location_in_patrol(peep, footpathCoords.x, footpathCoords.y))
+                if (!peep->AsStaff()->IsLocationInPatrol(footpathCoords))
                 {
                     continue;
                 }
@@ -569,8 +569,8 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         (window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].left
          + window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].right)
                 / 2
-            + w->x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 + w->y, 0);
+            + w->windowPos.x,
+        window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 + w->windowPos.y, 0);
 
     // Mechanic tab image
     i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
@@ -581,8 +581,8 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         (window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].left
          + window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].right)
                 / 2
-            + w->x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].bottom - 6 + w->y, 0);
+            + w->windowPos.x,
+        window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].bottom - 6 + w->windowPos.y, 0);
 
     // Security tab image
     i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
@@ -593,13 +593,13 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         (window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].left
          + window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].right)
                 / 2
-            + w->x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 + w->y, 0);
+            + w->windowPos.x,
+        window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 + w->windowPos.y, 0);
 
     rct_drawpixelinfo sprite_dpi;
     if (clip_drawpixelinfo(
-            &sprite_dpi, dpi, window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left + w->x + 1,
-            window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top + w->y + 1,
+            &sprite_dpi, dpi, window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left + w->windowPos.x + 1,
+            window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top + w->windowPos.y + 1,
             window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].right
                 - window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left - 1,
             window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].bottom
@@ -614,14 +614,15 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         set_format_arg(0, money32, gStaffWageTable[selectedTab]);
-        gfx_draw_string_left(dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 155, w->y + 0x20);
+        gfx_draw_string_left(
+            dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 155, w->windowPos.y + 0x20);
     }
 
     if (selectedTab < 3)
     {
         gfx_draw_string_left(
-            dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK, w->x + 6,
-            window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->y + 1);
+            dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK, w->windowPos.x + 6,
+            window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->windowPos.y + 1);
     }
 
     int32_t staffTypeStringId = StaffNamingConvention[selectedTab].plural;
@@ -635,8 +636,8 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(2, rct_string_id, staffTypeStringId);
 
     gfx_draw_string_left(
-        dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK, w->x + 4,
-        window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->y + 2);
+        dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 4,
+        window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->windowPos.y + 2);
 }
 
 /** rct2: 0x00992A08 */

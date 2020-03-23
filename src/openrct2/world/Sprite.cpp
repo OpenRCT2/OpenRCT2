@@ -31,9 +31,7 @@ static rct_sprite _spriteList[MAX_SPRITES];
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
-#define SPATIAL_INDEX_LOCATION_NULL 0x10000
-
-uint16_t gSpriteSpatialIndex[0x10001];
+uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_LITTER_VOMIT,
@@ -202,7 +200,7 @@ void reset_sprite_spatial_index()
         if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
             size_t index = GetSpatialIndexOffset(spr->generic.x, spr->generic.y);
-            uint16_t nextSpriteId = gSpriteSpatialIndex[index];
+            uint32_t nextSpriteId = gSpriteSpatialIndex[index];
             gSpriteSpatialIndex[index] = spr->generic.sprite_index;
             spr->generic.next_in_quadrant = nextSpriteId;
         }
@@ -815,6 +813,41 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
 }
 
 /**
+ * Loops through all sprites, finds floating objects and removes them.
+ * Returns the amount of removed objects as feedback.
+ */
+uint16_t remove_floating_sprites()
+{
+    uint16_t removed = 0;
+    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+    {
+        rct_sprite* rctSprite = get_sprite(i);
+        if (rctSprite->IsBalloon())
+        {
+            sprite_remove(rctSprite->AsBalloon());
+            sprite_misc_update(rctSprite);
+            removed++;
+        }
+        else if (rctSprite->IsDuck())
+        {
+            if (rctSprite->AsDuck()->IsFlying())
+            {
+                rctSprite->duck.Remove();
+                sprite_misc_update(rctSprite);
+                removed++;
+            }
+        }
+        else if (rctSprite->IsMoneyEffect())
+        {
+            sprite_remove(rctSprite->AsMoneyEffect());
+            sprite_misc_update(rctSprite);
+            removed++;
+        }
+    }
+    return removed;
+}
+
+/**
  * Determines whether it's worth tweening a sprite or not when frame smoothing is on.
  */
 static bool sprite_should_tween(rct_sprite* sprite)
@@ -1086,7 +1119,7 @@ int32_t fix_disjoint_sprites()
 
 int32_t check_for_spatial_index_cycles(bool fix)
 {
-    for (int32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++)
+    for (uint32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++)
     {
         rct_sprite* cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
         if (cycle_start != nullptr)

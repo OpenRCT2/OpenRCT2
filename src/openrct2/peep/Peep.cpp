@@ -771,7 +771,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
-    CoordsXYZ destination = { location.x * 32 + 16, location.y * 32 + 16, tileElement->GetBaseZ() + 16 };
+    CoordsXYZ destination = { location.ToCoordsXY().ToTileCentre(), tileElement->GetBaseZ() + 16 };
 
     if (!map_is_location_owned(destination))
     {
@@ -1376,13 +1376,13 @@ void peep_update_crowd_noise()
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
-        if (viewport->view_x > peep->sprite_right)
+        if (viewport->viewPos.x > peep->sprite_right)
             continue;
-        if (viewport->view_x + viewport->view_width < peep->sprite_left)
+        if (viewport->viewPos.x + viewport->view_width < peep->sprite_left)
             continue;
-        if (viewport->view_y > peep->sprite_bottom)
+        if (viewport->viewPos.y > peep->sprite_bottom)
             continue;
-        if (viewport->view_y + viewport->view_height < peep->sprite_top)
+        if (viewport->viewPos.y + viewport->view_height < peep->sprite_top)
             continue;
 
         visiblePeeps += peep->state == PEEP_STATE_QUEUING ? 1 : 2;
@@ -1749,7 +1749,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->pathfind_goal.x = 0xFF;
     peep->pathfind_goal.y = 0xFF;
     peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = 0xFF;
+    peep->pathfind_goal.direction = INVALID_DIRECTION;
     peep->item_standard_flags = 0;
     peep->item_extra_flags = 0;
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
@@ -3059,7 +3059,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         else
         {
             auto staff = AsStaff();
-            result = staff_path_finding(staff);
+            result = staff->DoPathFinding();
         }
 
         if (result != 0)
@@ -3196,7 +3196,7 @@ void peep_reset_pathfind_goal(Peep* peep)
     peep->pathfind_goal.x = 0xFF;
     peep->pathfind_goal.y = 0xFF;
     peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = 0xFF;
+    peep->pathfind_goal.direction = INVALID_DIRECTION;
 }
 
 /**

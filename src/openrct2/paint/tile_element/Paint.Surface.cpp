@@ -315,7 +315,7 @@ static uint32_t get_surface_image(
             { session->MapPosition.x >> 5, session->MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground);
         if (obj->Colour != 255)
         {
-            image |= obj->Colour << 19 | IMAGE_TYPE_REMAP;
+            image |= SPRITE_ID_PALETTE_COLOUR_1(obj->Colour);
         }
     }
     return image;
@@ -330,7 +330,7 @@ static uint32_t get_surface_pattern(uint8_t index, int32_t offset)
         image = obj->PatternBaseImageId + offset;
         if (obj->Colour != 255)
         {
-            image |= obj->Colour << 19 | IMAGE_TYPE_REMAP;
+            image |= SPRITE_ID_PALETTE_COLOUR_1(obj->Colour);
         }
     }
     return image;
@@ -518,11 +518,13 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
     if (tile.tile_element == nullptr)
         return false;
 
-    if (tile.tile_element->base_height > gClipHeight)
+    if (tile.tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP)
         return false;
-    if (tile.tile_coords.x < gClipSelectionA.x || tile.tile_coords.x > gClipSelectionB.x)
+
+    auto coords = tile.tile_coords.ToCoordsXY();
+    if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
         return false;
-    if (tile.tile_coords.y < gClipSelectionA.y || tile.tile_coords.y > gClipSelectionB.y)
+    if (coords.y < gClipSelectionA.y || coords.y > gClipSelectionB.y)
         return false;
 
     return true;
@@ -913,7 +915,7 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
         int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
-            localHeight += (2 * COORDS_Z_STEP);
+            localHeight += LAND_HEIGHT_STEP;
 
             if (waterHeight != localHeight || !(localSurfaceShape & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG))
             {
@@ -1315,19 +1317,14 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         // Owned land boundary fences
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
-        registers regs = {};
-        regs.al = tileElement->AsSurface()->GetParkFences();
-        regs.ax = regs.ax << rotation;
-        regs.ah = regs.al >> 4;
-
-        uint8_t al = regs.al | regs.ah;
+        uint8_t rotatedFences = rol4(tileElement->AsSurface()->GetParkFences(), rotation);
 
         for (const auto& fenceData : _tileSurfaceBoundaries)
         {
-            const int32_t bit = al & 1;
-            al >>= 1;
+            const int32_t edgeHasFence = rotatedFences & 1;
+            rotatedFences >>= 1;
 
-            if (bit == 0)
+            if (edgeHasFence == 0)
                 continue;
 
             int32_t local_height = height;

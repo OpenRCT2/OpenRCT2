@@ -305,7 +305,7 @@ static void window_land_invalidate(rct_window* w)
         surfaceImage = surfaceObj->IconImageId;
         if (surfaceObj->Colour != 255)
         {
-            surfaceImage |= surfaceObj->Colour << 19 | IMAGE_TYPE_REMAP;
+            surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
         }
     }
     const auto edgeObj = static_cast<TerrainEdgeObject*>(
@@ -346,22 +346,22 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        x = w->x + (previewWidget->left + previewWidget->right) / 2;
-        y = w->y + (previewWidget->top + previewWidget->bottom) / 2;
+        x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
+        y = w->windowPos.y + (previewWidget->top + previewWidget->bottom) / 2;
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
     else if (gLandMountainMode)
     {
-        x = w->x + previewWidget->left;
-        y = w->y + previewWidget->top;
+        x = w->windowPos.x + previewWidget->left;
+        y = w->windowPos.y + previewWidget->top;
         int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
         gfx_draw_sprite(dpi, sprite, x, y, 0);
         widget_draw(dpi, w, WIDX_DECREMENT);
         widget_draw(dpi, w, WIDX_INCREMENT);
     }
 
-    x = w->x + (previewWidget->left + previewWidget->right) / 2;
-    y = w->y + previewWidget->bottom + 5;
+    x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
+    y = w->windowPos.y + previewWidget->bottom + 5;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {

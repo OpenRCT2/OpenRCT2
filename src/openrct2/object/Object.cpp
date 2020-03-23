@@ -13,6 +13,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
+#include "../world/Scenery.h"
 #include "ObjectLimits.h"
 
 #include <algorithm>
@@ -166,6 +167,25 @@ std::string Object::GetName() const
 std::string Object::GetName(int32_t language) const
 {
     return GetString(language, OBJ_STRING_ID_NAME);
+}
+
+std::optional<uint8_t> rct_object_entry::GetSceneryType() const
+{
+    switch (GetType())
+    {
+        case OBJECT_TYPE_SMALL_SCENERY:
+            return SCENERY_TYPE_SMALL;
+        case OBJECT_TYPE_LARGE_SCENERY:
+            return SCENERY_TYPE_LARGE;
+        case OBJECT_TYPE_WALLS:
+            return SCENERY_TYPE_WALL;
+        case OBJECT_TYPE_BANNERS:
+            return SCENERY_TYPE_BANNER;
+        case OBJECT_TYPE_PATH_BITS:
+            return SCENERY_TYPE_PATH_ITEM;
+        default:
+            return std::nullopt;
+    }
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

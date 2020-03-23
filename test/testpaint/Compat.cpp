@@ -32,8 +32,8 @@ int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
-TileCoordsXY gClipSelectionA = { 0, 0 };
-TileCoordsXY gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+CoordsXY gClipSelectionA = { 0, 0 };
+CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
 uint32_t gScenarioTicks;
 uint8_t gCurrentRotation;
 
@@ -61,8 +61,8 @@ const TileCoordsXY TileDirectionDelta[] = {
 };
 // clang-format on
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex);
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex);
+TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex);
+TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex);
 
 uint8_t get_current_rotation()
 {
@@ -157,15 +157,15 @@ rct_sprite* get_sprite(size_t sprite_idx)
 
 bool TileElementBase::IsLastForTile() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 void TileElementBase::SetLastForTile(bool on)
 {
     if (on)
-        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     else
-        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
 uint8_t TileElementBase::GetType() const
@@ -175,12 +175,12 @@ uint8_t TileElementBase::GetType() const
 
 bool TileElementBase::IsGhost() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 bool TrackElement::BlockBrakeClosed() const
 {
-    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
 }
 
 TileElement* map_get_first_element_at(const CoordsXY& elementPos)
@@ -396,12 +396,12 @@ void TrackElement::SetHasChain(bool on)
     }
 }
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex)
 {
     return ride->stations[stationIndex].Entrance;
 }
 
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
+TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex)
 {
     return ride->stations[stationIndex].Exit;
 }
@@ -439,7 +439,7 @@ bool TrackElement::IsHighlighted() const
 
 uint8_t PathElement::GetEdges() const
 {
-    return edges & 0xF;
+    return Edges & 0xF;
 }
 
 StationObject* ride_get_station_object(const Ride* ride)
@@ -455,43 +455,43 @@ bool Vehicle::IsGhost() const
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const
 {
-    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
 }
 
 void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 {
-    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
-    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+    Flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    Flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }
 
 int32_t TileElementBase::GetBaseZ() const
 {
-    return base_height * 8;
+    return base_height * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetBaseZ(int32_t newZ)
 {
-    base_height = (newZ / 8);
+    base_height = (newZ / COORDS_Z_STEP);
 }
 
 int32_t TileElementBase::GetClearanceZ() const
 {
-    return clearance_height * 8;
+    return clearance_height * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetClearanceZ(int32_t newZ)
 {
-    clearance_height = (newZ / 8);
+    clearance_height = (newZ / COORDS_Z_STEP);
 }
 
 int32_t RideStation::GetBaseZ() const
 {
-    return Height * 8;
+    return Height * COORDS_Z_STEP;
 }
 
 void RideStation::SetBaseZ(int32_t newZ)
 {
-    Height = newZ / 8;
+    Height = newZ / COORDS_Z_STEP;
 }
 
 CoordsXYZ RideStation::GetStart() const

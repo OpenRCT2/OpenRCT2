@@ -86,7 +86,7 @@ public:
             res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
-        if ((_loc.z & 0xF) != 0)
+        if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
         {
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
@@ -108,13 +108,13 @@ public:
             return res;
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
+        auto baseHeight = _loc.z;
+        auto clearanceHeight = _loc.z + 32;
 
-        int8_t heightDifference = baseHeight - surfaceElement->base_height;
+        auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
-            heightDifference = heightDifference >> 1;
+            heightDifference /= COORDS_Z_PER_TINY_Z;
 
             if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
             {
@@ -134,7 +134,7 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, { 0b1111, 0 }))
+            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 }))
             {
                 return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
             }
@@ -200,9 +200,6 @@ public:
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
-
         auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
@@ -211,10 +208,10 @@ public:
 
             auto startLoc = _loc.ToTileStart();
 
-            tileElement = tile_element_insert({ TileCoordsXY{ _loc }, baseHeight }, 0b1111);
+            tileElement = tile_element_insert(_loc, 0b1111);
             assert(tileElement != nullptr);
 
-            tileElement->clearance_height = clearanceHeight;
+            tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
             tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
