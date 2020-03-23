@@ -3674,6 +3674,8 @@ STR_6357    :{SMALLFONT}{BLACK}Remover todos os patos do mapa
 STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Habilitar efeitos luminosos em atrações (experimental)
+STR_6362    :{SMALLFONT}{BLACK}Se habilitados, veículos de atrações com trilhos serão iluminados à noite.
 
 #############
 # Scenarios #
