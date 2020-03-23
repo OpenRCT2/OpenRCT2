@@ -41,6 +41,7 @@
 - Fix: [#10904] RCT1/LL-scenarios with red water won't open.
 - Fix: [#10941] The Clear Scenery tool gives refunds for ghost elements.
 - Fix: [#10963] Light effects are drawn off-centre in some rotations.
+- Fix: [#11001] Rides list does not use natural sorting
 - Improved: [#682] The staff patrol area is now drawn on the water, instead of on the surface under water.
 - Improved: [#10858] Added horizontal grid lines to finance charts.
 - Improved: [#10884] Added y-axes and labels to park window charts.
