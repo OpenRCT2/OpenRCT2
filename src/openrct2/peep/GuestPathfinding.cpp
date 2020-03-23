@@ -1839,6 +1839,45 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
     loc.z = tileElement->base_height;
 }
 
+/*
+ * If a ride has multiple entrance stations and is set to sync with
+ * adjacent stations, cycle through the entrance stations (based on
+ * number of rides the peep has been on) so the peep will try the
+ * different sections of the ride.
+ * In this case, the ride's various entrance stations will typically,
+ * though not necessarily, be adjacent to one another and consequently
+ * not too far for the peep to walk when cycling between them.
+ * Note: the same choice of station must made while the peep navigates
+ * to the station. Consequently a truly random station selection here is not
+ * appropriate.
+ */
+static StationIndex guest_pathfinding_select_random_station(
+    const Guest* guest, int32_t numEntranceStations, std::bitset<MAX_STATIONS> entranceStations, StationIndex closestStationNum)
+{
+    int32_t select = guest->no_of_rides % numEntranceStations;
+    while (select > 0)
+    {
+        for (StationIndex i = 0; i < MAX_STATIONS; i++)
+        {
+            if (entranceStations[i])
+            {
+                entranceStations[i] = false;
+                select--;
+                break;
+            }
+        }
+    }
+    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    {
+        if (entranceStations[i])
+        {
+            closestStationNum = i;
+            break;
+        }
+    }
+
+    return closestStationNum;
+}
 /**
  *
  *  rct2: 0x00694C35
@@ -2079,39 +2118,10 @@ int32_t guest_path_finding(Guest* peep)
     if (numEntranceStations == 0)
         closestStationNum = 0;
 
-    /* If a ride has multiple entrance stations and is set to sync with
-     * adjacent stations, cycle through the entrance stations (based on
-     * number of rides the peep has been on) so the peep will try the
-     * different sections of the ride.
-     * In this case, the ride's various entrance stations will typically,
-     * though not necessarily, be adjacent to one another and consequently
-     * not too far for the peep to walk when cycling between them.
-     * Note: the same choice of station must made while the peep navigates
-     * to the station. Consequently a random station selection here is not
-     * appropriate. */
     if (numEntranceStations > 1 && (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
-        int32_t select = peep->no_of_rides % numEntranceStations;
-        while (select > 0)
-        {
-            for (size_t i = 0; i < entranceStations.size(); i++)
-            {
-                if (entranceStations[i])
-                {
-                    entranceStations[i] = false;
-                    select--;
-                    break;
-                }
-            }
-        }
-        for (size_t i = 0; i < entranceStations.size(); i++)
-        {
-            if (entranceStations[i])
-            {
-                closestStationNum = i;
-                break;
-            }
-        }
+        closestStationNum = guest_pathfinding_select_random_station(
+            peep, numEntranceStations, entranceStations, closestStationNum);
     }
 
     if (numEntranceStations == 0)

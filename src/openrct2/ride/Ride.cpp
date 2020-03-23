@@ -3731,7 +3731,7 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
  */
 static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
 {
-    uint8_t numStations = 0;
+    uint16_t numStations = 0;
     for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; ++stationIndex)
     {
         if (!ride->stations[stationIndex].Start.isNull())
