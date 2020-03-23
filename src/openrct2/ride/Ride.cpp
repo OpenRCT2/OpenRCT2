@@ -3062,7 +3062,7 @@ static bool ride_does_vehicle_colour_exist(uint8_t ride_sub_type, vehicle_colour
 
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type)
 {
-    if (ride_sub_type >= 128)
+    if (ride_sub_type >= MAX_RIDE_OBJECTS)
     {
         return 0;
     }
@@ -5554,7 +5554,7 @@ bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
  */
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
 {
-    if (ride_type >= 128)
+    if (ride_type >= std::size(RideColourPresets))
     {
         return 0;
     }

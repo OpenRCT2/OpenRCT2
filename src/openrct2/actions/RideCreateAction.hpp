@@ -87,7 +87,7 @@ public:
         }
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
-        if (rideEntryIndex >= 128)
+        if (rideEntryIndex >= MAX_RIDE_OBJECTS)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
