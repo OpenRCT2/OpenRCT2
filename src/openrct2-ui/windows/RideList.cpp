@@ -21,6 +21,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -805,7 +806,7 @@ void window_ride_list_refresh_list(rct_window* w)
                     if (otherRide != nullptr)
                     {
                         auto strB = otherRide->GetName();
-                        if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
+                        if (strlogicalcmp(strA.c_str(), strB.c_str()) >= 0)
                             break;
 
                         window_bubble_list_item(w, current_list_position);
