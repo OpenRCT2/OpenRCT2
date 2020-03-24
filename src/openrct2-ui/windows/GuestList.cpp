@@ -20,7 +20,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Sprite.h>
-#include <set>
+#include <vector>
 
 // clang-format off
 enum {
@@ -84,8 +84,7 @@ static constexpr const uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIG
 static constexpr const auto GUESTS_PER_PAGE = 2000;
 static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
 
-static auto PeepCompare = [](uint16_t x, uint16_t y){ return peep_compare(&x,&y) < 0; };
-static auto GuestList = std::multiset<uint16_t,decltype(PeepCompare)>(PeepCompare);
+static std::vector<uint16_t> GuestList;
 
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);
@@ -263,8 +262,10 @@ void window_guest_list_refresh_list()
         }
         if (!guest_should_be_visible(peep))
             continue;
-        GuestList.insert(spriteIndex);
+        GuestList.push_back(spriteIndex);
     }
+
+    std::sort(GuestList.begin(), GuestList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(&a, &b) < 0; });
 }
 
 /**
@@ -576,11 +577,11 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
         case PAGE_INDIVIDUAL:
             i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             i += _window_guest_list_selected_page * GUESTS_PER_PAGE;
-            for (auto spIndex : GuestList)
+            for (auto spriteIndex : GuestList)
             {
                 if (i == 0)
                 {
-                    window_guest_open(GET_PEEP(spIndex));
+                    window_guest_open(GET_PEEP(spriteIndex));
                     break;
                 }
                 i--;
@@ -724,7 +725,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(
             dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
             COLOUR_BLACK, x, y);
-        assert(w->var_492 == GuestList.size());
+        assert(w->var_492 == static_cast<int16_t>(GuestList.size()));
     }
 }
 
