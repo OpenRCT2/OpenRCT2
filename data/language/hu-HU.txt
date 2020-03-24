@@ -3573,7 +3573,19 @@ STR_6346    :Mezővizsgáló: Elem magasságának csökkentése
 STR_6347    :Úti extrák nem helyezhetőek útátjárókra!
 STR_6348    :Előbb távolítsd el az útátjárót!
 STR_6349    :Véletlenszerű főcím
+STR_6350    :Szórás
+STR_6351    :Díszletszóró eszköz
+STR_6352    :Sűrűség
+STR_6353    :{SMALLFONT}{BLACK}Alacsony sűrűség
+STR_6354    :{SMALLFONT}{BLACK}Közepes sűrűség
+STR_6355    :{SMALLFONT}{BLACK}Nagy sűrűség
+STR_6356    :{SMALLFONT}{BLACK}Kacsákat rak le, ha van víz a parkban
+STR_6357    :{SMALLFONT}{BLACK}Eltávolít minden kacsát a térképről
+STR_6358    :{UINT16}. oldal
+STR_6359    :{POP16}{POP16}{UINT16}. oldal
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Fényhatások a játékokon (kísérleti)
+STR_6362    :{SMALLFONT}{BLACK}Ha be van kapcsolva, a pályával rendlekező játékokon a járművek éjjel ki lesznek világítva.
 
 #############
 # Scenarios #
