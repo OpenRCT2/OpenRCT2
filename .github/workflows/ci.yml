@@ -3,7 +3,7 @@ on: [push, pull_request]
 env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
-  OPENRCT2_VERSION: 0.2.4
+  OPENRCT2_VERSION: 0.2.5
 jobs:
   check-code-formatting:
     name: Check code formatting

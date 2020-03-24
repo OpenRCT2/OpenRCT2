@@ -1,4 +1,4 @@
-0.2.4+ (in development)
+0.2.5 (2020-03-24)
 ------------------------------------------------------------------------
 - Feature: [#3154] Use a random title sequence each time it is shown.
 - Feature: [#6553] Android version now runs in full screen.
