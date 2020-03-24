@@ -20,6 +20,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "ride/RideData.h"
+#include "scenario/Scenario.h"
 #include "windows/Intent.h"
 #include "world/Footpath.h"
 #include "world/LargeScenery.h"
@@ -372,6 +373,24 @@ void reset_selected_object_count_and_size()
         {
             _numSelectedObjectsForType[objectType]++;
         }
+    }
+}
+
+void finish_object_selection()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    {
+        set_every_ride_type_invented();
+        set_every_ride_entry_invented();
+        gS6Info.editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
+        gfx_invalidate_screen();
+    }
+    else
+    {
+        set_all_scenery_items_invented();
+        scenery_set_default_placement_configuration();
+        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gfx_invalidate_screen();
     }
 }
 

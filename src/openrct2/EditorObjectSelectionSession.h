@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Editor.h"
 #include "common.h"
 #include "object/Object.h"
 
@@ -30,6 +31,7 @@ void editor_object_flags_free();
 void unload_unselected_objects();
 void sub_6AB211();
 void reset_selected_object_count_and_size();
+void finish_object_selection();
 int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry* entry);
 
 /**
