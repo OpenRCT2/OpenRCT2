@@ -41,6 +41,7 @@
 - Fix: [#10904] RCT1/LL-scenarios with red water won't open.
 - Fix: [#10941] The Clear Scenery tool gives refunds for ghost elements.
 - Fix: [#10963] Light effects are drawn off-centre in some rotations.
+- Fix: [#10993] Bottom toolbar not refreshing when a guest leaves the park.
 - Fix: [#11001] Rides list does not use natural sorting.
 - Fix: [objects#54] Stage Coach cars are not considered covered by the game.
 - Fix: [objects#56] Handymen cut grass incorrectly.
