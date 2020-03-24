@@ -22,7 +22,9 @@
 #        define __USE_SHGETKNOWNFOLDERPATH__
 #        define __USE_GETDATEFORMATEX__
 #    else
-#        define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#        ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#            define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#        endif
 #    endif
 
 #    include "../OpenRCT2.h"
@@ -134,6 +136,13 @@ namespace Platform
         }
     }
 
+    static std::string GetCurrentExecutableDirectory()
+    {
+        auto exePath = GetCurrentExecutablePath();
+        auto exeDirectory = Path::GetDirectory(exePath);
+        return exeDirectory;
+    }
+
     std::string GetInstallPath()
     {
         auto path = std::string(gCustomOpenrctDataPath);
@@ -143,8 +152,7 @@ namespace Platform
         }
         else
         {
-            auto exePath = GetCurrentExecutablePath();
-            auto exeDirectory = Path::GetDirectory(exePath);
+            auto exeDirectory = GetCurrentExecutableDirectory();
             path = Path::Combine(exeDirectory, "data");
         }
         return path;
@@ -157,7 +165,7 @@ namespace Platform
 
     std::string GetDocsPath()
     {
-        return std::string();
+        return GetCurrentExecutableDirectory();
     }
 
     static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
@@ -314,6 +322,16 @@ namespace Platform
             size = GetModuleFileNameW(hModule, wExePath.get(), wExePathCapacity);
         } while (size >= wExePathCapacity);
         return String::ToUtf8(wExePath.get());
+    }
+
+    uintptr_t StrDecompToPrecomp(utf8* input)
+    {
+        return reinterpret_cast<uintptr_t>(input);
+    }
+
+    bool HandleSpecialCommandLineArgument(const char* argument)
+    {
+        return false;
     }
 } // namespace Platform
 

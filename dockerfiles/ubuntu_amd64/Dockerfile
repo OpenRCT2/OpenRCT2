@@ -36,4 +36,4 @@ RUN \
 
 RUN apt-get -y upgrade
 # clang and gcc already installed
-RUN apt-get install --no-install-recommends -y ccache cmake libsdl2-dev libsdl2-ttf-dev pkg-config libjansson-dev libspeex-dev libspeexdsp-dev libcurl4-openssl-dev libcrypto++-dev libfontconfig1-dev libfreetype6-dev libpng-dev libzip-dev git libssl-dev ninja-build libicu-dev libgtest-dev
+RUN apt-get install --no-install-recommends -y ccache cmake libsdl2-dev pkg-config libjansson-dev libspeex-dev libspeexdsp-dev libcurl4-openssl-dev libcrypto++-dev libfontconfig1-dev libfreetype6-dev libpng-dev libzip-dev git libssl-dev ninja-build libicu-dev libgtest-dev

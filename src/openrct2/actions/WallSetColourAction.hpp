@@ -35,7 +35,7 @@ public:
     {
     }
 
-    WallSetColourAction(CoordsXYZD loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
+    WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
         : _loc(loc)
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)
@@ -63,14 +63,14 @@ public:
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park(_loc) && !gCheatsSandboxMode)
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto wallElement = map_get_wall_element_at(_loc.x, _loc.y, _loc.z / 8, _loc.direction);
+        auto wallElement = map_get_wall_element_at(_loc);
         if (wallElement == nullptr)
         {
             log_error(
@@ -121,9 +121,9 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
-        auto wallElement = map_get_wall_element_at(_loc.x, _loc.y, _loc.z / 8, _loc.direction);
+        auto wallElement = map_get_wall_element_at(_loc);
         if (wallElement == nullptr)
         {
             log_error(
@@ -151,7 +151,7 @@ public:
         {
             wallElement->SetTertiaryColour(_tertiaryColour);
         }
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z, _loc.z + 72);
+        map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 72 });
 
         return res;
     }

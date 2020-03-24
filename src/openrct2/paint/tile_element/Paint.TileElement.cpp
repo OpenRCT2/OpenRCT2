@@ -67,20 +67,20 @@ void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
  *
  *  rct2: 0x0068B2B7
  */
-void sub_68B2B7(paint_session* session, int32_t x, int32_t y)
+void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords)
 {
-    if (x < gMapSizeUnits && y < gMapSizeUnits && x >= 32 && y >= 32)
+    if (mapCoords.x < gMapSizeUnits && mapCoords.y < gMapSizeUnits && mapCoords.x >= 32 && mapCoords.y >= 32)
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
         session->WaterHeight = 0xFFFF;
         session->Unk141E9DB = G141E9DB_FLAG_2;
 
-        sub_68B3FB(session, x, y);
+        sub_68B3FB(session, mapCoords.x, mapCoords.y);
     }
     else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
-        blank_tiles_paint(session, x, y);
+        blank_tiles_paint(session, mapCoords.x, mapCoords.y);
     }
 }
 
@@ -140,9 +140,9 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
-        if (x / 32 < gClipSelectionA.x || x / 32 > gClipSelectionB.x)
+        if (x < gClipSelectionA.x || x > gClipSelectionB.x)
             return;
-        if (y / 32 < gClipSelectionA.y || y / 32 > gClipSelectionB.y)
+        if (y < gClipSelectionA.y || y > gClipSelectionB.y)
             return;
     }
 
@@ -154,7 +154,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
-    TileElement* tile_element = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tile_element = map_get_first_element_at(session->MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session->CurrentRotation;
@@ -163,7 +163,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 #ifndef __TESTPAINT__
     if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
     {
-        partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition.x, session->MapPosition.y);
+        partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition);
     }
 #endif // __TESTPAINT__
 
@@ -213,17 +213,15 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     uint16_t max_height = 0;
     do
     {
-        max_height = std::max(max_height, (uint16_t)element->clearance_height);
+        max_height = std::max(max_height, (uint16_t)element->GetClearanceZ());
     } while (!(element++)->IsLastForTile());
 
     element--;
 
     if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE && (element->AsSurface()->GetWaterHeight() > 0))
     {
-        max_height = element->AsSurface()->GetWaterHeight() * 2;
+        max_height = element->AsSurface()->GetWaterHeight();
     }
-
-    max_height *= 8;
 
 #ifndef __TESTPAINT__
     if (partOfVirtualFloor)
@@ -243,27 +241,27 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->DidPassSurface = false;
-    int32_t previousHeight = 0;
+    int32_t previousBaseZ = 0;
     do
     {
         // Only paint tile_elements below the clip height.
-        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
+        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
-        int32_t height = tile_element->base_height * 8;
+        int32_t baseZ = tile_element->GetBaseZ();
 
-        // If we are on a new height level, look through elements on the
-        //  same height and store any types might be relevant to others
-        if (height != previousHeight)
+        // If we are on a new baseZ level, look through elements on the
+        //  same baseZ and store any types might be relevant to others
+        if (baseZ != previousBaseZ)
         {
-            previousHeight = height;
+            previousBaseZ = baseZ;
             session->PathElementOnSameHeight = nullptr;
             session->TrackElementOnSameHeight = nullptr;
             TileElement* tile_element_sub_iterator = tile_element;
             while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
-                if (tile_element_sub_iterator->base_height != tile_element->base_height)
+                if (tile_element_sub_iterator->GetBaseZ() != tile_element->GetBaseZ())
                 {
                     break;
                 }
@@ -288,34 +286,34 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             }
         }
 
-        LocationXY16 dword_9DE574 = session->MapPosition;
+        CoordsXY mapPosition = session->MapPosition;
         session->CurrentlyDrawnItem = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
-                surface_paint(session, direction, height, tile_element);
+                surface_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                path_paint(session, height, tile_element);
+                path_paint(session, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
-                track_paint(session, direction, height, tile_element);
+                track_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                scenery_paint(session, direction, height, tile_element);
+                scenery_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                entrance_paint(session, direction, height, tile_element);
+                entrance_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
-                fence_paint(session, direction, height, tile_element);
+                fence_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                large_scenery_paint(session, direction, height, tile_element);
+                large_scenery_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner_paint(session, direction, height, tile_element);
+                banner_paint(session, direction, baseZ, tile_element);
                 break;
             // A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
             case TILE_ELEMENT_TYPE_CORRUPT:
@@ -328,7 +326,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
                 // all elements after it.
                 return;
         }
-        session->MapPosition = dword_9DE574;
+        session->MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
 #ifndef __TESTPAINT__

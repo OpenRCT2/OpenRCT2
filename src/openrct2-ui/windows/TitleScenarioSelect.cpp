@@ -102,8 +102,8 @@ static void window_scenarioselect_close(rct_window *w);
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_scenarioselect_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_scenarioselect_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_scenarioselect_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_scenarioselect_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_scenarioselect_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_scenarioselect_invalidate(rct_window *w);
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -325,22 +325,23 @@ static void window_scenarioselect_scrollgetsize(rct_window* w, int32_t scrollInd
  *
  *  rct2: 0x6780FE
  */
-static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
+    auto mutableScreenCoords = screenCoords;
     for (const auto& listItem : _listItems)
     {
         switch (listItem.type)
         {
             case LIST_ITEM_TYPE::HEADING:
-                y -= 18;
+                mutableScreenCoords.y -= 18;
                 break;
             case LIST_ITEM_TYPE::SCENARIO:
-                y -= scenarioItemHeight;
-                if (y < 0 && !listItem.scenario.is_locked)
+                mutableScreenCoords.y -= scenarioItemHeight;
+                if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                 {
-                    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
+                    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
@@ -350,7 +351,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                 }
                 break;
         }
-        if (y < 0)
+        if (mutableScreenCoords.y < 0)
         {
             break;
         }
@@ -361,23 +362,24 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
  *
  *  rct2: 0x678162
  */
-static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
     const scenario_index_entry* selected = nullptr;
+    auto mutableScreenCoords = screenCoords;
     for (const auto& listItem : _listItems)
     {
         switch (listItem.type)
         {
             case LIST_ITEM_TYPE::HEADING:
-                y -= 18;
+                mutableScreenCoords.y -= 18;
                 break;
             case LIST_ITEM_TYPE::SCENARIO:
-                y -= scenarioItemHeight;
-                if (y < 0)
+                mutableScreenCoords.y -= scenarioItemHeight;
+                if (mutableScreenCoords.y < 0)
                 {
                     if (listItem.scenario.is_locked)
                     {
@@ -390,7 +392,7 @@ static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollI
                 }
                 break;
         }
-        if (y < 0)
+        if (mutableScreenCoords.y < 0)
         {
             break;
         }
@@ -442,14 +444,14 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                                                                      : STR_WINDOW_COLOUR_2_STRINGID;
 
     // Text for each tab
-    for (int32_t i = 0; i < 8; i++)
+    for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
     {
         rct_widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
         if (widget->type == WWT_EMPTY)
             continue;
 
-        int32_t x = (widget->left + widget->right) / 2 + w->x;
-        int32_t y = (widget->top + widget->bottom) / 2 + w->y - 3;
+        int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
+        int32_t y = (widget->top + widget->bottom) / 2 + w->windowPos.y - 3;
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
@@ -469,8 +471,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (_showLockedInformation)
         {
             // Show locked information
-            int32_t x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-            int32_t y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+            int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+            int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
             gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, x + 85, y, 170);
             y += 15;
             y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
@@ -487,12 +489,13 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
         const utf8* pathPtr = path;
-        gfx_draw_string_left(dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+        gfx_draw_string_left(
+            dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->windowPos.x + 3, w->windowPos.y + w->height - 3 - 11);
     }
 
     // Scenario name
-    int32_t x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-    int32_t y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+    int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+    int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char*, scenario->name);
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);

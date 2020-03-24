@@ -87,7 +87,7 @@ public:
         }
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
-        if (rideEntryIndex >= 128)
+        if (rideEntryIndex >= MAX_RIDE_OBJECTS)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
@@ -137,12 +137,12 @@ public:
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
         ride->SetColourPreset(_colour1);
-        ride->overall_view.xy = RCT_XY8_UNDEFINED;
+        ride->overall_view.setNull();
         ride->SetNameToDefault();
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
-            ride->stations[i].Start.xy = RCT_XY8_UNDEFINED;
+            ride->stations[i].Start.setNull();
             ride_clear_entrance_location(ride, i);
             ride_clear_exit_location(ride, i);
             ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
@@ -299,7 +299,7 @@ public:
         ride_set_vehicle_colours_to_random_preset(ride, _colour2);
         window_invalidate_by_class(WC_RIDE_LIST);
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         return res;
     }

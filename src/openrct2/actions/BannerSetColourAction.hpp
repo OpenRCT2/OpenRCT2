@@ -24,7 +24,7 @@ private:
 public:
     BannerSetColourAction() = default;
 
-    BannerSetColourAction(CoordsXYZD loc, uint8_t primaryColour)
+    BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
         : _loc(loc)
         , _primaryColour(primaryColour)
     {
@@ -56,7 +56,7 @@ private:
     GameActionResult::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
@@ -79,7 +79,7 @@ private:
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto bannerElement = map_get_banner_element_at(_loc.x / 32, _loc.y / 32, _loc.z / 8, _loc.direction);
+        auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
 
         if (bannerElement == nullptr)
         {
@@ -103,7 +103,7 @@ private:
 
             auto banner = GetBanner(index);
             banner->colour = _primaryColour;
-            map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z, _loc.z + 32);
+            map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
         }
 
         return res;

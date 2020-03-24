@@ -24,8 +24,8 @@
 
 static uint16_t _virtualFloorBaseSize = 5 * 32;
 static uint16_t _virtualFloorHeight = 0;
-static LocationXYZ16 _virtualFloorLastMinPos;
-static LocationXYZ16 _virtualFloorLastMaxPos;
+static CoordsXYZ _virtualFloorLastMinPos;
+static CoordsXYZ _virtualFloorLastMaxPos;
 static uint32_t _virtualFloorFlags = 0;
 
 enum VirtualFloorFlags
@@ -56,10 +56,10 @@ void virtual_floor_set_height(int16_t height)
 
 static void virtual_floor_reset()
 {
-    _virtualFloorLastMinPos.x = std::numeric_limits<int16_t>::max();
-    _virtualFloorLastMinPos.y = std::numeric_limits<int16_t>::max();
-    _virtualFloorLastMaxPos.x = std::numeric_limits<int16_t>::lowest();
-    _virtualFloorLastMaxPos.y = std::numeric_limits<int16_t>::lowest();
+    _virtualFloorLastMinPos.x = std::numeric_limits<int32_t>::max();
+    _virtualFloorLastMinPos.y = std::numeric_limits<int32_t>::max();
+    _virtualFloorLastMaxPos.x = std::numeric_limits<int32_t>::lowest();
+    _virtualFloorLastMaxPos.y = std::numeric_limits<int32_t>::lowest();
     _virtualFloorHeight = 0;
 }
 
@@ -94,8 +94,8 @@ void virtual_floor_disable()
 void virtual_floor_invalidate()
 {
     // First, let's figure out how big our selection is.
-    LocationXY16 min_position = { std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::max() };
-    LocationXY16 max_position = { std::numeric_limits<int16_t>::lowest(), std::numeric_limits<int16_t>::lowest() };
+    CoordsXY min_position = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max() };
+    CoordsXY max_position = { std::numeric_limits<int32_t>::lowest(), std::numeric_limits<int32_t>::lowest() };
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
@@ -107,10 +107,10 @@ void virtual_floor_invalidate()
     {
         for (const auto& tile : gMapSelectionTiles)
         {
-            min_position.x = std::min<int16_t>(min_position.x, tile.x);
-            min_position.y = std::min<int16_t>(min_position.y, tile.y);
-            max_position.x = std::max<int16_t>(max_position.x, tile.x);
-            max_position.y = std::max<int16_t>(max_position.y, tile.y);
+            min_position.x = std::min(min_position.x, tile.x);
+            min_position.y = std::min(min_position.y, tile.y);
+            max_position.x = std::max(max_position.x, tile.x);
+            max_position.y = std::max(max_position.y, tile.y);
         }
     }
 
@@ -121,25 +121,23 @@ void virtual_floor_invalidate()
     max_position.y += _virtualFloorBaseSize + 16;
 
     // Invalidate previous region if appropriate.
-    if (_virtualFloorLastMinPos.x != std::numeric_limits<int16_t>::max()
-        && _virtualFloorLastMinPos.y != std::numeric_limits<int16_t>::max()
-        && _virtualFloorLastMaxPos.x != std::numeric_limits<int16_t>::lowest()
-        && _virtualFloorLastMaxPos.y != std::numeric_limits<int16_t>::lowest())
+    if (_virtualFloorLastMinPos.x != std::numeric_limits<int32_t>::max()
+        && _virtualFloorLastMinPos.y != std::numeric_limits<int32_t>::max()
+        && _virtualFloorLastMaxPos.x != std::numeric_limits<int32_t>::lowest()
+        && _virtualFloorLastMaxPos.y != std::numeric_limits<int32_t>::lowest())
     {
-        LocationXY16 prevMins = { _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y };
-        LocationXY16 prevMaxs = { _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y };
-
-        if (prevMins.x != min_position.x || prevMins.y != min_position.y || prevMaxs.x != max_position.x
-            || prevMaxs.y != max_position.y || (_virtualFloorFlags & VIRTUAL_FLOOR_FORCE_INVALIDATION) != 0)
+        if (_virtualFloorLastMinPos != min_position || _virtualFloorLastMaxPos != max_position
+            || (_virtualFloorFlags & VIRTUAL_FLOOR_FORCE_INVALIDATION) != 0)
         {
-            log_verbose("Invalidating previous region, Min: %d %d, Max: %d %d", prevMins.x, prevMins.y, prevMaxs.x, prevMaxs.y);
-            map_invalidate_region(prevMins, prevMaxs);
+            log_verbose(
+                "Invalidating previous region, Min: %d %d, Max: %d %d", _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y,
+                _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y);
+            map_invalidate_region(_virtualFloorLastMinPos, _virtualFloorLastMaxPos);
         }
     }
 
     // Do not invalidate new region if floor hasn't moved.
-    if (_virtualFloorLastMinPos.x == min_position.x && _virtualFloorLastMinPos.y == min_position.y
-        && _virtualFloorLastMinPos.z == _virtualFloorHeight)
+    if (min_position == _virtualFloorLastMinPos && _virtualFloorLastMinPos.z == _virtualFloorHeight)
     {
         return;
     }
@@ -152,8 +150,8 @@ void virtual_floor_invalidate()
     log_verbose("Min: %d %d, Max: %d %d", min_position.x, min_position.y, max_position.x, max_position.y);
 
     // Invalidate new region if coordinates are set.
-    if (min_position.x != std::numeric_limits<int16_t>::max() && min_position.y != std::numeric_limits<int16_t>::max()
-        && max_position.x != std::numeric_limits<int16_t>::lowest() && max_position.y != std::numeric_limits<int16_t>::lowest())
+    if (min_position.x != std::numeric_limits<int32_t>::max() && min_position.y != std::numeric_limits<int32_t>::max()
+        && max_position.x != std::numeric_limits<int32_t>::lowest() && max_position.y != std::numeric_limits<int32_t>::lowest())
     {
         map_invalidate_region(min_position, max_position);
 
@@ -168,7 +166,7 @@ void virtual_floor_invalidate()
     }
 }
 
-bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
+bool virtual_floor_tile_is_floor(const CoordsXY& loc)
 {
     if (!virtual_floor_is_enabled())
     {
@@ -177,9 +175,9 @@ bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
 
     // Check if map selection (usually single tiles) are enabled
     //  and if the current tile is near or on them
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) && x >= gMapSelectPositionA.x - _virtualFloorBaseSize
-        && y >= gMapSelectPositionA.y - _virtualFloorBaseSize && x <= gMapSelectPositionB.x + _virtualFloorBaseSize
-        && y <= gMapSelectPositionB.y + _virtualFloorBaseSize)
+    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) && loc.x >= gMapSelectPositionA.x - _virtualFloorBaseSize
+        && loc.y >= gMapSelectPositionA.y - _virtualFloorBaseSize && loc.x <= gMapSelectPositionB.x + _virtualFloorBaseSize
+        && loc.y <= gMapSelectPositionB.y + _virtualFloorBaseSize)
     {
         return true;
     }
@@ -188,8 +186,8 @@ bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
         for (const auto& tile : gMapSelectionTiles)
         {
-            if (x >= tile.x - _virtualFloorBaseSize && y >= tile.y - _virtualFloorBaseSize
-                && x <= tile.x + _virtualFloorBaseSize && y <= tile.y + _virtualFloorBaseSize)
+            if (loc.x >= tile.x - _virtualFloorBaseSize && loc.y >= tile.y - _virtualFloorBaseSize
+                && loc.x <= tile.x + _virtualFloorBaseSize && loc.y <= tile.y + _virtualFloorBaseSize)
             {
                 return true;
             }
@@ -200,7 +198,7 @@ bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
 }
 
 static void virtual_floor_get_tile_properties(
-    int16_t x, int16_t y, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
+    const CoordsXY& loc, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
     bool* aboveGround, bool* outLit)
 {
     *outOccupied = false;
@@ -213,8 +211,7 @@ static void virtual_floor_get_tile_properties(
     // See if we are a selected tile
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
     {
-        if (x >= gMapSelectPositionA.x && y >= gMapSelectPositionA.y && x <= gMapSelectPositionB.x
-            && y <= gMapSelectPositionB.y)
+        if (loc >= gMapSelectPositionA && loc <= gMapSelectPositionB)
         {
             *outLit = true;
         }
@@ -225,7 +222,7 @@ static void virtual_floor_get_tile_properties(
     {
         for (const auto& tile : gMapSelectionTiles)
         {
-            if (x == tile.x && y == tile.y)
+            if (tile == loc)
             {
                 *outLit = true;
                 break;
@@ -233,7 +230,7 @@ static void virtual_floor_get_tile_properties(
         }
     }
 
-    *tileOwned = map_is_location_owned({ x, y, height });
+    *tileOwned = map_is_location_owned({ loc, height });
 
     if (gCheatsSandboxMode)
         *tileOwned = true;
@@ -242,7 +239,7 @@ static void virtual_floor_get_tile_properties(
     //  * Surfaces, which may put us underground
     //  * Walls / banners, which are displayed as occupied edges
     //  * Ghost objects, which are displayed as lit squares
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return;
     do
@@ -251,23 +248,23 @@ static void virtual_floor_get_tile_properties(
 
         if (elementType == TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (height < tileElement->clearance_height)
+            if (height < tileElement->GetClearanceZ())
             {
                 *outBelowGround = true;
             }
-            else if (height < tileElement->base_height + 2 && tileElement->AsSurface()->GetSlope() != 0)
+            else if (height < (tileElement->GetBaseZ() + LAND_HEIGHT_STEP) && tileElement->AsSurface()->GetSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;
             }
-            if (height > tileElement->base_height)
+            if (height > tileElement->GetBaseZ())
             {
                 *aboveGround = true;
             }
             continue;
         }
 
-        if (height >= tileElement->clearance_height || height < tileElement->base_height)
+        if (height >= tileElement->GetClearanceZ() || height < tileElement->GetBaseZ())
         {
             continue;
         }
@@ -292,10 +289,10 @@ static void virtual_floor_get_tile_properties(
 void virtual_floor_paint(paint_session* session)
 {
     static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
-        { -32, 0 },
-        { 0, 32 },
-        { 32, 0 },
-        { 0, -32 },
+        { -COORDS_XY_STEP, 0 },
+        { 0, COORDS_XY_STEP },
+        { COORDS_XY_STEP, 0 },
+        { 0, -COORDS_XY_STEP },
     };
 
     if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
@@ -306,7 +303,7 @@ void virtual_floor_paint(paint_session* session)
     // This is a virtual floor, so no interactions
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    int16_t virtualFloorClipHeight = _virtualFloorHeight / 8;
+    int16_t virtualFloorClipHeight = _virtualFloorHeight;
 
     // Check for occupation and walls
     bool weAreOccupied;
@@ -318,8 +315,8 @@ void virtual_floor_paint(paint_session* session)
     uint8_t litEdges = 0;
 
     virtual_floor_get_tile_properties(
-        session->MapPosition.x, session->MapPosition.y, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges,
-        &weAreBelowGround, &weAreAboveGround, &weAreLit);
+        session->MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
+        &weAreAboveGround, &weAreLit);
 
     // Move the bits around to match the current rotation
     occupiedEdges |= occupiedEdges << 4;
@@ -328,11 +325,10 @@ void virtual_floor_paint(paint_session* session)
 
     // Try the four tiles next to us for the same parameters as above,
     //  if our parameters differ we set an edge towards that tile
-    for (uint8_t i = 0; i < 4; i++)
+    for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
     {
-        uint8_t effectiveRotation = (4 + i - direction) % 4;
-        int16_t theirLocationX = session->MapPosition.x + scenery_half_tile_offsets[effectiveRotation].x;
-        int16_t theirLocationY = session->MapPosition.y + scenery_half_tile_offsets[effectiveRotation].y;
+        uint8_t effectiveRotation = (NumOrthogonalDirections + i - direction) % NumOrthogonalDirections;
+        CoordsXY theirLocation = session->MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
         uint8_t theirOccupiedEdges;
@@ -342,10 +338,10 @@ void virtual_floor_paint(paint_session* session)
         bool theyAreAboveGround;
 
         virtual_floor_get_tile_properties(
-            theirLocationX, theirLocationY, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges,
-            &theyAreBelowGround, &theyAreAboveGround, &theyAreLit);
+            theirLocation, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges, &theyAreBelowGround,
+            &theyAreAboveGround, &theyAreLit);
 
-        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % 4)) && (weAreOwned && !theyAreOwned))
+        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % NumOrthogonalDirections)) && (weAreOwned && !theyAreOwned))
         {
             occupiedEdges |= 1 << i;
         }
@@ -359,9 +355,9 @@ void virtual_floor_paint(paint_session* session)
         }
     }
 
-    uint32_t remap_base = COLOUR_DARK_PURPLE << 19 | IMAGE_TYPE_REMAP;
-    uint32_t remap_edge = COLOUR_WHITE << 19 | IMAGE_TYPE_REMAP;
-    uint32_t remap_lit = COLOUR_DARK_BROWN << 19 | IMAGE_TYPE_REMAP;
+    uint32_t remap_base = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_PURPLE);
+    uint32_t remap_edge = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_WHITE);
+    uint32_t remap_lit = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_BROWN);
 
     // Edges which are internal to objects (i.e., the tile on both sides
     //  is occupied/lit) are not rendered to provide visual clarity.

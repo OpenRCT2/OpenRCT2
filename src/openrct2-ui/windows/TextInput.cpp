@@ -25,8 +25,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-#define WW 250
-#define WH 90
+constexpr int32_t WW = 250;
+constexpr int32_t WH = 90;
 
 // clang-format off
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {
@@ -39,12 +39,12 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
-        { WWT_FRAME, 1, 0, WW - 1, 0, WH - 1, STR_NONE, STR_NONE },
-        { WWT_CAPTION, 1, 1, WW - 2, 1, 14, STR_OPTIONS, STR_WINDOW_TITLE_TIP },
-        { WWT_CLOSEBOX, 1, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
-        { WWT_BUTTON,          1, WW - 80, WW - 10, WH - 21, WH - 10, STR_CANCEL, STR_NONE },
-        { WWT_BUTTON,          1, 10, 80, WH - 21, WH - 10, STR_OK, STR_NONE },
-        { WIDGETS_END }
+    { WWT_FRAME,     1,  0,        WW - 1,   0,        WH - 1,  STR_NONE,     STR_NONE },
+    { WWT_CAPTION,   1,  1,        WW - 2,   1,        14,      STR_OPTIONS,  STR_WINDOW_TITLE_TIP },
+    { WWT_CLOSEBOX,  1,  WW - 13,  WW - 3,   2,        13,      STR_CLOSE_X,  STR_CLOSE_WINDOW_TIP },
+    { WWT_BUTTON,    1,  WW - 80,  WW - 10,  WH - 22,  WH - 9,  STR_CANCEL,   STR_NONE },
+    { WWT_BUTTON,    1,  10,       80,       WH - 22,  WH - 9,  STR_OK,       STR_NONE },
+    { WIDGETS_END }
 };
 
 static void window_text_input_close(rct_window *w);
@@ -192,12 +192,12 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    int32_t y = w->y + 25;
+    int32_t y = w->windowPos.y + 25;
 
     int32_t no_lines = 0;
     int32_t font_height = 0;
 
-    gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
+    gfx_draw_string_centred(dpi, input_text_description, w->windowPos.x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
 
     y += 25;
 
@@ -211,7 +211,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-    gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
+    gfx_fill_rect_inset(
+        dpi, w->windowPos.x + 10, y, w->windowPos.x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
 
     y += 1;
 
@@ -223,7 +224,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t cursorY = 0;
     for (int32_t line = 0; line <= no_lines; line++)
     {
-        gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
+        gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->windowPos.x + 12, y);
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -232,7 +233,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             // Make a copy of the string for measuring the width.
             char temp_string[TEXT_INPUT_SIZE] = { 0 };
             std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-            cursorX = w->x + 13 + gfx_get_string_width(temp_string);
+            cursorX = w->windowPos.x + 13 + gfx_get_string_width(temp_string);
             cursorY = y;
 
             int32_t width = 6;
@@ -348,11 +349,11 @@ static void window_text_input_invalidate(rct_window* w)
         window_set_resize(w, WW, height, WW, height);
     }
 
-    window_text_input_widgets[WIDX_OKAY].top = height - 21;
-    window_text_input_widgets[WIDX_OKAY].bottom = height - 10;
+    window_text_input_widgets[WIDX_OKAY].top = height - 22;
+    window_text_input_widgets[WIDX_OKAY].bottom = height - 9;
 
-    window_text_input_widgets[WIDX_CANCEL].top = height - 21;
-    window_text_input_widgets[WIDX_CANCEL].bottom = height - 10;
+    window_text_input_widgets[WIDX_CANCEL].top = height - 22;
+    window_text_input_widgets[WIDX_CANCEL].bottom = height - 9;
 
     window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
 }

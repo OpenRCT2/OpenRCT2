@@ -27,6 +27,7 @@
 #    include "../Version.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
+#    include "../core/Guard.hpp"
 #    include "../core/String.hpp"
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
@@ -70,8 +71,15 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     {
         parameters[L"commit"] = String::ToWideChar(gVersionInfoFull);
     }
+
+    auto assertMsg = Guard::GetLastAssertMessage();
+    if (assertMsg)
+    {
+        parameters[L"assert_failure"] = String::ToWideChar(*assertMsg);
+    }
+
     int timeout = 10000;
-    bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
+    bool success = google_breakpad::HTTPUpload::SendMultipartPostRequest(url, parameters, files, &timeout, &response, &error);
     wprintf(L"Success = %d, error = %d, response = %s\n", success, error, response.c_str());
     return success;
 }

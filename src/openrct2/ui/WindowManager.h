@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui
         virtual void HandleInput() abstract;
         virtual void HandleKeyboard(bool isTitle) abstract;
         virtual std::string GetKeyboardShortcutString(int32_t shortcut) abstract;
-        virtual void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) abstract;
+        virtual void SetMainView(const ScreenCoordsXY& viewPos, int32_t zoom, int32_t rotation) abstract;
         virtual void UpdateMouseWheel() abstract;
         virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;
     };

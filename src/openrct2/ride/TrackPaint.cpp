@@ -29,7 +29,7 @@
 
 // clang-format off
 /* rct2: 0x007667AC */
-static LocationXY16 loc_7667AC[] = {
+static constexpr TileCoordsXY EntranceOffsetEdgeNE[] = {
     { -1, 0 },
     { 0,  -1 },
     { 1,  0 },
@@ -37,7 +37,7 @@ static LocationXY16 loc_7667AC[] = {
 };
 
 /* rct2: 0x007667AE */
-static LocationXY16 loc_7667AE[] = {
+static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { 0, -1 },
     { 1, 0 },
     { 0, 1 },
@@ -202,33 +202,32 @@ enum
 // clang-format on
 
 bool track_paint_util_has_fence(
-    enum edge_t edge, LocationXY16 position, const TileElement* tileElement, Ride* ride, uint8_t rotation)
+    enum edge_t edge, const CoordsXY& position, const TileElement* tileElement, Ride* ride, uint8_t rotation)
 {
-    LocationXY16 offset = { 0, 0 };
+    TileCoordsXY offset;
     switch (edge)
     {
         case EDGE_NE:
-            offset = loc_7667AC[rotation];
+            offset = EntranceOffsetEdgeNE[rotation];
             break;
         case EDGE_SE:
-            offset = loc_7667AE[(rotation + 2) & 3];
+            offset = EntranceOffsetEdgeNW[(rotation + 2) & 3];
             break;
         case EDGE_SW:
-            offset = loc_7667AC[(rotation + 2) & 3];
+            offset = EntranceOffsetEdgeNE[(rotation + 2) & 3];
             break;
         case EDGE_NW:
-            offset = loc_7667AE[rotation];
+            offset = EntranceOffsetEdgeNW[rotation];
             break;
     }
 
-    int32_t entranceX = (position.x / 32) + offset.x;
-    int32_t entranceY = (position.y / 32) + offset.y;
+    auto entranceLoc = TileCoordsXY(position) + offset;
 
     int32_t entranceId = tileElement->AsTrack()->GetStationIndex();
     const TileCoordsXYZD entrance = ride_get_entrance_location(ride, entranceId);
     const TileCoordsXYZD exit = ride_get_exit_location(ride, entranceId);
 
-    return ((entrance.x != entranceX || entrance.y != entranceY) && (exit.x != entranceX || exit.y != entranceY));
+    return (entranceLoc != entrance && entranceLoc != exit);
 }
 
 void track_paint_util_paint_floor(
@@ -257,7 +256,7 @@ void track_paint_util_paint_floor(
 }
 
 void track_paint_util_paint_fences(
-    paint_session* session, uint8_t edges, LocationXY16 position, const TileElement* tileElement, Ride* ride,
+    paint_session* session, uint8_t edges, const CoordsXY& position, const TileElement* tileElement, Ride* ride,
     uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
 {
     uint32_t imageId;
@@ -285,7 +284,7 @@ void track_paint_util_paint_fences(
 }
 
 /* Supports are only placed every 2 tiles for flat pieces*/
-bool track_paint_util_should_paint_supports(LocationXY16 position)
+bool track_paint_util_should_paint_supports(const CoordsXY& position)
 {
     if ((position.x & (1 << 5)) == (position.y & (1 << 5)))
         return true;
@@ -328,7 +327,7 @@ static void track_paint_util_draw_station_impl(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
@@ -536,7 +535,7 @@ void track_paint_util_draw_station_inverted(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
@@ -774,29 +773,28 @@ bool track_paint_util_draw_station_covers_2(
     }
 
     int32_t imageOffset = 0;
-    LocationXYZ16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
-
-    offset = LocationXYZ16{ 0, 0, static_cast<int16_t>(height) };
+    CoordsXYZ bounds, boundsOffset;
+    CoordsXYZ offset = CoordsXYZ(0, 0, height);
     switch (edge)
     {
         case EDGE_NE:
-            bounds = LocationXYZ16{ 1, 30, heights[stationVariant][0] };
-            boundsOffset = LocationXYZ16{ 0, 1, static_cast<int16_t>(height + 1) };
+            bounds = CoordsXYZ(1, 30, heights[stationVariant][0]);
+            boundsOffset = CoordsXYZ(0, 1, height + 1);
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
             break;
         case EDGE_SE:
-            bounds = LocationXYZ16{ 32, 32, 0 };
-            boundsOffset = LocationXYZ16{ 0, 0, static_cast<int16_t>(height + 1 + heights[stationVariant][0]) };
+            bounds = CoordsXYZ(32, 32, 0);
+            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
             imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
             break;
         case EDGE_SW:
-            bounds = LocationXYZ16{ 32, 32, 0 };
-            boundsOffset = LocationXYZ16{ 0, 0, static_cast<int16_t>(height + 1 + heights[stationVariant][0]) };
+            bounds = CoordsXYZ(32, 32, 0);
+            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
             imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
             break;
         case EDGE_NW:
-            bounds = LocationXYZ16{ 30, 1, heights[stationVariant][0] };
-            boundsOffset = LocationXYZ16{ 1, 0, static_cast<int16_t>(height + 1) };
+            bounds = CoordsXYZ(30, 1, heights[stationVariant][0]);
+            boundsOffset = CoordsXYZ(1, 0, height + 1);
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
             break;
     }
@@ -843,7 +841,7 @@ bool track_paint_util_draw_station_covers_2(
 void track_paint_util_draw_station_platform(
     paint_session* session, Ride* ride, uint8_t direction, int32_t height, int32_t zOffset, const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     if (direction & 1)
     {
@@ -886,7 +884,7 @@ void track_paint_util_draw_station_platform(
 }
 
 void track_paint_util_draw_pier(
-    paint_session* session, Ride* ride, const StationObject* stationObj, LocationXY16 position, uint8_t direction,
+    paint_session* session, Ride* ride, const StationObject* stationObj, const CoordsXY& position, uint8_t direction,
     int32_t height, const TileElement* tileElement, uint8_t rotation)
 {
     bool hasFence;
@@ -952,7 +950,7 @@ void track_paint_util_draw_station_metal_supports_2(
     }
 }
 
-const LocationXY16 defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
+constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
         { { 16, 16 }, { 0, 0 } },
@@ -975,7 +973,7 @@ const LocationXY16 defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     },
 };
 
-const LocationXYZ16 defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
+constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     {
         { { 0, 6, 0 }, { 0, 0, 0 } },
         { { 16, 16, 0 }, { 0, 0, 0 } },
@@ -1002,8 +1000,8 @@ static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = 
 
 void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     paint_session* session, const int8_t thickness[2], int16_t height, int32_t direction, uint8_t trackSequence,
-    uint32_t colourFlags, const uint32_t sprites[4][3][2], const LocationXY16 offsets[4][3][2],
-    const LocationXY16 boundsLengths[4][3][2], const LocationXYZ16 boundsOffsets[4][3][2])
+    uint32_t colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
+    const CoordsXY boundsLengths[4][3][2], const CoordsXYZ boundsOffsets[4][3][2])
 {
     int32_t index = right_helix_up_small_quarter_tiles_sprite_map[trackSequence];
     if (index < 0)
@@ -1014,10 +1012,9 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     if (sprites[direction][index][0] != 0)
     {
         uint32_t imageId = sprites[direction][index][0] | colourFlags;
-        LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index][0]);
-        LocationXY16 boundsLength = boundsLengths[direction][index][0];
-        LocationXYZ16 boundsOffset
-            = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][0]);
+        CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][0]);
+        CoordsXY boundsLength = boundsLengths[direction][index][0];
+        CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         sub_98197C(
             session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[0], height,
@@ -1026,10 +1023,9 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     if (sprites[direction][index][1] != 0)
     {
         uint32_t imageId = sprites[direction][index][1] | colourFlags;
-        LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index][1]);
-        LocationXY16 boundsLength = boundsLengths[direction][index][1];
-        LocationXYZ16 boundsOffset
-            = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][1]);
+        CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][1]);
+        CoordsXY boundsLength = boundsLengths[direction][index][1];
+        CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         sub_98197C(
             session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[1], height,
@@ -1037,7 +1033,7 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     }
 }
 
-const LocationXYZ16 defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
+constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     {
         { { 0, 6, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
@@ -1068,7 +1064,7 @@ const LocationXYZ16 defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     },
 };
 
-const LocationXY16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
+constexpr CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
         { { 32, 16 }, { 0, 0 } },
@@ -1102,8 +1098,8 @@ const LocationXY16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
 static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     paint_session* session, const int8_t thickness[2], int16_t height, int32_t direction, uint8_t trackSequence,
-    uint32_t colourFlags, const uint32_t sprites[4][5][2], const LocationXY16 offsets[4][5][2],
-    const LocationXY16 boundsLengths[4][5][2], const LocationXYZ16 boundsOffsets[4][5][2])
+    uint32_t colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
+    const CoordsXY boundsLengths[4][5][2], const CoordsXYZ boundsOffsets[4][5][2])
 {
     int32_t index = right_helix_up_large_quarter_sprite_map[trackSequence];
     if (index < 0)
@@ -1114,10 +1110,9 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     if (sprites[direction][index][0] != 0)
     {
         uint32_t imageId = sprites[direction][index][0] | colourFlags;
-        LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index][0]);
-        LocationXY16 boundsLength = boundsLengths[direction][index][0];
-        LocationXYZ16 boundsOffset
-            = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][0]);
+        CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][0]);
+        CoordsXY boundsLength = boundsLengths[direction][index][0];
+        CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         sub_98197C(
             session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[0], height,
@@ -1126,10 +1121,9 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     if (sprites[direction][index][1] != 0)
     {
         uint32_t imageId = sprites[direction][index][1] | colourFlags;
-        LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index][1]);
-        LocationXY16 boundsLength = boundsLengths[direction][index][1];
-        LocationXYZ16 boundsOffset
-            = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][1]);
+        CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][1]);
+        CoordsXY boundsLength = boundsLengths[direction][index][1];
+        CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         sub_98197C(
             session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[1], height,
@@ -1137,7 +1131,7 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     }
 }
 
-const LocationXY16 defaultLeftEighthToDiagBoundLengths[4][4] = {
+constexpr CoordsXY defaultLeftEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1164,7 +1158,7 @@ const LocationXY16 defaultLeftEighthToDiagBoundLengths[4][4] = {
     },
 };
 
-const LocationXYZ16 defaultLeftEighthToDiagBoundOffsets[4][4] = {
+constexpr CoordsXYZ defaultLeftEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 0, 0 },
@@ -1191,7 +1185,7 @@ const LocationXYZ16 defaultLeftEighthToDiagBoundOffsets[4][4] = {
     },
 };
 
-const LocationXY16 defaultRightEighthToDiagBoundLengths[4][4] = {
+constexpr CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1218,7 +1212,7 @@ const LocationXY16 defaultRightEighthToDiagBoundLengths[4][4] = {
     },
 };
 
-const LocationXYZ16 defaultRightEighthToDiagBoundOffsets[4][4] = {
+constexpr CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 16, 0 },
@@ -1277,8 +1271,8 @@ const uint8_t mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
 static constexpr const int8_t eighth_to_diag_sprite_map[] = { 0, 1, 2, -1, 3 };
 void track_paint_util_eighth_to_diag_tiles_paint(
     paint_session* session, const int8_t thickness[4][4], int16_t height, int32_t direction, uint8_t trackSequence,
-    uint32_t colourFlags, const uint32_t sprites[4][4], const LocationXY16 offsets[4][4],
-    const LocationXY16 boundsLengths[4][4], const LocationXYZ16 boundsOffsets[4][4])
+    uint32_t colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],
+    const CoordsXYZ boundsOffsets[4][4])
 {
     int32_t index = eighth_to_diag_sprite_map[trackSequence];
     if (index < 0)
@@ -1287,24 +1281,23 @@ void track_paint_util_eighth_to_diag_tiles_paint(
     }
 
     uint32_t imageId = sprites[direction][index] | colourFlags;
-    LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index]);
-    LocationXY16 boundsLength = boundsLengths[direction][index];
-    LocationXYZ16 boundsOffset
-        = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
+    CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index]);
+    CoordsXY boundsLength = boundsLengths[direction][index];
+    CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     sub_98197C(
         session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[direction][index],
         height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
 }
 
-const LocationXY16 defaultDiagTileOffsets[4] = {
+constexpr CoordsXY defaultDiagTileOffsets[4] = {
     { -16, -16 },
     { -16, -16 },
     { -16, -16 },
     { -16, -16 },
 };
 
-const LocationXY16 defaultDiagBoundLengths[4] = {
+constexpr CoordsXY defaultDiagBoundLengths[4] = {
     { 32, 32 },
     { 32, 32 },
     { 32, 32 },
@@ -1320,8 +1313,7 @@ static constexpr const int8_t diag_sprite_map[4][4] = {
 
 void track_paint_util_diag_tiles_paint(
     paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4], const LocationXY16 offsets[4], const LocationXY16 boundsLengths[4],
-    const LocationXYZ16 boundsOffsets[4])
+    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4])
 {
     int32_t index = diag_sprite_map[direction][trackSequence];
     if (index < 0)
@@ -1330,9 +1322,9 @@ void track_paint_util_diag_tiles_paint(
     }
 
     uint32_t imageId = sprites[direction] | colourFlags;
-    LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction]);
-    LocationXY16 boundsLength = boundsLengths[direction];
-    LocationXYZ16 boundsOffset = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction]);
+    CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction]);
+    CoordsXY boundsLength = boundsLengths[direction];
+    CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction]);
 
     sub_98197C(
         session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x,
@@ -1343,7 +1335,7 @@ const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
 
-const LocationXY16 defaultRightQuarterTurn5TilesOffsets[4][5] = {
+constexpr CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
         { 0, 6 },
         { 0, 16 },
@@ -1374,7 +1366,7 @@ const LocationXY16 defaultRightQuarterTurn5TilesOffsets[4][5] = {
     },
 };
 
-const LocationXYZ16 defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
+constexpr CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
     {
         { 0, 6, 0 },
         { 0, 16, 0 },
@@ -1405,7 +1397,7 @@ const LocationXYZ16 defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
     },
 };
 
-const LocationXY16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
+constexpr CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1442,8 +1434,8 @@ static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
 
 void track_paint_util_right_quarter_turn_5_tiles_paint(
     paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][5], const LocationXY16 offsets[4][5], const LocationXY16 boundsLengths[4][5],
-    const LocationXYZ16 boundsOffsets[4][5])
+    const uint32_t sprites[4][5], const CoordsXY offsets[4][5], const CoordsXY boundsLengths[4][5],
+    const CoordsXYZ boundsOffsets[4][5])
 {
     int32_t index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
     if (index < 0)
@@ -1452,10 +1444,9 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(
     }
 
     uint32_t imageId = sprites[direction][index] | colourFlags;
-    LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index]);
-    LocationXY16 boundsLength = boundsLengths[direction][index];
-    LocationXYZ16 boundsOffset
-        = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
+    CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index]);
+    CoordsXY boundsLength = boundsLengths[direction][index];
+    CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     sub_98197C(
         session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x,
@@ -1541,7 +1532,7 @@ const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
     0,
 };
 
-const LocationXY16 defaultRightQuarterTurn3TilesOffsets[4][3] = {
+constexpr CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3] = {
     {
         { 0, 6 },
         { 16, 16 },
@@ -1564,7 +1555,7 @@ const LocationXY16 defaultRightQuarterTurn3TilesOffsets[4][3] = {
     },
 };
 
-const LocationXYZ16 defaultRightQuarterTurn3TilesBoundOffsets[4][3] = {
+constexpr CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3] = {
     {
         { 0, 6, 0 },
         { 16, 16, 0 },
@@ -1587,7 +1578,7 @@ const LocationXYZ16 defaultRightQuarterTurn3TilesBoundOffsets[4][3] = {
     },
 };
 
-const LocationXY16 defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
+constexpr CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     {
         { 32, 20 },
         { 16, 16 },
@@ -1619,8 +1610,8 @@ static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
 
 void track_paint_util_right_quarter_turn_3_tiles_paint(
     paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][3], const LocationXY16 offsets[4][3], const LocationXY16 boundsLengths[4][3],
-    const LocationXYZ16 boundsOffsets[4][3])
+    const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
+    const CoordsXYZ boundsOffsets[4][3])
 {
     int32_t index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (index < 0)
@@ -1629,10 +1620,9 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(
     }
 
     uint32_t imageId = sprites[direction][index] | colourFlags;
-    LocationXY16 offset = (offsets == nullptr ? LocationXY16{ 0, 0 } : offsets[direction][index]);
-    LocationXY16 boundsLength = boundsLengths[direction][index];
-    LocationXYZ16 boundsOffset
-        = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
+    CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index]);
+    CoordsXY boundsLength = boundsLengths[direction][index];
+    CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     sub_98197C(
         session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x,
@@ -2185,10 +2175,12 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))
             {
                 uint16_t ax = RideData5[ride->type].z_offset;
-                uint32_t ebx = 0x20381689 + (height + 8) / 16;
-                ebx += get_height_marker_offset();
-                ebx -= gMapBaseZ;
-                sub_98197C(session, ebx, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047);
+                // 0x1689 represents 0 height there are -127 to 128 heights above and below it
+                // There are 3 arrays of 256 heights (units, m, ft) chosen with the get_height_marker_offset()
+                uint32_t imageId = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_LIGHT_BLUE) | (0x1689 + get_height_marker_offset());
+                auto heightNum = (height + 8) / 16 - gMapBaseZ;
+
+                sub_98197C(session, imageId + heightNum, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047);
             }
         }
 
@@ -2215,7 +2207,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             session->TrackColours[SCHEME_3] = ghost_id;
         }
 
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
+        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeDescriptors[ride->type].TrackPaintFunction;
         if (paintFunctionGetter != nullptr)
         {
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);

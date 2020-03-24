@@ -30,7 +30,7 @@ private:
 
 public:
     FootpathSceneryPlaceAction() = default;
-    FootpathSceneryPlaceAction(CoordsXYZ loc, uint8_t pathItemType)
+    FootpathSceneryPlaceAction(const CoordsXYZ& loc, uint8_t pathItemType)
         : _loc(loc)
         , _pathItemType(pathItemType)
     {
@@ -51,7 +51,7 @@ public:
     GameActionResult::Ptr Query() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc;
         if (!map_is_location_valid(_loc))
         {
@@ -63,17 +63,17 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        if (_loc.z / 8 < 2)
+        if (_loc.z < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > 248)
+        if (_loc.z > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
         }
 
-        auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
+        auto tileElement = map_get_footpath_element(_loc);
         if (tileElement == nullptr)
         {
             log_error("Could not find path element.");
@@ -81,6 +81,11 @@ public:
         }
 
         auto pathElement = tileElement->AsPath();
+        if (pathElement->IsLevelCrossing(_loc))
+        {
+            return MakeResult(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
+        }
 
         // No change
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType
@@ -141,9 +146,9 @@ public:
     {
         auto res = MakeResult();
         res->Position = _loc;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
-        auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
+        auto tileElement = map_get_footpath_element(_loc);
         auto pathElement = tileElement->AsPath();
 
         if (pathElement == nullptr)
@@ -176,7 +181,7 @@ public:
         }
         else
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
         }
 
         if ((_pathItemType != 0 && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -195,7 +200,7 @@ public:
                 pathElement->SetAdditionStatus(255);
             }
         }
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
         return res;
     }
 };

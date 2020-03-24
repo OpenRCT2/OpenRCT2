@@ -1863,39 +1863,14 @@ STR_2521    :Vis personale liste
 STR_2522    :Vis seneste meddelelser
 STR_2523    :Vis kort
 STR_2524    :Skærmbillede
-### The following need to be reordered to match SDL_keycode layout.
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Backspace
 STR_2534    :Tabulator
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Clear
 STR_2538    :Enter
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Mellemrumstast
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1912,54 +1887,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1972,53 +1900,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :ScrollLock
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :Al forskning udført
 STR_2681    :{MEDIUMFONT}{BLACK}Forøg dine penge med {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Stor gruppe af gæster ankommer
@@ -2034,9 +1920,6 @@ STR_2693    :Terræn:
 STR_2694    :Generer
 STR_2695    :Tilfældigt terræn
 STR_2696    :Placer træer
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Auto-gem frekvens:
 STR_2701    :Hvert minut
 STR_2702    :Hvert 5. minut
@@ -2048,13 +1931,6 @@ STR_2707    :Brug system fil browser
 STR_2708    :{WINDOW_COLOUR_1}Er du sikker på at du vil overskrive {STRINGID}?
 STR_2709    :Overskriv
 STR_2710    :Skriv navnet på filen.
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :op
 STR_2719    :Ny fil
 STR_2720    :{UINT16}sek
@@ -2081,10 +1957,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat ikke fundet
 STR_2743    :Kopier 'data/css17.dat' fra din RCT1 installation til 'data/css50.dat' i din RCT2 installation, eller vær sikker på at stien til RCT1, i fanen Diverse er korrekt.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Mit nye scenarie
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flyt alle enheder til toppen
@@ -2922,7 +2794,6 @@ STR_5410    :Rediger
 STR_5411    :Genindlæs
 STR_5412    :Skip til
 STR_5413    :Hent
-STR_5414    :Hent{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Hent{MOVE_X}{87}{STRING}
 STR_5416    :Hent{MOVE_X}{87}Ingen gemt valgt
 STR_5417    :Lokation
@@ -3617,26 +3488,26 @@ STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 STR_6144    :Show dirty visuals
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
-STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
-STR_6148    :Connecting to master server...
-STR_6149    :Unable to connect to master server
-STR_6150    :Invalid response from master server (no JSON number)
+STR_6147    :{SMALLFONT}{BLACK}Aktiverer alle sporstykker, som forlystelses typen er i stand til i konstruktions vinduet, uanset om køretøjet understøtter dem.
+STR_6148    :Forbinder til master server...
+STR_6149    :Kamn ikke forbinde til master server
+STR_6150    :Ugyldigt svar fra master server (ingen JSON nummer)
 STR_6151    :Master server failed to return servers
-STR_6152    :Invalid response from master server (no JSON array)
-STR_6153    :Pay to enter park / Pay per ride
-STR_6154    :For security reasons, it is not recommended to run OpenRCT2 with elevated permissions.
-STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
-STR_6156    :Name is reserved
-STR_6157    :Console
-STR_6158    :Failed to load this file...{NEWLINE}Incompatible RCTC version: {COMMA16}
-STR_6159    :Smooth Nearest Neighbour
-STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
-STR_6161    :Gridlines display toggle
-STR_6162    :Spinning Wild Mouse
-STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
+STR_6152    :Ugyldigt svar fra master server (ingen JSON array)
+STR_6153    :Betal ved indgang / Betal per tur
+STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2 med forhøjede tilladelser.
+STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linje.
+STR_6156    :Navn er reserveret
+STR_6157    :Konsol
+STR_6158    :Kan ikke hente denne fil...{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
+STR_6159    :Blødgør til nærmeste nabo
+STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
+STR_6161    :Skift gitterlinjer Visning til/fra
+STR_6162    :Snurrende Vild Mus
+STR_6163    :Muse formede biler suser gennem skarpe kurver og korte fald, imens de snurrer lidt rundt for at desorientere gæsterne
 STR_6164    :{WHITE}❌
-STR_6165    :Use vertical sync
-STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6165    :Brug vertikal synkronisering
+STR_6166    :{SMALLFONT}{BLACK}Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :{SMALLFONT}{BLACK}Avanceret
 STR_6168    :Titel Sekvens
 STR_6169    :Scenarie valg
@@ -3747,7 +3618,7 @@ STR_6273    :Musik
 STR_6274    :Kan ikke sætte farveskema...
 STR_6275    :{WINDOW_COLOUR_2}Stations stil:
 STR_6276    :{RED}{STRINGID} har fastklemte gæster, muligvis på grund af forkert forlystelsetype eller operations tilstand.
-STR_6277    :{WINDOW_COLOUR_2}Stations index: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Stations index: {BLACK}{STRINGID}
 STR_6278    :Autogem mængde
 STR_6279    :{SMALLFONT}{BLACK}Antallet af automatisk gemte spil der skal beholdes
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3803,6 +3674,34 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Henter [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Anbring ænder
 STR_6332    :Fjern ænder
+STR_6333    :Forøg skalerings faktor
+STR_6334    :Reducer skalerings faktor
+STR_6335    :Felt Undersøger: Indsæt korrupt element
+STR_6336    :Felt Undersøger: Kopier element
+STR_6337    :Felt Undersøger: Indsæt element
+STR_6338    :Felt Undersøger: Slet element
+STR_6339    :Felt Undersøger: Flyt element op
+STR_6340    :Felt Undersøger: Flyt element ned
+STR_6341    :Felt Undersøger: Forøg X koordinat
+STR_6342    :Felt Undersøger: Reducer X koordinat
+STR_6343    :Felt Undersøger: Forøg Y koordinat
+STR_6344    :Felt Undersøger: Reducer Y koordinat
+STR_6345    :Felt Undersøger: Forøg element højde
+STR_6346    :Felt Undersøger: Reducer element højde
+STR_6347    :Sti tilføjelse kan ikke placeres på jernbaneoverskæring!
+STR_6348    :Fjern jernbaneoverskæring først!
+STR_6349    :Tilfældig titelsekvens
+STR_6350    :Spredning
+STR_6351    :Sceneri sprednings værktøj
+STR_6352    :Tæthed
+STR_6353    :{SMALLFONT}{BLACK}Lav tæthed
+STR_6354    :{SMALLFONT}{BLACK}Mellem tæthed
+STR_6355    :{SMALLFONT}{BLACK}Høj tæthed
+STR_6356    :{SMALLFONT}{BLACK}Generer ænder hvis parken indeholder vand
+STR_6357    :{SMALLFONT}{BLACK}Fjern alle ænder fra kortet
+STR_6358    :Side {UINT16}
+STR_6359    :{POP16}{POP16}Side {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

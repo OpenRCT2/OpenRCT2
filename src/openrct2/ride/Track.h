@@ -13,7 +13,7 @@
 #include "../object/Object.h"
 #include "Ride.h"
 
-typedef uint16_t track_type_t;
+using track_type_t = uint16_t;
 
 #pragma pack(push, 1)
 struct rct_trackdefinition
@@ -38,7 +38,7 @@ struct rct_preview_track
     int16_t z;     // 0x05
     uint8_t var_07;
     QuarterTile var_08;
-    uint8_t var_09;
+    uint8_t flags;
 };
 
 /* size 0x0A */
@@ -50,6 +50,13 @@ struct rct_track_coordinates
     int16_t z_end;         // 0x04
     int16_t x;             // 0x06
     int16_t y;             // 0x08
+};
+
+enum
+{
+    RCT_PREVIEW_TRACK_FLAG_0 = (1 << 0),
+    RCT_PREVIEW_TRACK_FLAG_1 = (1 << 1),
+    RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL = (1 << 2),
 };
 
 enum
@@ -66,6 +73,8 @@ enum
     TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
     TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
     TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
+    TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED = 1 << 5,
+    TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
 };
 
 enum
@@ -78,6 +87,7 @@ enum
 };
 
 #define MAX_STATION_PLATFORM_LENGTH 32
+constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
 
 enum
 {
@@ -131,6 +141,7 @@ enum
     TRACK_QUARTER_LOOP,
     TRACK_SPINNING_TUNNEL,
     TRACK_ROTATION_CONTROL_TOGGLE,
+    TRACK_BOOSTER = TRACK_ROTATION_CONTROL_TOGGLE,
     TRACK_INLINE_TWIST_UNINVERTED,
     TRACK_INLINE_TWIST_INVERTED,
     TRACK_QUARTER_LOOP_UNINVERTED,
@@ -138,15 +149,14 @@ enum
     TRACK_RAPIDS,
     TRACK_HALF_LOOP_UNINVERTED,
     TRACK_HALF_LOOP_INVERTED,
-    TRACK_BOOSTER = TRACK_ROTATION_CONTROL_TOGGLE,
 
-    TRACK_WATERFALL = 152,
-    TRACK_WHIRLPOOL = 152,
-    TRACK_BRAKE_FOR_DROP = 172,
-    TRACK_190 = 190,
-    TRACK_192 = 192,
-    TRACK_194 = 194,
-    TRACK_MINI_GOLF_HOLE = 195,
+    TRACK_WATERFALL,
+    TRACK_WHIRLPOOL,
+    TRACK_BRAKE_FOR_DROP,
+    TRACK_CORKSCREW_UNINVERTED,
+    TRACK_CORKSCREW_INVERTED,
+    TRACK_HEARTLINE_TRANSFER,
+    TRACK_MINI_GOLF_HOLE,
 };
 
 enum
@@ -467,6 +477,8 @@ enum
     TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP,
     TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP,
     TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP,
+
+    TRACK_ELEM_COUNT,
 };
 
 enum
@@ -539,10 +551,10 @@ bool track_element_is_station(TileElement* trackElement);
 
 int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank);
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);
-int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement);
+int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement);
 
-bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
-bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
+bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags);
+bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags);
 
 money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,

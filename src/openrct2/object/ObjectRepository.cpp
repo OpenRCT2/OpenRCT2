@@ -42,6 +42,9 @@
 #include <unordered_map>
 #include <vector>
 
+// windows.h defines CP_UTF8
+#undef CP_UTF8
+
 using namespace OpenRCT2;
 
 struct ObjectEntryHash
@@ -79,11 +82,11 @@ private:
 public:
     explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
         : FileIndex(
-              "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
-              std::vector<std::string>{
-                  env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                  env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
-              })
+            "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
+            std::vector<std::string>{
+                env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
+                env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+            })
         , _objectRepository(objectRepository)
     {
     }
@@ -132,7 +135,7 @@ protected:
             stream->WriteValue(source);
         }
 
-        switch (object_entry_get_type(&item.ObjectEntry))
+        switch (item.ObjectEntry.GetType())
         {
             case OBJECT_TYPE_RIDE:
                 stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
@@ -170,7 +173,7 @@ protected:
             item.Sources.push_back(value);
         }
 
-        switch (object_entry_get_type(&item.ObjectEntry))
+        switch (item.ObjectEntry.GetType())
         {
             case OBJECT_TYPE_RIDE:
                 item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
@@ -323,10 +326,8 @@ public:
         }
         else
         {
-            utf8 path[MAX_PATH];
-            GetPathForNewObject(path, sizeof(path), objectName);
-
             log_verbose("Adding object: [%s]", objectName);
+            auto path = GetPathForNewObject(objectName);
             try
             {
                 SaveObject(path, objectEntry, data, dataSize);
@@ -334,18 +335,15 @@ public:
             }
             catch (const std::exception&)
             {
-                Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+                Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path.c_str());
             }
         }
     }
 
     void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) override
     {
-        utf8 path[MAX_PATH];
-        std::string objectNameString(objectName);
-        GetPathForNewObject(path, sizeof(path), objectNameString.c_str());
-
-        log_verbose("Adding object: [%s]", objectNameString.c_str());
+        log_verbose("Adding object: [%s]", std::string(objectName).c_str());
+        auto path = GetPathForNewObject(objectName);
         try
         {
             File::WriteAllBytes(path, data, dataSize);
@@ -353,7 +351,7 @@ public:
         }
         catch (const std::exception&)
         {
-            Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectNameString.c_str(), path);
+            Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", std::string(objectName).c_str(), path.c_str());
         }
     }
 
@@ -470,7 +468,7 @@ private:
     }
 
     static void SaveObject(
-        const utf8* path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
+        const std::string_view& path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {
@@ -522,7 +520,7 @@ private:
         }
 
         // Encode data
-        uint8_t objectType = object_entry_get_type(entry);
+        uint8_t objectType = entry->GetType();
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
         chunkHeader.length = (uint32_t)dataSize;
@@ -532,7 +530,7 @@ private:
         // Save to file
         try
         {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
             fs.Write(entry, sizeof(rct_object_entry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
@@ -575,10 +573,31 @@ private:
         return salt;
     }
 
-    void GetPathForNewObject(utf8* buffer, size_t bufferSize, const char* name)
+    std::string GetPathForNewObject(const std::string_view& name)
     {
+        // Get object directory and create it if it doesn't exist
+        auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        Path::CreateDirectory(userObjPath);
+
+        // Find a unique file name
+        auto fileName = GetFileNameForNewObject(name);
+        auto fullPath = Path::Combine(userObjPath, fileName + ".DAT");
+        auto counter = 1U;
+        while (File::Exists(fullPath))
+        {
+            counter++;
+            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X.DAT", fileName.c_str(), counter));
+        }
+
+        return fullPath;
+    }
+
+    std::string GetFileNameForNewObject(const std::string_view& name)
+    {
+        // Trim name
         char normalisedName[9] = { 0 };
-        for (int32_t i = 0; i < 8; i++)
+        auto maxLength = std::min<size_t>(name.size(), 8);
+        for (size_t i = 0; i < maxLength; i++)
         {
             if (name[i] != ' ')
             {
@@ -587,28 +606,12 @@ private:
             else
             {
                 normalisedName[i] = '\0';
+                break;
             }
         }
 
-        const std::string& userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
-        String::Set(buffer, bufferSize, userObjPath.c_str());
-        platform_ensure_directory_exists(buffer);
-
-        Path::Append(buffer, bufferSize, normalisedName);
-        String::Append(buffer, bufferSize, ".DAT");
-
-        uint32_t counter = 2;
-        for (; platform_file_exists(buffer);)
-        {
-            utf8 counterString[8];
-            snprintf(counterString, sizeof(counterString), "-%02X", counter);
-            counter++;
-
-            String::Set(buffer, bufferSize, userObjPath.c_str());
-            Path::Append(buffer, bufferSize, normalisedName);
-            String::Append(buffer, bufferSize, counterString);
-            String::Append(buffer, bufferSize, ".DAT");
-        }
+        // Convert to UTF-8 filename
+        return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
     }
 
     void WritePackedObject(IStream* stream, const rct_object_entry* entry)
@@ -647,7 +650,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     // Do not count our new object types as custom yet, otherwise the game
     // will try to pack them into saved games.
-    auto type = object_entry_get_type(&object->ObjectEntry);
+    auto type = object->ObjectEntry.GetType();
     if (type > OBJECT_TYPE_SCENARIO_TEXT)
     {
         return false;
@@ -746,7 +749,7 @@ bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)
     // If an official object don't bother checking checksum
     if ((a->flags & 0xF0) || (b->flags & 0xF0))
     {
-        if (object_entry_get_type(a) != object_entry_get_type(b))
+        if (a->GetType() != b->GetType())
         {
             return false;
         }

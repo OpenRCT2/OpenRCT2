@@ -26,11 +26,13 @@ OLD_CWD=$(readlink -f .)
 
 pushd "$BUILD_DIR"
 
+export VERSION=$(cd "$REPO_ROOT" && git describe --tags)
+
 # standard linuxdeploy pattern
 #see https://docs.appimage.org/packaging-guide/from-source/index.html for more information
 cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr -G Ninja -DCMAKE_BUILD_TYPE=Release
 
-ninja -v
+ninja -k0
 DESTDIR=AppDir ninja install
 
 wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage

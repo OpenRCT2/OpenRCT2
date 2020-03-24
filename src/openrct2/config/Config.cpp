@@ -183,6 +183,7 @@ namespace Config
             model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
 
             model->enable_light_fx = reader->GetBoolean("enable_light_fx", false);
+            model->enable_light_fx_for_vehicles = reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->upper_case_banners = reader->GetBoolean("upper_case_banners", false);
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
@@ -256,6 +257,7 @@ namespace Config
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
         writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
         writer->WriteBoolean("enable_light_fx", model->enable_light_fx);
+        writer->WriteBoolean("enable_light_fx_for_vehicles", model->enable_light_fx_for_vehicles);
         writer->WriteBoolean("upper_case_banners", model->upper_case_banners);
         writer->WriteBoolean("disable_lightning_effect", model->disable_lightning_effect);
         writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
@@ -299,6 +301,7 @@ namespace Config
             model->console_small_font = reader->GetBoolean("console_small_font", false);
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
             model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
+            model->random_title_sequence = reader->GetBoolean("random_title_sequence", false);
             model->object_selection_filter_flags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->scenarioselect_last_tab = reader->GetInt32("scenarioselect_last_tab", 0);
         }
@@ -317,6 +320,7 @@ namespace Config
         writer->WriteBoolean("console_small_font", model->console_small_font);
         writer->WriteString("current_theme", model->current_theme_preset);
         writer->WriteString("current_title_sequence", model->current_title_sequence_preset);
+        writer->WriteBoolean("random_title_sequence", model->random_title_sequence);
         writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
         writer->WriteInt32("scenarioselect_last_tab", model->scenarioselect_last_tab);
     }

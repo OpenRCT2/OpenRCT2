@@ -38,12 +38,25 @@ namespace FOUNTAIN_FLAG
     const uint32_t DIRECTION = 1 << 7;
 }; // namespace FOUNTAIN_FLAG
 
-static constexpr const CoordsXY _fountainDirectionsNegative[] = {
-    { -32, 0 }, { -32, -32 }, { 0, 0 }, { -32, 0 }, { 0, 0 }, { 0, -32 }, { 0, -32 }, { -32, -32 },
+static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ 0, -COORDS_XY_STEP },
+    CoordsXY{ 0, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
-static constexpr const CoordsXY _fountainDirectionsPositive[] = { { 32, 0 },  { 0, 0 },  { 0, 32 }, { 32, 32 },
-                                                                  { 32, 32 }, { 32, 0 }, { 0, 0 },  { 0, 32 } };
+static constexpr const std::array<CoordsXY, 8> _fountainDirectionsPositive = { CoordsXY{ COORDS_XY_STEP, 0 },
+                                                                               CoordsXY{ 0, 0 },
+                                                                               CoordsXY{ 0, COORDS_XY_STEP },
+                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+                                                                               CoordsXY{ COORDS_XY_STEP, 0 },
+                                                                               CoordsXY{ 0, 0 },
+                                                                               CoordsXY{ 0, COORDS_XY_STEP } };
 constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
 constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
 
@@ -67,10 +80,10 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY newLoc, const TileElement* tileElement)
+void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
     int32_t randomIndex;
-    auto newZ = tileElement->base_height * 8;
+    auto newZ = tileElement->GetBaseZ();
 
     // Change pattern approximately every 51 seconds
     uint32_t pattern = (gCurrentTicks >> 11) & 7;
@@ -117,7 +130,7 @@ void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY newLo
 }
 
 void JumpingFountain::Create(
-    const int32_t newType, const CoordsXYZ newLoc, const int32_t direction, const int32_t newFlags, const int32_t iteration)
+    const int32_t newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags, const int32_t iteration)
 {
     auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
     if (jumpingFountain != nullptr)
@@ -129,7 +142,7 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(newLoc.x, newLoc.y, newLoc.z, reinterpret_cast<rct_sprite*>(jumpingFountain));
+        sprite_move(newLoc.x, newLoc.y, newLoc.z, jumpingFountain);
         jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
                                                                       : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->NumTicksAlive = 0;
@@ -149,7 +162,7 @@ void JumpingFountain::Update()
         return;
     }
 
-    invalidate_sprite_0(reinterpret_cast<rct_sprite*>(this));
+    invalidate_sprite_0(this);
     frame++;
 
     switch (type)
@@ -174,7 +187,7 @@ void JumpingFountain::Update()
 
     if (frame == 16)
     {
-        sprite_remove(reinterpret_cast<rct_sprite*>(this));
+        sprite_remove(this);
     }
 }
 
@@ -192,7 +205,7 @@ void JumpingFountain::AdvanceAnimation()
     const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
     int32_t availableDirections = 0;
-    for (int32_t i = 0; i < 8; i++)
+    for (uint32_t i = 0; i < _fountainDirectionsNegative.size(); i++)
     {
         if (IsJumpingFountain(newType, { newLoc + _fountainDirectionsNegative[i], z }))
         {
@@ -231,19 +244,19 @@ void JumpingFountain::AdvanceAnimation()
     Random({ newLoc, z }, availableDirections);
 }
 
-bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ newLoc)
+bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ& newLoc)
 {
     const int32_t pathBitFlagMask = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
                                                                           : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
-    TileElement* tileElement = map_get_first_element_at(newLoc.x / 32, newLoc.y / 32);
+    TileElement* tileElement = map_get_first_element_at(newLoc);
     if (tileElement == nullptr)
         return false;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (tileElement->base_height != newLoc.z / 8)
+        if (tileElement->GetBaseZ() != newLoc.z)
             continue;
         if (tileElement->AsPath()->AdditionIsGhost())
             continue;
@@ -261,7 +274,7 @@ bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ n
     return false;
 }
 
-void JumpingFountain::GoToEdge(const CoordsXYZ newLoc, const int32_t availableDirections) const
+void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableDirections) const
 {
     int32_t direction = (sprite_direction >> 3) << 1;
     if (availableDirections & (1 << direction))
@@ -298,7 +311,7 @@ void JumpingFountain::GoToEdge(const CoordsXYZ newLoc, const int32_t availableDi
     CreateNext(newLoc, direction);
 }
 
-void JumpingFountain::Bounce(const CoordsXYZ newLoc, const int32_t availableDirections)
+void JumpingFountain::Bounce(const CoordsXYZ& newLoc, const int32_t availableDirections)
 {
     Iteration++;
     if (Iteration < 8)
@@ -319,7 +332,7 @@ void JumpingFountain::Bounce(const CoordsXYZ newLoc, const int32_t availableDire
     }
 }
 
-void JumpingFountain::Split(const CoordsXYZ newLoc, int32_t availableDirections) const
+void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections) const
 {
     if (Iteration < 3)
     {
@@ -345,7 +358,7 @@ void JumpingFountain::Split(const CoordsXYZ newLoc, int32_t availableDirections)
     }
 }
 
-void JumpingFountain::Random(const CoordsXYZ newLoc, int32_t availableDirections) const
+void JumpingFountain::Random(const CoordsXYZ& newLoc, int32_t availableDirections) const
 {
     const uint32_t randomIndex = scenario_rand();
     if ((randomIndex & 0xFFFF) >= _FountainChanceOfStoppingRandomMode)
@@ -359,7 +372,7 @@ void JumpingFountain::Random(const CoordsXYZ newLoc, int32_t availableDirections
     }
 }
 
-void JumpingFountain::CreateNext(const CoordsXYZ newLoc, int32_t direction) const
+void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) const
 {
     const int32_t newType = GetType();
     int32_t newFlags = FountainFlags & ~FOUNTAIN_FLAG::DIRECTION;

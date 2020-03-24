@@ -23,7 +23,7 @@ private:
 public:
     ParkEntranceRemoveAction() = default;
 
-    ParkEntranceRemoveAction(CoordsXYZ loc)
+    ParkEntranceRemoveAction(const CoordsXYZ& loc)
         : _loc(loc)
     {
     }
@@ -48,11 +48,11 @@ public:
         }
 
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _loc;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        auto entranceIndex = park_entrance_get_index(_loc.x, _loc.y, _loc.z);
+        auto entranceIndex = park_entrance_get_index(_loc);
         if (entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
@@ -64,11 +64,11 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _loc;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        auto entranceIndex = park_entrance_get_index(_loc.x, _loc.y, _loc.z);
+        auto entranceIndex = park_entrance_get_index(_loc);
         if (entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
@@ -93,15 +93,15 @@ public:
     }
 
 private:
-    void ParkEntranceRemoveSegment(CoordsXYZ loc) const
+    void ParkEntranceRemoveSegment(const CoordsXYZ& loc) const
     {
-        auto entranceElement = map_get_park_entrance_element_at(loc.x, loc.y, loc.z / 8, true);
+        auto entranceElement = map_get_park_entrance_element_at(loc, true);
         if (entranceElement == nullptr)
         {
             return;
         }
 
-        map_invalidate_tile(loc.x, loc.y, entranceElement->base_height * 8, entranceElement->clearance_height * 8);
+        map_invalidate_tile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
         entranceElement->Remove();
         update_park_fences({ loc.x, loc.y });
     }

@@ -21,38 +21,21 @@
 #include "WallRemoveAction.hpp"
 
 #pragma region PlaceParkEntranceAction
-money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction)
-{
-    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, direction });
-    auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GA_ERROR::OK)
-    {
-        return 0;
-    }
-    else
-    {
-        return MONEY32_UNDEFINED;
-    }
-}
-
 /**
  *
  *  rct2: 0x00666F4E
  */
-money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction)
+money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
 {
     park_entrance_remove_ghost();
 
-    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, (Direction)direction });
+    auto gameAction = PlaceParkEntranceAction(entranceLoc);
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
     if (result->Error == GA_ERROR::OK)
     {
-        gParkEntranceGhostPosition.x = x;
-        gParkEntranceGhostPosition.y = y;
-        gParkEntranceGhostPosition.z = z;
-        gParkEntranceGhostDirection = direction;
+        gParkEntranceGhostPosition = entranceLoc;
         gParkEntranceGhostExists = true;
     }
     return result->Cost;
@@ -89,30 +72,6 @@ void ride_construct_new(ride_list_item listItem)
     });
 
     GameActions::Execute(&gameAction);
-}
-
-money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour)
-{
-    int32_t rideEntryIndex = ride_get_entry_index(type, subType);
-    int32_t colour1 = ride_get_random_colour_preset_index(type);
-    int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
-
-    auto gameAction = RideCreateAction(type, subType, colour1, colour2);
-    gameAction.SetFlags(flags);
-
-    auto r = GameActions::Execute(&gameAction);
-    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
-
-    // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
-    if (res->Error != GA_ERROR::OK)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    *outRideIndex = res->rideIndex;
-    *outRideColour = colour1;
-
-    return res->Cost;
 }
 
 #pragma endregion
@@ -161,15 +120,6 @@ void staff_set_name(uint16_t spriteIndex, const char* name)
 {
     auto gameAction = StaffSetNameAction(spriteIndex, name);
     GameActions::Execute(&gameAction);
-}
-#pragma endregion
-
-#pragma region PlacePeepSpawn
-bool place_peep_spawn(CoordsXYZD location)
-{
-    auto gameAction = PlacePeepSpawnAction(location);
-    auto result = GameActions::Execute(&gameAction);
-    return result->Error == GA_ERROR::OK;
 }
 #pragma endregion
 

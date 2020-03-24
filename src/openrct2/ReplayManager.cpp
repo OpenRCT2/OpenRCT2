@@ -768,11 +768,11 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && gCommandPosition.x != LOCATION_NULL)
+                if (isPositionValid && !result->Position.isNull())
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(mainWindow, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+                        window_scroll_to_location(mainWindow, result->Position.x, result->Position.y, result->Position.z);
                 }
 
                 replayQueue.erase(replayQueue.begin());

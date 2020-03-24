@@ -75,7 +75,7 @@ static uint16_t _window_error_num_lines;
 rct_window* window_error_open(rct_string_id title, rct_string_id message)
 {
     utf8* dst;
-    int32_t numLines, fontHeight, x, y, width, height, maxY;
+    int32_t numLines, fontHeight, width, height, maxY;
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
@@ -126,25 +126,22 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     const CursorState* state = context_get_cursor_state();
-    x = state->x - (width / 2);
-    x = std::clamp(x, 0, screenWidth);
-
-    y = state->y + 26;
-    y = std::max(22, y);
+    ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
+    windowPosition.x = std::clamp(windowPosition.x, 0, screenWidth);
+    windowPosition.y = std::max(22, windowPosition.y);
     maxY = screenHeight - height;
-    if (y > maxY)
+    if (windowPosition.y > maxY)
     {
-        y = y - height - 40;
-        y = std::min(y, maxY);
+        windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
     }
 
     w = window_create(
-        ScreenCoordsXY(x, y), width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+        windowPosition, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
-        audio_play_sound(SoundId::Error, 0, w->x + (w->width / 2));
+        audio_play_sound(SoundId::Error, 0, w->windowPos.x + (w->width / 2));
     }
 
     return w;
@@ -169,10 +166,10 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t t, l, r, b;
 
-    l = w->x;
-    t = w->y;
-    r = w->x + w->width - 1;
-    b = w->y + w->height - 1;
+    l = w->windowPos.x;
+    t = w->windowPos.y;
+    r = w->windowPos.x + w->width - 1;
+    b = w->windowPos.y + w->height - 1;
 
     gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_45);
     gfx_filter_rect(dpi, l, t, r, b, PALETTE_GLASS_SATURATED_RED);
@@ -187,7 +184,7 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_filter_rect(dpi, l + 1, b - 1, l + 1, b - 1, PALETTE_DARKEN_3);
     gfx_filter_rect(dpi, r - 1, b - 1, r - 1, b - 1, PALETTE_DARKEN_3);
 
-    l = w->x + (w->width + 1) / 2 - 1;
-    t = w->y + 1;
+    l = w->windowPos.x + (w->width + 1) / 2 - 1;
+    t = w->windowPos.y + 1;
     draw_string_centred_raw(dpi, l, t, _window_error_num_lines, _window_error_text);
 }

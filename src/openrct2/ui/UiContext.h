@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../common.h"
 #include "../interface/Cursors.h"
+#include "../world/Location.hpp"
 
 #include <memory>
 #include <string>
@@ -120,8 +121,8 @@ namespace OpenRCT2
             virtual void SetCursor(CURSOR_ID cursor) abstract;
             virtual void SetCursorScale(uint8_t scale) abstract;
             virtual void SetCursorVisible(bool value) abstract;
-            virtual void GetCursorPosition(int32_t * x, int32_t * y) abstract;
-            virtual void SetCursorPosition(int32_t x, int32_t y) abstract;
+            virtual ScreenCoordsXY GetCursorPosition() abstract;
+            virtual void SetCursorPosition(const ScreenCoordsXY& cursorPosition) abstract;
             virtual void SetCursorTrap(bool value) abstract;
             virtual const uint8_t* GetKeysState() abstract;
             virtual const uint8_t* GetKeysPressed() abstract;

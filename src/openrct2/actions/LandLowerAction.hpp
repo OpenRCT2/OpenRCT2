@@ -36,7 +36,7 @@ public:
     LandLowerAction()
     {
     }
-    LandLowerAction(CoordsXY coords, MapRange range, uint8_t selectionType)
+    LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)
@@ -84,7 +84,7 @@ private:
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
         res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         if (isExecuting)
         {
@@ -93,11 +93,11 @@ private:
 
         uint8_t maxHeight = map_get_highest_land_height(validRange);
 
-        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
-                auto* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+                auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
 

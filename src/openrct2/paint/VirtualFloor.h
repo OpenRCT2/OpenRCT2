@@ -7,10 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _VIRTUAL_FLOOR_H
-#define _VIRTUAL_FLOOR_H
+#pragma once
 
 #include "../common.h"
+#include "../world/Location.hpp"
 
 enum VirtualFloorStyles
 {
@@ -30,8 +30,6 @@ void virtual_floor_enable();
 void virtual_floor_disable();
 void virtual_floor_invalidate();
 
-bool virtual_floor_tile_is_floor(int16_t x, int16_t y);
+bool virtual_floor_tile_is_floor(const CoordsXY& loc);
 
 void virtual_floor_paint(paint_session* session);
-
-#endif

@@ -32,10 +32,10 @@ enum {
     WIDX_SCROLL
 };
 
-#define WW 500
-#define WH 400
-#define MIN_WW 300
-#define MIN_WH 200
+constexpr int32_t WW = 500;
+constexpr int32_t WH = 400;
+constexpr int32_t MIN_WW = 300;
+constexpr int32_t MIN_WH = 200;
 
 static rct_widget window_changelog_widgets[] = {
     { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     0xFFFFFFFF,                     STR_NONE },             // panel / background

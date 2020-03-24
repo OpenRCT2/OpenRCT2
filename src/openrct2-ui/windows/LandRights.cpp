@@ -52,9 +52,9 @@ static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static bool land_rights_tool_is_active();
 
@@ -91,8 +91,8 @@ static rct_window_event_list window_land_rights_events = {
 };
 // clang-format on
 
-#define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
-#define LAND_RIGHTS_MODE_BUY_LAND 1
+constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
+constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
 
 static uint8_t _landRightsMode;
 static money32 _landRightsCost;
@@ -271,8 +271,8 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y;
 
-    x = w->x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
-    y = w->y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
+    x = w->windowPos.x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
+    y = w->windowPos.y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
 
     window_draw_widgets(w, dpi);
     // Draw number for tool sizes bigger than 7
@@ -284,21 +284,21 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw cost amount
     if (_landRightsCost != MONEY32_UNDEFINED && _landRightsCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-        y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->y + 32;
+        x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2
+            + w->windowPos.x;
+        y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32;
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &_landRightsCost);
     }
 }
 
-static void window_land_rights_tool_update_land_rights(int16_t x, int16_t y)
+static void window_land_rights_tool_update_land_rights(const ScreenCoordsXY& screenCoords)
 {
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = {};
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
+    auto mapTile = screen_get_map_xy(screenCoords, nullptr);
 
-    if (mapTile.x == LOCATION_NULL)
+    if (!mapTile)
     {
         if (_landRightsCost != MONEY32_UNDEFINED)
         {
@@ -329,35 +329,34 @@ static void window_land_rights_tool_update_land_rights(int16_t x, int16_t y)
     int16_t tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
-    mapTile.x -= (tool_size - 1) * 16;
-    mapTile.y -= (tool_size - 1) * 16;
-    mapTile.x &= 0xFFE0;
-    mapTile.y &= 0xFFE0;
+    mapTile->x -= (tool_size - 1) * 16;
+    mapTile->y -= (tool_size - 1) * 16;
+    mapTile = mapTile->ToTileStart();
 
-    if (gMapSelectPositionA.x != mapTile.x)
+    if (gMapSelectPositionA.x != mapTile->x)
     {
-        gMapSelectPositionA.x = mapTile.x;
+        gMapSelectPositionA.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionA.y != mapTile.y)
+    if (gMapSelectPositionA.y != mapTile->y)
     {
-        gMapSelectPositionA.y = mapTile.y;
+        gMapSelectPositionA.y = mapTile->y;
         state_changed++;
     }
 
-    mapTile.x += tool_length;
-    mapTile.y += tool_length;
+    mapTile->x += tool_length;
+    mapTile->y += tool_length;
 
-    if (gMapSelectPositionB.x != mapTile.x)
+    if (gMapSelectPositionB.x != mapTile->x)
     {
-        gMapSelectPositionB.x = mapTile.x;
+        gMapSelectPositionB.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionB.y != mapTile.y)
+    if (gMapSelectPositionB.y != mapTile->y)
     {
-        gMapSelectPositionB.y = mapTile.y;
+        gMapSelectPositionB.y = mapTile->y;
         state_changed++;
     }
 
@@ -395,20 +394,20 @@ static void window_land_rights_toolabort(rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x006681D1
  */
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    window_land_rights_tool_update_land_rights(x, y);
+    window_land_rights_tool_update_land_rights(screenCoords);
 }
 
 /**
  *
  *  rct2: 0x006681E6
  */
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -418,7 +417,7 @@ static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
     else
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -432,11 +431,11 @@ static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006681FB
  */
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -446,7 +445,7 @@ static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetInd
     }
     else
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },

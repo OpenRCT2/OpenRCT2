@@ -46,10 +46,10 @@ uint8_t gResearchFundingLevel;
 uint8_t gResearchPriorities;
 uint16_t gResearchProgress;
 uint8_t gResearchProgressStage;
-ResearchItem gResearchLastItem;
+std::optional<ResearchItem> gResearchLastItem;
 uint8_t gResearchExpectedMonth;
 uint8_t gResearchExpectedDay;
-ResearchItem gResearchNextItem;
+std::optional<ResearchItem> gResearchNextItem;
 
 // 0x01358844[500]
 ResearchItem gResearchItems[MAX_RESEARCH_ITEMS];
@@ -61,7 +61,7 @@ uint8_t gResearchUncompletedCategories;
 
 static bool _researchedRideTypes[RIDE_TYPE_COUNT];
 static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
-static bool _researchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
+static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
 bool gSilentResearch = false;
 
@@ -219,8 +219,7 @@ void research_finish_item(ResearchItem* researchItem)
             }
 
             ride_type_set_invented(base_ride_type);
-            openrct2_assert(
-                base_ride_type < std::size(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
+            openrct2_assert(base_ride_type < RIDE_TYPE_COUNT, "Invalid base_ride_type = %d", base_ride_type);
 
             ride_entry_set_invented(rideEntryIndex);
 
@@ -368,7 +367,7 @@ void research_update()
                 research_invalidate_related_windows();
                 break;
             case RESEARCH_STAGE_COMPLETING_DESIGN:
-                research_finish_item(&gResearchNextItem);
+                research_finish_item(&*gResearchNextItem);
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
                 research_calculate_expected_date();
@@ -400,7 +399,7 @@ void research_reset_current_item()
         research_finish_item(&researchItem);
     }
 
-    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    gResearchLastItem = std::nullopt;
     gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
     gResearchProgress = 0;
 }
@@ -409,19 +408,18 @@ void research_reset_current_item()
  *
  *  rct2: 0x006857FA
  */
-static void research_insert_unresearched(int32_t rawValue, uint8_t category)
+static void research_insert_unresearched(ResearchItem item)
 {
-    gResearchItemsUninvented.push_back({ rawValue, category });
+    gResearchItemsUninvented.push_back(item);
 }
 
 /**
  *
  *  rct2: 0x00685826
  */
-static void research_insert_researched(int32_t rawValue, uint8_t category)
+static void research_insert_researched(ResearchItem item)
 {
     // First check to make sure that entry is not already accounted for
-    ResearchItem item = { rawValue, category };
     if (item.Exists())
     {
         return;
@@ -456,15 +454,15 @@ void research_remove(ResearchItem* researchItem)
     }
 }
 
-void research_insert(int32_t researched, int32_t rawValue, uint8_t category)
+void research_insert(ResearchItem item, bool researched)
 {
     if (researched)
     {
-        research_insert_researched(rawValue, category);
+        research_insert_researched(item);
     }
     else
     {
-        research_insert_unresearched(rawValue, category);
+        research_insert_unresearched(item);
     }
 }
 
@@ -488,15 +486,12 @@ void research_populate_list_random()
         int32_t researched = (scenario_rand() & 0xFF) > 128;
         for (auto rideType : rideEntry->ride_type)
         {
-            if (rideType != RIDE_TYPE_NULL)
-            {
-                research_insert(researched, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | i, rideEntry->category[0]);
-            }
+            research_insert_ride_entry(rideType, i, rideEntry->category[0], researched);
         }
     }
 
     // Scenery
-    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(i);
         if (sceneryGroupEntry == nullptr)
@@ -505,7 +500,7 @@ void research_populate_list_random()
         }
 
         int32_t researched = (scenario_rand() & 0xFF) > 85;
-        research_insert(researched, i, RESEARCH_CATEGORY_SCENERY_GROUP);
+        research_insert_scenery_group_entry(i, researched);
     }
 }
 
@@ -522,15 +517,12 @@ void research_populate_list_researched()
 
         for (auto rideType : rideEntry->ride_type)
         {
-            if (rideType != RIDE_TYPE_NULL)
-            {
-                research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | i, rideEntry->category[0]);
-            }
+            research_insert_ride_entry(rideType, i, rideEntry->category[0], true);
         }
     }
 
     // Scenery
-    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(i);
         if (sceneryGroupEntry == nullptr)
@@ -538,26 +530,35 @@ void research_populate_list_researched()
             continue;
         }
 
-        research_insert(true, i, RESEARCH_CATEGORY_SCENERY_GROUP);
+        research_insert_scenery_group_entry(i, true);
     }
 }
 
-void research_insert_ride_entry(uint8_t entryIndex, bool researched)
+bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched)
+{
+    if (rideType != RIDE_TYPE_NULL)
+    {
+        research_insert(
+            { static_cast<uint32_t>(RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex), category }, researched);
+        return true;
+    }
+
+    return false;
+}
+
+void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 {
     rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
     uint8_t category = rideEntry->category[0];
     for (auto rideType : rideEntry->ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
-        {
-            research_insert(researched, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex, category);
-        }
+        research_insert_ride_entry(rideType, entryIndex, category, researched);
     }
 }
 
-void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched)
+void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched)
 {
-    research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
+    research_insert({ entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP }, researched);
 }
 
 bool ride_type_is_invented(uint32_t rideType)
@@ -571,9 +572,20 @@ bool ride_entry_is_invented(int32_t rideEntryIndex)
     return _researchedRideEntries[rideEntryIndex];
 }
 
+uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType)
+{
+    uint64_t baseVals = RideTypeDescriptors[rideType].EnabledTrackPieces;
+    uint64_t extendedVals = 0;
+    if (gCheatsEnableAllDrawableTrackPieces)
+    {
+        extendedVals = RideTypeDescriptors[rideType].ExtraTrackPieces;
+    }
+    return baseVals | extendedVals;
+}
+
 bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType)
 {
-    return RideTypePossibleTrackConfigurations[rideType] & (1ULL << trackType);
+    return (get_available_track_pieces_for_ride_type(rideType)) & (1ULL << trackType);
 }
 
 void ride_type_set_invented(uint32_t rideType)
@@ -587,19 +599,21 @@ void ride_entry_set_invented(int32_t rideEntryIndex)
     _researchedRideEntries[rideEntryIndex] = true;
 }
 
-bool scenery_is_invented(uint16_t sceneryItem)
+bool scenery_is_invented(const ScenerySelection& sceneryItem)
 {
-    return _researchedSceneryItems[sceneryItem];
+    return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
 }
 
-void scenery_set_invented(uint16_t sceneryItem)
+void scenery_set_invented(const ScenerySelection& sceneryItem)
 {
-    _researchedSceneryItems[sceneryItem] = true;
+    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
+    _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = true;
 }
 
-void scenery_set_not_invented(uint16_t sceneryItem)
+void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 {
-    _researchedSceneryItems[sceneryItem] = false;
+    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
+    _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = false;
 }
 
 bool scenery_group_is_invented(int32_t sgIndex)
@@ -616,8 +630,8 @@ bool scenery_group_is_invented(int32_t sgIndex)
         {
             for (auto i = 0; i < sgEntry->entry_count; i++)
             {
-                auto sceneryEntryIndex = sgEntry->scenery_entries[i];
-                if (scenery_is_invented(sceneryEntryIndex))
+                auto sceneryEntry = sgEntry->scenery_entries[i];
+                if (scenery_is_invented(sceneryEntry))
                 {
                     invented = true;
                     break;
@@ -660,12 +674,18 @@ void set_all_scenery_groups_not_invented()
 
 void set_all_scenery_items_invented()
 {
-    std::fill(std::begin(_researchedSceneryItems), std::end(_researchedSceneryItems), true);
+    for (auto sceneryType = 0; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
+    {
+        std::fill(std::begin(_researchedSceneryItems[sceneryType]), std::end(_researchedSceneryItems[sceneryType]), true);
+    }
 }
 
 void set_all_scenery_items_not_invented()
 {
-    std::fill(std::begin(_researchedSceneryItems), std::end(_researchedSceneryItems), false);
+    for (auto sceneryType = 0; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
+    {
+        std::fill(std::begin(_researchedSceneryItems[sceneryType]), std::end(_researchedSceneryItems[sceneryType]), true);
+    }
 }
 
 void set_every_ride_type_invented()
@@ -692,11 +712,11 @@ void set_every_ride_entry_not_invented()
  *
  *  rct2: 0x0068563D
  */
-rct_string_id research_item_get_name(const ResearchItem* researchItem)
+rct_string_id ResearchItem::GetName() const
 {
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+    if (type == RESEARCH_ENTRY_TYPE_RIDE)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(researchItem->entryIndex);
+        rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
         if (rideEntry == nullptr)
         {
             return STR_EMPTY;
@@ -708,7 +728,7 @@ rct_string_id research_item_get_name(const ResearchItem* researchItem)
     }
     else
     {
-        rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(researchItem->entryIndex);
+        rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(entryIndex);
         if (sceneryEntry == nullptr)
         {
             return STR_EMPTY;
@@ -717,22 +737,6 @@ rct_string_id research_item_get_name(const ResearchItem* researchItem)
         {
             return sceneryEntry->name;
         }
-    }
-}
-
-/**
- * This will return the name of the base ride type or ride group, as seen in the research window.
- */
-rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry* rideEntry)
-{
-    if (RideGroupManager::RideTypeHasRideGroups(trackType))
-    {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(trackType, rideEntry);
-        return rideGroup->Naming.name;
-    }
-    else
-    {
-        return RideNaming[trackType].name;
     }
 }
 
@@ -774,7 +778,7 @@ void research_fix()
         }
         else
         {
-            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.rawValue);
+            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
             if (sceneryGroupEntry == nullptr)
             {
                 it = gResearchItemsInvented.erase(it);
@@ -802,7 +806,7 @@ void research_fix()
         }
         else
         {
-            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.rawValue);
+            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
             if (sceneryGroupEntry == nullptr)
             {
                 it = gResearchItemsUninvented.erase(it);
@@ -823,7 +827,7 @@ void research_fix()
     // For good measure, also include scenery groups.
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
-        for (uint8_t i = 0; i < MAX_RIDE_OBJECTS; i++)
+        for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
         {
             const rct_ride_entry* rideEntry = get_ride_entry(i);
 
@@ -878,16 +882,14 @@ void research_items_shuffle()
     std::shuffle(std::begin(gResearchItemsUninvented), std::end(gResearchItemsUninvented), std::default_random_engine{});
 }
 
-bool research_item_is_always_researched(const ResearchItem* researchItem)
+bool ResearchItem::IsAlwaysResearched() const
 {
-    return (researchItem->flags
-            & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED))
-        != 0;
+    return (flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
-bool ResearchItem::IsInventedEndMarker() const
+bool ResearchItem::IsNull() const
 {
-    return rawValue == RESEARCHED_ITEMS_SEPARATOR;
+    return rawValue == RESEARCH_ITEM_NULL;
 }
 
 bool ResearchItem::Equals(const ResearchItem* otherItem) const

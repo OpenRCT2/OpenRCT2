@@ -34,9 +34,6 @@ enum
     SCREEN_FLAGS_EDITOR = (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER),
 };
 
-/** The exit code for OpenRCT2 when it exits. */
-extern int32_t gExitCode;
-
 extern int32_t gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
 extern utf8 gExePath[MAX_PATH];

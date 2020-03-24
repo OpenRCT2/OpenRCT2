@@ -25,7 +25,7 @@ public:
     StaffSetPatrolAreaAction()
     {
     }
-    StaffSetPatrolAreaAction(uint16_t spriteId, CoordsXY loc)
+    StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
         : _spriteId(spriteId)
         , _loc(loc)
     {
@@ -89,11 +89,11 @@ public:
             gStaffModes[peep->staff_id] |= (1 << 1);
         }
 
-        for (int32_t y = 0; y < 4 * 32; y += 32)
+        for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
         {
-            for (int32_t x = 0; x < 4 * 32; x += 32)
+            for (int32_t x = 0; x < 4 * COORDS_XY_STEP; x += COORDS_XY_STEP)
             {
-                map_invalidate_tile_full((_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y);
+                map_invalidate_tile_full({ (_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y });
             }
         }
         staff_update_greyed_patrol_areas();

@@ -10,7 +10,10 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
-typedef uint8_t ride_id_t;
-typedef uint32_t ride_idnew_t; // Temporary, old one can be removed after switching save format.
+using ride_id_t = uint16_t;
 struct Ride;
+
+constexpr const ride_id_t RIDE_ID_NULL = 0xFF; // std::numeric_limits<ride_id_t>::max();
+constexpr const ride_id_t RideIdNewNull = std::numeric_limits<ride_id_t>::max();

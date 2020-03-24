@@ -131,8 +131,8 @@ static void window_editor_objective_options_rides_mouseup(rct_window *w, rct_wid
 static void window_editor_objective_options_rides_resize(rct_window *w);
 static void window_editor_objective_options_rides_update(rct_window *w);
 static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_editor_objective_options_rides_invalidate(rct_window *w);
 static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -263,7 +263,6 @@ rct_window* window_editor_objective_options_open()
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     window_init_scroll_widgets(w);
-    w->var_4AE = 0;
     w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
     w->no_list_items = 0;
     w->selected_list_item = -1;
@@ -303,7 +302,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->x + widget->left, w->y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
 
     // Tab 2
     if (!(w->disabled_widgets & (1 << WIDX_TAB_2)))
@@ -313,7 +312,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->x + widget->left, w->y + widget->top, 0);
+        gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
     }
 }
 
@@ -485,8 +484,9 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     numItems++;
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->right - dropdownWidget->left - 3);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+        dropdownWidget->right - dropdownWidget->left - 3);
 
     objectiveType = gScenarioObjectiveType;
     for (int32_t j = 0; j < numItems; j++)
@@ -512,8 +512,9 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
         gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, dropdownWidget->right - dropdownWidget->left - 3);
+        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5,
+        dropdownWidget->right - dropdownWidget->left - 3);
     dropdown_set_checked(gS6Info.category, true);
 }
 
@@ -863,21 +864,21 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     // Objective label
-    x = w->x + 8;
-    y = w->y + w->widgets[WIDX_OBJECTIVE].top;
+    x = w->windowPos.x + 8;
+    y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top;
     gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, x, y);
 
     // Objective value
-    x = w->x + w->widgets[WIDX_OBJECTIVE].left + 1;
-    y = w->y + w->widgets[WIDX_OBJECTIVE].top;
+    x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE].left + 1;
+    y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top;
     stringId = ObjectiveDropdownOptionNames[gScenarioObjectiveType];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY)
     {
         // Objective argument 1 label
-        x = w->x + 28;
-        y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
+        x = w->windowPos.x + 28;
+        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -904,8 +905,8 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, x, y);
 
         // Objective argument 1 value
-        x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
-        y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
+        x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
+        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -935,20 +936,20 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WWT_EMPTY)
     {
         // Objective argument 2 label
-        x = w->x + 28;
-        y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
+        x = w->windowPos.x + 28;
+        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, x, y);
 
         // Objective argument 2 value
-        x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
-        y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
+        x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
+        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
         arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, x, y);
     }
 
     // Park name
-    x = w->x + 8;
-    y = w->y + w->widgets[WIDX_PARK_NAME].top;
+    x = w->windowPos.x + 8;
+    y = w->windowPos.y + w->widgets[WIDX_PARK_NAME].top;
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
     {
@@ -961,8 +962,8 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     }
 
     // Scenario name
-    x = w->x + 8;
-    y = w->y + w->widgets[WIDX_SCENARIO_NAME].top;
+    x = w->windowPos.x + 8;
+    y = w->windowPos.y + w->widgets[WIDX_SCENARIO_NAME].top;
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
     set_format_arg(0, rct_string_id, STR_STRING);
@@ -971,13 +972,13 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Scenario details label
-    x = w->x + 8;
-    y = w->y + w->widgets[WIDX_DETAILS].top;
+    x = w->windowPos.x + 8;
+    y = w->windowPos.y + w->widgets[WIDX_DETAILS].top;
     gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, x, y);
 
     // Scenario details value
-    x = w->x + 16;
-    y = w->y + w->widgets[WIDX_DETAILS].top + 10;
+    x = w->windowPos.x + 16;
+    y = w->windowPos.y + w->widgets[WIDX_DETAILS].top + 10;
     width = w->widgets[WIDX_DETAILS].left - 4;
 
     set_format_arg(0, rct_string_id, STR_STRING);
@@ -986,13 +987,13 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label
-    x = w->x + 8;
-    y = w->y + w->widgets[WIDX_CATEGORY].top;
+    x = w->windowPos.x + 8;
+    y = w->windowPos.y + w->widgets[WIDX_CATEGORY].top;
     gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, x, y);
 
     // Scenario category value
-    x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
-    y = w->y + w->widgets[WIDX_CATEGORY].top;
+    x = w->windowPos.x + w->widgets[WIDX_CATEGORY].left + 1;
+    y = w->windowPos.y + w->widgets[WIDX_CATEGORY].top;
     stringId = ScenarioCategoryStringIds[gS6Info.category];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
 }
@@ -1066,9 +1067,10 @@ static void window_editor_objective_options_rides_scrollgetheight(
  *
  *  rct2: 0x006724FC
  */
-static void window_editor_objective_options_rides_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_editor_objective_options_rides_scrollmousedown(
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    auto i = y / 12;
+    auto i = screenCoords.y / 12;
     if (i < 0 || i >= w->no_list_items)
         return;
 
@@ -1084,11 +1086,12 @@ static void window_editor_objective_options_rides_scrollmousedown(rct_window* w,
  *
  *  rct2: 0x006724CC
  */
-static void window_editor_objective_options_rides_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_editor_objective_options_rides_scrollmouseover(
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t i;
 
-    i = y / 12;
+    i = screenCoords.y / 12;
     if (i < 0 || i >= w->no_list_items)
         return;
 
@@ -1133,7 +1136,8 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     gfx_draw_string_left(
-        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK, w->x + 6, w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
+        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK, w->windowPos.x + 6,
+        w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
 }
 
 /**

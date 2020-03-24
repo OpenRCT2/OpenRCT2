@@ -77,9 +77,9 @@ size_t Banner::FormatTextTo(void* argsV) const
  *
  *  rct2: 0x006B7EAB
  */
-static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
+static uint8_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(bannerCoords);
     ride_id_t resultRideIndex = RIDE_ID_NULL;
     if (tileElement == nullptr)
         return resultRideIndex;
@@ -93,7 +93,7 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
         if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        if ((tileElement->clearance_height * 8) + 32 <= z)
+        if ((tileElement->GetClearanceZ()) + (4 * COORDS_Z_STEP) <= bannerCoords.z)
             continue;
 
         resultRideIndex = rideIndex;
@@ -162,7 +162,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+        auto tileElement = map_get_first_element_at(banner->position.ToCoordsXY());
         if (tileElement != nullptr)
         {
             do
@@ -183,7 +183,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
     if (banner == nullptr)
         return nullptr;
 
-    auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+    auto tileElement = map_get_first_element_at(banner->position.ToCoordsXY());
     if (tileElement == nullptr)
         return nullptr;
 
@@ -209,15 +209,21 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
+uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
-    static constexpr const LocationXY16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },
-                                                                  { 0, -32 },   { -32, +32 }, { +32, -32 },
-                                                                  { +32, +32 }, { -32, +32 }, { 0, 0 } };
+    static constexpr const std::array<CoordsXY, 9> NeighbourCheckOrder = { CoordsXY{ COORDS_XY_STEP, 0 },
+                                                                           CoordsXY{ -COORDS_XY_STEP, 0 },
+                                                                           { 0, COORDS_XY_STEP },
+                                                                           CoordsXY{ 0, -COORDS_XY_STEP },
+                                                                           CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+                                                                           CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
+                                                                           CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
+                                                                           CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+                                                                           CoordsXY{ 0, 0 } };
 
-    for (size_t i = 0; i < std::size(NeighbourCheckOrder); i++)
+    for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
-        ride_id_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        ride_id_t rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
         if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
@@ -231,13 +237,11 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        LocationXY8 location = ride.overall_view;
-        if (location.xy == RCT_XY8_UNDEFINED)
+        auto rideCoords = ride.overall_view;
+        if (rideCoords.isNull())
             continue;
 
-        int32_t rideX = location.x * 32;
-        int32_t rideY = location.y * 32;
-        int32_t distance = abs(x - rideX) + abs(y - rideY);
+        int32_t distance = abs(mapPos.x - rideCoords.x) + abs(mapPos.y - rideCoords.y);
         if (distance < resultDistance)
         {
             resultDistance = distance;
@@ -267,7 +271,7 @@ void fix_duplicated_banners()
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto tileElement = map_get_first_element_at(x, y);
+            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (tileElement != nullptr)
             {
                 do
@@ -284,7 +288,7 @@ void fix_duplicated_banners()
                                 tileElement->base_height);
 
                             // Banner index is already in use by another banner, so duplicate it
-                            BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                            auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
                             if (newBannerIndex == BANNER_INDEX_NULL)
                             {
                                 log_error("Failed to create new banner.");

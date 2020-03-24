@@ -30,7 +30,7 @@
 bool gPaintWidePathsAsGhost = false;
 
 // clang-format off
-const uint8_t PathSlopeToLandSlope[] = 
+const uint8_t PathSlopeToLandSlope[] =
 {
     TILE_ELEMENT_SLOPE_SW_SIDE_UP,
     TILE_ELEMENT_SLOPE_NW_SIDE_UP,
@@ -426,8 +426,7 @@ static void sub_6A4101(
         direction += session->CurrentRotation;
         direction &= 3;
 
-        LocationXYZ16 boundBoxOffsets = { BannerBoundBoxes[direction][0].x, BannerBoundBoxes[direction][0].y,
-                                          static_cast<int16_t>(height + 2) };
+        CoordsXYZ boundBoxOffsets = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
 
         uint32_t imageId = (direction << 1) + base_image_id + 28;
 
@@ -473,8 +472,8 @@ static void sub_6A4101(
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-            uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
-            uint16_t scroll = (gCurrentTicks / 2) % string_width;
+            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer);
+            uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             sub_98199C(
                 session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK), 0, 0, 1, 1,
@@ -857,16 +856,13 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         imageFlags |= CONSTRUCTION_MARKER;
     }
 
-    int16_t x = session->MapPosition.x, y = session->MapPosition.y;
+    auto surface = map_get_surface_element_at(session->MapPosition);
 
-    auto surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
-
-    uint16_t bl = height / 8;
     if (surface == nullptr)
     {
         hasSupports = true;
     }
-    else if (surface->base_height != bl)
+    else if (surface->GetBaseZ() != height)
     {
         hasSupports = true;
     }
@@ -895,49 +891,46 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         int32_t staffIndex = gStaffDrawPatrolAreas;
         uint8_t staffType = staffIndex & 0x7FFF;
         bool is_staff_list = staffIndex & 0x8000;
-        x = session->MapPosition.x;
-        y = session->MapPosition.y;
-
         uint8_t patrolColour = COLOUR_LIGHT_BLUE;
 
         if (!is_staff_list)
         {
-            Peep* staff = GET_PEEP(staffIndex);
-            if (!staff_is_patrol_area_set(staff->staff_id, x, y))
+            Staff* staff = (GET_PEEP(staffIndex))->AsStaff();
+            if (!staff->IsPatrolAreaSet(session->MapPosition))
             {
                 patrolColour = COLOUR_GREY;
             }
             staffType = staff->staff_type;
         }
 
-        if (staff_is_patrol_area_set(200 + staffType, x, y))
+        if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))
         {
             uint32_t imageId = 2618;
-            int32_t height2 = tile_element->base_height * 8;
+            int32_t patrolAreaBaseZ = tile_element->GetBaseZ();
             if (tile_element->AsPath()->IsSloped())
             {
                 imageId = 2619 + ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3);
-                height2 += 16;
+                patrolAreaBaseZ += 16;
             }
 
-            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2);
+            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
         }
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
     {
-        uint16_t height2 = 3 + tile_element->base_height * 8;
+        uint16_t heightMarkerBaseZ = tile_element->GetBaseZ() + 3;
         if (tile_element->AsPath()->IsSloped())
         {
-            height2 += 8;
+            heightMarkerBaseZ += 8;
         }
-        uint32_t imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
+        uint32_t imageId = (SPR_HEIGHT_MARKER_BASE + heightMarkerBaseZ / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
-        sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
+        sub_98196C(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
     }
 
-    PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetPathEntry();
+    PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetSurfaceEntry();
     PathRailingsEntry* railingEntry = tile_element->AsPath()->GetRailingEntry();
 
     if (footpathEntry != nullptr && railingEntry != nullptr)

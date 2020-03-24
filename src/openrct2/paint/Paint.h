@@ -149,7 +149,7 @@ struct paint_session
     const void* CurrentlyDrawnItem;
     paint_entry* EndOfPaintStructArray;
     paint_entry* NextFreePaintStruct;
-    LocationXY16 SpritePosition;
+    CoordsXY SpritePosition;
     paint_struct* LastRootPS;
     attached_paint_struct* UnkF1AD2C;
     uint8_t InteractionType;
@@ -159,7 +159,7 @@ struct paint_session
     paint_string_struct* PSStringHead;
     paint_string_struct* LastPSString;
     paint_struct* WoodenSupportsPrependTo;
-    LocationXY16 MapPosition;
+    CoordsXY MapPosition;
     tunnel_entry LeftTunnels[TUNNEL_MAX_COUNT];
     uint8_t LeftTunnelCount;
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
@@ -178,8 +178,8 @@ extern paint_session gPaintSession;
 
 // Globals for paint clipping
 extern uint8_t gClipHeight;
-extern LocationXY8 gClipSelectionA;
-extern LocationXY8 gClipSelectionB;
+extern CoordsXY gClipSelectionA;
+extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 #define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP)
@@ -228,7 +228,6 @@ paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
 void paint_session_free(paint_session* session);
 void paint_session_generate(paint_session* session);
 void paint_session_arrange(paint_session* session);
-paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation);
 void paint_draw_structs(paint_session* session);
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 

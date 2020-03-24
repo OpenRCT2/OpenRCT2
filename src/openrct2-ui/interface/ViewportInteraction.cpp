@@ -39,23 +39,23 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
-static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_footpath(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
-static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
+static void viewport_interaction_remove_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_footpath(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
+static void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords);
+static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance);
 
 /**
  *
  *  rct2: 0x006ED9D0
  */
-int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info)
+int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info)
 {
     TileElement* tileElement;
     rct_sprite* sprite;
-    rct_vehicle* vehicle;
+    Vehicle* vehicle;
 
     // No click input for title screen or scenario editor or track manager
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
@@ -65,14 +65,14 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    LocationXY16 mapCoord = {};
+    CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x,
-        &mapCoord.y, &info->type, &info->tileElement, nullptr);
+        screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK,
+        mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
-    sprite = (rct_sprite*)tileElement;
+    sprite = info->sprite;
 
     switch (info->type)
     {
@@ -111,7 +111,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     // If nothing is under cursor, find a close by peep
     if (info->type == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        info->peep = viewport_interaction_get_closest_peep(x, y, 32);
+        info->peep = viewport_interaction_get_closest_peep(screenCoords, 32);
         if (info->peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -124,11 +124,11 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     return info->type;
 }
 
-int32_t viewport_interaction_left_over(int32_t x, int32_t y)
+int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info))
+    switch (viewport_interaction_get_item_left(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         case VIEWPORT_INTERACTION_ITEM_RIDE:
@@ -139,11 +139,11 @@ int32_t viewport_interaction_left_over(int32_t x, int32_t y)
     }
 }
 
-int32_t viewport_interaction_left_click(int32_t x, int32_t y)
+int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info))
+    switch (viewport_interaction_get_item_left(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             switch (info.sprite->generic.sprite_identifier)
@@ -200,7 +200,7 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
  *
  *  rct2: 0x006EDE88
  */
-int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info* info)
+int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info)
 {
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
@@ -215,9 +215,9 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    LocationXY16 mapCoord = {};
+    CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
-        x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type,
+        screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), mapCoord, &info->type,
         &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -296,7 +296,8 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             }
             else
             {
-                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->base_height << 4 }))
+                // FIXME: Why does it *2 the value?
+                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->GetBaseZ() * 2 }))
                 {
                     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
@@ -315,7 +316,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                 stationIndex = tileElement->AsTrack()->GetStationIndex();
 
             for (i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                if (ride->stations[i].Start.isNull())
                     stationIndex--;
             stationIndex++;
             set_map_tooltip_format_arg(4 + nameArgLen + 2, uint16_t, stationIndex);
@@ -435,23 +436,23 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 }
 
-int32_t viewport_interaction_right_over(int32_t x, int32_t y)
+int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
 
-    return viewport_interaction_get_item_right(x, y, &info) != 0;
+    return viewport_interaction_get_item_right(screenCoords, &info) != 0;
 }
 
 /**
  *
  *  rct2: 0x006E8A62
  */
-int32_t viewport_interaction_right_click(int32_t x, int32_t y)
+int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYE tileElement;
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_right(x, y, &info))
+    switch (viewport_interaction_get_item_right(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_NONE:
             return 0;
@@ -473,22 +474,22 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
             ride_modify(&tileElement);
             break;
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
-            viewport_interaction_remove_scenery(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_scenery(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            viewport_interaction_remove_footpath(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_footpath(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-            viewport_interaction_remove_footpath_item(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_footpath_item(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_PARK:
-            viewport_interaction_remove_park_entrance(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_park_entrance(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            viewport_interaction_remove_park_wall(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_park_wall(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            viewport_interaction_remove_large_scenery(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_large_scenery(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_BANNER:
             context_open_detail_window(WD_BANNER, info.tileElement->AsBanner()->GetIndex());
@@ -502,10 +503,10 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_scenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
-        { x, y, tileElement->base_height * 8 }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        { mapCoords.x, mapCoords.y, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
         tileElement->AsSmallScenery()->GetEntryIndex());
 
     GameActions::Execute(&removeSceneryAction);
@@ -515,26 +516,25 @@ static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_footpath(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    int32_t z;
     rct_window* w;
     TileElement* tileElement2;
 
-    z = tileElement->base_height;
+    auto z = tileElement->GetBaseZ();
 
     w = window_find_by_class(WC_FOOTPATH);
     if (w != nullptr)
         footpath_provisional_update();
 
-    tileElement2 = map_get_first_element_at(x / 32, y / 32);
+    tileElement2 = map_get_first_element_at(mapCoords);
     if (tileElement2 == nullptr)
         return;
     do
     {
-        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z)
+        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->GetBaseZ() == z)
         {
-            footpath_remove(x, y, z, GAME_COMMAND_FLAG_APPLY);
+            footpath_remove({ mapCoords, z }, GAME_COMMAND_FLAG_APPLY);
             break;
         }
     } while (!(tileElement2++)->IsLastForTile());
@@ -544,9 +544,9 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ x, y, tileElement->base_height * 8 });
+    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&footpathSceneryRemoveAction);
 }
 
@@ -554,21 +554,19 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y)
+void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords)
 {
     int32_t rotation = tileElement->GetDirectionWithOffset(1);
     switch (tileElement->AsEntrance()->GetSequenceIndex())
     {
         case 1:
-            x += CoordsDirectionDelta[rotation].x;
-            y += CoordsDirectionDelta[rotation].y;
+            mapCoords += CoordsDirectionDelta[rotation];
             break;
         case 2:
-            x -= CoordsDirectionDelta[rotation].x;
-            y -= CoordsDirectionDelta[rotation].y;
+            mapCoords -= CoordsDirectionDelta[rotation];
             break;
     }
-    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ x, y, tileElement->base_height * 8 });
+    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&parkEntranceRemoveAction);
 }
 
@@ -576,7 +574,7 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
     if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
@@ -585,7 +583,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
     }
     else
     {
-        CoordsXYZD wallLocation = { x, y, tileElement->base_height * 8, tileElement->GetDirection() };
+        CoordsXYZD wallLocation = { mapCoords.x, mapCoords.y, tileElement->GetBaseZ(), tileElement->GetDirection() };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }
@@ -595,25 +593,25 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
     if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
     {
-        BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
+        auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         context_open_detail_window(WD_SIGN, bannerIndex);
     }
     else
     {
         auto removeSceneryAction = LargeSceneryRemoveAction(
-            { x, y, tileElement->base_height * 8, tileElement->GetDirection() },
+            { mapCoords.x, mapCoords.y, tileElement->GetBaseZ(), tileElement->GetDirection() },
             tileElement->AsLargeScenery()->GetSequenceIndex());
         GameActions::Execute(&removeSceneryAction);
     }
 }
 
-static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
+static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
     int32_t distance, closestDistance;
     uint16_t spriteIndex;
@@ -621,7 +619,7 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
     rct_viewport* viewport;
     Peep *peep, *closestPeep;
 
-    w = window_find_from_point(ScreenCoordsXY(x, y));
+    w = window_find_from_point(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -629,8 +627,8 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
     if (viewport == nullptr || viewport->zoom >= 2)
         return nullptr;
 
-    x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
-    y = ((y - viewport->y) << viewport->zoom) + viewport->view_y;
+    screenCoords.x = ((screenCoords.x - viewport->pos.x) << viewport->zoom) + viewport->viewPos.x;
+    screenCoords.y = ((screenCoords.y - viewport->pos.y) << viewport->zoom) + viewport->viewPos.y;
 
     closestPeep = nullptr;
     closestDistance = 0xFFFF;
@@ -639,8 +637,8 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
         if (peep->sprite_left == LOCATION_NULL)
             continue;
 
-        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - y);
+        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
+            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - screenCoords.y);
         if (distance > maxDistance)
             continue;
 
@@ -658,46 +656,44 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
+CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
 {
-    int16_t mapX, mapY;
+    CoordsXY mapCoords;
     CoordsXY initialPos{};
     int32_t interactionType;
     TileElement* tileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(
-        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapX, &mapY, &interactionType,
+        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapCoords, &interactionType,
         &tileElement, &viewport);
-    initialPos.x = mapX;
-    initialPos.y = mapY;
+    initialPos = mapCoords;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        *x = LOCATION_NULL;
-        return;
+        initialPos.setNull();
+        return initialPos;
     }
 
     int16_t waterHeight = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
     {
-        waterHeight = tileElement->AsSurface()->GetWaterHeight() << 4;
+        waterHeight = tileElement->AsSurface()->GetWaterHeight();
     }
 
-    LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-    LocationXY16 mapPos = { (int16_t)(initialPos.x + 16), (int16_t)(initialPos.y + 16) };
+    auto initialVPPos = screen_coord_to_viewport_coord(viewport, screenCoords);
+    CoordsXY mapPos = initialPos + CoordsXY{ 16, 16 };
 
     for (int32_t i = 0; i < 5; i++)
     {
         int16_t z = waterHeight;
         if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
         {
-            z = tile_element_height({ mapPos.x, mapPos.y });
+            z = tile_element_height(mapPos);
         }
         mapPos = viewport_coord_to_map_coord(initialVPPos.x, initialVPPos.y, z);
-        mapPos.x = std::clamp<int16_t>(mapPos.x, initialPos.x, initialPos.x + 31);
-        mapPos.y = std::clamp<int16_t>(mapPos.y, initialPos.y, initialPos.y + 31);
+        mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
+        mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }
 
-    *x = mapPos.x & ~0x1F;
-    *y = mapPos.y & ~0x1F;
+    return mapPos.ToTileStart();
 }

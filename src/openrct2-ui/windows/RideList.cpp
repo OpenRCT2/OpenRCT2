@@ -21,6 +21,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -77,8 +78,8 @@ static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetInde
 static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_ride_list_invalidate(rct_window *w);
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -318,7 +319,8 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
     {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
         gDropdownItemsFormat[1] = STR_OPEN_ALL;
-        window_dropdown_show_text(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0, 2);
+        window_dropdown_show_text(
+            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[1], 0, 2);
     }
     else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
     {
@@ -353,8 +355,8 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
         }
 
         window_dropdown_show_text_custom_width(
-            w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN,
-            numItems, widget->right - widget->left - 3);
+            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[1], 0,
+            DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
         if (selectedIndex != -1)
         {
             dropdown_set_checked(selectedIndex, true);
@@ -442,11 +444,11 @@ static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, i
  *
  *  rct2: 0x006B361F
  */
-static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
-    index = y / SCROLLABLE_ROW_HEIGHT;
+    index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -470,11 +472,11 @@ static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex,
  *
  *  rct2: 0x006B35EF
  */
-static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
-    index = y / SCROLLABLE_ROW_HEIGHT;
+    index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -569,8 +571,8 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw number of attractions on bottom
     gfx_draw_string_left(
-        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->x + 4,
-        w->widgets[WIDX_LIST].bottom + w->y + 2);
+        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->windowPos.x + 4,
+        w->widgets[WIDX_LIST].bottom + w->windowPos.y + 2);
 }
 
 /**
@@ -754,19 +756,22 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
     sprite_idx = SPR_TAB_RIDE_0;
     if (w->page == PAGE_RIDES)
         sprite_idx += w->frame_no / 4;
-    gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top, 0);
+    gfx_draw_sprite(
+        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_1].left, w->windowPos.y + w->widgets[WIDX_TAB_1].top, 0);
 
     // Shops and stalls tab
     sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
     if (w->page == PAGE_SHOPS_AND_STALLS)
         sprite_idx += w->frame_no / 4;
-    gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top, 0);
+    gfx_draw_sprite(
+        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_2].left, w->windowPos.y + w->widgets[WIDX_TAB_2].top, 0);
 
     // Information kiosks and facilities tab
     sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
     if (w->page == PAGE_KIOSKS_AND_FACILITIES)
         sprite_idx += (w->frame_no / 4) % 8;
-    gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
+    gfx_draw_sprite(
+        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_3].left, w->windowPos.y + w->widgets[WIDX_TAB_3].top, 0);
 }
 
 /**
@@ -801,7 +806,7 @@ void window_ride_list_refresh_list(rct_window* w)
                     if (otherRide != nullptr)
                     {
                         auto strB = otherRide->GetName();
-                        if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
+                        if (strlogicalcmp(strA.c_str(), strB.c_str()) >= 0)
                             break;
 
                         window_bubble_list_item(w, current_list_position);

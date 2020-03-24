@@ -14,6 +14,12 @@
 
 #include <algorithm>
 
+static uint8_t getBaseHeightOrZero(int32_t x, int32_t y)
+{
+    auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    return surfaceElement ? surfaceElement->base_height : 0;
+}
+
 /**
  * Not perfect, this still leaves some particular tiles unsmoothed.
  */
@@ -25,15 +31,17 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
     {
         for (x = l; x < r; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            if (surfaceElement == nullptr)
+                continue;
             surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
 
             // Raise to edge height - 2
             highest = surfaceElement->base_height;
-            highest = std::max(highest, map_get_surface_element_at(x - 1, y + 0)->base_height);
-            highest = std::max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
-            highest = std::max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
-            highest = std::max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
+            highest = std::max(highest, getBaseHeightOrZero(x - 1, y + 0));
+            highest = std::max(highest, getBaseHeightOrZero(x + 1, y + 0));
+            highest = std::max(highest, getBaseHeightOrZero(x + 0, y - 1));
+            highest = std::max(highest, getBaseHeightOrZero(x + 0, y + 1));
             if (surfaceElement->base_height < highest - 2)
             {
                 raisedLand = 1;
@@ -42,10 +50,10 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 
             // Check corners
             doubleCorner = -1;
-            cornerHeights[0] = map_get_surface_element_at(x - 1, y - 1)->base_height;
-            cornerHeights[1] = map_get_surface_element_at(x + 1, y - 1)->base_height;
-            cornerHeights[2] = map_get_surface_element_at(x + 1, y + 1)->base_height;
-            cornerHeights[3] = map_get_surface_element_at(x - 1, y + 1)->base_height;
+            cornerHeights[0] = getBaseHeightOrZero(x - 1, y - 1);
+            cornerHeights[1] = getBaseHeightOrZero(x + 1, y - 1);
+            cornerHeights[2] = getBaseHeightOrZero(x + 1, y + 1);
+            cornerHeights[3] = getBaseHeightOrZero(x - 1, y + 1);
             highest = surfaceElement->base_height;
             for (i = 0; i < 4; i++)
                 highest = std::max(highest, cornerHeights[i]);
@@ -67,24 +75,16 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
                         {
                             default:
                             case 0:
-                                highestOnLowestSide = std::max(
-                                    map_get_surface_element_at(x + 1, y)->base_height,
-                                    map_get_surface_element_at(x, y + 1)->base_height);
+                                highestOnLowestSide = std::max(getBaseHeightOrZero(x + 1, y), getBaseHeightOrZero(x, y + 1));
                                 break;
                             case 1:
-                                highestOnLowestSide = std::max(
-                                    map_get_surface_element_at(x - 1, y)->base_height,
-                                    map_get_surface_element_at(x, y + 1)->base_height);
+                                highestOnLowestSide = std::max(getBaseHeightOrZero(x - 1, y), getBaseHeightOrZero(x, y + 1));
                                 break;
                             case 2:
-                                highestOnLowestSide = std::max(
-                                    map_get_surface_element_at(x - 1, y)->base_height,
-                                    map_get_surface_element_at(x, y - 1)->base_height);
+                                highestOnLowestSide = std::max(getBaseHeightOrZero(x - 1, y), getBaseHeightOrZero(x, y - 1));
                                 break;
                             case 3:
-                                highestOnLowestSide = std::max(
-                                    map_get_surface_element_at(x + 1, y)->base_height,
-                                    map_get_surface_element_at(x, y - 1)->base_height);
+                                highestOnLowestSide = std::max(getBaseHeightOrZero(x + 1, y), getBaseHeightOrZero(x, y - 1));
                                 break;
                         }
 
@@ -146,37 +146,37 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
             {
                 uint8_t slope = surfaceElement->GetSlope();
                 // Corners
-                auto surfaceElement2 = map_get_surface_element_at(x + 1, y + 1);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                auto surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x + 1, y + 1 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
 
-                surfaceElement2 = map_get_surface_element_at(x - 1, y + 1);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x - 1, y + 1 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
 
-                surfaceElement2 = map_get_surface_element_at(x + 1, y - 1);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x + 1, y - 1 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
 
-                surfaceElement2 = map_get_surface_element_at(x - 1, y - 1);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x - 1, y - 1 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
 
                 // Sides
-                surfaceElement2 = map_get_surface_element_at(x + 1, y + 0);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x + 1, y + 0 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_NE_SIDE_UP;
 
-                surfaceElement2 = map_get_surface_element_at(x - 1, y + 0);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x - 1, y + 0 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_SW_SIDE_UP;
 
-                surfaceElement2 = map_get_surface_element_at(x + 0, y - 1);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x + 0, y - 1 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_SE_SIDE_UP;
 
-                surfaceElement2 = map_get_surface_element_at(x + 0, y + 1);
-                if (surfaceElement2->base_height > surfaceElement->base_height)
+                surfaceElement2 = map_get_surface_element_at(TileCoordsXY{ x + 0, y + 1 }.ToCoordsXY());
+                if (surfaceElement2 != nullptr && surfaceElement2->base_height > surfaceElement->base_height)
                     slope |= TILE_ELEMENT_SLOPE_NW_SIDE_UP;
 
                 // Raise
@@ -200,7 +200,9 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
  */
 int32_t tile_smooth(int32_t x, int32_t y)
 {
-    auto* const surfaceElement = map_get_surface_element_at(x, y);
+    auto* const surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    if (surfaceElement == nullptr)
+        return 0;
 
     // +-----+-----+-----+
     // |  W  | NW  |  N  |
@@ -239,9 +241,9 @@ int32_t tile_smooth(int32_t x, int32_t y)
                 continue;
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
-            auto* neighbourSurfaceElement = map_get_surface_element_at(x + x_offset, y + y_offset);
-            neighbourHeightOffset.baseheight[index] = neighbourSurfaceElement ? neighbourSurfaceElement->base_height
-                                                                              : surfaceElement->base_height;
+            auto* neighbourSurfaceElement = map_get_surface_element_at(TileCoordsXY{ x + x_offset, y + y_offset }.ToCoordsXY());
+            neighbourHeightOffset.baseheight[index] = neighbourSurfaceElement != nullptr ? neighbourSurfaceElement->base_height
+                                                                                         : surfaceElement->base_height;
 
             // Make the height relative to the current surface element
             neighbourHeightOffset.baseheight[index] -= surfaceElement->base_height;
@@ -287,8 +289,7 @@ int32_t tile_smooth(int32_t x, int32_t y)
         // All corners are raised, raise the entire tile instead.
         surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
-        uint8_t waterHeight = surfaceElement->GetWaterHeight() * 2;
-        if (waterHeight <= surfaceElement->base_height)
+        if (surfaceElement->GetWaterHeight() <= surfaceElement->GetBaseZ())
         {
             surfaceElement->SetWaterHeight(0);
         }

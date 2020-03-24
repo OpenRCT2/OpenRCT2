@@ -28,7 +28,7 @@ enum
  *  rct2: 0x006D6258
  */
 void vehicle_visual_observation_tower(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t image_id;
@@ -84,7 +84,7 @@ static void paint_observation_tower_base(
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -168,7 +168,7 @@ static void paint_observation_tower_section(
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const TileElement* nextTileElement = tileElement + 1;
-    if (tileElement->IsLastForTile() || tileElement->clearance_height != nextTileElement->base_height)
+    if (tileElement->IsLastForTile() || tileElement->GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = SPR_OBSERVATION_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);

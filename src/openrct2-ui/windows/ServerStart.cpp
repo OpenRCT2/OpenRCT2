@@ -46,8 +46,8 @@ enum {
     WIDX_LOAD_SERVER
 };
 
-#define WW 300
-#define WH 154
+constexpr int32_t WW = 300;
+constexpr int32_t WH = 154;
 
 static rct_widget window_server_start_widgets[] = {
     { WWT_FRAME,            0,  0,      WW-1,   0,          WH-1,   STR_NONE,                       STR_NONE },                 // panel / background
@@ -338,14 +338,20 @@ static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    gfx_draw_string_left(dpi, STR_PORT, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PORT_INPUT].top);
-    gfx_draw_string_left(dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_NAME_INPUT].top);
     gfx_draw_string_left(
-        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+        dpi, STR_PORT, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PORT_INPUT].top);
     gfx_draw_string_left(
-        dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_GREETING_INPUT].top);
-    gfx_draw_string_left(dpi, STR_PASSWORD, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
-    gfx_draw_string_left(dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
+        dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_NAME_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->windowPos.x + 6,
+        w->windowPos.y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->windowPos.x + 6,
+        w->windowPos.y + w->widgets[WIDX_GREETING_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_PASSWORD, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PASSWORD_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_MAXPLAYERS].top);
 }
 
 #endif

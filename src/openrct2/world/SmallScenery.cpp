@@ -25,7 +25,7 @@
 #include "Surface.h"
 
 static int32_t map_place_clear_func(
-    TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price, bool is_scenery)
+    TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
 {
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
@@ -50,7 +50,7 @@ static int32_t map_place_clear_func(
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         return 0;
 
-    map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
+    map_invalidate_tile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
 
     tile_element_remove(*tile_element);
 
@@ -62,18 +62,18 @@ static int32_t map_place_clear_func(
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
+int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
 {
-    return map_place_clear_func(tile_element, x, y, flags, price, /*is_scenery=*/true);
+    return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/true);
 }
 
 /**
  *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
-int32_t map_place_non_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
+int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
 {
-    return map_place_clear_func(tile_element, x, y, flags, price, /*is_scenery=*/false);
+    return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags)
@@ -92,12 +92,12 @@ void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
     type |= (newQuadrant << 6);
 }
 
-uint8_t SmallSceneryElement::GetEntryIndex() const
+uint16_t SmallSceneryElement::GetEntryIndex() const
 {
     return this->entryIndex;
 }
 
-void SmallSceneryElement::SetEntryIndex(uint8_t newIndex)
+void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
 {
     this->entryIndex = newIndex;
 }
@@ -112,7 +112,7 @@ void SmallSceneryElement::SetAge(uint8_t newAge)
     this->age = newAge;
 }
 
-void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
+void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 {
     if (IsGhost())
         return;
@@ -128,7 +128,7 @@ void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
 
             if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1(x, y, base_height * 8, clearance_height * 8);
+                map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }
         }
     }

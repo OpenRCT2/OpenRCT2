@@ -102,7 +102,7 @@ void park_set_open(bool open)
  *
  *  rct2: 0x00664D05
  */
-void update_park_fences(const CoordsXY coords)
+void update_park_fences(const CoordsXY& coords)
 {
     if (map_is_edge(coords))
         return;
@@ -116,7 +116,7 @@ void update_park_fences(const CoordsXY coords)
     {
         bool fenceRequired = true;
 
-        TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(coords);
         if (tileElement == nullptr)
             return;
         // If an entrance element do not place flags around surface
@@ -140,22 +140,22 @@ void update_park_fences(const CoordsXY coords)
             // As map_is_location_in_park sets the error text
             // will require to back it up.
             rct_string_id previous_error = gGameCommandErrorText;
-            if (map_is_location_in_park({ coords.x - 32, coords.y }))
+            if (map_is_location_in_park({ coords.x - COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x8;
             }
 
-            if (map_is_location_in_park({ coords.x, coords.y - 32 }))
+            if (map_is_location_in_park({ coords.x, coords.y - COORDS_XY_STEP }))
             {
                 newFences |= 0x4;
             }
 
-            if (map_is_location_in_park({ coords.x + 32, coords.y }))
+            if (map_is_location_in_park({ coords.x + COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x2;
             }
 
-            if (map_is_location_in_park({ coords.x, coords.y + 32 }))
+            if (map_is_location_in_park({ coords.x, coords.y + COORDS_XY_STEP }))
             {
                 newFences |= 0x1;
             }
@@ -166,20 +166,20 @@ void update_park_fences(const CoordsXY coords)
 
     if (surfaceElement->GetParkFences() != newFences)
     {
-        int32_t z0 = surfaceElement->base_height * 8;
-        int32_t z1 = z0 + 16;
-        map_invalidate_tile(coords.x, coords.y, z0, z1);
+        int32_t baseZ = surfaceElement->GetBaseZ();
+        int32_t clearZ = baseZ + 16;
+        map_invalidate_tile({ coords, baseZ, clearZ });
         surfaceElement->SetParkFences(newFences);
     }
 }
 
-void update_park_fences_around_tile(const CoordsXY coords)
+void update_park_fences_around_tile(const CoordsXY& coords)
 {
     update_park_fences(coords);
-    update_park_fences({ coords.x + 32, coords.y });
-    update_park_fences({ coords.x - 32, coords.y });
-    update_park_fences({ coords.x, coords.y + 32 });
-    update_park_fences({ coords.x, coords.y - 32 });
+    update_park_fences({ coords.x + COORDS_XY_STEP, coords.y });
+    update_park_fences({ coords.x - COORDS_XY_STEP, coords.y });
+    update_park_fences({ coords.x, coords.y + COORDS_XY_STEP });
+    update_park_fences({ coords.x, coords.y - COORDS_XY_STEP });
 }
 
 void set_forced_park_rating(int32_t rating)
@@ -268,7 +268,7 @@ void Park::Initialise()
     gParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
-    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    gResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
     research_reset_items();
@@ -468,7 +468,7 @@ int32_t Park::CalculateParkRating() const
 
     // Litter
     {
-        rct_litter* litter;
+        Litter* litter;
         int32_t litterCount = 0;
         for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
              spriteIndex = litter->next)
@@ -657,7 +657,10 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
     // This sequence can be defined as PI*(9+n)/2 (the value is floored)
     for (uint8_t n = 1; n < 55; n++)
     {
-        if ((3.14159 * (9 + n)) / 2 >= percentage)
+        // Avoid floating point math by rescaling PI up.
+        constexpr int32_t SCALE = 100000;
+        constexpr int32_t PI_SCALED = 314159; // PI * SCALE;
+        if (((PI_SCALED * (9 + n)) / SCALE) / 2 >= percentage)
         {
             return (9 + n) * 4;
         }

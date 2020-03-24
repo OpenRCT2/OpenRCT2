@@ -19,7 +19,7 @@ namespace Crypt
     template<size_t TLength> class HashAlgorithm
     {
     public:
-        typedef std::array<uint8_t, TLength> Result;
+        using Result = std::array<uint8_t, TLength>;
 
         virtual ~HashAlgorithm() = default;
         virtual HashAlgorithm* Clear() = 0;

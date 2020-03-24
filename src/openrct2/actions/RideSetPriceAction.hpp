@@ -26,7 +26,7 @@
 DEFINE_GAME_ACTION(RideSetPriceAction, GAME_COMMAND_SET_RIDE_PRICE, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     money16 _price = MONEY16_UNDEFINED;
     bool _primaryPrice = true;
 
@@ -77,7 +77,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
+        res->Expenditure = ExpenditureType::ParkRideTickets;
 
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
@@ -93,11 +93,10 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        if (!ride->overall_view.isNull())
         {
-            res->Position.x = ride->overall_view.x * 32 + 16;
-            res->Position.y = ride->overall_view.y * 32 + 16;
-            res->Position.z = tile_element_height(res->Position);
+            auto location = ride->overall_view.ToTileCentre();
+            res->Position = { location, tile_element_height(location) };
         }
 
         uint32_t shopItem;

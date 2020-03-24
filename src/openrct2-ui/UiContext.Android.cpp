@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui
         {
             log_verbose(message.c_str());
 
-            STUB();
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message.c_str(), window);
         }
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override

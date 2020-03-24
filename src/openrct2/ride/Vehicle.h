@@ -10,6 +10,7 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
+#include "../audio/audio.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
@@ -95,7 +96,7 @@ struct rct_ride_entry_vehicle
                                             // it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments; // 0x61 new
     uint8_t pad_62[6] = {};                 // 0x62 , 0x7B
-    std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
+    std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
 #ifdef __TESTPAINT__
@@ -148,19 +149,45 @@ enum VEHICLE_STATUS
     VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
-struct rct_vehicle : rct_sprite_common
+struct rct_vehicle_sound_params;
+
+enum VEHICLE_TRACK_SUBPOSITION : uint8_t
 {
-    uint8_t vehicle_sprite_type; // 0x1F
-    uint8_t bank_rotation;       // 0x20
-    int32_t remaining_distance;  // 0x24
-    int32_t velocity;            // 0x28
-    int32_t acceleration;        // 0x2C
-    ride_id_t ride;              // 0x30
-    uint8_t vehicle_type;        // 0x31
-    rct_vehicle_colour colours;  // 0x32
+    VEHICLE_TRACK_SUBPOSITION_0,
+    // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT,
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK,
+    // End and start bullwheel as viewed from Station 1.
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL,
+    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9 = 9,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9 = 9,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13,
+    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14,
+    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE,
+    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
+};
+
+struct Vehicle : SpriteBase
+{
+    uint8_t vehicle_sprite_type;
+    uint8_t bank_rotation;
+    int32_t remaining_distance;
+    int32_t velocity;
+    int32_t acceleration;
+    ride_id_t ride;
+    uint8_t vehicle_type;
+    rct_vehicle_colour colours;
     union
     {
-        uint16_t track_progress; // 0x34
+        uint16_t track_progress;
         struct
         {
             int8_t var_34;
@@ -169,117 +196,122 @@ struct rct_vehicle : rct_sprite_common
     };
     union
     {
-        int16_t track_direction;   // 0x36 (0000 0000 0000 0011)
-        int16_t track_type;        // 0x36 (0000 0011 1111 1100)
-        LocationXY8 boat_location; // 0x36
+        int16_t track_direction; // (0000 0000 0000 0011)
+        int16_t track_type;      // (0000 0011 1111 1100)
     };
-    uint16_t track_x;               // 0x38
-    uint16_t track_y;               // 0x3A
-    uint16_t track_z;               // 0x3C
-    uint16_t next_vehicle_on_train; // 0x3E
+    CoordsXYZ TrackLocation;
+    uint16_t next_vehicle_on_train;
 
     // The previous vehicle on the same train or the last vehicle on the previous or only train.
-    uint16_t prev_vehicle_on_ride; // 0x40
+    uint16_t prev_vehicle_on_ride;
 
     // The next vehicle on the same train or the first vehicle on the next or only train
-    uint16_t next_vehicle_on_ride; // 0x42
+    uint16_t next_vehicle_on_ride;
 
     uint16_t var_44;
-    uint16_t mass;         // 0x46
-    uint16_t update_flags; // 0x48
+    uint16_t mass;
+    uint16_t update_flags;
     uint8_t swing_sprite;
-    uint8_t current_station; // 0x4B
+    uint8_t current_station;
     union
     {
-        int16_t swinging_car_var_0; // 0x4C
-        int16_t current_time;       // 0x4C
+        int16_t swinging_car_var_0;
+        int16_t current_time;
         struct
         {
-            int8_t ferris_wheel_var_0; // 0x4C
-            int8_t ferris_wheel_var_1; // 0x4D
+            int8_t ferris_wheel_var_0;
+            int8_t ferris_wheel_var_1;
         };
     };
     union
     {
         int16_t var_4E;
-        int16_t crash_z; // 0x4E
+        int16_t crash_z;
     };
-    VEHICLE_STATUS status;           // 0x50
-    uint8_t sub_state;               // 0x51
-    uint16_t peep[32];               // 0x52
-    uint8_t peep_tshirt_colours[32]; // 0x92
-    uint8_t num_seats;               // 0xB2
-    uint8_t num_peeps;               // 0xB3
-    uint8_t next_free_seat;          // 0xB4
-    uint8_t restraints_position;     // 0xB5 0 == Close, 255 == Open
+    VEHICLE_STATUS status;
+    uint8_t sub_state;
+    uint16_t peep[32];
+    uint8_t peep_tshirt_colours[32];
+    uint8_t num_seats;
+    uint8_t num_peeps;
+    uint8_t next_free_seat;
+    uint8_t restraints_position; // 0 == Close, 255 == Open
     union
     {
-        int16_t spin_speed; // 0xB6
-        int16_t crash_x;    // 0xB6
+        int16_t spin_speed;
+        int16_t crash_x;
     };
-    uint16_t sound2_flags; // 0xB8
-    uint8_t spin_sprite;   // 0xBA lowest 3 bits not used for sprite selection (divide by 8 to use)
-    SoundId sound1_id;     // 0xBB
-    uint8_t sound1_volume; // 0xBC
-    SoundId sound2_id;     // 0xBD
-    uint8_t sound2_volume; // 0xBE
+    uint16_t sound2_flags;
+    uint8_t spin_sprite; // lowest 3 bits not used for sprite selection (divide by 8 to use)
+    SoundId sound1_id;
+    uint8_t sound1_volume;
+    SoundId sound2_id;
+    uint8_t sound2_volume;
     int8_t sound_vector_factor;
     union
     {
         uint16_t var_C0;
-        int16_t crash_y;            // 0xC0
-        uint16_t time_waiting;      // 0xC0
-        uint16_t cable_lift_target; // 0xC0
+        int16_t crash_y;
+        uint16_t time_waiting;
+        uint16_t cable_lift_target;
     };
-    uint8_t speed;                // 0xC2
-    uint8_t powered_acceleration; // 0xC3
+    uint8_t speed;
+    uint8_t powered_acceleration;
     union
     {
-        uint8_t dodgems_collision_direction; // 0xC4
+        uint8_t dodgems_collision_direction;
         uint8_t var_C4;
     };
-    uint8_t animation_frame; // 0xC5
+    uint8_t animation_frame;
     uint8_t pad_C6[0x2];
     uint16_t var_C8;
     uint16_t var_CA;
-    SoundId scream_sound_id; // 0xCC
-    uint8_t var_CD;
+    SoundId scream_sound_id;
+    uint8_t TrackSubposition;
     union
     {
         uint8_t var_CE;
-        uint8_t num_laps; // 0xCE
+        uint8_t num_laps;
     };
     union
     {
         uint8_t var_CF;
-        uint8_t brake_speed; // 0xCF
+        uint8_t brake_speed;
     };
-    uint16_t lost_time_out;         // 0xD0
-    int8_t vertical_drop_countdown; // 0xD1
+    uint16_t lost_time_out;
+    int8_t vertical_drop_countdown;
     uint8_t var_D3;
     uint8_t mini_golf_current_animation;
-    uint8_t mini_golf_flags;      // 0xD5
-    uint8_t ride_subtype;         // 0xD6
-    uint8_t colours_extended;     // 0xD7
-    uint8_t seat_rotation;        // 0xD8
-    uint8_t target_seat_rotation; // 0xD9
+    uint8_t mini_golf_flags;
+    uint8_t ride_subtype;
+    uint8_t colours_extended;
+    uint8_t seat_rotation;
+    uint8_t target_seat_rotation;
+    CoordsXY BoatLocation;
 
     constexpr bool IsHead() const
     {
         return type == VEHICLE_TYPE_HEAD;
     }
-    rct_vehicle* GetHead();
-    const rct_vehicle* GetHead() const;
-    const rct_vehicle* GetCar(size_t carIndex) const;
+    void Update();
+    Vehicle* GetHead();
+    const Vehicle* GetHead() const;
+    const Vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
+    void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
+
+private:
+    bool SoundCanPlay() const;
+    uint16_t GetSoundPriority() const;
+    rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
 };
 
 struct train_ref
 {
-    rct_vehicle* head;
-    rct_vehicle* tail;
+    Vehicle* head;
+    Vehicle* tail;
 };
 
 // Size: 0x09
@@ -466,26 +498,26 @@ struct GForces
     int32_t LateralG{};
 };
 
-rct_vehicle* try_get_vehicle(uint16_t spriteIndex);
+Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-GForces vehicle_get_g_forces(const rct_vehicle* vehicle);
-void vehicle_set_map_toolbar(const rct_vehicle* vehicle);
-int32_t vehicle_is_used_in_pairs(const rct_vehicle* vehicle);
-int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation);
-rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const rct_vehicle* vehicle);
-int32_t vehicle_get_total_num_peeps(const rct_vehicle* vehicle);
-void vehicle_invalidate_window(rct_vehicle* vehicle);
-void vehicle_update_test_finish(rct_vehicle* vehicle);
-void vehicle_test_reset(rct_vehicle* vehicle);
-void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle);
-rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle);
-rct_vehicle* vehicle_get_tail(const rct_vehicle* vehicle);
-const rct_vehicle_info* vehicle_get_move_info(int32_t cd, int32_t typeAndDirection, int32_t offset);
-uint16_t vehicle_get_move_info_size(int32_t cd, int32_t typeAndDirection);
-bool vehicle_update_dodgems_collision(rct_vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
+GForces vehicle_get_g_forces(const Vehicle* vehicle);
+void vehicle_set_map_toolbar(const Vehicle* vehicle);
+int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle);
+int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation);
+rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle);
+int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
+void vehicle_invalidate_window(Vehicle* vehicle);
+void vehicle_update_test_finish(Vehicle* vehicle);
+void vehicle_test_reset(Vehicle* vehicle);
+void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle);
+Vehicle* vehicle_get_head(const Vehicle* vehicle);
+Vehicle* vehicle_get_tail(const Vehicle* vehicle);
+const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
+uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
+bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
 
-extern rct_vehicle* gCurrentVehicle;
+extern Vehicle* gCurrentVehicle;
 extern uint8_t _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;
@@ -494,8 +526,8 @@ extern int32_t _vehicleUnkF64E10;
 extern uint8_t _vehicleVAngleEndF64E36;
 extern uint8_t _vehicleBankEndF64E37;
 extern uint8_t _vehicleF64E2C;
-extern rct_vehicle* _vehicleFrontVehicle;
-extern LocationXYZ16 unk_F64E20;
+extern Vehicle* _vehicleFrontVehicle;
+extern CoordsXYZ unk_F64E20;
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)

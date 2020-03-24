@@ -23,14 +23,14 @@
 DEFINE_GAME_ACTION(SignSetStyleAction, GAME_COMMAND_SET_SIGN_STYLE, GameActionResult)
 {
 private:
-    int32_t _bannerIndex;
+    BannerIndex _bannerIndex;
     uint8_t _mainColour;
     uint8_t _textColour;
     bool _isLarge;
 
 public:
     SignSetStyleAction() = default;
-    SignSetStyleAction(int32_t bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
+    SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
         : _bannerIndex(bannerIndex)
         , _mainColour(mainColour)
         , _textColour(textColour)
@@ -51,19 +51,15 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if ((BannerIndex)_bannerIndex >= MAX_BANNERS || _bannerIndex < 0)
+        if (_bannerIndex >= MAX_BANNERS)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' out of range", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto banner = GetBanner(_bannerIndex);
-
-        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
-
         if (_isLarge)
         {
-            TileElement* tileElement = banner_get_tile_element((BannerIndex)_bannerIndex);
+            TileElement* tileElement = banner_get_tile_element(_bannerIndex);
             if (tileElement == nullptr)
             {
                 log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
@@ -77,7 +73,7 @@ public:
         }
         else
         {
-            WallElement* wallElement = banner_get_scrolling_wall_tile_element(static_cast<BannerIndex>(_bannerIndex));
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
 
             if (!wallElement)
             {
@@ -93,13 +89,13 @@ public:
     {
         auto banner = GetBanner(_bannerIndex);
 
-        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
+        CoordsXY coords = banner->position.ToCoordsXY();
 
         if (_isLarge)
         {
-            TileElement* tileElement = banner_get_tile_element((BannerIndex)_bannerIndex);
-            if (!sign_set_colour(
-                    coords.x, coords.y, tileElement->base_height, tileElement->GetDirection(),
+            TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+            if (!map_large_scenery_sign_set_colour(
+                    { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                     tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
             {
                 return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
@@ -107,15 +103,15 @@ public:
         }
         else
         {
-            WallElement* wallElement = banner_get_scrolling_wall_tile_element(static_cast<BannerIndex>(_bannerIndex));
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
 
             wallElement->SetPrimaryColour(_mainColour);
             wallElement->SetSecondaryColour(_textColour);
-            map_invalidate_tile(coords.x, coords.y, wallElement->base_height * 8, wallElement->clearance_height * 8);
+            map_invalidate_tile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, (BannerIndex)_bannerIndex);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
         context_broadcast_intent(&intent);
 
         return MakeResult();

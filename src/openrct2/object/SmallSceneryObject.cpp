@@ -35,7 +35,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.num_frames = stream->ReadValue<uint16_t>();
-    _legacyType.small_scenery.scenery_tab_id = 0xFF;
+    _legacyType.small_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -76,7 +76,7 @@ void SmallSceneryObject::Load()
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 
-    _legacyType.small_scenery.scenery_tab_id = 0xFF;
+    _legacyType.small_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {

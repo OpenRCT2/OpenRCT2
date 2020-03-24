@@ -32,7 +32,7 @@ private:
 
 public:
     PeepPickupAction() = default;
-    PeepPickupAction(PeepPickupType type, uint32_t spriteId, CoordsXYZ loc, NetworkPlayerId_t owner)
+    PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
         : _type(static_cast<uint8_t>(type))
         , _spriteId(spriteId)
         , _loc(loc)
@@ -104,7 +104,7 @@ public:
                     return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE);
                 }
 
-                if (!peep->Place({ _loc.x / 32, _loc.y / 32, _loc.z }, false))
+                if (!peep->Place(TileCoordsXYZ(_loc), false))
                 {
                     return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
                 }
@@ -174,7 +174,7 @@ public:
             break;
             case PeepPickupType::Place:
                 res->Position = _loc;
-                if (!peep->Place({ _loc.x / 32, _loc.y / 32, _loc.z }, true))
+                if (!peep->Place(TileCoordsXYZ(_loc), true))
                 {
                     return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
                 }

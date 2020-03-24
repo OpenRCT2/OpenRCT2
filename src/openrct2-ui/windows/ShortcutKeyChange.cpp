@@ -15,8 +15,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
-#define WW 250
-#define WH 60
+constexpr int32_t WW = 250;
+constexpr int32_t WH = 60;
 
 // clang-format off
 enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
@@ -105,8 +105,8 @@ static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    int32_t x = w->x + 125;
-    int32_t y = w->y + 30;
+    int32_t x = w->windowPos.x + 125;
+    int32_t y = w->windowPos.y + 30;
 
     set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);

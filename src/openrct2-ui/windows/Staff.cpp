@@ -31,8 +31,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 
-#define WW 190
-#define WH 180
+constexpr int32_t WW = 190;
+constexpr int32_t WH = 180;
 
 // clang-format off
 enum WINDOW_STAFF_PAGE {
@@ -140,10 +140,10 @@ static void window_staff_overview_update(rct_window* w);
 static void window_staff_overview_invalidate(rct_window *w);
 static void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_staff_overview_viewport_rotate(rct_window *w);
@@ -567,8 +567,8 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
     gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
     int32_t extray = widget->bottom - widget->top + 1;
     window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
@@ -623,13 +623,13 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
  */
 void window_staff_overview_update(rct_window* w)
 {
-    int32_t var_496 = w->var_496;
-    var_496++;
-    if (var_496 >= 24)
+    int32_t newAnimationFrame = w->var_496;
+    newAnimationFrame++;
+    if (newAnimationFrame >= 24)
     {
-        var_496 = 0;
+        newAnimationFrame = 0;
     }
-    w->var_496 = var_496;
+    w->var_496 = newAnimationFrame;
     widget_invalidate(w, WIDX_TAB_1);
 }
 
@@ -947,7 +947,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
         }
     }
 
@@ -955,8 +955,8 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
     peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
-    int32_t x = (widget->left + widget->right) / 2 + w->x;
-    int32_t y = w->y + widget->top;
+    int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
+    int32_t y = w->windowPos.y + widget->top;
     int32_t width = widget->right - widget->left;
     gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 }
@@ -971,8 +971,8 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
 
@@ -994,8 +994,8 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STATS_0;
 
@@ -1018,8 +1018,8 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
     int32_t width = widget->right - widget->left - 1;
     int32_t height = widget->bottom - widget->top - 1;
-    int32_t x = widget->left + 1 + w->x;
-    int32_t y = widget->top + 1 + w->y;
+    int32_t x = widget->left + 1 + w->windowPos.x;
+    int32_t y = widget->top + 1 + w->windowPos.y;
     if (w->page == WINDOW_STAFF_OVERVIEW)
         height++;
 
@@ -1101,12 +1101,12 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     Peep* peep = GET_PEEP(w->number);
 
-    int32_t x = w->x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
-    int32_t y = w->y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
+    int32_t x = w->windowPos.x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
+    int32_t y = w->windowPos.y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        set_format_arg(0, money32, wage_table[peep->staff_type]);
+        set_format_arg(0, money32, gStaffWageTable[peep->staff_type]);
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
@@ -1137,7 +1137,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006BDFD8
  */
-void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
@@ -1146,30 +1146,27 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    int32_t map_x, map_y;
-    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
-    if (map_x != LOCATION_NULL)
+    auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
+    if (!mapCoords.isNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = map_x;
-        gMapSelectPositionB.x = map_x;
-        gMapSelectPositionA.y = map_y;
-        gMapSelectPositionB.y = map_y;
+        gMapSelectPositionA = mapCoords;
+        gMapSelectPositionB = mapCoords;
         map_invalidate_selection_rect();
     }
 
     gPickupPeepImage = UINT32_MAX;
 
     int32_t interactionType;
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
+    CoordsXY unusedCoords;
+    get_map_coordinates_from_pos(
+        screenCoords, VIEWPORT_INTERACTION_MASK_NONE, unusedCoords, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
-    x--;
-    y += 16;
-    gPickupPeepX = x;
-    gPickupPeepY = y;
+    gPickupPeepX = screenCoords.x - 1;
+    gPickupPeepY = screenCoords.y + 16;
     w->picked_peep_frame++;
     if (w->picked_peep_frame >= 48)
     {
@@ -1190,19 +1187,18 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006BDFC3
  */
-void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PICKUP)
     {
-        int32_t dest_x, dest_y;
         TileElement* tileElement;
-        footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &tileElement);
+        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-        if (dest_x == LOCATION_NULL)
+        if (destCoords.isNull())
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Place, w->number, { dest_x, dest_y, tileElement->base_height }, network_get_current_player_id()
+            PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
         };
         pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
             if (result->Error != GA_ERROR::OK)
@@ -1214,10 +1210,9 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     }
     else if (widgetIndex == WIDX_PATROL)
     {
-        int32_t dest_x, dest_y;
-        footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
+        auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-        if (dest_x == LOCATION_NULL)
+        if (destCoords.isNull())
             return;
 
         rct_sprite* sprite = try_get_sprite(w->number);
@@ -1228,7 +1223,8 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (peep.type != PEEP_TYPE_STAFF)
             return;
 
-        if (staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y))
+        auto staff = peep.AsStaff();
+        if (staff->IsPatrolAreaSet(destCoords))
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
         }
@@ -1236,12 +1232,12 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
-        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
         GameActions::Execute(&staffSetPatrolAreaAction);
     }
 }
 
-void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PATROL)
         return;
@@ -1255,10 +1251,9 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::NONE)
         return; // Do nothing if we do not have a paintvalue(this should never happen)
 
-    int32_t dest_x, dest_y;
-    footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
+    auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-    if (dest_x == LOCATION_NULL)
+    if (destCoords.isNull())
         return;
 
     rct_sprite* sprite = try_get_sprite(w->number);
@@ -1269,17 +1264,17 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (peep.type != PEEP_TYPE_STAFF)
         return;
 
-    bool patrolAreaValue = staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y);
+    bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet(destCoords);
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
         return; // Since area is already the value we want, skip...
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
         return; // Since area is already the value we want, skip...
 
-    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
-void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PATROL)
         return;
@@ -1385,12 +1380,12 @@ void window_staff_viewport_init(rct_window* w)
         {
             rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
-            int32_t x = view_widget->left + 1 + w->x;
-            int32_t y = view_widget->top + 1 + w->y;
+            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
             int32_t width = view_widget->right - view_widget->left - 1;
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
-            viewport_create(w, x, y, width, height, 0, 0, 0, 0, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
+            viewport_create(
+                w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }
@@ -1432,8 +1427,8 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     // Get the dropdown box widget instead of button.
     widget--;
 
-    int32_t x = widget->left + w->x;
-    int32_t y = widget->top + w->y;
+    int32_t x = widget->left + w->windowPos.x;
+    int32_t y = widget->top + w->windowPos.y;
     int32_t extray = widget->bottom - widget->top + 1;
     int32_t width = widget->right - widget->left - 3;
     window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);

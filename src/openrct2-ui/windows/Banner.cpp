@@ -22,8 +22,8 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-#define WW 113
-#define WH 96
+constexpr int32_t WW = 113;
+constexpr int32_t WH = 96;
 
 // clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {
@@ -133,10 +133,9 @@ rct_window* window_banner_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto bannerViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at(bannerViewPos);
     if (tile_element == nullptr)
         return nullptr;
     while (1)
@@ -149,17 +148,15 @@ rct_window* window_banner_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->GetBaseZ();
     w->frame_no = view_z;
-
-    view_x += 16;
-    view_y += 16;
 
     // Create viewport
     viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 2,
-        (viewportWidget->bottom - viewportWidget->top) - 2, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 2, (viewportWidget->bottom - viewportWidget->top) - 2, 0,
+        { bannerViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -174,10 +171,9 @@ rct_window* window_banner_open(rct_windownumber number)
 static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     auto banner = GetBanner(w->number);
-    int32_t x = banner->position.x << 5;
-    int32_t y = banner->position.y << 5;
+    auto bannerPos = banner->position.ToCoordsXY();
 
-    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tile_element = map_get_first_element_at(bannerPos);
     if (tile_element == nullptr)
         return;
 
@@ -196,7 +192,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_BANNER_DEMOLISH:
         {
             auto bannerRemoveAction = BannerRemoveAction(
-                { x, y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() });
+                { bannerPos, tile_element->GetBaseZ(), tile_element->AsBanner()->GetPosition() });
             GameActions::Execute(&bannerRemoveAction);
             break;
         }
@@ -240,7 +236,7 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             widget--;
 
             window_dropdown_show_text_custom_width(
-                widget->left + w->x, widget->top + w->y, widget->bottom - widget->top + 1, w->colours[1], 0,
+                widget->left + w->windowPos.x, widget->top + w->windowPos.y, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, 13, widget->right - widget->left - 3);
 
             dropdown_set_checked(banner->text_colour - 1, true);
@@ -348,15 +344,14 @@ static void window_banner_viewport_rotate(rct_window* w)
 
     auto banner = GetBanner(w->number);
 
-    int32_t view_x = (banner->position.x << 5) + 16;
-    int32_t view_y = (banner->position.y << 5) + 16;
-    int32_t view_z = w->frame_no;
+    auto bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        bannerViewPos, 0, SPRITE_INDEX_NULL);
 
     if (w->viewport != nullptr)
         w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;

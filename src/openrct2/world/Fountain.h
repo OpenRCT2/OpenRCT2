@@ -13,7 +13,7 @@
 #include "Map.h"
 #include "SpriteBase.h"
 
-struct JumpingFountain : rct_sprite_generic
+struct JumpingFountain : SpriteGeneric
 {
     uint8_t NumTicksAlive;
     uint8_t FountainFlags;
@@ -22,18 +22,18 @@ struct JumpingFountain : rct_sprite_generic
     uint16_t Iteration;
 
     void Update();
-    static void StartAnimation(int32_t newType, const CoordsXY newLoc, const TileElement* tileElement);
+    static void StartAnimation(int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement);
 
 private:
     int32_t GetType() const;
     void AdvanceAnimation();
-    void GoToEdge(CoordsXYZ newLoc, int32_t availableDirections) const;
-    void Bounce(CoordsXYZ newLoc, int32_t availableDirections);
-    void Split(CoordsXYZ newLoc, int32_t availableDirections) const;
-    void Random(CoordsXYZ newLoc, int32_t availableDirections) const;
-    void CreateNext(CoordsXYZ newLoc, int32_t direction) const;
-    static void Create(int32_t newType, CoordsXYZ newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
-    static bool IsJumpingFountain(int32_t newType, CoordsXYZ newLoc);
+    void GoToEdge(const CoordsXYZ& newLoc, int32_t availableDirections) const;
+    void Bounce(const CoordsXYZ& newLoc, int32_t availableDirections);
+    void Split(const CoordsXYZ& newLoc, int32_t availableDirections) const;
+    void Random(const CoordsXYZ& newLoc, int32_t availableDirections) const;
+    void CreateNext(const CoordsXYZ& newLoc, int32_t direction) const;
+    static void Create(int32_t newType, const CoordsXYZ& newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
+    static bool IsJumpingFountain(int32_t newType, const CoordsXYZ& newLoc);
 };
 
 enum

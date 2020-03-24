@@ -19,6 +19,16 @@
 #    include <sys/stat.h>
 #endif
 
+#if defined(__linux__) && !defined(__ANDROID__)
+#    define ftello ftello64
+#    define fseeko fseeko64
+#endif
+
+#ifdef _MSC_VER
+#    define ftello _ftelli64
+#    define fseeko _fseeki64
+#endif
+
 enum
 {
     FILE_MODE_OPEN,
@@ -127,13 +137,7 @@ public:
     }
     uint64_t GetPosition() const override
     {
-#if defined(_MSC_VER)
-        return _ftelli64(_file);
-#elif (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__) || defined(__OpenBSD__) || defined(__FreeBSD__)
         return ftello(_file);
-#else
-        return ftello64(_file);
-#endif
     }
 
     void SetPosition(uint64_t position) override
@@ -143,20 +147,6 @@ public:
 
     void Seek(int64_t offset, int32_t origin) override
     {
-#if defined(_MSC_VER)
-        switch (origin)
-        {
-            case STREAM_SEEK_BEGIN:
-                _fseeki64(_file, offset, SEEK_SET);
-                break;
-            case STREAM_SEEK_CURRENT:
-                _fseeki64(_file, offset, SEEK_CUR);
-                break;
-            case STREAM_SEEK_END:
-                _fseeki64(_file, offset, SEEK_END);
-                break;
-        }
-#elif (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__) || defined(__OpenBSD__) || defined(__FreeBSD__)
         switch (origin)
         {
             case STREAM_SEEK_BEGIN:
@@ -169,20 +159,6 @@ public:
                 fseeko(_file, offset, SEEK_END);
                 break;
         }
-#else
-        switch (origin)
-        {
-            case STREAM_SEEK_BEGIN:
-                fseeko64(_file, offset, SEEK_SET);
-                break;
-            case STREAM_SEEK_CURRENT:
-                fseeko64(_file, offset, SEEK_CUR);
-                break;
-            case STREAM_SEEK_END:
-                fseeko64(_file, offset, SEEK_END);
-                break;
-        }
-#endif
     }
 
     void Read(void* buffer, uint64_t length) override

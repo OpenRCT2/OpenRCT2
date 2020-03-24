@@ -38,8 +38,8 @@
 
 #pragma region Widgets
 
-#define WW 340
-#define WH 400
+constexpr int32_t WW = 350;
+constexpr int32_t WH = 400;
 
 // clang-format off
 enum
@@ -65,10 +65,10 @@ static rct_widget window_loadsave_widgets[] =
     { WWT_CAPTION,      0,      1,                  WW - 2,         1,          14,         STR_NONE,                           STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,     0,      WW - 13,            WW - 3,         2,          13,         STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },     //Window close button
     { WWT_RESIZE,       1,      0,                  WW - 1,         WH - 1,     WH - 1,     0xFFFFFFFF,                         STR_NONE },                 // tab content panel
-    { WWT_BUTTON,       0,      4,                  85,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
-    { WWT_BUTTON,       0,      86,                 167,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
-    { WWT_BUTTON,       0,      168,                251,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
-    { WWT_BUTTON,       0,      252,                334,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
+    { WWT_BUTTON,       0,      4,                  87,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
+    { WWT_BUTTON,       0,      88,                 171,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
+    { WWT_BUTTON,       0,      172,                258,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
+    { WWT_BUTTON,       0,      259,                345,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
     { WWT_TABLE_HEADER, 0,      4,                  (WW - 5) / 2,   55,         68,         STR_NONE,                           STR_NONE },                 // Name
     { WWT_TABLE_HEADER, 0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     55,         68,         STR_NONE,                           STR_NONE },                 // Date
     { WWT_SCROLL,       0,      4,                  WW - 5,         68,         WH - 30,    SCROLL_VERTICAL,                    STR_NONE },                 // File list
@@ -84,8 +84,8 @@ static void window_loadsave_close(rct_window *w);
 static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_loadsave_resize(rct_window *w);
 static void window_loadsave_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_compute_max_date_width();
 static void window_loadsave_invalidate(rct_window *w);
@@ -527,11 +527,11 @@ static void window_loadsave_scrollgetsize(rct_window* w, int32_t scrollIndex, in
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
-static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t selectedItem;
 
-    selectedItem = y / SCROLLABLE_ROW_HEIGHT;
+    selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
 
@@ -563,11 +563,11 @@ static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     }
 }
 
-static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t selectedItem;
 
-    selectedItem = y / SCROLLABLE_ROW_HEIGHT;
+    selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
 
@@ -701,12 +701,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
     // Draw path text
-#ifdef __APPLE__
-    set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(buffer));
-#else
-    set_format_arg(0, uintptr_t, (uintptr_t)buffer);
-#endif
-    gfx_draw_string_left_clipped(dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 4, w->y + 20, w->width - 8);
+    set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(buffer));
+    gfx_draw_string_left_clipped(
+        dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 4, w->windowPos.y + 20, w->width - 8);
 
     // Name button text
     rct_string_id id = STR_NONE;
@@ -717,7 +714,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw name button indicator.
     rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
-    gfx_draw_string_left(dpi, STR_NAME, &id, COLOUR_GREY, w->x + sort_name_widget.left + 11, w->y + sort_name_widget.top + 1);
+    gfx_draw_string_left(
+        dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos.x + sort_name_widget.left + 11,
+        w->windowPos.y + sort_name_widget.top + 1);
 
     // Date button text
     if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
@@ -728,7 +727,8 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         id = STR_NONE;
 
     rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
-    gfx_draw_string_left(dpi, STR_DATE, &id, COLOUR_GREY, w->x + sort_date_widget.left + 5, w->y + sort_date_widget.top + 1);
+    gfx_draw_string_left(
+        dpi, STR_DATE, &id, COLOUR_GREY, w->windowPos.x + sort_date_widget.left + 5, w->windowPos.y + sort_date_widget.top + 1);
 }
 
 static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -1115,8 +1115,8 @@ static void window_loadsave_select(rct_window* w, const char* path)
 
 #pragma region Overwrite prompt
 
-#define OVERWRITE_WW 200
-#define OVERWRITE_WH 100
+constexpr int32_t OVERWRITE_WW = 200;
+constexpr int32_t OVERWRITE_WH = 100;
 
 enum
 {
@@ -1225,8 +1225,8 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, char*, _window_overwrite_prompt_name);
 
-    int32_t x = w->x + w->width / 2;
-    int32_t y = w->y + (w->height / 2) - 3;
+    int32_t x = w->windowPos.x + w->width / 2;
+    int32_t y = w->windowPos.y + (w->height / 2) - 3;
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 

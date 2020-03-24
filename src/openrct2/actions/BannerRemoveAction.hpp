@@ -22,7 +22,7 @@ private:
 
 public:
     BannerRemoveAction() = default;
-    BannerRemoveAction(CoordsXYZD loc)
+    BannerRemoveAction(const CoordsXYZD& loc)
         : _loc(loc)
     {
     }
@@ -42,7 +42,7 @@ public:
     GameActionResult::Ptr Query() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
@@ -86,7 +86,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
@@ -120,7 +120,7 @@ public:
         }
 
         tile_element_remove_banner_entry(reinterpret_cast<TileElement*>(bannerElement));
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z / 8, _loc.z / 8 + 32);
+        map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
         bannerElement->Remove();
 
         return res;
@@ -129,7 +129,7 @@ public:
 private:
     BannerElement* GetBannerElementAt() const
     {
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
 
         // Find the banner element at known z and position
         do
@@ -138,7 +138,7 @@ private:
                 break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
-            if (tileElement->base_height != _loc.z / 8)
+            if (tileElement->GetBaseZ() != _loc.z)
                 continue;
             if (tileElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
                 continue;

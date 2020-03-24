@@ -28,7 +28,7 @@ public:
     ApplyPaletteShader();
     ~ApplyPaletteShader() override;
 
-    void SetTexture(GLuint texture);
+    static void SetTexture(GLuint texture);
     void SetPalette(const vec4* glPalette);
 
     void Draw();

@@ -45,12 +45,8 @@ using namespace OpenRCT2;
 class TitleSequencePlayer final : public ITitleSequencePlayer
 {
 private:
-    static constexpr const char* SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
-
-    IScenarioRepository& _scenarioRepository;
     GameState& _gameState;
 
-    size_t _sequenceId = 0;
     TitleSequence* _sequence = nullptr;
     int32_t _position = 0;
     int32_t _waitCounter = 0;
@@ -60,9 +56,8 @@ private:
     CoordsXY _viewCentreLocation = {};
 
 public:
-    explicit TitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
-        : _scenarioRepository(scenarioRepository)
-        , _gameState(gameState)
+    explicit TitleSequencePlayer(GameState& gameState)
+        : _gameState(gameState)
     {
     }
 
@@ -99,7 +94,6 @@ public:
 
         Eject();
         _sequence = sequence;
-        _sequenceId = titleSequenceId;
 
         Reset();
         return true;
@@ -112,7 +106,7 @@ public:
 
         if (_sequence == nullptr)
         {
-            SetViewLocation(75 * 32, 75 * 32);
+            SetViewLocation(TileCoordsXY(75, 75).ToCoordsXY());
             return false;
         }
 
@@ -258,28 +252,10 @@ private:
                 // 25 ms/tick
                 _waitCounter = std::max<int32_t>(1, command->Milliseconds / (uint32_t)GAME_UPDATE_TIME_MS);
                 break;
-            case TITLE_SCRIPT_LOADMM:
-            {
-                const scenario_index_entry* entry = _scenarioRepository.GetByFilename(SFMM_FILENAME);
-                if (entry == nullptr)
-                {
-                    Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
-                    return false;
-                }
-
-                const utf8* path = entry->path;
-                if (!LoadParkFromFile(path))
-                {
-                    Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
-                    return false;
-                }
-                break;
-            }
             case TITLE_SCRIPT_LOCATION:
             {
-                int32_t x = command->X * 32 + 16;
-                int32_t y = command->Y * 32 + 16;
-                SetViewLocation(x, y);
+                auto loc = TileCoordsXY(command->X, command->Y).ToCoordsXY().ToTileCentre();
+                SetViewLocation(loc);
                 break;
             }
             case TITLE_SCRIPT_ROTATE:
@@ -314,32 +290,6 @@ private:
                         const utf8* path = _sequence->Saves[saveIndex];
                         Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
                     }
-                    return false;
-                }
-                break;
-            }
-            case TITLE_SCRIPT_LOADRCT1:
-            {
-                source_desc sourceDesc;
-                if (!ScenarioSources::TryGetById(command->SaveIndex, &sourceDesc) || sourceDesc.index == -1)
-                {
-                    Console::Error::WriteLine("Invalid scenario id.");
-                    return false;
-                }
-
-                const utf8* path = nullptr;
-                size_t numScenarios = _scenarioRepository.GetCount();
-                for (size_t i = 0; i < numScenarios; i++)
-                {
-                    const scenario_index_entry* scenario = _scenarioRepository.GetByIndex(i);
-                    if (scenario && scenario->source_index == sourceDesc.index)
-                    {
-                        path = scenario->path;
-                        break;
-                    }
-                }
-                if (path == nullptr || !LoadParkFromFile(path))
-                {
                     return false;
                 }
                 break;
@@ -501,7 +451,7 @@ private:
     void PrepareParkForPlayback()
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
+        windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
         reset_sprite_spatial_index();
         reset_all_sprite_quadrant_placements();
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
@@ -514,22 +464,21 @@ private:
     }
 
     /**
-     * Sets the map location to the given tile coordinates. Z is automatic.
-     * @param x X position in map tiles.
-     * @param y Y position in map tiles.
+     * Sets the map location to the given (big) coordinates. Z is automatic.
+     * @param loc X and Y position in big coordinates.
      */
-    void SetViewLocation(int32_t x, int32_t y)
+    void SetViewLocation(const CoordsXY& loc)
     {
         // Update viewport
         rct_window* w = window_get_main();
         if (w != nullptr)
         {
-            int32_t z = tile_element_height({ x, y });
+            int32_t z = tile_element_height(loc);
 
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;
             gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            w->SetLocation(x, y, z);
+            w->SetLocation(loc.x, loc.y, z);
             gScreenFlags = oldScreenFlags;
 
             viewport_update_position(w);
@@ -537,8 +486,7 @@ private:
             // Save known tile position in case of window resize
             _lastScreenWidth = w->width;
             _lastScreenHeight = w->height;
-            _viewCentreLocation.x = x;
-            _viewCentreLocation.y = y;
+            _viewCentreLocation = loc;
         }
     }
 
@@ -552,13 +500,13 @@ private:
         {
             if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
             {
-                SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
+                SetViewLocation(_viewCentreLocation);
             }
         }
     }
 };
 
-std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
+std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(GameState& gameState)
 {
-    return std::make_unique<TitleSequencePlayer>(scenarioRepository, gameState);
+    return std::make_unique<TitleSequencePlayer>(gameState);
 }

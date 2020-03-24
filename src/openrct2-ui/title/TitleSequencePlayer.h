@@ -20,5 +20,4 @@ namespace OpenRCT2
     class GameState;
 }
 
-std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(
-    IScenarioRepository& scenarioRepository, OpenRCT2::GameState& gameState);
+std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(OpenRCT2::GameState& gameState);

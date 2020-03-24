@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "Location.hpp"
+#include "Map.h"
 
 #include <vector>
 
@@ -28,13 +29,16 @@ assert_struct_size(rct_entrance_type, 8);
 
 struct TileElement;
 
+constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
+constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
+constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
+
 extern bool gParkEntranceGhostExists;
-extern LocationXYZ16 gParkEntranceGhostPosition;
-extern uint8_t gParkEntranceGhostDirection;
+extern CoordsXYZD gParkEntranceGhostPosition;
 
 #define MAX_PARK_ENTRANCES 4
 
-constexpr int32_t MaxRideEntranceOrExitHeight = 244;
+constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
 
 extern std::vector<CoordsXYZD> gParkEntrances;
 
@@ -42,12 +46,11 @@ extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern uint8_t gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
-money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction);
-money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction);
+money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc);
 
 void reset_park_entrance();
-void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement);
-void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement);
+void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
+void maze_entrance_hedge_removal(const CoordsXYE& entrance);
 
 void fix_park_entrance_locations();
 

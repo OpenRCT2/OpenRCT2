@@ -17,6 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -94,7 +95,7 @@ private:
     {
         auto res = std::make_unique<StaffHireNewActionResult>();
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
+        res->Expenditure = ExpenditureType::Wages;
 
         if (_staffType >= STAFF_TYPE_COUNT)
         {
@@ -153,11 +154,11 @@ private:
         if (execute == false)
         {
             // In query we just want to see if we can obtain a sprite slot.
-            sprite_remove((rct_sprite*)newPeep);
+            sprite_remove(newPeep);
         }
         else
         {
-            move_sprite_to_list((rct_sprite*)newPeep, SPRITE_LIST_PEEP);
+            move_sprite_to_list(newPeep, SPRITE_LIST_PEEP);
 
             newPeep->sprite_identifier = 1;
             newPeep->window_invalidate_flags = 0;
@@ -227,8 +228,8 @@ private:
                 // NOTE: This state is required for the window to act.
                 newPeep->state = PEEP_STATE_PICKED;
 
-                sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
-                invalidate_sprite_2((rct_sprite*)newPeep);
+                sprite_move(newPeep->x, newPeep->y, newPeep->z, newPeep);
+                invalidate_sprite_2(newPeep);
             }
 
             // Staff uses this
@@ -236,7 +237,7 @@ private:
             newPeep->pathfind_goal.x = 0xFF;
             newPeep->pathfind_goal.y = 0xFF;
             newPeep->pathfind_goal.z = 0xFF;
-            newPeep->pathfind_goal.direction = 0xFF;
+            newPeep->pathfind_goal.direction = INVALID_DIRECTION;
 
             uint8_t colour = staff_get_colour(_staffType);
             newPeep->tshirt_colour = colour;
@@ -282,7 +283,7 @@ private:
             if (guest->state == PEEP_STATE_WALKING)
             {
                 // Check the walking guest's tile. Only count them if they're on a path tile.
-                guest_tile = map_get_path_element_at({ guest->next_x / 32, guest->next_y / 32, guest->next_z });
+                guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                 if (guest_tile != nullptr)
                     ++count;
             }
@@ -296,7 +297,7 @@ private:
             {
                 if (guest->state == PEEP_STATE_WALKING)
                 {
-                    guest_tile = map_get_path_element_at({ guest->next_x / 32, guest->next_y / 32, guest->next_z });
+                    guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
                     {
                         if (rand == 0)
@@ -334,7 +335,7 @@ private:
             }
         }
 
-        sprite_move(x, y, z + 16, (rct_sprite*)newPeep);
-        invalidate_sprite_2((rct_sprite*)newPeep);
+        sprite_move(x, y, z + 16, newPeep);
+        invalidate_sprite_2(newPeep);
     }
 };

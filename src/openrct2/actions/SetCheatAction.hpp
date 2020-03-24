@@ -26,6 +26,7 @@
 #include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -358,13 +359,11 @@ private:
 
     void SetGrassLength(int32_t length) const
     {
-        int32_t x, y;
-
-        for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+        for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
         {
-            for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+            for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
-                auto surfaceElement = map_get_surface_element_at(x, y);
+                auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
                 if (surfaceElement == nullptr)
                     continue;
 
@@ -416,14 +415,14 @@ private:
 
     void RemoveLitter() const
     {
-        rct_litter* litter;
+        Litter* litter;
         uint16_t spriteIndex, nextSpriteIndex;
 
         for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
         {
             litter = &(get_sprite(spriteIndex)->litter);
             nextSpriteIndex = litter->next;
-            sprite_remove((rct_sprite*)litter);
+            sprite_remove(litter);
         }
 
         tile_element_iterator it;
@@ -731,9 +730,9 @@ private:
         const int32_t min = 32;
         const int32_t max = gMapSizeUnits - 32;
 
-        for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += 32)
+        for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += COORDS_XY_STEP)
         {
-            for (coords.x = min; coords.x <= max; coords.x += 32)
+            for (coords.x = min; coords.x <= max; coords.x += COORDS_XY_STEP)
             {
                 auto* surfaceElement = map_get_surface_element_at(coords);
                 if (surfaceElement == nullptr)
@@ -743,16 +742,15 @@ private:
                 if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                     continue;
 
-                int32_t base_z = surfaceElement->base_height;
-                int32_t destOwnership = check_max_allowable_land_rights_for_tile(coords.x >> 5, coords.y >> 5, base_z);
+                int32_t baseZ = surfaceElement->GetBaseZ();
+                int32_t destOwnership = check_max_allowable_land_rights_for_tile({ coords, baseZ });
 
                 // only own tiles that were not set to 0
                 if (destOwnership != OWNERSHIP_UNOWNED)
                 {
                     surfaceElement->SetOwnership(destOwnership);
                     update_park_fences_around_tile(coords);
-                    uint16_t baseHeight = surfaceElement->base_height * 8;
-                    map_invalidate_tile(coords.x, coords.y, baseHeight, baseHeight + 16);
+                    map_invalidate_tile({ coords, baseZ, baseZ + 16 });
                 }
             }
         }
@@ -760,15 +758,13 @@ private:
         // Completely unown peep spawn points
         for (const auto& spawn : gPeepSpawns)
         {
-            int32_t x = spawn.x;
-            int32_t y = spawn.y;
-            if (x != PEEP_SPAWN_UNDEFINED)
+            auto* surfaceElement = map_get_surface_element_at(spawn);
+            if (surfaceElement != nullptr)
             {
-                auto* surfaceElement = map_get_surface_element_at({ x, y });
                 surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                update_park_fences_around_tile({ x, y });
-                uint16_t baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+                update_park_fences_around_tile(spawn);
+                uint16_t baseZ = surfaceElement->GetBaseZ();
+                map_invalidate_tile({ spawn, baseZ, baseZ + 16 });
             }
         }
 

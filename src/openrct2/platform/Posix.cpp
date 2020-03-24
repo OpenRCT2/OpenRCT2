@@ -123,7 +123,7 @@ bool platform_original_game_data_exists(const utf8* path)
 bool platform_original_rct1_data_exists(const utf8* path)
 {
     char buffer[MAX_PATH], checkPath1[MAX_PATH], checkPath2[MAX_PATH];
-    safe_strcpy(buffer, path, sizeof(path));
+    safe_strcpy(buffer, path, MAX_PATH);
     safe_strcat_path(buffer, "Data", MAX_PATH);
     safe_strcpy(checkPath1, buffer, MAX_PATH);
     safe_strcpy(checkPath2, buffer, MAX_PATH);

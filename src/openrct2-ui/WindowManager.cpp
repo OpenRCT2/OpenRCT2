@@ -101,6 +101,8 @@ public:
                 return window_save_prompt_open();
             case WC_SCENERY:
                 return window_scenery_open();
+            case WC_SCENERY_SCATTER:
+                return window_scenery_scatter_open();
 #ifndef DISABLE_NETWORK
             case WC_SERVER_LIST:
                 return window_server_list_open();
@@ -263,7 +265,7 @@ public:
                 return window_scenarioselect_open(
                     (scenarioselect_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK), false);
             case WD_VEHICLE:
-                return window_ride_open_vehicle((rct_vehicle*)intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                return window_ride_open_vehicle((Vehicle*)intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
             case WD_TRACK:
                 return window_ride_open_track((TileElement*)intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT));
             case INTENT_ACTION_NEW_RIDE_OF_TYPE:
@@ -374,7 +376,7 @@ public:
 
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
-                auto vehicle = static_cast<rct_vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
                 auto w = window_find_by_number(WC_RIDE, vehicle->ride);
                 if (w == nullptr)
                     return;
@@ -411,6 +413,12 @@ public:
                 window_invalidate_by_class(WC_GUEST_LIST);
                 break;
 
+            case INTENT_ACTION_UPDATE_GUEST_COUNT:
+                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+                window_invalidate_by_class(WC_GUEST_LIST);
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+                break;
+
             case INTENT_ACTION_UPDATE_PARK_RATING:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
                 window_invalidate_by_class(WC_PARK_INFORMATION);
@@ -439,6 +447,14 @@ public:
             case INTENT_ACTION_UPDATE_RESEARCH:
                 window_invalidate_by_class(WC_FINANCES);
                 window_invalidate_by_class(WC_RESEARCH);
+                break;
+
+            case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
+                TrackPlaceClearProvisionalTemporarily();
+                break;
+
+            case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
+                TrackPlaceRestoreProvisional();
                 break;
         }
     }
@@ -478,7 +494,7 @@ public:
         return std::string(buffer);
     }
 
-    void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) override
+    void SetMainView(const ScreenCoordsXY& viewPos, int32_t zoom, int32_t rotation) override
     {
         auto mainWindow = window_get_main();
         if (mainWindow != nullptr)
@@ -487,8 +503,7 @@ public:
             auto zoomDifference = zoom - viewport->zoom;
 
             mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
-            mainWindow->saved_view_x = x;
-            mainWindow->saved_view_y = y;
+            mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             gCurrentRotation = rotation;
 
@@ -497,8 +512,8 @@ public:
                 viewport->view_width <<= zoomDifference;
                 viewport->view_height <<= zoomDifference;
             }
-            mainWindow->saved_view_x -= viewport->view_width >> 1;
-            mainWindow->saved_view_y -= viewport->view_height >> 1;
+            mainWindow->savedViewPos.x -= viewport->view_width >> 1;
+            mainWindow->savedViewPos.y -= viewport->view_height >> 1;
 
             // Make sure the viewport has correct coordinates set.
             viewport_update_position(mainWindow);

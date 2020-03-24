@@ -17,6 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -33,7 +34,7 @@ enum class RideSetVehicleType : uint8_t
 DEFINE_GAME_ACTION(RideSetVehicleAction, GAME_COMMAND_SET_RIDE_VEHICLES, GameActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ -1 };
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
     uint8_t _type;
     uint8_t _value;
     uint8_t _colour;
@@ -201,11 +202,10 @@ public:
         ride->UpdateMaxVehicles();
 
         auto res = std::make_unique<GameActionResult>();
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        if (!ride->overall_view.isNull())
         {
-            res->Position.x = ride->overall_view.x * 32 + 16;
-            res->Position.y = ride->overall_view.y * 32 + 16;
-            res->Position.z = tile_element_height(res->Position);
+            auto location = ride->overall_view.ToTileCentre();
+            res->Position = { location, tile_element_height(res->Position) };
         }
 
         auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
@@ -223,8 +223,9 @@ private:
         int32_t rideTypeIterator, rideTypeIteratorMax;
 
         if (gCheatsShowVehiclesFromOtherTrackTypes
-            && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-                 || ride->type == RIDE_TYPE_MINI_GOLF))
+            && !(
+                ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+                || ride->type == RIDE_TYPE_MINI_GOLF))
         {
             selectionShouldBeExpanded = true;
             rideTypeIterator = 0;
@@ -247,11 +248,10 @@ private:
                     continue;
             }
 
-            uint8_t* rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
-            for (uint8_t* currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL;
-                 currentRideEntryIndex++)
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+            for (auto rideEntryIndex : rideEntries)
             {
-                uint8_t rideEntryIndex = *currentRideEntryIndex;
                 if (rideEntryIndex == _value)
                 {
                     if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)

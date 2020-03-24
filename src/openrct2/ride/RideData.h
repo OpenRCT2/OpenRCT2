@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "Ride.h"
+#include "TrackPaint.h"
 
 struct ride_component_name
 {
@@ -84,6 +85,24 @@ struct rct_ride_lift_data
     uint8_t minimum_speed;
     uint8_t maximum_speed;
 };
+
+struct RideTypeDescriptor
+{
+    // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
+    uint64_t EnabledTrackPieces;
+    // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
+    // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
+    uint64_t ExtraTrackPieces;
+    TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
+};
+
+#ifdef _WIN32
+#    define SET_FIELD(fieldname, value) value
+#else
+#    define SET_FIELD(fieldname, value) .fieldname = value
+#endif
+
+extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
 
 enum
 {

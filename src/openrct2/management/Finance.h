@@ -10,34 +10,30 @@
 #pragma once
 
 #include "../common.h"
-#include "../peep/Staff.h"
 #include "Research.h"
 
-using rct_expenditure_type = int32_t;
-
-enum
+enum class ExpenditureType : int32_t
 {
-    RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,
-    RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS,
-    RCT_EXPENDITURE_TYPE_LAND_PURCHASE,
-    RCT_EXPENDITURE_TYPE_LANDSCAPING,
-    RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS,
-    RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS,
-    RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES,
-    RCT_EXPENDITURE_TYPE_SHOP_STOCK,
-    RCT_EXPENDITURE_TYPE_FOODDRINK_SALES,
-    RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK,
-    RCT_EXPENDITURE_TYPE_WAGES,
-    RCT_EXPENDITURE_TYPE_MARKETING,
-    RCT_EXPENDITURE_TYPE_RESEARCH,
-    RCT_EXPENDITURE_TYPE_INTEREST,
-    RCT_EXPENDITURE_TYPE_COUNT
+    RideConstruction = 0,
+    RideRunningCosts,
+    LandPurchase,
+    Landscaping,
+    ParkEntranceTickets,
+    ParkRideTickets,
+    ShopSales,
+    ShopStock,
+    FoodDrinkSales,
+    FoodDrinkStock,
+    Wages,
+    Marketing,
+    Research,
+    Interest,
+    Count
 };
 
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define FINANCE_GRAPH_SIZE 128
 
-extern const money32 wage_table[STAFF_TYPE_COUNT];
 extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money32 gInitialCash;
@@ -59,13 +55,11 @@ extern uint16_t gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
 extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
-extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
-
-extern uint8_t gCommandExpenditureType;
+extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 bool finance_check_money_required(uint32_t flags);
 bool finance_check_affordability(money32 cost, uint32_t flags);
-void finance_payment(money32 amount, rct_expenditure_type type);
+void finance_payment(money32 amount, ExpenditureType type);
 void finance_pay_wages();
 void finance_pay_research();
 void finance_pay_interest();

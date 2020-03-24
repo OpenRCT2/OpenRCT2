@@ -677,7 +677,6 @@ static void paint_mini_golf_station(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     uint32_t imageId;
     bool hasFence;
@@ -687,14 +686,15 @@ static void paint_mini_golf_station(
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2);
         }
 
-        bool hasSWFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
+        bool hasSWFence = track_paint_util_has_fence(
+            EDGE_SW, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
@@ -709,14 +709,15 @@ static void paint_mini_golf_station(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2);
         }
 
-        bool hasSEFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
+        bool hasSEFence = track_paint_util_has_fence(
+            EDGE_SE, session->MapPosition, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
@@ -827,7 +828,7 @@ static void paint_mini_golf_hole_ab(
     paint_session* session, uint8_t trackSequence, uint8_t direction, int32_t height, const uint32_t sprites[4][2][2])
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
         session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -895,7 +896,7 @@ static void paint_mini_golf_hole_c(
     const TileElement* tileElement)
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
         session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -962,7 +963,7 @@ static void paint_mini_golf_hole_d(
     const TileElement* tileElement)
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
@@ -1052,7 +1053,7 @@ static void paint_mini_golf_hole_e(
     const TileElement* tileElement)
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
@@ -1189,7 +1190,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int32_t trackType, int32
  * rct2: 0x006D42F0
  */
 void vehicle_visual_mini_golf_player(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle)
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->num_peeps == 0)
     {
@@ -1229,7 +1230,7 @@ void vehicle_visual_mini_golf_player(
  * rct2: 0x006D43C6
  */
 void vehicle_visual_mini_golf_ball(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle)
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->mini_golf_current_animation != 1)
     {

@@ -13,6 +13,8 @@
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 
+#include <optional>
+
 struct rct_ride_entry;
 
 struct ResearchItem
@@ -20,7 +22,7 @@ struct ResearchItem
     // Bit 16 (0: scenery entry, 1: ride entry)
     union
     {
-        int32_t rawValue;
+        uint32_t rawValue;
         struct
         {
             uint8_t entryIndex;
@@ -31,9 +33,18 @@ struct ResearchItem
     };
     uint8_t category;
 
-    bool IsInventedEndMarker() const;
+    bool IsNull() const;
     bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
+    bool IsAlwaysResearched() const;
+    rct_string_id GetName() const;
+
+    ResearchItem() = default;
+    constexpr ResearchItem(uint32_t _rawValue, int32_t _category)
+        : rawValue(_rawValue)
+        , category(_category)
+    {
+    }
 };
 
 enum
@@ -48,16 +59,10 @@ enum
     RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 6),
 };
 
-// Everything before this point has been researched
-#define RESEARCHED_ITEMS_SEPARATOR (-1)
-// Everything before this point and after separator still requires research
-#define RESEARCHED_ITEMS_END (-2)
-// Extra end of list entry. Leftover from RCT1.
-#define RESEARCHED_ITEMS_END_2 (-3)
+// Only used to mark as null nowadays. Deprecated. TODO: remove.
+#define RESEARCH_ITEM_NULL 0xFFFFFFFF
 
 #define MAX_RESEARCH_ITEMS 500
-#define MAX_RESEARCHED_TRACK_TYPES 128
-#define MAX_RESEARCHED_SCENERY_ITEMS 1792
 
 #define RESEARCH_ENTRY_RIDE_MASK 0x10000
 
@@ -97,8 +102,8 @@ extern uint16_t gResearchProgress;
 extern uint8_t gResearchProgressStage;
 extern uint8_t gResearchExpectedMonth;
 extern uint8_t gResearchExpectedDay;
-extern ResearchItem gResearchLastItem;
-extern ResearchItem gResearchNextItem;
+extern std::optional<ResearchItem> gResearchLastItem;
+extern std::optional<ResearchItem> gResearchNextItem;
 
 extern std::vector<ResearchItem> gResearchItemsUninvented;
 extern std::vector<ResearchItem> gResearchItemsInvented;
@@ -113,22 +118,24 @@ void research_populate_list_random();
 void research_populate_list_researched();
 
 void research_finish_item(ResearchItem* researchItem);
-void research_insert(int32_t researched, int32_t rawValue, uint8_t category);
+void research_insert(ResearchItem item, bool researched);
 void research_remove(ResearchItem* researchItem);
 
-void research_insert_ride_entry(uint8_t entryIndex, bool researched);
-void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
+bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched);
+void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
+void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
 void ride_entry_set_invented(int32_t rideEntryIndex);
-void scenery_set_invented(uint16_t sceneryItem);
-void scenery_set_not_invented(uint16_t sceneryItem);
+void scenery_set_invented(const ScenerySelection& sceneryItem);
+void scenery_set_not_invented(const ScenerySelection& sceneryItem);
 bool ride_type_is_invented(uint32_t rideType);
 bool ride_entry_is_invented(int32_t rideEntryIndex);
+uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType);
 bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType);
 bool scenery_group_is_invented(int32_t sgIndex);
 void scenery_group_set_invented(int32_t sgIndex);
-bool scenery_is_invented(uint16_t sceneryItem);
+bool scenery_is_invented(const ScenerySelection& sceneryItem);
 void set_all_scenery_items_invented();
 void set_all_scenery_items_not_invented();
 void set_all_scenery_groups_not_invented();
@@ -136,12 +143,9 @@ void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
-rct_string_id research_item_get_name(const ResearchItem* researchItem);
-rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry* rideEntry);
 void research_remove_flags();
 void research_fix();
 
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
-bool research_item_is_always_researched(const ResearchItem* researchItem);

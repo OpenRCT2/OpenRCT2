@@ -453,15 +453,6 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
             {
                 command.Type = TITLE_SCRIPT_END;
             }
-            else if (_stricmp(token, "LOADMM") == 0)
-            {
-                command.Type = TITLE_SCRIPT_LOADMM;
-            }
-            else if (_stricmp(token, "LOADRCT1") == 0)
-            {
-                command.Type = TITLE_SCRIPT_LOADRCT1;
-                command.SaveIndex = atoi(part1) & 0xFF;
-            }
             else if (_stricmp(token, "LOADSC") == 0)
             {
                 command.Type = TITLE_SCRIPT_LOADSC;
@@ -578,13 +569,6 @@ static std::string LegacyScriptWrite(TitleSequence* seq)
         const TitleCommand* command = &seq->Commands[i];
         switch (command->Type)
         {
-            case TITLE_SCRIPT_LOADMM:
-                sb.Append("LOADMM");
-                break;
-            case TITLE_SCRIPT_LOADRCT1:
-                String::Format(buffer, sizeof(buffer), "LOADRCT1 %u", command->SaveIndex);
-                sb.Append(buffer);
-                break;
             case TITLE_SCRIPT_LOAD:
                 if (command->SaveIndex == 0xFF)
                 {
@@ -648,9 +632,7 @@ bool TitleSequenceIsLoadCommand(const TitleCommand* command)
 {
     switch (command->Type)
     {
-        case TITLE_SCRIPT_LOADMM:
         case TITLE_SCRIPT_LOAD:
-        case TITLE_SCRIPT_LOADRCT1:
         case TITLE_SCRIPT_LOADSC:
             return true;
         default:

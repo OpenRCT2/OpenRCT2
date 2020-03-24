@@ -32,7 +32,7 @@ private:
 public:
     LargeSceneryRemoveAction() = default;
 
-    LargeSceneryRemoveAction(CoordsXYZD location, uint16_t tileIndex)
+    LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex)
         : _loc(location)
         , _tileIndex(tileIndex)
     {
@@ -60,7 +60,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement();
@@ -72,27 +72,22 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                    scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-                                    static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset) };
+        auto rotatedOffsets = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                                   scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
+                                             .Rotate(_loc.direction),
+                                         scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
 
-        rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
-
-        firstTile.x = _loc.x - firstTile.x;
-        firstTile.y = _loc.y - firstTile.y;
+        auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
 
         bool calculate_cost = true;
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
         {
-            LocationXYZ16 currentTile = { scenery_entry->large_scenery.tiles[i].x_offset,
-                                          scenery_entry->large_scenery.tiles[i].y_offset,
-                                          scenery_entry->large_scenery.tiles[i].z_offset };
+            auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset,
+                                                                 scenery_entry->large_scenery.tiles[i].y_offset }
+                                                           .Rotate(_loc.direction),
+                                                       scenery_entry->large_scenery.tiles[i].z_offset };
 
-            rotate_map_coordinates(&currentTile.x, &currentTile.y, _loc.direction);
-
-            currentTile.x += firstTile.x;
-            currentTile.y += firstTile.y;
-            currentTile.z += firstTile.z;
+            auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
@@ -130,7 +125,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement();
@@ -144,26 +139,21 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                    scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-                                    static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset) };
+        auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                                     scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
+                                               .Rotate(_loc.direction),
+                                           scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
 
-        rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
-
-        firstTile.x = _loc.x - firstTile.x;
-        firstTile.y = _loc.y - firstTile.y;
+        auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
         {
-            LocationXYZ16 currentTile = { scenery_entry->large_scenery.tiles[i].x_offset,
-                                          scenery_entry->large_scenery.tiles[i].y_offset,
-                                          scenery_entry->large_scenery.tiles[i].z_offset };
+            auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset,
+                                                           scenery_entry->large_scenery.tiles[i].y_offset }
+                                                     .Rotate(_loc.direction),
+                                                 scenery_entry->large_scenery.tiles[i].z_offset };
 
-            rotate_map_coordinates(&currentTile.x, &currentTile.y, _loc.direction);
-
-            currentTile.x += firstTile.x;
-            currentTile.y += firstTile.y;
-            currentTile.z += firstTile.z;
+            auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
@@ -173,7 +163,7 @@ public:
                 }
             }
 
-            TileElement* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
+            TileElement* sceneryElement = map_get_first_element_at(currentTile);
             bool element_found = false;
             if (sceneryElement != nullptr)
             {
@@ -188,14 +178,14 @@ public:
                     if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
                         continue;
 
-                    if (sceneryElement->base_height != currentTile.z / 8)
+                    if (sceneryElement->GetBaseZ() != currentTile.z)
                         continue;
 
                     // If we are removing ghost elements
                     if ((flags & GAME_COMMAND_FLAG_GHOST) && sceneryElement->IsGhost() == false)
                         continue;
 
-                    map_invalidate_tile_full(currentTile.x, currentTile.y);
+                    map_invalidate_tile_full(currentTile);
                     tile_element_remove(sceneryElement);
 
                     element_found = true;
@@ -217,7 +207,7 @@ public:
 private:
     TileElement* FindLargeSceneryElement() const
     {
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
         if (tileElement == nullptr)
             return nullptr;
 
@@ -226,7 +216,7 @@ private:
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
-            if (tileElement->base_height != _loc.z / 8)
+            if (tileElement->GetBaseZ() != _loc.z)
                 continue;
 
             if (tileElement->AsLargeScenery()->GetSequenceIndex() != _tileIndex)

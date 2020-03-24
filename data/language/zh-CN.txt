@@ -1867,39 +1867,14 @@ STR_2521    :显示职员列表
 STR_2522    :显示最近信息
 STR_2523    :显示地图
 STR_2524    :截图
-### The following need to be reordered to match SDL_keycode layout.
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Backspace
 STR_2534    :Tab
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Clear
 STR_2538    :Return
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Spacebar
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1916,54 +1891,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1976,53 +1904,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :所有项目已研发完毕
 STR_2681    :{MEDIUMFONT}{BLACK}增加{CURRENCY}到你的账上
 STR_2684    :{SMALLFONT}{BLACK}一大批游客到访
@@ -2038,9 +1924,6 @@ STR_2693    :地形:
 STR_2694    :生成
 STR_2695    :随机地形
 STR_2696    :放置树木
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :自动保存频率:
 STR_2701    :每分钟
 STR_2702    :每5分钟
@@ -2052,13 +1935,6 @@ STR_2707    :使用系统的文件浏览器
 STR_2708    :{WINDOW_COLOUR_1}你确定要覆盖存档{STRINGID}?
 STR_2709    :覆盖
 STR_2710    :请输入存档名称：
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :向上一层
 STR_2719    :新存档
 STR_2720    :{UINT16}秒
@@ -2085,10 +1961,6 @@ STR_2740    :过山车大亨1(RCT1)
 STR_2741    :过山车大亨2(RCT2)
 STR_2742    :找不到css50.dat
 STR_2743    :将过山车大亨1安装目录下的'data/css17.dat'拷贝到过山车大亨2安装目录并重命名为'data/css50.dat', 或确保杂项窗口中过山车大亨1的路径设置正确.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :我的新剧情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移动全部物品到顶部
@@ -2915,7 +2787,6 @@ STR_5410    :编辑
 STR_5411    :重载
 STR_5412    :转跳至
 STR_5413    :加载
-STR_5414    :加载{MOVE_X}{87}大型六旗游乐园.SC6
 STR_5415    :加载{MOVE_X}{87}{STRING}
 STR_5416    :加载{MOVE_X}{87}无存档被选中
 STR_5417    :定位
@@ -3741,7 +3612,7 @@ STR_6273    :音乐
 STR_6274    :无法设置配色主题...
 STR_6275    :{WINDOW_COLOUR_2}车站类型:
 STR_6276    :{RED}{STRINGID} 有游客被困住了，这可能是因为无效的设施类型或者运行模式
-STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{STRINGID}
 STR_6278    :自动保存数量
 STR_6279    :{SMALLFONT}{BLACK}应该保留的自动保存数量
 STR_6284    :网络
@@ -3771,7 +3642,7 @@ STR_6303    :下载文件 ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :打开景物选择器
 STR_6305    :多线程
 STR_6306    :{SMALLFONT}{BLACK}使用多个线程进行渲染的实验选项可能会导致游戏不稳定
-
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

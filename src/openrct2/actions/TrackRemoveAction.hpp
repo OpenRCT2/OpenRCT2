@@ -31,7 +31,7 @@ public:
     {
     }
 
-    TrackRemoveAction(int32_t trackType, int32_t sequence, CoordsXYZD origin)
+    TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
         : _trackType(trackType)
         , _sequence(sequence)
         , _origin(origin)
@@ -57,7 +57,7 @@ public:
         res->Position.x = _origin.x + 16;
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         // Stations require some massaging of the track type for comparing
         auto comparableTrackType = _trackType;
@@ -71,14 +71,14 @@ public:
 
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-        TileElement* tileElement = map_get_first_element_at(_origin.x / 32, _origin.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_origin);
 
         do
         {
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->base_height * 8 != _origin.z)
+            if (tileElement->GetBaseZ() != _origin.z)
                 continue;
 
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -93,7 +93,7 @@ public:
             if (tileElement->IsGhost() != isGhost)
                 continue;
 
-            uint8_t tileTrackType = tileElement->AsTrack()->GetTrackType();
+            auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
                 case TRACK_ELEM_BEGIN_STATION:
@@ -138,11 +138,10 @@ public:
         auto startLoc = _origin;
         startLoc.direction = tileElement->GetDirection();
 
-        LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
-        rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-        startLoc.x -= trackLoc.x;
-        startLoc.y -= trackLoc.y;
-        startLoc.z -= trackBlock->z;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+        startLoc.x -= rotatedTrack.x;
+        startLoc.y -= rotatedTrack.y;
+        startLoc.z -= rotatedTrack.z;
         res->Position.x = startLoc.x;
         res->Position.y = startLoc.y;
         res->Position.z = startLoc.z;
@@ -152,23 +151,19 @@ public:
         trackBlock = get_track_def_from_ride(ride, trackType);
         for (; trackBlock->index != 255; trackBlock++)
         {
-            CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
-            trackLoc = { trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-            mapLoc.x += trackLoc.x;
-            mapLoc.y += trackLoc.y;
-            mapLoc.z += trackBlock->z;
+            rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+            auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrack;
 
-            map_invalidate_tile_full(mapLoc.x, mapLoc.y);
+            map_invalidate_tile_full(mapLoc);
 
             found = false;
-            tileElement = map_get_first_element_at(mapLoc.x / 32, mapLoc.y / 32);
+            tileElement = map_get_first_element_at(mapLoc);
             do
             {
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->base_height != mapLoc.z / 8)
+                if (tileElement->GetBaseZ() != mapLoc.z)
                     continue;
 
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -258,7 +253,7 @@ public:
         res->Position.x = _origin.x + 16;
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         // Stations require some massaging of the track type for comparing
         auto comparableTrackType = _trackType;
@@ -272,14 +267,14 @@ public:
 
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-        TileElement* tileElement = map_get_first_element_at(_origin.x / 32, _origin.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_origin);
 
         do
         {
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->base_height * 8 != _origin.z)
+            if (tileElement->GetBaseZ() != _origin.z)
                 continue;
 
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -294,7 +289,7 @@ public:
             if (tileElement->IsGhost() != isGhost)
                 continue;
 
-            uint8_t tileTrackType = tileElement->AsTrack()->GetTrackType();
+            auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
                 case TRACK_ELEM_BEGIN_STATION:
@@ -334,11 +329,10 @@ public:
         auto startLoc = _origin;
         startLoc.direction = tileElement->GetDirection();
 
-        LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
-        rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-        startLoc.x -= trackLoc.x;
-        startLoc.y -= trackLoc.y;
-        startLoc.z -= trackBlock->z;
+        auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+        startLoc.x -= rotatedTrackLoc.x;
+        startLoc.y -= rotatedTrackLoc.y;
+        startLoc.z -= rotatedTrackLoc.z;
         res->Position.x = startLoc.x;
         res->Position.y = startLoc.y;
         res->Position.z = startLoc.z;
@@ -347,23 +341,19 @@ public:
         trackBlock = get_track_def_from_ride(ride, trackType);
         for (; trackBlock->index != 255; trackBlock++)
         {
-            CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
-            trackLoc = { trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-            mapLoc.x += trackLoc.x;
-            mapLoc.y += trackLoc.y;
-            mapLoc.z += trackBlock->z;
+            rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+            auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrackLoc;
 
-            map_invalidate_tile_full(mapLoc.x, mapLoc.y);
+            map_invalidate_tile_full(mapLoc);
 
             found = false;
-            tileElement = map_get_first_element_at(mapLoc.x / 32, mapLoc.y / 32);
+            tileElement = map_get_first_element_at(mapLoc);
             do
             {
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->base_height != mapLoc.z / 8)
+                if (tileElement->GetBaseZ() != mapLoc.z)
                     continue;
 
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -444,7 +434,7 @@ public:
             footpath_queue_chain_reset();
             if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
             {
-                footpath_remove_edges_at(mapLoc.x, mapLoc.y, tileElement);
+                footpath_remove_edges_at(mapLoc, tileElement);
             }
             tile_element_remove(tileElement);
             sub_6CB945(ride);

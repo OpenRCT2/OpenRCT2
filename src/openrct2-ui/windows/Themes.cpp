@@ -41,8 +41,8 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
 static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_themes_update(rct_window *w);
 static void window_themes_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_themes_invalidate(rct_window *w);
 static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -200,6 +200,7 @@ static rct_windowclass window_themes_tab_3_classes[] = {
     WC_CLEAR_SCENERY,
     WC_LAND_RIGHTS,
     WC_SCENERY,
+    WC_SCENERY_SCATTER,
     WC_FOOTPATH,
     WC_RIDE_CONSTRUCTION,
     WC_TRACK_DESIGN_PLACE,
@@ -315,8 +316,8 @@ static void window_themes_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         if (_selected_tab == i)
             sprite_idx += w->frame_no / window_themes_tab_animation_divisor[_selected_tab];
         gfx_draw_sprite(
-            dpi, sprite_idx, w->x + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
-            w->y + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top, 0);
+            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
+            w->windowPos.y + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top, 0);
     }
 }
 
@@ -522,7 +523,7 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
             dropdown_set_checked((int32_t)theme_manager_get_active_available_theme_index(), true);
@@ -635,19 +636,20 @@ void window_themes_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wi
     *height = scrollHeight;
 }
 
-void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (y / _row_height < get_colour_scheme_tab_count())
+    if (screenCoords.y / _row_height < get_colour_scheme_tab_count())
     {
-        int32_t y2 = y % _row_height;
-        _colour_index_1 = y / _row_height;
-        _colour_index_2 = ((x - _button_offset_x) / 12);
+        int32_t y2 = screenCoords.y % _row_height;
+        _colour_index_1 = screenCoords.y / _row_height;
+        _colour_index_2 = ((screenCoords.x - _button_offset_x) / 12);
 
         rct_windowclass wc = get_window_class_tab_index(_colour_index_1);
         int32_t numColours = theme_desc_get_num_colours(wc);
         if (_colour_index_2 < numColours)
         {
-            if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11)
+            if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y
+                && y2 < _button_offset_y + 11)
             {
                 if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
                 {
@@ -673,7 +675,7 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x
                 }
             }
             else if (
-                x >= _button_offset_x && x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y
+                screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y
                 && y2 < _check_offset_y + 11)
             {
                 if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
@@ -700,7 +702,7 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x
     }
 }
 
-void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     // if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
     //  return;
@@ -836,13 +838,14 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
         const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
         set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
         gfx_draw_string_left(
-            dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10,
-            w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
+            dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->windowPos.x + 10,
+            w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
         gfx_draw_string_left_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
-            w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
-            w->x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - window_themes_widgets[WIDX_THEMES_PRESETS].left
-                - 4);
+            dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
+            w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
+            w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
+            w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
+                - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4);
     }
 }
 

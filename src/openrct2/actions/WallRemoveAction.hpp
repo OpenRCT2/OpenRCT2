@@ -42,7 +42,7 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         if (!map_is_location_valid(_loc))
         {
@@ -71,7 +71,7 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
@@ -87,7 +87,7 @@ public:
         res->Position.z = tile_element_height(res->Position);
 
         tile_element_remove_banner_entry(wallElement);
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
+        map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72 });
         tile_element_remove(wallElement);
 
         return res;
@@ -96,7 +96,7 @@ public:
 private:
     TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const
     {
-        TileElement* tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
+        TileElement* tileElement = map_get_first_element_at(location);
         if (!tileElement)
             return nullptr;
 
@@ -104,7 +104,7 @@ private:
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
                 continue;
-            if (tileElement->base_height != location.z / 8)
+            if (tileElement->GetBaseZ() != location.z)
                 continue;
             if (tileElement->GetDirection() != location.direction)
                 continue;

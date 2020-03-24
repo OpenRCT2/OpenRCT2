@@ -33,7 +33,7 @@ private:
 public:
     SmallSceneryRemoveAction() = default;
 
-    SmallSceneryRemoveAction(CoordsXYZ location, uint8_t quadrant, uint8_t sceneryType)
+    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, uint8_t sceneryType)
         : _loc(location)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)
@@ -68,7 +68,7 @@ public:
         }
 
         res->Cost = entry->small_scenery.removal_price * 10;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
@@ -115,7 +115,7 @@ public:
         }
 
         res->Cost = entry->small_scenery.removal_price * 10;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc;
 
         TileElement* tileElement = FindSceneryElement();
@@ -126,7 +126,7 @@ public:
 
         res->Position.z = tile_element_height(res->Position);
 
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
         tile_element_remove(tileElement);
 
         return res;
@@ -135,7 +135,7 @@ public:
 private:
     TileElement* FindSceneryElement() const
     {
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
         if (!tileElement)
             return nullptr;
 
@@ -145,7 +145,7 @@ private:
                 continue;
             if ((tileElement->AsSmallScenery()->GetSceneryQuadrant()) != _quadrant)
                 continue;
-            if (tileElement->base_height != _loc.z / 8)
+            if (tileElement->GetBaseZ() != _loc.z)
                 continue;
             if (tileElement->AsSmallScenery()->GetEntryIndex() != _sceneryType)
                 continue;

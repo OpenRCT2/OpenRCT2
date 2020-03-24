@@ -11,6 +11,7 @@
 
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
+#    include "../core/String.hpp"
 #    include "Platform2.h"
 
 // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
@@ -41,11 +42,6 @@ namespace Platform
         }
     }
 
-    std::string GetDocsPath()
-    {
-        return std::string();
-    }
-
     static std::string GetBundlePath()
     {
         @autoreleasepool {
@@ -60,6 +56,11 @@ namespace Platform
             }
             return std::string();
         }
+    }
+
+    std::string GetDocsPath()
+    {
+        return GetBundlePath();
     }
 
     std::string GetInstallPath()
@@ -101,6 +102,33 @@ namespace Platform
             return std::string();
         }
     }
+
+    uintptr_t StrDecompToPrecomp(utf8* input)
+    {
+        @autoreleasepool {
+            if (input == NULL)
+            {
+                return 0;
+            }
+
+            NSString* inputDecomp = [NSString stringWithUTF8String:input];
+            return reinterpret_cast<uintptr_t>(strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]));
+        }
+    }
+
+    bool HandleSpecialCommandLineArgument(const char* argument)
+    {
+        if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
+        {
+            return true;
+        }
+        if (String::StartsWith(argument, "-psn_"))
+        {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 #endif

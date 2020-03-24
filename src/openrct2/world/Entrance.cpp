@@ -29,18 +29,17 @@
 #include <algorithm>
 
 bool gParkEntranceGhostExists = false;
-LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
-uint8_t gParkEntranceGhostDirection = 0;
+CoordsXYZD gParkEntranceGhostPosition = { 0, 0, 0, 0 };
 std::vector<CoordsXYZD> gParkEntrances;
 
 CoordsXYZD gRideEntranceExitGhostPosition;
 uint8_t gRideEntranceExitGhostStationIndex;
 
 static money32 RideEntranceExitPlaceGhost(
-    ride_id_t rideIndex, int16_t x, int16_t y, uint8_t direction, uint8_t placeType, uint8_t stationNum)
+    ride_id_t rideIndex, const CoordsXY& entranceExitCoords, uint8_t direction, uint8_t placeType, uint8_t stationNum)
 {
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        { x, y }, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
+        entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 
@@ -56,19 +55,18 @@ void park_entrance_remove_ghost()
     if (gParkEntranceGhostExists)
     {
         gParkEntranceGhostExists = false;
-        auto parkEntranceRemoveAction = ParkEntranceRemoveAction(
-            { gParkEntranceGhostPosition.x, gParkEntranceGhostPosition.y, gParkEntranceGhostPosition.z * 16 });
+        auto parkEntranceRemoveAction = ParkEntranceRemoveAction(gParkEntranceGhostPosition);
         parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&parkEntranceRemoveAction);
     }
 }
 
-int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z)
+int32_t park_entrance_get_index(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
     for (const auto& entrance : gParkEntrances)
     {
-        if (x == entrance.x && y == entrance.y && z == entrance.z)
+        if (entrancePos == entrance)
         {
             return i;
         }
@@ -87,8 +85,8 @@ void ride_entrance_exit_place_provisional_ghost()
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
         RideEntranceExitPlaceGhost(
-            _currentRideIndex, gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y,
-            gRideEntranceExitGhostPosition.direction, gRideEntranceExitPlaceType, gRideEntranceExitGhostStationIndex);
+            _currentRideIndex, gRideEntranceExitGhostPosition, gRideEntranceExitGhostPosition.direction,
+            gRideEntranceExitPlaceType, gRideEntranceExitGhostStationIndex);
     }
 }
 
@@ -97,8 +95,8 @@ void ride_entrance_exit_remove_ghost()
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
-            { gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y }, _currentRideIndex,
-            gRideEntranceExitGhostStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+            gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
+            gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&rideEntranceExitRemove);
@@ -110,16 +108,16 @@ void ride_entrance_exit_remove_ghost()
  *  rct2: 0x006CA28C
  */
 money32 ride_entrance_exit_place_ghost(
-    Ride* ride, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum)
+    Ride* ride, const CoordsXY& entranceExitCoords, int32_t direction, int32_t placeType, int32_t stationNum)
 {
     ride_construction_remove_ghosts();
-    money32 result = RideEntranceExitPlaceGhost(ride->id, x, y, direction, placeType, stationNum);
+    money32 result = RideEntranceExitPlaceGhost(ride->id, entranceExitCoords, direction, placeType, stationNum);
 
     if (result != MONEY32_UNDEFINED)
     {
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
-        gRideEntranceExitGhostPosition.x = x;
-        gRideEntranceExitGhostPosition.y = y;
+        gRideEntranceExitGhostPosition.x = entranceExitCoords.x;
+        gRideEntranceExitGhostPosition.y = entranceExitCoords.y;
         gRideEntranceExitGhostPosition.direction = direction;
         gRideEntranceExitGhostStationIndex = stationNum & 0xFF;
     }
@@ -130,15 +128,14 @@ money32 ride_entrance_exit_place_ghost(
  * Replaces the outer hedge walls for an entrance placement removal.
  *  rct2: 0x00666D6F
  */
-void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement)
+void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
 {
-    int32_t direction = tileElement->GetDirection();
-    x += CoordsDirectionDelta[direction].x;
-    y += CoordsDirectionDelta[direction].y;
-    int32_t z = tileElement->base_height;
-    ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    int32_t direction = entrance.element->GetDirection();
+    auto hedgePos = entrance + CoordsDirectionDelta[direction];
+    int32_t z = entrance.element->GetBaseZ();
+    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -147,7 +144,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElem
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->GetBaseZ() != z)
             continue;
         if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_MAZE)
             continue;
@@ -159,7 +156,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElem
         // Add the bottom outer wall
         tileElement->AsTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
-        map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -168,15 +165,14 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElem
  * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
  */
-void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
+void maze_entrance_hedge_removal(const CoordsXYE& entrance)
 {
-    int32_t direction = tileElement->GetDirection();
-    x += CoordsDirectionDelta[direction].x;
-    y += CoordsDirectionDelta[direction].y;
-    int32_t z = tileElement->base_height;
-    ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    int32_t direction = entrance.element->GetDirection();
+    auto hedgePos = entrance + CoordsDirectionDelta[direction];
+    int32_t z = entrance.element->GetBaseZ();
+    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -185,7 +181,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->GetBaseZ() != z)
             continue;
         if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_MAZE)
             continue;
@@ -203,7 +199,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
         // Remove the bottom hedge section
         tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
-        map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -214,21 +210,18 @@ void fix_park_entrance_locations(void)
     gParkEntrances.erase(
         std::remove_if(
             gParkEntrances.begin(), gParkEntrances.end(),
-            [](const auto& entrance) {
-                return map_get_park_entrance_element_at(entrance.x, entrance.y, entrance.z >> 3, false) == nullptr;
-            }),
+            [](const auto& entrance) { return map_get_park_entrance_element_at(entrance, false) == nullptr; }),
         gParkEntrances.end());
 }
 
 uint8_t EntranceElement::GetStationIndex() const
 {
-    return (index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return StationIndex;
 }
 
-void EntranceElement::SetStationIndex(uint8_t stationIndex)
+void EntranceElement::SetStationIndex(uint8_t newStationIndex)
 {
-    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    index |= (stationIndex << 4);
+    StationIndex = newStationIndex;
 }
 
 uint8_t EntranceElement::GetEntranceType() const
@@ -253,21 +246,21 @@ void EntranceElement::SetRideIndex(ride_id_t newRideIndex)
 
 uint8_t EntranceElement::GetSequenceIndex() const
 {
-    return index & 0xF;
+    return SequenceIndex & 0xF;
 }
 
 void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    index &= ~0xF;
-    index |= (newSequenceIndex & 0xF);
+    SequenceIndex &= ~0xF;
+    SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
-uint8_t EntranceElement::GetPathType() const
+PathSurfaceIndex EntranceElement::GetPathType() const
 {
-    return pathType;
+    return PathType;
 }
 
-void EntranceElement::SetPathType(uint8_t newPathType)
+void EntranceElement::SetPathType(PathSurfaceIndex newPathType)
 {
-    pathType = newPathType;
+    PathType = newPathType;
 }

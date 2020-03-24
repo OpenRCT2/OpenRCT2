@@ -61,11 +61,12 @@ void TextureCache::InvalidateImage(uint32_t image)
     }
 }
 
+// Note: for performance reasons, this returns a BasicTextureInfo over an AtlasTextureInfo (also to not expose the cache)
 BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
 {
     uint32_t index;
 
-    image &= 0x7FFFF;
+    image &= 0x7FFFFUL;
 
     // Try to read cached texture first.
     {
@@ -97,7 +98,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
 
 BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette)
 {
-    GlyphId glyphId;
+    GlyphId glyphId{};
     glyphId.Image = image;
 
     // Try to read cached texture first.
@@ -203,7 +204,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
         }
 
         // Initial capacity will be 12 which covers most cases of a fully visible park.
-        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1;
+        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1UL;
     }
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
@@ -275,8 +276,8 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
         throw std::runtime_error("more texture atlases required, but device limit reached!");
     }
 
-    int32_t atlasIndex = (int32_t)_atlases.size();
-    int32_t atlasSize = (int32_t)powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
+    auto atlasIndex = static_cast<int32_t>(_atlases.size());
+    int32_t atlasSize = powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
 
 #    ifdef DEBUG
     log_verbose("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
@@ -294,7 +295,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
 
 rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryColour)
 {
-    auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFFUL);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
@@ -305,13 +306,12 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryC
 
 rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, uint8_t* palette)
 {
-    auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFFUL);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_palette_set_software(
-        &dpi, ImageId::FromUInt32(image), -g1Element->x_offset, -g1Element->y_offset, palette, nullptr);
+    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), -g1Element->x_offset, -g1Element->y_offset, palette);
     return dpi;
 }
 

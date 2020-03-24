@@ -12,6 +12,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
+#include "../platform/Platform2.h"
 
 #include <algorithm>
 #include <cstring>
@@ -507,17 +508,7 @@ namespace CommandLine
 
     static bool HandleSpecialArgument([[maybe_unused]] const char* argument)
     {
-#ifdef __APPLE__
-        if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
-        {
-            return true;
-        }
-        if (String::StartsWith(argument, "-psn_"))
-        {
-            return true;
-        }
-#endif
-        return false;
+        return Platform::HandleSpecialCommandLineArgument(argument);
     }
 
     const CommandLineOptionDefinition* FindOption(const CommandLineOptionDefinition* options, char shortName)

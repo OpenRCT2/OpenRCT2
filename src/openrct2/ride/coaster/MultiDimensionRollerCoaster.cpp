@@ -115,8 +115,6 @@ static void multi_dimension_rc_track_station(
         { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
     };
 
-    LocationXY16 position = session->MapPosition;
-
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
         sub_98197C_rotated(
@@ -138,23 +136,23 @@ static void multi_dimension_rc_track_station(
         bool hasFence;
         if (direction == 0 || direction == 2)
         {
-            hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
+            hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, tileElement, ride, session->CurrentRotation);
             track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
         }
         else
         {
-            hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
+            hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, tileElement, ride, session->CurrentRotation);
             track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
         }
 
         if (direction == 0 || direction == 2)
         {
-            hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
+            hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, tileElement, ride, session->CurrentRotation);
             track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
         }
         else
         {
-            hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
+            hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, tileElement, ride, session->CurrentRotation);
             track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
         }
     }

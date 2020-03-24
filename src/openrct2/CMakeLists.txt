@@ -13,24 +13,35 @@ if (APPLE)
     set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
 endif ()
 
-add_library(${PROJECT_NAME} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
+add_library(${PROJECT_NAME} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
+# GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
+if (NOT MINGW)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_link_libraries(${PROJECT_NAME} stdc++fs)
+    endif()
+endif()
+
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
-    if (APPLE)
-        # Needed for linking with non-broken OpenSSL on Apple platforms
-        set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
-    endif ()
-        
-    find_package(OpenSSL 1.0.0 REQUIRED)
-        
-    target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR})
-        
-    if(STATIC)
-        target_link_libraries(${PROJECT_NAME} ${SSL_STATIC_LIBRARIES})
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
-        target_link_libraries(${PROJECT_NAME} ${OPENSSL_LIBRARIES})
+        if (APPLE)
+            # Needed for linking with non-broken OpenSSL on Apple platforms
+            set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
+        endif ()
+
+        find_package(OpenSSL 1.0.0 REQUIRED)
+
+        target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR})
+
+        if(STATIC)
+            target_link_libraries(${PROJECT_NAME} ${SSL_STATIC_LIBRARIES})
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${OPENSSL_LIBRARIES})
+        endif()
     endif()
 endif ()
 
@@ -39,19 +50,18 @@ if (NOT DISABLE_NETWORK AND WIN32)
 endif ()
 
 if (NOT DISABLE_HTTP)
-    if (MSVC)
-        find_package(curl REQUIRED)
-        set(LIBCURL_LIBRARIES ${CURL_LIBRARIES})
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} winhttp)
     else ()
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-    endif ()
-        
-    target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCURL_INCLUDE_DIRS})
-        
-    if (STATIC)
-        target_link_libraries(${PROJECT_NAME} ${LIBCURL_STATIC_LIBRARIES})
-    else ()
-        target_link_libraries(${PROJECT_NAME} ${LIBCURL_LIBRARIES})
+
+        target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCURL_INCLUDE_DIRS})
+
+        if (STATIC)
+            target_link_libraries(${PROJECT_NAME} ${LIBCURL_STATIC_LIBRARIES})
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${LIBCURL_LIBRARIES})
+        endif ()
     endif ()
 endif ()
 
@@ -73,14 +83,16 @@ if (NOT DISABLE_TTF)
     endif ()
 endif ()
 
-find_package(benchmark 1.4 QUIET)
-if (benchmark_FOUND)
-    message("Found Google benchmark, enabling support")
-    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS USE_BENCHMARK)
-    target_link_libraries(${PROJECT_NAME} benchmark::benchmark)
-    target_include_directories(${PROJECT_NAME} PRIVATE ${benchmark_INCLUDE_DIRS})
-else ()
-    message("Google benchmark not found, disabling support")
+if (NOT DISABLE_GOOGLE_BENCHMARK)
+    find_package(benchmark)
+    if (benchmark_FOUND)
+        message("Found Google benchmark, enabling support")
+        set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS USE_BENCHMARK)
+        target_link_libraries(${PROJECT_NAME} benchmark::benchmark)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${benchmark_INCLUDE_DIRS})
+    else ()
+        message("Google benchmark not found, disabling support")
+    endif ()
 endif ()
 
 # Third party libraries
@@ -120,6 +132,11 @@ else ()
                                      ${ZLIB_LIBRARIES}
                                      ${LIBZIP_LIBRARIES})
 endif ()
+
+if (MINGW)
+    # Hardcode libraries used by libzip on mingw
+    target_link_libraries(${PROJECT_NAME} crypto ws2_32)
+endif()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     # Include libdl for dlopen

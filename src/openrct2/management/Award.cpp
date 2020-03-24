@@ -20,8 +20,8 @@
 
 #include <algorithm>
 
-#define NEGATIVE 0
-#define POSITIVE 1
+constexpr uint8_t NEGATIVE = 0;
+constexpr uint8_t POSITIVE = 1;
 
 static constexpr const uint8_t AwardPositiveMap[] = {
     NEGATIVE, // PARK_AWARD_MOST_UNTIDY

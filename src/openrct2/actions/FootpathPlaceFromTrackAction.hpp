@@ -32,7 +32,7 @@ private:
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(CoordsXYZ loc, uint8_t slope, uint8_t type, uint8_t edges)
+    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, uint8_t edges)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
@@ -56,10 +56,8 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
+        res->Expenditure = ExpenditureType::Landscaping;
+        res->Position = _loc.ToTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -74,12 +72,12 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        if (_loc.z / 8 < FootpathMinHeight)
+        if (_loc.z < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > FootpathMaxHeight)
+        if (_loc.z > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
@@ -91,14 +89,12 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
+        res->Expenditure = ExpenditureType::Landscaping;
+        res->Position = _loc.ToTileCentre();
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
         }
 
         gFootpathGroundFlags = 0;
@@ -122,15 +118,15 @@ private:
         res->Cost = MONEY(12, 00);
 
         QuarterTile quarterTile{ 0b1111, 0 };
-        auto zLow = _loc.z / 8;
-        auto zHigh = zLow + 4;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
-            zHigh += 2;
+            zHigh += PATH_HEIGHT_STEP;
         }
 
-        auto entranceElement = map_get_park_entrance_element_at(_loc.x, _loc.y, zLow, false);
+        auto entranceElement = map_get_park_entrance_element_at(_loc, false);
         // Make sure the entrance part is the middle
         if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
@@ -148,8 +144,7 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
-                   crossingMode))
+                { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
         {
             return MakeResult(
                 GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
@@ -168,8 +163,8 @@ private:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
-        int32_t supportHeight = zLow - surfaceElement->base_height;
-        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
         // Prevent the place sound from being spammed
         if (entranceIsSamePath)
@@ -184,21 +179,21 @@ private:
 
         if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
         {
-            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
+            footpath_remove_litter(_loc);
         }
 
         res->Cost = MONEY(12, 00);
 
         QuarterTile quarterTile{ 0b1111, 0 };
-        auto zLow = _loc.z / 8;
-        auto zHigh = zLow + 4;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
-            zHigh += 2;
+            zHigh += PATH_HEIGHT_STEP;
         }
 
-        auto entranceElement = map_get_park_entrance_element_at(_loc.x, _loc.y, zLow, false);
+        auto entranceElement = map_get_park_entrance_element_at(_loc, false);
         // Make sure the entrance part is the middle
         if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
@@ -216,8 +211,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile,
-                   GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost, crossingMode))
+                { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+                &res->Cost, crossingMode))
         {
             return MakeResult(
                 GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
@@ -231,8 +226,8 @@ private:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
-        int32_t supportHeight = zLow - surfaceElement->base_height;
-        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
         if (entrancePath)
         {
@@ -240,17 +235,17 @@ private:
             {
                 // Set the path type but make sure it's not a queue as that will not show up
                 entranceElement->SetPathType(_type & 0x7F);
-                map_invalidate_tile_full(_loc.x, _loc.y);
+                map_invalidate_tile_full(_loc);
             }
         }
         else
         {
-            auto tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, 0b1111);
+            auto tileElement = tile_element_insert(_loc, 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
-            pathElement->clearance_height = zHigh;
-            pathElement->SetPathEntryIndex(_type);
+            pathElement->SetClearanceZ(zHigh);
+            pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
             pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
             {
@@ -270,7 +265,7 @@ private:
             {
                 pathElement->SetGhost(true);
             }
-            map_invalidate_tile_full(_loc.x, _loc.y);
+            map_invalidate_tile_full(_loc);
         }
 
         // Prevent the place sound from being spammed

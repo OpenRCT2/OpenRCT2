@@ -189,8 +189,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-        uint16_t string_width = gfx_get_string_width(entrance_string);
-        uint16_t scroll = (gCurrentTicks / 2) % string_width;
+        uint16_t stringWidth = gfx_get_string_width(entrance_string);
+        uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
         sub_98199C(
             session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode, COLOUR_BLACK), 0,
@@ -298,8 +298,8 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-                uint16_t string_width = gfx_get_string_width(park_name);
-                uint16_t scroll = (gCurrentTicks / 2) % string_width;
+                uint16_t stringWidth = gfx_get_string_width(park_name);
+                uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
                 if (entrance->scrolling_mode == SCROLLING_MODE_NONE)
                     break;
@@ -347,7 +347,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
     {
         if (entrance_get_directions(tile_element) & 0xF)
         {
-            int32_t z = tile_element->base_height * 8 + 3;
+            int32_t z = tile_element->GetBaseZ() + 3;
             uint32_t image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 

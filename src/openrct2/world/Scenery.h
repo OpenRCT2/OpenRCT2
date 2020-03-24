@@ -11,22 +11,12 @@
 #define _SCENERY_H_
 
 #include "../common.h"
-#include "../object/Object.h"
 #include "../world/Location.hpp"
+#include "../world/ScenerySelection.h"
 #include "TileElement.h"
 
 #include <limits>
 
-#define SCENERY_SMALL_SCENERY_ID_MIN 0x0
-#define SCENERY_SMALL_SCENERY_ID_MAX 0xFC
-#define SCENERY_LARGE_SCENERY_ID_MIN 0x300
-#define SCENERY_LARGE_SCENERY_ID_MAX 0x380
-#define SCENERY_WALLS_ID_MIN 0x200
-#define SCENERY_WALLS_ID_MAX 0x280
-#define SCENERY_BANNERS_ID_MIN 0x400
-#define SCENERY_BANNERS_ID_MAX 0x420
-#define SCENERY_PATH_SCENERY_ID_MIN 0x100
-#define SCENERY_PATH_SCENERY_ID_MAX 0x10F
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
 
@@ -185,19 +175,17 @@ struct rct_scenery_entry
 assert_struct_size(rct_scenery_entry, 6 + 21);
 #endif
 
+#pragma pack(pop)
+
 struct rct_scenery_group_entry
 {
-    rct_string_id name;             // 0x00
-    uint32_t image;                 // 0x02
-    uint16_t scenery_entries[0x80]; // 0x06
-    uint8_t entry_count;            // 0x106
-    uint8_t pad_107;
-    uint8_t priority; // 0x108
-    uint8_t pad_109;
-    uint32_t entertainer_costumes; // 0x10A
+    rct_string_id name;
+    uint32_t image;
+    ScenerySelection scenery_entries[0x80];
+    uint8_t entry_count;
+    uint8_t priority;
+    uint32_t entertainer_costumes;
 };
-assert_struct_size(rct_scenery_group_entry, 14 + 2 * 0x80);
-#pragma pack(pop)
 
 enum
 {
@@ -226,7 +214,9 @@ enum
     SCENERY_TYPE_PATH_ITEM,
     SCENERY_TYPE_WALL,
     SCENERY_TYPE_LARGE,
-    SCENERY_TYPE_BANNER
+    SCENERY_TYPE_BANNER,
+
+    SCENERY_TYPE_COUNT,
 };
 
 enum
@@ -243,31 +233,23 @@ enum
     BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
 };
 
-#define SCENERY_ENTRIES_BY_TAB 1024
-constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
-
-extern uint8_t gWindowSceneryActiveTabIndex;
-extern uint16_t gWindowSceneryTabSelections[20];
-extern uint8_t gWindowSceneryClusterEnabled;
-extern uint8_t gWindowSceneryPaintEnabled;
-extern uint8_t gWindowSceneryRotation;
-extern colour_t gWindowSceneryPrimaryColour;
-extern colour_t gWindowScenerySecondaryColour;
-extern colour_t gWindowSceneryTertiaryColour;
-extern bool gWindowSceneryEyedropperEnabled;
+enum class ScatterToolDensity : uint8_t
+{
+    LowDensity,
+    MediumDensity,
+    HighDensity
+};
 
 extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;
-extern int16_t gSceneryPlaceObject;
+extern ScenerySelection gSceneryPlaceObject;
+extern uint16_t gSceneryPlaceObjectEntryIndex;
 extern int16_t gSceneryPlaceZ;
-extern uint8_t gSceneryPlacePathType;
-extern uint8_t gSceneryPlacePathSlope;
 extern uint8_t gSceneryPlaceRotation;
 
 extern uint8_t gSceneryGhostType;
-extern LocationXYZ16 gSceneryGhostPosition;
-extern uint32_t gSceneryGhostPathObjectType;
+extern CoordsXYZ gSceneryGhostPosition;
 extern uint8_t gSceneryGhostWallRotation;
 
 extern int16_t gSceneryShiftPressed;
@@ -278,13 +260,12 @@ extern int16_t gSceneryShiftPressZOffset;
 extern int16_t gSceneryCtrlPressed;
 extern int16_t gSceneryCtrlPressZ;
 
-extern const LocationXY8 ScenerySubTileOffsets[];
+extern const CoordsXY SceneryQuadrantOffsets[];
 
 extern money32 gClearSceneryCost;
 
 void init_scenery();
-void scenery_update_tile(int32_t x, int32_t y);
-void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement);
+void scenery_update_tile(const CoordsXY& sceneryPos);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
@@ -293,7 +274,6 @@ rct_scenery_entry* get_banner_entry(int32_t entryIndex);
 rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex);
 
-int32_t get_scenery_id_from_entry_index(uint8_t objectType, int32_t entryIndex);
 int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
 
 #endif

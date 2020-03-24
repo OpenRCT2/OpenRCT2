@@ -94,7 +94,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
 		brew install wine
 		mac_os_install_mingw_32
 	else
-		brew install jansson sdl2 sdl2_ttf speex --universal
+		brew install jansson sdl2 speex --universal
 	fi
 elif [[ $(uname) == "Linux" ]]; then
 	# Clone discord-rpc for Discord's Rich Presence support

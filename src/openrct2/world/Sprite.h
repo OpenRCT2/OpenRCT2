@@ -39,12 +39,12 @@ enum SPRITE_LIST
     SPRITE_LIST_COUNT,
 };
 
-struct rct_litter : rct_sprite_common
+struct Litter : SpriteBase
 {
     uint32_t creationTick;
 };
 
-struct rct_balloon : rct_sprite_generic
+struct Balloon : SpriteGeneric
 {
     uint16_t popped;
     uint8_t time_to_move;
@@ -55,7 +55,7 @@ struct rct_balloon : rct_sprite_generic
     void Press();
 };
 
-struct rct_duck : rct_sprite_generic
+struct Duck : SpriteGeneric
 {
     int16_t target_x;
     int16_t target_y;
@@ -68,11 +68,12 @@ struct rct_duck : rct_sprite_generic
     void UpdateFlyAway();
     uint32_t GetFrameImage(int32_t direction) const;
     void Invalidate();
+    bool IsFlying();
     void Remove();
-    void MoveTo(int16_t x, int16_t y, int16_t z);
+    void MoveTo(const CoordsXYZ& destination);
 };
 
-struct rct_money_effect : rct_sprite_common
+struct MoneyEffect : SpriteBase
 {
     uint16_t move_delay;
     uint8_t num_movements;
@@ -82,12 +83,12 @@ struct rct_money_effect : rct_sprite_common
     uint16_t wiggle;
 
     static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
-    static void Create(money32 value);
+    static void Create(money32 value, CoordsXYZ loc);
     void Update();
     std::pair<rct_string_id, money32> GetStringId() const;
 };
 
-struct rct_crashed_vehicle_particle : rct_sprite_generic
+struct VehicleCrashParticle : SpriteGeneric
 {
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -100,11 +101,11 @@ struct rct_crashed_vehicle_particle : rct_sprite_generic
     int32_t acceleration_z;
 };
 
-struct rct_crash_splash : rct_sprite_generic
+struct CrashSplashParticle : SpriteGeneric
 {
 };
 
-struct rct_steam_particle : rct_sprite_generic
+struct SteamParticle : SpriteGeneric
 {
     uint16_t time_to_move;
 };
@@ -112,33 +113,38 @@ struct rct_steam_particle : rct_sprite_generic
 #pragma pack(push, 1)
 /**
  * Sprite structure.
- * size: 0x0100
+ * size: 0x0200
  */
 union rct_sprite
 {
-    uint8_t pad_00[0x100];
-    rct_sprite_generic generic;
+    uint8_t pad_00[0x200];
+    SpriteGeneric generic;
     Peep peep;
-    rct_litter litter;
-    rct_vehicle vehicle;
-    rct_balloon balloon;
-    rct_duck duck;
+    Litter litter;
+    Vehicle vehicle;
+    Balloon balloon;
+    Duck duck;
     JumpingFountain jumping_fountain;
-    rct_money_effect money_effect;
-    rct_crashed_vehicle_particle crashed_vehicle_particle;
-    rct_crash_splash crash_splash;
-    rct_steam_particle steam_particle;
+    MoneyEffect money_effect;
+    VehicleCrashParticle crashed_vehicle_particle;
+    CrashSplashParticle crash_splash;
+    SteamParticle steam_particle;
 
     bool IsBalloon();
     bool IsDuck();
     bool IsMoneyEffect();
     bool IsPeep();
-    rct_balloon* AsBalloon();
-    rct_duck* AsDuck();
-    rct_money_effect* AsMoneyEffect();
+    Balloon* AsBalloon();
+    Duck* AsDuck();
+    MoneyEffect* AsMoneyEffect();
     Peep* AsPeep();
+    // Default constructor to prevent non trivial construction issues
+    rct_sprite()
+        : pad_00()
+    {
+    }
 };
-assert_struct_size(rct_sprite, 0x100);
+assert_struct_size(rct_sprite, 0x200);
 
 struct rct_sprite_checksum
 {
@@ -189,9 +195,11 @@ enum
 rct_sprite* try_get_sprite(size_t spriteIndex);
 rct_sprite* get_sprite(size_t sprite_idx);
 
-extern uint16_t gSpriteListHead[6];
-extern uint16_t gSpriteListCount[6];
-extern uint16_t gSpriteSpatialIndex[0x10001];
+extern uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
+extern uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
+constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
+constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
+extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 extern const rct_string_id litterNames[12];
 
@@ -199,16 +207,17 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
-void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList);
+void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newList);
 void sprite_misc_update_all();
-void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
-void invalidate_sprite_0(rct_sprite* sprite);
-void invalidate_sprite_1(rct_sprite* sprite);
-void invalidate_sprite_2(rct_sprite* sprite);
-void sprite_remove(rct_sprite* sprite);
+void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
+void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
+void invalidate_sprite_0(SpriteBase* sprite);
+void invalidate_sprite_1(SpriteBase* sprite);
+void invalidate_sprite_2(SpriteBase* sprite);
+void sprite_remove(SpriteBase* sprite);
 void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);
+uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z);
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z);
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y);
@@ -222,29 +231,29 @@ void sprite_position_tween_reset();
 // Balloon
 ///////////////////////////////////////////////////////////////
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped);
-void balloon_update(rct_balloon* balloon);
+void balloon_update(Balloon* balloon);
 
 ///////////////////////////////////////////////////////////////
 // Duck
 ///////////////////////////////////////////////////////////////
 void create_duck(const CoordsXY& pos);
-void duck_update(rct_duck* duck);
-void duck_press(rct_duck* duck);
+void duck_update(Duck* duck);
+void duck_press(Duck* duck);
 void duck_remove_all();
-uint32_t duck_get_frame_image(const rct_duck* duck, int32_t direction);
+uint32_t duck_get_frame_image(const Duck* duck, int32_t direction);
 
 ///////////////////////////////////////////////////////////////
 // Crash particles
 ///////////////////////////////////////////////////////////////
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int32_t y, int32_t z);
-void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle);
+void crashed_vehicle_particle_update(VehicleCrashParticle* particle);
 void crash_splash_create(int32_t x, int32_t y, int32_t z);
-void crash_splash_update(rct_crash_splash* splash);
+void crash_splash_update(CrashSplashParticle* splash);
 
 rct_sprite_checksum sprite_checksum();
 
-void sprite_set_flashing(rct_sprite* sprite, bool flashing);
-bool sprite_get_flashing(rct_sprite* sprite);
+void sprite_set_flashing(SpriteBase* sprite, bool flashing);
+bool sprite_get_flashing(SpriteBase* sprite);
 int32_t check_for_sprite_list_cycles(bool fix);
 int32_t check_for_spatial_index_cycles(bool fix);
 int32_t fix_disjoint_sprites();

@@ -56,7 +56,7 @@ DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSce
 private:
     CoordsXYZD _loc;
     uint8_t _quadrant;
-    uint8_t _sceneryType;
+    uint16_t _sceneryType;
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
 
@@ -64,7 +64,7 @@ public:
     SmallSceneryPlaceAction() = default;
 
     SmallSceneryPlaceAction(
-        CoordsXYZD loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+        const CoordsXYZD& loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)
@@ -147,20 +147,18 @@ public:
         }
 
         // Check if sub tile height is any different compared to actual surface tile height
-        int32_t x2 = _loc.x;
-        int32_t y2 = _loc.y;
+        auto loc2 = _loc;
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
         {
-            x2 += 16;
-            y2 += 16;
+            loc2 = loc2.ToTileCentre();
         }
         else
         {
-            x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
-            y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
+            loc2.x += SceneryQuadrantOffsets[quadrant & 3].x - 1;
+            loc2.y += SceneryQuadrantOffsets[quadrant & 3].y - 1;
         }
-        landHeight = tile_element_height({ x2, y2 });
-        waterHeight = tile_element_water_height({ x2, y2 });
+        landHeight = tile_element_height(loc2);
+        waterHeight = tile_element_water_height(loc2);
 
         surfaceHeight = landHeight;
         // If on water
@@ -189,7 +187,7 @@ public:
 
         if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
         {
-            int32_t water_height = (surfaceElement->GetWaterHeight() * 16) - 1;
+            int32_t water_height = surfaceElement->GetWaterHeight() - 1;
             if (water_height > targetHeight)
             {
                 return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -205,7 +203,7 @@ public:
 
             if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
             {
-                if (static_cast<int32_t>((surfaceElement->GetWaterHeight() * 16)) > targetHeight)
+                if (surfaceElement->GetWaterHeight() > targetHeight)
                 {
                     return std::make_unique<SmallSceneryPlaceActionResult>(
                         GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
@@ -227,7 +225,7 @@ public:
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->GetWaterHeight() || (surfaceElement->base_height * 8) != targetHeight)
+                    if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->GetBaseZ()) != targetHeight)
                     {
                         return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
                     }
@@ -239,8 +237,8 @@ public:
             }
         }
 
-        int32_t zLow = targetHeight / 8;
-        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
+        int32_t zLow = targetHeight;
+        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, COORDS_Z_STEP);
         uint8_t collisionQuadrants = 0b1111;
         auto quadRotation{ 0 };
         if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -280,7 +278,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
+                { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
                 CREATE_CROSSING_MODE_NONE))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(
@@ -289,7 +287,7 @@ public:
 
         res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
         return res;
@@ -349,8 +347,8 @@ public:
         }
         else
         {
-            x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
-            y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
+            x2 += SceneryQuadrantOffsets[quadrant & 3].x - 1;
+            y2 += SceneryQuadrantOffsets[quadrant & 3].y - 1;
         }
         landHeight = tile_element_height({ x2, y2 });
         waterHeight = tile_element_water_height({ x2, y2 });
@@ -370,15 +368,15 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_remove_litter(_loc.x, _loc.y, targetHeight);
+            footpath_remove_litter({ _loc, targetHeight });
             if (!gCheatsDisableClearanceChecks && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS)))
             {
-                wall_remove_at(_loc.x, _loc.y, targetHeight, targetHeight + sceneryEntry->small_scenery.height);
+                wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->small_scenery.height });
             }
         }
 
-        int32_t zLow = targetHeight / 8;
-        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
+        int32_t zLow = targetHeight;
+        int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8);
         uint8_t collisionQuadrants = 0b1111;
         auto quadRotation{ 0 };
         if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -418,7 +416,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+                { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
                 &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(
@@ -427,10 +425,10 @@ public:
 
         res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-        TileElement* newElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
+        TileElement* newElement = tile_element_insert(CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
         res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
@@ -441,7 +439,7 @@ public:
         sceneryElement->SetAge(0);
         sceneryElement->SetPrimaryColour(_primaryColour);
         sceneryElement->SetSecondaryColour(_secondaryColour);
-        sceneryElement->clearance_height = sceneryElement->base_height + ((sceneryEntry->small_scenery.height + 7) / 8);
+        sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->small_scenery.height + 7);
 
         if (supportsRequired)
         {
@@ -453,10 +451,10 @@ public:
             sceneryElement->SetGhost(true);
         }
 
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
         {
-            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, _loc.x, _loc.y, sceneryElement->base_height);
+            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });
         }
 
         return res;

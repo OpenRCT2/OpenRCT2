@@ -87,6 +87,39 @@ class UnexpectedError(Exception):
         self.formatted_traceback = traceback.format_exc()
         self.exc = exc
 
+def run_clang_format_version(args):
+    invocation = [args.clang_format_executable, "--version"]
+	
+    encoding_py3 = {}
+    if sys.version_info[0] >= 3:
+        encoding_py3['encoding'] = 'utf-8'
+		
+    try:
+	    proc = subprocess.Popen(
+            invocation,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+            **encoding_py3)
+    except OSError as exc:
+        raise DiffError(str(exc))
+    proc_stdout = proc.stdout
+    proc_stderr = proc.stderr
+    if sys.version_info[0] < 3:
+        # make the pipes compatible with Python 3,
+        # reading lines should output unicode
+        encoding = 'utf-8'
+        proc_stdout = codecs.getreader(encoding)(proc_stdout)
+        proc_stderr = codecs.getreader(encoding)(proc_stderr)
+    # hopefully the stderr pipe won't get full and block the process
+    outs = list(proc_stdout.readlines())
+    errs = list(proc_stderr.readlines())
+    proc.wait()
+    if proc.returncode:
+        raise DiffError("clang-format exited with status {}: '{}'".format(
+            proc.returncode, file), errs)
+    print(outs[0])
+    return
 
 def run_clang_format_diff_wrapper(args, file):
     try:
@@ -247,6 +280,8 @@ def main():
 
     args = parser.parse_args()
 
+    run_clang_format_version(args)
+		
     # use default signal handling, like diff return SIGINT value on ^C
     # https://bugs.python.org/issue14229#msg156446
     signal.signal(signal.SIGINT, signal.SIG_DFL)

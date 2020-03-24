@@ -16,9 +16,9 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
 
-#define WW 400
-#define WH 350
-#define TABHEIGHT 50
+constexpr int32_t WW = 400;
+constexpr int32_t WH = 350;
+constexpr int32_t TABHEIGHT = 50;
 
 // clang-format off
 enum
@@ -204,9 +204,10 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
 
     int32_t x1, x2, y;
 
-    x1 = w->x + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->left + 45;
-    x2 = w->x + (&w->widgets[WIDX_TAB_ABOUT_RCT2])->left + 45;
-    y = w->y + (((&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->top + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->bottom) / 2) - 3;
+    x1 = w->windowPos.x + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->left + 45;
+    x2 = w->windowPos.x + (&w->widgets[WIDX_TAB_ABOUT_RCT2])->left + 45;
+    y = w->windowPos.y + (((&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->top + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->bottom) / 2)
+        - 3;
 
     set_format_arg(0, rct_string_id, STR_TITLE_SEQUENCE_OPENRCT2);
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x1, y, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
@@ -224,8 +225,8 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    x = w->x + (w->width / 2);
-    y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
+    x = w->windowPos.x + (w->width / 2);
+    y = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
     width = w->width - 20;
 
     y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + lineHeight;
@@ -249,7 +250,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     utf8 buffer[256];
     utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-    gfx_draw_string_centred_wrapped(dpi, &ch, x, w->y + WH - 25, width, STR_STRING, w->colours[2]);
+    gfx_draw_string_centred_wrapped(dpi, &ch, x, w->windowPos.y + WH - 25, width, STR_STRING, w->colours[2]);
 }
 
 #pragma endregion OpenRCT2
@@ -287,9 +288,9 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     window_about_openrct2_common_paint(w, dpi);
 
-    yPage = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
+    yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
 
-    x = w->x + 200;
+    x = w->windowPos.x + 200;
     y = yPage + 5;
 
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
@@ -314,7 +315,7 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, x, y, COLOUR_BLACK, nullptr);
 
     // Images
-    gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, yPage + 24, 0);
+    gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->windowPos.x + 92, yPage + 24, 0);
 
     // Licence
 }

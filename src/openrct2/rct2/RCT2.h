@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RCT2_H_
-#define _RCT2_H_
+#pragma once
 
 #include "../common.h"
 #include "../object/Object.h"
@@ -17,22 +16,70 @@
 #include "../ride/Vehicle.h"
 #include "../world/Location.hpp"
 
-#define RCT2_MAX_STAFF 200
-#define RCT2_MAX_BANNERS_IN_PARK 250
-#define RCT2_MAX_VEHICLES_PER_RIDE 32
-#define RCT2_MAX_CARS_PER_TRAIN 32
-#define RCT2_MAX_CATEGORIES_PER_RIDE 2
-#define RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
-#define RCT2_MAX_VEHICLES_PER_RIDE_ENTRY 4
-#define RCT2_DOWNTIME_HISTORY_SIZE 8
-#define RCT2_CUSTOMER_HISTORY_SIZE 10
-#define RCT2_MAX_SPRITES 10000
-#define RCT2_MAX_TILE_ELEMENTS 0x30000
-#define RCT2_MAX_ANIMATED_OBJECTS 2000
-#define RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS 8  // With 32 bits per uint32_t, this means there is room for 256 types.
-#define RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS 8 // With 32 bits per uint32_t, this means there is room for 256 entries.
-#define RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS 56
-#define RCT2_MAX_RESEARCHED_SCENERY_ITEMS (RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS * 32) // There are 32 bits per quad.
+constexpr const uint8_t RCT2_MAX_STAFF = 200;
+constexpr const uint8_t RCT2_MAX_BANNERS_IN_PARK = 250;
+constexpr const uint8_t RCT2_MAX_VEHICLES_PER_RIDE = 31;
+constexpr const uint8_t RCT2_MAX_CARS_PER_TRAIN = 32;
+constexpr const uint8_t RCT2_MAX_CATEGORIES_PER_RIDE = 2;
+constexpr const uint8_t RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY = 3;
+constexpr const uint8_t RCT2_MAX_VEHICLES_PER_RIDE_ENTRY = 4;
+constexpr const uint8_t RCT2_DOWNTIME_HISTORY_SIZE = 8;
+constexpr const uint8_t RCT2_CUSTOMER_HISTORY_SIZE = 10;
+constexpr const uint16_t RCT2_MAX_SPRITES = 10000;
+constexpr const uint32_t RCT2_MAX_TILE_ELEMENTS = 0x30000;
+constexpr const uint16_t RCT2_MAX_ANIMATED_OBJECTS = 2000;
+constexpr const uint8_t RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS = 8;  // With 32 bits per uint32_t, this means there is room for 256
+                                                                  // types.
+constexpr const uint8_t RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS = 8; // With 32 bits per uint32_t, this means there is room for 256
+                                                                  // entries.
+constexpr const uint8_t RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS = 56;
+constexpr const uint16_t RCT2_MAX_RESEARCHED_SCENERY_ITEMS = (RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS * 32); // There are 32 bits
+                                                                                                            // per quad.
+constexpr uint16_t TD6MaxTrackElements = 8192;
+
+constexpr const uint8_t RCT2_MAX_RIDE_OBJECTS = 128;
+constexpr const uint8_t RCT2_MAX_SMALL_SCENERY_OBJECTS = 252;
+constexpr const uint8_t RCT2_MAX_LARGE_SCENERY_OBJECTS = 128;
+constexpr const uint8_t RCT2_MAX_WALL_SCENERY_OBJECTS = 128;
+constexpr const uint8_t RCT2_MAX_BANNER_OBJECTS = 32;
+constexpr const uint8_t RCT2_MAX_PATH_OBJECTS = 16;
+constexpr const uint8_t RCT2_MAX_PATH_ADDITION_OBJECTS = 15;
+constexpr const uint8_t RCT2_MAX_SCENERY_GROUP_OBJECTS = 19;
+constexpr const uint8_t RCT2_MAX_PARK_ENTRANCE_OBJECTS = 1;
+constexpr const uint8_t RCT2_MAX_WATER_OBJECTS = 1;
+constexpr const uint8_t RCT2_MAX_SCENARIO_TEXT_OBJECTS = 1;
+
+// clang-format off
+constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
+    RCT2_MAX_RIDE_OBJECTS +
+    RCT2_MAX_SMALL_SCENERY_OBJECTS +
+    RCT2_MAX_LARGE_SCENERY_OBJECTS +
+    RCT2_MAX_WALL_SCENERY_OBJECTS +
+    RCT2_MAX_BANNER_OBJECTS +
+    RCT2_MAX_PATH_OBJECTS +
+    RCT2_MAX_PATH_ADDITION_OBJECTS +
+    RCT2_MAX_SCENERY_GROUP_OBJECTS +
+    RCT2_MAX_PARK_ENTRANCE_OBJECTS +
+    RCT2_MAX_WATER_OBJECTS +
+    RCT2_MAX_SCENARIO_TEXT_OBJECTS;
+// clang-format on
+static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
+
+// clang-format off
+constexpr const int32_t rct2_object_entry_group_counts[] = {
+    RCT2_MAX_RIDE_OBJECTS,
+    RCT2_MAX_SMALL_SCENERY_OBJECTS,
+    RCT2_MAX_LARGE_SCENERY_OBJECTS,
+    RCT2_MAX_WALL_SCENERY_OBJECTS,
+    RCT2_MAX_BANNER_OBJECTS,
+    RCT2_MAX_PATH_OBJECTS,
+    RCT2_MAX_PATH_ADDITION_OBJECTS,
+    RCT2_MAX_SCENERY_GROUP_OBJECTS,
+    RCT2_MAX_PARK_ENTRANCE_OBJECTS,
+    RCT2_MAX_WATER_OBJECTS,
+    RCT2_MAX_SCENARIO_TEXT_OBJECTS,
+};
+// clang-format on
 
 struct rct2_install_info
 {
@@ -74,20 +121,20 @@ struct rct2_ride
             uint16_t name_arguments_number;         // 0x04E
         };
     };
-    LocationXY8 overall_view;                                // 0x050
-    LocationXY8 station_starts[RCT12_MAX_STATIONS_PER_RIDE]; // 0x052
-    uint8_t station_heights[RCT12_MAX_STATIONS_PER_RIDE];    // 0x05A
-    uint8_t station_length[RCT12_MAX_STATIONS_PER_RIDE];     // 0x05E
-    uint8_t station_depart[RCT12_MAX_STATIONS_PER_RIDE];     // 0x062
+    RCT12xy8 overall_view;                                // 0x050
+    RCT12xy8 station_starts[RCT12_MAX_STATIONS_PER_RIDE]; // 0x052
+    uint8_t station_heights[RCT12_MAX_STATIONS_PER_RIDE]; // 0x05A
+    uint8_t station_length[RCT12_MAX_STATIONS_PER_RIDE];  // 0x05E
+    uint8_t station_depart[RCT12_MAX_STATIONS_PER_RIDE];  // 0x062
     // ride->vehicle index for current train waiting for passengers
     // at station
     uint8_t train_at_station[RCT12_MAX_STATIONS_PER_RIDE];    // 0x066
-    LocationXY8 entrances[RCT12_MAX_STATIONS_PER_RIDE];       // 0x06A
-    LocationXY8 exits[RCT12_MAX_STATIONS_PER_RIDE];           // 0x072
+    RCT12xy8 entrances[RCT12_MAX_STATIONS_PER_RIDE];          // 0x06A
+    RCT12xy8 exits[RCT12_MAX_STATIONS_PER_RIDE];              // 0x072
     uint16_t last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE]; // 0x07A
-    uint8_t pad_082[RCT12_MAX_STATIONS_PER_RIDE];  // 0x082, Used to be number of peeps in queue in RCT1, but this has moved.
-    uint16_t vehicles[RCT2_MAX_VEHICLES_PER_RIDE]; // 0x086, Points to the first car in the train
-    uint8_t depart_flags;                          // 0x0C6
+    uint8_t pad_082[RCT12_MAX_STATIONS_PER_RIDE]; // 0x082, Used to be number of peeps in queue in RCT1, but this has moved.
+    uint16_t vehicles[RCT2_MAX_VEHICLES_PER_RIDE + 1]; // 0x086, Points to the first car in the train
+    uint8_t depart_flags;                              // 0x0C6
 
     // Not sure if these should be uint or sint.
     uint8_t num_stations;                // 0x0C7
@@ -109,9 +156,9 @@ struct rct2_ride
         uint8_t rotations;        // 0x0D0
     };
 
-    uint8_t boat_hire_return_direction;    // 0x0D1
-    LocationXY8 boat_hire_return_position; // 0x0D2
-    uint8_t measurement_index;             // 0x0D4
+    uint8_t boat_hire_return_direction; // 0x0D1
+    RCT12xy8 boat_hire_return_position; // 0x0D2
+    uint8_t measurement_index;          // 0x0D4
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
     // bit 6: log reverser, waterfall
@@ -136,7 +183,7 @@ struct rct2_ride
     uint32_t testing_flags;                      // 0x108
     // x y map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    LocationXY8 cur_test_track_location; // 0x10C
+    RCT12xy8 cur_test_track_location; // 0x10C
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16_t turn_count_default; // 0x10E X = current turn count
     uint16_t turn_count_banked;  // 0x110
@@ -166,7 +213,7 @@ struct rct2_ride
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[RCT2_CUSTOMER_HISTORY_SIZE]; // 0x124
     money16 price;                                      // 0x138
-    LocationXY8 chairlift_bullwheel_location[2];        // 0x13A
+    RCT12xy8 chairlift_bullwheel_location[2];           // 0x13A
     uint8_t chairlift_bullwheel_z[2];                   // 0x13E
     union
     {
@@ -423,9 +470,9 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction;   // 0x36
-        int16_t track_type;        // 0x36
-        LocationXY8 boat_location; // 0x36
+        int16_t track_direction; // 0x36
+        int16_t track_type;      // 0x36
+        RCT12xy8 boat_location;  // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -492,7 +539,7 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     uint16_t var_C8;
     uint16_t var_CA;
     uint8_t scream_sound_id; // 0xCC
-    uint8_t var_CD;
+    uint8_t TrackSubposition;
     union
     {
         uint8_t var_CE;
@@ -713,5 +760,3 @@ struct RCT2RideRatingCalculationData
 assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 #pragma pack(pop)
-
-#endif

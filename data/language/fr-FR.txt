@@ -116,10 +116,10 @@ STR_0530    :Des voitures suspendues à un câble métallique font des allers-re
 STR_0531    :Montagnes russes compactes dont les voies en acier prennent la forme de tire-bouchons et de boucles
 STR_0532    :Labyrinthe construit à partie de haies ou de murs de 2m de haut duquel les visiteurs ne peuvent sortir que lorsqu'ils en trouvent la sortie
 STR_0533    :Structure en bois constitué d'un escalier intérieur et d'un toboggan extérieur en spirale utilisable avec des tapis de glisse
-STR_0534    :Karts individuels constitués de moteurs à essence
+STR_0534    :Les visiteurs font la course dans des karts sur un terrain en bitume
 STR_0535    :Bateaux en forme de bûches géantes parcourant un tube aquatique dont les pentes abruptes auront pour effet de tremper les passagers
 STR_0536    :Des bateaux de forme circulaire serpentent le long d'un large cours d'eau, puis dévalent des rapides et des chutes d'eau spectaculaires
-STR_0537    :Auto tamponneuses électriques en libre service
+STR_0537    :Les visiteurs se rentrent dedans dans des auto tamponneuses électriques
 STR_0538    :Grand bateau pirate à balancier
 STR_0539    :Bateau attaché à un bras avec contrepoids à l'autre extrémité, capable de se balancer en effectuant une rotation à 360°
 STR_0540    :Échoppe vendant de la nourriture
@@ -158,7 +158,7 @@ STR_0578    :Une voiture fonce dans des anneaux circulaires, des pentes abruptes
 STR_0579    :Un relaxant jeu de golf miniature
 STR_0580    :Roue en acier géante alternant descentes douces et crêtes de 90m de haut
 STR_0581    :Une roue composée de sièges est montée en haut d'une haute tour en tournant lentement avant d'être lâchée en chute libre avant d'être progressivement freinée magnétiquement
-STR_0582    :Véhicules volants en libre-service
+STR_0582    :Les visiteurs voyagent en véhicules volants qu'ils contrôlent
 STR_0583    :Bâtiment composé de pièces déformées et de couloirs coudés visant à désorienter ses visiteurs
 STR_0584    :Des vélos spéciaux parcourent une voie monorail métallique
 STR_0585    :Les passagers sont assis par deux, suspendus à la voie tandis qu'ils zigzaguent et sont chahutés lors d'inversions serrées
@@ -873,7 +873,7 @@ STR_1487    :{SMALLFONT}“Rien que le fait de regarder {STRINGID} me rend malad
 STR_1488    :{SMALLFONT}“Je ne paierai pas si cher pour aller sur {STRINGID}”
 STR_1489    :{SMALLFONT}“Je veux rentrer chez moi”
 STR_1490    :{SMALLFONT}“{STRINGID} est un très bon choix”
-STR_1491    :{SMALLFONT}“J'ai déjà un {STRINGID}”
+STR_1491    :{SMALLFONT}“J'ai déjà {STRINGID}”
 STR_1492    :{SMALLFONT}“Je ne peux pas me payer {STRINGID}”
 STR_1493    :{SMALLFONT}“Je n'ai pas faim”
 STR_1494    :{SMALLFONT}“Je n'ai pas soif”
@@ -1863,38 +1863,14 @@ STR_2521    :Voir liste des employés
 STR_2522    :Voir messages récents
 STR_2523    :Voir la carte
 STR_2524    :Capture d'écran
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Retour arr.
 STR_2534    :Tab
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Effacer
 STR_2538    :Retour
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Verr. Maj.
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Echap.
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Barre d'espace
 STR_2558    :Page Haut
 STR_2559    :Page Bas
@@ -1911,54 +1887,7 @@ STR_2569    :Capture d'écran
 STR_2570    :Insertion
 STR_2571    :Supprimer
 STR_2572    :Aide
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :0 (pavé numérique)
 STR_2622    :1 (pavé numérique)
 STR_2623    :2 (pavé numérique)
@@ -1971,53 +1900,11 @@ STR_2629    :8 (pavé numérique)
 STR_2630    :9 (pavé numérique)
 STR_2631    :* (pavé numérique)
 STR_2632    :+ (pavé numérique)
-STR_2633    :???
 STR_2634    :- (pavé numérique)
 STR_2635    :. (pavé numérique)
 STR_2636    :/ (pavé numérique)
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :Verr num
 STR_2670    :Défil.
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :Toutes les recherches effectuées
 STR_2681    :{MEDIUMFONT}{BLACK}Augmenter votre argent de {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Un grand groupe de visiteurs arrive
@@ -2033,9 +1920,6 @@ STR_2693    :Terrain :
 STR_2694    :Générer
 STR_2695    :Terrain aléatoire
 STR_2696    :Placer les arbres
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Fréquence sauv. auto. :
 STR_2701    :Toutes les minutes
 STR_2702    :Toutes les 5 minutes
@@ -2047,13 +1931,6 @@ STR_2707    :Explorateur de fichiers système
 STR_2708    :{WINDOW_COLOUR_1}Etes vous sûr de vouloir écraser {STRINGID}?
 STR_2709    :Ecraser
 STR_2710    :Entrez le nom du fichier.
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :Dossier parent
 STR_2719    :Nv. fichier
 STR_2720    :{UINT16}s
@@ -2080,10 +1957,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat introuvable
 STR_2743    :Copiez 'data/css17.dat' depuis votre installation de RCT1 en 'data/css50.dat' dans celui de RCT2, ou vérifiez que le chemin vers l'installation de RCT1 dans les options avancées est défini correctement.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Mon nouveau scénario
 STR_2750    :Déplacer tous les éléments en haut
 STR_2751    :Déplacer tous les éléments en bas
@@ -2609,11 +2482,6 @@ STR_3390    :Trop d'objets sélectionnés
 STR_3437    :{SMALLFONT}{BLACK}Nettoyer grande zone de décor du paysage
 STR_3438    :Impossible d'effacer tout le décor de cette zone...
 STR_3439    :Effacer décor
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
 STR_3445    :Définir zone de Patrouille
 STR_3446    :Annuler zone de Patrouille
 
@@ -2910,7 +2778,6 @@ STR_5410    :Editer
 STR_5411    :Recharger
 STR_5412    :Passer à
 STR_5413    :Charger
-STR_5414    :Charger{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Charger{MOVE_X}{87}{STRING}
 STR_5416    :Charger{MOVE_X}{87}Aucune sauvegarde séléctionné
 STR_5417    :Emplacement
@@ -3738,7 +3605,7 @@ STR_6273    :Musique
 STR_6274    :Impossible de définir le schéma de couleurs...
 STR_6275    :{WINDOW_COLOUR_2}Style de quai :
 STR_6276    :{RED}{STRINGID} a des visiteurs coincés, probablement à cause du type d'attraction invalide ou mode opératoire.
-STR_6277    :{WINDOW_COLOUR_2}Index du quai : {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Index du quai : {BLACK}{STRINGID}
 STR_6278    :Nombre de sauvegardes automatiques
 STR_6279    :{SMALLFONT}{BLACK}Nombre de sauvegardes automatiques à conserver
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3794,6 +3661,34 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Téléchargement [{STRING}] depuis {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Créer des canards
 STR_6332    :Supprimer des canards
+STR_6333    :Augmenter l'échelle
+STR_6334    :Diminuer l'échelle
+STR_6335    :Inspecteur de tuile : Insérer un élément corrompu
+STR_6336    :Inspecteur de tuile : Copier l'élément
+STR_6337    :Inspecteur de tuile : Coller l'élément
+STR_6338    :Inspecteur de tuile : Supprimer l'élément
+STR_6339    :Inspecteur de tuile : Déplacer l'élément vers le haut
+STR_6340    :Inspecteur de tuile : Déplacer l'élément vers le bas
+STR_6341    :Inspecteur de tuile : Incrémenter la position sur l'axe X
+STR_6342    :Inspecteur de tuile : Décrémenter la position sur l'axe X
+STR_6343    :Inspecteur de tuile : Incrémenter la position sur l'axe Y
+STR_6344    :Inspecteur de tuile : Décrémenter la position sur l'axe Y
+STR_6345    :Inspecteur de tuile : Incrémenter l'hauteur de l'élement
+STR_6346    :Inspecteur de tuile : Décrémenter l'hauteur de l'élement
+STR_6347    :Les ajouts pour les allées ne peuvent pas être placés sur les passages à niveau !
+STR_6348    :Supprimez le passage à niveau d'abord !
+STR_6349    :Séquence d'introduction aléatoire
+STR_6350    :Eparpillement
+STR_6351    :Outil d'éparpillement de décor
+STR_6352    :Densité
+STR_6353    :{SMALLFONT}{BLACK}Densité faible
+STR_6354    :{SMALLFONT}{BLACK}Densité moyenne
+STR_6355    :{SMALLFONT}{BLACK}Densité élevée
+STR_6356    :{SMALLFONT}{BLACK}Fait apparaitre des cannards si le parc contient de l'eau
+STR_6357    :{SMALLFONT}{BLACK}Supprime tous les cannards de la carte
+STR_6358    :Page {UINT16}
+STR_6359    :{POP16}{POP16}Page {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarios #

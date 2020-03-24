@@ -57,7 +57,7 @@ static void top_spin_paint_vehicle(
     height += 3;
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
 
     uint8_t seatRotation = 0;
     int8_t armRotation = 0;
@@ -142,7 +142,7 @@ static void top_spin_paint_vehicle(
     }
     image_id += seatImageId;
 
-    LocationXYZ16 seatCoords = { al, cl, static_cast<int16_t>(height) };
+    CoordsXYZ seatCoords(al, cl, height);
 
     if (armRotation >= static_cast<int8_t>(std::size(TopSpinSeatHeightOffset)))
     {
@@ -252,7 +252,6 @@ static void paint_top_spin(
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
-    LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -262,8 +261,8 @@ static void paint_top_spin(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-            session->CurrentRotation);
+            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+            fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)

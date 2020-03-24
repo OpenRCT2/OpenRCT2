@@ -14,6 +14,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Footpath.h"
@@ -58,7 +59,7 @@ public:
     MazeSetTrackAction()
     {
     }
-    MazeSetTrackAction(CoordsXYZD location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
+    MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
         : _loc(location)
         , _initialPlacement(initialPlacement)
         , _rideIndex(rideIndex)
@@ -76,10 +77,8 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _loc.x + 8;
-        res->Position.y = _loc.y + 8;
-        res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if (!map_check_free_elements_and_reorganise(1))
         {
@@ -87,7 +86,7 @@ public:
             res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
-        if ((_loc.z & 0xF) != 0)
+        if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
         {
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
@@ -109,13 +108,13 @@ public:
             return res;
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
+        auto baseHeight = _loc.z;
+        auto clearanceHeight = _loc.z + 32;
 
-        int8_t heightDifference = baseHeight - surfaceElement->base_height;
+        auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
-            heightDifference = heightDifference >> 1;
+            heightDifference /= COORDS_Z_PER_TINY_Z;
 
             if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
             {
@@ -125,8 +124,7 @@ public:
             }
         }
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(
-            _loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -136,7 +134,7 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at(floor2(_loc.x, 32), floor2(_loc.y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
+            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 }))
             {
                 return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
             }
@@ -176,10 +174,8 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _loc.x + 8;
-        res->Position.y = _loc.y + 8;
-        res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
         auto ride = get_ride(_rideIndex);
@@ -200,26 +196,22 @@ public:
         uint32_t flags = GetFlags();
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
-            wall_remove_at(floor2(_loc.x, 32), floor2(_loc.y, 32), _loc.z, _loc.z + 32);
+            footpath_remove_litter(_loc);
+            wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        uint8_t baseHeight = _loc.z / 8;
-        uint8_t clearanceHeight = (_loc.z + 32) / 8;
-
-        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
-            uint16_t flooredX = floor2(_loc.x, 32);
-            uint16_t flooredY = floor2(_loc.y, 32);
+            auto startLoc = _loc.ToTileStart();
 
-            tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b1111);
+            tileElement = tile_element_insert(_loc, 0b1111);
             assert(tileElement != nullptr);
 
-            tileElement->clearance_height = clearanceHeight;
+            tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
             tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
@@ -231,16 +223,15 @@ public:
                 tileElement->SetGhost(true);
             }
 
-            map_invalidate_tile_full(flooredX, flooredY);
+            map_invalidate_tile_full(startLoc);
 
             ride->maze_tiles++;
-            ride->stations[0].Height = tileElement->base_height;
-            ride->stations[0].Start.xy = 0;
+            ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
+            ride->stations[0].Start = { 0, 0 };
 
             if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                ride->overall_view.x = flooredX / 32;
-                ride->overall_view.y = flooredY / 32;
+                ride->overall_view = startLoc;
             }
         }
 
@@ -260,11 +251,10 @@ public:
                     uint8_t temp_edx = byte_993CFC[segmentOffset];
                     if (temp_edx != 0xFF)
                     {
-                        uint16_t previousElementX = floor2(_loc.x, 32) - CoordsDirectionDelta[_loc.direction].x;
-                        uint16_t previousElementY = floor2(_loc.y, 32) - CoordsDirectionDelta[_loc.direction].y;
+                        auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
                         TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
-                            previousElementX, previousElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+                            { previousElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (previousTileElement != nullptr)
                         {
@@ -286,13 +276,13 @@ public:
             case GC_SET_MAZE_TRACK_FILL:
                 if (!_initialPlacement)
                 {
-                    uint16_t previousSegmentX = _loc.x - CoordsDirectionDelta[_loc.direction].x / 2;
-                    uint16_t previousSegmentY = _loc.y - CoordsDirectionDelta[_loc.direction].y / 2;
+                    auto previousSegment = CoordsXY{ _loc.x - CoordsDirectionDelta[_loc.direction].x / 2,
+                                                     _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
                     tileElement = map_get_track_element_at_of_type_from_ride(
-                        previousSegmentX, previousSegmentY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+                        { previousSegment, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
-                    map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
+                    map_invalidate_tile_full(previousSegment.ToTileStart());
                     if (tileElement == nullptr)
                     {
                         log_error("No surface found");
@@ -301,7 +291,7 @@ public:
                         return res;
                     }
 
-                    uint32_t segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
+                    uint32_t segmentBit = MazeGetSegmentBit(previousSegment.x, previousSegment.y);
 
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
                     segmentBit--;
@@ -315,11 +305,10 @@ public:
                         tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
                         uint32_t direction1 = byte_993D0C[segmentBit];
-                        uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
-                        uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
+                        auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                         TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
-                            nextElementX, nextElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+                            { nextElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (tmp_tileElement != nullptr)
                         {
@@ -333,8 +322,7 @@ public:
                 break;
         }
 
-        map_invalidate_tile(
-            floor2(_loc.x, 32), floor2(_loc.y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
         if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {

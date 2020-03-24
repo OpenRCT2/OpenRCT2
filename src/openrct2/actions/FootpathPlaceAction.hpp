@@ -32,7 +32,7 @@ private:
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(CoordsXYZ loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
+    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
@@ -56,10 +56,8 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
+        res->Expenditure = ExpenditureType::Landscaping;
+        res->Position = _loc.ToTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -78,12 +76,12 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
-        if (_loc.z / 8 < FootpathMinHeight)
+        if (_loc.z < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > FootpathMaxHeight)
+        if (_loc.z > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
@@ -95,7 +93,7 @@ public:
         }
 
         footpath_provisional_remove();
-        auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
+        auto tileElement = map_get_footpath_element_slope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertQuery(std::move(res));
@@ -110,14 +108,12 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
+        res->Expenditure = ExpenditureType::Landscaping;
+        res->Position = _loc.ToTileCentre();
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
         }
 
         gFootpathGroundFlags = 0;
@@ -130,18 +126,18 @@ public:
             if (_direction != INVALID_DIRECTION && !gCheatsDisableClearanceChecks)
             {
                 // It is possible, let's remove walls between the old and new piece of path
-                auto zLow = _loc.z / 8;
-                auto zHigh = zLow + 4;
+                auto zLow = _loc.z;
+                auto zHigh = zLow + PATH_CLEARANCE;
                 wall_remove_intersecting_walls(
-                    _loc.x, _loc.y, zLow, zHigh + ((_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 2 : 0),
+                    { _loc, zLow, zHigh + (_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0 },
                     direction_reverse(_direction));
                 wall_remove_intersecting_walls(
-                    _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh,
+                    { _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh },
                     _direction);
             }
         }
 
-        auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
+        auto tileElement = map_get_footpath_element_slope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertExecute(std::move(res));
@@ -157,7 +153,7 @@ private:
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
-        if (pathElement->GetPathEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+        if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
         {
             res->Cost += MONEY(6, 00);
         }
@@ -173,7 +169,7 @@ private:
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
-        if (pathElement->GetPathEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+        if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
         {
             res->Cost += MONEY(6, 00);
         }
@@ -182,11 +178,11 @@ private:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
         {
-            footpath_remove_edges_at(_loc.x, _loc.y, (TileElement*)pathElement);
+            footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
 
-        pathElement->SetPathEntryIndex(_type);
-        if (_type & (1 << 7))
+        pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
         {
             pathElement->SetIsQueue(true);
         }
@@ -213,15 +209,15 @@ private:
         res->Cost = MONEY(12, 00);
 
         QuarterTile quarterTile{ 0b1111, 0 };
-        auto zLow = _loc.z / 8;
-        auto zHigh = zLow + 4;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
-            zHigh += 2;
+            zHigh += PATH_HEIGHT_STEP;
         }
 
-        auto entranceElement = map_get_park_entrance_element_at(_loc.x, _loc.y, zLow, false);
+        auto entranceElement = map_get_park_entrance_element_at(_loc, false);
         // Make sure the entrance part is the middle
         if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
@@ -239,8 +235,7 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
-                   crossingMode))
+                { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -256,8 +251,8 @@ private:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        int32_t supportHeight = zLow - surfaceElement->base_height;
-        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
         // Prevent the place sound from being spammed
         if (entranceIsSamePath)
@@ -272,21 +267,21 @@ private:
 
         if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
         {
-            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
+            footpath_remove_litter(_loc);
         }
 
         res->Cost = MONEY(12, 00);
 
         QuarterTile quarterTile{ 0b1111, 0 };
-        auto zLow = _loc.z / 8;
-        auto zHigh = zLow + 4;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + PATH_CLEARANCE;
         if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
         {
             quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & TILE_ELEMENT_DIRECTION_MASK);
-            zHigh += 2;
+            zHigh += PATH_HEIGHT_STEP;
         }
 
-        auto entranceElement = map_get_park_entrance_element_at(_loc.x, _loc.y, zLow, false);
+        auto entranceElement = map_get_park_entrance_element_at(_loc, false);
         // Make sure the entrance part is the middle
         if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
@@ -304,8 +299,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile,
-                   GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost, crossingMode))
+                { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+                &res->Cost, crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -317,8 +312,8 @@ private:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        int32_t supportHeight = zLow - surfaceElement->base_height;
-        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
         if (entrancePath)
         {
@@ -326,17 +321,17 @@ private:
             {
                 // Set the path type but make sure it's not a queue as that will not show up
                 entranceElement->SetPathType(_type & 0x7F);
-                map_invalidate_tile_full(_loc.x, _loc.y);
+                map_invalidate_tile_full(_loc);
             }
         }
         else
         {
-            auto tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, 0b1111);
+            auto tileElement = tile_element_insert(_loc, 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
-            pathElement->clearance_height = zHigh;
-            pathElement->SetPathEntryIndex(_type);
+            pathElement->SetClearanceZ(zHigh);
+            pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
             pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
             {
@@ -358,7 +353,7 @@ private:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
             {
-                footpath_remove_edges_at(_loc.x, _loc.y, tileElement);
+                footpath_remove_edges_at(_loc, tileElement);
             }
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
@@ -401,8 +396,8 @@ private:
             gPeepSpawns.emplace_back();
         }
         PeepSpawn* peepSpawn = &gPeepSpawns[0];
-        peepSpawn->x = _loc.x + (word_981D6C[direction].x * 15) + 16;
-        peepSpawn->y = _loc.y + (word_981D6C[direction].y * 15) + 16;
+        peepSpawn->x = _loc.x + (DirectionOffsets[direction].x * 15) + 16;
+        peepSpawn->y = _loc.y + (DirectionOffsets[direction].y * 15) + 16;
         peepSpawn->direction = direction;
         peepSpawn->z = _loc.z;
     }
@@ -411,12 +406,12 @@ private:
     {
         if (pathElement->IsSloped() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            int32_t direction = pathElement->GetSlopeDirection();
-            int32_t z = pathElement->base_height;
-            wall_remove_intersecting_walls(_loc.x, _loc.y, z, z + 6, direction_reverse(direction));
-            wall_remove_intersecting_walls(_loc.x, _loc.y, z, z + 6, direction);
+            auto direction = pathElement->GetSlopeDirection();
+            int32_t z = pathElement->GetBaseZ();
+            wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction_reverse(direction));
+            wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction);
             // Removing walls may have made the pointer invalid, so find it again
-            auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, z);
+            auto tileElement = map_get_footpath_element(CoordsXYZ(_loc, z));
             if (tileElement == nullptr)
             {
                 log_error("Something went wrong. Could not refind footpath.");
@@ -426,23 +421,23 @@ private:
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
-            footpath_connect_edges(_loc.x, _loc.y, (TileElement*)pathElement, GetFlags());
+            footpath_connect_edges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
         footpath_update_queue_chains();
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
     }
 
-    PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope) const
+    PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const
     {
         TileElement* tileElement;
         bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 
-        tileElement = map_get_first_element_at(x, y);
+        tileElement = map_get_first_element_at(footpathPos);
         do
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->GetBaseZ() == footpathPos.z
                 && (tileElement->AsPath()->IsSloped() == isSloped)
                 && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))
             {

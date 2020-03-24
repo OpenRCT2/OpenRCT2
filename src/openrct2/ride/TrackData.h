@@ -14,18 +14,17 @@
 #include "TrackPaint.h"
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
-extern const rct_track_coordinates TrackCoordinates[256];
+extern const rct_track_coordinates TrackCoordinates[TRACK_ELEM_COUNT];
 // 0x009972BB, 0x009972BC, 0x009972BD, 0x009972BF, 0x009972C1, 0x009972C3
-extern const rct_track_coordinates FlatTrackCoordinates[253];
+extern const rct_track_coordinates FlatTrackCoordinates[TRACK_ELEM_COUNT];
 
-extern const uint8_t TrackSequenceProperties[256][16];
-extern const uint8_t FlatRideTrackSequenceProperties[256][16];
+extern const uint8_t TrackSequenceProperties[TRACK_ELEM_COUNT][16];
+extern const uint8_t FlatRideTrackSequenceProperties[TRACK_ELEM_COUNT][16];
 
-extern const uint64_t RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT];
-extern const rct_preview_track* TrackBlocks[256];
-extern const rct_preview_track* FlatRideTrackBlocks[256];
+extern const rct_preview_track* TrackBlocks[TRACK_ELEM_COUNT];
+extern const rct_preview_track* FlatRideTrackBlocks[TRACK_ELEM_COUNT];
 
-extern const uint8_t TrackPieceLengths[256];
+extern const uint8_t TrackPieceLengths[TRACK_ELEM_COUNT];
 
 struct track_curve_chain
 {
@@ -33,10 +32,9 @@ struct track_curve_chain
     uint16_t previous;
 };
 
-extern const track_curve_chain gTrackCurveChain[256];
-extern const track_curve_chain gFlatRideTrackCurveChain[256];
+extern const track_curve_chain gTrackCurveChain[TRACK_ELEM_COUNT];
+extern const track_curve_chain gFlatRideTrackCurveChain[TRACK_ELEM_COUNT];
 
-extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT];
 extern const uint32_t* RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
 
 struct track_descriptor
@@ -51,14 +49,6 @@ struct track_descriptor
 };
 
 extern const track_descriptor gTrackDescriptors[142];
-
-struct rct_vehicle_info_list
-{
-    uint16_t size;
-    const rct_vehicle_info* info;
-};
-
-extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[17];
 
 extern const int16_t AlternativeTrackTypes[256];
 

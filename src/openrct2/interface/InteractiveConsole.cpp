@@ -257,7 +257,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                             uint16_t vehicle_index = ride->vehicles[i];
                             while (vehicle_index != SPRITE_INDEX_NULL)
                             {
-                                rct_vehicle* vehicle = GET_VEHICLE(vehicle_index);
+                                Vehicle* vehicle = GET_VEHICLE(vehicle_index);
                                 vehicle->mass = mass;
                                 vehicle_index = vehicle->next_vehicle_on_train;
                             }
@@ -649,18 +649,14 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
             {
                 int32_t interactionType;
                 TileElement* tileElement;
-                LocationXY16 mapCoord = {};
+                CoordsXY mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
                 get_map_coordinates_from_pos(
-                    viewport->view_width / 2, viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
-                    &mapCoord.y, &interactionType, &tileElement, nullptr);
-                mapCoord.x -= 16;
-                mapCoord.x /= 32;
-                mapCoord.y -= 16;
-                mapCoord.y /= 32;
-                mapCoord.x++;
-                mapCoord.y++;
-                console.WriteFormatLine("location %d %d", mapCoord.x, mapCoord.y);
+                    { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
+                    &interactionType, &tileElement, nullptr);
+
+                auto tileMapCoord = TileCoordsXY(mapCoord);
+                console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
             }
         }
         else if (argv[0] == "window_scale")
@@ -905,10 +901,9 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             rct_window* w = window_get_main();
             if (w != nullptr)
             {
-                int32_t x = (int16_t)(int_val[0] * 32 + 16);
-                int32_t y = (int16_t)(int_val[1] * 32 + 16);
-                int32_t z = tile_element_height({ x, y });
-                w->SetLocation(x, y, z);
+                auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
+                location.z = tile_element_height(location);
+                w->SetLocation(location.x, location.y, location.z);
                 viewport_update_position(w);
                 console.Execute("get location");
             }
@@ -1081,9 +1076,9 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             console.WriteLineError("Unable to load object.");
             return 1;
         }
-        int32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8_t objectType = object_entry_get_type(entry);
+        uint8_t objectType = entry->GetType();
         if (objectType == OBJECT_TYPE_RIDE)
         {
             // Automatically research the ride so it's supported by the game.
@@ -1095,8 +1090,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
                 rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
-                    research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | groupIndex, rideEntry->category[0]);
+                research_insert_ride_entry(rideType, groupIndex, rideEntry->category[0], true);
             }
 
             gSilentResearch = true;
@@ -1105,7 +1099,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
         else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
         {
-            research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
+            research_insert_scenery_group_entry(groupIndex, true);
 
             gSilentResearch = true;
             research_reset_current_item();
@@ -1198,6 +1192,13 @@ static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unu
     return 0;
 }
 
+static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arguments_t& argv)
+{
+    uint16_t result = remove_floating_sprites();
+    console.WriteFormatLine("Removed %d flying objects", result);
+    return 0;
+}
+
 static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     tile_element_iterator it;
@@ -1269,7 +1270,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
 
     // All cases involve providing a year, so grab that first
     year = atoi(argv[0].c_str());
-    if (year < 1 || year > 8192)
+    if (year < 1 || year > MAX_YEAR)
     {
         return -1;
     }
@@ -1518,8 +1519,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         desyncType = atoi(argv[0].c_str());
     }
 
-    std::vector<rct_sprite*> peeps;
-    std::vector<rct_sprite*> vehicles;
+    std::vector<Peep*> peeps;
 
     for (int i = 0; i < MAX_SPRITES; i++)
     {
@@ -1527,10 +1527,9 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
             continue;
 
-        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
-            peeps.push_back(sprite);
-        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
-            vehicles.push_back(sprite);
+        auto peep = sprite->AsPeep();
+        if (peep != nullptr)
+            peeps.push_back(peep);
     }
 
     switch (desyncType)
@@ -1543,11 +1542,11 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
             }
             else
             {
-                rct_sprite* sprite = peeps[0];
+                auto* peep = peeps[0];
                 if (peeps.size() > 1)
-                    sprite = peeps[util_rand() % peeps.size() - 1];
-                sprite->peep.tshirt_colour = util_rand() & 0xFF;
-                invalidate_sprite_0(sprite);
+                    peep = peeps[util_rand() % peeps.size() - 1];
+                peep->tshirt_colour = util_rand() & 0xFF;
+                invalidate_sprite_0(peep);
             }
             break;
         }
@@ -1559,10 +1558,10 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
             }
             else
             {
-                rct_sprite* sprite = peeps[0];
+                auto* peep = peeps[0];
                 if (peeps.size() > 1)
-                    sprite = peeps[util_rand() % peeps.size() - 1];
-                sprite->AsPeep()->Remove();
+                    peep = peeps[util_rand() % peeps.size() - 1];
+                peep->Remove();
             }
             break;
         }
@@ -1595,6 +1594,15 @@ static int32_t cc_terminate([[maybe_unused]] InteractiveConsole& console, [[mayb
     return 0;
 }
 #pragma warning(pop)
+
+static int32_t cc_assert([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (!argv.empty())
+        Guard::Assert(false, "%s", argv[0].c_str());
+    else
+        Guard::Assert(false);
+    return 0;
+}
 
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct console_command
@@ -1655,6 +1663,7 @@ static constexpr const utf8* console_window_table[] = {
 
 static constexpr const console_command console_command_table[] = {
     { "abort", cc_abort, "Calls std::abort(), for testing purposes only.", "abort" },
+    { "assert", cc_assert, "Triggers assertion failure, for testing purposes only", "assert" },
     { "clear", cc_clear, "Clears the console.", "clear" },
     { "close", cc_close, "Closes the console.", "close" },
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]." },
@@ -1673,6 +1682,7 @@ static constexpr const console_command console_command_table[] = {
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
+    { "remove_floating_objects", cc_remove_floating_objects, "Removes floating objects", "remove_floating_objects"},
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },
@@ -1689,7 +1699,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
     { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
-    
+
 };
 // clang-format on
 

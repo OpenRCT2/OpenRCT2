@@ -239,14 +239,16 @@ public:
         SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
     }
 
-    void GetCursorPosition(int32_t* x, int32_t* y) override
+    ScreenCoordsXY GetCursorPosition() override
     {
-        SDL_GetMouseState(x, y);
+        ScreenCoordsXY cursorPosition;
+        SDL_GetMouseState(&cursorPosition.x, &cursorPosition.y);
+        return cursorPosition;
     }
 
-    void SetCursorPosition(int32_t x, int32_t y) override
+    void SetCursorPosition(const ScreenCoordsXY& cursorPosition) override
     {
-        SDL_WarpMouseInWindow(nullptr, x, y);
+        SDL_WarpMouseInWindow(nullptr, cursorPosition.x, cursorPosition.y);
     }
 
     void SetCursorTrap(bool value) override
@@ -365,8 +367,8 @@ public:
                     }
                     break;
                 case SDL_MOUSEMOTION:
-                    _cursorState.x = (int32_t)(e.motion.x / gConfigGeneral.window_scale);
-                    _cursorState.y = (int32_t)(e.motion.y / gConfigGeneral.window_scale);
+                    _cursorState.position = { static_cast<int32_t>(e.motion.x / gConfigGeneral.window_scale),
+                                              static_cast<int32_t>(e.motion.y / gConfigGeneral.window_scale) };
                     break;
                 case SDL_MOUSEWHEEL:
                     if (_inGameConsole.IsOpen())
@@ -382,12 +384,12 @@ public:
                     {
                         break;
                     }
-                    int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
-                    int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.window_scale),
+                                                static_cast<int32_t>(e.button.y / gConfigGeneral.window_scale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, mousePos);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -395,7 +397,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, mousePos);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -409,12 +411,12 @@ public:
                     {
                         break;
                     }
-                    int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
-                    int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.window_scale),
+                                                static_cast<int32_t>(e.button.y / gConfigGeneral.window_scale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, mousePos);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -422,7 +424,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -433,13 +435,13 @@ public:
                 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
                 case SDL_FINGERMOTION:
-                    _cursorState.x = (int32_t)(e.tfinger.x * _width);
-                    _cursorState.y = (int32_t)(e.tfinger.y * _height);
+                    _cursorState.position = { static_cast<int32_t>(e.tfinger.x * _width),
+                                              static_cast<int32_t>(e.tfinger.y * _height) };
                     break;
                 case SDL_FINGERDOWN:
                 {
-                    int32_t x = (int32_t)(e.tfinger.x * _width);
-                    int32_t y = (int32_t)(e.tfinger.y * _height);
+                    ScreenCoordsXY fingerPos = { static_cast<int32_t>(e.tfinger.x * _width),
+                                                 static_cast<int32_t>(e.tfinger.y * _height) };
 
                     _cursorState.touchIsDouble
                         = (!_cursorState.touchIsDouble
@@ -447,13 +449,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, fingerPos);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, fingerPos);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -463,18 +465,18 @@ public:
                 }
                 case SDL_FINGERUP:
                 {
-                    int32_t x = (int32_t)(e.tfinger.x * _width);
-                    int32_t y = (int32_t)(e.tfinger.y * _height);
+                    ScreenCoordsXY fingerPos = { static_cast<int32_t>(e.tfinger.x * _width),
+                                                 static_cast<int32_t>(e.tfinger.y * _height) };
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, fingerPos);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, fingerPos);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
@@ -555,10 +557,10 @@ public:
 
         // Set window position to default display
         int32_t defaultDisplay = std::clamp(gConfigGeneral.default_display, 0, 0xFFFF);
-        int32_t x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
-        int32_t y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
+        auto windowPos = ScreenCoordsXY{ static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)),
+                                         static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)) };
 
-        CreateWindow(x, y);
+        CreateWindow(windowPos);
 
         // Check if steam overlay renderer is loaded into the process
         _steamOverlayActive = _platformUiContext->IsSteamOverlayAttached();
@@ -577,12 +579,12 @@ public:
     void RecreateWindow() override
     {
         // Use the position of the current window for the new window
-        int32_t x, y;
+        ScreenCoordsXY windowPos;
         SDL_SetWindowFullscreen(_window, 0);
-        SDL_GetWindowPosition(_window, &x, &y);
+        SDL_GetWindowPosition(_window, &windowPos.x, &windowPos.y);
 
         CloseWindow();
-        CreateWindow(x, y);
+        CreateWindow(windowPos);
     }
 
     void ShowMessageBox(const std::string& message) override
@@ -620,15 +622,14 @@ public:
         if (_titleSequencePlayer == nullptr)
         {
             auto context = GetContext();
-            auto scenarioRepository = context->GetScenarioRepository();
             auto gameState = context->GetGameState();
-            _titleSequencePlayer = CreateTitleSequencePlayer(*scenarioRepository, *gameState);
+            _titleSequencePlayer = CreateTitleSequencePlayer(*gameState);
         }
         return _titleSequencePlayer.get();
     }
 
 private:
-    void CreateWindow(int32_t x, int32_t y)
+    void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
         int32_t width = gConfigGeneral.window_width;
@@ -645,7 +646,7 @@ private:
             flags |= SDL_WINDOW_OPENGL;
         }
 
-        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
+        _window = SDL_CreateWindow(OPENRCT2_NAME, windowPos.x, windowPos.y, width, height, flags);
         if (_window == nullptr)
         {
             SDLException::Throw("SDL_CreateWindow(...)");
@@ -793,10 +794,10 @@ private:
                 auto vp = original_w->viewport;
                 if (vp != nullptr)
                 {
-                    left = std::max<int16_t>(left, vp->x);
-                    right = std::min<int16_t>(right, vp->x + vp->width);
-                    top = std::max<int16_t>(top, vp->y);
-                    bottom = std::min<int16_t>(bottom, vp->y + vp->height);
+                    left = std::max<int16_t>(left, vp->pos.x);
+                    right = std::min<int16_t>(right, vp->pos.x + vp->width);
+                    top = std::max<int16_t>(top, vp->pos.y);
+                    bottom = std::min<int16_t>(bottom, vp->pos.y + vp->height);
                     if (left < right && top < bottom)
                     {
                         auto width = right - left;
@@ -808,7 +809,7 @@ private:
             }
 
             w = it->get();
-            if (right <= w->x || bottom <= w->y)
+            if (right <= w->windowPos.x || bottom <= w->windowPos.y)
             {
                 continue;
             }
@@ -818,14 +819,14 @@ private:
                 continue;
             }
 
-            if (left >= w->x)
+            if (left >= w->windowPos.x)
             {
                 break;
             }
 
-            DrawRainWindow(rainDrawer, original_w, left, w->x, top, bottom, drawFunc);
+            DrawRainWindow(rainDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
 
-            left = w->x;
+            left = w->windowPos.x;
             DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
@@ -840,11 +841,11 @@ private:
             return;
         }
 
-        if (top < w->y)
+        if (top < w->windowPos.y)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w->y, drawFunc);
+            DrawRainWindow(rainDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
 
-            top = w->y;
+            top = w->windowPos.y;
             DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }

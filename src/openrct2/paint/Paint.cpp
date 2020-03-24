@@ -27,8 +27,8 @@ using namespace OpenRCT2;
 
 // Globals for paint clipping
 uint8_t gClipHeight = 128; // Default to middle value
-LocationXY8 gClipSelectionA = { 0, 0 };
-LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+CoordsXY gClipSelectionA = { 0, 0 };
+CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
 
 static constexpr const uint8_t BoundBoxDebugColours[] = {
     0,   // NONE
@@ -71,8 +71,7 @@ static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struc
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
 static paint_struct* sub_9819_c(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, LocationXYZ16 boundBoxSize,
-    LocationXYZ16 boundBoxOffset)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, CoordsXYZ boundBoxSize, CoordsXYZ boundBoxOffset)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
         return nullptr;
@@ -119,22 +118,22 @@ static paint_struct* sub_9819_c(
         case 0:
             boundBoxSize.x--;
             boundBoxSize.y--;
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 0);
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 0);
+            boundBoxOffset = { boundBoxOffset.Rotate(0), boundBoxOffset.z };
+            boundBoxSize = { boundBoxSize.Rotate(0), boundBoxSize.z };
             break;
         case 1:
             boundBoxSize.x--;
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 3);
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 3);
+            boundBoxOffset = { boundBoxOffset.Rotate(3), boundBoxOffset.z };
+            boundBoxSize = { boundBoxSize.Rotate(3), boundBoxSize.z };
             break;
         case 2:
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 2);
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 2);
+            boundBoxSize = { boundBoxSize.Rotate(2), boundBoxSize.z };
+            boundBoxOffset = { boundBoxOffset.Rotate(2), boundBoxOffset.z };
             break;
         case 3:
             boundBoxSize.y--;
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 1);
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 1);
+            boundBoxSize = { boundBoxSize.Rotate(1), boundBoxSize.z };
+            boundBoxOffset = { boundBoxOffset.Rotate(1), boundBoxOffset.z };
             break;
     }
 
@@ -400,7 +399,7 @@ static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next
     }
 }
 
-paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
+static paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
 {
     switch (rotation)
     {
@@ -751,7 +750,7 @@ paint_struct* sub_98196C(
         z_offset,
     };
 
-    LocationXYZ16 boundBox = {
+    CoordsXYZ boundBox = {
         bound_box_length_x, // di
         bound_box_length_y, // si
         bound_box_length_z,
@@ -764,26 +763,26 @@ paint_struct* sub_98196C(
 
             boundBox.x--;
             boundBox.y--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_WEST);
+            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_WEST), boundBox.z };
             break;
 
         case 1:
             coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_SOUTH), coord_3d.z };
 
             boundBox.x--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_SOUTH);
+            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_SOUTH), boundBox.z };
             break;
 
         case 2:
             coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_EAST), coord_3d.z };
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_EAST);
+            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_EAST), boundBox.z };
             break;
 
         case 3:
             coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_NORTH), coord_3d.z };
 
             boundBox.y--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_NORTH);
+            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_NORTH), boundBox.z };
             break;
     }
 
@@ -880,8 +879,8 @@ paint_struct* sub_98197C(
     session->UnkF1AD2C = nullptr;
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    LocationXYZ16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
+    CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
+    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
     paint_struct* ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset);
 
     if (ps == nullptr)
@@ -891,9 +890,7 @@ paint_struct* sub_98197C(
 
     session->LastRootPS = ps;
 
-    LocationXY16 attach = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y };
-
-    rotate_map_coordinates(&attach.x, &attach.y, session->CurrentRotation);
+    auto attach = CoordsXY{ (int16_t)ps->bounds.x, (int16_t)ps->bounds.y }.Rotate(session->CurrentRotation);
     switch (session->CurrentRotation)
     {
         case 0:
@@ -942,8 +939,8 @@ paint_struct* sub_98198C(
     session->UnkF1AD2C = nullptr;
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    LocationXYZ16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
+    CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
+    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
     paint_struct* ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset);
 
     if (ps == nullptr)
@@ -988,8 +985,8 @@ paint_struct* sub_98199C(
     }
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    LocationXYZ16 boundBox = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
+    CoordsXYZ boundBox = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
+    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
     paint_struct* ps = sub_9819_c(session, image_id, offset, boundBox, boundBoxOffset);
 
     if (ps == nullptr)

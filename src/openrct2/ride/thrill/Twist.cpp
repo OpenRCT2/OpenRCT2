@@ -22,7 +22,7 @@ static void paint_twist_structure(
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
 
     if (rideEntry == nullptr)
     {
@@ -88,7 +88,6 @@ static void paint_twist(
     trackSequence = track_map_3x3[direction][trackSequence];
 
     const uint8_t edges = edges_3x3[trackSequence];
-    LocationXY16 position = session->MapPosition;
 
     uint32_t imageId;
 
@@ -99,12 +98,12 @@ static void paint_twist(
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, session->MapPosition, tileElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_FENCE_ROPE_SW | session->TrackColours[SCHEME_MISC];
                 sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3);
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, session->MapPosition, tileElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_FENCE_ROPE_SE | session->TrackColours[SCHEME_MISC];
                 sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
@@ -112,8 +111,8 @@ static void paint_twist(
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-                session->CurrentRotation);
+                session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+                fenceSpritesRope, session->CurrentRotation);
             break;
     }
 

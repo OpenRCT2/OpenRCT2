@@ -113,10 +113,10 @@ STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het
 STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_0532    :
 STR_0533    :
-STR_0534    :Go-karts met benzinemotor die de passagiers zelf besturen.
-STR_0535    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_0534    :Bezoekers racen tegen elkaar in go-karts op een asfaltbaan.
+STR_0535    :Bezoekers varen in bootjes door een waterbak, waarbij ze van steile hellingen afdalen en doorweekt raken.
 STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
-STR_0537    :
+STR_0537    :Bezoekers botsen tegen elkaar in elektrisch aangedreven botsauto's die ze zelf kunnen besturen.
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -155,7 +155,7 @@ STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door stei
 STR_0579    :
 STR_0580    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
 STR_0581    :Een ring van stoelen wordt naar de bovenkant van een hoge toren getrokken terwijl hij rustig ronddraait, waarna hij losgelaten wordt in een vrije val, waarna hij beneden rustig wordt afgeremd door middel van magnetische remmen.
-STR_0582    :
+STR_0582    :Bezoekers botsen tegen elkaar in hovercrafts die ze zelf kunnen besturen.
 STR_0583    :
 STR_0584    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
 STR_0585    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
@@ -1859,38 +1859,14 @@ STR_2521    :Lijst met werknemers tonen
 STR_2522    :Recente berichten tonen
 STR_2523    :Kaart tonen
 STR_2524    :Screenshot
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Backspace
 STR_2534    :Tab
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Wissen
 STR_2538    :Return
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Spatiebalk
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1907,54 +1883,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1967,53 +1896,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Verhoog je saldo met {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
@@ -2029,9 +1916,6 @@ STR_2693    :Terrein:
 STR_2694    :Genereren
 STR_2695    :Willekeurig terrein
 STR_2696    :Bomen plaatsen
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Automatisch opslaan:
 STR_2701    :Elke minuut
 STR_2702    :Elke 5 minuten
@@ -2043,13 +1927,6 @@ STR_2707    :Systeembestandsbrowser openen
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
 STR_2710    :Kies een bestandsnaam.
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :Eén map omhoog
 STR_2719    :Nieuw bestand
 STR_2720    :{UINT16}s
@@ -2076,10 +1953,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat niet gevonden
 STR_2743    :Kopieer ‘data/css17.dat’ van je RCT1-installatie naar ‘data/css50.dat’ in je RCT2-installatie, of stel een pad in naar je RCT1-bestanden onder het tabblad ‘Geavanceerd’.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Mijn nieuwe scenario
 STR_2750    :Alles naar boven verplaatsen
 STR_2751    :Alles naar beneden verplaatsen
@@ -2615,11 +2488,6 @@ STR_3390    :Te veel items geselecteerd
 STR_3437    :{SMALLFONT}{BLACK}Grote gebieden met decor van het landschap verwijderen
 STR_3438    :Kan hier niet al het decor verwijderen…
 STR_3439    :Decor verwijderen
-STR_3440    :Pagina 1
-STR_3441    :Pagina 2
-STR_3442    :Pagina 3
-STR_3443    :Pagina 4
-STR_3444    :Pagina 5
 STR_3445    :Werkgebied instellen
 STR_3446    :Werkgebied wissen
 
@@ -2916,7 +2784,6 @@ STR_5410    :Bewerken
 STR_5411    :Herladen
 STR_5412    :Spring naar
 STR_5413    :Laad
-STR_5414    :Laad{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Laad{MOVE_X}{87}{STRING}
 STR_5416    :Laad{MOVE_X}{87}Geen opgeslagen spel geselecteerd
 STR_5417    :Locatie
@@ -3463,7 +3330,7 @@ STR_5997    :Geld toevoegen/instellen
 STR_5998    :Toevoegen
 STR_5999    :Instellen
 STR_6000    :Voer een bedrag in
-STR_6001    :Belichtingeffecten inschakelen (experimenteel)
+STR_6001    :Belichtingseffecten inschakelen (experimenteel)
 STR_6002    :{SMALLFONT}{BLACK}Lampen zullen 's nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
 STR_6003    :Opengewerkte weergave
 STR_6004    :Opengewerkte weergave
@@ -3739,7 +3606,7 @@ STR_6273    :Muziek
 STR_6274    :Kan kleurenschema niet instellen...
 STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Aantal autosaves
 STR_6279    :{SMALLFONT}{BLACK}Het aantal autosaves dat moet worden bewaard.
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3795,6 +3662,36 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :[{STRING}] wordt gedownload van {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Eenden aanmaken
 STR_6332    :Eenden verw.
+STR_6333    :Vergrotingsfactor verhogen
+STR_6334    :Vergrotingsfactor verlagen
+STR_6335    :Vakinspecteur: Ongeldig element invoegen
+STR_6336    :Vakinspecteur: Element kopiëren
+STR_6337    :Vakinspecteur: Element plakken
+STR_6338    :Vakinspecteur: Element verwijderen
+STR_6339    :Vakinspecteur: Element hoger rangschikken
+STR_6340    :Vakinspecteur: Element lager rangschikken
+STR_6341    :Vakinspecteur: X-coordinaat verhogen
+STR_6342    :Vakinspecteur: X-coordinaat verlagen
+STR_6343    :Vakinspecteur: Y-coordinaat verhogen
+STR_6344    :Vakinspecteur: Y-coordinaat verlagen
+STR_6345    :Vakinspecteur: Elementhoogte vergroten
+STR_6346    :Vakinspecteur: Elementhoogte verkleinen
+STR_6347    :Straatmeubilair kan niet op overwegen worden geplaatst!
+STR_6348    :Verwijder eerst de overweg.
+STR_6349    :Willekeurige titelpresentatie
+STR_6350    :Cluster
+STR_6351    :Cluster van decorobjecten plaatsen
+STR_6352    :Dichtheid
+STR_6353    :{SMALLFONT}{BLACK}Lage dichtheid
+STR_6354    :{SMALLFONT}{BLACK}Gemiddelde dichtheid
+STR_6355    :{SMALLFONT}{BLACK}Hoge dichtheid
+STR_6356    :{SMALLFONT}{BLACK}Maakt eenden aan, mits er water op de kaart is.
+STR_6357    :{SMALLFONT}{BLACK}Verwijdert alle eenden van de kaart.
+STR_6358    :Pagina {UINT16}
+STR_6359    :{POP16}{POP16}Pagina {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Belichtingseffecten op attracties (experimenteel)
+STR_6362    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben 's nachts verlicht worden.
 
 #############
 # Scenarios #

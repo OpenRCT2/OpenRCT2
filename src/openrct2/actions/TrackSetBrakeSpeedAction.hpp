@@ -16,12 +16,12 @@ DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, Game
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _trackType;
+    track_type_t _trackType;
     uint8_t _brakeSpeed;
 
 public:
     TrackSetBrakeSpeedAction() = default;
-    TrackSetBrakeSpeedAction(CoordsXYZ loc, uint8_t trackType, uint8_t brakeSpeed)
+    TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
         : _loc(loc)
         , _trackType(trackType)
         , _brakeSpeed(brakeSpeed)
@@ -57,9 +57,9 @@ private:
         res->Position = _loc;
         res->Position.x += 16;
         res->Position.y += 16;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
-        TileElement* tileElement = map_get_track_element_at_of_type(_loc.x, _loc.y, _loc.z / 8, _trackType);
+        TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
         if (tileElement == nullptr)
         {
             log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);

@@ -43,13 +43,13 @@ private:
 public:
     LandBuyRightsAction() = default;
 
-    LandBuyRightsAction(MapRange range, LandBuyRightSetting setting)
+    LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
         : _range(range)
         , _setting(static_cast<uint8_t>(setting))
     {
     }
 
-    LandBuyRightsAction(CoordsXY coord, LandBuyRightSetting setting)
+    LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting)
         : _range(coord.x, coord.y, coord.x, coord.y)
         , _setting(static_cast<uint8_t>(setting))
     {
@@ -96,12 +96,12 @@ private:
         centre.z = tile_element_height(centre);
 
         res->Position = centre;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
 
         // Game command modified to accept selection size
-        for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+        for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
-            for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+            for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
                 auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
                 if (result->Error == GA_ERROR::OK)
@@ -117,7 +117,7 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY loc, bool isExecuting) const
+    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
     {
         if (_setting >= static_cast<uint8_t>(LandBuyRightSetting::Count))
         {
@@ -169,8 +169,8 @@ private:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseHeight = surfaceElement->base_height * 8;
-                    map_invalidate_tile(loc.x, loc.y, baseHeight, baseHeight + 16);
+                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    map_invalidate_tile({ loc, baseZ, baseZ + 16 });
                 }
                 res->Cost = gConstructionRightsPrice;
                 return res;

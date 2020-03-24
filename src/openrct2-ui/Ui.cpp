@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioContext.h>
+#include <openrct2/cmdline/CommandLine.hpp>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ui/UiContext.h>
 
@@ -38,16 +39,17 @@ int NormalisedMain(int argc, const char** argv)
 int main(int argc, const char** argv)
 #endif
 {
+    std::unique_ptr<IContext> context;
+    int32_t rc = EXIT_SUCCESS;
     int runGame = cmdline_run(argv, argc);
     core_init();
     RegisterBitmapReader();
-    if (runGame == 1)
+    if (runGame == EXITCODE_CONTINUE)
     {
         if (gOpenRCT2Headless)
         {
             // Run OpenRCT2 with a plain context
-            auto context = CreateContext();
-            context->RunOpenRCT2(argc, argv);
+            context = CreateContext();
         }
         else
         {
@@ -55,12 +57,15 @@ int main(int argc, const char** argv)
             auto env = to_shared(CreatePlatformEnvironment());
             auto audioContext = to_shared(CreateAudioContext());
             auto uiContext = to_shared(CreateUiContext(env));
-            auto context = CreateContext(env, audioContext, uiContext);
-
-            context->RunOpenRCT2(argc, argv);
+            context = CreateContext(env, audioContext, uiContext);
         }
+        rc = context->RunOpenRCT2(argc, argv);
     }
-    return gExitCode;
+    else if (runGame == EXITCODE_FAIL)
+    {
+        rc = EXIT_FAILURE;
+    }
+    return rc;
 }
 
 #ifdef __ANDROID__

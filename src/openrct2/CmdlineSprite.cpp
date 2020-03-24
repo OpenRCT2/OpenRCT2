@@ -222,7 +222,8 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
 
     spriteHeader = &spriteFileEntries[spriteIndex];
     pixelBufferSize = spriteHeader->width * spriteHeader->height;
-    pixels = (uint8_t*)malloc(pixelBufferSize);
+    std::unique_ptr<uint8_t[]> pixelBuffer(new uint8_t[pixelBufferSize]);
+    pixels = pixelBuffer.get();
     std::fill_n(pixels, pixelBufferSize, 0x00);
 
     dpi.bits = pixels;
@@ -608,7 +609,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
 
             json_t* path = json_object_get(sprite_description, "path");
-            if (!path || !json_is_string(path))
+            if (!json_is_string(path))
             {
                 fprintf(stderr, "Error: no path provided for sprite %lu\n", (unsigned long)i);
                 json_decref(sprite_list);
@@ -621,7 +622,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             // Get palette option, if present
             bool keep_palette = false;
             json_t* palette = json_object_get(sprite_description, "palette");
-            if (palette && json_is_string(palette))
+            if (json_is_string(palette))
             {
                 const char* option = json_string_value(palette);
                 if (strncmp(option, "keep", 4) == 0)

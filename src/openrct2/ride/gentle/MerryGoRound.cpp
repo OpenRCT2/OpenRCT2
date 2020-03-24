@@ -37,7 +37,7 @@ static void paint_merry_go_round_structure(
     if (rideEntry == nullptr)
         return;
 
-    rct_vehicle* vehicle = nullptr;
+    Vehicle* vehicle = nullptr;
     uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
@@ -110,7 +110,6 @@ static void paint_merry_go_round(
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
-    LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -120,8 +119,8 @@ static void paint_merry_go_round(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-            session->CurrentRotation);
+            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+            fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)

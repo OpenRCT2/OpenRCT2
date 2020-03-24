@@ -25,7 +25,7 @@ private:
 public:
     LargeScenerySetColourAction() = default;
 
-    LargeScenerySetColourAction(CoordsXYZD loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
+    LargeScenerySetColourAction(const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _tileIndex(tileIndex)
         , _primaryColour(primaryColour)
@@ -59,7 +59,7 @@ private:
     GameActionResult::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = tile_element_height(_loc);
@@ -83,7 +83,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }
 
-        auto largeElement = map_get_large_scenery_segment(_loc.x, _loc.y, _loc.z / 8, _loc.direction, _tileIndex);
+        auto largeElement = map_get_large_scenery_segment(_loc, _tileIndex);
 
         if (largeElement == nullptr)
         {
@@ -106,21 +106,20 @@ private:
             return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
         }
         // Work out the base tile coordinates (Tile with index 0)
-        auto baseX = sceneryEntry->large_scenery.tiles[_tileIndex].x_offset;
-        auto baseY = sceneryEntry->large_scenery.tiles[_tileIndex].y_offset;
-        rotate_map_coordinates(&baseX, &baseY, _loc.direction);
+        auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->large_scenery.tiles[_tileIndex].x_offset,
+                                                            sceneryEntry->large_scenery.tiles[_tileIndex].y_offset }
+                                                      .Rotate(_loc.direction),
+                                                  sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
 
-        CoordsXYZ baseTile = { _loc.x - baseX, _loc.y - baseY,
-                               _loc.z - sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
+        auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
 
         auto i = 0;
         for (auto tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; ++tile, ++i)
         {
             // Work out the current tile coordinates
-            auto tileX = tile->x_offset;
-            auto tileY = tile->y_offset;
-            rotate_map_coordinates(&tileX, &tileY, _loc.direction);
-            CoordsXYZ currentTile = { tileX + baseTile.x, tileY + baseTile.y, tile->z_offset + baseTile.z };
+            auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction),
+                                                tile->z_offset };
+            auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
@@ -130,7 +129,7 @@ private:
                 }
             }
 
-            auto tileElement = map_get_large_scenery_segment(currentTile.x, currentTile.y, _loc.z / 8, _loc.direction, i);
+            auto tileElement = map_get_large_scenery_segment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
 
             if (tileElement == nullptr)
             {
@@ -144,7 +143,7 @@ private:
                 tileElement->SetPrimaryColour(_primaryColour);
                 tileElement->SetSecondaryColour(_secondaryColour);
 
-                map_invalidate_tile_full(currentTile.x, currentTile.y);
+                map_invalidate_tile_full(currentTile);
             }
         }
         return res;

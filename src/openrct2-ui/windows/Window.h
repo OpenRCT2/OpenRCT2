@@ -18,7 +18,20 @@ using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
 struct TileElement;
-struct rct_vehicle;
+struct Vehicle;
+enum class ScatterToolDensity : uint8_t;
+
+extern ScenerySelection gWindowSceneryTabSelections[];
+extern uint8_t gWindowSceneryActiveTabIndex;
+extern bool gWindowSceneryScatterEnabled;
+extern uint16_t gWindowSceneryScatterSize;
+extern ScatterToolDensity gWindowSceneryScatterDensity;
+extern uint8_t gWindowSceneryPaintEnabled;
+extern uint8_t gWindowSceneryRotation;
+extern colour_t gWindowSceneryPrimaryColour;
+extern colour_t gWindowScenerySecondaryColour;
+extern colour_t gWindowSceneryTertiaryColour;
+extern bool gWindowSceneryEyedropperEnabled;
 
 rct_window* window_about_open();
 rct_window* window_changelog_open();
@@ -95,6 +108,9 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
+void TrackPlaceClearProvisionalTemporarily();
+void TrackPlaceRestoreProvisional();
+
 rct_window* window_map_open();
 void window_map_reset();
 
@@ -112,7 +128,7 @@ void window_ride_list_refresh_list(rct_window* w);
 
 rct_window* window_ride_main_open(Ride* ride);
 rct_window* window_ride_open_track(TileElement* tileElement);
-rct_window* window_ride_open_vehicle(rct_vehicle* vehicle);
+rct_window* window_ride_open_vehicle(Vehicle* vehicle);
 void window_ride_measurements_design_cancel();
 
 // rct2: 0x00F635EE
@@ -148,7 +164,7 @@ bool clear_scenery_tool_is_active();
 bool water_tool_is_active();
 
 rct_window* window_scenery_open();
-bool window_scenery_set_selected_item(int32_t sceneryId);
+bool window_scenery_set_selected_item(const ScenerySelection& scenery);
 void window_scenery_set_default_placement_configuration();
 void window_scenery_init();
 void window_scenery_reset_selected_scenery_items();
@@ -164,7 +180,9 @@ void window_tile_inspector_clear_clipboard();
 
 rct_window* window_editor_object_selection_open();
 
-void window_tooltip_reset(ScreenCoordsXY screenCoords);
+void window_tooltip_reset(const ScreenCoordsXY& screenCoords);
 void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords);
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_tooltip_close();
+
+rct_window* window_scenery_scatter_open();

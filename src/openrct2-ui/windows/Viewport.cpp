@@ -15,8 +15,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-#define INITIAL_WIDTH 500
-#define INITIAL_HEIGHT 350
+constexpr int32_t INITIAL_WIDTH = 500;
+constexpr int32_t INITIAL_HEIGHT = 350;
 
 // clang-format off
 enum {
@@ -94,15 +94,14 @@ rct_window* window_viewport_open()
     w->number = _viewportNumber++;
 
     // Create viewport
-    viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, SPRITE_INDEX_NULL);
+    viewport_create(w, w->windowPos, w->width, w->height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
     {
         rct_viewport* mainViewport = mainWindow->viewport;
-        int32_t x = mainViewport->view_x + (mainViewport->view_width / 2);
-        int32_t y = mainViewport->view_y + (mainViewport->view_height / 2);
-        w->saved_view_x = x - (w->viewport->view_width / 2);
-        w->saved_view_y = y - (w->viewport->view_height / 2);
+        int32_t x = mainViewport->viewPos.x + (mainViewport->view_width / 2);
+        int32_t y = mainViewport->viewPos.y + (mainViewport->view_height / 2);
+        w->savedViewPos = { x - (w->viewport->view_width / 2), y - (w->viewport->view_height / 2) };
     }
 
     w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -124,7 +123,6 @@ static void window_viewport_anchor_border_widgets(rct_window* w)
 static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_window* mainWindow;
-    int16_t x, y;
 
     switch (widgetIndex)
     {
@@ -149,10 +147,11 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
+                CoordsXY mapCoords;
                 get_map_coordinates_from_pos(
-                    w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr,
-                    nullptr);
-                window_scroll_to_location(mainWindow, x, y, tile_element_height({ x, y }));
+                    { w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2) }, VIEWPORT_INTERACTION_MASK_NONE,
+                    mapCoords, nullptr, nullptr, nullptr);
+                window_scroll_to_location(mainWindow, mapCoords.x, mapCoords.y, tile_element_height(mapCoords));
             }
             break;
     }
@@ -211,8 +210,7 @@ static void window_viewport_invalidate(rct_window* w)
     if (viewport->zoom >= 3)
         w->disabled_widgets |= 1 << WIDX_ZOOM_OUT;
 
-    viewport->x = w->x + viewportWidget->left;
-    viewport->y = w->y + viewportWidget->top;
+    viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
     viewport->width = viewportWidget->right - viewportWidget->left;
     viewport->height = viewportWidget->bottom - viewportWidget->top;
     viewport->view_width = viewport->width << viewport->zoom;

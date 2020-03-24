@@ -94,7 +94,7 @@ private:
     {
         auto result = MakeResult();
         result->ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-        result->ExpenditureType = RCT_EXPENDITURE_TYPE_MARKETING;
+        result->Expenditure = ExpenditureType::Marketing;
         result->Cost = CalculatePrice();
         return result;
     }

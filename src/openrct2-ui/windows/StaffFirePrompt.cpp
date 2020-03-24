@@ -16,8 +16,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
 
-#define WW 200
-#define WH 100
+constexpr int32_t WW = 200;
+constexpr int32_t WH = 100;
 
 // clang-format off
 enum WINDOW_STAFF_FIRE_WIDGET_IDX {
@@ -129,8 +129,8 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     peep->FormatNameTo(gCommonFormatArgs);
 
-    int32_t x = w->x + WW / 2;
-    int32_t y = w->y + (WH / 2) - 3;
+    int32_t x = w->windowPos.x + WW / 2;
+    int32_t y = w->windowPos.y + (WH / 2) - 3;
 
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
 }

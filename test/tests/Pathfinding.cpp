@@ -68,7 +68,7 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the center of the tile.
-        Peep* peep = Peep::Generate({ pos->x * 32 + 16, pos->y * 32 + 16, pos->z * 8 });
+        Peep* peep = Peep::Generate(pos->ToCoordsXYZ().ToTileCentre());
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
@@ -109,15 +109,13 @@ protected:
             peep->PerformNextAction(pathingResult);
             ++step;
 
-            pos->x = peep->x / 32;
-            pos->y = peep->y / 32;
-            pos->z = peep->z / 8;
+            *pos = TileCoordsXYZ(CoordsXYZ(peep->x, peep->y, peep->z));
 
             EXPECT_PRED_FORMAT1(AssertIsNotForbiddenPosition, *pos);
 
             // Check that the peep is still on a footpath. Use next_z instead of pos->z here because pos->z will change
             // when the peep is halfway up a slope, but next_z will not change until they move to the next tile.
-            EXPECT_NE(map_get_footpath_element(pos->x, pos->y, peep->next_z), nullptr);
+            EXPECT_NE(map_get_footpath_element({ pos->ToCoordsXY(), peep->NextLoc.z }), nullptr);
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.
@@ -136,7 +134,7 @@ protected:
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
         const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = map_get_surface_element_at(location.x, location.y)->GetSurfaceStyle();
+        const uint32_t style = map_get_surface_element_at(location.ToCoordsXYZ())->GetSurfaceStyle();
 
         if (style != expectedSurfaceStyle)
             return ::testing::AssertionFailure()
@@ -151,7 +149,7 @@ protected:
     {
         const uint32_t forbiddenSurfaceStyle = 8u;
 
-        const uint32_t style = map_get_surface_element_at(location.x, location.y)->GetSurfaceStyle();
+        const uint32_t style = map_get_surface_element_at(location.ToCoordsXYZ())->GetSurfaceStyle();
 
         if (style == forbiddenSurfaceStyle)
             return ::testing::AssertionFailure()

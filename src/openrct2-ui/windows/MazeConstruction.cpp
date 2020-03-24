@@ -87,8 +87,8 @@ static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widg
 static void window_maze_construction_resize(rct_window *w);
 static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_maze_construction_update(rct_window *w);
-static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -173,7 +173,7 @@ static void window_maze_construction_close(rct_window* w)
     auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
-        if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
+        if (ride->overall_view.isNull())
         {
             int32_t savedPausedState = gGamePaused;
             gGamePaused = 0;
@@ -335,16 +335,16 @@ static void window_maze_construction_update(rct_window* w)
  *
  *  rct2: 0x006CD63E
  */
-static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_MAZE_DIRECTION_GROUPBOX:
-            ride_construction_toolupdate_construct(ScreenCoordsXY(x, y));
+            ride_construction_toolupdate_construct(screenCoords);
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:
-            ride_construction_toolupdate_entrance_exit(ScreenCoordsXY(x, y));
+            ride_construction_toolupdate_entrance_exit(screenCoords);
             break;
     }
 }
@@ -353,7 +353,7 @@ static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C825F
  */
-static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct_window* w)
+static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& screenCoords, rct_window* w)
 {
     ride_construction_invalidate_current_track();
 
@@ -362,16 +362,17 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t direction = 0;
-    ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
+    CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
+    if (entranceOrExitCoords.isNull())
+        return;
 
-    if (gRideEntranceExitPlaceDirection == 0xFF)
+    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
         return;
 
     ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        { x, y }, direction_reverse(direction), rideIndex, gRideEntranceExitPlaceStationIndex,
+        entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex, gRideEntranceExitPlaceStationIndex,
         gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
     rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
@@ -401,16 +402,16 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
  *
  *  rct2: 0x006CD65D
  */
-static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_MAZE_DIRECTION_GROUPBOX:
-            ride_construction_tooldown_construct(ScreenCoordsXY(x, y));
+            ride_construction_tooldown_construct(screenCoords);
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:
-            window_maze_construction_entrance_tooldown(x, y, w);
+            window_maze_construction_entrance_tooldown(screenCoords, w);
             break;
     }
 }

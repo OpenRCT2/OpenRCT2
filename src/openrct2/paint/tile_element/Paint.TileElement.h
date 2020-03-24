@@ -85,7 +85,7 @@ extern const uint16_t segment_offsets[9];
 
 extern bool gShowSupportSegmentHeights;
 
-extern const LocationXY16 BannerBoundBoxes[][2];
+extern const CoordsXY BannerBoundBoxes[][2];
 
 extern const uint8_t PathSlopeToLandSlope[4];
 

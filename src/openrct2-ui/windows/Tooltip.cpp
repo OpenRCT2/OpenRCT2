@@ -63,7 +63,7 @@ static rct_window_event_list window_tooltip_events = {
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static int16_t _tooltipNumLines;
 
-void window_tooltip_reset(ScreenCoordsXY screenCoords)
+void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursorX = screenCoords.x;
     gTooltipCursorY = screenCoords.y;
@@ -130,7 +130,7 @@ void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCords)
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
 {
     rct_widget* widget;
 
@@ -178,10 +178,10 @@ static void window_tooltip_update(rct_window* w)
  */
 static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t left = w->x;
-    int32_t top = w->y;
-    int32_t right = w->x + w->width - 1;
-    int32_t bottom = w->y + w->height - 1;
+    int32_t left = w->windowPos.x;
+    int32_t top = w->windowPos.y;
+    int32_t right = w->windowPos.x + w->width - 1;
+    int32_t bottom = w->windowPos.y + w->height - 1;
 
     // Background
     gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_45);
@@ -200,7 +200,7 @@ static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_filter_pixel(dpi, right - 1, bottom - 1, PALETTE_DARKEN_3);
 
     // Text
-    left = w->x + ((w->width + 1) / 2) - 1;
-    top = w->y + 1;
+    left = w->windowPos.x + ((w->width + 1) / 2) - 1;
+    top = w->windowPos.y + 1;
     draw_string_centred_raw(dpi, left, top, _tooltipNumLines, _tooltipText);
 }

@@ -28,7 +28,7 @@ private:
 
 public:
     FootpathSceneryRemoveAction() = default;
-    FootpathSceneryRemoveAction(CoordsXYZ loc)
+    FootpathSceneryRemoveAction(const CoordsXYZ& loc)
         : _loc(loc)
     {
     }
@@ -57,17 +57,17 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        if (_loc.z / 8 < 2)
+        if (_loc.z < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > 248)
+        if (_loc.z > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
         }
 
-        auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
+        auto tileElement = map_get_footpath_element(_loc);
         if (tileElement == nullptr)
         {
             log_warning("Could not find path element.");
@@ -94,12 +94,12 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
+        auto tileElement = map_get_footpath_element(_loc);
         auto pathElement = tileElement->AsPath();
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
         }
 
         if (pathElement == nullptr)
@@ -109,7 +109,7 @@ public:
         }
 
         pathElement->SetAddition(0);
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
 
         auto res = MakeResult();
         res->Position = _loc;

@@ -24,7 +24,7 @@ struct XData
     bool begin;
     int32_t top, bottom;
 };
-typedef std::vector<XData> SweepLine;
+using SweepLine = std::vector<XData>;
 
 /*
  * Creates a list of vertical bounding box edges, stored as xdata and sorted
@@ -76,7 +76,7 @@ struct YData
 {
     int32_t count, depth;
 };
-typedef std::map<int32_t, YData> IntervalTree;
+using IntervalTree = std::map<int32_t, YData>;
 
 /*
  * Inserts the interval's top endpoint into the interval tree. If the endpoint

@@ -116,10 +116,11 @@ namespace OpenRCT2::Ui
         void SetCursorVisible(bool /*value*/) override
         {
         }
-        void GetCursorPosition(int32_t* /*x*/, int32_t* /*y*/) override
+        ScreenCoordsXY GetCursorPosition() override
         {
+            return {};
         }
-        void SetCursorPosition(int32_t /*x*/, int32_t /*y*/) override
+        void SetCursorPosition(const ScreenCoordsXY& /*cursorPosition*/) override
         {
         }
         void SetCursorTrap(bool /*value*/) override

@@ -36,14 +36,14 @@ void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
     EdgeStyle = newStyle;
 }
 
-uint32_t SurfaceElement::GetWaterHeight() const
+int32_t SurfaceElement::GetWaterHeight() const
 {
-    return WaterHeight;
+    return WaterHeight * 16;
 }
 
-void SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
+void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
 {
-    WaterHeight = newWaterHeight;
+    WaterHeight = newWaterHeight / 16;
 }
 
 bool SurfaceElement::CanGrassGrow() const
@@ -72,7 +72,7 @@ void SurfaceElement::SetGrassLength(uint8_t newLength)
     GrassLength = newLength;
 }
 
-void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords)
+void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, const CoordsXY& coords)
 {
     uint8_t oldLength = GrassLength & 0x7;
     uint8_t newLength = length & 0x7;
@@ -92,15 +92,15 @@ void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords
         return;
     }
 
-    int32_t z = base_height * 8;
-    map_invalidate_tile(coords.x, coords.y, z, z + 16);
+    int32_t z = GetBaseZ();
+    map_invalidate_tile({ coords, z, z + 16 });
 }
 
 /**
  *
  *  rct2: 0x006647A1
  */
-void SurfaceElement::UpdateGrassLength(CoordsXY coords)
+void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
 {
     // Check if tile is grass
     if (!CanGrassGrow())
@@ -109,8 +109,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     uint8_t grassLengthTmp = GrassLength & 7;
 
     // Check if grass is underwater or outside park
-    uint32_t waterHeight = GetWaterHeight() * 2;
-    if (waterHeight > base_height || !map_is_location_in_park(coords))
+    if (GetWaterHeight() > GetBaseZ() || !map_is_location_in_park(coords))
     {
         if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
             SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
@@ -121,10 +120,10 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     // Grass can't grow any further than CLUMPS_2 but this code also cuts grass
     // if there is an object placed on top of it.
 
-    int32_t z0 = base_height;
-    int32_t z1 = base_height + 2;
+    int32_t baseZ = GetBaseZ();
+    int32_t clearZ = GetBaseZ() + LAND_HEIGHT_STEP;
     if (Slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-        z1 += 2;
+        clearZ += LAND_HEIGHT_STEP;
 
     // Check objects above grass
     TileElement* tileElementAbove = (TileElement*)this;
@@ -166,9 +165,9 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
             // Grass should not be affected by ghost elements.
             if (tileElementAbove->IsGhost())
                 continue;
-            if (z0 >= tileElementAbove->clearance_height)
+            if (baseZ >= tileElementAbove->GetClearanceZ())
                 continue;
-            if (z1 < tileElementAbove->base_height)
+            if (clearZ < tileElementAbove->GetBaseZ())
                 continue;
 
             if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)

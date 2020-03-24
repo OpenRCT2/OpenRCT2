@@ -1859,38 +1859,14 @@ STR_2521    :Mostrar lista de empleados
 STR_2522    :Mostrar mensajes recientes
 STR_2523    :Mostrar mapa
 STR_2524    :Captura Pantalla
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Tecla RETROCESO
 STR_2534    :Tab
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Clear
 STR_2538    :INTRO/ENTER
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pausa
 STR_2545    :Caps
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Barra Espaciadora
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1907,54 +1883,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1967,53 +1896,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :Investigación Completa
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Llega un gran grupo de visitantes
@@ -2029,9 +1916,6 @@ STR_2693    :Terreno:
 STR_2694    :Generar
 STR_2695    :Terreno aleatorio
 STR_2696    :Colocar arboles
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Autoguardado:
 STR_2701    :Cada minuto
 STR_2702    :Cada 5 minutos
@@ -2043,13 +1927,6 @@ STR_2707    :Usar explorador de archivos del sistema
 STR_2708    :{WINDOW_COLOUR_1}¿Estas seguro de sobrescribir {STRINGID}?
 STR_2709    :Sobrescribir
 STR_2710    :Ingresar nombre para este archivo:
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :(arriba)
 STR_2719    :(nuevo archivo)
 STR_2720    :{UINT16}seg
@@ -2076,10 +1953,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat no encontrado
 STR_2743    :Copia 'data/css17.dat' de tu instalación de RCT1 en 'data/css50.dat' de tu instalación de RCT2, o asegúrate de que la carpeta de RCT1 en la sección "Avanzado" esté establecido correctamente.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Mi nuevo escenario
 STR_2750    :Mover todo hacia arriba
 STR_2751    :Mover todo hacia abajo
@@ -2906,7 +2779,6 @@ STR_5410    :Editar
 STR_5411    :Recargar
 STR_5412    :Cambiar a
 STR_5413    :Cargar
-STR_5414    :Cargar{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Cargar{MOVE_X}{87}{STRING}
 STR_5416    :Cargar{MOVE_X}{87}No seleccionado
 STR_5417    :Localización
@@ -3733,7 +3605,7 @@ STR_6273    :Música
 STR_6274    :No se puede establecer colores...
 STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
 STR_6276    :{RED}Hay invitados atascandose en {STRINGID}, probablemente debido a un tipo de atracción o modo de operación no válido.
-STR_6277    :{WINDOW_COLOUR_2}Índice de estación: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Índice de estación: {BLACK}{STRINGID}
 STR_6278    :Cantidad de autoguardado
 STR_6279    :{SMALLFONT}{BLACK}Número de partidas guardadas automáticamente a conservar.
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3785,6 +3657,7 @@ STR_6327    :Fondo transparente en capturas enormes
 STR_6328    :{SMALLFONT}{BLACK}Si se activa esta opción, las capturas de pantallas enormes tendrán un fondo transparente en lugar del fondo negro por defecto.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Descargando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 ##############
 # Escenarios #
@@ -3905,303 +3778,303 @@ STR_DTLS    :¡Por pasarlo bien!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Convierte los acantilados en un próspero parque de atracciones.
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :En el centro de este gran parque en desarrollo hay una montaña rusa de tres vías para carreras y duelos.
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its minature railway and a pair of vertical drop roller coasters
+STR_DTLS    :Esta mina abandonada tiene posibilidades para ser convertida en atracción turística, con un ferrocarril en miniatura y un par de montañas rusas de caída en picado.
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :Dispones de un viejo puente inutilizado para convertirlo en un parque de atracciones.
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :Este parque, que ocupa unos terrenos a ambos lados de una autopista, cuenta con muchas atracciones que ya están en funcionamiento.
 
 <Haunted Harbour>
 STR_SCNR    :Haunted Harbour
 STR_PARK    :Haunted Harbour
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_DTLS    :Las autoridades locales han accedido a vender a este pequeño parque costero unos terrenos contiguos por un precio barato, con la condición de que se conserven determinadas atracciones.
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :Este castillo queda a tu entera disposición para que lo conviertas en un parque temático.
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+STR_DTLS    :Este parque futurista tiene sitio de sobra para nuevas atracciones en la zona de paisajes extraterrestres.
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+STR_DTLS    :La población local prefiere atracciones tranquilas y relajantes. Debes expandir el parque para satisfacer sus gustos.
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :En las profundidades de la selva hay unos grandes terrenos listos para ser convertidos en un parque temático.
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :La atracción principal de este nuevo parque la constituyen los lagos escalonados.
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical rides but is badly in debt
+STR_DTLS    :Este antiguo parque cuenta con numerosas atracciones históricas, pero en la actualidad se encuentra en quiebra.
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :Se ha despejado y tematizado parcialmente un gran terreno que está listo para que lo conviertas en un parque con temática de paisajes.
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :Una prospera compañía frutícola ha construido un ferrocarril en miniatura para aumentar sus ingresos. Tu misión es convertirlo en un verdadero parque de atracciones.
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :Dispones del área que rodea una presa para convertirla en un parque de atracciones.
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :Posees un cañón inmenso para convertirlo en parque temático.
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :El clima es tan húmedo que se ha construido una pirámide gigante para poder colocar algunas atracciones a cubierto.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :Las autoridades locales no permitirán que se construya por encima de la altura de los árboles del parque.
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :Desarrolla este parque temático romano añadiendo atracciones y montañas rusas.
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Construye parcialmente sobre una serie de islas pequeñas; este parque cuenta ya con un par de montañas rusas de gran tamaño como atracción central.
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Construye un parque que atraiga a la población local en busca de emociones fuertes.
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :El oasis situado en el centro del parque constituye una oportunidad única para construir un parque de atracciones.
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :¿Puedes devolver la vida a este antiguo parque, ahora abandonado y en ruinas?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :Cuentas con un presupuesto y un tiempo limitados para reformar este parque, que esta lleno de atracciones defectuosas y peligrosas.
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :Las autoridades locales prohíben todo tipo de publicidad o propaganda de este parque, de modo que este deberá salir adelante por si mismo.
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :Una atracción de carreras de obstáculos de cuatro calles es el núcleo principal de este parque en crecimiento.
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :Convierte esta cantera abandonada en un lugar que atraiga a turistas en busca de emociones fuertes.
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :Tienes a tu disposición todo el tiempo necesario para convertir esta área montañosa en un enorme parque de atracciones, pero no olvides que el presupuesto con el que cuentas es limitado.
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :Un pequeño parque ha establecido un acuerdo con la ciudad vecina con el fin de ampliar su territorio.
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :Deberás convertir un gran parque con jardines en un próspero parque de atracciones.
 
 ## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :Una colección de icebergs dan un gélido entorno a este ambicioso parque temático.
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :Un volcán en estado latente es el entorno para este proyecto de montaña rusa en construcción.
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Libre de cualquier límite financiero, tu reto es desarrollar este desértico parque mientras mantienes contentos a los invitados.
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Tu cometido es construir un gran parque lleno de montañas rusas en medio de Razor Rocks.
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :Un gran lago en un viejo cráter es el entorno para este parque.
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Este gran parque ya cuenta con una excelente hyper-montaña rusa, aunque tu cometido es el de aumentar significantemente sus beneficios.
 
 <Paradise Pier 2>
 STR_SCNR    :Big Pier 2
 STR_PARK    :Big Pier 2
-STR_DTLS    :Big Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Muelle Paraiso ha aumentado su red de pasarelas sobre el mar, y tu cometido es el de agrandar el parque para utilizar el espacio extra.
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Una cala frente al mar es el entorno para este proyecto de montaña rusa en construcción.
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+STR_DTLS    :Hay que desarrollar un castillo con un par de montañas rusas dentro de un gran parque temático.
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :Un parque que tiene gran parte de sus aceras y montañas rusas bajo tierra.
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :Tienes a tu disposición un valle lleno de glaciares para desarrollar en el un parque temático.
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :En un mundo lejano en el que el dinero no es necesario, debes construir un complejo de entretenimiento en el que tener a la gente contenta.
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :Necesitan terminarse cinco montañas rusas en este desértico parque.
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled rides
+STR_DTLS    :En este parque histórico solo está permitido construir atracciones al viejo estilo.
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Desarrolla este parque ajeno para maximizar sus beneficios.
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+STR_DTLS    :Este buen parque de atracciones temático ya cuenta con numerosas atracciones, aunque tiene espacio suficiente para ampliarlo.
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :Un parque espeluznante con una montaña rusa gigante como atracción principal.
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :Dos grandes pedazos de roca sacados de la arena del desierto, sobre los cuales se construyen los principios de este parque temático.
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :En este gran parque debes diseñar y construir diez grandes montañas rusas.
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :Una larga y estrecha isla será el desafiante entorno en el que debes construir una selección de montañas rusas.
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Un paisaje helado que tiene que convertirse en un próspero parque temático.
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :Tienes a tu disposición un desértico parque con algunas montañas rusas ingeniosamente diseñadas, para ampliarlo.
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In this tiny park you must finish building the five existing coasters
+STR_DTLS    :En este diminuto parque debes terminar de construir las cinco montañas rusas existentes.
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transporation system around its edge
+STR_DTLS    :Un gran parque con un novedoso sistema de transporte alrededor de su perímetro.
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :This large island is all yours to develop as an amusement park
+STR_DTLS    :Esta gran isla es toda tuya para que desarrolles en ella un parque de atracciones.
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
 STR_PARK    :Urban Jungle
-STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+STR_DTLS    :Un rascacielos gigante abandonado es una oportunidad única para un desarrollador de parques temáticos.
 
 <Terror Town>
 STR_SCNR    :Terror Town
 STR_PARK    :Terror Town
-STR_DTLS    :This urban area is all yours to develop into as an amusement park
+STR_DTLS    :Esta área urbana es toda tuya para que la desarrolles como parque de atracciones.
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :A giant park already packed full of rides needs improving
+STR_DTLS    :Un parque gigante completamente equipado con atracciones, necesita mejoras.
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
 STR_PARK    :Venus Ponds
-STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+STR_DTLS    :En un planeta lejano, esta zona de terreno debe convertirse en un parque temático.
 
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Intenta crear el parque rentable más pequeño del mundo.
 
 ## Real Parks from RCT1
 # None of them had details

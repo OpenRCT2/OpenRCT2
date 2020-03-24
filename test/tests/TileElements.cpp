@@ -51,7 +51,7 @@ std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
     // Flat paths want to connect to other paths in any direction
-    const TileElement* const pathElement = map_get_footpath_element(19, 18, 14);
+    const TileElement* const pathElement = map_get_footpath_element(TileCoordsXYZ{ 19, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(pathElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 0 }, nullptr));
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 1 }, nullptr));
@@ -63,7 +63,7 @@ TEST_F(TileElementWantsFootpathConnection, FlatPath)
 TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 {
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
-    const TileElement* const slopedPathElement = map_get_footpath_element(18, 18, 14);
+    const TileElement* const slopedPathElement = map_get_footpath_element(TileCoordsXYZ{ 18, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(slopedPathElement, nullptr);
     ASSERT_TRUE(slopedPathElement->AsPath()->IsSloped());
     // Bottom and top of sloped path want a path connection
@@ -82,7 +82,8 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 TEST_F(TileElementWantsFootpathConnection, Stall)
 {
     // Stalls usually have one path direction flag, but can have multiple (info kiosk for example)
-    const TrackElement* const stallElement = map_get_track_element_at(19 << 5, 15 << 5, 14);
+    auto tileCoords = TileCoordsXYZ{ 19, 15, 14 };
+    const TrackElement* const stallElement = map_get_track_element_at(tileCoords.ToCoordsXYZ());
     ASSERT_NE(stallElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 15, 14, 0 }, nullptr));
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 14, 1 }, nullptr));
@@ -94,7 +95,8 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 {
     // Ride entrances and exits want a connection in one direction
-    const EntranceElement* const entranceElement = map_get_ride_entrance_element_at(18 << 5, 8 << 5, 14, false);
+    const EntranceElement* const entranceElement = map_get_ride_entrance_element_at(
+        TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(entranceElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 8, 14, 0 }, nullptr));
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 14, 1 }, nullptr));
@@ -106,7 +108,7 @@ TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 TEST_F(TileElementWantsFootpathConnection, RideExit)
 {
     // The exit has been rotated; it wants a path connection in direction 1, but not 0 like the entrance
-    const EntranceElement* const exitElement = map_get_ride_exit_element_at(18 << 5, 10 << 5, 14, false);
+    const EntranceElement* const exitElement = map_get_ride_exit_element_at(TileCoordsXYZ{ 18, 10, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(exitElement, nullptr);
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 14, 0 }, nullptr));
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 10, 14, 1 }, nullptr));

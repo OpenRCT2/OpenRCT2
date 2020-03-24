@@ -116,8 +116,8 @@ STR_0530    :Carros pendurados por um cabo de aço andam continuamente de uma po
 STR_0531    :Uma montanha-russa de aço compacta onde trens viajam por parafusos e loops
 STR_0532    :O Labirinto é construído com cercas vivas ou muros de 1,82 metros de altura. Os visitantes vagam pelo labirinto podendo sair apenas quando encontrarem a saída
 STR_0533    :Prédio de madeira com uma escada interna e um escorregador espiral externo para ser usado com tapetes deslizantes
-STR_0534    :Passageiros pilotam karts com motor a gasolina
-STR_0535    :Barcos em formato de troncos viajam por um canal d'água, esparrinhando água e molhando passageiros em declives íngremes
+STR_0534    :Visitantes disputam uma corrida de kart em uma pista de asfalto
+STR_0535    :Barcos navegam por um canal d'água, esparrinhando água e molhando passageiros em declives íngremes
 STR_0536    :Barcos circulares serpenteiam por um largo canal d'água, esparrinhando por cachoeiras e empolgando os passageiros por corredeiras espumantes
 STR_0537    :Carros de bate-bate controlados pelos passageiros
 STR_0538    :Grande navio pirata de balanço.
@@ -158,7 +158,7 @@ STR_0578    :Carros correm em trilhos envolvidos por anéis, passando por quedas
 STR_0579    :Um jogo suave de golfe em miniatura
 STR_0580    :Uma montanha-russa de aço gigante capaz de quedas suaves e colinas maiores que 90m
 STR_0581    :Um anel de assentos é puxado para o topo de uma alta torre enquanto gira lentamente, então desce em queda livre, parando suavemente na parte inferior usando freios magnéticos
-STR_0582    :Veículos aerobarcos guiados pelos passageiros
+STR_0582    :Visitantes passeiam em aerobarcos que eles mesmos pilotam
 STR_0583    :Prédio contendo salas tortas e corredores inclinados para desorientar as pessoas que andam por eles
 STR_0584    :Bicicletas especiais correm em uma pista de aço de monotrilho, controladas pelo pedalar dos passageiros
 STR_0585    :Passageiros sentam em um par de cadeiras suspensas abaixo do trilho enquanto fazem loops e giros por inversões estreitas
@@ -1858,39 +1858,14 @@ STR_2521    :Mostrar lista de funcionários
 STR_2522    :Mostrar mensagens recentes
 STR_2523    :Mostrar mapa
 STR_2524    :Captura de tela
-### The following need to be reordered to match SDL_keycode layout.
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Backspace
 STR_2534    :Tab
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Clear
 STR_2538    :Return
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps Lock
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Barra de Espaço
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1907,54 +1882,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1967,53 +1895,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :Todas as pesquisas completadas
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa seu dinheiro em {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Um grande grupo de visitantes está chegando (250 visitantes)
@@ -2029,9 +1915,6 @@ STR_2693    :Terreno:
 STR_2694    :Gerar
 STR_2695    :Terreno aleatório
 STR_2696    :Colocar árvores
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Salvamento automático:
 STR_2701    :A cada minuto
 STR_2702    :A cada 5 minutos
@@ -2043,13 +1926,6 @@ STR_2707    :Usar explorador de arquivos do sistema
 STR_2708    :{WINDOW_COLOUR_1}Você tem certeza que quer sobrescrever {STRINGID}?
 STR_2709    :Sobrescrever
 STR_2710    :Tipo de nome para o arquivo.
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :Voltar Pasta
 STR_2719    :Novo Arquivo
 STR_2720    :{UINT16}s
@@ -2076,10 +1952,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat não encontrado
 STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Avançado está correto.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Meu novo cenário
 # New strings used in the cheats window previously these were ???
 STR_2750    :Mover todos os itens para o topo
@@ -2603,11 +2475,6 @@ STR_3390    :Muitos itens selecionados
 STR_3437    :{SMALLFONT}{BLACK}Limpar grandes áreas de cenário na paisagem
 STR_3438    :Impossível remover todos os cenários a partir daqui...
 STR_3439    :Limpar Cenário
-STR_3440    :Página 1
-STR_3441    :Página 2
-STR_3442    :Página 3
-STR_3443    :Página 4
-STR_3444    :Página 5
 STR_3445    :Definir a Área de Patrulha
 STR_3446    :Cancelar a Área de Patrulha
 
@@ -2902,7 +2769,6 @@ STR_5410    :Editar
 STR_5411    :Recarregar
 STR_5412    :Ir para
 STR_5413    :Carregar
-STR_5414    :Carregar{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Carregar{MOVE_X}{87}{STRING}
 STR_5416    :Carregar{MOVE_X}{87}Jogo salvo não selecionado
 STR_5417    :Localização
@@ -3036,7 +2902,7 @@ STR_5547    :{SMALLFONT}{BLACK}Rosa claro
 STR_5548    :Exibir todos os modos operacionais
 STR_5549    :Ano/Mês/Dia
 STR_5550    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
-STR_5551    :Ano/Mês/Dia
+STR_5551    :Ano/Dia/Mês
 STR_5552    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Pausar jogo quando a Steam estiver sobrepondo
 STR_5554    :{SMALLFONT}{BLACK}Habilitar ferramenta de montanha
@@ -3724,7 +3590,7 @@ STR_6273    :Música
 STR_6274    :Impossível definir esquema de cor...
 STR_6275    :{WINDOW_COLOUR_2}Estilo da estação:
 STR_6276    :{RED}{STRINGID} está deixando visitantes presos, possivelmente por um tipo de brinquedo ou modo de operação inválido.
-STR_6277    :{WINDOW_COLOUR_2}Índice de estação: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Índice de estação: {BLACK}{STRINGID}
 STR_6278    :Quantidade de Autosave
 STR_6279    :{SMALLFONT}{BLACK}Número de autosaves que devem ser guardados
 STR_6280    :{SMALLFONT}{BLACK}Bate-papo
@@ -3780,6 +3646,36 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Baixando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Criar Patos
 STR_6332    :Remover Patos
+STR_6333    :Aumentar fator de escala
+STR_6334    :Diminuir fator de escala
+STR_6335    :Inspetor de azulejo: Inserir elemento corrupto
+STR_6336    :Inspetor de azulejo: Copiar elemento
+STR_6337    :Inspetor de azulejo: Colar elemento
+STR_6338    :Inspetor de azulejo: Apagar elemento
+STR_6339    :Inspetor de azulejo: Mover elemento pra cima
+STR_6340    :Inspetor de azulejo: Mover elemento pra baixo
+STR_6341    :Inspetor de azulejo: Aumentar coordenada X
+STR_6342    :Inspetor de azulejo: Diminuir coordenada X
+STR_6343    :Inspetor de azulejo: Aumentar coordenada Y
+STR_6344    :Inspetor de azulejo: Diminuir coordenada Y
+STR_6345    :Inspetor de azulejo: Aumentar altura do elemento
+STR_6346    :Inspetor de azulejo: Diminuir altura do elemento
+STR_6347    :Adições de caminho não podem ser feitas em passagens de nível!
+STR_6348    :Remova a passagem de nível primeiro!
+STR_6349    :Sequência de título aleatória
+STR_6350    :Dispersar
+STR_6351    :Ferramenta de Dispersão de Cenário
+STR_6352    :Densidade
+STR_6353    :{SMALLFONT}{BLACK}Densidade baixa
+STR_6354    :{SMALLFONT}{BLACK}Densidade média
+STR_6355    :{SMALLFONT}{BLACK}Densidade alta
+STR_6356    :{SMALLFONT}{BLACK}Gerar patos se o parque tiver água
+STR_6357    :{SMALLFONT}{BLACK}Remover todos os patos do mapa
+STR_6358    :Página {UINT16}
+STR_6359    :{POP16}{POP16}Página {UINT16}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Habilitar efeitos luminosos em atrações (experimental)
+STR_6362    :{SMALLFONT}{BLACK}Se habilitados, veículos de atrações com trilhos serão iluminados à noite.
 
 #############
 # Scenarios #

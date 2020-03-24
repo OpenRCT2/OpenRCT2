@@ -207,73 +207,70 @@ static int32_t news_item_get_new_history_slot()
  *
  *  rct2: 0x0066BA74
  */
-void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, int32_t* y, int32_t* z)
+std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t subject)
 {
-    Ride* ride;
-    Peep* peep;
-    rct_vehicle* vehicle;
+    std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
     switch (type)
     {
         case NEWS_ITEM_RIDE:
-            ride = get_ride(subject);
-            if (ride == nullptr || ride->overall_view.xy == RCT_XY8_UNDEFINED)
+        {
+            Ride* ride = get_ride(subject);
+            if (ride == nullptr || ride->overall_view.isNull())
             {
-                *x = LOCATION_NULL;
                 break;
             }
-            *x = ride->overall_view.x * 32 + 16;
-            *y = ride->overall_view.y * 32 + 16;
-            *z = tile_element_height({ *x, *y });
+            auto rideViewCentre = ride->overall_view.ToTileCentre();
+            subjectLoc = CoordsXYZ{ rideViewCentre, tile_element_height(rideViewCentre) };
             break;
+        }
         case NEWS_ITEM_PEEP_ON_RIDE:
-            peep = GET_PEEP(subject);
-            *x = peep->x;
-            *y = peep->y;
-            *z = peep->z;
-            if (*x != LOCATION_NULL)
+        {
+            Peep* peep = GET_PEEP(subject);
+            subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+            if (subjectLoc->x != LOCATION_NULL)
                 break;
 
             if (peep->state != 3 && peep->state != 7)
             {
-                *x = LOCATION_NULL;
+                subjectLoc = std::nullopt;
                 break;
             }
 
             // Find which ride peep is on
-            ride = get_ride(peep->current_ride);
+            Ride* ride = get_ride(peep->current_ride);
             if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
-                *x = LOCATION_NULL;
+                subjectLoc = std::nullopt;
                 break;
             }
 
             // Find the first car of the train peep is on
-            vehicle = &(get_sprite(ride->vehicles[peep->current_train])->vehicle);
+            Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
             // Find the actual car peep is on
             for (int32_t i = 0; i < peep->current_car; i++)
             {
-                vehicle = &(get_sprite(vehicle->next_vehicle_on_train)->vehicle);
+                vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
             }
-            *x = vehicle->x;
-            *y = vehicle->y;
-            *z = vehicle->z;
+            subjectLoc = CoordsXYZ{ vehicle->x, vehicle->y, vehicle->z };
             break;
+        }
         case NEWS_ITEM_PEEP:
-            peep = GET_PEEP(subject);
-            *x = peep->x;
-            *y = peep->y;
-            *z = peep->z;
+        {
+            Peep* peep = GET_PEEP(subject);
+            subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
             break;
+        }
         case NEWS_ITEM_BLANK:
-            *x = subject;
-            *y = subject >> 16;
-            *z = tile_element_height({ *x, *y });
+        {
+            auto subjectXY = CoordsXY{ subject & 0xFFFF, subject >> 16 };
+            subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
             break;
+        }
         default:
-            *x = LOCATION_NULL;
             break;
     }
+    return subjectLoc;
 }
 
 /**
@@ -356,11 +353,13 @@ void news_item_open_subject(int32_t type, int32_t subject)
             context_open_window(WC_FINANCES);
             break;
         case NEWS_ITEM_RESEARCH:
-            if (subject >= RESEARCH_ENTRY_RIDE_MASK)
+        {
+            auto item = ResearchItem(subject, 0);
+            if (item.type == RESEARCH_ENTRY_TYPE_RIDE)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
-                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, subject >> 8);
-                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, subject & 0xFF);
+                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
+                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
                 context_open_intent(&intent);
                 break;
             }
@@ -386,6 +385,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             if (window != nullptr)
                 window_event_mouse_down_call(window, WC_SCENERY__WIDX_SCENERY_TAB_1 + subject);
             break;
+        }
         case NEWS_ITEM_PEEPS:
         {
             auto intent = Intent(WC_GUEST_LIST);

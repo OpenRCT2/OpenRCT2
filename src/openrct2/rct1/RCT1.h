@@ -19,15 +19,15 @@
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
-#define RCT1_MAX_TILE_ELEMENTS 0xC000
-#define RCT1_MAX_SPRITES 5000
-#define RCT1_MAX_TRAINS_PER_RIDE 12
-#define RCT1_MAX_MAP_SIZE 128
-#define RCT1_MAX_RIDES_IN_PARK 128
-#define RCT1_MAX_STAFF 116
-#define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
-#define RCT1_MAX_ANIMATED_OBJECTS 1000
-#define RCT1_MAX_BANNERS 100
+constexpr const uint16_t RCT1_MAX_TILE_ELEMENTS = 0xC000;
+constexpr const uint16_t RCT1_MAX_SPRITES = 5000;
+constexpr const uint8_t RCT1_MAX_TRAINS_PER_RIDE = 12;
+constexpr const uint8_t RCT1_MAX_MAP_SIZE = 128;
+constexpr const uint8_t RCT1_MAX_STAFF = 116;
+constexpr const uint8_t RCT1_RESEARCH_FLAGS_SEPARATOR = 0xFF;
+constexpr const uint16_t RCT1_MAX_ANIMATED_OBJECTS = 1000;
+constexpr const uint8_t RCT1_MAX_BANNERS = 100;
+constexpr int32_t RCT1_COORDS_Z_STEP = 4;
 
 struct ParkLoadResult;
 
@@ -64,14 +64,14 @@ struct rct1_ride
     uint16_t name;                                            // 0x022
     uint16_t name_argument_ride;                              // 0x024
     uint16_t name_argument_number;                            // 0x026
-    LocationXY8 overall_view;                                 // 0x028
-    LocationXY8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];  // 0x02A
+    RCT12xy8 overall_view;                                    // 0x028
+    RCT12xy8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];     // 0x02A
     uint8_t station_height[RCT12_MAX_STATIONS_PER_RIDE];      // 0x032
     uint8_t station_length[RCT12_MAX_STATIONS_PER_RIDE];      // 0x036
     uint8_t station_light[RCT12_MAX_STATIONS_PER_RIDE];       // 0x03A
     uint8_t station_depart[RCT12_MAX_STATIONS_PER_RIDE];      // 0x03E
-    LocationXY8 entrance[RCT12_MAX_STATIONS_PER_RIDE];        // 0x042
-    LocationXY8 exit[RCT12_MAX_STATIONS_PER_RIDE];            // 0x04A
+    RCT12xy8 entrance[RCT12_MAX_STATIONS_PER_RIDE];           // 0x042
+    RCT12xy8 exit[RCT12_MAX_STATIONS_PER_RIDE];               // 0x04A
     uint16_t last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE]; // 0x052
     uint8_t num_peeps_in_queue[RCT12_MAX_STATIONS_PER_RIDE];  // 0x05A
     uint16_t vehicles[RCT1_MAX_TRAINS_PER_RIDE];              // 0x05E
@@ -87,7 +87,7 @@ struct rct1_ride
     uint8_t max_waiting_time;                                 // 0x07F
     uint8_t operation_option;                                 // 0x080
     uint8_t boat_hire_return_direction;                       // 0x081
-    LocationXY8 boat_hire_return_position;                    // 0x082
+    RCT12xy8 boat_hire_return_position;                       // 0x082
     uint8_t data_logging_index;                               // 0x084
     uint8_t special_track_elements;                           // 0x085
     uint16_t unk_86;                                          // 0x086
@@ -107,7 +107,7 @@ struct rct1_ride
     uint32_t testing_flags;                                   // 0x0B8
     // x y map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    LocationXY8 cur_test_track_location; // 0x0BC
+    RCT12xy8 cur_test_track_location; // 0x0BC
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16_t turn_count_default; // 0x0BE X = current turn count
     uint16_t turn_count_banked;  // 0x0C0
@@ -124,22 +124,22 @@ struct rct1_ride
     uint8_t unk_CC[2];              // 0x0CC
     uint8_t num_sheltered_sections; // 0x0CE
     // see cur_test_track_location
-    uint8_t cur_test_track_z;                    // 0x0CF
-    int16_t unk_D0;                              // 0x0D0
-    int16_t unk_D2;                              // 0x0D2
-    int16_t customers_per_hour;                  // 0x0D4
-    int16_t unk_D6;                              // 0x0D6
-    int16_t unk_D8;                              // 0x0D8
-    int16_t unk_DA;                              // 0x0DA
-    int16_t unk_DC;                              // 0x0DC
-    int16_t unk_DE;                              // 0x0DE
-    uint16_t age;                                // 0x0E0
-    int16_t running_cost;                        // 0x0E2
-    int16_t unk_E4;                              // 0x0E4
-    int16_t unk_E6;                              // 0x0E6
-    money16 price;                               // 0x0E8
-    LocationXY8 chairlift_bullwheel_location[2]; // 0x0EA
-    uint8_t chairlift_bullwheel_z[2];            // 0x0EE
+    uint8_t cur_test_track_z;                 // 0x0CF
+    int16_t unk_D0;                           // 0x0D0
+    int16_t unk_D2;                           // 0x0D2
+    int16_t customers_per_hour;               // 0x0D4
+    int16_t unk_D6;                           // 0x0D6
+    int16_t unk_D8;                           // 0x0D8
+    int16_t unk_DA;                           // 0x0DA
+    int16_t unk_DC;                           // 0x0DC
+    int16_t unk_DE;                           // 0x0DE
+    uint16_t age;                             // 0x0E0
+    int16_t running_cost;                     // 0x0E2
+    int16_t unk_E4;                           // 0x0E4
+    int16_t unk_E6;                           // 0x0E6
+    money16 price;                            // 0x0E8
+    RCT12xy8 chairlift_bullwheel_location[2]; // 0x0EA
+    uint8_t chairlift_bullwheel_z[2];         // 0x0EE
     union
     {
         rating_tuple ratings;
@@ -187,7 +187,7 @@ struct rct1_ride
     uint8_t broken_vehicle;            // 0x141
     uint8_t broken_car;                // 0x142
     uint8_t breakdown_reason;          // 0x143
-    uint8_t unk_144[2];                // 0x144
+    money16 price_secondary;           // 0x144
     union
     {
         struct
@@ -248,9 +248,9 @@ struct rct1_vehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction;   // 0x36 (0000 0000 0000 0011)
-        int16_t track_type;        // 0x36 (0000 0011 1111 1100)
-        LocationXY8 boat_location; // 0x36
+        int16_t track_direction; // 0x36 (0000 0000 0000 0011)
+        int16_t track_type;      // 0x36 (0000 0011 1111 1100)
+        RCT12xy8 boat_location;  // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -309,7 +309,7 @@ struct rct1_vehicle : RCT12SpriteBase
     uint16_t var_C8;
     uint16_t var_CA;
     uint8_t scream_sound_id; // 0xCC
-    uint8_t var_CD;
+    uint8_t TrackSubposition;
     union
     {
         uint8_t var_CE;

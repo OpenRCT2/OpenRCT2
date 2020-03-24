@@ -32,21 +32,21 @@ int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
-LocationXY8 gClipSelectionA = { 0, 0 };
-LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+CoordsXY gClipSelectionA = { 0, 0 };
+CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
 uint32_t gScenarioTicks;
 uint8_t gCurrentRotation;
 
 // clang-format off
-const CoordsXY CoordsDirectionDelta[] = {
-    { -32, 0 },
-    { 0, +32 },
-    { +32, 0 },
-    { 0, -32 },
-    { -32, +32 },
-    { +32, +32 },
-    { +32, -32 },
-    { -32, -32 },
+constexpr const std::array<CoordsXY, 8> CoordsDirectionDelta = {
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{               0, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, 0 },
+    CoordsXY{               0, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
 const TileCoordsXY TileDirectionDelta[] = {
@@ -61,8 +61,8 @@ const TileCoordsXY TileDirectionDelta[] = {
 };
 // clang-format on
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex);
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex);
+TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex);
+TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex);
 
 uint8_t get_current_rotation()
 {
@@ -91,9 +91,9 @@ int object_entry_group_counts[] = {
 GeneralConfiguration gConfigGeneral;
 uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
-LocationXY16 gMapSelectPositionA;
-LocationXY16 gMapSelectPositionB;
-LocationXYZ16 gMapSelectArrowPosition;
+CoordsXY gMapSelectPositionA;
+CoordsXY gMapSelectPositionB;
+CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
 void entrance_paint(paint_session* session, uint8_t direction, int height, const TileElement* tile_element)
@@ -157,15 +157,15 @@ rct_sprite* get_sprite(size_t sprite_idx)
 
 bool TileElementBase::IsLastForTile() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 void TileElementBase::SetLastForTile(bool on)
 {
     if (on)
-        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     else
-        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+        Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
 uint8_t TileElementBase::GetType() const
@@ -175,22 +175,23 @@ uint8_t TileElementBase::GetType() const
 
 bool TileElementBase::IsGhost() const
 {
-    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 bool TrackElement::BlockBrakeClosed() const
 {
-    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
 }
 
-TileElement* map_get_first_element_at(int x, int y)
+TileElement* map_get_first_element_at(const CoordsXY& elementPos)
 {
-    if (x < 0 || y < 0 || x > 255 || y > 255)
+    if (elementPos.x < 0 || elementPos.y < 0 || elementPos.x > 255 || elementPos.y > 255)
     {
         log_error("Trying to access element outside of range");
         return nullptr;
     }
-    return gTileElementTilePointers[x + y * 256];
+    auto tileElementPos = TileCoordsXY{ elementPos };
+    return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
 bool ride_type_has_flag(int rideType, uint32_t flag)
@@ -304,12 +305,12 @@ uint8_t TrackElement::GetDoorBState() const
     return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
 }
 
-ride_idnew_t TrackElement::GetRideIndex() const
+ride_id_t TrackElement::GetRideIndex() const
 {
     return RideIndex;
 }
 
-void TrackElement::SetRideIndex(ride_idnew_t newRideIndex)
+void TrackElement::SetRideIndex(ride_id_t newRideIndex)
 {
     RideIndex = newRideIndex;
 }
@@ -395,12 +396,12 @@ void TrackElement::SetHasChain(bool on)
     }
 }
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex)
 {
     return ride->stations[stationIndex].Entrance;
 }
 
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
+TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex)
 {
     return ride->stations[stationIndex].Exit;
 }
@@ -426,9 +427,9 @@ uint8_t SurfaceElement::GetSlope() const
     return Slope;
 }
 
-uint32_t SurfaceElement::GetWaterHeight() const
+int32_t SurfaceElement::GetWaterHeight() const
 {
-    return WaterHeight;
+    return WaterHeight * 16;
 }
 
 bool TrackElement::IsHighlighted() const
@@ -438,7 +439,7 @@ bool TrackElement::IsHighlighted() const
 
 uint8_t PathElement::GetEdges() const
 {
-    return edges & 0xF;
+    return Edges & 0xF;
 }
 
 StationObject* ride_get_station_object(const Ride* ride)
@@ -446,7 +447,7 @@ StationObject* ride_get_station_object(const Ride* ride)
     return nullptr;
 }
 
-bool rct_vehicle::IsGhost() const
+bool Vehicle::IsGhost() const
 {
     auto r = get_ride(ride);
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
@@ -454,11 +455,47 @@ bool rct_vehicle::IsGhost() const
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const
 {
-    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
 }
 
 void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 {
-    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
-    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+    Flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    Flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
+}
+
+int32_t TileElementBase::GetBaseZ() const
+{
+    return base_height * COORDS_Z_STEP;
+}
+
+void TileElementBase::SetBaseZ(int32_t newZ)
+{
+    base_height = (newZ / COORDS_Z_STEP);
+}
+
+int32_t TileElementBase::GetClearanceZ() const
+{
+    return clearance_height * COORDS_Z_STEP;
+}
+
+void TileElementBase::SetClearanceZ(int32_t newZ)
+{
+    clearance_height = (newZ / COORDS_Z_STEP);
+}
+
+int32_t RideStation::GetBaseZ() const
+{
+    return Height * COORDS_Z_STEP;
+}
+
+void RideStation::SetBaseZ(int32_t newZ)
+{
+    Height = newZ / COORDS_Z_STEP;
+}
+
+CoordsXYZ RideStation::GetStart() const
+{
+    TileCoordsXYZ stationTileCoords{ Start.x, Start.y, Height };
+    return stationTileCoords.ToCoordsXYZ();
 }

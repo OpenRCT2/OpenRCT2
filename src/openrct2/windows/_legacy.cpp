@@ -237,7 +237,7 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
  * @param[out] _trackType (dh)
  * @param[out] _trackDirection (bh)
  * @param[out] _rideIndex (dl)
- * @param[out] _liftHillAndAlternativeState (liftHillAndAlternativeState)
+ * @param[out] _liftHillAndInvertedState (liftHillAndInvertedState)
  * @param[out] _x (ax)
  * @param[out] _y (cx)
  * @param[out] _z (di)
@@ -245,12 +245,12 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
+    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndInvertedState, int32_t* _x,
     int32_t* _y, int32_t* _z, int32_t* _properties)
 {
     ride_id_t rideIndex;
     uint8_t trackType, trackDirection;
-    uint16_t z, x, y, liftHillAndAlternativeState, properties;
+    uint16_t x, y, liftHillAndInvertedState, properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();
     if (!std::get<0>(updated_element))
@@ -259,16 +259,16 @@ bool window_ride_construction_update_state(
     }
 
     trackType = std::get<1>(updated_element);
-    liftHillAndAlternativeState = 0;
+    liftHillAndInvertedState = 0;
     rideIndex = _currentRideIndex;
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
     {
-        liftHillAndAlternativeState |= CONSTRUCTION_LIFT_HILL_SELECTED;
+        liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
     }
 
     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
     {
-        liftHillAndAlternativeState |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+        liftHillAndInvertedState |= CONSTRUCTION_INVERTED_TRACK_SELECTED;
     }
 
     auto ride = get_ride(rideIndex);
@@ -315,7 +315,7 @@ bool window_ride_construction_update_state(
             {
                 trackType = (uint8_t)alternativeType;
             }
-            liftHillAndAlternativeState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }
 
@@ -323,7 +323,7 @@ bool window_ride_construction_update_state(
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
-    z = _currentTrackBegin.z;
+    auto z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         z -= trackCoordinates->z_end;
@@ -365,12 +365,12 @@ bool window_ride_construction_update_state(
 
     if (turnOffLiftHill && !gCheatsEnableChainLiftOnAllTrack)
     {
-        liftHillAndAlternativeState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+        liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
 
         if (trackType == TRACK_ELEM_LEFT_CURVED_LIFT_HILL || trackType == TRACK_ELEM_RIGHT_CURVED_LIFT_HILL)
         {
-            liftHillAndAlternativeState |= CONSTRUCTION_LIFT_HILL_SELECTED;
+            liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }
 
@@ -389,8 +389,8 @@ bool window_ride_construction_update_state(
         *_trackDirection = trackDirection;
     if (_rideIndex != nullptr)
         *_rideIndex = rideIndex;
-    if (_liftHillAndAlternativeState != nullptr)
-        *_liftHillAndAlternativeState = liftHillAndAlternativeState;
+    if (_liftHillAndInvertedState != nullptr)
+        *_liftHillAndInvertedState = liftHillAndInvertedState;
     if (_x != nullptr)
         *_x = x;
     if (_y != nullptr)

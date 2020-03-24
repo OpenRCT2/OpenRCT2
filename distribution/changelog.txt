@@ -1,3 +1,56 @@
+0.2.4+ (in development)
+------------------------------------------------------------------------
+- Feature: [#3154] Use a random title sequence each time it is shown.
+- Feature: [#6553] Android version now runs in full screen.
+- Feature: [#7865] Transport rides can now be synchronised.
+- Feature: [#9073] Shortcut keys for the Tile Inspector.
+- Feature: [#10305] Add two shortcuts for increasing and decreasing the scaling factor.
+- Feature: [#10189] Make Track Designs work in multiplayer.
+- Feature: [#10357] Added window for scenery scatter tool, allowing for area and density selection.
+- Feature: [#10637] Console command to remove all floating objects.
+- Change: [#1164] Use available translations for shortcut key bindings.
+- Change: [#10997] Speed is automatically reset to normal upon scenario completion.
+- Fix: [#2485] Hide Vertical Faces not applied to the edges of water.
+- Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
+- Fix: [#6766] Changelog window doesn't open on some platforms.
+- Fix: [#7784] Vehicle tab takes 1st car colour instead of tab_vehicle's colour.
+- Fix: [#7854] Cannot build a custom spiral roller coaster design.
+- Fix: [#7854] Empty entries in spiral roller coaster designs list.
+- Fix: [#8151] Game freezes upon demolishing mazes at odd heights.
+- Fix: [#8875] RCT1 competition scenarios are classified incorrectly.
+- Fix: [#10176] Mistake in the sprite for the land tool's 6x6 grid.
+- Fix: [#10196] Doors unable to be placed at end of track corners.
+- Fix: [#10228] Can't import RCT1 Deluxe from Steam.
+- Fix: [#10313] Path furniture can be placed on level crossings.
+- Fix: [#10325] Crash when banners have no text.
+- Fix: [#10376] No ratings generated when a shop and track intersect.
+- Fix: [#10420] Money effect causing false positive desync.
+- Fix: [#10477] Large Scenery cannot be placed higher using SHIFT.
+- Fix: [#10489] Hosts last player action not being synchronized.
+- Fix: [#10543] Secondary shop item prices are not imported correctly from RCT1 saves.
+- Fix: [#10547] RCT1 parks have too many rides available.
+- Fix: [#10587] Update last action coordinates on correct player.
+- Fix: [#10631] Game bugs out and crashes if you get too many stations via copying stations with the tile inspector.
+- Fix: [#10662] Duck cheat tooltips look odd and do not explain anything.
+- Fix: [#10694] The lift hill speed of the flying roller coaster cannot be changed (original bug).
+- Fix: [#10705] Apply multithreaded rendering to all viewports.
+- Fix: [#10739] Mountain tool overlay for even-numbered selections.
+- Fix: [#10752] Mute button state not correctly set at startup.
+- Fix: [#10822] Can place too many peep spawns.
+- Fix: [#10898] Banner text has an offset in tile inspector window.
+- Fix: [#10904] RCT1/LL-scenarios with red water won't open.
+- Fix: [#10941] The Clear Scenery tool gives refunds for ghost elements.
+- Fix: [#10963] Light effects are drawn off-centre in some rotations.
+- Fix: [#10993] Bottom toolbar not refreshing when a guest leaves the park.
+- Fix: [#11001] Rides list does not use natural sorting.
+- Fix: [objects#54] Stage Coach cars are not considered covered by the game.
+- Fix: [objects#56] Handymen cut grass incorrectly.
+- Improved: [#682] The staff patrol area is now drawn on the water, instead of on the surface under water.
+- Improved: [#10858] Added horizontal grid lines to finance charts.
+- Improved: [#10884] Added y-axes and labels to park window charts.
+- Improved: [#10970] Introduced optional light effects for vehicles at night.
+- Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
+
 0.2.4 (2019-10-28)
 ------------------------------------------------------------------------
 - Feature: [#9285] Remember current group in scenario list window.
@@ -32,6 +85,8 @@
 - Fix: [#10036] Do not allocate large chunks of memory for save file classification.
 - Fix: [#10106] Ride circuits should not be used for modes that do not support it.
 - Fix: [#10149] Desync in headless mode with rides that create smoke particles.
+- Fix: [#10249] Desync because of ride crashes and simulation mode.
+- Fix: [#10256] Desync because of advancing ahead of server ticks during map change.
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 - Improved: [#9987] Minimum load rounding.
 - Improved: [#10125] Better support for high DPI screens.
@@ -72,6 +127,7 @@
 - Fix: [#7700, #8079, #8969] Crash when unloading buggy custom rides.
 - Fix: [#7829] Rotated information kiosk can cause 'unreachable' messages.
 - Fix: [#7878] Scroll shortcut keys ignore SHIFT/CTRL/ALT modifiers.
+- Fix: [#8064] Ride construction errors shown as (undefined string)
 - Fix: [#8219] Faulty folder recreation in "save" folder.
 - Fix: [#8480, #8535] Crash when mirroring track design.
 - Fix: [#8507] Incorrect change in vehicle rolling direction.

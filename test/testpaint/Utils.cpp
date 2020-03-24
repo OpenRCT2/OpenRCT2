@@ -10,6 +10,7 @@
 #include "Utils.hpp"
 
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 
@@ -44,7 +45,7 @@ namespace Utils
 
     bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType)
     {
-        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeDescriptors[rideType].TrackPaintFunction;
 
         if (newPaintGetter == nullptr)
         {
@@ -66,7 +67,7 @@ namespace Utils
 
     bool rideIsImplemented(uint8_t rideType)
     {
-        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeDescriptors[rideType].TrackPaintFunction;
         return (newPaintGetter != 0);
     }
 } // namespace Utils

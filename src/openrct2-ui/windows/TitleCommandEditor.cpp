@@ -69,16 +69,16 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_CANCEL
 };
 
-#define WW 200
-#define WH 120
-#define BY 32
-#define BY2 70
-#define WS 16
-#define WHA ((WW-WS*2)/2)
+constexpr int32_t WW = 200;
+constexpr int32_t WH = 120;
+constexpr int32_t BY = 32;
+constexpr int32_t BY2 = 70;
+constexpr int32_t WS = 16;
+constexpr int32_t WHA = (WW-WS*2)/2;
 
 static bool _window_title_command_editor_insert;
 static int32_t _window_title_command_editor_index;
-#define BUF_SIZE 50
+constexpr size_t BUF_SIZE = 50;
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
 static TitleCommand command = { TITLE_SCRIPT_LOAD, { 0 } };
@@ -115,14 +115,14 @@ static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex 
 static void window_title_command_editor_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
 static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_title_command_editor_update(rct_window * w);
-static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
 static void scenario_select_callback(const utf8 * path);
 static int32_t get_command_info_index(int32_t index);
 static TITLE_COMMAND_ORDER get_command_info(int32_t index);
-static LocationXY16 get_location();
+static TileCoordsXY get_location();
 static uint8_t get_zoom();
 
 static rct_window_event_list window_title_command_editor_events = {
@@ -187,26 +187,25 @@ static TITLE_COMMAND_ORDER get_command_info(int32_t index)
     return _window_title_command_editor_orders[0];
 }
 
-static LocationXY16 get_location()
+static TileCoordsXY get_location()
 {
-    LocationXY16 mapCoord = {};
+    TileCoordsXY tileCoord = {};
     rct_window* w = window_get_main();
     if (w != nullptr)
     {
         int32_t interactionType;
         TileElement* tileElement;
-
+        CoordsXY mapCoord;
         get_map_coordinates_from_pos_window(
-            w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
-            &mapCoord.y, &interactionType, &tileElement, nullptr);
+            w, { w->viewport->view_width / 2, w->viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
+            &interactionType, &tileElement, nullptr);
         mapCoord.x -= 16;
-        mapCoord.x /= 32;
         mapCoord.y -= 16;
-        mapCoord.y /= 32;
-        mapCoord.x++;
-        mapCoord.y++;
+        tileCoord = TileCoordsXY{ mapCoord };
+        tileCoord.x++;
+        tileCoord.y++;
     }
-    return mapCoord;
+    return tileCoord;
 }
 
 static uint8_t get_zoom()
@@ -250,8 +249,8 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
-        window, window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1,
-        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0,
+        window, window->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, { 0, 0, 0 }, 0,
         SPRITE_INDEX_NULL);
 
     _window_title_command_editor_index = index;
@@ -324,9 +323,9 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
         case WIDX_GET:
             if (command.Type == TITLE_SCRIPT_LOCATION)
             {
-                LocationXY16 mapCoord = get_location();
-                command.X = (uint8_t)mapCoord.x;
-                command.Y = (uint8_t)mapCoord.y;
+                auto tileCoord = get_location();
+                command.X = (uint8_t)tileCoord.x;
+                command.Y = (uint8_t)tileCoord.y;
                 snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
                 snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
             }
@@ -395,7 +394,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
 
             dropdown_set_checked(get_command_info_index(command.Type), true);
@@ -412,8 +411,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 }
 
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
 
                 dropdown_set_checked(command.Speed - 1, true);
             }
@@ -427,8 +426,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 }
 
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
 
                 dropdown_set_checked(command.SaveIndex, true);
             }
@@ -463,9 +462,9 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
             {
                 case TITLE_SCRIPT_LOCATION:
                 {
-                    LocationXY16 mapCoord = get_location();
-                    command.X = (uint8_t)mapCoord.x;
-                    command.Y = (uint8_t)mapCoord.y;
+                    auto tileCoord = get_location();
+                    command.X = (uint8_t)tileCoord.x;
+                    command.Y = (uint8_t)tileCoord.y;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
                     snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
                     break;
@@ -610,10 +609,11 @@ static void window_title_command_editor_update(rct_window* w)
     }
 }
 
-static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_title_command_editor_tool_down(
+    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     viewport_interaction_info info;
-    viewport_interaction_get_item_left(x, y, &info);
+    viewport_interaction_get_item_left(screenCoords, &info);
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
@@ -648,7 +648,7 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
         {
-            rct_litter* litter = &(get_sprite(spriteIndex)->litter);
+            Litter* litter = &(get_sprite(spriteIndex)->litter);
             if (litter->type < std::size(litterNames))
             {
                 validSprite = true;
@@ -747,21 +747,25 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     TITLE_COMMAND_ORDER command_info = get_command_info(command.Type);
 
     // "Command:" label
-    gfx_draw_string_left(dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->x + WS, w->y + BY - 14);
+    gfx_draw_string_left(
+        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY - 14);
 
     // Command dropdown name
     gfx_draw_string_left_clipped(
-        dpi, command_info.nameStringId, nullptr, w->colours[1], w->x + w->widgets[WIDX_COMMAND].left + 1,
-        w->y + w->widgets[WIDX_COMMAND].top, w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
+        dpi, command_info.nameStringId, nullptr, w->colours[1], w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1,
+        w->windowPos.y + w->widgets[WIDX_COMMAND].top,
+        w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
 
     // Label (e.g. "Location:")
-    gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->x + WS, w->y + BY2 - 14);
+    gfx_draw_string_left(
+        dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY2 - 14);
 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {
         gfx_draw_string_left_clipped(
-            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-            w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
+            w->windowPos.y + w->widgets[WIDX_INPUT].top,
+            w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
@@ -779,26 +783,29 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         }
 
         gfx_set_dirty_blocks(
-            w->x + w->widgets[WIDX_VIEWPORT].left, w->y + w->widgets[WIDX_VIEWPORT].top, w->x + w->widgets[WIDX_VIEWPORT].right,
-            w->y + w->widgets[WIDX_VIEWPORT].bottom);
+            w->windowPos.x + w->widgets[WIDX_VIEWPORT].left, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top,
+            w->windowPos.x + w->widgets[WIDX_VIEWPORT].right, w->windowPos.y + w->widgets[WIDX_VIEWPORT].bottom);
         gfx_draw_string_left_clipped(
-            dpi, spriteString, gCommonFormatArgs, colour, w->x + w->widgets[WIDX_VIEWPORT].left + 2,
-            w->y + w->widgets[WIDX_VIEWPORT].top + 1, w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
+            dpi, spriteString, gCommonFormatArgs, colour, w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2,
+            w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1,
+            w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {
         if (command.SaveIndex == SAVE_INDEX_INVALID)
         {
             gfx_draw_string_left_clipped(
-                dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-                w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+                dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1],
+                w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
         else
         {
             set_format_arg(0, uintptr_t, (uintptr_t)_sequence->Saves[command.SaveIndex]);
             gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-                w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
+                w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
     else if (command.Type == TITLE_SCRIPT_LOADSC)
@@ -807,7 +814,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         {
             gfx_draw_string_left_clipped(
                 dpi, STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, nullptr, w->colours[1],
-                w->x + w->widgets[WIDX_INPUT].left + 1, w->y + w->widgets[WIDX_INPUT].top,
+                w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top,
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
         else
@@ -825,8 +832,9 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             }
             set_format_arg(0, uintptr_t, name);
             gfx_draw_string_left_clipped(
-                dpi, nameString, gCommonFormatArgs, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
-                w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+                dpi, nameString, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
+                w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
 }

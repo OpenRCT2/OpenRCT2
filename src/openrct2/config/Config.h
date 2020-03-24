@@ -41,6 +41,7 @@ struct GeneralConfiguration
     int32_t virtual_floor_style;
     bool day_night_cycle;
     bool enable_light_fx;
+    bool enable_light_fx_for_vehicles;
     bool upper_case_banners;
     bool render_weather_effects;
     bool render_weather_gloom;
@@ -106,6 +107,7 @@ struct InterfaceConfiguration
     bool toolbar_show_mute;
     bool toolbar_show_chat;
     bool console_small_font;
+    bool random_title_sequence;
     utf8* current_theme_preset;
     utf8* current_title_sequence_preset;
     int32_t object_selection_filter_flags;

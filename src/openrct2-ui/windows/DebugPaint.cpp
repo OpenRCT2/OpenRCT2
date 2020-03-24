@@ -32,8 +32,8 @@ enum WINDOW_DEBUG_PAINT_WIDGET_IDX
     WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
 };
 
-#define WINDOW_WIDTH    (200)
-#define WINDOW_HEIGHT   (8 + 15 + 15 + 15 + 15 + 11 + 8)
+constexpr int32_t WINDOW_WIDTH = 200;
+constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
 
 static rct_widget window_debug_paint_widgets[] = {
     { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,              WINDOW_HEIGHT - 1,  STR_NONE,                               STR_NONE },

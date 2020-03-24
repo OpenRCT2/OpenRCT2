@@ -40,7 +40,7 @@ static rct_widget window_news_widgets[] = {
 static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
@@ -136,7 +136,7 @@ static void window_news_mouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 static void window_news_update(rct_window* w)
 {
-    int32_t i, j, x, y, z;
+    int32_t i, j;
 
     if (w->news.var_480 == -1 || --w->news.var_484 != 0)
     {
@@ -144,7 +144,7 @@ static void window_news_update(rct_window* w)
     }
 
     w->Invalidate();
-    audio_play_sound(SoundId::Click2, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
 
     j = w->news.var_480;
     w->news.var_480 = -1;
@@ -165,10 +165,10 @@ static void window_news_update(rct_window* w)
             }
             else if (w->news.var_482 > 1)
             {
-                news_item_get_subject_location(newsItem->Type, newsItem->Assoc, &x, &y, &z);
-                if (x != LOCATION_NULL && (w = window_get_main()) != nullptr)
+                auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
+                if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
                 {
-                    window_scroll_to_location(w, x, y, z);
+                    window_scroll_to_location(w, subjectLoc->x, subjectLoc->y, subjectLoc->z);
                 }
                 return;
             }
@@ -199,37 +199,39 @@ static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_
  *
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t itemHeight = window_news_get_item_height();
     int32_t i, buttonIndex;
 
     buttonIndex = 0;
+    auto mutableScreenCoords = screenCoords;
     for (i = 11; i < 61; i++)
     {
         if (news_item_is_empty(i))
             break;
 
-        if (y < itemHeight)
+        if (mutableScreenCoords.y < itemHeight)
         {
             NewsItem* const newsItem = news_item_get(i);
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || y < 14 || y >= 38 || x < 328)
+            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
+                || mutableScreenCoords.x < 328)
             {
                 buttonIndex = 0;
                 break;
             }
-            else if (x < 351 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)
+            else if (mutableScreenCoords.x < 351 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)
             {
                 buttonIndex = 1;
                 break;
             }
-            else if (x < 376 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION)
+            else if (mutableScreenCoords.x < 376 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION)
             {
                 buttonIndex = 2;
                 break;
             }
         }
-        y -= itemHeight;
+        mutableScreenCoords.y -= itemHeight;
     }
 
     if (buttonIndex != 0)
@@ -238,7 +240,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, int3
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
         w->Invalidate();
-        audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
+        audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     }
 }
 

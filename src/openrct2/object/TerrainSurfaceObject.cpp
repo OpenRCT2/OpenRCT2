@@ -51,7 +51,7 @@ void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, in
     uint32_t imageId = GetImageId({}, 1, 0, 0, false, false);
     if (Colour != 255)
     {
-        imageId |= Colour << 19 | IMAGE_TYPE_REMAP;
+        imageId |= SPRITE_ID_PALETTE_COLOUR_1(Colour);
     }
 
     int32_t x0 = 0;

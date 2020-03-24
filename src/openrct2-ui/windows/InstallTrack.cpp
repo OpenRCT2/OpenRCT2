@@ -34,11 +34,11 @@ enum {
     WIDX_CANCEL
 };
 
-#define WW 380
-#define WH 448
-#define WW_LESS_PADDING (WW - 4)
-#define PREVIEW_BUTTONS_LEFT (WW - 25)
-#define ACTION_BUTTONS_LEFT (WW - 100)
+constexpr int32_t WW = 380;
+constexpr int32_t WH = 448;
+constexpr int32_t WW_LESS_PADDING = WW - 4;
+constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
+constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
 static rct_widget window_install_track_widgets[] = {
     { WWT_FRAME,            0,  0,                      WW - 1,             0,      WH-1,   STR_NONE,                               STR_NONE                },
@@ -226,8 +226,8 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Track preview
     rct_widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
-    int32_t x = w->x + widget->left + 1;
-    int32_t y = w->y + widget->top + 1;
+    int32_t x = w->windowPos.x + widget->left + 1;
+    int32_t y = w->windowPos.y + widget->top + 1;
     int32_t colour = ColourMapA[w->colours[0]].darkest;
     gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
@@ -240,8 +240,8 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, x, y, 0);
 
-    x = w->x + (widget->left + widget->right) / 2;
-    y = w->y + widget->bottom - 12;
+    x = w->windowPos.x + (widget->left + widget->right) / 2;
+    y = w->windowPos.y + widget->bottom - 12;
 
     // Warnings
     const TrackDesign* td6 = _trackDesign.get();
@@ -257,8 +257,8 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Information
-    x = w->x + widget->left + 1;
-    y = w->y + widget->bottom + 4;
+    x = w->windowPos.x + widget->left + 1;
+    y = w->windowPos.y + widget->bottom + 4;
     // 0x006D3CF1 -- 0x006d3d71 missing
 
     // Track design name & type
@@ -272,7 +272,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     void* objectEntry = object_manager_load_object(&td6->vehicle_object);
     if (objectEntry != nullptr)
     {
-        int32_t groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
+        auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
         rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
         friendlyTrackName = rideName.name;
     }

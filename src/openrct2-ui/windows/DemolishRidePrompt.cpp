@@ -16,8 +16,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-#define WW 200
-#define WH 100
+constexpr int32_t WW = 200;
+constexpr int32_t WH = 100;
 
 static money32 _demolishRideCost;
 
@@ -127,10 +127,9 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
-        int x = w->x;
-        int y = w->y;
+        auto windowPos = w->windowPos;
         window_close(w);
-        w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = window_create(windowPos, WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
@@ -153,10 +152,9 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
-        int x = w->x;
-        int y = w->y;
+        auto windowPos = w->windowPos;
         window_close(w);
-        w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = window_create(windowPos, WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
@@ -225,8 +223,8 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
         set_format_arg(nameArgLen, money32, _demolishRideCost);
 
-        int32_t x = w->x + WW / 2;
-        int32_t y = w->y + (WH / 2) - 3;
+        int32_t x = w->windowPos.x + WW / 2;
+        int32_t y = w->windowPos.y + (WH / 2) - 3;
         gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
     }
 }
@@ -242,8 +240,8 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
         set_format_arg(nameArgLen, money32, _demolishRideCost / 2);
 
-        int32_t x = w->x + WW / 2;
-        int32_t y = w->y + (WH / 2) - 3;
+        int32_t x = w->windowPos.x + WW / 2;
+        int32_t y = w->windowPos.y + (WH / 2) - 3;
         gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
     }
 }

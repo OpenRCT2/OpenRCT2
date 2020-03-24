@@ -52,7 +52,7 @@ static void large_scenery_paint_supports(
 
     wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, nullptr);
 
-    int32_t clearanceHeight = ceil2(tileElement->clearance_height * 8 + 15, 16);
+    int32_t clearanceHeight = ceil2(tileElement->GetClearanceZ() + 15, 16);
 
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
@@ -440,8 +440,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-    uint16_t string_width = gfx_get_string_width(signString);
-    uint16_t scroll = (gCurrentTicks / 2) % string_width;
+    uint16_t stringWidth = gfx_get_string_width(signString);
+    uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
     sub_98199C(
         session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
         height + 25, boxoffset.x, boxoffset.y, boxoffset.z);

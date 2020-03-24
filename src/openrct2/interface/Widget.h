@@ -67,8 +67,8 @@ bool widget_is_pressed(rct_window* w, rct_widgetindex widgetIndex);
 bool widget_is_highlighted(rct_window* w, rct_widgetindex widgetIndex);
 bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex);
 void widget_scroll_get_part(
-    rct_window* w, rct_widget* widget, int32_t x, int32_t y, int32_t* output_x, int32_t* output_y, int32_t* output_scroll_area,
-    int32_t* scroll_id);
+    rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    int32_t* output_scroll_area, int32_t* scroll_id);
 
 void widget_set_enabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
 void widget_set_checkbox_value(rct_window* w, rct_widgetindex widgetIndex, int32_t value);

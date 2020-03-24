@@ -73,7 +73,6 @@ bool gDoSingleUpdate = false;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
-int32_t gGameCommandNestLevel;
 std::string gCurrentLoadedPath;
 
 bool gLoadKeepWindowsOpen = false;
@@ -85,6 +84,12 @@ rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
 
 using namespace OpenRCT2;
+
+void game_reset_speed()
+{
+    gGameSpeed = 1;
+    window_invalidate_by_class(WC_TOP_TOOLBAR);
+}
 
 void game_increase_game_speed()
 {
@@ -284,160 +289,6 @@ void update_palette_effects()
         }
     }
 }
-/**
- *
- *  rct2: 0x0069C62C
- *
- * @param cost (ebp)
- */
-static int32_t game_check_affordability(int32_t cost, uint32_t flags)
-{
-    if (finance_check_affordability(cost, flags))
-        return cost;
-
-    set_format_arg(0, uint32_t, cost);
-    gGameCommandErrorText = STR_NOT_ENOUGH_CASH_REQUIRES;
-    return MONEY32_UNDEFINED;
-}
-
-/**
- *
- *  rct2: 0x006677F2
- *
- * @param ebx flags
- * @param esi command
- */
-int32_t game_do_command(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp)
-{
-    return game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-}
-
-/**
- *
- *  rct2: 0x006677F2 with pointers as arguments
- *
- * @param ebx flags
- * @param esi command
- */
-int32_t game_do_command_p(
-    uint32_t command, int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
-{
-    int32_t cost, flags;
-    int32_t original_ebx, original_edx, original_esi, original_edi, original_ebp;
-
-    *esi = command;
-    original_ebx = *ebx;
-    original_edx = *edx;
-    original_esi = *esi;
-    original_edi = *edi;
-    original_ebp = *ebp;
-
-    if (command >= std::size(new_game_command_table))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    flags = *ebx;
-
-    auto* replayManager = GetContext()->GetReplayManager();
-    if (replayManager->IsReplaying())
-    {
-        // We only accept replay commands as long the replay is active.
-        if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
-        {
-            // TODO: Introduce proper error.
-            gGameCommandErrorText = STR_CHEAT_BUILD_IN_PAUSE_MODE;
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    if (gGameCommandNestLevel == 0)
-    {
-        gGameCommandErrorText = STR_NONE;
-    }
-
-    // Increment nest count
-    gGameCommandNestLevel++;
-
-    *ebx &= ~GAME_COMMAND_FLAG_APPLY;
-
-    // Make sure the camera position won't change if the command skips setting them.
-    gCommandPosition.x = LOCATION_NULL;
-    gCommandPosition.y = LOCATION_NULL;
-    gCommandPosition.z = LOCATION_NULL;
-
-    // First call for validity and price check
-    new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
-    cost = *ebx;
-
-    if (cost != MONEY32_UNDEFINED)
-    {
-        // Check funds
-        int32_t insufficientFunds = 0;
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && cost != 0)
-            insufficientFunds = game_check_affordability(cost, flags);
-
-        if (insufficientFunds != MONEY32_UNDEFINED)
-        {
-            *ebx = original_ebx;
-            *edx = original_edx;
-            *esi = original_esi;
-            *edi = original_edi;
-            *ebp = original_ebp;
-
-            if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            {
-                // Decrement nest count
-                gGameCommandNestLevel--;
-                return cost;
-            }
-
-            // Second call to actually perform the operation
-            new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
-
-            *edx = *ebx;
-
-            if (*edx != MONEY32_UNDEFINED && *edx < cost)
-                cost = *edx;
-
-            // Decrement nest count
-            gGameCommandNestLevel--;
-            if (gGameCommandNestLevel != 0)
-                return cost;
-
-            // Check if money is required.
-            if (finance_check_money_required(flags))
-            {
-                // Update money balance
-                finance_payment(cost, gCommandExpenditureType);
-
-                // Create a +/- money text effect
-                if (cost != 0 && game_is_not_paused())
-                    rct_money_effect::Create(cost);
-            }
-
-            // Start autosave timer after game command
-            if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
-                gLastAutoSaveUpdate = platform_get_ticks();
-
-            return cost;
-        }
-    }
-
-    // Error occurred
-
-    // Decrement nest count
-    gGameCommandNestLevel--;
-
-    // Show error window
-    if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
-        && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST))
-    {
-        context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
-    }
-
-    return MONEY32_UNDEFINED;
-}
 
 void pause_toggle()
 {
@@ -603,12 +454,19 @@ void game_fix_save_vars()
             {
                 continue;
             }
+            Ride* ride = get_ride(rideIdx);
+            if (ride == nullptr)
+            {
+                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, spriteIndex);
+                peep->current_ride = RIDE_ID_NULL;
+                continue;
+            }
             set_format_arg(0, uint32_t, peep->id);
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
-            int8_t station = ride_get_first_valid_station_exit(get_ride(rideIdx));
-            if (station == -1)
+            auto station = ride_get_first_valid_station_exit(ride);
+            if (station == STATION_INDEX_NULL)
             {
                 log_warning("Couldn't find station, removing peep %u", spriteIndex);
                 peepsToRemove.push_back(peep);
@@ -638,12 +496,12 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                auto tileElement = tile_element_insert({ x, y, 14 }, 0b0000);
+                auto tileElement = tile_element_insert(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
                 if (tileElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
@@ -656,8 +514,8 @@ void game_fix_save_vars()
             // At this point, we can be sure that surfaceElement is not NULL.
             if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
             {
-                surfaceElement->base_height = 2;
-                surfaceElement->clearance_height = 2;
+                surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
+                surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
             }
@@ -701,7 +559,7 @@ void game_load_init()
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
+    windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {
@@ -741,7 +599,7 @@ void reset_all_sprite_quadrant_placements()
         rct_sprite* spr = get_sprite(i);
         if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
-            sprite_move(spr->generic.x, spr->generic.y, spr->generic.z, spr);
+            sprite_move(spr->generic.x, spr->generic.y, spr->generic.z, &spr->generic);
         }
     }
 }
@@ -989,79 +847,3 @@ void game_load_or_quit_no_save_prompt()
             break;
     }
 }
-
-GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    game_command_place_track_design,
-    nullptr,
-    game_command_place_maze_design,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    NULL,
-};

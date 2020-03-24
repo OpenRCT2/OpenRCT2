@@ -1859,38 +1859,14 @@ STR_2521    :Visa personallista
 STR_2522    :Visa senaste meddelanden
 STR_2523    :Visa karta
 STR_2524    :Skärmdump
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Backsteg
 STR_2534    :Tabb
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Clear
 STR_2538    :Retur
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt / Meny
 STR_2544    :Pause
 STR_2545    :Caps
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Mellanslag
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1907,54 +1883,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Meny
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1967,53 +1896,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :All forskning färdig
 STR_2681    :{MEDIUMFONT}{BLACK}Ökar pengarna med {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}En stor grupp anländer
@@ -2029,9 +1916,6 @@ STR_2693    :Terräng:
 STR_2694    :Generera
 STR_2695    :Slumpmässig terräng
 STR_2696    :Placera träd
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Spara automatiskt:
 STR_2701    :Varje minut
 STR_2702    :Var 5:e minut
@@ -2043,13 +1927,6 @@ STR_2707    :Använd operativsystemets filhanterare
 STR_2708    :{WINDOW_COLOUR_1}Är du säker på att du vill skriva över {STRINGID}?
 STR_2709    :Skriv över
 STR_2710    :Skriv namnet på filen.
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :Upp
 STR_2719    :Ny fil
 STR_2720    :{UINT16}s
@@ -2076,10 +1953,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat hittades inte
 STR_2743    :Kopiera 'data/css17.dat' från din RCT1-installation till 'data/css50.dat' i din RCT2-installation eller kolla så att sökvägen till RCT1 under fliken 'Diverse' är korrekt.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Mitt nya scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flytta alla föremål till toppen
@@ -2905,7 +2778,6 @@ STR_5410    :Redigera
 STR_5411    :Börja om
 STR_5412    :Hoppa till
 STR_5413    :Ladda
-STR_5414    :Ladda{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Ladda{MOVE_X}{87}{STRING}
 STR_5416    :Ladda{MOVE_X}{87}Ingen sparfil vald
 STR_5417    :Plats
@@ -3651,7 +3523,7 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Välj datum
 STR_6200    :Återställ datum
 STR_6201    :{MONTH}
-STR_6202    :Stil på virutiella golv:
+STR_6202    :Stil på virtuella golv:
 STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
 STR_6204    :Tegel
 STR_6205    :Järn
@@ -3778,8 +3650,7 @@ STR_6325    :{SMALLFONT}{BLACK}Simulera åktur eller attraktion
 STR_6326    :Kan inte simulera {POP16}{POP16}{POP16}{STRINGID} …
 STR_6327    :Genomskinlig bakgrund för stora skärmdumpar
 STR_6328    :{SMALLFONT}{BLACK}Med det här alernativet aktiverat kommer stora skärmdumpar ha genomskinlig bakgrund istället för den vanliga svarta.
-
-
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############
 # Scenarion #

@@ -15,6 +15,7 @@
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
+#include "../ride/TrackDesign.h"
 #include "../world/Location.hpp"
 #include "../world/TileElement.h"
 #include "DataSerialiserTag.h"
@@ -140,14 +141,15 @@ template<> struct DataSerializerTraits<NetworkPlayerId_t>
 {
     static void encode(IStream* stream, const NetworkPlayerId_t& val)
     {
-        uint32_t temp = ByteSwapBE(val.id);
+        uint32_t temp = static_cast<uint32_t>(val.id);
+        temp = ByteSwapBE(temp);
         stream->Write(&temp);
     }
     static void decode(IStream* stream, NetworkPlayerId_t& val)
     {
         uint32_t temp;
         stream->Read(&temp);
-        val.id = ByteSwapBE(temp);
+        val.id = static_cast<decltype(val.id)>(ByteSwapBE(temp));
     }
     static void log(IStream* stream, const NetworkPlayerId_t& val)
     {
@@ -174,14 +176,15 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
 {
     static void encode(IStream* stream, const NetworkRideId_t& val)
     {
-        uint32_t temp = ByteSwapBE(val.id);
+        uint32_t temp = static_cast<uint32_t>(val.id);
+        temp = ByteSwapBE(temp);
         stream->Write(&temp);
     }
     static void decode(IStream* stream, NetworkRideId_t& val)
     {
         uint32_t temp;
         stream->Read(&temp);
-        val.id = ByteSwapBE(temp);
+        val.id = static_cast<decltype(val.id)>(ByteSwapBE(temp));
     }
     static void log(IStream* stream, const NetworkRideId_t& val)
     {
@@ -353,6 +356,47 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
     }
 };
 
+template<typename _Ty> struct DataSerializerTraits<std::vector<_Ty>>
+{
+    static void encode(IStream* stream, const std::vector<_Ty>& val)
+    {
+        uint16_t len = (uint16_t)val.size();
+        uint16_t swapped = ByteSwapBE(len);
+        stream->Write(&swapped);
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.encode(stream, sub);
+        }
+    }
+    static void decode(IStream* stream, std::vector<_Ty>& val)
+    {
+        uint16_t len;
+        stream->Read(&len);
+        len = ByteSwapBE(len);
+
+        DataSerializerTraits<_Ty> s;
+        for (auto i = 0; i < len; ++i)
+        {
+            _Ty sub;
+            s.decode(stream, sub);
+            val.push_back(sub);
+        }
+    }
+    static void log(IStream* stream, const std::vector<_Ty>& val)
+    {
+        stream->Write("{", 1);
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.log(stream, sub);
+            stream->Write("; ", 2);
+        }
+        stream->Write("}", 1);
+    }
+};
+
 template<> struct DataSerializerTraits<MapRange>
 {
     static void encode(IStream* stream, const MapRange& v)
@@ -386,7 +430,7 @@ template<> struct DataSerializerTraits<TileElement>
     static void encode(IStream* stream, const TileElement& tileElement)
     {
         stream->WriteValue(tileElement.type);
-        stream->WriteValue(tileElement.flags);
+        stream->WriteValue(tileElement.Flags);
         stream->WriteValue(tileElement.base_height);
         stream->WriteValue(tileElement.clearance_height);
         for (int i = 0; i < 4; ++i)
@@ -401,7 +445,7 @@ template<> struct DataSerializerTraits<TileElement>
     static void decode(IStream* stream, TileElement& tileElement)
     {
         tileElement.type = stream->ReadValue<uint8_t>();
-        tileElement.flags = stream->ReadValue<uint8_t>();
+        tileElement.Flags = stream->ReadValue<uint8_t>();
         tileElement.base_height = stream->ReadValue<uint8_t>();
         tileElement.clearance_height = stream->ReadValue<uint8_t>();
         for (int i = 0; i < 4; ++i)
@@ -417,7 +461,7 @@ template<> struct DataSerializerTraits<TileElement>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.flags,
+            msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.Flags,
             tileElement.base_height);
         stream->Write(msg, strlen(msg));
     }
@@ -514,5 +558,151 @@ template<> struct DataSerializerTraits<NetworkCheatType_t>
     {
         const char* cheatName = CheatsGetName(static_cast<CheatType>(val.id));
         stream->Write(cheatName, strlen(cheatName));
+    }
+};
+
+template<> struct DataSerializerTraits<rct_object_entry>
+{
+    static void encode(IStream* stream, const rct_object_entry& val)
+    {
+        uint32_t temp = ByteSwapBE(val.flags);
+        stream->Write(&temp);
+        stream->WriteArray(val.nameWOC, 12);
+    }
+    static void decode(IStream* stream, rct_object_entry& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.flags = ByteSwapBE(temp);
+        const char* str = stream->ReadArray<char>(12);
+        memcpy(val.nameWOC, str, 12);
+    }
+    static void log(IStream* stream, const rct_object_entry& val)
+    {
+        stream->WriteArray(val.name, 8);
+    }
+};
+
+template<> struct DataSerializerTraits<TrackDesignTrackElement>
+{
+    static void encode(IStream* stream, const TrackDesignTrackElement& val)
+    {
+        stream->Write(&val.flags);
+        stream->Write(&val.type);
+    }
+    static void decode(IStream* stream, TrackDesignTrackElement& val)
+    {
+        stream->Read(&val.flags);
+        stream->Read(&val.type);
+    }
+    static void log(IStream* stream, const TrackDesignTrackElement& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", val.type, val.flags);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits<TrackDesignMazeElement>
+{
+    static void encode(IStream* stream, const TrackDesignMazeElement& val)
+    {
+        uint32_t temp = ByteSwapBE(val.all);
+        stream->Write(&temp);
+    }
+    static void decode(IStream* stream, TrackDesignMazeElement& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.all = ByteSwapBE(temp);
+    }
+    static void log(IStream* stream, const TrackDesignMazeElement& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "TrackDesignMazeElement(all = %d)", val.all);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits<TrackDesignEntranceElement>
+{
+    static void encode(IStream* stream, const TrackDesignEntranceElement& val)
+    {
+        stream->Write(&val.x);
+        stream->Write(&val.y);
+        stream->Write(&val.z);
+        stream->Write(&val.direction);
+        stream->Write(&val.isExit);
+    }
+    static void decode(IStream* stream, TrackDesignEntranceElement& val)
+    {
+        stream->Read(&val.x);
+        stream->Read(&val.y);
+        stream->Read(&val.z);
+        stream->Read(&val.direction);
+        stream->Read(&val.isExit);
+    }
+    static void log(IStream* stream, const TrackDesignEntranceElement& val)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.x, val.y, val.z,
+            val.direction, val.isExit);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits<TrackDesignSceneryElement>
+{
+    static void encode(IStream* stream, const TrackDesignSceneryElement& val)
+    {
+        stream->Write(&val.x);
+        stream->Write(&val.y);
+        stream->Write(&val.z);
+        stream->Write(&val.flags);
+        stream->Write(&val.primary_colour);
+        stream->Write(&val.secondary_colour);
+        DataSerializerTraits<rct_object_entry> s;
+        s.encode(stream, val.scenery_object);
+    }
+    static void decode(IStream* stream, TrackDesignSceneryElement& val)
+    {
+        stream->Read(&val.x);
+        stream->Read(&val.y);
+        stream->Read(&val.z);
+        stream->Read(&val.flags);
+        stream->Read(&val.primary_colour);
+        stream->Read(&val.secondary_colour);
+        DataSerializerTraits<rct_object_entry> s;
+        s.decode(stream, val.scenery_object);
+    }
+    static void log(IStream* stream, const TrackDesignSceneryElement& val)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d)",
+            val.x, val.y, val.z, val.flags, val.primary_colour, val.secondary_colour);
+        stream->Write(msg, strlen(msg));
+        stream->WriteArray(val.scenery_object.name, 8);
+    }
+};
+
+template<> struct DataSerializerTraits<rct_vehicle_colour>
+{
+    static void encode(IStream* stream, const rct_vehicle_colour& val)
+    {
+        stream->Write(&val.body_colour);
+        stream->Write(&val.trim_colour);
+    }
+    static void decode(IStream* stream, rct_vehicle_colour& val)
+    {
+        stream->Read(&val.body_colour);
+        stream->Read(&val.trim_colour);
+    }
+    static void log(IStream* stream, const rct_vehicle_colour& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "rct_vehicle_colour(body_colour = %d, trim_colour = %d)", val.body_colour, val.trim_colour);
+        stream->Write(msg, strlen(msg));
     }
 };

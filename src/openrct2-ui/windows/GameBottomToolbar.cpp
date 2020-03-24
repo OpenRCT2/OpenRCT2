@@ -72,7 +72,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t *cursorId);
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t *cursorId);
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -192,17 +192,15 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
 
             {
                 newsItem = news_item_get(0);
-                int32_t x, y, z;
-                int32_t subject = newsItem->Assoc;
 
-                news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
+                auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
 
-                if (x == LOCATION_NULL)
+                if (subjectLoc == std::nullopt)
                     break;
 
                 rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
-                    window_scroll_to_location(mainWindow, x, y, z);
+                    window_scroll_to_location(mainWindow, subjectLoc->x, subjectLoc->y, subjectLoc->z);
             }
             break;
         case WIDX_RIGHT_OUTSET:
@@ -246,7 +244,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
-    w->y = context_get_height() - w->height;
+    w->windowPos.y = context_get_height() - w->height;
 
     // Change height of widgets in accordance with line height.
     w->widgets[WIDX_LEFT_OUTSET].bottom = w->widgets[WIDX_MIDDLE_OUTSET].bottom = w->widgets[WIDX_RIGHT_OUTSET].bottom
@@ -333,11 +331,9 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
-        int32_t y, z;
-        int32_t subject = newsItem->Assoc;
-        news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
+        auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
 
-        if (x == LOCATION_NULL)
+        if (subjectLoc == std::nullopt)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
         if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT))
@@ -374,24 +370,24 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
 {
     // Draw panel grey backgrounds
     gfx_filter_rect(
-        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, PALETTE_51);
+        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
+        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, PALETTE_51);
     gfx_filter_rect(
-        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, PALETTE_51);
+        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
+        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, PALETTE_51);
 
     if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         gfx_filter_rect(
-            dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
-            w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
-            w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
-            w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, PALETTE_51);
+            dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
+            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
+            w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
+            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, PALETTE_51);
     }
 
     window_draw_widgets(w, dpi);
@@ -413,10 +409,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
 {
     // Draw green inset rectangle on panel
     gfx_fill_rect_inset(
-        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
+        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1,
+        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
@@ -425,8 +421,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
-        int32_t x = w->x + (widget.left + widget.right) / 2;
-        int32_t y = w->y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6);
+        int32_t x = w->windowPos.x + (widget.left + widget.right) / 2;
+        int32_t y = w->windowPos.y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6);
 
         set_format_arg(0, money32, gCash);
         gfx_draw_string_centred(
@@ -452,8 +448,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     // Draw guests
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
-        int32_t x = w->x + (widget.left + widget.right) / 2;
-        int32_t y = w->y + (widget.top + widget.bottom) / 2 - 6;
+        int32_t x = w->windowPos.x + (widget.left + widget.right) / 2;
+        int32_t y = w->windowPos.y + (widget.top + widget.bottom) / 2 - 6;
 
         gfx_draw_string_centred(
             dpi,
@@ -468,8 +464,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     // Draw park rating
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
-        int32_t x = w->x + widget.left + 11;
-        int32_t y = w->y + (widget.top + widget.bottom) / 2 - 5;
+        int32_t x = w->windowPos.x + widget.left + 11;
+        int32_t y = w->windowPos.y + (widget.top + widget.bottom) / 2 - 5;
 
         window_game_bottom_toolbar_draw_park_rating(dpi, w, w->colours[3], x, y, std::max(10, ((gParkRating / 4) * 263) / 256));
     }
@@ -501,16 +497,16 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
 {
     // Draw green inset rectangle on panel
     gfx_fill_rect_inset(
-        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
+        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1,
+        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     int32_t x = (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
                  + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
             / 2
-        + w->x;
-    int32_t y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
+        + w->windowPos.x;
+    int32_t y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->windowPos.y + 2;
 
     // Date
     int32_t year = date_get_year(gDateMonthsElapsed) + 1;
@@ -532,7 +528,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Temperature
-    x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
+    x = w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
     y += line_height + 1;
 
     int32_t temperature = gClimateCurrent.Temperature;
@@ -577,19 +573,20 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
     // Current news item
     gfx_fill_rect_inset(
-        dpi, w->x + middleOutsetWidget->left + 1, w->y + middleOutsetWidget->top + 1, w->x + middleOutsetWidget->right - 1,
-        w->y + middleOutsetWidget->bottom - 1, w->colours[2], INSET_RECT_F_30);
+        dpi, w->windowPos.x + middleOutsetWidget->left + 1, w->windowPos.y + middleOutsetWidget->top + 1,
+        w->windowPos.x + middleOutsetWidget->right - 1, w->windowPos.y + middleOutsetWidget->bottom - 1, w->colours[2],
+        INSET_RECT_F_30);
 
     // Text
     utf8* newsItemText = newsItem->Text;
-    x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
-    y = w->y + middleOutsetWidget->top + 11;
+    x = w->windowPos.x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
+    y = w->windowPos.y + middleOutsetWidget->top + 11;
     width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
     gfx_draw_string_centred_wrapped_partial(
         dpi, x, y, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
 
-    x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
-    y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
+    x = w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
+    y = w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
     switch (newsItem->Type)
     {
         case NEWS_ITEM_RIDE:
@@ -670,14 +667,15 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     rct_widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
     gfx_fill_rect_inset(
-        dpi, w->x + middleOutsetWidget->left + 1, w->y + middleOutsetWidget->top + 1, w->x + middleOutsetWidget->right - 1,
-        w->y + middleOutsetWidget->bottom - 1, w->colours[1], INSET_RECT_F_30);
+        dpi, w->windowPos.x + middleOutsetWidget->left + 1, w->windowPos.y + middleOutsetWidget->top + 1,
+        w->windowPos.x + middleOutsetWidget->right - 1, w->windowPos.y + middleOutsetWidget->bottom - 1, w->colours[1],
+        INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
-    int32_t x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
-    int32_t y = w->y + middleOutsetWidget->top + line_height + 1;
+    int32_t x = w->windowPos.x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
+    int32_t y = w->windowPos.y + middleOutsetWidget->top + line_height + 1;
     int32_t width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
 
     // Check if there is a map tooltip to draw
@@ -712,7 +710,7 @@ static void window_game_bottom_toolbar_update(rct_window* w)
  *  rct2: 0x0066C644
  */
 static void window_game_bottom_toolbar_cursor(
-    rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
+    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t* cursorId)
 {
     switch (widgetIndex)
     {

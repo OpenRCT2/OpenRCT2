@@ -25,8 +25,8 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
-#define WW 113
-#define WH 96
+constexpr int32_t WW = 113;
+constexpr int32_t WH = 96;
 
 // clang-format off
 enum WINDOW_SIGN_WIDGET_IDX {
@@ -156,10 +156,9 @@ rct_window* window_sign_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;
 
@@ -170,7 +169,7 @@ rct_window* window_sign_open(rct_windownumber number)
             rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
             if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
+                auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
 
                 if (bannerIndex == w->number)
                     break;
@@ -179,21 +178,19 @@ rct_window* window_sign_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->GetBaseZ();
     w->frame_no = view_z;
 
     w->list_information_type = tile_element->AsLargeScenery()->GetPrimaryColour();
     w->var_492 = tile_element->AsLargeScenery()->GetSecondaryColour();
-    w->var_48C = tile_element->AsLargeScenery()->GetEntryIndex();
-
-    view_x += 16;
-    view_y += 16;
+    w->SceneryEntry = tile_element->AsLargeScenery()->GetEntryIndex();
 
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -217,7 +214,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             auto banner = GetBanner(w->number);
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
-            auto tile_element = map_get_first_element_at(x / 32, y / 32);
+            auto tile_element = map_get_first_element_at({ x, y });
             if (tile_element == nullptr)
                 return;
             while (1)
@@ -227,7 +224,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
                     if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                     {
-                        BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
+                        auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
                         if (bannerIndex == w->number)
                             break;
                     }
@@ -236,7 +233,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
 
             auto sceneryRemoveAction = LargeSceneryRemoveAction(
-                { x, y, tile_element->base_height * 8, tile_element->GetDirection() },
+                { x, y, tile_element->GetBaseZ(), tile_element->GetDirection() },
                 tile_element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&sceneryRemoveAction);
             break;
@@ -319,7 +316,7 @@ static void window_sign_invalidate(rct_window* w)
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->var_48C);
+    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->SceneryEntry);
 
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;
@@ -365,15 +362,14 @@ static void window_sign_viewport_rotate(rct_window* w)
 
     auto banner = GetBanner(w->number);
 
-    int32_t view_x = (banner->position.x << 5) + 16;
-    int32_t view_y = (banner->position.y << 5) + 16;
-    int32_t view_z = w->frame_no;
+    auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport
     rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, signViewPos,
+        0, SPRITE_INDEX_NULL);
     if (w->viewport != nullptr)
         w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -405,10 +401,9 @@ rct_window* window_sign_small_open(rct_windownumber number)
     w->colours[2] = COLOUR_DARK_BROWN;
 
     auto banner = GetBanner(w->number);
-    int32_t view_x = banner->position.x << 5;
-    int32_t view_y = banner->position.y << 5;
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
-    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;
 
@@ -426,21 +421,19 @@ rct_window* window_sign_small_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->GetBaseZ();
     w->frame_no = view_z;
 
     w->list_information_type = tile_element->AsWall()->GetPrimaryColour();
     w->var_492 = tile_element->AsWall()->GetSecondaryColour();
-    w->var_48C = tile_element->AsWall()->GetEntryIndex();
-
-    view_x += 16;
-    view_y += 16;
+    w->SceneryEntry = tile_element->AsWall()->GetEntryIndex();
 
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
+        { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->flags |= WF_NO_SCROLLING;
@@ -465,7 +458,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             auto banner = GetBanner(w->number);
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
-            auto tile_element = map_get_first_element_at(x / 32, y / 32);
+            auto tile_element = map_get_first_element_at({ x, y });
             if (tile_element == nullptr)
                 return;
             while (true)
@@ -481,7 +474,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 }
                 tile_element++;
             }
-            CoordsXYZD wallLocation = { x, y, tile_element->base_height * 8, tile_element->GetDirection() };
+            CoordsXYZD wallLocation = { x, y, tile_element->GetBaseZ(), tile_element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
             break;
@@ -534,7 +527,7 @@ static void window_sign_small_invalidate(rct_window* w)
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
-    rct_scenery_entry* scenery_entry = get_wall_entry(w->var_48C);
+    rct_scenery_entry* scenery_entry = get_wall_entry(w->SceneryEntry);
 
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;

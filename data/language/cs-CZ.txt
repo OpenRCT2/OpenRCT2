@@ -116,8 +116,8 @@ STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jedno
 STR_0531    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
 STR_0532    :Bludiště z šest stop vysokých zdí nebo živého plotu. Návštěvníci bloudí dokud nenajdou východ
 STR_0533    :Dřevěná budova s krytým schodištěm a venkovní skluzavkou s koberečky
-STR_0534    :Návštěvníci sami řídí benzínové motokáry
-STR_0535    :Lodě ve tvaru klády se plaví po vodní kanále a sjíždí strmé úseky. Žádný návštěvník nezůstane suchý
+STR_0534    :Návštěvníci závodí na benzínových motokárách po asfaltovém okruhu
+STR_0535    :Lodě ve tvaru klády se plaví po vodním kanále a sjíždí strmé úseky. Nikdo nezůstane suchý!
 STR_0536    :Loď pluje po širokých meandrech, přes stříkající vodopády a po vzrušujících pěnících peřejích
 STR_0537    :Autodrom
 STR_0538    :Velká houpající se pirátská kocábka
@@ -1863,39 +1863,14 @@ STR_2521    :Zobrazit seznam personálu
 STR_2522    :Zobrazit poslední zprávy
 STR_2523    :Zobrazit mapu
 STR_2524    :Snímek obrazovky
-### The following need to be reordered to match SDL_keycode layout.
-STR_2525    :???
-STR_2526    :???
-STR_2527    :???
-STR_2528    :???
-STR_2529    :???
-STR_2530    :???
-STR_2531    :???
-STR_2532    :???
 STR_2533    :Backspace
 STR_2534    :Tab
-STR_2535    :???
-STR_2536    :???
 STR_2537    :Clear
 STR_2538    :Return
-STR_2539    :???
-STR_2540    :???
-STR_2541    :???
-STR_2542    :???
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps
-STR_2546    :???
-STR_2547    :???
-STR_2548    :???
-STR_2549    :???
-STR_2550    :???
-STR_2551    :???
 STR_2552    :Escape
-STR_2553    :???
-STR_2554    :???
-STR_2555    :???
-STR_2556    :???
 STR_2557    :Spacebar
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -1912,54 +1887,7 @@ STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
 STR_2572    :Help
-STR_2573    :0
-STR_2574    :1
-STR_2575    :2
-STR_2576    :3
-STR_2577    :4
-STR_2578    :5
-STR_2579    :6
-STR_2580    :7
-STR_2581    :8
-STR_2582    :9
-STR_2583    :???
-STR_2584    :???
-STR_2585    :???
-STR_2586    :???
-STR_2587    :???
-STR_2588    :???
-STR_2589    :???
-STR_2590    :A
-STR_2591    :B
-STR_2592    :C
-STR_2593    :D
-STR_2594    :E
-STR_2595    :F
-STR_2596    :G
-STR_2597    :H
-STR_2598    :I
-STR_2599    :J
-STR_2600    :K
-STR_2601    :L
-STR_2602    :M
-STR_2603    :N
-STR_2604    :O
-STR_2605    :P
-STR_2606    :Q
-STR_2607    :R
-STR_2608    :S
-STR_2609    :T
-STR_2610    :U
-STR_2611    :V
-STR_2612    :W
-STR_2613    :X
-STR_2614    :Y
-STR_2615    :Z
-STR_2616    :???
-STR_2617    :???
 STR_2618    :Menu
-STR_2619    :???
-STR_2620    :???
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
 STR_2623    :NumPad 2
@@ -1972,53 +1900,11 @@ STR_2629    :NumPad 8
 STR_2630    :NumPad 9
 STR_2631    :NumPad *
 STR_2632    :NumPad +
-STR_2633    :???
 STR_2634    :NumPad -
 STR_2635    :NumPad .
 STR_2636    :NumPad /
-STR_2637    :F1
-STR_2638    :F2
-STR_2639    :F3
-STR_2640    :F4
-STR_2641    :F5
-STR_2642    :F6
-STR_2643    :F7
-STR_2644    :F8
-STR_2645    :F9
-STR_2646    :F10
-STR_2647    :F11
-STR_2648    :F12
-STR_2649    :F13
-STR_2650    :F14
-STR_2651    :F15
-STR_2652    :F16
-STR_2653    :F17
-STR_2654    :F18
-STR_2655    :F19
-STR_2656    :F20
-STR_2657    :F21
-STR_2658    :F22
-STR_2659    :F23
-STR_2660    :F24
-STR_2661    :???
-STR_2662    :???
-STR_2663    :???
-STR_2664    :???
-STR_2665    :???
-STR_2666    :???
-STR_2667    :???
-STR_2668    :???
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2671    :???
-STR_2672    :???
-STR_2673    :???
-STR_2674    :???
-STR_2675    :???
-STR_2676    :???
-STR_2677    :???
-STR_2678    :???
-STR_2679    :???
 STR_2680    :Všechen výzkum byl dokončen
 STR_2681    :{MEDIUMFONT}{BLACK}Přidat {CURRENCY} hotovosti
 STR_2684    :{SMALLFONT}{BLACK}Dorazí velká skupina návštěvníků
@@ -2034,9 +1920,6 @@ STR_2693    :Terén:
 STR_2694    :Generovat
 STR_2695    :Náhodný terén
 STR_2696    :Umístit stromy
-STR_2697    :???
-STR_2698    :???
-STR_2699    :???
 STR_2700    :Frekvence autoukládání:
 STR_2701    :každou minutu
 STR_2702    :každých 5 minut
@@ -2048,13 +1931,6 @@ STR_2707    :Použít systémového průzkumníka souborů
 STR_2708    :{WINDOW_COLOUR_1}Opravdu chcete přepsat {STRINGID}?
 STR_2709    :Přepsat
 STR_2710    :Napište název souboru.
-STR_2711    :;
-STR_2712    :=
-STR_2713    :,
-STR_2714    :-
-STR_2715    :.
-STR_2716    :/
-STR_2717    :'
 STR_2718    :(up)
 STR_2719    :(new file)
 STR_2720    :{UINT16}s
@@ -2081,10 +1957,6 @@ STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nenalezen
 STR_2743    :Nakopírujte „data/css17.dat“ z vaší instalace RCT1 do „data/css50.dat“ ve vaší instalaci RCT2, nebo se přesvědčte, že cesta k instalaci RCT1 je správně nastavena v záložce „Pokročilé“.
-STR_2744    :[
-STR_2745    :\
-STR_2746    :]
-STR_2747    :”
 STR_2749    :Můj nový scénář
 # New strings used in the cheats window previously these were ???
 STR_2750    :Posunout všechny položky nahoru
@@ -2921,7 +2793,6 @@ STR_5410    :Upravit
 STR_5411    :Znovu načíst
 STR_5412    :Přeskočit na
 STR_5413    :Načíst
-STR_5414    :Načíst{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Načíst{MOVE_X}{87}{STRING}
 STR_5416    :Načíst{MOVE_X}{87}Nebyla vybrána uložená hra
 STR_5417    :Umístění
@@ -3744,7 +3615,7 @@ STR_6273    :Hudba
 STR_6274    :Nelze nastavit schéma barev...
 STR_6275    :{WINDOW_COLOUR_2}Styl stanice:
 STR_6276    :{RED}Na atrakci {STRINGID} se zasekávají návštěvníci, zkontrolujte typ atrakce a mód provozu.
-STR_6277    :{WINDOW_COLOUR_2}Index stanice: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Index stanice: {BLACK}{STRINGID}
 STR_6278    :Počet autouložení
 STR_6279    :{SMALLFONT}{BLACK}Maximální počet autouložených her
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3800,6 +3671,24 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Stahování [{STRING}] od {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Přivolat kachny
 STR_6332    :Zmizet kachny
+STR_6333    :Zvýšit koeficient škálování
+STR_6334    :Snížit koeficient škálování
+STR_6335    :Průzkumník dlaždic: Vložit neplatný prvek
+STR_6336    :Průzkumník dlaždic: Kopírovat prvek
+STR_6337    :Průzkumník dlaždic: Vložit prvek
+STR_6338    :Průzkumník dlaždic: Smazat prvek
+STR_6339    :Průzkumník dlaždic: Posunout prvek nahoru
+STR_6340    :Průzkumník dlaždic: Posunout prvek dolů
+STR_6341    :Průzkumník dlaždic: Zvýšit X souřadnici
+STR_6342    :Průzkumník dlaždic: Snížit X souřadnici
+STR_6343    :Průzkumník dlaždic: Zvýšit Y souřadnici
+STR_6344    :Průzkumník dlaždic: Snížit Y souřadnici
+STR_6345    :Průzkumník dlaždic: Zvýšit výšku prvku
+STR_6346    :Průzkumník dlaždic: Snížit výšku prvku
+STR_6347    :Doplňky cest nelze kombinovat s přejezdem!
+STR_6348    :Napřed je nutné odstranit přejezd!
+STR_6349    :Náhodná úvodní herní sekvence
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 ###############################################################################
 ## RCT2 Scenarios

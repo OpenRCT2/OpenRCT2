@@ -30,7 +30,7 @@ private:
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(CoordsXYZD location, int32_t trackType, uint16_t newColourScheme)
+    RideSetColourSchemeAction(const CoordsXYZD& location, int32_t trackType, uint16_t newColourScheme)
         : _loc(location)
         , _trackType(trackType)
         , _newColourScheme(newColourScheme)
@@ -57,7 +57,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
         int32_t x = _loc.x, y = _loc.y, z = _loc.z;
