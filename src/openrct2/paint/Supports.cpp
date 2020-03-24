@@ -705,7 +705,7 @@ bool wooden_b_supports_paint_setup(
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
         int32_t imageId;
-		if(special <= 48)imageId = WoodenCurveSupportImageIds[supportType];
+		if(specialIndex <= 48)imageId = WoodenCurveSupportImageIds[supportType];
 		else imageId = WoodenCurveSupportImageIdsG2[supportType];
 
         unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
