@@ -20,6 +20,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Sprite.h>
+#include <set>
 
 // clang-format off
 enum {
@@ -82,6 +83,9 @@ static rct_widget window_guest_list_widgets[] = {
 static constexpr const uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
 static constexpr const auto GUESTS_PER_PAGE = 2000;
 static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
+
+static auto PeepCompare = [](uint16_t x, uint16_t y){ return peep_compare(&x,&y) < 0; };
+static auto GuestList = std::multiset<uint16_t,decltype(PeepCompare)>(PeepCompare);
 
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);
@@ -222,15 +226,45 @@ rct_window* window_guest_list_open()
     window->min_height = 330;
     window->max_width = 500;
     window->max_height = 450;
-
+    window_guest_list_refresh_list();
     return window;
 }
 
 void window_guest_list_refresh_list()
 {
+    if (window_find_by_class(WC_GUEST_LIST) == nullptr)
+    {
+        return;
+    }
     _window_guest_list_last_find_groups_wait = 0;
     _window_guest_list_last_find_groups_tick = 0;
     window_guest_list_find_groups();
+
+    // Only the individual tab uses the GuestList so no point calculating it
+    if (_window_guest_list_selected_tab != PAGE_INDIVIDUAL)
+    {
+        return;
+    }
+
+    GuestList.clear();
+    Peep* peep = nullptr;
+    uint16_t spriteIndex;
+    FOR_ALL_GUESTS (spriteIndex, peep)
+    {
+        sprite_set_flashing(peep, false);
+        if (peep->outside_of_park != 0)
+            continue;
+        if (_window_guest_list_selected_filter != -1)
+        {
+            if (window_guest_list_is_peep_in_filter(peep))
+                continue;
+            gWindowMapFlashingFlags |= (1 << 0);
+            sprite_set_flashing(peep, true);
+        }
+        if (!guest_should_be_visible(peep))
+            continue;
+        GuestList.insert(spriteIndex);
+    }
 }
 
 /**
@@ -402,6 +436,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             _window_guest_list_selected_filter = -1;
             w->Invalidate();
             w->scrolls[0].v_top = 0;
+            window_guest_list_refresh_list();
             break;
         case WIDX_PAGE_DROPDOWN_BUTTON:
             widget = &w->widgets[widgetIndex - 1];
@@ -482,29 +517,14 @@ static void window_guest_list_update(rct_window* w)
  */
 static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    int32_t i, y, numGuests, spriteIndex;
-    Peep* peep;
-
+    int32_t i, y;
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
             // Count the number of guests
-            numGuests = 0;
-
-            FOR_ALL_GUESTS (spriteIndex, peep)
-            {
-                if (peep->outside_of_park != 0)
-                    continue;
-                if (_window_guest_list_selected_filter != -1)
-                    if (window_guest_list_is_peep_in_filter(peep))
-                        continue;
-                if (!guest_should_be_visible(peep))
-                    continue;
-                numGuests++;
-            }
-            w->var_492 = numGuests;
-            y = numGuests * SCROLLABLE_ROW_HEIGHT;
-            _window_guest_list_num_pages = 1 + (numGuests - 1) / GUESTS_PER_PAGE;
+            w->var_492 = static_cast<int16_t>(GuestList.size());
+            y = static_cast<int16_t>(GuestList.size()) * SCROLLABLE_ROW_HEIGHT;
+            _window_guest_list_num_pages = 1 + (static_cast<int16_t>(GuestList.size()) - 1) / GUESTS_PER_PAGE;
             if (_window_guest_list_num_pages == 0)
                 _window_guest_list_selected_page = 0;
             else if (_window_guest_list_selected_page >= _window_guest_list_num_pages)
@@ -549,35 +569,21 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
  */
 static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t i, spriteIndex;
-    Peep* peep;
+    int32_t i;
 
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
             i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             i += _window_guest_list_selected_page * GUESTS_PER_PAGE;
-            FOR_ALL_GUESTS (spriteIndex, peep)
+            for (auto spIndex : GuestList)
             {
-                if (peep->outside_of_park != 0)
-                    continue;
-                if (_window_guest_list_selected_filter != -1)
-                    if (window_guest_list_is_peep_in_filter(peep))
-                        continue;
-                if (!guest_should_be_visible(peep))
-                    continue;
-
                 if (i == 0)
                 {
-                    // Open guest window
-                    window_guest_open(peep);
-
+                    window_guest_open(GET_PEEP(spIndex));
                     break;
                 }
-                else
-                {
-                    i--;
-                }
+                i--;
             }
             break;
         case PAGE_SUMMARISED:
@@ -718,6 +724,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(
             dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
             COLOUR_BLACK, x, y);
+        assert(w->var_492 == GuestList.size());
     }
 }
 
@@ -727,14 +734,12 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t spriteIndex, numGuests, i, j, y;
+    int32_t numGuests, i, j, y;
     rct_string_id format;
-    Peep* peep;
     rct_peep_thought* thought;
 
     // Background fill
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
-
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
@@ -742,21 +747,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
             y = _window_guest_list_selected_page * -GUEST_PAGE_HEIGHT;
 
             // For each guest
-            FOR_ALL_GUESTS (spriteIndex, peep)
+            for (auto spriteIndex : GuestList)
             {
-                sprite_set_flashing(peep, false);
-                if (peep->outside_of_park != 0)
-                    continue;
-                if (_window_guest_list_selected_filter != -1)
-                {
-                    if (window_guest_list_is_peep_in_filter(peep))
-                        continue;
-                    gWindowMapFlashingFlags |= (1 << 0);
-                    sprite_set_flashing(peep, true);
-                }
-                if (!guest_should_be_visible(peep))
-                    continue;
-
                 // Check if y is beyond the scroll control
                 if (y + SCROLLABLE_ROW_HEIGHT + 1 >= -0x7FFF && y + SCROLLABLE_ROW_HEIGHT + 1 > dpi->y && y < 0x7FFF
                     && y < dpi->y + dpi->height)
@@ -770,6 +762,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     }
 
                     // Guest name
+                    auto peep = GET_PEEP(spriteIndex);
                     peep->FormatNameTo(gCommonFormatArgs);
                     gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 113);
 

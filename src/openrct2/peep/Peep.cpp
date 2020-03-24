@@ -3241,7 +3241,7 @@ rct_string_id get_real_name_string_id_from_id(uint32_t id)
     return dx;
 }
 
-static int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b)
+int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b)
 {
     Peep const* peep_a = GET_PEEP(*(uint16_t*)sprite_index_a);
     Peep const* peep_b = GET_PEEP(*(uint16_t*)sprite_index_b);
