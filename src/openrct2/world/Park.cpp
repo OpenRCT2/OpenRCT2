@@ -516,7 +516,14 @@ money32 Park::CalculateRideValue(const Ride* ride) const
 
 money32 Park::CalculateCompanyValue() const
 {
-    return finance_get_current_cash() + gParkValue - gBankLoan;
+    // Cast the sum to a 64-bit value
+    money64 result = (money64)finance_get_current_cash() + (money64)gParkValue - (money64)gBankLoan;
+
+    // Clamp the result to the range of a 32-bit value
+    result = result < INT32_MIN ? INT32_MIN : result;
+    result = result > INT32_MAX ? INT32_MAX : result;
+
+    return (money32)result;
 }
 
 money16 Park::CalculateTotalRideValueForMoney() const
