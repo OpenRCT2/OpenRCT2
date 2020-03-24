@@ -1667,7 +1667,7 @@ static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
             continue;
         tileElement->AsPath()->SetWideForGroup(wideGroup, false);
 
-        if (wideGroup == 0 && !(tileElement->AsPath()->IsWideForGroup(wideGroup)))
+        if (wideGroup == 0 && !tileElement->AsPath()->IsWideForGroup(wideGroup))
             tileElement->AsPath()->SetWide(false);
 
     } while (!(tileElement++)->IsLastForTile());

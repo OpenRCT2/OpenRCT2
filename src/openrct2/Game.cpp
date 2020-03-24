@@ -582,6 +582,7 @@ void game_load_init()
     }
 
     audio_stop_title_music();
+    map_update_all_path_wide_flags();
     gGameSpeed = 1;
 }
 

@@ -661,6 +661,26 @@ void map_update_path_wide_flags()
     gWidePathTileLoopY = secondary;
 }
 
+void map_update_all_path_wide_flags()
+{
+    for (int secondary = 0; secondary < MAXIMUM_MAP_SIZE_BIG; secondary += COORDS_XY_STEP)
+    {
+        for (int primary = 0; primary < MAXIMUM_MAP_SIZE_BIG; primary += COORDS_XY_STEP)
+        {
+            footpath_update_path_wide_flags({ primary, secondary }, WIDE_GROUP_N_SW);
+            footpath_update_path_wide_flags({ secondary, primary }, WIDE_GROUP_N_SE);
+            footpath_update_path_wide_flags({ secondary, MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_E_NW);
+            footpath_update_path_wide_flags({ primary, MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_E_SW);
+            footpath_update_path_wide_flags(
+                { MAXIMUM_MAP_SIZE_BIG - (primary + 1), MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_S_NE);
+            footpath_update_path_wide_flags(
+                { MAXIMUM_MAP_SIZE_BIG - (secondary + 1), MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_S_NW);
+            footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (secondary + 1), primary }, WIDE_GROUP_W_SE);
+            footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006A7B84
@@ -1068,6 +1088,7 @@ void map_invalidate_selection_rect()
 void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
+    map_update_all_path_wide_flags();
 
     TileElement* new_tile_elements = (TileElement*)malloc(
         3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(TileElement));

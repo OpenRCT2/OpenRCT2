@@ -186,6 +186,7 @@ bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection);
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();
 void map_update_path_wide_flags();
+void map_update_all_path_wide_flags();
 bool map_is_location_valid(const CoordsXY& coords);
 bool map_is_edge(const CoordsXY& coords);
 bool map_can_build_at(const CoordsXYZ& loc);
