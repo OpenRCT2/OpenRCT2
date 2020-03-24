@@ -363,7 +363,7 @@ void S6Exporter::Export()
     _s6.saved_age = gSavedAge;
     _s6.saved_view_x = gSavedView.x;
     _s6.saved_view_y = gSavedView.y;
-    _s6.saved_view_zoom = gSavedViewZoom;
+    _s6.saved_view_zoom = static_cast<int8_t>(std::clamp<ZoomLevel>(gSavedViewZoom, 0, 3));
     _s6.saved_view_rotation = gSavedViewRotation;
 
     ExportMapAnimations();

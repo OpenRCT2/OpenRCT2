@@ -2169,7 +2169,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
         int32_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
         int32_t trackColourScheme = tileElement->AsTrack()->GetColourScheme();
 
-        if ((session->ViewFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0)
+        if ((session->ViewFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level <= 0)
         {
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))

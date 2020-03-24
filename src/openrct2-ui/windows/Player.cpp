@@ -459,8 +459,8 @@ void window_player_overview_invalidate(rct_window* w)
         viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
         viewport->width = viewportWidget->right - viewportWidget->left;
         viewport->height = viewportWidget->bottom - viewportWidget->top;
-        viewport->view_width = viewport->width << viewport->zoom;
-        viewport->view_height = viewport->height << viewport->zoom;
+        viewport->view_width = viewport->width * viewport->zoom;
+        viewport->view_height = viewport->height * viewport->zoom;
     }
 
     // Only enable kick button for other players

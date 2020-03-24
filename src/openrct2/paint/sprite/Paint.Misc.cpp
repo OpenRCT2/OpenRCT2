@@ -44,7 +44,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 
         case SPRITE_MISC_MONEY_EFFECT: // 1
         {
-            if (dpi->zoom_level != 0)
+            if (dpi->zoom_level > 0)
             {
                 return;
             }
@@ -59,7 +59,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE: // 2
         {
-            if (dpi->zoom_level != 0)
+            if (dpi->zoom_level > 0)
             {
                 return;
             }
@@ -98,7 +98,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER: // 6
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:  // 9
         {
-            if (dpi->zoom_level != 0)
+            if (dpi->zoom_level > 0)
             {
                 return;
             }

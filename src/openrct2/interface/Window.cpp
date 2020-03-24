@@ -974,12 +974,12 @@ void window_viewport_get_map_coords_by_cursor(
     }
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = ((w->width >> 1) - mouseCoords.x) * (1 << w->viewport->zoom),
-            rebased_y = ((w->height >> 1) - mouseCoords.y) * (1 << w->viewport->zoom);
+    int32_t rebased_x = ((w->width / 2) - mouseCoords.x) * w->viewport->zoom;
+    int32_t rebased_y = ((w->height / 2) - mouseCoords.y) * w->viewport->zoom;
 
     // Compute cursor offset relative to tile.
-    *offset_x = (w->savedViewPos.x - (centreLoc->x + rebased_x)) * (1 << w->viewport->zoom);
-    *offset_y = (w->savedViewPos.y - (centreLoc->y + rebased_y)) * (1 << w->viewport->zoom);
+    *offset_x = (w->savedViewPos.x - (centreLoc->x + rebased_x)) * w->viewport->zoom;
+    *offset_y = (w->savedViewPos.y - (centreLoc->y + rebased_y)) * w->viewport->zoom;
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y)
@@ -998,19 +998,19 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = ((w->width >> 1) - mouseCoords.x) * (1 << w->viewport->zoom),
-            rebased_y = ((w->height >> 1) - mouseCoords.y) * (1 << w->viewport->zoom);
+    int32_t rebased_x = ((w->width >> 1) - mouseCoords.x) * w->viewport->zoom;
+    int32_t rebased_y = ((w->height >> 1) - mouseCoords.y) * w->viewport->zoom;
 
     // Apply offset to the viewport.
-    w->savedViewPos = { centreLoc->x + rebased_x + (offset_x / (1 << w->viewport->zoom)),
-                        centreLoc->y + rebased_y + (offset_y / (1 << w->viewport->zoom)) };
+    w->savedViewPos = { centreLoc->x + rebased_x + (offset_x / w->viewport->zoom),
+                        centreLoc->y + rebased_y + (offset_y / w->viewport->zoom) };
 }
 
-void window_zoom_set(rct_window* w, int32_t zoomLevel, bool atCursor)
+void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
 
-    zoomLevel = std::clamp(zoomLevel, 0, MAX_ZOOM_LEVEL);
+    zoomLevel = std::clamp(zoomLevel, ZoomLevel::min(), ZoomLevel::max());
     if (v->zoom == zoomLevel)
         return;
 
@@ -1663,8 +1663,8 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         mainWind->height = height;
         viewport->width = width;
         viewport->height = height;
-        viewport->view_width = width << viewport->zoom;
-        viewport->view_height = height << viewport->zoom;
+        viewport->view_width = width * viewport->zoom;
+        viewport->view_height = height * viewport->zoom;
         if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
@@ -1734,18 +1734,12 @@ void window_update_viewport_ride_music()
         g_music_tracking_viewport = viewport;
         gWindowAudioExclusive = w;
 
-        switch (viewport->zoom)
-        {
-            case 0:
-                gVolumeAdjustZoom = 0;
-                break;
-            case 1:
-                gVolumeAdjustZoom = 30;
-                break;
-            default:
-                gVolumeAdjustZoom = 60;
-                break;
-        }
+        if (viewport->zoom <= 0)
+            gVolumeAdjustZoom = 0;
+        else if (viewport->zoom == 1)
+            gVolumeAdjustZoom = 30;
+        else
+            gVolumeAdjustZoom = 60;
         break;
     }
 }

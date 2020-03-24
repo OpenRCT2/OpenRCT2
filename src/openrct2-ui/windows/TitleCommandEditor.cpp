@@ -214,7 +214,7 @@ static uint8_t get_zoom()
     rct_window* w = window_get_main();
     if (w != nullptr)
     {
-        zoom = w->viewport->zoom;
+        zoom = static_cast<int8_t>(w->viewport->zoom);
     }
     return zoom;
 }

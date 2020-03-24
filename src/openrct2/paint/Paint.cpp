@@ -688,16 +688,6 @@ static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, u
     return imageId;
 }
 
-static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo* dpi)
-{
-    int32_t zoom = dpi->zoom_level;
-    dpi->zoom_level = 0;
-    dpi->x >>= zoom;
-    dpi->y >>= zoom;
-    dpi->width >>= zoom;
-    dpi->height >>= zoom;
-}
-
 paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
@@ -1129,24 +1119,33 @@ void paint_floating_money_effect(
     session->LastPSString = ps;
 }
 
+static rct_drawpixelinfo draw_pixel_info_crop_by_zoom(const rct_drawpixelinfo& dpi)
+{
+    auto result = dpi;
+    result.x = dpi.x * dpi.zoom_level;
+    result.y = dpi.y * dpi.zoom_level;
+    result.width = dpi.width / dpi.zoom_level;
+    result.height = dpi.height / dpi.zoom_level;
+    result.zoom_level = 0;
+    return result;
+}
+
 /**
  *
  *  rct2: 0x006860C3
  */
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
 {
-    rct_drawpixelinfo dpi2 = *dpi;
-    draw_pixel_info_crop_by_zoom(&dpi2);
-
+    auto dpi2 = draw_pixel_info_crop_by_zoom(*dpi);
     do
     {
-        utf8 buffer[256];
-        format_string(buffer, 256, ps->string_id, &ps->args);
+        char buffer[256]{};
+        format_string(buffer, sizeof(buffer), ps->string_id, &ps->args);
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
-        bool forceSpriteFont = false;
-        const currency_descriptor& currencyDesc = CurrencyDescriptors[gConfigGeneral.currency_format];
+        auto forceSpriteFont = false;
+        const auto& currencyDesc = CurrencyDescriptors[gConfigGeneral.currency_format];
         if (LocalisationService_UseTrueTypeFont() && font_supports_string_sprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;

@@ -627,8 +627,8 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
     if (viewport == nullptr || viewport->zoom >= 2)
         return nullptr;
 
-    screenCoords.x = ((screenCoords.x - viewport->pos.x) << viewport->zoom) + viewport->viewPos.x;
-    screenCoords.y = ((screenCoords.y - viewport->pos.y) << viewport->zoom) + viewport->viewPos.y;
+    screenCoords.x = ((screenCoords.x - viewport->pos.x) * viewport->zoom) + viewport->viewPos.x;
+    screenCoords.y = ((screenCoords.y - viewport->pos.y) * viewport->zoom) + viewport->viewPos.y;
 
     closestPeep = nullptr;
     closestDistance = 0xFFFF;

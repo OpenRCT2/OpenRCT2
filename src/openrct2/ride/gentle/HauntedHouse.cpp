@@ -63,7 +63,7 @@ static void paint_haunted_house_structure(
         boundBox.offset_y, height);
 
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level == 0 && frameNum != 0)
+    if (dpi->zoom_level <= 0 && frameNum != 0)
     {
         switch (direction)
         {
