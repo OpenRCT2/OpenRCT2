@@ -3909,6 +3909,9 @@ enum
     STR_ENABLE_LIGHTING_VEHICLES = 6361,
     STR_ENABLE_LIGHTING_VEHICLES_TIP = 6362,
 
+    STR_FILTER_UNAVAILABLE = 6363,
+    STR_FILTER_UNAVAILABLE_TIP = 6364,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
