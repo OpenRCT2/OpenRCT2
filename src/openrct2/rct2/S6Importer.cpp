@@ -1174,7 +1174,7 @@ public:
                 auto entry = dst2->GetEntry();
                 if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
                 {
-                    auto bannerIndex = dst2->GetBannerIndex();
+                    auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
@@ -1200,7 +1200,7 @@ public:
                 auto entry = dst2->GetEntry();
                 if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
-                    auto bannerIndex = dst2->GetBannerIndex();
+                    auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
