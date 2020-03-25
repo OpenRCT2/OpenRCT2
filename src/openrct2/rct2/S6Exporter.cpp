@@ -1552,11 +1552,15 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetAcrossTrack(src2->IsAcrossTrack());
             dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
-            auto bannerIndex = src2->GetBannerIndex();
-            if (bannerIndex != BANNER_INDEX_NULL)
-                dst2->SetBannerIndex(bannerIndex);
-            else
-                dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            auto entry = src2->GetEntry();
+            if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                auto bannerIndex = src2->GetBannerIndex();
+                if (bannerIndex != BANNER_INDEX_NULL)
+                    dst2->SetBannerIndex(bannerIndex);
+                else
+                    dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            }
 
             break;
         }
@@ -1570,11 +1574,15 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetPrimaryColour(src2->GetPrimaryColour());
             dst2->SetSecondaryColour(src2->GetSecondaryColour());
 
-            auto bannerIndex = src2->GetBannerIndex();
-            if (bannerIndex != BANNER_INDEX_NULL)
-                dst2->SetBannerIndex(bannerIndex);
-            else
-                dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            auto entry = src2->GetEntry();
+            if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                auto bannerIndex = src2->GetBannerIndex();
+                if (bannerIndex != BANNER_INDEX_NULL)
+                    dst2->SetBannerIndex(bannerIndex);
+                else
+                    dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            }
 
             break;
         }
