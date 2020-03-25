@@ -220,7 +220,6 @@ rct_window* window_guest_list_open()
     window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WWT_FLATBTN;
     window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
     window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
-    window->var_492 = 0;
     window->min_width = 350;
     window->min_height = 330;
     window->max_width = 500;
@@ -518,12 +517,11 @@ static void window_guest_list_update(rct_window* w)
  */
 static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    int32_t i, y;
+    int32_t y = 0;
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
             // Count the number of guests
-            w->var_492 = static_cast<int16_t>(GuestList.size());
             y = static_cast<int16_t>(GuestList.size()) * SCROLLABLE_ROW_HEIGHT;
             _window_guest_list_num_pages = 1 + (static_cast<int16_t>(GuestList.size()) - 1) / GUESTS_PER_PAGE;
             if (_window_guest_list_num_pages == 0)
@@ -534,7 +532,6 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
         case PAGE_SUMMARISED:
             // Find the groups
             window_guest_list_find_groups();
-            w->var_492 = _window_guest_list_num_groups;
             y = _window_guest_list_num_groups * SUMMARISED_GUEST_ROW_HEIGHT;
             break;
         default:
@@ -551,7 +548,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
         w->Invalidate();
     }
 
-    i = y - window_guest_list_widgets[WIDX_GUEST_LIST].bottom + window_guest_list_widgets[WIDX_GUEST_LIST].top + 21;
+    auto i = y - window_guest_list_widgets[WIDX_GUEST_LIST].bottom + window_guest_list_widgets[WIDX_GUEST_LIST].top + 21;
     if (i < 0)
         i = 0;
     if (i < w->scrolls[0].v_top)
@@ -570,7 +567,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
  */
 static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t i;
+    int32_t i = 0;
 
     switch (_window_guest_list_selected_tab)
     {
@@ -721,11 +718,10 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         x = w->windowPos.x + 4;
         y = w->windowPos.y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
-        set_format_arg(0, int16_t, w->var_492);
+        set_format_arg(0, int16_t, static_cast<int16_t>(GuestList.size()));
         gfx_draw_string_left(
-            dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
+            dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
             COLOUR_BLACK, x, y);
-        assert(w->var_492 == static_cast<int16_t>(GuestList.size()));
     }
 }
 
