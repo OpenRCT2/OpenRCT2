@@ -52,6 +52,7 @@ private:
     int32_t _colour;
     int32_t _seatRotation;
     int32_t _trackPlaceFlags;
+    bool _fromTrackDesign;
 
 public:
     TrackPlaceAction()
@@ -60,7 +61,7 @@ public:
 
     TrackPlaceAction(
         NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-        int32_t seatRotation, int32_t liftHillAndAlternativeState)
+        int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign)
         : _rideIndex(rideIndex)
         , _trackType(trackType)
         , _origin(origin)
@@ -68,6 +69,7 @@ public:
         , _colour(colour)
         , _seatRotation(seatRotation)
         , _trackPlaceFlags(liftHillAndAlternativeState)
+        , _fromTrackDesign(fromTrackDesign)
     {
         _origin.direction &= 3;
     }
@@ -348,7 +350,7 @@ public:
             }
             if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
             {
-                if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0))
+                if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorText);
                 }
@@ -665,7 +667,8 @@ public:
             {
                 if (trackBlock->index == 0)
                 {
-                    track_add_station_element({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY);
+                    track_add_station_element(
+                        { mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
                 }
                 sub_6CB945(ride);
                 ride->UpdateMaxVehicles();
