@@ -24,13 +24,14 @@ private:
     CoordsXY _loc;
     Direction _direction;
     NetworkRideId_t _rideIndex;
-    uint8_t _stationNum;
+    StationIndex _stationNum;
     bool _isExit;
 
 public:
     RideEntranceExitPlaceAction() = default;
 
-    RideEntranceExitPlaceAction(const CoordsXY& loc, Direction direction, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
+    RideEntranceExitPlaceAction(
+        const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
         : _loc(loc)
         , _direction(direction)
         , _rideIndex(rideIndex)

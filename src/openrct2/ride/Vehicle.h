@@ -15,6 +15,7 @@
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
+#include "Station.h"
 
 #include <array>
 #include <cstddef>
@@ -212,7 +213,7 @@ struct Vehicle : SpriteBase
     uint16_t mass;
     uint16_t update_flags;
     uint8_t swing_sprite;
-    uint8_t current_station;
+    StationIndex current_station;
     union
     {
         int16_t swinging_car_var_0;

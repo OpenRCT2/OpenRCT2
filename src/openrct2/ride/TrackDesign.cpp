@@ -255,7 +255,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     // First entrances, second exits
     for (int32_t i = 0; i < 2; i++)
     {
-        for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
+        for (StationIndex station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
         {
             z = ride.stations[station_index].GetBaseZ();
 
@@ -1685,7 +1685,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                             continue;
                         }
 
-                        int32_t stationIndex = tile_element->AsTrack()->GetStationIndex();
+                        auto stationIndex = tile_element->AsTrack()->GetStationIndex();
                         uint8_t flags = GAME_COMMAND_FLAG_APPLY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {

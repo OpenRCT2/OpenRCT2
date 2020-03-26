@@ -116,7 +116,7 @@ CoordsXYZD _unkF440C5;
 
 uint8_t gRideEntranceExitPlaceType;
 ride_id_t gRideEntranceExitPlaceRideIndex;
-uint8_t gRideEntranceExitPlaceStationIndex;
+StationIndex gRideEntranceExitPlaceStationIndex;
 uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
 
@@ -266,7 +266,7 @@ int32_t Ride::GetMaxQueueTime() const
     return (int32_t)queueTime;
 }
 
-Peep* Ride::GetQueueHeadGuest(int32_t stationIndex) const
+Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
 {
     Peep* peep;
     Peep* result = nullptr;
@@ -279,7 +279,7 @@ Peep* Ride::GetQueueHeadGuest(int32_t stationIndex) const
     return result;
 }
 
-void Ride::UpdateQueueLength(int32_t stationIndex)
+void Ride::UpdateQueueLength(StationIndex stationIndex)
 {
     uint16_t count = 0;
     Peep* peep;
@@ -292,7 +292,7 @@ void Ride::UpdateQueueLength(int32_t stationIndex)
     stations[stationIndex].QueueLength = count;
 }
 
-void Ride::QueueInsertGuestAtFront(int32_t stationIndex, Peep* peep)
+void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
 {
     assert(stationIndex < MAX_STATIONS);
     assert(peep != nullptr);
@@ -1680,7 +1680,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
         return false;
 
-    int32_t stationIndex = entranceElement->GetStationIndex();
+    auto stationIndex = entranceElement->GetStationIndex();
 
     // Get or create construction window for ride
     auto constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2638,7 +2638,7 @@ static void ride_call_closest_mechanic(Ride* ride)
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
 {
     // Get either exit position or entrance position if there is no exit
-    int32_t stationIndex = ride->inspection_station;
+    auto stationIndex = ride->inspection_station;
     TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
     if (location.isNull())
     {
@@ -3729,14 +3729,14 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
  *
  *  rct2: 0x006B4CC1
  */
-static int32_t ride_mode_check_valid_station_numbers(Ride* ride)
+static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
 {
-    uint8_t no_stations = 0;
-    for (uint8_t station_index = 0; station_index < MAX_STATIONS; ++station_index)
+    uint16_t numStations = 0;
+    for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; ++stationIndex)
     {
-        if (!ride->stations[station_index].Start.isNull())
+        if (!ride->stations[stationIndex].Start.isNull())
         {
-            no_stations++;
+            numStations++;
         }
     }
 
@@ -3746,12 +3746,12 @@ static int32_t ride_mode_check_valid_station_numbers(Ride* ride)
         case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
         case RIDE_MODE_POWERED_LAUNCH:
         case RIDE_MODE_LIM_POWERED_LAUNCH:
-            if (no_stations <= 1)
+            if (numStations <= 1)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
             return 0;
         case RIDE_MODE_SHUTTLE:
-            if (no_stations >= 2)
+            if (numStations >= 2)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
             return 0;
@@ -3759,7 +3759,7 @@ static int32_t ride_mode_check_valid_station_numbers(Ride* ride)
 
     if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF)
     {
-        if (no_stations <= 1)
+        if (numStations <= 1)
             return 1;
         gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
         return 0;
@@ -4821,8 +4821,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
 static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
     CoordsXYZ location;
-    int32_t stationIndex;
-    for (stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+    for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
     {
         location = ride->stations[stationIndex].GetStart();
         if (!location.isNull())
@@ -5098,7 +5097,6 @@ static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
 
 int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
 {
-    int32_t stationIndex;
     CoordsXYE trackElement, problematicTrackElement = {};
 
     if (ride->type == RIDE_TYPE_NULL)
@@ -5112,8 +5110,8 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         window_close_by_number(WC_RIDE_CONSTRUCTION, ride->id);
     }
 
-    stationIndex = ride_mode_check_station_present(ride);
-    if (stationIndex == -1)
+    StationIndex stationIndex = ride_mode_check_station_present(ride);
+    if (stationIndex == STATION_INDEX_NULL)
         return 0;
 
     if (!ride_mode_check_valid_station_numbers(ride))
@@ -5238,7 +5236,6 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
  */
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying)
 {
-    int32_t stationIndex;
     CoordsXYE trackElement, problematicTrackElement = {};
 
     // Check to see if construction tool is in use. If it is close the construction window
@@ -5249,8 +5246,8 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         window_close_by_number(WC_RIDE_CONSTRUCTION, ride->id);
 
-    stationIndex = ride_mode_check_station_present(ride);
-    if (stationIndex == -1)
+    StationIndex stationIndex = ride_mode_check_station_present(ride);
+    if (stationIndex == STATION_INDEX_NULL)
         return 0;
 
     if (!ride_mode_check_valid_station_numbers(ride))
@@ -6794,7 +6791,7 @@ void sub_6CB945(Ride* ride)
 {
     if (ride->type != RIDE_TYPE_MAZE)
     {
-        for (uint8_t stationId = 0; stationId < MAX_STATIONS; ++stationId)
+        for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
         {
             if (ride->stations[stationId].Start.isNull())
                 continue;
@@ -6887,7 +6884,7 @@ void sub_6CB945(Ride* ride)
     }
 
     std::vector<TileCoordsXYZD> locations;
-    for (uint8_t stationId = 0; stationId < MAX_STATIONS; ++stationId)
+    for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
         auto entrance = ride_get_entrance_location(ride, stationId);
         if (!entrance.isNull())
@@ -6966,7 +6963,7 @@ void sub_6CB945(Ride* ride)
                     continue;
                 }
 
-                uint8_t stationId = 0;
+                StationIndex stationId = 0;
                 if (trackType != TRACK_ELEM_MAZE)
                 {
                     stationId = trackElement->AsTrack()->GetStationIndex();
@@ -7250,13 +7247,13 @@ bool ride_has_adjacent_station(Ride* ride)
 
     /* Loop through all of the ride stations, checking for an
      * adjacent station on either side. */
-    for (int32_t stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
+    for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
     {
         auto stationStart = ride->stations[stationNum].Start;
         if (!stationStart.isNull())
         {
             /* Get the map element for the station start. */
-            uint8_t stationZ = ride->stations[stationNum].Height;
+            auto stationZ = ride->stations[stationNum].Height;
 
             TileElement* stationElement = get_station_platform(stationStart.x, stationStart.y, stationZ, 0);
             if (stationElement == nullptr)
@@ -7542,7 +7539,7 @@ void determine_ride_entrance_and_exit_locations()
 
     for (auto& ride : GetRideManager())
     {
-        for (int32_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+        for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
             TileCoordsXYZD entranceLoc = ride.stations[stationIndex].Entrance;
             TileCoordsXYZD exitLoc = ride.stations[stationIndex].Exit;

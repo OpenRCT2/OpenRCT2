@@ -1502,7 +1502,7 @@ void PathElement::SetIsBlockedByVehicle(bool isBlocked)
     }
 }
 
-uint8_t PathElement::GetStationIndex() const
+::StationIndex PathElement::GetStationIndex() const
 {
     return StationIndex;
 }
