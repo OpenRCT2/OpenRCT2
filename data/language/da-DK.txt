@@ -3702,6 +3702,8 @@ STR_6357    :{SMALLFONT}{BLACK}Fjern alle ænder fra kortet
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
+STR_6362    :{SMALLFONT}{BLACK}Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
 
 #############
 # Scenarios #
