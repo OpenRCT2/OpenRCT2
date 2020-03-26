@@ -1852,7 +1852,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
  * appropriate.
  */
 static StationIndex guest_pathfinding_select_random_station(
-    const Guest* guest, int32_t numEntranceStations, std::bitset<MAX_STATIONS> entranceStations, StationIndex closestStationNum)
+    const Guest* guest, int32_t numEntranceStations, std::bitset<MAX_STATIONS>& entranceStations)
 {
     int32_t select = guest->no_of_rides % numEntranceStations;
     while (select > 0)
@@ -1871,12 +1871,11 @@ static StationIndex guest_pathfinding_select_random_station(
     {
         if (entranceStations[i])
         {
-            closestStationNum = i;
-            break;
+            return i;
         }
     }
 
-    return closestStationNum;
+    return 0;
 }
 /**
  *
@@ -2120,8 +2119,7 @@ int32_t guest_path_finding(Guest* peep)
 
     if (numEntranceStations > 1 && (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
-        closestStationNum = guest_pathfinding_select_random_station(
-            peep, numEntranceStations, entranceStations, closestStationNum);
+        closestStationNum = guest_pathfinding_select_random_station(peep, numEntranceStations, entranceStations);
     }
 
     if (numEntranceStations == 0)
