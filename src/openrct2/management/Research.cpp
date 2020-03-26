@@ -601,6 +601,7 @@ void ride_entry_set_invented(int32_t rideEntryIndex)
 
 bool scenery_is_invented(const ScenerySelection& sceneryItem)
 {
+    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
     return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
 }
 
