@@ -3770,7 +3770,7 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
 
 /**
  * returns stationIndex of first station on success
- * -1 on failure.
+ * STATION_INDEX_NULL on failure.
  */
 static StationIndex ride_mode_check_station_present(Ride* ride)
 {
