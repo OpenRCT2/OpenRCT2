@@ -1705,9 +1705,9 @@ void junior_rc_paint_track_25_deg_up(
     uint32_t imageId = junior_rc_track_pieces_25_deg_up[chainType][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
-    int8_t tunnel_height[4] = { -8, 8, 8, -8 };
-    uint8_t tunnel_type[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
-    paint_util_push_tunnel_rotated(session, direction, height + tunnel_height[direction], tunnel_type[direction]);
+    int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
+    uint8_t tunnelType[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
+    paint_util_push_tunnel_rotated(session, direction, height + tunnelHeights[direction], tunnelType[direction]);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
