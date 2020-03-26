@@ -417,6 +417,7 @@ public:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
                 window_invalidate_by_class(WC_GUEST_LIST);
                 window_invalidate_by_class(WC_PARK_INFORMATION);
+                window_guest_list_refresh_list();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:

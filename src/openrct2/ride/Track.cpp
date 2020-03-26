@@ -637,14 +637,14 @@ static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
  *
  *  rct2: 0x006C4D89
  */
-bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags)
+bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags, bool fromTrackDesign)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
 
-    CoordsXY stationLoc0 = loc;
-    CoordsXY stationLoc1 = loc;
+    CoordsXY stationBackLoc = loc;
+    CoordsXY stationFrontLoc = loc;
     int32_t stationLength = 1;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
@@ -672,7 +672,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
     TileElement* stationElement;
 
     // Search backwards for more station
-    loc = { stationLoc0, loc.z, loc.direction };
+    loc = { stationBackLoc, loc.z, loc.direction };
     do
     {
         loc -= CoordsDirectionDelta[loc.direction];
@@ -688,13 +688,13 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
                 }
             }
 
-            stationLoc0 = loc;
+            stationBackLoc = loc;
             stationLength++;
         }
     } while (stationElement != nullptr);
 
     // Search forwards for more station
-    loc = { stationLoc1, loc.z, loc.direction };
+    loc = { stationFrontLoc, loc.z, loc.direction };
     do
     {
         loc += CoordsDirectionDelta[loc.direction];
@@ -710,12 +710,15 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
                 }
             }
 
-            stationLoc1 = loc;
+            stationFrontLoc = loc;
             stationLength++;
         }
     } while (stationElement != nullptr);
 
-    if (stationLoc0 == stationLoc1 && ride->num_stations >= MAX_STATIONS)
+    // When attempting to place a track design, it sometimes happens that the front and back of station 0 are built,
+    // but the middle is not. Allow this, so the track place function can actually finish building all 4 stations.
+    // This _might_ cause issues if the track designs is bugged and actually has 5.
+    if (stationBackLoc == stationFrontLoc && ride->num_stations >= MAX_STATIONS && !fromTrackDesign)
     {
         gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
         return false;
@@ -729,7 +732,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        loc = { stationLoc1, loc.z, loc.direction };
+        loc = { stationFrontLoc, loc.z, loc.direction };
 
         bool finaliseStationDone;
         do
@@ -740,7 +743,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
-                if (stationLoc1 == loc)
+                if (stationFrontLoc == loc)
                 {
                     auto stationIndex = ride_get_first_empty_station_start(ride);
                     if (stationIndex == STATION_INDEX_NULL)
@@ -758,7 +761,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
 
                     targetTrackType = TRACK_ELEM_END_STATION;
                 }
-                else if (stationLoc0 == loc)
+                else if (stationBackLoc == loc)
                 {
                     targetTrackType = TRACK_ELEM_BEGIN_STATION;
                 }
@@ -770,7 +773,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
 
                 map_invalidate_element(loc, stationElement);
 
-                if (stationLoc0 != loc)
+                if (stationBackLoc != loc)
                 {
                     loc -= CoordsDirectionDelta[loc.direction];
                     finaliseStationDone = false;

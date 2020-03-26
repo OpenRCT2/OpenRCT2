@@ -1166,24 +1166,21 @@ public:
                 dst2->SetSecondaryColour(src2->GetSecondaryColour());
                 dst2->SetTertiaryColour(src2->GetTertiaryColour());
                 dst2->SetAnimationFrame(src2->GetAnimationFrame());
-                dst2->SetBannerIndex(src2->GetBannerIndex());
                 dst2->SetAcrossTrack(src2->IsAcrossTrack());
                 dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
                 // Import banner information
+                dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
                 if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
                 {
-                    auto bannerIndex = dst2->GetBannerIndex();
+                    auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
                         auto dstBanner = GetBanner(bannerIndex);
                         ImportBanner(dstBanner, srcBanner);
-                    }
-                    else
-                    {
-                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                        dst2->SetBannerIndex(src2->GetBannerIndex());
                     }
                 }
                 break;
@@ -1197,22 +1194,19 @@ public:
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetPrimaryColour(src2->GetPrimaryColour());
                 dst2->SetSecondaryColour(src2->GetSecondaryColour());
-                dst2->SetBannerIndex(src2->GetBannerIndex());
 
                 // Import banner information
+                dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
                 if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
-                    auto bannerIndex = dst2->GetBannerIndex();
+                    auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
                         auto dstBanner = GetBanner(bannerIndex);
                         ImportBanner(dstBanner, srcBanner);
-                    }
-                    else
-                    {
-                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                        dst2->SetBannerIndex(src2->GetBannerIndex());
                     }
                 }
                 break;
