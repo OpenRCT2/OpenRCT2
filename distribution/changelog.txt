@@ -1,6 +1,7 @@
 0.2.5+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
+- Fix: [#475] Water sides drawn incorrectly (original bug).
 - Fix: [#6123, #7907, #9472, #11028] Cannot build some track designs with 4 stations (original bug).
 - Fix: [#7094] Back wall edge texture in water missing.
 - Fix: [#11027] Third color on walls becomes black when saving.

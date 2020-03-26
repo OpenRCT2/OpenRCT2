@@ -1300,14 +1300,14 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
                 // end new code
 
-                viewport_surface_draw_water_side_top(
-                    session, EDGE_TOPLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
-                viewport_surface_draw_water_side_top(
-                    session, EDGE_TOPRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
                 viewport_surface_draw_water_side_bottom(
                     session, EDGE_BOTTOMLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
                 viewport_surface_draw_water_side_bottom(
                     session, EDGE_BOTTOMRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
+                viewport_surface_draw_water_side_top(
+                    session, EDGE_TOPLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
+                viewport_surface_draw_water_side_top(
+                    session, EDGE_TOPRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
             }
         }
     }
