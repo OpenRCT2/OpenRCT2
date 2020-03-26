@@ -517,11 +517,10 @@ money32 Park::CalculateRideValue(const Ride* ride) const
 
 money32 Park::CalculateCompanyValue() const
 {
-    money32 result = finance_get_current_cash();
+    money32 result = gParkValue - gBankLoan;
 
-    // Clamp addition and substraction to prevent overflow
-    result = add_clamp_money32(result, -gBankLoan);
-    result = add_clamp_money32(result, gParkValue);
+    // Clamp addition to prevent overflow
+    result = add_clamp_money32(result, finance_get_current_cash());
 
     return result;
 }
