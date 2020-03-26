@@ -362,11 +362,7 @@ public:
 
             case INTENT_ACTION_REFRESH_STAFF_LIST:
             {
-                auto w = window_find_by_class(WC_STAFF_LIST);
-                if (w != nullptr)
-                {
-                    w->no_list_items = 0;
-                }
+                WindowStaffListRefresh();
                 break;
             }
 
