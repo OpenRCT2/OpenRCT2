@@ -756,7 +756,7 @@ static void viewport_surface_draw_tile_side_top(
     if (!is_csg_loaded() && terrain >= TERRAIN_EDGE_RCT2_COUNT)
         terrain = TERRAIN_EDGE_ROCK;
 
-    int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2, landHeight = 0;
+    int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
     CoordsXY offset = { 0, 0 };
     CoordsXY bounds = { 0, 0 };
@@ -789,9 +789,6 @@ static void viewport_surface_draw_tile_side_top(
             return;
     }
 
-    if (!isWater)
-        landHeight = height;
-
     // save ecx
     if (neighbour.tile_element == nullptr)
     {
@@ -802,14 +799,14 @@ static void viewport_surface_draw_tile_side_top(
     {
         if (isWater)
         {
-            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
-            if (landHeight == waterHeight)
+            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
+            if (height == waterHeight)
             {
                 return;
             }
 
-            cornerHeight1 = landHeight;
-            cornerHeight2 = landHeight;
+            cornerHeight1 = height;
+            cornerHeight2 = height;
         }
     }
 
@@ -835,7 +832,7 @@ static void viewport_surface_draw_tile_side_top(
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
             const uint32_t image_id = get_edge_image(terrain, 3) + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
-            const int16_t y = (landHeight - cornerHeight1) * COORDS_Z_PER_TINY_Z;
+            const int16_t y = (height - cornerHeight1) * COORDS_Z_PER_TINY_Z;
             paint_attach_to_previous_ps(session, image_id, 0, y);
             return;
         }
