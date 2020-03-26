@@ -715,13 +715,11 @@ static void scenario_objective_check_guests_by()
 {
     uint8_t objectiveYear = gScenarioObjectiveYear;
     int16_t parkRating = gParkRating;
-    int16_t guestsInPark = gNumGuestsInPark;
-    int16_t objectiveGuests = gScenarioObjectiveNumGuests;
     int16_t currentMonthYear = gDateMonthsElapsed;
 
     if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion)
     {
-        if (parkRating >= 600 && guestsInPark >= objectiveGuests)
+        if (parkRating >= 600 && gNumGuestsInPark >= gScenarioObjectiveNumGuests)
         {
             scenario_success();
         }

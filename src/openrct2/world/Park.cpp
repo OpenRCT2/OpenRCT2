@@ -67,7 +67,7 @@ static int32_t _forcedParkRating = -1;
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
  */
-int32_t _suggestedGuestMaximum;
+uint32_t _suggestedGuestMaximum;
 
 /**
  * Probability out of 65535, of gaining a new guest per game tick.
@@ -382,8 +382,8 @@ int32_t Park::CalculateParkRating() const
         result -= 150 - (std::min<int16_t>(2000, gNumGuestsInPark) / 13);
 
         // Find the number of happy peeps and the number of peeps who can't find the park exit
-        int32_t happyGuestCount = 0;
-        int32_t lostGuestCount = 0;
+        uint32_t happyGuestCount = 0;
+        uint32_t lostGuestCount = 0;
         uint16_t spriteIndex;
         Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
@@ -405,7 +405,7 @@ int32_t Park::CalculateParkRating() const
         result -= 500;
         if (gNumGuestsInPark > 0)
         {
-            result += 2 * std::min(250, (happyGuestCount * 300) / gNumGuestsInPark);
+            result += 2 * std::min(250u, (happyGuestCount * 300) / gNumGuestsInPark);
         }
 
         // Up to 25 guests can be lost without affecting the park rating.
@@ -598,7 +598,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     uint32_t probability = 50 + std::clamp(gParkRating - 200, 0, 650);
 
     // The more guests, the lower the chance of a new one
-    int32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
+    uint32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
     if (numGuests > _suggestedGuestMaximum)
     {
         probability /= 4;

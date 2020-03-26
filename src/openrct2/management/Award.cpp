@@ -77,7 +77,6 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
         return false;
@@ -86,7 +85,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_TIDY))
         return false;
 
-    negativeCount = 0;
+    uint32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
@@ -111,16 +110,14 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t positiveCount;
-    int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
-    positiveCount = 0;
-    negativeCount = 0;
+    uint32_t positiveCount = 0;
+    uint32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
@@ -196,16 +193,14 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t positiveCount;
-    int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
-    positiveCount = 0;
-    negativeCount = 0;
+    uint32_t positiveCount = 0;
+    uint32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
@@ -310,9 +305,9 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
     if (activeAwardTypes & (1 << PARK_AWARD_WORST_FOOD))
         return false;
 
-    auto shops = 0;
-    auto uniqueShops = 0;
-    auto shopTypes = 0;
+    uint32_t shops = 0;
+    uint32_t uniqueShops = 0;
+    uint32_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status != RIDE_STATUS_OPEN)
@@ -356,9 +351,9 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_FOOD))
         return false;
 
-    auto shops = 0;
-    auto uniqueShops = 0;
-    auto shopTypes = 0;
+    uint32_t shops = 0;
+    uint32_t uniqueShops = 0;
+    uint32_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status != RIDE_STATUS_OPEN)

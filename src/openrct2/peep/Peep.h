@@ -951,9 +951,9 @@ extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT]
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gGuestChangeModifier;
-extern uint16_t gNumGuestsInPark;
-extern uint16_t gNumGuestsInParkLastWeek;
-extern uint16_t gNumGuestsHeadingForPark;
+extern uint32_t gNumGuestsInPark;
+extern uint32_t gNumGuestsInParkLastWeek;
+extern uint32_t gNumGuestsHeadingForPark;
 
 extern money16 gGuestInitialCash;
 extern uint8_t gGuestInitialHappiness;
