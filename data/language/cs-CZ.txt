@@ -1132,8 +1132,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Časový limit atrakce nelze změnit...
 STR_1752    :{SMALLFONT}{BLACK}Zobrazit seznam návštěvníků v parku
 STR_1753    :{SMALLFONT}{BLACK}Zobrazit sumarizovaný seznam návštěvníků v parku
-STR_1754    :{BLACK}{COMMA16} návštěvníků
-STR_1755    :{BLACK}{COMMA16} návštěvník
+STR_1754    :{BLACK}{COMMA32} návštěvníků
+STR_1755    :{BLACK}{COMMA32} návštěvník
 STR_1756    :{WINDOW_COLOUR_2}Cena vstupu do parku:
 STR_1757    :{WINDOW_COLOUR_2}Spolehlivost: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Mód stavby
@@ -1191,7 +1191,7 @@ STR_1813    :Ostatní objekty
 STR_1814    :Dle aktivity
 STR_1815    :Dle myšlenek
 STR_1816    :{SMALLFONT}{BLACK}Vyberte informaci k zobrazení v seznamu návštěvníků
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Všichni návštěvníci
 STR_1819    :{WINDOW_COLOUR_2}Všichni návštěvníci (sumarizace)
 STR_1820    :{WINDOW_COLOUR_2}Návštěvníci {STRINGID}
@@ -1221,8 +1221,8 @@ STR_1843    :Nejoblíbenější: {COMMA16} návštěvníků
 STR_1844    :{SMALLFONT}{BLACK}Vyberte informaci k zobrazení v seznamu atrakcí
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} návštěvníků
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} návštěvníků
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} návštěvníků
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} návštěvníků
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} návštěvníků
 STR_1849    :{WINDOW_COLOUR_2}Hrát hudbu
 STR_1850    :{SMALLFONT}{BLACK}Vyberte, jaká hudba se bude hrát
 STR_1851    :{WINDOW_COLOUR_2}Cena provozu: {BLACK}{CURRENCY2DP} za hodinu
@@ -1580,7 +1580,7 @@ STR_2219    :{RED}{COMMA16} lidí zemřelo při nehodě na {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Hodnocení parku: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Hodnocení parku: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Návštěvníci v parku: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Návštěvníci v parku: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Hotovost: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Hotovost: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Hodnota parku: {BLACK}{CURRENCY}
@@ -2494,11 +2494,6 @@ STR_3390    :Vybráno příliš mnoho položek
 STR_3437    :{SMALLFONT}{BLACK}Odebrat velkou oblast kulis z krajiny
 STR_3438    :Odsud nelze odebrat všechny kulisy...
 STR_3439    :Odebrat kulisy
-STR_3440    :Strana 1
-STR_3441    :Strana 2
-STR_3442    :Strana 3
-STR_3443    :Strana 4
-STR_3444    :Strana 5
 STR_3445    :Nastavit oblast obchůzky
 STR_3446    :Zrušit oblast obchůzky
 
@@ -3688,7 +3683,20 @@ STR_6346    :Průzkumník dlaždic: Snížit výšku prvku
 STR_6347    :Doplňky cest nelze kombinovat s přejezdem!
 STR_6348    :Napřed je nutné odstranit přejezd!
 STR_6349    :Náhodná úvodní herní sekvence
+STR_6350    :Rozprostření
+STR_6351    :Nástroj pro rozprostření kulis
+STR_6352    :Hustota
+STR_6353    :{SMALLFONT}{BLACK}Nízká hustota
+STR_6354    :{SMALLFONT}{BLACK}Střední hustota
+STR_6355    :{SMALLFONT}{BLACK}Vysoká hustota
+STR_6356    :{SMALLFONT}{BLACK}Přivolat kachny (pokud park má vodní plochu)
+STR_6357    :{SMALLFONT}{BLACK}Zmizet kachny z mapy
+STR_6358    :Strana {UINT16}
+STR_6359    :{POP16}{POP16}Strana {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Povolit světelné efekty na atrakcích (experimentální)
+STR_6362    :{SMALLFONT}{BLACK}Zapne noční osvětlené atrakcí na kolejích.
+STR_6363    :Text zkopírován do schránky
 
 ###############################################################################
 ## RCT2 Scenarios
