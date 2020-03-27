@@ -1659,18 +1659,34 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
 static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
 {
     TileElement* tileElement = map_get_first_element_at(footpathPos);
+    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
+
     if (tileElement == nullptr)
+    {
+        for (int i = 0; i < extPathVector->size(); i++)
+            delete extPathVector->at(i);
+
+        extPathVector->clear();
         return;
+    }
+    int i = 0;
     do
     {
+        if (extPathVector->size() <= i)
+        {
+            extPathVector->push_back(new ExtendedPathData());
+        }
+
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        tileElement->AsPath()->SetWideForGroup(wideGroup, false);
 
-        if (wideGroup == 0 && !tileElement->AsPath()->IsWideForGroup(wideGroup))
+        tileElement->AsPath()->SetWideForGroup(wideGroup, false);
+        extPathVector->at(i)->SetWideForGroup(wideGroup, false);
+
+        if (wideGroup == WIDE_GROUP_N_SW)
             tileElement->AsPath()->SetWide(false);
 
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->IsLastForTile() && i++);
 }
 
 /**
@@ -1759,10 +1775,17 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
     // y -= 0x20;
 
     TileElement* tileElement = map_get_first_element_at(footpathPos);
+    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
+
     if (tileElement == nullptr)
         return;
+
+    int i = 0;
     do
     {
+        if (extPathVector->size() <= 0)
+            extPathVector->push_back(new ExtendedPathData);
+
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
@@ -1780,11 +1803,12 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         // pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         std::array<TileElement*, 8> pathList;
-
+        std::array<ExtendedPathData*, 8> extendedPathList;
         for (int32_t direction = 0; direction < 8; ++direction)
         {
             auto footpathLoc = CoordsXYZ(footpathPos + CoordsDirectionDelta[direction], height);
             pathList[direction] = footpath_can_be_wide(footpathLoc);
+            extendedPathList[direction] = extended_footpath_can_be_wide(footpathLoc, 0);
         }
 
         uint8_t pathConnections = 0;
@@ -1950,12 +1974,15 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         {
             uint8_t e = tileElement->AsPath()->GetEdgesAndCorners();
             if ((e != 0b10101111) && (e != 0b01011111) && (e != ~(wideGroupEdges[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE] << 4)))
+            {
                 tileElement->AsPath()->SetWideForGroup(wideGroup, true);
+                extPathVector->at(i)->SetWideForGroup(wideGroup, true);
+            }
 
             if (wideGroup == 0 && tileElement->AsPath()->IsWideForGroup(0))
                 tileElement->AsPath()->SetWide(true);
         }
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->IsLastForTile() && i++);
 }
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
@@ -2370,7 +2397,6 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
 
     return (ride->type == RIDE_TYPE_MINIATURE_RAILWAY);
 }
-
 
 bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup) const
 {
