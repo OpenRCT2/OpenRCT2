@@ -373,7 +373,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
     _vehicleF64E2C = 0;
     gCurrentVehicle = cableLift;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = 0xFF;
+    _vehicleStationIndex = STATION_INDEX_NULL;
 
     cableLift->velocity += cableLift->acceleration;
     _vehicleVelocityF64E08 = cableLift->velocity;

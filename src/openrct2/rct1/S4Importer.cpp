@@ -919,7 +919,7 @@ private:
         }
         dst->testing_flags = src->testing_flags;
         dst->current_test_segment = src->current_test_segment;
-        dst->current_test_station = 0xFF;
+        dst->current_test_station = STATION_INDEX_NULL;
         dst->average_speed_test_timeout = src->average_speed_test_timeout;
         dst->slide_in_use = src->slide_in_use;
         dst->slide_peep_t_shirt_colour = RCT1::GetColour(src->slide_peep_t_shirt_colour);

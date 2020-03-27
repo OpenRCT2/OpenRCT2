@@ -96,7 +96,7 @@ constexpr int16_t VEHICLE_STOPPING_SPIN_SPEED = 600;
 Vehicle* gCurrentVehicle;
 
 static uint8_t _vehicleBreakdown;
-uint8_t _vehicleStationIndex;
+StationIndex _vehicleStationIndex;
 uint32_t _vehicleMotionTrackFlags;
 int32_t _vehicleVelocityF64E08;
 int32_t _vehicleVelocityF64E0C;
@@ -1559,7 +1559,7 @@ static void vehicle_update_measurements(Vehicle* vehicle)
         return;
     }
 
-    if (ride->current_test_station == 0xFF)
+    if (ride->current_test_station == STATION_INDEX_NULL)
         return;
 
     if (!ride_get_entrance_location(ride, ride->current_test_station).isNull())
@@ -7860,7 +7860,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
         return;
     }
 
-    if (_vehicleStationIndex == 0xFF)
+    if (_vehicleStationIndex == STATION_INDEX_NULL)
     {
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
@@ -9552,7 +9552,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
     _vehicleF64E2C = 0;
     gCurrentVehicle = vehicle;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = 0xFF;
+    _vehicleStationIndex = STATION_INDEX_NULL;
 
     vehicle_update_track_motion_up_stop_check(vehicle);
     check_and_apply_block_section_stop_site(vehicle);
