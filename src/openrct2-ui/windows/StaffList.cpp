@@ -188,9 +188,6 @@ void WindowStaffListRefresh()
     {
         return;
     }
-
-    w->no_list_items = 0;
-
     StaffList.clear();
     Peep* peep = nullptr;
     uint16_t spriteIndex;
