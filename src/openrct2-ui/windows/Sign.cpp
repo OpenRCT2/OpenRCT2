@@ -161,11 +161,12 @@ rct_window* window_sign_open(rct_windownumber number)
 
     auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
     TileElement* tile_element = map_get_first_element_at(signViewPos);
-    if (tile_element == nullptr)
-        return nullptr;
 
-    while (1)
+    while (true)
     {
+        if (tile_element == nullptr)
+            return nullptr;
+
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
@@ -217,14 +218,15 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
             auto tile_element = map_get_first_element_at({ x, y });
-            if (tile_element == nullptr)
-                return;
-            while (1)
+            while (true)
             {
+                if (tile_element == nullptr)
+                    return;
+
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 {
                     rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-                    if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                    if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
                         if (bannerIndex == w->number)
@@ -406,11 +408,11 @@ rct_window* window_sign_small_open(rct_windownumber number)
     auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
 
     TileElement* tile_element = map_get_first_element_at(signViewPos);
-    if (tile_element == nullptr)
-        return nullptr;
-
-    while (1)
+    while (true)
     {
+        if (tile_element == nullptr)
+            return nullptr;
+
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
@@ -461,14 +463,15 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
             auto tile_element = map_get_first_element_at({ x, y });
-            if (tile_element == nullptr)
-                return;
             while (true)
             {
+                if (tile_element == nullptr)
+                    return;
+
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
                 {
                     rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-                    if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+                    if (scenery_entry != nullptr && scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         if (tile_element->AsWall()->GetBannerIndex() == w->number)
                             break;
