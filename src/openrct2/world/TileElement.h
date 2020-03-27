@@ -585,6 +585,40 @@ public:
     }
 };
 
+struct ExtendedPathData
+{
+private:
+    std::vector<uint8_t> WideFlags;
+
+public:
+    ExtendedPathData()
+    {
+        WideFlags.push_back(0);
+    }
+
+    ExtendedPathData(uint8_t i)
+    {
+        WideFlags.push_back(i);
+    }
+
+    bool IsWideForGroup(uint8_t wideGroup) const;
+    bool IsWideForGroup(uint8_t wideGroup, uint8_t wideLevel) const;
+    void SetWideForGroup(uint8_t wideGroup, bool isWide);
+    void SetWideForGroup(uint8_t wideGroup, uint8_t wideLevel, bool isWide);
+
+    uint8_t GetWideFlags() const;
+    uint8_t GetWideFlags(uint8_t wideLevel) const;
+    void SetWideFlags(uint8_t flags);
+    void SetWideFlags(uint8_t wideLevel, uint8_t flags);
+
+    int GetPathLevel();
+    void SetPathLevel(uint8_t pathLevel);
+    void IncreasePathLevelTo(uint8_t pathLevel);
+    void DecreasePathLevelTo(uint8_t pathLevel);
+
+    void SetToZero();
+};
+
 enum
 {
     TILE_ELEMENT_QUADRANT_SW,

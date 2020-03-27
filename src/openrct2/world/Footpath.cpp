@@ -2340,3 +2340,87 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
 
     return (ride->type == RIDE_TYPE_MINIATURE_RAILWAY);
 }
+
+
+bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup) const
+{
+    return IsWideForGroup(wideGroup, 0);
+}
+
+bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup, uint8_t wideLevel) const
+{
+    if (WideFlags.size() > wideLevel)
+        return (WideFlags[wideLevel] & (1 << wideGroup)) != 0;
+
+    return false;
+}
+
+void ExtendedPathData::SetWideForGroup(uint8_t wideGroup, bool isWide)
+{
+    SetWideForGroup(wideGroup, 0, isWide);
+}
+
+void ExtendedPathData::SetWideForGroup(uint8_t wideGroup, uint8_t wideLevel, bool isWide)
+{
+    IncreasePathLevelTo(wideLevel + 1);
+    WideFlags[wideLevel] &= ~(1 << wideGroup);
+    if (isWide)
+        WideFlags[wideLevel] |= (1 << wideGroup);
+}
+
+uint8_t ExtendedPathData::GetWideFlags() const
+{
+    return GetWideFlags(0);
+}
+
+uint8_t ExtendedPathData::GetWideFlags(uint8_t wideLevel) const
+{
+    if (WideFlags.size() > wideLevel)
+        return WideFlags[wideLevel];
+
+    return 0;
+}
+
+void ExtendedPathData::SetWideFlags(uint8_t flags)
+{
+    SetWideFlags(0, flags);
+}
+
+void ExtendedPathData::SetWideFlags(uint8_t wideLevel, uint8_t flags)
+{
+    IncreasePathLevelTo(wideLevel + 1);
+    WideFlags[wideLevel] = flags;
+}
+
+int ExtendedPathData::GetPathLevel()
+{
+    return (int)WideFlags.size();
+}
+
+void ExtendedPathData::SetPathLevel(uint8_t pathLevel)
+{
+    IncreasePathLevelTo(pathLevel);
+    DecreasePathLevelTo(pathLevel);
+}
+
+void ExtendedPathData::IncreasePathLevelTo(uint8_t pathLevel)
+{
+    while (GetPathLevel() < pathLevel)
+    {
+        WideFlags.push_back(0b00000000);
+    }
+}
+
+void ExtendedPathData::DecreasePathLevelTo(uint8_t pathLevel)
+{
+    while (GetPathLevel() > pathLevel + 1)
+    {
+        WideFlags.pop_back();
+    }
+}
+
+void ExtendedPathData::SetToZero()
+{
+    WideFlags.clear();
+    WideFlags.push_back(0b00000000);
+}
