@@ -1787,13 +1787,13 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         {
             pathConnections |= wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION];
             /* In the following:
-             * footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_0]])
+             * footpath_element_is_wide(pathlist[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]])
              * is always false due to the tile update order
              * in combination with reset tiles.
              * Commented out since it will never occur. */
-            // if (pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_0]] != nullptr) {
-            //  if (footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_0]])) {
-            //      pathConnections &= ~wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION_0];
+            // if (pathlist[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] != nullptr) {
+            //  if (footpath_element_is_wide(pathlist[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]])) {
+            //      pathConnections &= ~wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION];
             //  }
             //}
         }
@@ -1802,13 +1802,13 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         {
             pathConnections |= wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION];
             /* In the following:
-             * footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_0]])
+             * footpath_element_is_wide(pathlist[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]])
              * is always false due to the tile update order
              * in combination with reset tiles.
              * Commented out since it will never occur. */
-            // if (pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_0]] != nullptr) {
-            //  if (footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_0]])) {
-            //      pathConnections &= ~wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_0];
+            // if (pathlist[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]] != nullptr) {
+            //  if (footpath_element_is_wide(pathlist[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]])) {
+            //      pathConnections &= ~wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION];
             //  }
             //}
         }
@@ -1846,8 +1846,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         }
 
         /* In the following:
-         * footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_FINAL_LOOP_START_CARDINAL_180]])
-         * footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_0]])
+         * footpath_element_is_wide(wideGroupDirections[WIDE_GROUP_THIRD_CORNER_CARDINAL])
+         * footpath_element_is_wide(wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION])
          * are always false due to the tile update order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
@@ -1867,8 +1867,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             }
 
             /* In the following:
-             * footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_ORIGIN_TILE_CARDINAL_180]])
-             * footpath_element_is_wide(pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_0]])
+             * footpath_element_is_wide(wideGroupDirections[WIDE_GROUP_FINAL_CORNER_CARDINAL])
+             * footpath_element_is_wide(wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION])
              * are always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
