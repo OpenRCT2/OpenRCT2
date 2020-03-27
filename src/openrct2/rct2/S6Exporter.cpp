@@ -882,6 +882,11 @@ void S6Exporter::ExportResearchedSceneryItems()
     {
         ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
                                               static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
+
+        // SV6 allows for more scenery types than there are. Avoid triggering an assertion in scenery_is_invented().
+        if (scenerySelection.SceneryType >= SCENERY_TYPE_COUNT)
+            break;
+
         if (scenery_is_invented(scenerySelection))
         {
             int32_t quadIndex = sceneryEntryIndex >> 5;
