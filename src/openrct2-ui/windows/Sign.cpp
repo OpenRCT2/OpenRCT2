@@ -178,6 +178,10 @@ rct_window* window_sign_open(rct_windownumber number)
             }
         }
         tile_element++;
+        if (tile_element >= &gTileElements[std::size(gTileElements)])
+        {
+            return nullptr;
+        }
     }
 
     int32_t view_z = tile_element->GetBaseZ();
@@ -232,6 +236,10 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     }
                 }
                 tile_element++;
+                if (tile_element >= &gTileElements[std::size(gTileElements)])
+                {
+                    return;
+                }
             }
 
             auto sceneryRemoveAction = LargeSceneryRemoveAction(
