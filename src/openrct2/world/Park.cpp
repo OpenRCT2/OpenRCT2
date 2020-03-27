@@ -33,6 +33,7 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
@@ -516,7 +517,12 @@ money32 Park::CalculateRideValue(const Ride* ride) const
 
 money32 Park::CalculateCompanyValue() const
 {
-    return finance_get_current_cash() + gParkValue - gBankLoan;
+    money32 result = gParkValue - gBankLoan;
+
+    // Clamp addition to prevent overflow
+    result = add_clamp_money32(result, finance_get_current_cash());
+
+    return result;
 }
 
 money16 Park::CalculateTotalRideValueForMoney() const
