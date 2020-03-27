@@ -991,8 +991,6 @@ void peep_set_map_tooltip(Peep* peep);
 int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b);
 
 void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
-void peep_update_name_sort(Peep* peep);
-void peep_sort();
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);

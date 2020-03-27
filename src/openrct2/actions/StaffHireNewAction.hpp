@@ -248,8 +248,6 @@ private:
             newPeep->energy_target = 0x60;
             newPeep->staff_mowing_timeout = 0;
 
-            peep_update_name_sort(newPeep);
-
             newPeep->staff_id = staffIndex;
 
             gStaffModes[staffIndex] = STAFF_MODE_WALK;

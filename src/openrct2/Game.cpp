@@ -438,8 +438,6 @@ void game_fix_save_vars()
 
     gNumGuestsInPark = peepCount;
 
-    peep_sort();
-
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
 

@@ -1548,8 +1548,6 @@ private:
 
         dst->item_standard_flags = src->item_standard_flags;
 
-        peep_update_name_sort(dst);
-
         if (dst->type == PEEP_TYPE_GUEST)
         {
             if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
