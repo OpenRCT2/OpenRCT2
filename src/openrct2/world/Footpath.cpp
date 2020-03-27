@@ -1700,6 +1700,36 @@ static TileElement* footpath_can_be_wide(const CoordsXYZ& footpathPos)
     return nullptr;
 }
 
+static ExtendedPathData* extended_footpath_can_be_wide(const CoordsXYZ& footpathPos, uint8_t wideLevel)
+{
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
+    auto extData = map_get_extended_data_vector_at(footpathPos);
+    if (tileElement == nullptr)
+    {
+        return nullptr;
+    }
+
+    int i = 0;
+    do
+    {
+        if (extData->size() <= i)
+            extData->push_back(new ExtendedPathData(0));
+
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+            continue;
+        if (footpathPos.z != tileElement->GetBaseZ())
+            continue;
+        if (tileElement->AsPath()->IsQueue())
+            continue;
+        if (tileElement->AsPath()->IsSloped())
+            continue;
+
+        return extData->at(i);
+    } while (!(tileElement++)->IsLastForTile() && i++);
+
+    return nullptr;
+}
+
 /**
  *
  *  rct2: 0x006A87BB

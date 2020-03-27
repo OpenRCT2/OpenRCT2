@@ -134,8 +134,12 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
 
+extern uint8_t gMaxWideLevels;
+
 extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+
+extern std::vector<ExtendedPathData*>* gExtendedPathDataVectors[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
 extern std::vector<PeepSpawn> gPeepSpawns;
@@ -266,6 +270,8 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, i
 TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, int32_t trackType, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
+
+std::vector<ExtendedPathData*>* map_get_extended_data_vector_at(const CoordsXY& elementPos);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
 class GameActionResult;

@@ -98,10 +98,14 @@ int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
 
+uint8_t gMaxWideLevels;
+
 TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
+
+std::vector<ExtendedPathData*>* gExtendedPathDataVectors[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 TileElement* gNextFreeTileElement;
 uint32_t gNextFreeTileElementPointerIndex;
@@ -284,6 +288,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
  */
 void map_init(int32_t size)
 {
+    gMaxWideLevels = 1;
     gNextFreeTileElementPointerIndex = 0;
 
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
@@ -679,6 +684,21 @@ void map_update_all_path_wide_flags()
             footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
         }
     }
+}
+
+std::vector<ExtendedPathData*>* map_get_extended_data_vector_at(const CoordsXY& elementPos)
+{
+    if (!map_is_location_valid(elementPos))
+    {
+        log_verbose("Trying to access element outside of range");
+        return nullptr;
+    }
+    auto tileElementPos = TileCoordsXY{ elementPos };
+    if (gExtendedPathDataVectors[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL] == nullptr)
+        gExtendedPathDataVectors[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL] = new std::vector<
+            ExtendedPathData*>;
+
+    return gExtendedPathDataVectors[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL];
 }
 
 /**
