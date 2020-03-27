@@ -12,6 +12,7 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/util/Util.h>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -146,4 +147,11 @@ TEST_F(StringTest, ToUpper_Japanese)
 {
     auto actual = String::ToUpper(u8"日本語で大文字がなし");
     ASSERT_STREQ(actual.c_str(), u8"日本語で大文字がなし");
+}
+
+TEST_F(StringTest, strlogicalcmp)
+{
+    auto res1 = strlogicalcmp("foo1", "foo1_2");
+    auto res2 = strlogicalcmp("foo1_2", "foo1");
+    ASSERT_NE(res1, res2);
 }
