@@ -811,7 +811,8 @@ static void window_finances_financial_graph_update(rct_window* w)
     // Tab animation
     if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_2);
+
+    w->Invalidate();
 }
 
 /**
@@ -918,7 +919,8 @@ static void window_finances_park_value_graph_update(rct_window* w)
     // Tab animation
     if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_2);
+
+    w->Invalidate();
 }
 
 /**
