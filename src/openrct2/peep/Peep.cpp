@@ -1779,8 +1779,6 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->energy = energy;
     peep->energy_target = energy;
 
-    peep_update_name_sort(peep);
-
     increment_guests_heading_for_park();
 
     return peep;
@@ -3279,122 +3277,6 @@ int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b)
 
 /**
  *
- *  rct2: 0x00699115
- */
-void peep_update_name_sort(Peep* peep)
-{
-    // Remove peep from sprite list
-    uint16_t nextSpriteIndex = peep->next;
-    uint16_t prevSpriteIndex = peep->previous;
-    if (prevSpriteIndex != SPRITE_INDEX_NULL)
-    {
-        Peep* prevPeep = GET_PEEP(prevSpriteIndex);
-        prevPeep->next = nextSpriteIndex;
-    }
-    else
-    {
-        gSpriteListHead[SPRITE_LIST_PEEP] = nextSpriteIndex;
-    }
-
-    if (nextSpriteIndex != SPRITE_INDEX_NULL)
-    {
-        Peep* nextPeep = GET_PEEP(nextSpriteIndex);
-        nextPeep->previous = prevSpriteIndex;
-    }
-
-    Peep* otherPeep;
-    uint16_t spriteIndex;
-    FOR_ALL_PEEPS (spriteIndex, otherPeep)
-    {
-        // Check if peep should go before this one
-        if (peep_compare(&peep->sprite_index, &otherPeep->sprite_index) >= 0)
-        {
-            continue;
-        }
-
-        // Place peep before this one
-        peep->previous = otherPeep->previous;
-        otherPeep->previous = peep->sprite_index;
-        if (peep->previous != SPRITE_INDEX_NULL)
-        {
-            Peep* prevPeep = GET_PEEP(peep->previous);
-            peep->next = prevPeep->next;
-            prevPeep->next = peep->sprite_index;
-        }
-        else
-        {
-            peep->next = gSpriteListHead[SPRITE_LIST_PEEP];
-            gSpriteListHead[SPRITE_LIST_PEEP] = peep->sprite_index;
-        }
-        goto finish_peep_sort;
-    }
-
-    // Place peep at the end
-    FOR_ALL_PEEPS (spriteIndex, otherPeep)
-    {
-        if (otherPeep->next == SPRITE_INDEX_NULL)
-        {
-            otherPeep->next = peep->sprite_index;
-            peep->previous = otherPeep->sprite_index;
-            peep->next = SPRITE_INDEX_NULL;
-            goto finish_peep_sort;
-        }
-    }
-
-    gSpriteListHead[SPRITE_LIST_PEEP] = peep->sprite_index;
-    peep->next = SPRITE_INDEX_NULL;
-    peep->previous = SPRITE_INDEX_NULL;
-
-finish_peep_sort:
-    // This is required at the moment because this function reorders peeps in the sprite list
-    sprite_position_tween_reset();
-}
-
-void peep_sort()
-{
-    // Count number of peeps
-    uint16_t sprite_index, num_peeps = 0;
-    Peep* peep;
-    FOR_ALL_PEEPS (sprite_index, peep)
-    {
-        num_peeps++;
-    }
-
-    // No need to sort
-    if (num_peeps < 2)
-        return;
-
-    // Create a copy of the peep list and sort it using peep_compare
-    uint16_t* peep_list = (uint16_t*)malloc(num_peeps * sizeof(uint16_t));
-    int32_t i = 0;
-    FOR_ALL_PEEPS (sprite_index, peep)
-    {
-        peep_list[i++] = peep->sprite_index;
-    }
-    qsort(peep_list, num_peeps, sizeof(uint16_t), peep_compare);
-
-    // Set the correct peep->next and peep->previous using the sorted list
-    for (i = 0; i < num_peeps; i++)
-    {
-        peep = GET_PEEP(peep_list[i]);
-        peep->previous = (i > 0) ? peep_list[i - 1] : SPRITE_INDEX_NULL;
-        peep->next = (i + 1 < num_peeps) ? peep_list[i + 1] : SPRITE_INDEX_NULL;
-    }
-    // Make sure the first peep is set
-    gSpriteListHead[SPRITE_LIST_PEEP] = peep_list[0];
-
-    free(peep_list);
-
-    i = 0;
-    FOR_ALL_PEEPS (sprite_index, peep)
-    {
-        i++;
-    }
-    assert(i == num_peeps);
-}
-
-/**
- *
  *  rct2: 0x0069926C
  */
 void peep_update_names(bool realNames)
@@ -3410,7 +3292,8 @@ void peep_update_names(bool realNames)
         // Peep names are now dynamic
     }
 
-    peep_sort();
+    auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
+    context_broadcast_intent(&intent);
     gfx_invalidate_screen();
 }
 
