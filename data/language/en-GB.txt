@@ -3677,6 +3677,10 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :{SMALLFONT}{BLACK}If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
+STR_6364    :Do not show wide path
+STR_6365    :Show paths that are wide for any groups
+STR_6366    :Show paths that are wide for all groups
+STR_6367    :Show wide paths for Group {UINT16}
 
 #############
 # Scenarios #

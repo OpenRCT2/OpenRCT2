@@ -640,15 +640,19 @@ void map_update_path_wide_flags()
     for (int32_t i = 0; i < 128; i++)
     {
         footpath_update_path_wide_flags({ primary, secondary }, WIDE_GROUP_N_SW);
-        footpath_update_path_wide_flags({ secondary, primary }, WIDE_GROUP_N_SE);
-        footpath_update_path_wide_flags({ secondary, MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_E_NW);
-        footpath_update_path_wide_flags({ primary, MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_E_SW);
-        footpath_update_path_wide_flags(
-            { MAXIMUM_MAP_SIZE_BIG - (primary + 1), MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_S_NE);
-        footpath_update_path_wide_flags(
-            { MAXIMUM_MAP_SIZE_BIG - (secondary + 1), MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_S_NW);
-        footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (secondary + 1), primary }, WIDE_GROUP_W_SE);
-        footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
+
+        if (gMaxWideLevels > 0)
+        {
+            footpath_update_path_wide_flags({ secondary, primary }, WIDE_GROUP_N_SE);
+            footpath_update_path_wide_flags({ secondary, MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_E_NW);
+            footpath_update_path_wide_flags({ primary, MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_E_SW);
+            footpath_update_path_wide_flags(
+                { MAXIMUM_MAP_SIZE_BIG - (primary + 1), MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_S_NE);
+            footpath_update_path_wide_flags(
+                { MAXIMUM_MAP_SIZE_BIG - (secondary + 1), MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_S_NW);
+            footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (secondary + 1), primary }, WIDE_GROUP_W_SE);
+            footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
+        }
 
         // Next x, y tile
         primary += COORDS_XY_STEP;

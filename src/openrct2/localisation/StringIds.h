@@ -3911,6 +3911,11 @@ enum
 
     STR_COPY_INPUT_TO_CLIPBOARD = 6363,
 
+    STR_SHOW_WIDE_PATH_NONE = 6364,
+    STR_SHOW_WIDE_PATH_ANY = 6365,
+    STR_SHOW_WIDE_PATH_ALL = 6366,
+    STR_SHOW_WIDE_PATH_GROUP = 6367,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
