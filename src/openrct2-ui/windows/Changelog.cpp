@@ -199,7 +199,7 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         if (y + lineHeight < dpi->y || y >= dpi->y + dpi->height)
             continue;
 
-        gfx_draw_string(dpi, (char*)line, w->colours[0], x, y);
+        gfx_draw_string(dpi, static_cast<const char*>(line), w->colours[0], x, y);
     }
 }
 

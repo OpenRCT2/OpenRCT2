@@ -330,7 +330,7 @@ namespace OpenRCT2::Audio
 
             // Finally mix on to destination buffer
             size_t dstLength = std::min(length, bufferLen);
-            SDL_MixAudioFormat(data, (const uint8_t*)buffer, _format.format, (uint32_t)dstLength, mixVolume);
+            SDL_MixAudioFormat(data, static_cast<const uint8_t*>(buffer), _format.format, (uint32_t)dstLength, mixVolume);
 
             channel->UpdateOldVolume();
         }
@@ -357,7 +357,7 @@ namespace OpenRCT2::Audio
             uint32_t inLen = srcSamples;
             uint32_t outLen = dstSamples;
             speex_resampler_process_interleaved_int(
-                resampler, (const spx_int16_t*)srcBuffer, &inLen, (spx_int16_t*)_effectBuffer.data(), &outLen);
+                resampler, static_cast<const spx_int16_t*>(srcBuffer), &inLen, (spx_int16_t*)_effectBuffer.data(), &outLen);
 
             return outLen * byteRate;
         }
@@ -369,10 +369,10 @@ namespace OpenRCT2::Audio
                 switch (_format.format)
                 {
                     case AUDIO_S16SYS:
-                        EffectPanS16(channel, (int16_t*)buffer, (int32_t)(len / sampleSize));
+                        EffectPanS16(channel, static_cast<int16_t*>(buffer), (int32_t)(len / sampleSize));
                         break;
                     case AUDIO_U8:
-                        EffectPanU8(channel, (uint8_t*)buffer, (int32_t)(len / sampleSize));
+                        EffectPanU8(channel, static_cast<uint8_t*>(buffer), (int32_t)(len / sampleSize));
                         break;
                 }
             }
@@ -417,10 +417,10 @@ namespace OpenRCT2::Audio
                 switch (_format.format)
                 {
                     case AUDIO_S16SYS:
-                        EffectFadeS16((int16_t*)buffer, fadeLength, startVolume, endVolume);
+                        EffectFadeS16(static_cast<int16_t*>(buffer), fadeLength, startVolume, endVolume);
                         break;
                     case AUDIO_U8:
-                        EffectFadeU8((uint8_t*)buffer, fadeLength, startVolume, endVolume);
+                        EffectFadeU8(static_cast<uint8_t*>(buffer), fadeLength, startVolume, endVolume);
                         break;
                 }
             }
@@ -494,7 +494,7 @@ namespace OpenRCT2::Audio
             {
                 size_t reqConvertBufferCapacity = len * cvt->len_mult;
                 _convertBuffer.resize(reqConvertBufferCapacity);
-                std::copy_n((const uint8_t*)src, len, _convertBuffer.data());
+                std::copy_n(static_cast<const uint8_t*>(src), len, _convertBuffer.data());
 
                 cvt->len = (int32_t)len;
                 cvt->buf = (uint8_t*)_convertBuffer.data();

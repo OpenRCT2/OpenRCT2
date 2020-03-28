@@ -1147,7 +1147,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
                     colour2 |= COLOUR_FLAG_INSET;
 
-                gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
+                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), colour2, x, y);
             }
 
             x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;

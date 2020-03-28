@@ -264,7 +264,7 @@ private:
             int32_t padding = pitch - (width * 4);
             if (pitch == width * 4)
             {
-                uint32_t* dst = (uint32_t*)pixels;
+                uint32_t* dst = static_cast<uint32_t*>(pixels);
                 for (int32_t i = width * height; i > 0; i--)
                 {
                     *dst++ = palette[*src++];
@@ -274,7 +274,7 @@ private:
             {
                 if (pitch == (width * 2) + padding)
                 {
-                    uint16_t* dst = (uint16_t*)pixels;
+                    uint16_t* dst = static_cast<uint16_t*>(pixels);
                     for (int32_t y = height; y > 0; y--)
                     {
                         for (int32_t x = width; x > 0; x--)
@@ -288,7 +288,7 @@ private:
                 }
                 else if (pitch == width + padding)
                 {
-                    uint8_t* dst = (uint8_t*)pixels;
+                    uint8_t* dst = static_cast<uint8_t*>(pixels);
                     for (int32_t y = height; y > 0; y--)
                     {
                         for (int32_t x = width; x > 0; x--)
