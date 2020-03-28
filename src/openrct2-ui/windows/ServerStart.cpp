@@ -217,7 +217,7 @@ static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetInd
             network_set_password(_password);
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)window_server_start_loadsave_callback);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_server_start_loadsave_callback));
             context_open_intent(&intent);
             break;
     }

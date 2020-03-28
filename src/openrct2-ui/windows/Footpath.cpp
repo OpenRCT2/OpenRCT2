@@ -575,8 +575,8 @@ static void window_footpath_invalidate(rct_window* w)
         : WWT_EMPTY;
 
     // Set footpath and queue type button images
-    auto pathImage = (uint32_t)SPR_NONE;
-    auto queueImage = (uint32_t)SPR_NONE;
+    auto pathImage = static_cast<uint32_t>(SPR_NONE);
+    auto queueImage = static_cast<uint32_t>(SPR_NONE);
     auto pathEntry = get_path_surface_entry(gFootpathSelectedId);
     if (pathEntry != nullptr)
     {

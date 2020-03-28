@@ -383,7 +383,7 @@ static void window_guest_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             {
                 window_text_input_open(
                     w, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, STR_STRING,
-                    (uintptr_t)&_window_guest_list_filter_name, sizeof(_window_guest_list_filter_name));
+                    reinterpret_cast<uintptr_t>(&_window_guest_list_filter_name), sizeof(_window_guest_list_filter_name));
             }
             break;
     }
@@ -451,7 +451,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             for (i = 0; i < _window_guest_list_num_pages; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                uint16_t* args = (uint16_t*)&gDropdownItemsArgs[i];
+                uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
                 args[0] = STR_PAGE_X;
                 args[1] = i + 1;
             }

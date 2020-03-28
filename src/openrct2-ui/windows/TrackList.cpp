@@ -184,7 +184,7 @@ static void window_track_list_filter_list()
     utf8 filterStringLower[sizeof(_filterString)];
     String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
     for (int32_t i = 0; filterStringLower[i] != '\0'; i++)
-        filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
+        filterStringLower[i] = static_cast<utf8>(tolower(filterStringLower[i]));
 
     // Fill the set with indices for tracks that match the filter
     for (uint16_t i = 0; i < _trackDesigns.size(); i++)
@@ -192,7 +192,7 @@ static void window_track_list_filter_list()
         utf8 trackNameLower[USER_STRING_MAX_LENGTH];
         String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
         for (int32_t j = 0; trackNameLower[j] != '\0'; j++)
-            trackNameLower[j] = (utf8)tolower(trackNameLower[j]);
+            trackNameLower[j] = static_cast<utf8>(tolower(trackNameLower[j]));
 
         if (strstr(trackNameLower, filterStringLower) != nullptr)
         {
@@ -295,7 +295,7 @@ static int32_t window_track_list_get_list_item_index_from_position(const ScreenC
     }
 
     int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-    if (index < 0 || (uint32_t)index >= maxItems)
+    if (index < 0 || static_cast<uint32_t>(index) >= maxItems)
     {
         index = -1;
     }
@@ -368,7 +368,7 @@ static void window_track_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
         numItems++;
     }
 
-    *height = (int32_t)(numItems * SCROLLABLE_ROW_HEIGHT);
+    *height = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
 }
 
 /**
@@ -721,7 +721,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     {
         // Build custom track item
         rct_string_id stringId;
-        if (listIndex == (size_t)w->selected_list_item)
+        if (listIndex == static_cast<size_t>(w->selected_list_item))
         {
             // Highlight
             gfx_filter_rect(dpi, x, y, w->width, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
@@ -743,7 +743,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
         if (y + SCROLLABLE_ROW_HEIGHT >= dpi->y && y < dpi->y + dpi->height)
         {
             rct_string_id stringId;
-            if (listIndex == (size_t)w->selected_list_item)
+            if (listIndex == static_cast<size_t>(w->selected_list_item))
             {
                 // Highlight
                 gfx_filter_rect(dpi, x, y, w->width, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);

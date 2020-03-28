@@ -167,7 +167,7 @@ static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widget
         case WIDX_RATE:
             window_text_input_open(
                 w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, STR_FORMAT_INTEGER,
-                (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate, CURRENCY_RATE_MAX_NUM_DIGITS);
+                static_cast<uint32_t>(CurrencyDescriptors[CURRENCY_CUSTOM].rate), CURRENCY_RATE_MAX_NUM_DIGITS);
             break;
     }
 }

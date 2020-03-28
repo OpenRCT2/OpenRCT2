@@ -297,7 +297,7 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             if (_windowStaffListSelectedTab == newSelectedTab)
                 break;
 
-            _windowStaffListSelectedTab = (uint8_t)newSelectedTab;
+            _windowStaffListSelectedTab = static_cast<uint8_t>(newSelectedTab);
             w->Invalidate();
             w->scrolls[0].v_top = 0;
             window_staff_list_cancel_tools(w);
@@ -531,7 +531,8 @@ void window_staff_list_invalidate(rct_window* w)
     {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = SPRITE_ID_PALETTE_COLOUR_1(
-                                                                                     (uint32_t)staff_get_colour(tabIndex))
+                                                                                     static_cast<uint32_t>(
+                                                                                         staff_get_colour(tabIndex)))
             | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
     if (_quick_fire_mode)
