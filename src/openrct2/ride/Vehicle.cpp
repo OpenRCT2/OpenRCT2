@@ -1284,7 +1284,7 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
+    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
         get_sprite(i)->vehicle.UpdateSoundParams(vehicleSoundParamsList);
     }
@@ -1365,7 +1365,7 @@ void vehicle_update_all()
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
+    sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
         vehicle = GET_VEHICLE(sprite_index);

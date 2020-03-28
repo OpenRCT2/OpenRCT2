@@ -1123,7 +1123,7 @@ private:
                     // If vehicle is the first car on a train add to train list
                     if (vehicle->IsHead())
                     {
-                        move_sprite_to_list(vehicle, SPRITE_LIST_VEHICLE_HEAD);
+                        move_sprite_to_list(vehicle, SPRITE_LIST_TRAIN_HEAD);
                     }
                 }
             }
