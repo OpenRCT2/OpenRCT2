@@ -234,13 +234,13 @@ void window_guest_list_refresh_list()
     {
         return;
     }
-    _window_guest_list_last_find_groups_wait = 0;
-    _window_guest_list_last_find_groups_tick = 0;
-    window_guest_list_find_groups();
 
     // Only the individual tab uses the GuestList so no point calculating it
     if (_window_guest_list_selected_tab != PAGE_INDIVIDUAL)
     {
+        _window_guest_list_last_find_groups_wait = 0;
+        _window_guest_list_last_find_groups_tick = 0;
+        window_guest_list_find_groups();
         return;
     }
 
@@ -343,6 +343,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
         }
     }
 
+    window_guest_list_refresh_list();
     return w;
 }
 
@@ -594,6 +595,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
                 window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
                 w->Invalidate();
                 w->scrolls[0].v_top = 0;
+                window_guest_list_refresh_list();
             }
             break;
     }
