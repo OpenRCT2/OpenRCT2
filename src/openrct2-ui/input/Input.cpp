@@ -110,7 +110,7 @@ static void game_handle_key_scroll()
 
 static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)
 {
-    char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
+    char keycode = static_cast<char>(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(sdl_key)));
 
     // Until we reshuffle the text files to use the new positions
     // this will suffice to move the majority to the correct positions.

@@ -483,7 +483,7 @@ static void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex
 
 static void input_window_resize_continue(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    if (screenCoords.y < (int32_t)context_get_height() - 2)
+    if (screenCoords.y < static_cast<int32_t>(context_get_height()) - 2)
     {
         auto differentialCoords = screenCoords - gInputDragLast;
         int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w->width;
@@ -1482,7 +1482,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, con
  */
 int32_t get_next_key()
 {
-    uint8_t* keysPressed = (uint8_t*)context_get_keys_pressed();
+    uint8_t* keysPressed = const_cast<uint8_t*>(context_get_keys_pressed());
     for (int32_t i = 0; i < 221; i++)
     {
         if (keysPressed[i])

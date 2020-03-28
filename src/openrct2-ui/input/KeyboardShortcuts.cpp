@@ -230,14 +230,14 @@ ScreenCoordsXY KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState)
 
         // Check if SHIFT is either set in the shortcut key and currently pressed,
         // or not set in the shortcut key and not currently pressed (in other words: check if they match).
-        if ((bool)(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
+        if (static_cast<bool>(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
             continue;
-        if ((bool)(shortcutKey & CTRL) != (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
+        if (static_cast<bool>(shortcutKey & CTRL) != (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
             continue;
-        if ((bool)(shortcutKey & ALT) != (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
+        if (static_cast<bool>(shortcutKey & ALT) != (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
             continue;
 #ifdef __MACOSX__
-        if ((bool)(shortcutKey & CMD) != (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
+        if (static_cast<bool>(shortcutKey & CMD) != (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
             continue;
 #endif
         switch (shortcutId)
