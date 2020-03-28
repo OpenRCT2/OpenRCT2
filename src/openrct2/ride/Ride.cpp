@@ -7108,7 +7108,7 @@ Vehicle* ride_get_broken_vehicle(Ride* ride)
     }
 
     Vehicle* vehicle = GET_VEHICLE(vehicleIndex);
-    for (uint8_t i = 0; i < ride->broken_car; i++)
+    for (uint8_t i = 0; vehicle != nullptr && i < ride->broken_car; i++)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
