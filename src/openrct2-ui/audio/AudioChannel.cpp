@@ -176,12 +176,12 @@ namespace OpenRCT2::Audio
             if (_pan <= 0.5)
             {
                 _volume_l = 1.0;
-                _volume_r = (float)(1.0 / attenuation);
+                _volume_r = static_cast<float>(1.0 / attenuation);
             }
             else
             {
                 _volume_r = 1.0;
-                _volume_l = (float)(1.0 / attenuation);
+                _volume_l = static_cast<float>(1.0 / attenuation);
             }
         }
 
@@ -260,7 +260,7 @@ namespace OpenRCT2::Audio
                 size_t readLen = _source->Read(dst, _offset, bytesToRead);
                 if (readLen > 0)
                 {
-                    dst = (void*)((uintptr_t)dst + readLen);
+                    dst = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(dst) + readLen);
                     bytesToRead -= readLen;
                     bytesRead += readLen;
                     _offset += readLen;
