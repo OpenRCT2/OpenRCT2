@@ -33,7 +33,7 @@ namespace OpenRCT2
             std::unique_ptr<IDrawingEngine> Create(
                 DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
             {
-                switch ((int32_t)type)
+                switch (static_cast<int32_t>(type))
                 {
                     case DRAWING_ENGINE_SOFTWARE:
                         return CreateSoftwareDrawingEngine(uiContext);

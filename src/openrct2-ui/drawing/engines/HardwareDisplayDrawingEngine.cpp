@@ -57,7 +57,7 @@ public:
         : X8DrawingEngine(uiContext)
         , _uiContext(uiContext)
     {
-        _window = (SDL_Window*)_uiContext->GetWindow();
+        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -221,7 +221,8 @@ private:
         else
 #endif
         {
-            CopyBitsToTexture(_screenTexture, _bits, (int32_t)_width, (int32_t)_height, _paletteHWMapped);
+            CopyBitsToTexture(
+                _screenTexture, _bits, static_cast<int32_t>(_width), static_cast<int32_t>(_height), _paletteHWMapped);
         }
         if (smoothNN)
         {
@@ -279,11 +280,11 @@ private:
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            const uint8_t lower = *(uint8_t*)(&palette[*src++]);
-                            const uint8_t upper = *(uint8_t*)(&palette[*src++]);
+                            const uint8_t lower = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
+                            const uint8_t upper = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
                             *dst++ = (lower << 8) | upper;
                         }
-                        dst = (uint16_t*)(((uint8_t*)dst) + padding);
+                        dst = reinterpret_cast<uint16_t*>(reinterpret_cast<uint8_t*>(dst) + padding);
                     }
                 }
                 else if (pitch == width + padding)
@@ -293,7 +294,7 @@ private:
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            *dst++ = *(uint8_t*)(&palette[*src++]);
+                            *dst++ = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
                         }
                         dst += padding;
                     }
@@ -352,13 +353,13 @@ private:
                 auto timeLeft = GetDirtyVisualTime(x, y);
                 if (timeLeft > 0)
                 {
-                    uint8_t alpha = (uint8_t)(timeLeft * 5 / 2);
+                    uint8_t alpha = static_cast<uint8_t>(timeLeft * 5 / 2);
 
                     SDL_Rect ddRect;
-                    ddRect.x = (int32_t)(x * _dirtyGrid.BlockWidth * scaleX);
-                    ddRect.y = (int32_t)(y * _dirtyGrid.BlockHeight * scaleY);
-                    ddRect.w = (int32_t)(_dirtyGrid.BlockWidth * scaleX);
-                    ddRect.h = (int32_t)(_dirtyGrid.BlockHeight * scaleY);
+                    ddRect.x = static_cast<int32_t>(x * _dirtyGrid.BlockWidth * scaleX);
+                    ddRect.y = static_cast<int32_t>(y * _dirtyGrid.BlockHeight * scaleY);
+                    ddRect.w = static_cast<int32_t>(_dirtyGrid.BlockWidth * scaleX);
+                    ddRect.h = static_cast<int32_t>(_dirtyGrid.BlockHeight * scaleY);
 
                     SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
                     SDL_RenderFillRect(_sdlRenderer, &ddRect);
@@ -369,7 +370,7 @@ private:
 
     void ReadCentrePixel(uint32_t* pixel)
     {
-        SDL_Rect centrePixelRegion = { (int32_t)(_width / 2), (int32_t)(_height / 2), 1, 1 };
+        SDL_Rect centrePixelRegion = { static_cast<int32_t>(_width / 2), static_cast<int32_t>(_height / 2), 1, 1 };
         SDL_RenderReadPixels(_sdlRenderer, &centrePixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32_t));
     }
 
