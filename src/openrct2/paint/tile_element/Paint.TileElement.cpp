@@ -31,6 +31,7 @@
 #include "Paint.Surface.h"
 
 #include <algorithm>
+#include <iostream>
 
 #ifdef __TESTPAINT__
 uint16_t testPaintVerticalTunnelHeight;
@@ -155,10 +156,10 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.y = y;
 
     TileElement* tile_element = map_get_first_element_at(session->MapPosition);
+
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session->CurrentRotation;
-
     bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__
     if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
@@ -288,6 +289,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
         CoordsXY mapPosition = session->MapPosition;
         session->CurrentlyDrawnItem = tile_element;
+
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->GetType())
         {

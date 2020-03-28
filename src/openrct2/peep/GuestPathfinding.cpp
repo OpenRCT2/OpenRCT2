@@ -234,6 +234,7 @@ static uint8_t footpath_element_next_in_direction(
 
     loc += TileDirectionDelta[chosenDirection];
     nextTileElement = map_get_first_element_at(loc.ToCoordsXY());
+    auto nextExtPathVector = map_get_extended_data_vector_at(loc.ToCoordsXY());
     do
     {
         if (nextTileElement == nullptr)
@@ -244,7 +245,7 @@ static uint8_t footpath_element_next_in_direction(
             continue;
         if (!is_valid_path_z_and_direction(nextTileElement, loc.z, chosenDirection))
             continue;
-        if (nextTileElement->AsPath()->IsWideForGroup(peepWideGroup))
+        if (footpath_find_extended_data(nextTileElement, nextExtPathVector)->IsWideForGroup(peepWideGroup))
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
         if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != 0xFF)
@@ -285,10 +286,13 @@ static uint8_t footpath_element_dest_in_dir(
 
     loc += TileDirectionDelta[chosenDirection];
     tileElement = map_get_first_element_at(loc.ToCoordsXY());
+
     if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
     }
+    auto extPathVector = map_get_extended_data_vector_at(loc.ToCoordsXY());
+
     do
     {
         if (tileElement->IsGhost())
@@ -337,7 +341,7 @@ static uint8_t footpath_element_dest_in_dir(
             case TILE_ELEMENT_TYPE_PATH:
                 if (!is_valid_path_z_and_direction(tileElement, loc.z, chosenDirection))
                     continue;
-                if (tileElement->AsPath()->IsWideForGroup(peepWideGroup))
+                if (footpath_find_extended_data(tileElement, extPathVector)->IsWideForGroup(peepWideGroup))
                     return PATH_SEARCH_WIDE;
 
                 uint8_t edges = path_get_permitted_edges(tileElement->AsPath());
@@ -597,12 +601,12 @@ static int32_t CalculateHeuristicPathingScore(const TileCoordsXYZ& loc1, const T
 static void peep_pathfind_heuristic_search(
     TileCoordsXYZ loc, Peep* peep, TileElement* currentTileElement, bool inPatrolArea, uint8_t counter, uint16_t* endScore,
     Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
-    TileCoordsXYZ* endXYZ, uint8_t* endSteps)
+    TileCoordsXYZ* endXYZ, uint8_t* endSteps, ExtendedPathData* currentExtPath)
 {
     uint8_t searchResult = PATH_SEARCH_FAILED;
     uint8_t peepWideGroup = (peep->id) % NUMBER_OF_WIDEGROUPS;
     bool currentElementIsWide
-        = (currentTileElement->AsPath()->IsWideForGroup(peepWideGroup)
+        = (currentExtPath->IsWideForGroup(peepWideGroup)
            && !staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, currentTileElement));
 
     loc += TileDirectionDelta[test_edge];
@@ -651,6 +655,8 @@ static void peep_pathfind_heuristic_search(
     {
         return;
     }
+    auto extPathVector = map_get_extended_data_vector_at(loc.ToCoordsXY());
+
     do
     {
         /* Look for all map elements that the peep could walk onto while
@@ -733,8 +739,7 @@ static void peep_pathfind_heuristic_search(
 
                 // Path may be sloped, so set z to path base height.
                 loc.z = tileElement->base_height;
-
-                if (tileElement->AsPath()->IsWideForGroup(peepWideGroup))
+                if (footpath_find_extended_data(tileElement, extPathVector)->IsWideForGroup(peepWideGroup))
                 {
                     /* Check if staff can ignore this wide flag. */
                     if (!staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, tileElement))
@@ -1117,9 +1122,10 @@ static void peep_pathfind_heuristic_search(
                 _peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = next_test_edge;
             }
 
+            ExtendedPathData* extPathB = footpath_find_extended_data(tileElement, extPathVector);
             peep_pathfind_heuristic_search(
                 { loc.x, loc.y, height }, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge, endJunctions,
-                junctionList, directionList, endXYZ, endSteps);
+                junctionList, directionList, endXYZ, endSteps, extPathB);
             _peepPathFindNumJunctions = savedNumJunctions;
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1186,6 +1192,8 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
     // Get the path element at this location
     TileElement* dest_tile_element = map_get_first_element_at(loc.ToCoordsXY());
+    auto destExtPathVector = map_get_extended_data_vector_at(loc.ToCoordsXY());
+    ExtendedPathData* firstExtPath = nullptr;
     /* Where there are multiple matching map elements placed with zero
      * clearance, save the first one for later use to determine the path
      * slope - this maintains the original behaviour (which only processes
@@ -1219,6 +1227,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         if (first_tile_element == nullptr)
         {
             first_tile_element = dest_tile_element;
+            firstExtPath = footpath_find_extended_data(first_tile_element, destExtPathVector);
         }
 
         /* Check if this path element is a thin junction.
@@ -1419,7 +1428,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
             peep_pathfind_heuristic_search(
                 { loc.x, loc.y, height }, peep, first_tile_element, inPatrolArea, 0, &score, test_edge, &endJunctions,
-                endJunctionList, endDirectionList, &endXYZ, &endSteps);
+                endJunctionList, endDirectionList, &endXYZ, &endSteps, firstExtPath);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             if (gPathFindDebug)

@@ -206,10 +206,10 @@ private:
         ride_id_t rideIndex;    // 11
     };
     ::StationIndex StationIndex; // 13
-    uint8_t WideFlags;           // 14
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0E[1];
+    uint8_t pad_0E[2];
 #pragma clang diagnostic pop
 
 public:
@@ -237,11 +237,7 @@ public:
     void SetStationIndex(::StationIndex newStationIndex);
 
     bool IsWide() const;
-    bool IsWideForGroup(uint8_t wideGroup) const;
-    uint8_t GetWideFlags() const;
-    void SetWideFlags(uint8_t flags);
     void SetWide(bool isWide);
-    void SetWideForGroup(uint8_t wideGroup, bool isWide);
 
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
@@ -583,40 +579,6 @@ public:
     {
         return (_val >> 4) & 0xF;
     }
-};
-
-struct ExtendedPathData
-{
-private:
-    std::vector<uint8_t> WideFlags;
-
-public:
-    ExtendedPathData()
-    {
-        WideFlags.push_back(0);
-    }
-
-    ExtendedPathData(uint8_t i)
-    {
-        WideFlags.push_back(i);
-    }
-
-    bool IsWideForGroup(uint8_t wideGroup) const;
-    bool IsWideForGroup(uint8_t wideGroup, uint8_t wideLevel) const;
-    void SetWideForGroup(uint8_t wideGroup, bool isWide);
-    void SetWideForGroup(uint8_t wideGroup, uint8_t wideLevel, bool isWide);
-
-    uint8_t GetWideFlags() const;
-    uint8_t GetWideFlags(uint8_t wideLevel) const;
-    void SetWideFlags(uint8_t flags);
-    void SetWideFlags(uint8_t wideLevel, uint8_t flags);
-
-    int GetPathLevel();
-    void SetPathLevel(uint8_t pathLevel);
-    void IncreasePathLevelTo(uint8_t pathLevel);
-    void DecreasePathLevelTo(uint8_t pathLevel);
-
-    void SetToZero();
 };
 
 enum

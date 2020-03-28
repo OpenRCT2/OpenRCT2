@@ -695,8 +695,10 @@ std::vector<ExtendedPathData*>* map_get_extended_data_vector_at(const CoordsXY& 
     }
     auto tileElementPos = TileCoordsXY{ elementPos };
     if (gExtendedPathDataVectors[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL] == nullptr)
+    {
         gExtendedPathDataVectors[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL] = new std::vector<
             ExtendedPathData*>;
+    }
 
     return gExtendedPathDataVectors[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL];
 }

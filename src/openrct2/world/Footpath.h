@@ -72,6 +72,51 @@ struct PathRailingsEntry
     uint8_t scrolling_mode;
 };
 
+struct ExtendedPathData
+{
+private:
+    bool used;
+    TileElement* TilePointer;
+    std::vector<uint8_t> WideFlags;
+
+public:
+    ExtendedPathData(TileElement* tileIn)
+    {
+        used = true;
+        TilePointer = tileIn;
+    }
+
+    ExtendedPathData(TileElement* tileIn, uint8_t i)
+    {
+        used = true;
+        TilePointer = tileIn;
+        WideFlags.push_back(i);
+    }
+
+    bool IsWideForGroup(uint8_t wideGroup) const;
+    bool IsWideForGroup(uint8_t wideGroup, uint8_t wideLevel) const;
+    void SetWideForGroup(uint8_t wideGroup, bool isWide);
+    void SetWideForGroup(uint8_t wideGroup, uint8_t wideLevel, bool isWide);
+
+    uint8_t GetWideFlags() const;
+    uint8_t GetWideFlags(uint8_t wideLevel) const;
+    void SetWideFlags(uint8_t flags);
+    void SetWideFlags(uint8_t wideLevel, uint8_t flags);
+
+    int GetPathLevel() const;
+    void SetPathLevel(uint8_t pathLevel);
+    void IncreasePathLevelTo(uint8_t pathLevel);
+    void DecreasePathLevelTo(uint8_t pathLevel);
+
+    TileElement* GetTilePointer() const;
+    void SetTilePointer(TileElement* tileIn);
+
+    bool IsUsed() const;
+    void SetUsed(bool usedIn);
+
+    void SetToZero();
+};
+
 // Masks for values stored in TileElement.type
 enum
 {
@@ -209,3 +254,5 @@ PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);
+
+ExtendedPathData* footpath_find_extended_data(TileElement* tileElement, std::vector<ExtendedPathData*>* extendedPathVector);

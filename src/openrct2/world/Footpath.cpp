@@ -1537,28 +1537,6 @@ void PathElement::SetWide(bool isWide)
         type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
 }
 
-bool PathElement::IsWideForGroup(uint8_t wideGroup) const
-{
-    return (WideFlags & (1 << wideGroup)) != 0;
-}
-
-uint8_t PathElement::GetWideFlags() const
-{
-    return WideFlags;
-}
-
-void PathElement::SetWideForGroup(uint8_t wideGroup, bool isWide)
-{
-    WideFlags &= ~(1 << wideGroup);
-    if (isWide)
-        WideFlags |= (1 << wideGroup);
-}
-
-void PathElement::SetWideFlags(uint8_t flags)
-{
-    WideFlags = flags;
-}
-
 bool PathElement::HasAddition() const
 {
     return Additions != 0;
@@ -1650,6 +1628,22 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
     log_verbose("Setting 'draw path over supports' to %d", (size_t)on);
 }
 
+ExtendedPathData* footpath_find_extended_data(
+    TileElement* tileElement, std::vector<ExtendedPathData*>* extendedPathVector)
+{
+    for (int iExt = 0; iExt < extendedPathVector->size(); iExt++)
+    {
+        if (extendedPathVector->at(iExt)->GetTilePointer() == tileElement)
+        {
+            extendedPathVector->at(iExt)->SetUsed(true);
+            return extendedPathVector->at(iExt);
+        }
+    }
+
+    extendedPathVector->push_back(new ExtendedPathData(tileElement, 0));
+    return extendedPathVector->back();
+}
+
 /**
  *
  *  rct2: 0x006A8B12
@@ -1659,34 +1653,26 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
 static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
 {
     TileElement* tileElement = map_get_first_element_at(footpathPos);
-    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
 
     if (tileElement == nullptr)
     {
-        for (int i = 0; i < extPathVector->size(); i++)
-            delete extPathVector->at(i);
-
-        extPathVector->clear();
         return;
     }
-    int i = 0;
+
+    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
+
     do
     {
-        if (extPathVector->size() <= i)
-        {
-            extPathVector->push_back(new ExtendedPathData());
-        }
-
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        tileElement->AsPath()->SetWideForGroup(wideGroup, false);
-        extPathVector->at(i)->SetWideForGroup(wideGroup, false);
+        ExtendedPathData* extPath = footpath_find_extended_data(tileElement, extPathVector);
+        extPath->SetWideForGroup(wideGroup, false);
 
         if (wideGroup == WIDE_GROUP_N_SW)
             tileElement->AsPath()->SetWide(false);
 
-    } while (!(tileElement++)->IsLastForTile() && i++);
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -1719,18 +1705,14 @@ static TileElement* footpath_can_be_wide(const CoordsXYZ& footpathPos)
 static ExtendedPathData* extended_footpath_can_be_wide(const CoordsXYZ& footpathPos, uint8_t wideLevel)
 {
     TileElement* tileElement = map_get_first_element_at(footpathPos);
-    auto extData = map_get_extended_data_vector_at(footpathPos);
     if (tileElement == nullptr)
     {
         return nullptr;
     }
 
-    int i = 0;
+    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
     do
     {
-        if (extData->size() <= i)
-            extData->push_back(new ExtendedPathData(0));
-
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
         if (footpathPos.z != tileElement->GetBaseZ())
@@ -1740,8 +1722,8 @@ static ExtendedPathData* extended_footpath_can_be_wide(const CoordsXYZ& footpath
         if (tileElement->AsPath()->IsSloped())
             continue;
 
-        return extData->at(i);
-    } while (!(tileElement++)->IsLastForTile() && i++);
+        return footpath_find_extended_data(tileElement, extPathVector);
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -1775,17 +1757,13 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
     // y -= 0x20;
 
     TileElement* tileElement = map_get_first_element_at(footpathPos);
-    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
 
     if (tileElement == nullptr)
         return;
 
-    int i = 0;
+    auto extPathVector = map_get_extended_data_vector_at(footpathPos);
     do
     {
-        if (extPathVector->size() <= 0)
-            extPathVector->push_back(new ExtendedPathData);
-
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
@@ -1797,6 +1775,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
 
         if (tileElement->AsPath()->GetEdges() == 0)
             continue;
+
+        ExtendedPathData* extPath = footpath_find_extended_data(tileElement, extPathVector);
 
         auto height = tileElement->GetBaseZ();
 
@@ -1821,7 +1801,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         {
             pathConnections |= wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE];
             if (pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]] != nullptr
-                && pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]]->AsPath()->IsWideForGroup(wideGroup))
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]] != nullptr
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
             {
                 pathConnections &= ~wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE];
             }
@@ -1831,7 +1812,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         {
             pathConnections |= wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE];
             if (pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
-                && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->AsPath()->IsWideForGroup(wideGroup))
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
             {
                 pathConnections &= ~wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE];
             }
@@ -1869,15 +1851,18 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
 
         if ((pathConnections & wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE])
             && pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]] != nullptr
-            && !pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]]->AsPath()->IsWideForGroup(wideGroup))
+            && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]] != nullptr
+            && !extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
         {
             uint8_t edgeMask1 = wideGroupEdges[WIDE_GROUP_SECONDARY_DIRECTION] | wideGroupEdges[WIDE_GROUP_PRIMARY_DIRECTION];
             if ((pathConnections & wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE])
                 && pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]] != nullptr
-                && !pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]]->AsPath()->IsWideForGroup(wideGroup)
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]] != nullptr
+                && !extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]]->IsWideForGroup(wideGroup)
                 && (pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]]->AsPath()->GetEdges() & edgeMask1) == edgeMask1
                 && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
-                && !pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->AsPath()->IsWideForGroup(wideGroup))
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                && !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
             {
                 pathConnections |= wideGroupConnections[WIDE_GROUP_FINAL_CORNER_CARDINAL];
             }
@@ -1891,7 +1876,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
                 | wideGroupEdges[WIDE_GROUP_SECONDARY_DIRECTION];
             if ((pathConnections & wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION])
                 && pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]] != nullptr
-                && !(pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]])->AsPath()->IsWideForGroup(wideGroup)
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]] != nullptr
+                && !(extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]])->IsWideForGroup(wideGroup)
                 && (pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]]->AsPath()->GetEdges() & edgeMask2) == edgeMask2
                 && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]] != nullptr)
             {
@@ -1915,9 +1901,10 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
                 && (pathList[wideGroupDirections[WIDE_GROUP_THIRD_CORNER_CARDINAL]]->AsPath()->GetEdges() & edgeMask1)
                     == edgeMask1
                 && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
-                && !pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->AsPath()->IsWideForGroup(wideGroup))
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                && !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
             {
-                pathConnections |= wideGroupConnections[WIDE_GROUP_SECOND_CORNER]; // xx
+                pathConnections |= wideGroupConnections[WIDE_GROUP_SECOND_CORNER];
             }
 
             /* In the following:
@@ -1967,6 +1954,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             pathConnections &= ~wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION];
         }
 
+        // std::cout << (int)pathConnections << "\n";
+
         if (!(pathConnections
               & (wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]
                  | wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION] | wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION]
@@ -1975,14 +1964,26 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             uint8_t e = tileElement->AsPath()->GetEdgesAndCorners();
             if ((e != 0b10101111) && (e != 0b01011111) && (e != ~(wideGroupEdges[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE] << 4)))
             {
-                tileElement->AsPath()->SetWideForGroup(wideGroup, true);
-                extPathVector->at(i)->SetWideForGroup(wideGroup, true);
+                extPath->SetWideForGroup(wideGroup, true);
+                if (wideGroup == WIDE_GROUP_N_SW)
+                    tileElement->AsPath()->SetWide(true);
             }
-
-            if (wideGroup == 0 && tileElement->AsPath()->IsWideForGroup(0))
-                tileElement->AsPath()->SetWide(true);
         }
-    } while (!(tileElement++)->IsLastForTile() && i++);
+    } while (!(tileElement++)->IsLastForTile());
+
+    int iTile = 0;
+    while (iTile < extPathVector->size())
+    {
+        if (!extPathVector->at(iTile)->IsUsed())
+        {
+            delete extPathVector->at(iTile);
+            extPathVector->erase(extPathVector->begin() + iTile);
+        }
+        else
+        {
+            iTile++;
+        }
+    }
 }
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
@@ -2405,8 +2406,10 @@ bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup) const
 
 bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup, uint8_t wideLevel) const
 {
-    if (WideFlags.size() > wideLevel)
-        return (WideFlags[wideLevel] & (1 << wideGroup)) != 0;
+    if (GetPathLevel() > wideLevel)
+    {
+        return (WideFlags.at(wideLevel) & (1 << wideGroup)) != 0;
+    }
 
     return false;
 }
@@ -2419,9 +2422,9 @@ void ExtendedPathData::SetWideForGroup(uint8_t wideGroup, bool isWide)
 void ExtendedPathData::SetWideForGroup(uint8_t wideGroup, uint8_t wideLevel, bool isWide)
 {
     IncreasePathLevelTo(wideLevel + 1);
-    WideFlags[wideLevel] &= ~(1 << wideGroup);
+    WideFlags.at(wideLevel) &= ~(1 << wideGroup);
     if (isWide)
-        WideFlags[wideLevel] |= (1 << wideGroup);
+        WideFlags.at(wideLevel) |= (1 << wideGroup);
 }
 
 uint8_t ExtendedPathData::GetWideFlags() const
@@ -2432,7 +2435,7 @@ uint8_t ExtendedPathData::GetWideFlags() const
 uint8_t ExtendedPathData::GetWideFlags(uint8_t wideLevel) const
 {
     if (WideFlags.size() > wideLevel)
-        return WideFlags[wideLevel];
+        return WideFlags.at(wideLevel);
 
     return 0;
 }
@@ -2445,10 +2448,10 @@ void ExtendedPathData::SetWideFlags(uint8_t flags)
 void ExtendedPathData::SetWideFlags(uint8_t wideLevel, uint8_t flags)
 {
     IncreasePathLevelTo(wideLevel + 1);
-    WideFlags[wideLevel] = flags;
+    WideFlags.at(wideLevel) = flags;
 }
 
-int ExtendedPathData::GetPathLevel()
+int ExtendedPathData::GetPathLevel() const
 {
     return (int)WideFlags.size();
 }
@@ -2463,13 +2466,13 @@ void ExtendedPathData::IncreasePathLevelTo(uint8_t pathLevel)
 {
     while (GetPathLevel() < pathLevel)
     {
-        WideFlags.push_back(0b00000000);
+        WideFlags.push_back(0);
     }
 }
 
 void ExtendedPathData::DecreasePathLevelTo(uint8_t pathLevel)
 {
-    while (GetPathLevel() > pathLevel + 1)
+    while (GetPathLevel() > pathLevel)
     {
         WideFlags.pop_back();
     }
@@ -2479,4 +2482,24 @@ void ExtendedPathData::SetToZero()
 {
     WideFlags.clear();
     WideFlags.push_back(0b00000000);
+}
+
+TileElement* ExtendedPathData::GetTilePointer() const
+{
+    return TilePointer;
+}
+
+void ExtendedPathData::SetTilePointer(TileElement* tileIn)
+{
+    TilePointer = tileIn;
+}
+
+bool ExtendedPathData::IsUsed() const
+{
+    return used;
+}
+
+void ExtendedPathData::SetUsed(bool usedIn)
+{
+    used = usedIn;
 }
