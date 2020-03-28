@@ -28,7 +28,7 @@
 uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
 uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
 static rct_sprite _spriteList[MAX_SPRITES];
-std::array<std::vector<SpriteBase*>, SPRITE_LIST_COUNT> gSpriteLists;
+static std::array<std::vector<SpriteBase*>, SPRITE_LIST_COUNT> gSpriteLists;
 static std::vector<uint16_t> _freeSprites;
 
 static bool _spriteFlashingList[MAX_SPRITES];
@@ -52,6 +52,11 @@ static CoordsXYZ _spritelocations1[MAX_SPRITES];
 static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
+
+const std::vector<SpriteBase*> GetSpriteList(SPRITE_LIST type)
+{
+    return gSpriteLists[type];
+}
 
 std::string rct_sprite_checksum::ToString() const
 {
@@ -355,17 +360,72 @@ void sprite_clear_all_unused()
 }
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
-
-void ResetFreeSpriteList()
+static void AddSpriteToSpriteList(SpriteBase* sprite, SPRITE_LIST list);
+void ResetSpriteLists()
 {
     _freeSprites.clear();
+    for (auto& list : gSpriteLists)
+    {
+        list.clear();
+    }
     for (auto id = 0; id < MAX_SPRITES; ++id)
     {
         SpriteBase* sprite = &(get_sprite(id))->generic;
+        // Free sprites can often have the wrong SPRITE_IDENTIFIER set
+        // Move this code into S6/S4 import
         if (sprite->linked_list_index == SPRITE_LIST_FREE || sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
         {
             _freeSprites.push_back(id);
+            continue;
         }
+
+        // Refactor to use type with a type lookup
+        SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
+        switch (sprite->sprite_identifier)
+        {
+            case SPRITE_IDENTIFIER_VEHICLE:
+            {
+                auto vehicle = static_cast<Vehicle*>(sprite);
+                // Head cars are stored in a seperate list
+                if (vehicle->IsHead())
+                {
+                    linkedListIndex = SPRITE_LIST_TRAIN_HEAD;
+                }
+                else
+                {
+                    linkedListIndex = SPRITE_LIST_VEHICLE;
+                }
+                break;
+            }
+            case SPRITE_IDENTIFIER_PEEP:
+                linkedListIndex = SPRITE_LIST_PEEP;
+                break;
+            case SPRITE_IDENTIFIER_MISC:
+                linkedListIndex = SPRITE_LIST_MISC;
+                break;
+            case SPRITE_IDENTIFIER_LITTER:
+                linkedListIndex = SPRITE_LIST_LITTER;
+                break;
+        }
+
+        AddSpriteToSpriteList(sprite, linkedListIndex);
+    }
+}
+
+static void AddSpriteToSpriteList(SpriteBase* sprite, SPRITE_LIST list)
+{
+    auto res = std::upper_bound(gSpriteLists[list].begin(), gSpriteLists[list].end(), sprite,[](const SpriteBase* a, SpriteBase* b){
+        return a->sprite_index < b->sprite_index;});
+    gSpriteLists[list].insert(res, sprite);
+}
+
+static void RemoveSpriteFromSpriteLists(SpriteBase* sprite)
+{
+    auto& list = gSpriteLists[sprite->linked_list_index];
+    auto res = std::find(list.begin(), list.end(), sprite);
+    if (res != list.end())
+    {
+        list.erase(res);
     }
 }
 
@@ -394,7 +454,7 @@ SpriteBase* CreateSpriteAt(uint16_t spriteId)
     return sprite;
 }
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+SpriteBase* CreateSprite(SPRITE_LIST linkedListIndex)
 {
     if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
@@ -402,7 +462,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
         return nullptr;
     }
 
-    if (spriteIdentifier == SPRITE_IDENTIFIER_MISC)
+    if (linkedListIndex == SPRITE_LIST_MISC)
     {
         // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
         // free it will fail to keep slots for more relevant sprites.
@@ -417,7 +477,14 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     _freeSprites.pop_back();
     auto sprite = CreateSpriteAt(gSpriteListHead[SPRITE_LIST_FREE]);
 
-    SPRITE_LIST linkedListIndex;
+    move_sprite_to_list(sprite, linkedListIndex);
+    AddSpriteToSpriteList(sprite, linkedListIndex);
+    return sprite;
+}
+
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+{
+    SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
     switch (spriteIdentifier)
     {
         case SPRITE_IDENTIFIER_VEHICLE:
@@ -436,9 +503,8 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
             Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
             return nullptr;
     }
-    move_sprite_to_list(sprite, linkedListIndex);
 
-    return (rct_sprite*)sprite;
+    return reinterpret_cast<rct_sprite*>(CreateSprite(linkedListIndex));
 }
 
 /*
@@ -717,6 +783,7 @@ void sprite_remove(SpriteBase* sprite)
         peep->SetName({});
     }
 
+    RemoveSpriteFromSpriteLists(sprite);
     move_sprite_to_list(sprite, SPRITE_LIST_FREE);
     sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->sprite_index] = false;
@@ -1124,7 +1191,7 @@ int32_t fix_disjoint_sprites()
     for (sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
     {
         rct_sprite* spr = get_sprite(sprite_idx);
-        if (spr->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        if (spr->generic.linked_list_index == SPRITE_LIST_FREE || spr->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
         {
             openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
             spr->generic.sprite_index = sprite_idx;

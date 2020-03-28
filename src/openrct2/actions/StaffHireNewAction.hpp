@@ -158,8 +158,6 @@ private:
         }
         else
         {
-            move_sprite_to_list(newPeep, SPRITE_LIST_PEEP);
-
             newPeep->sprite_identifier = 1;
             newPeep->window_invalidate_flags = 0;
             newPeep->action = PEEP_ACTION_NONE_2;

@@ -4317,7 +4317,7 @@ static Vehicle* vehicle_create_car(
         return nullptr;
 
     auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle;
+    auto vehicle = reinterpret_cast<Vehicle*>(CreateSprite(carIndex == 0 ? SPRITE_LIST_TRAIN_HEAD : SPRITE_LIST_VEHICLE));
     if (vehicle == nullptr)
         return nullptr;
 
@@ -4560,8 +4560,6 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
         }
         lastTrain = train;
 
-        // Add train to ride vehicle list
-        move_sprite_to_list(train.head, SPRITE_LIST_TRAIN_HEAD);
         for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)
