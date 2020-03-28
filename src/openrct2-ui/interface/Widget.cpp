@@ -197,7 +197,7 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
 
-    if ((int32_t)widget->image == -2)
+    if (static_cast<int32_t>(widget->image) == -2)
     {
         // Draw border with no fill
         gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | INSET_RECT_FLAG_FILL_NONE);
@@ -219,7 +219,7 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if ((int32_t)widget->image == -1)
+    if (static_cast<int32_t>(widget->image) == -1)
         return;
 
     // Draw widgets that aren't explicitly disabled.
@@ -278,7 +278,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
     // Check if the button is pressed down
     if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
     {
-        if ((int32_t)widget->image == -2)
+        if (static_cast<int32_t>(widget->image) == -2)
         {
             // Draw border with no fill
             gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
@@ -603,7 +603,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_pressed(w, widgetIndex))
     {
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string(dpi, (char*)CheckBoxMarkString, NOT_TRANSLUCENT(colour), l, yMid - 5);
+        gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), l, yMid - 5);
     }
 
     // draw the text
@@ -701,7 +701,7 @@ static void widget_hscrollbar_draw(
         uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, flags);
-        gfx_draw_string(dpi, (char*)BlackLeftArrowString, COLOUR_BLACK, l + 1, t);
+        gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, l + 1, t);
     }
 
     // Thumb
@@ -718,7 +718,7 @@ static void widget_hscrollbar_draw(
         uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, flags);
-        gfx_draw_string(dpi, (char*)BlackRightArrowString, COLOUR_BLACK, r - 6, t);
+        gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, r - 6, t);
     }
 }
 
@@ -737,7 +737,7 @@ static void widget_vscrollbar_draw(
     // Up button
     gfx_fill_rect_inset(
         dpi, l, t, r, t + 9, colour, ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackUpArrowString, COLOUR_BLACK, l + 1, t - 1);
+    gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, l + 1, t - 1);
 
     // Thumb
     gfx_fill_rect_inset(
@@ -747,7 +747,7 @@ static void widget_vscrollbar_draw(
     // Down button
     gfx_fill_rect_inset(
         dpi, l, b - 9, r, b, colour, ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackDownArrowString, COLOUR_BLACK, l + 1, b - 9);
+    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, l + 1, b - 9);
 }
 
 /**
@@ -1049,7 +1049,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     int32_t cur_x = l + gfx_get_string_width(temp_string) + 3;
 
     int32_t width = 6;
-    if ((uint32_t)gTextInput->SelectionStart < strlen(gTextBoxInput))
+    if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
     {
         // Make a new 1 character wide string for measuring the width
         // of the character that the cursor is under.
