@@ -37,7 +37,7 @@ public:
         : X8DrawingEngine(uiContext)
         , _uiContext(uiContext)
     {
-        _window = (SDL_Window*)_uiContext->GetWindow();
+        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
     }
 
     ~SoftwareDrawingEngine() override
@@ -113,7 +113,7 @@ private:
         }
 
         // Copy pixels from the virtual screen buffer to the surface
-        std::copy_n(_bits, _surface->pitch * _surface->h, (uint8_t*)_surface->pixels);
+        std::copy_n(_bits, _surface->pitch * _surface->h, static_cast<uint8_t*>(_surface->pixels));
 
         // Unlock the surface
         if (SDL_MUSTLOCK(_surface))
