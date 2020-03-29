@@ -72,7 +72,8 @@ Some Linux distributions offer native packages already. These packages are usual
 * Fedora 28 i386/amd64: [openrct2](https://copr.fedorainfracloud.org/coprs/nauticalnexus/openrct2/)
 
 Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* OpenBSD: [games/openrct2](http://openports.se/games/openrct2)
+* FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
+* OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
 ---
 
