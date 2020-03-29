@@ -24,7 +24,7 @@ Balloon* rct_sprite::AsBalloon()
     Balloon* result = nullptr;
     if (IsBalloon())
     {
-        result = (Balloon*)this;
+        result = reinterpret_cast<Balloon*>(this);
     }
     return result;
 }

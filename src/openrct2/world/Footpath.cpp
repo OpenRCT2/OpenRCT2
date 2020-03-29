@@ -584,16 +584,16 @@ struct rct_neighbour_list
 
 static int32_t rct_neighbour_compare(const void* a, const void* b)
 {
-    uint8_t va = ((rct_neighbour*)a)->order;
-    uint8_t vb = ((rct_neighbour*)b)->order;
+    uint8_t va = (static_cast<const rct_neighbour*>(a))->order;
+    uint8_t vb = (static_cast<const rct_neighbour*>(b))->order;
     if (va < vb)
         return 1;
     else if (va > vb)
         return -1;
     else
     {
-        uint8_t da = ((rct_neighbour*)a)->direction;
-        uint8_t db = ((rct_neighbour*)b)->direction;
+        uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
+        uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
         if (da < db)
             return -1;
         else if (da > db)
@@ -634,7 +634,7 @@ static bool neighbour_list_pop(rct_neighbour_list* neighbourList, rct_neighbour*
 static void neighbour_list_remove(rct_neighbour_list* neighbourList, size_t index)
 {
     Guard::ArgumentInRange<size_t>(index, 0, neighbourList->count - 1);
-    int32_t itemsRemaining = (int32_t)(neighbourList->count - index) - 1;
+    int32_t itemsRemaining = static_cast<int32_t>(neighbourList->count - index) - 1;
     if (itemsRemaining > 0)
     {
         memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(rct_neighbour) * itemsRemaining);
@@ -1612,7 +1612,7 @@ bool PathElement::ShouldDrawPathOverSupports()
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
 {
-    log_verbose("Setting 'draw path over supports' to %d", (size_t)on);
+    log_verbose("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
 }
 
 /**
@@ -2170,9 +2170,9 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
     if (obj != nullptr)
     {
         if (entryIndex < MAX_PATH_OBJECTS)
-            result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+            result = (static_cast<FootpathObject*>(obj))->GetPathSurfaceEntry();
         else
-            result = ((FootpathObject*)obj)->GetQueueEntry();
+            result = (static_cast<FootpathObject*>(obj))->GetQueueEntry();
     }
     return result;
 }
@@ -2184,7 +2184,7 @@ PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
     if (obj != nullptr)
     {
-        result = ((FootpathObject*)obj)->GetPathRailingsEntry();
+        result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();
     }
     return result;
 }

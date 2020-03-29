@@ -78,7 +78,7 @@ int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const Coord
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags)
 {
-    return (bool)(sceneryEntry->small_scenery.flags & flags);
+    return static_cast<bool>(sceneryEntry->small_scenery.flags & flags);
 }
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
@@ -160,7 +160,7 @@ void SmallSceneryElement::SetSecondaryColour(colour_t colour)
 
 bool SmallSceneryElement::NeedsSupports() const
 {
-    return (bool)(colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+    return static_cast<bool>(colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
 }
 
 void SmallSceneryElement::SetNeedsSupports()
@@ -180,7 +180,7 @@ rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex)
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
+        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
     }
     return result;
 }

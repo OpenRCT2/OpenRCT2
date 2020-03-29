@@ -340,7 +340,8 @@ static void mapgen_place_trees()
     // Place trees
     float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
     int32_t numTrees = std::min(
-        std::max(4, (int32_t)(availablePositions.size() * treeToLandRatio)), (int32_t)availablePositions.size());
+        std::max(4, static_cast<int32_t>(availablePositions.size() * treeToLandRatio)),
+        static_cast<int32_t>(availablePositions.size()));
 
     for (int32_t i = 0; i < numTrees; i++)
     {
@@ -531,7 +532,7 @@ static float generate(float x, float y)
     int32_t i = fast_floor(xs);
     int32_t j = fast_floor(ys);
 
-    float t = (float)(i + j) * G2;
+    float t = static_cast<float>(i + j) * G2;
     float X0 = i - t; // Unskew the cell origin back to (x,y) space
     float Y0 = j - t;
     float x0 = x - X0; // The x,y distances from the cell origin
@@ -605,7 +606,7 @@ static float generate(float x, float y)
 
 static int32_t fast_floor(float x)
 {
-    return (x > 0) ? ((int32_t)x) : (((int32_t)x) - 1);
+    return (x > 0) ? (static_cast<int32_t>(x)) : ((static_cast<int32_t>(x)) - 1);
 }
 
 static float grad(int32_t hash, float x, float y)
@@ -634,7 +635,7 @@ static void mapgen_simplex(mapgen_settings* settings)
             float noiseValue = std::clamp(fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-            set_height(x, y, low + (int32_t)(normalisedNoiseValue * high));
+            set_height(x, y, low + static_cast<int32_t>(normalisedNoiseValue * high));
         }
     }
 }
@@ -827,7 +828,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];
-            value = (uint8_t)((float)(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
+            value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
             surfaceElement->base_height = value;
 
             // Floor to even number

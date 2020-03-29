@@ -414,7 +414,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     sprite->next_in_quadrant = gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL];
     gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL] = sprite->sprite_index;
 
-    return (rct_sprite*)sprite;
+    return reinterpret_cast<rct_sprite*>(sprite);
 }
 
 /*
@@ -565,19 +565,19 @@ static void sprite_misc_update(rct_sprite* sprite)
     switch (sprite->generic.type)
     {
         case SPRITE_MISC_STEAM_PARTICLE:
-            sprite_steam_particle_update((SteamParticle*)sprite);
+            sprite_steam_particle_update(reinterpret_cast<SteamParticle*>(sprite));
             break;
         case SPRITE_MISC_MONEY_EFFECT:
             sprite->money_effect.Update();
             break;
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
-            crashed_vehicle_particle_update((VehicleCrashParticle*)sprite);
+            crashed_vehicle_particle_update(reinterpret_cast<VehicleCrashParticle*>(sprite));
             break;
         case SPRITE_MISC_EXPLOSION_CLOUD:
             sprite_misc_explosion_cloud_update(sprite);
             break;
         case SPRITE_MISC_CRASH_SPLASH:
-            crash_splash_update((CrashSplashParticle*)sprite);
+            crash_splash_update(reinterpret_cast<CrashSplashParticle*>(sprite));
             break;
         case SPRITE_MISC_EXPLOSION_FLARE:
             sprite_misc_explosion_flare_update(sprite);
@@ -687,7 +687,7 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
  */
 void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = ((rct_sprite*)sprite)->AsPeep();
+    auto peep = (reinterpret_cast<rct_sprite*>(sprite))->AsPeep();
     if (peep != nullptr)
     {
         peep->SetName({});
@@ -769,7 +769,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
         }
     }
 
-    Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
+    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
     if (litter == nullptr)
         return;
 

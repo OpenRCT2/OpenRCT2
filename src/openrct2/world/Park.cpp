@@ -540,7 +540,7 @@ money16 Park::CalculateTotalRideValueForMoney() const
         // Add ride value
         if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money16 rideValue = (money16)(ride.value - ride.price);
+            money16 rideValue = static_cast<money16>(ride.value - ride.price);
             if (rideValue > 0)
             {
                 totalRideValue += rideValue * 2;
@@ -679,7 +679,7 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
 void Park::GenerateGuests()
 {
     // Generate a new guest for some probability
-    if ((int32_t)(scenario_rand() & 0xFFFF) < _guestGenerationProbability)
+    if (static_cast<int32_t>(scenario_rand() & 0xFFFF) < _guestGenerationProbability)
     {
         bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
         if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
@@ -757,7 +757,7 @@ void Park::ResetHistories()
 void Park::UpdateHistories()
 {
     uint8_t guestChangeModifier = 1;
-    int32_t changeInGuestsInPark = (int32_t)gNumGuestsInPark - (int32_t)gNumGuestsInParkLastWeek;
+    int32_t changeInGuestsInPark = static_cast<int32_t>(gNumGuestsInPark) - static_cast<int32_t>(gNumGuestsInParkLastWeek);
     if (changeInGuestsInPark > -20)
     {
         guestChangeModifier++;
