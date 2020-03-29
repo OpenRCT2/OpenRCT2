@@ -67,6 +67,8 @@
 		932A211E22D73CFA00C57EDB /* GameActionCompat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */; };
 		932A211F22D73CFA00C57EDB /* GameActionRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */; };
 		932A212022D73CFA00C57EDB /* GameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A211C22D73CFA00C57EDB /* GameAction.cpp */; };
+		9338231E2430D31300F19647 /* Weather.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9338231C2430D31200F19647 /* Weather.cpp */; };
+		9338231F2430D31300F19647 /* Weather.h in Headers */ = {isa = PBXBuildFile; fileRef = 9338231D2430D31300F19647 /* Weather.h */; };
 		933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB120CB1ACC00134678 /* Widget.cpp */; };
 		933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB220CB1ACD00134678 /* Theme.cpp */; };
 		933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB920CB1B3F00134678 /* TitleSequencePlayer.cpp */; };
@@ -450,7 +452,6 @@
 		F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83991EC4E7CC00FA49E2 /* Zip.cpp */; };
 		F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A51EC4E7CC00FA49E2 /* Image.cpp */; };
 		F76C85FD1EC4E88300FA49E2 /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A91EC4E7CC00FA49E2 /* NewDrawing.cpp */; };
-		F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */; };
 		F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
 		F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* Network.cpp */; };
@@ -1000,6 +1001,8 @@
 		932A211B22D73CFA00C57EDB /* TrackSetBrakeSpeedAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackSetBrakeSpeedAction.hpp; sourceTree = "<group>"; };
 		932A211C22D73CFA00C57EDB /* GameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameAction.cpp; sourceTree = "<group>"; };
 		932A211D22D73CFA00C57EDB /* LargeSceneryRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LargeSceneryRemoveAction.hpp; sourceTree = "<group>"; };
+		9338231C2430D31200F19647 /* Weather.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Weather.cpp; sourceTree = "<group>"; };
+		9338231D2430D31300F19647 /* Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weather.h; sourceTree = "<group>"; };
 		933CBDB120CB1ACC00134678 /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
 		933CBDB220CB1ACD00134678 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
 		933CBDB320CB1ACD00134678 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
@@ -1613,8 +1616,6 @@
 		F76C83A71EC4E7CC00FA49E2 /* lightfx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lightfx.h; sourceTree = "<group>"; };
 		F76C83A91EC4E7CC00FA49E2 /* NewDrawing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NewDrawing.cpp; sourceTree = "<group>"; };
 		F76C83AA1EC4E7CC00FA49E2 /* NewDrawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewDrawing.h; sourceTree = "<group>"; };
-		F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Rain.cpp; sourceTree = "<group>"; };
-		F76C83AC1EC4E7CC00FA49E2 /* Rain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rain.h; sourceTree = "<group>"; };
 		F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = Editor.cpp; sourceTree = "<group>"; };
 		F76C83B21EC4E7CC00FA49E2 /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
 		F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
@@ -2700,8 +2701,6 @@
 				4C7B53CD200029CE00A52E21 /* Line.cpp */,
 				F76C83A91EC4E7CC00FA49E2 /* NewDrawing.cpp */,
 				F76C83AA1EC4E7CC00FA49E2 /* NewDrawing.h */,
-				F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */,
-				F76C83AC1EC4E7CC00FA49E2 /* Rain.h */,
 				4C7B53CF200029D900A52E21 /* Rect.cpp */,
 				4C7B53D0200029D900A52E21 /* ScrollingText.cpp */,
 				4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */,
@@ -2710,6 +2709,8 @@
 				4C7B53D820002CA400A52E21 /* TTF.cpp */,
 				4CB832AA1EFFB8D100B88761 /* ttf.h */,
 				4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */,
+				9338231C2430D31200F19647 /* Weather.cpp */,
+				9338231D2430D31300F19647 /* Weather.h */,
 				4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */,
 				4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */,
 			);
@@ -3489,6 +3490,7 @@
 				2ADE2F3122441905002598AF /* DiscordService.h in Headers */,
 				C67B28172002D67A00109C93 /* Viewport.h in Headers */,
 				939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */,
+				9338231F2430D31300F19647 /* Weather.h in Headers */,
 				9308DA04209908090079EE96 /* TileElement.h in Headers */,
 				C67B28152002D67A00109C93 /* Widget.h in Headers */,
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
@@ -4055,7 +4057,6 @@
 				C68878F120289B9B0084B384 /* FlyingRollerCoaster.cpp in Sources */,
 				C688792B20289B9B0084B384 /* MiniatureRailway.cpp in Sources */,
 				F76C85FD1EC4E88300FA49E2 /* NewDrawing.cpp in Sources */,
-				F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */,
 				C688785920289A0A0084B384 /* Banner.cpp in Sources */,
 				C68878EC20289B9B0084B384 /* AirPoweredVerticalCoaster.cpp in Sources */,
 				C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */,
@@ -4246,6 +4247,7 @@
 				C688792F20289B9B0084B384 /* DingySlide.cpp in Sources */,
 				C688787920289A780084B384 /* TrackData.cpp in Sources */,
 				C68878F020289B9B0084B384 /* CorkscrewRollerCoaster.cpp in Sources */,
+				9338231E2430D31300F19647 /* Weather.cpp in Sources */,
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
