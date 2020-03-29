@@ -656,6 +656,9 @@ bool track_block_get_previous_from_zero(
  */
 bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd)
 {
+    if (tileElement == nullptr)
+        return false;
+
     auto trackElement = tileElement->AsTrack();
     if (trackElement == nullptr)
         return false;
