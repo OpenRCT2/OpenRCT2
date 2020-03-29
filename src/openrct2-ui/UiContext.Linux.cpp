@@ -65,8 +65,8 @@ namespace OpenRCT2::Ui
             void* processHandle = dlopen(nullptr, RTLD_NOW);
             if (processHandle != nullptr)
             {
-                dummy* p = ((dummy*)processHandle)->ptr;
-                lmap* pl = (lmap*)p->ptr;
+                dummy* p = (static_cast<dummy*>(processHandle))->ptr;
+                lmap* pl = reinterpret_cast<lmap*>(p->ptr);
                 while (pl != nullptr)
                 {
                     if (strstr(pl->path, "gameoverlayrenderer.so") != nullptr)
@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui
                     }
                     else if (isalpha(c))
                     {
-                        filtersb << '[' << (char)tolower(c) << (char)toupper(c) << ']';
+                        filtersb << '[' << static_cast<char>(tolower(c)) << static_cast<char>(toupper(c)) << ']';
                     }
                     else
                     {
