@@ -851,7 +851,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
 
-    if (gPaintWideGroupAsGhost > -3)
+    if (gPaintWideGroupAsGhost > -3 && !tile_element->IsGhost())
     {
         auto extPathVector = map_get_extended_data_vector_at(session->MapPosition);
         ExtendedPathData* extPath = footpath_find_extended_data(const_cast<TileElement*>(tile_element), extPathVector);

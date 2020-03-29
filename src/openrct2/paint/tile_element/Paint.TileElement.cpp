@@ -31,7 +31,6 @@
 #include "Paint.Surface.h"
 
 #include <algorithm>
-#include <iostream>
 
 #ifdef __TESTPAINT__
 uint16_t testPaintVerticalTunnelHeight;

@@ -654,6 +654,8 @@ void map_update_path_wide_flags()
             footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
         }
 
+        //footpath_update_path_wide_extended({ primary, secondary }, WIDE_GROUP_N_SW, WIDE_GROUP_S_NE);
+
         // Next x, y tile
         primary += COORDS_XY_STEP;
         if (primary >= MAXIMUM_MAP_SIZE_BIG)
