@@ -116,8 +116,8 @@ STR_0530    :列車懸掛在鋼纜下並不斷於車站與車站之間遊走
 STR_0531    :一款列車會穿過螺旋及迴環的較小型雲霄飛車
 STR_0532    :
 STR_0533    :
-STR_0534    :自駕式, 並以氣油驅動的小型賽車(卡丁車)
-STR_0535    :以運木為形狀的小船穿梭於有水的軌道, 並會於下滑時濺濕遊客
+STR_0534    :乘客於瀝青路上駕駛小型賽車(卡丁車)競賽
+STR_0535    :小船穿梭於有水的軌道, 並會於下滑時濺濕遊客
 STR_0536    :圓形的小船穿梭於比較廣闊的水道, 於水道中被瀑布濺濕, 並有激流使乘客的緊張感大增
 STR_0537    :
 STR_0538    :
@@ -552,8 +552,8 @@ STR_1167    :不能在此升高水位...
 STR_1168    :選項
 STR_1169    :(無)
 STR_1170    :{STRING}
-STR_1171    :{RED}已關閉 - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}已關閉
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}建造道路及'輪候區'道路
 STR_1174    :橫額擋在路上
 STR_1175    :不能在斜路上建造此物件
@@ -1110,7 +1110,7 @@ STR_1726    :土地不供購買!
 STR_1727    :建造權不供購買!
 STR_1728    :不能在此購買建造權...
 STR_1729    :土地並非由樂園所擁有!
-STR_1730    :{RED}已關閉 - - 
+STR_1730    :{RED}已關閉
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :建造
 STR_1733    :模式
@@ -1131,8 +1131,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :不能改變此遊樂設施的遊玩時間限制...
 STR_1752    :{SMALLFONT}{BLACK}列出樂園內每個遊客
 STR_1753    :{SMALLFONT}{BLACK}列出樂園內遊客的總匯
-STR_1754    :{BLACK}{COMMA16}名遊客
-STR_1755    :{BLACK}{COMMA16}名遊客
+STR_1754    :{BLACK}{COMMA32}名遊客
+STR_1755    :{BLACK}{COMMA32}名遊客
 STR_1756    :{WINDOW_COLOUR_2}門票價格:
 STR_1757    :{WINDOW_COLOUR_2}可靠度: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}建造模式
@@ -1151,7 +1151,7 @@ STR_1770    :{SMALLFONT}{BLACK}完全搖擺的次數
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :每個遊樂設施只可建造一個即時照相區域
 STR_1774    :每個遊樂設施只可建造一個纜索坡道
-STR_1777    :{WINDOW_COLOUR_2}音樂
+STR_1777    :音樂
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊貓服裝
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 老虎服裝
@@ -1190,7 +1190,7 @@ STR_1813    :其他物件
 STR_1814    :動作
 STR_1815    :想法
 STR_1816    :{SMALLFONT}{BLACK}選擇遊客列表中要顯示的資訊類別
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}所有遊客
 STR_1819    :{WINDOW_COLOUR_2}所有遊客 (總匯)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID}的遊客
@@ -1219,9 +1219,9 @@ STR_1842    :{COMMA16}遊客最愛的遊樂設施
 STR_1843    :{COMMA16}遊客最愛的遊樂設施
 STR_1844    :{SMALLFONT}{BLACK}選擇要在遊樂設施/店面列表中顯示的資訊類別
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16}遊客
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}遊客
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}遊客
+STR_1846    :{COMMA32}遊客
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32}遊客
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32}遊客
 STR_1849    :{WINDOW_COLOUR_2}播放音樂
 STR_1850    :{SMALLFONT}{BLACK}選擇此遊樂設施播放音樂與否
 STR_1851    :{WINDOW_COLOUR_2}運作成本: {BLACK}每小時{CURRENCY2DP}
@@ -1579,7 +1579,7 @@ STR_2219    :{RED}{COMMA16}人已喪生於{STRINGID}的意外中
 STR_2220    :{WINDOW_COLOUR_2}樂園評價: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}樂園評價: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}園內遊客: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}園內遊客: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}現金: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}現金: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}樂園價值: {BLACK}{CURRENCY}
@@ -1926,7 +1926,7 @@ STR_2703    :每15分鐘
 STR_2704    :每30分鐘
 STR_2705    :每小時
 STR_2706    :從不
-STR_2707    :使用操作系統的對話框
+STR_2707    :使用操作系統的文件瀏覽器
 STR_2708    :{WINDOW_COLOUR_1}你確定要覆蓋存檔{STRINGID}?
 STR_2709    :覆蓋
 STR_2710    :請輸入存檔名稱:
@@ -1955,7 +1955,7 @@ STR_2739    :無
 STR_2740    :夢幻遊樂園 (RCT1)
 STR_2741    :模擬樂園 (RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data/css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data/css50.dat', 又或者請檢查"其他"選項中夢幻遊樂園(RCT1)的安裝路徑是否正確.
+STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data/css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data/css50.dat', 又或者請檢查"進階"選項中夢幻遊樂園(RCT1)的安裝路徑是否正確.
 STR_2749    :我的新劇情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移到所有物件至最頂部
@@ -1968,8 +1968,8 @@ STR_2756    :移除垃圾
 STR_2763    :???
 STR_2765    :添加超多遊客到訪
 STR_2766    :贏得此劇情
-STR_2767    :靜止氣候
-STR_2768    :不再靜止氣候
+STR_2767    :靜止天氣
+STR_2768    :不再靜止天氣
 STR_2769    :開放樂園
 STR_2770    :關閉樂園
 STR_2773    :視窗化
@@ -2063,7 +2063,7 @@ STR_2863    :音樂鳴謝列表
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) 無版權
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) 無版權
-STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (傳統樂曲)
+STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (傳統樂曲)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) 無版權
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (傳統樂曲)
 STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (傳統樂曲)
@@ -2096,7 +2096,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) © Chris Sawyer 
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) © Chris Sawyer 版權所有
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) © Chris Sawyer 版權所有
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) © Chris Sawyer 版權所有
-STR_2901    :{WINDOW_COLOUR_2}(音樂採樣承蒙Spectrasonics ”Liquid Grooves”)
+STR_2901    :{WINDOW_COLOUR_2}(音樂採樣承蒙Spectrasonics “Liquid Grooves”)
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer 版權所有
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) © Chris Sawyer 版權所有
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) © Chris Sawyer 版權所有
@@ -2113,7 +2113,7 @@ STR_2977    :員工命名
 STR_2978    :請輸入這位員工的新姓名:
 STR_2979    :不能命名這位員工...
 STR_2980    :遊戲中太多橫額
-STR_2981    :{RED}閒人止步 - - 
+STR_2981    :{RED}閒人止步
 STR_2982    :橫額文字
 STR_2983    :請輸入橫額中的文字:
 STR_2984    :不能設定橫額中的文字...
@@ -2304,7 +2304,6 @@ STR_3190    :額外的道路物件
 STR_3191    :景物組別
 STR_3192    :樂園入口
 STR_3193    :水塘
-STR_3194    :劇情簡介
 STR_3195    :研發列表
 STR_3196    :{WINDOW_COLOUR_2}研發組別: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}遊戲開始時已研發好的項目:
@@ -2496,11 +2495,6 @@ STR_3390    :選取了太多物件
 STR_3437    :{SMALLFONT}{BLACK}在地形中清理某些大範圍內的景物
 STR_3438    :無法移除這裡所有的景物...
 STR_3439    :移除景物
-STR_3440    :頁1
-STR_3441    :頁2
-STR_3442    :頁3
-STR_3443    :頁4
-STR_3444    :頁5
 STR_3445    :設置巡邏區域
 STR_3446    :取得巡邏區域
 
@@ -2846,7 +2840,7 @@ STR_5461    :設置遊客的屬性
 STR_5462    :{CURRENCY}
 STR_5463    :目標: 盡情玩吧!
 STR_5464    :一般
-STR_5465    :氣候
+STR_5465    :天氣
 STR_5466    :員工
 STR_5467    :ALT + 
 STR_5468    :最近消息
@@ -3110,7 +3104,7 @@ STR_5762    :人民幣 (CN¥)
 STR_5763    :所有檔案
 STR_5764    :不正確的遊樂設施類別
 STR_5765    :無法修改不正確類別的遊樂設施
-STR_5766    :<available string id>
+STR_5766    :匈牙利福林 (Ft)
 STR_5767    :收入
 STR_5768    :總乘客數
 STR_5769    :總利潤
@@ -3471,8 +3465,8 @@ STR_6125    :物件類別
 STR_6126    :未知類別
 STR_6127    :檔案: {STRING}
 STR_6128    :因為文件內需要的物件可能已損壞或遺失, 此樂園無法載入. 以下是那些物件的列表:
-STR_6129    :複製選中的物件到剪貼簿
-STR_6130    :複製整個清單到到剪貼簿
+STR_6129    :複製
+STR_6130    :複製所有
 STR_6131    :物件來源
 STR_6132    :忽略研發狀態
 STR_6133    :{SMALLFONT}{BLACK}允許使用尚未研發的遊樂設施及景物
@@ -3525,14 +3519,14 @@ STR_6179    :選擇
 STR_6180    :沒有選擇劇情
 STR_6181    :{RED}沒有此劇情
 STR_6182    :追蹤{MOVE_X}{87}{STRING}
-STR_6183    :Follow{MOVE_X}{87}No sprite selected
-STR_6184    :Follow Sprite
-STR_6185    :Select Sprite
-STR_6186    :No sprite selected
+STR_6183    :追蹤{MOVE_X}{87}無選取中的元素
+STR_6184    :追蹤元素
+STR_6185    :選取元素
+STR_6186    :無選取中的元素
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :嘔吐物
 STR_6189    :鴨子
-STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
+STR_6190    :{SMALLFONT}{BLACK}你不能於主標題畫面中選取元素.
 STR_6191    :表面
 STR_6192    :牆壁
 STR_6193    :{COMMA16}位遊客
@@ -3544,7 +3538,7 @@ STR_6198    :{BLACK}日:
 STR_6199    :設定日期
 STR_6200    :重置日期
 STR_6201    :{MONTH}
-STR_6202    :啟用虛擬樓層
+STR_6202    :虛擬樓層樣式:
 STR_6203    :{SMALLFONT}{BLACK}啟用後, 按著Ctrl或Shift將會渲染一面虛擬樓層以便垂直放置元素.
 STR_6215    :建造
 STR_6216    :營運
@@ -3588,7 +3582,127 @@ STR_6239    :垂直切割
 STR_6240    :縱橫切割
 STR_6241    :選擇範圍
 STR_6242    :清除選擇
+STR_6243    :{SMALLFONT}{BLACK}翻新選擇中的遊樂設施,{NEWLINE}讓它重置成新的遊樂設施一樣
+STR_6244    :不能翻新遊樂設施
+STR_6245    :{SMALLFONT}{BLACK}遊樂設施不需要翻新
+STR_6246    :翻新
+STR_6247    :翻新遊樂設施
+STR_6248    :{WINDOW_COLOUR_1}你確定要以{CURRENCY}翻新{STRINGID}嗎?
+STR_6249    :{WINDOW_COLOUR_1}你確定要翻新{STRINGID}嗎?
+STR_6250    :{WINDOW_COLOUR_1}你確定要完整移除{STRINGID}並賺取{CURRENCY}嗎?
+STR_6251    :遊樂設施依然在開啟中
+STR_6252    :Twitch API地址
+STR_6253    :{SMALLFONT}{BLACK}輸入Twitch整合API的地址. 啟用Twitch整合功能時必需填妥.
+STR_6254    :Twitch整合API地址:
+STR_6255    :非法的地址
+STR_6256    :渲染效果
+STR_6257    :玻璃 (半透明)
+STR_6258    :清澈 (透明)
+STR_6259    :禁用
+STR_6260    :顯示被阻擋的區域
+STR_6261    :顯示闊道路
+STR_6262    :主音量
+STR_6263    :{SMALLFONT}{BLACK}開關所有聲音效果
+STR_6264    :優先使用操作系統的文件瀏覽器
+STR_6265    :{SMALLFONT}{BLACK}啟用後, OpenRCT2將使用操作系統而非自帶的的文件瀏覽器.
+STR_6266    :開啟自訂物件所在的文件夾
+STR_6267    :開啟區域檢查器
+STR_6268    :前往下一個畫面
+STR_6269    :非法的氣候ID
+STR_6270    :地型表面
+STR_6271    :地型邊緣
+STR_6272    :車站
+STR_6273    :音樂
+STR_6274    :無法設置色彩選配...
+STR_6275    :{WINDOW_COLOUR_2}車站風格:
+STR_6276    :{RED}有遊客於{STRINGID}中卡住, 可能因為使用了非法的遊樂設施種類或運作模式.
+STR_6277    :{WINDOW_COLOUR_2}車站索引: {BLACK}{COMMA16}
+STR_6278    :自動存檔數量
+STR_6279    :{SMALLFONT}{BLACK}設置該保留的自動存檔數量
+STR_6280    :{SMALLFONT}{BLACK}聊天
+STR_6281    :{SMALLFONT}{BLACK}於工具列顯示單獨的聊天按鈕
+STR_6282    :聊天
+STR_6283    :聊天功能暫時未能使用. 請問你已連接到伺服器了嗎?
+STR_6284    :網絡
+STR_6285    :網絡資訊
+STR_6286    :目前接收
+STR_6287    :目前傳送
+STR_6288    :已接收
+STR_6289    :已傳送
+STR_6290    :傳輸協議
+STR_6291    :命令
+STR_6292    :劇情
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/秒
+STR_6299    :下載所有
+STR_6300    :{SMALLFONT}{BLACK}下載所有於網絡上可供下載的缺失物件.
+STR_6301    :{SMALLFONT}{BLACK}複製所有選中的物件名稱到剪貼簿.
+STR_6302    :{SMALLFONT}{BLACK}複製整個缺失物件的列表到剪貼簿.
+STR_6303    :下載第({COMMA16} / {COMMA16})項物件: [{STRING}]
+STR_6304    :開啟景物選取器
+STR_6305    :多執行緒
+STR_6306    :{SMALLFONT}{BLACK}啟用多執行緒渲染的實驗選項, 可能令到遊戲不穩定.
+STR_6307    :色彩選配: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :重新連接
+STR_6310    :{WINDOW_COLOUR_2}當前位置: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}下一位置: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(surface)
+STR_6313    :(斜度{INT32})
+STR_6314    :{WINDOW_COLOUR_2}目的地: {BLACK}{INT32}, {INT32} 容忍度 {INT32}
+STR_6315    :{WINDOW_COLOUR_2}尋路目標: {BLACK}{INT32}, {INT32}, {INT32} 方向 {INT32}
+STR_6316    :{WINDOW_COLOUR_2}尋路歷史:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} 方向 {INT32}
+STR_6318    :檢測到網絡不同步.{NEWLINE}記錄檔: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}關閉區域煞車
+STR_6320    :{WINDOW_COLOUR_2}永不損壞
+STR_6321    :{WINDOW_COLOUR_2}附加物品已損壞
+STR_6322    :{WINDOW_COLOUR_2}元素ID: {BLACK}{INT32}
+STR_6323    :模擬運作中
+STR_6324    :模擬
+STR_6325    :{SMALLFONT}{BLACK}模擬遊樂設施的運作
+STR_6326    :無法模擬{POP16}{POP16}{POP16}{STRINGID}的運作...
+STR_6327    :巨型截圖時使用透明背景
+STR_6328    :{SMALLFONT}{BLACK}當啟用此選項時, 黑色背景將不會套用於巨型截圖上.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :從{STRING}下載[{STRING}]中 ({COMMA16} / {COMMA16})
+STR_6331    :製造鴨子
+STR_6332    :移除鴨子
+STR_6333    :增加縮放比例
+STR_6334    :減少縮放比例
+STR_6335    :區域檢查器: 插入已損壞的元素
+STR_6336    :區域檢查器: 複製元素
+STR_6337    :區域檢查器: 貼上元素
+STR_6338    :區域檢查器: 刪除元素
+STR_6339    :區域檢查器: 向上移動元素
+STR_6340    :區域檢查器: 向下移動元素
+STR_6341    :區域檢查器: 增加X軸坐標
+STR_6342    :區域檢查器: 減少X軸坐標
+STR_6343    :區域檢查器: 增加Y軸坐標
+STR_6344    :區域檢查器: 減少Y軸坐標
+STR_6345    :區域檢查器: 增加元素高度
+STR_6346    :區域檢查器: 減少元素高度
+STR_6347    :不能在路軌交叉路口上放置新的道路!
+STR_6348    :必須先行移除交叉路口!
+STR_6349    :隨機主選單動畫
+STR_6350    :分散放置
+STR_6351    :景物分散放置工具
+STR_6352    :密度
+STR_6353    :{SMALLFONT}{BLACK}低密度
+STR_6354    :{SMALLFONT}{BLACK}中密度
+STR_6355    :{SMALLFONT}{BLACK}高密度
+STR_6356    :{SMALLFONT}{BLACK}如果樂園中有水域存在, 則會生成鴨子
+STR_6357    :{SMALLFONT}{BLACK}移除所有於地圖上的鴨子
+STR_6358    :第{UINT16}頁
+STR_6359    :{POP16}{POP16}第{UINT16}頁
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :啟用遊樂設施的燈光效果 (實驗性質)
+STR_6362    :{SMALLFONT}{BLACK}當啟用此選項時, 所有在擁有軌道的遊樂設施中的車輛將會於晚中被照亮.
+STR_6363    :複製文字到剪貼簿
 
 #############
 # Scenarios #
@@ -4325,4 +4439,5 @@ STR_DTLS    :您的土地上將舉辦大型的年度音樂嘉年華。請建立�
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :搖滾-搖滾
 STR_PARK    :搖滾復興
-STR_DTLS    :這個過時的主題樂園曾經有過輝煌的日子。請協助所有者將讓這個主題樂園再次搖滾起來,讓這個地方成為成ꗿªº企業。
+STR_DTLS    :這個過時的主題樂園曾經有過輝煌的日子。請協助所有者將讓這個主題樂園再次搖滾起來,讓這個地方成為成功的企業。
+

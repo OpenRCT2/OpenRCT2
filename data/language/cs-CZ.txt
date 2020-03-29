@@ -1220,7 +1220,7 @@ STR_1842    :Nejoblíbenější: {COMMA16} návštěvníka
 STR_1843    :Nejoblíbenější: {COMMA16} návštěvníků
 STR_1844    :{SMALLFONT}{BLACK}Vyberte informaci k zobrazení v seznamu atrakcí
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} návštěvníků
+STR_1846    :{COMMA32} návštěvníků
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} návštěvníků
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} návštěvníků
 STR_1849    :{WINDOW_COLOUR_2}Hrát hudbu

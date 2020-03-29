@@ -1122,8 +1122,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Nem változtatható meg a játék időkorlátja...
 STR_1752    :{SMALLFONT}{BLACK}A park egyedi vendégeinek listázása
 STR_1753    :{SMALLFONT}{BLACK}A park vendégeinek összegző listázása
-STR_1754    :{BLACK}{COMMA16} vendég
-STR_1755    :{BLACK}{COMMA16} vendég
+STR_1754    :{BLACK}{COMMA32} vendég
+STR_1755    :{BLACK}{COMMA32} vendég
 STR_1756    :{WINDOW_COLOUR_2}Belépési díj:
 STR_1757    :{WINDOW_COLOUR_2}Megbízhatóság: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Építő mód
@@ -1181,7 +1181,7 @@ STR_1813    :Egyéb objektumok
 STR_1814    :Tevékenységek
 STR_1815    :Gondolatok
 STR_1816    :{SMALLFONT}{BLACK}A vendéglistában megjelenítendő információtípus kiválasztása
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Minden vendég
 STR_1819    :{WINDOW_COLOUR_2}Minden vendég (összegezve)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID}
@@ -1210,9 +1210,9 @@ STR_1842    :Kedvence: {COMMA16} vendégnek
 STR_1843    :Kedvence: {COMMA16} vendégnek
 STR_1844    :{SMALLFONT}{BLACK}A játékok/épületek listájában megjelenített információtípus kiválasztása
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} vendég
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} vendég
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} vendég
+STR_1846    :{COMMA32} vendég
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} vendég
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} vendég
 STR_1849    :{WINDOW_COLOUR_2}Zene játszása
 STR_1850    :{SMALLFONT}{BLACK}Válaszd ki, hogy legyen-e zene ezen a játékon
 STR_1851    :{WINDOW_COLOUR_2}Üzemeltetési költség: {BLACK}{CURRENCY2DP} óránként
@@ -1568,7 +1568,7 @@ STR_2219    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_2220    :{WINDOW_COLOUR_2}Park értékelése: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park értékelése: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Vendégek a parkban: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Vendégek a parkban: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Pénz: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Pénz: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park értéke: {BLACK}{CURRENCY}
