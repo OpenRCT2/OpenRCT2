@@ -34,7 +34,7 @@ public:
 
     std::string GetDirectoryPath(DIRBASE base) const override
     {
-        return _basePath[(size_t)base];
+        return _basePath[static_cast<size_t>(base)];
     }
 
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
@@ -46,12 +46,12 @@ public:
             default:
             case DIRBASE::RCT1:
             case DIRBASE::RCT2:
-                directoryName = DirectoryNamesRCT2[(size_t)did];
+                directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
             case DIRBASE::CONFIG:
-                directoryName = DirectoryNamesOpenRCT2[(size_t)did];
+                directoryName = DirectoryNamesOpenRCT2[static_cast<size_t>(did)];
                 break;
         }
 
@@ -62,13 +62,13 @@ public:
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
-        auto fileName = FileNames[(size_t)pathid];
+        auto fileName = FileNames[static_cast<size_t>(pathid)];
         return Path::Combine(basePath, fileName);
     }
 
     void SetBasePath(DIRBASE base, const std::string& path) override
     {
-        _basePath[(size_t)base] = path;
+        _basePath[static_cast<size_t>(base)] = path;
     }
 
 private:
@@ -152,7 +152,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     if (basePaths[(size_t)DIRBASE::DOCUMENTATION].empty())
     {
-        basePaths[(size_t)DIRBASE::DOCUMENTATION] = basePaths[(size_t)DIRBASE::OPENRCT2];
+        basePaths[(size_t)DIRBASE::DOCUMENTATION] = basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)];
     }
 
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);

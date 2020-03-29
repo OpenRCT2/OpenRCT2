@@ -88,8 +88,8 @@ namespace
 
 #    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #        define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
-#        define LOBYTE(w) ((uint8_t)(w))
-#        define HIBYTE(w) ((uint8_t)(((uint16_t)(w) >> 8) & 0xFF))
+#        define LOBYTE(w) (static_cast<uint8_t>(w))
+#        define HIBYTE(w) (static_cast<uint8_t>((static_cast<uint16_t>(w) >> 8) & 0xFF))
 #    endif // __BYTE_ORDER__
 
 #    ifndef RCT2_ENDIANESS
@@ -139,8 +139,8 @@ using money64 = fixed64_1dp;
 #define MONEY(whole, fraction) ((whole)*10 + ((fraction) / 10))
 
 #define MONEY_FREE MONEY(0, 00)
-#define MONEY16_UNDEFINED (money16)(uint16_t) 0xFFFF
-#define MONEY32_UNDEFINED ((money32)0x80000000)
+#define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
+#define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;

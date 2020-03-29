@@ -102,7 +102,7 @@ namespace Editor
         tool_cancel();
         auto intent = Intent(WC_LOADSAVE);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-        intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)ConvertSaveToScenarioCallback);
+        intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
         context_open_intent(&intent);
     }
 
@@ -347,7 +347,8 @@ namespace Editor
 
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gGuestInitialCash = std::clamp(gGuestInitialCash, (money16)MONEY(10, 00), (money16)MAX_ENTRANCE_FEE);
+            gGuestInitialCash = std::clamp(
+                gGuestInitialCash, static_cast<money16>(MONEY(10, 00)), static_cast<money16>(MAX_ENTRANCE_FEE));
 
             gInitialCash = std::min(gInitialCash, 100000);
             finance_reset_cash_to_initial();

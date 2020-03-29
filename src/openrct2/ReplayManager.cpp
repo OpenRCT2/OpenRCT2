@@ -265,7 +265,7 @@ namespace OpenRCT2
 
             auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
             compress2(
-                compressBuf.get(), &compressLength, (unsigned char*)stream.GetData(), stream.GetLength(),
+                compressBuf.get(), &compressLength, static_cast<const unsigned char*>(stream.GetData()), stream.GetLength(),
                 ReplayCompressionLevel);
             file.data.Write(compressBuf.get(), compressLength);
 
@@ -328,8 +328,8 @@ namespace OpenRCT2
                 info.Ticks = gCurrentTicks - data->tickStart;
             else if (_mode == ReplayMode::PLAYING)
                 info.Ticks = data->tickEnd - data->tickStart;
-            info.NumCommands = (uint32_t)data->commands.size();
-            info.NumChecksums = (uint32_t)data->checksums.size();
+            info.NumCommands = static_cast<uint32_t>(data->commands.size());
+            info.NumChecksums = static_cast<uint32_t>(data->checksums.size());
 
             return true;
         }
@@ -505,7 +505,8 @@ namespace OpenRCT2
                 auto buff = std::make_unique<unsigned char[]>(recFile.uncompressedSize);
                 unsigned long outSize = recFile.uncompressedSize;
                 uncompress(
-                    (unsigned char*)buff.get(), &outSize, (unsigned char*)recFile.data.GetData(), recFile.data.GetLength());
+                    static_cast<unsigned char*>(buff.get()), &outSize,
+                    static_cast<const unsigned char*>(recFile.data.GetData()), recFile.data.GetLength());
                 if (outSize != recFile.uncompressedSize)
                 {
                     return false;
@@ -657,7 +658,7 @@ namespace OpenRCT2
             serialiser << data.tickStart;
             serialiser << data.tickEnd;
 
-            uint32_t countCommands = (uint32_t)data.commands.size();
+            uint32_t countCommands = static_cast<uint32_t>(data.commands.size());
             serialiser << countCommands;
 
             if (serialiser.IsSaving())
@@ -678,7 +679,7 @@ namespace OpenRCT2
                 }
             }
 
-            uint32_t countChecksums = (uint32_t)data.checksums.size();
+            uint32_t countChecksums = static_cast<uint32_t>(data.checksums.size());
             serialiser << countChecksums;
 
             if (serialiser.IsLoading())

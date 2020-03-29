@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2020 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #include "GameStateSnapshots.h"
 
 #include "core/CircularBuffer.h"
@@ -40,9 +49,9 @@ struct GameStateSnapshot_t
             {
                 if (sprites[i].generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
                     continue;
-                indexTable.push_back((uint32_t)i);
+                indexTable.push_back(static_cast<uint32_t>(i));
             }
-            numSavedSprites = (uint32_t)indexTable.size();
+            numSavedSprites = static_cast<uint32_t>(indexTable.size());
         }
 
         ds << numSavedSprites;
@@ -125,7 +134,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
     {
         snapshot.SerialiseSprites(get_sprite(0), MAX_SPRITES, true);
 
-        // log_info("Snapshot size: %u bytes", (uint32_t)snapshot.storedSprites.GetLength());
+        // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
 
     virtual const GameStateSnapshot_t* GetLinkedSnapshot(uint32_t tick) const override final
@@ -171,7 +180,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
         std::memcpy(&valB, &spriteCmp.field, sizeof(struc::field));                                                            \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(                                                                                            \
-            GameStateSpriteChange_t::Diff_t{ (size_t)offset, sizeof(struc::field), #struc, #field, valA, valB });              \
+            GameStateSpriteChange_t::Diff_t{ static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB }); \
     }
 
     void CompareSpriteDataCommon(
@@ -416,7 +425,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
         std::vector<rct_sprite> spritesBase = BuildSpriteList(const_cast<GameStateSnapshot_t&>(base));
         std::vector<rct_sprite> spritesCmp = BuildSpriteList(const_cast<GameStateSnapshot_t&>(cmp));
 
-        for (uint32_t i = 0; i < (uint32_t)spritesBase.size(); i++)
+        for (uint32_t i = 0; i < static_cast<uint32_t>(spritesBase.size()); i++)
         {
             GameStateSpriteChange_t changeData;
             changeData.spriteIndex = i;
@@ -549,8 +558,8 @@ struct GameStateSnapshots : public IGameStateSnapshots
                     snprintf(
                         tempBuffer, sizeof(tempBuffer),
                         "  %s::%s, len = %u, offset = %u, left = 0x%.16llX, right = 0x%.16llX\n", diff.structname,
-                        diff.fieldname, (uint32_t)diff.length, (uint32_t)diff.offset, (unsigned long long)diff.valueA,
-                        (unsigned long long)diff.valueB);
+                        diff.fieldname, static_cast<uint32_t>(diff.length), static_cast<uint32_t>(diff.offset),
+                        static_cast<unsigned long long>(diff.valueA), static_cast<unsigned long long>(diff.valueB));
                     outputBuffer += tempBuffer;
                 }
             }
