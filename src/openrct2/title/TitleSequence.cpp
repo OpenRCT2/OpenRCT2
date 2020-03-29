@@ -88,7 +88,7 @@ TitleSequence* LoadTitleSequence(const utf8* path)
         isZip = false;
     }
 
-    auto commands = LegacyScriptRead((utf8*)script.data(), script.size(), saves);
+    auto commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), saves);
 
     TitleSequence* seq = CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(path);
@@ -174,7 +174,7 @@ void TitleSequenceCloseParkHandle(TitleSequenceParkHandle* handle)
     if (handle != nullptr)
     {
         Memory::Free(handle->HintPath);
-        delete ((IStream*)handle->Stream);
+        delete (static_cast<IStream*>(handle->Stream));
         Memory::Free(handle);
     }
 }
@@ -408,7 +408,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
                 {
                     if (String::Equals(part1, saves[i], true))
                     {
-                        command.SaveIndex = (uint8_t)i;
+                        command.SaveIndex = static_cast<uint8_t>(i);
                         break;
                     }
                 }
@@ -544,7 +544,7 @@ static std::vector<uint8_t> ReadScriptFile(const utf8* path)
     try
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        auto size = (size_t)fs.GetLength();
+        auto size = static_cast<size_t>(fs.GetLength());
         result.resize(size);
         fs.Read(result.data(), size);
     }
