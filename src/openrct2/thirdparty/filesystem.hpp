@@ -45,6 +45,8 @@
 #define GHC_OS_MACOS
 #elif defined(__linux__)
 #define GHC_OS_LINUX
+#elif defined(__FreeBSD__)
+#define GHC_OS_FREEBSD
 #if defined(__ANDROID__)
 #define GHC_OS_ANDROID
 #endif
