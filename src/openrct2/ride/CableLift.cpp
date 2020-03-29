@@ -35,7 +35,7 @@ Vehicle* cable_lift_segment_create(
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
     {
-        move_sprite_to_list(current, SPRITE_LIST_VEHICLE_HEAD);
+        move_sprite_to_list(current, SPRITE_LIST_TRAIN_HEAD);
         ride.cable_lift = current->sprite_index;
     }
     current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;

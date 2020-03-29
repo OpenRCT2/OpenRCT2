@@ -855,7 +855,7 @@ static bool sprite_should_tween(rct_sprite* sprite)
     switch (sprite->generic.linked_list_index)
     {
         case SPRITE_LIST_PEEP:
-        case SPRITE_LIST_VEHICLE_HEAD:
+        case SPRITE_LIST_TRAIN_HEAD:
         case SPRITE_LIST_VEHICLE:
             return true;
     }
