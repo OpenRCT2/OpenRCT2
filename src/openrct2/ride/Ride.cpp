@@ -179,7 +179,7 @@ ride_id_t GetNextFreeRideId()
     {
         return RIDE_ID_NULL;
     }
-    return (ride_id_t)result;
+    return static_cast<ride_id_t>(result);
 }
 
 Ride* GetOrAllocateRide(ride_id_t index)
@@ -216,7 +216,7 @@ rct_ride_entry* get_ride_entry(int32_t index)
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_RIDE, index);
     if (obj != nullptr)
     {
-        result = (rct_ride_entry*)obj->GetLegacyData();
+        result = static_cast<rct_ride_entry*>(obj->GetLegacyData());
     }
 
     return result;
@@ -224,7 +224,7 @@ rct_ride_entry* get_ride_entry(int32_t index)
 
 std::string_view get_ride_entry_name(size_t index)
 {
-    if (index >= (size_t)object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= static_cast<size_t>(object_entry_group_counts[OBJECT_TYPE_RIDE]))
     {
         log_error("invalid index %d for ride type", index);
         return {};
@@ -245,7 +245,7 @@ rct_ride_entry* Ride::GetRideEntry() const
 
 int32_t ride_get_count()
 {
-    return (int32_t)GetRideManager().size();
+    return static_cast<int32_t>(GetRideManager().size());
 }
 
 int32_t Ride::GetTotalQueueLength() const
@@ -263,7 +263,7 @@ int32_t Ride::GetMaxQueueTime() const
     for (i = 0; i < MAX_STATIONS; i++)
         if (!ride_get_entrance_location(this, i).isNull())
             queueTime = std::max(queueTime, stations[i].QueueTime);
-    return (int32_t)queueTime;
+    return static_cast<int32_t>(queueTime);
 }
 
 Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
@@ -753,7 +753,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
 
 void Ride::FormatStatusTo(void* argsV) const
 {
-    auto args = (uint8_t*)argsV;
+    auto args = static_cast<uint8_t*>(argsV);
 
     if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
@@ -1140,7 +1140,7 @@ int32_t sub_6C683D(
     uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
-    auto location = CoordsXYZD{ *x, *y, *z, (Direction)direction };
+    auto location = CoordsXYZD{ *x, *y, *z, static_cast<Direction>(direction) };
     auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0);
     if (trackElement == nullptr)
     {
@@ -1180,14 +1180,14 @@ int32_t sub_6C683D(
         map_invalidate_tile_full(cur);
 
         trackElement = map_get_track_element_at_of_type_seq(
-            { cur.x, cur.y, cur_z, (Direction)direction }, type, trackBlock[i].index);
+            { cur.x, cur.y, cur_z, static_cast<Direction>(direction) }, type, trackBlock[i].index);
         if (trackElement == nullptr)
         {
             return 1;
         }
         if (i == 0 && output_element != nullptr)
         {
-            *output_element = (TileElement*)trackElement;
+            *output_element = reinterpret_cast<TileElement*>(trackElement);
         }
         if (flags & (1 << 0))
         {
@@ -1199,11 +1199,11 @@ int32_t sub_6C683D(
         }
         if (flags & (1 << 2))
         {
-            trackElement->SetColourScheme((uint8_t)(extra_params & 0xFF));
+            trackElement->SetColourScheme(static_cast<uint8_t>(extra_params & 0xFF));
         }
         if (flags & (1 << 5))
         {
-            trackElement->SetSeatRotation((uint8_t)(extra_params & 0xFF));
+            trackElement->SetSeatRotation(static_cast<uint8_t>(extra_params & 0xFF));
         }
         if (flags & (1 << 3))
         {
@@ -2018,7 +2018,7 @@ void Ride::Update()
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
         if (upkeep_cost != MONEY16_UNDEFINED)
-            profit = (income_per_hour - ((money32)upkeep_cost * 16));
+            profit = (income_per_hour - (static_cast<money32>(upkeep_cost * 16)));
     }
 
     // Ride specific updates
@@ -2031,7 +2031,7 @@ void Ride::Update()
 
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-        if (((gCurrentTicks >> 1) & 255) == (uint32_t)id)
+        if (((gCurrentTicks >> 1) & 255) == static_cast<uint32_t>(id))
             ride_breakdown_status_update(this);
 
     ride_inspection_update(this);
@@ -2305,7 +2305,7 @@ static void ride_breakdown_update(Ride* ride)
 
     // Calculate breakdown probability?
     int32_t unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
-    ride->reliability = (uint16_t)std::max(0, (ride->reliability - unreliabilityAccumulator));
+    ride->reliability = static_cast<uint16_t>(std::max(0, (ride->reliability - unreliabilityAccumulator)));
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     // Random probability of a breakdown. Roughly this is 1 in
@@ -2314,7 +2314,8 @@ static void ride_breakdown_update(Ride* ride)
     //
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
-    if ((ride->reliability == 0 || (int32_t)(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability)
+    if ((ride->reliability == 0
+         || static_cast<int32_t>(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability)
         && !gCheatsDisableAllBreakdowns)
     {
         int32_t breakdownReason = ride_get_new_breakdown_problem(ride);
@@ -3116,7 +3117,7 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
     else
     {
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
-        uint32_t count = std::min(presetList->count, (uint8_t)32);
+        uint32_t count = std::min(presetList->count, static_cast<uint8_t>(32));
         for (uint32_t i = 0; i < count; i++)
         {
             vehicle_colour* preset = &presetList->list[i];
@@ -3528,7 +3529,7 @@ int32_t ride_music_params_update(
         if (pany2 > 0)
         {
             pany2 = -((pany2 / 4) - 1024) / 4;
-            vol1 = (uint8_t)pany2;
+            vol1 = static_cast<uint8_t>(pany2);
             if (pany2 >= 256)
             {
                 vol1 = 255;
@@ -3547,7 +3548,7 @@ int32_t ride_music_params_update(
         if (panx2 > 0)
         {
             panx2 = -((panx2 / 4) - 1024) / 4;
-            vol2 = (uint8_t)panx2;
+            vol2 = static_cast<uint8_t>(panx2);
             if (panx2 >= 256)
             {
                 vol2 = 255;
@@ -3565,7 +3566,7 @@ int32_t ride_music_params_update(
         {
             vol1 = vol1 - (gVolumeAdjustZoom * 3);
         }
-        int32_t v32 = -(((uint8_t)(-vol1 - 1) * (uint8_t)(-vol1 - 1)) / 16) - 700;
+        int32_t v32 = -((static_cast<uint8_t>(-vol1 - 1) * static_cast<uint8_t>(-vol1 - 1)) / 16) - 700;
         if (vol1 && v32 >= -4000)
         {
             if (pan_x > 10000)
@@ -3597,7 +3598,7 @@ int32_t ride_music_params_update(
                 *tuneId = 0xFF;
                 return 0;
             }
-            a1 = (uint32_t)Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
+            a1 = static_cast<uint32_t>(Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel));
 
             return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
         }
@@ -5930,7 +5931,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
     uint8_t bitmap[200][200] = { 0 };
 
     rct_drawpixelinfo dpi = {
-        /*.bits = */ (uint8_t*)bitmap,
+        /*.bits = */ reinterpret_cast<uint8_t*>(bitmap),
         /*.x = */ -100,
         /*.y = */ -100,
         /*.width = */ 200,
@@ -6656,7 +6657,7 @@ void Ride::UpdateMaxVehicles()
             }
         }
         int32_t newCarsPerTrain = std::max(proposed_num_cars_per_train, rideEntry->min_cars_in_train);
-        maxCarsPerTrain = std::max(maxCarsPerTrain, (int32_t)rideEntry->min_cars_in_train);
+        maxCarsPerTrain = std::max(maxCarsPerTrain, static_cast<int32_t>(rideEntry->min_cars_in_train));
         if (!gCheatsDisableTrainLengthLimit)
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
@@ -6734,7 +6735,7 @@ void Ride::UpdateMaxVehicles()
         }
         max_trains = maxNumTrains;
 
-        numCarsPerTrain = std::min(proposed_num_cars_per_train, (uint8_t)newCarsPerTrain);
+        numCarsPerTrain = std::min(proposed_num_cars_per_train, static_cast<uint8_t>(newCarsPerTrain));
     }
     else
     {
@@ -6748,7 +6749,7 @@ void Ride::UpdateMaxVehicles()
     {
         maxNumTrains = 31;
     }
-    numVehicles = std::min(proposed_num_vehicles, (uint8_t)maxNumTrains);
+    numVehicles = std::min(proposed_num_vehicles, static_cast<uint8_t>(maxNumTrains));
 
     // Refresh new current num vehicles / num cars per vehicle
     if (numVehicles != num_vehicles || numCarsPerTrain != num_cars_per_train)
@@ -7561,7 +7562,7 @@ void determine_ride_entrance_and_exit_locations()
                 }
                 else
                 {
-                    ride.stations[stationIndex].Entrance.direction = (uint8_t)entranceElement->GetDirection();
+                    ride.stations[stationIndex].Entrance.direction = static_cast<uint8_t>(entranceElement->GetDirection());
                 }
             }
 
@@ -7576,7 +7577,7 @@ void determine_ride_entrance_and_exit_locations()
                 }
                 else
                 {
-                    ride.stations[stationIndex].Exit.direction = (uint8_t)entranceElement->GetDirection();
+                    ride.stations[stationIndex].Exit.direction = static_cast<uint8_t>(entranceElement->GetDirection());
                 }
             }
 
@@ -7631,7 +7632,7 @@ void determine_ride_entrance_and_exit_locations()
                                     x,
                                     y,
                                     entranceElement->base_height,
-                                    (uint8_t)entranceElement->GetDirection(),
+                                    static_cast<uint8_t>(entranceElement->GetDirection()),
                                 };
                                 ride_set_entrance_location(&ride, stationIndex, newEntranceLoc);
                                 alreadyFoundEntrance = true;
@@ -7653,7 +7654,8 @@ void determine_ride_entrance_and_exit_locations()
                                 // Found our exit
                                 ride_set_exit_location(
                                     &ride, stationIndex,
-                                    { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
+                                    { x, y, entranceElement->base_height,
+                                      static_cast<uint8_t>(entranceElement->GetDirection()) });
                                 alreadyFoundExit = true;
 
                                 log_verbose(
@@ -7705,7 +7707,7 @@ std::string Ride::GetName() const
 
 size_t Ride::FormatNameTo(void* argsV) const
 {
-    auto args = (uint8_t*)argsV;
+    auto args = static_cast<uint8_t*>(argsV);
     if (!custom_name.empty())
     {
         auto str = custom_name.c_str();

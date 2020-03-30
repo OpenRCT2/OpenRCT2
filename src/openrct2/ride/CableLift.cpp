@@ -302,7 +302,7 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
         uint16_t trackProgress = vehicle->track_progress - 1;
         const rct_vehicle_info* moveInfo;
 
-        if ((int16_t)trackProgress == -1)
+        if (static_cast<int16_t>(trackProgress) == -1)
         {
             uint8_t trackType = vehicle->track_type >> 2;
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;

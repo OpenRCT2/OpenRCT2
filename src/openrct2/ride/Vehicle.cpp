@@ -978,7 +978,7 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
 
     frequency += 11025;
     frequency += 16 * sound_vector_factor;
-    param.frequency = (uint16_t)frequency;
+    param.frequency = static_cast<uint16_t>(frequency);
     param.id = sprite_index;
     param.volume = 0;
 
@@ -1063,16 +1063,16 @@ static uint8_t vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params* so
     uint8_t vol2 = 0xFF;
 
     int16_t pan_y = std::abs(sound_params->pan_y);
-    pan_y = std::min((int16_t)0xFFF, pan_y);
+    pan_y = std::min(static_cast<int16_t>(0xFFF), pan_y);
     pan_y -= 0x800;
     if (pan_y > 0)
     {
         pan_y = (0x400 - pan_y) / 4;
         vol1 = LOBYTE(pan_y);
-        if ((int8_t)HIBYTE(pan_y) != 0)
+        if (static_cast<int8_t>(HIBYTE(pan_y)) != 0)
         {
             vol1 = 0xFF;
-            if ((int8_t)HIBYTE(pan_y) < 0)
+            if (static_cast<int8_t>(HIBYTE(pan_y)) < 0)
             {
                 vol1 = 0;
             }
@@ -1080,17 +1080,17 @@ static uint8_t vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params* so
     }
 
     int16_t pan_x = std::abs(sound_params->pan_x);
-    pan_x = std::min((int16_t)0xFFF, pan_x);
+    pan_x = std::min(static_cast<int16_t>(0xFFF), pan_x);
     pan_x -= 0x800;
 
     if (pan_x > 0)
     {
         pan_x = (0x400 - pan_x) / 4;
         vol2 = LOBYTE(pan_x);
-        if ((int8_t)HIBYTE(pan_x) != 0)
+        if (static_cast<int8_t>(HIBYTE(pan_x)) != 0)
         {
             vol2 = 0xFF;
-            if ((int8_t)HIBYTE(pan_x) < 0)
+            if (static_cast<int8_t>(HIBYTE(pan_x)) < 0)
             {
                 vol2 = 0;
             }
@@ -1611,7 +1611,7 @@ static void vehicle_update_measurements(Vehicle* vehicle)
                 ride->max_negative_vertical_g = gForces.VerticalG;
 
             gForces.LateralG = std::abs(gForces.LateralG);
-            ride->max_lateral_g = std::max(ride->max_lateral_g, (fixed16_2dp)gForces.LateralG);
+            ride->max_lateral_g = std::max(ride->max_lateral_g, static_cast<fixed16_2dp>(gForces.LateralG));
         }
     }
 
@@ -1758,7 +1758,7 @@ static void vehicle_update_measurements(Vehicle* vehicle)
                     z = abs(z);
                     if (z > ride->highest_drop_height)
                     {
-                        ride->highest_drop_height = (uint8_t)z;
+                        ride->highest_drop_height = static_cast<uint8_t>(z);
                     }
                 }
             }
@@ -1790,7 +1790,7 @@ static void vehicle_update_measurements(Vehicle* vehicle)
                     z = abs(z);
                     if (z > ride->highest_drop_height)
                     {
-                        ride->highest_drop_height = (uint8_t)z;
+                        ride->highest_drop_height = static_cast<uint8_t>(z);
                     }
                 }
             }
@@ -4707,10 +4707,10 @@ static void vehicle_update_swinging(Vehicle* vehicle)
     if (spriteType != -128)
     {
         vehicle->current_time++;
-        if ((uint8_t)spriteType != vehicle->vehicle_sprite_type)
+        if (static_cast<uint8_t>(spriteType) != vehicle->vehicle_sprite_type)
         {
             // Used to know which sprite to draw
-            vehicle->vehicle_sprite_type = (uint8_t)spriteType;
+            vehicle->vehicle_sprite_type = static_cast<uint8_t>(spriteType);
             vehicle->Invalidate();
         }
         return;
@@ -4906,10 +4906,10 @@ static void vehicle_update_rotating(Vehicle* vehicle)
     }
     time++;
 
-    uint8_t sprite = timeToSpriteMap[(uint32_t)time];
+    uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
     if (sprite != 0xFF)
     {
-        vehicle->current_time = (uint16_t)time;
+        vehicle->current_time = static_cast<uint16_t>(time);
         if (sprite == vehicle->vehicle_sprite_type)
             return;
         vehicle->vehicle_sprite_type = sprite;
@@ -5047,7 +5047,7 @@ static void vehicle_update_crooked_house_operating(Vehicle* vehicle)
         return;
 
     // Originally used an array of size 1 at 0x009A0AC4 and passed the sub state into it.
-    if ((uint16_t)(vehicle->current_time + 1) > 600)
+    if (static_cast<uint16_t>(vehicle->current_time + 1) > 600)
     {
         vehicle->SetState(VEHICLE_STATUS_ARRIVING);
         vehicle->var_C0 = 0;
@@ -5437,9 +5437,9 @@ static void vehicle_update_crash(Vehicle* vehicle)
 
         CoordsXYZ curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
 
-        curPosition.x += (int8_t)(curVehicle->crash_x >> 8);
-        curPosition.y += (int8_t)(curVehicle->crash_y >> 8);
-        curPosition.z += (int8_t)(curVehicle->crash_z >> 8);
+        curPosition.x += static_cast<int8_t>(curVehicle->crash_x >> 8);
+        curPosition.y += static_cast<int8_t>(curVehicle->crash_y >> 8);
+        curPosition.z += static_cast<int8_t>(curVehicle->crash_z >> 8);
         curVehicle->TrackLocation = { (curVehicle->crash_x << 8), (curVehicle->crash_y << 8), (curVehicle->crash_z << 8) };
 
         if (!map_is_location_valid(curPosition))
@@ -5631,7 +5631,7 @@ produceScream:
     if (vehicle->scream_sound_id == SoundId::Null)
     {
         r = scenario_rand();
-        if (totalNumPeeps >= (int32_t)(r % 16))
+        if (totalNumPeeps >= static_cast<int32_t>(r % 16))
         {
             switch (vehicleEntry->sound_range)
             {
@@ -5666,8 +5666,8 @@ produceScream:
  */
 GForces vehicle_get_g_forces(const Vehicle* vehicle)
 {
-    int32_t gForceVert = (((int64_t)0x280000) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
-    gForceVert = (((int64_t)gForceVert) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
     int32_t lateralFactor = 0, vertFactor = 0;
 
     // Note shr has meant some of the below functions cast a known negative number to
@@ -5901,7 +5901,7 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
             break;
         case TRACK_ELEM_HALF_LOOP_UP:
         case TRACK_ELEM_FLYER_HALF_LOOP_UP:
-            vertFactor = (((uint16_t)(-(vehicle->track_progress - 155))) / 2) + 28;
+            vertFactor = ((static_cast<uint16_t>(-(vehicle->track_progress - 155))) / 2) + 28;
             // 6d763E
             break;
         case TRACK_ELEM_HALF_LOOP_DOWN:
@@ -6081,7 +6081,7 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
             break;
         case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
         case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
-            vertFactor = (((uint16_t)(-(vehicle->track_progress - 311))) / 4) + 46;
+            vertFactor = ((static_cast<uint16_t>(-(vehicle->track_progress - 311))) / 4) + 46;
             // 6d7666
             break;
         case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
@@ -6130,7 +6130,7 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
         case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
         case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
         case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
-            vertFactor = (((uint16_t)(-(vehicle->track_progress - 137))) / 4) + 55;
+            vertFactor = ((static_cast<uint16_t>(-(vehicle->track_progress - 137))) / 4) + 55;
             // 6D7614
             break;
         case TRACK_ELEM_AIR_THRUST_TOP_CAP:
@@ -6179,7 +6179,7 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
     gForceLateral *= 10;
     gForceVert >>= 16;
     gForceLateral >>= 16;
-    return { (int16_t)(gForceVert & 0xFFFF), (int16_t)(gForceLateral & 0xFFFF) };
+    return { static_cast<int16_t>(gForceVert & 0xFFFF), static_cast<int16_t>(gForceLateral & 0xFFFF) };
 }
 
 void vehicle_set_map_toolbar(const Vehicle* vehicle)
@@ -7229,7 +7229,7 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
     uint8_t al, ah;
     uint32_t eax;
 
-    uint32_t* var_C8 = (uint32_t*)&vehicle->var_C8;
+    uint32_t* var_C8 = reinterpret_cast<uint32_t*>(&vehicle->var_C8);
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
     if (vehicleEntry == nullptr)
     {
@@ -8911,7 +8911,7 @@ loc_6DC743:
                 vehicle->track_progress++;
                 break;
             case 1: // loc_6DC7ED
-                vehicle->var_D3 = (uint8_t)moveInfo->z;
+                vehicle->var_D3 = static_cast<uint8_t>(moveInfo->z);
                 vehicle->track_progress++;
                 break;
             case 2: // loc_6DC800
@@ -9014,7 +9014,7 @@ loc_6DC743:
         if (_vehicleVelocityF64E08 >= 0)
         {
             regs.bp = vehicle->prev_vehicle_on_ride;
-            vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16_t*)&regs.bp);
+            vehicle_update_motion_collision_detection(vehicle, x, y, z, reinterpret_cast<uint16_t*>(&regs.bp));
         }
     }
     goto loc_6DC99A;
@@ -9055,7 +9055,7 @@ loc_6DCA7A:
 
 loc_6DCA9A:
     regs.ax = vehicle->track_progress - 1;
-    if ((uint16_t)regs.ax != 0xFFFF)
+    if (static_cast<uint16_t>(regs.ax) != 0xFFFF)
     {
         goto loc_6DCC2C;
     }
@@ -9168,7 +9168,7 @@ loc_6DCC2C:
         if (_vehicleVelocityF64E08 >= 0)
         {
             regs.bp = vehicle->var_44;
-            if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16_t*)&regs.bp))
+            if (vehicle_update_motion_collision_detection(vehicle, x, y, z, reinterpret_cast<uint16_t*>(&regs.bp)))
             {
                 goto loc_6DCD6B;
             }
@@ -9279,11 +9279,11 @@ loc_6DCEB2:
     if (_vehicleVelocityF64E08 >= 0)
     {
         regs.si = vehicle->next_vehicle_on_train;
-        if ((uint16_t)regs.si == SPRITE_INDEX_NULL)
+        if (static_cast<uint16_t>(regs.si) == SPRITE_INDEX_NULL)
         {
             goto loc_6DCEFF;
         }
-        vehicle = GET_VEHICLE((uint16_t)regs.si);
+        vehicle = GET_VEHICLE(static_cast<uint16_t>(regs.si));
         goto loc_6DC40E;
     }
 
@@ -9308,11 +9308,11 @@ loc_6DCEFF:
         regs.bp += vehicle->mass;
         regs.eax += vehicle->acceleration;
         regs.si = vehicle->next_vehicle_on_train;
-        if ((uint16_t)regs.si == SPRITE_INDEX_NULL)
+        if (static_cast<uint16_t>(regs.si) == SPRITE_INDEX_NULL)
         {
             break;
         }
-        vehicle = GET_VEHICLE((uint16_t)regs.si);
+        vehicle = GET_VEHICLE(static_cast<uint16_t>(regs.si));
     }
 
     vehicle = gCurrentVehicle;
@@ -9977,7 +9977,7 @@ Vehicle* Vehicle::GetHead()
 
 const Vehicle* Vehicle::GetHead() const
 {
-    return ((Vehicle*)this)->GetHead();
+    return (const_cast<Vehicle*>(this)->GetHead());
 }
 
 const Vehicle* Vehicle::GetCar(size_t carIndex) const
