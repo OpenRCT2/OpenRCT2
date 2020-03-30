@@ -646,11 +646,15 @@ static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
 
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
-        widget_hscrollbar_draw(dpi, scroll, l, b - SCROLLBAR_WIDTH, ((scroll->flags & VSCROLLBAR_VISIBLE) ? r - (SCROLLBAR_WIDTH + 1) : r), b, colour);
+        widget_hscrollbar_draw(
+            dpi, scroll, l, b - SCROLLBAR_WIDTH, ((scroll->flags & VSCROLLBAR_VISIBLE) ? r - (SCROLLBAR_WIDTH + 1) : r), b,
+            colour);
 
     // Vertical scrollbar
     if (scroll->flags & VSCROLLBAR_VISIBLE)
-        widget_vscrollbar_draw(dpi, scroll, r - SCROLLBAR_WIDTH, t, r, ((scroll->flags & HSCROLLBAR_VISIBLE) ? b - (SCROLLBAR_WIDTH + 1) : b), colour);
+        widget_vscrollbar_draw(
+            dpi, scroll, r - SCROLLBAR_WIDTH, t, r, ((scroll->flags & HSCROLLBAR_VISIBLE) ? b - (SCROLLBAR_WIDTH + 1) : b),
+            colour);
 
     // Contents
     if (scroll->flags & HSCROLLBAR_VISIBLE)
@@ -736,17 +740,20 @@ static void widget_vscrollbar_draw(
 
     // Up button
     gfx_fill_rect_inset(
-        dpi, l, t, r, t + (SCROLLBAR_WIDTH - 1), colour, ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+        dpi, l, t, r, t + (SCROLLBAR_WIDTH - 1), colour,
+        ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, l + 1, t - 1);
 
     // Thumb
     gfx_fill_rect_inset(
-        dpi, l, std::max(t + SCROLLBAR_WIDTH, t + scroll->v_thumb_top - 1), r, std::min(b - SCROLLBAR_WIDTH, t + scroll->v_thumb_bottom - 1), colour,
+        dpi, l, std::max(t + SCROLLBAR_WIDTH, t + scroll->v_thumb_top - 1), r,
+        std::min(b - SCROLLBAR_WIDTH, t + scroll->v_thumb_bottom - 1), colour,
         ((scroll->flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
     gfx_fill_rect_inset(
-        dpi, l, b - (SCROLLBAR_WIDTH - 1), r, b, colour, ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+        dpi, l, b - (SCROLLBAR_WIDTH - 1), r, b, colour,
+        ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, l + 1, b - (SCROLLBAR_WIDTH - 1));
 }
 
@@ -882,7 +889,8 @@ void widget_scroll_get_part(
         }
     }
 
-    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w->windowPos.y + widget->bottom - (SCROLLBAR_WIDTH + 1)))
+    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE)
+        && screenCoords.y >= (w->windowPos.y + widget->bottom - (SCROLLBAR_WIDTH + 1)))
     {
         // horizontal scrollbar
         int32_t rightOffset = 0;
@@ -918,7 +926,9 @@ void widget_scroll_get_part(
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
         }
     }
-    else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w->windowPos.x + widget->right - (SCROLLBAR_WIDTH + 1)))
+    else if (
+        (w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE)
+        && (screenCoords.x >= w->windowPos.x + widget->right - (SCROLLBAR_WIDTH + 1)))
     {
         // vertical scrollbar
         int32_t bottomOffset = 0;
