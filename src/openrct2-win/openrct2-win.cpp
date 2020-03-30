@@ -60,7 +60,6 @@ static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 static void FreeCommandLineArgs(int argc, char** argv)
 {
     // Free argv
-    delete[] *argv;
     delete[] argv;
 }
 
@@ -68,7 +67,7 @@ static char* ConvertWideChartoUTF8(const wchar_t* src)
 {
     auto srcLen = lstrlenW(src);
     auto sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    auto result = std::make_unique<char[]>(sizeReq+1);
+    auto result = new char[sizeReq];
     WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
     return result;
 }
