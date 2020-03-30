@@ -7,6 +7,7 @@
 - Fix: [#7094] Back wall edge texture in water missing.
 - Fix: [#11005] Company value overflows.
 - Fix: [#11027] Third color on walls becomes black when saving.
+- Improved: [#11157] Slimmer virtual floor lines.
 
 0.2.5 (2020-03-24)
 ------------------------------------------------------------------------
