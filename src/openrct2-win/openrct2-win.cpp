@@ -48,14 +48,12 @@ int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 {
     // Allocate UTF-8 strings
-    auto argv = (char**)malloc(argc * sizeof(char*));
-    if (argv != nullptr)
+    auto argv = new char*[argc];
+    //char** argv = (char**)malloc(argc * sizeof(char*));
+    // Convert to UTF-8
+    for (int i = 0; i < argc; i++)
     {
-        // Convert to UTF-8
-        for (int i = 0; i < argc; i++)
-        {
-            argv[i] = ConvertWideChartoUTF8(argvW[i]);
-        }
+        argv[i] = ConvertWideChartoUTF8(argvW[i]);
     }
     return argv;
 }
@@ -63,18 +61,16 @@ static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 static void FreeCommandLineArgs(int argc, char** argv)
 {
     // Free argv
-    for (int i = 0; i < argc; i++)
-    {
-        free(argv[i]);
-    }
-    free(argv);
+    delete[] argv*;
+    delete argv;
 }
 
 static char* ConvertWideChartoUTF8(const wchar_t* src)
 {
     auto srcLen = lstrlenW(src);
     auto sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    auto result = static_cast<char*>(calloc(1, static_cast<size_t>(sizeReq) + 1));
+    //auto result = static_cast<char*>(calloc(1, static_cast<size_t>(sizeReq) + 1));
+    auto result = std::make_unique<char[]>(sizeReq+1);
     WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
     return result;
 }
