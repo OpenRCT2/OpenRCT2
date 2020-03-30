@@ -10,7 +10,7 @@
 // Windows.h needs to be included first
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
+#include <memory>
 // Enable visual styles
 #pragma comment(                                                                                                               \
     linker,                                                                                                                    \
@@ -60,8 +60,8 @@ static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 static void FreeCommandLineArgs(int argc, char** argv)
 {
     // Free argv
-    delete[] argv*;
-    delete argv;
+    delete[] *argv;
+    delete[] argv;
 }
 
 static char* ConvertWideChartoUTF8(const wchar_t* src)
