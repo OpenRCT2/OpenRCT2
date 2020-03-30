@@ -3,6 +3,7 @@
 - Feature: [#7648] "Enable all drawable track pieces" now enables more pieces for the Twister, Vertical and Air Powered Vertical coasters.
 - Feature: [#9029] Open doors with the tile inspector.
 - Feature: [#10572] Cheat to allow building at invalid heights.
+- Feature: [#11155] Guest entry points can now be removed by clicking them again.
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
 - Feature: [#11306] Path additions are now kept when replacing the path.
 - Feature: [#11320] Support for custom JavaScript plugins.
@@ -14,6 +15,8 @@
 - Fix: [#5451] Guests scream on every descent, no matter how small.
 - Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#7006] Submarine Ride is in the wrong research group.
+- Fix: [#10876] When removing a path, its guest entry point is not removed.
+- Fix: [#10876] There can be multiple peep spawns on the same location.
 - Fix: [#11002] Rides list shows both red and green light activated.
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
 - Fix: [#11259] Custom JSON object breaks saves.

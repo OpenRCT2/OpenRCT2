@@ -98,6 +98,35 @@ public:
         res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _location;
 
+        // Shift the spawn point to the edge of the tile
+        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
+            + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
+
+        PeepSpawn spawn;
+        spawn.x = spawnPos.x;
+        spawn.y = spawnPos.y;
+        spawn.z = _location.z;
+        spawn.direction = _location.direction;
+
+        // When attempting to place a peep spawn on a tile that already contains it,
+        // remove that peep spawn instead.
+        if (!gPeepSpawns.empty())
+        {
+            // When searching for existing spawns, ignore the direction.
+            auto foundSpawn = std::find_if(gPeepSpawns.begin(), gPeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
+                {
+                    return existingSpawn.ToTileStart() == spawn.ToTileStart();
+                }
+            });
+
+            if (foundSpawn != std::end(gPeepSpawns))
+            {
+                gPeepSpawns.erase(foundSpawn);
+                map_invalidate_tile_full(spawn);
+                return res;
+            }
+        }
+
         // If we have reached our max peep spawns, remove the oldest spawns
         while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
         {
@@ -106,16 +135,7 @@ public:
             map_invalidate_tile_full(oldestSpawn);
         }
 
-        // Shift the spawn point to the edge of the tile
-        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
-            + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
-
         // Set peep spawn
-        PeepSpawn spawn;
-        spawn.x = spawnPos.x;
-        spawn.y = spawnPos.y;
-        spawn.z = _location.z;
-        spawn.direction = _location.direction;
         gPeepSpawns.push_back(spawn);
 
         // Invalidate tile

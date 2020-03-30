@@ -95,6 +95,17 @@ public:
             map_invalidate_tile_full(_loc);
             tile_element_remove(footpathElement);
             footpath_update_queue_chains();
+
+            // Remove the spawn point (if there is one in the current tile)
+            gPeepSpawns.erase(
+                std::remove_if(
+                    gPeepSpawns.begin(), gPeepSpawns.end(),
+                    [this](const CoordsXYZ& spawn) {
+                        {
+                            return spawn.ToTileStart() == _loc.ToTileStart();
+                        }
+                    }),
+                gPeepSpawns.end());
         }
         else
         {
