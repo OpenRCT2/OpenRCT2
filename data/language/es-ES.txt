@@ -158,7 +158,7 @@ STR_0578    :Los vagones circulan por vías formando aros y recorriendo bruscas 
 STR_0579    :
 STR_0580    :Una montaña rusa gigante capaz de caídas suaves y subidas de más de 300 pies.
 STR_0581    :Un anillo de asientos es arrastrado a lo alto de una torre mientras gira, y después cae libremente hasta detenerse suavemente usando unos frenos magnéticos.
-STR_0582    :Los visitantes viajan en vehiculos aerodeslizadores que controlan libremente.
+STR_0582    :Los visitantes viajan en vehículos aerodeslizadores que controlan libremente.
 STR_0583    :
 STR_0584    :Bicicletas especiales que viajan sobre un monorriel, impulsadas por el pedaleo.
 STR_0585    :Los pasajeros se sientan en parejas atravesando rizos e inversiones.
@@ -3605,7 +3605,7 @@ STR_6273    :Música
 STR_6274    :No se puede establecer colores...
 STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
 STR_6276    :{RED}{STRINGID} tiene visitantes trabados, posiblemente por tipo de atracción o modo de operación inválidos.
-STR_6277    :{WINDOW_COLOUR_2}Indice de estación: {BLACK}{STRINGID}
+STR_6277    :{WINDOW_COLOUR_2}Índice de estación: {BLACK}{STRINGID}
 STR_6278    :Cantidad de Autoguardados
 STR_6279    :{SMALLFONT}{BLACK}Número de archivos de autoguardado a mantener
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3629,8 +3629,8 @@ STR_6297    :TiB
 STR_6298    :{STRING}/s
 STR_6299    :Descargar todo
 STR_6300    :{SMALLFONT}{BLACK}Descargar todos los objetos faltantes si están disponibles en línea.
-STR_6301    :{SMALLFONT}{BLACK}Copiar el nombre de objeto seleccionado al porta papeles.
-STR_6302    :{SMALLFONT}{BLACK}Copiar la lista entera de objetos faltantes al porta papeles.
+STR_6301    :{SMALLFONT}{BLACK}Copiar el nombre de objeto seleccionado al portapapeles.
+STR_6302    :{SMALLFONT}{BLACK}Copiar la lista entera de objetos faltantes al portapapeles.
 STR_6303    :Descargando objeto ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Abrir selector de escenografía
 STR_6305    :Multithreading
@@ -3661,18 +3661,18 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Descargando [{STRING}] desde {STRING} ({COMMA16} / {COMMA16})
 STR_6333    :Incrementar factor de escala
 STR_6334    :Disminuir factor de escala
-STR_6335    :Inspector de cuadricula: Insertar elemento corrupto
-STR_6336    :Inspector de cuadricula: Copiar elemento
-STR_6337    :Inspector de cuadricula: Pegar elemento
-STR_6338    :Inspector de cuadricula: Borrar elemento
-STR_6339    :Inspector de cuadricula: Mover elemento hacia arriba
-STR_6340    :Inspector de cuadricula: Mover elemento hacia abajo
-STR_6341    :Inspector de cuadricula: Aumentar coordenada X
-STR_6342    :Inspector de cuadricula: Disminuir coordenada X
-STR_6343    :Inspector de cuadricula: Aumentar coordenada Y
-STR_6344    :Inspector de cuadricula: Disminuir coordenada Y
-STR_6345    :Inspector de cuadricula: Aumentar altura del elemento
-STR_6346    :Inspector de cuadricula: Disminuir altura del elemento
+STR_6335    :Inspector de cuadrícula: Insertar elemento corrupto
+STR_6336    :Inspector de cuadrícula: Copiar elemento
+STR_6337    :Inspector de cuadrícula: Pegar elemento
+STR_6338    :Inspector de cuadrícula: Borrar elemento
+STR_6339    :Inspector de cuadrícula: Mover elemento hacia arriba
+STR_6340    :Inspector de cuadrícula: Mover elemento hacia abajo
+STR_6341    :Inspector de cuadrícula: Aumentar coordenada X
+STR_6342    :Inspector de cuadrícula: Disminuir coordenada X
+STR_6343    :Inspector de cuadrícula: Aumentar coordenada Y
+STR_6344    :Inspector de cuadrícula: Disminuir coordenada Y
+STR_6345    :Inspector de cuadrícula: Aumentar altura del elemento
+STR_6346    :Inspector de cuadrícula: Disminuir altura del elemento
 STR_6347    :¡Agregados a los caminos no se pueden añadir en cruces de nivel!
 STR_6348    :¡Primero remueve el cruce de nivel!
 STR_6349    :Secuencia de la pantalla de inicio al azar
@@ -3684,12 +3684,12 @@ STR_6354    :{SMALLFONT}{BLACK}Media densidad
 STR_6355    :{SMALLFONT}{BLACK}Alta densidad
 STR_6356    :{SMALLFONT}{BLACK}Crear patos si el parque tiene agua
 STR_6357    :{SMALLFONT}{BLACK}Quitar todos los patos del mapa
-STR_6358    :Pagina {UINT16}
-STR_6359    :{POP16}{POP16}Pagina {UINT16}
+STR_6358    :Página {UINT16}
+STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Habilitar efectos de luz en atracciones (experimental)
 STR_6362    :{SMALLFONT}{BLACK}Si está activado, vehículos para las atracciones con vias estarán iluminados de noche.
-STR_6363    :Copiar texto al porta papeles
+STR_6363    :Copiar texto al portapapeles
 
 ##############
 # Escenarios #
