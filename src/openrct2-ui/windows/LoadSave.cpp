@@ -635,6 +635,8 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
     }
 }
 
+constexpr uint16_t DATE_TIME_GAP = 2;
+
 static void window_loadsave_compute_max_date_width()
 {
     // Generate a time object for a relatively wide time: 2000-02-20 00:00:00
@@ -653,7 +655,7 @@ static void window_loadsave_compute_max_date_width()
 
     // Check how how this date is represented (e.g. 2000-02-20, or 00/02/20)
     std::string date = Platform::FormatShortDate(long_time);
-    maxDateWidth = gfx_get_string_width(date.c_str());
+    maxDateWidth = gfx_get_string_width(date.c_str()) + DATE_TIME_GAP;
 
     // Some locales do not use leading zeros for months and days, so let's try October, too.
     tm.tm_mon = 10;
@@ -662,11 +664,11 @@ static void window_loadsave_compute_max_date_width()
 
     // Again, check how how this date is represented (e.g. 2000-10-20, or 00/10/20)
     date = Platform::FormatShortDate(long_time);
-    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str()));
+    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str()) + DATE_TIME_GAP);
 
     // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be representable.
     std::string time = Platform::FormatTime(long_time);
-    maxTimeWidth = gfx_get_string_width(time.c_str());
+    maxTimeWidth = gfx_get_string_width(time.c_str()) + DATE_TIME_GAP;
 }
 
 static void window_loadsave_invalidate(rct_window* w)
@@ -681,8 +683,8 @@ static void window_loadsave_invalidate(rct_window* w)
     window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
 
     rct_widget* date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
-    date_widget->left = w->width - maxDateWidth - maxTimeWidth - 24;
     date_widget->right = w->width - 5;
+    date_widget->left = date_widget->right - (maxDateWidth + maxTimeWidth + (4 * DATE_TIME_GAP) + (SCROLLBAR_WIDTH + 1));
 
     window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
     window_loadsave_widgets[WIDX_SORT_NAME].right = window_loadsave_widgets[WIDX_SORT_DATE].left - 1;
@@ -746,6 +748,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
     const int32_t listWidth = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
+    const int32_t dateAnchor = w->widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
@@ -780,14 +783,14 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
-            int32_t offset = w->widgets[WIDX_SORT_DATE].left + maxDateWidth;
-
             set_format_arg(0, rct_string_id, STR_STRING);
             set_format_arg(2, char*, _listItems[i].date_formatted.c_str());
-            gfx_draw_string_right_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset - 2, y, maxDateWidth);
+            gfx_draw_string_right_clipped(
+                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, dateAnchor - DATE_TIME_GAP, y, maxDateWidth);
 
             set_format_arg(2, char*, _listItems[i].time_formatted.c_str());
-            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset + 2, y, maxTimeWidth);
+            gfx_draw_string_left_clipped(
+                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, dateAnchor + DATE_TIME_GAP, y, maxTimeWidth);
         }
     }
 }
