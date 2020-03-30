@@ -49,7 +49,6 @@ static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 {
     // Allocate UTF-8 strings
     auto argv = new char*[argc];
-    //char** argv = (char**)malloc(argc * sizeof(char*));
     // Convert to UTF-8
     for (int i = 0; i < argc; i++)
     {
@@ -69,7 +68,6 @@ static char* ConvertWideChartoUTF8(const wchar_t* src)
 {
     auto srcLen = lstrlenW(src);
     auto sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    //auto result = static_cast<char*>(calloc(1, static_cast<size_t>(sizeReq) + 1));
     auto result = std::make_unique<char[]>(sizeReq+1);
     WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
     return result;
