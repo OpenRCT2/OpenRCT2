@@ -705,8 +705,7 @@ static void window_scenery_mousedown(rct_window* w, rct_widgetindex widgetIndex,
         w->Invalidate();
         gSceneryPlaceCost = MONEY32_UNDEFINED;
 
-        // HACK: for 3210 Ensures that window_scenery_update_scroll gets called one time
-        w->max_height = 60;
+        window_scenery_update_scroll(w);
     }
 }
 
