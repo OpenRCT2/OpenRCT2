@@ -33,6 +33,7 @@ extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
+extern bool gCheatsAllowTrackPlaceInvalidHeights;
 
 enum class CheatType : int32_t
 {
@@ -85,6 +86,7 @@ enum class CheatType : int32_t
     EnableAllDrawableTrackPieces,
     CreateDucks,
     RemoveDucks,
+    AllowTrackPlaceInvalidHeights,
     Count,
 };
 

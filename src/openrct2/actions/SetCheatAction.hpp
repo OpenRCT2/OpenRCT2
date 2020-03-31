@@ -237,6 +237,9 @@ public:
             case CheatType::RemoveDucks:
                 duck_remove_all();
                 break;
+            case CheatType::AllowTrackPlaceInvalidHeights:
+                gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
+                break;
             default:
             {
                 log_error("Unabled cheat: %d", _cheatType.id);
