@@ -590,8 +590,9 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
         sub_98196C(
-            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], (int8_t)sbb->offset.x, (int8_t)sbb->offset.y,
-            sbb->bb_size.x, sbb->bb_size.y, (int8_t)sbb->bb_size.z, height + (int8_t)sbb->offset.z);
+            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
+            static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
+            height + static_cast<int8_t>(sbb->offset.z));
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(
@@ -658,8 +659,9 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
         sub_98196C(
-            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], (int8_t)sbb->offset.x, (int8_t)sbb->offset.y,
-            sbb->bb_size.x, sbb->bb_size.y, (int8_t)sbb->bb_size.z, height + (int8_t)sbb->offset.z);
+            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
+            static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
+            height + static_cast<int8_t>(sbb->offset.z));
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(session, height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
