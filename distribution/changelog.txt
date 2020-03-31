@@ -6,6 +6,7 @@
 - Fix: [#6123, #7907, #9472, #11028] Cannot build some track designs with 4 stations (original bug).
 - Fix: [#7094] Back wall edge texture in water missing.
 - Fix: [#10928] File browser's date column is too narrow.
+- Fix: [#10951, #11160] Attempting to place park entrances creates ghost entrances in random locations.
 - Fix: [#11005] Company value overflows.
 - Fix: [#11027] Third color on walls becomes black when saving.
 - Improved: [#11157] Slimmer virtual floor lines.
