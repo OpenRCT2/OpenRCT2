@@ -77,8 +77,8 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        int8_t zLow = _loc.z;
-        int8_t zHigh = zLow + ParkEntranceHeight;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + ParkEntranceHeight;
         CoordsXYZ entranceLoc = _loc;
         for (uint8_t index = 0; index < 3; index++)
         {
@@ -123,8 +123,8 @@ public:
 
         gParkEntrances.push_back(parkEntrance);
 
-        int8_t zLow = _loc.z;
-        int8_t zHigh = zLow + ParkEntranceHeight;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + ParkEntranceHeight;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
         for (uint8_t index = 0; index < 3; index++)
         {
