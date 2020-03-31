@@ -1630,7 +1630,7 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
 
 ExtendedPathData* footpath_find_extended_data(TileElement* tileElement, std::vector<ExtendedPathData*>* extendedPathVector)
 {
-    for (int iExt = 0; iExt < extendedPathVector->size(); iExt++)
+    for (uint32_t iExt = 0; iExt < extendedPathVector->size(); iExt++)
     {
         if (extendedPathVector->at(iExt)->GetTilePointer() == tileElement)
         {
@@ -1978,7 +1978,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
 
     } while (!(tileElement++)->IsLastForTile());
 
-    int iTile = 0;
+    uint32_t iTile = 0;
     while (iTile < extPathVector->size())
     {
         if (extPathVector->at(iTile)->GetHighestUsedLevel() == 0)
