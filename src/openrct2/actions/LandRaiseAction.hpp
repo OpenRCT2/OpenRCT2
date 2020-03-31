@@ -93,6 +93,7 @@ private:
         }
 
         uint8_t minHeight = map_get_lowest_land_height(validRange);
+        bool withinOwnership = false;
 
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
@@ -101,6 +102,16 @@ private:
                 auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
+
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                {
+                    if (!map_is_location_in_park(CoordsXY{ x, y }))
+                    {
+                        continue;
+                    }
+                }
+                withinOwnership = true;
+
                 uint8_t height = surfaceElement->base_height;
 
                 if (height > minHeight)
@@ -127,6 +138,13 @@ private:
                     return result;
                 }
             }
+        }
+
+        if (!withinOwnership)
+        { 
+            GameActionResult::Ptr ownerShipResult = std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
+            ownerShipResult->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
+            return ownerShipResult;
         }
 
         // Force ride construction to recheck area
