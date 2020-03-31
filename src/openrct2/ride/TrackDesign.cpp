@@ -1606,7 +1606,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         }
                     }
 
-                    uint8_t waterZ = surfaceElement->GetWaterHeight();
+                    auto waterZ = surfaceElement->GetWaterHeight();
                     if (waterZ > 0 && waterZ > surfaceZ)
                     {
                         surfaceZ = waterZ;
