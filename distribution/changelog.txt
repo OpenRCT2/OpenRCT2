@@ -9,6 +9,7 @@
 - Fix: [#11005] Company value overflows.
 - Fix: [#11027] Third color on walls becomes black when saving.
 - Improved: [#11157] Slimmer virtual floor lines.
+- Fix: [#11063] Scrolling position persists when switching tabs in the scenery window.
 
 0.2.5 (2020-03-24)
 ------------------------------------------------------------------------
