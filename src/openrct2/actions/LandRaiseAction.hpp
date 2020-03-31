@@ -141,7 +141,7 @@ private:
         }
 
         if (!withinOwnership)
-        { 
+        {
             GameActionResult::Ptr ownerShipResult = std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
             ownerShipResult->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
             return ownerShipResult;
