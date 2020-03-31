@@ -3677,10 +3677,17 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :{SMALLFONT}{BLACK}If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
-STR_6364    :Do not show wide path
-STR_6365    :Show paths that are wide for any groups
-STR_6366    :Show paths that are wide for all groups
-STR_6367    :Show wide paths for Group {UINT16}
+STR_6364    :Show paths wide for:
+STR_6365    :Any groups
+STR_6366    :All groups
+STR_6367    :Group {UINT16}
+STR_6368    :Group -
+STR_6369    :{POP16}Level {UINT16}
+STR_6370    :None
+STR_6371    :Basic
+STR_6372    :Wide Pathing
+STR_6373    :{SMALLFONT}{BLACK}0: Default mode. Full path utilization off.{NEWLINE}1: Guests use wide paths symetrically. Note: Gamestate is not saved perfectly{NEWLINE}2+: Experimental system for Guests to fill in gaps left by previous levels.
+STR_6374    :Wide Path evaluation levels:
 
 #############
 # Scenarios #

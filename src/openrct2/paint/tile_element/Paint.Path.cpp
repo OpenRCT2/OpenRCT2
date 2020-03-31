@@ -29,6 +29,7 @@
 
 bool gPaintWidePathsAsGhost = false;
 int8_t gPaintWideGroupAsGhost = -3;
+int8_t gPaintWideLevelAsGhost = -2;
 // clang-format off
 const uint8_t PathSlopeToLandSlope[] =
 {
@@ -851,36 +852,48 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
 
-    if (gPaintWideGroupAsGhost > -3 && !tile_element->IsGhost())
+    if (gPaintWideLevelAsGhost >= 0)
     {
-        auto extPathVector = map_get_extended_data_vector_at(session->MapPosition);
-        ExtendedPathData* extPath = footpath_find_extended_data(const_cast<TileElement*>(tile_element), extPathVector);
-        switch (gPaintWideGroupAsGhost)
+        if (gPaintWideGroupAsGhost > -3 && !tile_element->IsGhost() && !gWideFlagsAreLoading && !gInMapInitCode)
         {
-            case -3:
-                break;
-            case -2:
-                if (extPath->GetWideFlags() & 0b11111111)
-                {
-                    imageFlags &= 0x7FFFF;
-                    imageFlags |= CONSTRUCTION_MARKER;
-                }
-                break;
-            case -1:
-                if (extPath->GetWideFlags() == 0b11111111)
-                {
-                    imageFlags &= 0x7FFFF;
-                    imageFlags |= CONSTRUCTION_MARKER;
-                }
-                break;
-            default:
-                if (extPath->IsWideForGroup((gPaintWideGroupAsGhost)))
-                {
-                    imageFlags &= 0x7FFFF;
-                    imageFlags |= CONSTRUCTION_MARKER;
-                }
+            auto extPathVector = map_get_extended_data_vector_at(session->MapPosition);
+            ExtendedPathData* extPath = footpath_find_extended_data(const_cast<TileElement*>(tile_element), extPathVector);
+            switch (gPaintWideGroupAsGhost)
+            {
+                case -3:
+                    break;
+                case -2:
+                    if (extPath->GetWideFlags(gPaintWideLevelAsGhost) & 0b11111111)
+                    {
+                        imageFlags &= 0x7FFFF;
+                        imageFlags |= CONSTRUCTION_MARKER;
+                    }
+                    break;
+                case -1:
+                    if (extPath->IsWideForAll(gPaintWideLevelAsGhost))
+                    {
+                        imageFlags &= 0x7FFFF;
+                        imageFlags |= CONSTRUCTION_MARKER;
+                    }
+                    break;
+                default:
+                    if (extPath->IsWideForGroup(gPaintWideGroupAsGhost, gPaintWideLevelAsGhost))
+                    {
+                        imageFlags &= 0x7FFFF;
+                        imageFlags |= CONSTRUCTION_MARKER;
+                    }
+            }
         }
     }
+    else if (gPaintWideLevelAsGhost == -1)
+    {
+        if (tile_element->AsPath()->IsWide())
+        {
+            imageFlags &= 0x7FFFF;
+            imageFlags |= CONSTRUCTION_MARKER;
+        }
+    }
+
     auto surface = map_get_surface_element_at(session->MapPosition);
 
     if (surface == nullptr)

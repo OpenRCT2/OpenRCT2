@@ -1628,14 +1628,13 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
     log_verbose("Setting 'draw path over supports' to %d", (size_t)on);
 }
 
-ExtendedPathData* footpath_find_extended_data(
-    TileElement* tileElement, std::vector<ExtendedPathData*>* extendedPathVector)
+ExtendedPathData* footpath_find_extended_data(TileElement* tileElement, std::vector<ExtendedPathData*>* extendedPathVector)
 {
     for (int iExt = 0; iExt < extendedPathVector->size(); iExt++)
     {
         if (extendedPathVector->at(iExt)->GetTilePointer() == tileElement)
         {
-            extendedPathVector->at(iExt)->SetUsed(true);
+            extendedPathVector->at(iExt)->IncreaseHighestUsedTo(1);
             return extendedPathVector->at(iExt);
         }
     }
@@ -1650,7 +1649,7 @@ ExtendedPathData* footpath_find_extended_data(
  *  clears the wide footpath flag for all footpaths
  *  at location
  */
-static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
+static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup, uint8_t wideLevel)
 {
     TileElement* tileElement = map_get_first_element_at(footpathPos);
 
@@ -1667,7 +1666,7 @@ static void footpath_clear_wide(const CoordsXY& footpathPos, uint8_t wideGroup)
             continue;
 
         ExtendedPathData* extPath = footpath_find_extended_data(tileElement, extPathVector);
-        extPath->SetWideForGroup(wideGroup, false);
+        extPath->SetWideForGroup(wideGroup, wideLevel, false);
 
         if (wideGroup == WIDE_GROUP_N_SW)
             tileElement->AsPath()->SetWide(false);
@@ -1737,7 +1736,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
     if (map_is_location_at_edge(footpathPos))
         return;
 
-    footpath_clear_wide(footpathPos, wideGroup);
+    footpath_clear_wide(footpathPos, wideGroup, 0);
     /* Rather than clearing the wide flag of the following tiles and
      * checking the state of them later, leave them intact and assume
      * they were cleared. Consequently only the wide flag for this single
@@ -1856,10 +1855,11 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
         {
             uint8_t edgeMask1 = wideGroupEdges[WIDE_GROUP_SECONDARY_DIRECTION] | wideGroupEdges[WIDE_GROUP_PRIMARY_DIRECTION];
             if ((pathConnections & wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE])
-                && pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]] != nullptr
-                && extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]] != nullptr
-                && !extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]]->IsWideForGroup(wideGroup)
-                && (pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER]]->AsPath()->GetEdges() & edgeMask1) == edgeMask1
+                && pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER_CARDINAL]] != nullptr
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER_CARDINAL]] != nullptr
+                && !extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER_CARDINAL]]->IsWideForGroup(wideGroup)
+                && (pathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER_CARDINAL]]->AsPath()->GetEdges() & edgeMask1)
+                    == edgeMask1
                 && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
                 && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
                 && !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
@@ -1875,10 +1875,11 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
             uint8_t edgeMask2 = wideGroupEdges[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]
                 | wideGroupEdges[WIDE_GROUP_SECONDARY_DIRECTION];
             if ((pathConnections & wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION])
-                && pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]] != nullptr
-                && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]] != nullptr
-                && !(extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]])->IsWideForGroup(wideGroup)
-                && (pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER]]->AsPath()->GetEdges() & edgeMask2) == edgeMask2
+                && pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]] != nullptr
+                && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]] != nullptr
+                && !(extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]])->IsWideForGroup(wideGroup)
+                && (pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]]->AsPath()->GetEdges() & edgeMask2)
+                    == edgeMask2
                 && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]] != nullptr)
             {
                 pathConnections |= wideGroupConnections[WIDE_GROUP_THIRD_CORNER_CARDINAL];
@@ -1904,7 +1905,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
                 && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
                 && !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(wideGroup))
             {
-                pathConnections |= wideGroupConnections[WIDE_GROUP_SECOND_CORNER];
+                pathConnections |= wideGroupConnections[WIDE_GROUP_SECOND_CORNER_CARDINAL];
             }
 
             /* In the following:
@@ -1921,7 +1922,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
                     == edgeMask2
                 && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]] != nullptr)
             {
-                pathConnections |= wideGroupConnections[WIDE_GROUP_FIRST_CORNER];
+                pathConnections |= wideGroupConnections[WIDE_GROUP_FIRST_CORNER_CARDINAL];
             }
         }
 
@@ -1935,21 +1936,24 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
 
         if ((pathConnections & wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE])
             && (pathConnections
-                & (wideGroupConnections[WIDE_GROUP_SECOND_CORNER] | wideGroupConnections[WIDE_GROUP_FINAL_CORNER_CARDINAL])))
+                & (wideGroupConnections[WIDE_GROUP_SECOND_CORNER_CARDINAL]
+                   | wideGroupConnections[WIDE_GROUP_FINAL_CORNER_CARDINAL])))
         {
             pathConnections &= ~wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE];
         }
 
         if ((pathConnections & wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION])
             && (pathConnections
-                & (wideGroupConnections[WIDE_GROUP_FIRST_CORNER] | wideGroupConnections[WIDE_GROUP_SECOND_CORNER])))
+                & (wideGroupConnections[WIDE_GROUP_FIRST_CORNER_CARDINAL]
+                   | wideGroupConnections[WIDE_GROUP_SECOND_CORNER_CARDINAL])))
         {
             pathConnections &= ~wideGroupConnections[WIDE_GROUP_SECONDARY_DIRECTION];
         }
 
         if ((pathConnections & wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION])
             && (pathConnections
-                & (wideGroupConnections[WIDE_GROUP_THIRD_CORNER_CARDINAL] | wideGroupConnections[WIDE_GROUP_FIRST_CORNER])))
+                & (wideGroupConnections[WIDE_GROUP_THIRD_CORNER_CARDINAL]
+                   | wideGroupConnections[WIDE_GROUP_FIRST_CORNER_CARDINAL])))
         {
             pathConnections &= ~wideGroupConnections[WIDE_GROUP_PRIMARY_DIRECTION];
         }
@@ -1969,20 +1973,149 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos, uint8_t wideGr
                     tileElement->AsPath()->SetWide(true);
             }
         }
+
+        footpath_update_path_wide_flags_extended(tileElement, extPath, wideGroup, pathList, extendedPathList, 1);
+
     } while (!(tileElement++)->IsLastForTile());
 
     int iTile = 0;
     while (iTile < extPathVector->size())
     {
-        if (!extPathVector->at(iTile)->IsUsed())
+        if (extPathVector->at(iTile)->GetHighestUsedLevel() == 0)
         {
             delete extPathVector->at(iTile);
             extPathVector->erase(extPathVector->begin() + iTile);
         }
         else
         {
+            extPathVector->at(iTile)->DecreasePathLevelTo(extPathVector->at(iTile)->GetHighestUsedLevel());
+            extPathVector->at(iTile)->SetHighestUsedLevel(0);
             iTile++;
         }
+    }
+}
+
+void footpath_update_path_wide_flags_extended(
+    TileElement* tileElement, ExtendedPathData* extPath, uint8_t wideGroup, std::array<TileElement*, 8> pathList,
+    std::array<ExtendedPathData*, 8> extendedPathList, uint8_t currentLevel)
+{
+    if (gMaxWideLevels > currentLevel)
+    {
+        const uint8_t* wideGroupDirections = AllWideGroupDirections[wideGroup];
+        if (extPath->IsWideForAll(currentLevel - 1))
+        {
+            bool previousWideFlag = extPath->IsWideForGroup(wideGroup, currentLevel - 1);
+            extPath->SetWideForGroup(wideGroup, currentLevel, previousWideFlag);
+        }
+        else
+        {
+            for (int direction = 0; direction < 8; direction++)
+            {
+                if (pathList[direction] != nullptr && extendedPathList[direction] != nullptr)
+                {
+                    if (extendedPathList[direction]->IsWideForAll(currentLevel - 1))
+                    {
+                        bool previousWideFlag = extPath->IsWideForGroup(wideGroup, currentLevel - 1);
+                        extPath->SetWideForGroup(wideGroup, currentLevel, previousWideFlag);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (extPath->GetPathLevel() > currentLevel)
+        {
+            if (extPath->IsWideForAll(currentLevel - 1))
+            {
+                if (pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] != nullptr
+                    && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] != nullptr
+                    && !extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]]->IsWideForGroup(
+                        wideGroup, currentLevel - 1))
+                {
+                    if (pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                        && !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(
+                            wideGroup, currentLevel - 1)
+                        && pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]] != nullptr
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]] != nullptr
+                        && (extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]]->IsWideForAll(currentLevel - 1)
+                            || !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION]]->IsWideForGroup(
+                                wideGroup, currentLevel - 1)))
+                    {
+                        extPath->SetWideForGroup(wideGroup, currentLevel, false);
+                    }
+                    else if (
+                        pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] != nullptr
+                        && !extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(
+                            wideGroup, currentLevel)
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForAll(
+                            currentLevel - 1))
+
+                    {
+                        extPath->SetWideForGroup(wideGroup, currentLevel, false);
+                    }
+                }
+            }
+            else
+            {
+                if (pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]] != nullptr
+                    && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]] != nullptr
+                    && !extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]]->IsWideForGroup(
+                        wideGroup, currentLevel)
+                    && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION_REVERSE]]->IsWideForAll(
+                        currentLevel - 1))
+                {
+                    if (pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]] != nullptr
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]] != nullptr
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]]->IsWideForGroup(
+                            wideGroup, currentLevel))
+                    {
+                        extPath->SetWideForGroup(wideGroup, currentLevel, false);
+                    }
+                    else
+                    {
+                        extPath->SetWideForGroup(wideGroup, currentLevel, true);
+                    }
+                }
+                else if (
+                    (pathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]] != nullptr
+                     && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]] != nullptr
+                     && !extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]]->IsWideForGroup(
+                         wideGroup, currentLevel)
+                     && extendedPathList[wideGroupDirections[WIDE_GROUP_SECOND_CORNER_CARDINAL]]->IsWideForAll(
+                         currentLevel - 1))
+                    || (pathList[wideGroupDirections[WIDE_GROUP_THIRD_CORNER_CARDINAL]] != nullptr
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER_CARDINAL]] != nullptr
+                        && !extendedPathList[wideGroupDirections[WIDE_GROUP_FIRST_CORNER_CARDINAL]]->IsWideForGroup(
+                            wideGroup, currentLevel)
+                        && extendedPathList[wideGroupDirections[WIDE_GROUP_THIRD_CORNER_CARDINAL]]->IsWideForAll(
+                            currentLevel - 1)))
+                {
+                    if (((pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] == nullptr
+                          || extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] == nullptr)
+                         || (pathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] != nullptr
+                             && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]] != nullptr
+                             && extendedPathList[wideGroupDirections[WIDE_GROUP_SECONDARY_DIRECTION]]->IsWideForGroup(
+                                 wideGroup, currentLevel)))
+                        && ((pathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] == nullptr
+                             || extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]] == nullptr)
+                            || extendedPathList[wideGroupDirections[WIDE_GROUP_PRIMARY_DIRECTION_REVERSE]]->IsWideForGroup(
+                                wideGroup, currentLevel)))
+                    {
+                        extPath->SetWideForGroup(wideGroup, currentLevel, true);
+                    }
+                }
+            }
+            footpath_update_path_wide_flags_extended(
+                tileElement, extPath, wideGroup, pathList, extendedPathList, currentLevel + 1);
+        }
+        else
+            return;
+    }
+    else
+    {
+        return;
     }
 }
 
@@ -2406,11 +2539,19 @@ bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup) const
 
 bool ExtendedPathData::IsWideForGroup(uint8_t wideGroup, uint8_t wideLevel) const
 {
-    if (GetPathLevel() > wideLevel)
+    if (gMaxWideLevels == 0)
+        return (TilePointer->AsPath()->IsWide());
+    if (GetPathLevel() > 0)
     {
-        return (WideFlags.at(wideLevel) & (1 << wideGroup)) != 0;
+        if (GetPathLevel() > wideLevel)
+        {
+            return (WideFlags.at(wideLevel) & (1 << wideGroup)) != 0;
+        }
+        else
+        {
+            return (WideFlags.at(GetPathLevel() - 1) & (1 << wideGroup)) != 0;
+        }
     }
-
     return false;
 }
 
@@ -2434,9 +2575,13 @@ uint8_t ExtendedPathData::GetWideFlags() const
 
 uint8_t ExtendedPathData::GetWideFlags(uint8_t wideLevel) const
 {
-    if (WideFlags.size() > wideLevel)
-        return WideFlags.at(wideLevel);
-
+    if (GetPathLevel() > 0)
+    {
+        if (GetPathLevel() > wideLevel)
+            return WideFlags.at(wideLevel);
+        else
+            return WideFlags.at(GetPathLevel() - 1);
+    }
     return 0;
 }
 
@@ -2451,9 +2596,9 @@ void ExtendedPathData::SetWideFlags(uint8_t wideLevel, uint8_t flags)
     WideFlags.at(wideLevel) = flags;
 }
 
-int ExtendedPathData::GetPathLevel() const
+uint8_t ExtendedPathData::GetPathLevel() const
 {
-    return (int)WideFlags.size();
+    return static_cast<uint8_t>(WideFlags.size());
 }
 
 void ExtendedPathData::SetPathLevel(uint8_t pathLevel)
@@ -2466,8 +2611,9 @@ void ExtendedPathData::IncreasePathLevelTo(uint8_t pathLevel)
 {
     while (GetPathLevel() < pathLevel)
     {
-        WideFlags.push_back(0);
+        WideFlags.push_back(0b00000000);
     }
+    IncreaseHighestUsedTo(pathLevel);
 }
 
 void ExtendedPathData::DecreasePathLevelTo(uint8_t pathLevel)
@@ -2494,12 +2640,28 @@ void ExtendedPathData::SetTilePointer(TileElement* tileIn)
     TilePointer = tileIn;
 }
 
-bool ExtendedPathData::IsUsed() const
+uint8_t ExtendedPathData::GetHighestUsedLevel() const
 {
-    return used;
+    return HighestUsedLevel;
 }
 
-void ExtendedPathData::SetUsed(bool usedIn)
+void ExtendedPathData::SetHighestUsedLevel(uint8_t usedIn)
 {
-    used = usedIn;
+    HighestUsedLevel = usedIn;
+}
+
+void ExtendedPathData::IncreaseHighestUsedTo(uint8_t usedIn)
+{
+    if (HighestUsedLevel < usedIn)
+        HighestUsedLevel = usedIn;
+}
+
+bool ExtendedPathData::IsWideForAll(uint8_t wideLevel)
+{
+    for (int i = 0; i <= wideLevel && i < GetPathLevel(); i++)
+    {
+        if (WideFlags.at(i) != 0b11111111)
+            return false;
+    }
+    return true;
 }

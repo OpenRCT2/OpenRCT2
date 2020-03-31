@@ -99,6 +99,7 @@ int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
 
 uint8_t gMaxWideLevels;
+bool gWideFlagsAreLoading;
 
 TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
@@ -288,7 +289,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
  */
 void map_init(int32_t size)
 {
-    gMaxWideLevels = 1;
+    gMaxWideLevels = gConfigGeneral.maximum_wide_levels;
     gNextFreeTileElementPointerIndex = 0;
 
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
@@ -654,8 +655,6 @@ void map_update_path_wide_flags()
             footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
         }
 
-        //footpath_update_path_wide_extended({ primary, secondary }, WIDE_GROUP_N_SW, WIDE_GROUP_S_NE);
-
         // Next x, y tile
         primary += COORDS_XY_STEP;
         if (primary >= MAXIMUM_MAP_SIZE_BIG)
@@ -674,20 +673,50 @@ void map_update_path_wide_flags()
 
 void map_update_all_path_wide_flags()
 {
-    for (int secondary = 0; secondary < MAXIMUM_MAP_SIZE_BIG; secondary += COORDS_XY_STEP)
+    gMaxWideLevels = gConfigGeneral.maximum_wide_levels;
+    if (gMaxWideLevels > 0)
     {
-        for (int primary = 0; primary < MAXIMUM_MAP_SIZE_BIG; primary += COORDS_XY_STEP)
+        for (int i = 0; i < gMaxWideLevels; i++)
         {
-            footpath_update_path_wide_flags({ primary, secondary }, WIDE_GROUP_N_SW);
-            footpath_update_path_wide_flags({ secondary, primary }, WIDE_GROUP_N_SE);
-            footpath_update_path_wide_flags({ secondary, MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_E_NW);
-            footpath_update_path_wide_flags({ primary, MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_E_SW);
-            footpath_update_path_wide_flags(
-                { MAXIMUM_MAP_SIZE_BIG - (primary + 1), MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_S_NE);
-            footpath_update_path_wide_flags(
-                { MAXIMUM_MAP_SIZE_BIG - (secondary + 1), MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_S_NW);
-            footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (secondary + 1), primary }, WIDE_GROUP_W_SE);
-            footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
+            for (int secondary = 0; secondary < MAXIMUM_MAP_SIZE_BIG; secondary += COORDS_XY_STEP)
+            {
+                for (int primary = 0; primary < MAXIMUM_MAP_SIZE_BIG; primary += COORDS_XY_STEP)
+                {
+                    footpath_update_path_wide_flags({ primary, secondary }, WIDE_GROUP_N_SW);
+                    footpath_update_path_wide_flags({ secondary, primary }, WIDE_GROUP_N_SE);
+                    footpath_update_path_wide_flags({ secondary, MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_E_NW);
+                    footpath_update_path_wide_flags({ primary, MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_E_SW);
+                    footpath_update_path_wide_flags(
+                        { MAXIMUM_MAP_SIZE_BIG - (primary + 1), MAXIMUM_MAP_SIZE_BIG - (secondary + 1) }, WIDE_GROUP_S_NE);
+                    footpath_update_path_wide_flags(
+                        { MAXIMUM_MAP_SIZE_BIG - (secondary + 1), MAXIMUM_MAP_SIZE_BIG - (primary + 1) }, WIDE_GROUP_S_NW);
+                    footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (secondary + 1), primary }, WIDE_GROUP_W_SE);
+                    footpath_update_path_wide_flags({ MAXIMUM_MAP_SIZE_BIG - (primary + 1), secondary }, WIDE_GROUP_W_NE);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int secondary = 0; secondary < MAXIMUM_MAP_SIZE_BIG; secondary += COORDS_XY_STEP)
+        {
+            for (int primary = 0; primary < MAXIMUM_MAP_SIZE_BIG; primary += COORDS_XY_STEP)
+            {
+                TileElement* tileElement = map_get_first_element_at({ primary, secondary });
+                if (tileElement == nullptr)
+                    continue;
+
+                auto extPathVector = map_get_extended_data_vector_at({ primary, secondary });
+                do
+                {
+                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+                        continue;
+
+                    ExtendedPathData* extPath = footpath_find_extended_data(tileElement, extPathVector);
+                    extPath->SetWideForGroup(WIDE_GROUP_N_SW, 0, tileElement->AsPath()->IsWide());
+
+                } while (!(tileElement++)->IsLastForTile());
+            }
         }
     }
 }
@@ -1116,7 +1145,7 @@ void map_invalidate_selection_rect()
 void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
-    map_update_all_path_wide_flags();
+    gWideFlagsAreLoading = true;
 
     TileElement* new_tile_elements = (TileElement*)malloc(
         3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(TileElement));
@@ -1156,6 +1185,8 @@ void map_reorganise_elements()
     free(new_tile_elements);
 
     map_update_tile_pointers();
+    map_update_all_path_wide_flags();
+    gWideFlagsAreLoading = false;
 }
 
 /**

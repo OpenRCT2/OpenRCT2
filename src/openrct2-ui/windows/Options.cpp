@@ -174,6 +174,10 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_AUTO_OPEN_SHOPS,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
+    WIDX_WIDEPATHING_GROUP,
+    WIDX_WIDEPATHING_LEVELS,
+    WIDX_WIDEPATHING_LEVELS_UP,
+    WIDX_WIDEPATHING_LEVELS_DOWN,
 
     // Advanced
     WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
@@ -359,6 +363,10 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 61,              TWEAKS_START + 72,              STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
     { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 62,              TWEAKS_START + 71,              STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
 #undef TWEAKS_START
+#define WIDEPATHING_START 297
+    { WWT_GROUPBOX,         1,  5,      304,    WIDEPATHING_START + 0,          WIDEPATHING_START + 34,         STR_OPTIONS_WIDEPATHING,          STR_NONE },
+    SPINNER_WIDGETS        (1,  175,    299,    WIDEPATHING_START + 15,         WIDEPATHING_START + 29,         STR_NONE,                         STR_WIDEPATHING_TIP ),                   // Wide Pathing levels spinner
+#undef WIDEPATHING_START
     { WIDGETS_END },
 };
 
@@ -605,7 +613,11 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_ALLOW_EARLY_COMPLETION) |
     (1 << WIDX_AUTO_OPEN_SHOPS) |
     (1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
-    (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
+    (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN) |
+    (static_cast<uint64_t>(1) << WIDX_WIDEPATHING_GROUP) |
+    (static_cast<uint64_t>(1) << WIDX_WIDEPATHING_LEVELS) |
+    (static_cast<uint64_t>(1) << WIDX_WIDEPATHING_LEVELS_UP) |
+    (static_cast<uint64_t>(1) << WIDX_WIDEPATHING_LEVELS_DOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_DEBUGGING_TOOLS) |
@@ -1343,6 +1355,28 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
 
                     window_options_show_dropdown(w, widget, 7);
                     dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+                    break;
+                case WIDX_WIDEPATHING_LEVELS_DOWN:
+                    if (!gWideFlagsAreLoading)
+                    {
+                        gWideFlagsAreLoading = true;
+                        gConfigGeneral.maximum_wide_levels -= 1;
+                        config_save_default();
+                        map_update_all_path_wide_flags();
+                        widget_invalidate(w, WIDX_WIDEPATHING_LEVELS);
+                        gWideFlagsAreLoading = false;
+                    }
+                    break;
+                case WIDX_WIDEPATHING_LEVELS_UP:
+                    if (!gWideFlagsAreLoading)
+                    {
+                        gWideFlagsAreLoading = true;
+                        gConfigGeneral.maximum_wide_levels += 1;
+                        config_save_default();
+                        map_update_all_path_wide_flags();
+                        widget_invalidate(w, WIDX_WIDEPATHING_LEVELS);
+                        gWideFlagsAreLoading = false;
+                    }
                     break;
             }
             break;
@@ -2137,6 +2171,13 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1], w->windowPos.x + 10,
                 w->windowPos.y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1);
+            gfx_draw_string_left(
+                dpi, STR_WIDEPATHING_LEVELS_LABEL, w, w->colours[1], w->windowPos.x + 10,
+                w->windowPos.y + window_options_misc_widgets[WIDX_WIDEPATHING_LEVELS].top + 1);
+            int32_t maxWideLevels = static_cast<int32_t>(gConfigGeneral.maximum_wide_levels);
+            gfx_draw_string_left(
+                dpi, STR_COMMA16, &maxWideLevels, w->colours[1], w->windowPos.x + w->widgets[WIDX_WIDEPATHING_LEVELS].left + 1,
+                w->windowPos.y + w->widgets[WIDX_WIDEPATHING_LEVELS].top + 1);
             break;
         }
 

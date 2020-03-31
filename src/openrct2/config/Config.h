@@ -86,6 +86,7 @@ struct GeneralConfiguration
     bool steam_overlay_pause;
     bool show_real_names_of_guests;
     bool allow_early_completion;
+    int32_t maximum_wide_levels;
 
     // Loading and saving
     bool confirmation_prompt;

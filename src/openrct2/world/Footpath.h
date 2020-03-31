@@ -75,20 +75,20 @@ struct PathRailingsEntry
 struct ExtendedPathData
 {
 private:
-    bool used;
+    uint8_t HighestUsedLevel;
     TileElement* TilePointer;
     std::vector<uint8_t> WideFlags;
 
 public:
     ExtendedPathData(TileElement* tileIn)
     {
-        used = true;
+        HighestUsedLevel = 1;
         TilePointer = tileIn;
     }
 
     ExtendedPathData(TileElement* tileIn, uint8_t i)
     {
-        used = true;
+        HighestUsedLevel = 1;
         TilePointer = tileIn;
         WideFlags.push_back(i);
     }
@@ -103,7 +103,7 @@ public:
     void SetWideFlags(uint8_t flags);
     void SetWideFlags(uint8_t wideLevel, uint8_t flags);
 
-    int GetPathLevel() const;
+    uint8_t GetPathLevel() const;
     void SetPathLevel(uint8_t pathLevel);
     void IncreasePathLevelTo(uint8_t pathLevel);
     void DecreasePathLevelTo(uint8_t pathLevel);
@@ -111,8 +111,11 @@ public:
     TileElement* GetTilePointer() const;
     void SetTilePointer(TileElement* tileIn);
 
-    bool IsUsed() const;
-    void SetUsed(bool usedIn);
+    uint8_t GetHighestUsedLevel() const;
+    void SetHighestUsedLevel(uint8_t usedIn);
+    void IncreaseHighestUsedTo(uint8_t usedIn);
+
+    bool IsWideForAll(uint8_t wideLevel);
 
     void SetToZero();
 };
@@ -202,8 +205,8 @@ enum
     WIDE_GROUP_SECONDARY_DIRECTION,
     WIDE_GROUP_PRIMARY_DIRECTION_REVERSE,
     WIDE_GROUP_SECONDARY_DIRECTION_REVERSE,
-    WIDE_GROUP_FIRST_CORNER,
-    WIDE_GROUP_SECOND_CORNER,
+    WIDE_GROUP_FIRST_CORNER_CARDINAL,
+    WIDE_GROUP_SECOND_CORNER_CARDINAL,
     WIDE_GROUP_FINAL_CORNER_CARDINAL,
     WIDE_GROUP_THIRD_CORNER_CARDINAL,
 };
@@ -256,3 +259,6 @@ void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);
 
 ExtendedPathData* footpath_find_extended_data(TileElement* tileElement, std::vector<ExtendedPathData*>* extendedPathVector);
+void footpath_update_path_wide_flags_extended(
+    TileElement* tileElement, ExtendedPathData* extPath, uint8_t wideGroup, std::array<TileElement*, 8> pathList,
+    std::array<ExtendedPathData*, 8> extendedPathList, uint8_t currentLevel);

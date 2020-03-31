@@ -120,6 +120,7 @@ extern uint16_t gWidePathTileLoopY;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
 extern int16_t gMapSizeUnits;
+extern int16_t gMapSizeUnits;
 extern int16_t gMapSizeMinus2;
 extern int16_t gMapSize;
 extern int16_t gMapSizeMaxXY;
@@ -133,8 +134,8 @@ extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
-
 extern uint8_t gMaxWideLevels;
+extern bool gWideFlagsAreLoading;
 
 extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
