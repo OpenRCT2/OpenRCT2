@@ -370,6 +370,8 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
 {
     if ((*size) == 0)
         return;
+    if (string == nullptr)
+        return;
     size_t length = strnlen(string, *size);
     if (length < (*size))
     {
