@@ -701,6 +701,11 @@ static void window_scenery_mousedown(rct_window* w, rct_widgetindex widgetIndex,
 
     if (widgetIndex >= WIDX_SCENERY_TAB_1 && widgetIndex <= WIDX_SCENERY_TAB_20)
     {
+        // Reset scroll position if moving to another tab
+        if (gWindowSceneryActiveTabIndex != widgetIndex - WIDX_SCENERY_TAB_1)
+        {
+            w->scrolls[0].v_top = 0;
+        }
         gWindowSceneryActiveTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
         w->Invalidate();
         gSceneryPlaceCost = MONEY32_UNDEFINED;
