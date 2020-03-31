@@ -3209,7 +3209,6 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             }
             break;
         case WIDX_LAND:
-            
             // Custom setting to only change land style instead of raising or lowering land
             if (gLandPaintMode)
             {
