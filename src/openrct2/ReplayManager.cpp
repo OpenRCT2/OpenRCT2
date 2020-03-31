@@ -98,6 +98,8 @@ namespace OpenRCT2
         static constexpr uint16_t ReplayVersion = 3;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
         static constexpr int ReplayCompressionLevel = 9;
+        static constexpr int NormalRecordingChecksumTicks = 1;
+        static constexpr int SilentRecordingChecksumTicks = 40; // Same as network server
 
         enum class ReplayMode
         {
@@ -127,6 +129,11 @@ namespace OpenRCT2
             return _mode == ReplayMode::NORMALISATION;
         }
 
+        virtual bool ShouldDisplayNotice() const override
+        {
+            return IsRecording() && _recordType == RecordType::NORMAL;
+        }
+
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
         {
             if (_currentRecording == nullptr)
@@ -153,7 +160,7 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
-                _nextChecksumTick = gCurrentTicks + 1;
+                _nextChecksumTick = gCurrentTicks + ChecksumTicksDelta();
             }
 
             if (_mode == ReplayMode::RECORDING)
@@ -197,8 +204,14 @@ namespace OpenRCT2
             }
         }
 
-        virtual bool StartRecording(const std::string& name, uint32_t maxTicks /*= k_MaxReplayTicks*/) override
+        virtual bool StartRecording(
+            const std::string& name, uint32_t maxTicks /*= k_MaxReplayTicks*/, RecordType rt /*= RecordType::NORMAL*/) override
         {
+            // If using silent recording, discard whatever recording there is going on, even if a new silent recording is to be
+            // started.
+            if (_mode == ReplayMode::RECORDING && _recordType == RecordType::SILENT)
+                StopRecording(true);
+
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
                 return false;
 
@@ -213,9 +226,7 @@ namespace OpenRCT2
             else
                 replayData->tickEnd = k_MaxReplayTicks;
 
-            std::string replayName = String::StdFormat("%s.sv6r", name.c_str());
-            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
-            replayData->filePath = Path::Combine(outPath, replayName);
+            replayData->filePath = name;
 
             auto context = GetContext();
             auto& objManager = context->GetObjectManager();
@@ -239,17 +250,30 @@ namespace OpenRCT2
                 _mode = ReplayMode::RECORDING;
 
             _currentRecording = std::move(replayData);
+            _recordType = rt;
             _nextChecksumTick = gCurrentTicks + 1;
 
             return true;
         }
 
-        virtual bool StopRecording() override
+        virtual bool StopRecording(bool discard = false) override
         {
             if (_mode != ReplayMode::RECORDING && _mode != ReplayMode::NORMALISATION)
                 return false;
 
+            if (discard)
+            {
+                _currentRecording.reset();
+                _mode = ReplayMode::NONE;
+                return true;
+            }
+
             _currentRecording->tickEnd = gCurrentTicks;
+
+            {
+                rct_sprite_checksum checksum = sprite_checksum();
+                AddChecksum(gCurrentTicks, std::move(checksum));
+            }
 
             // Serialise Body.
             DataSerialiser recSerialiser(true);
@@ -409,7 +433,7 @@ namespace OpenRCT2
                 return false;
             }
 
-            if (!StartRecording(outFile, k_MaxReplayTicks))
+            if (!StartRecording(outFile, k_MaxReplayTicks, RecordType::NORMAL))
             {
                 StopPlayback();
                 return false;
@@ -421,6 +445,18 @@ namespace OpenRCT2
         }
 
     private:
+        int ChecksumTicksDelta() const
+        {
+            switch (_recordType)
+            {
+                default:
+                case RecordType::NORMAL:
+                    return NormalRecordingChecksumTicks;
+                case RecordType::SILENT:
+                    return SilentRecordingChecksumTicks;
+            }
+        }
+
         bool LoadReplayDataMap(ReplayRecordData& data)
         {
             try
@@ -787,6 +823,7 @@ namespace OpenRCT2
         uint32_t _commandId = 0;
         uint32_t _nextChecksumTick = 0;
         uint32_t _nextReplayTick = 0;
+        RecordType _recordType = RecordType::NORMAL;
     };
 
     std::unique_ptr<IReplayManager> CreateReplayManager()
