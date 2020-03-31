@@ -25,6 +25,7 @@
     <ProjectGuid>{B6808F71-30B4-4499-8FF6-0B1C86391842}</ProjectGuid>
     <RootNamespace>openrct2-cli</RootNamespace>
     <ProjectName>openrct2-cli</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>

@@ -3200,10 +3200,10 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             }
             break;
         case WIDX_LAND:
-            // Custom setting to only change land style instead of raising or lowering land
-            if (gLandPaintMode)
+            if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                // Custom setting to only change land style instead of raising or lowering land
+                if (gLandPaintMode)
                 {
                     auto surfaceSetStyleAction = SurfaceSetStyleAction(
                         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -3215,10 +3215,10 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
                     // cursor
                     gCurrentToolId = TOOL_CROSSHAIR;
                 }
-            }
-            else
-            {
-                window_top_toolbar_land_tool_drag(screenCoords.x, screenCoords.y);
+                else
+                {
+                    window_top_toolbar_land_tool_drag(screenCoords.x, screenCoords.y);
+                }
             }
             break;
         case WIDX_WATER:
