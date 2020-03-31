@@ -173,7 +173,7 @@ public:
                 _stream.SetPosition(_stream.GetPosition() - 1);
                 _stream.Read(&t6EntranceElement, sizeof(rct_td6_entrance_element));
                 TrackDesignEntranceElement entranceElement{};
-                entranceElement.z = (t6EntranceElement.z == (int8_t)(uint8_t)0x80) ? -1 : t6EntranceElement.z;
+                entranceElement.z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
                 entranceElement.direction = t6EntranceElement.direction & 0x7F;
                 entranceElement.x = t6EntranceElement.x;
                 entranceElement.y = t6EntranceElement.y;
