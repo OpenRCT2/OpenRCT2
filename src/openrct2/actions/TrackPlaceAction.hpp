@@ -450,7 +450,7 @@ public:
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
         {
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
-            auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
+            const auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
@@ -657,7 +657,7 @@ public:
                             tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                             tempLoc.y += CoordsDirectionDelta[tempDirection].y;
                             tempDirection = direction_reverse(tempDirection);
-                            wall_remove_intersecting_walls(mapLocWithClearance, tempDirection & 3);
+                            wall_remove_intersecting_walls({ tempLoc, mapLoc.z, clearanceZ }, tempDirection & 3);
                         }
                     }
                 }
