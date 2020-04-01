@@ -1681,12 +1681,16 @@ static void window_tile_inspector_invalidate(rct_window* w)
             const auto wallType = tileElement->AsWall()->GetEntryIndex();
             const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
             const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+            const bool hasAnimation = wallEntry.flags & WALL_SCENERY_IS_DOOR;
             // Wall slope dropdown
             widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
             widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
             widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
             widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
-            //widget_set_enabled(w, WIDX_WALL_SPINNER_HEIGHT, false);
+            // Wall animation frame
+            widget_set_enabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME, hasAnimation);
+            widget_set_enabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, hasAnimation);
+            widget_set_enabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, hasAnimation);
             break;
         }
         case TILE_INSPECTOR_PAGE_LARGE_SCENERY:
@@ -2096,9 +2100,14 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, nullptr, COLOUR_WHITE, x, y);
 
                 // Current animation frame
+                uint8_t colour = COLOUR_WHITE;
+                if (widget_is_disabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME))
+                {
+                    colour = w->colours[0] | COLOUR_FLAG_INSET;
+                }
                 x = w->windowPos.x + w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3;
                 int32_t animationFrame = tileElement->AsWall()->GetAnimationFrame();
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &animationFrame, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &animationFrame, colour, x, y);
                 break;
             }
 
