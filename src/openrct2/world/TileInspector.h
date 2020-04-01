@@ -46,6 +46,8 @@ GameActionResultPtr tile_inspector_path_toggle_edge(
 GameActionResultPtr tile_inspector_entrance_make_usable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
 GameActionResultPtr tile_inspector_wall_set_slope(
     const CoordsXY& loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting);
+GameActionResultPtr tile_inspector_wall_animation_frame_offset(
+    const CoordsXY& loc, int16_t elementIndex, int8_t animationFrameOffset, bool isExecuting);
 GameActionResultPtr tile_inspector_track_base_height_offset(
     const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting);
 GameActionResultPtr tile_inspector_track_set_block_brake(

@@ -29,6 +29,7 @@ enum class TileModifyType : uint8_t
     PathToggleEdge,
     EntranceMakeUsable,
     WallSetSlope,
+    WallSetAnimationFrame,
     TrackBaseHeightOffset,
     TrackSetChain,
     TrackSetChainBlock,
@@ -183,6 +184,13 @@ private:
                 const auto elementIndex = _value1;
                 const auto slopeValue = _value2;
                 res = tile_inspector_wall_set_slope(_loc, elementIndex, slopeValue, isExecuting);
+                break;
+            }
+            case TileModifyType::WallSetAnimationFrame:
+            {
+                const auto elementIndex = _value1;
+                const auto animationFrameOffset = _value2;
+                res = tile_inspector_wall_animation_frame_offset(_loc, elementIndex, animationFrameOffset, isExecuting);
                 break;
             }
             case TileModifyType::TrackBaseHeightOffset:

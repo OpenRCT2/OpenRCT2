@@ -3916,7 +3916,7 @@ enum
     STR_NOTIFICATION_RIDE_CASUALTIES = 6365,
     STR_NOTIFICATION_RIDE_VEHICLE_STALLED = 6366,
 
-    STR_TILE_INSPECTOR_WALL_OPEN_DOOR = 6367,
+    STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME = 6367,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
