@@ -212,7 +212,7 @@ public:
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_LOW);
             }
 
-            int32_t baseZ = mapLoc.z;
+            int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
 
             int32_t clearanceZ = trackBlock->var_07;
             if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
@@ -224,7 +224,7 @@ public:
                 clearanceZ += RideData5[ride->type].clearance_height;
             }
 
-            clearanceZ += baseZ;
+            clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
 
             if (clearanceZ > MAX_TRACK_HEIGHT)
             {
@@ -454,6 +454,7 @@ public:
 
             auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
+            int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
             int32_t clearanceZ = trackBlock->var_07;
             if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
             {
@@ -464,8 +465,8 @@ public:
                 clearanceZ += RideData5[ride->type].clearance_height;
             }
 
-            clearanceZ = clearanceZ + mapLoc.z;
-            const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, mapLoc.z, clearanceZ);
+            clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+            const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
             uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
@@ -515,7 +516,7 @@ public:
             if (surfaceElement == nullptr)
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-            int32_t supportHeight = mapLoc.z - surfaceElement->GetBaseZ();
+            int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
             if (supportHeight < 0)
             {
                 supportHeight = (10 * COORDS_Z_STEP);
@@ -657,7 +658,7 @@ public:
                             tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                             tempLoc.y += CoordsDirectionDelta[tempDirection].y;
                             tempDirection = direction_reverse(tempDirection);
-                            wall_remove_intersecting_walls(mapLocWithClearance, tempDirection & 3);
+                            wall_remove_intersecting_walls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
                         }
                     }
                 }
