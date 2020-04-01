@@ -1687,7 +1687,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
             widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
             widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
-            // Wall animation frame
+            // Wall animation frame spinner
             widget_set_enabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME, hasAnimation);
             widget_set_enabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, hasAnimation);
             widget_set_enabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, hasAnimation);
