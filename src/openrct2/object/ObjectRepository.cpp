@@ -656,8 +656,16 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
         return false;
     }
 
-    // Validate the object is not one from base game or expansion pack
-    return !(object->ObjectEntry.flags & 0xF0);
+    switch (object->GetFirstSourceGame())
+    {
+        case OBJECT_SOURCE_RCT2:
+        case OBJECT_SOURCE_WACKY_WORLDS:
+        case OBJECT_SOURCE_TIME_TWISTER:
+        case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+            return false;
+        default:
+            return true;
+    }
 }
 
 const rct_object_entry* object_list_find(rct_object_entry* entry)
