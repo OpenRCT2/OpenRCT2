@@ -2149,6 +2149,10 @@ private:
                     case RCT1_SCENERY_TULIPS_2:
                         dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
                         dst2->SetSecondaryColour(COLOUR_YELLOW);
+                        break;
+                    case RCT1_SCENERY_SMALL_RED_GARDENS:
+                        dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
+                        break;
                 }
 
                 break;
