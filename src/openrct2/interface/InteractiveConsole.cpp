@@ -13,6 +13,7 @@
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
@@ -22,6 +23,7 @@
 #include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
@@ -1365,6 +1367,14 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
     }
 
     std::string name = argv[0];
+
+    if (!String::EndsWith(name, ".sv6r", true))
+    {
+        name += ".sv6r";
+    }
+    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+        OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);
+    name = Path::Combine(outPath, name);
 
     // If ticks are specified by user use that otherwise maximum ticks specified by const.
     uint32_t maxTicks = OpenRCT2::k_MaxReplayTicks;

@@ -24,6 +24,8 @@
 #        error Breakpad support not implemented yet for this platform
 #    endif
 
+#    include "../Game.h"
+#    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
@@ -108,10 +110,12 @@ static bool OnCrash(
     wchar_t saveFilePath[MAX_PATH];
     wchar_t configFilePath[MAX_PATH];
     wchar_t saveFilePathGZIP[MAX_PATH];
+    wchar_t recordFilePathNew[MAX_PATH];
     swprintf_s(dumpFilePath, std::size(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
     swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
     swprintf_s(configFilePath, std::size(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
     swprintf_s(saveFilePathGZIP, std::size(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
+    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.sv6r", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
@@ -140,6 +144,8 @@ static bool OnCrash(
         fclose(input);
         fclose(dest);
     }
+
+    bool with_record = stop_silent_record();
 
     // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
@@ -201,6 +207,20 @@ static bool OnCrash(
         uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
     }
 
+    if (with_record)
+    {
+        auto sv6rPathW = String::ToWideChar(gSilentRecordingName);
+        bool record_copied = CopyFileW(sv6rPathW.c_str(), recordFilePathNew, true);
+        if (record_copied)
+        {
+            uploadFiles[L"attachment_replay.sv6r"] = recordFilePathNew;
+        }
+        else
+        {
+            with_record = false;
+        }
+    }
+
     if (gOpenRCT2SilentBreakpad)
     {
         int error;
@@ -243,7 +263,7 @@ static bool OnCrash(
     if (SUCCEEDED(coInitializeResult))
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
-        LPITEMIDLIST files[3];
+        LPITEMIDLIST files[4];
         uint32_t numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);
@@ -253,6 +273,10 @@ static bool OnCrash(
         if (savedGameDumped)
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
+        }
+        if (with_record)
+        {
+            files[numFiles++] = ILCreateFromPathW(recordFilePathNew);
         }
         if (pidl != nullptr)
         {

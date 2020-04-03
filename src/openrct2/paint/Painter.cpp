@@ -64,7 +64,7 @@ void Painter::Paint(IDrawingEngine& de)
 
     if (replayManager->IsReplaying())
         text = "Replaying...";
-    else if (replayManager->IsRecording())
+    else if (replayManager->ShouldDisplayNotice())
         text = "Recording...";
     else if (replayManager->IsNormalising())
         text = "Normalising...";

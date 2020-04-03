@@ -587,6 +587,12 @@ namespace OpenRCT2
                         {
                             network_send_map();
                         }
+#ifdef USE_BREAKPAD
+                        if (network_get_mode() == NETWORK_MODE_NONE)
+                        {
+                            start_silent_record();
+                        }
+#endif
                         return true;
                     }
                     catch (const ObjectLoadException& e)
