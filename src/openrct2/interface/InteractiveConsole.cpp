@@ -1701,8 +1701,7 @@ static constexpr const console_command console_command_table[] = {
                                     "Loading a scenery group will not load its associated objects.\n"
                                     "This is a safer method opposed to \"open object_selection\".",
                                     "load_object <objectfilenodat>" },
-	{ "load_park", cc_load_park, "Load park", "load_park [name]" },
- 								
+    { "load_park", cc_load_park, "Load park", "load_park [name]" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
     { "open", cc_open, "Opens the window with the give name.", "open <window>." },
     { "quit", cc_close, "Closes the console.", "quit" },
