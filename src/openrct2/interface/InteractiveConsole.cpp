@@ -1325,7 +1325,7 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
         platform_get_user_directory(savePath, "save", sizeof(savePath));
         safe_strcat_path(savePath, argv[0].c_str(), sizeof(savePath));
         path_append_extension(savePath, ".sv6", sizeof(savePath));
-		context_load_park_from_file(savePath);
+        context_load_park_from_file(savePath);
     }
     return 1;
 }
