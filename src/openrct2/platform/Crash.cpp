@@ -248,10 +248,13 @@ static bool OnCrash(
         {
             const wchar_t* MessageFormat2 = L"There was a problem while uploading the dump. Please upload it manually to "
                                             L"GitHub. It should be highlighted for you once you close this message.\n"
+                                            L"It might be because you are using outdated build and we have disabled its "
+                                            L"access token. Make sure you are running recent version.\n"
+                                            L"Dump file = %s\n"
                                             L"Please provide following information as well:\n"
                                             L"Error code = %d\n"
                                             L"Response = %s";
-            swprintf_s(message, MessageFormat2, error, response.c_str());
+            swprintf_s(message, MessageFormat2, dumpFilePath, error, response.c_str());
             MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
         }
         else
