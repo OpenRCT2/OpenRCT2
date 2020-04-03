@@ -327,17 +327,15 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
             if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsWall()->GetBanner();
-                if (banner != nullptr)
-                {
-                    size_t argPos = 0;
-                    set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                    argPos += sizeof(rct_string_id);
-                    argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
-                    set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                    argPos += sizeof(rct_string_id);
-                    set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
-                    return info->type;
-                }
+
+                size_t argPos = 0;
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                argPos += sizeof(rct_string_id);
+                argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                argPos += sizeof(rct_string_id);
+                set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
+                return info->type;
             }
             break;
 
@@ -346,17 +344,15 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsLargeScenery()->GetBanner();
-                if (banner != nullptr)
-                {
-                    size_t argPos = 0;
-                    set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                    argPos += sizeof(rct_string_id);
-                    argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
-                    set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                    argPos += sizeof(rct_string_id);
-                    set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
-                    return info->type;
-                }
+
+                size_t argPos = 0;
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                argPos += sizeof(rct_string_id);
+                argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                argPos += sizeof(rct_string_id);
+                set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
+                return info->type;
             }
             break;
 
