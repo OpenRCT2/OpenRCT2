@@ -47,7 +47,8 @@ void TerrainEdgeObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32
 
 void TerrainEdgeObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
-    // auto properties = json_object_get(root, "properties");
+    auto properties = json_object_get(root, "properties");
+    HasDoors = ObjectJsonHelpers::GetBoolean(properties, "hasDoors", false);
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());

@@ -386,11 +386,22 @@ static uint32_t get_edge_image(uint8_t index, uint8_t type)
     return result;
 }
 
-static uint32_t get_tunnel_image(uint8_t index, uint8_t type)
+static uint32_t get_tunnel_image(ObjectEntryIndex index, uint8_t type)
 {
-    static constexpr uint32_t offsets[] = {
-        36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 36, 48, 60, 72,
-    };
+    static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
+                                                             36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
+
+    bool hasDoors = false;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, index);
+    if (obj != nullptr)
+    {
+        auto tobj = static_cast<TerrainEdgeObject*>(obj);
+        hasDoors = tobj->HasDoors;
+    }
+
+    if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
+        type = TUNNEL_0;
 
     uint32_t result = 0;
     if (type < std::size(offsets))
