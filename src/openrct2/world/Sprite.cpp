@@ -423,7 +423,7 @@ static void RemoveSpriteFromSpriteLists(SpriteBase* sprite)
         auto res = std::lower_bound(list.begin(), list.end(), sprite, [](const SpriteBase* a, SpriteBase* b) {
             return a->sprite_index < b->sprite_index;
         });
-        if (res != list.end())
+        if (res != list.end() && (*res)->sprite_index == sprite->sprite_index)
         {
             list.erase(res);
         }
@@ -799,6 +799,12 @@ void sprite_remove(SpriteBase* sprite)
         spriteIndex = &quadrantSprite->next_in_quadrant;
     }
     *spriteIndex = sprite->next_in_quadrant;
+
+    // Debug check
+    for (int i = 1; i < SPRITE_LIST_COUNT; ++i)
+    {
+        assert(gSpriteLists[i].size() == gSpriteListCount[i]);
+    }
 }
 
 static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
@@ -889,7 +895,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
     {
         rct_sprite* sprite = get_sprite(spriteIndex);
         uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
-        if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             Litter* litter = &sprite->litter;
 
@@ -946,11 +952,10 @@ uint16_t remove_floating_sprites()
  */
 static bool sprite_should_tween(rct_sprite* sprite)
 {
-    switch (sprite->generic.linked_list_index)
+    switch (sprite->generic.sprite_identifier)
     {
-        case SPRITE_LIST_PEEP:
-        case SPRITE_LIST_TRAIN_HEAD:
-        case SPRITE_LIST_VEHICLE:
+        case SPRITE_IDENTIFIER_PEEP:
+        case SPRITE_IDENTIFIER_VEHICLE:
             return true;
     }
     return false;

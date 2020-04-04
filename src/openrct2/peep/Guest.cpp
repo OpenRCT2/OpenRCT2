@@ -5471,8 +5471,7 @@ void Guest::UpdateWalking()
     for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
-
-        if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
+        if (!sprite->IsPeep())
             continue;
 
         if (sprite->peep.state != PEEP_STATE_WATCHING)
@@ -6054,7 +6053,7 @@ bool Guest::UpdateWalkingFindBench()
     {
         sprite = get_sprite(sprite_id);
 
-        if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
+        if (!sprite->IsPeep())
             continue;
 
         if (sprite->peep.state != PEEP_STATE_SITTING)
@@ -6248,7 +6247,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
     {
         sprite = get_sprite(sprite_id);
 
-        if ((sprite->generic.linked_list_index != SPRITE_LIST_PEEP) || (sprite->peep.state != PEEP_STATE_SITTING)
+        if (!sprite->IsPeep() || (sprite->peep.state != PEEP_STATE_SITTING)
             || (peep->z != sprite->peep.z))
         {
             continue;
