@@ -203,7 +203,13 @@ void WallElement::SetAnimationIsBackwards(bool isBackwards)
 
 void WallElement::SetRawRCT1Data(uint32_t rawData)
 {
-    colour_3 = rawData & 0xFF;
-    colour_1 = (rawData >> 8) & 0xFF;
-    animation = (rawData >> 16) & 0xFF;
+    entryIndex = rawData & 0xFF;
+    colour_3 = (rawData >> 8) & 0xFF;
+    colour_1 = (rawData >> 16) & 0xFF;
+    animation = (rawData >> 24) & 0xFF;
+}
+
+uint8_t WallElement::GetRCT1Slope() const
+{
+    return entryIndex & 0b00011111;
 }
