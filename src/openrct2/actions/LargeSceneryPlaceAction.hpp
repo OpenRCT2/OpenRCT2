@@ -211,6 +211,7 @@ public:
     {
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
