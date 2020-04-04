@@ -371,18 +371,14 @@ void ResetSpriteLists()
     for (auto id = 0; id < MAX_SPRITES; ++id)
     {
         SpriteBase* sprite = &(get_sprite(id))->generic;
-        // Free sprites can often have the wrong SPRITE_IDENTIFIER set
-        // Move this code into S6/S4 import
-        if (sprite->linked_list_index == SPRITE_LIST_FREE || sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
-        {
-            _freeSprites.push_back(id);
-            continue;
-        }
 
         // Refactor to use type with a type lookup
         SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
         switch (sprite->sprite_identifier)
         {
+            case SPRITE_IDENTIFIER_NULL:
+                _freeSprites.push_back(id);
+                continue;
             case SPRITE_IDENTIFIER_VEHICLE:
             {
                 auto vehicle = static_cast<Vehicle*>(sprite);
@@ -414,18 +410,23 @@ void ResetSpriteLists()
 
 static void AddSpriteToSpriteList(SpriteBase* sprite, SPRITE_LIST list)
 {
-    auto res = std::upper_bound(gSpriteLists[list].begin(), gSpriteLists[list].end(), sprite,[](const SpriteBase* a, SpriteBase* b){
-        return a->sprite_index < b->sprite_index;});
+    auto res = std::upper_bound(
+        gSpriteLists[list].begin(), gSpriteLists[list].end(), sprite,
+        [](const SpriteBase* a, SpriteBase* b) { return a->sprite_index < b->sprite_index; });
     gSpriteLists[list].insert(res, sprite);
 }
 
 static void RemoveSpriteFromSpriteLists(SpriteBase* sprite)
 {
-    auto& list = gSpriteLists[sprite->linked_list_index];
-    auto res = std::find(list.begin(), list.end(), sprite);
-    if (res != list.end())
+    for (auto& list : gSpriteLists)
     {
-        list.erase(res);
+        auto res = std::lower_bound(list.begin(), list.end(), sprite, [](const SpriteBase* a, SpriteBase* b) {
+            return a->sprite_index < b->sprite_index;
+        });
+        if (res != list.end())
+        {
+            list.erase(res);
+        }
     }
 }
 
