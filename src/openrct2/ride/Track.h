@@ -88,6 +88,7 @@ enum
 
 #define MAX_STATION_PLATFORM_LENGTH 32
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
+constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
 enum
 {

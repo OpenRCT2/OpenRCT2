@@ -1498,20 +1498,18 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
             dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
             dst2->SetIsIndestructible(src2->IsIndestructible());
+            dst2->SetSeatRotation(src2->GetSeatRotation());
+            // Skipping IsHighlighted()
 
+            // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
             auto ride = get_ride(dst2->GetRideIndex());
             if (ride)
             {
-                if (ride->type == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
-                {
-                    dst2->SetSeatRotation(src2->GetSeatRotation());
-                }
-                else if (ride->type == RIDE_TYPE_MAZE)
+                if (ride->type == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
             }
-            // Skipping IsHighlighted()
 
             break;
         }

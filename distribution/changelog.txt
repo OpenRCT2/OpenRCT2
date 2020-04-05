@@ -12,6 +12,7 @@
 - Fix: [#11063] Scrolling position persists when switching tabs in the scenery window.
 - Fix: [#11126] Cannot place Frightmare track design.
 - Fix: [#11208] Cannot export parks with RCT2 DLC objects.
+- Fix: [#11230] Seat Rotation not imported correctly for hacked rides.
 - Fix: Small red gardens in RCT1 saves are imported in the wrong colour.
 - Improved: [#11157] Slimmer virtual floor lines.
 
