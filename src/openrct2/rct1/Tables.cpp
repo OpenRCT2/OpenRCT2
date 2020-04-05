@@ -1177,104 +1177,63 @@ namespace RCT1
     {
         static constexpr const char * map[] =
         {
-            "WMF     ",
-            "WMFG    ",
-            "WRW     ",
-            "WEW     ",
-            "WHG     ",
-            "WHGG    ",
-            "WCW1    ",
-            "WCW2    ",
-            "WSW     ",
-            "WSWG    ",
-            "WMW     ",
-            "WALLGL16",
-            "WFW1    ",
-            "WFWG    ",
-            "WPW1    ",
-            "WPW2    ",
-            "WPF     ",
-            "WPFG    ",
-            "WWTW    ",
-            "WMWW    ",
-            "WSW1    ",
-            "WSW2    ",
-            "WGW2    ",
-            "WBW     ",
-            "WBR1    ",
-            "WBRG    ",
-            "WFW1    ",
-            "WFW1    ",
-            "WBR2    ",
-            "WBR3    ",
-            "WPW3    ",
-            "WJF     ",
-            "WCH     ",
-            "WCHG    ",
-            "WC1     ",
-            "WC2     ",
-            "WC3     ",
-            "WC4     ",
-            "WC5     ",
-            "WC6     ",
-            "WC7     ",
-            "WC8     ",
-            "WC9     ",
-            "WC10    ",
-            "WC11    ",
-            "WC12    ",
-            "WC13    ",
-            "WC14    ",
-            "WC15    ",
-            "WC16    ",
-            "WC17    ",
-            "WC18    ",
-            "WALLBRDR",
-            "WALLBR32",
-            "WALLBR16",
-            "WALLBR8 ",
-            "WALLCF8 ",
-            "WALLCF16",
-            "WALLCF32",
-            "WALLBB8 ",
-            "WALLBB16",
-            "WALLBB32",
-            "WALLRS8 ",
-            "WALLRS16",
-            "WALLRS32",
-            "WALLCB8 ",
-            "WALLCB16",
-            "WALLCB32",
-            "WALLGL8 ",
-            "WALLGL32",
-            "WALLWD8 ",
-            "WALLWD16",
-            "WALLWD32",
-            "WALLTN32",
-            "WALLJN32",
-            "WALLMN32",
-            "WALLSP32",
-            "WALLPG32",
-            "WALLU132",
-            "WALLU232",
-            "WALLCZ32",
-            "WALLCW32",
-            "WALLCY32",
-            "WALLCX32",
-            "WBR1A   ",
-            "WBR2A   ",
-            "WRWA    ",
-            "WWTWA   ",
-            "WALLIG16",
-            "WALLIG24",
-            "WALLCO16",
-            "WALLCFDR",
-            "WALLCBDR",
-            "WALLBRWN",
-            "WALLCFWN",
-            "WALLCBWN",
+            "WMF     ", // RCT1_WALL_TYPE_MESH_FENCE         
+            "WMFG    ", // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE         
+            "WRW     ", // RCT1_WALL_TYPE_ROMAN         
+            "WEW     ", // RCT1_WALL_TYPE_EGYPTIAN         
+            "WHG     ", // RCT1_WALL_TYPE_HEDGE         
+            "WHGG    ", // RCT1_WALL_TYPE_HEDGE_WITH_GATE         
+            "WCW1    ", // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS         
+            "WCW2    ", // RCT1_WALL_TYPE_RED_PLAYING_CARDS         
+            "WSW     ", // RCT1_WALL_TYPE_WHITE_RAILING         
+            "WSWG    ", // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE         
+            "WMW     ", // RCT1_WALL_TYPE_MARTIAN         
+            "WALLGL16", // RCT1_WALL_TYPE_GLASS_SMOOTH         
+            "WFW1    ", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE         
+            "WFWG    ", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE         
+            "WPW1    ", // RCT1_WALL_TYPE_WOODEN_POST_FENCE         
+            "WPW2    ", // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE         
+            "WPF     ", // RCT1_WALL_TYPE_BARBED_WIRE         
+            "WPFG    ", // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE         
+            "WWTW    ", // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE         
+            "WMWW    ", // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE         
+            "WSW1    ", // RCT1_WALL_TYPE_IRON_RAILING         
+            "WSW2    ", // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE         
+            "WGW2    ", // RCT1_WALL_TYPE_GLASS_PANELS         
+            "WBW     ", // RCT1_WALL_TYPE_BONE_FENCE         
+            "WBR1    ", // RCT1_WALL_TYPE_BRICK         
+            "WBRG    ", // RCT1_WALL_TYPE_BRICK_WITH_GATE         
+            "WFW1    ", // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE         
+            "WFW1    ", // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE         
+            "WBR2    ", // RCT1_WALL_TYPE_STONE         
+            "WBR3    ", // RCT1_WALL_TYPE_STONE_WITH_GATE         
+            "WPW3    ", // RCT1_WALL_TYPE_WOODEN_FENCE         
+            "WJF     ", // RCT1_WALL_TYPE_JUNGLE         
+            "WCH     ", // RCT1_WALL_TYPE_CONIFER_HEDGE         
+            "WCHG    ", // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE         
+            "WC1     ", // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE         
+            "WC2     ", // RCT1_WALL_TYPE_SMALL_GREY_CASTLE         
+            "WC3     ", // RCT1_WALL_TYPE_ROMAN_COLUMN         
+            "WC4     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE         
+            "WC5     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS         
+            "WC6     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE         
+            "WC7     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW         
+            "WC8     ", // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE         
+            "WC9     ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE         
+            "WC10    ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS         
+            "WC11    ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE         
+            "WC12    ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW         
+            "WC13    ", // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE         
+            "WC14    ", // RCT1_WALL_TYPE_CREEPY         
+            "WC15    ", // RCT1_WALL_TYPE_CREEPY_GATE         
+            "WC16    ", // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW         
+            "WC17    ", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW         
+            "WC18    ", // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW
         };
-        return map[wallType];
+        if (wallType < std::size(map))
+            return map[wallType];
+        else
+            return map[0];
     }
 
     const char * GetPathObject(uint8_t pathType)

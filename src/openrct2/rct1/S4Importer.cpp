@@ -51,6 +51,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "RCT1.h"
 #include "Tables.h"
 
@@ -1991,7 +1992,7 @@ private:
 
         // All saved in "flags"
         dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
-        dst->SetGhost(src->IsGhost());
+        // Skipping IsGhost, which appears to use a different flag in RCT1.
         dst->SetLastForTile(src->IsLastForTile());
 
         dst->SetBaseZ(src->base_height * RCT1_COORDS_Z_STEP);
@@ -2187,9 +2188,7 @@ private:
                 auto dst2 = dst->AsWall();
                 auto src2 = src->AsWall();
 
-                dst2->SetEntryIndex(src2->GetEntryIndex());
                 dst2->SetSlope(src2->GetSlope());
-                dst2->SetPrimaryColour(RCT1::GetColour(src2->GetRCT1WallColour()));
                 dst2->SetRawRCT1Data(src2->GetRawRCT1WallTypeData());
 
                 break;
@@ -2763,10 +2762,7 @@ private:
 
     void FixWalls()
     {
-        // The user might attempt to load a save while in pause mode.
-        // Since we cannot place walls in pause mode without a cheat, temporarily turn it on.
-        bool oldCheatValue = gCheatsBuildInPauseMode;
-        gCheatsBuildInPauseMode = true;
+        std::vector<TileElement> wallsOnTile = {};
 
         for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
@@ -2779,40 +2775,55 @@ private:
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
                     {
-                        TileElement originalTileElement = *tileElement;
+                        wallsOnTile.push_back(*tileElement);
                         tile_element_remove(tileElement);
-
-                        for (int32_t edge = 0; edge < 4; edge++)
-                        {
-                            int32_t type = originalTileElement.AsWall()->GetRCT1WallType(edge);
-
-                            if (type != -1)
-                            {
-                                int32_t colourA = RCT1::GetColour(originalTileElement.AsWall()->GetRCT1WallColour());
-                                int32_t colourB = 0;
-                                int32_t colourC = 0;
-                                ConvertWall(&type, &colourA, &colourB);
-
-                                type = _wallTypeToEntryMap[type];
-
-                                auto location = TileCoordsXYZ(x, y, 0).ToCoordsXYZ();
-                                auto wallPlaceAction = WallPlaceAction(type, location, edge, colourA, colourB, colourC);
-                                wallPlaceAction.SetFlags(
-                                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                                    | GAME_COMMAND_FLAG_PATH_SCENERY);
-                                GameActions::Execute(&wallPlaceAction);
-                            }
-                        }
-                        break;
+                        tileElement--;
                     }
                 } while (!(tileElement++)->IsLastForTile());
+
+                for (auto originalTileElement : wallsOnTile)
+                {
+                    auto location = TileCoordsXYZ(x, y, 0).ToCoordsXYZ();
+
+                    for (int32_t edge = 0; edge < 4; edge++)
+                    {
+                        int32_t type = originalTileElement.AsWall()->GetRCT1WallType(edge);
+                        auto slope = originalTileElement.AsWall()->GetRCT1Slope();
+
+                        if (type != -1)
+                        {
+                            colour_t colourA = RCT1::GetColour(originalTileElement.AsWall()->GetRCT1WallColour());
+                            colour_t colourB = COLOUR_BLACK;
+                            colour_t colourC = COLOUR_BLACK;
+                            ConvertWall(&type, &colourA, &colourB);
+
+                            type = _wallTypeToEntryMap[type];
+                            auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3] & ~EDGE_SLOPE_ELEVATED;
+
+                            auto element = tile_element_insert(location, originalTileElement.GetOccupiedQuadrants());
+                            element->SetType(TILE_ELEMENT_TYPE_WALL);
+                            element->SetDirection(edge);
+                            element->SetBaseZ(originalTileElement.GetBaseZ());
+                            element->SetClearanceZ(originalTileElement.GetClearanceZ());
+
+                            auto wallElement = element->AsWall();
+                            wallElement->SetEntryIndex(type);
+                            wallElement->SetPrimaryColour(colourA);
+                            wallElement->SetSecondaryColour(colourB);
+                            wallElement->SetTertiaryColour(colourC);
+                            wallElement->SetBannerIndex(BANNER_INDEX_NULL);
+                            wallElement->SetAcrossTrack(originalTileElement.AsWall()->IsAcrossTrack());
+                            wallElement->SetAnimationIsBackwards(originalTileElement.AsWall()->AnimationIsBackwards());
+                            wallElement->SetSlope(edgeSlope);
+                        }
+                    }
+                }
+                wallsOnTile.clear();
             }
         }
-
-        gCheatsBuildInPauseMode = oldCheatValue;
     }
 
-    void ConvertWall(int32_t* type, int32_t* colourA, int32_t* colourB)
+    void ConvertWall(int32_t* type, colour_t* colourA, colour_t* colourB)
     {
         switch (*type)
         {
@@ -2837,11 +2848,11 @@ private:
                 *colourB = COLOUR_WHITE;
                 break;
             case RCT1_WALL_TYPE_SMALL_GREY_CASTLE:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_CROSS:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_GATE:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_WINDOW:
-            case RCT1_WALL_TYPE_MEDIUM_CREY_CASTLE:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW:
+            case RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE:
                 *colourA = COLOUR_GREY;
                 break;
         }
@@ -3118,5 +3129,5 @@ int32_t WallElement::GetRCT1WallType(int32_t edge) const
 
 colour_t WallElement::GetRCT1WallColour() const
 {
-    return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
+    return (((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5)) & 31;
 }
