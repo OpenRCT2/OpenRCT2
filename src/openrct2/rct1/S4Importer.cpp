@@ -1193,8 +1193,8 @@ private:
         dst->bank_rotation = src->bank_rotation;
 
         // Seat rotation was not in RCT1
-        dst->target_seat_rotation = 4;
-        dst->seat_rotation = 4;
+        dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;
+        dst->seat_rotation = DEFAULT_SEAT_ROTATION;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
@@ -2103,6 +2103,8 @@ private:
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
+                dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))
@@ -2114,11 +2116,11 @@ private:
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
 
+                // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                 if (_s4.rides[src2->GetRideIndex()].type == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
-                // Skipping IsHighlighted()
 
                 break;
             }
