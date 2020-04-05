@@ -94,6 +94,7 @@ static const ShortcutStringPair ShortcutList[] =
     { SHORTCUT_PAUSE_GAME,                            STR_SHORTCUT_PAUSE_GAME },
     { SHORTCUT_ZOOM_VIEW_OUT,                         STR_SHORTCUT_ZOOM_VIEW_OUT },
     { SHORTCUT_ZOOM_VIEW_IN,                          STR_SHORTCUT_ZOOM_VIEW_IN },
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
     { SHORTCUT_ROTATE_VIEW_CLOCKWISE,                 STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE },
     { SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE,             STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE },
     { SHORTCUT_ROTATE_CONSTRUCTION_OBJECT,            STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT },
@@ -107,6 +108,7 @@ static const ShortcutStringPair ShortcutList[] =
     { SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE,           STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE },
     { SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE,    STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE },
     { SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE,          STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE },
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
     { SHORTCUT_ADJUST_LAND,                           STR_SHORTCUT_ADJUST_LAND },
     { SHORTCUT_ADJUST_WATER,                          STR_SHORTCUT_ADJUST_WATER },
     { SHORTCUT_BUILD_SCENERY,                         STR_SHORTCUT_BUILD_SCENERY },
@@ -265,6 +267,10 @@ static void window_shortcut_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     if (selected_item >= w->no_list_items)
         return;
 
+    // Is this a separator?
+    if (ShortcutList[selected_item].ShortcutId == SHORTCUT_UNDEFINED)
+        return;
+
     auto& shortcut = ShortcutList[selected_item];
     window_shortcut_change_open(shortcut.ShortcutId, shortcut.StringId);
 }
@@ -292,6 +298,10 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
+    // TODO: the line below is a workaround for what is presumably a bug with dpi->width
+    //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
+    const auto scrollWidth = w->width - SCROLLBAR_WIDTH - 10;
+
     for (int32_t i = 0; i < w->no_list_items; ++i)
     {
         int32_t y = 1 + i * SCROLLABLE_ROW_HEIGHT;
@@ -305,11 +315,20 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             continue;
         }
 
+        // Is this a separator?
+        if (ShortcutList[i].ShortcutId == SHORTCUT_UNDEFINED)
+        {
+            const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
+            gfx_fill_rect(dpi, 0, top, scrollWidth, top, ColourMapA[w->colours[0]].mid_dark);
+            gfx_fill_rect(dpi, 0, top + 1, scrollWidth, top + 1, ColourMapA[w->colours[0]].lightest);
+            continue;
+        }
+
         int32_t format = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y - 1, 800, y + (SCROLLABLE_ROW_HEIGHT - 2), PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), PALETTE_DARKEN_1);
         }
 
         char keybinding[128];
