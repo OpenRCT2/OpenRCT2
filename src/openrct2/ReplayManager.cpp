@@ -734,9 +734,6 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         void CheckState()
         {
-            if (_nextChecksumTick != gCurrentTicks)
-                return;
-
             uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
