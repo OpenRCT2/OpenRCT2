@@ -179,19 +179,19 @@ Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/b
 A list of bugs can be found on the [issue tracker](https://github.com/OpenRCT2/OpenRCT2/issues). Feel free to work on any bug and submit a pull request to the develop branch with the fix. Mentioning that you intend to fix a bug on the issue will prevent other people from trying as well.
 
 ## 4.2 New features
-Please talk to the OpenRCT2 team first before starting to develop a new feature. We may already have plans or reasons against it, therefore contacting us will allow us to help you or prevent you from wasting any time. You can talk to us via gitter, see links at the top of this page.
+Please talk to the OpenRCT2 team first before starting to develop a new feature. We may already have plans or reasons against something that you'd like to work on, therefore contacting us will allow us to help you or prevent you from wasting any time. You can talk to us via Discord, see links at the top of this page.
 
 ## 4.3 Translation
-You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
+You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions in the [#localisation channel on Discord](https://discordapp.com/invite/sxnrvX9) and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
 
 ## 4.4 Graphics
-You can help create new graphics for the game by visiting the [OpenGraphics project](https://gitter.im/OpenRCT2/OpenGraphics). 3D modellers needed!
+You can help create new graphics for the game by visiting the [OpenGraphics project](https://github.com/OpenRCT2/OpenGraphics). 3D modellers needed!
 
 ## 4.5 Audio
-You can help create the music and sound effects for the game, drop by [the OpenMusic chat](https://gitter.im/OpenRCT2/OpenMusic) to find out more.
+You can help create the music and sound effects for the game. check out the OpenMusic repository and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
 
 ## 4.6 Scenarios
-We also need need scenarios to distribute with the game, when the time comes. For that, we need talented scenario makers! Come chat with us [over here](https://gitter.im/PFCKrutonium/OpenRCT2-OpenScenarios)!
+We also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the OpenScenarios repository [over here](https://github.com/PFCKrutonium/OpenRCT2-OpenScenarios).
 
 ---
 
