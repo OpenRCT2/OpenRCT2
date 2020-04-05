@@ -196,6 +196,8 @@ void S6Exporter::Export()
     _s6.scenario_srand_0 = state.s0;
     _s6.scenario_srand_1 = state.s1;
 
+    // Map elements must be reorganised prior to saving otherwise save may be invalid
+    map_reorganise_elements();
     ExportTileElements();
     ExportSprites();
     ExportParkName();
