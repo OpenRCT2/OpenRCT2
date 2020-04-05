@@ -15,7 +15,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ---
 
 ### Chat
-You only need a [GitHub](https://github.com/), [GitLab](https://gitlab.com), or [Twitter](https://twitter.com) account to access these channels.
+Chat takes place on Discord. You will need to create a Discord account if you don't yet have one.
 
 If you want to help *make* the game, join the developer channel.
 
@@ -25,8 +25,8 @@ If you want to help translate the game to your language, please stop by the Loca
 
 | Language | Non Developer | Developer | Localisation |
 |----------|---------------|-----------|--------------|
-| English | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev) | [![Gitter](https://img.shields.io/badge/gitter-development-yellowgreen.svg)](https://gitter.im/OpenRCT2/OpenRCT2) | [![Gitter](https://img.shields.io/badge/gitter-localisation-green.svg)](https://gitter.im/OpenRCT2/Localisation) |
-| Nederlands | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/Nederlands) | | |
+| English | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/ZXZd8D8) | [![Discord](https://img.shields.io/badge/discord-development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-localisation-green.svg)](https://discord.gg/sxnrvX9) |
+| Nederlands | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/cQYSXzW) | | |
 
 ---
 
