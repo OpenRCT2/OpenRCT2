@@ -183,6 +183,8 @@ enum
     PTD_OPERATION_REMOVE_GHOST,
 };
 
+static constexpr uint8_t PTD_OPERATION_FLAG_IS_REPLAY = (1 << 7);
+
 enum
 {
     MAZE_ELEMENT_TYPE_MAZE_TRACK = 0,

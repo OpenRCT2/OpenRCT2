@@ -211,7 +211,10 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         {
             operation = PTD_OPERATION_PLACE;
         }
-
+        if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
+        {
+            operation |= PTD_OPERATION_FLAG_IS_REPLAY;
+        }
         cost = place_virtual_track(_td, operation, placeScenery, ride, _loc);
     }
 

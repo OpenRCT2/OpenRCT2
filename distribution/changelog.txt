@@ -14,6 +14,7 @@
 - Fix: [#11126] Cannot place Frightmare track design.
 - Fix: [#11208] Cannot export parks with RCT2 DLC objects.
 - Fix: [#11230] Seat Rotation not imported correctly for hacked rides.
+- Fix: [#11225] Replay manager cannot handle track designs.
 - Fix: Small red gardens in RCT1 saves are imported in the wrong colour.
 - Improved: [#11157] Slimmer virtual floor lines.
 
