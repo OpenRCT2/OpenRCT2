@@ -84,6 +84,7 @@ Vehicle* cable_lift_segment_create(
     current->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
+    current->BoatLocation.setNull();
     return current;
 }
 
