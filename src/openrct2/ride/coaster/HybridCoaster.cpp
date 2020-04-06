@@ -27,7 +27,8 @@
 
 static uint32_t hybrid_rc_get_track_colour(paint_session* session)
 {
-    return (session->TrackColours[SCHEME_TRACK] & ~0x1F000000) | ((session->TrackColours[SCHEME_SUPPORTS] & 0xF80000)<<5);
+        if(session->TrackColours[SCHEME_TRACK] == 0x21600000)return 0x21600000; //TODO dirty hack
+        else return (session->TrackColours[SCHEME_TRACK] & ~0x1F000000) | ((session->TrackColours[SCHEME_SUPPORTS] & 0xF80000)<<5);
 }
 
 
