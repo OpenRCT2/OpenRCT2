@@ -388,6 +388,72 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(Litter, creationTick);
     }
 
+    void CompareSpriteDataMoneyEffect(
+        const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(MoneyEffect, move_delay);
+        COMPARE_FIELD(MoneyEffect, num_movements);
+        COMPARE_FIELD(MoneyEffect, vertical);
+        COMPARE_FIELD(MoneyEffect, value);
+        COMPARE_FIELD(MoneyEffect, offset_x);
+        COMPARE_FIELD(MoneyEffect, wiggle);
+    }
+
+    void CompareSpriteDataSteamParticle(
+        const SteamParticle& spriteBase, const SteamParticle& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(SteamParticle, time_to_move);
+    }
+
+    void CompareSpriteDataVehicleCrashParticle(
+        const VehicleCrashParticle& spriteBase, const VehicleCrashParticle& spriteCmp,
+        GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(VehicleCrashParticle, time_to_live);
+        for (int i = 0; i < 2; i++)
+        {
+            COMPARE_FIELD(VehicleCrashParticle, colour[i]);
+        }
+        COMPARE_FIELD(VehicleCrashParticle, crashed_sprite_base);
+        COMPARE_FIELD(VehicleCrashParticle, velocity_x);
+        COMPARE_FIELD(VehicleCrashParticle, velocity_y);
+        COMPARE_FIELD(VehicleCrashParticle, velocity_z);
+        COMPARE_FIELD(VehicleCrashParticle, acceleration_x);
+        COMPARE_FIELD(VehicleCrashParticle, acceleration_y);
+        COMPARE_FIELD(VehicleCrashParticle, acceleration_z);
+    }
+
+    void CompareSpriteDataDuck(const Duck& spriteBase, const Duck& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(Duck, target_x);
+        COMPARE_FIELD(Duck, target_y);
+        COMPARE_FIELD(Duck, state);
+    }
+
+    void CompareSpriteDataBalloon(
+        const Balloon& spriteBase, const Balloon& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(Balloon, popped);
+        COMPARE_FIELD(Balloon, time_to_move);
+        COMPARE_FIELD(Balloon, colour);
+    }
+
+    void CompareSpriteDataJumpingFountain(
+        const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(JumpingFountain, NumTicksAlive);
+        COMPARE_FIELD(JumpingFountain, FountainFlags);
+        COMPARE_FIELD(JumpingFountain, TargetX);
+        COMPARE_FIELD(JumpingFountain, TargetY);
+        COMPARE_FIELD(JumpingFountain, Iteration);
+    }
+
+    void CompareSpriteDataGeneric(
+        const SpriteGeneric& spriteBase, const SpriteGeneric& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(SpriteGeneric, frame);
+    }
+
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         CompareSpriteDataCommon(spriteBase.generic, spriteCmp.generic, changeData);
@@ -403,6 +469,39 @@ struct GameStateSnapshots : public IGameStateSnapshots
                     break;
                 case SPRITE_IDENTIFIER_LITTER:
                     CompareSpriteDataLitter(spriteBase.litter, spriteCmp.litter, changeData);
+                    break;
+                case SPRITE_IDENTIFIER_MISC:
+                    // This is not expected to happen, as misc sprites do not constitute sprite checksum
+                    CompareSpriteDataGeneric(spriteBase.generic, spriteCmp.generic, changeData);
+                    switch (spriteBase.generic.type)
+                    {
+                        case SPRITE_MISC_STEAM_PARTICLE:
+                            CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
+                            break;
+                        case SPRITE_MISC_MONEY_EFFECT:
+                            CompareSpriteDataMoneyEffect(spriteBase.money_effect, spriteCmp.money_effect, changeData);
+                            break;
+                        case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                            CompareSpriteDataVehicleCrashParticle(
+                                spriteBase.crashed_vehicle_particle, spriteCmp.crashed_vehicle_particle, changeData);
+                            break;
+                        case SPRITE_MISC_EXPLOSION_CLOUD:
+                        case SPRITE_MISC_CRASH_SPLASH:
+                        case SPRITE_MISC_EXPLOSION_FLARE:
+                            // SpriteGeneric
+                            break;
+                        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+                            CompareSpriteDataJumpingFountain(
+                                spriteBase.jumping_fountain, spriteCmp.jumping_fountain, changeData);
+                            break;
+                        case SPRITE_MISC_BALLOON:
+                            CompareSpriteDataBalloon(spriteBase.balloon, spriteCmp.balloon, changeData);
+                            break;
+                        case SPRITE_MISC_DUCK:
+                            CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
+                            break;
+                    }
                     break;
             }
         }
