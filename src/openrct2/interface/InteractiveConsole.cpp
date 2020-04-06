@@ -1321,7 +1321,7 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
 {
     if (argv.size() < 1)
     {
-        console.WriteFormatLine("Parameters required <filename>");
+        console.WriteLine("Parameters required <filename>");
         return 0;
     }
 
@@ -1340,7 +1340,14 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
     {
         path_append_extension(savePath, ".sv6", sizeof(savePath));
     }
-    context_load_park_from_file(savePath);
+    if (context_load_park_from_file(savePath))
+    {
+        console.WriteFormatLine("Park %s was loaded successfully", savePath);
+    }
+    else
+    {
+        console.WriteFormatLine("Loading Park %s failed", savePath);
+    }
     return 1;
 }
 
