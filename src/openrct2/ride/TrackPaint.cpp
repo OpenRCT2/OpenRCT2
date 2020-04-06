@@ -11,6 +11,7 @@
 
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -2166,6 +2167,20 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
                 PaintAddImageAsParent(session, imageId + heightNum, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047);
             }
         }
+
+#ifdef __ENABLE_LIGHTFX__
+        if (lightfx_is_available())
+        {
+            uint8_t zOffset = 16;
+            if (ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
+                zOffset = 23;
+
+            if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
+                lightfx_add_kiosk_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+                lightfx_add_shop_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+        }
+#endif
 
         session->InteractionType = ViewportInteractionItem::Ride;
         session->TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(

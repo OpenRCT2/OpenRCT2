@@ -802,6 +802,62 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
     };
 }
 
+void lightfx_add_kiosk_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset)
+{
+    CoordsXY lantern_offset_1 = CoordsXY(0, 16);
+    CoordsXY lantern_offset_2 = CoordsXY(16, 0);
+    uint8_t relative_rotation = (4 - get_current_rotation()) % 4;
+    lantern_offset_1 = lantern_offset_1.Rotate(relative_rotation);
+    lantern_offset_2 = lantern_offset_2.Rotate(relative_rotation);
+    lightfx_add_3d_light_magic_from_drawing_tile(
+        mapPosition, lantern_offset_1.x, lantern_offset_1.y, height + zOffset, LightType::Lantern3);
+    lightfx_add_3d_light_magic_from_drawing_tile(
+        mapPosition, lantern_offset_2.x, lantern_offset_2.y, height + zOffset, LightType::Lantern3);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, 32, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, 8, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, 8, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, -32, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, 32, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, -8, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, -8, height, LightType::Spot1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, -32, height, LightType::Spot1);
+}
+
+void lightfx_add_shop_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset)
+{
+    if (direction == (4 - get_current_rotation()) % 4) // Back Right Facing Stall
+    {
+        CoordsXY spot_offset_1 = CoordsXY(-32, 8);
+        CoordsXY spot_offset_2 = CoordsXY(-32, 4);
+        spot_offset_1 = spot_offset_1.Rotate(direction);
+        spot_offset_2 = spot_offset_2.Rotate(direction);
+        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_1.x, spot_offset_1.y, height, LightType::Spot1);
+        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_2.x, spot_offset_2.y, height, LightType::Spot2);
+    }
+    else if (direction == (7 - get_current_rotation()) % 4) // Back left Facing Stall
+    {
+        CoordsXY spot_offset_1 = CoordsXY(-32, -8);
+        CoordsXY spot_offset_2 = CoordsXY(-32, -4);
+        spot_offset_1 = spot_offset_1.Rotate(direction);
+        spot_offset_2 = spot_offset_2.Rotate(direction);
+        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_1.x, spot_offset_1.y, height, LightType::Spot1);
+        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_2.x, spot_offset_2.y, height, LightType::Spot2);
+    }
+    else // Forward Facing Stall
+    {
+        CoordsXY spot_offset_1 = CoordsXY(-32, 8);
+        CoordsXY spot_offset_2 = CoordsXY(-32, -8);
+        CoordsXY lantern_offset = CoordsXY(-16, 0);
+        lantern_offset = lantern_offset.Rotate(direction);
+        spot_offset_1 = spot_offset_1.Rotate(direction);
+        spot_offset_2 = spot_offset_2.Rotate(direction);
+        lightfx_add_3d_light_magic_from_drawing_tile(
+            mapPosition, lantern_offset.x, lantern_offset.y, height + zOffset, LightType::Lantern3);
+        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_1.x, spot_offset_1.y, height, LightType::Spot1);
+        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_2.x, spot_offset_2.y, height, LightType::Spot1);
+    }
+}
+
 void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
     float night = static_cast<float>(pow(gDayNightCycle, 1.5));
