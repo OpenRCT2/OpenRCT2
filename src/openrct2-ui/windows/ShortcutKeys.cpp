@@ -362,13 +362,20 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             gfx_filter_rect(dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), PALETTE_DARKEN_1);
         }
 
+        const int32_t bindingOffset = scrollWidth - 150;
+        set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
+        set_format_arg(2, rct_string_id, ShortcutList[i].StringId);
+        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, bindingOffset);
+
         char keybinding[128];
         keyboard_shortcuts_format_string(keybinding, 128, ShortcutList[i].ShortcutId);
 
-        set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
-        set_format_arg(2, rct_string_id, ShortcutList[i].StringId);
-        set_format_arg(4, rct_string_id, STR_STRING);
-        set_format_arg(6, char*, keybinding);
-        gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+        if (strlen(keybinding) > 0)
+        {
+            const int32_t maxWidth = 150;
+            set_format_arg(0, rct_string_id, STR_STRING);
+            set_format_arg(2, char*, keybinding);
+            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, bindingOffset, y - 1, maxWidth);
+        }
     }
 }
