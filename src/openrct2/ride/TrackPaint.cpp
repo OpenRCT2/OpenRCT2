@@ -11,6 +11,7 @@
 
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -2167,6 +2168,21 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             }
         }
 
+#ifdef __ENABLE_LIGHTFX__
+        if (lightfx_is_available())
+        {
+            uint8_t zOffset = 16;
+            if (ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
+                zOffset = 23;
+
+            if (ride->type == RIDE_TYPE_FOOD_STALL || ride->type == RIDE_TYPE_DRINK_STALL || ride->type == RIDE_TYPE_SHOP
+                || ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
+                track_paint_add_shop_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+            else if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
+                track_paint_add_kiosk_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+        }
+#endif
+
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         session->TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(
             ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
@@ -2199,5 +2215,123 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 paintFunction(session, rideIndex, trackSequence, direction, height, tileElement);
             }
         }
+    }
+}
+
+void track_paint_add_kiosk_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset)
+{
+    switch (get_current_rotation())
+    {
+        case 0:
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 0, 16, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 16, 0, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            break;
+        case 1:
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -16, 0, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 0, 16, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            break;
+        case 2:
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -16, 0, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 0, -16, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            break;
+        case 3:
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 0, -16, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 16, 0, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            break;
+    }
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, 8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, 8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, -8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, -8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+}
+
+void track_paint_add_shop_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset)
+{
+    switch (direction)
+    {
+        case 0:
+            switch (get_current_rotation())
+            {
+                case 1:
+                case 2:
+                    lightfx_add_3d_light_magic_from_drawing_tile(
+                        mapPosition, -16, 0, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, 8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, -8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 0:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, 8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, 4, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 3:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, -8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, -4, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+            }
+            break;
+        case 1:
+            switch (get_current_rotation())
+            {
+                case 0:
+                case 1:
+                    lightfx_add_3d_light_magic_from_drawing_tile(
+                        mapPosition, 0, 16, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 2:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -4, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 3:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 4, 32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+            }
+            break;
+        case 2:
+            switch (get_current_rotation())
+            {
+                case 0:
+                case 3:
+                    lightfx_add_3d_light_magic_from_drawing_tile(
+                        mapPosition, 16, 0, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, 8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, -8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 1:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, 8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, 4, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 2:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, -8, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, -4, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+            }
+            break;
+        case 3:
+            switch (get_current_rotation())
+            {
+                case 2:
+                case 3:
+                    lightfx_add_3d_light_magic_from_drawing_tile(
+                        mapPosition, 0, -16, height + zOffset, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 0:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 4, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+                case 1:
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -4, -32, height, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                    break;
+            }
+            break;
     }
 }

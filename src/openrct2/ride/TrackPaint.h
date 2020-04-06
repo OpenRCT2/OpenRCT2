@@ -389,6 +389,9 @@ void track_paint_util_right_vertical_loop_segments(paint_session* session, uint8
 
 void track_paint_util_left_corkscrew_up_supports(paint_session* session, uint8_t direction, uint16_t height);
 
+void track_paint_add_kiosk_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset);
+void track_paint_add_shop_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset);
+
 using TRACK_PAINT_FUNCTION = void (*)(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement);
