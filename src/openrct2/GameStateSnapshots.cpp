@@ -233,7 +233,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(Peep, nausea_tolerance);
         COMPARE_FIELD(Peep, window_invalidate_flags);
         COMPARE_FIELD(Peep, paid_on_drink);
-        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        for (int i = 0; i < 16; i++)
         {
             COMPARE_FIELD(Peep, ride_types_been_on[i]);
         }
@@ -379,6 +379,8 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, colours_extended);
         COMPARE_FIELD(Vehicle, seat_rotation);
         COMPARE_FIELD(Vehicle, target_seat_rotation);
+        COMPARE_FIELD(Vehicle, BoatLocation.x);
+        COMPARE_FIELD(Vehicle, BoatLocation.y);
     }
 
     void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
