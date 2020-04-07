@@ -1017,7 +1017,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
-    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE)
+    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && src->status == VEHICLE_STATUS_TRAVELLING_BOAT)
     {
         if (src->BoatLocation.isNull())
         {
@@ -1031,9 +1031,10 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     }
     else
     {
+        // Track direction and type are in the same field
         dst->track_direction = src->track_direction;
+        // dst->track_type = src->track_type;
     }
-    dst->track_type = src->track_type;
     dst->track_x = src->TrackLocation.x;
     dst->track_y = src->TrackLocation.y;
     dst->track_z = src->TrackLocation.z;

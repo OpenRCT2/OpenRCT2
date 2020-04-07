@@ -1322,15 +1322,17 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
-        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE)
+        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE || src->status != VEHICLE_STATUS_TRAVELLING_BOAT)
         {
             dst->BoatLocation.setNull();
+            dst->track_type = src->track_type;
         }
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+            dst->track_type = 0;
         }
-        dst->track_type = src->track_type;
+
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;

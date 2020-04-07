@@ -3148,6 +3148,8 @@ static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
 
     vehicle->BoatLocation = location;
     vehicle->var_35 = 0;
+    // No longer on a track so reset to 0 for import/export
+    vehicle->track_type = 0;
     vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
     vehicle->remaining_distance += 27924;
 
@@ -4269,6 +4271,7 @@ static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, i
         if (ride != nullptr)
         {
             vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+            vehicle->BoatLocation.setNull();
         }
 
         vehicle->track_progress = 0;
