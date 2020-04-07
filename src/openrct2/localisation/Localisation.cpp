@@ -998,6 +998,8 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
     if ((*size) == 0)
         return;
 
+    Guard::ArgumentNotNull(*dest);
+
 #ifdef DEBUG
     if (gDebugStringFormatting)
     {
