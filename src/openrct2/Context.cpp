@@ -587,6 +587,7 @@ namespace OpenRCT2
                         {
                             network_send_map();
                         }
+                        network_start_server_log();
 #ifdef USE_BREAKPAD
                         if (network_get_mode() == NETWORK_MODE_NONE)
                         {

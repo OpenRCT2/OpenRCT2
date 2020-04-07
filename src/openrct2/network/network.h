@@ -108,6 +108,7 @@ const utf8* network_get_server_greeting();
 const utf8* network_get_server_provider_name();
 const utf8* network_get_server_provider_email();
 const utf8* network_get_server_provider_website();
+void network_start_server_log();
 
 std::string network_get_version();
 

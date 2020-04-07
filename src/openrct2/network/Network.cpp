@@ -1349,7 +1349,7 @@ void Network::BeginServerLog()
     {
         format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
     }
-    else if (GetMode() == NETWORK_MODE_SERVER)
+    else if (GetMode() == NETWORK_MODE_SERVER || GetMode() == NETWORK_MODE_NONE)
     {
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
     }
@@ -1377,7 +1377,7 @@ void Network::CloseServerLog()
     {
         format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
     }
-    else if (GetMode() == NETWORK_MODE_SERVER)
+    else if (GetMode() == NETWORK_MODE_SERVER || GetMode() == NETWORK_MODE_NONE)
     {
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
     }
@@ -3855,6 +3855,11 @@ json_t* network_get_server_info_as_json()
 {
     return gNetwork.GetServerInfoAsJson();
 }
+
+void network_start_server_log()
+{
+    gNetwork.BeginServerLog();
+}
 #else
 int32_t network_get_mode()
 {
@@ -4111,5 +4116,8 @@ NetworkServerState_t network_get_server_state()
 json_t* network_get_server_info_as_json()
 {
     return nullptr;
+}
+void network_start_server_log()
+{
 }
 #endif /* DISABLE_NETWORK */

@@ -1451,6 +1451,7 @@ static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& a
     std::string name = argv[0];
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    network_start_server_log();
     if (replayManager->StartPlayback(name))
     {
         OpenRCT2::ReplayRecordInfo info;
