@@ -47,6 +47,11 @@ void Balloon::Update()
         {
             time_to_move = 0;
             frame++;
+            // NOTE: To keep S6 Compatibility this field needs to roll over after 1 byte
+            if (frame == 256)
+            {
+                frame = 0;
+            }
             sprite_move(x, y, z + 1, this);
 
             int32_t maxZ = 1967 - ((x ^ y) & 31);

@@ -4495,6 +4495,7 @@ static Vehicle* vehicle_create_car(
     // loc_6DDD5E:
     vehicle->num_peeps = 0;
     vehicle->next_free_seat = 0;
+    vehicle->BoatLocation.setNull();
     return vehicle;
 }
 
