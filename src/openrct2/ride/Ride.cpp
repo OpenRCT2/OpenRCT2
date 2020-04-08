@@ -438,7 +438,7 @@ bool track_block_get_next_from_zero(
     int16_t x, int16_t y, int16_t z_start, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z,
     int32_t* direction, bool isGhost)
 {
-    if (!(direction_start & (1 << 2)))
+    if (!(direction_start & TRACK_BLOCK_2))
     {
         x += CoordsDirectionDelta[direction_start].x;
         y += CoordsDirectionDelta[direction_start].y;
@@ -476,7 +476,7 @@ bool track_block_get_next_from_zero(
             continue;
 
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
-            | (nextTrackCoordinate->rotation_begin & (1 << 2));
+            | (nextTrackCoordinate->rotation_begin & TRACK_BLOCK_2);
 
         if (nextRotation != direction_start)
             continue;
@@ -546,7 +546,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     OriginZ += trackCoordinate->z_end;
 
     uint8_t directionStart = ((trackCoordinate->rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
-        | (trackCoordinate->rotation_end & (1 << 2));
+        | (trackCoordinate->rotation_end & TRACK_BLOCK_2);
 
     return track_block_get_next_from_zero(coords.x, coords.y, OriginZ, ride, directionStart, output, z, direction, false);
 }
@@ -565,7 +565,7 @@ bool track_block_get_previous_from_zero(
     uint8_t directionStart = direction;
     direction = direction_reverse(direction);
 
-    if (!(direction & (1 << 2)))
+    if (!(direction & TRACK_BLOCK_2))
     {
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
@@ -603,7 +603,7 @@ bool track_block_get_previous_from_zero(
             continue;
 
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_end)
-            | (nextTrackCoordinate->rotation_end & (1 << 2));
+            | (nextTrackCoordinate->rotation_end & TRACK_BLOCK_2);
 
         if (nextRotation != directionStart)
             continue;
@@ -613,7 +613,7 @@ bool track_block_get_previous_from_zero(
             continue;
 
         nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
-            | (nextTrackCoordinate->rotation_begin & (1 << 2));
+            | (nextTrackCoordinate->rotation_begin & TRACK_BLOCK_2);
         outTrackBeginEnd->begin_element = tileElement;
         outTrackBeginEnd->begin_x = x;
         outTrackBeginEnd->begin_y = y;
@@ -689,7 +689,7 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
     z += trackCoordinate->z_begin;
 
     rotation = ((trackCoordinate->rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
-        | (trackCoordinate->rotation_begin & (1 << 2));
+        | (trackCoordinate->rotation_begin & TRACK_BLOCK_2);
 
     return track_block_get_previous_from_zero(coords.x, coords.y, z, ride, rotation, outTrackBeginEnd);
 }
@@ -1189,27 +1189,27 @@ int32_t sub_6C683D(
         {
             *output_element = (TileElement*)trackElement;
         }
-        if (flags & (1 << 0))
+        if (flags & TRACK_ELEMENT_SET_HIGHLIGHT_FALSE)
         {
             trackElement->SetHighlight(false);
         }
-        if (flags & (1 << 1))
+        if (flags & TRACK_ELEMENT_SET_HIGHLIGHT_TRUE)
         {
             trackElement->SetHighlight(true);
         }
-        if (flags & (1 << 2))
+        if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
             trackElement->SetColourScheme((uint8_t)(extra_params & 0xFF));
         }
-        if (flags & (1 << 5))
+        if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
             trackElement->SetSeatRotation((uint8_t)(extra_params & 0xFF));
         }
-        if (flags & (1 << 3))
+        if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE)
         {
             trackElement->SetHasCableLift(true);
         }
-        if (flags & (1 << 4))
+        if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE)
         {
             trackElement->SetHasCableLift(false);
         }

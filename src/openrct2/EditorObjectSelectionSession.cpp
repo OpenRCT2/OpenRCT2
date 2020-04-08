@@ -433,7 +433,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
         }
 
         uint8_t objectType = item->ObjectEntry.GetType();
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2)))
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_2)
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -449,7 +449,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
     {
         if (bh == 0)
         {
-            if (flags & (1 << 3))
+            if (flags & INPUT_FLAG_EDITOR_OBJECT_3)
             {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
             }
@@ -472,7 +472,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
             return 0;
         }
 
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2)))
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_2))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -483,7 +483,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
             }
         }
 
-        if (bh != 0 && !(flags & (1 << 1)))
+        if (bh != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
         {
             char objectName[64];
             object_create_identifier_name(objectName, 64, &item->ObjectEntry);
