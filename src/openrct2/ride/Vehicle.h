@@ -71,11 +71,13 @@ struct rct_ride_entry_vehicle {
     uint8_t powered_acceleration;     // 0x5B , 0x75
     uint8_t powered_max_speed;        // 0x5C , 0x76
     uint8_t car_visual;               // 0x5D , 0x77
-    uint8_t effect_visual;
-    uint8_t draw_order;
+    uint8_t effect_visual;            // 0x5E , 0x78
+    uint8_t draw_order;               // 0x5F , 0x79
     uint8_t num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
-    uint8_t peep_loading_waypoint_segments; // 0x61 new
-    uint8_t pad_62[6] = {};          // 0x62 , 0x7B
+    uint8_t peep_loading_waypoint_segments; // 0x61, 0x7B new
+    int8_t animation_speed_modifier;  // 0x62 , 0x7C, A multiplier to change animation speed on most animation types
+    int8_t smoke_effect_modifier[2] = {}; // 0x63, 0x7D, A multiplier to change smoke particle effect positions in lateral and vertical directions
+    uint8_t pad_65[3] = {};           // 0x65 , 0x7E
     std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
