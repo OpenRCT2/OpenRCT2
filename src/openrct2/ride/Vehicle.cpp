@@ -7318,9 +7318,16 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
                     {
                         index += 32;
                     }
-                    steam_particle_create(vehicle->x + SteamParticleOffsets[index].x,
-                                          vehicle->y + SteamParticleOffsets[index].y,
-                                          vehicle->z + SteamParticleOffsets[index].z);
+                    if (vehicleEntry->pad_62[1] == 0 && vehicleEntry->pad_62[2] == 0) {
+                        steam_particle_create(vehicle->x + SteamParticleOffsets[index].x,
+                            vehicle->y + SteamParticleOffsets[index].y,
+                            vehicle->z + SteamParticleOffsets[index].z);
+                    }
+                    else {
+                        steam_particle_create((int16_t) vehicle->x + SteamParticleOffsets[index].x * ((int8_t)vehicleEntry->pad_62[1]) / 64,
+                            (int16_t) vehicle->y + SteamParticleOffsets[index].y * ((int8_t)vehicleEntry->pad_62[1]) / 64,
+                            (int16_t) vehicle->z + SteamParticleOffsets[index].z * ((int8_t)vehicleEntry->pad_62[2]) / 64);
+                    }
                 }
             }
             vehicle_invalidate(vehicle);
