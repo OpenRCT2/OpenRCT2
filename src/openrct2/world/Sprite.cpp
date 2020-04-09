@@ -220,7 +220,10 @@ static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
         index = (flooredX << 3) | tileY;
     }
 
-    openrct2_assert(index < sizeof(gSpriteSpatialIndex), "GetSpatialIndexOffset out of range");
+    if (index >= sizeof(gSpriteSpatialIndex))
+    {
+        return SPATIAL_INDEX_LOCATION_NULL;
+    }
     return index;
 }
 
@@ -352,7 +355,7 @@ void sprite_clear_all_unused()
     }
 }
 
-static void SpriteSpatialInsert(SpriteBase* sprite, CoordsXY newLoc);
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
@@ -615,7 +618,7 @@ void sprite_misc_update_all()
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
-static void SpriteSpatialInsert(SpriteBase* sprite, CoordsXY newLoc)
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
 
@@ -635,9 +638,12 @@ static void SpriteSpatialRemove(SpriteBase* sprite)
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
     auto* index = &gSpriteSpatialIndex[currentIndex];
 
-    // This indicates that the spatial index data is all incorrect.
-    // Suggest rebuilding the sprite spatial index.
-    Guard::Assert(*index != SPRITE_INDEX_NULL, "Bad sprite spatial Index");
+    // This indicates that the spatial index data is incorrect.
+    if (*index == SPRITE_INDEX_NULL)
+    {
+        log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
+        reset_sprite_spatial_index();
+    }
 
     auto* sprite2 = &get_sprite(*index)->generic;
     while (sprite != sprite2)
