@@ -7318,15 +7318,15 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
                     {
                         index += 32;
                     }
-                    if (vehicleEntry->smoke_effect_modifier[0] == 0 && vehicleEntry->smoke_effect_modifier[0] == 0) {
+                    if (vehicleEntry->steam_effect_modifier[0] == 0 && vehicleEntry->steam_effect_modifier[0] == 0) {
                         steam_particle_create(vehicle->x + SteamParticleOffsets[index].x,
                             vehicle->y + SteamParticleOffsets[index].y,
                             vehicle->z + SteamParticleOffsets[index].z);
                     }
                     else {
-                        steam_particle_create((int16_t) vehicle->x + SteamParticleOffsets[index].x * ((int8_t)vehicleEntry->smoke_effect_modifier[0]) / 32,
-                            (int16_t) vehicle->y + SteamParticleOffsets[index].y * ((int8_t)vehicleEntry->smoke_effect_modifier[0]) / 32,
-                            (int16_t) vehicle->z + SteamParticleOffsets[index].z * ((int8_t)vehicleEntry->smoke_effect_modifier[1]) / 32);
+                        steam_particle_create(vehicle->x + floor(0.5 + SteamParticleOffsets[index].x * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT),
+                            vehicle->y + floor(0.5 + SteamParticleOffsets[index].y * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT),
+                            vehicle->z + floor(0.5 + SteamParticleOffsets[index].z * vehicleEntry->steam_effect_modifier[1] / STEAM_EFFECT_MODIFIER_COEFFICIENT));
                     }
                 }
             }

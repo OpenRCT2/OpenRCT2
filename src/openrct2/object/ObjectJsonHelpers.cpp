@@ -119,6 +119,26 @@ namespace ObjectJsonHelpers
         return result;
     }
 
+    std::vector<float_t> GetJsonRealArray(const json_t * arr)
+    {
+        std::vector<float_t> result;
+        if (json_is_array(arr))
+        {
+            auto count = json_array_size(arr);
+            result.reserve(count);
+            for (size_t i = 0; i < count; i++)
+            {
+                auto element = json_real_value(json_array_get(arr, i));
+                result.push_back(element);
+            }
+        }
+        else if (json_is_integer(arr))
+        {
+            result.push_back(json_real_value(arr));
+        }
+        return result;
+    }
+
     uint8_t ParseCursor(const std::string &s, uint8_t defaultValue)
     {
         static const std::unordered_map<std::string, uint8_t> LookupTable

@@ -434,7 +434,11 @@ void RideObject::ReadLegacyVehicle(
     vehicle->effect_visual = stream->ReadValue<uint8_t>();
     vehicle->draw_order = stream->ReadValue<uint8_t>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
-    stream->Seek(4, STREAM_SEEK_CURRENT);
+    stream->Seek(1, STREAM_SEEK_CURRENT);
+    vehicle->animation_speed_modifier = stream->ReadValue<uint8_t>();
+    vehicle->steam_effect_modifier[0] = stream->ReadValue<uint8_t>();
+    vehicle->steam_effect_modifier[1] = stream->ReadValue<uint8_t>();
+//    stream->Seek(0, STREAM_SEEK_CURRENT);
 }
 
 uint8_t RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry)
@@ -750,6 +754,13 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.effect_visual = ObjectJsonHelpers::GetInteger(jCar, "effectVisual", 1);
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
+    car.animation_speed_modifier = ObjectJsonHelpers::GetInteger(jCar, "animationSpeedModifier");
+
+    auto jSteamEffect = ObjectJsonHelpers::GetJsonRealArray(json_object_get(jCar, "steamEffectModifier"));
+    if (jSteamEffect.size() == 2) {
+        car.steam_effect_modifier[0] = jSteamEffect[0];
+        car.steam_effect_modifier[1] = jSteamEffect[1];
+    }
 
     auto& peepLoadingPositions = car.peep_loading_positions;
     auto jLoadingPositions = json_object_get(jCar, "loadingPositions");
