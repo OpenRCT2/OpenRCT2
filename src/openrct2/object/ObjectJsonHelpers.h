@@ -31,6 +31,7 @@ namespace ObjectJsonHelpers
     float GetFloat(const json_t* obj, const std::string& name, const float& defaultValue = 0);
     std::vector<std::string> GetJsonStringArray(const json_t* arr);
     std::vector<int32_t> GetJsonIntegerArray(const json_t* arr);
+    std::vector<int32_t> GetJsonRealArray(const json_t* arr);
     colour_t ParseColour(const std::string_view& s, colour_t defaultValue = COLOUR_BLACK);
     uint8_t ParseCursor(const std::string& s, uint8_t defaultValue);
     rct_object_entry ParseObjectEntry(const std::string& s);

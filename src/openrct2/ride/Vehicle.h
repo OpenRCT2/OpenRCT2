@@ -79,26 +79,25 @@ struct rct_ride_entry_vehicle
         uint32_t curved_lift_hill_image_id; // 0x4C , 0x66
         uint32_t corkscrew_image_id;        // 0x4C , 0x66
     };
-    uint32_t no_vehicle_images;              // 0x50 , 0x6A
-    uint8_t no_seating_rows;                 // 0x54 , 0x6E
-    uint8_t spinning_inertia;                // 0x55 , 0x6F
-    uint8_t spinning_friction;               // 0x56 , 0x70
-    SoundId friction_sound_id;               // 0x57 , 0x71
-    uint8_t log_flume_reverser_vehicle_type; // 0x58 , 0x72
-    uint8_t sound_range;                     // 0x59 , 0x73
-    uint8_t
-        double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
-    uint8_t powered_acceleration; // 0x5B , 0x75
-    uint8_t powered_max_speed;    // 0x5C , 0x76
-    uint8_t car_visual;           // 0x5D , 0x77
-    uint8_t effect_visual;
-    uint8_t draw_order;
-    uint8_t num_vertical_frames_override;   // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine
-                                            // it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
-    uint8_t peep_loading_waypoint_segments; // 0x61 new
-    uint8_t pad_62[6] = {};                 // 0x62 , 0x7B
+    uint32_t no_vehicle_images;       // 0x50 , 0x6A
+    uint8_t no_seating_rows;          // 0x54 , 0x6E
+    uint8_t spinning_inertia;         // 0x55 , 0x6F
+    uint8_t spinning_friction;        // 0x56 , 0x70
+    uint8_t friction_sound_id;        // 0x57 , 0x71
+    uint8_t log_flume_reverser_vehicle_type;          // 0x58 , 0x72
+    uint8_t sound_range;              // 0x59 , 0x73
+    uint8_t double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
+    uint8_t powered_acceleration;     // 0x5B , 0x75
+    uint8_t powered_max_speed;        // 0x5C , 0x76
+    uint8_t car_visual;               // 0x5D , 0x77
+    uint8_t effect_visual;            // 0x5E , 0x78
+    uint8_t draw_order;               // 0x5F , 0x79
+    uint8_t num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
+    uint8_t peep_loading_waypoint_segments; // 0x61, 0x7B new
+    uint8_t animation_speed_multiplier;  // 0x62 , 0x7C, A multiplier to change animation speed on most animation types
+    int8_t steam_effect_translation[2] = {}; // 0x63, 0x7D, A multiplier to change smoke particle effect positions in lateral and vertical directions
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
-    std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
+    std::vector<int8_t> peep_loading_positions = {}; // previously 0x61
 };
 #ifdef __TESTPAINT__
 #    pragma pack(pop)
@@ -384,6 +383,42 @@ enum
     VEHICLE_ENTRY_ANIMATION_HELICARS,
     VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
     VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
+};
+constexpr const uint8_t ANIMATION_SPEED_MULTIPLIER_COEFFICIENT = 64;
+constexpr const uint8_t STEAM_EFFECT_TRANSLATION_COEFFICIENT = 32; 
+
+enum {
+    VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
+    VEHICLE_STATUS_WAITING_FOR_PASSENGERS,
+    VEHICLE_STATUS_WAITING_TO_DEPART,
+    VEHICLE_STATUS_DEPARTING,
+    VEHICLE_STATUS_TRAVELLING,
+    VEHICLE_STATUS_ARRIVING,
+    VEHICLE_STATUS_UNLOADING_PASSENGERS,
+    VEHICLE_STATUS_TRAVELLING_BOAT,
+    VEHICLE_STATUS_CRASHING,
+    VEHICLE_STATUS_CRASHED,
+    VEHICLE_STATUS_TRAVELLING_DODGEMS,
+    VEHICLE_STATUS_SWINGING,
+    VEHICLE_STATUS_ROTATING,
+    VEHICLE_STATUS_FERRIS_WHEEL_ROTATING,
+    VEHICLE_STATUS_SIMULATOR_OPERATING,
+    VEHICLE_STATUS_SHOWING_FILM,
+    VEHICLE_STATUS_SPACE_RINGS_OPERATING,
+    VEHICLE_STATUS_TOP_SPIN_OPERATING,
+    VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING,
+    VEHICLE_STATUS_DOING_CIRCUS_SHOW,
+    VEHICLE_STATUS_CROOKED_HOUSE_OPERATING,
+    VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT,
+    VEHICLE_STATUS_TRAVELLING_CABLE_LIFT,
+    VEHICLE_STATUS_STOPPING,
+    VEHICLE_STATUS_WAITING_FOR_PASSENGERS_17,
+    VEHICLE_STATUS_WAITING_TO_START,
+    VEHICLE_STATUS_STARTING,
+    VEHICLE_STATUS_OPERATING_1A,
+    VEHICLE_STATUS_STOPPING_1B,
+    VEHICLE_STATUS_UNLOADING_PASSENGERS_1C,
+    VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
 enum : uint32_t

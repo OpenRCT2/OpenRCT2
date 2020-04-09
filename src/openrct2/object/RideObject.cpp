@@ -453,7 +453,17 @@ void RideObject::ReadLegacyVehicle(
     vehicle->effect_visual = stream->ReadValue<uint8_t>();
     vehicle->draw_order = stream->ReadValue<uint8_t>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
-    stream->Seek(4, STREAM_SEEK_CURRENT);
+    stream->Seek(1, STREAM_SEEK_CURRENT);
+    vehicle->animation_speed_multiplier = stream->ReadValue<uint8_t>(); // for testing
+    if (vehicle->animation_speed_multiplier == 0) vehicle->animation_speed_multiplier = ANIMATION_SPEED_MULTIPLIER_COEFFICIENT; // for testing
+    vehicle->steam_effect_translation[0] = stream->ReadValue<int8_t>(); // for testing
+    if (vehicle->steam_effect_translation[0] == 0) vehicle->steam_effect_translation[0] = STEAM_EFFECT_TRANSLATION_COEFFICIENT; // for testing
+    vehicle->steam_effect_translation[1] = stream->ReadValue<int8_t>(); // for testing
+    if (vehicle->steam_effect_translation[1] == 0) vehicle->steam_effect_translation[1] = STEAM_EFFECT_TRANSLATION_COEFFICIENT; // for testing
+//    vehicle->animation_speed_modifier = ANIMATION_SPEED_MODIFIER_COEFFICIENT;
+//    vehicle->steam_effect_modifier[0] = STEAM_EFFECT_MODIFIER_COEFFICIENT;
+//    vehicle->steam_effect_modifier[1] = STEAM_EFFECT_MODIFIER_COEFFICIENT;
+//    stream->Seek(4, STREAM_SEEK_CURRENT);
 }
 
 uint8_t RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry)
@@ -774,6 +784,19 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
     car.effect_visual = ObjectJsonHelpers::GetInteger(jCar, "effectVisual", 1);
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
+
+    car.animation_speed_multiplier = Math::Clamp<uint8_t>(0, ObjectJsonHelpers::GetFloat(jCar, "animationSpeedModifier", 1)*ANIMATION_SPEED_MULTIPLIER_COEFFICIENT , UINT8_MAX);
+
+    auto jSteamEffect = ObjectJsonHelpers::GetJsonRealArray(json_object_get(jCar, "steamEffectModifier"));
+    if (jSteamEffect.size() == 2) {
+        car.steam_effect_translation[0] = Math::Clamp<int8_t>(INT8_MIN, jSteamEffect[0] * STEAM_EFFECT_TRANSLATION_COEFFICIENT, INT8_MAX);
+        car.steam_effect_translation[1] = Math::Clamp<int8_t>(INT8_MIN, jSteamEffect[1] * STEAM_EFFECT_TRANSLATION_COEFFICIENT, INT8_MAX);
+    }
+    else
+    {
+        car.steam_effect_translation[0] = STEAM_EFFECT_TRANSLATION_COEFFICIENT;
+        car.steam_effect_translation[1] = STEAM_EFFECT_TRANSLATION_COEFFICIENT;
+    }
 
     auto& peepLoadingPositions = car.peep_loading_positions;
     auto jLoadingPositions = json_object_get(jCar, "loadingPositions");

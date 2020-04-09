@@ -7242,7 +7242,7 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
             *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 20) & 3;
+            al = ((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 20) & 3;
             if (vehicle->animation_frame != al)
             {
                 ah = al;
@@ -7274,7 +7274,9 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
                             }();
                             int32_t directionIndex = vehicle->sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            steam_particle_create(vehicle->x + offset.x, vehicle->y + offset.y, vehicle->z + offset.z);
+                            steam_particle_create( vehicle->x + 0.5 + offset.x * vehicleEntry->steam_effect_translation[0] / STEAM_EFFECT_TRANSLATION_COEFFICIENT,
+                                vehicle->y + 0.5 + offset.y * vehicleEntry->steam_effect_translation[0] / STEAM_EFFECT_TRANSLATION_COEFFICIENT,
+                                vehicle->z + 0.5 + offset.z * vehicleEntry->steam_effect_translation[1] / STEAM_EFFECT_TRANSLATION_COEFFICIENT);
                         }
                     }
                 }
@@ -7283,7 +7285,7 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
             *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 18) & 2;
+            al = ((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 18) & 2;
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
@@ -7292,7 +7294,8 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
             *var_C8 += _vehicleVelocityF64E08;
-            eax = ((*var_C8 >> 13) & 0xFF) * 6;
+            eax = (((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 13) & 0xFF)
+                * 6;
             ah = (eax >> 8) & 0xFF;
             if (vehicle->animation_frame != ah)
             {
@@ -7302,7 +7305,8 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
             *var_C8 += _vehicleVelocityF64E08;
-            eax = ((*var_C8 >> 13) & 0xFF) * 7;
+            eax = (((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 13) & 0xFF)
+                * 7;
             ah = (eax >> 8) & 0xFF;
             if (vehicle->animation_frame != ah)
             {
@@ -7312,7 +7316,7 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
             *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 19) & 1;
+            al = ((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 19) & 1;
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
@@ -7334,7 +7338,7 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
             *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 18) & 3;
+            al = ((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 18) & 3;
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
@@ -7345,7 +7349,9 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
             if (vehicle->num_peeps != 0)
             {
                 *var_C8 += _vehicleVelocityF64E08;
-                eax = ((*var_C8 >> 13) & 0xFF) << 2;
+                eax = (((*var_C8 * vehicleEntry->animation_speed_multiplier / ANIMATION_SPEED_MULTIPLIER_COEFFICIENT) >> 13)
+                       & 0xFF)
+                    << 2;
                 ah = (eax >> 8) & 0xFF;
                 if (vehicle->animation_frame != ah)
                 {

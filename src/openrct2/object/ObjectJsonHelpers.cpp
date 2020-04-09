@@ -165,6 +165,26 @@ namespace ObjectJsonHelpers
         return result;
     }
 
+    std::vector<double_t> GetJsonRealArray(const json_t* arr)
+    {
+        std::vector<double_t> result;
+        if (json_is_array(arr))
+        {
+            auto count = json_array_size(arr);
+            result.reserve(count);
+            for (size_t i = 0; i < count; i++)
+            {
+                auto element = json_real_value(json_array_get(arr, i));
+                result.push_back(element);
+            }
+        }
+        else if (json_is_number(arr))
+        {
+            result.push_back(json_real_value(arr));
+        }
+        return result;
+    }
+
     colour_t ParseColour(const std::string_view& s, colour_t defaultValue)
     {
         static const std::unordered_map<std::string_view, colour_t> LookupTable{
