@@ -754,12 +754,13 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.effect_visual = ObjectJsonHelpers::GetInteger(jCar, "effectVisual", 1);
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
-    car.animation_speed_modifier = ObjectJsonHelpers::GetInteger(jCar, "animationSpeedModifier");
+
+    car.animation_speed_modifier = Math::Clamp<int8_t>(INT8_MIN, log(ObjectJsonHelpers::GetFloat(jCar, "animationSpeedModifier", 1)) / log(2)*ANIMATION_SPEED_MODIFIER_COEFFICIENT , INT8_MAX);
 
     auto jSteamEffect = ObjectJsonHelpers::GetJsonRealArray(json_object_get(jCar, "steamEffectModifier"));
     if (jSteamEffect.size() == 2) {
-        car.steam_effect_modifier[0] = jSteamEffect[0];
-        car.steam_effect_modifier[1] = jSteamEffect[1];
+        car.steam_effect_modifier[0] = Math::Clamp<int8_t>(INT8_MIN, jSteamEffect[0] * STEAM_EFFECT_MODIFIER_COEFFICIENT, INT8_MAX);
+        car.steam_effect_modifier[1] = Math::Clamp<int8_t>(INT8_MIN, jSteamEffect[1] * STEAM_EFFECT_MODIFIER_COEFFICIENT, INT8_MAX);
     }
 
     auto& peepLoadingPositions = car.peep_loading_positions;

@@ -7324,9 +7324,9 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
                             vehicle->z + SteamParticleOffsets[index].z);
                     }
                     else {
-                        steam_particle_create(vehicle->x + floor(0.5 + SteamParticleOffsets[index].x * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT),
-                            vehicle->y + floor(0.5 + SteamParticleOffsets[index].y * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT),
-                            vehicle->z + floor(0.5 + SteamParticleOffsets[index].z * vehicleEntry->steam_effect_modifier[1] / STEAM_EFFECT_MODIFIER_COEFFICIENT));
+                        steam_particle_create(vehicle->x + 0.5 + SteamParticleOffsets[index].x * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT,
+                            vehicle->y + 0.5 + SteamParticleOffsets[index].y * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT,
+                            vehicle->z + 0.5 + SteamParticleOffsets[index].z * vehicleEntry->steam_effect_modifier[1] / STEAM_EFFECT_MODIFIER_COEFFICIENT);
                     }
                 }
             }

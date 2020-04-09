@@ -77,9 +77,8 @@ struct rct_ride_entry_vehicle {
     uint8_t peep_loading_waypoint_segments; // 0x61, 0x7B new
     int8_t animation_speed_modifier;  // 0x62 , 0x7C, A multiplier to change animation speed on most animation types
     int8_t steam_effect_modifier[2] = {}; // 0x63, 0x7D, A multiplier to change smoke particle effect positions in lateral and vertical directions
-    uint8_t pad_65[3] = {};           // 0x65 , 0x7E
     std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
-    std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
+    std::vector<int8_t> peep_loading_positions = {}; // previously 0x61
 };
 #ifdef __TESTPAINT__
 #pragma pack(pop)
@@ -283,9 +282,8 @@ enum {
     VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
     VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
 };
-
-#define ANIMATION_SPEED_MODIFIER_COEFFICIENT 32
-#define STEAM_EFFECT_MODIFIER_COEFFICIENT 32
+constexpr const double_t ANIMATION_SPEED_MODIFIER_COEFFICIENT = 32;
+constexpr const double_t STEAM_EFFECT_MODIFIER_COEFFICIENT = 32;
 
 enum {
     VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
