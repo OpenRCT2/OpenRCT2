@@ -92,8 +92,7 @@ rct_sprite* get_sprite(size_t sprite_idx)
 
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
 {
-    int32_t offset = ((x & 0x1FE0) << 3) | (y >> 5);
-    return gSpriteSpatialIndex[offset];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(x, y)];
 }
 
 static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
@@ -220,7 +219,10 @@ static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
         index = (flooredX << 3) | tileY;
     }
 
-    openrct2_assert(index < sizeof(gSpriteSpatialIndex), "GetSpatialIndexOffset out of range");
+    if (index >= sizeof(gSpriteSpatialIndex))
+    {
+        return SPATIAL_INDEX_LOCATION_NULL;
+    }
     return index;
 }
 
@@ -352,6 +354,8 @@ void sprite_clear_all_unused()
     }
 }
 
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
+
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
@@ -411,8 +415,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     sprite->flags = 0;
     sprite->sprite_left = LOCATION_NULL;
 
-    sprite->next_in_quadrant = gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL];
-    gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL] = sprite->sprite_index;
+    SpriteSpatialInsert(sprite, { LOCATION_NULL, 0 });
 
     return (rct_sprite*)sprite;
 }
@@ -613,6 +616,58 @@ void sprite_misc_update_all()
     }
 }
 
+// Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
+{
+    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
+
+    auto* next = &gSpriteSpatialIndex[newIndex];
+    while (sprite->sprite_index < *next && *next != SPRITE_INDEX_NULL)
+    {
+        auto sprite2 = &get_sprite(*next)->generic;
+        next = &sprite2->next_in_quadrant;
+    }
+
+    sprite->next_in_quadrant = *next;
+    *next = sprite->sprite_index;
+}
+
+static void SpriteSpatialRemove(SpriteBase* sprite)
+{
+    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    auto* index = &gSpriteSpatialIndex[currentIndex];
+
+    // This indicates that the spatial index data is incorrect.
+    if (*index == SPRITE_INDEX_NULL)
+    {
+        log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
+        reset_sprite_spatial_index();
+    }
+
+    auto* sprite2 = &get_sprite(*index)->generic;
+    while (sprite != sprite2)
+    {
+        index = &sprite2->next_in_quadrant;
+        if (*index == SPRITE_INDEX_NULL)
+        {
+            break;
+        }
+        sprite2 = &get_sprite(*index)->generic;
+    }
+    *index = sprite->next_in_quadrant;
+}
+
+static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
+{
+    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
+    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    if (newIndex == currentIndex)
+        return;
+
+    SpriteSpatialRemove(sprite);
+    SpriteSpatialInsert(sprite, newLoc);
+}
+
 /**
  * Moves a sprite to a new location.
  *  rct2: 0x0069E9D3
@@ -629,30 +684,7 @@ void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
         x = LOCATION_NULL;
     }
 
-    size_t newIndex = GetSpatialIndexOffset(x, y);
-    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    if (newIndex != currentIndex)
-    {
-        uint16_t* spriteIndex = &gSpriteSpatialIndex[currentIndex];
-        if (*spriteIndex != SPRITE_INDEX_NULL)
-        {
-            rct_sprite* sprite2 = get_sprite(*spriteIndex);
-            while (sprite != &sprite2->generic)
-            {
-                spriteIndex = &sprite2->generic.next_in_quadrant;
-                if (*spriteIndex == SPRITE_INDEX_NULL)
-                {
-                    break;
-                }
-                sprite2 = get_sprite(*spriteIndex);
-            }
-        }
-        *spriteIndex = sprite->next_in_quadrant;
-
-        int32_t tempSpriteIndex = gSpriteSpatialIndex[newIndex];
-        gSpriteSpatialIndex[newIndex] = sprite->sprite_index;
-        sprite->next_in_quadrant = tempSpriteIndex;
-    }
+    SpriteSpatialMove(sprite, { x, y });
 
     if (x == LOCATION_NULL)
     {
