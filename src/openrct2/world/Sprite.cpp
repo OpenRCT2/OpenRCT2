@@ -657,13 +657,8 @@ static void SpriteSpatialRemove(SpriteBase* sprite)
     *index = sprite->next_in_quadrant;
 }
 
-static void SpriteSpatialMove(SpriteBase* sprite, CoordsXY newLoc)
+static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
 {
-    if (!map_is_location_valid(newLoc))
-    {
-        newLoc.setNull();
-    }
-
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
     if (newIndex == currentIndex)
