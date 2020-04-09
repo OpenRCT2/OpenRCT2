@@ -75,8 +75,8 @@ struct rct_ride_entry_vehicle {
     uint8_t draw_order;               // 0x5F , 0x79
     uint8_t num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments; // 0x61, 0x7B new
-    int8_t animation_speed_modifier;  // 0x62 , 0x7C, A multiplier to change animation speed on most animation types
-    int8_t steam_effect_modifier[2] = {}; // 0x63, 0x7D, A multiplier to change smoke particle effect positions in lateral and vertical directions
+    uint8_t animation_speed_multiplier;  // 0x62 , 0x7C, A multiplier to change animation speed on most animation types
+    int8_t steam_effect_translation[2] = {}; // 0x63, 0x7D, A multiplier to change smoke particle effect positions in lateral and vertical directions
     std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {}; // previously 0x61
 };
@@ -282,8 +282,8 @@ enum {
     VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
     VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
 };
-constexpr const double_t ANIMATION_SPEED_MODIFIER_COEFFICIENT = 32;
-constexpr const double_t STEAM_EFFECT_MODIFIER_COEFFICIENT = 32;
+constexpr const uint8_t ANIMATION_SPEED_MULTIPLIER_COEFFICIENT = 64;
+constexpr const uint8_t STEAM_EFFECT_TRANSLATION_COEFFICIENT = 32; 
 
 enum {
     VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
