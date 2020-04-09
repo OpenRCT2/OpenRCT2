@@ -92,8 +92,7 @@ rct_sprite* get_sprite(size_t sprite_idx)
 
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
 {
-    int32_t offset = ((x & 0x1FE0) << 3) | (y >> 5);
-    return gSpriteSpatialIndex[offset];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(x, y)];
 }
 
 static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
