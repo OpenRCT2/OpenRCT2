@@ -7295,7 +7295,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
     {
     case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
         *var_C8 += _vehicleVelocityF64E08;
-        al = (*var_C8 >> 20) & 3;
+        al = ((uint32_t)(*var_C8 * pow(2,vehicleEntry->animation_speed_modifier/ANIMATION_SPEED_MODIFIER_COEFFICIENT))>> 20) & 3;
         if (vehicle->animation_frame != al)
         {
             ah              = al;
@@ -7324,9 +7324,9 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
                             vehicle->z + SteamParticleOffsets[index].z);
                     }
                     else {
-                        steam_particle_create(vehicle->x + 0.5 + SteamParticleOffsets[index].x * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT,
-                            vehicle->y + 0.5 + SteamParticleOffsets[index].y * vehicleEntry->steam_effect_modifier[0] / STEAM_EFFECT_MODIFIER_COEFFICIENT,
-                            vehicle->z + 0.5 + SteamParticleOffsets[index].z * vehicleEntry->steam_effect_modifier[1] / STEAM_EFFECT_MODIFIER_COEFFICIENT);
+                        steam_particle_create(vehicle->x + 0.5 + SteamParticleOffsets[index].x * vehicleEntry->steam_effect_modifier[0],
+                            vehicle->y + 0.5 + SteamParticleOffsets[index].y * vehicleEntry->steam_effect_modifier[0],
+                            vehicle->z + 0.5 + SteamParticleOffsets[index].z * vehicleEntry->steam_effect_modifier[1]);
                     }
                 }
             }
