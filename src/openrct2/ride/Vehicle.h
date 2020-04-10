@@ -330,6 +330,7 @@ private:
     void UpdateWaitingForCableLift();
     void UpdateShowingFilm();
     void UpdateDoingCircusShow();
+    void UpdateSound();
 };
 
 struct train_ref

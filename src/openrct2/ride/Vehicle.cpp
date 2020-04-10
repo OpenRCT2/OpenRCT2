@@ -58,7 +58,6 @@ static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle);
 static void vehicle_update_additional_animation(Vehicle* vehicle);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
-static void vehicle_update_sound(Vehicle* vehicle);
 static SoundId vehicle_update_scream_sound(Vehicle* vehicle);
 
 static void vehicle_kill_all_passengers(Vehicle* vehicle);
@@ -2045,7 +2044,7 @@ void Vehicle::Update()
             break;
     }
 
-    vehicle_update_sound(this);
+    UpdateSound();
 }
 
 /**
@@ -5454,7 +5453,7 @@ void Vehicle::UpdateCrash()
  *
  *  rct2: 0x006D7888
  */
-static void vehicle_update_sound(Vehicle* vehicle)
+void Vehicle::UpdateSound()
 {
     // frictionVolume (bl) should be set before hand
     uint8_t frictionVolume = 255;
@@ -5463,17 +5462,17 @@ static void vehicle_update_sound(Vehicle* vehicle)
     SoundId screamId = SoundId::Null;
     uint8_t screamVolume = 255;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
         return;
 
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    int32_t ecx = abs(vehicle->velocity) - 0x10000;
+    int32_t ecx = abs(velocity) - 0x10000;
     if (ecx >= 0)
     {
         frictionId = vehicleEntry->friction_sound_id;
@@ -5484,15 +5483,15 @@ static void vehicle_update_sound(Vehicle* vehicle)
     switch (vehicleEntry->sound_range)
     {
         case 3:
-            screamId = vehicle->scream_sound_id;
+            screamId = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != SoundId::Null)
+                if (velocity < 0x40000 || scream_sound_id != SoundId::Null)
                     goto loc_6D7A97;
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
-                    vehicle->scream_sound_id = SoundId::TrainWhistle;
+                    scream_sound_id = SoundId::TrainWhistle;
                     screamVolume = 255;
                     break;
                 }
@@ -5503,15 +5502,15 @@ static void vehicle_update_sound(Vehicle* vehicle)
             break;
 
         case 4:
-            screamId = vehicle->scream_sound_id;
+            screamId = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != SoundId::Null)
+                if (velocity < 0x40000 || scream_sound_id != SoundId::Null)
                     goto loc_6D7A97;
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
-                    vehicle->scream_sound_id = SoundId::Tram;
+                    scream_sound_id = SoundId::Tram;
                     screamVolume = 255;
                     break;
                 }
@@ -5524,7 +5523,7 @@ static void vehicle_update_sound(Vehicle* vehicle)
         default:
             if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDERS_SCREAM))
             {
-                screamId = vehicle_update_scream_sound(vehicle);
+                screamId = vehicle_update_scream_sound(this);
                 if (screamId == SoundId::NoScream)
                     screamId = SoundId::Null;
                 if (screamId == SoundId::Null)
@@ -5533,33 +5532,33 @@ static void vehicle_update_sound(Vehicle* vehicle)
             }
 
         loc_6D7A97:
-            vehicle->scream_sound_id = SoundId::Null;
-            if (ride->type < std::size(RideLiftData))
+            scream_sound_id = SoundId::Null;
+            if (curRide->type < std::size(RideLiftData))
             {
                 // Get lift hill sound
-                screamId = RideLiftData[ride->type].sound_id;
+                screamId = RideLiftData[curRide->type].sound_id;
                 screamVolume = 243;
-                if (!(vehicle->sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
+                if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
                     screamId = SoundId::Null;
             }
     }
 
     // Friction sound
-    auto soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, frictionId, frictionVolume);
-    vehicle->sound1_id = soundIdVolume.id;
-    vehicle->sound1_volume = soundIdVolume.volume;
+    auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionId, frictionVolume);
+    sound1_id = soundIdVolume.id;
+    sound1_volume = soundIdVolume.volume;
 
     // Scream sound
-    soundIdVolume = sub_6D7AC0(vehicle->sound2_id, vehicle->sound2_volume, screamId, screamVolume);
-    vehicle->sound2_id = soundIdVolume.id;
-    vehicle->sound2_volume = soundIdVolume.volume;
+    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamId, screamVolume);
+    sound2_id = soundIdVolume.id;
+    sound2_volume = soundIdVolume.volume;
 
     // Calculate Sound Vector (used for sound frequency calcs)
-    int32_t soundDirection = SpriteDirectionToSoundDirection[vehicle->sprite_direction];
-    int32_t soundVector = ((vehicle->velocity >> 14) * soundDirection) >> 14;
+    int32_t soundDirection = SpriteDirectionToSoundDirection[sprite_direction];
+    int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
-    vehicle->sound_vector_factor = soundVector & 0xFF;
+    sound_vector_factor = soundVector & 0xFF;
 }
 
 /**
