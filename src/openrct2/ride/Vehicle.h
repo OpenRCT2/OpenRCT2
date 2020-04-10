@@ -340,6 +340,7 @@ private:
     SoundId UpdateScreamSound();
     void UpdateCrashSetup();
     void UpdateCollisionSetup();
+    int32_t UpdateMotionDodgems();
 };
 
 struct train_ref

@@ -48,7 +48,6 @@
 static void vehicle_claxon(const Vehicle* vehicle);
 
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
-static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle);
 static void vehicle_update_additional_animation(Vehicle* vehicle);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
@@ -2424,7 +2423,7 @@ void Vehicle::UpdateDodgemsMode()
         Invalidate();
     }
 
-    vehicle_update_motion_dodgems(this);
+    UpdateMotionDodgems();
 
     // Update the length of time vehicle has been in bumper mode
     if (sub_state++ == 0xFF)
@@ -6232,173 +6231,173 @@ int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle)
  *
  *  rct2: 0x006DA44E
  */
-static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle)
+int32_t Vehicle::UpdateMotionDodgems()
 {
     _vehicleMotionTrackFlags = 0;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return _vehicleMotionTrackFlags;
 
-    int32_t nextVelocity = vehicle->velocity + vehicle->acceleration;
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
-        && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
+    int32_t nextVelocity = velocity + acceleration;
+    if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
+        && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
     {
         nextVelocity = 0;
     }
-    vehicle->velocity = nextVelocity;
+    velocity = nextVelocity;
 
     _vehicleVelocityF64E08 = nextVelocity;
     _vehicleVelocityF64E0C = (nextVelocity / 1024) * 42;
     _vehicleUnkF64E10 = 1;
 
-    vehicle->acceleration = 0;
-    if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
-        || ride->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT)
+    acceleration = 0;
+    if (!(curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+        || curRide->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT)
     {
-        if (gCurrentTicks & 1 && vehicle->var_34 != 0)
+        if (gCurrentTicks & 1 && var_34 != 0)
         {
-            if (vehicle->var_34 > 0)
+            if (var_34 > 0)
             {
-                vehicle->var_34--;
-                vehicle->sprite_direction += 2;
+                var_34--;
+                sprite_direction += 2;
             }
             else
             {
-                vehicle->var_34++;
-                vehicle->sprite_direction -= 2;
+                var_34++;
+                sprite_direction -= 2;
             }
-            vehicle->sprite_direction &= 0x1E;
-            vehicle->Invalidate();
+            sprite_direction &= 0x1E;
+            Invalidate();
         }
         else if ((scenario_rand() & 0xFFFF) <= 2849)
         {
-            if (vehicle->var_35 & (1 << 6))
-                vehicle->sprite_direction -= 2;
+            if (var_35 & (1 << 6))
+                sprite_direction -= 2;
             else
-                vehicle->sprite_direction += 2;
-            vehicle->sprite_direction &= 0x1E;
-            vehicle->Invalidate();
+                sprite_direction += 2;
+            sprite_direction &= 0x1E;
+            Invalidate();
         }
     }
 
     uint16_t collideSprite = SPRITE_INDEX_NULL;
 
-    if (vehicle->dodgems_collision_direction != 0)
+    if (dodgems_collision_direction != 0)
     {
-        uint8_t oldCollisionDirection = vehicle->dodgems_collision_direction & 0x1E;
-        vehicle->dodgems_collision_direction = 0;
+        uint8_t oldCollisionDirection = dodgems_collision_direction & 0x1E;
+        dodgems_collision_direction = 0;
 
-        CoordsXYZ location = { vehicle->x, vehicle->y, vehicle->z };
+        CoordsXYZ location = { x, y, z };
 
         location.x += Unk9A36C4[oldCollisionDirection].x;
         location.y += Unk9A36C4[oldCollisionDirection].y;
         location.x += Unk9A36C4[oldCollisionDirection + 1].x;
         location.y += Unk9A36C4[oldCollisionDirection + 1].y;
 
-        if (!vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
+        if (!vehicle_update_dodgems_collision(this, location.x, location.y, &collideSprite))
         {
-            vehicle->Invalidate();
-            sprite_move(location.x, location.y, location.z, vehicle);
-            vehicle->Invalidate();
+            Invalidate();
+            sprite_move(location.x, location.y, location.z, this);
+            Invalidate();
         }
     }
 
-    vehicle->remaining_distance += _vehicleVelocityF64E0C;
+    remaining_distance += _vehicleVelocityF64E0C;
 
-    if (vehicle->remaining_distance >= 13962)
+    if (remaining_distance >= 13962)
     {
-        vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20.x = vehicle->x;
-        unk_F64E20.y = vehicle->y;
-        unk_F64E20.z = vehicle->z;
+        sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+        unk_F64E20.x = x;
+        unk_F64E20.y = y;
+        unk_F64E20.z = z;
 
-        vehicle->Invalidate();
+        Invalidate();
 
         while (true)
         {
-            vehicle->var_35++;
-            uint8_t direction = vehicle->sprite_direction;
-            direction |= vehicle->var_35 & 1;
+            var_35++;
+            uint8_t direction = sprite_direction;
+            direction |= var_35 & 1;
 
             CoordsXY location = unk_F64E20;
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
-            if (vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
+            if (vehicle_update_dodgems_collision(this, location.x, location.y, &collideSprite))
                 break;
 
-            vehicle->remaining_distance -= Unk9A36C4[direction].distance;
+            remaining_distance -= Unk9A36C4[direction].distance;
             unk_F64E20.x = location.x;
             unk_F64E20.y = location.y;
-            if (vehicle->remaining_distance < 13962)
+            if (remaining_distance < 13962)
             {
                 break;
             }
             _vehicleUnkF64E10++;
         }
 
-        if (vehicle->remaining_distance >= 13962)
+        if (remaining_distance >= 13962)
         {
-            int32_t oldVelocity = vehicle->velocity;
-            vehicle->remaining_distance = 0;
-            vehicle->velocity = 0;
-            uint8_t direction = vehicle->sprite_direction | 1;
+            int32_t oldVelocity = velocity;
+            remaining_distance = 0;
+            velocity = 0;
+            uint8_t direction = sprite_direction | 1;
 
             if (collideSprite != SPRITE_INDEX_NULL)
             {
-                vehicle->var_34 = (scenario_rand() & 1) ? 1 : -1;
+                var_34 = (scenario_rand() & 1) ? 1 : -1;
 
                 if (oldVelocity >= 131072)
                 {
                     Vehicle* collideVehicle = GET_VEHICLE(collideSprite);
                     collideVehicle->dodgems_collision_direction = direction;
-                    vehicle->dodgems_collision_direction = direction ^ (1 << 4);
+                    dodgems_collision_direction = direction ^ (1 << 4);
                 }
             }
             else
             {
-                vehicle->var_34 = (scenario_rand() & 1) ? 6 : -6;
+                var_34 = (scenario_rand() & 1) ? 6 : -6;
 
                 if (oldVelocity >= 131072)
                 {
-                    vehicle->dodgems_collision_direction = direction ^ (1 << 4);
+                    dodgems_collision_direction = direction ^ (1 << 4);
                 }
             }
         }
 
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
-        vehicle->Invalidate();
+        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, this);
+        Invalidate();
     }
 
-    int32_t eax = vehicle->velocity / 2;
-    int32_t edx = vehicle->velocity >> 8;
+    int32_t eax = velocity / 2;
+    int32_t edx = velocity >> 8;
     edx *= edx;
-    if (vehicle->velocity < 0)
+    if (velocity < 0)
         edx = -edx;
     edx >>= 5;
     eax += edx;
-    eax /= vehicle->mass;
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    eax /= mass;
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
     {
-        vehicle->acceleration = -eax;
+        acceleration = -eax;
         return _vehicleMotionTrackFlags;
     }
 
-    int32_t ebx = (vehicle->speed * vehicle->mass) >> 2;
-    int32_t _eax = vehicle->speed << 14;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+    int32_t ebx = (speed * mass) >> 2;
+    int32_t _eax = speed << 14;
+    if (update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
     {
         _eax = -_eax;
     }
-    _eax -= vehicle->velocity;
-    _eax *= vehicle->powered_acceleration * 2;
+    _eax -= velocity;
+    _eax *= powered_acceleration * 2;
     _eax /= ebx;
 
-    vehicle->acceleration = _eax - eax;
+    acceleration = _eax - eax;
     return _vehicleMotionTrackFlags;
 }
 
