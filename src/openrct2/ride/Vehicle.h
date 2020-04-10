@@ -338,6 +338,8 @@ private:
     void UpdateCrossings() const;
     void UpdateSound();
     SoundId UpdateScreamSound();
+    void UpdateCrashSetup();
+    void UpdateCollisionSetup();
 };
 
 struct train_ref

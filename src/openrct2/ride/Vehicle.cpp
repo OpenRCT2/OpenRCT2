@@ -48,8 +48,6 @@
 static void vehicle_claxon(const Vehicle* vehicle);
 
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
-static void vehicle_update_crash_setup(Vehicle* vehicle);
-static void vehicle_update_collision_setup(Vehicle* vehicle);
 static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle);
 static void vehicle_update_additional_animation(Vehicle* vehicle);
 static bool vehicle_update_motion_collision_detection(
@@ -3366,7 +3364,7 @@ void Vehicle::UpdateDeparting()
                 || curRide->mode == RIDE_MODE_SHUTTLE)
                 return;
 
-            vehicle_update_crash_setup(this);
+            UpdateCrashSetup();
             return;
         }
     }
@@ -3495,45 +3493,45 @@ static void vehicle_simulate_crash(Vehicle* vehicle)
  *
  *  rct2: 0x006DA059
  */
-static void vehicle_update_collision_setup(Vehicle* vehicle)
+void Vehicle::UpdateCollisionSetup()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (ride->status == RIDE_STATUS_SIMULATING)
+    if (curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(vehicle);
+        vehicle_simulate_crash(this);
         return;
     }
 
-    vehicle->SetState(VEHICLE_STATUS_CRASHED, vehicle->sub_state);
+    SetState(VEHICLE_STATUS_CRASHED, sub_state);
 
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        auto frontVehicle = vehicle->GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        auto frontVehicle = GetHead();
+        auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
         if (!trainIndex)
         {
             return;
         }
 
-        ride->Crash(*trainIndex);
+        curRide->Crash(*trainIndex);
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (curRide->status != RIDE_STATUS_CLOSED)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
+            auto gameAction = RideSetStatusAction(curRide->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
         }
     }
 
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-    vehicle_kill_all_passengers(vehicle);
+    curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+    curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    vehicle_kill_all_passengers(this);
 
-    Vehicle* lastVehicle = vehicle;
-    uint16_t spriteId = vehicle->sprite_index;
+    Vehicle* lastVehicle = this;
+    uint16_t spriteId = sprite_index;
     for (Vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train)
     {
         train = GET_VEHICLE(spriteId);
@@ -3565,9 +3563,9 @@ static void vehicle_update_collision_setup(Vehicle* vehicle)
         train->var_4E = 0;
     }
 
-    (GET_VEHICLE(vehicle->prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
-    (GET_VEHICLE(lastVehicle->next_vehicle_on_ride))->prev_vehicle_on_ride = vehicle->prev_vehicle_on_ride;
-    vehicle->velocity = 0;
+    (GET_VEHICLE(prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
+    (GET_VEHICLE(lastVehicle->next_vehicle_on_ride))->prev_vehicle_on_ride = prev_vehicle_on_ride;
+    velocity = 0;
 }
 
 /** rct2: 0x009A3AC4, 0x009A3AC6 */
@@ -3580,51 +3578,50 @@ static constexpr const CoordsXY stru_9A3AC4[] = {
  *
  *  rct2: 0x006D9EFE
  */
-static void vehicle_update_crash_setup(Vehicle* vehicle)
+void Vehicle::UpdateCrashSetup()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    auto curRide = get_ride(ride);
+    if (curRide != nullptr && curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(vehicle);
+        vehicle_simulate_crash(this);
         return;
     }
-    vehicle->SetState(VEHICLE_STATUS_CRASHING, vehicle->sub_state);
+    SetState(VEHICLE_STATUS_CRASHING, sub_state);
 
-    int32_t num_peeps = vehicle_get_total_num_peeps(vehicle);
-    if (num_peeps != 0)
+    if (vehicle_get_total_num_peeps(this) != 0)
     {
-        audio_play_sound_at_location(SoundId::HauntedHouseScream2, { vehicle->x, vehicle->y, vehicle->z });
+        audio_play_sound_at_location(SoundId::HauntedHouseScream2, { x, y, z });
     }
 
-    int32_t edx = vehicle->velocity >> 10;
+    int32_t edx = velocity >> 10;
 
-    Vehicle* lastVehicle = vehicle;
-    uint16_t spriteId = vehicle->sprite_index;
+    Vehicle* lastVehicle = this;
+    uint16_t spriteId = sprite_index;
     for (Vehicle* trainVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = trainVehicle->next_vehicle_on_train)
     {
         trainVehicle = GET_VEHICLE(spriteId);
         lastVehicle = trainVehicle;
 
         trainVehicle->sub_state = 0;
-        int32_t x = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
-        int32_t y = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
-        auto z = Unk9A38D4[trainVehicle->vehicle_sprite_type] >> 23;
+        int32_t trainX = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
+        int32_t trainY = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
+        auto trainZ = Unk9A38D4[trainVehicle->vehicle_sprite_type] >> 23;
 
         int32_t ecx = Unk9A37E4[trainVehicle->vehicle_sprite_type] >> 15;
-        x *= ecx;
-        y *= ecx;
-        x >>= 16;
-        y >>= 16;
-        x *= edx;
-        y *= edx;
-        z *= edx;
-        x >>= 8;
-        y >>= 8;
-        z >>= 8;
+        trainX *= ecx;
+        trainY *= ecx;
+        trainX >>= 16;
+        trainY >>= 16;
+        trainX *= edx;
+        trainY *= edx;
+        trainZ *= edx;
+        trainX >>= 8;
+        trainY >>= 8;
+        trainZ >>= 8;
 
-        trainVehicle->crash_x = x;
-        trainVehicle->crash_y = y;
-        trainVehicle->crash_z = z;
+        trainVehicle->crash_x = trainX;
+        trainVehicle->crash_y = trainY;
+        trainVehicle->crash_z = trainZ;
         trainVehicle->crash_x += (scenario_rand() & 0xF) - 8;
         trainVehicle->crash_y += (scenario_rand() & 0xF) - 8;
         trainVehicle->crash_z += (scenario_rand() & 0xF) - 8;
@@ -3632,9 +3629,9 @@ static void vehicle_update_crash_setup(Vehicle* vehicle)
         trainVehicle->TrackLocation = { 0, 0, 0 };
     }
 
-    (GET_VEHICLE(vehicle->prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
-    (GET_VEHICLE(lastVehicle->next_vehicle_on_ride))->prev_vehicle_on_ride = vehicle->prev_vehicle_on_ride;
-    vehicle->velocity = 0;
+    (GET_VEHICLE(prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
+    (GET_VEHICLE(lastVehicle->next_vehicle_on_ride))->prev_vehicle_on_ride = prev_vehicle_on_ride;
+    velocity = 0;
 }
 
 /**
@@ -3682,13 +3679,13 @@ void Vehicle::UpdateTravelling()
     {
         if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED)
         {
-            vehicle_update_crash_setup(this);
+            UpdateCrashSetup();
             return;
         }
 
         if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION)
         {
-            vehicle_update_collision_setup(this);
+            UpdateCollisionSetup();
             return;
         }
 
@@ -3717,7 +3714,7 @@ void Vehicle::UpdateTravelling()
             {
                 if (sub_state != 0)
                 {
-                    vehicle_update_crash_setup(this);
+                    UpdateCrashSetup();
                     return;
                 }
                 sub_state = 1;
@@ -3947,7 +3944,7 @@ loc_6D8E36:
     curFlags = vehicle_update_track_motion(this, nullptr);
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
     {
-        vehicle_update_collision_setup(this);
+        UpdateCollisionSetup();
         return;
     }
 
