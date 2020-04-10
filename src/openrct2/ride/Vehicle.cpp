@@ -1966,7 +1966,7 @@ void Vehicle::Update()
     // The cable lift uses the ride type of NULL
     if (ride_subtype == RIDE_TYPE_NULL)
     {
-        cable_lift_update(this);
+        CableLiftUpdate();
         return;
     }
 

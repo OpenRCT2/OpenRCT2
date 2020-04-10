@@ -307,6 +307,7 @@ private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
+    void CableLiftUpdate();
 };
 
 struct train_ref
