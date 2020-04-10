@@ -51,7 +51,6 @@ static void vehicle_claxon(const Vehicle* vehicle);
 static void vehicle_update_showing_film(Vehicle* vehicle);
 static void vehicle_update_doing_circus_show(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
-static void vehicle_update_travelling(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
@@ -2027,7 +2026,7 @@ void Vehicle::Update()
             UpdateDeparting();
             break;
         case VEHICLE_STATUS_TRAVELLING:
-            vehicle_update_travelling(this);
+            UpdateTravelling();
             break;
         case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
             vehicle_update_travelling_cable_lift(this);
@@ -3655,134 +3654,134 @@ static void vehicle_update_crash_setup(Vehicle* vehicle)
  *
  *  rct2: 0x006D8937
  */
-static void vehicle_update_travelling(Vehicle* vehicle)
+void Vehicle::UpdateTravelling()
 {
-    vehicle_check_if_missing(vehicle);
+    vehicle_check_if_missing(this);
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr || (_vehicleBreakdown == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT))
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RIDE_MODE_ROTATING_LIFT))
         return;
 
-    if (vehicle->sub_state == 2)
+    if (sub_state == 2)
     {
-        vehicle->velocity = 0;
-        vehicle->acceleration = 0;
-        vehicle->var_C0--;
-        if (vehicle->var_C0 == 0)
-            vehicle->sub_state = 0;
+        velocity = 0;
+        acceleration = 0;
+        var_C0--;
+        if (var_C0 == 0)
+            sub_state = 0;
     }
 
-    if (ride->mode == RIDE_MODE_FREEFALL_DROP && vehicle->animation_frame != 0)
+    if (curRide->mode == RIDE_MODE_FREEFALL_DROP && animation_frame != 0)
     {
-        vehicle->animation_frame++;
-        vehicle->velocity = 0;
-        vehicle->acceleration = 0;
-        vehicle->Invalidate();
+        animation_frame++;
+        velocity = 0;
+        acceleration = 0;
+        Invalidate();
         return;
     }
 
-    uint32_t flags = vehicle_update_track_motion(vehicle, nullptr);
+    uint32_t curFlags = vehicle_update_track_motion(this, nullptr);
 
     bool skipCheck = false;
-    if (flags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_9)
-        && ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && vehicle->sub_state == 0)
+    if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_9)
+        && curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && sub_state == 0)
     {
-        vehicle->sub_state = 1;
-        vehicle->velocity = 0;
+        sub_state = 1;
+        velocity = 0;
         skipCheck = true;
     }
 
     if (!skipCheck)
     {
-        if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED)
+        if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED)
         {
-            vehicle_update_crash_setup(vehicle);
+            vehicle_update_crash_setup(this);
             return;
         }
 
-        if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION)
+        if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION)
         {
-            vehicle_update_collision_setup(vehicle);
+            vehicle_update_collision_setup(this);
             return;
         }
 
-        if (flags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
+        if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
         {
-            if (ride->mode == RIDE_MODE_ROTATING_LIFT)
+            if (curRide->mode == RIDE_MODE_ROTATING_LIFT)
             {
-                if (vehicle->sub_state <= 1)
+                if (sub_state <= 1)
                 {
-                    vehicle->SetState(VEHICLE_STATUS_ARRIVING, 1);
-                    vehicle->var_C0 = 0;
+                    SetState(VEHICLE_STATUS_ARRIVING, 1);
+                    var_C0 = 0;
                     return;
                 }
             }
-            else if (ride->mode == RIDE_MODE_BOAT_HIRE)
+            else if (curRide->mode == RIDE_MODE_BOAT_HIRE)
             {
-                vehicle_update_travelling_boat_hire_setup(vehicle);
+                vehicle_update_travelling_boat_hire_setup(this);
                 return;
             }
-            else if (ride->mode == RIDE_MODE_SHUTTLE)
+            else if (curRide->mode == RIDE_MODE_SHUTTLE)
             {
-                vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
-                vehicle->velocity = 0;
+                update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+                velocity = 0;
             }
             else
             {
-                if (vehicle->sub_state != 0)
+                if (sub_state != 0)
                 {
-                    vehicle_update_crash_setup(vehicle);
+                    vehicle_update_crash_setup(this);
                     return;
                 }
-                vehicle->sub_state = 1;
-                vehicle->velocity = 0;
+                sub_state = 1;
+                velocity = 0;
             }
         }
     }
 
-    if (ride->mode == RIDE_MODE_ROTATING_LIFT && vehicle->sub_state <= 1)
+    if (curRide->mode == RIDE_MODE_ROTATING_LIFT && sub_state <= 1)
     {
-        if (vehicle->sub_state == 0)
+        if (sub_state == 0)
         {
-            if (vehicle->velocity >= -131940)
-                vehicle->acceleration = -3298;
-            vehicle->velocity = std::max(vehicle->velocity, -131940);
+            if (velocity >= -131940)
+                acceleration = -3298;
+            velocity = std::max(velocity, -131940);
         }
         else
         {
-            if (vehicle_current_tower_element_is_top(vehicle))
+            if (vehicle_current_tower_element_is_top(this))
             {
-                vehicle->velocity = 0;
-                vehicle->sub_state = 2;
-                vehicle->var_C0 = 150;
+                velocity = 0;
+                sub_state = 2;
+                var_C0 = 150;
             }
             else
             {
-                if (vehicle->velocity <= 131940)
-                    vehicle->acceleration = 3298;
+                if (velocity <= 131940)
+                    acceleration = 3298;
             }
         }
     }
 
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
-        if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+        if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
-            if (vehicle->sub_state == 0)
+            if (sub_state == 0)
             {
-                if (vehicle->velocity != 0)
-                    vehicle->sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+                if (velocity != 0)
+                    sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
 
-                if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_12))
+                if (!(update_flags & VEHICLE_UPDATE_FLAG_12))
                 {
-                    if (vehicle->velocity >= ride->lift_hill_speed * -31079)
+                    if (velocity >= curRide->lift_hill_speed * -31079)
                     {
-                        vehicle->acceleration = -15539;
+                        acceleration = -15539;
 
                         if (_vehicleBreakdown == 0)
                         {
-                            vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-                            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                            sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+                            update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                         }
                     }
                 }
@@ -3790,43 +3789,43 @@ static void vehicle_update_travelling(Vehicle* vehicle)
         }
         else
         {
-            vehicle->sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-            if (vehicle->velocity <= ride->lift_hill_speed * 31079)
+            sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+            if (velocity <= curRide->lift_hill_speed * 31079)
             {
-                vehicle->acceleration = 15539;
-                if (vehicle->velocity != 0)
+                acceleration = 15539;
+                if (velocity != 0)
                 {
                     if (_vehicleBreakdown == 0)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                        vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+                        update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                        sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                     }
                 }
                 else
                 {
-                    vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+                    sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                 }
             }
         }
     }
 
-    if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
+    if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-    if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && vehicle->velocity >= 0
-        && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_12))
+    if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && velocity >= 0
+        && !(update_flags & VEHICLE_UPDATE_FLAG_12))
     {
         return;
     }
 
-    if (ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH && vehicle->velocity < 0)
+    if (curRide->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH && velocity < 0)
         return;
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->current_station = _vehicleStationIndex;
-    vehicle->var_C0 = 0;
-    if (vehicle->velocity < 0)
-        vehicle->sub_state = 1;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    current_station = _vehicleStationIndex;
+    var_C0 = 0;
+    if (velocity < 0)
+        sub_state = 1;
 }
 
 /**

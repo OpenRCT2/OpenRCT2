@@ -322,6 +322,7 @@ private:
     void UpdateCrookedHouseOperating();
     void UpdateRotating();
     void UpdateDeparting();
+    void UpdateTravelling();
 };
 
 struct train_ref
