@@ -1511,6 +1511,14 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     std::string inputFile = argv[0];
     std::string outputFile = argv[1];
 
+    if (!String::EndsWith(outputFile, ".sv6r", true))
+    {
+        outputFile += ".sv6r";
+    }
+    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+        OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);
+    outputFile = Path::Combine(outPath, outputFile);
+
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->NormaliseReplay(inputFile, outputFile))
     {
