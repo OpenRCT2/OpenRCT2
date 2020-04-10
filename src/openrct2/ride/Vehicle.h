@@ -310,6 +310,7 @@ private:
     void CableLiftUpdate();
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
+    void UpdateWaitingToDepart();
 };
 
 struct train_ref

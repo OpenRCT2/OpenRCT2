@@ -50,7 +50,6 @@ static void vehicle_claxon(const Vehicle* vehicle);
 
 static void vehicle_update_showing_film(Vehicle* vehicle);
 static void vehicle_update_doing_circus_show(Vehicle* vehicle);
-static void vehicle_update_waiting_to_depart(Vehicle* vehicle);
 static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
@@ -2002,7 +2001,7 @@ void Vehicle::Update()
             UpdateWaitingForPassengers();
             break;
         case VEHICLE_STATUS_WAITING_TO_DEPART:
-            vehicle_update_waiting_to_depart(this);
+            UpdateWaitingToDepart();
             break;
         case VEHICLE_STATUS_CRASHING:
         case VEHICLE_STATUS_CRASHED:
@@ -2475,16 +2474,16 @@ static void vehicle_update_dodgems_mode(Vehicle* vehicle)
  *
  *  rct2: 0x006D80BE
  */
-static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
+void Vehicle::UpdateWaitingToDepart()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
     bool shouldBreak = false;
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        switch (ride->breakdown_reason_pending)
+        switch (curRide->breakdown_reason_pending)
         {
             case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
             case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
@@ -2498,39 +2497,39 @@ static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
     }
 
     bool skipCheck = false;
-    if (shouldBreak || ride->status != RIDE_STATUS_OPEN)
+    if (shouldBreak || curRide->status != RIDE_STATUS_OPEN)
     {
-        if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
+        if (curRide->mode == RIDE_MODE_FORWARD_ROTATION || curRide->mode == RIDE_MODE_BACKWARD_ROTATION)
         {
-            uint8_t seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
-            if (vehicle->peep[seat * 2] == SPRITE_INDEX_NULL)
+            uint8_t seat = ((-vehicle_sprite_type) >> 3) & 0xF;
+            if (peep[seat * 2] == SPRITE_INDEX_NULL)
             {
-                if (vehicle->num_peeps == 0)
+                if (num_peeps == 0)
                 {
                     skipCheck = true;
                 }
             }
             else
             {
-                if (!ride_get_exit_location(ride, vehicle->current_station).isNull())
+                if (!ride_get_exit_location(curRide, current_station).isNull())
                 {
-                    vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+                    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
                     return;
                 }
             }
         }
         else
         {
-            uint16_t spriteId = vehicle->sprite_index;
+            uint16_t spriteId = sprite_index;
             for (Vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train)
             {
                 curVehicle = GET_VEHICLE(spriteId);
 
                 if (curVehicle->num_peeps != 0)
                 {
-                    if (!ride_get_exit_location(ride, vehicle->current_station).isNull())
+                    if (!ride_get_exit_location(curRide, current_station).isNull())
                     {
-                        vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+                        SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
                         return;
                     }
                     break;
@@ -2541,17 +2540,17 @@ static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
 
     if (!skipCheck)
     {
-        if (!(ride->stations[vehicle->current_station].Depart & STATION_DEPART_FLAG))
+        if (!(curRide->stations[current_station].Depart & STATION_DEPART_FLAG))
             return;
     }
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
+    if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
     {
-        if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+        if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
-            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
+            if (update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
             {
-                if (!vehicle_can_depart_synchronised(vehicle))
+                if (!vehicle_can_depart_synchronised(this))
                 {
                     return;
                 }
@@ -2559,132 +2558,132 @@ static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
         }
     }
 
-    vehicle->SetState(VEHICLE_STATUS_DEPARTING);
+    SetState(VEHICLE_STATUS_DEPARTING);
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+    if (curRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
     {
         CoordsXYE track;
-        int32_t z;
+        int32_t zUnused;
         int32_t direction;
 
-        uint8_t trackDirection = (vehicle->track_direction & 0x3);
+        uint8_t trackDirection = (track_direction & 0x3);
         if (track_block_get_next_from_zero(
-                vehicle->TrackLocation.x, vehicle->TrackLocation.y, vehicle->TrackLocation.z, ride, trackDirection, &track, &z,
-                &direction, false))
+                TrackLocation.x, TrackLocation.y, TrackLocation.z, curRide, trackDirection, &track, &zUnused, &direction,
+                false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
-                vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT, vehicle->sub_state);
+                SetState(VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT, sub_state);
             }
         }
     }
 
-    switch (ride->mode)
+    switch (curRide->mode)
     {
         case RIDE_MODE_BUMPERCAR:
             // Bumper mode uses sub_state / var_CE to tell how long
             // the vehicle has been ridden.
-            vehicle->SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
-            vehicle->var_CE = 0;
-            vehicle_update_dodgems_mode(vehicle);
+            SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
+            var_CE = 0;
+            vehicle_update_dodgems_mode(this);
             break;
         case RIDE_MODE_SWING:
-            vehicle->SetState(VEHICLE_STATUS_SWINGING);
-            vehicle->var_CE = 0;
-            vehicle->current_time = -1;
-            vehicle_update_swinging(vehicle);
+            SetState(VEHICLE_STATUS_SWINGING);
+            var_CE = 0;
+            current_time = -1;
+            vehicle_update_swinging(this);
             break;
         case RIDE_MODE_ROTATION:
-            vehicle->SetState(VEHICLE_STATUS_ROTATING);
-            vehicle->var_CE = 0;
-            vehicle->current_time = -1;
-            vehicle_update_rotating(vehicle);
+            SetState(VEHICLE_STATUS_ROTATING);
+            var_CE = 0;
+            current_time = -1;
+            vehicle_update_rotating(this);
             break;
         case RIDE_MODE_FILM_AVENGING_AVIATORS:
-            vehicle->SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
-            vehicle->current_time = -1;
-            vehicle_update_simulator_operating(vehicle);
+            SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
+            current_time = -1;
+            vehicle_update_simulator_operating(this);
             break;
         case RIDE_MODE_FILM_THRILL_RIDERS:
-            vehicle->SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
-            vehicle->current_time = -1;
-            vehicle_update_simulator_operating(vehicle);
+            SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
+            current_time = -1;
+            vehicle_update_simulator_operating(this);
             break;
         case RIDE_MODE_BEGINNERS:
         case RIDE_MODE_INTENSE:
         case RIDE_MODE_BERSERK:
-            vehicle->SetState(VEHICLE_STATUS_TOP_SPIN_OPERATING, vehicle->sub_state);
+            SetState(VEHICLE_STATUS_TOP_SPIN_OPERATING, sub_state);
 
-            switch (ride->mode)
+            switch (curRide->mode)
             {
                 case RIDE_MODE_BEGINNERS:
-                    vehicle->sub_state = 0;
+                    sub_state = 0;
                     break;
                 case RIDE_MODE_INTENSE:
-                    vehicle->sub_state = 1;
+                    sub_state = 1;
                     break;
                 case RIDE_MODE_BERSERK:
-                    vehicle->sub_state = 2;
+                    sub_state = 2;
                     break;
             }
-            vehicle->current_time = -1;
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->bank_rotation = 0;
-            vehicle_update_top_spin_operating(vehicle);
+            current_time = -1;
+            vehicle_sprite_type = 0;
+            bank_rotation = 0;
+            vehicle_update_top_spin_operating(this);
             break;
         case RIDE_MODE_FORWARD_ROTATION:
         case RIDE_MODE_BACKWARD_ROTATION:
-            vehicle->SetState(VEHICLE_STATUS_FERRIS_WHEEL_ROTATING, vehicle->vehicle_sprite_type);
-            vehicle->var_CE = 0;
-            vehicle->ferris_wheel_var_0 = 8;
-            vehicle->ferris_wheel_var_1 = 8;
-            vehicle_update_ferris_wheel_rotating(vehicle);
+            SetState(VEHICLE_STATUS_FERRIS_WHEEL_ROTATING, vehicle_sprite_type);
+            var_CE = 0;
+            ferris_wheel_var_0 = 8;
+            ferris_wheel_var_1 = 8;
+            vehicle_update_ferris_wheel_rotating(this);
             break;
         case RIDE_MODE_3D_FILM_MOUSE_TAILS:
         case RIDE_MODE_3D_FILM_STORM_CHASERS:
         case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
-            vehicle->SetState(VEHICLE_STATUS_SHOWING_FILM, vehicle->sub_state);
-            switch (ride->mode)
+            SetState(VEHICLE_STATUS_SHOWING_FILM, sub_state);
+            switch (curRide->mode)
             {
                 case RIDE_MODE_3D_FILM_MOUSE_TAILS:
-                    vehicle->sub_state = 0;
+                    sub_state = 0;
                     break;
                 case RIDE_MODE_3D_FILM_STORM_CHASERS:
-                    vehicle->sub_state = 1;
+                    sub_state = 1;
                     break;
                 case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
-                    vehicle->sub_state = 2;
+                    sub_state = 2;
                     break;
             }
-            vehicle->current_time = -1;
-            vehicle_update_showing_film(vehicle);
+            current_time = -1;
+            vehicle_update_showing_film(this);
             break;
         case RIDE_MODE_CIRCUS_SHOW:
-            vehicle->SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
-            vehicle->current_time = -1;
-            vehicle_update_doing_circus_show(vehicle);
+            SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
+            current_time = -1;
+            vehicle_update_doing_circus_show(this);
             break;
         case RIDE_MODE_SPACE_RINGS:
-            vehicle->SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->current_time = -1;
-            vehicle_update_space_rings_operating(vehicle);
+            SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
+            vehicle_sprite_type = 0;
+            current_time = -1;
+            vehicle_update_space_rings_operating(this);
             break;
         case RIDE_MODE_HAUNTED_HOUSE:
-            vehicle->SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->current_time = -1;
-            vehicle_update_haunted_house_operating(vehicle);
+            SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
+            vehicle_sprite_type = 0;
+            current_time = -1;
+            vehicle_update_haunted_house_operating(this);
             break;
         case RIDE_MODE_CROOKED_HOUSE:
-            vehicle->SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->current_time = -1;
-            vehicle_update_crooked_house_operating(vehicle);
+            SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
+            vehicle_sprite_type = 0;
+            current_time = -1;
+            vehicle_update_crooked_house_operating(this);
             break;
         default:
-            vehicle->SetState(vehicle->status);
-            vehicle->var_CE = 0;
+            SetState(status);
+            var_CE = 0;
             break;
     }
 }
