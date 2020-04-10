@@ -50,7 +50,6 @@ static void vehicle_claxon(const Vehicle* vehicle);
 
 static void vehicle_update_showing_film(Vehicle* vehicle);
 static void vehicle_update_doing_circus_show(Vehicle* vehicle);
-static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
@@ -2025,7 +2024,7 @@ void Vehicle::Update()
             UpdateRotating();
             break;
         case VEHICLE_STATUS_DEPARTING:
-            vehicle_update_departing(this);
+            UpdateDeparting();
             break;
         case VEHICLE_STATUS_TRAVELLING:
             vehicle_update_travelling(this);
@@ -3167,101 +3166,101 @@ static void vehicle_update_departing_boat_hire(Vehicle* vehicle)
  *
  *  rct2: 0x006D845B
  */
-static void vehicle_update_departing(Vehicle* vehicle)
+void Vehicle::UpdateDeparting()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
         return;
 
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
+        if (update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
 
-            ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(ride);
+            curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+            ride_breakdown_add_news_item(curRide);
 
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+            curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
-            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-            ride->inspection_station = vehicle->current_station;
-            ride->breakdown_reason = ride->breakdown_reason_pending;
-            vehicle->velocity = 0;
+            curRide->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+            curRide->inspection_station = current_station;
+            curRide->breakdown_reason = curRide->breakdown_reason_pending;
+            velocity = 0;
             return;
         }
 
-        vehicle->sub_state = 1;
-        vehicle_peep_easteregg_here_we_are(vehicle);
+        sub_state = 1;
+        vehicle_peep_easteregg_here_we_are(this);
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
             auto soundId = (rideEntry->vehicles[0].sound_range == 4) ? SoundId::Tram : SoundId::TrainDeparting;
 
-            audio_play_sound_at_location(soundId, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(soundId, { x, y, z });
         }
 
-        if (ride->mode == RIDE_MODE_UPWARD_LAUNCH || (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH && vehicle->var_CE > 1))
+        if (curRide->mode == RIDE_MODE_UPWARD_LAUNCH || (curRide->mode == RIDE_MODE_DOWNWARD_LAUNCH && var_CE > 1))
         {
-            audio_play_sound_at_location(SoundId::RideLaunch2, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::RideLaunch2, { x, y, z });
         }
 
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
-            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+            if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
             {
-                if (ride->current_test_segment + 1 < ride->num_stations)
+                if (curRide->current_test_segment + 1 < curRide->num_stations)
                 {
-                    ride->current_test_segment++;
-                    ride->current_test_station = vehicle->current_station;
+                    curRide->current_test_segment++;
+                    curRide->current_test_station = current_station;
                 }
                 else
                 {
-                    vehicle_update_test_finish(vehicle);
+                    vehicle_update_test_finish(this);
                 }
             }
-            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !vehicle->IsGhost())
+            else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
             {
-                vehicle_test_reset(vehicle);
+                vehicle_test_reset(this);
             }
         }
     }
 
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    switch (ride->mode)
+    switch (curRide->mode)
     {
         case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
-            if (vehicle->velocity >= -131940)
-                vehicle->acceleration = -3298;
+            if (velocity >= -131940)
+                acceleration = -3298;
             break;
         case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
         case RIDE_MODE_POWERED_LAUNCH:
         case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
         case RIDE_MODE_LIM_POWERED_LAUNCH:
         case RIDE_MODE_UPWARD_LAUNCH:
-            if (ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
+            if (curRide->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
             {
-                if ((ride->launch_speed << 16) > vehicle->velocity)
+                if ((curRide->launch_speed << 16) > velocity)
                 {
-                    vehicle->acceleration = ride->launch_speed << 13;
+                    acceleration = curRide->launch_speed << 13;
                 }
                 break;
             }
 
-            if ((ride->launch_speed << 16) > vehicle->velocity)
-                vehicle->acceleration = ride->launch_speed << 12;
+            if ((curRide->launch_speed << 16) > velocity)
+                acceleration = curRide->launch_speed << 12;
             break;
         case RIDE_MODE_DOWNWARD_LAUNCH:
-            if (vehicle->var_CE >= 1)
+            if (var_CE >= 1)
             {
-                if ((14 << 16) > vehicle->velocity)
-                    vehicle->acceleration = 14 << 12;
+                if ((14 << 16) > velocity)
+                    acceleration = 14 << 12;
                 break;
             }
             [[fallthrough]];
@@ -3273,130 +3272,131 @@ static void vehicle_update_departing(Vehicle* vehicle)
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
                 break;
 
-            if (vehicle->velocity <= 131940)
-                vehicle->acceleration = 3298;
+            if (velocity <= 131940)
+                acceleration = 3298;
             break;
     }
 
-    uint32_t flags = vehicle_update_track_motion(vehicle, nullptr);
+    uint32_t curFlags = vehicle_update_track_motion(this, nullptr);
 
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
     {
-        if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+        if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
-            vehicle->velocity = -vehicle->velocity;
-            vehicle_finish_departing(vehicle);
+            velocity = -velocity;
+            vehicle_finish_departing(this);
             return;
         }
     }
 
-    if (flags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
+    if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
     {
-        if (ride->mode == RIDE_MODE_BOAT_HIRE)
+        if (curRide->mode == RIDE_MODE_BOAT_HIRE)
         {
-            vehicle_update_departing_boat_hire(vehicle);
+            vehicle_update_departing_boat_hire(this);
             return;
         }
-        else if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+        else if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
-            vehicle->velocity = -vehicle->velocity;
-            vehicle_finish_departing(vehicle);
+            velocity = -velocity;
+            vehicle_finish_departing(this);
             return;
         }
-        else if (ride->mode == RIDE_MODE_SHUTTLE)
+        else if (curRide->mode == RIDE_MODE_SHUTTLE)
         {
-            vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
-            vehicle->velocity = 0;
+            update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+            velocity = 0;
 
             // We have turned, so treat it like entering a new tile
-            vehicle_update_crossings(vehicle);
+            vehicle_update_crossings(this);
         }
     }
 
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
-        vehicle->sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        if (ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+        sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+        if (curRide->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
-            int32_t speed = ride->lift_hill_speed * 31079;
-            if (vehicle->velocity <= speed)
+            int32_t curSpeed = curRide->lift_hill_speed * 31079;
+            if (velocity <= curSpeed)
             {
-                vehicle->acceleration = 15539;
-                if (vehicle->velocity != 0)
+                acceleration = 15539;
+                if (velocity != 0)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                        update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                        update_flags &= ~VEHICLE_UPDATE_FLAG_1;
                     }
                 }
                 else
-                    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                    update_flags &= ~VEHICLE_UPDATE_FLAG_1;
             }
         }
         else
         {
-            int32_t speed = ride->lift_hill_speed * -31079;
-            if (vehicle->velocity >= speed)
+            int32_t curSpeed = curRide->lift_hill_speed * -31079;
+            if (velocity >= curSpeed)
             {
-                vehicle->acceleration = -15539;
-                if (vehicle->velocity != 0)
+                acceleration = -15539;
+                if (velocity != 0)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                        update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                        update_flags &= ~VEHICLE_UPDATE_FLAG_1;
                     }
                 }
                 else
-                    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                    update_flags &= ~VEHICLE_UPDATE_FLAG_1;
             }
         }
     }
 
-    if (ride->mode == RIDE_MODE_FREEFALL_DROP)
+    if (curRide->mode == RIDE_MODE_FREEFALL_DROP)
     {
-        vehicle->animation_frame++;
+        animation_frame++;
     }
     else
     {
         bool shouldLaunch = true;
-        if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH)
+        if (curRide->mode == RIDE_MODE_DOWNWARD_LAUNCH)
         {
-            if (vehicle->var_CE < 1)
+            if (var_CE < 1)
                 shouldLaunch = false;
         }
 
         if (shouldLaunch)
         {
-            if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3) || _vehicleStationIndex != vehicle->current_station)
+            if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3) || _vehicleStationIndex != current_station)
             {
-                vehicle_finish_departing(vehicle);
+                vehicle_finish_departing(this);
                 return;
             }
 
-            if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
+            if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 return;
-            if (ride->mode == RIDE_MODE_BOAT_HIRE || ride->mode == RIDE_MODE_ROTATING_LIFT || ride->mode == RIDE_MODE_SHUTTLE)
+            if (curRide->mode == RIDE_MODE_BOAT_HIRE || curRide->mode == RIDE_MODE_ROTATING_LIFT
+                || curRide->mode == RIDE_MODE_SHUTTLE)
                 return;
 
-            vehicle_update_crash_setup(vehicle);
+            vehicle_update_crash_setup(this);
             return;
         }
     }
 
-    if (!vehicle_current_tower_element_is_top(vehicle))
+    if (!vehicle_current_tower_element_is_top(this))
     {
-        if (ride->mode == RIDE_MODE_FREEFALL_DROP)
-            vehicle->Invalidate();
+        if (curRide->mode == RIDE_MODE_FREEFALL_DROP)
+            Invalidate();
         return;
     }
 
-    vehicle_finish_departing(vehicle);
+    vehicle_finish_departing(this);
 }
 
 /**
- * Part of vehicle_update_departing
+ * Part of UpdateDeparting
  * Called after finishing departing sequence to enter
  * traveling state.
  * Vertical rides class the lift to the top of the tower

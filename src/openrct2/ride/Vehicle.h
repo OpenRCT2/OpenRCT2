@@ -321,6 +321,7 @@ private:
     void UpdateHauntedHouseOperating();
     void UpdateCrookedHouseOperating();
     void UpdateRotating();
+    void UpdateDeparting();
 };
 
 struct train_ref
