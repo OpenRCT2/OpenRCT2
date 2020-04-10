@@ -785,12 +785,12 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
 
-    car.animation_speed_multiplier = Math::Clamp<uint8_t>(0, ObjectJsonHelpers::GetFloat(jCar, "animationSpeedModifier", 1)*ANIMATION_SPEED_MULTIPLIER_COEFFICIENT , UINT8_MAX);
+    car.animation_speed_multiplier = std::clamp<uint8_t>(ObjectJsonHelpers::GetFloat(jCar, "animationSpeedModifier", 1)*ANIMATION_SPEED_MULTIPLIER_COEFFICIENT, 0, UINT8_MAX);
 
-    auto jSteamEffect = ObjectJsonHelpers::GetJsonRealArray(json_object_get(jCar, "steamEffectModifier"));
+    auto jSteamEffect = ObjectJsonHelpers::GetJsonFloatArray(json_object_get(jCar, "steamEffectModifier"));
     if (jSteamEffect.size() == 2) {
-        car.steam_effect_translation[0] = Math::Clamp<int8_t>(INT8_MIN, jSteamEffect[0] * STEAM_EFFECT_TRANSLATION_COEFFICIENT, INT8_MAX);
-        car.steam_effect_translation[1] = Math::Clamp<int8_t>(INT8_MIN, jSteamEffect[1] * STEAM_EFFECT_TRANSLATION_COEFFICIENT, INT8_MAX);
+        car.steam_effect_translation[0] = std::clamp<int8_t>(jSteamEffect[0] * STEAM_EFFECT_TRANSLATION_COEFFICIENT, INT8_MIN, INT8_MAX);
+        car.steam_effect_translation[1] = std::clamp<int8_t>(jSteamEffect[1] * STEAM_EFFECT_TRANSLATION_COEFFICIENT, INT8_MIN, INT8_MAX);
     }
     else
     {
