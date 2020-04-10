@@ -54,7 +54,6 @@ static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
 static void vehicle_update_rotating(Vehicle* vehicle);
-static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
@@ -2019,7 +2018,7 @@ void Vehicle::Update()
             UpdateSpaceRingsOperating();
             break;
         case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
-            vehicle_update_haunted_house_operating(this);
+            UpdateHauntedHouseOperating();
             break;
         case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
             vehicle_update_crooked_house_operating(this);
@@ -2666,7 +2665,7 @@ void Vehicle::UpdateWaitingToDepart()
             SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
             vehicle_sprite_type = 0;
             current_time = -1;
-            vehicle_update_haunted_house_operating(this);
+            UpdateHauntedHouseOperating();
             break;
         case RIDE_MODE_CROOKED_HOUSE:
             SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
@@ -4985,52 +4984,52 @@ void Vehicle::UpdateSpaceRingsOperating()
  *
  *  rct2: 0x006D9641
  */
-static void vehicle_update_haunted_house_operating(Vehicle* vehicle)
+void Vehicle::UpdateHauntedHouseOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle_sprite_type != 0)
     {
         if (gCurrentTicks & 1)
         {
-            vehicle->vehicle_sprite_type++;
-            vehicle->Invalidate();
+            vehicle_sprite_type++;
+            Invalidate();
 
-            if (vehicle->vehicle_sprite_type == 19)
-                vehicle->vehicle_sprite_type = 0;
+            if (vehicle_sprite_type == 19)
+                vehicle_sprite_type = 0;
         }
     }
 
-    if (vehicle->current_time + 1 > 1500)
+    if (current_time + 1 > 1500)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
 
-    vehicle->current_time++;
-    switch (vehicle->current_time)
+    current_time++;
+    switch (current_time)
     {
         case 45:
-            audio_play_sound_at_location(SoundId::HauntedHouseScare, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::HauntedHouseScare, { x, y, z });
             break;
         case 75:
-            vehicle->vehicle_sprite_type = 1;
-            vehicle->Invalidate();
+            vehicle_sprite_type = 1;
+            Invalidate();
             break;
         case 400:
-            audio_play_sound_at_location(SoundId::HauntedHouseScream1, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::HauntedHouseScream1, { x, y, z });
             break;
         case 745:
-            audio_play_sound_at_location(SoundId::HauntedHouseScare, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::HauntedHouseScare, { x, y, z });
             break;
         case 775:
-            vehicle->vehicle_sprite_type = 1;
-            vehicle->Invalidate();
+            vehicle_sprite_type = 1;
+            Invalidate();
             break;
         case 1100:
-            audio_play_sound_at_location(SoundId::HauntedHouseScream2, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::HauntedHouseScream2, { x, y, z });
             break;
     }
 }

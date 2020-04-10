@@ -318,6 +318,7 @@ private:
     void UpdateTopSpinOperating();
     void UpdateFerrisWheelRotating();
     void UpdateSpaceRingsOperating();
+    void UpdateHauntedHouseOperating();
 };
 
 struct train_ref
