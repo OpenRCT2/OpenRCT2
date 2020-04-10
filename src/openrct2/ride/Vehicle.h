@@ -311,6 +311,7 @@ private:
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
     void UpdateWaitingToDepart();
+    void UpdateCrash();
 };
 
 struct train_ref

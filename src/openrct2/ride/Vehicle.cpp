@@ -62,7 +62,6 @@ static void vehicle_update_dodgems_mode(Vehicle* vehicle);
 static void vehicle_update_swinging(Vehicle* vehicle);
 static void vehicle_update_simulator_operating(Vehicle* vehicle);
 static void vehicle_update_top_spin_operating(Vehicle* vehicle);
-static void vehicle_update_crash(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
@@ -2005,7 +2004,7 @@ void Vehicle::Update()
             break;
         case VEHICLE_STATUS_CRASHING:
         case VEHICLE_STATUS_CRASHED:
-            vehicle_update_crash(this);
+            UpdateCrash();
             break;
         case VEHICLE_STATUS_TRAVELLING_DODGEMS:
             vehicle_update_dodgems_mode(this);
@@ -5383,9 +5382,9 @@ static void vehicle_crash_on_water(Vehicle* vehicle)
  *
  *  rct2: 0x006D98CA
  */
-static void vehicle_update_crash(Vehicle* vehicle)
+void Vehicle::UpdateCrash()
 {
-    uint16_t spriteId = vehicle->sprite_index;
+    uint16_t spriteId = sprite_index;
     Vehicle* curVehicle;
     do
     {
@@ -5424,7 +5423,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
             continue;
         }
 
-        int16_t z = tile_element_height({ curVehicle->x, curVehicle->y });
+        int16_t height = tile_element_height({ curVehicle->x, curVehicle->y });
         int16_t waterHeight = tile_element_water_height({ curVehicle->x, curVehicle->y });
         int16_t zDiff;
         if (waterHeight != 0)
@@ -5437,7 +5436,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
             }
         }
 
-        zDiff = curVehicle->z - z;
+        zDiff = curVehicle->z - height;
         if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16)
         {
             vehicle_crash_on_land(curVehicle);
