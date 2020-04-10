@@ -48,7 +48,6 @@
 static void vehicle_claxon(const Vehicle* vehicle);
 
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
-static void vehicle_update_additional_animation(Vehicle* vehicle);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
 
@@ -4273,7 +4272,7 @@ void Vehicle::UpdateMotionBoatHire()
     }
     if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION | VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
     {
-        vehicle_update_additional_animation(this);
+        UpdateAdditionalAnimation();
     }
 
     _vehicleUnkF64E10 = 1;
@@ -7209,13 +7208,13 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
  *
  *  rct2: 0x006D63D4
  */
-static void vehicle_update_additional_animation(Vehicle* vehicle)
+void Vehicle::UpdateAdditionalAnimation()
 {
     uint8_t al, ah;
     uint32_t eax;
 
-    uint32_t* var_C8 = reinterpret_cast<uint32_t*>(&vehicle->var_C8);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    uint32_t* curVar_C8 = reinterpret_cast<uint32_t*>(&var_C8);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7223,26 +7222,25 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 20) & 3;
-            if (vehicle->animation_frame != al)
+            *curVar_C8 += _vehicleVelocityF64E08;
+            al = (*curVar_C8 >> 20) & 3;
+            if (animation_frame != al)
             {
                 ah = al;
-                al = vehicle->animation_frame;
-                vehicle->animation_frame = ah;
+                al = animation_frame;
+                animation_frame = ah;
                 al &= 0x02;
                 ah &= 0x02;
                 if (al != ah)
                 {
-                    auto ride = get_ride(vehicle->ride);
-                    if (ride != nullptr)
+                    auto curRide = get_ride(ride);
+                    if (curRide != nullptr)
                     {
-                        if (!ride_has_station_shelter(ride)
-                            || (vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION
-                                && vehicle->status != VEHICLE_STATUS_ARRIVING))
+                        if (!ride_has_station_shelter(curRide)
+                            || (status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION && status != VEHICLE_STATUS_ARRIVING))
                         {
                             int32_t typeIndex = [&] {
-                                switch (vehicle->vehicle_sprite_type)
+                                switch (vehicle_sprite_type)
                                 {
                                     case 2:
                                         // uphill
@@ -7254,107 +7252,107 @@ static void vehicle_update_additional_animation(Vehicle* vehicle)
                                         return 0;
                                 }
                             }();
-                            int32_t directionIndex = vehicle->sprite_direction >> 1;
+                            int32_t directionIndex = sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            steam_particle_create(vehicle->x + offset.x, vehicle->y + offset.y, vehicle->z + offset.z);
+                            steam_particle_create(x + offset.x, y + offset.y, z + offset.z);
                         }
                     }
                 }
-                vehicle->Invalidate();
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 18) & 2;
-            if (vehicle->animation_frame != al)
+            *curVar_C8 += _vehicleVelocityF64E08;
+            al = (*curVar_C8 >> 18) & 2;
+            if (animation_frame != al)
             {
-                vehicle->animation_frame = al;
-                vehicle->Invalidate();
+                animation_frame = al;
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
-            *var_C8 += _vehicleVelocityF64E08;
-            eax = ((*var_C8 >> 13) & 0xFF) * 6;
+            *curVar_C8 += _vehicleVelocityF64E08;
+            eax = ((*curVar_C8 >> 13) & 0xFF) * 6;
             ah = (eax >> 8) & 0xFF;
-            if (vehicle->animation_frame != ah)
+            if (animation_frame != ah)
             {
-                vehicle->animation_frame = ah;
-                vehicle->Invalidate();
+                animation_frame = ah;
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
-            *var_C8 += _vehicleVelocityF64E08;
-            eax = ((*var_C8 >> 13) & 0xFF) * 7;
+            *curVar_C8 += _vehicleVelocityF64E08;
+            eax = ((*curVar_C8 >> 13) & 0xFF) * 7;
             ah = (eax >> 8) & 0xFF;
-            if (vehicle->animation_frame != ah)
+            if (animation_frame != ah)
             {
-                vehicle->animation_frame = ah;
-                vehicle->Invalidate();
+                animation_frame = ah;
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 19) & 1;
-            if (vehicle->animation_frame != al)
+            *curVar_C8 += _vehicleVelocityF64E08;
+            al = (*curVar_C8 >> 19) & 1;
+            if (animation_frame != al)
             {
-                vehicle->animation_frame = al;
-                vehicle->Invalidate();
+                animation_frame = al;
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
-            if (vehicle->var_C8 <= 0xCCCC)
+            if (var_C8 <= 0xCCCC)
             {
-                vehicle->var_C8 += 0x3333;
+                var_C8 += 0x3333;
             }
             else
             {
-                vehicle->var_C8 += 0x3333;
-                vehicle->animation_frame += 1;
-                vehicle->animation_frame &= 7;
-                vehicle->Invalidate();
+                var_C8 += 0x3333;
+                animation_frame += 1;
+                animation_frame &= 7;
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
-            *var_C8 += _vehicleVelocityF64E08;
-            al = (*var_C8 >> 18) & 3;
-            if (vehicle->animation_frame != al)
+            *curVar_C8 += _vehicleVelocityF64E08;
+            al = (*curVar_C8 >> 18) & 3;
+            if (animation_frame != al)
             {
-                vehicle->animation_frame = al;
-                vehicle->Invalidate();
+                animation_frame = al;
+                Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
-            if (vehicle->num_peeps != 0)
+            if (num_peeps != 0)
             {
-                *var_C8 += _vehicleVelocityF64E08;
-                eax = ((*var_C8 >> 13) & 0xFF) << 2;
+                *curVar_C8 += _vehicleVelocityF64E08;
+                eax = ((*curVar_C8 >> 13) & 0xFF) << 2;
                 ah = (eax >> 8) & 0xFF;
-                if (vehicle->animation_frame != ah)
+                if (animation_frame != ah)
                 {
-                    vehicle->animation_frame = ah;
-                    vehicle->Invalidate();
+                    animation_frame = ah;
+                    Invalidate();
                 }
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
-            if (vehicle->seat_rotation != vehicle->target_seat_rotation)
+            if (seat_rotation != target_seat_rotation)
             {
-                if (vehicle->var_C8 <= 0xCCCC)
+                if (var_C8 <= 0xCCCC)
                 {
-                    vehicle->var_C8 += 0x3333;
+                    var_C8 += 0x3333;
                 }
                 else
                 {
-                    vehicle->var_C8 += 0x3333;
+                    var_C8 += 0x3333;
 
-                    if (vehicle->seat_rotation >= vehicle->target_seat_rotation)
-                        vehicle->seat_rotation--;
+                    if (seat_rotation >= target_seat_rotation)
+                        seat_rotation--;
 
                     else
-                        vehicle->seat_rotation++;
+                        seat_rotation++;
 
-                    vehicle->animation_frame = (vehicle->seat_rotation - 4) & 7;
-                    vehicle->Invalidate();
+                    animation_frame = (seat_rotation - 4) & 7;
+                    Invalidate();
                 }
             }
             break;
@@ -9575,7 +9573,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION)
             || (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
         {
-            vehicle_update_additional_animation(car);
+            car->UpdateAdditionalAnimation();
         }
         car->acceleration = dword_9A2970[car->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
