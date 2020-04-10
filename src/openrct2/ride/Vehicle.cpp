@@ -45,7 +45,6 @@
 #include <algorithm>
 #include <iterator>
 
-static void vehicle_update_crossings(const Vehicle* vehicle);
 static void vehicle_claxon(const Vehicle* vehicle);
 
 static void vehicle_finish_departing(Vehicle* vehicle);
@@ -3297,7 +3296,7 @@ void Vehicle::UpdateDeparting()
             velocity = 0;
 
             // We have turned, so treat it like entering a new tile
-            vehicle_update_crossings(this);
+            UpdateCrossings();
         }
     }
 
@@ -8210,7 +8209,7 @@ loc_6DAEB9:
     uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->TrackSubposition, vehicle->track_type);
     if (regs.ax >= trackTotalProgress)
     {
-        vehicle_update_crossings(vehicle);
+        vehicle->UpdateCrossings();
 
         if (!vehicle_update_track_motion_forwards_get_new_track(vehicle, trackType, ride, rideEntry))
         {
@@ -8552,7 +8551,7 @@ loc_6DBA33:;
     regs.ax = vehicle->track_progress - 1;
     if (regs.ax == -1)
     {
-        vehicle_update_crossings(vehicle);
+        vehicle->UpdateCrossings();
 
         if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, (uint16_t*)&regs.ax))
         {
@@ -9815,9 +9814,9 @@ void vehicle_invalidate_window(Vehicle* vehicle)
     context_broadcast_intent(&intent);
 }
 
-void vehicle_update_crossings(const Vehicle* vehicle)
+void Vehicle::UpdateCrossings() const
 {
-    if (vehicle_get_head(vehicle) != vehicle)
+    if (vehicle_get_head(this) != this)
     {
         return;
     }
@@ -9825,17 +9824,17 @@ void vehicle_update_crossings(const Vehicle* vehicle)
     const Vehicle* frontVehicle{};
     const Vehicle* backVehicle{};
 
-    bool travellingForwards = !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
+    bool travellingForwards = !(update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
 
     if (travellingForwards)
     {
-        frontVehicle = vehicle;
-        backVehicle = vehicle_get_tail(vehicle);
+        frontVehicle = this;
+        backVehicle = vehicle_get_tail(this);
     }
     else
     {
-        frontVehicle = vehicle_get_tail(vehicle);
-        backVehicle = vehicle;
+        frontVehicle = vehicle_get_tail(this);
+        backVehicle = this;
     }
 
     track_begin_end output;
@@ -9844,11 +9843,11 @@ void vehicle_update_crossings(const Vehicle* vehicle)
     CoordsXYE xyElement = { frontVehicle->TrackLocation,
                             map_get_track_element_at_of_type_seq(
                                 frontVehicle->TrackLocation, frontVehicle->track_type >> 2, 0) };
-    int32_t z = frontVehicle->TrackLocation.z;
+    int32_t curZ = frontVehicle->TrackLocation.z;
 
-    if (xyElement.element && vehicle->status != VEHICLE_STATUS_ARRIVING)
+    if (xyElement.element && status != VEHICLE_STATUS_ARRIVING)
     {
-        int16_t autoReserveAhead = 4 + abs(vehicle->velocity) / 150000;
+        int16_t autoReserveAhead = 4 + abs(velocity) / 150000;
         int16_t crossingBonus = 0;
         bool playedClaxon = false;
 
@@ -9862,15 +9861,15 @@ void vehicle_update_crossings(const Vehicle* vehicle)
         while (true)
         {
             auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            auto ride = get_ride(vehicle->ride);
+            auto curRide = get_ride(ride);
 
             // Many New Element parks have invisible rides hacked into the path.
             // Limit path blocking to Miniature Railway to prevent peeps getting stuck everywhere.
-            if (pathElement && ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
+            if (pathElement && curRide != nullptr && curRide->type == RIDE_TYPE_MINIATURE_RAILWAY)
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
-                    vehicle_claxon(vehicle);
+                    vehicle_claxon(this);
                 }
                 crossingBonus = 4;
                 pathElement->SetIsBlockedByVehicle(true);
@@ -9885,11 +9884,11 @@ void vehicle_update_crossings(const Vehicle* vehicle)
                 break;
             }
 
-            z = xyElement.element->base_height;
+            curZ = xyElement.element->base_height;
 
             if (travellingForwards)
             {
-                if (!track_block_get_next(&xyElement, &xyElement, &z, &direction))
+                if (!track_block_get_next(&xyElement, &xyElement, &curZ, &direction))
                 {
                     break;
                 }
@@ -9916,7 +9915,7 @@ void vehicle_update_crossings(const Vehicle* vehicle)
 
     xyElement = { backVehicle->TrackLocation,
                   map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->track_type >> 2, 0) };
-    z = backVehicle->TrackLocation.z;
+    curZ = backVehicle->TrackLocation.z;
 
     if (xyElement.element)
     {

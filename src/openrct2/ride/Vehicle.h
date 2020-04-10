@@ -333,6 +333,7 @@ private:
     void UpdateWaitingForCableLift();
     void UpdateShowingFilm();
     void UpdateDoingCircusShow();
+    void UpdateCrossings() const;
     void UpdateSound();
     SoundId UpdateScreamSound();
 };
