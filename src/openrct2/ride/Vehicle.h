@@ -312,6 +312,7 @@ private:
     void UpdateWaitingForPassengers();
     void UpdateWaitingToDepart();
     void UpdateCrash();
+    void UpdateDodgemsMode();
 };
 
 struct train_ref

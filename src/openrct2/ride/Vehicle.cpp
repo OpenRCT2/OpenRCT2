@@ -58,7 +58,6 @@ static void vehicle_update_rotating(Vehicle* vehicle);
 static void vehicle_update_space_rings_operating(Vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
-static void vehicle_update_dodgems_mode(Vehicle* vehicle);
 static void vehicle_update_swinging(Vehicle* vehicle);
 static void vehicle_update_simulator_operating(Vehicle* vehicle);
 static void vehicle_update_top_spin_operating(Vehicle* vehicle);
@@ -2007,7 +2006,7 @@ void Vehicle::Update()
             UpdateCrash();
             break;
         case VEHICLE_STATUS_TRAVELLING_DODGEMS:
-            vehicle_update_dodgems_mode(this);
+            UpdateDodgemsMode();
             break;
         case VEHICLE_STATUS_SWINGING:
             vehicle_update_swinging(this);
@@ -2430,43 +2429,43 @@ void Vehicle::UpdateWaitingForPassengers()
  *
  *  rct2: 0x006D91BF
  */
-static void vehicle_update_dodgems_mode(Vehicle* vehicle)
+void Vehicle::UpdateDodgemsMode()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
     {
         return;
     }
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
     // Mark the dodgem as in use.
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS && vehicle->animation_frame != 1)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS && animation_frame != 1)
     {
-        vehicle->animation_frame = 1;
-        vehicle->Invalidate();
+        animation_frame = 1;
+        Invalidate();
     }
 
-    vehicle_update_motion_dodgems(vehicle);
+    vehicle_update_motion_dodgems(this);
 
     // Update the length of time vehicle has been in bumper mode
-    if (vehicle->sub_state++ == 0xFF)
+    if (sub_state++ == 0xFF)
     {
-        vehicle->var_CE++;
+        var_CE++;
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         return;
 
     // Mark the dodgem as not in use.
-    vehicle->animation_frame = 0;
-    vehicle->Invalidate();
-    vehicle->velocity = 0;
-    vehicle->acceleration = 0;
-    vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+    animation_frame = 0;
+    Invalidate();
+    velocity = 0;
+    acceleration = 0;
+    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
 }
 
 /**
@@ -2584,7 +2583,7 @@ void Vehicle::UpdateWaitingToDepart()
             // the vehicle has been ridden.
             SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
             var_CE = 0;
-            vehicle_update_dodgems_mode(this);
+            UpdateDodgemsMode(this);
             break;
         case RIDE_MODE_SWING:
             SetState(VEHICLE_STATUS_SWINGING);
