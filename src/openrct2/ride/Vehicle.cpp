@@ -53,7 +53,6 @@ static void vehicle_update_doing_circus_show(Vehicle* vehicle);
 static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
-static void vehicle_update_rotating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
@@ -2023,7 +2022,7 @@ void Vehicle::Update()
             UpdateCrookedHouseOperating();
             break;
         case VEHICLE_STATUS_ROTATING:
-            vehicle_update_rotating(this);
+            UpdateRotating();
             break;
         case VEHICLE_STATUS_DEPARTING:
             vehicle_update_departing(this);
@@ -2588,7 +2587,7 @@ void Vehicle::UpdateWaitingToDepart()
             SetState(VEHICLE_STATUS_ROTATING);
             var_CE = 0;
             current_time = -1;
-            vehicle_update_rotating(this);
+            UpdateRotating();
             break;
         case RIDE_MODE_FILM_AVENGING_AVIATORS:
             SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
@@ -4866,16 +4865,16 @@ void Vehicle::UpdateSimulatorOperating()
  *
  *  rct2: 0x006D92FF
  */
-static void vehicle_update_rotating(Vehicle* vehicle)
+void Vehicle::UpdateRotating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
     {
         return;
@@ -4884,73 +4883,73 @@ static void vehicle_update_rotating(Vehicle* vehicle)
     const uint8_t* timeToSpriteMap;
     if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)
     {
-        timeToSpriteMap = Rotation1TimeToSpriteMaps[vehicle->sub_state];
+        timeToSpriteMap = Rotation1TimeToSpriteMaps[sub_state];
     }
     else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2)
     {
-        timeToSpriteMap = Rotation2TimeToSpriteMaps[vehicle->sub_state];
+        timeToSpriteMap = Rotation2TimeToSpriteMaps[sub_state];
     }
     else
     {
-        timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
+        timeToSpriteMap = Rotation3TimeToSpriteMaps[sub_state];
     }
 
-    int32_t time = vehicle->current_time;
+    int32_t time = current_time;
     if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
     {
-        time += (ride->breakdown_sound_modifier >> 6) + 1;
+        time += (curRide->breakdown_sound_modifier >> 6) + 1;
     }
     time++;
 
     uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
     if (sprite != 0xFF)
     {
-        vehicle->current_time = static_cast<uint16_t>(time);
-        if (sprite == vehicle->vehicle_sprite_type)
+        current_time = static_cast<uint16_t>(time);
+        if (sprite == vehicle_sprite_type)
             return;
-        vehicle->vehicle_sprite_type = sprite;
-        vehicle->Invalidate();
+        vehicle_sprite_type = sprite;
+        Invalidate();
         return;
     }
 
-    vehicle->current_time = -1;
-    vehicle->var_CE++;
+    current_time = -1;
+    var_CE++;
     if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
     {
         bool shouldStop = true;
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (curRide->status != RIDE_STATUS_CLOSED)
         {
-            sprite = vehicle->var_CE + 1;
-            if (ride->type == RIDE_TYPE_ENTERPRISE)
+            sprite = var_CE + 1;
+            if (curRide->type == RIDE_TYPE_ENTERPRISE)
                 sprite += 9;
 
-            if (sprite < ride->rotations)
+            if (sprite < curRide->rotations)
                 shouldStop = false;
         }
 
         if (shouldStop)
         {
-            if (vehicle->sub_state == 2)
+            if (sub_state == 2)
             {
-                vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-                vehicle->var_C0 = 0;
+                SetState(VEHICLE_STATUS_ARRIVING);
+                var_C0 = 0;
                 return;
             }
-            vehicle->sub_state++;
-            vehicle_update_rotating(vehicle);
+            sub_state++;
+            UpdateRotating();
             return;
         }
     }
 
-    if (ride->type == RIDE_TYPE_ENTERPRISE && vehicle->sub_state == 2)
+    if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
 
-    vehicle->sub_state = 1;
-    vehicle_update_rotating(vehicle);
+    sub_state = 1;
+    UpdateRotating();
 }
 
 /**

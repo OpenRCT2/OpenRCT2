@@ -320,6 +320,7 @@ private:
     void UpdateSpaceRingsOperating();
     void UpdateHauntedHouseOperating();
     void UpdateCrookedHouseOperating();
+    void UpdateRotating();
 };
 
 struct train_ref
