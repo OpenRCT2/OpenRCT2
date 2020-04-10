@@ -54,7 +54,6 @@ static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
-static void vehicle_update_unloading_passengers(Vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
 static void vehicle_update_collision_setup(Vehicle* vehicle);
@@ -2035,7 +2034,7 @@ void Vehicle::Update()
             UpdateArriving();
             break;
         case VEHICLE_STATUS_UNLOADING_PASSENGERS:
-            vehicle_update_unloading_passengers(this);
+            UpdateUnloadingPassengers();
             break;
         case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
             vehicle_update_waiting_for_cable_lift(this);
@@ -4038,57 +4037,57 @@ loc_6D8E36:
  *
  *  rct2: 0x006D9002
  */
-static void vehicle_update_unloading_passengers(Vehicle* vehicle)
+void Vehicle::UpdateUnloadingPassengers()
 {
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        if (vehicle_open_restraints(vehicle))
+        if (vehicle_open_restraints(this))
         {
-            vehicle->sub_state = 1;
+            sub_state = 1;
         }
     }
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
+    if (curRide->mode == RIDE_MODE_FORWARD_ROTATION || curRide->mode == RIDE_MODE_BACKWARD_ROTATION)
     {
-        uint8_t seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
-        if (vehicle->restraints_position == 255 && (vehicle->peep[seat * 2] != SPRITE_INDEX_NULL))
+        uint8_t seat = ((-vehicle_sprite_type) >> 3) & 0xF;
+        if (restraints_position == 255 && (peep[seat * 2] != SPRITE_INDEX_NULL))
         {
-            vehicle->next_free_seat -= 2;
+            next_free_seat -= 2;
 
-            Peep* peep = GET_PEEP(vehicle->peep[seat * 2]);
-            vehicle->peep[seat * 2] = SPRITE_INDEX_NULL;
+            Peep* curPeep = GET_PEEP(peep[seat * 2]);
+            peep[seat * 2] = SPRITE_INDEX_NULL;
 
-            peep->SetState(PEEP_STATE_LEAVING_RIDE);
-            peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+            curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
+            curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
 
-            peep = GET_PEEP(vehicle->peep[seat * 2 + 1]);
-            vehicle->peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
+            curPeep = GET_PEEP(peep[seat * 2 + 1]);
+            peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
-            peep->SetState(PEEP_STATE_LEAVING_RIDE);
-            peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+            curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
+            curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
         }
     }
     else
     {
-        if (ride_get_exit_location(ride, vehicle->current_station).isNull())
+        if (ride_get_exit_location(curRide, current_station).isNull())
         {
-            if (vehicle->sub_state != 1)
+            if (sub_state != 1)
                 return;
 
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING
-                && ride->current_test_segment + 1 >= ride->num_stations)
+            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
+                && curRide->current_test_segment + 1 >= curRide->num_stations)
             {
-                vehicle_update_test_finish(vehicle);
+                vehicle_update_test_finish(this);
             }
-            vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
+            SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
             return;
         }
 
-        uint16_t spriteId = vehicle->sprite_index;
+        uint16_t spriteId = sprite_index;
         for (Vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train)
         {
             train = GET_VEHICLE(spriteId);
@@ -4101,17 +4100,17 @@ static void vehicle_update_unloading_passengers(Vehicle* vehicle)
             train->next_free_seat = 0;
             for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
-                Peep* peep = GET_PEEP(train->peep[peepIndex]);
-                peep->SetState(PEEP_STATE_LEAVING_RIDE);
-                peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+                Peep* curPeep = GET_PEEP(train->peep[peepIndex]);
+                curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
+                curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
             }
         }
     }
 
-    if (vehicle->sub_state != 1)
+    if (sub_state != 1)
         return;
 
-    uint16_t spriteId = vehicle->sprite_index;
+    uint16_t spriteId = sprite_index;
     for (Vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train)
     {
         train = GET_VEHICLE(spriteId);
@@ -4119,12 +4118,12 @@ static void vehicle_update_unloading_passengers(Vehicle* vehicle)
             return;
     }
 
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING
-        && ride->current_test_segment + 1 >= ride->num_stations)
+    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
+        && curRide->current_test_segment + 1 >= curRide->num_stations)
     {
-        vehicle_update_test_finish(vehicle);
+        vehicle_update_test_finish(this);
     }
-    vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
+    SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
 }
 
 /**

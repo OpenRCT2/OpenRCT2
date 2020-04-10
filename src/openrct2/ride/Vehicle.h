@@ -326,6 +326,7 @@ private:
     void UpdateTravellingCableLift();
     void UpdateTravellingBoat();
     void UpdateArriving();
+    void UpdateUnloadingPassengers();
 };
 
 struct train_ref
