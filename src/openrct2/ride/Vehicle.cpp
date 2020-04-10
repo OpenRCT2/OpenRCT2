@@ -48,7 +48,6 @@
 static void vehicle_update_crossings(const Vehicle* vehicle);
 static void vehicle_claxon(const Vehicle* vehicle);
 
-static void vehicle_update_showing_film(Vehicle* vehicle);
 static void vehicle_update_doing_circus_show(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
@@ -2039,7 +2038,7 @@ void Vehicle::Update()
             UpdateWaitingForCableLift();
             break;
         case VEHICLE_STATUS_SHOWING_FILM:
-            vehicle_update_showing_film(this);
+            UpdateShowingFilm();
             break;
         case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
             vehicle_update_doing_circus_show(this);
@@ -2639,7 +2638,7 @@ void Vehicle::UpdateWaitingToDepart()
                     break;
             }
             current_time = -1;
-            vehicle_update_showing_film(this);
+            UpdateShowingFilm();
             break;
         case RIDE_MODE_CIRCUS_SHOW:
             SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
@@ -5082,23 +5081,23 @@ void Vehicle::UpdateTopSpinOperating()
  *
  *  rct2: 0x006D95AD
  */
-static void vehicle_update_showing_film(Vehicle* vehicle)
+void Vehicle::UpdateShowingFilm()
 {
     int32_t currentTime, totalTime;
 
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = RideFilmLength[vehicle->sub_state];
-    currentTime = vehicle->current_time + 1;
+    totalTime = RideFilmLength[sub_state];
+    currentTime = current_time + 1;
     if (currentTime <= totalTime)
     {
-        vehicle->current_time = currentTime;
+        current_time = currentTime;
     }
     else
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
     }
 }
 
