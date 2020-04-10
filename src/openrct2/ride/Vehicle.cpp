@@ -47,7 +47,6 @@
 
 static void vehicle_claxon(const Vehicle* vehicle);
 
-static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
 static void vehicle_update_collision_setup(Vehicle* vehicle);
@@ -4371,7 +4370,7 @@ void Vehicle::UpdateMotionBoatHire()
             curX += curY;
             if (curX <= 12)
             {
-                vehicle_update_boat_location(this);
+                UpdateBoatLocation();
             }
 
             if (!(var_35 & (1 << 0)))
@@ -4411,7 +4410,7 @@ void Vehicle::UpdateMotionBoatHire()
                 if (sprite_direction == var_34)
                 {
                     sprite_direction ^= (1 << 4);
-                    vehicle_update_boat_location(this);
+                    UpdateBoatLocation();
                     sprite_direction ^= (1 << 4);
                 }
                 break;
@@ -4447,7 +4446,7 @@ void Vehicle::UpdateMotionBoatHire()
                         remaining_distance = 0;
                         if (sprite_direction == var_34)
                         {
-                            vehicle_update_boat_location(this);
+                            UpdateBoatLocation();
                         }
                         break;
                     }
@@ -4555,36 +4554,36 @@ void Vehicle::UpdateMotionBoatHire()
  *
  *  rct2: 0x006DA280
  */
-static void vehicle_update_boat_location(Vehicle* vehicle)
+void Vehicle::UpdateBoatLocation()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    TileCoordsXY returnPosition = ride->boat_hire_return_position;
-    uint8_t returnDirection = ride->boat_hire_return_direction & 3;
+    TileCoordsXY returnPosition = curRide->boat_hire_return_position;
+    uint8_t returnDirection = curRide->boat_hire_return_direction & 3;
 
-    CoordsXY location = CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection];
+    CoordsXY location = CoordsXY{ x, y } + CoordsDirectionDelta[returnDirection];
 
     if (location.ToTileStart() == returnPosition.ToCoordsXY())
     {
-        vehicle->sub_state = 1;
-        vehicle->BoatLocation = location;
+        sub_state = 1;
+        BoatLocation = location;
         return;
     }
 
-    vehicle->sub_state = 0;
-    uint8_t curDirection = ((vehicle->sprite_direction + 19) >> 3) & 3;
+    sub_state = 0;
+    uint8_t curDirection = ((sprite_direction + 19) >> 3) & 3;
     uint8_t randDirection = scenario_rand() & 3;
 
-    if (vehicle->lost_time_out > 1920)
+    if (lost_time_out > 1920)
     {
         if (scenario_rand() & 1)
         {
             CoordsXY destLocation = (returnPosition.ToCoordsXY() - CoordsDirectionDelta[returnDirection]).ToTileCentre();
 
-            destLocation.x -= vehicle->x;
-            destLocation.y -= vehicle->y;
+            destLocation.x -= x;
+            destLocation.y -= y;
 
             if (abs(destLocation.x) <= abs(destLocation.y))
             {
@@ -4605,7 +4604,7 @@ static void vehicle_update_boat_location(Vehicle* vehicle)
             continue;
         }
 
-        auto trackLocation = vehicle->TrackLocation;
+        auto trackLocation = TrackLocation;
         trackLocation += CoordsDirectionDelta[(randDirection + rotation) & 3];
 
         if (!vehicle_boat_is_location_accessible(trackLocation))
@@ -4613,13 +4612,13 @@ static void vehicle_update_boat_location(Vehicle* vehicle)
             continue;
         }
 
-        vehicle->BoatLocation = trackLocation;
+        BoatLocation = trackLocation;
         return;
     }
 
-    CoordsXY trackLocation = vehicle->TrackLocation;
+    CoordsXY trackLocation = TrackLocation;
     trackLocation += CoordsDirectionDelta[curDirection & 3];
-    vehicle->BoatLocation = trackLocation;
+    BoatLocation = trackLocation;
 }
 
 /**
