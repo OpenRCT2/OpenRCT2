@@ -343,6 +343,7 @@ private:
     int32_t UpdateMotionDodgems();
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
+    bool CurrentTowerElementIsTop();
 };
 
 struct train_ref
