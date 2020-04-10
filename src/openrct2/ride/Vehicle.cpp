@@ -58,7 +58,6 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static void vehicle_update_arriving(Vehicle* vehicle);
 static void vehicle_update_unloading_passengers(Vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle);
-static void vehicle_update_travelling_cable_lift(Vehicle* vehicle);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
 static void vehicle_update_collision_setup(Vehicle* vehicle);
 static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle);
@@ -2029,7 +2028,7 @@ void Vehicle::Update()
             UpdateTravelling();
             break;
         case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
-            vehicle_update_travelling_cable_lift(this);
+            UpdateTravellingCableLift();
             break;
         case VEHICLE_STATUS_TRAVELLING_BOAT:
             vehicle_update_travelling_boat(this);
@@ -4154,88 +4153,89 @@ static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle)
  *
  *  rct2: 0x006D9D21
  */
-static void vehicle_update_travelling_cable_lift(Vehicle* vehicle)
+void Vehicle::UpdateTravellingCableLift()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
+        if (update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
 
-            ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(ride);
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+            curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+            ride_breakdown_add_news_item(curRide);
+            curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-            ride->inspection_station = vehicle->current_station;
-            ride->breakdown_reason = ride->breakdown_reason_pending;
-            vehicle->velocity = 0;
+            curRide->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+            curRide->inspection_station = current_station;
+            curRide->breakdown_reason = curRide->breakdown_reason_pending;
+            velocity = 0;
             return;
         }
 
-        vehicle->sub_state = 1;
-        vehicle_peep_easteregg_here_we_are(vehicle);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        sub_state = 1;
+        vehicle_peep_easteregg_here_we_are(this);
+        if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
-            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+            if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
             {
-                if (ride->current_test_segment + 1 < ride->num_stations)
+                if (curRide->current_test_segment + 1 < curRide->num_stations)
                 {
-                    ride->current_test_segment++;
-                    ride->current_test_station = vehicle->current_station;
+                    curRide->current_test_segment++;
+                    curRide->current_test_station = current_station;
                 }
                 else
                 {
-                    vehicle_update_test_finish(vehicle);
+                    vehicle_update_test_finish(this);
                 }
             }
-            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !vehicle->IsGhost())
+            else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
             {
-                vehicle_test_reset(vehicle);
+                vehicle_test_reset(this);
             }
         }
     }
 
-    if (vehicle->velocity <= 439800)
+    if (velocity <= 439800)
     {
-        vehicle->acceleration = 4398;
+        acceleration = 4398;
     }
-    int32_t flags = vehicle_update_track_motion(vehicle, nullptr);
+    int32_t curFlags = vehicle_update_track_motion(this, nullptr);
 
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11)
     {
-        vehicle->SetState(VEHICLE_STATUS_TRAVELLING, 1);
-        vehicle->lost_time_out = 0;
+        SetState(VEHICLE_STATUS_TRAVELLING, 1);
+        lost_time_out = 0;
         return;
     }
 
-    if (vehicle->sub_state == 2)
+    if (sub_state == 2)
         return;
 
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && vehicle->current_station == _vehicleStationIndex)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && current_station == _vehicleStationIndex)
         return;
 
-    vehicle->sub_state = 2;
+    sub_state = 2;
 
-    if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (curRide->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        || curRide->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
         return;
 
     // This is slightly different to the vanilla function
-    ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
+    curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
     uint8_t waitingTime = 3;
-    if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
+    if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
-        waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
+        waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
         waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     }
 
-    ride->stations[vehicle->current_station].Depart |= waitingTime;
+    curRide->stations[current_station].Depart |= waitingTime;
 }
 
 /**

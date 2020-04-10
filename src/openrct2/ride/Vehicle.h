@@ -323,6 +323,7 @@ private:
     void UpdateRotating();
     void UpdateDeparting();
     void UpdateTravelling();
+    void UpdateTravellingCableLift();
 };
 
 struct train_ref
