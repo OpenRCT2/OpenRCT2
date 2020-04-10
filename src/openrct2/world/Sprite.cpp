@@ -1211,8 +1211,8 @@ bool check_for_vehicle_ride_loops()
                 loops_found = true;
                 Ride* ride = get_ride(fast->ride);
                 ride->FormatNameTo(gCommonFormatArgs);
-                auto name = ride->GetName() + "'s vehicle list contained loop. Vehicles were removed.";
                 news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_VEHICLES_LOOPED_REMOVED, fast->ride);
+                auto name = ride->GetName() + "'s vehicle list contained loop. Vehicles were removed.";
                 log_error(name.c_str());
                 ride_clear_for_construction(ride);
                 break;
