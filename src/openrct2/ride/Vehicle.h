@@ -331,6 +331,7 @@ private:
     void UpdateShowingFilm();
     void UpdateDoingCircusShow();
     void UpdateSound();
+    SoundId UpdateScreamSound();
 };
 
 struct train_ref

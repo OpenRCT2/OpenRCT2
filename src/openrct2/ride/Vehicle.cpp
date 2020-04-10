@@ -58,7 +58,6 @@ static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle);
 static void vehicle_update_additional_animation(Vehicle* vehicle);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
-static SoundId vehicle_update_scream_sound(Vehicle* vehicle);
 
 static void vehicle_kill_all_passengers(Vehicle* vehicle);
 static bool vehicle_can_depart_synchronised(Vehicle* vehicle);
@@ -5523,7 +5522,7 @@ void Vehicle::UpdateSound()
         default:
             if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDERS_SCREAM))
             {
-                screamId = vehicle_update_scream_sound(this);
+                screamId = UpdateScreamSound();
                 if (screamId == SoundId::NoScream)
                     screamId = SoundId::Null;
                 if (screamId == SoundId::Null)
@@ -5565,27 +5564,27 @@ void Vehicle::UpdateSound()
  *
  *  rct2: 0x006D796B
  */
-static SoundId vehicle_update_scream_sound(Vehicle* vehicle)
+SoundId Vehicle::UpdateScreamSound()
 {
     uint32_t r;
     uint16_t spriteIndex;
     rct_ride_entry* rideEntry;
     Vehicle* vehicle2;
 
-    rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rideEntry = get_ride_entry(ride_subtype);
 
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    int32_t totalNumPeeps = vehicle_get_total_num_peeps(vehicle);
+    int32_t totalNumPeeps = vehicle_get_total_num_peeps(this);
     if (totalNumPeeps == 0)
         return SoundId::Null;
 
-    if (vehicle->velocity < 0)
+    if (velocity < 0)
     {
-        if (vehicle->velocity > -0x2C000)
+        if (velocity > -0x2C000)
             return SoundId::Null;
 
-        spriteIndex = vehicle->sprite_index;
+        spriteIndex = sprite_index;
         do
         {
             vehicle2 = &(get_sprite(spriteIndex)->vehicle);
@@ -5601,10 +5600,10 @@ static SoundId vehicle_update_scream_sound(Vehicle* vehicle)
         return SoundId::Null;
     }
 
-    if (vehicle->velocity < 0x2C000)
+    if (velocity < 0x2C000)
         return SoundId::Null;
 
-    spriteIndex = vehicle->sprite_index;
+    spriteIndex = sprite_index;
     do
     {
         vehicle2 = &(get_sprite(spriteIndex)->vehicle);
@@ -5620,7 +5619,7 @@ static SoundId vehicle_update_scream_sound(Vehicle* vehicle)
     return SoundId::Null;
 
 produceScream:
-    if (vehicle->scream_sound_id == SoundId::Null)
+    if (scream_sound_id == SoundId::Null)
     {
         r = scenario_rand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
@@ -5628,25 +5627,25 @@ produceScream:
             switch (vehicleEntry->sound_range)
             {
                 case 0:
-                    vehicle->scream_sound_id = byte_9A3A14[r % 2];
+                    scream_sound_id = byte_9A3A14[r % 2];
                     break;
                 case 1:
-                    vehicle->scream_sound_id = byte_9A3A18[r % 7];
+                    scream_sound_id = byte_9A3A18[r % 7];
                     break;
                 case 2:
-                    vehicle->scream_sound_id = byte_9A3A16[r % 2];
+                    scream_sound_id = byte_9A3A16[r % 2];
                     break;
                 default:
-                    vehicle->scream_sound_id = SoundId::NoScream;
+                    scream_sound_id = SoundId::NoScream;
                     break;
             }
         }
         else
         {
-            vehicle->scream_sound_id = SoundId::NoScream;
+            scream_sound_id = SoundId::NoScream;
         }
     }
-    return vehicle->scream_sound_id;
+    return scream_sound_id;
 }
 
 /**
