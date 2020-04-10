@@ -327,6 +327,7 @@ private:
     void UpdateTravellingBoat();
     void UpdateMotionBoatHire();
     void UpdateDepartingBoatHire();
+    void UpdateTravellingBoatHireSetup();
     void UpdateArriving();
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();

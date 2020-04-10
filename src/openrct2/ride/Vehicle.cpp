@@ -3113,23 +3113,23 @@ static bool vehicle_current_tower_element_is_top(Vehicle* vehicle)
  *
  *  rct2: 0x006D986C
  */
-static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
+void Vehicle::UpdateTravellingBoatHireSetup()
 {
-    vehicle->var_34 = vehicle->sprite_direction;
-    vehicle->TrackLocation.x = vehicle->x;
-    vehicle->TrackLocation.y = vehicle->y;
-    vehicle->TrackLocation = vehicle->TrackLocation.ToTileStart();
+    var_34 = sprite_direction;
+    TrackLocation.x = x;
+    TrackLocation.y = y;
+    TrackLocation = TrackLocation.ToTileStart();
 
-    CoordsXY location = CoordsXY(vehicle->TrackLocation) + CoordsDirectionDelta[vehicle->sprite_direction >> 3];
+    CoordsXY location = CoordsXY(TrackLocation) + CoordsDirectionDelta[sprite_direction >> 3];
 
-    vehicle->BoatLocation = location;
-    vehicle->var_35 = 0;
+    BoatLocation = location;
+    var_35 = 0;
     // No longer on a track so reset to 0 for import/export
-    vehicle->track_type = 0;
-    vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
-    vehicle->remaining_distance += 27924;
+    track_type = 0;
+    SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
+    remaining_distance += 27924;
 
-    vehicle->UpdateTravellingBoat();
+    UpdateTravellingBoat();
 }
 
 /**
@@ -3148,7 +3148,7 @@ void Vehicle::UpdateDepartingBoatHire()
     uint8_t waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     curRide->stations[current_station].Depart |= waitingTime;
-    vehicle_update_travelling_boat_hire_setup(this);
+    UpdateTravellingBoatHireSetup();
 }
 
 /**
@@ -3708,7 +3708,7 @@ void Vehicle::UpdateTravelling()
             }
             else if (curRide->mode == RIDE_MODE_BOAT_HIRE)
             {
-                vehicle_update_travelling_boat_hire_setup(this);
+                UpdateTravellingBoatHireSetup();
                 return;
             }
             else if (curRide->mode == RIDE_MODE_SHUTTLE)
