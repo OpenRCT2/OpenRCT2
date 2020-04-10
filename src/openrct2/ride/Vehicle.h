@@ -308,6 +308,8 @@ private:
     uint16_t GetSoundPriority() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
+    void UpdateMovingToEndOfStation();
+    void UpdateWaitingForPassengers();
 };
 
 struct train_ref

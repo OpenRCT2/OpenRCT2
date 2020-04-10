@@ -50,8 +50,6 @@ static void vehicle_claxon(const Vehicle* vehicle);
 
 static void vehicle_update_showing_film(Vehicle* vehicle);
 static void vehicle_update_doing_circus_show(Vehicle* vehicle);
-static void vehicle_update_moving_to_end_of_station(Vehicle* vehicle);
-static void vehicle_update_waiting_for_passengers(Vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(Vehicle* vehicle);
 static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
@@ -1998,10 +1996,10 @@ void Vehicle::Update()
     switch (status)
     {
         case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
-            vehicle_update_moving_to_end_of_station(this);
+            UpdateMovingToEndOfStation();
             break;
         case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
-            vehicle_update_waiting_for_passengers(this);
+            UpdateWaitingForPassengers();
             break;
         case VEHICLE_STATUS_WAITING_TO_DEPART:
             vehicle_update_waiting_to_depart(this);
@@ -2074,31 +2072,31 @@ void Vehicle::Update()
  *
  *  rct2: 0x006D7BCC
  */
-static void vehicle_update_moving_to_end_of_station(Vehicle* vehicle)
+void Vehicle::UpdateMovingToEndOfStation()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    int32_t flags, station;
+    int32_t curFlags, station;
 
-    switch (ride->mode)
+    switch (curRide->mode)
     {
         case RIDE_MODE_UPWARD_LAUNCH:
         case RIDE_MODE_ROTATING_LIFT:
         case RIDE_MODE_DOWNWARD_LAUNCH:
         case RIDE_MODE_FREEFALL_DROP:
-            if (vehicle->velocity >= -131940)
+            if (velocity >= -131940)
             {
-                vehicle->acceleration = -3298;
+                acceleration = -3298;
             }
-            if (vehicle->velocity < -131940)
+            if (velocity < -131940)
             {
-                vehicle->velocity -= vehicle->velocity / 16;
-                vehicle->acceleration = 0;
+                velocity -= velocity / 16;
+                acceleration = 0;
             }
-            flags = vehicle_update_track_motion(vehicle, &station);
-            if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
+            curFlags = vehicle_update_track_motion(this, &station);
+            if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
         case RIDE_MODE_BUMPERCAR:
@@ -2118,63 +2116,63 @@ static void vehicle_update_moving_to_end_of_station(Vehicle* vehicle)
         case RIDE_MODE_HAUNTED_HOUSE:
         case RIDE_MODE_CROOKED_HOUSE:
         case RIDE_MODE_CIRCUS_SHOW:
-            vehicle->current_station = 0;
-            vehicle->velocity = 0;
-            vehicle->acceleration = 0;
-            vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+            current_station = 0;
+            velocity = 0;
+            acceleration = 0;
+            SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
             break;
         default:
         {
-            rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+            rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
             if (rideEntry == nullptr)
             {
                 return;
             }
 
-            rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+            rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
             {
-                if (vehicle->velocity <= 131940)
+                if (velocity <= 131940)
                 {
-                    vehicle->acceleration = 3298;
+                    acceleration = 3298;
                 }
             }
-            if (vehicle->velocity > 131940)
+            if (velocity > 131940)
             {
-                vehicle->velocity -= vehicle->velocity / 16;
-                vehicle->acceleration = 0;
+                velocity -= velocity / 16;
+                acceleration = 0;
             }
 
-            flags = vehicle_update_track_motion(vehicle, &station);
+            curFlags = vehicle_update_track_motion(this, &station);
 
-            if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
+            if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
             {
-                vehicle->velocity = 0;
-                vehicle->acceleration = 0;
-                vehicle->sub_state++;
+                velocity = 0;
+                acceleration = 0;
+                sub_state++;
 
-                if (ride->mode == RIDE_MODE_RACE && vehicle->sub_state >= 40)
+                if (curRide->mode == RIDE_MODE_RACE && sub_state >= 40)
                 {
-                    vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+                    SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
                     break;
                 }
             }
             else
             {
-                if (vehicle->velocity > 98955)
+                if (velocity > 98955)
                 {
-                    vehicle->sub_state = 0;
+                    sub_state = 0;
                 }
             }
 
-            if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
+            if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
                 break;
 
-            vehicle->current_station = station;
-            vehicle->velocity = 0;
-            vehicle->acceleration = 0;
-            vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+            current_station = station;
+            velocity = 0;
+            acceleration = 0;
+            SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
             break;
         }
     }
@@ -2261,53 +2259,53 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uin
  *
  *  rct2: 0x006D7DA1
  */
-static void vehicle_update_waiting_for_passengers(Vehicle* vehicle)
+void Vehicle::UpdateWaitingForPassengers()
 {
-    vehicle->velocity = 0;
+    velocity = 0;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        if (!vehicle_open_restraints(vehicle))
+        if (!vehicle_open_restraints(this))
             return;
 
-        if (ride_get_entrance_location(ride, vehicle->current_station).isNull())
+        if (ride_get_entrance_location(curRide, current_station).isNull())
         {
-            ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
-            vehicle->sub_state = 2;
+            curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            sub_state = 2;
             return;
         }
 
-        auto trainIndex = ride_get_train_index_from_vehicle(ride, vehicle->sprite_index);
+        auto trainIndex = ride_get_train_index_from_vehicle(curRide, sprite_index);
         if (!trainIndex)
         {
             return;
         }
 
-        if (ride->stations[vehicle->current_station].TrainAtStation != RideStation::NO_TRAIN)
+        if (curRide->stations[current_station].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
-        ride->stations[vehicle->current_station].TrainAtStation = *trainIndex;
-        vehicle->sub_state = 1;
-        vehicle->time_waiting = 0;
+        curRide->stations[current_station].TrainAtStation = *trainIndex;
+        sub_state = 1;
+        time_waiting = 0;
 
-        vehicle->Invalidate();
+        Invalidate();
         return;
     }
-    else if (vehicle->sub_state == 1)
+    else if (sub_state == 1)
     {
-        if (vehicle->time_waiting != 0xFFFF)
-            vehicle->time_waiting++;
+        if (time_waiting != 0xFFFF)
+            time_waiting++;
 
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+        update_flags &= ~VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
 
         // 0xF64E31, 0xF64E32, 0xF64E33
         uint8_t num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
 
-        for (uint16_t sprite_id = vehicle->sprite_index; sprite_id != SPRITE_INDEX_NULL;)
+        for (uint16_t sprite_id = sprite_index; sprite_id != SPRITE_INDEX_NULL;)
         {
             Vehicle* train_vehicle = GET_VEHICLE(sprite_id);
 
@@ -2320,11 +2318,11 @@ static void vehicle_update_waiting_for_passengers(Vehicle* vehicle)
 
         num_seats_on_train &= 0x7F;
 
-        if (ride->SupportsStatus(RIDE_STATUS_TESTING))
+        if (curRide->SupportsStatus(RIDE_STATUS_TESTING))
         {
-            if (vehicle->time_waiting < 20)
+            if (time_waiting < 20)
             {
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+                train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
         }
@@ -2332,40 +2330,40 @@ static void vehicle_update_waiting_for_passengers(Vehicle* vehicle)
         {
             if (num_peeps_on_train == 0)
             {
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+                train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
         }
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
+        if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
         {
-            if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
+            if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
             {
-                if (ride->min_waiting_time * 32 > vehicle->time_waiting)
+                if (curRide->min_waiting_time * 32 > time_waiting)
                 {
-                    train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+                    train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
-            if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
+            if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
             {
-                if (ride->max_waiting_time * 32 < vehicle->time_waiting)
+                if (curRide->max_waiting_time * 32 < time_waiting)
                 {
-                    vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                    train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+                    update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                    train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
         }
 
-        if (ride->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
+        if (curRide->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
         {
-            for (auto train_id : ride->vehicles)
+            for (auto train_id : curRide->vehicles)
             {
                 if (train_id == SPRITE_INDEX_NULL)
                     continue;
 
-                if (train_id == vehicle->sprite_index)
+                if (train_id == sprite_index)
                     continue;
 
                 Vehicle* train = GET_VEHICLE(train_id);
@@ -2373,27 +2371,28 @@ static void vehicle_update_waiting_for_passengers(Vehicle* vehicle)
                 if (train->status == VEHICLE_STATUS_UNLOADING_PASSENGERS
                     || train->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION)
                 {
-                    if (train->current_station == vehicle->current_station)
+                    if (train->current_station == current_station)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                        train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+                        update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                        train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                         return;
                     }
                 }
             }
         }
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS) && ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
+        if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)
+            && curRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
         {
             if (num_peeps_on_train == num_seats_on_train)
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+                update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
 
             // any load: load=4 , full: load=3 , 3/4s: load=2 , half: load=1 , quarter: load=0
-            uint8_t load = ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK;
+            uint8_t load = curRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK;
 
             // We want to wait for ceiling((load+1)/4 * num_seats_on_train) peeps, the +3 below is used instead of
             // ceil() to prevent issues on different cpus/platforms with floats. Note that vanilla RCT1/2 rounded
@@ -2404,29 +2403,29 @@ static void vehicle_update_waiting_for_passengers(Vehicle* vehicle)
                 peepTarget = 1;
 
             if (num_peeps_on_train >= peepTarget)
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
 
-            train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+            train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
             return;
         }
 
-        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-        train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
+        update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+        train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
         return;
     }
 
-    if (!vehicle_close_restraints(vehicle))
+    if (!vehicle_close_restraints(this))
         return;
 
-    vehicle->velocity = 0;
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+    velocity = 0;
+    update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
 
-    if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+    if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
     {
-        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+        update_flags |= VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
     }
 
-    vehicle->SetState(VEHICLE_STATUS_WAITING_TO_DEPART);
+    SetState(VEHICLE_STATUS_WAITING_TO_DEPART);
 }
 
 /**
