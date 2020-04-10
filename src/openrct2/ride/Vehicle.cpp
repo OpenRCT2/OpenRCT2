@@ -3431,48 +3431,50 @@ void Vehicle::FinishDeparting()
  *
  *  rct2: 0x006DE5CB
  */
-static void vehicle_check_if_missing(Vehicle* vehicle)
+void Vehicle::CheckIfMissing()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
+    if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
 
-    if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (curRide->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        || curRide->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
         return;
 
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
+    if (!ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
         return;
 
-    vehicle->lost_time_out++;
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE)
+    lost_time_out++;
+    if (curRide->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE)
         return;
 
-    uint16_t limit = ride->type == RIDE_TYPE_BOAT_HIRE ? 15360 : 9600;
+    uint16_t limit = curRide->type == RIDE_TYPE_BOAT_HIRE ? 15360 : 9600;
 
-    if (vehicle->lost_time_out <= limit)
+    if (lost_time_out <= limit)
         return;
 
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
+    curRide->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
     if (gConfigNotifications.ride_stalled_vehicles)
     {
-        set_format_arg(0, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
+        set_format_arg(0, rct_string_id, RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].number);
 
         uint8_t vehicleIndex = 0;
-        for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
-            if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+        for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
+            if (curRide->vehicles[vehicleIndex] == sprite_index)
                 break;
 
         vehicleIndex++;
         set_format_arg(2, uint16_t, vehicleIndex);
-        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
+        auto nameArgLen = curRide->FormatNameTo(gCommonFormatArgs + 4);
         set_format_arg(
-            4 + nameArgLen, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
+            4 + nameArgLen, rct_string_id,
+            RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
 
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, ride);
     }
 }
 
@@ -3638,7 +3640,7 @@ void Vehicle::UpdateCrashSetup()
  */
 void Vehicle::UpdateTravelling()
 {
-    vehicle_check_if_missing(this);
+    CheckIfMissing();
 
     auto curRide = get_ride(ride);
     if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RIDE_MODE_ROTATING_LIFT))
@@ -4226,7 +4228,7 @@ void Vehicle::UpdateTravellingCableLift()
  */
 void Vehicle::UpdateTravellingBoat()
 {
-    vehicle_check_if_missing(this);
+    CheckIfMissing();
     UpdateMotionBoatHire();
 }
 

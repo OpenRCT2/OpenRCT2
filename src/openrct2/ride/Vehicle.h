@@ -342,6 +342,7 @@ private:
     void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();
     void UpdateAdditionalAnimation();
+    void CheckIfMissing();
 };
 
 struct train_ref
