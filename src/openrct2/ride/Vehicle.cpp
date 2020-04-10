@@ -58,7 +58,6 @@ static void vehicle_update_rotating(Vehicle* vehicle);
 static void vehicle_update_space_rings_operating(Vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
-static void vehicle_update_swinging(Vehicle* vehicle);
 static void vehicle_update_simulator_operating(Vehicle* vehicle);
 static void vehicle_update_top_spin_operating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
@@ -2009,7 +2008,7 @@ void Vehicle::Update()
             UpdateDodgemsMode();
             break;
         case VEHICLE_STATUS_SWINGING:
-            vehicle_update_swinging(this);
+            UpdateSwinging();
             break;
         case VEHICLE_STATUS_SIMULATOR_OPERATING:
             vehicle_update_simulator_operating(this);
@@ -2583,13 +2582,13 @@ void Vehicle::UpdateWaitingToDepart()
             // the vehicle has been ridden.
             SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
             var_CE = 0;
-            UpdateDodgemsMode(this);
+            UpdateDodgemsMode();
             break;
         case RIDE_MODE_SWING:
             SetState(VEHICLE_STATUS_SWINGING);
             var_CE = 0;
             current_time = -1;
-            vehicle_update_swinging(this);
+            UpdateSwinging();
             break;
         case RIDE_MODE_ROTATION:
             SetState(VEHICLE_STATUS_ROTATING);
@@ -4681,20 +4680,20 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
  *
  *  rct2: 0x006D9249
  */
-static void vehicle_update_swinging(Vehicle* vehicle)
+void Vehicle::UpdateSwinging()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
         return;
 
     // SubState for this ride means swinging state
     // 0 == first swing
     // 3 == full swing
-    uint8_t swingState = vehicle->sub_state;
+    uint8_t swingState = sub_state;
     if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1)
     {
         swingState += 4;
@@ -4703,52 +4702,52 @@ static void vehicle_update_swinging(Vehicle* vehicle)
     }
 
     const int8_t* spriteMap = SwingingTimeToSpriteMaps[swingState];
-    int8_t spriteType = spriteMap[vehicle->current_time + 1];
+    int8_t spriteType = spriteMap[current_time + 1];
 
     // 0x80 indicates that a complete swing has been
     // completed and the next swing can start
     if (spriteType != -128)
     {
-        vehicle->current_time++;
-        if (static_cast<uint8_t>(spriteType) != vehicle->vehicle_sprite_type)
+        current_time++;
+        if (static_cast<uint8_t>(spriteType) != vehicle_sprite_type)
         {
             // Used to know which sprite to draw
-            vehicle->vehicle_sprite_type = static_cast<uint8_t>(spriteType);
-            vehicle->Invalidate();
+            vehicle_sprite_type = static_cast<uint8_t>(spriteType);
+            Invalidate();
         }
         return;
     }
 
-    vehicle->current_time = -1;
-    vehicle->var_CE++;
-    if (ride->status != RIDE_STATUS_CLOSED)
+    current_time = -1;
+    var_CE++;
+    if (curRide->status != RIDE_STATUS_CLOSED)
     {
         // It takes 3 swings to get into full swing
         // ride->rotations already takes this into account
-        if (vehicle->var_CE + 3 < ride->rotations)
+        if (var_CE + 3 < curRide->rotations)
         {
             // Go to the next swing state until we
             // are at full swing.
-            if (vehicle->sub_state != 3)
+            if (sub_state != 3)
             {
-                vehicle->sub_state++;
+                sub_state++;
             }
-            vehicle_update_swinging(vehicle);
+            UpdateSwinging();
             return;
         }
     }
 
     // To get to this part of the code the
     // swing has to be in slowing down phase
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
     // Go towards first swing state
-    vehicle->sub_state--;
-    vehicle_update_swinging(vehicle);
+    sub_state--;
+    UpdateSwinging();
 }
 
 /**

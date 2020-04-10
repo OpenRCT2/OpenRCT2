@@ -313,6 +313,7 @@ private:
     void UpdateWaitingToDepart();
     void UpdateCrash();
     void UpdateDodgemsMode();
+    void UpdateSwinging();
 };
 
 struct train_ref
