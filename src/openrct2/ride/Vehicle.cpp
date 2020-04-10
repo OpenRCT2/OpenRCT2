@@ -3136,19 +3136,19 @@ static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
  *
  *  rct2: 0x006D982F
  */
-static void vehicle_update_departing_boat_hire(Vehicle* vehicle)
+void Vehicle::UpdateDepartingBoatHire()
 {
-    vehicle->lost_time_out = 0;
+    lost_time_out = 0;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
-    uint8_t waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
+    curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
+    uint8_t waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
-    ride->stations[vehicle->current_station].Depart |= waitingTime;
-    vehicle_update_travelling_boat_hire_setup(vehicle);
+    curRide->stations[current_station].Depart |= waitingTime;
+    vehicle_update_travelling_boat_hire_setup(this);
 }
 
 /**
@@ -3282,7 +3282,7 @@ void Vehicle::UpdateDeparting()
     {
         if (curRide->mode == RIDE_MODE_BOAT_HIRE)
         {
-            vehicle_update_departing_boat_hire(this);
+            UpdateDepartingBoatHire();
             return;
         }
         else if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
