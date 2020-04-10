@@ -329,6 +329,7 @@ private:
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();
     void UpdateShowingFilm();
+    void UpdateDoingCircusShow();
 };
 
 struct train_ref

@@ -48,7 +48,6 @@
 static void vehicle_update_crossings(const Vehicle* vehicle);
 static void vehicle_claxon(const Vehicle* vehicle);
 
-static void vehicle_update_doing_circus_show(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
@@ -2041,7 +2040,7 @@ void Vehicle::Update()
             UpdateShowingFilm();
             break;
         case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
-            vehicle_update_doing_circus_show(this);
+            UpdateDoingCircusShow();
         default:
             break;
     }
@@ -2643,7 +2642,7 @@ void Vehicle::UpdateWaitingToDepart()
         case RIDE_MODE_CIRCUS_SHOW:
             SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
             current_time = -1;
-            vehicle_update_doing_circus_show(this);
+            UpdateDoingCircusShow();
             break;
         case RIDE_MODE_SPACE_RINGS:
             SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
@@ -5105,20 +5104,20 @@ void Vehicle::UpdateShowingFilm()
  *
  *  rct2: 0x006D95F7
  */
-static void vehicle_update_doing_circus_show(Vehicle* vehicle)
+void Vehicle::UpdateDoingCircusShow()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    int32_t currentTime = vehicle->current_time + 1;
+    int32_t currentTime = current_time + 1;
     if (currentTime <= 5000)
     {
-        vehicle->current_time = currentTime;
+        current_time = currentTime;
     }
     else
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
     }
 }
 
