@@ -54,7 +54,6 @@ static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
 static void vehicle_update_rotating(Vehicle* vehicle);
-static void vehicle_update_space_rings_operating(Vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
@@ -2017,7 +2016,7 @@ void Vehicle::Update()
             UpdateFerrisWheelRotating();
             break;
         case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
-            vehicle_update_space_rings_operating(this);
+            UpdateSpaceRingsOperating();
             break;
         case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
             vehicle_update_haunted_house_operating(this);
@@ -2661,7 +2660,7 @@ void Vehicle::UpdateWaitingToDepart()
             SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
             vehicle_sprite_type = 0;
             current_time = -1;
-            vehicle_update_space_rings_operating(this);
+            UpdateSpaceRingsOperating();
             break;
         case RIDE_MODE_HAUNTED_HOUSE:
             SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
@@ -4960,25 +4959,25 @@ static void vehicle_update_rotating(Vehicle* vehicle)
  *
  *  rct2: 0x006D97CB
  */
-static void vehicle_update_space_rings_operating(Vehicle* vehicle)
+void Vehicle::UpdateSpaceRingsOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    uint8_t spriteType = SpaceRingsTimeToSpriteMap[vehicle->current_time + 1];
+    uint8_t spriteType = SpaceRingsTimeToSpriteMap[current_time + 1];
     if (spriteType != 255)
     {
-        vehicle->current_time++;
-        if (spriteType != vehicle->vehicle_sprite_type)
+        current_time++;
+        if (spriteType != vehicle_sprite_type)
         {
-            vehicle->vehicle_sprite_type = spriteType;
-            vehicle->Invalidate();
+            vehicle_sprite_type = spriteType;
+            Invalidate();
         }
     }
     else
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
     }
 }
 

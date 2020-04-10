@@ -317,6 +317,7 @@ private:
     void UpdateSimulatorOperating();
     void UpdateTopSpinOperating();
     void UpdateFerrisWheelRotating();
+    void UpdateSpaceRingsOperating();
 };
 
 struct train_ref
