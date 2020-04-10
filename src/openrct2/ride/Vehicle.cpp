@@ -54,7 +54,6 @@ static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
-static void vehicle_update_arriving(Vehicle* vehicle);
 static void vehicle_update_unloading_passengers(Vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
@@ -2033,7 +2032,7 @@ void Vehicle::Update()
             UpdateTravellingBoat();
             break;
         case VEHICLE_STATUS_ARRIVING:
-            vehicle_update_arriving(this);
+            UpdateArriving();
             break;
         case VEHICLE_STATUS_UNLOADING_PASSENGERS:
             vehicle_update_unloading_passengers(this);
@@ -3830,14 +3829,14 @@ void Vehicle::UpdateTravelling()
  *
  *  rct2: 0x006D8C36
  */
-static void vehicle_update_arriving(Vehicle* vehicle)
+void Vehicle::UpdateArriving()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
     uint8_t unkF64E35 = 1;
-    switch (ride->mode)
+    switch (curRide->mode)
     {
         case RIDE_MODE_SWING:
         case RIDE_MODE_ROTATION:
@@ -3855,37 +3854,37 @@ static void vehicle_update_arriving(Vehicle* vehicle)
         case RIDE_MODE_SPACE_RINGS:
         case RIDE_MODE_HAUNTED_HOUSE:
         case RIDE_MODE_CROOKED_HOUSE:
-            vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_12;
-            vehicle->velocity = 0;
-            vehicle->acceleration = 0;
-            vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+            update_flags &= ~VEHICLE_UPDATE_FLAG_12;
+            velocity = 0;
+            acceleration = 0;
+            SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
             return;
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN && ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
-        && ride->inspection_station == vehicle->current_station
-        && ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+    if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
+        && curRide->inspection_station == current_station
+        && curRide->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
     {
         unkF64E35 = 0;
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        if (ride->mode == RIDE_MODE_RACE && ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        if (curRide->mode == RIDE_MODE_RACE && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         {
             goto loc_6D8E36;
         }
 
-        if (vehicle->velocity <= 131940)
+        if (velocity <= 131940)
         {
-            vehicle->acceleration = 3298;
+            acceleration = 3298;
             goto loc_6D8E36;
         }
 
-        int32_t velocity_diff = vehicle->velocity;
+        int32_t velocity_diff = velocity;
         if (velocity_diff >= 1572864)
             velocity_diff /= 8;
         else
@@ -3896,29 +3895,29 @@ static void vehicle_update_arriving(Vehicle* vehicle)
             goto loc_6D8E36;
         }
 
-        if (ride->num_circuits != 1)
+        if (curRide->num_circuits != 1)
         {
-            if (vehicle->num_laps + 1 < ride->num_circuits)
+            if (num_laps + 1 < curRide->num_circuits)
             {
                 goto loc_6D8E36;
             }
         }
-        vehicle->velocity -= velocity_diff;
-        vehicle->acceleration = 0;
+        velocity -= velocity_diff;
+        acceleration = 0;
     }
     else
     {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && vehicle->velocity >= -131940)
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && velocity >= -131940)
         {
-            vehicle->acceleration = -3298;
+            acceleration = -3298;
         }
 
-        if (vehicle->velocity >= -131940)
+        if (velocity >= -131940)
         {
             goto loc_6D8E36;
         }
 
-        int32_t velocity_diff = vehicle->velocity;
+        int32_t velocity_diff = velocity;
         if (velocity_diff < -1572864)
             velocity_diff /= 8;
         else
@@ -3929,111 +3928,110 @@ static void vehicle_update_arriving(Vehicle* vehicle)
             goto loc_6D8E36;
         }
 
-        if (vehicle->num_laps + 1 < ride->num_circuits)
+        if (num_laps + 1 < curRide->num_circuits)
         {
             goto loc_6D8E36;
         }
 
-        if (vehicle->num_laps + 1 != ride->num_circuits)
+        if (num_laps + 1 != curRide->num_circuits)
         {
-            vehicle->velocity -= velocity_diff;
-            vehicle->acceleration = 0;
+            velocity -= velocity_diff;
+            acceleration = 0;
             goto loc_6D8E36;
         }
 
-        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS && ride->mode != RIDE_MODE_SHUTTLE
-            && ride->mode != RIDE_MODE_POWERED_LAUNCH)
+        if (RideTypeDescriptors[curRide->type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS
+            && curRide->mode != RIDE_MODE_SHUTTLE && curRide->mode != RIDE_MODE_POWERED_LAUNCH)
         {
-            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_12;
+            update_flags |= VEHICLE_UPDATE_FLAG_12;
         }
         else
         {
-            vehicle->velocity -= velocity_diff;
-            vehicle->acceleration = 0;
+            velocity -= velocity_diff;
+            acceleration = 0;
         }
     }
 
-    uint32_t flags;
+    uint32_t curFlags;
 loc_6D8E36:
-    flags = vehicle_update_track_motion(vehicle, nullptr);
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
+    curFlags = vehicle_update_track_motion(this, nullptr);
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
     {
-        vehicle_update_collision_setup(vehicle);
+        vehicle_update_collision_setup(this);
         return;
     }
 
-    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION && unkF64E35 == 0)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION && unkF64E35 == 0)
     {
-        vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(VEHICLE_STATUS_DEPARTING, 1);
         return;
     }
 
-    if (!(flags
+    if (!(curFlags
           & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION | VEHICLE_UPDATE_MOTION_TRACK_FLAG_1
              | VEHICLE_UPDATE_MOTION_TRACK_FLAG_5)))
     {
-        if (vehicle->velocity > 98955)
-            vehicle->var_C0 = 0;
+        if (velocity > 98955)
+            var_C0 = 0;
         return;
     }
 
-    vehicle->var_C0++;
-    if ((flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) && (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
-        && (vehicle->var_C0 < 40))
+    var_C0++;
+    if ((curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) && (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) && (var_C0 < 40))
     {
         return;
     }
 
-    auto trackElement = map_get_track_element_at(vehicle->TrackLocation);
+    auto trackElement = map_get_track_element_at(TrackLocation);
 
     if (trackElement == nullptr)
     {
         return;
     }
 
-    vehicle->current_station = trackElement->GetStationIndex();
-    vehicle->num_laps++;
+    current_station = trackElement->GetStationIndex();
+    num_laps++;
 
-    if (vehicle->sub_state != 0)
+    if (sub_state != 0)
     {
-        if (vehicle->num_laps < ride->num_circuits)
+        if (num_laps < curRide->num_circuits)
         {
-            vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
+            SetState(VEHICLE_STATUS_DEPARTING, 1);
             return;
         }
 
-        if (vehicle->num_laps == ride->num_circuits && vehicle->update_flags & VEHICLE_UPDATE_FLAG_12)
+        if (num_laps == curRide->num_circuits && update_flags & VEHICLE_UPDATE_FLAG_12)
         {
-            vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
+            SetState(VEHICLE_STATUS_DEPARTING, 1);
             return;
         }
     }
 
-    if (ride->num_circuits != 1 && vehicle->num_laps < ride->num_circuits)
+    if (curRide->num_circuits != 1 && num_laps < curRide->num_circuits)
     {
-        vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(VEHICLE_STATUS_DEPARTING, 1);
         return;
     }
 
-    if ((ride->mode == RIDE_MODE_UPWARD_LAUNCH || ride->mode == RIDE_MODE_DOWNWARD_LAUNCH) && vehicle->var_CE < 2)
+    if ((curRide->mode == RIDE_MODE_UPWARD_LAUNCH || curRide->mode == RIDE_MODE_DOWNWARD_LAUNCH) && var_CE < 2)
     {
-        audio_play_sound_at_location(SoundId::RideLaunch2, { vehicle->x, vehicle->y, vehicle->z });
-        vehicle->velocity = 0;
-        vehicle->acceleration = 0;
-        vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
+        audio_play_sound_at_location(SoundId::RideLaunch2, { x, y, z });
+        velocity = 0;
+        acceleration = 0;
+        SetState(VEHICLE_STATUS_DEPARTING, 1);
         return;
     }
 
-    if (ride->mode == RIDE_MODE_RACE && ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (curRide->mode == RIDE_MODE_RACE && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
-        vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(VEHICLE_STATUS_DEPARTING, 1);
         return;
     }
 
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_12;
-    vehicle->velocity = 0;
-    vehicle->acceleration = 0;
-    vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+    update_flags &= ~VEHICLE_UPDATE_FLAG_12;
+    velocity = 0;
+    acceleration = 0;
+    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
 }
 
 /**
