@@ -58,7 +58,6 @@ static void vehicle_update_rotating(Vehicle* vehicle);
 static void vehicle_update_space_rings_operating(Vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
-static void vehicle_update_simulator_operating(Vehicle* vehicle);
 static void vehicle_update_top_spin_operating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
@@ -2011,7 +2010,7 @@ void Vehicle::Update()
             UpdateSwinging();
             break;
         case VEHICLE_STATUS_SIMULATOR_OPERATING:
-            vehicle_update_simulator_operating(this);
+            UpdateSimulatorOperating();
             break;
         case VEHICLE_STATUS_TOP_SPIN_OPERATING:
             vehicle_update_top_spin_operating(this);
@@ -2599,12 +2598,12 @@ void Vehicle::UpdateWaitingToDepart()
         case RIDE_MODE_FILM_AVENGING_AVIATORS:
             SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
             current_time = -1;
-            vehicle_update_simulator_operating(this);
+            UpdateSimulatorOperating();
             break;
         case RIDE_MODE_FILM_THRILL_RIDERS:
             SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
             current_time = -1;
-            vehicle_update_simulator_operating(this);
+            UpdateSimulatorOperating();
             break;
         case RIDE_MODE_BEGINNERS:
         case RIDE_MODE_INTENSE:
@@ -4846,26 +4845,26 @@ static void vehicle_update_ferris_wheel_rotating(Vehicle* vehicle)
  *
  *  rct2: 0x006D94F2
  */
-static void vehicle_update_simulator_operating(Vehicle* vehicle)
+void Vehicle::UpdateSimulatorOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    assert(vehicle->current_time >= -1);
-    assert(vehicle->current_time < MotionSimulatorTimeToSpriteMapCount);
-    uint8_t al = MotionSimulatorTimeToSpriteMap[vehicle->current_time + 1];
+    assert(current_time >= -1);
+    assert(current_time < MotionSimulatorTimeToSpriteMapCount);
+    uint8_t al = MotionSimulatorTimeToSpriteMap[current_time + 1];
     if (al != 0xFF)
     {
-        vehicle->current_time++;
-        if (al == vehicle->vehicle_sprite_type)
+        current_time++;
+        if (al == vehicle_sprite_type)
             return;
-        vehicle->vehicle_sprite_type = al;
-        vehicle->Invalidate();
+        vehicle_sprite_type = al;
+        Invalidate();
         return;
     }
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->var_C0 = 0;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    var_C0 = 0;
 }
 
 /**
