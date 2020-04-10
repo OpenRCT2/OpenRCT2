@@ -3677,6 +3677,7 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :{SMALLFONT}{BLACK}If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
+STR_6364    :{RED}{STRINGID}'s vehicle list contained loops. The vehicles were removed.
 
 #############
 # Scenarios #

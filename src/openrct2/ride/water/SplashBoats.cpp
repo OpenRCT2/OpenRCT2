@@ -1258,6 +1258,8 @@ void vehicle_visual_splash_boats_or_water_coaster(
     {
         vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     }
+    if (vehicle == nullptr)
+        return;
     session->CurrentlyDrawnItem = vehicle;
     imageDirection = ((session->CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;
     session->SpritePosition.x = vehicle->x;

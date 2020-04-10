@@ -3,6 +3,7 @@
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
 - Fix: [#475] Water sides drawn incorrectly (original bug).
+- Fix: [#5302] Infinite Loop with Splash Boats 1.
 - Fix: [#6123, #7907, #9472, #11028] Cannot build some track designs with 4 stations (original bug).
 - Fix: [#6238] Invalid tile elem iteration in Guest::UpdateUsingBin
 - Fix: [#7094] Back wall edge texture in water missing.
@@ -16,7 +17,7 @@
 - Fix: [#11208] Cannot export parks with RCT2 DLC objects.
 - Fix: [#11230] Seat Rotation not imported correctly for hacked rides.
 - Fix: [#11225] Replay manager cannot handle track designs.
-- Fix: [#11246] Fix Various Import/Export issues
+- Fix: [#11246] Fix Various Import/Export issues.
 - Fix: Small red gardens in RCT1 saves are imported in the wrong colour.
 - Improved: [#11157] Slimmer virtual floor lines.
 

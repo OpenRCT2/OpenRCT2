@@ -256,6 +256,7 @@ void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
 int32_t check_for_sprite_list_cycles(bool fix);
 int32_t check_for_spatial_index_cycles(bool fix);
+bool check_for_vehicle_ride_loops();
 int32_t fix_disjoint_sprites();
 
 #endif

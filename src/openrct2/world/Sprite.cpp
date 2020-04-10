@@ -18,6 +18,7 @@
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/NewsItem.h"
 #include "../scenario/Scenario.h"
 #include "Fountain.h"
 
@@ -1180,4 +1181,43 @@ int32_t check_for_spatial_index_cycles(bool fix)
         }
     }
     return -1;
+}
+
+bool check_for_vehicle_ride_loops()
+{
+    bool loops_found = false;
+    for (uint32_t i = 0; i < RCT2_MAX_SPRITES; i++)
+    {
+        Vehicle* v = try_get_vehicle(i);
+        if (v == nullptr)
+            continue;
+
+        Vehicle* fast = v;
+        Vehicle* slow = v;
+        while (fast != nullptr && fast->next_vehicle_on_ride != SPRITE_INDEX_NULL)
+        {
+            fast = try_get_vehicle(fast->next_vehicle_on_ride);
+            Guard::Assert(fast != nullptr, "Ride's vehicle list contains non-vehicles");
+            if (fast->next_vehicle_on_ride == SPRITE_INDEX_NULL)
+                break;
+            fast = try_get_vehicle(fast->next_vehicle_on_ride);
+            Guard::Assert(fast != nullptr, "Ride's vehicle list contains non-vehicles");
+
+            slow = try_get_vehicle(slow->next_vehicle_on_ride);
+            Guard::Assert(slow != nullptr, "Ride's vehicle list contains non-vehicles");
+
+            if (fast == slow)
+            {
+                loops_found = true;
+                Ride* ride = get_ride(fast->ride);
+                ride->FormatNameTo(gCommonFormatArgs);
+                auto name = ride->GetName() + "'s vehicle list contained loop. Vehicles were removed.";
+                news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_VEHICLES_LOOPED_REMOVED, fast->ride);
+                log_error(name.c_str());
+                ride_clear_for_construction(ride);
+                break;
+            }
+        }
+    }
+    return loops_found;
 }
