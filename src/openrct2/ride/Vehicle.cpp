@@ -51,7 +51,6 @@ static void vehicle_claxon(const Vehicle* vehicle);
 static void vehicle_update_showing_film(Vehicle* vehicle);
 static void vehicle_update_doing_circus_show(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
-static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
@@ -2031,7 +2030,7 @@ void Vehicle::Update()
             UpdateTravellingCableLift();
             break;
         case VEHICLE_STATUS_TRAVELLING_BOAT:
-            vehicle_update_travelling_boat(this);
+            UpdateTravellingBoat();
             break;
         case VEHICLE_STATUS_ARRIVING:
             vehicle_update_arriving(this);
@@ -3138,7 +3137,7 @@ static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
     vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
     vehicle->remaining_distance += 27924;
 
-    vehicle_update_travelling_boat(vehicle);
+    vehicle->UpdateTravellingBoat();
 }
 
 /**
@@ -4242,10 +4241,10 @@ void Vehicle::UpdateTravellingCableLift()
  *
  *  rct2: 0x006D9820
  */
-static void vehicle_update_travelling_boat(Vehicle* vehicle)
+void Vehicle::UpdateTravellingBoat()
 {
-    vehicle_check_if_missing(vehicle);
-    vehicle_update_motion_boat_hire(vehicle);
+    vehicle_check_if_missing(this);
+    vehicle_update_motion_boat_hire(this);
 }
 
 static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, int32_t trackY)
