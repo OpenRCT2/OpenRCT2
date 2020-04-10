@@ -1512,7 +1512,9 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
-    /* .peep_loading_positions = */ 0
+    /* .animation_speed_multiplier = */ ANIMATION_SPEED_MULTIPLIER_COEFFICIENT,
+    /* .steam_effect_translation = */ STEAM_EFFECT_TRANSLATION_COEFFICIENT,
+                                      STEAM_EFFECT_TRANSLATION_COEFFICIENT
 };
 
 /* rct2: 0x009A0AA0 */
