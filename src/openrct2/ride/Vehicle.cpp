@@ -53,7 +53,6 @@ static void vehicle_update_doing_circus_show(Vehicle* vehicle);
 static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
-static void vehicle_update_ferris_wheel_rotating(Vehicle* vehicle);
 static void vehicle_update_rotating(Vehicle* vehicle);
 static void vehicle_update_space_rings_operating(Vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
@@ -2015,7 +2014,7 @@ void Vehicle::Update()
             UpdateTopSpinOperating();
             break;
         case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
-            vehicle_update_ferris_wheel_rotating(this);
+            UpdateFerrisWheelRotating();
             break;
         case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
             vehicle_update_space_rings_operating(this);
@@ -2632,7 +2631,7 @@ void Vehicle::UpdateWaitingToDepart()
             var_CE = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
-            vehicle_update_ferris_wheel_rotating(this);
+            UpdateFerrisWheelRotating();
             break;
         case RIDE_MODE_3D_FILM_MOUSE_TAILS:
         case RIDE_MODE_3D_FILM_STORM_CHASERS:
@@ -4752,92 +4751,92 @@ void Vehicle::UpdateSwinging()
  *
  *  rct2: 0x006D9413
  */
-static void vehicle_update_ferris_wheel_rotating(Vehicle* vehicle)
+void Vehicle::UpdateFerrisWheelRotating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if ((vehicle->ferris_wheel_var_1 -= 1) != 0)
+    if ((ferris_wheel_var_1 -= 1) != 0)
         return;
 
-    int8_t ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
+    int8_t curFerrisWheelVar0 = ferris_wheel_var_0;
 
-    if (ferris_wheel_var_0 == 3)
+    if (curFerrisWheelVar0 == 3)
     {
-        vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
-        vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
+        ferris_wheel_var_0 = curFerrisWheelVar0;
+        ferris_wheel_var_1 = curFerrisWheelVar0;
     }
-    else if (ferris_wheel_var_0 < 3)
+    else if (curFerrisWheelVar0 < 3)
     {
-        if (ferris_wheel_var_0 != -8)
-            ferris_wheel_var_0--;
-        vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
-        vehicle->ferris_wheel_var_1 = -ferris_wheel_var_0;
+        if (curFerrisWheelVar0 != -8)
+            curFerrisWheelVar0--;
+        ferris_wheel_var_0 = curFerrisWheelVar0;
+        ferris_wheel_var_1 = -curFerrisWheelVar0;
     }
     else
     {
-        ferris_wheel_var_0--;
-        vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
-        vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
+        curFerrisWheelVar0--;
+        ferris_wheel_var_0 = curFerrisWheelVar0;
+        ferris_wheel_var_1 = curFerrisWheelVar0;
     }
 
-    uint8_t rotation = vehicle->vehicle_sprite_type;
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
+    uint8_t rotation = vehicle_sprite_type;
+    if (curRide->mode == RIDE_MODE_FORWARD_ROTATION)
         rotation++;
     else
         rotation--;
 
     rotation &= 0x7F;
-    vehicle->vehicle_sprite_type = rotation;
+    vehicle_sprite_type = rotation;
 
-    if (rotation == vehicle->sub_state)
-        vehicle->var_CE++;
+    if (rotation == sub_state)
+        var_CE++;
 
-    vehicle->Invalidate();
+    Invalidate();
 
-    uint8_t subState = vehicle->sub_state;
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
+    uint8_t subState = sub_state;
+    if (curRide->mode == RIDE_MODE_FORWARD_ROTATION)
         subState++;
     else
         subState--;
     subState &= 0x7F;
 
-    if (subState == vehicle->vehicle_sprite_type)
+    if (subState == vehicle_sprite_type)
     {
         bool shouldStop = true;
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (curRide->status != RIDE_STATUS_CLOSED)
         {
-            if (vehicle->var_CE < ride->rotations)
+            if (var_CE < curRide->rotations)
                 shouldStop = false;
         }
 
         if (shouldStop)
         {
-            ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
-            vehicle->ferris_wheel_var_0 = -abs(ferris_wheel_var_0);
-            vehicle->ferris_wheel_var_1 = abs(ferris_wheel_var_0);
+            curFerrisWheelVar0 = ferris_wheel_var_0;
+            ferris_wheel_var_0 = -abs(curFerrisWheelVar0);
+            ferris_wheel_var_1 = abs(curFerrisWheelVar0);
         }
     }
 
-    if (vehicle->ferris_wheel_var_0 != -8)
+    if (ferris_wheel_var_0 != -8)
         return;
 
-    subState = vehicle->sub_state;
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
+    subState = sub_state;
+    if (curRide->mode == RIDE_MODE_FORWARD_ROTATION)
         subState += 8;
     else
         subState -= 8;
     subState &= 0x7F;
 
-    if (subState != vehicle->vehicle_sprite_type)
+    if (subState != vehicle_sprite_type)
         return;
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->var_C0 = 0;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    var_C0 = 0;
 }
 
 /**
