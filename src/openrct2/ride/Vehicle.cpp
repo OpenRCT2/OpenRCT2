@@ -54,7 +54,6 @@ static void vehicle_update_departing(Vehicle* vehicle);
 static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_travelling(Vehicle* vehicle);
 static void vehicle_update_rotating(Vehicle* vehicle);
-static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
@@ -2021,7 +2020,7 @@ void Vehicle::Update()
             UpdateHauntedHouseOperating();
             break;
         case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
-            vehicle_update_crooked_house_operating(this);
+            UpdateCrookedHouseOperating();
             break;
         case VEHICLE_STATUS_ROTATING:
             vehicle_update_rotating(this);
@@ -2671,7 +2670,7 @@ void Vehicle::UpdateWaitingToDepart()
             SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
             vehicle_sprite_type = 0;
             current_time = -1;
-            vehicle_update_crooked_house_operating(this);
+            UpdateCrookedHouseOperating();
             break;
         default:
             SetState(status);
@@ -5038,20 +5037,20 @@ void Vehicle::UpdateHauntedHouseOperating()
  *
  *  rct2: 0x006d9781
  */
-static void vehicle_update_crooked_house_operating(Vehicle* vehicle)
+void Vehicle::UpdateCrookedHouseOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
     // Originally used an array of size 1 at 0x009A0AC4 and passed the sub state into it.
-    if (static_cast<uint16_t>(vehicle->current_time + 1) > 600)
+    if (static_cast<uint16_t>(current_time + 1) > 600)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
 
-    vehicle->current_time++;
+    current_time++;
 }
 
 /**

@@ -319,6 +319,7 @@ private:
     void UpdateFerrisWheelRotating();
     void UpdateSpaceRingsOperating();
     void UpdateHauntedHouseOperating();
+    void UpdateCrookedHouseOperating();
 };
 
 struct train_ref
