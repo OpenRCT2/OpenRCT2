@@ -28,7 +28,7 @@ static rct_widget window_title_logo_widgets[] = {
 };
 
 static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
 static rct_window_event_list window_title_logo_events = {
