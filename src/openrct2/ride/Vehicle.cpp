@@ -47,7 +47,6 @@
 
 static void vehicle_claxon(const Vehicle* vehicle);
 
-static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
@@ -3272,7 +3271,7 @@ void Vehicle::UpdateDeparting()
         if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             velocity = -velocity;
-            vehicle_finish_departing(this);
+            FinishDeparting();
             return;
         }
     }
@@ -3287,7 +3286,7 @@ void Vehicle::UpdateDeparting()
         else if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             velocity = -velocity;
-            vehicle_finish_departing(this);
+            FinishDeparting();
             return;
         }
         else if (curRide->mode == RIDE_MODE_SHUTTLE)
@@ -3358,7 +3357,7 @@ void Vehicle::UpdateDeparting()
         {
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3) || _vehicleStationIndex != current_station)
             {
-                vehicle_finish_departing(this);
+                FinishDeparting();
                 return;
             }
 
@@ -3380,7 +3379,7 @@ void Vehicle::UpdateDeparting()
         return;
     }
 
-    vehicle_finish_departing(this);
+    FinishDeparting();
 }
 
 /**
@@ -3392,45 +3391,45 @@ void Vehicle::UpdateDeparting()
  * boosters do not affect the ride.
  *  rct2: 0x006D8858
  */
-static void vehicle_finish_departing(Vehicle* vehicle)
+void Vehicle::FinishDeparting()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH)
+    if (curRide->mode == RIDE_MODE_DOWNWARD_LAUNCH)
     {
-        if (vehicle->var_CE >= 1 && (14 << 16) > vehicle->velocity)
+        if (var_CE >= 1 && (14 << 16) > velocity)
             return;
 
-        audio_play_sound_at_location(SoundId::RideLaunch1, { vehicle->x, vehicle->y, vehicle->z });
+        audio_play_sound_at_location(SoundId::RideLaunch1, { x, y, z });
     }
 
-    if (ride->mode == RIDE_MODE_UPWARD_LAUNCH)
+    if (curRide->mode == RIDE_MODE_UPWARD_LAUNCH)
     {
-        if ((ride->launch_speed << 16) > vehicle->velocity)
+        if ((curRide->launch_speed << 16) > velocity)
             return;
 
-        audio_play_sound_at_location(SoundId::RideLaunch1, { vehicle->x, vehicle->y, vehicle->z });
+        audio_play_sound_at_location(SoundId::RideLaunch1, { x, y, z });
     }
 
-    if (ride->mode != RIDE_MODE_RACE && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-        && ride->mode != RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (curRide->mode != RIDE_MODE_RACE && curRide->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        && curRide->mode != RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
     {
-        ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
+        curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
         uint8_t waitingTime = 3;
-        if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
+        if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
-            waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
+            waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
             waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
         }
 
-        ride->stations[vehicle->current_station].Depart |= waitingTime;
+        curRide->stations[current_station].Depart |= waitingTime;
     }
-    vehicle->lost_time_out = 0;
-    vehicle->SetState(VEHICLE_STATUS_TRAVELLING, 1);
-    if (vehicle->velocity < 0)
-        vehicle->sub_state = 0;
+    lost_time_out = 0;
+    SetState(VEHICLE_STATUS_TRAVELLING, 1);
+    if (velocity < 0)
+        sub_state = 0;
 }
 
 /**

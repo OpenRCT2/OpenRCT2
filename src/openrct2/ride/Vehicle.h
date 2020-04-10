@@ -322,6 +322,7 @@ private:
     void UpdateCrookedHouseOperating();
     void UpdateRotating();
     void UpdateDeparting();
+    void FinishDeparting();
     void UpdateTravelling();
     void UpdateTravellingCableLift();
     void UpdateTravellingBoat();
