@@ -49,7 +49,6 @@ static void vehicle_update_crossings(const Vehicle* vehicle);
 static void vehicle_claxon(const Vehicle* vehicle);
 
 static void vehicle_finish_departing(Vehicle* vehicle);
-static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
@@ -4236,7 +4235,7 @@ void Vehicle::UpdateTravellingCableLift()
 void Vehicle::UpdateTravellingBoat()
 {
     vehicle_check_if_missing(this);
-    vehicle_update_motion_boat_hire(this);
+    UpdateMotionBoatHire();
 }
 
 static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, int32_t trackY)
@@ -4267,57 +4266,57 @@ static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, i
  *
  *  rct2: 0x006DA717
  */
-static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
+void Vehicle::UpdateMotionBoatHire()
 {
     _vehicleMotionTrackFlags = 0;
-    vehicle->velocity += vehicle->acceleration;
-    _vehicleVelocityF64E08 = vehicle->velocity;
-    _vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
+    velocity += acceleration;
+    _vehicleVelocityF64E08 = velocity;
+    _vehicleVelocityF64E0C = (velocity >> 10) * 42;
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
     if (vehicleEntry == nullptr)
     {
         return;
     }
     if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION | VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
     {
-        vehicle_update_additional_animation(vehicle);
+        vehicle_update_additional_animation(this);
     }
 
     _vehicleUnkF64E10 = 1;
-    vehicle->acceleration = 0;
-    vehicle->remaining_distance += _vehicleVelocityF64E0C;
-    if (vehicle->remaining_distance >= 0x368A)
+    acceleration = 0;
+    remaining_distance += _vehicleVelocityF64E0C;
+    if (remaining_distance >= 0x368A)
     {
-        vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20.x = vehicle->x;
-        unk_F64E20.y = vehicle->y;
-        unk_F64E20.z = vehicle->z;
-        vehicle->Invalidate();
+        sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+        unk_F64E20.x = x;
+        unk_F64E20.y = y;
+        unk_F64E20.z = z;
+        Invalidate();
 
         for (;;)
         {
             // loc_6DA7A5
-            vehicle->var_35++;
-            auto loc = vehicle->BoatLocation.ToTileCentre();
-            int32_t x = loc.x;
-            int32_t y = loc.y;
-            int32_t z;
+            var_35++;
+            auto loc = BoatLocation.ToTileCentre();
+            int32_t curX = loc.x;
+            int32_t curY = loc.y;
+            int32_t curZ;
             uint8_t bl;
 
-            x -= vehicle->x;
-            if (x >= 0)
+            curX -= x;
+            if (curX >= 0)
             {
-                y -= vehicle->y;
-                if (y < 0)
+                curY -= y;
+                if (curY < 0)
                 {
                     // loc_6DA81A:
-                    y = -y;
+                    curY = -curY;
                     bl = 24;
-                    if (y <= x * 4)
+                    if (curY <= curX * 4)
                     {
                         bl = 16;
-                        if (x <= y * 4)
+                        if (curX <= curY * 4)
                         {
                             bl = 20;
                         }
@@ -4326,10 +4325,10 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
                 else
                 {
                     bl = 8;
-                    if (y <= x * 4)
+                    if (curY <= curX * 4)
                     {
                         bl = 16;
-                        if (x <= y * 4)
+                        if (curX <= curY * 4)
                         {
                             bl = 12;
                         }
@@ -4338,17 +4337,17 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
             }
             else
             {
-                y -= vehicle->y;
-                if (y < 0)
+                curY -= y;
+                if (curY < 0)
                 {
                     // loc_6DA83D:
-                    x = -x;
-                    y = -y;
+                    curX = -curX;
+                    curY = -curY;
                     bl = 24;
-                    if (y <= x * 4)
+                    if (curY <= curX * 4)
                     {
                         bl = 0;
-                        if (x <= y * 4)
+                        if (curX <= curY * 4)
                         {
                             bl = 28;
                         }
@@ -4356,12 +4355,12 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
                 }
                 else
                 {
-                    x = -x;
+                    curX = -curX;
                     bl = 8;
-                    if (y <= x * 4)
+                    if (curY <= curX * 4)
                     {
                         bl = 0;
-                        if (x <= y * 4)
+                        if (curX <= curY * 4)
                         {
                             bl = 4;
                         }
@@ -4370,25 +4369,25 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
             }
 
             // loc_6DA861:
-            vehicle->var_34 = bl;
-            x += y;
-            if (x <= 12)
+            var_34 = bl;
+            curX += curY;
+            if (curX <= 12)
             {
-                vehicle_update_boat_location(vehicle);
+                vehicle_update_boat_location(this);
             }
 
-            if (!(vehicle->var_35 & (1 << 0)))
+            if (!(var_35 & (1 << 0)))
             {
-                uint8_t spriteDirection = vehicle->sprite_direction;
-                if (spriteDirection != vehicle->var_34)
+                uint8_t spriteDirection = sprite_direction;
+                if (spriteDirection != var_34)
                 {
-                    uint8_t dl = (vehicle->var_34 + 16 - spriteDirection) & 0x1E;
+                    uint8_t dl = (var_34 + 16 - spriteDirection) & 0x1E;
                     if (dl >= 16)
                     {
                         spriteDirection += 2;
                         if (dl > 24)
                         {
-                            vehicle->var_35--;
+                            var_35--;
                         }
                     }
                     else
@@ -4396,49 +4395,49 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
                         spriteDirection -= 2;
                         if (dl < 8)
                         {
-                            vehicle->var_35--;
+                            var_35--;
                         }
                     }
 
-                    vehicle->sprite_direction = spriteDirection & 0x1E;
+                    sprite_direction = spriteDirection & 0x1E;
                 }
             }
 
-            int32_t edi = (vehicle->sprite_direction | (vehicle->var_35 & 1)) & 0x1F;
-            x = vehicle->x + Unk9A36C4[edi].x;
-            y = vehicle->y + Unk9A36C4[edi].y;
-            z = vehicle->z;
-            if (vehicle_update_motion_collision_detection(vehicle, x, y, z, nullptr))
+            int32_t edi = (sprite_direction | (var_35 & 1)) & 0x1F;
+            curX = x + Unk9A36C4[edi].x;
+            curY = y + Unk9A36C4[edi].y;
+            curZ = z;
+            if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, nullptr))
             {
-                vehicle->remaining_distance = 0;
-                if (vehicle->sprite_direction == vehicle->var_34)
+                remaining_distance = 0;
+                if (sprite_direction == var_34)
                 {
-                    vehicle->sprite_direction ^= (1 << 4);
-                    vehicle_update_boat_location(vehicle);
-                    vehicle->sprite_direction ^= (1 << 4);
+                    sprite_direction ^= (1 << 4);
+                    vehicle_update_boat_location(this);
+                    sprite_direction ^= (1 << 4);
                 }
                 break;
             }
 
-            auto flooredLocation = CoordsXY(x, y).ToTileStart();
-            if (flooredLocation != vehicle->TrackLocation)
+            auto flooredLocation = CoordsXY(curX, curY).ToTileStart();
+            if (flooredLocation != TrackLocation)
             {
-                if (!vehicle_boat_is_location_accessible(CoordsXYZ{ x, y, vehicle->TrackLocation.z }))
+                if (!vehicle_boat_is_location_accessible(CoordsXYZ{ curX, curY, TrackLocation.z }))
                 {
                     // loc_6DA939:
-                    auto ride = get_ride(vehicle->ride);
-                    if (ride == nullptr)
+                    auto curRide = get_ride(ride);
+                    if (curRide == nullptr)
                         return;
 
                     bool do_loc_6DAA97 = false;
-                    if (vehicle->sub_state != 1)
+                    if (sub_state != 1)
                     {
                         do_loc_6DAA97 = true;
                     }
                     else
                     {
                         auto flooredTileLoc = TileCoordsXY(flooredLocation);
-                        if (ride->boat_hire_return_position != flooredTileLoc)
+                        if (curRide->boat_hire_return_position != flooredTileLoc)
                         {
                             do_loc_6DAA97 = true;
                         }
@@ -4447,108 +4446,108 @@ static void vehicle_update_motion_boat_hire(Vehicle* vehicle)
                     // loc_6DAA97:
                     if (do_loc_6DAA97)
                     {
-                        vehicle->remaining_distance = 0;
-                        if (vehicle->sprite_direction == vehicle->var_34)
+                        remaining_distance = 0;
+                        if (sprite_direction == var_34)
                         {
-                            vehicle_update_boat_location(vehicle);
+                            vehicle_update_boat_location(this);
                         }
                         break;
                     }
 
-                    if (!(ride->boat_hire_return_direction & 1))
+                    if (!(curRide->boat_hire_return_direction & 1))
                     {
-                        uint16_t bp = y & 0x1F;
+                        uint16_t bp = curY & 0x1F;
                         if (bp == 16)
                         {
-                            loc_6DA9F9(vehicle, x, y, flooredLocation.x, flooredLocation.y);
+                            loc_6DA9F9(this, curX, curY, flooredLocation.x, flooredLocation.y);
                             break;
                         }
                         if (bp <= 16)
                         {
-                            x = unk_F64E20.x;
-                            y = unk_F64E20.y + 1;
+                            curX = unk_F64E20.x;
+                            curY = unk_F64E20.y + 1;
                         }
                         else
                         {
-                            x = unk_F64E20.x;
-                            y = unk_F64E20.y - 1;
+                            curX = unk_F64E20.x;
+                            curY = unk_F64E20.y - 1;
                         }
                     }
                     else
                     {
                         // loc_6DA9A2:
-                        uint16_t bp = x & 0x1F;
+                        uint16_t bp = curX & 0x1F;
                         if (bp == 16)
                         {
-                            loc_6DA9F9(vehicle, x, y, flooredLocation.x, flooredLocation.y);
+                            loc_6DA9F9(this, curX, curY, flooredLocation.x, flooredLocation.y);
                             break;
                         }
                         if (bp <= 16)
                         {
-                            x = unk_F64E20.x + 1;
-                            y = unk_F64E20.y;
+                            curX = unk_F64E20.x + 1;
+                            curY = unk_F64E20.y;
                         }
                         else
                         {
-                            x = unk_F64E20.x - 1;
-                            y = unk_F64E20.y;
+                            curX = unk_F64E20.x - 1;
+                            curY = unk_F64E20.y;
                         }
                     }
 
                     // loc_6DA9D1:
-                    vehicle->remaining_distance = 0;
-                    if (!vehicle_update_motion_collision_detection(vehicle, x, y, vehicle->z, nullptr))
+                    remaining_distance = 0;
+                    if (!vehicle_update_motion_collision_detection(this, curX, curY, z, nullptr))
                     {
-                        unk_F64E20.x = x;
-                        unk_F64E20.y = y;
+                        unk_F64E20.x = curX;
+                        unk_F64E20.y = curY;
                     }
                     break;
                 }
-                vehicle->TrackLocation = { flooredLocation, vehicle->TrackLocation.z };
+                TrackLocation = { flooredLocation, TrackLocation.z };
             }
 
-            vehicle->remaining_distance -= Unk9A36C4[edi].distance;
-            unk_F64E20.x = x;
-            unk_F64E20.y = y;
-            if (vehicle->remaining_distance < 0x368A)
+            remaining_distance -= Unk9A36C4[edi].distance;
+            unk_F64E20.x = curX;
+            unk_F64E20.y = curY;
+            if (remaining_distance < 0x368A)
             {
                 break;
             }
             _vehicleUnkF64E10++;
         }
 
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
-        vehicle->Invalidate();
+        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, this);
+        Invalidate();
     }
 
     // loc_6DAAC9:
     {
-        int32_t edx = vehicle->velocity >> 8;
+        int32_t edx = velocity >> 8;
         edx = (edx * edx);
-        if (vehicle->velocity < 0)
+        if (velocity < 0)
         {
             edx = -edx;
         }
         edx >>= 5;
 
         // Hack to fix people messing with boat hire
-        int32_t mass = vehicle->mass == 0 ? 1 : vehicle->mass;
+        int32_t curMass = mass == 0 ? 1 : mass;
 
-        int32_t eax = ((vehicle->velocity >> 1) + edx) / mass;
+        int32_t eax = ((velocity >> 1) + edx) / curMass;
         int32_t ecx = -eax;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
         {
-            eax = vehicle->speed << 14;
-            int32_t ebx = (vehicle->speed * mass) >> 2;
-            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+            eax = speed << 14;
+            int32_t ebx = (speed * curMass) >> 2;
+            if (update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
             {
                 eax = -eax;
             }
-            eax -= vehicle->velocity;
-            edx = vehicle->powered_acceleration * 2;
+            eax -= velocity;
+            edx = powered_acceleration * 2;
             ecx += (eax * edx) / ebx;
         }
-        vehicle->acceleration = ecx;
+        acceleration = ecx;
     }
     // eax = _vehicleMotionTrackFlags;
     // ebx = _vehicleStationIndex;
