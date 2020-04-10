@@ -54,7 +54,6 @@ static void vehicle_finish_departing(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
-static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle);
 static void vehicle_update_crash_setup(Vehicle* vehicle);
 static void vehicle_update_collision_setup(Vehicle* vehicle);
 static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle);
@@ -2037,7 +2036,7 @@ void Vehicle::Update()
             UpdateUnloadingPassengers();
             break;
         case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
-            vehicle_update_waiting_for_cable_lift(this);
+            UpdateWaitingForCableLift();
             break;
         case VEHICLE_STATUS_SHOWING_FILM:
             vehicle_update_showing_film(this);
@@ -4130,19 +4129,19 @@ void Vehicle::UpdateUnloadingPassengers()
  *
  *  rct2: 0x006D9CE9
  */
-static void vehicle_update_waiting_for_cable_lift(Vehicle* vehicle)
+void Vehicle::UpdateWaitingForCableLift()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    Vehicle* cableLift = GET_VEHICLE(ride->cable_lift);
+    Vehicle* cableLift = GET_VEHICLE(curRide->cable_lift);
 
     if (cableLift->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
         return;
 
-    cableLift->SetState(VEHICLE_STATUS_WAITING_TO_DEPART, vehicle->sub_state);
-    cableLift->cable_lift_target = vehicle->sprite_index;
+    cableLift->SetState(VEHICLE_STATUS_WAITING_TO_DEPART, sub_state);
+    cableLift->cable_lift_target = sprite_index;
 }
 
 /**
