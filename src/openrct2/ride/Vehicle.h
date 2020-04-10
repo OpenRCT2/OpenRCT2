@@ -315,6 +315,7 @@ private:
     void UpdateDodgemsMode();
     void UpdateSwinging();
     void UpdateSimulatorOperating();
+    void UpdateTopSpinOperating();
 };
 
 struct train_ref

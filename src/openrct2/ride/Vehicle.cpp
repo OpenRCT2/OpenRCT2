@@ -58,7 +58,6 @@ static void vehicle_update_rotating(Vehicle* vehicle);
 static void vehicle_update_space_rings_operating(Vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(Vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(Vehicle* vehicle);
-static void vehicle_update_top_spin_operating(Vehicle* vehicle);
 static void vehicle_update_travelling_boat(Vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(Vehicle* vehicle);
 static void vehicle_update_boat_location(Vehicle* vehicle);
@@ -2013,7 +2012,7 @@ void Vehicle::Update()
             UpdateSimulatorOperating();
             break;
         case VEHICLE_STATUS_TOP_SPIN_OPERATING:
-            vehicle_update_top_spin_operating(this);
+            UpdateTopSpinOperating();
             break;
         case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
             vehicle_update_ferris_wheel_rotating(this);
@@ -2625,7 +2624,7 @@ void Vehicle::UpdateWaitingToDepart()
             current_time = -1;
             vehicle_sprite_type = 0;
             bank_rotation = 0;
-            vehicle_update_top_spin_operating(this);
+            UpdateTopSpinOperating();
             break;
         case RIDE_MODE_FORWARD_ROTATION:
         case RIDE_MODE_BACKWARD_ROTATION:
@@ -5062,32 +5061,32 @@ static void vehicle_update_crooked_house_operating(Vehicle* vehicle)
  *
  *  rct2: 0x006D9547
  */
-static void vehicle_update_top_spin_operating(Vehicle* vehicle)
+void Vehicle::UpdateTopSpinOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    const top_spin_time_to_sprite_map* sprite_map = TopSpinTimeToSpriteMaps[vehicle->sub_state];
-    uint8_t rotation = sprite_map[vehicle->current_time + 1].arm_rotation;
+    const top_spin_time_to_sprite_map* sprite_map = TopSpinTimeToSpriteMaps[sub_state];
+    uint8_t rotation = sprite_map[current_time + 1].arm_rotation;
     if (rotation != 0xFF)
     {
-        vehicle->current_time = vehicle->current_time + 1;
-        if (rotation != vehicle->vehicle_sprite_type)
+        current_time = current_time + 1;
+        if (rotation != vehicle_sprite_type)
         {
-            vehicle->vehicle_sprite_type = rotation;
-            vehicle->Invalidate();
+            vehicle_sprite_type = rotation;
+            Invalidate();
         }
-        rotation = sprite_map[vehicle->current_time].bank_rotation;
-        if (rotation != vehicle->bank_rotation)
+        rotation = sprite_map[current_time].bank_rotation;
+        if (rotation != bank_rotation)
         {
-            vehicle->bank_rotation = rotation;
-            vehicle->Invalidate();
+            bank_rotation = rotation;
+            Invalidate();
         }
         return;
     }
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->var_C0 = 0;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    var_C0 = 0;
 }
 
 /**
