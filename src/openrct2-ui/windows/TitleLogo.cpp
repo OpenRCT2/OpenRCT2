@@ -14,16 +14,26 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-// clang-format off
+constexpr int32_t WW = 232;
+constexpr int32_t WH = 136;
+
+enum
+{
+    WIDX_LOGO
+};
+
 static rct_widget window_title_logo_widgets[] = {
+    { WWT_IMGBTN, 0, 0, WW, 0, WH, STR_NONE, STR_NONE },
     { WIDGETS_END },
 };
 
+static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
+// clang-format off
 static rct_window_event_list window_title_logo_events = {
     nullptr,
-    nullptr,
+    window_title_menu_mouseup,
     nullptr,
     nullptr,
     nullptr,
@@ -60,14 +70,25 @@ static rct_window_event_list window_title_logo_events = {
 rct_window* window_title_logo_open()
 {
     rct_window* window = window_create(
-        ScreenCoordsXY(0, 0), 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     window_init_scroll_widgets(window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
     window->colours[1] = TRANSLUCENT(COLOUR_GREY);
     window->colours[2] = TRANSLUCENT(COLOUR_GREY);
+    window->enabled_widgets = (1 << WIDX_LOGO);
 
     return window;
+}
+
+static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_LOGO:
+            window_about_open();
+            break;
+    }
 }
 
 /**
