@@ -81,7 +81,6 @@ namespace OpenRCT2
         uint16_t version;
         std::string networkId;
         MemoryStream parkData;
-        MemoryStream spriteSpatialData;
         MemoryStream parkParams;
         MemoryStream cheatData;
         std::string name;      // Name of play
@@ -239,7 +238,6 @@ namespace OpenRCT2
             s6exporter->Export();
             s6exporter->SaveGame(&replayData->parkData);
 
-            replayData->spriteSpatialData.Write(gSpriteSpatialIndex, sizeof(gSpriteSpatialIndex));
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
             DataSerialiser parkParamsDs(true, replayData->parkParams);
@@ -505,12 +503,6 @@ namespace OpenRCT2
 
                 sprite_position_tween_reset();
 
-                Guard::Assert(sizeof(gSpriteSpatialIndex) >= data.spriteSpatialData.GetLength());
-
-                // In case the sprite limit will be increased we keep the unused fields cleared.
-                std::fill_n(gSpriteSpatialIndex, std::size(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
-                std::memcpy(gSpriteSpatialIndex, data.spriteSpatialData.GetData(), data.spriteSpatialData.GetLength());
-
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
@@ -625,7 +617,6 @@ namespace OpenRCT2
             data.parkData.SetPosition(0);
             data.parkParams.SetPosition(0);
             data.cheatData.SetPosition(0);
-            data.spriteSpatialData.SetPosition(0);
             data.gameStateSnapshot.SetPosition(0);
 
             return true;
@@ -721,7 +712,6 @@ namespace OpenRCT2
             serialiser << data.parkData;
             serialiser << data.parkParams;
             serialiser << data.cheatData;
-            serialiser << data.spriteSpatialData;
             serialiser << data.tickStart;
             serialiser << data.tickEnd;
 
