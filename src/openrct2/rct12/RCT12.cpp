@@ -221,7 +221,8 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
+        || trackType == TRACK_ELEM_TOWER_BASE)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -790,7 +791,8 @@ void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
+        || trackType == TRACK_ELEM_TOWER_BASE)
     {
         sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
         sequence |= (newStationIndex << 4);
