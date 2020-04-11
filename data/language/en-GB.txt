@@ -3678,6 +3678,7 @@ STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :{SMALLFONT}{BLACK}If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
 STR_6464    :Ride casualties
+STR_6465    :Stuck or stalled vehicles
 
 #############
 # Scenarios #
