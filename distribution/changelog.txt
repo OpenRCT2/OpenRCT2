@@ -7,6 +7,7 @@
 - Fix: [#6238] Invalid tile elem iteration in Guest::UpdateUsingBin
 - Fix: [#7094] Back wall edge texture in water missing.
 - Fix: [#9719] Hacked walls in RCT1 saves are imported incorrectly. 
+- Fix: [#10372, #10509, #10806] Lift base sections incorrectly exporting, causing various lift related bugs.
 - Fix: [#10928] File browser's date column is too narrow.
 - Fix: [#10951, #11160] Attempting to place park entrances creates ghost entrances in random locations.
 - Fix: [#11005] Company value overflows.
@@ -16,7 +17,7 @@
 - Fix: [#11208] Cannot export parks with RCT2 DLC objects.
 - Fix: [#11230] Seat Rotation not imported correctly for hacked rides.
 - Fix: [#11225] Replay manager cannot handle track designs.
-- Fix: [#11246] Fix Various Import/Export issues
+- Fix: [#11246] Fix Various Import/Export issues with Boat locations, balloon frame number.
 - Fix: Small red gardens in RCT1 saves are imported in the wrong colour.
 - Improved: [#11157] Slimmer virtual floor lines.
 
