@@ -642,7 +642,7 @@ private:
 
     void RemoveAllGuests() const
     {
-        uint16_t spriteIndex, nextSpriteIndex;
+        uint16_t spriteIndex;
         for (auto& ride : GetRideManager())
         {
             ride.num_riders = 0;
@@ -685,14 +685,12 @@ private:
             }
         }
 
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        Peep* peep;
+        uint16_t sprite_index;
+
+        FOR_ALL_GUESTS (sprite_index, peep)
         {
-            auto peep = &(get_sprite(spriteIndex)->peep);
-            nextSpriteIndex = peep->next;
-            if (peep->type == PEEP_TYPE_GUEST)
-            {
-                peep->Remove();
-            }
+            peep->Remove();
         }
 
         window_invalidate_by_class(WC_RIDE);

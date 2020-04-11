@@ -404,19 +404,15 @@ int32_t peep_get_staff_count()
  */
 void peep_update_all()
 {
-    int32_t i;
+    int32_t i = 0;
     uint16_t spriteIndex;
     Peep* peep;
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
-
-    spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
-    i = 0;
-    while (spriteIndex != SPRITE_INDEX_NULL)
+    FOR_ALL_PEEPS (spriteIndex, peep)
     {
         peep = &(get_sprite(spriteIndex)->peep);
-        spriteIndex = peep->next;
 
         if ((uint32_t)(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
