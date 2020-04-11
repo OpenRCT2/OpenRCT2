@@ -91,7 +91,8 @@ namespace OpenRCT2
         std::multiset<ReplayCommand> commands;
         std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
         uint32_t checksumIndex;
-        MemoryStream gameStateSnapshot;
+        MemoryStream startGameStateSnapshot;
+        MemoryStream endGameStateSnapshot;
     };
 
     class ReplayManager final : public IReplayManager
@@ -251,7 +252,7 @@ namespace OpenRCT2
             auto& snapshot = snapshots->CreateSnapshot();
             snapshots->Capture(snapshot);
             snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
-            DataSerialiser snapShotDs(true, replayData->gameStateSnapshot);
+            DataSerialiser snapShotDs(true, replayData->startGameStateSnapshot);
             snapshots->SerialiseSnapshot(snapshot, snapShotDs);
 
             if (_mode != ReplayMode::NORMALISATION)
@@ -282,6 +283,14 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
             }
+
+            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+            auto& snapshot = snapshots->CreateSnapshot();
+            snapshots->Capture(snapshot);
+            snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+            DataSerialiser snapShotDs(true, _currentRecording->endGameStateSnapshot);
+            snapshots->SerialiseSnapshot(snapshot, snapShotDs);
 
             // Serialise Body.
             DataSerialiser recSerialiser(true);
@@ -387,8 +396,8 @@ namespace OpenRCT2
 
             gCurrentTicks = replayData->tickStart;
 
-            replayData->gameStateSnapshot.SetPosition(0);
-            DataSerialiser ds(false, replayData->gameStateSnapshot);
+            replayData->startGameStateSnapshot.SetPosition(0);
+            DataSerialiser ds(false, replayData->startGameStateSnapshot);
 
             IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
 
@@ -404,7 +413,7 @@ namespace OpenRCT2
                 std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
                     DIRBASE::USER, DIRID::LOG_DESYNCS);
 
-                std::string outputFile = Path::Combine(outputPath, "replaydesync.txt");
+                std::string outputFile = Path::Combine(outputPath, "ReplayDesyncStart.txt");
                 snapshots->LogCompareDataToFile(outputFile, cmpData);
             }
 
@@ -434,6 +443,27 @@ namespace OpenRCT2
         {
             if (_mode != ReplayMode::PLAYING && _mode != ReplayMode::NORMALISATION)
                 return false;
+
+            _currentReplay->endGameStateSnapshot.SetPosition(0);
+            DataSerialiser ds(false, _currentReplay->endGameStateSnapshot);
+
+            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+            GameStateSnapshot_t& replaySnapshot = snapshots->CreateSnapshot();
+            snapshots->SerialiseSnapshot(replaySnapshot, ds);
+
+            auto& localSnapshot = snapshots->CreateSnapshot();
+            snapshots->Capture(localSnapshot);
+            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
+            GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
+            if (cmpData.spriteChanges.size() > 0)
+            {
+                std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                    DIRBASE::USER, DIRID::LOG_DESYNCS);
+
+                std::string outputFile = Path::Combine(outputPath, "ReplayDesyncEnd.txt");
+                snapshots->LogCompareDataToFile(outputFile, cmpData);
+            }
 
             // During normal playback we pause the game if stopped.
             if (_mode == ReplayMode::PLAYING)
@@ -617,7 +647,8 @@ namespace OpenRCT2
             data.parkData.SetPosition(0);
             data.parkParams.SetPosition(0);
             data.cheatData.SetPosition(0);
-            data.gameStateSnapshot.SetPosition(0);
+            data.startGameStateSnapshot.SetPosition(0);
+            data.endGameStateSnapshot.SetPosition(0);
 
             return true;
         }
@@ -750,7 +781,8 @@ namespace OpenRCT2
                 serialiser << data.checksums[i].second.raw;
             }
 
-            serialiser << data.gameStateSnapshot;
+            serialiser << data.startGameStateSnapshot;
+            serialiser << data.endGameStateSnapshot;
             return true;
         }
 
