@@ -388,9 +388,9 @@ namespace OpenRCT2
             GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
 
             // Find out if there are any differences between the two states
-            auto res = std::find_if(cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(), [](const GameStateSpriteChange_t& diff) {
-                return diff.changeType != GameStateSpriteChange_t::EQUAL;
-            });
+            auto res = std::find_if(
+                cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
+                [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
 
             // If there are difference write a log to the desyncs folder
             if (res != cmpData.spriteChanges.end())
