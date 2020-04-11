@@ -91,8 +91,7 @@ namespace OpenRCT2
         std::multiset<ReplayCommand> commands;
         std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
         uint32_t checksumIndex;
-        MemoryStream startGameStateSnapshot;
-        MemoryStream endGameStateSnapshot;
+        MemoryStream gameStateSnapshots;
     };
 
     class ReplayManager final : public IReplayManager
@@ -206,6 +205,17 @@ namespace OpenRCT2
             }
         }
 
+        void TakeGameStateSnapshot(MemoryStream& snapshotStream)
+        {
+            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+            auto& snapshot = snapshots->CreateSnapshot();
+            snapshots->Capture(snapshot);
+            snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+            DataSerialiser snapShotDs(true, snapshotStream);
+            snapshots->SerialiseSnapshot(snapshot, snapShotDs);
+        }
+
         virtual bool StartRecording(
             const std::string& name, uint32_t maxTicks /*= k_MaxReplayTicks*/, RecordType rt /*= RecordType::NORMAL*/) override
         {
@@ -247,13 +257,7 @@ namespace OpenRCT2
             DataSerialiser cheatDataDs(true, replayData->cheatData);
             SerialiseCheats(cheatDataDs);
 
-            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
-
-            auto& snapshot = snapshots->CreateSnapshot();
-            snapshots->Capture(snapshot);
-            snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
-            DataSerialiser snapShotDs(true, replayData->startGameStateSnapshot);
-            snapshots->SerialiseSnapshot(snapshot, snapShotDs);
+            TakeGameStateSnapshot(replayData->gameStateSnapshots);
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::RECORDING;
@@ -284,13 +288,7 @@ namespace OpenRCT2
                 AddChecksum(gCurrentTicks, std::move(checksum));
             }
 
-            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
-
-            auto& snapshot = snapshots->CreateSnapshot();
-            snapshots->Capture(snapshot);
-            snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
-            DataSerialiser snapShotDs(true, _currentRecording->endGameStateSnapshot);
-            snapshots->SerialiseSnapshot(snapshot, snapShotDs);
+            TakeGameStateSnapshot(_currentRecording->gameStateSnapshots);
 
             // Serialise Body.
             DataSerialiser recSerialiser(true);
@@ -375,6 +373,38 @@ namespace OpenRCT2
             return true;
         }
 
+        void LoadAndCompareSnapshot(MemoryStream& snapshotStream)
+        {
+            DataSerialiser ds(false, snapshotStream);
+
+            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+            GameStateSnapshot_t& replaySnapshot = snapshots->CreateSnapshot();
+            snapshots->SerialiseSnapshot(replaySnapshot, ds);
+
+            auto& localSnapshot = snapshots->CreateSnapshot();
+            snapshots->Capture(localSnapshot);
+            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
+            GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
+
+            // Find out if there are any differences between the two states
+            auto res = std::find_if(cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(), [](const GameStateSpriteChange_t& diff) {
+                return diff.changeType != GameStateSpriteChange_t::EQUAL;
+            });
+
+            // If there are difference write a log to the desyncs folder
+            if (res != cmpData.spriteChanges.end())
+            {
+                std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                    DIRBASE::USER, DIRID::LOG_DESYNCS);
+                char uniqueFileName[128] = {};
+                snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", gCurrentTicks);
+
+                std::string outputFile = Path::Combine(outputPath, uniqueFileName);
+                snapshots->LogCompareDataToFile(outputFile, cmpData);
+            }
+        }
+
         virtual bool StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
@@ -396,26 +426,7 @@ namespace OpenRCT2
 
             gCurrentTicks = replayData->tickStart;
 
-            replayData->startGameStateSnapshot.SetPosition(0);
-            DataSerialiser ds(false, replayData->startGameStateSnapshot);
-
-            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
-
-            GameStateSnapshot_t& replaySnapshot = snapshots->CreateSnapshot();
-            snapshots->SerialiseSnapshot(replaySnapshot, ds);
-
-            auto& localSnapshot = snapshots->CreateSnapshot();
-            snapshots->Capture(localSnapshot);
-            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
-            GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
-            if (cmpData.spriteChanges.size() > 0)
-            {
-                std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-                    DIRBASE::USER, DIRID::LOG_DESYNCS);
-
-                std::string outputFile = Path::Combine(outputPath, "ReplayDesyncStart.txt");
-                snapshots->LogCompareDataToFile(outputFile, cmpData);
-            }
+            LoadAndCompareSnapshot(replayData->gameStateSnapshots);
 
             _currentReplay = std::move(replayData);
             _currentReplay->checksumIndex = 0;
@@ -444,26 +455,7 @@ namespace OpenRCT2
             if (_mode != ReplayMode::PLAYING && _mode != ReplayMode::NORMALISATION)
                 return false;
 
-            _currentReplay->endGameStateSnapshot.SetPosition(0);
-            DataSerialiser ds(false, _currentReplay->endGameStateSnapshot);
-
-            IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
-
-            GameStateSnapshot_t& replaySnapshot = snapshots->CreateSnapshot();
-            snapshots->SerialiseSnapshot(replaySnapshot, ds);
-
-            auto& localSnapshot = snapshots->CreateSnapshot();
-            snapshots->Capture(localSnapshot);
-            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
-            GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
-            if (cmpData.spriteChanges.size() > 0)
-            {
-                std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-                    DIRBASE::USER, DIRID::LOG_DESYNCS);
-
-                std::string outputFile = Path::Combine(outputPath, "ReplayDesyncEnd.txt");
-                snapshots->LogCompareDataToFile(outputFile, cmpData);
-            }
+            LoadAndCompareSnapshot(_currentReplay->gameStateSnapshots);
 
             // During normal playback we pause the game if stopped.
             if (_mode == ReplayMode::PLAYING)
@@ -647,8 +639,7 @@ namespace OpenRCT2
             data.parkData.SetPosition(0);
             data.parkParams.SetPosition(0);
             data.cheatData.SetPosition(0);
-            data.startGameStateSnapshot.SetPosition(0);
-            data.endGameStateSnapshot.SetPosition(0);
+            data.gameStateSnapshots.SetPosition(0);
 
             return true;
         }
@@ -781,8 +772,7 @@ namespace OpenRCT2
                 serialiser << data.checksums[i].second.raw;
             }
 
-            serialiser << data.startGameStateSnapshot;
-            serialiser << data.endGameStateSnapshot;
+            serialiser << data.gameStateSnapshots;
             return true;
         }
 
