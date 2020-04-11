@@ -169,6 +169,7 @@ struct NotificationConfiguration
     bool park_rating_warnings;
     bool ride_broken_down;
     bool ride_crashed;
+    bool ride_casualties;
     bool ride_warnings;
     bool ride_researched;
     bool guest_warnings;
