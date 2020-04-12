@@ -2595,24 +2595,13 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         vehicle = GET_VEHICLE(vehicle_id);
 
         uint8_t num_seats = vehicle->num_seats;
-        if (vehicle_is_used_in_pairs(vehicle))
-        {
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
-            if (vehicle->next_free_seat & 1)
-            {
-                current_car = i;
-                peep_choose_seat_from_car(this, ride, vehicle);
-                GoToRideEntrance(ride);
-                return false;
-            }
-        }
         if (num_seats == vehicle->next_free_seat)
             continue;
 
         if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
         {
             uint8_t position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
-            if (vehicle->peep[position] != SPRITE_INDEX_NULL)
+            if (vehicle->peep[position + 1] != SPRITE_INDEX_NULL)
                 continue;
         }
         car_array.push_back(i);
