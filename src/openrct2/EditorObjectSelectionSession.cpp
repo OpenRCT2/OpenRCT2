@@ -433,7 +433,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
         }
 
         uint8_t objectType = item->ObjectEntry.GetType();
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_2)
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_2))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
