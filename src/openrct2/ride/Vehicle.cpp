@@ -5204,7 +5204,8 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
     if (numFatalities != 0)
     {
         ride->FormatNameTo(gCommonFormatArgs + 2);
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, numFatalities == 1
+        ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
         if (gParkRatingCasualtyPenalty < 500)
         {
