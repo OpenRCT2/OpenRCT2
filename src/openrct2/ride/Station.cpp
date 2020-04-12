@@ -105,7 +105,7 @@ static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex)
                 continue;
 
             Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-            if (vehicle->var_CE < dh)
+            if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
                 continue;
 
             // End match
