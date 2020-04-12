@@ -385,23 +385,30 @@ namespace OpenRCT2
             auto& localSnapshot = snapshots->CreateSnapshot();
             snapshots->Capture(localSnapshot);
             snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
-            GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
-
-            // Find out if there are any differences between the two states
-            auto res = std::find_if(
-                cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
-                [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
-
-            // If there are difference write a log to the desyncs folder
-            if (res != cmpData.spriteChanges.end())
+            try
             {
-                std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-                    DIRBASE::USER, DIRID::LOG_DESYNCS);
-                char uniqueFileName[128] = {};
-                snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", gCurrentTicks);
+                GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
 
-                std::string outputFile = Path::Combine(outputPath, uniqueFileName);
-                snapshots->LogCompareDataToFile(outputFile, cmpData);
+                // Find out if there are any differences between the two states
+                auto res = std::find_if(
+                    cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
+                    [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
+
+                // If there are difference write a log to the desyncs folder
+                if (res != cmpData.spriteChanges.end())
+                {
+                    std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                        DIRBASE::USER, DIRID::LOG_DESYNCS);
+                    char uniqueFileName[128] = {};
+                    snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", gCurrentTicks);
+
+                    std::string outputFile = Path::Combine(outputPath, uniqueFileName);
+                    snapshots->LogCompareDataToFile(outputFile, cmpData);
+                }
+            }
+            catch (const std::runtime_error& err)
+            {
+                log_warning("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
             }
         }
 
