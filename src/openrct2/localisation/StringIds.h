@@ -3911,7 +3911,7 @@ enum
 
     STR_COPY_INPUT_TO_CLIPBOARD = 6363,
 
-	STR_X_PERSON_DIED_ON_X = 6364,
+    STR_X_PERSON_DIED_ON_X = 6364,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
