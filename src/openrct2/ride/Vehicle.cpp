@@ -2065,7 +2065,7 @@ void Vehicle::UpdateMovingToEndOfStation()
                 velocity -= velocity / 16;
                 acceleration = 0;
             }
-            curFlags = vehicle_update_track_motion(this, &station);
+            curFlags = UpdateTrackMotion(&station);
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
@@ -2114,7 +2114,7 @@ void Vehicle::UpdateMovingToEndOfStation()
                 acceleration = 0;
             }
 
-            curFlags = vehicle_update_track_motion(this, &station);
+            curFlags = UpdateTrackMotion(&station);
 
             if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
             {
@@ -3259,7 +3259,7 @@ void Vehicle::UpdateDeparting()
             break;
     }
 
-    uint32_t curFlags = vehicle_update_track_motion(this, nullptr);
+    uint32_t curFlags = UpdateTrackMotion(nullptr);
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
     {
@@ -3664,7 +3664,7 @@ void Vehicle::UpdateTravelling()
         return;
     }
 
-    uint32_t curFlags = vehicle_update_track_motion(this, nullptr);
+    uint32_t curFlags = UpdateTrackMotion(nullptr);
 
     bool skipCheck = false;
     if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_9)
@@ -3941,7 +3941,7 @@ void Vehicle::UpdateArriving()
 
     uint32_t curFlags;
 loc_6D8E36:
-    curFlags = vehicle_update_track_motion(this, nullptr);
+    curFlags = UpdateTrackMotion(nullptr);
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
     {
         UpdateCollisionSetup();
@@ -4189,7 +4189,7 @@ void Vehicle::UpdateTravellingCableLift()
     {
         acceleration = 4398;
     }
-    int32_t curFlags = vehicle_update_track_motion(this, nullptr);
+    int32_t curFlags = UpdateTrackMotion(nullptr);
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11)
     {
@@ -8102,78 +8102,78 @@ loc_6DB41D:
  *
  *  rct2: 0x006DAEB9
  */
-static bool vehicle_update_track_motion_forwards(
-    Vehicle* vehicle, rct_ride_entry_vehicle* vehicleEntry, Ride* ride, rct_ride_entry* rideEntry)
+bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
     registers regs = {};
 loc_6DAEB9:
-    regs.edi = vehicle->track_type;
-    regs.cx = vehicle->track_type >> 2;
-    int32_t trackType = vehicle->track_type >> 2;
+    regs.edi = track_type;
+    regs.cx = track_type >> 2;
+    int32_t trackType = track_type >> 2;
     if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN)
     {
-        if (vehicle->track_progress == 80)
+        if (track_progress == 80)
         {
-            vehicle->vehicle_type ^= 1;
-            vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+            vehicle_type ^= 1;
+            vehicleEntry = vehicle_get_vehicle_entry(this);
         }
         if (_vehicleVelocityF64E08 >= 0x40000)
         {
-            vehicle->acceleration = -_vehicleVelocityF64E08 * 8;
+            acceleration = -_vehicleVelocityF64E08 * 8;
         }
         else if (_vehicleVelocityF64E08 < 0x20000)
         {
-            vehicle->acceleration = 0x50000;
+            acceleration = 0x50000;
         }
     }
     else if (trackType == TRACK_ELEM_BRAKES)
     {
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN && ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
-              && ride->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES))
+        if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
+              && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
+              && curRide->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES))
         {
-            regs.eax = vehicle->brake_speed << 16;
+            regs.eax = brake_speed << 16;
             if (regs.eax < _vehicleVelocityF64E08)
             {
-                vehicle->acceleration = -_vehicleVelocityF64E08 * 16;
+                acceleration = -_vehicleVelocityF64E08 * 16;
             }
             else if (!(gCurrentTicks & 0x0F))
             {
                 if (_vehicleF64E2C == 0)
                 {
                     _vehicleF64E2C++;
-                    audio_play_sound_at_location(SoundId::BrakeRelease, { vehicle->x, vehicle->y, vehicle->z });
+                    audio_play_sound_at_location(SoundId::BrakeRelease, { x, y, z });
                 }
             }
         }
     }
-    else if (track_element_is_booster(ride->type, trackType))
+    else if (track_element_is_booster(curRide->type, trackType))
     {
-        regs.eax = get_booster_speed(ride->type, (vehicle->brake_speed << 16));
+        regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
 
         if (regs.eax > _vehicleVelocityF64E08)
         {
-            vehicle->acceleration = RideProperties[ride->type].booster_acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
+            acceleration = RideProperties[curRide->type].booster_acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
 
-    if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    if ((trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
         || (trackType == TRACK_ELEM_POWERED_LIFT))
     {
-        vehicle->acceleration = RideProperties[ride->type].powered_lift_acceleration << 16;
+        acceleration = RideProperties[curRide->type].powered_lift_acceleration << 16;
     }
     if (trackType == TRACK_ELEM_BRAKE_FOR_DROP)
     {
-        if (vehicle->IsHead())
+        if (IsHead())
         {
-            if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP))
+            if (!(update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP))
             {
-                if (vehicle->track_progress >= 8)
+                if (track_progress >= 8)
                 {
-                    vehicle->acceleration = -_vehicleVelocityF64E08 * 16;
-                    if (vehicle->track_progress >= 24)
+                    acceleration = -_vehicleVelocityF64E08 * 16;
+                    if (track_progress >= 24)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
-                        vehicle->vertical_drop_countdown = 90;
+                        update_flags |= VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
+                        vertical_drop_countdown = 90;
                     }
                 }
             }
@@ -8181,110 +8181,108 @@ loc_6DAEB9:
     }
     if (trackType == TRACK_ELEM_LOG_FLUME_REVERSER)
     {
-        if (vehicle->track_progress != 16 || vehicle->velocity < 0x40000)
+        if (track_progress != 16 || velocity < 0x40000)
         {
-            if (vehicle->track_progress == 32)
+            if (track_progress == 32)
             {
-                vehicle->vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
-                vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+                vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
+                vehicleEntry = vehicle_get_vehicle_entry(this);
             }
         }
         else
         {
-            vehicle->track_progress += 17;
+            track_progress += 17;
         }
     }
 
-    regs.ax = vehicle->track_progress + 1;
+    regs.ax = track_progress + 1;
 
-    const rct_vehicle_info* moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, 0);
+    const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
 
     // Track Total Progress is in the two bytes before the move info list
-    uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->TrackSubposition, vehicle->track_type);
+    uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
     if (regs.ax >= trackTotalProgress)
     {
-        vehicle->UpdateCrossings();
+        UpdateCrossings();
 
-        if (!vehicle_update_track_motion_forwards_get_new_track(vehicle, trackType, ride, rideEntry))
+        if (!vehicle_update_track_motion_forwards_get_new_track(this, trackType, curRide, rideEntry))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-            _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
-            vehicle->remaining_distance = -1;
+            _vehicleVelocityF64E0C -= remaining_distance + 1;
+            remaining_distance = -1;
             return false;
         }
         regs.ax = 0;
     }
 
-    vehicle->track_progress = regs.ax;
-    vehicle_update_handle_water_splash(vehicle);
+    track_progress = regs.ax;
+    vehicle_update_handle_water_splash(this);
 
     // loc_6DB706
-    moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, vehicle->track_progress);
-    trackType = vehicle->track_type >> 2;
+    moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    trackType = track_type >> 2;
     {
-        int16_t x = vehicle->TrackLocation.x + moveInfo->x;
-        int16_t y = vehicle->TrackLocation.y + moveInfo->y;
-        int16_t z = vehicle->TrackLocation.z + moveInfo->z + RideData5[ride->type].z_offset;
+        int16_t curX = TrackLocation.x + moveInfo->x;
+        int16_t curY = TrackLocation.y + moveInfo->y;
+        int16_t curZ = TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset;
 
         regs.ebx = 0;
-        if (x != unk_F64E20.x)
+        if (curX != unk_F64E20.x)
         {
             regs.ebx |= 1;
         }
-        if (y != unk_F64E20.y)
+        if (curY != unk_F64E20.y)
         {
             regs.ebx |= 2;
         }
-        if (z != unk_F64E20.z)
+        if (curZ != unk_F64E20.z)
         {
             regs.ebx |= 4;
         }
 
-        if (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
-            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER)
-            && vehicle->track_progress >= 30 && vehicle->track_progress <= 66)
+        if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
+            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress >= 30
+            && track_progress <= 66)
         {
             regs.ebx |= 8;
         }
 
-        if (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
-            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER)
-            && vehicle->track_progress == 96)
+        if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
+            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
         {
-            vehicle_reverse_reverser_car(vehicle);
+            vehicle_reverse_reverser_car(this);
 
-            const rct_vehicle_info* moveInfo2 = vehicle_get_move_info(
-                vehicle->TrackSubposition, vehicle->track_type, vehicle->track_progress);
-            x = vehicle->x + moveInfo2->x;
-            y = vehicle->y + moveInfo2->y;
+            const rct_vehicle_info* moveInfo2 = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+            curX = x + moveInfo2->x;
+            curY = y + moveInfo2->y;
         }
 
         // loc_6DB8A5
         regs.ebx = dword_9A2930[regs.ebx];
-        vehicle->remaining_distance -= regs.ebx;
-        unk_F64E20.x = x;
-        unk_F64E20.y = y;
-        unk_F64E20.z = z;
-        vehicle->sprite_direction = moveInfo->direction;
-        vehicle->bank_rotation = moveInfo->bank_rotation;
-        vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        remaining_distance -= regs.ebx;
+        unk_F64E20.x = curX;
+        unk_F64E20.y = curY;
+        unk_F64E20.z = curZ;
+        sprite_direction = moveInfo->direction;
+        bank_rotation = moveInfo->bank_rotation;
+        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
         regs.ebx = moveInfo->vehicle_sprite_type;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
         {
-            vehicle->swing_sprite = 0;
-            vehicle->swinging_car_var_0 = 0;
-            vehicle->var_4E = 0;
+            swing_sprite = 0;
+            swinging_car_var_0 = 0;
+            var_4E = 0;
         }
 
-        // vehicle == frontVehicle
-        if (vehicle == _vehicleFrontVehicle)
+        // this == frontVehicle
+        if (this == _vehicleFrontVehicle)
         {
             if (_vehicleVelocityF64E08 >= 0)
             {
-                regs.bp = vehicle->prev_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16_t*)&regs.bp))
+                regs.bp = prev_vehicle_on_ride;
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, (uint16_t*)&regs.bp))
                 {
                     goto loc_6DB967;
                 }
@@ -8293,24 +8291,24 @@ loc_6DAEB9:
     }
 
     // loc_6DB928
-    if (vehicle->remaining_distance < 0x368A)
+    if (remaining_distance < 0x368A)
     {
         return true;
     }
 
     regs.ebx = dword_9A2970[regs.ebx];
-    vehicle->acceleration += regs.ebx;
+    acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DAEB9;
 
 loc_6DB967:
-    _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
-    vehicle->remaining_distance = -1;
+    _vehicleVelocityF64E0C -= remaining_distance + 1;
+    remaining_distance = -1;
 
-    // Might need to be bp rather than vehicle, but hopefully not
+    // Might need to be bp rather than this, but hopefully not
     Vehicle* head = vehicle_get_head(GET_VEHICLE(regs.bp));
 
-    regs.eax = abs(vehicle->velocity - head->velocity);
+    regs.eax = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
         if (regs.eax > 0xE0000)
@@ -8324,12 +8322,12 @@ loc_6DB967:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
     {
-        vehicle->velocity -= vehicle->velocity >> 2;
+        velocity -= velocity >> 2;
     }
     else
     {
-        int32_t newHeadVelocity = vehicle->velocity >> 1;
-        vehicle->velocity = head->velocity >> 1;
+        int32_t newHeadVelocity = velocity >> 1;
+        velocity = head->velocity >> 1;
         head->velocity = newHeadVelocity;
     }
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
@@ -8504,100 +8502,98 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
  *
  *  rct2: 0x006DBA33
  */
-static bool vehicle_update_track_motion_backwards(
-    Vehicle* vehicle, rct_ride_entry_vehicle* vehicleEntry, Ride* ride, rct_ride_entry* rideEntry)
+bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
     registers regs = {};
 
 loc_6DBA33:;
-    uint16_t trackType = vehicle->track_type >> 2;
-    if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    uint16_t trackType = track_type >> 2;
+    if (trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
     {
         int32_t unkVelocity = _vehicleVelocityF64E08;
         if (unkVelocity < -524288)
         {
             unkVelocity = abs(unkVelocity);
-            vehicle->acceleration = unkVelocity * 2;
+            acceleration = unkVelocity * 2;
         }
     }
 
     if (trackType == TRACK_ELEM_BRAKES)
     {
-        regs.eax = -(vehicle->brake_speed << 16);
+        regs.eax = -(brake_speed << 16);
         if (regs.eax > _vehicleVelocityF64E08)
         {
             regs.eax = _vehicleVelocityF64E08 * -16;
-            vehicle->acceleration = regs.eax;
+            acceleration = regs.eax;
         }
     }
 
-    if (track_element_is_booster(ride->type, trackType))
+    if (track_element_is_booster(curRide->type, trackType))
     {
-        regs.eax = get_booster_speed(ride->type, (vehicle->brake_speed << 16));
+        regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
 
         if (regs.eax < _vehicleVelocityF64E08)
         {
-            regs.eax = RideProperties[ride->type].booster_acceleration << 16;
-            vehicle->acceleration = regs.eax;
+            regs.eax = RideProperties[curRide->type].booster_acceleration << 16;
+            acceleration = regs.eax;
         }
     }
 
-    regs.ax = vehicle->track_progress - 1;
+    regs.ax = track_progress - 1;
     if (regs.ax == -1)
     {
-        vehicle->UpdateCrossings();
+        UpdateCrossings();
 
-        if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, (uint16_t*)&regs.ax))
+        if (!vehicle_update_track_motion_backwards_get_new_track(this, trackType, curRide, (uint16_t*)&regs.ax))
         {
             goto loc_6DBE5E;
         }
     }
 
     // loc_6DBD42
-    vehicle->track_progress = regs.ax;
+    track_progress = regs.ax;
     {
-        const rct_vehicle_info* moveInfo = vehicle_get_move_info(
-            vehicle->TrackSubposition, vehicle->track_type, vehicle->track_progress);
-        int16_t x = vehicle->TrackLocation.x + moveInfo->x;
-        int16_t y = vehicle->TrackLocation.y + moveInfo->y;
-        int16_t z = vehicle->TrackLocation.z + moveInfo->z + RideData5[ride->type].z_offset;
+        const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+        int16_t curX = TrackLocation.x + moveInfo->x;
+        int16_t curY = TrackLocation.y + moveInfo->y;
+        int16_t curZ = TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset;
 
         regs.ebx = 0;
-        if (x != unk_F64E20.x)
+        if (curX != unk_F64E20.x)
         {
             regs.ebx |= 1;
         }
-        if (y != unk_F64E20.y)
+        if (curY != unk_F64E20.y)
         {
             regs.ebx |= 2;
         }
-        if (z != unk_F64E20.z)
+        if (curZ != unk_F64E20.z)
         {
             regs.ebx |= 4;
         }
-        vehicle->remaining_distance += dword_9A2930[regs.ebx];
+        remaining_distance += dword_9A2930[regs.ebx];
 
-        unk_F64E20.x = x;
-        unk_F64E20.y = y;
-        unk_F64E20.z = z;
-        vehicle->sprite_direction = moveInfo->direction;
-        vehicle->bank_rotation = moveInfo->bank_rotation;
+        unk_F64E20.x = curX;
+        unk_F64E20.y = curY;
+        unk_F64E20.z = curZ;
+        sprite_direction = moveInfo->direction;
+        bank_rotation = moveInfo->bank_rotation;
         regs.ebx = moveInfo->vehicle_sprite_type;
-        vehicle->vehicle_sprite_type = regs.bl;
+        vehicle_sprite_type = regs.bl;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
         {
-            vehicle->swing_sprite = 0;
-            vehicle->swinging_car_var_0 = 0;
-            vehicle->var_4E = 0;
+            swing_sprite = 0;
+            swinging_car_var_0 = 0;
+            var_4E = 0;
         }
 
-        if (vehicle == _vehicleFrontVehicle)
+        if (this == _vehicleFrontVehicle)
         {
             if (_vehicleVelocityF64E08 < 0)
             {
-                regs.bp = vehicle->next_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16_t*)&regs.bp))
+                regs.bp = next_vehicle_on_ride;
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, (uint16_t*)&regs.bp))
                 {
                     goto loc_6DBE7F;
                 }
@@ -8606,24 +8602,24 @@ loc_6DBA33:;
     }
 
     // loc_6DBE3F
-    if (vehicle->remaining_distance >= 0)
+    if (remaining_distance >= 0)
     {
         return true;
     }
     regs.ebx = dword_9A2970[regs.ebx];
-    vehicle->acceleration += regs.ebx;
+    acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DBA33;
 
 loc_6DBE5E:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
-    vehicle->remaining_distance = 0x368A;
+    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+    remaining_distance = 0x368A;
     return false;
 
 loc_6DBE7F:
-    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
-    vehicle->remaining_distance = 0x368A;
+    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+    remaining_distance = 0x368A;
 
     Vehicle* v3 = GET_VEHICLE(regs.bp);
     Vehicle* v4 = gCurrentVehicle;
@@ -8641,7 +8637,7 @@ loc_6DBE7F:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
     {
-        vehicle->velocity -= vehicle->velocity >> 2;
+        velocity -= velocity >> 2;
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
     }
     else
@@ -9513,16 +9509,16 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
  *
  *  rct2: 0x006DAB4C
  */
-int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
+int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 {
     registers regs = {};
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return 0;
 
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
 
     if (vehicleEntry == nullptr)
     {
@@ -9531,18 +9527,19 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
     {
-        return vehicle_update_track_motion_mini_golf(vehicle, outStation);
+        return vehicle_update_track_motion_mini_golf(this, outStation);
     }
 
     _vehicleF64E2C = 0;
-    gCurrentVehicle = vehicle;
+    gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
     _vehicleStationIndex = STATION_INDEX_NULL;
 
-    vehicle_update_track_motion_up_stop_check(vehicle);
-    check_and_apply_block_section_stop_site(vehicle);
-    update_velocity(vehicle);
+    vehicle_update_track_motion_up_stop_check(this);
+    check_and_apply_block_section_stop_site(this);
+    update_velocity(this);
 
+    Vehicle* vehicle = this;
     if (_vehicleVelocityF64E08 < 0)
     {
         vehicle = vehicle_get_tail(vehicle);
@@ -9593,7 +9590,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
             if (car->remaining_distance < 0)
             {
                 // Backward loop
-                if (vehicle_update_track_motion_backwards(car, vehicleEntry, ride, rideEntry))
+                if (car->UpdateTrackMotionBackwards(vehicleEntry, curRide, rideEntry))
                 {
                     break;
                 }
@@ -9614,7 +9611,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
                 // Location found
                 goto loc_6DBF3E;
             }
-            if (vehicle_update_track_motion_forwards(car, vehicleEntry, ride, rideEntry))
+            if (car->UpdateTrackMotionForwards(vehicleEntry, curRide, rideEntry))
             {
                 break;
             }
@@ -9691,7 +9688,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
         regs.eax += 511;
     }
     regs.eax >>= 9;
-    int32_t acceleration = regs.eax;
+    int32_t curAcceleration = regs.eax;
     regs.eax = vehicle->velocity;
     if (regs.eax < 0)
     {
@@ -9704,7 +9701,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
         regs.eax >>= 12;
     }
 
-    acceleration -= regs.eax;
+    curAcceleration -= regs.eax;
     regs.edx = vehicle->velocity;
     regs.ebx = regs.edx;
     regs.edx >>= 8;
@@ -9720,20 +9717,20 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
     {
         regs.eax = regs.eax / totalMass;
     }
-    acceleration -= regs.eax;
+    curAcceleration -= regs.eax;
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
     {
-        vehicle_update_track_motion_powered_ride_acceleration(vehicle, vehicleEntry, totalMass, &acceleration);
+        vehicle_update_track_motion_powered_ride_acceleration(vehicle, vehicleEntry, totalMass, &curAcceleration);
     }
-    else if (acceleration <= 0 && acceleration >= -500)
+    else if (curAcceleration <= 0 && curAcceleration >= -500)
     {
         // Probably moving slowly on a flat track piece, low rolling resistance and drag.
 
         if (vehicle->velocity <= 0x8000 && vehicle->velocity >= 0)
         {
             // Vehicle is creeping forwards very slowly (less than ~2km/h), boost speed a bit.
-            acceleration += 400;
+            curAcceleration += 400;
         }
     }
 
@@ -9741,7 +9738,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {
-            acceleration -= vehicle->velocity >> 6;
+            curAcceleration -= vehicle->velocity >> 6;
         }
     }
 
@@ -9753,13 +9750,13 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
             {
                 if (vehicle->velocity > 0x20000)
                 {
-                    acceleration -= vehicle->velocity >> 6;
+                    curAcceleration -= vehicle->velocity >> 6;
                 }
             }
         }
     }
 
-    vehicle->acceleration = acceleration;
+    vehicle->acceleration = curAcceleration;
 
     regs.eax = _vehicleMotionTrackFlags;
     regs.ebx = _vehicleStationIndex;

@@ -176,6 +176,9 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
     VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
 };
 
+struct Ride;
+struct rct_ride_entry;
+
 struct Vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type;
@@ -302,6 +305,7 @@ struct Vehicle : SpriteBase
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
+    int32_t UpdateTrackMotion(int32_t* outStation);
 
 private:
     bool SoundCanPlay() const;
@@ -344,6 +348,8 @@ private:
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
+    bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
 };
 
 struct train_ref
@@ -542,7 +548,6 @@ void vehicle_sounds_update();
 GForces vehicle_get_g_forces(const Vehicle* vehicle);
 void vehicle_set_map_toolbar(const Vehicle* vehicle);
 int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle);
-int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation);
 rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle);
 int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
 void vehicle_invalidate_window(Vehicle* vehicle);

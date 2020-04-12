@@ -4743,7 +4743,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
 
                 if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
                 {
-                    vehicle_update_track_motion(vehicle, nullptr);
+                    vehicle->UpdateTrackMotion(nullptr);
                 }
 
                 vehicle_unset_update_flag_b1(vehicle);
@@ -4771,12 +4771,12 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         train = GET_VEHICLE(vehicleSpriteIdx);
         if (i == 0)
         {
-            vehicle_update_track_motion(train, nullptr);
+            train->UpdateTrackMotion(nullptr);
             vehicle_unset_update_flag_b1(train);
             continue;
         }
 
-        vehicle_update_track_motion(train, nullptr);
+        train->UpdateTrackMotion(nullptr);
 
         do
         {
@@ -4796,7 +4796,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
                 }
                 car = GET_VEHICLE(spriteIndex);
             }
-        } while (!(vehicle_update_track_motion(train, nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_10));
+        } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_10));
 
         tileElement->AsTrack()->SetBlockBrakeClosed(true);
         car = train;
