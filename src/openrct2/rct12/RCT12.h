@@ -792,8 +792,3 @@ assert_struct_size(RCT12ResearchItem, 5);
 #pragma pack(pop)
 
 bool is_user_string_id(rct_string_id stringId);
-
-namespace RCT12
-{
-    std::string RemoveFormatCodes(const std::string_view& s);
-}

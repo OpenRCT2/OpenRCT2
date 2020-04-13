@@ -482,44 +482,6 @@ bool is_user_string_id(rct_string_id stringId)
     return stringId >= 0x8000 && stringId < 0x9000;
 }
 
-std::string RCT12::RemoveFormatCodes(const std::string_view& s)
-{
-    constexpr auto RCT12_MULTIBYTE_PREFIX = (char)(uint8_t)0xFF;
-
-    std::string result;
-    result.reserve(s.size());
-
-    // Append each character that is not a format code
-    for (size_t i = 0; i < s.size(); i++)
-    {
-        auto c = s[i];
-        if (c == '\0')
-        {
-            break;
-        }
-        else if (c == RCT12_MULTIBYTE_PREFIX)
-        {
-            // Multi-byte, assume not a format code
-            result.push_back(c);
-            if (i + 1 < s.size())
-            {
-                result.push_back(s[i + 1]);
-            }
-            if (i + 2 < s.size())
-            {
-                result.push_back(s[i + 2]);
-            }
-            i += 2;
-        }
-        else if (!utf8_is_format_code(c))
-        {
-            result.push_back(c);
-        }
-    }
-
-    return result;
-}
-
 uint8_t RCT12TileElement::GetBannerIndex()
 {
     rct_scenery_entry* sceneryEntry;
