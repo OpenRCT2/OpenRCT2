@@ -6247,8 +6247,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
     {
         sprite = get_sprite(sprite_id);
 
-        if (!sprite->IsPeep() || (sprite->peep.state != PEEP_STATE_SITTING)
-            || (peep->z != sprite->peep.z))
+        if (!sprite->IsPeep() || (sprite->peep.state != PEEP_STATE_SITTING) || (peep->z != sprite->peep.z))
         {
             continue;
         }
