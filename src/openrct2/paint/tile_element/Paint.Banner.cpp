@@ -101,13 +101,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     scrollingMode += direction;
 
-    // We need to get the text colour code into the beginning of the string, so use a temporary buffer
-    char colouredBannerText[32]{};
-    utf8_write_codepoint(colouredBannerText, FORMAT_COLOUR_CODE_START + banner->text_colour);
-
-    set_format_arg(0, rct_string_id, STR_STRING_STRINGID);
-    set_format_arg(2, const char*, &colouredBannerText);
-    banner->FormatTextTo(gCommonFormatArgs + 2 + sizeof(const char*));
+    banner->FormatTextTo(gCommonFormatArgs, /*addColour*/ true);
 
     if (gConfigGeneral.upper_case_banners)
     {
