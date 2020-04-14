@@ -19,6 +19,10 @@
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #    include <winhttp.h>
+#    include <winsock2.h>
+#    include <ws2tcpip.h>
+
+bool InitialiseWSA();
 
 namespace Http
 {
@@ -150,6 +154,40 @@ namespace Http
         return body;
     }
 
+    static std::wstring ResolveAddressIPv4(const std::wstring& whostname)
+    {
+        std::string result;
+        auto hostname = String::ToUtf8(whostname);
+        if (InitialiseWSA())
+        {
+            ADDRINFOA hints{};
+            hints.ai_flags = AF_INET;
+            PADDRINFOA addrInfoHead{};
+            auto ret = getaddrinfo(hostname.c_str(), NULL, &hints, &addrInfoHead);
+            if (ret == 0)
+            {
+                auto addrInfo = addrInfoHead;
+                while (addrInfo != nullptr)
+                {
+                    if (addrInfo->ai_addr->sa_family == AF_INET)
+                    {
+                        if (addrInfo->ai_addrlen >= 6)
+                        {
+                            char ipAddress[128]{};
+                            auto data = reinterpret_cast<uint8_t*>(addrInfo->ai_addr->sa_data);
+                            std::snprintf(ipAddress, sizeof(ipAddress), "%d.%d.%d.%d", data[2], data[3], data[4], data[5]);
+                            result = ipAddress;
+                            break;
+                        }
+                    }
+                    addrInfo = addrInfo->ai_next;
+                }
+                freeaddrinfo(addrInfoHead);
+            }
+        }
+        return String::ToWideChar(result);
+    }
+
     Response Do(const Request& req)
     {
         HINTERNET hSession{}, hConnect{}, hRequest{};
@@ -173,6 +211,15 @@ namespace Http
                 ThrowWin32Exception("WinHttpOpen");
 
             auto wHostName = std::wstring(url.lpszHostName, url.dwHostNameLength);
+            if (req.forceIPv4)
+            {
+                auto szIpAddress = ResolveAddressIPv4(wHostName);
+                if (!szIpAddress.empty())
+                {
+                    wHostName = szIpAddress;
+                }
+            }
+
             hConnect = WinHttpConnect(hSession, wHostName.c_str(), url.nPort, 0);
             if (hConnect == nullptr)
                 ThrowWin32Exception("WinHttpConnect");
