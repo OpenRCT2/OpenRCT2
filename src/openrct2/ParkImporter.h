@@ -35,10 +35,10 @@ struct scenario_index_entry;
 struct ParkLoadResult final
 {
 public:
-    std::vector<rct_object_entry> const RequiredObjects;
+    std::vector<rct_object_entry> RequiredObjects;
 
     explicit ParkLoadResult(std::vector<rct_object_entry>&& requiredObjects)
-        : RequiredObjects(requiredObjects)
+        : RequiredObjects(std::move(requiredObjects))
     {
     }
 };
