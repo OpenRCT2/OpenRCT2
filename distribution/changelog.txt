@@ -19,6 +19,7 @@
 - Fix: [#11225] Replay manager cannot handle track designs.
 - Fix: [#11246] Fix Various Import/Export issues with Boat locations, balloon frame number.
 - Fix: Small red gardens in RCT1 saves are imported in the wrong colour.
+- Fix: [#11258] Properly remove format codes from imported strings.
 - Improved: [#11157] Slimmer virtual floor lines.
 
 0.2.5 (2020-03-24)
