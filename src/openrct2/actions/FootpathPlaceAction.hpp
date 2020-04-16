@@ -190,7 +190,7 @@ private:
         {
             pathElement->SetIsQueue(false);
         }
-        pathElement->SetAddition(0);
+        //pathElement->SetAddition(0);
         pathElement->SetIsBroken(false);
 
         RemoveIntersectingWalls(pathElement);
