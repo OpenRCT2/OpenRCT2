@@ -266,16 +266,18 @@ static bool OnCrash(
     if (SUCCEEDED(coInitializeResult))
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
-        LPITEMIDLIST files[4];
+        LPITEMIDLIST files[6];
         uint32_t numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);
         // There should be no need to check if this file exists, if it doesn't
         // it simply shouldn't get selected.
         files[numFiles++] = ILCreateFromPathW(dumpFilePathGZIP);
+        files[numFiles++] = ILCreateFromPathW(configFilePath);
         if (savedGameDumped)
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
+            files[numFiles++] = ILCreateFromPathW(saveFilePathGZIP);
         }
         if (with_record)
         {

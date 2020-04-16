@@ -190,6 +190,7 @@ struct CoordsXY
     void setNull()
     {
         x = COORDS_NULL;
+        y = 0;
     }
 };
 
@@ -301,6 +302,7 @@ struct TileCoordsXY
     void setNull()
     {
         x = COORDS_NULL;
+        y = 0;
     }
 };
 

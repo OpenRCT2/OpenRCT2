@@ -34,6 +34,7 @@ struct Banner
     uint8_t colour{};
     ride_id_t ride_index{};
     uint8_t text_colour{};
+    mutable std::string textColourUtf8;
     TileCoordsXY position;
 
     bool IsNull() const
@@ -42,6 +43,7 @@ struct Banner
     }
 
     std::string GetText() const;
+    size_t FormatTextTo(void* args, bool addColour) const;
     size_t FormatTextTo(void* args) const;
 };
 

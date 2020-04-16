@@ -71,6 +71,10 @@ protected:
 
 TEST_P(ReplayTests, RunReplay)
 {
+#ifdef PLATFORM_32BIT
+    log_warning("Replay Tests have not been performed. OpenRCT2/OpenRCT2#11279.");
+    return;
+#else
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
     core_init();
@@ -96,6 +100,7 @@ TEST_P(ReplayTests, RunReplay)
         gs->UpdateLogic();
         ASSERT_TRUE(replayManager->IsPlaybackStateMismatching() == false);
     }
+#endif
 }
 
 static void PrintTo(const ReplayTestData& testData, std::ostream* os)

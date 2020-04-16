@@ -3148,6 +3148,8 @@ static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
 
     vehicle->BoatLocation = location;
     vehicle->var_35 = 0;
+    // No longer on a track so reset to 0 for import/export
+    vehicle->track_type = 0;
     vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
     vehicle->remaining_distance += 27924;
 
@@ -3485,19 +3487,22 @@ static void vehicle_check_if_missing(Vehicle* vehicle)
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
-    set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
+    if (gConfigNotifications.ride_stalled_vehicles)
+    {
+        set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
 
-    uint8_t vehicleIndex = 0;
-    for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
-        if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
-            break;
+        uint8_t vehicleIndex = 0;
+        for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
+            if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+                break;
 
-    vehicleIndex++;
-    set_format_arg(2, uint16_t, vehicleIndex);
-    auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
-    set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
+        vehicleIndex++;
+        set_format_arg(2, uint16_t, vehicleIndex);
+        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
+        set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
-    news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+    }
 }
 
 static void vehicle_simulate_crash(Vehicle* vehicle)
@@ -4269,6 +4274,7 @@ static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, i
         if (ride != nullptr)
         {
             vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+            vehicle->BoatLocation.setNull();
         }
 
         vehicle->track_progress = 0;
@@ -5206,6 +5212,11 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
         ride->FormatNameTo(gCommonFormatArgs + 2);
         news_item_add_to_queue(
             NEWS_ITEM_RIDE, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        if (gConfigNotifications.ride_casualties)
+        {
+            ride->FormatNameTo(gCommonFormatArgs + 2);
+            news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        }
 
         if (gParkRatingCasualtyPenalty < 500)
         {
@@ -6216,6 +6227,8 @@ Vehicle* vehicle_get_head(const Vehicle* vehicle)
 
     for (;;)
     {
+        if (vehicle->prev_vehicle_on_ride > MAX_SPRITES)
+            return nullptr;
         prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             break;

@@ -5850,7 +5850,8 @@ void Guest::UpdateUsingBin()
             if (tileElement == nullptr)
                 return;
 
-            for (;; tileElement++)
+            bool found = false;
+            do
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 {
@@ -5858,13 +5859,16 @@ void Guest::UpdateUsingBin()
                 }
 
                 if (tileElement->GetBaseZ() == NextLoc.z)
-                    break;
-
-                if (tileElement->IsLastForTile())
                 {
-                    StateReset();
-                    return;
+                    found = true;
+                    break;
                 }
+            } while (!(tileElement++)->IsLastForTile());
+
+            if (!found)
+            {
+                StateReset();
+                return;
             }
 
             if (!tileElement->AsPath()->HasAddition())
