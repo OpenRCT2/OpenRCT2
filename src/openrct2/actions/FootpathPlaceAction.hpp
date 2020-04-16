@@ -20,6 +20,7 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/Scenery.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActionResult)
@@ -182,22 +183,24 @@ private:
         }
 
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
-        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
-        {
-            pathElement->SetIsQueue(true);
+        bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
+        pathElement->SetIsQueue(isQueue);
 
-            //remove all but TVs
-            if (pathElement->GetAddition() != FOOTPATH_ELEMENT_ADDITION_TV1
-                && pathElement->GetAddition() != FOOTPATH_ELEMENT_ADDITION_TV2)
-                pathElement->SetAddition(0);
-        }
-        else
+        rct_scenery_entry* elem = pathElement->GetAdditionEntry();
+        if (elem != nullptr)
         {
-            //remove TVs
-            if (pathElement->GetAddition() == FOOTPATH_ELEMENT_ADDITION_TV1
-                || pathElement->GetAddition() == FOOTPATH_ELEMENT_ADDITION_TV2)
-                pathElement->SetAddition(0);
-            pathElement->SetIsQueue(false);
+            if (isQueue)
+            {
+                //remove any addition that isn't a TV
+                if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0)
+                    pathElement->SetAddition(0);
+            }
+            else
+            {
+                //remove all TVs
+                if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+                    pathElement->SetAddition(0);
+            }
         }
         
         pathElement->SetIsBroken(false);
