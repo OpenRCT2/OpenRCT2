@@ -39,6 +39,29 @@ std::string Banner::GetText() const
     return format_string(STR_STRINGID, args);
 }
 
+size_t Banner::FormatTextTo(void* argsV, bool addColour) const
+{
+    auto args = static_cast<uint8_t*>(argsV);
+
+    int numColourArgs = 0;
+    if (addColour)
+    {
+        textColourUtf8.resize(5); // one code point in utf8 takes at most 4 bytes
+        auto terminator = utf8_write_codepoint(textColourUtf8.data(), FORMAT_COLOUR_CODE_START + text_colour);
+        *terminator = '\0';
+
+        set_format_arg_on(args, numColourArgs, rct_string_id, STR_STRING_STRINGID);
+        numColourArgs += sizeof(rct_string_id);
+
+        set_format_arg_on(args, numColourArgs, const char*, textColourUtf8.data());
+        numColourArgs += sizeof(const char*);
+
+        args += numColourArgs;
+    }
+
+    return numColourArgs + FormatTextTo(args);
+}
+
 size_t Banner::FormatTextTo(void* argsV) const
 {
     auto args = (uint8_t*)argsV;
