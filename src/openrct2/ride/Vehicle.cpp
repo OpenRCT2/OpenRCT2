@@ -1648,7 +1648,7 @@ static void vehicle_update_measurements(Vehicle* vehicle)
                 ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
             }
         }
-
+        
         switch (track_elem_type)
         {
             case TRACK_ELEM_RAPIDS:
@@ -5590,6 +5590,11 @@ static SoundId vehicle_update_scream_sound(Vehicle* vehicle)
     int32_t totalNumPeeps = vehicle_get_total_num_peeps(vehicle);
     if (totalNumPeeps == 0)
         return SoundId::Null;
+
+    if((rand() % 0x6E0000) < (abs(vehicle->velocity) * vehicle->num_peeps))
+    {
+        return SoundId::Null;
+    }
 
     if (vehicle->velocity < 0)
     {
