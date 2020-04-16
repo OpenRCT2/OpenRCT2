@@ -40,6 +40,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Staff.h"
+#include "../platform/platform.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../util/Util.h"
@@ -1317,6 +1318,40 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     return 1;
 }
 
+static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (argv.size() < 1)
+    {
+        console.WriteLine("Parameters required <filename>");
+        return 0;
+    }
+
+    char savePath[MAX_PATH];
+    if (String::IndexOf(argv[0].c_str(), '/') == SIZE_MAX && String::IndexOf(argv[0].c_str(), '\\') == SIZE_MAX)
+    {
+        // no / or \ was included. File should be in save dir.
+        platform_get_user_directory(savePath, "save", sizeof(savePath));
+        safe_strcat_path(savePath, argv[0].c_str(), sizeof(savePath));
+    }
+    else
+    {
+        safe_strcpy(savePath, argv[0].c_str(), sizeof(savePath));
+    }
+    if (!String::EndsWith(savePath, ".sv6", true) && !String::EndsWith(savePath, ".sc6", true))
+    {
+        path_append_extension(savePath, ".sv6", sizeof(savePath));
+    }
+    if (context_load_park_from_file(savePath))
+    {
+        console.WriteFormatLine("Park %s was loaded successfully", savePath);
+    }
+    else
+    {
+        console.WriteFormatLine("Loading Park %s failed", savePath);
+    }
+    return 1;
+}
+
 static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.size() < 1)
@@ -1727,6 +1762,7 @@ static constexpr const console_command console_command_table[] = {
                                     "Loading a scenery group will not load its associated objects.\n"
                                     "This is a safer method opposed to \"open object_selection\".",
                                     "load_object <objectfilenodat>" },
+    { "load_park", cc_load_park, "Load park from save directory or by absolute path", "load_park <filename>" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
     { "open", cc_open, "Opens the window with the give name.", "open <window>." },
     { "quit", cc_close, "Closes the console.", "quit" },
