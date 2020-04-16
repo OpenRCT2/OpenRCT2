@@ -1575,6 +1575,7 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} de {STRINGID} encara no ha tornat a {STRINGID}!{NEWLINE}Comproveu què li ha passat.
 STR_2219    :{RED}{COMMA16} persones han mort en l'accident de {STRINGID}
+STR_2219_1  :{RED}{COMMA16} persona ha mort en l'accident de {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valoració del parc: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}

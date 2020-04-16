@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -1576,6 +1576,7 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID}, {STRINGID}的一部份, 尚未返回到{STRINGID}!{NEWLINE}檢查是否被卡住或被停止了
 STR_2219    :{RED}{COMMA16}人已喪生於{STRINGID}的意外中
+STR_2219_1  :{RED}{COMMA16}人已喪生於{STRINGID}的意外中
 STR_2220    :{WINDOW_COLOUR_2}樂園評價: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}樂園評價: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}

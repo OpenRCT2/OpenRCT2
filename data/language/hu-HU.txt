@@ -1565,6 +1565,7 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} itt van: {STRINGID} és még nem érkezett vissza ide: {STRINGID}!{NEWLINE}Ellenőrizd, hogy nincs-e beragadva vagy elakadva
 STR_2219    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
+STR_2219_1  :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_2220    :{WINDOW_COLOUR_2}Park értékelése: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park értékelése: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}

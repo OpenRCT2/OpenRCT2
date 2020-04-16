@@ -1580,6 +1580,7 @@ STR_2216    :{WINDOW_COLOU1R_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} ihmistä kuoli tapaturmassa kohteessa {STRINGID}
+STR_2219_1  :{RED}{COMMA16} henkilö kuoli tapaturmassa kohteessa {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Puiston luokitus: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Puiston luokitus: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}

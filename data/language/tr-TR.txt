@@ -1572,6 +1572,7 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} aletinde {STRINGID} halen {STRINGID}ye dönmedi!{NEWLINE}Aleti kontrol ediniz
 STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
+STR_2219_1  :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park değerlendirmesi: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}

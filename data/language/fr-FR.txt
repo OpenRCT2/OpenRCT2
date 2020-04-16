@@ -1577,6 +1577,7 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sur {STRINGID} n'est pas encore revenu à {STRINGID}!{NEWLINE}Vérifiez s'il est coincé ou au point mort
 STR_2219    :{RED}{COMMA16} personnes sont mortes dans un accident sur {STRINGID}
+STR_2219_1  :{RED}{COMMA16} personne sont mortes dans un accident sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Evaluation du parc : {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Evaluation du parc : {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}

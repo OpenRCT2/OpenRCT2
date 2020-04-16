@@ -1573,6 +1573,7 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16} °C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16} °F
 STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
+STR_2219_1  :{RED}{COMMA16} persoon zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkwaardering: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
