@@ -6224,6 +6224,8 @@ Vehicle* vehicle_get_head(const Vehicle* vehicle)
 
     for (;;)
     {
+        if (vehicle->prev_vehicle_on_ride > MAX_SPRITES)
+            return nullptr;
         prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             break;
