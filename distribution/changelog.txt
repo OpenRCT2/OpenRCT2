@@ -2,7 +2,9 @@
 ------------------------------------------------------------------------
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
+- Feature: [#11218] load_park command for console
 - Feature: [#11272] Option for toggling notifications for 'Ride casualties' and 'Stuck or stalled vehicles'.
+- Feature: [#11281] add_news_item command for console
 - Feature: [#11300] Add powered launch and reverse incline launched shuttle mode to the Stand-Up Roller Coaster (for RCT1 parity).
 - Fix: [#475] Water sides drawn incorrectly (original bug).
 - Fix: [#6123, #7907, #9472, #11028] Cannot build some track designs with 4 stations (original bug).
