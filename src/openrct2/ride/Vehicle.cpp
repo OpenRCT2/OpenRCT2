@@ -5592,9 +5592,7 @@ static SoundId vehicle_update_scream_sound(Vehicle* vehicle)
         return SoundId::Null;
 
     if((rand() % 0x6E0000) < (abs(vehicle->velocity) * vehicle->num_peeps))
-    {
         return SoundId::Null;
-    }
 
     if (vehicle->velocity < 0)
     {
