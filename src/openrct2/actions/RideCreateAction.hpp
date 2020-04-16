@@ -166,7 +166,7 @@ public:
         ride->min_waiting_time = 10;
         ride->max_waiting_time = 60;
         ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT)
+        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
         }

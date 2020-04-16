@@ -479,7 +479,7 @@ private:
                 return false;
             }
         }
-        else if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
+        else if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
         {
             return false;
         }
