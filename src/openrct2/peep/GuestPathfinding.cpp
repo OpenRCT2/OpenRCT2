@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../core/Guard.hpp"
+#include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"

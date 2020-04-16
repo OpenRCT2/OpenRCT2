@@ -18,6 +18,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "Map.h"

@@ -1133,7 +1133,7 @@ int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
 
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 {
-    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+    if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
     {
         if (isInverted)
         {
