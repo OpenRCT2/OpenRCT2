@@ -187,13 +187,15 @@ private:
             pathElement->SetIsQueue(true);
 
             //remove all but TVs
-            if (pathElement->GetAddition() != 0x6 && pathElement->GetAddition() != 0x5)
+            if (pathElement->GetAddition() != FOOTPATH_ELEMENT_ADDITION_TV1
+                && pathElement->GetAddition() != FOOTPATH_ELEMENT_ADDITION_TV2)
                 pathElement->SetAddition(0);
         }
         else
         {
             //remove TVs
-            if (pathElement->GetAddition() == 0x6 || pathElement->GetAddition() == 0x5)
+            if (pathElement->GetAddition() == FOOTPATH_ELEMENT_ADDITION_TV1
+                || pathElement->GetAddition() == FOOTPATH_ELEMENT_ADDITION_TV2)
                 pathElement->SetAddition(0);
             pathElement->SetIsQueue(false);
         }
