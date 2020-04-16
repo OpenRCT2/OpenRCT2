@@ -1423,10 +1423,10 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
  */
 static int32_t ride_ratings_get_scenery_score(Ride* ride)
 {
-    auto i = ride_get_first_valid_station_start(ride);
+    auto stationIndex = ride_get_first_valid_station_start(ride);
     CoordsXY location;
 
-    if (i == STATION_INDEX_NULL)
+    if (stationIndex == STATION_INDEX_NULL)
     {
         return 0;
     }
@@ -1437,13 +1437,13 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     }
     else
     {
-        location = ride->stations[i].Start;
+        location = ride->stations[stationIndex].Start;
     }
 
     int32_t z = tile_element_height(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-    if (z > ride->stations[i].GetBaseZ())
+    if (z > ride->stations[stationIndex].GetBaseZ())
     {
         return 40;
     }
