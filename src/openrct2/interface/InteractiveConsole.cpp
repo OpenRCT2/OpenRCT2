@@ -32,6 +32,7 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
+#include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../object/Object.h"
@@ -1622,6 +1623,36 @@ static int32_t cc_assert([[maybe_unused]] InteractiveConsole& console, [[maybe_u
     return 0;
 }
 
+static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    printf("argv.size() = %zu\n", argv.size());
+    if (argv.size() < 3)
+    {
+        console.WriteLineWarning("Too few arguments");
+        static_assert(NEWS_ITEM_TYPE_COUNT == 10, "NEWS_ITEM_TYPE_COUNT changed, update console command!");
+        console.WriteLine("add_news_item <type> <message> <assoc>");
+        console.WriteLine("type is one of:");
+        console.WriteLine("    0 (NEWS_ITEM_NULL)");
+        console.WriteLine("    1 (NEWS_ITEM_RIDE)");
+        console.WriteLine("    2 (NEWS_ITEM_PEEP_ON_RIDE)");
+        console.WriteLine("    3 (NEWS_ITEM_PEEP)");
+        console.WriteLine("    4 (NEWS_ITEM_MONEY)");
+        console.WriteLine("    5 (NEWS_ITEM_BLANK)");
+        console.WriteLine("    6 (NEWS_ITEM_RESEARCH)");
+        console.WriteLine("    7 (NEWS_ITEM_PEEPS)");
+        console.WriteLine("    8 (NEWS_ITEM_AWARD)");
+        console.WriteLine("    9 (NEWS_ITEM_GRAPH)");
+        console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
+        console.WriteLine("assoc is the associated id of ride/peep/tile/etc.");
+        return 1;
+    }
+    auto type = atoi(argv[0].c_str());
+    auto msg = argv[1].c_str();
+    auto assoc = atoi(argv[2].c_str());
+    news_item_add_to_queue_raw(type, msg, assoc);
+    return 0;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct console_command
 {
@@ -1681,6 +1712,7 @@ static constexpr const utf8* console_window_table[] = {
 
 static constexpr const console_command console_command_table[] = {
     { "abort", cc_abort, "Calls std::abort(), for testing purposes only.", "abort" },
+    { "add_news_item", cc_add_news_item, "Inserts a news item", "add_news_item [<type> <message> <assoc>]" },
     { "assert", cc_assert, "Triggers assertion failure, for testing purposes only", "assert" },
     { "clear", cc_clear, "Clears the console.", "clear" },
     { "close", cc_close, "Closes the console.", "close" },
