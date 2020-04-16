@@ -185,12 +185,19 @@ private:
         if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
         {
             pathElement->SetIsQueue(true);
+
+            //remove all but TVs
+            if (pathElement->GetAddition() != 0x6 && pathElement->GetAddition() != 0x5)
+                pathElement->SetAddition(0);
         }
         else
         {
+            //remove TVs
+            if (pathElement->GetAddition() == 0x6 || pathElement->GetAddition() == 0x5)
+                pathElement->SetAddition(0);
             pathElement->SetIsQueue(false);
         }
-        //pathElement->SetAddition(0);
+        
         pathElement->SetIsBroken(false);
 
         RemoveIntersectingWalls(pathElement);
