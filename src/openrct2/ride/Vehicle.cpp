@@ -3487,19 +3487,22 @@ static void vehicle_check_if_missing(Vehicle* vehicle)
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
-    set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
+    if (gConfigNotifications.ride_stalled_vehicles)
+    {
+        set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
 
-    uint8_t vehicleIndex = 0;
-    for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
-        if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
-            break;
+        uint8_t vehicleIndex = 0;
+        for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
+            if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+                break;
 
-    vehicleIndex++;
-    set_format_arg(2, uint16_t, vehicleIndex);
-    auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
-    set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
+        vehicleIndex++;
+        set_format_arg(2, uint16_t, vehicleIndex);
+        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
+        set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
-    news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+    }
 }
 
 static void vehicle_simulate_crash(Vehicle* vehicle)
@@ -5206,8 +5209,11 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
 
     if (numFatalities != 0)
     {
-        ride->FormatNameTo(gCommonFormatArgs + 2);
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        if (gConfigNotifications.ride_casualties)
+        {
+            ride->FormatNameTo(gCommonFormatArgs + 2);
+            news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        }
 
         if (gParkRatingCasualtyPenalty < 500)
         {

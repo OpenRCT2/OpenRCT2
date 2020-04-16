@@ -3911,6 +3911,9 @@ enum
 
     STR_COPY_INPUT_TO_CLIPBOARD = 6363,
 
+    STR_NOTIFICATION_RIDE_CASUALTIES = 6464,
+    STR_NOTIFICATION_RIDE_VEHICLE_STALLED = 6465,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
