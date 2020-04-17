@@ -193,17 +193,25 @@ private:
             {
                 //remove any addition that isn't a TV
                 if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0)
+                {
+                    pathElement->SetIsBroken(false);
                     pathElement->SetAddition(0);
+                }
+                    
             }
             else
             {
                 //remove all TVs
                 if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+                {
+                    pathElement->SetIsBroken(false);
                     pathElement->SetAddition(0);
+                }
+                    
             }
         }
         
-        pathElement->SetIsBroken(false);
+        
 
         RemoveIntersectingWalls(pathElement);
         return res;
