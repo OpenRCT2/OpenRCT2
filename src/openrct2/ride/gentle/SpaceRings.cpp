@@ -51,7 +51,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
             session->CurrentlyDrawnItem = vehicle;
-            frameNum += (int8_t)vehicle->vehicle_sprite_type * 4;
+            frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type * 4);
         }
 
         uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];

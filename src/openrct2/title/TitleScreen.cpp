@@ -264,7 +264,7 @@ void TitleScreen::TitleInitialise()
         while (!safeSequence)
         {
             size_t total = TitleSequenceManager::GetCount();
-            random = util_rand() % (int32_t)total;
+            random = util_rand() % static_cast<int32_t>(total);
             const utf8* scName = title_sequence_manager_get_name(random);
             safeSequence = true;
             if (scName == RCT1String)
@@ -291,7 +291,7 @@ void TitleScreen::TitleInitialise()
             seqId = 0;
         }
     }
-    ChangePresetSequence((int32_t)seqId);
+    ChangePresetSequence(static_cast<int32_t>(seqId));
 }
 
 bool TitleScreen::TryLoadSequence(bool loadPreview)
@@ -442,7 +442,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
 
     // Invalidate screen area
-    int16_t width = (int16_t)gfx_get_string_width(buffer);
+    int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer));
     gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
 
     // Write platform information

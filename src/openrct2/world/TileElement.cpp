@@ -167,7 +167,7 @@ void TileElement::ClearAs(uint8_t newType)
 
 void TileElementBase::Remove()
 {
-    tile_element_remove((TileElement*)this);
+    tile_element_remove(static_cast<TileElement*>(this));
 }
 
 // Rotate both of the values amount

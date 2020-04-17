@@ -454,7 +454,8 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 }
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2)
+                if (abs(static_cast<int32_t>(inputTileElement->base_height) - static_cast<int32_t>(tileElement->base_height))
+                    <= 2)
                 {
                     proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
                 }
@@ -462,7 +463,9 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
             case TILE_ELEMENT_TYPE_TRACK:
                 if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
-                    if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2)
+                    if (abs(static_cast<int32_t>(inputTileElement->base_height)
+                            - static_cast<int32_t>(tileElement->base_height))
+                        <= 2)
                     {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                     }
@@ -500,7 +503,8 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
         {
             case TILE_ELEMENT_TYPE_PATH:
             {
-                int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
+                int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
+                    - static_cast<int32_t>(inputTileElement->base_height);
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
@@ -513,7 +517,8 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
                 bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1) != 0;
                 if (elementsAreAt90DegAngle)
                 {
-                    int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
+                    int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
+                        - static_cast<int32_t>(inputTileElement->base_height);
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
@@ -669,7 +674,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                     }
                     if (inputTileElement->clearance_height + 2 == tileElement->base_height)
                     {
-                        if ((uint8_t)(inputTileElement->clearance_height + 10) >= tileElement->base_height)
+                        if (static_cast<uint8_t>(inputTileElement->clearance_height + 10) >= tileElement->base_height)
                         {
                             proximity_score_increment(PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                         }
@@ -881,7 +886,7 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     {
         totalLength *= 20;
     }
-    upkeep += (uint16_t)(totalLength >> 10);
+    upkeep += static_cast<uint16_t>(totalLength >> 10);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
@@ -963,13 +968,13 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
 
     // Apply ride entry multipliers
     ride_ratings_add(
-        ratings, (((int32_t)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
-        (((int32_t)ratings->intensity * rideEntry->intensity_multiplier) >> 7),
-        (((int32_t)ratings->nausea * rideEntry->nausea_multiplier) >> 7));
+        ratings, ((static_cast<int32_t>(ratings->excitement) * rideEntry->excitement_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings->intensity) * rideEntry->intensity_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings->nausea) * rideEntry->nausea_multiplier) >> 7));
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME)
+    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         uint16_t totalAirTime = ride->total_air_time;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
@@ -988,7 +993,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
         }
     }
 #else
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME)
+    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         int32_t excitementModifier;
         int32_t nauseaModifier;
@@ -1265,7 +1270,8 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
-    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
+    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                            static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1303,7 +1309,8 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
     intensity += inversionsRating.intensity;
     nausea += inversionsRating.nausea;
 
-    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
+    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                            static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1341,7 +1348,8 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 
-    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
+    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                            static_cast<ride_rating>(nausea) };
     return rating;
 }
 

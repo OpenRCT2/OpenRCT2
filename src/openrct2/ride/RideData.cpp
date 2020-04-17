@@ -1186,97 +1186,97 @@ const uint8_t RideAvailableBreakdowns[] = {
 
 // rct2: 0x0097D4F0,  0x0097D4F1,  0x0097D4F2, 0x0097D4F4, 0x0097D4F5
 const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_SPIRAL_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_STAND_UP_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                        MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER,                                                                                                                                   MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINIATURE_RAILWAY
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER,                                                                                                                                   MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT,                                                                                                                                                                                                                                                                                                               MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_BOAT_HIRE
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                  MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_WILD_MOUSE
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEPLECHASE
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                     MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CAR_RIDE
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                             MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_LAUNCHED_FREEFALL
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_BOBSLEIGH_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                    MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_OBSERVATION_TOWER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_LOOPING_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                              MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_DINGHY_SLIDE
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINE_TRAIN_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                           MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CHAIRLIFT
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT,                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MAZE
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                                      MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_SPIRAL_SLIDE
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                                      MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_GO_KARTS
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                      MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_LOG_FLUME
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                      MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_RIVER_RAPIDS
-    {   15, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                          MUSIC_STYLE_DODGEMS_BEAT,       0                                               },  // RIDE_TYPE_DODGEMS
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_PIRATES,            0                                               },  // RIDE_TYPE_SWINGING_SHIP
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
-    {   9,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FOOD_STALL
-    {   15, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1D
-    {   12, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_DRINK_STALL
-    {   8,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1F
-    {   15, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SHOP
-    {   10, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                  MUSIC_STYLE_FAIRGROUND_ORGAN,   0                                               },  // RIDE_TYPE_MERRY_GO_ROUND
-    {   9,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_22
-    {   6,  25, 0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_INFORMATION_KIOSK
-    {   0,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TOILETS
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                            MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_FERRIS_WHEEL
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                            MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_MOTION_SIMULATOR
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                              MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_3D_CINEMA
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_TOP_SPIN
-    {   5,  0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                            MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SPACE_RINGS
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                              MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_REVERSE_FREEFALL_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER,                                                                                                                                                                                                                                     MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_LIFT
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-    {   0,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_CASH_MACHINE
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TWIST
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                              MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_HAUNTED_HOUSE
-    {   0,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FIRST_AID
-    {   15, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                         MUSIC_STYLE_CIRCUS_SHOW,        0                                               },  // RIDE_TYPE_CIRCUS
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                               MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_GHOST_TRAIN
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEL_WILD_MOUSE
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                  MUSIC_STYLE_ROCK_STYLE_3,       RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT    },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                                                                          MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED,                    MUSIC_STYLE_ROCK,               RIDE_TYPE_FLYING_ROLLER_COASTER_ALT             },  // RIDE_TYPE_FLYING_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED,                                                                                                                                                                                                                                                            MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_VIRGINIA_REEL
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                             MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SPLASH_BOATS
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                     MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_HELICOPTERS
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                  MUSIC_STYLE_ROCK,               RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT           },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER,                                                                                                                                   MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_SUSPENDED_MONORAIL
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                                                                          MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_REVERSER_ROLLER_COASTER
-    {   15, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                             MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_GOLF
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_ALLOW_CABLE_LIFT_HILL | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                       MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_GIGA_COASTER
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                            MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_ROTO_DROP
-    {   15, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_FLYING_SAUCERS
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                              MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_CROOKED_HOUSE
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                             MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL_CYCLES
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_COMPACT_INVERTED_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_WATER_COASTER
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_EGYPTIAN,           0                                               },  // RIDE_TYPE_MAGIC_CARPET
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS,                                                                                                                                                                                                                  MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SUBMARINE_RIDE
-    {   10, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                            MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_RIVER_RAFTS
-    {   7,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_50
-    {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_ENTERPRISE
-    {   12, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_52
-    {   15, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_53
-    {   12, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_54
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_55
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_INVERTED_IMPULSE_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINE_RIDE
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                           MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_59
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_SPIRAL_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_STAND_UP_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINIATURE_RAILWAY
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL
+    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
+    {   10, 0,  MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_BOAT_HIRE
+    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_WILD_MOUSE
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEPLECHASE
+    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CAR_RIDE
+    {   20, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_LAUNCHED_FREEFALL
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_BOBSLEIGH_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_OBSERVATION_TOWER
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_LOOPING_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_DINGHY_SLIDE
+    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINE_TRAIN_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CHAIRLIFT
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MAZE
+    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_SPIRAL_SLIDE
+    {   20, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_GO_KARTS
+    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_LOG_FLUME
+    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_RIVER_RAPIDS
+    {   15, 0,  MUSIC_STYLE_DODGEMS_BEAT,       0                                               },  // RIDE_TYPE_DODGEMS
+    {   15, 0,  MUSIC_STYLE_PIRATES,            0                                               },  // RIDE_TYPE_SWINGING_SHIP
+    {   15, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
+    {   9,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FOOD_STALL
+    {   15, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1D
+    {   12, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_DRINK_STALL
+    {   8,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1F
+    {   15, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SHOP
+    {   10, 0,  MUSIC_STYLE_FAIRGROUND_ORGAN,   0                                               },  // RIDE_TYPE_MERRY_GO_ROUND
+    {   9,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_22
+    {   6,  25, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_INFORMATION_KIOSK
+    {   0,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TOILETS
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_FERRIS_WHEEL
+    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_MOTION_SIMULATOR
+    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_3D_CINEMA
+    {   20, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_TOP_SPIN
+    {   5,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SPACE_RINGS
+    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_REVERSE_FREEFALL_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_LIFT
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+    {   0,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_CASH_MACHINE
+    {   10, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TWIST
+    {   10, 0,  MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_HAUNTED_HOUSE
+    {   0,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FIRST_AID
+    {   15, 0,  MUSIC_STYLE_CIRCUS_SHOW,        0                                               },  // RIDE_TYPE_CIRCUS
+    {   15, 0,  MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_GHOST_TRAIN
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEL_WILD_MOUSE
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,       RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT    },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
+    {   20, 20, MUSIC_STYLE_ROCK,               RIDE_TYPE_FLYING_ROLLER_COASTER_ALT             },  // RIDE_TYPE_FLYING_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_VIRGINIA_REEL
+    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SPLASH_BOATS
+    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_HELICOPTERS
+    {   20, 20, MUSIC_STYLE_ROCK,               RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT           },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_SUSPENDED_MONORAIL
+    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
+    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_REVERSER_ROLLER_COASTER
+    {   15, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_GOLF
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_GIGA_COASTER
+    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_ROTO_DROP
+    {   15, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_FLYING_SAUCERS
+    {   10, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_CROOKED_HOUSE
+    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL_CYCLES
+    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_COMPACT_INVERTED_COASTER
+    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_WATER_COASTER
+    {   20, 0,  MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
+    {   15, 0,  MUSIC_STYLE_EGYPTIAN,           0                                               },  // RIDE_TYPE_MAGIC_CARPET
+    {   10, 0,  MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SUBMARINE_RIDE
+    {   10, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_RIVER_RAFTS
+    {   7,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_50
+    {   20, 0,  MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_ENTERPRISE
+    {   12, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_52
+    {   15, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_53
+    {   12, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_54
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_55
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_INVERTED_IMPULSE_COASTER
+    {   20, 20, MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINE_RIDE
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_59
+    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
 // rct2: 0x0097DD78
@@ -1814,507 +1814,97 @@ const rating_tuple RideRatings[RIDE_TYPE_COUNT] = {
 
 // rct2: 0x0097CF40
 const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 17, 17, 0 }, // RIDE_TYPE_SPIRAL_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                7,  27,  0,  0,  0, 0 }, // RIDE_TYPE_STAND_UP_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                7,  27,  0,  0,  0, 0 },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  17,  16, -1 },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINIATURE_RAILWAY
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MONORAIL
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
-         RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER |
-         RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_BOAT_HIRE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
-         RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_WOODEN_WILD_MOUSE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_STEEPLECHASE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CAR_RIDE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 40,  0,  0,  0, 0 },  // RIDE_TYPE_LAUNCHED_FREEFALL
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_BOBSLEIGH_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_OBSERVATION_TOWER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  26, 18,  18, 0 },  // RIDE_TYPE_LOOPING_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_DINGHY_SLIDE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINE_TRAIN_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                1,  4,   0,  0,  0, 0 },  // RIDE_TYPE_CHAIRLIFT
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK,
-                1,  64,  0,  0,  0, 0 },  // RIDE_TYPE_MAZE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
-         RIDE_TYPE_FLAG_FLAT_RIDE,
-                1,  5,   0,  0,  0, 0 },  // RIDE_TYPE_SPIRAL_SLIDE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_NO_TEST_MODE |
-         RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                1,  10,  0,  0,  0, 0 },  // RIDE_TYPE_GO_KARTS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_LOG_FLUME
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
-         RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_RIVER_RAPIDS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                20, 180, 0,  0,  0, 0 },  // RIDE_TYPE_DODGEMS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-         RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK |
-         RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                7,  25,  0,  0,  0, 0 },  // RIDE_TYPE_SWINGING_SHIP
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
-         RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                7,  15,  0,  0,  0, 0 },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_FOOD,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_FOOD_STALL
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_FOOD,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_1D
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_DRINKS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_DRINK_STALL
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_DRINKS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_1F
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP |
-         RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SHOP
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                4,  25,  0,  0,  0, 0 },  // RIDE_TYPE_MERRY_GO_ROUND
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP |
-         RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_22
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP |
-         RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_INFORMATION_KIOSK
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_IS_BATHROOM,
-                4,  4,   0,  0,  0, 0 },  // RIDE_TYPE_TOILETS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                1,  3,   0,  0,  0, 0 },  // RIDE_TYPE_FERRIS_WHEEL
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MOTION_SIMULATOR
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_3D_CINEMA
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
-         RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_TOP_SPIN
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SPACE_RINGS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                7,  30,  30, 40, 40, 0 },  // RIDE_TYPE_REVERSE_FREEFALL_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-         RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_LIFT
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  26, 17, 68, 0 },  // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CASH_MACHINE
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                3,  6,   0,  0,  0, 0 },  // RIDE_TYPE_TWIST
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_IN_RIDE,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_HAUNTED_HOUSE
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY | RIDE_TYPE_FLAG_IN_RIDE,
-                8,  8,   0,  0,  0, 0 },  // RIDE_TYPE_FIRST_AID
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CIRCUS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_GHOST_TRAIN
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 17,  68, 0 },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_STEEL_WILD_MOUSE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_FLYING_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_VIRGINIA_REEL
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SPLASH_BOATS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINI_HELICOPTERS
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SUSPENDED_MONORAIL
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_REVERSER_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINI_GOLF
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 17,  68, 1 },  // RIDE_TYPE_GIGA_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN |
-         RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_ROTO_DROP
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-         RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_NO_TRACK |
-         RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                20, 180, 0,  0,  0, 0 },  // RIDE_TYPE_FLYING_SAUCERS
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_IN_RIDE,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CROOKED_HOUSE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MONORAIL_CYCLES
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                7,  27,  0,  0,  0, 0 },  // RIDE_TYPE_COMPACT_INVERTED_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  17,  16, -1 },  // RIDE_TYPE_WATER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-         RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                30, 50,  30, 40,  40, 0 },  // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
-         RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                7,  15,  0,  0,  0, 0 },  // RIDE_TYPE_MAGIC_CARPET
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-         RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SUBMARINE_RIDE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING |
-         RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_RIVER_RAFTS
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_FOOD,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_50
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                10, 20,  0,  0,  0, 0 },  // RIDE_TYPE_ENTERPRISE
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_DRINKS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_52
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_FOOD,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_53
-        {RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_DRINKS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_54
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_55
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 33,  30, 25,  25, 0 },  // RIDE_TYPE_INVERTED_IMPULSE_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  68, 1 },  // RIDE_TYPE_MINI_ROLLER_COASTER
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINE_RIDE
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_59
-        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
-         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                10, 31,  26, 18,  18, 0 },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+        { 10, 27,  30, 17, 17, 0 }, // RIDE_TYPE_SPIRAL_ROLLER_COASTER
+        { 7,  27,  0,  0,  0, 0 }, // RIDE_TYPE_STAND_UP_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+        { 7,  27,  0,  0,  0, 0 },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
+        { 0,  0,   0,  17,  16, -1 },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINIATURE_RAILWAY
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MONORAIL
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_BOAT_HIRE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_WOODEN_WILD_MOUSE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_STEEPLECHASE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CAR_RIDE
+        { 10, 40,  0,  0,  0, 0 },  // RIDE_TYPE_LAUNCHED_FREEFALL
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_BOBSLEIGH_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_OBSERVATION_TOWER
+        { 10, 27,  26, 18,  18, 0 },  // RIDE_TYPE_LOOPING_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_DINGHY_SLIDE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINE_TRAIN_COASTER
+        { 1,  4,   0,  0,  0, 0 },  // RIDE_TYPE_CHAIRLIFT
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+        { 1,  64,  0,  0,  0, 0 },  // RIDE_TYPE_MAZE
+        { 1,  5,   0,  0,  0, 0 },  // RIDE_TYPE_SPIRAL_SLIDE
+        { 1,  10,  0,  0,  0, 0 },  // RIDE_TYPE_GO_KARTS
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_LOG_FLUME
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_RIVER_RAPIDS
+        { 20, 180, 0,  0,  0, 0 },  // RIDE_TYPE_DODGEMS
+        { 7,  25,  0,  0,  0, 0 },  // RIDE_TYPE_SWINGING_SHIP
+        { 7,  15,  0,  0,  0, 0 },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_FOOD_STALL
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_1D
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_DRINK_STALL
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_1F
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SHOP
+        { 4,  25,  0,  0,  0, 0 },  // RIDE_TYPE_MERRY_GO_ROUND
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_22
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_INFORMATION_KIOSK
+        { 4,  4,   0,  0,  0, 0 },  // RIDE_TYPE_TOILETS
+        { 1,  3,   0,  0,  0, 0 },  // RIDE_TYPE_FERRIS_WHEEL
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MOTION_SIMULATOR
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_3D_CINEMA
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_TOP_SPIN
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SPACE_RINGS
+        { 7,  30,  30, 40, 40, 0 },  // RIDE_TYPE_REVERSE_FREEFALL_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_LIFT
+        { 10, 27,  26, 17, 68, 0 },  // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CASH_MACHINE
+        { 3,  6,   0,  0,  0, 0 },  // RIDE_TYPE_TWIST
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_HAUNTED_HOUSE
+        { 8,  8,   0,  0,  0, 0 },  // RIDE_TYPE_FIRST_AID
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CIRCUS
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_GHOST_TRAIN
+        { 10, 27,  30, 17,  68, 0 },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_STEEL_WILD_MOUSE
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_FLYING_ROLLER_COASTER
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_VIRGINIA_REEL
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SPLASH_BOATS
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINI_HELICOPTERS
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SUSPENDED_MONORAIL
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_REVERSER_ROLLER_COASTER
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINI_GOLF
+        { 10, 27,  30, 17,  68, 1 },  // RIDE_TYPE_GIGA_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_ROTO_DROP
+        { 20, 180, 0,  0,  0, 0 },  // RIDE_TYPE_FLYING_SAUCERS
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CROOKED_HOUSE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MONORAIL_CYCLES
+        { 7,  27,  0,  0,  0, 0 },  // RIDE_TYPE_COMPACT_INVERTED_COASTER
+        { 0,  0,   0,  17,  16, -1 },  // RIDE_TYPE_WATER_COASTER
+        { 30, 50,  30, 40,  40, 0 },  // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
+        { 7,  15,  0,  0,  0, 0 },  // RIDE_TYPE_MAGIC_CARPET
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_SUBMARINE_RIDE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_RIVER_RAFTS
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_50
+        { 10, 20,  0,  0,  0, 0 },  // RIDE_TYPE_ENTERPRISE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_52
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_53
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_54
+        { 10, 27,  30, 25,  25, 0 },  // RIDE_TYPE_55
+        { 10, 33,  30, 25,  25, 0 },  // RIDE_TYPE_INVERTED_IMPULSE_COASTER
+        { 0,  0,   0,  0,  68, 1 },  // RIDE_TYPE_MINI_ROLLER_COASTER
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_MINE_RIDE
+        { 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_59
+        { 10, 31,  26, 18,  18, 0 },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
 /** rct2: 0x0097CC68 */
@@ -3015,6 +2605,7 @@ static constexpr const RideTypeDescriptor DummyRTD =
         SET_FIELD(EnabledTrackPieces, 0),
         SET_FIELD(ExtraTrackPieces, 0),
         SET_FIELD(TrackPaintFunction, nullptr),
+        SET_FIELD(Flags, 0),
     };
 // clang-format on
 

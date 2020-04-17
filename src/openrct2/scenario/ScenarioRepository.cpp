@@ -468,13 +468,13 @@ private:
     scenario_index_entry* GetByFilename(const utf8* filename)
     {
         const ScenarioRepository* repo = this;
-        return (scenario_index_entry*)repo->GetByFilename(filename);
+        return const_cast<scenario_index_entry*>(repo->GetByFilename(filename));
     }
 
     scenario_index_entry* GetByPath(const utf8* path)
     {
         const ScenarioRepository* repo = this;
-        return (scenario_index_entry*)repo->GetByPath(path);
+        return const_cast<scenario_index_entry*>(repo->GetByPath(path));
     }
 
     /**
@@ -729,7 +729,7 @@ private:
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
             fs.WriteValue<uint32_t>(HighscoreFileVersion);
-            fs.WriteValue<uint32_t>((uint32_t)_highscores.size());
+            fs.WriteValue<uint32_t>(static_cast<uint32_t>(_highscores.size()));
             for (size_t i = 0; i < _highscores.size(); i++)
             {
                 const scenario_highscore_entry* highscore = _highscores[i];

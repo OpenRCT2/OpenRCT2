@@ -1228,7 +1228,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->guest_heading_to_ride_id);
-                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_BATHROOM))
+                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_TOILET))
                     bathroom_counter++;
                 break;
 

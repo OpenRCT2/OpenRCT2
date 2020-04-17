@@ -142,7 +142,7 @@ enum
  */
 void update_palette_effects()
 {
-    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
 
     if (gClimateLightningFlash == 1)
     {
@@ -211,7 +211,7 @@ void update_palette_effects()
             }
         }
         uint32_t j = gPaletteEffectFrame;
-        j = (((uint16_t)((~j / 2) * 128) * 15) >> 16);
+        j = ((static_cast<uint16_t>((~j / 2) * 128) * 15) >> 16);
         uint32_t waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
         {
@@ -262,7 +262,7 @@ void update_palette_effects()
             }
         }
 
-        j = ((uint16_t)(gPaletteEffectFrame * -960) * 3) >> 16;
+        j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
         waterId = SPR_GAME_PALETTE_4;
         g1 = gfx_get_g1_element(shade + waterId);
         if (g1 != nullptr)
@@ -333,7 +333,7 @@ void utf8_to_rct2_self(char* buffer, size_t length)
     char* dst = buffer;
     while (*src != 0 && i < length - 1)
     {
-        if (*src == (char)(uint8_t)0xFF)
+        if (*src == static_cast<char>(static_cast<uint8_t>(0xFF)))
         {
             if (i < length - 3)
             {
@@ -659,13 +659,14 @@ void* create_save_game_as_intent()
 
 void save_game_as()
 {
-    auto* intent = (Intent*)create_save_game_as_intent();
+    auto* intent = static_cast<Intent*>(create_save_game_as_intent());
     context_open_intent(intent);
     delete intent;
 }
 
 static int32_t compare_autosave_file_paths(const void* a, const void* b)
 {
+    // TODO: CAST-IMPROVEMENT-NEEDED
     return strcmp(*(char**)a, *(char**)b);
 }
 
@@ -706,13 +707,13 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         return;
     }
 
-    autosaveFiles = (utf8**)malloc(sizeof(utf8*) * autosavesCount);
+    autosaveFiles = static_cast<utf8**>(malloc(sizeof(utf8*) * autosavesCount));
 
     {
         auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            autosaveFiles[i] = (utf8*)malloc(sizeof(utf8) * MAX_PATH);
+            autosaveFiles[i] = static_cast<utf8*>(malloc(sizeof(utf8) * MAX_PATH));
             std::memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
 
             if (scanner->Next())
@@ -825,7 +826,7 @@ void game_load_or_quit_no_save_prompt()
             {
                 auto intent = Intent(WC_LOADSAVE);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)game_load_or_quit_no_save_prompt_callback);
+                intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_load_or_quit_no_save_prompt_callback));
                 context_open_intent(&intent);
             }
             break;

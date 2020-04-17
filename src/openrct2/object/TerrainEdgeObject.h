@@ -19,6 +19,7 @@ public:
     uint32_t IconImageId{};
     uint32_t BaseImageId{};
     uint32_t NumImagesLoaded{};
+    bool HasDoors{};
 
     explicit TerrainEdgeObject(const rct_object_entry& entry)
         : Object(entry)

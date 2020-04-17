@@ -869,8 +869,8 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 uint8_t map_get_lowest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), (int32_t)gMapSizeMaxXY),
-                            std::min(range.GetBottom(), (int32_t)gMapSizeMaxXY) };
+                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
+                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
 
     uint8_t min_height = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -890,8 +890,8 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
 uint8_t map_get_highest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), (int32_t)gMapSizeMaxXY),
-                            std::min(range.GetBottom(), (int32_t)gMapSizeMaxXY) };
+                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
+                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
 
     uint8_t max_height = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -1082,13 +1082,13 @@ void map_reorganise_elements()
             while (!(endElement++)->IsLastForTile())
                 ;
 
-            num_elements = (uint32_t)(endElement - startElement);
+            num_elements = static_cast<uint32_t>(endElement - startElement);
             std::memcpy(new_elements_pointer, startElement, num_elements * sizeof(TileElement));
             new_elements_pointer += num_elements;
         }
     }
 
-    num_elements = (uint32_t)(new_elements_pointer - new_tile_elements);
+    num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements);
     std::memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
     std::memset(
         gTileElements + num_elements, 0,

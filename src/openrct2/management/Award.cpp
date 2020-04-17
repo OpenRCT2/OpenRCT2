@@ -14,6 +14,7 @@
 #include "../localisation/StringIds.h"
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
 #include "NewsItem.h"
