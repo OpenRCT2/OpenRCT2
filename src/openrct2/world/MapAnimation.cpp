@@ -53,7 +53,7 @@ void map_animation_create(int32_t type, const CoordsXYZ& loc)
         if (_mapAnimations.size() < MAX_ANIMATED_OBJECTS)
         {
             // Create new animation
-            _mapAnimations.push_back({ (uint8_t)type, loc });
+            _mapAnimations.push_back({ static_cast<uint8_t>(type), loc });
         }
         else
         {

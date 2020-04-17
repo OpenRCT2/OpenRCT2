@@ -65,7 +65,7 @@ size_t Banner::FormatTextTo(void* argsV, bool addColour) const
 
 size_t Banner::FormatTextTo(void* argsV) const
 {
-    auto args = (uint8_t*)argsV;
+    auto args = static_cast<uint8_t*>(argsV);
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
         set_format_arg_on(args, 0, rct_string_id, STR_NO_ENTRY);

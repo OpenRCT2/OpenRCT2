@@ -29,7 +29,7 @@ MoneyEffect* rct_sprite::AsMoneyEffect()
     MoneyEffect* result = nullptr;
     if (IsMoneyEffect())
     {
-        result = (MoneyEffect*)this;
+        result = reinterpret_cast<MoneyEffect*>(this);
     }
     return result;
 }

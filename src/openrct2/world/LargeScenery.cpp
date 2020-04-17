@@ -101,7 +101,7 @@ rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
+        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
     }
     return result;
 }

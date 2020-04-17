@@ -126,7 +126,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
         clearZ += LAND_HEIGHT_STEP;
 
     // Check objects above grass
-    TileElement* tileElementAbove = (TileElement*)this;
+    TileElement* tileElementAbove = reinterpret_cast<TileElement*>(this);
     for (;;)
     {
         if (tileElementAbove->IsLastForTile())
