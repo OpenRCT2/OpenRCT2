@@ -135,8 +135,8 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     num_circuits = ride.num_circuits;
 
     entrance_style = ride.entrance_style;
-    max_speed = (int8_t)(ride.max_speed / 65536);
-    average_speed = (int8_t)(ride.average_speed / 65536);
+    max_speed = static_cast<int8_t>(ride.max_speed / 65536);
+    average_speed = static_cast<int8_t>(ride.average_speed / 65536);
     ride_length = ride_get_total_length(&ride) / 65536;
     max_positive_vertical_g = ride.max_positive_vertical_g / 32;
     max_negative_vertical_g = ride.max_negative_vertical_g / 32;
@@ -152,7 +152,7 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     {
         totalAirTime = 0;
     }
-    total_air_time = (uint8_t)totalAirTime;
+    total_air_time = static_cast<uint8_t>(totalAirTime);
 
     excitement = ride.ratings.excitement / 10;
     intensity = ride.ratings.intensity / 10;
@@ -408,8 +408,8 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     TrackDesignMazeElement mazeEntrance{};
     mazeEntrance.direction = entranceDirection;
     mazeEntrance.type = 8;
-    mazeEntrance.x = (int8_t)((entranceLoc.x - startLoc.x) / 32);
-    mazeEntrance.y = (int8_t)((entranceLoc.y - startLoc.y) / 32);
+    mazeEntrance.x = static_cast<int8_t>((entranceLoc.x - startLoc.x) / 32);
+    mazeEntrance.y = static_cast<int8_t>((entranceLoc.y - startLoc.y) / 32);
     maze_elements.push_back(mazeEntrance);
 
     location = ride_get_exit_location(&ride, 0);
@@ -437,8 +437,8 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     TrackDesignMazeElement mazeExit{};
     mazeExit.direction = exit_direction;
     mazeExit.type = 0x80;
-    mazeExit.x = (int8_t)((exitLoc.x - startLoc.x) / 32);
-    mazeExit.y = (int8_t)((exitLoc.y - startLoc.y) / 32);
+    mazeExit.x = static_cast<int8_t>((exitLoc.x - startLoc.x) / 32);
+    mazeExit.y = static_cast<int8_t>((exitLoc.y - startLoc.y) / 32);
     maze_elements.push_back(mazeExit);
 
     // Save global vars as they are still used by scenery????
@@ -670,7 +670,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             entryIndex = 0;
         }
 
-        rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entryIndex);
+        rct_scenery_entry* scenery_entry = static_cast<rct_scenery_entry*>(object_entry_get_chunk(entry_type, entryIndex));
         switch (entry_type)
         {
             case OBJECT_TYPE_LARGE_SCENERY:
@@ -2103,7 +2103,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
  */
 static map_backup* track_design_preview_backup_map()
 {
-    map_backup* backup = (map_backup*)malloc(sizeof(map_backup));
+    map_backup* backup = static_cast<map_backup*>(malloc(sizeof(map_backup)));
     if (backup != nullptr)
     {
         std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));

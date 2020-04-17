@@ -977,7 +977,7 @@ struct RideManager
             , _index(beginIndex)
             , _endIndex(endIndex)
         {
-            if (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr)
+            if (_index < _endIndex && _rideManager[static_cast<ride_id_t>(_index)] == nullptr)
             {
                 ++(*this);
             }
@@ -989,7 +989,7 @@ struct RideManager
             do
             {
                 _index++;
-            } while (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr);
+            } while (_index < _endIndex && _rideManager[static_cast<ride_id_t>(_index)] == nullptr);
             return *this;
         }
         Iterator operator++(int)
@@ -1008,7 +1008,7 @@ struct RideManager
         }
         Ride& operator*()
         {
-            return *_rideManager[(ride_id_t)_index];
+            return *_rideManager[static_cast<ride_id_t>(_index)];
         }
     };
 
@@ -1017,11 +1017,11 @@ struct RideManager
     Iterator end();
     Iterator begin() const
     {
-        return ((RideManager*)this)->begin();
+        return (const_cast<RideManager*>(this))->begin();
     }
     Iterator end() const
     {
-        return ((RideManager*)this)->end();
+        return (const_cast<RideManager*>(this))->end();
     }
 };
 

@@ -141,7 +141,7 @@ static int32_t tile_element_get_total_element_count(TileElement* tileElement)
             {
                 tile++;
                 elementCount++;
-            } while (tile->x_offset != (int16_t)(uint16_t)0xFFFF);
+            } while (tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)));
             return elementCount;
 
         default:
