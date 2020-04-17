@@ -9,6 +9,7 @@
 
 0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
+- Feature: [#11306] Replacing path textures do not remove additions on it. It handles the switch from queue line to standard path and vice versa.
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
 - Feature: [#11218] load_park command for console
