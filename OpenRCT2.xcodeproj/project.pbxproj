@@ -43,6 +43,9 @@
 		2ADE2F3622441960002598AF /* RideTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F352244195F002598AF /* RideTypes.h */; };
 		2ADE2F382244198B002598AF /* SpriteBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F372244198A002598AF /* SpriteBase.h */; };
 		304FE95023A2996600470197 /* SceneryScatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304FE94F23A2996600470197 /* SceneryScatter.cpp */; };
+		4C255958244A328B00CE7E45 /* CustomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25594F244A328A00CE7E45 /* CustomMenu.cpp */; };
+		4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255954244A328A00CE7E45 /* UiExtensions.cpp */; };
+		4C25595A244A328B00CE7E45 /* CustomWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255957244A328B00CE7E45 /* CustomWindow.cpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
@@ -648,8 +651,37 @@
 		2ADE2F352244195F002598AF /* RideTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideTypes.h; sourceTree = "<group>"; };
 		2ADE2F372244198A002598AF /* SpriteBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBase.h; sourceTree = "<group>"; };
 		304FE94F23A2996600470197 /* SceneryScatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryScatter.cpp; sourceTree = "<group>"; };
-		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
+		4C25594E244A328A00CE7E45 /* CustomWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWindow.h; path = scripting/CustomWindow.h; sourceTree = "<group>"; };
+		4C25594F244A328A00CE7E45 /* CustomMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomMenu.cpp; path = scripting/CustomMenu.cpp; sourceTree = "<group>"; };
+		4C255950244A328A00CE7E45 /* ScUi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScUi.hpp; path = scripting/ScUi.hpp; sourceTree = "<group>"; };
+		4C255951244A328A00CE7E45 /* ScWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScWidget.hpp; path = scripting/ScWidget.hpp; sourceTree = "<group>"; };
+		4C255952244A328A00CE7E45 /* ScWindow.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScWindow.hpp; path = scripting/ScWindow.hpp; sourceTree = "<group>"; };
+		4C255953244A328A00CE7E45 /* CustomMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomMenu.h; path = scripting/CustomMenu.h; sourceTree = "<group>"; };
+		4C255954244A328A00CE7E45 /* UiExtensions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UiExtensions.cpp; path = scripting/UiExtensions.cpp; sourceTree = "<group>"; };
+		4C255955244A328A00CE7E45 /* ScViewport.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScViewport.hpp; path = scripting/ScViewport.hpp; sourceTree = "<group>"; };
+		4C255956244A328B00CE7E45 /* UiExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UiExtensions.h; path = scripting/UiExtensions.h; sourceTree = "<group>"; };
+		4C255957244A328B00CE7E45 /* CustomWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomWindow.cpp; path = scripting/CustomWindow.cpp; sourceTree = "<group>"; };
+		4C25595C244A32E400CE7E45 /* filesystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = filesystem.hpp; path = src/thirdparty/filesystem.hpp; sourceTree = SOURCE_ROOT; };
+		4C25595D244A32E400CE7E45 /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = linenoise.hpp; path = src/thirdparty/linenoise.hpp; sourceTree = SOURCE_ROOT; };
+		4C25595F244A330700CE7E45 /* detail_stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_stack.h; path = src/thirdparty/dukglue/detail_stack.h; sourceTree = SOURCE_ROOT; };
+		4C255960244A330700CE7E45 /* register_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = register_class.h; path = src/thirdparty/dukglue/register_class.h; sourceTree = SOURCE_ROOT; };
+		4C255961244A330700CE7E45 /* dukvalue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukvalue.h; path = src/thirdparty/dukglue/dukvalue.h; sourceTree = SOURCE_ROOT; };
+		4C255962244A330700CE7E45 /* detail_primitive_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_primitive_types.h; path = src/thirdparty/dukglue/detail_primitive_types.h; sourceTree = SOURCE_ROOT; };
+		4C255963244A330700CE7E45 /* dukglue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukglue.h; path = src/thirdparty/dukglue/dukglue.h; sourceTree = SOURCE_ROOT; };
+		4C255964244A330700CE7E45 /* detail_class_proto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_class_proto.h; path = src/thirdparty/dukglue/detail_class_proto.h; sourceTree = SOURCE_ROOT; };
+		4C255965244A330700CE7E45 /* detail_traits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_traits.h; path = src/thirdparty/dukglue/detail_traits.h; sourceTree = SOURCE_ROOT; };
+		4C255966244A330700CE7E45 /* register_function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = register_function.h; path = src/thirdparty/dukglue/register_function.h; sourceTree = SOURCE_ROOT; };
+		4C255967244A330700CE7E45 /* detail_function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_function.h; path = src/thirdparty/dukglue/detail_function.h; sourceTree = SOURCE_ROOT; };
+		4C255968244A330700CE7E45 /* detail_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_types.h; path = src/thirdparty/dukglue/detail_types.h; sourceTree = SOURCE_ROOT; };
+		4C255969244A330800CE7E45 /* detail_constructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_constructor.h; path = src/thirdparty/dukglue/detail_constructor.h; sourceTree = SOURCE_ROOT; };
+		4C25596A244A330800CE7E45 /* public_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = public_util.h; path = src/thirdparty/dukglue/public_util.h; sourceTree = SOURCE_ROOT; };
+		4C25596B244A330800CE7E45 /* detail_refs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_refs.h; path = src/thirdparty/dukglue/detail_refs.h; sourceTree = SOURCE_ROOT; };
+		4C25596C244A330800CE7E45 /* register_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = register_property.h; path = src/thirdparty/dukglue/register_property.h; sourceTree = SOURCE_ROOT; };
+		4C25596D244A330800CE7E45 /* detail_method.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_method.h; path = src/thirdparty/dukglue/detail_method.h; sourceTree = SOURCE_ROOT; };
+		4C25596E244A330800CE7E45 /* dukexception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukexception.h; path = src/thirdparty/dukglue/dukexception.h; sourceTree = SOURCE_ROOT; };
+		4C25596F244A330800CE7E45 /* detail_typeinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_typeinfo.h; path = src/thirdparty/dukglue/detail_typeinfo.h; sourceTree = SOURCE_ROOT; };
+		4C255971244A342900CE7E45 /* CustomAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CustomAction.hpp; sourceTree = "<group>"; };
 		4C29DEB2218C6AE500E8707F /* RCT12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT12.cpp; sourceTree = "<group>"; };
 		4C358E5021C445F700ADE6BC /* ReplayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplayManager.cpp; sourceTree = "<group>"; };
 		4C358E5121C445F700ADE6BC /* ReplayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayManager.h; sourceTree = "<group>"; };
@@ -1825,12 +1857,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4C04D69E2056AA5C00F82EBA /* thirdparty */ = {
+		4C25594D244A326100CE7E45 /* scripting */ = {
 			isa = PBXGroup;
 			children = (
-				4C04D69F2056AA9600F82EBA /* linenoise.hpp */,
+				4C25594F244A328A00CE7E45 /* CustomMenu.cpp */,
+				4C255953244A328A00CE7E45 /* CustomMenu.h */,
+				4C255957244A328B00CE7E45 /* CustomWindow.cpp */,
+				4C25594E244A328A00CE7E45 /* CustomWindow.h */,
+				4C255950244A328A00CE7E45 /* ScUi.hpp */,
+				4C255955244A328A00CE7E45 /* ScViewport.hpp */,
+				4C255951244A328A00CE7E45 /* ScWidget.hpp */,
+				4C255952244A328A00CE7E45 /* ScWindow.hpp */,
+				4C255954244A328A00CE7E45 /* UiExtensions.cpp */,
+				4C255956244A328B00CE7E45 /* UiExtensions.h */,
 			);
-			path = thirdparty;
+			name = scripting;
+			sourceTree = "<group>";
+		};
+		4C25595B244A32A800CE7E45 /* thirdparty */ = {
+			isa = PBXGroup;
+			children = (
+				4C25595E244A32EA00CE7E45 /* dukglue */,
+				4C25595C244A32E400CE7E45 /* filesystem.hpp */,
+				4C25595D244A32E400CE7E45 /* linenoise.hpp */,
+			);
+			name = thirdparty;
+			path = openrct2;
+			sourceTree = "<group>";
+		};
+		4C25595E244A32EA00CE7E45 /* dukglue */ = {
+			isa = PBXGroup;
+			children = (
+				4C255964244A330700CE7E45 /* detail_class_proto.h */,
+				4C255969244A330800CE7E45 /* detail_constructor.h */,
+				4C255967244A330700CE7E45 /* detail_function.h */,
+				4C25596D244A330800CE7E45 /* detail_method.h */,
+				4C255962244A330700CE7E45 /* detail_primitive_types.h */,
+				4C25596B244A330800CE7E45 /* detail_refs.h */,
+				4C25595F244A330700CE7E45 /* detail_stack.h */,
+				4C255965244A330700CE7E45 /* detail_traits.h */,
+				4C25596F244A330800CE7E45 /* detail_typeinfo.h */,
+				4C255968244A330700CE7E45 /* detail_types.h */,
+				4C25596E244A330800CE7E45 /* dukexception.h */,
+				4C255963244A330700CE7E45 /* dukglue.h */,
+				4C255961244A330700CE7E45 /* dukvalue.h */,
+				4C25596A244A330800CE7E45 /* public_util.h */,
+				4C255960244A330700CE7E45 /* register_class.h */,
+				4C255966244A330700CE7E45 /* register_function.h */,
+				4C25596C244A330800CE7E45 /* register_property.h */,
+			);
+			name = dukglue;
 			sourceTree = "<group>";
 		};
 		933CBDB820CB1B3F00134678 /* title */ = {
@@ -2111,6 +2187,7 @@
 				932A211722D73CF900C57EDB /* BannerSetStyleAction.hpp */,
 				932A211622D73CF900C57EDB /* ClearAction.hpp */,
 				932A20DE22D73CF000C57EDB /* ClimateSetAction.hpp */,
+				4C255971244A342900CE7E45 /* CustomAction.hpp */,
 				932A20F722D73CF300C57EDB /* FootpathPlaceAction.hpp */,
 				932A20DB22D73CF000C57EDB /* FootpathPlaceFromTrackAction.hpp */,
 				932A20F322D73CF300C57EDB /* FootpathRemoveAction.hpp */,
@@ -2225,6 +2302,7 @@
 		D41B72431C21015A0080A7B9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4C25595B244A32A800CE7E45 /* thirdparty */,
 				F76C85801EC4E82600FA49E2 /* openrct2-ui */,
 				F76C857C1EC4E80E00FA49E2 /* openrct2-cli */,
 				F76C83551EC4E7CC00FA49E2 /* libopenrct2 */,
@@ -2527,7 +2605,6 @@
 				F76C846C1EC4E7CC00FA49E2 /* rct12 */,
 				F76C84831EC4E7CC00FA49E2 /* ride */,
 				F76C84F31EC4E7CD00FA49E2 /* scenario */,
-				4C04D69E2056AA5C00F82EBA /* thirdparty */,
 				F76C84FB1EC4E7CD00FA49E2 /* title */,
 				F76C85041EC4E7CD00FA49E2 /* ui */,
 				F76C85061EC4E7CD00FA49E2 /* util */,
@@ -3295,6 +3372,7 @@
 				F76C858D1EC4E82600FA49E2 /* drawing */,
 				F7CB86451EEDA1200030C877 /* input */,
 				C68313CF1FDB4F4C006DB3D8 /* interface */,
+				4C25594D244A326100CE7E45 /* scripting */,
 				933CBDB820CB1B3F00134678 /* title */,
 				F7CB86401EEDA0E20030C877 /* windows */,
 				F76C858A1EC4E82600FA49E2 /* CursorData.cpp */,
@@ -3826,6 +3904,7 @@
 				9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
 				933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */,
+				4C255958244A328B00CE7E45 /* CustomMenu.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
@@ -3890,6 +3969,7 @@
 				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
 				304FE95023A2996600470197 /* SceneryScatter.cpp in Sources */,
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
+				4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */,
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
 				01C6F0C922FD51FC0057E2F7 /* T6Importer.cpp in Sources */,
 				4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */,
@@ -3921,6 +4001,7 @@
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
 				9308DA01209908090079EE96 /* Surface.cpp in Sources */,
 				933CBDBF20CB1BCA00134678 /* Window.cpp in Sources */,
+				4C25595A244A328B00CE7E45 /* CustomWindow.cpp in Sources */,
 				C68878C320289B710084B384 /* DrawRectShader.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
