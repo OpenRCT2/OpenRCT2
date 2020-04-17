@@ -3677,13 +3677,10 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :{SMALLFONT}{BLACK}If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
-<<<<<<< HEAD
 STR_6364    :{RED}{COMMA16} person has died in an accident on {STRINGID}
 STR_6365    :Ride casualties
 STR_6366    :Stuck or stalled vehicles
-=======
-STR_6364    :{WINDOW_COLOUR_2}Animation frame:
->>>>>>> Add animation frame spinner for wall elements
+STR_6367    :{WINDOW_COLOUR_2}Animation frame:
 
 #############
 # Scenarios #
