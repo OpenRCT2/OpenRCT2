@@ -15,6 +15,7 @@
 #include <openrct2/object/Object.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Station.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Location.hpp>
@@ -187,9 +188,9 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
     return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
-bool ride_type_has_flag(int rideType, uint32_t flag)
+bool ride_type_has_flag(int rideType, uint64_t flag)
 {
-    return (RideProperties[rideType].flags & flag) != 0;
+    return (RideTypeDescriptors[rideType].Flags & flag) != 0;
 }
 
 int16_t get_height_marker_offset()

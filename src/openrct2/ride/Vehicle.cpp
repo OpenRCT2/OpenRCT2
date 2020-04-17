@@ -3955,7 +3955,7 @@ static void vehicle_update_arriving(Vehicle* vehicle)
             goto loc_6D8E36;
         }
 
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS && ride->mode != RIDE_MODE_SHUTTLE
+        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS && ride->mode != RIDE_MODE_SHUTTLE
             && ride->mode != RIDE_MODE_POWERED_LAUNCH)
         {
             vehicle->update_flags |= VEHICLE_UPDATE_FLAG_12;
@@ -8040,7 +8040,7 @@ loc_6DB358:
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-        if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -8432,7 +8432,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
 
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -8856,7 +8856,7 @@ loc_6DC476:
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
-        if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -9102,7 +9102,7 @@ loc_6DCA9A:
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
-        if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
             {

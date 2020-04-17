@@ -116,7 +116,7 @@ public:
 
         res->GroundFlags = 0;
 
-        uint32_t rideTypeFlags = RideProperties[ride->type].flags;
+        uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
 
         if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TRACK_ELEM_END_STATION)
         {
@@ -431,7 +431,7 @@ public:
 
         res->GroundFlags = 0;
 
-        uint32_t rideTypeFlags = RideProperties[ride->type].flags;
+        uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
 
         const uint8_t(*wallEdges)[16];
         if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE)

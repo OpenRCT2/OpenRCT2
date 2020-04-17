@@ -1444,7 +1444,7 @@ static void window_ride_disable_tabs(rct_window* w)
         && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
         && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS)
         && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
-        && !(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT))
+        && !(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
         disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
     }
@@ -1452,7 +1452,7 @@ static void window_ride_disable_tabs(rct_window* w)
     if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_SHOP))
         disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
 
-    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MUSIC))
+    if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
         disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
     }
@@ -2796,7 +2796,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     if (ride->type == RIDE_TYPE_MINI_GOLF)
         return 0;
 
-    if ((RideData4[ride->type].flags & RIDE_TYPE_FLAG4_SINGLE_SESSION)
+    if ((RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
         && vehicle->status <= VEHICLE_STATUS_UNLOADING_PASSENGERS)
     {
         stringId = SingleSessionVehicleStatusNames[vehicle->status];
@@ -3644,7 +3644,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         | (1ULL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
 
     // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
-    bool hasAlternativeType = (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) != 0;
+    bool hasAlternativeType = (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE) != 0;
     if (track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)
         || (hasAlternativeType
             && track_piece_is_available_for_ride_type(RideData4[ride->type].alternate_type, TRACK_LIFT_HILL)))
@@ -4855,7 +4855,7 @@ static void window_ride_colour_invalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WWT_EMPTY;
 
     // Entrance style
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT)
+    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT)
     {
         window_ride_colour_widgets[WIDX_ENTRANCE_PREVIEW].type = WWT_SPINNER;
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WWT_DROPDOWN;

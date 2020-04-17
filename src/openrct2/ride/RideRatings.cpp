@@ -969,7 +969,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME)
+    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         uint16_t totalAirTime = ride->total_air_time;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
@@ -988,7 +988,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
         }
     }
 #else
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME)
+    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         int32_t excitementModifier;
         int32_t nauseaModifier;

@@ -87,7 +87,7 @@ static void setup_track_designer_objects()
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER)
+                    if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER)
                     {
                         *selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
                         break;

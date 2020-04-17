@@ -164,7 +164,7 @@ rct_window* window_new_campaign_open(int16_t campaignType)
             if (!ride_type_has_flag(
                     ride.type,
                     RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
-                        | RIDE_TYPE_FLAG_IS_BATHROOM))
+                        | RIDE_TYPE_FLAG_IS_TOILET))
             {
                 window_new_campaign_rides.push_back(ride.id);
             }
