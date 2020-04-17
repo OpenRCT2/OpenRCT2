@@ -3083,11 +3083,22 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         coord1.y = elem.ToTileCentre().y;
         coord1.z = elem.ToTileCentre().z;
 
+        CoordsXYZ tileCoord;
+        tileCoord.x = coord1.x / COORDS_XY_STEP;
+        tileCoord.y = coord1.y / COORDS_XY_STEP;
+        tileCoord.z = coord1.z;
+
         //check if either peep is on the edge of the map or anywhere else
         bool outside = false;
-        if (newLoc.x <= 32 || newLoc.y <= 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
-            //apply same old behaviour
-            outside = true;
+        
+        if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits - 1) / COORDS_XY_STEP || tileCoord.y == 0
+            || tileCoord.y == (gMapSizeUnits - 1) / COORDS_XY_STEP)
+        {
+            if (newLoc.x <= 32 || newLoc.y <= 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
+                // apply same old behaviour
+                outside = true;
+        }
+        
         else if (newLoc.ToTileCentre().x == coord1.x && newLoc.ToTileCentre().y == coord1.y && height == coord1.z && direction == elem.direction)
             //the moment the peep enter the tile with the same direction, it disappears
             outside = true;
