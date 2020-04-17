@@ -3068,21 +3068,40 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     auto newLoc = *loc;
     CoordsXY truncatedNewLoc = newLoc.ToTileStart();
+    int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
     if (truncatedNewLoc == CoordsXY{ NextLoc })
     {
-        int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
         MoveTo(newLoc.x, newLoc.y, height);
         return;
     }
 
-    if (newLoc.x < 32 || newLoc.y < 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
+    //check if peep is on peep spawn location
+    for (auto& elem : gPeepSpawns)
     {
-        if (outside_of_park == 1)
+        CoordsXYZ coord1, coord2;
+        coord1.x = elem.ToTileCentre().x;
+        coord1.y = elem.ToTileCentre().y;
+        coord1.z = elem.ToTileCentre().z;
+
+        //check if either peep is on the edge of the map or anywhere else
+        bool outside = false;
+        if (newLoc.x <= 32 || newLoc.y <= 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
+            //apply same old behaviour
+            outside = true;
+        else if (newLoc.ToTileCentre().x == coord1.x && newLoc.ToTileCentre().y == coord1.y && height == coord1.z && direction == elem.direction)
+            //the moment the peep enter the tile with the same direction, it disappears
+            outside = true;
+
+        //calling the routine to make peep disappear
+        if (outside)
         {
-            pathing_result |= PATHING_OUTSIDE_PARK;
+            if (outside_of_park)
+                pathing_result |= PATHING_OUTSIDE_PARK;
+            peep_return_to_centre_of_tile(this);
+            return;
         }
-        peep_return_to_centre_of_tile(this);
-        return;
+        
+            
     }
 
     TileElement* tileElement = map_get_first_element_at(newLoc);
@@ -3124,7 +3143,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     if (type == PEEP_TYPE_STAFF || (GetNextIsSurface()))
     {
-        int16_t height = abs(tile_element_height(newLoc) - z);
+        height = abs(tile_element_height(newLoc) - z);
         if (height <= 3 || (type == PEEP_TYPE_STAFF && height <= 32))
         {
             interaction_ride_index = 0xFF;

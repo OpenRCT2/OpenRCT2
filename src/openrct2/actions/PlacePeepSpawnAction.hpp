@@ -62,12 +62,12 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
-        if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
+        /*if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
             || _location.y >= (gMapSizeUnits - 16))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
-        }
+        }*/
 
         // Verify footpath exists at location, and retrieve coordinates
         auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });

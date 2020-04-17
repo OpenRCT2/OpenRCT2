@@ -1422,6 +1422,165 @@ int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t 
     return footpath_is_connected_to_map_edge_recurse(footpathPos, direction, flags, 0, 0, 16);
 }
 
+//check if connected to a spawn point
+static int32_t footpath_is_connected_to_map_peep_spawn_location_recurse(
+    const CoordsXYZ& footpathPos, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
+    int32_t junctionTolerance)
+{
+    TileElement* tileElement;
+    int32_t edges, slopeDirection;
+
+    auto targetPos = CoordsXYZ{ CoordsXY{ footpathPos } + CoordsDirectionDelta[direction], footpathPos.z };
+    if (++level > 250)
+        return FOOTPATH_SEARCH_TOO_COMPLEX;
+
+    // Check if we are at edge of map
+    /*if (targetPos.x < COORDS_XY_STEP || targetPos.y < COORDS_XY_STEP)
+        return FOOTPATH_SEARCH_SUCCESS;
+    if (targetPos.x >= gMapSizeUnits || targetPos.y >= gMapSizeUnits)
+        return FOOTPATH_SEARCH_SUCCESS;*/
+
+    //check if there is a spawn point at location
+    for (auto& elem : gPeepSpawns)
+    {
+
+        CoordsXYZ coord;
+        coord.x = elem.ToTileStart().x;
+        coord.y = elem.ToTileStart().y;
+        coord.z = elem.ToTileStart().z;
+        if (coord == targetPos)
+            return FOOTPATH_SEARCH_SUCCESS;
+    }
+
+    tileElement = map_get_first_element_at(targetPos);
+
+    
+    
+    if (tileElement == nullptr)
+        return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
+    do
+    {
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+            continue;
+
+        if (tileElement->AsPath()->IsSloped() && (slopeDirection = tileElement->AsPath()->GetSlopeDirection()) != direction)
+        {
+            if (direction_reverse(slopeDirection) != direction)
+                continue;
+            if (tileElement->GetBaseZ() + PATH_HEIGHT_STEP != targetPos.z)
+                continue;
+        }
+        else if (tileElement->GetBaseZ() != targetPos.z)
+        {
+            continue;
+        }
+
+        if (!(flags & (1 << 0)))
+        {
+            if (tileElement->AsPath()->IsQueue())
+            {
+                continue;
+            }
+        }
+
+        if (flags & (1 << 5))
+        {
+            footpath_fix_ownership(targetPos);
+        }
+        edges = tileElement->AsPath()->GetEdges();
+        direction = direction_reverse(direction);
+        if (!(flags & (1 << 7)))
+        {
+            if (tileElement[1].GetType() == TILE_ELEMENT_TYPE_BANNER)
+            {
+                for (int32_t i = 1; i < 4; i++)
+                {
+                    if ((&tileElement[i - 1])->IsLastForTile())
+                        break;
+                    if (tileElement[i].GetType() != TILE_ELEMENT_TYPE_BANNER)
+                        break;
+                    edges &= tileElement[i].AsBanner()->GetAllowedEdges();
+                }
+            }
+            if (tileElement[2].GetType() == TILE_ELEMENT_TYPE_BANNER && tileElement[1].GetType() != TILE_ELEMENT_TYPE_PATH)
+            {
+                for (int32_t i = 1; i < 6; i++)
+                {
+                    if ((&tileElement[i - 1])->IsLastForTile())
+                        break;
+                    if (tileElement[i].GetType() != TILE_ELEMENT_TYPE_BANNER)
+                        break;
+                    edges &= tileElement[i].AsBanner()->GetAllowedEdges();
+                }
+            }
+        }
+        goto searchFromFootpath;
+    } while (!(tileElement++)->IsLastForTile());
+    return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
+
+searchFromFootpath:
+    // Exclude direction we came from
+    targetPos.z = tileElement->GetBaseZ();
+    edges &= ~(1 << direction);
+
+    // Find next direction to go
+    int32_t newDirection{};
+    if (!get_next_direction(edges, &newDirection))
+    {
+        return FOOTPATH_SEARCH_INCOMPLETE;
+    }
+    direction = newDirection;
+
+    edges &= ~(1 << direction);
+    if (edges == 0)
+    {
+        // Only possible direction to go
+        if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
+        {
+            targetPos.z += PATH_HEIGHT_STEP;
+        }
+        return footpath_is_connected_to_map_peep_spawn_location_recurse(
+            targetPos, direction, flags, level, distanceFromJunction + 1, junctionTolerance);
+    }
+    else
+    {
+        // We have reached a junction
+        if (distanceFromJunction != 0)
+        {
+            junctionTolerance--;
+        }
+        junctionTolerance--;
+        if (junctionTolerance < 0)
+        {
+            return FOOTPATH_SEARCH_TOO_COMPLEX;
+        }
+
+        do
+        {
+            direction = newDirection;
+            edges &= ~(1 << direction);
+            if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
+            {
+                targetPos.z += PATH_HEIGHT_STEP;
+            }
+            int32_t result = footpath_is_connected_to_map_peep_spawn_location_recurse(
+                targetPos, direction, flags, level, 0, junctionTolerance);
+            if (result == FOOTPATH_SEARCH_SUCCESS)
+            {
+                return result;
+            }
+        } while (get_next_direction(edges, &newDirection));
+
+        return FOOTPATH_SEARCH_INCOMPLETE;
+    }
+}
+
+int32_t footpath_is_connected_to_map_peep_spawn_location(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags)
+{
+    flags |= (1 << 0);
+    return footpath_is_connected_to_map_peep_spawn_location_recurse(footpathPos, direction, flags, 0, 0, 16);
+}
+
 bool PathElement::IsSloped() const
 {
     return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED) != 0;
