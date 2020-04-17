@@ -5658,8 +5658,15 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 
 bool ride_type_has_flag(int32_t rideType, uint64_t flag)
 {
-    Guard::Assert(rideType < static_cast<int32_t>(std::size(RideTypeDescriptors)));
-    return (RideTypeDescriptors[rideType].Flags & flag) != 0;
+    if (rideType < static_cast<int32_t>(std::size(RideTypeDescriptors)))
+    {
+        return (RideTypeDescriptors[rideType].Flags & flag) != 0;
+    }
+    else
+    {
+        Guard::Assert(false);
+        return false;
+    }
 }
 
 /*
