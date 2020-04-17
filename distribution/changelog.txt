@@ -1,4 +1,4 @@
-0.2.5+ (in development)
+0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
