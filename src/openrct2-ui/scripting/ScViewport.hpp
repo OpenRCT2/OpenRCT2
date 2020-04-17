@@ -133,7 +133,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport();
             if (viewport != nullptr)
             {
-                return viewport->zoom;
+                return static_cast<int8_t>(viewport->zoom);
             }
             return 0;
         }

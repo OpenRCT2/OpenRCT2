@@ -969,7 +969,7 @@ namespace OpenRCT2::Scripting
                     if (numElements > currentNumElements)
                     {
                         // Allocate space for the extra tile elements (inefficient but works)
-                        auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0);
+                        auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
                         auto numToInsert = numElements - currentNumElements;
                         for (size_t i = 0; i < numToInsert; i++)
                         {
@@ -1017,7 +1017,7 @@ namespace OpenRCT2::Scripting
             {
                 std::vector<TileElement> data(first, first + origNumElements);
 
-                auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0);
+                auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
                 auto newElement = tile_element_insert(pos, 0);
                 if (newElement == nullptr)
                 {

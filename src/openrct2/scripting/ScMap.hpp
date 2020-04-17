@@ -109,7 +109,7 @@ namespace OpenRCT2::Scripting
             }
             if (type == "car")
             {
-                targetList = SPRITE_LIST_VEHICLE_HEAD;
+                targetList = SPRITE_LIST_TRAIN_HEAD;
             }
             else if (type == "litter")
             {
@@ -147,7 +147,7 @@ namespace OpenRCT2::Scripting
                         {
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScPeep>(spriteId)));
                         }
-                        else if (targetList == SPRITE_LIST_VEHICLE_HEAD)
+                        else if (targetList == SPRITE_LIST_TRAIN_HEAD)
                         {
                             auto carId = spriteId;
                             while (carId != SPRITE_INDEX_NULL)
