@@ -2441,7 +2441,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
             return true;
         }
 
-        uint8_t stationDirection = 0;
+        Direction stationDirection = 0;
         track_begin_end trackBeginEnd;
         while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd))
         {

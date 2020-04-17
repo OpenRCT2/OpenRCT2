@@ -153,7 +153,7 @@ public:
                 uint32_t finalPixelOffset = width + pixelOffset;
 
                 uint32_t xPixelOffset = pixelOffset;
-                xPixelOffset += ((uint8_t)(patternX - patternStartXOffset)) % patternXSpace;
+                xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
 
                 uint8_t patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
@@ -204,7 +204,7 @@ public:
         , _drawingContext(new OpenGLDrawingContext(this))
         , _rainDrawer(_drawingContext)
     {
-        _window = (SDL_Window*)_uiContext->GetWindow();
+        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
 #    ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
@@ -623,9 +623,9 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
         return;
     }
 
-    if (_dpi->zoom_level != 0)
+    if (_dpi->zoom_level > 0)
     {
-        if (g1Element->flags & (1 << 4))
+        if (g1Element->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
             rct_drawpixelinfo zoomedDPI;
             zoomedDPI.bits = _dpi->bits;
@@ -639,19 +639,21 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
             DrawSprite((image & 0xFFF80000) | (g1Id - g1Element->zoomed_offset), x >> 1, y >> 1, tertiaryColour);
             return;
         }
-        if (g1Element->flags & (1 << 5))
+        if (g1Element->flags & G1_FLAG_NO_ZOOM_DRAW)
         {
             return;
         }
     }
 
-    uint8_t zoomLevel = (1 << _dpi->zoom_level);
-
     int32_t left = x + g1Element->x_offset;
     int32_t top = y + g1Element->y_offset;
 
-    int32_t zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
-    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION)
+    int32_t zoom_mask;
+    if (_dpi->zoom_level >= 0)
+        zoom_mask = 0xFFFFFFFF * _dpi->zoom_level;
+    else
+        zoom_mask = 0xFFFFFFFF;
+    if (_dpi->zoom_level != 0 && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
     {
         top -= ~zoom_mask;
     }
@@ -667,7 +669,7 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     int32_t right = left + g1Element->width;
     int32_t bottom = top + g1Element->height;
 
-    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION)
+    if (_dpi->zoom_level != 0 && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
     {
         bottom += top & ~zoom_mask;
     }
@@ -686,10 +688,10 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     right -= _dpi->x;
     bottom -= _dpi->y;
 
-    left /= zoomLevel;
-    top /= zoomLevel;
-    right /= zoomLevel;
-    bottom /= zoomLevel;
+    left = left / _dpi->zoom_level;
+    top = top / _dpi->zoom_level;
+    right = right / _dpi->zoom_level;
+    bottom = bottom / _dpi->zoom_level;
 
     left += _clipLeft;
     top += _clipTop;
@@ -774,8 +776,6 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     const auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
     const auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
-    uint8_t zoomLevel = (1 << _dpi->zoom_level);
-
     int32_t drawOffsetX = g1ElementMask->x_offset;
     int32_t drawOffsetY = g1ElementMask->y_offset;
     int32_t drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
@@ -800,10 +800,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     right -= _dpi->x;
     bottom -= _dpi->y;
 
-    left /= zoomLevel;
-    top /= zoomLevel;
-    right /= zoomLevel;
-    bottom /= zoomLevel;
+    left = left * _dpi->zoom_level;
+    top = top * _dpi->zoom_level;
+    right = right * _dpi->zoom_level;
+    bottom = bottom * _dpi->zoom_level;
 
     left += _clipLeft;
     top += _clipTop;
@@ -839,8 +839,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y,
 
     int32_t drawOffsetX = g1Element->x_offset;
     int32_t drawOffsetY = g1Element->y_offset;
-    int32_t drawWidth = (uint16_t)g1Element->width;
-    int32_t drawHeight = (uint16_t)g1Element->height;
+    int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
+    int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
 
     int32_t left = x + drawOffsetX;
     int32_t top = y + drawOffsetY;
@@ -887,8 +887,8 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8
 
     int32_t drawOffsetX = g1Element->x_offset;
     int32_t drawOffsetY = g1Element->y_offset;
-    int32_t drawWidth = (uint16_t)g1Element->width;
-    int32_t drawHeight = (uint16_t)g1Element->height;
+    int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
+    int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
 
     int32_t left = x + drawOffsetX;
     int32_t top = y + drawOffsetY;
@@ -1003,17 +1003,16 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
     rct_drawpixelinfo* screenDPI = _engine->GetDPI();
 #    ifndef NDEBUG
-    size_t bitsSize = (size_t)screenDPI->height * (size_t)(screenDPI->width + screenDPI->pitch);
+    size_t bitsSize = static_cast<size_t>(screenDPI->height) * static_cast<size_t>(screenDPI->width + screenDPI->pitch);
 #    endif
-    size_t bitsOffset = (size_t)(dpi->bits - screenDPI->bits);
+    size_t bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
 
     assert(bitsOffset < bitsSize);
 
-    _clipLeft = (int32_t)(bitsOffset % (screenDPI->width + screenDPI->pitch));
-    _clipTop = (int32_t)(bitsOffset / (screenDPI->width + screenDPI->pitch));
-
-    _clipRight = _clipLeft + (dpi->width >> dpi->zoom_level);
-    _clipBottom = _clipTop + (dpi->height >> dpi->zoom_level);
+    _clipLeft = static_cast<int32_t>(bitsOffset % (screenDPI->width + screenDPI->pitch));
+    _clipTop = static_cast<int32_t>(bitsOffset / (screenDPI->width + screenDPI->pitch));
+    _clipRight = _clipLeft + (dpi->width / dpi->zoom_level);
+    _clipBottom = _clipTop + (dpi->height / dpi->zoom_level);
     _offsetX = _clipLeft - dpi->x;
     _offsetY = _clipTop - dpi->y;
 

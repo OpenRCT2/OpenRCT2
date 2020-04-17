@@ -91,6 +91,7 @@ static bool _trackDesignPlaceStateEntranceExitPlaced = false;
 bool _trackDesignPlaceStateSceneryUnavailable = false;
 static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
+static bool _trackDesignPlaceIsReplay = false;
 
 static map_backup* track_design_preview_backup_map();
 
@@ -255,7 +256,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     // First entrances, second exits
     for (int32_t i = 0; i < 2; i++)
     {
-        for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
+        for (StationIndex station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
         {
             z = ride.stations[station_index].GetBaseZ();
 
@@ -1036,7 +1037,10 @@ static bool TrackDesignPlaceSceneryElement(
                 {
                     flags = GAME_COMMAND_FLAG_PATH_SCENERY;
                 }
-
+                if (_trackDesignPlaceIsReplay)
+                {
+                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                }
                 gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
                 auto smallSceneryPlace = SmallSceneryPlaceAction(
@@ -1081,12 +1085,15 @@ static bool TrackDesignPlaceSceneryElement(
                 {
                     flags = GAME_COMMAND_FLAG_PATH_SCENERY;
                 }
-
+                if (_trackDesignPlaceIsReplay)
+                {
+                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                }
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(
                     { mapCoord.x, mapCoord.y, z, rotation }, entry_index, scenery.primary_colour, scenery.secondary_colour);
                 sceneryPlaceAction.SetFlags(flags);
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::Execute(&sceneryPlaceAction)
-                                                           : GameActions::Query(&sceneryPlaceAction);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
+                                                           : GameActions::QueryNested(&sceneryPlaceAction);
 
                 cost = res->Cost;
                 break;
@@ -1121,7 +1128,10 @@ static bool TrackDesignPlaceSceneryElement(
                 {
                     flags = 0;
                 }
-
+                if (_trackDesignPlaceIsReplay)
+                {
+                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                }
                 auto wallPlaceAction = WallPlaceAction(
                     entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
                     (scenery.flags & 0xFC) >> 2);
@@ -1169,7 +1179,10 @@ static bool TrackDesignPlaceSceneryElement(
                     {
                         flags = 0;
                     }
-
+                    if (_trackDesignPlaceIsReplay)
+                    {
+                        flags |= GAME_COMMAND_FLAG_REPLAY;
+                    }
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
@@ -1207,7 +1220,10 @@ static bool TrackDesignPlaceSceneryElement(
                         flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                             | GAME_COMMAND_FLAG_GHOST;
                     }
-
+                    if (_trackDesignPlaceIsReplay)
+                    {
+                        flags |= GAME_COMMAND_FLAG_REPLAY;
+                    }
                     footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
                     footpath_update_queue_chains();
                     return true;
@@ -1337,6 +1353,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
+                        if (_trackDesignPlaceIsReplay)
+                        {
+                            flags |= GAME_COMMAND_FLAG_REPLAY;
+                        }
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
@@ -1372,6 +1392,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
+                        if (_trackDesignPlaceIsReplay)
+                        {
+                            flags |= GAME_COMMAND_FLAG_REPLAY;
+                        }
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
@@ -1402,7 +1426,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                     {
                         flags = GAME_COMMAND_FLAG_APPLY;
                     }
-
+                    if (_trackDesignPlaceIsReplay)
+                    {
+                        flags |= GAME_COMMAND_FLAG_REPLAY;
+                    }
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
                     auto mazePlace = MazePlaceTrackAction({ mapCoord, z }, ride->id, maze_entry);
@@ -1560,11 +1587,14 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 {
                     flags = 0;
                 }
-
+                if (_trackDesignPlaceIsReplay)
+                {
+                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                }
                 gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 auto trackPlaceAction = TrackPlaceAction(
                     _currentRideIndex, trackType, { x, y, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed, trackColour,
-                    seatRotation, liftHillAndAlternativeState);
+                    seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)
@@ -1606,7 +1636,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         }
                     }
 
-                    uint8_t waterZ = surfaceElement->GetWaterHeight();
+                    auto waterZ = surfaceElement->GetWaterHeight();
                     if (waterZ > 0 && waterZ > surfaceZ)
                     {
                         surfaceZ = waterZ;
@@ -1685,7 +1715,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                             continue;
                         }
 
-                        int32_t stationIndex = tile_element->AsTrack()->GetStationIndex();
+                        auto stationIndex = tile_element->AsTrack()->GetStationIndex();
                         uint8_t flags = GAME_COMMAND_FLAG_APPLY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
@@ -1701,7 +1731,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         {
                             flags = 0;
                         }
-
+                        if (_trackDesignPlaceIsReplay)
+                        {
+                            flags |= GAME_COMMAND_FLAG_REPLAY;
+                        }
                         gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
                             { x, y }, rotation, ride->id, stationIndex, entrance.isExit);
@@ -1772,6 +1805,8 @@ int32_t place_virtual_track(
     _trackDesignPlaceStateSceneryUnavailable = false;
     _trackDesignPlaceStateHasScenery = false;
 
+    _trackDesignPlaceIsReplay = ptdOperation & PTD_OPERATION_FLAG_IS_REPLAY;
+    ptdOperation &= ~PTD_OPERATION_FLAG_IS_REPLAY;
     _trackDesignPlaceOperation = ptdOperation;
     if (gTrackDesignSceneryToggle)
     {

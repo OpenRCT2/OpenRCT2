@@ -70,12 +70,12 @@ static uint32_t LightListCurrentCountFront;
 static int16_t _current_view_x_front = 0;
 static int16_t _current_view_y_front = 0;
 static uint8_t _current_view_rotation_front = 0;
-static uint8_t _current_view_zoom_front = 0;
+static ZoomLevel _current_view_zoom_front = 0;
 static int16_t _current_view_x_back = 0;
 static int16_t _current_view_y_back = 0;
 static uint8_t _current_view_rotation_back = 0;
-static uint8_t _current_view_zoom_back = 0;
-static uint8_t _current_view_zoom_back_delay = 0;
+static ZoomLevel _current_view_zoom_back = 0;
+static ZoomLevel _current_view_zoom_back_delay = 0;
 
 static rct_palette gPalette_light;
 
@@ -202,8 +202,8 @@ void lightfx_prepare_light_list()
         int32_t posOnScreenX = entry->viewCoords.x - _current_view_x_front;
         int32_t posOnScreenY = entry->viewCoords.y - _current_view_y_front;
 
-        posOnScreenX >>= _current_view_zoom_front;
-        posOnScreenY >>= _current_view_zoom_front;
+        posOnScreenX = posOnScreenX / _current_view_zoom_front;
+        posOnScreenY = posOnScreenY / _current_view_zoom_front;
 
         if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.width + 128)
             || (posOnScreenY > _pixelInfo.height + 128))
@@ -263,7 +263,7 @@ void lightfx_prepare_light_list()
                 break;
         }
 
-        int32_t mapFrontDiv = 1 << _current_view_zoom_front;
+        int32_t mapFrontDiv = 1 * _current_view_zoom_front;
 
         // clang-format off
         static int16_t offsetPattern[26] = {
@@ -397,17 +397,18 @@ void lightfx_prepare_light_list()
             entry->lightIntensity = std::min<uint32_t>(
                 0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
         }
-        entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
+        entry->lightIntensity = std::max<uint32_t>(
+            0x00, entry->lightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5);
 
         if (_current_view_zoom_front > 0)
         {
-            if ((entry->lightType & 0x3) < _current_view_zoom_front)
+            if ((entry->lightType & 0x3) < static_cast<int8_t>(_current_view_zoom_front))
             {
                 entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
                 continue;
             }
 
-            entry->lightType -= _current_view_zoom_front;
+            entry->lightType -= static_cast<int8_t>(_current_view_zoom_front);
         }
     }
 }
@@ -484,8 +485,8 @@ void lightfx_render_lights_to_frontbuffer()
         {
             inRectCentreX -= _current_view_x_front;
             inRectCentreY -= _current_view_y_front;
-            inRectCentreX >>= _current_view_zoom_front;
-            inRectCentreY >>= _current_view_zoom_front;
+            inRectCentreX = inRectCentreX / _current_view_zoom_front;
+            inRectCentreY = inRectCentreY / _current_view_zoom_front;
         }
 
         switch (entry->lightType)

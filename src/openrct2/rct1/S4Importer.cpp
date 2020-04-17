@@ -51,6 +51,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "RCT1.h"
 #include "Tables.h"
 
@@ -919,7 +920,7 @@ private:
         }
         dst->testing_flags = src->testing_flags;
         dst->current_test_segment = src->current_test_segment;
-        dst->current_test_station = 0xFF;
+        dst->current_test_station = STATION_INDEX_NULL;
         dst->average_speed_test_timeout = src->average_speed_test_timeout;
         dst->slide_in_use = src->slide_in_use;
         dst->slide_peep_t_shirt_colour = RCT1::GetColour(src->slide_peep_t_shirt_colour);
@@ -1123,7 +1124,7 @@ private:
                     // If vehicle is the first car on a train add to train list
                     if (vehicle->IsHead())
                     {
-                        move_sprite_to_list(vehicle, SPRITE_LIST_VEHICLE_HEAD);
+                        move_sprite_to_list(vehicle, SPRITE_LIST_TRAIN_HEAD);
                     }
                 }
             }
@@ -1193,8 +1194,8 @@ private:
         dst->bank_rotation = src->bank_rotation;
 
         // Seat rotation was not in RCT1
-        dst->target_seat_rotation = 4;
-        dst->seat_rotation = 4;
+        dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;
+        dst->seat_rotation = DEFAULT_SEAT_ROTATION;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
@@ -1221,14 +1222,15 @@ private:
         dst->TrackSubposition = src->TrackSubposition;
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        dst->track_type = src->track_type;
-        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE)
+        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != VEHICLE_STATUS_TRAVELLING_BOAT)
         {
             dst->BoatLocation.setNull();
+            dst->track_type = src->track_type;
         }
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+            dst->track_type = 0;
         }
         dst->track_progress = src->track_progress;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
@@ -1547,8 +1549,6 @@ private:
         }
 
         dst->item_standard_flags = src->item_standard_flags;
-
-        peep_update_name_sort(dst);
 
         if (dst->type == PEEP_TYPE_GUEST)
         {
@@ -1993,7 +1993,7 @@ private:
 
         // All saved in "flags"
         dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
-        dst->SetGhost(src->IsGhost());
+        // Skipping IsGhost, which appears to use a different flag in RCT1.
         dst->SetLastForTile(src->IsLastForTile());
 
         dst->SetBaseZ(src->base_height * RCT1_COORDS_Z_STEP);
@@ -2105,6 +2105,8 @@ private:
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
+                dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))
@@ -2116,11 +2118,11 @@ private:
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
 
+                // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                 if (_s4.rides[src2->GetRideIndex()].type == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
-                // Skipping IsHighlighted()
 
                 break;
             }
@@ -2151,6 +2153,10 @@ private:
                     case RCT1_SCENERY_TULIPS_2:
                         dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
                         dst2->SetSecondaryColour(COLOUR_YELLOW);
+                        break;
+                    case RCT1_SCENERY_SMALL_RED_GARDENS:
+                        dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
+                        break;
                 }
 
                 break;
@@ -2183,9 +2189,7 @@ private:
                 auto dst2 = dst->AsWall();
                 auto src2 = src->AsWall();
 
-                dst2->SetEntryIndex(src2->GetEntryIndex());
                 dst2->SetSlope(src2->GetSlope());
-                dst2->SetPrimaryColour(RCT1::GetColour(src2->GetRCT1WallColour()));
                 dst2->SetRawRCT1Data(src2->GetRawRCT1WallTypeData());
 
                 break;
@@ -2759,10 +2763,7 @@ private:
 
     void FixWalls()
     {
-        // The user might attempt to load a save while in pause mode.
-        // Since we cannot place walls in pause mode without a cheat, temporarily turn it on.
-        bool oldCheatValue = gCheatsBuildInPauseMode;
-        gCheatsBuildInPauseMode = true;
+        std::vector<TileElement> wallsOnTile = {};
 
         for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
@@ -2775,40 +2776,55 @@ private:
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
                     {
-                        TileElement originalTileElement = *tileElement;
+                        wallsOnTile.push_back(*tileElement);
                         tile_element_remove(tileElement);
-
-                        for (int32_t edge = 0; edge < 4; edge++)
-                        {
-                            int32_t type = originalTileElement.AsWall()->GetRCT1WallType(edge);
-
-                            if (type != -1)
-                            {
-                                int32_t colourA = RCT1::GetColour(originalTileElement.AsWall()->GetRCT1WallColour());
-                                int32_t colourB = 0;
-                                int32_t colourC = 0;
-                                ConvertWall(&type, &colourA, &colourB);
-
-                                type = _wallTypeToEntryMap[type];
-
-                                auto location = TileCoordsXYZ(x, y, 0).ToCoordsXYZ();
-                                auto wallPlaceAction = WallPlaceAction(type, location, edge, colourA, colourB, colourC);
-                                wallPlaceAction.SetFlags(
-                                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                                    | GAME_COMMAND_FLAG_PATH_SCENERY);
-                                GameActions::Execute(&wallPlaceAction);
-                            }
-                        }
-                        break;
+                        tileElement--;
                     }
                 } while (!(tileElement++)->IsLastForTile());
+
+                for (auto originalTileElement : wallsOnTile)
+                {
+                    auto location = TileCoordsXYZ(x, y, 0).ToCoordsXYZ();
+
+                    for (int32_t edge = 0; edge < 4; edge++)
+                    {
+                        int32_t type = originalTileElement.AsWall()->GetRCT1WallType(edge);
+                        auto slope = originalTileElement.AsWall()->GetRCT1Slope();
+
+                        if (type != -1)
+                        {
+                            colour_t colourA = RCT1::GetColour(originalTileElement.AsWall()->GetRCT1WallColour());
+                            colour_t colourB = COLOUR_BLACK;
+                            colour_t colourC = COLOUR_BLACK;
+                            ConvertWall(&type, &colourA, &colourB);
+
+                            type = _wallTypeToEntryMap[type];
+                            auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3] & ~EDGE_SLOPE_ELEVATED;
+
+                            auto element = tile_element_insert(location, originalTileElement.GetOccupiedQuadrants());
+                            element->SetType(TILE_ELEMENT_TYPE_WALL);
+                            element->SetDirection(edge);
+                            element->SetBaseZ(originalTileElement.GetBaseZ());
+                            element->SetClearanceZ(originalTileElement.GetClearanceZ());
+
+                            auto wallElement = element->AsWall();
+                            wallElement->SetEntryIndex(type);
+                            wallElement->SetPrimaryColour(colourA);
+                            wallElement->SetSecondaryColour(colourB);
+                            wallElement->SetTertiaryColour(colourC);
+                            wallElement->SetBannerIndex(BANNER_INDEX_NULL);
+                            wallElement->SetAcrossTrack(originalTileElement.AsWall()->IsAcrossTrack());
+                            wallElement->SetAnimationIsBackwards(originalTileElement.AsWall()->AnimationIsBackwards());
+                            wallElement->SetSlope(edgeSlope);
+                        }
+                    }
+                }
+                wallsOnTile.clear();
             }
         }
-
-        gCheatsBuildInPauseMode = oldCheatValue;
     }
 
-    void ConvertWall(int32_t* type, int32_t* colourA, int32_t* colourB)
+    void ConvertWall(int32_t* type, colour_t* colourA, colour_t* colourB)
     {
         switch (*type)
         {
@@ -2833,11 +2849,11 @@ private:
                 *colourB = COLOUR_WHITE;
                 break;
             case RCT1_WALL_TYPE_SMALL_GREY_CASTLE:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_CROSS:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_GATE:
-            case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_WINDOW:
-            case RCT1_WALL_TYPE_MEDIUM_CREY_CASTLE:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE:
+            case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW:
+            case RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE:
                 *colourA = COLOUR_GREY;
                 break;
         }
@@ -2929,8 +2945,9 @@ private:
     {
         const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
-        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
-        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        utf8_remove_format_codes(asUtf8.data(), /*allow colour*/ false);
+        return asUtf8.data();
     }
 
     void FixLandOwnership()
@@ -3114,5 +3131,5 @@ int32_t WallElement::GetRCT1WallType(int32_t edge) const
 
 colour_t WallElement::GetRCT1WallColour() const
 {
-    return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
+    return (((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5)) & 31;
 }

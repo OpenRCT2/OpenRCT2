@@ -3728,9 +3728,18 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
+
     for (int32_t i = current_car; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        if (vehicle == nullptr)
+        {
+            return;
+        }
     }
 
     ride_entry = get_ride_entry(vehicle->ride_subtype);
@@ -4174,7 +4183,7 @@ void Guest::UpdateRideLeaveVehicle()
                         break;
                 }
 
-                uint8_t stationIndex = inner_map->AsTrack()->GetStationIndex();
+                auto stationIndex = inner_map->AsTrack()->GetStationIndex();
                 if (stationIndex == current_ride_station)
                     break;
             }
@@ -4260,7 +4269,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, current_ride_station);
 
-    uint8_t station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
+    Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
     vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
@@ -5841,7 +5850,8 @@ void Guest::UpdateUsingBin()
             if (tileElement == nullptr)
                 return;
 
-            for (;; tileElement++)
+            bool found = false;
+            do
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 {
@@ -5849,13 +5859,16 @@ void Guest::UpdateUsingBin()
                 }
 
                 if (tileElement->GetBaseZ() == NextLoc.z)
-                    break;
-
-                if (tileElement->IsLastForTile())
                 {
-                    StateReset();
-                    return;
+                    found = true;
+                    break;
                 }
+            } while (!(tileElement++)->IsLastForTile());
+
+            if (!found)
+            {
+                StateReset();
+                return;
             }
 
             if (!tileElement->AsPath()->HasAddition())

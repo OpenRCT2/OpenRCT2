@@ -70,7 +70,7 @@ void litter_paint(paint_session* session, const Litter* litter, int32_t imageDir
     rct_drawpixelinfo* dpi;
 
     dpi = &session->DPI;
-    if (dpi->zoom_level != 0)
+    if (dpi->zoom_level > 0)
         return; // If zoomed at all no litter drawn
 
     // litter has no sprite direction so remove that

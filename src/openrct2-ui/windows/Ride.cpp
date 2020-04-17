@@ -1609,7 +1609,7 @@ rct_window* window_ride_main_open(Ride* ride)
  *
  *  rct2: 0x006ACCCE
  */
-static rct_window* window_ride_open_station(Ride* ride, int32_t stationIndex)
+static rct_window* window_ride_open_station(Ride* ride, StationIndex stationIndex)
 {
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
         return window_ride_main_open(ride);
@@ -1904,7 +1904,7 @@ static void window_ride_init_viewport(rct_window* w)
     }
     else if (eax >= ride->num_vehicles && eax < (ride->num_vehicles + ride->num_stations))
     {
-        int32_t stationIndex = -1;
+        StationIndex stationIndex = STATION_INDEX_NULL;
         int32_t count = eax - ride->num_vehicles;
         do
         {
@@ -2820,7 +2820,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
         return STR_NONE;
 
     int32_t count = w->ride.view - ride->num_vehicles - 1;
-    int32_t stationIndex = -1;
+    StationIndex stationIndex = STATION_INDEX_NULL;
     rct_string_id stringId = 0;
 
     do

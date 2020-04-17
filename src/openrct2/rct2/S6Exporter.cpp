@@ -196,6 +196,8 @@ void S6Exporter::Export()
     _s6.scenario_srand_0 = state.s0;
     _s6.scenario_srand_1 = state.s1;
 
+    // Map elements must be reorganised prior to saving otherwise save may be invalid
+    map_reorganise_elements();
     ExportTileElements();
     ExportSprites();
     ExportParkName();
@@ -363,7 +365,7 @@ void S6Exporter::Export()
     _s6.saved_age = gSavedAge;
     _s6.saved_view_x = gSavedView.x;
     _s6.saved_view_y = gSavedView.y;
-    _s6.saved_view_zoom = gSavedViewZoom;
+    _s6.saved_view_zoom = static_cast<int8_t>(std::clamp<ZoomLevel>(gSavedViewZoom, 0, 3));
     _s6.saved_view_rotation = gSavedViewRotation;
 
     ExportMapAnimations();
@@ -882,6 +884,11 @@ void S6Exporter::ExportResearchedSceneryItems()
     {
         ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
                                               static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
+
+        // SV6 allows for more scenery types than there are. Avoid triggering an assertion in scenery_is_invented().
+        if (scenerySelection.SceneryType >= SCENERY_TYPE_COUNT)
+            break;
+
         if (scenery_is_invented(scenerySelection))
         {
             int32_t quadIndex = sceneryEntryIndex >> 5;
@@ -1010,7 +1017,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
-    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE)
+    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && src->status == VEHICLE_STATUS_TRAVELLING_BOAT)
     {
         if (src->BoatLocation.isNull())
         {
@@ -1024,9 +1031,10 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     }
     else
     {
+        // Track direction and type are in the same field
         dst->track_direction = src->track_direction;
+        // dst->track_type = src->track_type;
     }
-    dst->track_type = src->track_type;
     dst->track_x = src->TrackLocation.x;
     dst->track_y = src->TrackLocation.y;
     dst->track_z = src->TrackLocation.z;
@@ -1493,20 +1501,18 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
             dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
             dst2->SetIsIndestructible(src2->IsIndestructible());
+            dst2->SetSeatRotation(src2->GetSeatRotation());
+            // Skipping IsHighlighted()
 
+            // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
             auto ride = get_ride(dst2->GetRideIndex());
             if (ride)
             {
-                if (ride->type == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
-                {
-                    dst2->SetSeatRotation(src2->GetSeatRotation());
-                }
-                else if (ride->type == RIDE_TYPE_MAZE)
+                if (ride->type == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
             }
-            // Skipping IsHighlighted()
 
             break;
         }
@@ -1552,11 +1558,15 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetAcrossTrack(src2->IsAcrossTrack());
             dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
-            auto bannerIndex = src2->GetBannerIndex();
-            if (bannerIndex != BANNER_INDEX_NULL)
-                dst2->SetBannerIndex(bannerIndex);
-            else
-                dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            auto entry = src2->GetEntry();
+            if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                auto bannerIndex = src2->GetBannerIndex();
+                if (bannerIndex != BANNER_INDEX_NULL)
+                    dst2->SetBannerIndex(bannerIndex);
+                else
+                    dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            }
 
             break;
         }
@@ -1570,11 +1580,15 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetPrimaryColour(src2->GetPrimaryColour());
             dst2->SetSecondaryColour(src2->GetSecondaryColour());
 
-            auto bannerIndex = src2->GetBannerIndex();
-            if (bannerIndex != BANNER_INDEX_NULL)
-                dst2->SetBannerIndex(bannerIndex);
-            else
-                dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            auto entry = src2->GetEntry();
+            if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                auto bannerIndex = src2->GetBannerIndex();
+                if (bannerIndex != BANNER_INDEX_NULL)
+                    dst2->SetBannerIndex(bannerIndex);
+                else
+                    dst2->SetBannerIndex(RCT12_BANNER_INDEX_NULL);
+            }
 
             break;
         }

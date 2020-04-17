@@ -46,6 +46,7 @@ extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2NoGraphics;
 extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
+extern utf8 gSilentRecordingName[MAX_PATH];
 
 #ifndef DISABLE_NETWORK
 extern int32_t gNetworkStart;

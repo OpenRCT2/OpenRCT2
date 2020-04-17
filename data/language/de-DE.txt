@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Zeitlimit für Fahrt kann nicht geändert werden...
 STR_1752    :{SMALLFONT}{BLACK}Liste einzelner Parkbesucher anzeigen
 STR_1753    :{SMALLFONT}{BLACK}Gesamtliste von Parkbesuchern anzeigen
-STR_1754    :{BLACK}{COMMA16} Besucher
-STR_1755    :{BLACK}{COMMA16} Besucher
+STR_1754    :{BLACK}{COMMA32} Besucher
+STR_1755    :{BLACK}{COMMA32} Besucher
 STR_1756    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_1757    :{WINDOW_COLOUR_2}Zuverlässigkeit: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Baumodus
@@ -1189,7 +1189,7 @@ STR_1813    :Verschiedene Objekte
 STR_1814    :Aktionen
 STR_1815    :Gedanken
 STR_1816    :{SMALLFONT}{BLACK}Informationsart auswählen, die{NEWLINE}in Besucherliste angezeigt{NEWLINE}werden soll
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle Besucher
 STR_1819    :{WINDOW_COLOUR_2}Alle Besucher (zusammengefasst)
 STR_1820    :{WINDOW_COLOUR_2}Besucher {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :Favorit von: {COMMA16} Besucher
 STR_1843    :Favorit von: {COMMA16} Besuchern
 STR_1844    :{SMALLFONT}{BLACK}Informationsart auswählen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} Besucher
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} Besucher
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} Besucher
+STR_1846    :{COMMA32} Besucher
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} Besucher
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} Besucher
 STR_1849    :{WINDOW_COLOUR_2}Musikwiedergabe
 STR_1850    :{SMALLFONT}{BLACK}Auswählen, ob Musik für diese{NEWLINE}Bahn abgespielt werden soll
 STR_1851    :{WINDOW_COLOUR_2}Betriebskosten: {BLACK}{CURRENCY2DP} pro Stunde
@@ -1576,7 +1576,7 @@ STR_2219    :{RED}{COMMA16} Menschen sind in einem Unfall bei {STRINGID} gestorb
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkbewertung: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Besucher im Park: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Besucher im Park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Kontostand: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Kontostand: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Verkehrswert: {BLACK}{CURRENCY}
@@ -3675,6 +3675,9 @@ STR_6357    :{SMALLFONT}{BLACK}Entfernt alle Enten aus der Karte
 STR_6358    :Seite {UINT16}
 STR_6359    :{POP16}{POP16}Seite {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Lichteffekte an Fahrgeschäften aktivieren (experimentell)
+STR_6362    :{SMALLFONT}{BLACK}Falls aktiviert, werden Fahrzeuge für Streckenfahrgeschäfte in der Nacht leuchten.
+STR_6363    :Text in die Zwischenablage kopiert
 
 #############
 # Scenarios #

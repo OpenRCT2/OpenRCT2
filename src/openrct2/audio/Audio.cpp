@@ -220,7 +220,7 @@ static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsX
         {
             int16_t vx = pos2.x - viewport->viewPos.x;
             int16_t vy = pos2.y - viewport->viewPos.y;
-            params.pan = viewport->pos.x + (vx >> viewport->zoom);
+            params.pan = viewport->pos.x + (vx / viewport->zoom);
             params.volume = SoundVolumeAdjust[static_cast<uint8_t>(soundId)]
                 + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
 

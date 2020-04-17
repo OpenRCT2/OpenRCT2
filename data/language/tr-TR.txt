@@ -1129,8 +1129,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Aletin süresi değiştirilemiyor...
 STR_1752    :{SMALLFONT}{BLACK}Müşteriler listesi
 STR_1753    :{SMALLFONT}{BLACK}Toplam müşteri listesi
-STR_1754    :{BLACK}{COMMA16} Müşteri
-STR_1755    :{BLACK}{COMMA16} Müşteri
+STR_1754    :{BLACK}{COMMA32} Müşteri
+STR_1755    :{BLACK}{COMMA32} Müşteri
 STR_1756    :{WINDOW_COLOUR_2}Giriş ücreti:
 STR_1757    :{WINDOW_COLOUR_2}Güvenilirlik: {MOVE_X}{255}{BLACK}%{COMMA16}
 STR_1758    :{SMALLFONT}{BLACK}Inşa modu
@@ -1188,7 +1188,7 @@ STR_1813    :Diğer cisimler
 STR_1814    :Yaptıkları
 STR_1815    :Düşünceleri
 STR_1816    :{SMALLFONT}{BLACK}Müşteri bilgisinde{NEWLINE}görmek istediğiniz{NEWLINE}bilgizi seçiniz
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tüm müşteriler
 STR_1819    :{WINDOW_COLOUR_2}Tüm müşteriler (özetli)
 STR_1820    :{WINDOW_COLOUR_2}Müşteri {STRINGID}
@@ -1217,9 +1217,9 @@ STR_1842    :{COMMA16} kişinin favorisi
 STR_1843    :{COMMA16} kişinin favorisi
 STR_1844    :{SMALLFONT}{BLACK}Informationsart auswÃ¤hlen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} müşteri
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} müşteri
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} müşteri
+STR_1846    :{COMMA32} müşteri
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} müşteri
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} müşteri
 STR_1849    :{WINDOW_COLOUR_2}Müziği aç/kapat
 STR_1850    :{SMALLFONT}{BLACK}Bu alet için müziği{NEWLINE}seçiniz
 STR_1851    :{WINDOW_COLOUR_2}Işletme maliyeti:{BLACK} saatde {CURRENCY2DP} 
@@ -1575,7 +1575,7 @@ STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park değerlendirmesi: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Parkdaki müşteri sayısı: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Parkdaki müşteri sayısı: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Para: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Para: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park değeri: {BLACK}{CURRENCY}
@@ -2298,7 +2298,6 @@ STR_3190    :Yol eklentileri
 STR_3191    :Dekorasyon temaları
 STR_3192    :Park girişi tarzı
 STR_3193    :Su tarzı
-STR_3194    :Senaryo açıklaması
 STR_3195    :Araştırma listesi
 STR_3196    :{WINDOW_COLOUR_2}Tür: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Başdan araştırılmış ve mevcut olanlar:

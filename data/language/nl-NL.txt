@@ -1128,8 +1128,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Kan de tijdslimiet voor deze attractie niet aanpassen…
 STR_1752    :{SMALLFONT}{BLACK}Toon een lijst van individuele bezoekers in het park
 STR_1753    :{SMALLFONT}{BLACK}Toon een samengevatte lijst van bezoekers in het park
-STR_1754    :{BLACK}{COMMA16} bezoekers
-STR_1755    :{BLACK}{COMMA16} bezoeker
+STR_1754    :{BLACK}{COMMA32} bezoekers
+STR_1755    :{BLACK}{COMMA32} bezoeker
 STR_1756    :{WINDOW_COLOUR_2}Toegangsprijs:
 STR_1757    :{WINDOW_COLOUR_2}Betrouwbaarheid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Bouwmodus
@@ -1187,7 +1187,7 @@ STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
 STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de bezoekerslijst wilt zien
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
 STR_1820    :{WINDOW_COLOUR_2}Bezoekers met de volgende status: {STRINGID}
@@ -1216,9 +1216,9 @@ STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
 STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
 STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wilt zien
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} bezoekers
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoekers
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} bezoekers
+STR_1846    :{COMMA32} bezoekers
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} bezoekers
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} bezoekers
 STR_1849    :{WINDOW_COLOUR_2}Draai muziek
 STR_1850    :{SMALLFONT}{BLACK}Selecteer of er in deze attractie muziek moet worden gedraaid
 STR_1851    :{WINDOW_COLOUR_2}Bedrijfskosten: {BLACK}{CURRENCY2DP} per uur
@@ -1576,7 +1576,7 @@ STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk i
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkwaardering: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Contant: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}

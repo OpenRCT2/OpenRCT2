@@ -1103,6 +1103,8 @@ public:
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
+                dst2->SetSeatRotation(src2->GetSeatRotation());
+                // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))
@@ -1114,13 +1116,9 @@ public:
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
 
-                // Skipping IsHighlighted()
+                // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
-                if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
-                {
-                    dst2->SetSeatRotation(src2->GetSeatRotation());
-                }
-                else if (rideType == RIDE_TYPE_MAZE)
+                if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
@@ -1166,24 +1164,21 @@ public:
                 dst2->SetSecondaryColour(src2->GetSecondaryColour());
                 dst2->SetTertiaryColour(src2->GetTertiaryColour());
                 dst2->SetAnimationFrame(src2->GetAnimationFrame());
-                dst2->SetBannerIndex(src2->GetBannerIndex());
                 dst2->SetAcrossTrack(src2->IsAcrossTrack());
                 dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
                 // Import banner information
+                dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
                 if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
                 {
-                    auto bannerIndex = dst2->GetBannerIndex();
+                    auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
                         auto dstBanner = GetBanner(bannerIndex);
                         ImportBanner(dstBanner, srcBanner);
-                    }
-                    else
-                    {
-                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                        dst2->SetBannerIndex(src2->GetBannerIndex());
                     }
                 }
                 break;
@@ -1197,22 +1192,19 @@ public:
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetPrimaryColour(src2->GetPrimaryColour());
                 dst2->SetSecondaryColour(src2->GetSecondaryColour());
-                dst2->SetBannerIndex(src2->GetBannerIndex());
 
                 // Import banner information
+                dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
                 if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
-                    auto bannerIndex = dst2->GetBannerIndex();
+                    auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
                         auto dstBanner = GetBanner(bannerIndex);
                         ImportBanner(dstBanner, srcBanner);
-                    }
-                    else
-                    {
-                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                        dst2->SetBannerIndex(src2->GetBannerIndex());
                     }
                 }
                 break;
@@ -1330,15 +1322,17 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
-        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE)
+        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE || src->status != VEHICLE_STATUS_TRAVELLING_BOAT)
         {
             dst->BoatLocation.setNull();
+            dst->track_type = src->track_type;
         }
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+            dst->track_type = 0;
         }
-        dst->track_type = src->track_type;
+
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
@@ -1637,8 +1631,9 @@ public:
     {
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
-        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
-        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        utf8_remove_format_codes(asUtf8.data(), /*allow colour*/ false);
+        return asUtf8.data();
     }
 
     std::vector<rct_object_entry> GetRequiredObjects()

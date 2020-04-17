@@ -26,11 +26,6 @@ Object::Object(const rct_object_entry& entry)
     char name[DAT_NAME_LENGTH + 1] = { 0 };
     std::copy_n(entry.name, DAT_NAME_LENGTH, name);
     _identifier = String::Duplicate(name);
-
-    if (IsOpenRCT2OfficialObject())
-    {
-        SetSourceGames({ OBJECT_SOURCE_OPENRCT2_OFFICIAL });
-    }
 }
 
 Object::~Object()
@@ -103,55 +98,6 @@ std::vector<uint8_t> Object::GetSourceGames()
 void Object::SetSourceGames(const std::vector<uint8_t>& sourceGames)
 {
     _sourceGames = sourceGames;
-}
-
-bool Object::IsOpenRCT2OfficialObject()
-{
-    static const char _openRCT2OfficialObjects[][9] = {
-        // Offical extended scenery set
-        "XXBBBR01",
-        "TTRFTL02",
-        "TTRFTL03",
-        "TTRFTL04",
-        "TTRFTL07",
-        "TTRFTL08",
-        "TTPIRF02",
-        "TTPIRF03",
-        "TTPIRF04",
-        "TTPIRF05",
-        "TTPIRF07",
-        "TTPIRF08",
-        "MG-PRAR ",
-        "TTRFWD01",
-        "TTRFWD02",
-        "TTRFWD03",
-        "TTRFWD04",
-        "TTRFWD05",
-        "TTRFWD06",
-        "TTRFWD07",
-        "TTRFWD08",
-        "TTRFGL01",
-        "TTRFGL02",
-        "TTRFGL03",
-        "ACWW33  ",
-        "ACWWF32 ",
-
-        // Official DLC
-        "BIGPANDA",
-        "LITTERPA",
-        "PANDAGR ",
-        "SCGPANDA",
-        "WTRPINK ",
-        "ZPANDA  ",
-    };
-
-    for (const auto entry : _openRCT2OfficialObjects)
-    {
-        if (String::Equals(_identifier, entry))
-            return true;
-    }
-
-    return false;
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

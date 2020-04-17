@@ -90,8 +90,6 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        peep_update_name_sort(peep);
-
         gfx_invalidate_screen();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);

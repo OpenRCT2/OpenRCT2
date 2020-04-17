@@ -1810,7 +1810,7 @@ static void window_ride_construction_construct(rct_window* w)
 
     auto trackPlaceAction = TrackPlaceAction(
         rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
-        (properties >> 12) & 0x0F, liftHillAndAlternativeState);
+        (properties >> 12) & 0x0F, liftHillAndAlternativeState, false);
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedBackwardGameActionCallback);
@@ -2148,15 +2148,14 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            constexpr uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32)
-                << MAX_ZOOM_LEVEL;
+            uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
 
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
             if (mainWnd && mainWnd->viewport)
             {
-                _trackPlaceShiftZ <<= mainWnd->viewport->zoom;
+                _trackPlaceShiftZ = _trackPlaceShiftZ * mainWnd->viewport->zoom;
             }
             _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
 
@@ -3664,8 +3663,6 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
  */
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
-    uint8_t stationNum;
-
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -3687,7 +3684,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     map_invalidate_selection_rect();
 
     entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
-    stationNum = gRideEntranceExitPlaceStationIndex;
+    StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
     if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
         || entranceOrExitCoords != gRideEntranceExitGhostPosition || stationNum != gRideEntranceExitGhostStationIndex)
     {

@@ -1131,8 +1131,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Impossibile cambiare il limite di tempo per attrazione...
 STR_1752    :{SMALLFONT}{BLACK}Mostra la lista completa dei visitatori del parco
 STR_1753    :{SMALLFONT}{BLACK}Mostra il riassunto dei visitatori del parco
-STR_1754    :{BLACK}{COMMA16} visitatori
-STR_1755    :{BLACK}{COMMA16} visitatore
+STR_1754    :{BLACK}{COMMA32} visitatori
+STR_1755    :{BLACK}{COMMA32} visitatore
 STR_1756    :{WINDOW_COLOUR_2}Prezzo biglietto:
 STR_1757    :{WINDOW_COLOUR_2}Affidabilità: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Modalità costruzione
@@ -1190,7 +1190,7 @@ STR_1813    :Oggetti vari
 STR_1814    :Azioni
 STR_1815    :Pensieri
 STR_1816    :{SMALLFONT}{BLACK}Scegli il tipo di informazioni da mostrare nella lista dei visitatori
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tutti i visitatori
 STR_1819    :{WINDOW_COLOUR_2}Tutti i visitatori (riassunto)
 STR_1820    :{WINDOW_COLOUR_2}Visitatori {STRINGID}
@@ -1219,9 +1219,9 @@ STR_1842    :La preferita da: {COMMA16} visitatore
 STR_1843    :La preferita da: {COMMA16} visitatori
 STR_1844    :{SMALLFONT}{BLACK}Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} visitatori
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitatori
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitatori
+STR_1846    :{COMMA32} visitatori
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} visitatori
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} visitatori
 STR_1849    :{WINDOW_COLOUR_2}Suona la musica
 STR_1850    :{SMALLFONT}{BLACK}Scegli quale musica dev'essere suonata in quest'attrazione
 STR_1851    :{WINDOW_COLOUR_2}Costo mantenim.: {BLACK}{CURRENCY2DP} l'ora
@@ -1579,7 +1579,7 @@ STR_2219    :{RED}{COMMA16} persone sono rimaste uccise in un incidente su {STRI
 STR_2220    :{WINDOW_COLOUR_2}Valutazione del parco: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valutazione del parco: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Visitatori nel parco: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Visitatori nel parco: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Denaro: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Denaro: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Valore del parco: {BLACK}{CURRENCY}

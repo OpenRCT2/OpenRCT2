@@ -35,7 +35,7 @@ Vehicle* cable_lift_segment_create(
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
     {
-        move_sprite_to_list(current, SPRITE_LIST_VEHICLE_HEAD);
+        move_sprite_to_list(current, SPRITE_LIST_TRAIN_HEAD);
         ride.cable_lift = current->sprite_index;
     }
     current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
@@ -84,6 +84,7 @@ Vehicle* cable_lift_segment_create(
     current->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
+    current->BoatLocation.setNull();
     return current;
 }
 
@@ -373,7 +374,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
     _vehicleF64E2C = 0;
     gCurrentVehicle = cableLift;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = 0xFF;
+    _vehicleStationIndex = STATION_INDEX_NULL;
 
     cableLift->velocity += cableLift->acceleration;
     _vehicleVelocityF64E08 = cableLift->velocity;

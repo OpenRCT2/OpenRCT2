@@ -1450,7 +1450,7 @@ int32_t scrolling_text_setup(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level != 0)
+    if (dpi->zoom_level > 0)
         return SPR_SCROLLING_TEXT_DEFAULT;
 
     _drawSCrollNextIndex++;

@@ -156,8 +156,10 @@ rct_window* window_sign_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = GetBanner(w->number);
-    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
+    if (banner == nullptr)
+        return nullptr;
 
+    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
     TileElement* tile_element = map_get_first_element_at(signViewPos);
     if (tile_element == nullptr)
         return nullptr;

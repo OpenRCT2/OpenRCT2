@@ -86,19 +86,15 @@ struct paint_struct
 assert_struct_size(paint_struct, 0x34);
 #endif
 
-/* size 0x1E */
 struct paint_string_struct
 {
     rct_string_id string_id;   // 0x00
     paint_string_struct* next; // 0x02
-    uint16_t x;                // 0x06
-    uint16_t y;                // 0x08
+    int32_t x;                 // 0x06
+    int32_t y;                 // 0x08
     uint32_t args[4];          // 0x0A
     uint8_t* y_offsets;        // 0x1A
 };
-#ifdef PLATFORM_32BIT
-assert_struct_size(paint_string_struct, 0x1e);
-#endif
 #pragma pack(pop)
 
 union paint_entry

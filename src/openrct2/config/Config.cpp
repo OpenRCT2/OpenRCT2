@@ -436,8 +436,10 @@ namespace Config
             model->park_rating_warnings = reader->GetBoolean("park_rating_warnings", true);
             model->ride_broken_down = reader->GetBoolean("ride_broken_down", true);
             model->ride_crashed = reader->GetBoolean("ride_crashed", true);
+            model->ride_casualties = reader->GetBoolean("ride_casualties", true);
             model->ride_warnings = reader->GetBoolean("ride_warnings", true);
             model->ride_researched = reader->GetBoolean("ride_researched", true);
+            model->ride_stalled_vehicles = reader->GetBoolean("ride_stalled_vehicles", true);
             model->guest_warnings = reader->GetBoolean("guest_warnings", true);
             model->guest_lost = reader->GetBoolean("guest_lost", false);
             model->guest_left_park = reader->GetBoolean("guest_left_park", true);
@@ -460,8 +462,10 @@ namespace Config
         writer->WriteBoolean("park_rating_warnings", model->park_rating_warnings);
         writer->WriteBoolean("ride_broken_down", model->ride_broken_down);
         writer->WriteBoolean("ride_crashed", model->ride_crashed);
+        writer->WriteBoolean("ride_casualties", model->ride_casualties);
         writer->WriteBoolean("ride_warnings", model->ride_warnings);
         writer->WriteBoolean("ride_researched", model->ride_researched);
+        writer->WriteBoolean("ride_stalled_vehicles", model->ride_stalled_vehicles);
         writer->WriteBoolean("guest_warnings", model->guest_warnings);
         writer->WriteBoolean("guest_lost", model->guest_lost);
         writer->WriteBoolean("guest_left_park", model->guest_left_park);

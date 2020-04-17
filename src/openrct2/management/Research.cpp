@@ -601,19 +601,39 @@ void ride_entry_set_invented(int32_t rideEntryIndex)
 
 bool scenery_is_invented(const ScenerySelection& sceneryItem)
 {
-    return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
+    if (sceneryItem.SceneryType < SCENERY_TYPE_COUNT)
+    {
+        return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
+    }
+    else
+    {
+        log_warning("Invalid Scenery Type");
+        return false;
+    }
 }
 
 void scenery_set_invented(const ScenerySelection& sceneryItem)
 {
-    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
-    _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = true;
+    if (sceneryItem.SceneryType < SCENERY_TYPE_COUNT)
+    {
+        _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = true;
+    }
+    else
+    {
+        log_warning("Invalid Scenery Type");
+    }
 }
 
 void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 {
-    assert(sceneryItem.SceneryType < SCENERY_TYPE_COUNT);
-    _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = false;
+    if (sceneryItem.SceneryType < SCENERY_TYPE_COUNT)
+    {
+        _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex] = false;
+    }
+    else
+    {
+        log_warning("Invalid Scenery Type");
+    }
 }
 
 bool scenery_group_is_invented(int32_t sgIndex)

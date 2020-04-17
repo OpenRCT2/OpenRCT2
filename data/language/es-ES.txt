@@ -116,16 +116,16 @@ STR_0530    :Asientos colgados de un cable de acero viajan continuamente desde u
 STR_0531    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacacorchos.
 STR_0532    :
 STR_0533    :
-STR_0534    :Go-Karts autopropulsados con gasolina.
-STR_0535    :Barcos con forma de tronco que viajan por un canal de agua, salpicando hasta empapar a los pasajeros.
+STR_0534    :Los visitantes corren carreras en kartings sobre una calle de asfalto.
+STR_0535    :Barcos viajan por un canal de agua, salpicando hasta empapar a los pasajeros.
 STR_0536    :Botes circulares viajan a lo largo de un canal de agua ancho, salpicando a través de cascadas y paseos emocionantes a través de rápidos espumantes.
-STR_0537    :
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0542    :
-STR_0544    :
-STR_0545    :
+STR_0537    :Los visitantes topan entre sí en autos de choque
+STR_0538    :Gran barco pirata que se balancea
+STR_0539    :El barco está unido a un brazo con un contrapeso en el lado opuesto, y se balancea en giros de hasta 360º
+STR_0540    :Puesto donde los visitantes compran comidas
+STR_0542    :Puesto donde los visitantes compran bebidas
+STR_0544    :Puesto donde los visitantes compran souvenirs
+STR_0545    :Calesita tradicional con caballos de madera tallados
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -158,7 +158,7 @@ STR_0578    :Los vagones circulan por vías formando aros y recorriendo bruscas 
 STR_0579    :
 STR_0580    :Una montaña rusa gigante capaz de caídas suaves y subidas de más de 300 pies.
 STR_0581    :Un anillo de asientos es arrastrado a lo alto de una torre mientras gira, y después cae libremente hasta detenerse suavemente usando unos frenos magnéticos.
-STR_0582    :
+STR_0582    :Los visitantes viajan en vehículos aerodeslizadores que controlan libremente.
 STR_0583    :
 STR_0584    :Bicicletas especiales que viajan sobre un monorriel, impulsadas por el pedaleo.
 STR_0585    :Los pasajeros se sientan en parejas atravesando rizos e inversiones.
@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :No se puede cambiar el límite de tiempo para esta atracción...
 STR_1752    :{SMALLFONT}{BLACK}Mostrar lista de visitantes en el parque
 STR_1753    :{SMALLFONT}{BLACK}Mostrar lista agrupada de visitantes en el parque
-STR_1754    :{BLACK}{COMMA16} visitantes
-STR_1755    :{BLACK}{COMMA16} visitante
+STR_1754    :{BLACK}{COMMA32} visitantes
+STR_1755    :{BLACK}{COMMA32} visitante
 STR_1756    :{WINDOW_COLOUR_2}Precio de la entrada:
 STR_1757    :{WINDOW_COLOUR_2}Fiabilidad: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Modo construir
@@ -1189,7 +1189,7 @@ STR_1813    :Objetos misceláneos
 STR_1814    :Acciones
 STR_1815    :Pensamientos
 STR_1816    :{SMALLFONT}{BLACK}Selecciona el tipo de información a mostrar en la lista de visitantes
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Todos los visitantes
 STR_1819    :{WINDOW_COLOUR_2}Todos los visitantes (agrupados)
 STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :Favorito de: {COMMA16} visitante
 STR_1843    :Favorito de: {COMMA16} visitantes
 STR_1844    :{SMALLFONT}{BLACK}Selecciona el tipo de información a mostrar en la lista
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} visitantes
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitantes
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitantes
+STR_1846    :{COMMA32} visitantes
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} visitantes
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} visitantes
 STR_1849    :{WINDOW_COLOUR_2}Reproducir música
 STR_1850    :{SMALLFONT}{BLACK}Activar música para esta atracción.
 STR_1851    :{WINDOW_COLOUR_2}Coste de funcionamiento: {BLACK}{CURRENCY2DP} por hora
@@ -1576,7 +1576,7 @@ STR_2219    :{RED}{COMMA16} personas han muerto en un accidente en {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valoración del parque: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Visitantes en el parque: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Visitantes en el parque: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Efectivo: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Efectivo: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Valor del parque: {BLACK}{CURRENCY}
@@ -2745,29 +2745,29 @@ STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Partidas a cargar
 STR_5378    :{SMALLFONT}{BLACK}Instrucciones
 STR_5379    :{SMALLFONT}{BLACK}Ir al siguiente comando de espera
-STR_5380    :{SMALLFONT}{BLACK}Iniciar la secuencia de la pantalla del Titulo
-STR_5381    :{SMALLFONT}{BLACK}Detener la secuencia de la pantalla del Titulo
-STR_5382    :{SMALLFONT}{BLACK}Reiniciar secuencia del Titulo
-STR_5383    :{SMALLFONT}{BLACK}Crear una secuencia del Titulo basada en la actual
-STR_5384    :{SMALLFONT}{BLACK}Borrar la secuencia del Titulo actual
-STR_5385    :{SMALLFONT}{BLACK}Renombrar la secuencia del Titulo actual
+STR_5380    :{SMALLFONT}{BLACK}Iniciar la secuencia de la pantalla de inicio
+STR_5381    :{SMALLFONT}{BLACK}Detener la secuencia de la pantalla de inicio
+STR_5382    :{SMALLFONT}{BLACK}Reiniciar secuencia de la pantalla de inicio
+STR_5383    :{SMALLFONT}{BLACK}Crear una secuencia de la pantalla de inicio basada en la actual
+STR_5384    :{SMALLFONT}{BLACK}Borrar la secuencia de la pantalla de inicio actual
+STR_5385    :{SMALLFONT}{BLACK}Renombrar la secuencia de la pantalla de inicio actual
 STR_5386    :{SMALLFONT}{BLACK}Insertar un nuevo comando
 STR_5387    :{SMALLFONT}{BLACK}Editar comando seleccionado
 STR_5388    :{SMALLFONT}{BLACK}Eliminar comando seleccionado
-STR_5389    :{SMALLFONT}{BLACK}Ir al comando seleccionado en la ventana de Secuencias de Titulos
+STR_5389    :{SMALLFONT}{BLACK}Ir al comando seleccionado en la ventana de Secuencias de la pantalla de inicio
 STR_5390    :{SMALLFONT}{BLACK}Mover comando seleccionado arriba
 STR_5391    :{SMALLFONT}{BLACK}Mover comando seleccionado abajo
 STR_5392    :{SMALLFONT}{BLACK}Añadir partida al secuenciador
 STR_5393    :{SMALLFONT}{BLACK}Quitar la partida seleccionada del secuenciador
 STR_5394    :{SMALLFONT}{BLACK}Renombrar partida seleccionada
 STR_5395    :{SMALLFONT}{BLACK}Cargar partida en juego
-STR_5396    :{SMALLFONT}{BLACK}Reinicia la secuencia de Titulo si se han realizado cambios fuera del juego
+STR_5396    :{SMALLFONT}{BLACK}Reinicia la secuencia de la pantalla de inicio si se han realizado cambios fuera del juego
 STR_5397    :Sólo se puede usar en la ventana principal
-STR_5398    :No puedes editar la secuencia del titulo mientras se usa
+STR_5398    :No puedes editar la secuencia de la pantalla de inicio mientras se usa
 STR_5399    :Presiona el botón de Parar para continuar con la edición
-STR_5400    :No se puede editar esta secuencia de Titulo
-STR_5401    :Crear una nueva secuencia de título para hacer cambios a
-STR_5402    :Falló la carga de la secuencia de Titulo
+STR_5400    :No se puede editar esta secuencia de la pantalla de inicio
+STR_5401    :Crear una nueva secuencia de la pantalla de inicio para hacer cambios a
+STR_5402    :Falló la carga de la secuencia de la pantalla de inicio
 STR_5403    :Es posible que no haya ningun comando Cargar o Esperar, o el guardado puede no ser válido
 STR_5404    :El nombre ya existe
 STR_5405    :Escribe un nombre para la partida
@@ -3496,7 +3496,7 @@ STR_6164    :{WHITE}❌
 STR_6165    :Usar sincronización vertical
 STR_6166    :{SMALLFONT}{BLACK}Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
 STR_6167    :{SMALLFONT}{BLACK}Avanzado
-STR_6168    :Secuencia de Título
+STR_6168    :Secuencia de la pantalla de inicio
 STR_6169    :Selección de escenario
 STR_6170    :Ajustecitos interfaz
 STR_6171    :Buscar
@@ -3604,20 +3604,20 @@ STR_6272    :Estaciones
 STR_6273    :Música
 STR_6274    :No se puede establecer colores...
 STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
-STR_6276    :{RED}Hay invitados atascandose en {STRINGID}, probablemente debido a un tipo de atracción o modo de operación no válido.
+STR_6276    :{RED}{STRINGID} tiene visitantes trabados, posiblemente por tipo de atracción o modo de operación inválidos.
 STR_6277    :{WINDOW_COLOUR_2}Índice de estación: {BLACK}{STRINGID}
-STR_6278    :Cantidad de autoguardado
-STR_6279    :{SMALLFONT}{BLACK}Número de partidas guardadas automáticamente a conservar.
+STR_6278    :Cantidad de Autoguardados
+STR_6279    :{SMALLFONT}{BLACK}Número de archivos de autoguardado a mantener
 STR_6280    :{SMALLFONT}{BLACK}Chat
-STR_6281    :{SMALLFONT}{BLACK}Muestra un botón para la ventana de Chat en la barra de herramientas.
+STR_6281    :{SMALLFONT}{BLACK}Mostrar un botón para el chat separado en la barra de herramientas
 STR_6282    :Chat
-STR_6283    :Chat no disponible en este momento. ¿Estás conectado a un servidor?
+STR_6283    :Chat no disponible ¿Estás conectado a un servidor?
 STR_6284    :Red
 STR_6285    :Información de Red
 STR_6286    :Recibir
 STR_6287    :Enviar
-STR_6288    :Total recibido
-STR_6289    :Total enviado
+STR_6288    :Total recibidos
+STR_6289    :Total enviados
 STR_6290    :Protocolo base
 STR_6291    :Comandos
 STR_6292    :Mapa
@@ -3626,38 +3626,70 @@ STR_6294    :KiB
 STR_6295    :MiB
 STR_6296    :GiB
 STR_6297    :TiB
-STR_6298    :{STRING}/seg
+STR_6298    :{STRING}/s
 STR_6299    :Descargar todo
 STR_6300    :{SMALLFONT}{BLACK}Descargar todos los objetos faltantes si están disponibles en línea.
-STR_6301    :{SMALLFONT}{BLACK}Copia el nombre del objeto seleccionado al portapapeles.
-STR_6302    :{SMALLFONT}{BLACK}Copia la lista completa de objetos faltantes en el portapapeles.
+STR_6301    :{SMALLFONT}{BLACK}Copiar el nombre de objeto seleccionado al portapapeles.
+STR_6302    :{SMALLFONT}{BLACK}Copiar la lista entera de objetos faltantes al portapapeles.
 STR_6303    :Descargando objeto ({COMMA16} / {COMMA16}): [{STRING}]
-STR_6305    :Multihilo
-STR_6306    :{SMALLFONT}{BLACK}Opción experimental para usar múltiples hilos en el renderizado, puede causar inestabilidad.
+STR_6304    :Abrir selector de escenografía
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Opción experimental para usar múltiples núcleos en el renderizado, puede ser inestable.
 STR_6307    :Esquema de color: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconectar
 STR_6310    :{WINDOW_COLOUR_2}Posición: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Siguiente: {BLACK}{INT32} {INT32} {INT32}
 STR_6312    :(superficie)
-STR_6313    :(pendiente {INT32})
+STR_6313    :(declive {INT32})
 STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerancia {INT32}
-STR_6315    :{WINDOW_COLOUR_2}Objetivo busqueda de ruta: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
-STR_6316    :{WINDOW_COLOUR_2}Historia busqueda de ruta:
+STR_6315    :{WINDOW_COLOUR_2}Pathfind objetivo: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Pathfind historial:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
-STR_6318    :Desincronización detectada en la red.{NEWLINE}Archivo de registro: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Bloque de freno cerrado
+STR_6318    :Desincronización detectada.{NEWLINE}Log: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Bloque de frenado cerrado
 STR_6320    :{WINDOW_COLOUR_2}Indestructible
-STR_6321    :{WINDOW_COLOUR_2}Adición rota
-STR_6322    :{WINDOW_COLOUR_2}Id de Sprite: {BLACK}{INT32}
+STR_6321    :{WINDOW_COLOUR_2}Agregado está roto
+STR_6322    :{WINDOW_COLOUR_2}Id sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
-STR_6325    :{SMALLFONT}{BLACK}Simular atracción
+STR_6325    :{SMALLFONT}{BLACK}Simular Atracción
 STR_6326    :No se puede simular {POP16}{POP16}{POP16}{STRINGID}...
-STR_6327    :Fondo transparente en capturas enormes
-STR_6328    :{SMALLFONT}{BLACK}Si se activa esta opción, las capturas de pantallas enormes tendrán un fondo transparente en lugar del fondo negro por defecto.
+STR_6327    :Fondo transparente para capturas de pantalla gigantes
+STR_6328    :{SMALLFONT}{BLACK}Con esta opción activada, las capturas gigantes tendrán un fondo transparente en vez del fondo negro por defecto.
 STR_6329    :{STRING}{STRINGID}
-STR_6330    :Descargando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
+STR_6330    :Descargando [{STRING}] desde {STRING} ({COMMA16} / {COMMA16})
+STR_6333    :Incrementar factor de escala
+STR_6334    :Disminuir factor de escala
+STR_6335    :Inspector de cuadrícula: Insertar elemento corrupto
+STR_6336    :Inspector de cuadrícula: Copiar elemento
+STR_6337    :Inspector de cuadrícula: Pegar elemento
+STR_6338    :Inspector de cuadrícula: Borrar elemento
+STR_6339    :Inspector de cuadrícula: Mover elemento hacia arriba
+STR_6340    :Inspector de cuadrícula: Mover elemento hacia abajo
+STR_6341    :Inspector de cuadrícula: Aumentar coordenada X
+STR_6342    :Inspector de cuadrícula: Disminuir coordenada X
+STR_6343    :Inspector de cuadrícula: Aumentar coordenada Y
+STR_6344    :Inspector de cuadrícula: Disminuir coordenada Y
+STR_6345    :Inspector de cuadrícula: Aumentar altura del elemento
+STR_6346    :Inspector de cuadrícula: Disminuir altura del elemento
+STR_6347    :¡Agregados a los caminos no se pueden añadir en cruces de nivel!
+STR_6348    :¡Primero remueve el cruce de nivel!
+STR_6349    :Secuencia de la pantalla de inicio al azar
+STR_6350    :Distribuir
+STR_6351    :Herramienta de distribución de escenografía
+STR_6352    :Densidad
+STR_6353    :{SMALLFONT}{BLACK}Baja densidad
+STR_6354    :{SMALLFONT}{BLACK}Media densidad
+STR_6355    :{SMALLFONT}{BLACK}Alta densidad
+STR_6356    :{SMALLFONT}{BLACK}Crear patos si el parque tiene agua
+STR_6357    :{SMALLFONT}{BLACK}Quitar todos los patos del mapa
+STR_6358    :Página {UINT16}
+STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Habilitar efectos de luz en atracciones (experimental)
+STR_6362    :{SMALLFONT}{BLACK}Si está activado, vehículos para las atracciones con vias estarán iluminados de noche.
+STR_6363    :Copiar texto al portapapeles
 
 ##############
 # Escenarios #

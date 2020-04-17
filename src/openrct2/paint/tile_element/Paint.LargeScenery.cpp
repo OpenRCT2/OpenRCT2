@@ -427,24 +427,27 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     // 6B809A:
     uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     auto banner = tileElement->AsLargeScenery()->GetBanner();
-    banner->FormatTextTo(gCommonFormatArgs);
-    utf8 signString[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (banner != nullptr)
     {
-        format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
-    }
-    else
-    {
-        format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
-    }
+        banner->FormatTextTo(gCommonFormatArgs);
+        utf8 signString[256];
+        if (gConfigGeneral.upper_case_banners)
+        {
+            format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
+        }
+        else
+        {
+            format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
+        }
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-    uint16_t stringWidth = gfx_get_string_width(signString);
-    uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-    sub_98199C(
-        session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
-        height + 25, boxoffset.x, boxoffset.y, boxoffset.z);
+        uint16_t stringWidth = gfx_get_string_width(signString);
+        uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+        sub_98199C(
+            session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
+            height + 25, boxoffset.x, boxoffset.y, boxoffset.z);
+    }
 
     large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
 }

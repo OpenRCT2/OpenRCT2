@@ -195,8 +195,6 @@ protected:
     std::string GetString(uint8_t index) const;
     std::string GetString(int32_t language, uint8_t index) const;
 
-    bool IsOpenRCT2OfficialObject();
-
 public:
     explicit Object(const rct_object_entry& entry);
     virtual ~Object();

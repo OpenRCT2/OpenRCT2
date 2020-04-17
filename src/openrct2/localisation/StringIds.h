@@ -3909,6 +3909,13 @@ enum
     STR_ENABLE_LIGHTING_VEHICLES = 6361,
     STR_ENABLE_LIGHTING_VEHICLES_TIP = 6362,
 
+    STR_COPY_INPUT_TO_CLIPBOARD = 6363,
+
+    STR_X_PERSON_DIED_ON_X = 6364,
+
+    STR_NOTIFICATION_RIDE_CASUALTIES = 6365,
+    STR_NOTIFICATION_RIDE_VEHICLE_STALLED = 6366,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

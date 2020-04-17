@@ -28,6 +28,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
+#include <vector>
 
 // clang-format off
 enum {
@@ -37,6 +38,7 @@ enum {
     WINDOW_STAFF_LIST_TAB_ENTERTAINERS
 };
 
+static std::vector<uint16_t> StaffList;
 static bool _quick_fire_mode = false;
 
 static void window_staff_list_close(rct_window *w);
@@ -125,7 +127,6 @@ static rct_widget window_staff_list_widgets[] = {
     { WIDGETS_END },
 };
 
-static uint16_t _window_staff_list_selected_type_count = 0;
 static int32_t _windowStaffListHighlightedIndex;
 static int32_t _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
@@ -176,7 +177,31 @@ rct_window* window_staff_list_open()
     window->max_height = MAX_WH;
     _quick_fire_mode = false;
 
+    WindowStaffListRefresh();
     return window;
+}
+
+void WindowStaffListRefresh()
+{
+    auto w = window_find_by_class(WC_STAFF_LIST);
+    if (w == nullptr)
+    {
+        return;
+    }
+    StaffList.clear();
+    Peep* peep = nullptr;
+    uint16_t spriteIndex;
+    FOR_ALL_STAFF (spriteIndex, peep)
+    {
+        sprite_set_flashing(peep, false);
+        if (peep->staff_type != _windowStaffListSelectedTab)
+            continue;
+        sprite_set_flashing(peep, true);
+
+        StaffList.push_back(spriteIndex);
+    }
+
+    std::sort(StaffList.begin(), StaffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(&a, &b) < 0; });
 }
 
 static void window_staff_list_cancel_tools(rct_window* w)
@@ -328,6 +353,10 @@ void window_staff_list_update(rct_window* w)
             }
         }
     }
+
+    // Note this may be slow if number of staff increases a large amount.
+    // See GuestList for fix (more intents) if required.
+    WindowStaffListRefresh();
 }
 
 /**
@@ -416,27 +445,15 @@ void window_staff_list_toolabort(rct_window* w, rct_widgetindex widgetIndex)
  */
 void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    int32_t i, spriteIndex;
-    Peep* peep;
-
-    uint16_t staffCount = 0;
-    FOR_ALL_STAFF (spriteIndex, peep)
-    {
-        if (peep->staff_type == _windowStaffListSelectedTab)
-            staffCount++;
-    }
-
-    _window_staff_list_selected_type_count = staffCount;
-
     if (_windowStaffListHighlightedIndex != -1)
     {
         _windowStaffListHighlightedIndex = -1;
         w->Invalidate();
     }
 
-    *height = staffCount * SCROLLABLE_ROW_HEIGHT;
-    i = *height - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top
-        + 21;
+    *height = static_cast<int16_t>(StaffList.size()) * SCROLLABLE_ROW_HEIGHT;
+    auto i = *height - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom
+        + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top + 21;
     if (i < 0)
         i = 0;
     if (i < w->scrolls[0].v_top)
@@ -454,15 +471,9 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
  */
 void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t i, spriteIndex;
-    Peep* peep;
-
-    i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-    FOR_ALL_STAFF (spriteIndex, peep)
+    int32_t i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+    for (auto spriteIndex : StaffList)
     {
-        if (peep->staff_type != _windowStaffListSelectedTab)
-            continue;
-
         if (i == 0)
         {
             if (_quick_fire_mode)
@@ -472,6 +483,7 @@ void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const
             }
             else
             {
+                auto peep = GET_PEEP(spriteIndex);
                 auto intent = Intent(WC_PEEP);
                 intent.putExtra(INTENT_EXTRA_PEEP, peep);
                 context_open_intent(&intent);
@@ -627,12 +639,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     int32_t staffTypeStringId = StaffNamingConvention[selectedTab].plural;
     // If the number of staff for a given type is 1, we use the singular forms of the names
-    if (_window_staff_list_selected_type_count == 1)
+    if (StaffList.size() == 1)
     {
         staffTypeStringId = StaffNamingConvention[selectedTab].singular;
     }
 
-    set_format_arg(0, uint16_t, _window_staff_list_selected_type_count);
+    set_format_arg(0, uint16_t, static_cast<uint16_t>(StaffList.size()));
     set_format_arg(2, rct_string_id, staffTypeStringId);
 
     gfx_draw_string_left(
@@ -660,10 +672,6 @@ static constexpr const uint32_t staffCostumeSprites[] = {
  */
 void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-    uint8_t selectedTab;
-    Peep* peep;
-
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
     // How much space do we have for the name and action columns? (Discount scroll area and icons.)
@@ -672,67 +680,64 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     const int32_t actionColumnSize = nonIconSpace * 0.58;
     const int32_t actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - actionColumnSize - 15;
 
-    y = 0;
-    i = 0;
-    selectedTab = _windowStaffListSelectedTab;
-    FOR_ALL_STAFF (spriteIndex, peep)
+    auto y = 0;
+    auto i = 0;
+    for (auto spriteIndex : StaffList)
     {
-        if (peep->staff_type == selectedTab)
+        if (y > dpi->y + dpi->height)
         {
-            if (y > dpi->y + dpi->height)
-            {
-                break;
-            }
-
-            if (y + 11 >= dpi->y)
-            {
-                int32_t format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
-
-                if (i == _windowStaffListHighlightedIndex)
-                {
-                    gfx_filter_rect(dpi, 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
-                    format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
-                }
-
-                peep->FormatNameTo(gCommonFormatArgs);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, nameColumnSize);
-
-                peep->FormatActionTo(gCommonFormatArgs);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, actionColumnSize);
-
-                // True if a patrol path is set for the worker
-                if (gStaffModes[peep->staff_id] & 2)
-                {
-                    gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, nameColumnSize + 5, y, 0);
-                }
-
-                staffOrderIcon_x = nameColumnSize + 20;
-                if (peep->staff_type != 3)
-                {
-                    staffOrders = peep->staff_orders;
-                    staffOrderSprite = staffOrderBaseSprites[selectedTab];
-
-                    while (staffOrders != 0)
-                    {
-                        if (staffOrders & 1)
-                        {
-                            gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y, 0);
-                        }
-                        staffOrders = staffOrders >> 1;
-                        staffOrderIcon_x += 9;
-                        // TODO: Remove sprite ID addition
-                        staffOrderSprite++;
-                    }
-                }
-                else
-                {
-                    gfx_draw_sprite(dpi, staffCostumeSprites[peep->sprite_type - 4], staffOrderIcon_x, y, 0);
-                }
-            }
-
-            y += SCROLLABLE_ROW_HEIGHT;
-            i++;
+            break;
         }
+
+        if (y + 11 >= dpi->y)
+        {
+            auto peep = GET_PEEP(spriteIndex);
+            int32_t format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
+
+            if (i == _windowStaffListHighlightedIndex)
+            {
+                gfx_filter_rect(dpi, 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
+                format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+            }
+
+            peep->FormatNameTo(gCommonFormatArgs);
+            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, nameColumnSize);
+
+            peep->FormatActionTo(gCommonFormatArgs);
+            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, actionColumnSize);
+
+            // True if a patrol path is set for the worker
+            if (gStaffModes[peep->staff_id] & 2)
+            {
+                gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, nameColumnSize + 5, y, 0);
+            }
+
+            auto staffOrderIcon_x = nameColumnSize + 20;
+            if (peep->staff_type != 3)
+            {
+                auto staffOrders = peep->staff_orders;
+                auto staffOrderSprite = staffOrderBaseSprites[_windowStaffListSelectedTab];
+
+                while (staffOrders != 0)
+                {
+                    if (staffOrders & 1)
+                    {
+                        gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y, 0);
+                    }
+                    staffOrders = staffOrders >> 1;
+                    staffOrderIcon_x += 9;
+                    // TODO: Remove sprite ID addition
+                    staffOrderSprite++;
+                }
+            }
+            else
+            {
+                gfx_draw_sprite(dpi, staffCostumeSprites[peep->sprite_type - 4], staffOrderIcon_x, y, 0);
+            }
+        }
+
+        y += SCROLLABLE_ROW_HEIGHT;
+        i++;
     }
 }
 

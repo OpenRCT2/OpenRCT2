@@ -14,6 +14,14 @@
 #include <cstring>
 
 template<int32_t image_type, int32_t zoom_level>
+static void FASTCALL DrawRLESprite2_Magnify(
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
+{
+    // TODO
+}
+
+template<int32_t image_type, int32_t zoom_level>
 static void FASTCALL DrawRLESprite2(
     const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
     const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
@@ -138,6 +146,10 @@ static void FASTCALL DrawRLESprite2(
     }
 }
 
+#define DrawRLESpriteHelper2_Magnify(image_type, zoom_level)                                                                   \
+    DrawRLESprite2_Magnify<image_type, zoom_level>(                                                                            \
+        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
+
 #define DrawRLESpriteHelper2(image_type, zoom_level)                                                                           \
     DrawRLESprite2<image_type, zoom_level>(                                                                                    \
         source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
@@ -147,9 +159,15 @@ static void FASTCALL DrawRLESprite1(
     const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const uint8_t* palette_pointer,
     const rct_drawpixelinfo* dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
-    int32_t zoom_level = dpi->zoom_level;
+    auto zoom_level = static_cast<int8_t>(dpi->zoom_level);
     switch (zoom_level)
     {
+        case -2:
+            DrawRLESpriteHelper2_Magnify(image_type, 2);
+            break;
+        case -1:
+            DrawRLESpriteHelper2_Magnify(image_type, 1);
+            break;
         case 0:
             DrawRLESpriteHelper2(image_type, 0);
             break;

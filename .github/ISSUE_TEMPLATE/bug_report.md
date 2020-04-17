@@ -1,3 +1,12 @@
+---
+name: Bug Report
+about: Describe an issue you encountered when playing OpenRCT2
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 <!--
   Fill in the placeholders below. Delete any headings and placeholders that you do not fill in.
 -->

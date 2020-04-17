@@ -30,7 +30,7 @@ includes some 3rd party software under different licenses. See the section
 ---- ----------
 The easiest way to contact the OpenRCT2 team is by submitting issues on GitHub
 (https://github.com/OpenRCT2/OpenRCT2) in the form of questions or bug reports.
-You can also chat with us on gitter (https://gitter.im/OpenRCT2/OpenRCT2).
+You can also chat with us on Discord (https://discordapp.com/invite/fsEwSWs).
 
 2.1) Reporting bugs
 ---- --------------

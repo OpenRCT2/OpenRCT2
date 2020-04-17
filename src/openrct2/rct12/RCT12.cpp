@@ -221,7 +221,8 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
+        || trackType == TRACK_ELEM_TOWER_BASE)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -410,7 +411,7 @@ bool RCT12WallElement::AnimationIsBackwards() const
 
 uint32_t RCT12WallElement::GetRawRCT1WallTypeData() const
 {
-    return colour_3 | (colour_1 << 8) | (animation << 16);
+    return entryIndex | (colour_3 << 8) | (colour_1 << 16) | (animation << 24);
 }
 
 int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
@@ -479,44 +480,6 @@ uint8_t RCT12BannerElement::GetAllowedEdges() const
 bool is_user_string_id(rct_string_id stringId)
 {
     return stringId >= 0x8000 && stringId < 0x9000;
-}
-
-std::string RCT12::RemoveFormatCodes(const std::string_view& s)
-{
-    constexpr auto RCT12_MULTIBYTE_PREFIX = (char)(uint8_t)0xFF;
-
-    std::string result;
-    result.reserve(s.size());
-
-    // Append each character that is not a format code
-    for (size_t i = 0; i < s.size(); i++)
-    {
-        auto c = s[i];
-        if (c == '\0')
-        {
-            break;
-        }
-        else if (c == RCT12_MULTIBYTE_PREFIX)
-        {
-            // Multi-byte, assume not a format code
-            result.push_back(c);
-            if (i + 1 < s.size())
-            {
-                result.push_back(s[i + 1]);
-            }
-            if (i + 2 < s.size())
-            {
-                result.push_back(s[i + 2]);
-            }
-            i += 2;
-        }
-        else if (!utf8_is_format_code(c))
-        {
-            result.push_back(c);
-        }
-    }
-
-    return result;
 }
 
 uint8_t RCT12TileElement::GetBannerIndex()
@@ -790,7 +753,8 @@ void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
+        || trackType == TRACK_ELEM_TOWER_BASE)
     {
         sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
         sequence |= (newStationIndex << 4);

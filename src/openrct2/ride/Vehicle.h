@@ -15,6 +15,7 @@
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
+#include "Station.h"
 
 #include <array>
 #include <cstddef>
@@ -212,7 +213,7 @@ struct Vehicle : SpriteBase
     uint16_t mass;
     uint16_t update_flags;
     uint8_t swing_sprite;
-    uint8_t current_station;
+    StationIndex current_station;
     union
     {
         int16_t swinging_car_var_0;
@@ -518,7 +519,7 @@ uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDir
 bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
 
 extern Vehicle* gCurrentVehicle;
-extern uint8_t _vehicleStationIndex;
+extern StationIndex _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;
 extern int32_t _vehicleVelocityF64E0C;

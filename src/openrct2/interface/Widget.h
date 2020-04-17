@@ -58,6 +58,8 @@ enum
     SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
 };
 
+constexpr uint8_t SCROLLBAR_WIDTH = 10;
+
 void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index);
 void widget_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 

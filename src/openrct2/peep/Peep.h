@@ -582,7 +582,7 @@ struct Peep : SpriteBase
     uint8_t photo3_ride_ref;
     uint8_t photo4_ride_ref;
     uint8_t current_ride;
-    uint8_t current_ride_station;
+    StationIndex current_ride_station;
     uint8_t current_train;
     union
     {
@@ -951,9 +951,9 @@ extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT]
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gGuestChangeModifier;
-extern uint16_t gNumGuestsInPark;
-extern uint16_t gNumGuestsInParkLastWeek;
-extern uint16_t gNumGuestsHeadingForPark;
+extern uint32_t gNumGuestsInPark;
+extern uint32_t gNumGuestsInParkLastWeek;
+extern uint32_t gNumGuestsHeadingForPark;
 
 extern money16 gGuestInitialCash;
 extern uint8_t gGuestInitialHappiness;
@@ -988,10 +988,9 @@ void peep_window_state_update(Peep* peep);
 void peep_decrement_num_riders(Peep* peep);
 
 void peep_set_map_tooltip(Peep* peep);
+int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b);
 
 void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
-void peep_update_name_sort(Peep* peep);
-void peep_sort();
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);

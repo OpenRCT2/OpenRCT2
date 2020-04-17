@@ -57,12 +57,12 @@ namespace OpenRCT2::Audio
             size_t bytesToRead = 0;
             if (offset < _length)
             {
-                bytesToRead = (size_t)std::min<uint64_t>(len, _length - offset);
+                bytesToRead = static_cast<size_t>(std::min<uint64_t>(len, _length - offset));
 
                 auto src = GetData();
                 if (src != nullptr)
                 {
-                    std::copy_n(src + offset, bytesToRead, (uint8_t*)dst);
+                    std::copy_n(src + offset, bytesToRead, reinterpret_cast<uint8_t*>(dst));
                 }
             }
             return bytesToRead;
@@ -164,7 +164,7 @@ namespace OpenRCT2::Audio
                     auto src = GetData();
                     auto cvtBuffer = std::vector<uint8_t>(_length * cvt.len_mult);
                     std::copy_n(src, _length, cvtBuffer.data());
-                    cvt.len = (int32_t)_length;
+                    cvt.len = static_cast<int32_t>(_length);
                     cvt.buf = cvtBuffer.data();
                     if (SDL_ConvertAudio(&cvt) >= 0)
                     {

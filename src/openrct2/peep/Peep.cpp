@@ -55,9 +55,9 @@ utf8 gPathFindDebugPeepName[256];
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 uint8_t gGuestChangeModifier;
-uint16_t gNumGuestsInPark;
-uint16_t gNumGuestsInParkLastWeek;
-uint16_t gNumGuestsHeadingForPark;
+uint32_t gNumGuestsInPark;
+uint32_t gNumGuestsInParkLastWeek;
+uint32_t gNumGuestsHeadingForPark;
 
 money16 gGuestInitialCash;
 uint8_t gGuestInitialHappiness;
@@ -1184,9 +1184,8 @@ void peep_problem_warnings_update()
     Peep* peep;
     Ride* ride;
     uint16_t spriteIndex;
-    uint16_t guests_in_park = gNumGuestsInPark;
-    int32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
-            disgust_counter = 0, bathroom_counter = 0, vandalism_counter = 0;
+    uint32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
+             disgust_counter = 0, bathroom_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
     FOR_ALL_GUESTS (spriteIndex, peep)
@@ -1252,7 +1251,7 @@ void peep_problem_warnings_update()
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warning_throttle[0])
         --warning_throttle[0];
-    else if (hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= guests_in_park / 16)
+    else if (hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[0] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1263,7 +1262,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[1])
         --warning_throttle[1];
-    else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= guests_in_park / 16)
+    else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[1] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1274,7 +1273,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[2])
         --warning_throttle[2];
-    else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= guests_in_park / 16)
+    else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1285,7 +1284,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[3])
         --warning_throttle[3];
-    else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= guests_in_park / 32)
+    else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= gNumGuestsInPark / 32)
     {
         warning_throttle[3] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1296,7 +1295,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[4])
         --warning_throttle[4];
-    else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= guests_in_park / 32)
+    else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= gNumGuestsInPark / 32)
     {
         warning_throttle[4] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1307,7 +1306,7 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[5])
         --warning_throttle[5];
-    else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= guests_in_park / 32)
+    else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= gNumGuestsInPark / 32)
     {
         warning_throttle[5] = 4;
         if (gConfigNotifications.guest_warnings)
@@ -1411,7 +1410,7 @@ void peep_update_crowd_noise()
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
         volume = 120 - std::min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
-        volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
+        volume = (((207360000 - volume) / viewport->zoom) - 207360000) / 65536 - 150;
 
         // Load and play crowd noise if needed and set volume
         if (_crowdSoundChannel == nullptr)
@@ -1779,8 +1778,6 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     uint8_t energy = (scenario_rand() % 64) + 65;
     peep->energy = energy;
     peep->energy_target = energy;
-
-    peep_update_name_sort(peep);
 
     increment_guests_heading_for_park();
 
@@ -2405,7 +2402,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         }
 
         peep->time_lost = 0;
-        uint8_t stationNum = tile_element->AsEntrance()->GetStationIndex();
+        auto stationNum = tile_element->AsEntrance()->GetStationIndex();
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
@@ -2832,7 +2829,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
         {
             // Peep is not queuing.
             peep->time_lost = 0;
-            uint8_t stationNum = tile_element->AsPath()->GetStationIndex();
+            auto stationNum = tile_element->AsPath()->GetStationIndex();
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()
@@ -3241,7 +3238,7 @@ rct_string_id get_real_name_string_id_from_id(uint32_t id)
     return dx;
 }
 
-static int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b)
+int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b)
 {
     Peep const* peep_a = GET_PEEP(*(uint16_t*)sprite_index_a);
     Peep const* peep_b = GET_PEEP(*(uint16_t*)sprite_index_b);
@@ -3280,122 +3277,6 @@ static int32_t peep_compare(const void* sprite_index_a, const void* sprite_index
 
 /**
  *
- *  rct2: 0x00699115
- */
-void peep_update_name_sort(Peep* peep)
-{
-    // Remove peep from sprite list
-    uint16_t nextSpriteIndex = peep->next;
-    uint16_t prevSpriteIndex = peep->previous;
-    if (prevSpriteIndex != SPRITE_INDEX_NULL)
-    {
-        Peep* prevPeep = GET_PEEP(prevSpriteIndex);
-        prevPeep->next = nextSpriteIndex;
-    }
-    else
-    {
-        gSpriteListHead[SPRITE_LIST_PEEP] = nextSpriteIndex;
-    }
-
-    if (nextSpriteIndex != SPRITE_INDEX_NULL)
-    {
-        Peep* nextPeep = GET_PEEP(nextSpriteIndex);
-        nextPeep->previous = prevSpriteIndex;
-    }
-
-    Peep* otherPeep;
-    uint16_t spriteIndex;
-    FOR_ALL_PEEPS (spriteIndex, otherPeep)
-    {
-        // Check if peep should go before this one
-        if (peep_compare(&peep->sprite_index, &otherPeep->sprite_index) >= 0)
-        {
-            continue;
-        }
-
-        // Place peep before this one
-        peep->previous = otherPeep->previous;
-        otherPeep->previous = peep->sprite_index;
-        if (peep->previous != SPRITE_INDEX_NULL)
-        {
-            Peep* prevPeep = GET_PEEP(peep->previous);
-            peep->next = prevPeep->next;
-            prevPeep->next = peep->sprite_index;
-        }
-        else
-        {
-            peep->next = gSpriteListHead[SPRITE_LIST_PEEP];
-            gSpriteListHead[SPRITE_LIST_PEEP] = peep->sprite_index;
-        }
-        goto finish_peep_sort;
-    }
-
-    // Place peep at the end
-    FOR_ALL_PEEPS (spriteIndex, otherPeep)
-    {
-        if (otherPeep->next == SPRITE_INDEX_NULL)
-        {
-            otherPeep->next = peep->sprite_index;
-            peep->previous = otherPeep->sprite_index;
-            peep->next = SPRITE_INDEX_NULL;
-            goto finish_peep_sort;
-        }
-    }
-
-    gSpriteListHead[SPRITE_LIST_PEEP] = peep->sprite_index;
-    peep->next = SPRITE_INDEX_NULL;
-    peep->previous = SPRITE_INDEX_NULL;
-
-finish_peep_sort:
-    // This is required at the moment because this function reorders peeps in the sprite list
-    sprite_position_tween_reset();
-}
-
-void peep_sort()
-{
-    // Count number of peeps
-    uint16_t sprite_index, num_peeps = 0;
-    Peep* peep;
-    FOR_ALL_PEEPS (sprite_index, peep)
-    {
-        num_peeps++;
-    }
-
-    // No need to sort
-    if (num_peeps < 2)
-        return;
-
-    // Create a copy of the peep list and sort it using peep_compare
-    uint16_t* peep_list = (uint16_t*)malloc(num_peeps * sizeof(uint16_t));
-    int32_t i = 0;
-    FOR_ALL_PEEPS (sprite_index, peep)
-    {
-        peep_list[i++] = peep->sprite_index;
-    }
-    qsort(peep_list, num_peeps, sizeof(uint16_t), peep_compare);
-
-    // Set the correct peep->next and peep->previous using the sorted list
-    for (i = 0; i < num_peeps; i++)
-    {
-        peep = GET_PEEP(peep_list[i]);
-        peep->previous = (i > 0) ? peep_list[i - 1] : SPRITE_INDEX_NULL;
-        peep->next = (i + 1 < num_peeps) ? peep_list[i + 1] : SPRITE_INDEX_NULL;
-    }
-    // Make sure the first peep is set
-    gSpriteListHead[SPRITE_LIST_PEEP] = peep_list[0];
-
-    free(peep_list);
-
-    i = 0;
-    FOR_ALL_PEEPS (sprite_index, peep)
-    {
-        i++;
-    }
-    assert(i == num_peeps);
-}
-
-/**
- *
  *  rct2: 0x0069926C
  */
 void peep_update_names(bool realNames)
@@ -3411,7 +3292,8 @@ void peep_update_names(bool realNames)
         // Peep names are now dynamic
     }
 
-    peep_sort();
+    auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
+    context_broadcast_intent(&intent);
     gfx_invalidate_screen();
 }
 
@@ -3449,7 +3331,7 @@ void pathfind_logging_disable()
 
 void increment_guests_in_park()
 {
-    if (gNumGuestsInPark < UINT16_MAX)
+    if (gNumGuestsInPark < UINT32_MAX)
     {
         gNumGuestsInPark++;
     }
@@ -3461,7 +3343,7 @@ void increment_guests_in_park()
 
 void increment_guests_heading_for_park()
 {
-    if (gNumGuestsHeadingForPark < UINT16_MAX)
+    if (gNumGuestsHeadingForPark < UINT32_MAX)
     {
         gNumGuestsHeadingForPark++;
     }

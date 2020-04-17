@@ -337,7 +337,10 @@ static void window_track_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             // Keep the highlighted item selected
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
-                w->selected_list_item = _filteredTrackIds[w->selected_list_item];
+                if (w->selected_list_item != -1 && _filteredTrackIds.size() > static_cast<size_t>(w->selected_list_item))
+                    w->selected_list_item = _filteredTrackIds[w->selected_list_item];
+                else
+                    w->selected_list_item = -1;
             }
             else
             {

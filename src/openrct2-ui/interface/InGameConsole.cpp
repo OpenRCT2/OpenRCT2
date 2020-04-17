@@ -131,7 +131,7 @@ void InGameConsole::ScrollToEnd()
     if (maxLines == 0)
         _consoleScrollPos = 0;
     else
-        _consoleScrollPos = std::max<int32_t>(0, (int32_t)_consoleLines.size() - maxLines);
+        _consoleScrollPos = std::max<int32_t>(0, static_cast<int32_t>(_consoleLines.size()) - maxLines);
 }
 
 void InGameConsole::RefreshCaret()
@@ -142,7 +142,7 @@ void InGameConsole::RefreshCaret()
 void InGameConsole::Scroll(int32_t linesToScroll)
 {
     const int32_t maxVisibleLines = GetNumVisibleLines();
-    const int32_t numLines = (int32_t)_consoleLines.size();
+    const int32_t numLines = static_cast<int32_t>(_consoleLines.size());
     if (numLines > maxVisibleLines)
     {
         int32_t maxScrollValue = numLines - maxVisibleLines;
@@ -308,7 +308,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     int32_t y = _consoleTop + CONSOLE_EDGE_PADDING;
 
     // Draw text inside console
-    for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++)
+    for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = colourFormatStr + _consoleLines[index];

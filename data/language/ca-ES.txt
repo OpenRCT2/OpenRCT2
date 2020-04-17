@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :No es pot canviar el temps límit de l'atracció...
 STR_1752    :{SMALLFONT}{BLACK}Mostra una llista amb tots els visitants del parc
 STR_1753    :{SMALLFONT}{BLACK}Mostra una llista resumida dels visitants del parc
-STR_1754    :{BLACK}{COMMA16} visitants
-STR_1755    :{BLACK}{COMMA16} visitant
+STR_1754    :{BLACK}{COMMA32} visitants
+STR_1755    :{BLACK}{COMMA32} visitant
 STR_1756    :{WINDOW_COLOUR_2}Preu de l'entrada:
 STR_1757    :{WINDOW_COLOUR_2}Fiabilitat: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Mode construir
@@ -1189,7 +1189,7 @@ STR_1813    :Altres objectes
 STR_1814    :Accions
 STR_1815    :Pensaments
 STR_1816    :{SMALLFONT}{BLACK}Seleccioneu el tipus d'informació per mostrar en la llista de visitants
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tots els visitants
 STR_1819    :{WINDOW_COLOUR_2}Tots els visitants (resum)
 STR_1820    :{WINDOW_COLOUR_2}Visitants {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :Preferida de: {COMMA16} visitant
 STR_1843    :Preferida de: {COMMA16} visitants
 STR_1844    :{SMALLFONT}{BLACK}Seleccioneu el tipus d'informació per mostrar a la llista d'atraccions
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} visitants
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitants
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitants
+STR_1846    :{COMMA32} visitants
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} visitants
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} visitants
 STR_1849    :{WINDOW_COLOUR_2}Reprodueix música
 STR_1850    :{SMALLFONT}{BLACK}Trieu si aquesta atracció reproduirà música o no.
 STR_1851    :{WINDOW_COLOUR_2}Cost de funcionament: {BLACK}{CURRENCY2DP} per hora
@@ -1578,7 +1578,7 @@ STR_2219    :{RED}{COMMA16} persones han mort en l'accident de {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valoració del parc: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Visitants del parc: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Visitants del parc: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Efectiu: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Efectiu: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{CURRENCY}

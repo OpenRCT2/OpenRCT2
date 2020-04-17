@@ -96,7 +96,7 @@ constexpr int16_t VEHICLE_STOPPING_SPIN_SPEED = 600;
 Vehicle* gCurrentVehicle;
 
 static uint8_t _vehicleBreakdown;
-uint8_t _vehicleStationIndex;
+StationIndex _vehicleStationIndex;
 uint32_t _vehicleMotionTrackFlags;
 int32_t _vehicleVelocityF64E08;
 int32_t _vehicleVelocityF64E0C;
@@ -939,7 +939,7 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
     rct_vehicle_sound_params param;
     param.priority = priority;
     int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
-    panX >>= g_music_tracking_viewport->zoom;
+    panX = panX / g_music_tracking_viewport->zoom;
     panX += g_music_tracking_viewport->pos.x;
 
     uint16_t screenWidth = context_get_width();
@@ -950,7 +950,7 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
     int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->viewPos.y;
-    panY >>= g_music_tracking_viewport->zoom;
+    panY = panY / g_music_tracking_viewport->zoom;
     panY += g_music_tracking_viewport->pos.y;
 
     uint16_t screenHeight = context_get_height();
@@ -1049,8 +1049,12 @@ static void vehicle_sounds_update_window_setup()
 
     g_music_tracking_viewport = viewport;
     gWindowAudioExclusive = window;
-    const uint8_t ZoomToVolume[MAX_ZOOM_LEVEL + 1] = { 0, 35, 70, 70 };
-    gVolumeAdjustZoom = ZoomToVolume[viewport->zoom];
+    if (viewport->zoom <= 0)
+        gVolumeAdjustZoom = 0;
+    else if (viewport->zoom == 1)
+        gVolumeAdjustZoom = 35;
+    else
+        gVolumeAdjustZoom = 70;
 }
 
 static uint8_t vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params* sound_params)
@@ -1280,7 +1284,7 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
+    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
         get_sprite(i)->vehicle.UpdateSoundParams(vehicleSoundParamsList);
     }
@@ -1361,7 +1365,7 @@ void vehicle_update_all()
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
+    sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
         vehicle = GET_VEHICLE(sprite_index);
@@ -1555,7 +1559,7 @@ static void vehicle_update_measurements(Vehicle* vehicle)
         return;
     }
 
-    if (ride->current_test_station == 0xFF)
+    if (ride->current_test_station == STATION_INDEX_NULL)
         return;
 
     if (!ride_get_entrance_location(ride, ride->current_test_station).isNull())
@@ -2689,7 +2693,7 @@ static void vehicle_update_waiting_to_depart(Vehicle* vehicle)
 struct rct_synchronised_vehicle
 {
     ride_id_t ride_id;
-    uint8_t station_id;
+    StationIndex stationIndex;
     uint16_t vehicle_id;
 };
 
@@ -2733,11 +2737,11 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    int32_t stationIndex = tileElement->AsTrack()->GetStationIndex();
+    auto stationIndex = tileElement->AsTrack()->GetStationIndex();
 
     rct_synchronised_vehicle* sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
-    sv->station_id = stationIndex;
+    sv->stationIndex = stationIndex;
     sv->vehicle_id = SPRITE_INDEX_NULL;
     _lastSynchronisedVehicle++;
 
@@ -2810,7 +2814,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
     if (ride == nullptr)
         return false;
 
-    int32_t station = vehicle->current_station;
+    StationIndex station = vehicle->current_station;
     auto location = ride->stations[station].GetStart();
     int32_t x = location.x;
     int32_t y = location.y;
@@ -2888,7 +2892,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
             {
                 if (sv_ride->IsBlockSectioned())
                 {
-                    if (!(sv_ride->stations[sv->station_id].Depart & STATION_DEPART_FLAG))
+                    if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
                         uint8_t rideId = RIDE_ID_NULL;
@@ -2943,7 +2947,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
 
                     int32_t numTrainsAtStation = 0;
                     int32_t numTravelingTrains = 0;
-                    int32_t currentStation = sv->station_id;
+                    auto currentStation = sv->stationIndex;
                     for (int32_t i = 0; i < sv_ride->num_vehicles; i++)
                     {
                         uint16_t spriteIndex = sv_ride->vehicles[i];
@@ -3144,6 +3148,8 @@ static void vehicle_update_travelling_boat_hire_setup(Vehicle* vehicle)
 
     vehicle->BoatLocation = location;
     vehicle->var_35 = 0;
+    // No longer on a track so reset to 0 for import/export
+    vehicle->track_type = 0;
     vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
     vehicle->remaining_distance += 27924;
 
@@ -3481,19 +3487,22 @@ static void vehicle_check_if_missing(Vehicle* vehicle)
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
-    set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
+    if (gConfigNotifications.ride_stalled_vehicles)
+    {
+        set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
 
-    uint8_t vehicleIndex = 0;
-    for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
-        if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
-            break;
+        uint8_t vehicleIndex = 0;
+        for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
+            if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+                break;
 
-    vehicleIndex++;
-    set_format_arg(2, uint16_t, vehicleIndex);
-    auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
-    set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
+        vehicleIndex++;
+        set_format_arg(2, uint16_t, vehicleIndex);
+        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
+        set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
-    news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
+    }
 }
 
 static void vehicle_simulate_crash(Vehicle* vehicle)
@@ -4265,6 +4274,7 @@ static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, i
         if (ride != nullptr)
         {
             vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+            vehicle->BoatLocation.setNull();
         }
 
         vehicle->track_progress = 0;
@@ -5200,7 +5210,13 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
     if (numFatalities != 0)
     {
         ride->FormatNameTo(gCommonFormatArgs + 2);
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        news_item_add_to_queue(
+            NEWS_ITEM_RIDE, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        if (gConfigNotifications.ride_casualties)
+        {
+            ride->FormatNameTo(gCommonFormatArgs + 2);
+            news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+        }
 
         if (gParkRatingCasualtyPenalty < 500)
         {
@@ -6211,6 +6227,8 @@ Vehicle* vehicle_get_head(const Vehicle* vehicle)
 
     for (;;)
     {
+        if (vehicle->prev_vehicle_on_ride > MAX_SPRITES)
+            return nullptr;
         prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             break;
@@ -7856,7 +7874,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
         return;
     }
 
-    if (_vehicleStationIndex == 0xFF)
+    if (_vehicleStationIndex == STATION_INDEX_NULL)
     {
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
@@ -9548,7 +9566,7 @@ int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation)
     _vehicleF64E2C = 0;
     gCurrentVehicle = vehicle;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = 0xFF;
+    _vehicleStationIndex = STATION_INDEX_NULL;
 
     vehicle_update_track_motion_up_stop_check(vehicle);
     check_and_apply_block_section_stop_site(vehicle);

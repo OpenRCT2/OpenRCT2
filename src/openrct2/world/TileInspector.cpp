@@ -689,7 +689,7 @@ GameActionResult::Ptr tile_inspector_entrance_make_usable(const CoordsXY& loc, i
 
     if (isExecuting)
     {
-        uint8_t stationIndex = entranceElement->AsEntrance()->GetStationIndex();
+        auto stationIndex = entranceElement->AsEntrance()->GetStationIndex();
 
         switch (entranceElement->AsEntrance()->GetEntranceType())
         {

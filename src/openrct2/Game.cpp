@@ -17,11 +17,13 @@
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
+#include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "actions/LoadOrQuitAction.hpp"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
+#include "core/Path.hpp"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
@@ -63,6 +65,7 @@
 #include "world/Water.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <iterator>
 #include <memory>
 
@@ -429,7 +432,7 @@ void game_fix_save_vars()
     // Recalculates peep count after loading a save to fix corrupted files
     Peep* peep;
     uint16_t spriteIndex;
-    uint16_t peepCount = 0;
+    uint32_t peepCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (!peep->outside_of_park)
@@ -437,8 +440,6 @@ void game_fix_save_vars()
     }
 
     gNumGuestsInPark = peepCount;
-
-    peep_sort();
 
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
@@ -790,7 +791,8 @@ void game_autosave()
         platform_file_copy(path, backupPath, true);
     }
 
-    scenario_save(path, saveFlags);
+    if (!scenario_save(path, saveFlags))
+        std::fprintf(stderr, "Could not autosave the scenario. Is the save folder writeable?\n");
 }
 
 static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8* path)
@@ -846,4 +848,46 @@ void game_load_or_quit_no_save_prompt()
             openrct2_finish();
             break;
     }
+}
+
+void start_silent_record()
+{
+    std::string name = Path::Combine(
+        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.sv6r");
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
+    {
+        OpenRCT2::ReplayRecordInfo info;
+        replayManager->GetCurrentReplayInfo(info);
+        safe_strcpy(gSilentRecordingName, info.FilePath.c_str(), MAX_PATH);
+
+        const char* logFmt = "Silent replay recording started: (%s) %s";
+        printf(logFmt, info.Name.c_str(), info.FilePath.c_str());
+    }
+}
+
+bool stop_silent_record()
+{
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (!replayManager->IsRecording() && !replayManager->IsNormalising())
+    {
+        return false;
+    }
+
+    OpenRCT2::ReplayRecordInfo info;
+    replayManager->GetCurrentReplayInfo(info);
+
+    if (replayManager->StopRecording())
+    {
+        const char* logFmt = "Replay recording stopped: (%s) %s\n"
+                             "  Ticks: %u\n"
+                             "  Commands: %u\n"
+                             "  Checksums: %u";
+
+        printf(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+
+        return true;
+    }
+
+    return false;
 }

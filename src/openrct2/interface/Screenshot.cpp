@@ -348,7 +348,7 @@ static void ReleaseDPI(rct_drawpixelinfo& dpi)
     dpi.height = 0;
 }
 
-static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, int32_t zoom)
+static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, ZoomLevel zoom)
 {
     // Get the tile coordinates of each corner
     auto leftTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::LEFT, false);
@@ -370,8 +370,8 @@ static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, int32_t 
     viewport.viewPos = { left, top };
     viewport.view_width = right - left;
     viewport.view_height = bottom - top;
-    viewport.width = viewport.view_width >> zoom;
-    viewport.height = viewport.view_height >> zoom;
+    viewport.width = viewport.view_width / zoom;
+    viewport.height = viewport.view_height / zoom;
     viewport.zoom = zoom;
     return viewport;
 }
@@ -403,7 +403,7 @@ void screenshot_giant()
         }
 
         int32_t rotation = get_current_rotation();
-        int32_t zoom = 0;
+        ZoomLevel zoom = 0;
 
         auto mainWindow = window_get_main();
         auto vp = window_get_viewport(mainWindow);
@@ -463,7 +463,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
 
     // Create Viewport and DPI for every rotation and zoom.
     constexpr int32_t MAX_ROTATIONS = 4;
-
+    constexpr int32_t MAX_ZOOM_LEVEL = 3;
     std::array<rct_drawpixelinfo, MAX_ROTATIONS * MAX_ZOOM_LEVEL> dpis;
     std::array<rct_viewport, MAX_ROTATIONS * MAX_ZOOM_LEVEL> viewports;
 

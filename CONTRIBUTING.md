@@ -1,7 +1,7 @@
 # Contributing to OpenRCT2
 Any contribution to OpenRCT2 is welcome and valued. Contributions can be in the form of bug reports, translation or code
 additions / changes. Please read this document to learn how to contribute as effectively as possible. If you have any
-questions or concerns, please ask in the [gitter](https://gitter.im/OpenRCT2/OpenRCT2) chat room.
+questions or concerns, please ask in the [Discord chat](https://discordapp.com/invite/fsEwSWs).
 
 # Reporting bugs
 To report a bug, ensure you have a GitHub account. Search the issues page to see if the bug has already been reported.

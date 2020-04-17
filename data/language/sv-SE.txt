@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Kan inte ändra tidsgränsen för åkturen …
 STR_1752    :{SMALLFONT}{BLACK}Visa lista över individuella besökare i parken
 STR_1753    :{SMALLFONT}{BLACK}Visa sammanfattning av alla besökare i parken
-STR_1754    :{BLACK}{COMMA16} besökare
-STR_1755    :{BLACK}{COMMA16} Besökare
+STR_1754    :{BLACK}{COMMA32} besökare
+STR_1755    :{BLACK}{COMMA32} Besökare
 STR_1756    :{WINDOW_COLOUR_2}Biljettpris:
 STR_1757    :{WINDOW_COLOUR_2}Tillförlitlighet: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Byggläge
@@ -1189,7 +1189,7 @@ STR_1813    :Diverse saker
 STR_1814    :Handlingar
 STR_1815    :Tankar
 STR_1816    :{SMALLFONT}{BLACK}Välj informationstyp som ska visas i besökarlistan
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alla besökare
 STR_1819    :{WINDOW_COLOUR_2}Alla besökare (sammanfattat)
 STR_1820    :{WINDOW_COLOUR_2}Besökare {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :{COMMA16} besökares favorit
 STR_1843    :{COMMA16} besökares favorit
 STR_1844    :{SMALLFONT}{BLACK}Välj informationstyp som ska visas i åkturs- och attraktionslistan
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} besökare
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} besökare
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} besökare
+STR_1846    :{COMMA32} besökare
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} besökare
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} besökare
 STR_1849    :{WINDOW_COLOUR_2}Spela musik{MOVE_X}{138}Tema till dekorationer	
 STR_1850    :{SMALLFONT}{BLACK}Välj om musik ska spelas på denna åktur
 STR_1851    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}{CURRENCY2DP} per timme
@@ -1576,7 +1576,7 @@ STR_2219    :{RED}{COMMA16} personer har dött i en olycka på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkomdöme: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkomdöme: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Antal besökare: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Antal besökare: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Pengar: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Pengar: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Parkvärde: {BLACK}{CURRENCY}

@@ -1131,8 +1131,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :놀이기구의 탑승 시간을 변경할 수 없습니다...
 STR_1752    :{SMALLFONT}{BLACK}공원에 있는 손님의 모든 명단을 보여줍니다
 STR_1753    :{SMALLFONT}{BLACK}공원에 있는 손님을 항목별로 묶어서 보여줍니다
-STR_1754    :{BLACK}{COMMA16} 손님
-STR_1755    :{BLACK}{COMMA16} 손님
+STR_1754    :{BLACK}{COMMA32} 손님
+STR_1755    :{BLACK}{COMMA32} 손님
 STR_1756    :{WINDOW_COLOUR_2}입장료:
 STR_1757    :{WINDOW_COLOUR_2}신뢰도: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}건설 모드
@@ -1190,7 +1190,7 @@ STR_1813    :기타 오브젝트
 STR_1814    :행동
 STR_1815    :생각
 STR_1816    :{SMALLFONT}{BLACK}손님 목록에서 보여줄 정보의 종류를 선택하세요
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}모든 손님
 STR_1819    :{WINDOW_COLOUR_2}모든 손님 (항목별 분류)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID} 손님
@@ -1219,9 +1219,9 @@ STR_1842    :좋아하는 손님 수: {COMMA16}명
 STR_1843    :좋아하는 손님 수: {COMMA16}명
 STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보를 선택하세요
 STR_1845    :{MONTHYEAR}
-STR_1846    :손님 {COMMA16}명
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA16}명
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA16}명
+STR_1846    :손님 {COMMA32}명
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA32}명
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA32}명
 STR_1849    :{WINDOW_COLOUR_2}음악 재생
 STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악을 재생할지를 선택합니다
 STR_1851    :{WINDOW_COLOUR_2}유지비: {BLACK}시간당 {CURRENCY2DP}
@@ -1579,7 +1579,7 @@ STR_2219    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습
 STR_2220    :{WINDOW_COLOUR_2}공원 등급: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}공원 등급: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}공원에 있는 손님 수: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}공원에 있는 손님 수: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
@@ -3684,6 +3684,7 @@ STR_6359    :{POP16}{POP16}{UINT16}쪽
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :차량 조명 효과 (실험적 기능)
 STR_6362    :{SMALLFONT}{BLACK}이 설정을 켜면, 밤에 트랙형 놀이기구의 차량에 조명이 들어옵니다.
+STR_6363    :텍스트를 클립보드에 복사하였습니다
 
 #############
 # Scenarios #

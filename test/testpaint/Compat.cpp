@@ -15,6 +15,7 @@
 #include <openrct2/object/Object.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Station.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Location.hpp>
 #include <openrct2/world/Sprite.h>
@@ -61,18 +62,10 @@ const TileCoordsXY TileDirectionDelta[] = {
 };
 // clang-format on
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex);
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex);
-
 uint8_t get_current_rotation()
 {
     return gCurrentRotation & 3;
 }
-
-const uint32_t construction_markers[] = {
-    COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
-    2 << 19 | 0b110000 << 19 | IMAGE_TYPE_TRANSPARENT,              // Translucent
-};
 
 int object_entry_group_counts[] = {
     128, // rides

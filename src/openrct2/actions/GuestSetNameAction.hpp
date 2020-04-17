@@ -86,8 +86,6 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        peep_update_name_sort(peep);
-
         // Easter egg functions are for guests only
         Guest* guest = peep->AsGuest();
 

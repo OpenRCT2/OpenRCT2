@@ -15,6 +15,7 @@
 
 void graph_draw_uint8_t(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, int32_t baseX, int32_t baseY);
 void graph_draw_money32(
-    rct_drawpixelinfo* dpi, money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier, int32_t offset);
+    rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
+    const int32_t modifier, const int32_t offset);
 
 #endif
