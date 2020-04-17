@@ -81,7 +81,7 @@ static void paint_pirate_ship_structure(
     baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = (int8_t)vehicle->vehicle_sprite_type;
+        int32_t rotation = static_cast<int8_t>(vehicle->vehicle_sprite_type);
         if (rotation != 0)
         {
             if (direction & 2)

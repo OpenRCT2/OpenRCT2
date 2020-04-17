@@ -169,7 +169,7 @@ static void paint_monorail_cycles_track_flat(
 {
     uint32_t imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | session->TrackColours[SCHEME_TRACK];
     paint_monorail_cycles_util_7c(
-        session, (bool)(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, session->CurrentRotation);
+        session, static_cast<bool>(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, session->CurrentRotation);
 
     if (direction & 1)
     {
