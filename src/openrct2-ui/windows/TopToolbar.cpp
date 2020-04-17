@@ -327,6 +327,7 @@ static money32 selection_raise_land(uint8_t flags);
 static ClearAction GetClearAction();
 
 static bool _menuDropdownIncludesTwitch;
+static bool _landToolBlocked;
 static uint8_t _unkF64F0E;
 static int16_t _unkF64F0A;
 // rct2: 0x00F64F15
@@ -3008,11 +3009,19 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
 
                 gCurrentToolId = TOOL_UP_DOWN_ARROW;
             }
+            else
+            {
+                _landToolBlocked = true;
+            }
             break;
         case WIDX_WATER:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
                 gCurrentToolId = TOOL_UP_DOWN_ARROW;
+            }
+            else
+            {
+                _landToolBlocked = true;
             }
             break;
         case WIDX_SCENERY:
@@ -3218,11 +3227,17 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             }
             else
             {
-                window_top_toolbar_land_tool_drag(screenCoords.x, screenCoords.y);
+                if (!_landToolBlocked)
+                {
+                    window_top_toolbar_land_tool_drag(screenCoords.x, screenCoords.y);
+                }
             }
             break;
         case WIDX_WATER:
-            window_top_toolbar_water_tool_drag(screenCoords.x, screenCoords.y);
+            if (!_landToolBlocked)
+            {
+                window_top_toolbar_water_tool_drag(screenCoords.x, screenCoords.y);
+            }
             break;
         case WIDX_SCENERY:
             if (gWindowSceneryPaintEnabled & 1)
@@ -3239,6 +3254,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
+    _landToolBlocked = false;
     switch (widgetIndex)
     {
         case WIDX_LAND:
@@ -3711,6 +3727,7 @@ static void toggle_land_window(rct_window* topToolbar, rct_widgetindex widgetInd
     }
     else
     {
+        _landToolBlocked = false;
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_DIG_DOWN);
         input_set_flag(INPUT_FLAG_6, true);
@@ -3751,6 +3768,7 @@ static void toggle_water_window(rct_window* topToolbar, rct_widgetindex widgetIn
     }
     else
     {
+        _landToolBlocked = false;
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_WATER_DOWN);
         input_set_flag(INPUT_FLAG_6, true);
