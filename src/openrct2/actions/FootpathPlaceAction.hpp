@@ -18,9 +18,9 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
-#include "../world/Scenery.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActionResult)
@@ -191,27 +191,23 @@ private:
         {
             if (isQueue)
             {
-                //remove any addition that isn't a TV
+                // remove any addition that isn't a TV
                 if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0)
                 {
                     pathElement->SetIsBroken(false);
                     pathElement->SetAddition(0);
                 }
-                    
             }
             else
             {
-                //remove all TVs
+                // remove all TVs
                 if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
                 {
                     pathElement->SetIsBroken(false);
                     pathElement->SetAddition(0);
                 }
-                    
             }
         }
-        
-        
 
         RemoveIntersectingWalls(pathElement);
         return res;
