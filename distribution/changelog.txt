@@ -1,5 +1,6 @@
 0.2.5+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#11311] Peep spawn locations can now be placed elsewhere than on the edges of the map.
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
 - Feature: [#11272] Option for toggling notifications for 'Ride casualties' and 'Stuck or stalled vehicles'.
