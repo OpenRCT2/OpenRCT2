@@ -40,10 +40,10 @@ jobs:
           build-symbols
           build-installer -i
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2-preview
         with:
           name: "OpenRCT2-Windows-${{ matrix.platform }}"
-          path: artifacts
+          path: artifacts/*
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests
@@ -85,19 +85,19 @@ jobs:
           xcodebuild
           mkdir -p artifacts
           mv build/Release/OpenRCT2.app artifacts
+          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
+          cd artifacts
+          zip -rq openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2-preview
         with:
           name: "OpenRCT2-macOS"
-          path: artifacts
+          path: artifacts/openrct2-macos.zip
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
-              cd artifacts
-              zip -rq openrct2-macos.zip OpenRCT2.app
-              upload-build openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+              upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
               echo 'Not going to push build'
           fi
