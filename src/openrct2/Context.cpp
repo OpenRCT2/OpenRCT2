@@ -450,7 +450,7 @@ namespace OpenRCT2
             _drawingEngineType = gConfigGeneral.drawing_engine;
 
             auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
-            auto drawingEngine = drawingEngineFactory->Create((DRAWING_ENGINE_TYPE)_drawingEngineType, _uiContext);
+            auto drawingEngine = drawingEngineFactory->Create(static_cast<DRAWING_ENGINE_TYPE>(_drawingEngineType), _uiContext);
 
             if (drawingEngine == nullptr)
             {
@@ -607,8 +607,9 @@ namespace OpenRCT2
                         // which the window function doesn't like
                         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                         intent.putExtra(INTENT_EXTRA_PATH, path);
+                        // TODO: CAST-IMPROVEMENT-NEEDED
                         intent.putExtra(INTENT_EXTRA_LIST, (void*)e.MissingObjects.data());
-                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32_t)e.MissingObjects.size());
+                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                         auto windowManager = _uiContext->GetWindowManager();
                         windowManager->OpenIntent(&intent);
@@ -947,7 +948,7 @@ namespace OpenRCT2
 
             if (draw)
             {
-                const float alpha = std::min((float)_accumulator / GAME_UPDATE_TIME_MS, 1.0f);
+                const float alpha = std::min(static_cast<float>(_accumulator) / GAME_UPDATE_TIME_MS, 1.0f);
                 sprite_position_tween_all(alpha);
 
                 _drawingEngine->BeginDraw();
@@ -1148,7 +1149,7 @@ bool context_load_park_from_file(const utf8* path)
 
 bool context_load_park_from_stream(void* stream)
 {
-    return GetContext()->LoadParkFromStream((IStream*)stream, "");
+    return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
 
 void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize)
@@ -1163,7 +1164,7 @@ void openrct2_finish()
 
 void context_setcurrentcursor(int32_t cursor)
 {
-    GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
+    GetContext()->GetUiContext()->SetCursor(static_cast<CURSOR_ID>(cursor));
 }
 
 void context_update_cursor_scale()
@@ -1236,7 +1237,7 @@ void context_trigger_resize()
 
 void context_set_fullscreen_mode(int32_t mode)
 {
-    return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
+    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FULLSCREEN_MODE>(mode));
 }
 
 void context_recreate_window()
@@ -1342,7 +1343,7 @@ bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc,
     try
     {
         FileDialogDesc desc2;
-        desc2.Type = (FILE_DIALOG_TYPE)desc->type;
+        desc2.Type = static_cast<FILE_DIALOG_TYPE>(desc->type);
         desc2.Title = String::ToStd(desc->title);
         desc2.InitialDirectory = String::ToStd(desc->initial_directory);
         desc2.DefaultFilename = String::ToStd(desc->default_filename);

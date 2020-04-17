@@ -43,7 +43,7 @@ static void window_editor_object_selection_select_default_objects();
  */
 static void setup_track_manager_objects()
 {
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
@@ -72,7 +72,7 @@ static void setup_track_manager_objects()
  */
 static void setup_track_designer_objects()
 {
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
@@ -195,7 +195,7 @@ void setup_in_use_selection_flags()
         }
     }
 
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
@@ -226,7 +226,7 @@ void setup_in_use_selection_flags()
  */
 void sub_6AB211()
 {
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     _objectSelectionFlags = std::vector<uint8_t>(numObjects);
 
     for (uint8_t objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
@@ -316,11 +316,11 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
  */
 void unload_unselected_objects()
 {
-    int32_t numItems = (int32_t)object_repository_get_items_count();
+    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     size_t numObjectsToUnload = 0;
-    rct_object_entry* objectsToUnload = (rct_object_entry*)malloc(numItems * sizeof(rct_object_entry));
+    rct_object_entry* objectsToUnload = static_cast<rct_object_entry*>(malloc(numItems * sizeof(rct_object_entry)));
 
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -363,7 +363,7 @@ void reset_selected_object_count_and_size()
         objectType = 0;
     }
 
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
@@ -395,7 +395,7 @@ static void set_object_selection_error(uint8_t is_master_object, rct_string_id e
  */
 int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry* entry)
 {
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* item = object_repository_find_object_by_entry(entry);
     if (item == nullptr)
     {
@@ -507,7 +507,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
 
 bool editor_check_object_group_at_least_one_selected(int32_t checkObjectType)
 {
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     for (int32_t i = 0; i < numObjects; i++)
@@ -526,7 +526,7 @@ int32_t editor_remove_unused_objects()
     sub_6AB211();
     setup_in_use_selection_flags();
 
-    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     int32_t numUnselectedObjects = 0;
