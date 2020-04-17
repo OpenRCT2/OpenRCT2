@@ -377,7 +377,7 @@ namespace ScenarioSources
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;
-                    outDesc->source = (uint8_t)i;
+                    outDesc->source = static_cast<uint8_t>(i);
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     return true;
