@@ -1,5 +1,6 @@
 0.2.6+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
 
 
 0.2.6 (2020-04-17)
