@@ -841,7 +841,7 @@ public:
         {
             int32_t quadIndex = rideType >> 5;
             int32_t bitIndex = rideType & 0x1F;
-            bool invented = (_s6.researched_ride_types[quadIndex] & (static_cast<uint32_t>(1) << bitIndex));
+            bool invented = (_s6.researched_ride_types[quadIndex] & (1UL << bitIndex));
 
             if (invented)
                 ride_type_set_invented(rideType);
@@ -856,7 +856,7 @@ public:
         {
             int32_t quadIndex = rideEntryIndex >> 5;
             int32_t bitIndex = rideEntryIndex & 0x1F;
-            bool invented = (_s6.researched_ride_entries[quadIndex] & (static_cast<uint32_t>(1) << bitIndex));
+            bool invented = (_s6.researched_ride_entries[quadIndex] & (1UL << bitIndex));
 
             if (invented)
                 ride_entry_set_invented(rideEntryIndex);
@@ -871,7 +871,7 @@ public:
         {
             int32_t quadIndex = sceneryEntryIndex >> 5;
             int32_t bitIndex = sceneryEntryIndex & 0x1F;
-            bool invented = (_s6.researched_scenery_items[quadIndex] & (1ULL << bitIndex));
+            bool invented = (_s6.researched_scenery_items[quadIndex] & (1UL << bitIndex));
 
             if (invented)
             {
