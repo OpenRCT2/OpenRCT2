@@ -685,9 +685,12 @@ private:
             }
         }
 
-        Peep* peep;
-        FOR_ALL_GUESTS (spriteIndex, peep)
+        // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
+        // will be fetched on a delted peep.
+        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
         {
+            auto peep = GET_PEEP(spriteIndex);
+            spriteIndex = peep->next;
             peep->Remove();
         }
 
