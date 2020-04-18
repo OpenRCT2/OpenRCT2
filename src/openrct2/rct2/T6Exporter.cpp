@@ -107,7 +107,7 @@ bool T6Exporter::SaveTrack(IStream* stream)
 
         for (const auto& entranceElement : _trackDesign->entrance_elements)
         {
-            tempStream.WriteValue<uint8_t>(entranceElement.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.z);
+            tempStream.WriteValue<uint8_t>(entranceElement.z == -1 ? (uint8_t)0x80 : entranceElement.z);
             tempStream.WriteValue<uint8_t>(entranceElement.direction | (entranceElement.isExit << 7));
             tempStream.WriteValue<int16_t>(entranceElement.x);
             tempStream.WriteValue<int16_t>(entranceElement.y);

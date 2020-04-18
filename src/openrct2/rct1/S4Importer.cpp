@@ -527,7 +527,7 @@ private:
                             EntryList* entries = GetEntryList(objectType);
 
                             // Check if there are spare entries available
-                            size_t maxEntries = static_cast<size_t>(object_entry_group_counts[objectType]);
+                            size_t maxEntries = (size_t)object_entry_group_counts[objectType];
                             if (entries != nullptr && entries->GetCount() < maxEntries)
                             {
                                 entries->GetOrAddEntry(objectName);
@@ -1115,7 +1115,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE));
+                    Vehicle* vehicle = (Vehicle*)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1330,7 +1330,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                Peep* peep = reinterpret_cast<Peep*>(create_sprite(SPRITE_IDENTIFIER_PEEP));
+                Peep* peep = (Peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                 spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
@@ -1341,7 +1341,7 @@ private:
             rct_sprite* sprite = get_sprite(i);
             if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
-                Vehicle* vehicle = reinterpret_cast<Vehicle*>(sprite);
+                Vehicle* vehicle = (Vehicle*)sprite;
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
@@ -1513,7 +1513,7 @@ private:
         {
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->thoughts[i];
-            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
+            dstThought->type = (PeepThoughtType)srcThought->type;
             dstThought->item = srcThought->type;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
@@ -1630,7 +1630,7 @@ private:
             {
                 const auto* srcLitter = &sprite.litter;
 
-                Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
+                Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->type = srcLitter->type;
 
@@ -1655,7 +1655,7 @@ private:
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SPRITE_IDENTIFIER_MISC));
+                SpriteGeneric* dst = (SpriteGeneric*)create_sprite(SPRITE_IDENTIFIER_MISC);
                 dst->sprite_identifier = src->sprite_identifier;
                 dst->type = src->type;
                 dst->flags = src->flags;
@@ -1669,10 +1669,10 @@ private:
                 switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
-                        ImportSteamParticle(reinterpret_cast<SteamParticle*>(dst), reinterpret_cast<SteamParticle*>(src));
+                        ImportSteamParticle((SteamParticle*)dst, (SteamParticle*)src);
                         break;
                     case SPRITE_MISC_MONEY_EFFECT:
-                        ImportMoneyEffect(reinterpret_cast<MoneyEffect*>(dst), reinterpret_cast<MoneyEffect*>(src));
+                        ImportMoneyEffect((MoneyEffect*)dst, (MoneyEffect*)src);
                         break;
                     case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
                         break;
@@ -1683,14 +1683,13 @@ private:
                     case SPRITE_MISC_EXPLOSION_FLARE:
                         break;
                     case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-                        ImportJumpingFountainWater(
-                            reinterpret_cast<JumpingFountain*>(dst), reinterpret_cast<JumpingFountain*>(src));
+                        ImportJumpingFountainWater((JumpingFountain*)dst, (JumpingFountain*)src);
                         break;
                     case SPRITE_MISC_BALLOON:
-                        ImportBalloon(reinterpret_cast<Balloon*>(dst), reinterpret_cast<Balloon*>(src));
+                        ImportBalloon((Balloon*)dst, (Balloon*)src);
                         break;
                     case SPRITE_MISC_DUCK:
-                        ImportDuck(reinterpret_cast<Duck*>(dst), reinterpret_cast<Duck*>(src));
+                        ImportDuck((Duck*)dst, (Duck*)src);
                         break;
                 }
 
@@ -1815,7 +1814,7 @@ private:
             if (_s4.marketing_status[i] & CAMPAIGN_ACTIVE_FLAG)
             {
                 MarketingCampaign campaign;
-                campaign.Type = static_cast<uint8_t>(i);
+                campaign.Type = (uint8_t)i;
                 campaign.WeeksLeft = _s4.marketing_status[i] & ~CAMPAIGN_ACTIVE_FLAG;
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
@@ -2541,7 +2540,7 @@ private:
 
                 ResearchItem tmpResearchItem = {};
                 ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
-                dst->Assoc = static_cast<uint32_t>(tmpResearchItem.rawValue);
+                dst->Assoc = (uint32_t)tmpResearchItem.rawValue;
             }
             else
             {

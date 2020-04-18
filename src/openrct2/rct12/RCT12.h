@@ -276,7 +276,6 @@ struct RCT12TileElement : public RCT12TileElementBase
     uint8_t pad_04[4];
     template<typename TType, RCT12TileElementType TClass> TType* as() const
     {
-        // TODO: CAST-IMPROVEMENT-NEEDED
         return (RCT12TileElementType)GetType() == TClass ? (TType*)this : nullptr;
     }
 
