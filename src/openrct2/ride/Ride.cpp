@@ -322,7 +322,7 @@ void ride_update_favourited_stat()
     for (auto& ride : GetRideManager())
         ride.guests_favourite = 0;
 
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->linked_list_index != SPRITE_LIST_PEEP)
             return;
