@@ -1787,8 +1787,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Edge texture name
                 uint32_t idx = tileElement->AsSurface()->GetEdgeStyle();
                 openrct2_assert(
-                    static_cast<uint32_t>(idx) < std::size(TerrainEdgeTypeStringIds),
-                    "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
+                    idx < std::size(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds",
+                    idx);
                 rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tileElement->AsSurface()->GetEdgeStyle()];
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_WHITE, x, y + 11);
 
