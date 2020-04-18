@@ -3096,8 +3096,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             tileCoord.z = coord1.z;
 
             // check if either peep is on the edge of the map or anywhere else
-            if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits - 1) / COORDS_XY_STEP || tileCoord.y == 0
-                || tileCoord.y == (gMapSizeUnits - 1) / COORDS_XY_STEP)
+            if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits / COORDS_XY_STEP)-1 || tileCoord.y == 0
+                || tileCoord.y == (gMapSizeUnits / COORDS_XY_STEP)-1)
             {
                 //do nothing
             }
