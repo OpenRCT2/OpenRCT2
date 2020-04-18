@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#9029] Open doors with the tile inspector.
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
+- Feature: [#11306] Replacing path textures do not remove additions on it. It handles the switch from queue line to standard path and vice versa.
 - Fix: [#6119]: Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
 - Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
@@ -9,7 +10,6 @@
 
 0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
-- Feature: [#11306] Replacing path textures do not remove additions on it. It handles the switch from queue line to standard path and vice versa.
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
 - Feature: [#11218] load_park command for console
