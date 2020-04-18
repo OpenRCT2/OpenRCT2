@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SplashBoatsRTD =
 {
+    SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_ON_RIDE_PHOTO)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_splash_boats),

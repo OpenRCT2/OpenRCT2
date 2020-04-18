@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor LaunchedFreefallRTD =
 {
+    SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_launched_freefall),

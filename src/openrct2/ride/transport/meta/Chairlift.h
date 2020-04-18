@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor ChairliftRTD =
 {
+    SET_FIELD(Category, RIDE_CATEGORY_TRANSPORT),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_chairlift),

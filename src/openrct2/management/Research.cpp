@@ -257,7 +257,7 @@ void research_finish_item(ResearchItem* researchItem)
             }
 
             // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
-            if (RideGroupManager::RideTypeIsIndependent(base_ride_type))
+            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
                 set_format_arg(0, rct_string_id, rideEntry->naming.name);

@@ -691,7 +691,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         rct_string_id itemNameId = researchItem.GetName();
 
         if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE
-            && !RideGroupManager::RideTypeIsIndependent(researchItem.baseRideType))
+            && !RideTypeDescriptors[researchItem.baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
             const rct_string_id rideGroupName = get_ride_naming(researchItem.baseRideType, rideEntry).name;
@@ -736,7 +736,8 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     rct_string_id stringId = researchItem->GetName();
 
     ptr = buffer;
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+        && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         const auto rideEntry = get_ride_entry(researchItem->entryIndex);
         const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, rideEntry).name;
@@ -831,7 +832,8 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
     rct_string_id drawString;
     rct_string_id stringId = researchItem->GetName();
 
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+        && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
         rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))

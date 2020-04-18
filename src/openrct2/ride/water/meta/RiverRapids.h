@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor RiverRapidsRTD =
 {
+    SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_RAPIDS) | (1ULL << TRACK_WATERFALL) | (1ULL << TRACK_WHIRLPOOL)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_river_rapids),

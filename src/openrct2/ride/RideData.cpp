@@ -2397,6 +2397,7 @@ const rct_string_id RideModeNames[] = {
 // clang-format off
 static constexpr const RideTypeDescriptor DummyRTD =
     {
+        SET_FIELD(Category, RIDE_CATEGORY_NONE),
         SET_FIELD(EnabledTrackPieces, 0),
         SET_FIELD(ExtraTrackPieces, 0),
         SET_FIELD(TrackPaintFunction, nullptr),
@@ -2499,3 +2500,8 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_59                                 */ DummyRTD,
     /* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER        */ LIMLaunchedRollerCoasterRTD,
 };
+
+bool RideTypeDescriptor::HasFlag(uint64_t flag) const
+{
+    return Flags & flag;
+}
