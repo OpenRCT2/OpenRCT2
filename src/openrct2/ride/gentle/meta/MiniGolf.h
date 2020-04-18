@@ -24,5 +24,6 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_PLAYER, RIDE_COMPONENT_TYPE_COURSE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
+    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
 };
 // clang-format on

@@ -25,5 +25,6 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
 };
 // clang-format on

@@ -28,5 +28,6 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 5 }),
 };
 // clang-format on

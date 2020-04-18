@@ -25,5 +25,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
+    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
 };
 // clang-format on
