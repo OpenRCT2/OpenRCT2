@@ -658,26 +658,26 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_MONTH_UP:
             _monthSpinnerValue++;
-            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int>(MONTH_COUNT));
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int>(days_in_month[_monthSpinnerValue - 1]));
+            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_MONTH_DOWN:
             _monthSpinnerValue--;
-            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int>(MONTH_COUNT));
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int>(days_in_month[_monthSpinnerValue - 1]));
+            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_UP:
             _daySpinnerValue++;
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int>(days_in_month[_monthSpinnerValue - 1]));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_DOWN:
             _daySpinnerValue--;
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int>(days_in_month[_monthSpinnerValue - 1]));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:

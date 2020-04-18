@@ -720,15 +720,15 @@ static void window_scenery_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
 
     if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
     {
-        gWindowSceneryPrimaryColour = static_cast<uint8_t>(dropdownIndex);
+        gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
     }
     else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
     {
-        gWindowScenerySecondaryColour = static_cast<uint8_t>(dropdownIndex);
+        gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
     }
     else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
     {
-        gWindowSceneryTertiaryColour = static_cast<uint8_t>(dropdownIndex);
+        gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
     }
 
     w->Invalidate();
