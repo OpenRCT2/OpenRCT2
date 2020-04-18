@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{551E488D-BB59-DD5B-37FB-67932F70A445}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -64,22 +63,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Enums\Direction.cs" />
-    <Compile Include="Assets\Scripts\Enums\Ownership.cs" />
-    <Compile Include="Assets\Scripts\Enums\SurfaceSlope.cs" />
-    <Compile Include="Assets\Scripts\Enums\TerrainSurfaceStyle.cs" />
-    <Compile Include="Assets\Scripts\Enums\TerrainEdgeStyle.cs" />
-    <Compile Include="Assets\Scripts\Enums\TileElementType.cs" />
-    <Compile Include="Assets\Scripts\Extensions\TileElementExtensions.cs" />
-    <Compile Include="Assets\Scripts\OpenRCT2.cs" />
-    <Compile Include="Assets\Scripts\PrintLogger.cs" />
-    <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
-    <Compile Include="Assets\Scripts\TileElements\SmallSceneryElement.cs" />
-    <Compile Include="Assets\Scripts\TileElements\TrackElement.cs" />
-    <Compile Include="Assets\Scripts\TileElements\PathElement.cs" />
-    <Compile Include="Assets\Scripts\TileElements\SurfaceElement.cs" />
-    <Compile Include="Assets\Scripts\TileElements\TileElement.cs" />
-    <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Maths.cs" />
+    <Compile Include="Assets\Scripts\MeshBuilder\MeshBuilder.cs" />
+    <Compile Include="Assets\Scripts\MeshBuilder\MeshBuilderExtensions.cs" />
+    <Compile Include="Assets\Scripts\MeshBuilder\Vertex.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\Direction.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\Ownership.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\SurfaceSlope.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\TerrainEdgeStyle.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\TerrainSurfaceStyle.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\TileElementType.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Extensions\TileElementExtensions.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.Generation.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.Materials.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.Surface.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\OpenRCT2.Lib.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\OpenRCT2.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\TileElements\PathElement.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\TileElements\SmallSceneryElement.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\TileElements\SurfaceElement.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\TileElements\TileElement.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\TileElements\TrackElement.cs" />
+    <Compile Include="Assets\Scripts\Tools\CameraBuild.cs" />
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>D:/Projects/Visual Studio/OpenRCT2-Unity/src/openrct2-unity/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>

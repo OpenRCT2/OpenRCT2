@@ -71,13 +71,19 @@ extern "C"
     }
 
 
-    EXPORT const char* GetParkName()
+    EXPORT const char* GetParkNamePtr()
     {
         Park& park = context->GetGameState()->GetPark();
         const char* name = park.Name.c_str();
 
         printf("(me) GetParkName() = %s\n", name);
         return name;
+    }
+
+
+    EXPORT int GetMapSize()
+    {
+        return gMapSize;
     }
 
 
