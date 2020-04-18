@@ -1810,15 +1810,12 @@ private:
         gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
         // TODO marketing campaigns not working
-        static_assert(
-            std::numeric_limits<uint8_t>::max() > ADVERTISING_CAMPAIGN_COUNT,
-            "Advertising enum bigger than capacity of iterator");
-        for (uint8_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+        for (size_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
             if (_s4.marketing_status[i] & CAMPAIGN_ACTIVE_FLAG)
             {
                 MarketingCampaign campaign;
-                campaign.Type = i;
+                campaign.Type = static_cast<uint8_t>(i);
                 campaign.WeeksLeft = _s4.marketing_status[i] & ~CAMPAIGN_ACTIVE_FLAG;
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
