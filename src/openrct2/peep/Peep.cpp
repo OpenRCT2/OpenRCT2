@@ -3076,44 +3076,52 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     }
 
     //check if peep is on peep spawn location
-    for (auto& elem : gPeepSpawns)
+    bool outside = false;
+    if (newLoc.x <= 32 || newLoc.y <= 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
+        // apply same old behaviour
+        outside = true;
+
+    else
     {
-        CoordsXYZ coord1, coord2;
-        coord1.x = elem.ToTileCentre().x;
-        coord1.y = elem.ToTileCentre().y;
-        coord1.z = elem.ToTileCentre().z;
-
-        CoordsXYZ tileCoord;
-        tileCoord.x = coord1.x / COORDS_XY_STEP;
-        tileCoord.y = coord1.y / COORDS_XY_STEP;
-        tileCoord.z = coord1.z;
-
-        //check if either peep is on the edge of the map or anywhere else
-        bool outside = false;
-        
-        if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits - 1) / COORDS_XY_STEP || tileCoord.y == 0
-            || tileCoord.y == (gMapSizeUnits - 1) / COORDS_XY_STEP)
+        for (auto& elem : gPeepSpawns)
         {
-            if (newLoc.x <= 32 || newLoc.y <= 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
-                // apply same old behaviour
+            CoordsXYZ coord1, coord2;
+            coord1.x = elem.ToTileCentre().x;
+            coord1.y = elem.ToTileCentre().y;
+            coord1.z = elem.ToTileCentre().z;
+
+            CoordsXYZ tileCoord;
+            tileCoord.x = coord1.x / COORDS_XY_STEP;
+            tileCoord.y = coord1.y / COORDS_XY_STEP;
+            tileCoord.z = coord1.z;
+
+            // check if either peep is on the edge of the map or anywhere else
+            if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits - 1) / COORDS_XY_STEP || tileCoord.y == 0
+                || tileCoord.y == (gMapSizeUnits - 1) / COORDS_XY_STEP)
+            {
+                //do nothing
+            }
+
+            else if (
+                newLoc.ToTileCentre().x == coord1.x && newLoc.ToTileCentre().y == coord1.y && height == coord1.z
+                && direction == elem.direction)
+            {
+                // the moment the peep enter the tile with the same direction, it disappears
                 outside = true;
+                break;
+            }
         }
-        
-        else if (newLoc.ToTileCentre().x == coord1.x && newLoc.ToTileCentre().y == coord1.y && height == coord1.z && direction == elem.direction)
-            //the moment the peep enter the tile with the same direction, it disappears
-            outside = true;
-
-        //calling the routine to make peep disappear
-        if (outside)
-        {
-            if (outside_of_park)
-                pathing_result |= PATHING_OUTSIDE_PARK;
-            peep_return_to_centre_of_tile(this);
-            return;
-        }
-        
-            
     }
+
+    // calling the routine to make peep disappear
+    if (outside)
+    {
+        if (outside_of_park)
+            pathing_result |= PATHING_OUTSIDE_PARK;
+        peep_return_to_centre_of_tile(this);
+        return;
+    }
+    
 
     TileElement* tileElement = map_get_first_element_at(newLoc);
     if (tileElement == nullptr)
