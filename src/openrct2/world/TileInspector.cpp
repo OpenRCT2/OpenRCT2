@@ -745,6 +745,32 @@ GameActionResult::Ptr tile_inspector_wall_set_slope(
     return std::make_unique<GameActionResult>();
 }
 
+GameActionResult::Ptr tile_inspector_wall_animation_frame_offset(
+    const CoordsXY& loc, int16_t elementIndex, int8_t animationFrameOffset, bool isExecuting)
+{
+    TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
+
+    if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
+    if (isExecuting)
+    {
+        uint8_t animationFrame = wallElement->AsWall()->GetAnimationFrame();
+        wallElement->AsWall()->SetAnimationFrame(animationFrame + animationFrameOffset);
+
+        map_invalidate_tile_full(loc);
+
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
+        {
+            tileInspectorWindow->Invalidate();
+        }
+    }
+
+    return std::make_unique<GameActionResult>();
+}
+
 // Changes the height of all track elements that belong to the same track piece
 // Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
 GameActionResult::Ptr tile_inspector_track_base_height_offset(
