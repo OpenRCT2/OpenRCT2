@@ -1613,7 +1613,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
     {
-        if (static_cast<uint32_t>(gScenarioCompletedCompanyValue) == 0x80000001)
+        if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
             // Objective failed
             gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
