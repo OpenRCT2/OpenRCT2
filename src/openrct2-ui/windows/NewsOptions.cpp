@@ -303,6 +303,6 @@ static void window_news_options_draw_tab_images(rct_window* w, rct_drawpixelinfo
 
 static bool* get_notification_value_ptr(const notification_def* ndef)
 {
-    bool* configValue = reinterpret_cast<bool*>(reinterpret_cast<size_t>(&gConfigNotifications) + ndef->config_offset);
+    bool* configValue = (bool*)((size_t)&gConfigNotifications + ndef->config_offset);
     return configValue;
 }

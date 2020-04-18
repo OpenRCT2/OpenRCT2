@@ -114,8 +114,8 @@ private:
                 uint8_t args[32]{};
                 if (_downloadStatusInfo.Source.empty())
                 {
-                    set_format_arg_on(args, 0, int16_t, static_cast<int16_t>(_downloadStatusInfo.Count));
-                    set_format_arg_on(args, 2, int16_t, static_cast<int16_t>(_downloadStatusInfo.Total));
+                    set_format_arg_on(args, 0, int16_t, (int16_t)_downloadStatusInfo.Count);
+                    set_format_arg_on(args, 2, int16_t, (int16_t)_downloadStatusInfo.Total);
                     set_format_arg_on(args, 4, char*, _downloadStatusInfo.Name.c_str());
                     format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
                 }
@@ -123,11 +123,9 @@ private:
                 {
                     set_format_arg_on(args, 0, char*, _downloadStatusInfo.Name.c_str());
                     set_format_arg_on(args, sizeof(char*), char*, _downloadStatusInfo.Source.c_str());
+                    set_format_arg_on(args, sizeof(char*) + sizeof(char*), int16_t, (int16_t)_downloadStatusInfo.Count);
                     set_format_arg_on(
-                        args, sizeof(char*) + sizeof(char*), int16_t, static_cast<int16_t>(_downloadStatusInfo.Count));
-                    set_format_arg_on(
-                        args, sizeof(char*) + sizeof(char*) + sizeof(int16_t), int16_t,
-                        static_cast<int16_t>(_downloadStatusInfo.Total));
+                        args, sizeof(char*) + sizeof(char*) + sizeof(int16_t), int16_t, (int16_t)_downloadStatusInfo.Total);
                     format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, args);
                 }
 
@@ -165,7 +163,7 @@ private:
                     // Check that download operation hasn't been cancelled
                     if (_downloadingObjects)
                     {
-                        auto data = reinterpret_cast<uint8_t*>(response.body.data());
+                        auto data = (uint8_t*)response.body.data();
                         auto dataLen = response.body.size();
 
                         auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
@@ -234,7 +232,7 @@ private:
                 }
                 else
                 {
-                    std::printf("  %s query failed (status %d)\n", name.c_str(), static_cast<int32_t>(response.status));
+                    std::printf("  %s query failed (status %d)\n", name.c_str(), (int32_t)response.status);
                     QueueNextDownload();
                 }
             });
@@ -443,7 +441,7 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
     }
 
     // Refresh list items and path
-    window->no_list_items = static_cast<uint16_t>(numMissingObjects);
+    window->no_list_items = (uint16_t)numMissingObjects;
     file_path = path;
 
     window->Invalidate();
@@ -628,7 +626,7 @@ static void window_object_load_error_update_list(rct_window* w)
                 _invalid_entries.begin(), _invalid_entries.end(),
                 [de](const rct_object_entry& e) { return std::memcmp(de.name, e.name, sizeof(e.name)) == 0; }),
             _invalid_entries.end());
-        w->no_list_items = static_cast<uint16_t>(_invalid_entries.size());
+        w->no_list_items = (uint16_t)_invalid_entries.size();
     }
 }
 

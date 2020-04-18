@@ -296,7 +296,7 @@ static bool visible_list_sort_ride_type(const list_item& a, const list_item& b)
 
 static void visible_list_refresh(rct_window* w)
 {
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
 
     visible_list_dispose();
     w->selected_list_item = -1;
@@ -317,7 +317,7 @@ static void visible_list_refresh(rct_window* w)
 
             list_item currentListItem;
             currentListItem.repositoryItem = item;
-            currentListItem.entry = const_cast<rct_object_entry*>(&item->ObjectEntry);
+            currentListItem.entry = (rct_object_entry*)&item->ObjectEntry;
             currentListItem.filter = filter;
             currentListItem.flags = &_objectSelectionFlags[i];
             _listItems.push_back(std::move(currentListItem));
@@ -391,7 +391,7 @@ rct_window* window_editor_object_selection_open()
 
     window->enabled_widgets = (1 << WIDX_ADVANCED) | (1 << WIDX_INSTALL_TRACK) | (1 << WIDX_FILTER_DROPDOWN)
         | (1 << WIDX_FILTER_STRING_BUTTON) | (1 << WIDX_FILTER_CLEAR_BUTTON) | (1 << WIDX_CLOSE) | (1 << WIDX_LIST_SORT_TYPE)
-        | (1UL << WIDX_LIST_SORT_RIDE);
+        | (((uint32_t)1) << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -560,7 +560,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             visible_list_refresh(w);
             break;
         default:
-            if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
+            if (widgetIndex >= WIDX_TAB_1 && (size_t)widgetIndex < WIDX_TAB_1 + std::size(ObjectSelectionPages))
             {
                 window_editor_object_set_page(w, widgetIndex - WIDX_TAB_1);
             }
@@ -672,7 +672,7 @@ static void window_editor_object_selection_dropdown(rct_window* w, rct_widgetind
  */
 static void window_editor_object_selection_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    *height = static_cast<int32_t>(_listItems.size() * 12);
+    *height = (int32_t)(_listItems.size() * 12);
 }
 
 /**
@@ -786,7 +786,7 @@ static void window_editor_object_selection_scroll_mouseover(
  */
 static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
-    if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
+    if (widgetIndex >= WIDX_TAB_1 && (size_t)widgetIndex < WIDX_TAB_1 + std::size(ObjectSelectionPages))
     {
         set_format_arg(0, rct_string_id, ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
     }
@@ -909,7 +909,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
             for (int32_t i = 0; i < 6; i++)
             {
                 if (_filter_flags & (1 << (_numSourceGameItems + i)))
-                    w->pressed_widgets |= 1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i);
+                    w->pressed_widgets |= (uint64_t)(1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
             }
         }
 
@@ -1027,8 +1027,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     widget = &w->widgets[WIDX_LIST_SORT_TYPE];
     if (widget->type != WWT_EMPTY)
     {
-        stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : static_cast<rct_string_id>(STR_NONE);
+        stringId = _listSortType == RIDE_SORT_TYPE ? (rct_string_id)(_listSortDescending ? STR_DOWN : STR_UP)
+                                                   : (rct_string_id)STR_NONE;
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
             w->windowPos.y + widget->top + 1, widget->right - widget->left);
@@ -1036,8 +1036,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
     {
-        stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : static_cast<rct_string_id>(STR_NONE);
+        stringId = _listSortType == RIDE_SORT_RIDE ? (rct_string_id)(_listSortDescending ? STR_DOWN : STR_UP)
+                                                   : (rct_string_id)STR_NONE;
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
             w->windowPos.y + widget->top + 1, widget->right - widget->left);
@@ -1237,7 +1237,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window* w)
 static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y)
 {
     int32_t listItemIndex = y / 12;
-    if (listItemIndex < 0 || static_cast<size_t>(listItemIndex) >= _listItems.size())
+    if (listItemIndex < 0 || (size_t)listItemIndex >= _listItems.size())
         return -1;
 
     return listItemIndex;
@@ -1273,7 +1273,7 @@ static void window_editor_object_selection_manage_tracks()
  */
 static void editor_load_selected_objects()
 {
-    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
+    int32_t numItems = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -1395,13 +1395,13 @@ static bool filter_string(const ObjectRepositoryItem* item)
 
     // Make use of lowercase characters only
     for (int32_t i = 0; name_lower[i] != '\0'; i++)
-        name_lower[i] = static_cast<char>(tolower(name_lower[i]));
+        name_lower[i] = (char)tolower(name_lower[i]);
     for (int32_t i = 0; type_lower[i] != '\0'; i++)
-        type_lower[i] = static_cast<char>(tolower(type_lower[i]));
+        type_lower[i] = (char)tolower(type_lower[i]);
     for (int32_t i = 0; object_path[i] != '\0'; i++)
-        object_path[i] = static_cast<char>(tolower(object_path[i]));
+        object_path[i] = (char)tolower(object_path[i]);
     for (int32_t i = 0; filter_lower[i] != '\0'; i++)
-        filter_lower[i] = static_cast<char>(tolower(filter_lower[i]));
+        filter_lower[i] = (char)tolower(filter_lower[i]);
 
     // Check if the searched string exists in the name, ride type, or filename
     bool inName = strstr(name_lower, filter_lower) != nullptr;

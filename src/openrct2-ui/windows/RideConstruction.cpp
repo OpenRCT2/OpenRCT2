@@ -2350,7 +2350,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     y += 11;
     if (_currentTrackPrice != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, COLOUR_BLACK, static_cast<void*>(&_currentTrackPrice));
+        gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, COLOUR_BLACK, (void*)&_currentTrackPrice);
     }
 }
 

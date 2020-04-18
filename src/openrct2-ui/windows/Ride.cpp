@@ -1526,7 +1526,7 @@ static void window_ride_update_overall_view(Ride* ride)
     int32_t dy = maxy - miny;
     int32_t dz = maxz - minz;
 
-    int32_t size = static_cast<int32_t>(std::sqrt(dx * dx + dy * dy + dz * dz));
+    int32_t size = (int32_t)std::sqrt(dx * dx + dy * dy + dz * dz);
 
     if (size >= 80)
     {
@@ -2782,7 +2782,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
         {
             if (track_piece_is_available_for_ride_type(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
-                *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments)) = STR_STOPPED_BY_BLOCK_BRAKES;
+                *(rct_string_id*)(uintptr_t)arguments = STR_STOPPED_BY_BLOCK_BRAKES;
                 return STR_BLACK_STRING;
             }
         }
@@ -2791,7 +2791,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     stringId = VehicleStatusNames[vehicle->status];
 
     // Get speed in mph
-    *(reinterpret_cast<uint16_t*>(reinterpret_cast<uintptr_t>(arguments) + 2)) = (abs(vehicle->velocity) * 9) >> 18;
+    *((uint16_t*)((uintptr_t)arguments + 2)) = (abs(vehicle->velocity) * 9) >> 18;
 
     if (ride->type == RIDE_TYPE_MINI_GOLF)
         return 0;
@@ -2803,11 +2803,9 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     }
 
     const RideComponentName stationName = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station];
-    *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments) + 4) = (ride->num_stations > 1)
-        ? stationName.number
-        : stationName.singular;
-    *(reinterpret_cast<uint16_t*>(reinterpret_cast<uintptr_t>(arguments) + 6)) = vehicle->current_station + 1;
-    *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments) + 0) = stringId;
+    *(rct_string_id*)((uintptr_t)arguments + 4) = (ride->num_stations > 1) ? stationName.number : stationName.singular;
+    *((uint16_t*)((uintptr_t)arguments + 6)) = vehicle->current_station + 1;
+    *(rct_string_id*)((uintptr_t)arguments + 0) = stringId;
     return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
 
@@ -2835,14 +2833,14 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     // Entrance / exit
     if (ride->status == RIDE_STATUS_CLOSED)
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
+        if (ride_get_entrance_location(ride, (uint8_t)stationIndex).isNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
+        else if (ride_get_exit_location(ride, (uint8_t)stationIndex).isNull())
             stringId = STR_NO_EXIT;
     }
     else
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
+        if (ride_get_entrance_location(ride, (uint8_t)stationIndex).isNull())
             stringId = STR_EXIT_ONLY;
     }
 
@@ -2850,7 +2848,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     if (stringId == 0)
     {
         int32_t queueLength = ride->stations[stationIndex].QueueLength;
-        set_format_arg_body(static_cast<uint8_t*>(arguments), 2, static_cast<uintptr_t>(queueLength), sizeof(uint16_t));
+        set_format_arg_body(static_cast<uint8_t*>(arguments), 2, (uintptr_t)queueLength, sizeof(uint16_t));
         stringId = STR_QUEUE_EMPTY;
         if (queueLength == 1)
             stringId = STR_QUEUE_ONE_PERSON;
@@ -2858,7 +2856,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
             stringId = STR_QUEUE_PEOPLE;
     }
 
-    set_format_arg_body(static_cast<uint8_t*>(arguments), 0, static_cast<uintptr_t>(stringId), sizeof(rct_string_id));
+    set_format_arg_body(static_cast<uint8_t*>(arguments), 0, (uintptr_t)stringId, sizeof(rct_string_id));
     return STR_BLACK_STRING;
 }
 
@@ -3174,7 +3172,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
 
     // Excitement Factor
-    auto factor = static_cast<int16_t>(rideEntry->excitement_multiplier);
+    auto factor = (int16_t)rideEntry->excitement_multiplier;
     if (factor > 0)
     {
         y += LIST_ROW_HEIGHT;
@@ -4407,7 +4405,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
     uint8_t newColourScheme;
     int32_t interactionType, z, direction;
 
-    newColourScheme = static_cast<uint8_t>(w->ride_colour);
+    newColourScheme = (uint8_t)w->ride_colour;
 
     CoordsXY mapCoord = {};
     get_map_coordinates_from_pos({ x, y }, VIEWPORT_INTERACTION_MASK_RIDE, mapCoord, &interactionType, &tileElement, nullptr);
@@ -4597,7 +4595,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             for (i = 0; i < std::min(numItems, DROPDOWN_ITEMS_MAX_SIZE); i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = (static_cast<int64_t>(i + 1) << 32)
+                gDropdownItemsArgs[i] = ((int64_t)(i + 1) << 32)
                     | ((RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised) << 16)
                     | stringId;
             }
@@ -4636,7 +4634,7 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
     switch (widgetIndex)
     {
         case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-            w->ride_colour = static_cast<uint16_t>(dropdownIndex);
+            w->ride_colour = (uint16_t)dropdownIndex;
             w->Invalidate();
             break;
         case WIDX_TRACK_MAIN_COLOUR:
@@ -5380,7 +5378,7 @@ static void setup_scenery_selection(rct_window* w)
     while (tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR))
         ;
 
-    gTrackDesignSaveRideIndex = static_cast<uint8_t>(w->number);
+    gTrackDesignSaveRideIndex = (uint8_t)w->number;
 
     track_design_save_init();
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
@@ -6551,7 +6549,7 @@ static void window_ride_income_mouseup(rct_window* w, rct_widgetindex widgetInde
             auto ride = get_ride(w->number);
             if (ride != nullptr)
             {
-                money_to_string(static_cast<money32>(ride->price), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                money_to_string((money32)ride->price, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
                 window_text_input_raw_open(
                     w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
             }
@@ -6562,7 +6560,7 @@ static void window_ride_income_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_SECONDARY_PRICE:
         {
-            money32 price32 = static_cast<money32>(window_ride_income_get_secondary_price(w));
+            money32 price32 = (money32)window_ride_income_get_secondary_price(w);
 
             money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
             window_text_input_raw_open(
@@ -6637,7 +6635,7 @@ static void window_ride_income_textinput(rct_window* w, rct_widgetindex widgetIn
     }
 
     price = std::clamp(price, MONEY(0, 00), MONEY(20, 00));
-    money16 price16 = static_cast<money16>(price);
+    money16 price16 = (money16)price;
 
     if (widgetIndex == WIDX_PRIMARY_PRICE)
     {

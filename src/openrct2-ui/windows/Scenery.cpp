@@ -720,15 +720,15 @@ static void window_scenery_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
 
     if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
     {
-        gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
+        gWindowSceneryPrimaryColour = (uint8_t)dropdownIndex;
     }
     else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
     {
-        gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
+        gWindowScenerySecondaryColour = (uint8_t)dropdownIndex;
     }
     else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
     {
-        gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
+        gWindowSceneryTertiaryColour = (uint8_t)dropdownIndex;
     }
 
     w->Invalidate();
@@ -1181,8 +1181,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             w->windowPos.y + w->height - 13);
     }
 
-    set_format_arg(
-        0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
+    set_format_arg(0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE);
     gfx_draw_string_left_clipped(
         dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 3, w->windowPos.y + w->height - 13,
         w->width - 19);

@@ -389,12 +389,12 @@ static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex
             return;
 
         int32_t informationType = INFORMATION_TYPE_STATUS;
-        uint32_t arg = static_cast<uint32_t>(gDropdownItemsArgs[dropdownIndex]);
+        uint32_t arg = (uint32_t)gDropdownItemsArgs[dropdownIndex];
         for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
         {
             if (arg == ride_info_type_string_mapping[i])
             {
-                informationType = static_cast<int32_t>(i);
+                informationType = (int32_t)i;
             }
         }
 
@@ -534,7 +534,7 @@ static void window_ride_list_invalidate(rct_window* w)
         auto allOpen = false;
         if (std::size(rideManager) != 0)
         {
-            auto c = static_cast<RideClassification>(w->page);
+            auto c = (RideClassification)w->page;
             allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
                 return ride.GetClassification() == c && ride.status == RIDE_STATUS_OPEN;
             });

@@ -127,9 +127,9 @@ static void window_view_clipping_set_clipheight(rct_window* w, const uint8_t cli
 {
     gClipHeight = clipheight;
     rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-    const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-    w->scrolls[0].h_left = static_cast<int16_t>(
-        std::ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))));
+    const float clip_height_ratio = (float)gClipHeight / 255;
+    w->scrolls[0].h_left = (int16_t)std::ceil(
+        clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
 }
 
 rct_window* window_view_clipping_open()
@@ -286,8 +286,7 @@ static void window_view_clipping_update(rct_window* w)
     const rct_widget* const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const rct_scroll* const scroll = &w->scrolls[0];
     const int16_t scroll_width = widget->right - widget->left - 1;
-    const uint8_t clip_height = static_cast<uint8_t>(
-        (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
+    const uint8_t clip_height = (uint8_t)(((float)scroll->h_left / (scroll->h_right - scroll_width)) * 255);
     if (clip_height != gClipHeight)
     {
         gClipHeight = clip_height;
@@ -407,7 +406,7 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
     fixed16_1dp clipHeightValueInUnits;
     fixed32_2dp clipHeightValueInMeters;
     fixed16_1dp clipHeightValueInFeet;
-    int32_t clipHeightRawValue = static_cast<int32_t>(gClipHeight);
+    int32_t clipHeightRawValue = (int32_t)gClipHeight;
     switch (gClipHeightDisplayType)
     {
         case DISPLAY_TYPE::DISPLAY_RAW:
@@ -420,7 +419,7 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (gConfigGeneral.show_height_as_units == 1)
             {
                 // Height label is Units.
-                clipHeightValueInUnits = static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
+                clipHeightValueInUnits = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
                 gfx_draw_string_left(
                     dpi, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits, w->colours[0], x,
                     y); // Printing the value in Height Units.
@@ -433,14 +432,12 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     case MEASUREMENT_FORMAT_METRIC:
                     case MEASUREMENT_FORMAT_SI:
-                        clipHeightValueInMeters = static_cast<fixed32_2dp>(
-                            FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
+                        clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
                         gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
                         break;
                     case MEASUREMENT_FORMAT_IMPERIAL:
                     default:
-                        clipHeightValueInFeet = static_cast<fixed16_1dp>(
-                            FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
+                        clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
                         gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
                         break;
                 }

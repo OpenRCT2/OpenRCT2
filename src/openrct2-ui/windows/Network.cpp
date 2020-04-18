@@ -266,8 +266,8 @@ static void window_network_information_update(rct_window* w)
         const NetworkHistory_t& history = _networkHistory[i];
         for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
         {
-            graphMaxIn = static_cast<float>(std::max<uint32_t>(history.deltaBytesReceived[n], graphMaxIn));
-            graphMaxOut = static_cast<float>(std::max<uint32_t>(history.deltaBytesSent[n], graphMaxOut));
+            graphMaxIn = (float)std::max<uint32_t>(history.deltaBytesReceived[n], graphMaxIn);
+            graphMaxOut = (float)std::max<uint32_t>(history.deltaBytesSent[n], graphMaxOut);
         }
     }
 
@@ -282,8 +282,8 @@ static void window_network_information_update(rct_window* w)
 
         _bytesIn = _networkAccumulatedStats.deltaBytesReceived[NETWORK_STATISTICS_GROUP_TOTAL];
         _bytesOut = _networkAccumulatedStats.deltaBytesSent[NETWORK_STATISTICS_GROUP_TOTAL];
-        _bytesInSec = static_cast<double>(_bytesIn) / statsTimeElapsed;
-        _bytesOutSec = static_cast<double>(_bytesOut) / statsTimeElapsed;
+        _bytesInSec = (double)_bytesIn / statsTimeElapsed;
+        _bytesOutSec = (double)_bytesOut / statsTimeElapsed;
 
         _networkAccumulatedStats = {};
     }
@@ -334,15 +334,15 @@ static void window_network_draw_graph(
         // std::sort(history.deltaBytesReceived.begin(), history.deltaBytesReceived.end(), std::greater<uint16_t>());
 
         // NOTE: Capacity is not a mistake, we always want the full length.
-        uint32_t curX = std::round((static_cast<float>(i) / static_cast<float>(_networkHistory.capacity()) * barWidth * width));
+        uint32_t curX = std::round(((float)i / (float)_networkHistory.capacity()) * barWidth * width);
 
         float totalSum = 0.0f;
         for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
         {
             if (received)
-                totalSum += static_cast<float>(history.deltaBytesReceived[n]);
+                totalSum += (float)history.deltaBytesReceived[n];
             else
-                totalSum += static_cast<float>(history.deltaBytesSent[n]);
+                totalSum += (float)history.deltaBytesSent[n];
         }
 
         int32_t yOffset = height;
@@ -353,13 +353,13 @@ static void window_network_draw_graph(
 
             if (received)
             {
-                totalHeight = (static_cast<float>(history.deltaBytesReceived[n]) / dataMax) * height;
-                singleHeight = (static_cast<float>(history.deltaBytesReceived[n]) / totalSum) * totalHeight;
+                totalHeight = ((float)history.deltaBytesReceived[n] / dataMax) * height;
+                singleHeight = ((float)history.deltaBytesReceived[n] / totalSum) * totalHeight;
             }
             else
             {
-                totalHeight = (static_cast<float>(history.deltaBytesSent[n]) / dataMax) * height;
-                singleHeight = (static_cast<float>(history.deltaBytesSent[n]) / totalSum) * totalHeight;
+                totalHeight = ((float)history.deltaBytesSent[n] / dataMax) * height;
+                singleHeight = ((float)history.deltaBytesSent[n] / totalSum) * totalHeight;
             }
 
             uint32_t lineHeight = std::ceil(singleHeight);

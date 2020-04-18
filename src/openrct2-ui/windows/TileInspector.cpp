@@ -1818,8 +1818,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Edge texture name
                 uint32_t idx = tileElement->AsSurface()->GetEdgeStyle();
                 openrct2_assert(
-                    idx < std::size(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds",
-                    idx);
+                    (uint32_t)idx < std::size(TerrainEdgeTypeStringIds),
+                    "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
                 rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tileElement->AsSurface()->GetEdgeStyle()];
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_WHITE, x, y + 11);
 
@@ -1871,9 +1871,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
                     const auto* sceneryElement = get_footpath_item_entry(pathAdditionType);
-                    rct_string_id additionNameId = sceneryElement != nullptr
-                        ? sceneryElement->name
-                        : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE);
+                    rct_string_id additionNameId = sceneryElement != nullptr ? sceneryElement->name
+                                                                             : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE;
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_WHITE, x, y + 11);
                 }
                 else

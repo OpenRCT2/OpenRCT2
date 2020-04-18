@@ -1431,7 +1431,7 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
-    if (w->list_information_type != 0xFFFF)
+    if (w->list_information_type != (uint16_t)-1)
     {
         set_format_arg(0, uint32_t, w->list_information_type);
         gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1613,7 +1613,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
     {
-        if (static_cast<uint32_t>(gScenarioCompletedCompanyValue) == 0x80000001)
+        if ((uint32_t)gScenarioCompletedCompanyValue == 0x80000001)
         {
             // Objective failed
             gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);

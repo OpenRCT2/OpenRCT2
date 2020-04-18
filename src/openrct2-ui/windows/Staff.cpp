@@ -768,7 +768,7 @@ void window_staff_unknown_05(rct_window* w)
  */
 void window_staff_stats_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(w, static_cast<rct_windowclass>(WC_STAFF));
+    colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
     if (window_staff_page_widgets[w->page] != w->widgets)
     {
@@ -802,7 +802,7 @@ void window_staff_stats_invalidate(rct_window* w)
  */
 void window_staff_options_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(w, static_cast<rct_windowclass>(WC_STAFF));
+    colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
     if (window_staff_page_widgets[w->page] != w->widgets)
     {
@@ -879,7 +879,7 @@ void window_staff_options_invalidate(rct_window* w)
  */
 void window_staff_overview_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(w, static_cast<rct_windowclass>(WC_STAFF));
+    colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
     if (window_staff_page_widgets[w->page] != w->widgets)
     {
@@ -1111,30 +1111,24 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y += LIST_ROW_HEIGHT;
     }
 
-    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->time_in_park), COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, (void*)&peep->time_in_park, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
     switch (peep->staff_type)
     {
         case STAFF_TYPE_HANDYMAN:
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->staff_lawns_mown), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, (void*)&peep->staff_lawns_mown, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_GARDENS_WATERED, static_cast<void*>(&peep->staff_gardens_watered), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_GARDENS_WATERED, (void*)&peep->staff_gardens_watered, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->staff_litter_swept), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_LITTER_SWEPT, (void*)&peep->staff_litter_swept, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->staff_bins_emptied), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_BINS_EMPTIED, (void*)&peep->staff_bins_emptied, COLOUR_BLACK, x, y);
             break;
         case STAFF_TYPE_MECHANIC:
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->staff_rides_inspected), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_INSPECTED, (void*)&peep->staff_rides_inspected, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->staff_rides_fixed), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_FIXED, (void*)&peep->staff_rides_fixed, COLOUR_BLACK, x, y);
             break;
     }
 }

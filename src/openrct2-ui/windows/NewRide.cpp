@@ -313,7 +313,7 @@ static void window_new_ride_populate_list()
     ride_list_item* nextListItem = _windowNewRideListItems;
 
     // For each ride type in the view order list
-    for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeViewOrder)); i++)
+    for (int32_t i = 0; i < (int32_t)std::size(RideTypeViewOrder); i++)
     {
         uint8_t rideType = RideTypeViewOrder[i];
         if (rideType == RIDE_TYPE_NULL)
@@ -870,9 +870,9 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         rct_ride_entry* rideEntry;
         // Draw flat button rectangle
         int32_t flags = 0;
-        if (w->new_ride.selected_ride_id == *(reinterpret_cast<int16_t*>(listItem)))
+        if (w->new_ride.selected_ride_id == *((int16_t*)listItem))
             flags |= INSET_RECT_FLAG_BORDER_INSET;
-        if (w->new_ride.highlighted_ride_id == *(reinterpret_cast<int16_t*>(listItem)) || flags != 0)
+        if (w->new_ride.highlighted_ride_id == *((int16_t*)listItem) || flags != 0)
             gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
 
         // Draw ride image with feathered border
@@ -953,10 +953,10 @@ static int32_t get_num_track_designs(ride_list_item item)
         auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
         if (rideGroup != nullptr)
         {
-            return static_cast<int32_t>(repo->GetCountForRideGroup(item.type, rideGroup));
+            return (int32_t)repo->GetCountForRideGroup(item.type, rideGroup);
         }
     }
-    return static_cast<int32_t>(repo->GetCountForObjectEntry(item.type, entryName));
+    return (int32_t)repo->GetCountForObjectEntry(item.type, entryName);
 }
 
 /**

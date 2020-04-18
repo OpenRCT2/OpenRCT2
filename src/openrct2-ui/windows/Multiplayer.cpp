@@ -373,7 +373,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
     for (i = 0; i < network_get_num_groups(); i++)
     {
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItemsArgs[i] = (uintptr_t)network_get_group_name(i);
     }
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {
@@ -456,7 +456,7 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
     }
 
     _windowInformationSizeDirty = false;
-    _windowInformationSize = { static_cast<int16_t>(width), static_cast<int16_t>(height) };
+    _windowInformationSize = { (int16_t)width, (int16_t)height };
     return _windowInformationSize;
 }
 
@@ -495,35 +495,35 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
 
         const utf8* name = network_get_server_name();
         {
-            y += gfx_draw_string_left_wrapped(dpi, static_cast<void*>(&name), x, y, width, STR_STRING, w->colours[1]);
+            y += gfx_draw_string_left_wrapped(dpi, (void*)&name, x, y, width, STR_STRING, w->colours[1]);
             y += LIST_ROW_HEIGHT / 2;
         }
 
         const utf8* description = network_get_server_description();
         if (!str_is_null_or_empty(description))
         {
-            y += gfx_draw_string_left_wrapped(dpi, static_cast<void*>(&description), x, y, width, STR_STRING, w->colours[1]);
+            y += gfx_draw_string_left_wrapped(dpi, (void*)&description, x, y, width, STR_STRING, w->colours[1]);
             y += LIST_ROW_HEIGHT / 2;
         }
 
         const utf8* providerName = network_get_server_provider_name();
         if (!str_is_null_or_empty(providerName))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_NAME, static_cast<void*>(&providerName), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_PROVIDER_NAME, (void*)&providerName, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerEmail = network_get_server_provider_email();
         if (!str_is_null_or_empty(providerEmail))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, (void*)&providerEmail, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerWebsite = network_get_server_provider_website();
         if (!str_is_null_or_empty(providerWebsite))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, (void*)&providerWebsite, COLOUR_BLACK, x, y);
         }
     }
 }

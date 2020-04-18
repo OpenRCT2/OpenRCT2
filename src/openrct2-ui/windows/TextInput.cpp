@@ -368,5 +368,5 @@ static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursor
 
     gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
     gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
-    gfx_draw_string(dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, x, y);
+    gfx_draw_string(dpi, (char*)gTextInput->ImeBuffer, COLOUR_DARK_GREEN, x, y);
 }
