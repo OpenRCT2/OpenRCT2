@@ -212,9 +212,9 @@ public:
         switch (intent->GetWindowClass())
         {
             case WC_PEEP:
-                return window_guest_open((Peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
+                return window_guest_open(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
             case WC_FIRE_PROMPT:
-                return window_staff_fire_prompt_open((Peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
+                return window_staff_fire_prompt_open(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
             case WC_INSTALL_TRACK:
                 return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
             case WC_GUEST_LIST:
@@ -224,14 +224,16 @@ public:
             {
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                loadsave_callback callback = (loadsave_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
+                loadsave_callback callback = reinterpret_cast<loadsave_callback>(
+                    intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
                 rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback, trackDesign);
 
                 return w;
             }
             case WC_MANAGE_TRACK_DESIGN:
-                return window_track_manage_open((track_design_file_ref*)intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+                return window_track_manage_open(
+                    static_cast<track_design_file_ref*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WC_NETWORK_STATUS:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
@@ -241,7 +243,7 @@ public:
             case WC_OBJECT_LOAD_ERROR:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                const rct_object_entry* objects = (rct_object_entry*)intent->GetPointerExtra(INTENT_EXTRA_LIST);
+                const rct_object_entry* objects = static_cast<rct_object_entry*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
                 window_object_load_error_open(const_cast<utf8*>(path.c_str()), count, objects);
 
@@ -253,7 +255,8 @@ public:
                 return ride == nullptr ? nullptr : window_ride_main_open(ride);
             }
             case WC_TRACK_DESIGN_PLACE:
-                return window_track_place_open((track_design_file_ref*)intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+                return window_track_place_open(
+                    static_cast<track_design_file_ref*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WC_TRACK_DESIGN_LIST:
             {
                 ride_list_item rideItem;
@@ -263,11 +266,11 @@ public:
             }
             case WC_SCENARIO_SELECT:
                 return window_scenarioselect_open(
-                    (scenarioselect_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK), false);
+                    reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)), false);
             case WD_VEHICLE:
-                return window_ride_open_vehicle((Vehicle*)intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                return window_ride_open_vehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
             case WD_TRACK:
-                return window_ride_open_track((TileElement*)intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT));
+                return window_ride_open_track(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
             case INTENT_ACTION_NEW_RIDE_OF_TYPE:
             {
                 // Open ride list window

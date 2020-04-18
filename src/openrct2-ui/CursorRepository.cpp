@@ -92,7 +92,7 @@ SDL_Cursor* CursorRepository::Create(const CursorData* cursorInfo, uint8_t scale
 {
     SDL_Cursor* cursor;
 
-    auto integer_scale = (int)round(scale);
+    auto integer_scale = static_cast<int>(round(scale));
 
     auto data = scaleDataArray(cursorInfo->Data, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
     auto mask = scaleDataArray(cursorInfo->Mask, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
