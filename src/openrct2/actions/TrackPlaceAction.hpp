@@ -368,7 +368,8 @@ public:
                 {
                     uint16_t maxHeight;
 
-                    if (RideGroupManager::RideTypeIsIndependent(ride->type) && rideEntry->max_height != 0)
+                    if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                        && rideEntry->max_height != 0)
                     {
                         maxHeight = rideEntry->max_height;
                     }

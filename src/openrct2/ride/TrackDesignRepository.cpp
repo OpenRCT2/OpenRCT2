@@ -166,7 +166,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
+                if (ori == nullptr || !RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 
@@ -225,7 +225,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
+                if (ori == nullptr || !RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 

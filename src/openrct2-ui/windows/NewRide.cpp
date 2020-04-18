@@ -319,7 +319,7 @@ static void window_new_ride_populate_list()
         if (rideType == RIDE_TYPE_NULL)
             continue;
 
-        if (gRideCategories[rideType] != currentCategory)
+        if (RideTypeDescriptors[rideType].Category != currentCategory)
             continue;
 
         if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus)
@@ -377,7 +377,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
         }
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (!RideGroupManager::RideTypeIsIndependent(rideType))
+        if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             if (strcmp(preferredVehicleName, "        \0") == 0)
             {
@@ -399,7 +399,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
         }
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if (RideGroupManager::RideTypeIsIndependent(rideType))
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             // Separate, draw apart
             allowDrawingOverLastButton = false;
@@ -537,7 +537,7 @@ void window_new_ride_focus(ride_list_item rideItem)
     rideEntry = get_ride_entry(rideItem.entry_index);
     uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
-    window_new_ride_set_page(w, gRideCategories[rideTypeIndex]);
+    window_new_ride_set_page(w, RideTypeDescriptors[rideTypeIndex].Category);
 
     for (ride_list_item* listItem = _windowNewRideListItems; listItem->type != RIDE_TYPE_NULL; listItem++)
     {
@@ -941,7 +941,7 @@ static int32_t get_num_track_designs(ride_list_item item)
     if (item.type < 0x80)
     {
         rideEntry = get_ride_entry(item.entry_index);
-        if (RideGroupManager::RideTypeIsIndependent(item.type))
+        if (RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.entry_index);
         }
@@ -1060,7 +1060,7 @@ static void window_new_ride_select(rct_window* w)
 static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
 {
     std::fill_n(buffer, bufferLen, 0);
-    if (RideGroupManager::RideTypeIsIndependent(rideType))
+    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return;
     }

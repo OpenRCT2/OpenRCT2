@@ -2215,7 +2215,7 @@ static void ride_inspection_update(Ride* ride)
         return;
     }
 
-    if (RideAvailableBreakdowns[ride->type] == 0)
+    if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
         return;
 
     if (inspectionIntervalMinutes > ride->last_inspection)
@@ -2338,7 +2338,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     if (!ride->CanBreakDown())
         return -1;
 
-    availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
+    availableBreakdownProblems = RideTypeDescriptors[ride->type].AvailableBreakdowns;
 
     // Calculate the total probability range for all possible breakdown problems
     totalProbability = 0;
@@ -2387,7 +2387,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
 
 bool Ride::CanBreakDown() const
 {
-    if (RideAvailableBreakdowns[this->type] == 0)
+    if (RideTypeDescriptors[type].AvailableBreakdowns == 0)
     {
         return false;
     }
@@ -2575,7 +2575,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
             }
             break;
         case RIDE_MECHANIC_STATUS_CALLING:
-            if (RideAvailableBreakdowns[ride->type] == 0)
+            if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
             {
                 ride->lifecycle_flags &= ~(
                     RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION);
@@ -5648,7 +5648,7 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
         const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
         return rideGroup->Naming;
     }
-    else if (!RideGroupManager::RideTypeIsIndependent(rideType))
+    else if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return RideNaming[rideType];
     }
@@ -7523,7 +7523,7 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
                     continue;
                 }
 
-                if (!RideGroupManager::RideTypeIsIndependent(rideType))
+                if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                 {
                     subType = rideEntryIndex;
                     break;
@@ -7728,7 +7728,7 @@ size_t Ride::FormatNameTo(void* argsV) const
     else
     {
         auto rideTypeName = RideNaming[type].name;
-        if (RideGroupManager::RideTypeIsIndependent(type))
+        if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)

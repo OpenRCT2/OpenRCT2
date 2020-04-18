@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor ObservationTowerRTD =
 {
+    SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_observation_tower),
@@ -23,5 +24,6 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CABIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
 };
 // clang-format on

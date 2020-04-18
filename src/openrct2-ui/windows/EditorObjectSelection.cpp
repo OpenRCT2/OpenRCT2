@@ -1461,7 +1461,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
                     break;
                 }
             }
-            return (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems))) != 0;
+            return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
     }
     return true;
 }

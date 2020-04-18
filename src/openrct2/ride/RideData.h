@@ -87,6 +87,7 @@ struct rct_ride_lift_data
 
 struct RideTypeDescriptor
 {
+    uint8_t Category;
     // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
     uint64_t EnabledTrackPieces;
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
@@ -95,6 +96,9 @@ struct RideTypeDescriptor
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     RideNameConvention NameConvention;
+    uint8_t AvailableBreakdowns;
+
+    bool HasFlag(uint64_t flag) const;
 };
 
 #ifdef _WIN32
@@ -170,6 +174,8 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT = (1ULL << 45),
     RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1ULL << 46),
     RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED = (1ULL << 47), // This is only set on the Flying RC and its alternative type.
+
+    RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1ULL << 48),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -217,7 +223,6 @@ constexpr const RideComponentName RideComponentNames[] =
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
 extern const uint8_t RideAvailableModes[];
 extern const uint8_t AllRideModesAvailable[];
-extern const uint8_t RideAvailableBreakdowns[];
 
 extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 

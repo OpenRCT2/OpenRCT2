@@ -785,7 +785,7 @@ static void track_list_load_designs(ride_list_item item)
         std::string entryName;
         if (item.type < 0x80)
         {
-            if (RideGroupManager::RideTypeIsIndependent(item.type))
+            if (RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 entryName = get_ride_entry_name(item.entry_index);
             }
