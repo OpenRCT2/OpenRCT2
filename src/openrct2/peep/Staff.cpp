@@ -143,6 +143,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
 void staff_update_greyed_patrol_areas()
 {
     Peep* peep;
+    uint16_t sprite_index;
 
     for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
@@ -152,12 +153,9 @@ void staff_update_greyed_patrol_areas()
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        for (uint16_t sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL;
-             sprite_index = peep->next)
+        FOR_ALL_STAFF (sprite_index, peep)
         {
-            peep = GET_PEEP(sprite_index);
-
-            if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
+            if (peep->staff_type == staff_type)
             {
                 int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)

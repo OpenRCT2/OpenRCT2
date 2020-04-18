@@ -138,6 +138,7 @@ The following people are not part of the development team, but have been contrib
 * Kevin Laframboise (klaframboise)
 * Tushar Sariya (TusharSariya)
 * (WantDiscussion)
+* Tomáš Žilínek (TomasZilinek)
 
 ## Toolchain
 * (Balletie) - macOS
