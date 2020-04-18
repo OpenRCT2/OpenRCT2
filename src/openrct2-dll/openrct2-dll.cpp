@@ -9,6 +9,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Sprite.h>
 
 
 #define EXPORT __declspec(dllexport)
@@ -91,7 +92,7 @@ extern "C"
     {
         CoordsXY coords = CoordsXY(x * COORDS_XY_STEP, y * COORDS_XY_STEP).ToTileStart();
         *element = *map_get_first_element_at(coords);
-
+        /*
         printf("(me) GetMapElementAt( %i, %i ) = ( %i, %i )\n", x, y, coords.x, coords.y);
         printf("(me)   -> %i \t(type)\n", element->type);
         printf("(me)   -> %i \t(flags)\n", element->Flags);
@@ -109,6 +110,7 @@ extern "C"
         printf("(me)   -> %i \t(pad 0xA)\n", element->pad_08[5]);
         printf("(me)   -> %i \t(pad 0xB)\n", element->pad_08[6]);
         printf("(me)   -> %i \t(pad 0xC)\n", element->pad_08[7]);
+        */
     }
 
 
@@ -130,7 +132,28 @@ extern "C"
             element++;
         }
 
-        printf("(me) GetMapElementsAt( %i, %i ) = %i\n", x, y, elementCount);
+        // printf("(me) GetMapElementsAt( %i, %i ) = %i\n", x, y, elementCount);
         return elementCount;
+    }
+
+
+    EXPORT int GetSpriteCount(int spriteType)
+    {
+        return gSpriteListCount[spriteType];
+    }
+
+
+    EXPORT int GetAllPeeps(Peep* peeps, int arraySize)
+    {
+        Peep* peep;
+        uint16_t spriteIndex;
+        int peepCount = 0;
+
+        FOR_ALL_PEEPS (spriteIndex, peep)
+        {
+            peeps[peepCount] = *peep;
+            peepCount++;
+        }
+        return peepCount;
     }
 }

@@ -69,6 +69,10 @@
     <Compile Include="Assets\Scripts\MeshBuilder\Vertex.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Enums\Direction.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Enums\Ownership.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\PeepSpriteType.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\PeepState.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\PeepType.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Enums\SpriteType.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Enums\SurfaceSlope.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Enums\TerrainEdgeStyle.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Enums\TerrainSurfaceStyle.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.Materials.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.Surface.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\Map\Map.cs" />
+    <Compile Include="Assets\Scripts\OpenRCT2\Map\PeepController.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\OpenRCT2.Lib.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\OpenRCT2.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\TileElements\PathElement.cs" />
@@ -85,6 +90,8 @@
     <Compile Include="Assets\Scripts\OpenRCT2\TileElements\SurfaceElement.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\TileElements\TileElement.cs" />
     <Compile Include="Assets\Scripts\OpenRCT2\TileElements\TrackElement.cs" />
+    <Compile Include="Assets\Scripts\Sprites\Peep.cs" />
+    <Compile Include="Assets\Scripts\Sprites\SpriteBase.cs" />
     <Compile Include="Assets\Scripts\Tools\CameraBuild.cs" />
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>D:/Projects/Visual Studio/OpenRCT2-Unity/src/openrct2-unity/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>

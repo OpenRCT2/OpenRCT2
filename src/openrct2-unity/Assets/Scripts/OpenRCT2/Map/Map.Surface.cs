@@ -76,9 +76,9 @@ namespace OpenRCT2.Unity
             int height = GetSurfaceCornerHeight(startHeight, surfaceSlope, surfaceCorner);
 
             Vector3 position = new Vector3(
-                x * TileToCoordsMultiplier,
+                x * TileCoordsToVector3Multiplier,
                 height * HeightMultiplier,
-                y * TileToCoordsMultiplier
+                y * TileCoordsToVector3Multiplier
             );
 
             return new Vertex(position);

@@ -5,9 +5,19 @@ namespace OpenRCT2.Unity
 {
     public partial class Map
     {
-        const float TileToCoordsMultiplier = 2;
+        [SerializeField] GameObject pathPrefab;
+        [SerializeField] GameObject trackPrefab;
+        [SerializeField] GameObject smallSceneryPrefab;
+
+
+        const int TileCoordsToCoords = 32;
+        const float TileCoordsToVector3Multiplier = 2;
+        const float CoordsToVector3Multiplier = 2 / TileCoordsToCoords;
         const float HeightMultiplier = 0.5f;
+
         const int TileHeightStep = 2;
+
+
 
         MeshBuilder cachedBuilder;
 
@@ -45,7 +55,30 @@ namespace OpenRCT2.Unity
                 case TileElementType.Surface:
                     GenerateSurface(builder, ref tile, x, y);
                     break;
+
+                case TileElementType.Path:
+                    InstantiateElement(pathPrefab, x, tile.baseHeight, y);
+                    break;
+
+                case TileElementType.Track:
+                    InstantiateElement(trackPrefab, x, tile.baseHeight, y);
+                    break;
+
+                case TileElementType.SmallScenery:
+                    GameObject scenery = InstantiateElement(smallSceneryPrefab, x, tile.baseHeight, y);
+
+                    Vector3 scale = scenery.transform.localScale;
+                    scale.y = Mathf.Max((tile.clearanceHeight - tile.baseHeight) * HeightMultiplier, 1);
+                    scenery.transform.localScale = scale;
+                    break;
             }
+        }
+
+
+        GameObject InstantiateElement(GameObject obj, float x, float y, float z)
+        {
+            Vector3 position = TileCoordsToVector3(x, y, z);
+            return Instantiate(obj, position, Quaternion.identity, transform);
         }
     }
 }

@@ -56,7 +56,39 @@ namespace OpenRCT2.Unity
 
 
         [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int GetMapElementsAt(int x, int y, [In, Out] TileElement[] elements, int arraySize);
+        static extern int GetMapElementsAt(int x, int y, [In, Out] TileElement[] elements, int arraySize);
+
+
+        /// <summary>
+        /// Writes all elements to the given buffer at the specified position.
+        /// </summary>
+        public static int GetMapElementsAt(int x, int y, TileElement[] elements)
+            => GetMapElementsAt(x, y, elements, elements.Length);
+
+        #endregion
+
+
+        #region Sprites
+
+        [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
+        static extern int GetSpriteCount(SpriteType spriteType);
+
+
+        [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
+        static extern int GetAllPeeps([In, Out] Peep[] elements, int arraySize);
+
+
+        public static Peep[] GetAllPeeps()
+        {
+            int spriteCount = GetSpriteCount(SpriteType.Peep);
+            Debug.Log($"Peeps found: {spriteCount}");
+
+            Peep[] peeps = new Peep[spriteCount];
+
+            GetAllPeeps(peeps, spriteCount);
+            return peeps;
+        }
+
 
         #endregion
 

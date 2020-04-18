@@ -1,12 +1,11 @@
 using System;
-using MeshBuilding;
 using UnityEngine;
 
 namespace OpenRCT2.Unity
 {
-	public partial class Map : MonoBehaviour
-	{
-		MeshFilter meshFilter;
+    public partial class Map : MonoBehaviour
+    {
+        MeshFilter meshFilter;
 
 
 		int mapSize;
@@ -30,7 +29,12 @@ namespace OpenRCT2.Unity
 
 		void LoadMap()
 		{
-			mapSize = OpenRCT2.GetMapSize();
+            // Remove all children
+            foreach (Transform child in transform)
+                Destroy(child.gameObject);
+
+            // Load the map
+            mapSize = OpenRCT2.GetMapSize();
 			tiles = new Tile[mapSize, mapSize];
 
             Debug.Log($"Map size: {mapSize}");
@@ -41,12 +45,13 @@ namespace OpenRCT2.Unity
 			{
 				for (int y = 0; y < mapSize; y++)
 				{
-					int amount = OpenRCT2.GetMapElementsAt(x, y, buffer, buffer.Length);
+					int amount = OpenRCT2.GetMapElementsAt(x, y, buffer);
 
 					tiles[x, y] = new Tile(buffer, amount);
 				}
 			}
 
+            // Generate the surface mesh
 			Mesh mesh = GenerateSurfaceMesh();
             mesh.name = "Map";
 			meshFilter.sharedMesh = mesh;
@@ -82,5 +87,27 @@ namespace OpenRCT2.Unity
             public SurfaceElement Surface
                 => ((surfaceIndex != -1) ? Elements[surfaceIndex].AsSurface() : default);
 		}
-	}
+
+
+        public static Vector3 TileCoordsToVector3(float x, float y, float z)
+        {
+            float halftile = TileCoordsToVector3Multiplier / 2f;
+
+            return new Vector3(
+                (x * TileCoordsToVector3Multiplier) + halftile,
+                y * HeightMultiplier,
+                (z * TileCoordsToVector3Multiplier) + halftile
+            );
+        }
+
+
+        public static Vector3 CoordsToVector3(float x, float y, float z)
+        {
+            return new Vector3(
+                (x * CoordsToVector3Multiplier),
+                y * HeightMultiplier,
+                (z * CoordsToVector3Multiplier)
+            );
+        }
+    }
 }
