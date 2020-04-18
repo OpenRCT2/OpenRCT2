@@ -189,7 +189,7 @@ static void scenario_end()
  */
 void scenario_failure()
 {
-    gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+    gScenarioCompletedCompanyValue = 0x80000001;
     scenario_end();
 }
 
@@ -825,7 +825,7 @@ static void scenario_objective_check_guests_and_rating()
             gGuestInitialHappiness = 50;
         }
     }
-    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+    else if (gScenarioCompletedCompanyValue != static_cast<money32>(0x80000001))
     {
         gScenarioParkRatingWarningDays = 0;
     }

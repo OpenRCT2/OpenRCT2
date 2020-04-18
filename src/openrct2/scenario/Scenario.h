@@ -366,8 +366,6 @@ enum
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
-static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
-
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32_t gScenarioTicks;
