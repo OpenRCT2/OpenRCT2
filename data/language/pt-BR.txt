@@ -1977,7 +1977,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Janela de Exibição #{COMMA16}
 STR_2780    :Janela de Exibição Grande
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Alterar atalhos do teclado
@@ -3677,6 +3677,9 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Habilitar efeitos luminosos em atrações (experimental)
 STR_6362    :{SMALLFONT}{BLACK}Se habilitados, veículos de atrações com trilhos serão iluminados à noite.
 STR_6363    :Texto copiado para a área de transferência
+STR_6364    :{RED}{COMMA16} pessoa morreu em um acidente em {STRINGID}
+STR_6365    :Acidentes em atrações
+STR_6366    :Veículos presos ou parados
 
 #############
 # Scenarios #

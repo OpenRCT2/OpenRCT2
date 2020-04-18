@@ -148,6 +148,7 @@ STR_0565    :Egy egyszerű, kizárólag enyhe lejtőkre és fordulókra képes f
 STR_0566    :Különálló hullámvasút-kocsik száguldanak egy szoros, cikcakkos alaprajzú, éles kanyarokat és rövid meredek eséseket tartalmazó pályán
 STR_0567    :A pálya mindkét oldalán felfüggesztett ülésekben ülve az utasok bukfencezve forognak, miközben meredek eséseken és különböző fordítókon haladnak át
 STR_0569    :A pálya alatti speciális rögzítőhámokban utazva az utasok megtapasztalhatják a repülés élményét, ahogy szelik a levegőt
+STR_0571    :Kör alakú autók forognak körbe-körbe, miközben a cikkcakkos fa pályán haladnak
 STR_0573    :Motoros, helikopter formájú kocsik haladnak egy acélpályán, a pedálozó utasok irányításával
 STR_0578    :A kocsik egy abroncsokkal körbefogott, meredek esésekkel és palástorsókkal teli pálya mentén haladnak
 STR_0579    :Egy enyhe minigolf-játék
@@ -1952,7 +1953,7 @@ STR_2751    :Összes tétel áthelyezése alulra
 STR_2752    :Gyommentesítés
 STR_2753    :Fű lenyírása
 STR_2754    :Növények öntözése
-STR_2755    :Vandalizm. helyreáll.
+STR_2755    :Rongálások javítása
 STR_2756    :Szemét eltávolítása
 STR_2763    :???
 STR_2765    :Nagy villamos
@@ -1970,7 +1971,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Látkép {COMMA16}
 STR_2780    :Extra látkép
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Gyorsbillentyűk beállítása
@@ -2398,6 +2399,8 @@ STR_3331    :A park bejáratától a térkép széléig vezető út nem teljes, 
 STR_3332    :A parkbejárat rossz irányba néz, vagy nem vezet tőle út a térkép széléig
 STR_3333    :Plug-in objektumok exportálása a mentett játékokkal
 STR_3334    :{SMALLFONT}{BLACK} Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott plug-in objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
+STR_3335    :Játéktervező - Válaszd ki a játék típusát és a járműveket
+STR_3336    :Játékterv-kezelő - Válaszd ki a játék típusát
 STR_3338    :{BLACK}Egyedi tervezés
 STR_3339    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
 STR_3340    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
@@ -2881,6 +2884,7 @@ STR_5551    :év/nap/hónap
 STR_5552    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Játék megállítása, ha a Steam Átfedés nyitva van
 STR_5554    :{SMALLFONT}{BLACK}A hegy-eszköz bekapcsolása
+STR_5555    :Más pályatípusok járműveinek megjelenítése
 STR_5556    :{SMALLFONT}{BLACK}Játékos kirúgása
 STR_5557    :Kapcsolat fenntartása hiba esetén (többjátékos mód)
 STR_5558    :A beállítás érvénybe lépéséhez újraindítás szükséges
@@ -3104,7 +3108,12 @@ STR_5823    :{SMALLFONT}{BLACK}Nagybetűs megjelenítés a hirdetőtáblákon (R
 STR_5824    :{SMALLFONT}{BLACK}A viharok alatti villámhatás{NEWLINE}kikapcsolása
 STR_5825    :{SMALLFONT}{BLACK}Az egérmutató maradjon az ablakon belül
 STR_5826    :{SMALLFONT}{BLACK}A látkép jobb egeres húzásának invertálása
+STR_5830    :{SMALLFONT}{BLACK}A játék által használt nyelv megváltoztatása
+STR_5831    :{SMALLFONT}{BLACK}A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység megváltoztatása.
+STR_5833    :{SMALLFONT}{BLACK}A játék által használt dátumformátum megváltoztatása
+STR_5834    :{SMALLFONT}{BLACK}Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :{SMALLFONT}{BLACK}A játék némítása, ha az ablak elveszti a fókuszt
+STR_5836    :{SMALLFONT}{BLACK}A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha az RCT1 játékmappájából a 'data/css17.dat'-ot átmásolod az RCT2 mappán belül a 'data/css50.dat'-ba, vagy megadod az RCT1 útvonalát az Egyéb fülön.
 STR_5838    :{SMALLFONT}{BLACK}Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :{SMALLFONT}{BLACK}Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :{SMALLFONT}{BLACK}Külön gomb a csalások ablak számára az eszköztáron
@@ -3155,7 +3164,9 @@ STR_5892    :{SMALLFONT}{BLACK}Vissza az alapértelmezett mappába
 STR_5893    :Árfolyam
 STR_5894    :Írd be az árfolyamot
 STR_5895    :Terv mentése
+STR_5900    :Eredeti rajzolókód használata
 STR_5904    :Dátum visszaállítása
+STR_5905    :{SMALLFONT}{BLACK}Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
 STR_5907    :{SMALLFONT}{BLACK}Ha be van kapcsolva, a nagyítás képernyő közepe helyett a mutatóra közelít
 STR_5910    :Alkalmazás
@@ -3203,11 +3214,17 @@ STR_5951    :{WINDOW_COLOUR_2}Pályaelem ID: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Sorszám: {BLACK}{COMMA16}
 STR_5953    :{SMALLFONT}{BLACK}A jelenlegi mező térképelemeinek alapmagasság szerinti rendezése.
 STR_5954    :{WINDOW_COLOUR_2}Díszlet kora: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Kvadráns helyzet: {BLACK}{STRINGID}
 STR_5956    :Délnyugat
 STR_5957    :Északnyugat
 STR_5958    :Északkelet
 STR_5959    :Délkelet
+STR_5960    :{WINDOW_COLOUR_2}Kvadráns helyzet:
+STR_5961    :{WINDOW_COLOUR_2}Belépési index: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}Ütközésérzékelés:
+STR_5963    :{WINDOW_COLOUR_2}Megemelt sarkok:
+STR_5964    :{WINDOW_COLOUR_2}Átlós
+STR_5965    :{WINDOW_COLOUR_2}Bejárat típusa: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}Parkbejárat része: {BLACK}{STRINGID}
 STR_5967    :Középső
 STR_5968    :Bal
@@ -3215,6 +3232,12 @@ STR_5969    :Jobb
 STR_5970    :{WINDOW_COLOUR_2}Bejárat ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Kijárat ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Játék ID: {BLACK}{COMMA16}
+STR_5973    :Következőhöz erősítés
+STR_5974    :{SMALLFONT}{BLACK}Megváltoztatja az alap- és a felszín feletti magasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
+STR_5975    :Elhajlás:
+STR_5976    :Egyenes
+STR_5977    :Jobbra fel
+STR_5978    :Balra fel
 STR_5979    :{WINDOW_COLOUR_2}Fal típusa: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Hirdetőtábla szövege: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Nem hirdetőtábla
@@ -3381,6 +3404,7 @@ STR_6150    :Érvénytelen válasz a főszervertől (nincs JSON-szám)
 STR_6151    :A főszerver nem tudja listázni a szervereket
 STR_6152    :Érvénytelen válasz a főszervertől (nincs JSON-tömb)
 STR_6153    :Fizetős parkbelépő / Fizetős játékok
+STR_6154    :Biztonsági okokból nem javasolt az OpenRCT2 emelt jogosultságokkal történő futtatása.
 STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd valamelyiket, vagy konfiguráld a parancssorból.
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
@@ -3389,6 +3413,7 @@ STR_6159    :Sima legközelebbi szomszéd
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vad egér
+STR_6163    :Egér alakú kocsik száguldanak éles kanyarokon és rövid eséseken keresztül, miközben szelíden forognak, hogy összezavarják az utasokat
 STR_6164    :{WHITE}❌
 STR_6165    :Vertikális szinkron
 STR_6166    :{SMALLFONT}{BLACK}A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
@@ -3415,6 +3440,7 @@ STR_6186    :Nincs sprite kiválasztva
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Hányás
 STR_6189    :Kacsa
+STR_6190    :{SMALLFONT}{BLACK}Nem választhatsz ki sprite-ot, amíg a főcímképernyő aktív.
 STR_6191    :Felület
 STR_6192    :Fal
 STR_6193    :{COMMA16} vendég
@@ -3586,6 +3612,10 @@ STR_6359    :{POP16}{POP16}{UINT16}. oldal
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Fényhatások a játékokon (kísérleti)
 STR_6362    :{SMALLFONT}{BLACK}Ha be van kapcsolva, a pályával rendlekező játékokon a járművek éjjel ki lesznek világítva.
+STR_6363    :A szöveg a vágólapra másolva
+STR_6364    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
+STR_6365    :Játékok áldozatai
+STR_6366    :Beragadt vagy elakadt járművek
 
 #############
 # Scenarios #

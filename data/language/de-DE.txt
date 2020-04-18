@@ -1979,7 +1979,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ansichtsfenster {COMMA16}
 STR_2780    :Zusatz-Ansichtsfenster
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :UMSCHALT + 
 STR_2783    :STRG + 
 STR_2784    :Tastaturkürzel ändern

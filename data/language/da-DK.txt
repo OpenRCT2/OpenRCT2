@@ -1982,7 +1982,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Visning #{COMMA16}
 STR_2780    :Ekstra visning
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Skift tastatur genvej

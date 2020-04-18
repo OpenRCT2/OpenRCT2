@@ -1981,7 +1981,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :외부화면 #{COMMA16}
 STR_2780    :추가 외부화면
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :키보드 단축키 변경
@@ -3685,6 +3685,9 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :차량 조명 효과 (실험적 기능)
 STR_6362    :{SMALLFONT}{BLACK}이 설정을 켜면, 밤에 트랙형 놀이기구의 차량에 조명이 들어옵니다.
 STR_6363    :텍스트를 클립보드에 복사하였습니다
+STR_6364    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
+STR_6365    :놀이기구 사상자
+STR_6366    :끼거나 움직이지 않는 놀이기구
 
 #############
 # Scenarios #
@@ -3764,7 +3767,7 @@ STR_DTLS    :비밀스런 숲 속 언덕에 처음부터 놀이공원을 건설�
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :평화로운 피라미드
-STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔 보세요.
+STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔보세요.
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
