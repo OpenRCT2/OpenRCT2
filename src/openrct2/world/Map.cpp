@@ -878,8 +878,17 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
         {
             auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
+
             if (surfaceElement != nullptr && min_height > surfaceElement->base_height)
             {
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                {
+                    if (!map_is_location_in_park(CoordsXY{ xi, yi }))
+                    {
+                        continue;
+                    }
+                }
+
                 min_height = surfaceElement->base_height;
             }
         }
@@ -901,6 +910,14 @@ uint8_t map_get_highest_land_height(const MapRange& range)
             auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                {
+                    if (!map_is_location_in_park(CoordsXY{ xi, yi }))
+                    {
+                        continue;
+                    }
+                }
+
                 uint8_t base_height = surfaceElement->base_height;
                 if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     base_height += 2;
