@@ -857,7 +857,7 @@ void S6Exporter::ExportResearchedRideTypes()
         {
             int32_t quadIndex = rideType >> 5;
             int32_t bitIndex = rideType & 0x1F;
-            _s6.researched_ride_types[quadIndex] |= static_cast<uint32_t>(1) << bitIndex;
+            _s6.researched_ride_types[quadIndex] |= 1UL << bitIndex;
         }
     }
 }
@@ -872,7 +872,7 @@ void S6Exporter::ExportResearchedRideEntries()
         {
             int32_t quadIndex = rideEntryIndex >> 5;
             int32_t bitIndex = rideEntryIndex & 0x1F;
-            _s6.researched_ride_entries[quadIndex] |= static_cast<uint32_t>(1) << bitIndex;
+            _s6.researched_ride_entries[quadIndex] |= 1UL << bitIndex;
         }
     }
 }
@@ -894,7 +894,7 @@ void S6Exporter::ExportResearchedSceneryItems()
         {
             int32_t quadIndex = sceneryEntryIndex >> 5;
             int32_t bitIndex = sceneryEntryIndex & 0x1F;
-            _s6.researched_scenery_items[quadIndex] |= static_cast<uint32_t>(1) << bitIndex;
+            _s6.researched_scenery_items[quadIndex] |= 1UL << bitIndex;
         }
     }
 }
