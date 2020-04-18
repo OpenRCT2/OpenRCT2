@@ -416,7 +416,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands))
                 {
-                    for (int32_t i = w->selected_list_item; i < static_cast<int16_t>(_editingTitleSequence->NumCommands) - 1;
+                    for (int32_t i = w->selected_list_item; i < static_cast<int16_t>(_editingTitleSequence->NumCommands - 1);
                          i++)
                     {
                         _editingTitleSequence->Commands[i] = _editingTitleSequence->Commands[i + 1];
@@ -446,7 +446,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1
-                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands) - 1)
+                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands - 1))
                 {
                     TitleCommand* a = &_editingTitleSequence->Commands[w->selected_list_item];
                     TitleCommand* b = &_editingTitleSequence->Commands[w->selected_list_item + 1];
