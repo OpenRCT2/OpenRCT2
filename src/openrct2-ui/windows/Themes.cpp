@@ -369,7 +369,7 @@ static void window_themes_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
             window_text_input_open(
                 w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING,
-                (uintptr_t)activeThemeName, 64);
+                reinterpret_cast<uintptr_t>(activeThemeName), 64);
             break;
         case WIDX_THEMES_DELETE_BUTTON:
             if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
@@ -392,7 +392,7 @@ static void window_themes_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
                 window_text_input_open(
                     w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING,
-                    (uintptr_t)activeThemeName, 64);
+                    reinterpret_cast<uintptr_t>(activeThemeName), 64);
             }
             break;
     }
@@ -505,7 +505,7 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             newSelectedTab = widgetIndex - WIDX_THEMES_SETTINGS_TAB;
             if (_selected_tab == newSelectedTab)
                 break;
-            _selected_tab = (uint8_t)newSelectedTab;
+            _selected_tab = static_cast<uint8_t>(newSelectedTab);
             w->scrolls[0].v_top = 0;
             w->frame_no = 0;
             window_event_resize_call(w);
@@ -513,20 +513,20 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_THEMES_PRESETS_DROPDOWN:
             theme_manager_load_available_themes();
-            num_items = (int32_t)theme_manager_get_num_available_themes();
+            num_items = static_cast<int32_t>(theme_manager_get_num_available_themes());
 
             widget--;
             for (int32_t i = 0; i < num_items; i++)
             {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = (uintptr_t)theme_manager_get_available_theme_name(i);
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
             }
 
             window_dropdown_show_text_custom_width(
                 w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
-            dropdown_set_checked((int32_t)theme_manager_get_active_available_theme_index(), true);
+            dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
             break;
         case WIDX_THEMES_RCT1_RIDE_LIGHTS:
             if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
@@ -836,7 +836,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
         const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-        set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
+        set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(activeThemeName));
         gfx_draw_string_left(
             dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->windowPos.x + 10,
             w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);

@@ -95,12 +95,12 @@ static uint8_t window_new_campaign_shop_items[64];
 static int32_t ride_value_compare(const void* a, const void* b)
 {
     auto valueA = 0;
-    auto rideA = get_ride(*((uint8_t*)a));
+    auto rideA = get_ride(*(static_cast<const uint8_t*>(a)));
     if (rideA != nullptr)
         valueA = rideA->value;
 
     auto valueB = 0;
-    auto rideB = get_ride(*((uint8_t*)b));
+    auto rideB = get_ride(*(static_cast<const uint8_t*>(b)));
     if (rideB != nullptr)
         valueB = rideB->value;
 
@@ -110,12 +110,12 @@ static int32_t ride_value_compare(const void* a, const void* b)
 static int32_t ride_name_compare(const void* a, const void* b)
 {
     std::string rideAName;
-    auto rideA = get_ride(*((uint8_t*)a));
+    auto rideA = get_ride(*(static_cast<const uint8_t*>(a)));
     if (rideA != nullptr)
         rideAName = rideA->GetName();
 
     std::string rideBName;
-    auto rideB = get_ride(*((uint8_t*)b));
+    auto rideB = get_ride(*(static_cast<const uint8_t*>(b)));
     if (rideB != nullptr)
         rideBName = rideB->GetName();
 
@@ -270,7 +270,8 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                         {
                             gDropdownItemsFormat[numItems] = STR_OPTIONS_DROPDOWN_ITEM;
                             set_format_arg_on(
-                                (uint8_t*)&gDropdownItemsArgs[numItems], 0, const char*, ride->custom_name.c_str());
+                                reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[numItems]), 0, const char*,
+                                ride->custom_name.c_str());
                         }
                         numItems++;
                     }
@@ -303,7 +304,7 @@ static void window_new_campaign_dropdown(rct_window* w, rct_widgetindex widgetIn
     if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
         return;
 
-    if (dropdownIndex < 0 || (size_t)dropdownIndex >= window_new_campaign_rides.size())
+    if (dropdownIndex < 0 || static_cast<size_t>(dropdownIndex) >= window_new_campaign_rides.size())
         return;
 
     if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)

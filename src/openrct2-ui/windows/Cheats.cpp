@@ -188,17 +188,17 @@ constexpr int32_t OPTW = 220;                                            // Opti
 constexpr int32_t OPTH = 10;                                             // Option (checkbox) height (two columns)
 constexpr int32_t GROUP_SPACE = 6;
 
-#define YPL(ROW)        ((int16_t)(YOS + ((BTNH + YSPA) * ROW)))
-#define HPL(ROW)        ((int16_t)(YPL(ROW) + BTNH))
-#define OHPL(ROW)       ((int16_t)(YPL(ROW) + OPTH))
-#define XPL(COL)        ((int16_t)(XOS + ((BTNW + XSPA) * COL)))
-#define WPL(COL)        ((int16_t)(XPL(COL) + BTNW))
-#define OWPL            ((int16_t)(XPL(0) + OPTW))
+#define YPL(ROW)        (static_cast<int16_t>((YOS + ((BTNH + YSPA) * ROW))))
+#define HPL(ROW)        (static_cast<int16_t>(YPL(ROW) + BTNH))
+#define OHPL(ROW)       (static_cast<int16_t>(YPL(ROW) + OPTH))
+#define XPL(COL)        (static_cast<int16_t>(XOS + ((BTNW + XSPA) * COL)))
+#define WPL(COL)        (static_cast<int16_t>(XPL(COL) + BTNW))
+#define OWPL            (static_cast<int16_t>(XPL(0) + OPTW))
 
-#define MIN_BTN_LEFT    ((int16_t)(XPL(1)))
-#define MIN_BTN_RIGHT   ((int16_t)(WPL(1) - (BTNW / 2)))
-#define MAX_BTN_LEFT    ((int16_t)(XPL(1.5)))
-#define MAX_BTN_RIGHT   ((int16_t)(WPL(1)))
+#define MIN_BTN_LEFT    (static_cast<int16_t>(XPL(1)))
+#define MIN_BTN_RIGHT   (static_cast<int16_t>(WPL(1) - (BTNW / 2)))
+#define MAX_BTN_LEFT    (static_cast<int16_t>(XPL(1.5)))
+#define MAX_BTN_RIGHT   (static_cast<int16_t>(WPL(1)))
 
 constexpr int32_t TXTO = 3;  // Text horizontal offset from button left (for button text)
 #pragma endregion
@@ -658,26 +658,26 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_MONTH_UP:
             _monthSpinnerValue++;
-            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, (int)MONTH_COUNT);
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_MONTH_DOWN:
             _monthSpinnerValue--;
-            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, (int)MONTH_COUNT);
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_UP:
             _daySpinnerValue++;
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_DOWN:
             _daySpinnerValue--;
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:
@@ -1304,7 +1304,7 @@ static void window_cheats_set_page(rct_window* w, int32_t page)
     rct_widget* widget = &w->widgets[WIDX_TAB_CONTENT];
     while (widget->type != WWT_LAST)
     {
-        maxY = std::max(maxY, (int32_t)widget->bottom);
+        maxY = std::max(maxY, static_cast<int32_t>(widget->bottom));
         widget++;
     }
     maxY += 6;

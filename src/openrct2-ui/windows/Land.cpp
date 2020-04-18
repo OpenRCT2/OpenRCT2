@@ -294,8 +294,8 @@ static void window_land_update(rct_window* w)
  */
 static void window_land_invalidate(rct_window* w)
 {
-    auto surfaceImage = (uint32_t)SPR_NONE;
-    auto edgeImage = (uint32_t)SPR_NONE;
+    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
+    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(

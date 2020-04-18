@@ -527,7 +527,7 @@ private:
                             EntryList* entries = GetEntryList(objectType);
 
                             // Check if there are spare entries available
-                            size_t maxEntries = (size_t)object_entry_group_counts[objectType];
+                            size_t maxEntries = static_cast<size_t>(object_entry_group_counts[objectType]);
                             if (entries != nullptr && entries->GetCount() < maxEntries)
                             {
                                 entries->GetOrAddEntry(objectName);
@@ -1115,7 +1115,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    Vehicle* vehicle = (Vehicle*)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
+                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE));
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1330,7 +1330,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                Peep* peep = (Peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
+                Peep* peep = reinterpret_cast<Peep*>(create_sprite(SPRITE_IDENTIFIER_PEEP));
                 spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
@@ -1341,7 +1341,7 @@ private:
             rct_sprite* sprite = get_sprite(i);
             if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
-                Vehicle* vehicle = (Vehicle*)sprite;
+                Vehicle* vehicle = reinterpret_cast<Vehicle*>(sprite);
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
@@ -1513,7 +1513,7 @@ private:
         {
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->thoughts[i];
-            dstThought->type = (PeepThoughtType)srcThought->type;
+            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
             dstThought->item = srcThought->type;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
@@ -1630,7 +1630,7 @@ private:
             {
                 const auto* srcLitter = &sprite.litter;
 
-                Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
+                Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->type = srcLitter->type;
 
@@ -1655,7 +1655,7 @@ private:
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                SpriteGeneric* dst = (SpriteGeneric*)create_sprite(SPRITE_IDENTIFIER_MISC);
+                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SPRITE_IDENTIFIER_MISC));
                 dst->sprite_identifier = src->sprite_identifier;
                 dst->type = src->type;
                 dst->flags = src->flags;
@@ -1669,10 +1669,10 @@ private:
                 switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
-                        ImportSteamParticle((SteamParticle*)dst, (SteamParticle*)src);
+                        ImportSteamParticle(reinterpret_cast<SteamParticle*>(dst), reinterpret_cast<SteamParticle*>(src));
                         break;
                     case SPRITE_MISC_MONEY_EFFECT:
-                        ImportMoneyEffect((MoneyEffect*)dst, (MoneyEffect*)src);
+                        ImportMoneyEffect(reinterpret_cast<MoneyEffect*>(dst), reinterpret_cast<MoneyEffect*>(src));
                         break;
                     case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
                         break;
@@ -1683,13 +1683,14 @@ private:
                     case SPRITE_MISC_EXPLOSION_FLARE:
                         break;
                     case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-                        ImportJumpingFountainWater((JumpingFountain*)dst, (JumpingFountain*)src);
+                        ImportJumpingFountainWater(
+                            reinterpret_cast<JumpingFountain*>(dst), reinterpret_cast<JumpingFountain*>(src));
                         break;
                     case SPRITE_MISC_BALLOON:
-                        ImportBalloon((Balloon*)dst, (Balloon*)src);
+                        ImportBalloon(reinterpret_cast<Balloon*>(dst), reinterpret_cast<Balloon*>(src));
                         break;
                     case SPRITE_MISC_DUCK:
-                        ImportDuck((Duck*)dst, (Duck*)src);
+                        ImportDuck(reinterpret_cast<Duck*>(dst), reinterpret_cast<Duck*>(src));
                         break;
                 }
 
@@ -1809,12 +1810,15 @@ private:
         gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
         // TODO marketing campaigns not working
-        for (size_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+        static_assert(
+            std::numeric_limits<uint8_t>::max() > ADVERTISING_CAMPAIGN_COUNT,
+            "Advertising enum bigger than capacity of iterator");
+        for (uint8_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
             if (_s4.marketing_status[i] & CAMPAIGN_ACTIVE_FLAG)
             {
                 MarketingCampaign campaign;
-                campaign.Type = (uint8_t)i;
+                campaign.Type = i;
                 campaign.WeeksLeft = _s4.marketing_status[i] & ~CAMPAIGN_ACTIVE_FLAG;
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
@@ -2540,7 +2544,7 @@ private:
 
                 ResearchItem tmpResearchItem = {};
                 ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
-                dst->Assoc = (uint32_t)tmpResearchItem.rawValue;
+                dst->Assoc = static_cast<uint32_t>(tmpResearchItem.rawValue);
             }
             else
             {

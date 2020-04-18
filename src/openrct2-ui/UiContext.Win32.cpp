@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui
                     HWND hwnd = GetHWND(window);
                     if (hwnd != nullptr)
                     {
-                        SendMessageA(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
+                        SendMessageA(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
                     }
                 }
             }
@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui
             openFileName.lpstrInitialDir = wcInitialDirectory.c_str();
             openFileName.lpstrFilter = wcFilters.c_str();
             openFileName.lpstrFile = &wcFilename[0];
-            openFileName.nMaxFile = (DWORD)wcFilename.size();
+            openFileName.nMaxFile = static_cast<DWORD>(wcFilename.size());
 
             // Open dialog
             BOOL dialogResult = FALSE;
@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui
                     int32_t filterIndex = openFileName.nFilterIndex - 1;
 
                     assert(filterIndex >= 0);
-                    assert(filterIndex < (int32_t)desc.Filters.size());
+                    assert(filterIndex < static_cast<int32_t>(desc.Filters.size()));
 
                     std::string pattern = desc.Filters[filterIndex].Pattern;
                     std::string patternExtension = Path::GetExtension(pattern);

@@ -248,10 +248,10 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
                 }
                 else
                 {
-                    intent = (Intent*)create_save_game_as_intent();
+                    intent = static_cast<Intent*>(create_save_game_as_intent());
                 }
                 window_close(w);
-                intent->putExtra(INTENT_EXTRA_CALLBACK, (void*)window_save_prompt_callback);
+                intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_save_prompt_callback));
                 context_open_intent(intent);
                 delete intent;
                 break;

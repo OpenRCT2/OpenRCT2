@@ -490,7 +490,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         const utf8* pathPtr = path;
         gfx_draw_string_left(
-            dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->windowPos.x + 3, w->windowPos.y + w->height - 3 - 11);
+            dpi, STR_STRING, static_cast<void*>(&pathPtr), w->colours[1], w->windowPos.x + 3,
+            w->windowPos.y + w->height - 3 - 11);
     }
 
     // Scenario name
@@ -587,7 +588,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 // Draw scenario name
                 char buffer[64];
                 safe_strcpy(buffer, scenario->name, sizeof(buffer));
-                rct_string_id format = isDisabled ? (rct_string_id)STR_STRINGID
+                rct_string_id format = isDisabled ? static_cast<rct_string_id>(STR_STRINGID)
                                                   : (isHighlighted ? highlighted_format : unhighlighted_format);
                 set_format_arg(0, rct_string_id, STR_STRING);
                 set_format_arg(2, char*, buffer);

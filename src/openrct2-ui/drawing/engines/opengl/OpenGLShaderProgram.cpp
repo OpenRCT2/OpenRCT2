@@ -83,7 +83,7 @@ std::string OpenGLShader::ReadSourceCode(const std::string& path)
         throw IOException("Shader source too large.");
     }
 
-    auto fileData = std::string((size_t)fileLength + 1, '\0');
+    auto fileData = std::string(static_cast<size_t>(fileLength) + 1, '\0');
     fs.Read(static_cast<void*>(fileData.data()), fileLength);
     return fileData;
 }

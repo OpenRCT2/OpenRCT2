@@ -596,14 +596,14 @@ static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_text_input_open(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
-            TextInputDescriptionArgs[0] = (uint16_t)((BASESIZE_MIN - 12) / 2);
-            TextInputDescriptionArgs[1] = (uint16_t)((BASESIZE_MAX - 12) / 2);
+            TextInputDescriptionArgs[0] = static_cast<uint16_t>((BASESIZE_MIN - 12) / 2);
+            TextInputDescriptionArgs[1] = static_cast<uint16_t>((BASESIZE_MAX - 12) / 2);
             window_text_input_open(
                 w, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, STR_FORMAT_INTEGER, (_baseHeight - 12) / 2, 3);
             break;
         case WIDX_WATER_LEVEL:
-            TextInputDescriptionArgs[0] = (uint16_t)((WATERLEVEL_MIN - 12) / 2);
-            TextInputDescriptionArgs[1] = (uint16_t)((WATERLEVEL_MAX - 12) / 2);
+            TextInputDescriptionArgs[0] = static_cast<uint16_t>((WATERLEVEL_MIN - 12) / 2);
+            TextInputDescriptionArgs[1] = static_cast<uint16_t>((WATERLEVEL_MAX - 12) / 2);
             window_text_input_open(
                 w, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, STR_FORMAT_INTEGER, (_waterLevel - 12) / 2, 3);
             break;
@@ -734,8 +734,8 @@ static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, 
 
 static void window_mapgen_base_invalidate(rct_window* w)
 {
-    auto surfaceImage = (uint32_t)SPR_NONE;
-    auto edgeImage = (uint32_t)SPR_NONE;
+    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
+    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -906,7 +906,7 @@ static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetI
 
             mapgenSettings.simplex_low = _simplex_low;
             mapgenSettings.simplex_high = _simplex_high;
-            mapgenSettings.simplex_base_freq = ((float)_simplex_base_freq) / 100.00f;
+            mapgenSettings.simplex_base_freq = (static_cast<float>(_simplex_base_freq)) / 100.00f;
             mapgenSettings.simplex_octaves = _simplex_octaves;
 
             mapgen_generate(&mapgenSettings);
@@ -1037,8 +1037,8 @@ static void window_mapgen_simplex_update(rct_window* w)
 
 static void window_mapgen_simplex_invalidate(rct_window* w)
 {
-    auto surfaceImage = (uint32_t)SPR_NONE;
-    auto edgeImage = (uint32_t)SPR_NONE;
+    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
+    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -1239,7 +1239,7 @@ static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widge
         {
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)window_mapgen_heightmap_loadsave_callback);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_mapgen_heightmap_loadsave_callback));
             context_open_intent(&intent);
             return;
         }

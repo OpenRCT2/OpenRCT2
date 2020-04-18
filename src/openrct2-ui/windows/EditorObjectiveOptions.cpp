@@ -716,14 +716,14 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
     {
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
-            newObjectiveType = (uint8_t)(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
+            newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjectiveType != newObjectiveType)
                 window_editor_objective_options_set_objective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
-            if (gS6Info.category != (uint8_t)dropdownIndex)
+            if (gS6Info.category != static_cast<uint8_t>(dropdownIndex))
             {
-                gS6Info.category = (uint8_t)dropdownIndex;
+                gS6Info.category = static_cast<uint8_t>(dropdownIndex);
                 w->Invalidate();
             }
             break;

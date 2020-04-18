@@ -196,7 +196,7 @@ static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgeti
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
-    gRideEntranceExitPlaceRideIndex = (uint8_t)w->number;
+    gRideEntranceExitPlaceRideIndex = static_cast<uint8_t>(w->number);
     gRideEntranceExitPlaceStationIndex = 0;
     input_set_flag(INPUT_FLAG_6, true);
 
