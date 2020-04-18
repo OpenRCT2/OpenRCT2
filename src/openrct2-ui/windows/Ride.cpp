@@ -1348,10 +1348,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         }
 
         // For any suspended rides, move image higher in the vehicle tab on the rides window
-        if (ride->type == RIDE_TYPE_COMPACT_INVERTED_COASTER || ride->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
-            || ride->type == RIDE_TYPE_INVERTED_IMPULSE_COASTER || ride->type == RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-            || ride->type == RIDE_TYPE_SUSPENDED_SWINGING_COASTER || ride->type == RIDE_TYPE_CHAIRLIFT
-            || ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER || ride->type == RIDE_TYPE_SUSPENDED_MONORAIL)
+        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
         {
             y /= 4;
         }
