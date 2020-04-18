@@ -302,6 +302,12 @@ public:
                 window_new_ride_init_vars();
                 break;
 
+            case INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST:
+            {
+                WindowCampaignRefreshRides();
+                break;
+            }
+
             case INTENT_ACTION_REFRESH_RIDE_LIST:
             {
                 auto window = window_find_by_class(WC_RIDE_LIST);

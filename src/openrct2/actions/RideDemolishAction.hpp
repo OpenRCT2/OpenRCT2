@@ -259,6 +259,7 @@ private:
 
         // Refresh windows that display the ride name
         auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
