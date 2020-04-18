@@ -686,9 +686,7 @@ private:
         }
 
         Peep* peep;
-        uint16_t sprite_index;
-
-        FOR_ALL_GUESTS (sprite_index, peep)
+        FOR_ALL_GUESTS (spriteIndex, peep)
         {
             peep->Remove();
         }

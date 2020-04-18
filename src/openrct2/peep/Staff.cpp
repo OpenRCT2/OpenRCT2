@@ -155,9 +155,7 @@ void staff_update_greyed_patrol_areas()
 
         FOR_ALL_STAFF (sprite_index, peep)
         {
-            peep = GET_PEEP(sprite_index);
-
-            if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
+            if (peep->staff_type == staff_type)
             {
                 int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)

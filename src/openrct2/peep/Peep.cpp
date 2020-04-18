@@ -412,8 +412,6 @@ void peep_update_all()
         return;
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
-        peep = &(get_sprite(spriteIndex)->peep);
-
         if ((uint32_t)(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
             peep->Update();
