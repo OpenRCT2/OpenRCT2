@@ -12,8 +12,8 @@ echo -e "\033[0;36mBuilding OpenRCT2 repository indexes...\033[0m"
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     # Now run all the tests
     echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
-    ./tests --gtest_output=xml:../artifacts/test-results.xml
+    ./tests --gtest_output=xml:../artifacts/test-results.xml "$@"
 else
     echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
-    ctest --output-on-failure
+    ctest --output-on-failure "$@"
 fi
