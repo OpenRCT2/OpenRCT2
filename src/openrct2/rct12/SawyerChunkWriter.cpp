@@ -28,11 +28,11 @@ void SawyerChunkWriter::WriteChunk(const SawyerChunk* chunk)
 void SawyerChunkWriter::WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding)
 {
     sawyercoding_chunk_header header;
-    header.encoding = (uint8_t)encoding;
-    header.length = (uint32_t)length;
+    header.encoding = static_cast<uint8_t>(encoding);
+    header.length = static_cast<uint32_t>(length);
 
     auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
-    size_t dataLength = sawyercoding_write_chunk_buffer(data.get(), (const uint8_t*)src, header);
+    size_t dataLength = sawyercoding_write_chunk_buffer(data.get(), static_cast<const uint8_t*>(src), header);
 
     _stream->Write(data.get(), dataLength);
 }
@@ -92,7 +92,7 @@ static size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, siz
 void SawyerChunkWriter::WriteChunkTrack(const void* src, size_t length)
 {
     auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
-    size_t dataLength = EncodeChunkRLE((const uint8_t*)src, data.get(), length);
+    size_t dataLength = EncodeChunkRLE(static_cast<const uint8_t*>(src), data.get(), length);
 
     uint32_t checksum = 0;
     for (size_t i = 0; i < dataLength; i++)

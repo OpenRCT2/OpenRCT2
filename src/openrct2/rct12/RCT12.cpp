@@ -335,7 +335,7 @@ colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
 {
-    return (bool)(colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+    return colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
