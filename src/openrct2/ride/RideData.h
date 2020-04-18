@@ -95,6 +95,7 @@ struct RideTypeDescriptor
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     RideNameConvention NameConvention;
+    uint8_t AvailableBreakdowns;
 };
 
 #ifdef _WIN32
@@ -217,7 +218,6 @@ constexpr const RideComponentName RideComponentNames[] =
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
 extern const uint8_t RideAvailableModes[];
 extern const uint8_t AllRideModesAvailable[];
-extern const uint8_t RideAvailableBreakdowns[];
 
 extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 

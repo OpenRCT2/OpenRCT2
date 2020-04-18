@@ -90,7 +90,8 @@ public:
                     GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
             }
 
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED) || RideAvailableBreakdowns[ride->type] == 0)
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+                || RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
             {
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);

@@ -4020,7 +4020,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             for (int32_t i = 0; i < 8; i++)
             {
                 assert(j < (int32_t)std::size(rideEntry->ride_type));
-                if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & static_cast<uint8_t>(1 << i))
+                if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                 {
                     if (i == BREAKDOWN_BRAKES_FAILURE
                         && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -4050,7 +4050,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 {
                     for (int32_t i = 0; i < 8; i++)
                     {
-                        if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & static_cast<uint8_t>(1 << i))
+                        if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                         {
                             if (i == BREAKDOWN_BRAKES_FAILURE
                                 && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -4163,7 +4163,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                 for (i = 0; i < BREAKDOWN_COUNT; i++)
                 {
                     assert(j < (int32_t)std::size(rideEntry->ride_type));
-                    if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & static_cast<uint8_t>(1 << i))
+                    if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE
                             && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -4236,7 +4236,7 @@ static void window_ride_maintenance_invalidate(rct_window* w)
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_EMPTY;
     }
 
-    if (RideAvailableBreakdowns[ride->type] == 0 || !(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+    if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0 || !(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
     {
         w->disabled_widgets |= (1 << WIDX_REFURBISH_RIDE);
         window_ride_maintenance_widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;

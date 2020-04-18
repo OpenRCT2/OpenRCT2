@@ -2215,7 +2215,7 @@ static void ride_inspection_update(Ride* ride)
         return;
     }
 
-    if (RideAvailableBreakdowns[ride->type] == 0)
+    if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
         return;
 
     if (inspectionIntervalMinutes > ride->last_inspection)
@@ -2338,7 +2338,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     if (!ride->CanBreakDown())
         return -1;
 
-    availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
+    availableBreakdownProblems = RideTypeDescriptors[ride->type].AvailableBreakdowns;
 
     // Calculate the total probability range for all possible breakdown problems
     totalProbability = 0;
@@ -2387,7 +2387,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
 
 bool Ride::CanBreakDown() const
 {
-    if (RideAvailableBreakdowns[this->type] == 0)
+    if (RideTypeDescriptors[type].AvailableBreakdowns == 0)
     {
         return false;
     }
@@ -2574,7 +2574,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
             }
             break;
         case RIDE_MECHANIC_STATUS_CALLING:
-            if (RideAvailableBreakdowns[ride->type] == 0)
+            if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
             {
                 ride->lifecycle_flags &= ~(
                     RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION);
