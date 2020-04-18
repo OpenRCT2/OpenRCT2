@@ -369,7 +369,7 @@ static void window_themes_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
             window_text_input_open(
                 w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING,
-                reinterpret_cast<const uintptr_t>(activeThemeName), 64);
+                reinterpret_cast<uintptr_t>(activeThemeName), 64);
             break;
         case WIDX_THEMES_DELETE_BUTTON:
             if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
