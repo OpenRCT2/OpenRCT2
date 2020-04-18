@@ -17,6 +17,8 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 #include "GameAction.h"
@@ -219,6 +221,9 @@ public:
                 Guard::Assert(false, "Invalid status passed: %u", _status);
                 break;
         }
+        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
+
         return res;
     }
 };

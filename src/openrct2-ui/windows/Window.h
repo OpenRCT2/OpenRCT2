@@ -34,6 +34,7 @@ extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
 rct_window* window_about_open();
+void WindowCampaignRefreshRides();
 rct_window* window_changelog_open();
 rct_window* window_cheats_open();
 rct_window* window_clear_scenery_open();
