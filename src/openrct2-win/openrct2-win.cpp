@@ -48,7 +48,7 @@ int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 {
     // Allocate UTF-8 strings
-    auto argv = static_cast<char**>(malloc(argc * sizeof(char*)));
+    auto argv = (char**)malloc(argc * sizeof(char*));
     if (argv != nullptr)
     {
         // Convert to UTF-8
