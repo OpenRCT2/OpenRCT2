@@ -3489,7 +3489,7 @@ static void vehicle_check_if_missing(Vehicle* vehicle)
 
     if (gConfigNotifications.ride_stalled_vehicles)
     {
-        set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
+        set_format_arg(0, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
 
         uint8_t vehicleIndex = 0;
         for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
@@ -3499,7 +3499,8 @@ static void vehicle_check_if_missing(Vehicle* vehicle)
         vehicleIndex++;
         set_format_arg(2, uint16_t, vehicleIndex);
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
-        set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
+        set_format_arg(
+            4 + nameArgLen, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
 
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
     }
@@ -6213,7 +6214,7 @@ void vehicle_set_map_toolbar(const Vehicle* vehicle)
         argPos += sizeof(rct_string_id);
         argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
         set_map_tooltip_format_arg(
-            argPos, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
+            argPos, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
         argPos += sizeof(rct_string_id);
         set_map_tooltip_format_arg(argPos, uint16_t, vehicleIndex + 1);
         argPos += sizeof(uint16_t);

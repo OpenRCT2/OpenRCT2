@@ -3019,8 +3019,8 @@ std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride)
     }
     else
     {
-        set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
-        set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
+        set_format_arg(0, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
+        set_format_arg(2, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
         return { measurement.get(), STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES };
     }
 }
@@ -3322,7 +3322,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
         argPos += sizeof(rct_string_id);
         argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
         set_map_tooltip_format_arg(
-            argPos, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
+            argPos, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].capitalised);
         argPos += sizeof(rct_string_id);
         set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
         argPos += sizeof(uint16_t);

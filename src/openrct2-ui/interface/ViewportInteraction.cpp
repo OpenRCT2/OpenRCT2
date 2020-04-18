@@ -308,7 +308,8 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
 
             auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 4);
             set_map_tooltip_format_arg(
-                4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
+                4 + nameArgLen, rct_string_id,
+                RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].capitalised);
 
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
                 stationIndex = tileElement->AsEntrance()->GetStationIndex();

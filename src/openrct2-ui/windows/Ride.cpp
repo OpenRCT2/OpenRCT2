@@ -2151,7 +2151,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     int32_t currentItem = 1;
 
     // Vehicles
-    int32_t name = RideComponentNames[RideNameConvention[ride->type].vehicle].number;
+    int32_t name = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number;
     for (int32_t i = 1; i <= ride->num_vehicles; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -2160,7 +2160,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     }
 
     // Stations
-    name = RideComponentNames[RideNameConvention[ride->type].station].number;
+    name = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number;
     for (int32_t i = 1; i <= ride->num_stations; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -2802,7 +2802,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
         stringId = SingleSessionVehicleStatusNames[vehicle->status];
     }
 
-    const ride_component_name stationName = RideComponentNames[RideNameConvention[ride->type].station];
+    const RideComponentName stationName = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station];
     *(rct_string_id*)((uintptr_t)arguments + 4) = (ride->num_stations > 1) ? stationName.number : stationName.singular;
     *((uint16_t*)((uintptr_t)arguments + 6)) = vehicle->current_station + 1;
     *(rct_string_id*)((uintptr_t)arguments + 0) = stringId;
@@ -2904,11 +2904,11 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     stringId = STR_OVERALL_VIEW;
     if (w->ride.view != 0)
     {
-        stringId = RideComponentNames[RideNameConvention[ride->type].vehicle].number;
+        stringId = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number;
         if (w->ride.view > ride->num_vehicles)
         {
             set_format_arg(2, uint16_t, w->ride.view - ride->num_vehicles);
-            stringId = RideComponentNames[RideNameConvention[ride->type].station].number;
+            stringId = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number;
         }
         else
         {
@@ -3104,7 +3104,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     }
 
     set_format_arg(6, uint16_t, carsPerTrain);
-    RIDE_COMPONENT_TYPE vehicleType = RideNameConvention[ride->type].vehicle;
+    RIDE_COMPONENT_TYPE vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
     stringId = RideComponentNames[vehicleType].count;
     if (ride->num_vehicles > 1)
     {
@@ -3688,7 +3688,8 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WWT_CHECKBOX;
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip
             = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-        window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = RideNameConvention[ride->type].vehicle
+        window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = RideTypeDescriptors[ride->type]
+                                                                                           .NameConvention.vehicle
                 == RIDE_COMPONENT_TYPE_BOAT
             ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
             : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
@@ -4572,7 +4573,8 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             for (i = 0; i < 3; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = (RideComponentNames[RideNameConvention[ride->type].vehicle].singular << 16)
+                gDropdownItemsArgs[i] = (RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular
+                                         << 16)
                     | VehicleColourSchemeNames[i];
             }
 
@@ -4594,7 +4596,8 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = ((int64_t)(i + 1) << 32)
-                    | ((RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised) << 16) | stringId;
+                    | ((RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised) << 16)
+                    | stringId;
             }
 
             window_dropdown_show_text_custom_width(
@@ -4943,8 +4946,9 @@ static void window_ride_colour_invalidate(rct_window* w)
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_EMPTY;
         }
         set_format_arg(6, rct_string_id, VehicleColourSchemeNames[vehicleColourSchemeType]);
-        set_format_arg(8, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
-        set_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
+        set_format_arg(8, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
+        set_format_arg(
+            10, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
         set_format_arg(12, uint16_t, w->vehicleIndex + 1);
         // Vehicle index
         if (vehicleColourSchemeType != 0)
@@ -6077,7 +6081,8 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
             if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
             {
                 set_format_arg(4, uint16_t, measurement->vehicle_index + 1);
-                set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].count);
+                set_format_arg(
+                    2, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].count);
             }
             else
             {
