@@ -3,10 +3,15 @@ using UnityEngine;
 
 namespace OpenRCT2.Unity
 {
+    /// <summary>
+    /// The map of the park.
+    /// </summary>
     public partial class Map : MonoBehaviour
     {
         MeshFilter meshFilter;
 
+
+        const int MaxElementsPerTile = 128;
 
 		int mapSize;
 		Tile[,] tiles;
@@ -27,6 +32,9 @@ namespace OpenRCT2.Unity
         }
 
 
+        /// <summary>
+        /// Loads the map of the currently loaded park into Unity.
+        /// </summary>
 		void LoadMap()
 		{
             // Remove all children
@@ -39,7 +47,7 @@ namespace OpenRCT2.Unity
 
             Debug.Log($"Map size: {mapSize}");
 
-			TileElement[] buffer = new TileElement[16];
+			TileElement[] buffer = new TileElement[MaxElementsPerTile];
 
 			for (int x = 0; x < mapSize; x++)
 			{
@@ -60,17 +68,24 @@ namespace OpenRCT2.Unity
         }
 
 
-		
-
-
+        /// <summary>
+        /// A tile struct containing multiple elements.
+        /// </summary>
 		readonly struct Tile
 		{
+            /// <summary>
+            /// All the elements on this tile.
+            /// </summary>
 			public TileElement[] Elements { get; }
 
 
+            // The index at which the surface tile element is located.
             readonly int surfaceIndex;
 
 
+            /// <summary>
+            /// Creates a new tile from the specified buffer.
+            /// </summary>
 			public Tile(TileElement[] buffer, int size)
 			{
 				Elements = new TileElement[size];
@@ -80,34 +95,53 @@ namespace OpenRCT2.Unity
             }
 
 
+            /// <summary>
+            /// Returns the amount of tile elements on this tile.
+            /// </summary>
             public int Count
                 => Elements.Length;
 
 
+            /// <summary>
+            /// Returns the surface element on this tile.
+            /// </summary>
             public SurfaceElement Surface
                 => ((surfaceIndex != -1) ? Elements[surfaceIndex].AsSurface() : default);
 		}
 
 
-        public static Vector3 TileCoordsToVector3(float x, float y, float z)
+        /// <summary>
+        /// Transforms a OpenRCT2 TileCoords to the Unity coordination system.
+        /// </summary>
+        public static Vector3 TileCoordsToUnity(float x, float y, float z)
         {
             float halftile = TileCoordsToVector3Multiplier / 2f;
 
             return new Vector3(
                 (x * TileCoordsToVector3Multiplier) + halftile,
-                y * HeightMultiplier,
+                y * TileHeightMultiplier,
                 (z * TileCoordsToVector3Multiplier) + halftile
             );
         }
 
 
+        /// <summary>
+        /// Transforms a OpenRCT2 Coords to the Unity coordination system.
+        /// </summary>
         public static Vector3 CoordsToVector3(float x, float y, float z)
         {
             return new Vector3(
                 (x * CoordsToVector3Multiplier),
-                y * HeightMultiplier,
+                y * CoordsToVector3Multiplier,
                 (z * CoordsToVector3Multiplier)
             );
         }
+
+
+        /// <summary>
+        /// Transforms a OpenRCT2 Coords to the Unity coordination system.
+        /// </summary>
+        public static Vector3 CoordsToVector3(Vector3 position)
+            => CoordsToVector3(position.x, position.y, position.z);
     }
 }

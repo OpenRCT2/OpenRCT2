@@ -21,7 +21,7 @@ std::unique_ptr<IContext> context;
 
 extern "C"
 {
-    EXPORT void StartGame(const char* datapath)
+    EXPORT void StartGame(const char* datapath, const char* rct2path, const char* rct1path)
     {
         printf("(me) StartGame( %s )\n", datapath);
 
@@ -32,10 +32,15 @@ extern "C"
 
         Path::GetAbsolute(gCustomOpenrctDataPath, std::size(gCustomOpenrctDataPath), datapath);
 
-        String::Set(gCustomRCT1DataPath, std::size(gCustomRCT1DataPath), "D:\\Games\\RollerCoaster Tycoon Deluxe\\data");
-        String::Set(gCustomRCT2DataPath, std::size(gCustomRCT2DataPath), "D:\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack\\data");
+        if (rct1path != nullptr)
+            Path::GetAbsolute(gCustomRCT1DataPath, std::size(gCustomRCT1DataPath), rct1path);
+        if (rct2path != nullptr)
+            Path::GetAbsolute(gCustomRCT2DataPath, std::size(gCustomRCT2DataPath), rct2path);
 
-        printf("(me) gCustomRCT1DataPath = %s\n(me) gCustomRCT2DataPath = %s\n", gCustomRCT1DataPath, gCustomRCT2DataPath);
+        printf(
+            "(me) gCustomOpenrctDataPath = %s\ngCustomRCT1DataPath = %s\n(me) gCustomRCT2DataPath = %s\n",
+            gCustomOpenrctDataPath, gCustomRCT1DataPath, gCustomRCT2DataPath
+        );
 
         // Create a plain context
         core_init();
@@ -43,6 +48,12 @@ extern "C"
         bool result = context->Initialise();
 
         printf("(me) Initialise = %i\n", result);
+    }
+
+
+    EXPORT void PerformGameUpdate()
+    {
+        context->GetGameState()->Update();
     }
 
 
@@ -60,9 +71,6 @@ extern "C"
 
         // this one gives lots of "Object not found" messages 
         context->LoadParkFromFile(std::string(filepath));
-
-        //load_from_sv6(filepath);
-        //game_load_init();
 
         Park& park = context->GetGameState()->GetPark();
         const char* name = park.Name.c_str();
@@ -153,6 +161,9 @@ extern "C"
         {
             peeps[peepCount] = *peep;
             peepCount++;
+
+            if (peepCount >= arraySize)
+                break;
         }
         return peepCount;
     }

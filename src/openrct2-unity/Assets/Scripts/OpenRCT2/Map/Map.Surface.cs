@@ -5,6 +5,9 @@ namespace OpenRCT2.Unity
 {
     public partial class Map
     {
+        /// <summary>
+        /// Generates a surface tile along with the edges.
+        /// </summary>
         void GenerateSurface(MeshBuilder builder, ref TileElement tile, int x, int y)
         {
             /* Surface coords to Unity:
@@ -39,7 +42,7 @@ namespace OpenRCT2.Unity
             TryAddSurfaceEdge(builder, north, west, x, y, 0, 1, SurfaceSlope.EastUp, SurfaceSlope.SouthUp, submesh); // Edge northwest
             TryAddSurfaceEdge(builder, east, north, x, y, 1, 0, SurfaceSlope.SouthUp, SurfaceSlope.WestUp, submesh); // Edge northeast
             TryAddSurfaceEdge(builder, south, east, x, y, 0, -1, SurfaceSlope.WestUp, SurfaceSlope.NorthUp, submesh); // Edge southeast
-            TryAddSurfaceEdge(builder, west, south, x, y, -1, 0, SurfaceSlope.NorthUp, SurfaceSlope.EastDown, submesh); // Edge southwest
+            TryAddSurfaceEdge(builder, west, south, x, y, -1, 0, SurfaceSlope.NorthUp, SurfaceSlope.EastUp, submesh); // Edge southwest
         }
 
 
@@ -52,8 +55,8 @@ namespace OpenRCT2.Unity
             int baseHeight = other.BaseHeight;
             SurfaceSlope otherSlope = other.Slope;
 
-            float leftHeight = GetSurfaceCornerHeight(baseHeight, otherSlope, leftOtherCorner) * HeightMultiplier;
-            float rightHeight = GetSurfaceCornerHeight(baseHeight, otherSlope, rightOtherCorner) * HeightMultiplier;
+            float leftHeight = GetSurfaceCornerHeight(baseHeight, otherSlope, leftOtherCorner) * TileHeightMultiplier;
+            float rightHeight = GetSurfaceCornerHeight(baseHeight, otherSlope, rightOtherCorner) * TileHeightMultiplier;
 
             if (left.position.y > leftHeight || right.position.y > rightHeight)
             {
@@ -77,7 +80,7 @@ namespace OpenRCT2.Unity
 
             Vector3 position = new Vector3(
                 x * TileCoordsToVector3Multiplier,
-                height * HeightMultiplier,
+                height * TileHeightMultiplier,
                 y * TileCoordsToVector3Multiplier
             );
 

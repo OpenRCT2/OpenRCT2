@@ -14,7 +14,11 @@ namespace OpenRCT2.Unity
         #region Game
 
         [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        static extern void StartGame([MarshalAs(UnmanagedType.LPStr)] string rootpath);
+        static extern void StartGame([MarshalAs(UnmanagedType.LPStr)] string rootpath, [MarshalAs(UnmanagedType.LPStr)] string rct2path, [MarshalAs(UnmanagedType.LPStr)] string rct1path);
+
+
+        [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
+        static extern void PerformGameUpdate();
 
 
         [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
@@ -71,7 +75,7 @@ namespace OpenRCT2.Unity
         #region Sprites
 
         [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
-        static extern int GetSpriteCount(SpriteType spriteType);
+        internal static extern int GetSpriteCount(SpriteType spriteType);
 
 
         [DllImport(PluginFile, CallingConvention = CallingConvention.Cdecl)]
@@ -87,6 +91,12 @@ namespace OpenRCT2.Unity
 
             GetAllPeeps(peeps, spriteCount);
             return peeps;
+        }
+
+
+        public static int GetAllPeeps(Peep[] buffer)
+        {
+            return GetAllPeeps(buffer, buffer.Length);
         }
 
 

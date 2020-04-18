@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440946295}
   m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 10, z: -10}
+  m_LocalPosition: {x: 50, y: 20, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -220,8 +220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainMap: {fileID: 1491562768}
   cameraRotateSpeed: 500
-  cameraMoveSpeed: 1000
-  cameraZoomSpeed: 5000
+  cameraMoveSpeed: 350
+  cameraZoomSpeed: 2000
   minCameraHeight: 5
   maxCameraHeight: 150
   outsideMapDistance: 250
@@ -285,7 +285,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79be679884da2154dacd80be9669d5dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  park: Forest-Frontiers.sv6
+  park: Thunder Rock.sv6
+  openrctpath: D:\Projects\Visual Studio\OpenRCT2-Unity
+  rct2path: 
+  rct1path: 
 --- !u!4 &1347800243
 Transform:
   m_ObjectHideFlags: 0
@@ -319,7 +322,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!114 &1491562769
 MonoBehaviour:
@@ -465,7 +468,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.75
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2

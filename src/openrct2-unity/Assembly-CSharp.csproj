@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\Sprites\Peep.cs" />
     <Compile Include="Assets\Scripts\Sprites\SpriteBase.cs" />
     <Compile Include="Assets\Scripts\Tools\CameraBuild.cs" />
+    <None Include="Assets\csc.rsp" />
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>D:/Projects/Visual Studio/OpenRCT2-Unity/src/openrct2-unity/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>

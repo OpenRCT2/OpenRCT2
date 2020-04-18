@@ -11,9 +11,10 @@ namespace OpenRCT2.Unity
 
 
         const int TileCoordsToCoords = 32;
-        const float TileCoordsToVector3Multiplier = 2;
-        const float CoordsToVector3Multiplier = 2 / TileCoordsToCoords;
-        const float HeightMultiplier = 0.5f;
+        const float CoordsToVector3Multiplier = 1f / TileCoordsToCoords;
+        const float TileCoordsToVector3Multiplier = CoordsToVector3Multiplier * TileCoordsToCoords;
+
+        const float TileHeightMultiplier = 0.25f;
 
         const int TileHeightStep = 2;
 
@@ -48,6 +49,9 @@ namespace OpenRCT2.Unity
         }
 
 
+        /// <summary>
+        /// Generates a tile element based on the type of the given tile.
+        /// </summary>
         void GenerateTileElement(MeshBuilder builder, ref TileElement tile, int x, int y)
         {
             switch (tile.Type)
@@ -68,16 +72,19 @@ namespace OpenRCT2.Unity
                     GameObject scenery = InstantiateElement(smallSceneryPrefab, x, tile.baseHeight, y);
 
                     Vector3 scale = scenery.transform.localScale;
-                    scale.y = Mathf.Max((tile.clearanceHeight - tile.baseHeight) * HeightMultiplier, 1);
+                    scale.y = Mathf.Max((tile.clearanceHeight - tile.baseHeight) * TileHeightMultiplier, 1);
                     scenery.transform.localScale = scale;
                     break;
             }
         }
 
 
+        /// <summary>
+        /// Instantiates a prefab in the place of a tile element.
+        /// </summary>
         GameObject InstantiateElement(GameObject obj, float x, float y, float z)
         {
-            Vector3 position = TileCoordsToVector3(x, y, z);
+            Vector3 position = TileCoordsToUnity(x, y, z);
             return Instantiate(obj, position, Quaternion.identity, transform);
         }
     }
