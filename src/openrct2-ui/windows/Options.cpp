@@ -2001,7 +2001,7 @@ static void window_options_invalidate(rct_window* w)
 static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
 {
     uint8_t width = widget->right - widget->left - 1;
-    return static_cast<float>(scroll->h_left / (scroll->h_right - width) * 100);
+    return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
 }
 
 static void window_options_update(rct_window* w)

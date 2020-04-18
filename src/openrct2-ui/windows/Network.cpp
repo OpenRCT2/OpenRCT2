@@ -334,7 +334,7 @@ static void window_network_draw_graph(
         // std::sort(history.deltaBytesReceived.begin(), history.deltaBytesReceived.end(), std::greater<uint16_t>());
 
         // NOTE: Capacity is not a mistake, we always want the full length.
-        uint32_t curX = std::round((static_cast<float>(i) / static_cast<float>(_networkHistory.capacity()) * barWidth * width));
+        uint32_t curX = std::round((static_cast<float>(i) / static_cast<float>(_networkHistory.capacity())) * barWidth * width);
 
         float totalSum = 0.0f;
         for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
