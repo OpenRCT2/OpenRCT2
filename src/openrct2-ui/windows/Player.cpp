@@ -228,7 +228,7 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
 {
     rct_widget* dropdownWidget;
     int32_t numItems, i;
-    int32_t player = network_get_player_index((uint8_t)w->number);
+    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player == -1)
     {
         return;
@@ -245,7 +245,7 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
     for (i = 0; i < network_get_num_groups(); i++)
     {
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = (uintptr_t)network_get_group_name(i);
+        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
 
     dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
@@ -271,7 +271,7 @@ void window_player_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             rct_window* mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
-                int32_t player = network_get_player_index((uint8_t)w->number);
+                int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
                 if (player == -1)
                 {
                     return;
@@ -305,7 +305,7 @@ void window_player_overview_mouse_down(rct_window* w, rct_widgetindex widgetInde
 
 void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    int32_t player = network_get_player_index((uint8_t)w->number);
+    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player == -1)
     {
         return;
@@ -335,7 +335,7 @@ void window_player_overview_update(rct_window* w)
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
 
-    if (network_get_player_index((uint8_t)w->number) == -1)
+    if (network_get_player_index(static_cast<uint8_t>(w->number)) == -1)
     {
         window_close(w);
         return;
@@ -358,7 +358,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
-    int32_t player = network_get_player_index((uint8_t)w->number);
+    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player == -1)
     {
         return;
@@ -411,7 +411,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 void window_player_overview_invalidate(rct_window* w)
 {
-    int32_t playerIndex = network_get_player_index((uint8_t)w->number);
+    int32_t playerIndex = network_get_player_index(static_cast<uint8_t>(w->number));
     if (playerIndex == -1)
     {
         return;
@@ -502,7 +502,7 @@ void window_player_statistics_update(rct_window* w)
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
 
-    if (network_get_player_index((uint8_t)w->number) == -1)
+    if (network_get_player_index(static_cast<uint8_t>(w->number)) == -1)
     {
         window_close(w);
     }
@@ -538,7 +538,7 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
-    int32_t player = network_get_player_index((uint8_t)w->number);
+    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player == -1)
     {
         return;
@@ -636,7 +636,7 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 
 static void window_player_update_viewport(rct_window* w, bool scroll)
 {
-    int32_t playerIndex = network_get_player_index((uint8_t)w->number);
+    int32_t playerIndex = network_get_player_index(static_cast<uint8_t>(w->number));
     if (playerIndex == -1)
     {
         return;
@@ -683,7 +683,7 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
 
 static void window_player_update_title(rct_window* w)
 {
-    int32_t player = network_get_player_index((uint8_t)w->number);
+    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player != -1)
     {
         set_format_arg(0, const char*, network_get_player_name(player)); // set title caption to player name

@@ -409,11 +409,11 @@ static void window_editor_inventions_list_scrollgetheight(rct_window* w, int32_t
     *height = 0;
     if (scrollIndex == 0)
     {
-        *height += (int32_t)gResearchItemsInvented.size() * SCROLLABLE_ROW_HEIGHT;
+        *height += static_cast<int32_t>(gResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
     }
     else
     {
-        *height += (int32_t)gResearchItemsUninvented.size() * SCROLLABLE_ROW_HEIGHT;
+        *height += static_cast<int32_t>(gResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -696,7 +696,8 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
             const rct_string_id rideGroupName = get_ride_naming(researchItem.baseRideType, rideEntry).name;
             format_string(
-                groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*)&rideGroupName);
+                groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
+                static_cast<const void*>(&rideGroupName));
             format_string(vehicleNamePtr, std::size(vehicleNameBuffer), itemNameId, nullptr);
         }
         else

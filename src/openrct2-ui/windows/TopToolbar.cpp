@@ -586,7 +586,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 case DDIDX_NEW_GAME:
                 {
                     auto intent = Intent(WC_SCENARIO_SELECT);
-                    intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)window_top_toolbar_scenarioselect_callback);
+                    intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_top_toolbar_scenarioselect_callback));
                     context_open_intent(&intent);
                     break;
                 }
@@ -2562,7 +2562,7 @@ static money32 try_place_ghost_scenery(
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
-            gSceneryPlaceRotation = (uint16_t)(parameter_3 & 0xFF);
+            gSceneryPlaceRotation = static_cast<uint16_t>(parameter_3 & 0xFF);
             gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
             gSceneryPlaceObject.EntryIndex = entryIndex;
 
@@ -2826,7 +2826,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition
-                && (int16_t)(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z)
+                && static_cast<int16_t>(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z)
             {
                 return;
             }
@@ -2882,8 +2882,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             scenery = get_large_scenery_entry(selectedScenery);
             gMapSelectionTiles.clear();
 
-            for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (int16_t)(uint16_t)0xFFFF;
-                 tile++)
+            for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles;
+                 tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
             {
                 CoordsXY tileLocation = { tile->x_offset, tile->y_offset };
                 auto rotatedTileCoords = tileLocation.Rotate((parameter1 >> 8) & 0xFF);
@@ -2941,7 +2941,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition
-                && (int16_t)(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z
+                && static_cast<int16_t>(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z
                 && ((parameter2 >> 8) & 0xFF) == gSceneryPlaceRotation)
             {
                 return;
