@@ -572,22 +572,6 @@ bool ride_entry_is_invented(int32_t rideEntryIndex)
     return _researchedRideEntries[rideEntryIndex];
 }
 
-uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType)
-{
-    uint64_t baseVals = RideTypeDescriptors[rideType].EnabledTrackPieces;
-    uint64_t extendedVals = 0;
-    if (gCheatsEnableAllDrawableTrackPieces)
-    {
-        extendedVals = RideTypeDescriptors[rideType].ExtraTrackPieces;
-    }
-    return baseVals | extendedVals;
-}
-
-bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType)
-{
-    return (get_available_track_pieces_for_ride_type(rideType)) & (1ULL << trackType);
-}
-
 void ride_type_set_invented(uint32_t rideType)
 {
     Guard::Assert(rideType < std::size(_researchedRideTypes), GUARD_LINE);

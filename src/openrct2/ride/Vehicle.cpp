@@ -9855,8 +9855,9 @@ void Vehicle::UpdateCrossings() const
             auto curRide = get_ride(ride);
 
             // Many New Element parks have invisible rides hacked into the path.
-            // Limit path blocking to Miniature Railway to prevent peeps getting stuck everywhere.
-            if (pathElement && curRide != nullptr && curRide->type == RIDE_TYPE_MINIATURE_RAILWAY)
+            // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
+            if (pathElement && curRide != nullptr
+                && RideTypeDescriptors[curRide->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {

@@ -19,6 +19,7 @@
 
 #include "RideData.h"
 
+#include "../Cheats.h"
 #include "../audio/audio.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
@@ -2504,4 +2505,18 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
 {
     return Flags & flag;
+}
+
+uint64_t RideTypeDescriptor::GetAvailableTrackPieces() const
+{
+    if (gCheatsEnableAllDrawableTrackPieces)
+    {
+        return EnabledTrackPieces | ExtraTrackPieces;
+    }
+    return EnabledTrackPieces;
+}
+
+bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
+{
+    return GetAvailableTrackPieces() & (1ULL << trackPiece);
 }
