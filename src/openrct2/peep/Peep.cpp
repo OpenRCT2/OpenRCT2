@@ -410,8 +410,14 @@ void peep_update_all()
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
-    FOR_ALL_PEEPS (spriteIndex, peep)
+
+    // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
+    // will be fetched on a delted peep if peep leaves the park.
+    for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
     {
+        peep = GET_PEEP(spriteIndex);
+        spriteIndex = peep->next;
+
         if ((uint32_t)(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
             peep->Update();
