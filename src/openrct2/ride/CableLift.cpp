@@ -88,27 +88,27 @@ Vehicle* cable_lift_segment_create(
     return current;
 }
 
-void cable_lift_update(Vehicle* vehicle)
+void Vehicle::CableLiftUpdate()
 {
-    switch (vehicle->status)
+    switch (status)
     {
         case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
-            cable_lift_update_moving_to_end_of_station(vehicle);
+            cable_lift_update_moving_to_end_of_station(this);
             break;
         case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
             // Stays in this state until a train puts it into next state
             break;
         case VEHICLE_STATUS_WAITING_TO_DEPART:
-            cable_lift_update_waiting_to_depart(vehicle);
+            cable_lift_update_waiting_to_depart(this);
             break;
         case VEHICLE_STATUS_DEPARTING:
-            cable_lift_update_departing(vehicle);
+            cable_lift_update_departing(this);
             break;
         case VEHICLE_STATUS_TRAVELLING:
-            cable_lift_update_travelling(vehicle);
+            cable_lift_update_travelling(this);
             break;
         case VEHICLE_STATUS_ARRIVING:
-            cable_lift_update_arriving(vehicle);
+            cable_lift_update_arriving(this);
             break;
         default:
             break;
