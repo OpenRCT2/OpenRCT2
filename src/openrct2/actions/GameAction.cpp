@@ -272,7 +272,7 @@ namespace GameActions
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
-                set_format_arg_on(result->ErrorMessageArgs.data(), 0, uint32_t, result->Cost);
+                Formatter(result->ErrorMessageArgs.data()).add<uint32_t>(result->Cost);
             }
         }
         return result;
