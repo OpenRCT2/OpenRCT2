@@ -169,7 +169,7 @@ void audio_populate_devices()
     devices.insert(devices.begin(), defaultDevice);
 #endif
 
-    gAudioDeviceCount = (int32_t)devices.size();
+    gAudioDeviceCount = static_cast<int32_t>(devices.size());
     gAudioDevices = Memory::AllocateArray<audio_device>(gAudioDeviceCount);
     for (int32_t i = 0; i < gAudioDeviceCount; i++)
     {

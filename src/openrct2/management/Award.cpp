@@ -397,9 +397,9 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 {
     // Count open restrooms
     const auto& rideManager = GetRideManager();
-    auto numRestrooms = (size_t)std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
+    auto numRestrooms = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
         return ride.type == RIDE_TYPE_TOILETS && ride.status == RIDE_STATUS_OPEN;
-    });
+    }));
 
     // At least 4 open restrooms
     if (numRestrooms < 4)

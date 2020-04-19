@@ -314,7 +314,7 @@ bool window_ride_construction_update_state(
             int16_t alternativeType = AlternativeTrackTypes[trackType];
             if (alternativeType > -1)
             {
-                trackType = (uint8_t)alternativeType;
+                trackType = static_cast<uint8_t>(alternativeType);
             }
             liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
@@ -341,8 +341,8 @@ bool window_ride_construction_update_state(
         CoordsXY offsets = { trackCoordinates->x, trackCoordinates->y };
         CoordsXY coords = { x, y };
         coords += offsets.Rotate(direction_reverse(trackDirection));
-        x = (uint16_t)coords.x;
-        y = (uint16_t)coords.y;
+        x = static_cast<uint16_t>(coords.x);
+        y = static_cast<uint16_t>(coords.y);
     }
     else
     {

@@ -120,7 +120,7 @@ utf8* get_string_end(const utf8* text)
         int32_t argLength = utf8_get_format_code_arg_length(codepoint);
         ch += argLength;
     }
-    return (utf8*)(ch - 1);
+    return const_cast<utf8*>(ch - 1);
 }
 
 /**

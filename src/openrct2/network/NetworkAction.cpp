@@ -30,7 +30,7 @@ int32_t NetworkActions::FindCommand(int32_t command)
     });
     if (it != Actions.end())
     {
-        return (int32_t)(it - Actions.begin());
+        return static_cast<int32_t>(it - Actions.begin());
     }
     return -1;
 }
@@ -42,7 +42,7 @@ int32_t NetworkActions::FindCommandByPermissionName(const std::string& permissio
     });
     if (it != Actions.end())
     {
-        return (int32_t)(it - Actions.begin());
+        return static_cast<int32_t>(it - Actions.begin());
     }
     return -1;
 }

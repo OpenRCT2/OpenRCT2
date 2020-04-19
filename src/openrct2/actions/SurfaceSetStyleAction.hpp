@@ -55,8 +55,8 @@ public:
         auto normRange = _range.Normalise();
         auto x0 = std::max(normRange.GetLeft(), 32);
         auto y0 = std::max(normRange.GetTop(), 32);
-        auto x1 = std::min(normRange.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(normRange.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto x1 = std::min(normRange.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
+        auto y1 = std::min(normRange.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
 
         MapRange validRange{ x0, y0, x1, y1 };
 
@@ -171,8 +171,8 @@ public:
         auto normRange = _range.Normalise();
         auto x0 = std::max(normRange.GetLeft(), 32);
         auto y0 = std::max(normRange.GetTop(), 32);
-        auto x1 = std::min(normRange.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(normRange.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto x1 = std::min(normRange.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
+        auto y1 = std::min(normRange.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
 
         MapRange validRange{ x0, y0, x1, y1 };
 

@@ -65,7 +65,7 @@ public:
 
     NetworkPacket& operator<<(DataSerialiser& data)
     {
-        Write((const uint8_t*)data.GetStream().GetData(), data.GetStream().GetLength());
+        Write(static_cast<const uint8_t*>(data.GetStream().GetData()), data.GetStream().GetLength());
         return *this;
     }
 };

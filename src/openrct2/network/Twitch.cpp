@@ -492,7 +492,7 @@ namespace Twitch
                 {
                     // Rename peep and add flags
                     auto memLen = std::strlen(member->Name) + 1;
-                    peep->name = (char*)std::malloc(memLen);
+                    peep->name = static_cast<char*>(std::malloc(memLen));
                     if (peep->name != nullptr)
                     {
                         std::memcpy(peep->name, member->Name, memLen);
@@ -522,7 +522,7 @@ namespace Twitch
         {
             str++;
         }
-        return (char*)str;
+        return const_cast<char*>(str);
     }
 
     static void ParseChatMessage(const char* message)
@@ -556,7 +556,7 @@ namespace Twitch
         if (gConfigTwitch.enable_news)
         {
             utf8 buffer[256];
-            buffer[0] = (utf8)(uint8_t)FORMAT_TOPAZ;
+            buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_TOPAZ));
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
             utf8_remove_formatting(buffer, false);

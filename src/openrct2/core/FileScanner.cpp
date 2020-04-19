@@ -130,7 +130,7 @@ public:
         {
             DirectoryState* state = &_directoryStack.top();
             state->Index++;
-            if (state->Index >= (int32_t)state->Listing.size())
+            if (state->Index >= static_cast<int32_t>(state->Listing.size()))
             {
                 _directoryStack.pop();
             }
@@ -199,7 +199,7 @@ private:
             c = *ch;
             if (c == '\0' || c == ';')
             {
-                size_t length = (size_t)(ch - start);
+                size_t length = static_cast<size_t>(ch - start);
                 if (length > 0)
                 {
                     std::string newPattern = std::string(start, length);
@@ -365,8 +365,8 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
 
         result->TotalFiles++;
         result->TotalFileSize += fileInfo->Size;
-        result->FileDateModifiedChecksum ^= (uint32_t)(fileInfo->LastModified >> 32)
-            ^ (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
+        result->FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
+            ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
         result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
         result->PathChecksum += GetPathChecksum(path);
     }

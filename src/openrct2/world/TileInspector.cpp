@@ -761,8 +761,8 @@ GameActionResult::Ptr tile_inspector_wall_animation_frame_offset(
         map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
-            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && static_cast<uint32_t>(loc.x / 32) == windowTileInspectorTileX
+            && static_cast<uint32_t>(loc.y / 32) == windowTileInspectorTileY)
         {
             tileInspectorWindow->Invalidate();
         }

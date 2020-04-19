@@ -325,7 +325,7 @@ Peep* rct_sprite::AsPeep()
     Peep* result = nullptr;
     if (IsPeep())
     {
-        return (Peep*)this;
+        return reinterpret_cast<Peep*>(this);
     }
     return result;
 }
@@ -418,7 +418,7 @@ void peep_update_all()
         peep = GET_PEEP(spriteIndex);
         spriteIndex = peep->next;
 
-        if ((uint32_t)(i & 0x7F) != (gCurrentTicks & 0x7F))
+        if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
             peep->Update();
         }
@@ -743,7 +743,7 @@ void Peep::PickupAbort(int32_t old_x)
 
     MoveTo(old_x, y, z + 8);
 
-    if (x != (int16_t)LOCATION_NULL)
+    if (x != LOCATION_NULL)
     {
         SetState(PEEP_STATE_FALLING);
         action = PEEP_ACTION_NONE_2;
@@ -1791,7 +1791,7 @@ void Peep::FormatActionTo(Formatter& ft) const
 
 void Peep::FormatActionTo(void* argsV) const
 {
-    Formatter ft((uint8_t*)argsV);
+    Formatter ft(static_cast<uint8_t*>(argsV));
     switch (state)
     {
         case PEEP_STATE_FALLING:
@@ -1970,7 +1970,7 @@ void Peep::FormatNameTo(Formatter& ft) const
 
 size_t Peep::FormatNameTo(void* argsV) const
 {
-    Formatter ft((uint8_t*)argsV);
+    Formatter ft(static_cast<uint8_t*>(argsV));
     if (name == nullptr)
     {
         if (type == PeepType::PEEP_TYPE_STAFF)
@@ -2025,7 +2025,7 @@ bool Peep::SetName(const std::string_view& value)
     }
     else
     {
-        auto newNameMemory = (char*)std::malloc(value.size() + 1);
+        auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
         if (newNameMemory != nullptr)
         {
             std::memcpy(newNameMemory, value.data(), value.size());
@@ -2682,7 +2682,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         sprite = get_sprite(sprite_id);
         if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
         {
-            Peep* other_peep = (Peep*)sprite;
+            Peep* other_peep = reinterpret_cast<Peep*>(sprite);
             if (other_peep->state != PEEP_STATE_WALKING)
                 continue;
 
@@ -2693,7 +2693,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
         else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
-            Litter* litter = (Litter*)sprite;
+            Litter* litter = reinterpret_cast<Litter*>(sprite);
             if (abs(litter->z - peep->NextLoc.z) > 16)
                 continue;
 
@@ -3217,7 +3217,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 rct_string_id get_real_name_string_id_from_id(uint32_t id)
 {
     // Generate a name_string_idx from the peep id using bit twiddling
-    uint16_t ax = (uint16_t)(id + 0xF0B);
+    uint16_t ax = static_cast<uint16_t>(id + 0xF0B);
     uint16_t dx = 0;
     static constexpr uint16_t twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
     for (size_t i = 0; i < std::size(twiddlingBitOrder); i++)

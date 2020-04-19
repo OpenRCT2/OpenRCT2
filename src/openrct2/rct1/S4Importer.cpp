@@ -2481,7 +2481,7 @@ private:
     void ImportParkName()
     {
         std::string parkName = std::string(_s4.scenario_name);
-        if (is_user_string_id((rct_string_id)_s4.park_name_string_index))
+        if (is_user_string_id(static_cast<rct_string_id>(_s4.park_name_string_index)))
         {
             std::string userString = GetUserString(_s4.park_name_string_index);
             if (!userString.empty())

@@ -23,11 +23,11 @@
 #    include <mach-o/dyld.h>
 #    include <pwd.h>
 
-
 #    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
-    @autoreleasepool {
+    @autoreleasepool
+    {
         CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
             (CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
         CFURLRef url = (CFURLRef)CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute);
@@ -47,7 +47,8 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 
 bool platform_has_matching_language(NSString* preferredLocale, uint16_t* languageIdentifier)
 {
-    @autoreleasepool {
+    @autoreleasepool
+    {
         if ([preferredLocale isEqualToString:@"en"] || [preferredLocale isEqualToString:@"en-CA"])
         {
             *languageIdentifier = LANGUAGE_ENGLISH_US;
@@ -80,8 +81,8 @@ bool platform_has_matching_language(NSString* preferredLocale, uint16_t* languag
         NSString* languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
         for (int i = 1; i < LANGUAGE_COUNT; i++)
         {
-            NSString* optionLanguageCode = [
-                [[NSString stringWithUTF8String:LanguagesDescriptors[i].locale] componentsSeparatedByString:@"-"] firstObject];
+            NSString* optionLanguageCode = [[[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]
+                componentsSeparatedByString:@"-"] firstObject];
             if ([languageCode isEqualToString:optionLanguageCode])
             {
                 *languageIdentifier = i;
@@ -95,7 +96,8 @@ bool platform_has_matching_language(NSString* preferredLocale, uint16_t* languag
 
 uint16_t platform_get_locale_language()
 {
-    @autoreleasepool {
+    @autoreleasepool
+    {
         NSArray<NSString*>* preferredLanguages = [NSLocale preferredLanguages];
         for (NSString* preferredLanguage in preferredLanguages)
         {
@@ -113,7 +115,8 @@ uint16_t platform_get_locale_language()
 
 uint8_t platform_get_locale_currency()
 {
-    @autoreleasepool {
+    @autoreleasepool
+    {
         NSString* currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
         return platform_get_currency_value(currencyCode.UTF8String);
     }
@@ -121,7 +124,8 @@ uint8_t platform_get_locale_currency()
 
 uint8_t platform_get_locale_measurement_format()
 {
-    @autoreleasepool {
+    @autoreleasepool
+    {
         NSNumber* metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
 
         if (metricSystem.boolValue)

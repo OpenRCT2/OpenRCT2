@@ -84,7 +84,7 @@ public:
             auto zipFile = zip_fopen_index(_zip, index, 0);
             if (zipFile != nullptr)
             {
-                result.resize((size_t)dataSize);
+                result.resize(static_cast<size_t>(dataSize));
                 uint64_t readBytes = zip_fread(zipFile, result.data(), dataSize);
                 if (readBytes != dataSize)
                 {

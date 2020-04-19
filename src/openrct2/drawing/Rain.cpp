@@ -65,14 +65,14 @@ void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
  */
 static void DrawLightRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -(int32_t)gScenarioTicks + 8;
+    int32_t x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
     int32_t y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 0x18;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
@@ -86,28 +86,28 @@ static void DrawLightRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, in
  */
 static void DrawHeavyRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -(int32_t)gScenarioTicks;
+    int32_t x_start = -static_cast<int32_t>(gScenarioTicks);
     int32_t y_start = gScenarioTicks * 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 0x10;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x10;
     y_start = (gScenarioTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 8;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
     y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 0x18;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;

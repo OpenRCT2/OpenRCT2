@@ -157,7 +157,7 @@ void* get_loaded_object_chunk(size_t index)
 
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
 {
-    bufferSize = std::min((size_t)DAT_NAME_LENGTH + 1, bufferSize);
+    bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
     std::memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }

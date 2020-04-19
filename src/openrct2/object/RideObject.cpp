@@ -1051,7 +1051,7 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : (uint8_t)RIDE_TYPE_NULL;
+    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);
 }
 
 uint8_t RideObject::ParseRideCategory(const std::string& s)
@@ -1065,7 +1065,7 @@ uint8_t RideObject::ParseRideCategory(const std::string& s)
         { "stall", RIDE_CATEGORY_SHOP },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : (uint8_t)RIDE_CATEGORY_TRANSPORT;
+    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_CATEGORY_TRANSPORT);
 }
 
 uint8_t RideObject::ParseShopItem(const std::string& s)
@@ -1110,5 +1110,5 @@ uint8_t RideObject::ParseShopItem(const std::string& s)
         { "sunglasses", SHOP_ITEM_SUNGLASSES },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : (uint8_t)SHOP_ITEM_NONE;
+    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(SHOP_ITEM_NONE);
 }

@@ -200,12 +200,12 @@ public:
         if (_isExit)
         {
             ride_set_exit_location(
-                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, (uint8_t)tileElement->GetDirection() }));
+                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, static_cast<uint8_t>(tileElement->GetDirection()) }));
         }
         else
         {
             ride_set_entrance_location(
-                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, (uint8_t)tileElement->GetDirection() }));
+                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, static_cast<uint8_t>(tileElement->GetDirection()) }));
             ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
             ride->stations[_stationNum].QueueLength = 0;
 

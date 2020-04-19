@@ -45,7 +45,7 @@ MemoryStream::MemoryStream(void* data, size_t dataSize, uint8_t access)
 }
 
 MemoryStream::MemoryStream(const void* data, size_t dataSize)
-    : MemoryStream((void*)data, dataSize, MEMORY_ACCESS::READ)
+    : MemoryStream(const_cast<void*>(data), dataSize, MEMORY_ACCESS::READ)
 {
 }
 
@@ -115,7 +115,7 @@ uint64_t MemoryStream::GetLength() const
 
 uint64_t MemoryStream::GetPosition() const
 {
-    return (uint64_t)((uintptr_t)_position - (uintptr_t)_data);
+    return static_cast<uint64_t>((uintptr_t)_position - (uintptr_t)_data);
 }
 
 void MemoryStream::SetPosition(uint64_t position)
@@ -144,7 +144,7 @@ void MemoryStream::Seek(int64_t offset, int32_t origin)
     {
         throw IOException("New position out of bounds.");
     }
-    _position = (void*)((uintptr_t)_data + (uintptr_t)newPosition);
+    _position = (void*)((uintptr_t)_data + static_cast<uintptr_t>(newPosition));
 }
 
 void MemoryStream::Read(void* buffer, uint64_t length)
@@ -200,7 +200,7 @@ void MemoryStream::Write(const void* buffer, uint64_t length)
     {
         if (_access & MEMORY_ACCESS::OWNER)
         {
-            EnsureCapacity((size_t)nextPosition);
+            EnsureCapacity(static_cast<size_t>(nextPosition));
         }
         else
         {
@@ -210,7 +210,7 @@ void MemoryStream::Write(const void* buffer, uint64_t length)
 
     std::memcpy(_position, buffer, length);
     _position = (void*)((uintptr_t)_position + length);
-    _dataSize = std::max<size_t>(_dataSize, (size_t)nextPosition);
+    _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
 }
 
 void MemoryStream::Write1(const void* buffer)
@@ -251,6 +251,6 @@ void MemoryStream::EnsureCapacity(size_t capacity)
         uint64_t position = GetPosition();
         _dataCapacity = newCapacity;
         _data = Memory::Reallocate(_data, _dataCapacity);
-        _position = (void*)((uintptr_t)_data + (uintptr_t)position);
+        _position = (void*)((uintptr_t)_data + static_cast<uintptr_t>(position));
     }
 }

@@ -315,7 +315,7 @@ private:
             // No walking guests; pick random park entrance
             if (!gParkEntrances.empty())
             {
-                auto rand = scenario_rand_max((uint32_t)gParkEntrances.size());
+                auto rand = scenario_rand_max(static_cast<uint32_t>(gParkEntrances.size()));
                 const auto& entrance = gParkEntrances[rand];
                 auto dir = entrance.direction;
                 x = entrance.x;

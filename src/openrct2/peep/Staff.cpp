@@ -390,7 +390,7 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
     int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
     int32_t offset = (x | y) >> 5;
     int32_t bitIndex = (x | y) & 0x1F;
-    return gStaffPatrolAreas[peepOffset + offset] & (((uint32_t)1) << bitIndex);
+    return gStaffPatrolAreas[peepOffset + offset] & ((static_cast<uint32_t>(1)) << bitIndex);
 }
 
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
@@ -441,7 +441,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
  */
 static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
-    uint16_t nearestLitterDist = (uint16_t)-1;
+    uint16_t nearestLitterDist = static_cast<uint16_t>(-1);
     Litter* nearestLitter = nullptr;
     Litter* litter = nullptr;
 
@@ -884,7 +884,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
             return staff_mechanic_direction_path_rand(peep, pathDirections);
         }
 
-        return (uint8_t)pathfindDirection;
+        return static_cast<uint8_t>(pathfindDirection);
     }
     return staff_mechanic_direction_path_rand(peep, pathDirections);
 }

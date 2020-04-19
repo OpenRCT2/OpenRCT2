@@ -48,8 +48,8 @@ bool NetworkKey::LoadPrivate(IStream* stream)
 {
     Guard::ArgumentNotNull(stream);
 
-    size_t size = (size_t)stream->GetLength();
-    if (size == (size_t)-1)
+    size_t size = static_cast<size_t>(stream->GetLength());
+    if (size == static_cast<size_t>(-1))
     {
         log_error("unknown size, refusing to load key");
         return false;
@@ -80,8 +80,8 @@ bool NetworkKey::LoadPublic(IStream* stream)
 {
     Guard::ArgumentNotNull(stream);
 
-    size_t size = (size_t)stream->GetLength();
-    if (size == (size_t)-1)
+    size_t size = static_cast<size_t>(stream->GetLength());
+    if (size == static_cast<size_t>(-1))
     {
         log_error("unknown size, refusing to load key");
         return false;
