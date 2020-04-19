@@ -33,6 +33,30 @@
 
 static Banner _banners[MAX_BANNERS];
 
+namespace
+{
+    template<uint32_t TFrom, uint32_t TTo> struct CodePointToUtf8
+    {
+        constexpr CodePointToUtf8()
+        {
+            for (uint32_t i = TFrom; i <= TTo; ++i)
+            {
+                utf8_write_codepoint(m_colors[i - TFrom], i);
+            }
+        }
+
+        constexpr auto operator()(uint8_t colourId) const
+        {
+            return m_colors[colourId];
+        }
+
+        using Utf8Colour = utf8[5]; // A 32bit codepoint uses at most 4 bytes in utf8
+        Utf8Colour m_colors[TTo - TFrom + 1]{};
+    };
+} // namespace
+
+static constexpr CodePointToUtf8<FORMAT_COLOUR_CODE_START, FORMAT_COLOUR_CODE_END> colourToUtf8;
+
 std::string Banner::GetText() const
 {
     uint8_t args[32]{};
@@ -47,14 +71,10 @@ size_t Banner::FormatTextTo(void* argsV, bool addColour) const
     int numColourArgs = 0;
     if (addColour)
     {
-        textColourUtf8.resize(5); // one code point in utf8 takes at most 4 bytes
-        auto terminator = utf8_write_codepoint(textColourUtf8.data(), FORMAT_COLOUR_CODE_START + text_colour);
-        *terminator = '\0';
-
         set_format_arg_on(args, numColourArgs, rct_string_id, STR_STRING_STRINGID);
         numColourArgs += sizeof(rct_string_id);
 
-        set_format_arg_on(args, numColourArgs, const char*, textColourUtf8.data());
+        set_format_arg_on(args, numColourArgs, const char*, colourToUtf8(text_colour));
         numColourArgs += sizeof(const char*);
 
         args += numColourArgs;

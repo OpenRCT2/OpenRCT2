@@ -49,36 +49,6 @@ uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr)
     return result;
 }
 
-utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
-{
-    if (codepoint <= 0x7F)
-    {
-        dst[0] = (utf8)codepoint;
-        return dst + 1;
-    }
-    else if (codepoint <= 0x7FF)
-    {
-        dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
-        dst[1] = 0x80 | (codepoint & 0x3F);
-        return dst + 2;
-    }
-    else if (codepoint <= 0xFFFF)
-    {
-        dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
-        dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[2] = 0x80 | (codepoint & 0x3F);
-        return dst + 3;
-    }
-    else
-    {
-        dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
-        dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
-        dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[3] = 0x80 | (codepoint & 0x3F);
-        return dst + 4;
-    }
-}
-
 /**
  * Inserts the given codepoint at the given address, shifting all characters after along.
  * @returns the size of the inserted codepoint.
