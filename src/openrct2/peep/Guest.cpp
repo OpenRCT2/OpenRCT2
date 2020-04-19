@@ -2596,7 +2596,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         vehicle = GET_VEHICLE(vehicle_id);
 
         uint8_t num_seats = vehicle->num_seats;
-        if (vehicle_is_used_in_pairs(vehicle))
+        if (vehicle->IsUsedInPairs())
         {
             if (vehicle->next_free_seat & 1)
             {
@@ -3992,7 +3992,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    if (!vehicle_is_used_in_pairs(vehicle))
+    if (!vehicle->IsUsedInPairs())
     {
         UpdateRideFreeVehicleEnterRide(ride);
         return;
@@ -4064,7 +4064,7 @@ void Guest::UpdateRideEnterVehicle()
                     return;
             }
 
-            if (vehicle_is_used_in_pairs(vehicle))
+            if (vehicle->IsUsedInPairs())
             {
                 auto* seatedPeep = GET_PEEP(vehicle->peep[current_seat ^ 1]);
                 if (seatedPeep != nullptr)

@@ -6224,9 +6224,9 @@ Vehicle* Vehicle::TrainTail() const
     return const_cast<Vehicle*>(vehicle);
 }
 
-int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle)
+int32_t Vehicle::IsUsedInPairs() const
 {
-    return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
+    return num_seats & VEHICLE_SEAT_PAIR_FLAG;
 }
 
 /**
