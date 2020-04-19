@@ -691,7 +691,10 @@ private:
         {
             auto peep = GET_PEEP(spriteIndex);
             spriteIndex = peep->next;
-            peep->Remove();
+            if (peep->type == PEEP_TYPE_GUEST)
+            {
+                peep->Remove();
+            }
         }
 
         window_invalidate_by_class(WC_RIDE);
