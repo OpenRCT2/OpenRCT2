@@ -1318,11 +1318,6 @@ const uint16_t RideFilmLength[3] = {
     7000  // SPACE_RAIDERS
 };
 
-/* rct2: 0x009A0AC4 */
-const uint16_t RideCrookedHouseLength[1] = {
-    600
-};
-
 /** rct2: 0x0097D7CB */
 const int32_t RidePhotoItems[] = {
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_SPIRAL_ROLLER_COASTER

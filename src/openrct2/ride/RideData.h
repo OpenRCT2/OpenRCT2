@@ -240,7 +240,6 @@ extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
-extern const uint16_t RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
 
