@@ -28,6 +28,8 @@ class StationObject;
 #define gTileElementTilePointers RCT2_ADDRESS(0x013CE9A4, TileElement*)
 rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
 
+bool gCheatsEnableAllDrawableTrackPieces = false;
+
 Ride gRideList[MAX_RIDES];
 int16_t gMapSizeUnits;
 int16_t gMapBaseZ;

@@ -99,6 +99,8 @@ struct RideTypeDescriptor
     uint8_t AvailableBreakdowns;
 
     bool HasFlag(uint64_t flag) const;
+    uint64_t GetAvailableTrackPieces() const;
+    bool SupportsTrackPiece(const uint64_t trackPiece) const;
 };
 
 #ifdef _WIN32
@@ -176,6 +178,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED = (1ULL << 47), // This is only set on the Flying RC and its alternative type.
 
     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1ULL << 48),
+    RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1ULL << 49),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.

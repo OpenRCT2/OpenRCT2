@@ -1436,7 +1436,7 @@ static GameActionResult::Ptr map_can_construct_with_clear_at(
                     && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
                 {
                     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                    if (ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
+                    if (ride != nullptr && RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
                     {
                         continue;
                     }

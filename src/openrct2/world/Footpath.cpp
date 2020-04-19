@@ -2260,5 +2260,5 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return (ride->type == RIDE_TYPE_MINIATURE_RAILWAY);
+    return RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
 }
