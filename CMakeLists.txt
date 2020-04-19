@@ -191,7 +191,6 @@ if (MSVC)
     endif ()
     add_definitions(-DNOMINMAX)
 else ()
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
@@ -211,6 +210,9 @@ else ()
     if (NOT MINGW)
         # Do not enable for MinGW, as its headers contain redundant declarations of builtin functions
         ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
+
+        # Currently used MinGW w/GCC 7.2 doesn't provide sane error messages for this
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
     endif ()
     # These have no workarounds available when building with LTO
     if (NOT IPO_BUILD_ENABLED)
