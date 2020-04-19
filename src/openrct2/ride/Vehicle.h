@@ -305,6 +305,7 @@ struct Vehicle : SpriteBase
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
+    bool UpdateDodgemsCollision(int16_t x, int16_t y, uint16_t* spriteId);
     int32_t UpdateTrackMotion(int32_t* outStation);
 
 private:
@@ -564,7 +565,6 @@ Vehicle* vehicle_get_head(const Vehicle* vehicle);
 Vehicle* vehicle_get_tail(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
-bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;
