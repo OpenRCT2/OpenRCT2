@@ -307,6 +307,7 @@ struct Vehicle : SpriteBase
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
     bool DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* spriteId) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
+    void SetMapToolbar() const;
     int32_t IsUsedInPairs() const;
     rct_ride_entry_vehicle* Entry() const;
     Vehicle* TrainHead() const;
@@ -562,7 +563,6 @@ Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
 GForces vehicle_get_g_forces(const Vehicle* vehicle);
-void vehicle_set_map_toolbar(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 

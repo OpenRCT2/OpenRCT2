@@ -6170,25 +6170,25 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
     return { static_cast<int16_t>(gForceVert & 0xFFFF), static_cast<int16_t>(gForceLateral & 0xFFFF) };
 }
 
-void vehicle_set_map_toolbar(const Vehicle* vehicle)
+void Vehicle::SetMapToolbar() const
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide != nullptr)
     {
-        vehicle = vehicle->GetHead();
+        const Vehicle* vehicle = GetHead();
 
         int32_t vehicleIndex;
         for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
-            if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+            if (curRide->vehicles[vehicleIndex] == vehicle->sprite_index)
                 break;
 
         auto ft = Formatter::MapTooltip();
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
-        ride->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
+        curRide->FormatNameTo(ft);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].capitalised);
         ft.Add<uint16_t>(vehicleIndex + 1);
-        ride->FormatStatusTo(ft);
+        curRide->FormatStatusTo(ft);
     }
 }
 

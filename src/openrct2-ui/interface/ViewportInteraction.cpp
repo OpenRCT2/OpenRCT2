@@ -82,7 +82,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
                 case SPRITE_IDENTIFIER_VEHICLE:
                     vehicle = &(sprite->vehicle);
                     if (vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
-                        vehicle_set_map_toolbar(vehicle);
+                        vehicle->SetMapToolbar();
                     else
                         info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                     break;
