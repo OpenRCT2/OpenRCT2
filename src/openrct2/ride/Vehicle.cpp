@@ -7592,14 +7592,10 @@ static void vehicle_update_handle_water_splash(Vehicle* vehicle)
  *
  *  rct2: 0x006DB807
  */
-static void vehicle_update_reverser_car_bogies(Vehicle* vehicle)
+void Vehicle::UpdateReverserCarBogies()
 {
-    const rct_vehicle_info* moveInfo = vehicle_get_move_info(
-        vehicle->TrackSubposition, vehicle->track_type, vehicle->track_progress);
-    int32_t x = vehicle->TrackLocation.x + moveInfo->x;
-    int32_t y = vehicle->TrackLocation.y + moveInfo->y;
-    int32_t z = vehicle->z;
-    sprite_move(x, y, z, vehicle);
+    const auto moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    sprite_move(TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z, this);
 }
 
 /**
@@ -7818,8 +7814,8 @@ void Vehicle::ReverseReverserCar()
     previousVehicle->track_progress = 86;
     nextVehicle->track_progress = 158;
 
-    vehicle_update_reverser_car_bogies(nextVehicle);
-    vehicle_update_reverser_car_bogies(previousVehicle);
+    nextVehicle->UpdateReverserCarBogies();
+    previousVehicle->UpdateReverserCarBogies();
 }
 
 /**
