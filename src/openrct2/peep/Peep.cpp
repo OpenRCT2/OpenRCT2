@@ -3083,7 +3083,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     else
     {
-        for (auto& elem : gPeepSpawns)
+        for (auto& peepSpawn : gPeepSpawns)
         {
             CoordsXYZ coord1, coord2;
             coord1.x = elem.ToTileCentre().x;
