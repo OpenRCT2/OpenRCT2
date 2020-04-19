@@ -9806,10 +9806,10 @@ int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)
  *
  *  rct2: 0x006DA1EC
  */
-void vehicle_invalidate_window(Vehicle* vehicle)
+void Vehicle::InvalidateWindow()
 {
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
-    intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
+    intent.putExtra(INTENT_EXTRA_VEHICLE, this);
     context_broadcast_intent(&intent);
 }
 
@@ -9985,7 +9985,7 @@ void Vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState)
 {
     status = vehicleStatus;
     sub_state = subState;
-    vehicle_invalidate_window(this);
+    InvalidateWindow();
 }
 
 bool Vehicle::IsGhost() const
