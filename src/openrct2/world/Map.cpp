@@ -1480,7 +1480,12 @@ bool map_can_construct_with_clear_at(
     {
         *price += res->Cost;
     }
-    gMapGroundFlags = dynamic_cast<ConstructClearResult*>(res.get())->GroundFlags;
+    auto ccr = dynamic_cast<ConstructClearResult*>(res.get());
+    if (ccr == nullptr)
+    {
+        return false;
+    }
+    gMapGroundFlags = ccr->GroundFlags;
     return res->Error == GA_ERROR::OK;
 }
 
