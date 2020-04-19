@@ -374,6 +374,7 @@ private:
     void TestReset();
     void UpdateTestFinish();
     void PeepEasterEggHereWeAre() const;
+    bool CanDepartSynchronised() const;
 };
 
 struct train_ref

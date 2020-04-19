@@ -52,7 +52,6 @@ static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
 
 static void vehicle_kill_all_passengers(Vehicle* vehicle);
-static bool vehicle_can_depart_synchronised(Vehicle* vehicle);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
 constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
@@ -2515,7 +2514,7 @@ void Vehicle::UpdateWaitingToDepart()
         {
             if (update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
             {
-                if (!vehicle_can_depart_synchronised(this))
+                if (!CanDepartSynchronised())
                 {
                     return;
                 }
@@ -2771,13 +2770,12 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
  *  The vehicle flag VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT is cleared for those
  *  vehicles that depart in sync with the vehicle in the param.
  */
-static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
+static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationIndex station)
 {
-    auto ride = get_ride(vehicle->ride);
+    auto ride = get_ride(curRideId);
     if (ride == nullptr)
         return false;
 
-    StationIndex station = vehicle->current_station;
     auto location = ride->stations[station].GetStart();
     int32_t x = location.x;
     int32_t y = location.y;
@@ -2902,7 +2900,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
                     }
                     ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
                     // uint8_t currentStation = _synchronisedVehicles[0].station_id
-                    if (someRideIndex != vehicle->ride)
+                    if (someRideIndex != curRideId)
                     {
                         // Sync condition: the first station to sync is a different ride
                         return false;
@@ -2968,6 +2966,11 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
     }
 
     return true;
+}
+
+bool Vehicle::CanDepartSynchronised() const
+{
+    return ride_station_can_depart_synchronised(ride, current_station);
 }
 
 /**
