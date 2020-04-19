@@ -6499,13 +6499,73 @@ uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCa
 // Finds track pieces that a given ride entry has sprites for
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
 {
-    static constexpr uint16_t trackPieceRequiredSprites[55] = {
-        0x0001u, 0x0001u, 0x0001u, 0x0000u, 0x0006u, 0x0002u, 0x0020u, 0x000E,  0x0003u, 0x0006u, 0x0007u,
-        0x0002u, 0x0004u, 0x0001u, 0x0001u, 0x0001u, 0x0001u, 0x0061u, 0x000E,  0x1081u, 0x0001u, 0x0020u,
-        0x0020u, 0x0001u, 0x0001u, 0x0000u, 0x0001u, 0x0001u, 0x000C,  0x0061u, 0x0002u, 0x000E,  0x0480u,
-        0x0001u, 0x0061u, 0x0001u, 0x0001u, 0x000Fu, 0x0001u, 0x0200u, 0x0007u, 0x0008u, 0x0000u, 0x0000u,
-        0x4000u, 0x0008u, 0x0001u, 0x0001u, 0x0061u, 0x0061u, 0x0008u, 0x0008u, 0x0001u, 0x000Eu, 0x000Eu,
+    // clang-format off
+    static constexpr uint32_t trackPieceRequiredSprites[TRACK_GROUP_COUNT] =
+    {
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_FLAT
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_STRAIGHT
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_STATION_END
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_LIFT_HILL
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,                                                                  // TRACK_LIFT_HILL_STEEP
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_LIFT_HILL_CURVE
+        VEHICLE_SPRITE_FLAG_FLAT_BANKED,                                                                                                       // TRACK_FLAT_ROLL_BANKING
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES | VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                            // TRACK_VERTICAL_LOOP
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                          // TRACK_SLOPE
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,                                                                  // TRACK_SLOPE_STEEP
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,                                       // TRACK_SLOPE_LONG
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_SLOPE_CURVE
+        VEHICLE_SPRITE_FLAG_STEEP_SLOPES,                                                                                                      // TRACK_SLOPE_CURVE_STEEP
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_S_BEND
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_CURVE_VERY_SMALL
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_CURVE_SMALL
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_CURVE
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                        // TRACK_TWIST
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES |  VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                           // TRACK_HALF_LOOP
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS |  VEHICLE_SPRITE_FLAG_CORKSCREWS,              // TRACK_CORKSCREW
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_TOWER_BASE
+        VEHICLE_SPRITE_FLAG_FLAT_BANKED,                                                                                                       // TRACK_HELIX_SMALL
+        VEHICLE_SPRITE_FLAG_FLAT_BANKED,                                                                                                       // TRACK_HELIX_LARGE
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_HELIX_LARGE_UNBANKED
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_BRAKES
+        0,                                                                                                                                     // TRACK_25
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_ON_RIDE_PHOTO
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_WATER_SPLASH
+        VEHICLE_SPRITE_FLAG_STEEP_SLOPES | VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                // TRACK_SLOPE_VERTICAL
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_BARREL_ROLL
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_POWERED_LIFT
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES |  VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                           // TRACK_HALF_LOOP_LARGE
+        VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS,                           // TRACK_SLOPE_CURVE_BANKED
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_LOG_FLUME_REVERSER
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_HEARTLINE_ROLL
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_REVERSER
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_REVERSE_FREEFALL
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES | VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES, // TRACK_SLOPE_TO_FLAT
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_BLOCK_BRAKES
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS,                                                                                   // TRACK_SLOPE_ROLL_BANKING
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,                                       // TRACK_SLOPE_STEEP_LONG
+        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_CURVE_VERTICAL
+        0,                                                                                                                                     // TRACK_42
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_LIFT_HILL_CABLE
+        VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL,                                                                                                  // TRACK_LIFT_HILL_CURVED
+        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_SPINNING_TUNNEL
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_ROTATION_CONTROL_TOGGLE
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_INLINE_TWIST_UNINVERTED   
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_INLINE_TWIST_INVERTED     
+        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP_UNINVERTED   
+        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP_INVERTED     
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_RAPIDS
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES |  VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                           // TRACK_HALF_LOOP_UNINVERTED
+        VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES |  VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                           // TRACK_HALF_LOOP_INVERTED
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_WATERFALL
+        VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_WHIRLPOOL
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,                                       // TRACK_BRAKE_FOR_DROP
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS |  VEHICLE_SPRITE_FLAG_CORKSCREWS,              // TRACK_CORKSCREW_UNINVERTED
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS |  VEHICLE_SPRITE_FLAG_CORKSCREWS,              // TRACK_CORKSCREW_INVERTED
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                          // TRACK_HEARTLINE_TRANSFER
+        0,                                                                                                                                     // TRACK_MINI_GOLF_HOLE
     };
+    // clang-format on
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
     // exception, at least)
