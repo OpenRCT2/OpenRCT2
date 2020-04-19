@@ -84,7 +84,7 @@ namespace OpenRCT2::Scripting
             return std::make_shared<ScTile>(coords);
         }
 
-        std::shared_ptr<ScThing> getThing(int32_t id)
+        DukValue getThing(int32_t id)
         {
             if (id >= 0 && id < MAX_SPRITES)
             {
@@ -92,10 +92,11 @@ namespace OpenRCT2::Scripting
                 auto sprite = get_sprite(spriteId);
                 if (sprite != nullptr && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
                 {
-                    return std::make_shared<ScThing>(spriteId);
+                    return GetThingAsDukValue(sprite);
                 }
             }
-            return nullptr;
+            duk_push_null(_context);
+            return DukValue::take_from_stack(_context);
         }
 
         std::vector<DukValue> getAllThings(const std::string& type)
@@ -185,6 +186,19 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScMap::getTile, "getTile");
             dukglue_register_method(ctx, &ScMap::getThing, "getThing");
             dukglue_register_method(ctx, &ScMap::getAllThings, "getAllThings");
+        }
+
+    private:
+        DukValue GetThingAsDukValue(const rct_sprite* sprite)
+        {
+            auto spriteId = sprite->generic.sprite_index;
+            switch (sprite->generic.sprite_identifier)
+            {
+                case SPRITE_IDENTIFIER_PEEP:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScPeep>(spriteId));
+                default:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScThing>(spriteId));
+            }
         }
     };
 } // namespace OpenRCT2::Scripting
