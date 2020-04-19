@@ -10,7 +10,7 @@ namespace OpenRCT2.Unity
 
 
         // OpenRCT2 takes the executing directory by default; which is where the Unity Editor is installed here...
-        const string rootpath = @"D:\Projects\Visual Studio\OpenRCT2-Unity";
+        const string rootpath = @"C:\Users\Rolf\Projects\03 - OpenRCT2 Unity";
         const string datapath = rootpath + @"\bin\data";
         const string parkpath = rootpath + @"\src\openrct2-unity\parks";
 
