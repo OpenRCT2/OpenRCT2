@@ -260,7 +260,7 @@ struct list_item
 {
     const ObjectRepositoryItem* repositoryItem;
     rct_object_entry* entry;
-    rct_object_filters* filter;
+    std::unique_ptr<rct_object_filters> filter;
     uint8_t* flags;
 };
 
@@ -310,7 +310,7 @@ static void visible_list_refresh(rct_window* w)
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
             && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
-            rct_object_filters* filter = new rct_object_filters;
+            auto filter = std::make_unique<rct_object_filters>();
             filter->ride.category[0] = 0;
             filter->ride.category[1] = 0;
             filter->ride.ride_type = 0;
@@ -318,7 +318,7 @@ static void visible_list_refresh(rct_window* w)
             list_item currentListItem;
             currentListItem.repositoryItem = item;
             currentListItem.entry = const_cast<rct_object_entry*>(&item->ObjectEntry);
-            currentListItem.filter = filter;
+            currentListItem.filter = std::move(filter);
             currentListItem.flags = &_objectSelectionFlags[i];
             _listItems.push_back(std::move(currentListItem));
         }
