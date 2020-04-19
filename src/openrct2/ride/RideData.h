@@ -73,7 +73,7 @@ struct rct_ride_data_5
     int8_t z_offset;
     uint8_t max_mass;
     uint8_t z;
-    uint8_t price;
+    uint8_t PriceEstimateMultiplier;
 };
 
 struct rct_ride_lift_data
