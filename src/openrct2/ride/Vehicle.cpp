@@ -2974,18 +2974,19 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
  *
  *  rct2: 0x006D9EB0
  */
-void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle)
+void Vehicle::PeepEasterEggHereWeAre() const
 {
+    const Vehicle* vehicle = this;
     uint16_t spriteId = vehicle->sprite_index;
     do
     {
         vehicle = GET_VEHICLE(spriteId);
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
         {
-            Peep* peep = GET_PEEP(vehicle->peep[i]);
-            if (peep->peep_flags & PEEP_FLAGS_HERE_WE_ARE)
+            Peep* curPeep = GET_PEEP(vehicle->peep[i]);
+            if (curPeep->peep_flags & PEEP_FLAGS_HERE_WE_ARE)
             {
-                peep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
+                curPeep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, curPeep->current_ride);
             }
         }
     } while ((spriteId = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
@@ -3172,7 +3173,7 @@ void Vehicle::UpdateDeparting()
         }
 
         sub_state = 1;
-        vehicle_peep_easteregg_here_we_are(this);
+        PeepEasterEggHereWeAre();
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
@@ -4156,7 +4157,7 @@ void Vehicle::UpdateTravellingCableLift()
         }
 
         sub_state = 1;
-        vehicle_peep_easteregg_here_we_are(this);
+        PeepEasterEggHereWeAre();
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
             if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)

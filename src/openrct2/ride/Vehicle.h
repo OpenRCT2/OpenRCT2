@@ -360,6 +360,7 @@ private:
     bool CurrentTowerElementIsTop();
     bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    void PeepEasterEggHereWeAre() const;
 };
 
 struct train_ref
@@ -562,7 +563,6 @@ int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
 void vehicle_invalidate_window(Vehicle* vehicle);
 void vehicle_update_test_finish(Vehicle* vehicle);
 void vehicle_test_reset(Vehicle* vehicle);
-void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 
