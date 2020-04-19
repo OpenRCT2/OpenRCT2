@@ -361,6 +361,7 @@ private:
     bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     void TestReset();
+    void UpdateTestFinish();
     void PeepEasterEggHereWeAre() const;
 };
 
@@ -562,7 +563,6 @@ void vehicle_set_map_toolbar(const Vehicle* vehicle);
 int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle);
 int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
 void vehicle_invalidate_window(Vehicle* vehicle);
-void vehicle_update_test_finish(Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 

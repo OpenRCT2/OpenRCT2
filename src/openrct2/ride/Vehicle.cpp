@@ -2996,14 +2996,13 @@ void Vehicle::PeepEasterEggHereWeAre() const
  * Performed when vehicle has completed a full circuit
  *  rct2: 0x006D7338
  */
-void vehicle_update_test_finish(Vehicle* vehicle)
+static bool test_finish(ride_id_t rideId)
 {
-    auto ride = get_ride(vehicle->ride);
+    auto ride = get_ride(rideId);
     if (ride == nullptr)
-        return;
+        return false;
 
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 
     for (int32_t i = ride->num_stations - 1; i >= 1; i--)
@@ -3028,8 +3027,16 @@ void vehicle_update_test_finish(Vehicle* vehicle)
 
     totalTime = std::max(totalTime, 1u);
     ride->average_speed = ride->average_speed / totalTime;
+    window_invalidate_by_number(WC_RIDE, rideId);
+    return true;
+}
 
-    window_invalidate_by_number(WC_RIDE, vehicle->ride);
+void Vehicle::UpdateTestFinish()
+{
+    if (!test_finish(ride))
+        return;
+
+    update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
 }
 
 /**
@@ -3202,7 +3209,7 @@ void Vehicle::UpdateDeparting()
                 }
                 else
                 {
-                    vehicle_update_test_finish(this);
+                    UpdateTestFinish();
                 }
             }
             else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
@@ -4067,7 +4074,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
                 && curRide->current_test_segment + 1 >= curRide->num_stations)
             {
-                vehicle_update_test_finish(this);
+                UpdateTestFinish();
             }
             SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
             return;
@@ -4107,7 +4114,7 @@ void Vehicle::UpdateUnloadingPassengers()
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
         && curRide->current_test_segment + 1 >= curRide->num_stations)
     {
-        vehicle_update_test_finish(this);
+        UpdateTestFinish();
     }
     SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
 }
@@ -4173,7 +4180,7 @@ void Vehicle::UpdateTravellingCableLift()
                 }
                 else
                 {
-                    vehicle_update_test_finish(this);
+                    UpdateTestFinish();
                 }
             }
             else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
