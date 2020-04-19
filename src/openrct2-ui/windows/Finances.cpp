@@ -1368,6 +1368,11 @@ static void window_finances_research_invalidate(rct_window* w)
         _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
         _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
     }
+    else
+    {
+        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WWT_DROPDOWN;
+        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_BUTTON;
+    }
     int32_t currentResearchLevel = gResearchFundingLevel;
 
     // Current funding
