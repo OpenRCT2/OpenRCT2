@@ -177,7 +177,6 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
     {
         case 0:
             return QuarterTile{ *this };
-            break;
         case 1:
         {
             auto rotVal1 = _val << 1;

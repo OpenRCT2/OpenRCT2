@@ -3561,7 +3561,6 @@ GameActionResult::Ptr network_modify_groups(
         default:
             log_error("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-            break;
     }
 
     gNetwork.SaveGroups();
