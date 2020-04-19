@@ -4260,7 +4260,7 @@ void Vehicle::UpdateMotionBoatHire()
     _vehicleVelocityF64E08 = velocity;
     _vehicleVelocityF64E0C = (velocity >> 10) * 42;
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6461,7 +6461,7 @@ bool Vehicle::UpdateDodgemsCollision(int16_t curX, int16_t curY, uint16_t* sprit
  */
 static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
 {
-    auto vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6596,7 +6596,7 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
     if (ride == nullptr)
         return;
 
-    auto vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
         return;
 
@@ -6884,7 +6884,7 @@ static void vehicle_update_swinging_car(Vehicle* vehicle)
         vehicle->var_4E += dword_F64E08 >> swingAmount;
     }
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7068,7 +7068,7 @@ static void vehicle_update_spinning_car(Vehicle* vehicle)
         return;
     }
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7203,7 +7203,7 @@ void Vehicle::UpdateAdditionalAnimation()
     uint32_t eax;
 
     uint32_t* curVar_C8 = reinterpret_cast<uint32_t*>(&var_C8);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7594,7 +7594,7 @@ static bool vehicle_update_motion_collision_detection(
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_1)
         return false;
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return false;
@@ -7662,11 +7662,11 @@ static bool vehicle_update_motion_collision_detection(
             if (collideVehicle->ride_subtype == RIDE_TYPE_NULL)
                 continue;
 
-            rct_ride_entry_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
-            if (collideType == nullptr)
+            auto collideVehicleEntry = collideVehicle->Entry();
+            if (collideVehicleEntry == nullptr)
                 continue;
 
-            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+            if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                 continue;
 
             uint32_t x_diff = abs(collideVehicle->x - x);
@@ -7691,7 +7691,7 @@ static bool vehicle_update_motion_collision_detection(
             if (x_diff + y_diff >= ecx)
                 continue;
 
-            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_GO_KART))
+            if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART))
             {
                 mayCollide = true;
                 break;
@@ -7805,7 +7805,7 @@ static void vehicle_reverse_reverser_car(Vehicle* vehicle)
  */
 static void sub_6DBF3E(Vehicle* vehicle)
 {
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
 
     vehicle->acceleration = vehicle->acceleration / _vehicleUnkF64E10;
     if (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK)
@@ -8011,7 +8011,7 @@ loc_6DB41D:
     vehicle->TrackLocation = location;
 
     // TODO check if getting the vehicle entry again is necessary
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return false;
@@ -8101,7 +8101,7 @@ loc_6DAEB9:
         if (track_progress == 80)
         {
             vehicle_type ^= 1;
-            vehicleEntry = vehicle_get_vehicle_entry(this);
+            vehicleEntry = Entry();
         }
         if (_vehicleVelocityF64E08 >= 0x40000)
         {
@@ -8173,7 +8173,7 @@ loc_6DAEB9:
             if (track_progress == 32)
             {
                 vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
-                vehicleEntry = vehicle_get_vehicle_entry(this);
+                vehicleEntry = Entry();
             }
         }
         else
@@ -8653,7 +8653,7 @@ static int32_t vehicle_update_track_motion_mini_golf(Vehicle* vehicle, int32_t* 
         return 0;
 
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
 
     TileElement* tileElement = nullptr;
 
@@ -9506,7 +9506,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         return 0;
 
     rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
+    auto vehicleEntry = Entry();
 
     if (vehicleEntry == nullptr)
     {
@@ -9540,7 +9540,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     while (spriteId != SPRITE_INDEX_NULL)
     {
         Vehicle* car = GET_VEHICLE(spriteId);
-        vehicleEntry = vehicle_get_vehicle_entry(car);
+        vehicleEntry = car->Entry();
         if (vehicleEntry == nullptr)
         {
             goto loc_6DBF3E;
@@ -9643,7 +9643,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // loc_6DC144
     vehicle = gCurrentVehicle;
 
-    vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    vehicleEntry = vehicle->Entry();
     // eax
     int32_t totalAcceleration = 0;
     // ebp
@@ -9755,14 +9755,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     return regs.eax;
 }
 
-rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle)
+rct_ride_entry_vehicle* Vehicle::Entry() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
     {
         return nullptr;
     }
-    return &rideEntry->vehicles[vehicle->vehicle_type];
+    return &rideEntry->vehicles[vehicle_type];
 }
 
 int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)

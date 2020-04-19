@@ -307,6 +307,7 @@ struct Vehicle : SpriteBase
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
     bool UpdateDodgemsCollision(int16_t x, int16_t y, uint16_t* spriteId);
     int32_t UpdateTrackMotion(int32_t* outStation);
+    rct_ride_entry_vehicle* Entry() const;
 
 private:
     bool SoundCanPlay() const;
@@ -555,7 +556,6 @@ void vehicle_sounds_update();
 GForces vehicle_get_g_forces(const Vehicle* vehicle);
 void vehicle_set_map_toolbar(const Vehicle* vehicle);
 int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle);
-rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle);
 int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
 void vehicle_invalidate_window(Vehicle* vehicle);
 void vehicle_update_test_finish(Vehicle* vehicle);
