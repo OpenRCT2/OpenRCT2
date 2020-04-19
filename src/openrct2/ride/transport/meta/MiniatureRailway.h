@@ -27,5 +27,6 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
+    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
 };
 // clang-format on

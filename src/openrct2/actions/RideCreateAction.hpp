@@ -175,7 +175,7 @@ public:
         auto rideProperties = RideProperties[ride->type];
         ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
 
-        ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
+        ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
 
         ride->measurement = {};
         ride->excitement = (ride_rating)-1;

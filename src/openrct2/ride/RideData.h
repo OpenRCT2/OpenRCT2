@@ -97,6 +97,8 @@ struct RideTypeDescriptor
     uint64_t Flags;
     RideNameConvention NameConvention;
     uint8_t AvailableBreakdowns;
+    /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
+    rct_ride_lift_data LiftData;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -227,8 +229,6 @@ constexpr const RideComponentName RideComponentNames[] =
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
 extern const uint8_t RideAvailableModes[];
 extern const uint8_t AllRideModesAvailable[];
-
-extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
 extern const int32_t RidePhotoItems[RIDE_TYPE_COUNT];

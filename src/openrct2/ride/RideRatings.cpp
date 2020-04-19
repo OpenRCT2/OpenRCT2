@@ -1038,7 +1038,7 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple* ratings)
 static void set_unreliability_factor(Ride* ride)
 {
     // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8_t minLiftSpeed = RideLiftData[ride->type].minimum_speed;
+    uint8_t minLiftSpeed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
     ride->unreliability_factor += (ride->lift_hill_speed - minLiftSpeed) * 2;
 }
 
