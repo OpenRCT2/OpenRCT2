@@ -7807,13 +7807,13 @@ static bool vehicle_update_motion_collision_detection(
  *
  *  rct2: 0x006DB7D6
  */
-static void vehicle_reverse_reverser_car(Vehicle* vehicle)
+void Vehicle::ReverseReverserCar()
 {
-    Vehicle* previousVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
-    Vehicle* nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+    Vehicle* previousVehicle = GET_VEHICLE(prev_vehicle_on_ride);
+    Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
 
-    vehicle->track_progress = 168;
-    vehicle->vehicle_type ^= 1;
+    track_progress = 168;
+    vehicle_type ^= 1;
 
     previousVehicle->track_progress = 86;
     nextVehicle->track_progress = 158;
@@ -8260,7 +8260,7 @@ loc_6DAEB9:
         if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
             && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
         {
-            vehicle_reverse_reverser_car(this);
+            ReverseReverserCar();
 
             const rct_vehicle_info* moveInfo2 = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
             curX = x + moveInfo2->x;

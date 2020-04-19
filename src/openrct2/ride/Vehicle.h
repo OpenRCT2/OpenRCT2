@@ -375,6 +375,7 @@ private:
     void UpdateTestFinish();
     void PeepEasterEggHereWeAre() const;
     bool CanDepartSynchronised() const;
+    void ReverseReverserCar();
 };
 
 struct train_ref
