@@ -3,7 +3,8 @@
 - Feature: [#9029] Open doors with the tile inspector.
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
 - Feature: [#11306] Path additions are now kept when replacing the path.
-- Fix: [#6119]: Advertising campaign for ride window not updated properly (original bug).
+- Fix: [#1148] Research funding dropdown not shown in finances window.
+- Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
 - Fix: [#11259] Custom JSON object breaks saves.
 - Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
