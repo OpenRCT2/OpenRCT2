@@ -2541,9 +2541,7 @@ void window_ride_construction_update_enabled_track_pieces()
     if (rideEntry == nullptr)
         return;
 
-    int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
-        ? RideTypeDescriptors[ride->type].AlternateType
-        : ride->type;
+    int32_t rideType = ride_get_alternative_type(ride);
 
     if (!gCheatsEnableAllDrawableTrackPieces && RideGroupManager::RideTypeHasRideGroups(rideType))
     {
