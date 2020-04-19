@@ -130,7 +130,7 @@ public:
     {
     }
 
-    virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart)
+    virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) override
     {
         const uint8_t* pattern = RainPattern;
 
