@@ -1559,7 +1559,7 @@ void Vehicle::UpdateMeasurements()
 
         if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
-            auto gForces = vehicle_get_g_forces(this);
+            auto gForces = GetGForces();
             gForces.VerticalG += curRide->previous_vertical_g;
             gForces.LateralG += curRide->previous_lateral_g;
             gForces.VerticalG /= 2;
@@ -5652,15 +5652,15 @@ produceScream:
  * dx: lateralG
  * esi: vehicle
  */
-GForces vehicle_get_g_forces(const Vehicle* vehicle)
+GForces Vehicle::GetGForces() const
 {
-    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
-    gForceVert = ((static_cast<int64_t>(gForceVert)) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Unk9A37E4[vehicle_sprite_type]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * Unk9A39C4[bank_rotation]) >> 32;
     int32_t lateralFactor = 0, vertFactor = 0;
 
     // Note shr has meant some of the below functions cast a known negative number to
     // unsigned. Possibly an original bug but will be left implemented.
-    switch (vehicle->track_type >> 2)
+    switch (track_type >> 2)
     {
         case TRACK_ELEM_FLAT:
         case TRACK_ELEM_END_STATION:
@@ -5836,17 +5836,17 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
             break;
         case TRACK_ELEM_S_BEND_LEFT:
         case TRACK_ELEM_S_BEND_LEFT_COVERED:
-            lateralFactor = (vehicle->track_progress < 48) ? 98 : -98;
+            lateralFactor = (track_progress < 48) ? 98 : -98;
             // 6d75FF
             break;
         case TRACK_ELEM_S_BEND_RIGHT:
         case TRACK_ELEM_S_BEND_RIGHT_COVERED:
-            lateralFactor = (vehicle->track_progress < 48) ? -98 : 98;
+            lateralFactor = (track_progress < 48) ? -98 : 98;
             // 6d7608
             break;
         case TRACK_ELEM_LEFT_VERTICAL_LOOP:
         case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
-            vertFactor = (abs(vehicle->track_progress - 155) / 2) + 28;
+            vertFactor = (abs(track_progress - 155) / 2) + 28;
             // 6d7690
             break;
         case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
@@ -5889,12 +5889,12 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
             break;
         case TRACK_ELEM_HALF_LOOP_UP:
         case TRACK_ELEM_FLYER_HALF_LOOP_UP:
-            vertFactor = ((static_cast<uint16_t>(-(vehicle->track_progress - 155))) / 2) + 28;
+            vertFactor = ((static_cast<uint16_t>(-(track_progress - 155))) / 2) + 28;
             // 6d763E
             break;
         case TRACK_ELEM_HALF_LOOP_DOWN:
         case TRACK_ELEM_FLYER_HALF_LOOP_DOWN:
-            vertFactor = (vehicle->track_progress / 2) + 28;
+            vertFactor = (track_progress / 2) + 28;
             // 6d7656
             break;
         case TRACK_ELEM_LEFT_CORKSCREW_UP:
@@ -5936,16 +5936,16 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
             break;
         case TRACK_ELEM_WATER_SPLASH:
             vertFactor = -150;
-            if (vehicle->track_progress < 32)
+            if (track_progress < 32)
                 break;
             vertFactor = 150;
-            if (vehicle->track_progress < 64)
+            if (track_progress < 64)
                 break;
             vertFactor = 0;
-            if (vehicle->track_progress < 96)
+            if (track_progress < 96)
                 break;
             vertFactor = 150;
-            if (vehicle->track_progress < 128)
+            if (track_progress < 128)
                 break;
             vertFactor = -150;
             // 6d7408
@@ -6048,63 +6048,63 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
             // 6d75A8
             break;
         case TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
-            vertFactor = -(vehicle->track_progress / 2) + 134;
+            vertFactor = -(track_progress / 2) + 134;
             lateralFactor = 90;
             // 6d771C
             break;
         case TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
-            vertFactor = -(vehicle->track_progress / 2) + 134;
+            vertFactor = -(track_progress / 2) + 134;
             lateralFactor = -90;
             // 6D7746
             break;
         case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK:
-            vertFactor = -(vehicle->track_progress / 2) + 134;
+            vertFactor = -(track_progress / 2) + 134;
             lateralFactor = 90;
             // 6D7731 identical to 6d771c
             break;
         case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK:
-            vertFactor = -(vehicle->track_progress / 2) + 134;
+            vertFactor = -(track_progress / 2) + 134;
             lateralFactor = -90;
             // 6D775B identical to 6d7746
             break;
         case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
         case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
-            vertFactor = ((static_cast<uint16_t>(-(vehicle->track_progress - 311))) / 4) + 46;
+            vertFactor = ((static_cast<uint16_t>(-(track_progress - 311))) / 4) + 46;
             // 6d7666
             break;
         case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
         case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
-            vertFactor = (vehicle->track_progress / 4) + 46;
+            vertFactor = (track_progress / 4) + 46;
             // 6d767F
             break;
         case TRACK_ELEM_HEARTLINE_TRANSFER_UP:
             vertFactor = 103;
-            if (vehicle->track_progress < 32)
+            if (track_progress < 32)
                 break;
             vertFactor = -103;
-            if (vehicle->track_progress < 64)
+            if (track_progress < 64)
                 break;
             vertFactor = 0;
-            if (vehicle->track_progress < 96)
+            if (track_progress < 96)
                 break;
             vertFactor = 103;
-            if (vehicle->track_progress < 128)
+            if (track_progress < 128)
                 break;
             vertFactor = -103;
             // 6d74A0
             break;
         case TRACK_ELEM_HEARTLINE_TRANSFER_DOWN:
             vertFactor = -103;
-            if (vehicle->track_progress < 32)
+            if (track_progress < 32)
                 break;
             vertFactor = 103;
-            if (vehicle->track_progress < 64)
+            if (track_progress < 64)
                 break;
             vertFactor = 0;
-            if (vehicle->track_progress < 96)
+            if (track_progress < 96)
                 break;
             vertFactor = -103;
-            if (vehicle->track_progress < 128)
+            if (track_progress < 128)
                 break;
             vertFactor = 103;
             // 6D74CA
@@ -6112,13 +6112,13 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
         case TRACK_ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
         case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
         case TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP:
-            vertFactor = (vehicle->track_progress / 4) + 55;
+            vertFactor = (track_progress / 4) + 55;
             // 6d762D
             break;
         case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
         case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
         case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
-            vertFactor = ((static_cast<uint16_t>(-(vehicle->track_progress - 137))) / 4) + 55;
+            vertFactor = ((static_cast<uint16_t>(-(track_progress - 137))) / 4) + 55;
             // 6D7614
             break;
         case TRACK_ELEM_AIR_THRUST_TOP_CAP:
@@ -6155,12 +6155,12 @@ GForces vehicle_get_g_forces(const Vehicle* vehicle)
 
     if (vertFactor != 0)
     {
-        gForceVert += abs(vehicle->velocity) * 98 / vertFactor;
+        gForceVert += abs(velocity) * 98 / vertFactor;
     }
 
     if (lateralFactor != 0)
     {
-        gForceLateral += abs(vehicle->velocity) * 98 / lateralFactor;
+        gForceLateral += abs(velocity) * 98 / lateralFactor;
     }
 
     gForceVert *= 10;
@@ -6493,7 +6493,7 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
         int32_t trackType = vehicle->track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            auto gForces = vehicle_get_g_forces(vehicle);
+            auto gForces = vehicle->GetGForces();
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
@@ -6522,7 +6522,7 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
         int32_t trackType = vehicle->track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            auto gForces = vehicle_get_g_forces(vehicle);
+            auto gForces = vehicle->GetGForces();
 
             if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
             {

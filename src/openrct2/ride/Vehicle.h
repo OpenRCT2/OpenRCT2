@@ -179,6 +179,12 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
 struct Ride;
 struct rct_ride_entry;
 
+struct GForces
+{
+    int32_t VerticalG{};
+    int32_t LateralG{};
+};
+
 struct Vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type;
@@ -307,6 +313,7 @@ struct Vehicle : SpriteBase
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
     bool DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* spriteId) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
+    GForces GetGForces() const;
     void SetMapToolbar() const;
     int32_t IsUsedInPairs() const;
     rct_ride_entry_vehicle* Entry() const;
@@ -553,16 +560,9 @@ enum
 #define VEHICLE_SEAT_PAIR_FLAG 0x80
 #define VEHICLE_SEAT_NUM_MASK 0x7F
 
-struct GForces
-{
-    int32_t VerticalG{};
-    int32_t LateralG{};
-};
-
 Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-GForces vehicle_get_g_forces(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 

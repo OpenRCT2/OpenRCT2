@@ -2874,7 +2874,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
 
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
-        auto gForces = vehicle_get_g_forces(vehicle);
+        auto gForces = vehicle->GetGForces();
         gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
         gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
 
