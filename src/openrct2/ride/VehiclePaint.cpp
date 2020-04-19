@@ -2976,7 +2976,7 @@ static void vehicle_visual_splash1_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle_get_head(vehicle)->velocity <= 0x50000)
+    if (vehicle->TrainHead()->velocity <= 0x50000)
     {
         return;
     }

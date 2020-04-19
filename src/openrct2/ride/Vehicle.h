@@ -308,6 +308,8 @@ struct Vehicle : SpriteBase
     bool UpdateDodgemsCollision(int16_t x, int16_t y, uint16_t* spriteId);
     int32_t UpdateTrackMotion(int32_t* outStation);
     rct_ride_entry_vehicle* Entry() const;
+    Vehicle* TrainHead() const;
+    Vehicle* TrainTail() const;
 
 private:
     bool SoundCanPlay() const;
@@ -561,8 +563,6 @@ void vehicle_invalidate_window(Vehicle* vehicle);
 void vehicle_update_test_finish(Vehicle* vehicle);
 void vehicle_test_reset(Vehicle* vehicle);
 void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle);
-Vehicle* vehicle_get_head(const Vehicle* vehicle);
-Vehicle* vehicle_get_tail(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 

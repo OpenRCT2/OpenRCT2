@@ -1696,7 +1696,7 @@ rct_window* window_ride_open_track(TileElement* tileElement)
  */
 rct_window* window_ride_open_vehicle(Vehicle* vehicle)
 {
-    Vehicle* headVehicle = vehicle_get_head(vehicle);
+    Vehicle* headVehicle = vehicle->TrainHead();
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
     auto ride = get_ride(headVehicle->ride);
     if (ride == nullptr)

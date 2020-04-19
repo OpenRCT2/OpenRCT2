@@ -377,7 +377,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
     Vehicle* frontVehicle = cableLift;
     if (cableLift->velocity < 0)
     {
-        frontVehicle = vehicle_get_tail(cableLift);
+        frontVehicle = cableLift->TrainTail();
     }
 
     _vehicleFrontVehicle = frontVehicle;

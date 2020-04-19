@@ -6180,8 +6180,9 @@ void vehicle_set_map_toolbar(const Vehicle* vehicle)
     }
 }
 
-Vehicle* vehicle_get_head(const Vehicle* vehicle)
+Vehicle* Vehicle::TrainHead() const
 {
+    const Vehicle* vehicle = this;
     Vehicle* prevVehicle;
 
     for (;;)
@@ -6198,8 +6199,9 @@ Vehicle* vehicle_get_head(const Vehicle* vehicle)
     return const_cast<Vehicle*>(vehicle);
 }
 
-Vehicle* vehicle_get_tail(const Vehicle* vehicle)
+Vehicle* Vehicle::TrainTail() const
 {
+    const Vehicle* vehicle = this;
     uint16_t spriteIndex;
 
     while ((spriteIndex = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL)
@@ -8293,7 +8295,7 @@ loc_6DB967:
     remaining_distance = -1;
 
     // Might need to be bp rather than this, but hopefully not
-    Vehicle* head = vehicle_get_head(GET_VEHICLE(regs.bp));
+    auto head = (GET_VEHICLE(regs.bp))->TrainHead();
 
     regs.eax = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
@@ -8664,7 +8666,7 @@ static int32_t vehicle_update_track_motion_mini_golf(Vehicle* vehicle, int32_t* 
     _vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
     if (_vehicleVelocityF64E08 < 0)
     {
-        vehicle = vehicle_get_tail(vehicle);
+        vehicle = vehicle->TrainTail();
     }
     _vehicleFrontVehicle = vehicle;
 
@@ -9530,7 +9532,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     Vehicle* vehicle = this;
     if (_vehicleVelocityF64E08 < 0)
     {
-        vehicle = vehicle_get_tail(vehicle);
+        vehicle = vehicle->TrainTail();
     }
     // This will be the front vehicle even when traveling
     // backwards.
@@ -9795,7 +9797,7 @@ void vehicle_invalidate_window(Vehicle* vehicle)
 
 void Vehicle::UpdateCrossings() const
 {
-    if (vehicle_get_head(this) != this)
+    if (TrainHead() != this)
     {
         return;
     }
@@ -9808,11 +9810,11 @@ void Vehicle::UpdateCrossings() const
     if (travellingForwards)
     {
         frontVehicle = this;
-        backVehicle = vehicle_get_tail(this);
+        backVehicle = TrainTail();
     }
     else
     {
-        frontVehicle = vehicle_get_tail(this);
+        frontVehicle = TrainTail();
         backVehicle = this;
     }
 
