@@ -686,7 +686,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 break;
             case INFORMATION_TYPE_RUNNING_COST:
                 formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                if (ride->upkeep_cost != static_cast<money16>(static_cast<uint16_t>(0xFFFF)))
+                if (ride->upkeep_cost != static_cast<money16>(0xFFFF))
                 {
                     formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
                     set_format_arg(2, int32_t, ride->upkeep_cost * 16);
