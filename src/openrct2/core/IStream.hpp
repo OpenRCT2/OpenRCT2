@@ -24,6 +24,12 @@ enum
     STREAM_SEEK_END
 };
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
 /**
  * Represents a stream that can be read or written to. Implemented by types such as FileStream, NetworkStream or MemoryStream.
  */
@@ -198,6 +204,10 @@ interface IStream
     void WriteString(const utf8* str);
     void WriteString(const std::string& string);
 };
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
 
 class IOException : public std::runtime_error
 {

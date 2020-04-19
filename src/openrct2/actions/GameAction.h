@@ -297,7 +297,7 @@ namespace GameActions
             return #cls;                                                         \
         }                                                                        \
     };                                                                           \
-    struct cls : public GameActionBase<id, res>
+    struct cls final : public GameActionBase<id, res>
     // clang-format on
 
 } // namespace GameActions

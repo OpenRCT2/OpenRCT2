@@ -74,7 +74,7 @@ public:
         _origin.direction &= 3;
     }
 
-    uint16_t GetActionFlags() const override
+    uint16_t GetActionFlags() const override final
     {
         return GameAction::GetActionFlags();
     }

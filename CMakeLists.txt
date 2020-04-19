@@ -122,16 +122,6 @@ if (ENABLE_LIGHTFX)
     add_definitions(-D__ENABLE_LIGHTFX__)
 endif ()
 
-if (CXX_WARN_SUGGEST_FINAL_TYPES)
-    # Disable -Wsuggest-final-types via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
-endif ()
-
-if (CXX_WARN_SUGGEST_FINAL_METHODS)
-    # Disable -Wsuggest-final-methods via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
-endif ()
-
 if (NOT DISABLE_DISCORD_RPC)
     if(EXISTS "${ROOT_DIR}/discord-rpc")
         # Don't build discord's examples, some of which are in C and do not honour
@@ -202,8 +192,6 @@ if (MSVC)
     add_definitions(-DNOMINMAX)
 else ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
@@ -223,6 +211,11 @@ else ()
     if (NOT MINGW)
         # Do not enable for MinGW, as its headers contain redundant declarations of builtin functions
         ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
+    endif ()
+    # These have no workarounds available when building with LTO
+    if (NOT IPO_BUILD_ENABLED)
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
     endif ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
 
@@ -252,6 +245,16 @@ else ()
     else ()
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_TYPES)
+    # Disable -Wsuggest-final-types via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_METHODS)
+    # Disable -Wsuggest-final-methods via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()
 
 # Include sub-projects

@@ -172,7 +172,7 @@ public:
     }
 };
 
-class OpenGLDrawingEngine : public IDrawingEngine
+class OpenGLDrawingEngine final : public IDrawingEngine
 {
 private:
     std::shared_ptr<IUiContext> const _uiContext;
