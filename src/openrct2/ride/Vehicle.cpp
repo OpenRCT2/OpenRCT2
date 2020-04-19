@@ -3036,11 +3036,9 @@ void vehicle_update_test_finish(Vehicle* vehicle)
  *
  *  rct2: 0x006D6BE7
  */
-void vehicle_test_reset(Vehicle* vehicle)
+static void test_reset(ride_id_t rideId, StationIndex curStation)
 {
-    vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TESTING;
-
-    auto ride = get_ride(vehicle->ride);
+    auto ride = get_ride(rideId);
     if (ride == nullptr)
         return;
 
@@ -3075,8 +3073,14 @@ void vehicle_test_reset(Vehicle* vehicle)
         station.SegmentTime = 0;
     }
     ride->total_air_time = 0;
-    ride->current_test_station = vehicle->current_station;
-    window_invalidate_by_number(WC_RIDE, vehicle->ride);
+    ride->current_test_station = curStation;
+    window_invalidate_by_number(WC_RIDE, rideId);
+}
+
+void Vehicle::TestReset()
+{
+    update_flags |= VEHICLE_UPDATE_FLAG_TESTING;
+    test_reset(ride, current_station);
 }
 
 bool Vehicle::CurrentTowerElementIsTop()
@@ -3203,7 +3207,7 @@ void Vehicle::UpdateDeparting()
             }
             else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
             {
-                vehicle_test_reset(this);
+                TestReset();
             }
         }
     }
@@ -4174,7 +4178,7 @@ void Vehicle::UpdateTravellingCableLift()
             }
             else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
             {
-                vehicle_test_reset(this);
+                TestReset();
             }
         }
     }
