@@ -3593,7 +3593,7 @@ void Vehicle::UpdateCrashSetup()
     }
     SetState(VEHICLE_STATUS_CRASHING, sub_state);
 
-    if (vehicle_get_total_num_peeps(this) != 0)
+    if (NumPeepsUntilTrainTail() != 0)
     {
         audio_play_sound_at_location(SoundId::HauntedHouseScream2, { x, y, z });
     }
@@ -5572,7 +5572,7 @@ SoundId Vehicle::UpdateScreamSound()
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    int32_t totalNumPeeps = vehicle_get_total_num_peeps(this);
+    int32_t totalNumPeeps = NumPeepsUntilTrainTail();
     if (totalNumPeeps == 0)
         return SoundId::Null;
 
@@ -9785,8 +9785,9 @@ rct_ride_entry_vehicle* Vehicle::Entry() const
     return &rideEntry->vehicles[vehicle_type];
 }
 
-int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)
+int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
+    const Vehicle* vehicle = this;
     uint16_t spriteIndex;
     int32_t numPeeps = 0;
     for (;;)
