@@ -672,7 +672,7 @@ declare global {
 
     interface CheckboxWidget extends Widget {
         text: string;
-        isChecked: number;
+        isChecked: boolean;
         onChanged: (isChecked: boolean) => void;
     }
 
