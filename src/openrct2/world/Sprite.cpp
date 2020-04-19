@@ -872,26 +872,29 @@ uint16_t remove_floating_sprites()
     uint16_t removed = 0;
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* rctSprite = get_sprite(i);
-        if (rctSprite->IsBalloon())
+        auto* rctSprite = get_sprite(i);
+        auto* balloon = rctSprite->As<Balloon>();
+        auto* duck = rctSprite->As<Duck>();
+        auto* money = rctSprite->As<MoneyEffect>();
+        if (balloon)
         {
-            sprite_remove(rctSprite->AsBalloon());
-            sprite_misc_update(rctSprite);
+            sprite_remove(balloon);
+            sprite_misc_update(reinterpret_cast<rct_sprite*>(balloon));
             removed++;
         }
-        else if (rctSprite->IsDuck())
+        else if (duck)
         {
-            if (rctSprite->AsDuck()->IsFlying())
+            if (duck->IsFlying())
             {
-                rctSprite->duck.Remove();
-                sprite_misc_update(rctSprite);
+                duck->Remove();
+                sprite_misc_update(reinterpret_cast<rct_sprite*>(duck));
                 removed++;
             }
         }
-        else if (rctSprite->IsMoneyEffect())
+        else if (money)
         {
-            sprite_remove(rctSprite->AsMoneyEffect());
-            sprite_misc_update(rctSprite);
+            sprite_remove(money);
+            sprite_misc_update(reinterpret_cast<rct_sprite*>(money));
             removed++;
         }
     }
