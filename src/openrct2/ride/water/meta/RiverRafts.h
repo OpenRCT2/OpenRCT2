@@ -30,5 +30,6 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 50, 20, 0, 9, 0, 10 }),
 };
 // clang-format on

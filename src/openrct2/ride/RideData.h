@@ -82,6 +82,27 @@ struct rct_ride_lift_data
     uint8_t maximum_speed;
 };
 
+struct UpkeepCostsDescriptor
+{
+    /**
+     * Data about ride running costs. This is widely adjusted by the upkeep
+     * function, so values that don't make much sense here (a roller coaster having
+     * cheaper upkeep than a car ride) are fixed later on.
+     *
+     * Data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
+     */
+    uint8_t BaseCost;
+    /** rct2: 0x0097E3AC */
+    uint8_t TrackLengthMultiplier;
+    uint8_t CostPerTrackPiece;
+    /** rct2: 0x0097E3B4 */
+    uint8_t CostPerTrain;
+    /** rct2: 0x0097E3B6 */
+    uint8_t CostPerCar;
+    /** rct2: 0x0097E3B8 */
+    uint8_t CostPerStation;
+};
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -99,6 +120,7 @@ struct RideTypeDescriptor
     uint8_t AvailableBreakdowns;
     /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     rct_ride_lift_data LiftData;
+    UpkeepCostsDescriptor UpkeepCosts;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -197,13 +219,6 @@ constexpr const uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER = RIDE_TYPE_FLAG_HAS_G_F
 constexpr const uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT = RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER
     | RIDE_TYPE_FLAG_HAS_AIR_TIME | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT;
 
-extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
-extern const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT];
-extern const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT];
-
-extern const uint8_t costPerVehicle[RIDE_TYPE_COUNT];
-extern const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT];
-extern const uint8_t costPerStation[RIDE_TYPE_COUNT];
 extern const uint8_t rideBonusValue[RIDE_TYPE_COUNT];
 
 // clang-format off

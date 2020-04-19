@@ -27,5 +27,6 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
 };
 // clang-format on

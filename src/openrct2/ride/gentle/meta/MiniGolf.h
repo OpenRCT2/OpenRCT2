@@ -27,5 +27,6 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_PLAYER, RIDE_COMPONENT_TYPE_COURSE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 30, 20, 80, 11, 3, 10 }),
 };
 // clang-format on

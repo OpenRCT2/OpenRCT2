@@ -28,6 +28,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 6 }),
+    SET_FIELD(UpkeepCosts, { 75, 20, 90, 11, 3, 15 }),
 };
 
 constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
@@ -43,5 +44,6 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 6 }),
+    SET_FIELD(UpkeepCosts, { 75, 20, 90, 11, 3, 15 }),
 };
 // clang-format on
