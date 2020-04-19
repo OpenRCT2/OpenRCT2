@@ -2487,7 +2487,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 {
                     dropdownIndex = gDropdownHighlightedIndex;
                 }
-                if (dropdownIndex < (int32_t)std::size(gDropdownItemsArgs))
+                if (dropdownIndex < static_cast<int32_t>(std::size(gDropdownItemsArgs)))
                 {
                     switch (gDropdownItemsArgs[dropdownIndex])
                     {
@@ -5338,7 +5338,7 @@ static void window_ride_music_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static rct_string_id get_rating_name(ride_rating rating)
 {
-    int32_t index = std::clamp<int32_t>(rating >> 8, 0, (int32_t)std::size(RatingNames) - 1);
+    int32_t index = std::clamp<int32_t>(rating >> 8, 0, static_cast<int32_t>(std::size(RatingNames)) - 1);
     return RatingNames[index];
 }
 

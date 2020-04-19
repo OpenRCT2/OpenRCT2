@@ -1076,7 +1076,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                         if (resolution.Width == gConfigGeneral.fullscreen_width
                             && resolution.Height == gConfigGeneral.fullscreen_height)
                         {
-                            selectedResolution = (int32_t)i;
+                            selectedResolution = static_cast<int32_t>(i);
                         }
                     }
 
@@ -1255,7 +1255,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     audio_populate_devices();
 
                     // populate the list with the sound devices
-                    for (size_t i = 0; (int32_t)i < gAudioDeviceCount; i++)
+                    for (size_t i = 0; static_cast<int32_t>(i) < gAudioDeviceCount; i++)
                     {
                         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                         gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(gAudioDevices[i].name);
@@ -1602,7 +1602,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             switch (widgetIndex)
             {
                 case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                    if (dropdownIndex != (int32_t)title_get_current_sequence())
+                    if (dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
                     {
                         title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
                         config_save_default();
@@ -2077,7 +2077,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_DRAWING_ENGINE, w, w->colours[1], w->windowPos.x + 10,
                 w->windowPos.y + window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1);
 
-            int32_t scale = static_cast<int32_t>((gConfigGeneral.window_scale * 100));
+            int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
             gfx_draw_string_left(
                 dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->windowPos.x + w->widgets[WIDX_SCALE].left + 1,
                 w->windowPos.y + w->widgets[WIDX_SCALE].top + 1);
@@ -2152,7 +2152,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1], w->windowPos.x + 24,
                 w->windowPos.y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
-            int32_t autosavesToKeep = static_cast<int32_t>((gConfigGeneral.autosave_amount));
+            int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
             gfx_draw_string_left(
                 dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
                 w->windowPos.x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,

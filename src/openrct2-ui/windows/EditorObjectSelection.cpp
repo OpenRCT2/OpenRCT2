@@ -1028,7 +1028,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (widget->type != WWT_EMPTY)
     {
         stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : static_cast<rct_string_id>(STR_NONE);
+                                                   : STR_NONE;
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
             w->windowPos.y + widget->top + 1, widget->right - widget->left);
@@ -1037,7 +1037,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (widget->type != WWT_EMPTY)
     {
         stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : static_cast<rct_string_id>(STR_NONE);
+                                                   : STR_NONE;
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
             w->windowPos.y + widget->top + 1, widget->right - widget->left);

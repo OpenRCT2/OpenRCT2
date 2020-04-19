@@ -169,7 +169,7 @@ void window_dropdown_show_text_custom_width(
 {
     rct_window* w;
 
-    input_set_flag((INPUT_FLAGS)(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & DROPDOWN_FLAG_STAY_OPEN)
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
@@ -245,7 +245,7 @@ void window_dropdown_show_image(
     int32_t width, height;
     rct_window* w;
 
-    input_set_flag((INPUT_FLAGS)(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & DROPDOWN_FLAG_STAY_OPEN)
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
