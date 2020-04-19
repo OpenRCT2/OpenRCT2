@@ -28,5 +28,6 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
 };
 // clang-format on

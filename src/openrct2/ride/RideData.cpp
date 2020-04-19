@@ -110,100 +110,6 @@
 #include <iterator>
 
 // clang-format off
-const UpkeepCosts UpkeepCostsDescriptor[RIDE_TYPE_COUNT] = {
-    {    41,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_SPIRAL_ROLLER_COASTER          
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_STAND_UP_ROLLER_COASTER        
-    {    40,    20,   80,   20,   3,   10,     }, // RIDE_TYPE_SUSPENDED_SWINGING_COASTER     
-    {    40,    20,   80,   13,   3,   10,     }, // RIDE_TYPE_INVERTED_ROLLER_COASTER        
-    {    40,    20,   80,   8,    3,   5,      }, // RIDE_TYPE_JUNIOR_ROLLER_COASTER          
-    {    60,    20,   0,    10,   3,   5,      }, // RIDE_TYPE_MINIATURE_RAILWAY              
-    {    65,    20,   0,    10,   3,   10,     }, // RIDE_TYPE_MONORAIL                       
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_MINI_SUSPENDED_COASTER         
-    {    50,    1,    0,    4,    0,   0,     } , // RIDE_TYPE_BOAT_HIRE                      
-    {    40,    20,   80,   9,    3,   10,     }, // RIDE_TYPE_WOODEN_WILD_MOUSE              
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_STEEPLECHASE                   
-    {    70,    20,   0,    8,    3,   5,      }, // RIDE_TYPE_CAR_RIDE                       
-    {    50,    20,   0,    10,   0,   0,      }, // RIDE_TYPE_LAUNCHED_FREEFALL              
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_BOBSLEIGH_COASTER              
-    {    50,    20,   0,    10,   0,   0,      }, // RIDE_TYPE_OBSERVATION_TOWER              
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_LOOPING_ROLLER_COASTER         
-    {    40,    20,   80,   4,    3,   10,     }, // RIDE_TYPE_DINGHY_SLIDE                   
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_MINE_TRAIN_COASTER             
-    {    60,    20,   0,    4,    3,   10,     }, // RIDE_TYPE_CHAIRLIFT                      
-    {    40,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_CORKSCREW_ROLLER_COASTER       
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_MAZE                           
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_SPIRAL_SLIDE                   
-    {    50,    20,   0,    8,    0,   0,      }, // RIDE_TYPE_GO_KARTS                       
-    {    80,    20,   0,    9,    0,   10,     }, // RIDE_TYPE_LOG_FLUME                      
-    {    82,    20,   0,    10,   0,   10,     }, // RIDE_TYPE_RIVER_RAPIDS                   
-    {    50,    1,    0,    5,    0,   0,     } , // RIDE_TYPE_DODGEMS                        
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_SWINGING_SHIP                  
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_SWINGING_INVERTER_SHIP         
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_FOOD_STALL                     
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_1D                             
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_DRINK_STALL                    
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_1F                             
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_SHOP                           
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_MERRY_GO_ROUND                 
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_22                             
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_INFORMATION_KIOSK              
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_TOILETS                        
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_FERRIS_WHEEL                   
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_MOTION_SIMULATOR               
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_3D_CINEMA                      
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_TOP_SPIN                       
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_SPACE_RINGS                    
-    {    80,    20,   0,    0,    0,   10,     }, // RIDE_TYPE_REVERSE_FREEFALL_COASTER       
-    {    50,    20,   0,    10,   0,   0,      }, // RIDE_TYPE_LIFT                           
-    {    44,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER   
-    {    40,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_CASH_MACHINE                   
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_TWIST                          
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_HAUNTED_HOUSE                  
-    {    45,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_FIRST_AID                      
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_CIRCUS                         
-    {    80,    20,   0,    8,    3,   5,      }, // RIDE_TYPE_GHOST_TRAIN                    
-    {    43,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_TWISTER_ROLLER_COASTER         
-    {    40,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_WOODEN_ROLLER_COASTER          
-    {    39,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER   
-    {    40,    20,   80,   9,    3,   10,     }, // RIDE_TYPE_STEEL_WILD_MOUSE               
-    {    75,    20,   90,   11,   3,   15,     }, // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER 
-    {    75,    20,   90,   11,   3,   15,     }, // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_
-    {    49,    20,   90,   11,   3,   15,     }, // RIDE_TYPE_FLYING_ROLLER_COASTER          
-    {    49,    20,   90,   11,   3,   15,     }, // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT      
-    {    39,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_VIRGINIA_REEL                  
-    {    70,    20,   0,    9,    0,   10,     }, // RIDE_TYPE_SPLASH_BOATS                   
-    {    70,    20,   0,    8,    3,   5,      }, // RIDE_TYPE_MINI_HELICOPTERS               
-    {    49,    20,   90,   11,   3,   15,     }, // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER        
-    {    70,    20,   0,    10,   3,   10,     }, // RIDE_TYPE_SUSPENDED_MONORAIL             
-    {    49,    20,   90,   11,   3,   15,     }, // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT    
-    {    39,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_REVERSER_ROLLER_COASTER        
-    {    47,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_HEARTLINE_TWISTER_COASTER      
-    {    30,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_MINI_GOLF                      
-    {    10,    20,   80,   12,   3,   40,     }, // RIDE_TYPE_GIGA_COASTER                   
-    {    50,    20,   0,    10,   0,   0,      }, // RIDE_TYPE_ROTO_DROP                      
-    {    90,    1,    0,    5,    0,   0,     } , // RIDE_TYPE_FLYING_SAUCERS                 
-    {    30,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_CROOKED_HOUSE                  
-    {    47,    20,   0,    8,    3,   5,      }, // RIDE_TYPE_MONORAIL_CYCLES                
-    {    40,    20,   80,   13,   3,   10,     }, // RIDE_TYPE_COMPACT_INVERTED_COASTER       
-    {    60,    20,   80,   8,    3,   10,     }, // RIDE_TYPE_WATER_COASTER                  
-    {    90,    20,   0,    0,    0,   10,     }, // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER   
-    {    40,    20,   80,   9,    3,   10,     }, // RIDE_TYPE_INVERTED_HAIRPIN_COASTER       
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_MAGIC_CARPET                   
-    {    50,    1,    0,    4,    0,   0,     } , // RIDE_TYPE_SUBMARINE_RIDE                 
-    {    50,    20,   0,    9,    0,   10,     }, // RIDE_TYPE_RIVER_RAFTS                    
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_50                             
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_ENTERPRISE                     
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_52                             
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_53                             
-    {    50,    1,    0,    0,    0,   0,     } , // RIDE_TYPE_54                             
-    {    40,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_55                             
-    {   180,    20,   80,   11,   3,   10,     }, // RIDE_TYPE_INVERTED_IMPULSE_COASTER       
-    {    35,    20,   80,   8,    3,   10,     }, // RIDE_TYPE_MINI_ROLLER_COASTER            
-    {    50,    20,   80,   10,   3,   10,     }, // RIDE_TYPE_MINE_RIDE                      
-    {    42,    20,   80,   9,    3,   10,     }, // RIDE_TYPE_59                             
-    {    42,    20,   80,   9,    3,   10,     }, // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER    
-};
-
 // Data at 0x0097D21E
 const uint8_t rideBonusValue[RIDE_TYPE_COUNT] = {
     85,  // 00 Spiral Roller coaster
@@ -1726,6 +1632,7 @@ static constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
 };
 // clang-format on
 

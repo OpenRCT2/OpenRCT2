@@ -867,9 +867,9 @@ static void ride_ratings_calculate_value(Ride* ride)
 static uint16_t ride_compute_upkeep(Ride* ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
-    uint16_t upkeep = UpkeepCostsDescriptor[ride->type].BaseCost;
+    uint16_t upkeep = RideTypeDescriptors[ride->type].UpkeepCosts.BaseCost;
 
-    uint16_t trackCost = UpkeepCostsDescriptor[ride->type].CostPerTrackPiece;
+    uint16_t trackCost = RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrackPiece;
     uint8_t dropFactor = ride->drops;
 
     dropFactor >>= 6;
@@ -882,7 +882,7 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // rides that had tracks. The 0's were fixed rides like crooked house or
     // dodgems.
     // Data source is 0x0097E3AC
-    totalLength *= UpkeepCostsDescriptor[ride->type].TrackLengthMultiplier;
+    totalLength *= RideTypeDescriptors[ride->type].UpkeepCosts.TrackLengthMultiplier;
     upkeep += static_cast<uint16_t>(totalLength >> 10);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -909,12 +909,12 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += UpkeepCostsDescriptor[ride->type].CostPerTrain * ride->num_vehicles;
-    upkeep += UpkeepCostsDescriptor[ride->type].CostPerCar * ride->num_cars_per_train;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
-    upkeep += UpkeepCostsDescriptor[ride->type].CostPerStation * ride->num_stations;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerStation * ride->num_stations;
 
     if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
     {

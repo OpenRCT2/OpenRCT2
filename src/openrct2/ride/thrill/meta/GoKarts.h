@@ -27,5 +27,6 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 50, 20, 0, 8, 0, 0 }),
 };
 // clang-format on

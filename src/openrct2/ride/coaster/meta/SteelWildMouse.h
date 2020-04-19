@@ -27,5 +27,6 @@ constexpr const RideTypeDescriptor SteelWildMouseRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::LiftWildMouse, 4, 6 }),
+    SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
 };
 // clang-format on
