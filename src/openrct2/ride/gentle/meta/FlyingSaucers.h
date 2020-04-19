@@ -15,9 +15,11 @@
 // clang-format off
 constexpr const RideTypeDescriptor FlyingSaucersRTD =
 {
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(StartTrackPiece, FLAT_TRACK_ELEM_4_X_4),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_flying_saucers),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
                      RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_NO_TRACK |

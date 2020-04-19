@@ -501,7 +501,8 @@ static bool is_track_enabled(int32_t trackFlagIndex)
 
 static int32_t ride_get_alternative_type(Ride* ride)
 {
-    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
+    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideTypeDescriptors[ride->type].AlternateType
+                                                                         : ride->type;
 }
 
 /* move to ride.c */
@@ -562,7 +563,7 @@ rct_window* window_ride_construction_open()
     _currentBrakeSpeed2 = 8;
     _currentSeatRotationAngle = 4;
 
-    _currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
+    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | 0x100;
     _currentTrackSlopeEnd = 0;
     _currentTrackBankEnd = 0;
     _currentTrackLiftHill = 0;
@@ -2540,8 +2541,7 @@ void window_ride_construction_update_enabled_track_pieces()
     if (rideEntry == nullptr)
         return;
 
-    int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type
-                                                                                     : ride->type;
+    int32_t rideType = ride_get_alternative_type(ride);
 
     if (!gCheatsEnableAllDrawableTrackPieces && RideGroupManager::RideTypeHasRideGroups(rideType))
     {

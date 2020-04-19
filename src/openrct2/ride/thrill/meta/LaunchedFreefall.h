@@ -15,9 +15,11 @@
 // clang-format off
 constexpr const RideTypeDescriptor LaunchedFreefallRTD =
 {
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(StartTrackPiece, TRACK_ELEM_TOWER_BASE),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_launched_freefall),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN |

@@ -57,7 +57,6 @@ struct rct_ride_data_4
     uint8_t price;
     uint8_t price_secondary;
     uint8_t default_music;
-    uint8_t alternate_type;
 };
 
 struct ride_cost
@@ -73,9 +72,7 @@ struct rct_ride_data_5
     int8_t z_offset;
     uint8_t max_mass;
     uint8_t z;
-    uint8_t price;
-    uint8_t bonus_value; // Deprecated. Use rideBonusValue instead
-    uint8_t pad = 0;
+    uint8_t PriceEstimateMultiplier;
 };
 
 struct rct_ride_lift_data
@@ -87,12 +84,15 @@ struct rct_ride_lift_data
 
 struct RideTypeDescriptor
 {
+    uint8_t AlternateType;
     uint8_t Category;
     // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
     uint64_t EnabledTrackPieces;
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     uint64_t ExtraTrackPieces;
+    /** rct2: 0x0097CC68 */
+    uint64_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     RideNameConvention NameConvention;
@@ -238,11 +238,8 @@ extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
-extern const uint16_t RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
-
-extern const uint8_t RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
