@@ -3696,6 +3696,7 @@ STR_6363    :Tekst is naar het klembord gekopieerd.
 STR_6364    :{RED}{COMMA16} persoon is om het leven gekomen bij een ongeluk in {STRINGID}
 STR_6365    :Slachtoffers bij ongelukken in attracties
 STR_6366    :Vastgelopen of afgeslagen voertuigen
+STR_6367    :{WINDOW_COLOUR_2}Animatieframe:
 
 #############
 # Scenarios #

@@ -3697,6 +3697,10 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Povolit světelné efekty na atrakcích (experimentální)
 STR_6362    :{SMALLFONT}{BLACK}Zapne noční osvětlené atrakcí na kolejích.
 STR_6363    :Text zkopírován do schránky
+STR_6364    :{RED}{COMMA16} zemřel(a) při nehodě na {STRINGID}
+STR_6365    :Oběti atrakce
+STR_6366    :Zaseklá vozidla
+STR_6367    :{WINDOW_COLOUR_2}Snímek animace:
 
 ###############################################################################
 ## RCT2 Scenarios

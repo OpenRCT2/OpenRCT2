@@ -3680,6 +3680,7 @@ STR_6363    :Texto copiado para a área de transferência
 STR_6364    :{RED}{COMMA16} pessoa morreu em um acidente em {STRINGID}
 STR_6365    :Acidentes em atrações
 STR_6366    :Veículos presos ou parados
+STR_6367    :{WINDOW_COLOUR_2}Quadro de animação:
 
 #############
 # Scenarios #
