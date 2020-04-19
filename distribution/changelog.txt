@@ -4,6 +4,7 @@
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
 - Fix: [#6119]: Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
+- Fix: [#11259] Custom JSON object breaks saves.
 - Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
 - Improved: [#6530] Allow water and land height changes on park borders.
 

@@ -429,6 +429,7 @@ namespace ObjectFactory
                 std::memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
+                result->MarkAsJsonObject();
                 auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
                 result->ReadJson(&readContext, jRoot);
                 if (readContext.WasError())
