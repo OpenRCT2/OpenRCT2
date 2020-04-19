@@ -35,13 +35,13 @@ static Banner _banners[MAX_BANNERS];
 
 namespace
 {
-    template<uint32_t From, uint32_t To> struct CodePointToUtf8
+    template<uint32_t TFrom, uint32_t TTo> struct CodePointToUtf8
     {
         constexpr CodePointToUtf8()
         {
-            for (uint32_t i = From; i <= To; ++i)
+            for (uint32_t i = TFrom; i <= TTo; ++i)
             {
-                utf8_write_codepoint(m_colors[i - From], i);
+                utf8_write_codepoint(m_colors[i - TFrom], i);
             }
         }
 
@@ -51,7 +51,7 @@ namespace
         }
 
         using Utf8Colour = utf8[5]; // A 32bit codepoint uses at most 4 bytes in utf8
-        Utf8Colour m_colors[To - From + 1]{};
+        Utf8Colour m_colors[TTo - TFrom + 1]{};
     };
 } // namespace
 
