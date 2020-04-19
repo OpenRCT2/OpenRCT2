@@ -74,8 +74,6 @@ struct rct_ride_data_5
     uint8_t max_mass;
     uint8_t z;
     uint8_t price;
-    uint8_t bonus_value; // Deprecated. Use rideBonusValue instead
-    uint8_t pad = 0;
 };
 
 struct rct_ride_lift_data
