@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_HEARTLINE_ROLL) | (1ULL << TRACK_HEARTLINE_TRANSFER)),
     SET_FIELD(ExtraTrackPieces, 0),

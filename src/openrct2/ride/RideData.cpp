@@ -982,97 +982,97 @@ const uint8_t AllRideModesAvailable[] = {
 
 // rct2: 0x0097D4F0,  0x0097D4F1,  0x0097D4F2, 0x0097D4F4, 0x0097D4F5
 const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
-    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_SPIRAL_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_STAND_UP_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
-    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINIATURE_RAILWAY
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL
-    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    {   10, 0,  MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_BOAT_HIRE
-    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_WILD_MOUSE
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEPLECHASE
-    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CAR_RIDE
-    {   20, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_LAUNCHED_FREEFALL
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_BOBSLEIGH_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_OBSERVATION_TOWER
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_LOOPING_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_DINGHY_SLIDE
-    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINE_TRAIN_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CHAIRLIFT
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MAZE
-    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_SPIRAL_SLIDE
-    {   20, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_GO_KARTS
-    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_LOG_FLUME
-    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_RIVER_RAPIDS
-    {   15, 0,  MUSIC_STYLE_DODGEMS_BEAT,       0                                               },  // RIDE_TYPE_DODGEMS
-    {   15, 0,  MUSIC_STYLE_PIRATES,            0                                               },  // RIDE_TYPE_SWINGING_SHIP
-    {   15, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
-    {   9,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FOOD_STALL
-    {   15, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1D
-    {   12, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_DRINK_STALL
-    {   8,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1F
-    {   15, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SHOP
-    {   10, 0,  MUSIC_STYLE_FAIRGROUND_ORGAN,   0                                               },  // RIDE_TYPE_MERRY_GO_ROUND
-    {   9,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_22
-    {   6,  25, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_INFORMATION_KIOSK
-    {   0,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TOILETS
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_FERRIS_WHEEL
-    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_MOTION_SIMULATOR
-    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_3D_CINEMA
-    {   20, 0,  MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_TOP_SPIN
-    {   5,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SPACE_RINGS
-    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_REVERSE_FREEFALL_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_LIFT
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-    {   0,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_CASH_MACHINE
-    {   10, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TWIST
-    {   10, 0,  MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_HAUNTED_HOUSE
-    {   0,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FIRST_AID
-    {   15, 0,  MUSIC_STYLE_CIRCUS_SHOW,        0                                               },  // RIDE_TYPE_CIRCUS
-    {   15, 0,  MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_GHOST_TRAIN
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEL_WILD_MOUSE
-    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,       RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT    },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
-    {   20, 20, MUSIC_STYLE_ROCK,               RIDE_TYPE_FLYING_ROLLER_COASTER_ALT             },  // RIDE_TYPE_FLYING_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_VIRGINIA_REEL
-    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SPLASH_BOATS
-    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_HELICOPTERS
-    {   20, 20, MUSIC_STYLE_ROCK,               RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT           },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_SUSPENDED_MONORAIL
-    {   20, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
-    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_REVERSER_ROLLER_COASTER
-    {   15, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
-    {   10, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_GOLF
-    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_GIGA_COASTER
-    {   20, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_ROTO_DROP
-    {   15, 0,  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_FLYING_SAUCERS
-    {   10, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_CROOKED_HOUSE
-    {   15, 0,  MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL_CYCLES
-    {   20, 20, MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_COMPACT_INVERTED_COASTER
-    {   20, 20, MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_WATER_COASTER
-    {   20, 0,  MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-    {   20, 20, MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-    {   15, 0,  MUSIC_STYLE_EGYPTIAN,           0                                               },  // RIDE_TYPE_MAGIC_CARPET
-    {   10, 0,  MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SUBMARINE_RIDE
-    {   10, 20, MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_RIVER_RAFTS
-    {   7,  0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_50
-    {   20, 0,  MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_ENTERPRISE
-    {   12, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_52
-    {   15, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_53
-    {   12, 0,  MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_54
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_55
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_INVERTED_IMPULSE_COASTER
-    {   20, 20, MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINI_ROLLER_COASTER
-    {   20, 20, MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINE_RIDE
-    {   20, 20, MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_59
-    {   20, 20, MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,      },  // RIDE_TYPE_SPIRAL_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_STAND_UP_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+    {   20, 20, MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MINIATURE_RAILWAY
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MONORAIL
+    {   20, 20, MUSIC_STYLE_WILD_WEST,         },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
+    {   10, 0,  MUSIC_STYLE_WATER,             },  // RIDE_TYPE_BOAT_HIRE
+    {   20, 20, MUSIC_STYLE_WILD_WEST,         },  // RIDE_TYPE_WOODEN_WILD_MOUSE
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_STEEPLECHASE
+    {   15, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_CAR_RIDE
+    {   20, 0,  MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_LAUNCHED_FREEFALL
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_BOBSLEIGH_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_OBSERVATION_TOWER
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_LOOPING_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_WATER,             },  // RIDE_TYPE_DINGHY_SLIDE
+    {   20, 20, MUSIC_STYLE_WILD_WEST,         },  // RIDE_TYPE_MINE_TRAIN_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_CHAIRLIFT
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MAZE
+    {   15, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_SPIRAL_SLIDE
+    {   20, 0,  MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_GO_KARTS
+    {   20, 20, MUSIC_STYLE_WATER,             },  // RIDE_TYPE_LOG_FLUME
+    {   20, 20, MUSIC_STYLE_WATER,             },  // RIDE_TYPE_RIVER_RAPIDS
+    {   15, 0,  MUSIC_STYLE_DODGEMS_BEAT,      },  // RIDE_TYPE_DODGEMS
+    {   15, 0,  MUSIC_STYLE_PIRATES,           },  // RIDE_TYPE_SWINGING_SHIP
+    {   15, 0,  MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
+    {   9,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_FOOD_STALL
+    {   15, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_1D
+    {   12, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_DRINK_STALL
+    {   8,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_1F
+    {   15, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_SHOP
+    {   10, 0,  MUSIC_STYLE_FAIRGROUND_ORGAN,  },  // RIDE_TYPE_MERRY_GO_ROUND
+    {   9,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_22
+    {   6,  25, MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_INFORMATION_KIOSK
+    {   0,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_TOILETS
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_FERRIS_WHEEL
+    {   20, 0,  MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_MOTION_SIMULATOR
+    {   20, 0,  MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_3D_CINEMA
+    {   20, 0,  MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_TOP_SPIN
+    {   5,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_SPACE_RINGS
+    {   20, 0,  MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_REVERSE_FREEFALL_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_LIFT
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+    {   0,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_CASH_MACHINE
+    {   10, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_TWIST
+    {   10, 0,  MUSIC_STYLE_HORROR,            },  // RIDE_TYPE_HAUNTED_HOUSE
+    {   0,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_FIRST_AID
+    {   15, 0,  MUSIC_STYLE_CIRCUS_SHOW,       },  // RIDE_TYPE_CIRCUS
+    {   15, 0,  MUSIC_STYLE_HORROR,            },  // RIDE_TYPE_GHOST_TRAIN
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_WILD_WEST,         },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_STEEL_WILD_MOUSE
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,      },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_FLYING_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_VIRGINIA_REEL
+    {   20, 20, MUSIC_STYLE_WATER,             },  // RIDE_TYPE_SPLASH_BOATS
+    {   15, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MINI_HELICOPTERS
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_SUSPENDED_MONORAIL
+    {   20, 20, MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
+    {   20, 20, MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_REVERSER_ROLLER_COASTER
+    {   15, 20, MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
+    {   10, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MINI_GOLF
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_3,      },  // RIDE_TYPE_GIGA_COASTER
+    {   20, 0,  MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_ROTO_DROP
+    {   15, 0,  MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_FLYING_SAUCERS
+    {   10, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_CROOKED_HOUSE
+    {   15, 0,  MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MONORAIL_CYCLES
+    {   20, 20, MUSIC_STYLE_TECHNO,            },  // RIDE_TYPE_COMPACT_INVERTED_COASTER
+    {   20, 20, MUSIC_STYLE_WATER,             },  // RIDE_TYPE_WATER_COASTER
+    {   20, 0,  MUSIC_STYLE_ROCK_STYLE_2,      },  // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_2,      },  // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
+    {   15, 0,  MUSIC_STYLE_EGYPTIAN,          },  // RIDE_TYPE_MAGIC_CARPET
+    {   10, 0,  MUSIC_STYLE_WATER,             },  // RIDE_TYPE_SUBMARINE_RIDE
+    {   10, 20, MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_RIVER_RAFTS
+    {   7,  0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_50
+    {   20, 0,  MUSIC_STYLE_ROCK_STYLE_2,      },  // RIDE_TYPE_ENTERPRISE
+    {   12, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_52
+    {   15, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_53
+    {   12, 0,  MUSIC_STYLE_GENTLE,            },  // RIDE_TYPE_54
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_55
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_INVERTED_IMPULSE_COASTER
+    {   20, 20, MUSIC_STYLE_SUMMER,            },  // RIDE_TYPE_MINI_ROLLER_COASTER
+    {   20, 20, MUSIC_STYLE_WILD_WEST,         },  // RIDE_TYPE_MINE_RIDE
+    {   20, 20, MUSIC_STYLE_ROCK_STYLE_2,      },  // RIDE_TYPE_59
+    {   20, 20, MUSIC_STYLE_ROCK,              },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
 // rct2: 0x0097DD78
@@ -2201,6 +2201,7 @@ const rct_string_id RideModeNames[] = {
 
 static constexpr const RideTypeDescriptor DummyRTD =
 {
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),

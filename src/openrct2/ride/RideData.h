@@ -57,7 +57,6 @@ struct rct_ride_data_4
     uint8_t price;
     uint8_t price_secondary;
     uint8_t default_music;
-    uint8_t alternate_type;
 };
 
 struct ride_cost
@@ -85,6 +84,7 @@ struct rct_ride_lift_data
 
 struct RideTypeDescriptor
 {
+    uint8_t AlternateType;
     uint8_t Category;
     // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
     uint64_t EnabledTrackPieces;

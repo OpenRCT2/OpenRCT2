@@ -3646,7 +3646,7 @@ static void window_ride_operating_invalidate(rct_window* w)
     bool hasAlternativeType = RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
     if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_LIFT_HILL)
         || (hasAlternativeType
-            && RideTypeDescriptors[RideData4[ride->type].alternate_type].SupportsTrackPiece(TRACK_LIFT_HILL)))
+            && RideTypeDescriptors[RideTypeDescriptors[ride->type].AlternateType].SupportsTrackPiece(TRACK_LIFT_HILL)))
     {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;

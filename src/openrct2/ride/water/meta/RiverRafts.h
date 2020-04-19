@@ -15,6 +15,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor RiverRaftsRTD =
 {
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE)),
     SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_ON_RIDE_PHOTO)),
