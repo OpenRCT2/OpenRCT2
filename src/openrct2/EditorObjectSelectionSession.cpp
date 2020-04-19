@@ -449,7 +449,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
     {
         if (bh == 0)
         {
-            if (flags & INPUT_FLAG_EDITOR_OBJECT_3)
+            if (flags & INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED)
             {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
             }

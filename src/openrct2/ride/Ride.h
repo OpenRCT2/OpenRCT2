@@ -956,7 +956,7 @@ enum
 enum
 {
     RIDE_ISSUE_NONE = 0,
-    RIDE_ISSUE_GUESTS_STUCK = (1 << 0)
+    RIDE_ISSUE_GUESTS_STUCK = (1 << 0),
 };
 
 enum

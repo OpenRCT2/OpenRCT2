@@ -1275,7 +1275,7 @@ static bool get_next_direction(int32_t edges, int32_t* direction)
  *
  *  rct2: 0x0069AC1A
  * @param flags (1 << 0): Ignore queues
- *              (1 << 5): Unkown
+ *              (1 << 5): Unown
  *              (1 << 7): Ignore no entry signs
  */
 static int32_t footpath_is_connected_to_map_edge_recurse(
@@ -1323,7 +1323,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
             }
         }
 
-        if (flags & FOOTPATH_CONNECTED_MAP_EDGE_UNKNOWN)
+        if (flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)
         {
             footpath_fix_ownership(targetPos);
         }

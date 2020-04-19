@@ -17,10 +17,8 @@
 enum INPUT_FLAGS
 {
     INPUT_FLAG_EDITOR_OBJECT_1 = (1 << 1),
-
     INPUT_FLAG_EDITOR_OBJECT_2 = (1 << 2),
-
-    INPUT_FLAG_EDITOR_OBJECT_3 = (1 << 3)
+    INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
 };
 
 extern bool _maxObjectsWasHit;
