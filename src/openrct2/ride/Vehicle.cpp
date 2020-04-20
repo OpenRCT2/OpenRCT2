@@ -45,8 +45,6 @@
 #include <algorithm>
 #include <iterator>
 
-static void vehicle_claxon(const Vehicle* vehicle);
-
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
@@ -9869,7 +9867,7 @@ void Vehicle::UpdateCrossings() const
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
-                    vehicle_claxon(this);
+                    Claxon();
                 }
                 crossingBonus = 4;
                 pathElement->SetIsBlockedByVehicle(true);
@@ -9942,16 +9940,16 @@ void Vehicle::UpdateCrossings() const
     }
 }
 
-void vehicle_claxon(const Vehicle* vehicle)
+void Vehicle::Claxon() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    switch (rideEntry->vehicles[vehicle->vehicle_type].sound_range)
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    switch (rideEntry->vehicles[vehicle_type].sound_range)
     {
         case SOUND_RANGE_WHISTLE:
-            audio_play_sound_at_location(SoundId::TrainWhistle, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::TrainWhistle, { x, y, z });
             break;
         case SOUND_RANGE_BELL:
-            audio_play_sound_at_location(SoundId::Tram, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::Tram, { x, y, z });
             break;
     }
 }

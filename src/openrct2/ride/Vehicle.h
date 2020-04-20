@@ -378,6 +378,7 @@ private:
     void ReverseReverserCar();
     void UpdateReverserCarBogies();
     void UpdateHandleWaterSplash() const;
+    void Claxon() const;
 };
 
 struct train_ref
