@@ -3296,7 +3296,8 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
         for (const auto& item : customMenuItems)
         {
             gDropdownItemsFormat[i] = STR_STRING;
-            set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char*, item.Text.c_str());
+            auto sz = item.Text.c_str();
+            std::memcpy(&gDropdownItemsArgs[i], &sz, sizeof(const char*));
             i++;
         }
     }
