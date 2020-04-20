@@ -1576,7 +1576,7 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sur {STRINGID} n'est pas encore revenu à {STRINGID}!{NEWLINE}Vérifiez s'il est coincé ou au point mort
-STR_2219    :{RED}{COMMA16} personnes sont mortes dans un accident sur {STRINGID}
+STR_2219    :{RED}{COMMA16} personnes sont décédées dans un accident sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Evaluation du parc : {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Evaluation du parc : {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
@@ -3692,6 +3692,10 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Activer les effets de lumières sur les attractions (expérimental)
 STR_6362    :{SMALLFONT}{BLACK}Si activé, les véhicules sur les attractions sur rails seront éclairées la nuit.
 STR_6363    :Texte copié au presse-papier
+STR_6364    :{RED}{COMMA16} personne est décédée dans un accident sur {STRINGID}
+STR_6365    :Victimes de l'attraction
+STR_6366    :Véhicules coincés ou au point mort
+STR_6367    :{WINDOW_COLOUR_2}Image de l'animation :
 
 #############
 # Scenarios #
