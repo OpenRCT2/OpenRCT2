@@ -383,6 +383,7 @@ private:
     void CheckAndApplyBlockSectionStopSite();
     void UpdateVelocity();
     bool OpenRestraints();
+    bool CloseRestraints();
 };
 
 struct train_ref

@@ -1345,37 +1345,37 @@ void vehicle_update_all()
  *  rct2: 0x006D6956
  * @returns true when all closed
  */
-static bool vehicle_close_restraints(Vehicle* vehicle)
+bool Vehicle::CloseRestraints()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return true;
 
     bool restraintsClosed = true;
-    uint16_t vehicle_id = vehicle->sprite_index;
-
+    uint16_t vehicle_id = sprite_index;
+    Vehicle* vehicle = this;
     do
     {
         vehicle = GET_VEHICLE(vehicle_id);
         if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_CAR && vehicle->restraints_position != 0
-            && (ride->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
-                || ride->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_OPEN))
+            && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
+                || curRide->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_OPEN))
         {
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+                curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(ride);
+                ride_breakdown_add_news_item(curRide);
 
-                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+                curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-                ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+                curRide->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 
-                Vehicle* broken_vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
-                ride->inspection_station = broken_vehicle->current_station;
+                Vehicle* broken_vehicle = GET_VEHICLE(curRide->vehicles[curRide->broken_vehicle]);
+                curRide->inspection_station = broken_vehicle->current_station;
 
-                ride->breakdown_reason = ride->breakdown_reason_pending;
+                curRide->breakdown_reason = curRide->breakdown_reason_pending;
             }
         }
         else
@@ -2375,7 +2375,7 @@ void Vehicle::UpdateWaitingForPassengers()
         return;
     }
 
-    if (!vehicle_close_restraints(this))
+    if (!CloseRestraints())
         return;
 
     velocity = 0;
