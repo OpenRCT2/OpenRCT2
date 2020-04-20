@@ -6480,9 +6480,9 @@ bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collide
  *
  *  rct2: 0x006DAB90
  */
-static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
+void Vehicle::UpdateTrackMotionUpStopCheck() const
 {
-    auto vehicleEntry = vehicle->Entry();
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6491,14 +6491,14 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
     // No up stops (coaster types)
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            auto gForces = vehicle->GetGForces();
+            auto gForces = GetGForces();
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
-                if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
+                if (dword_9A2970[vehicle_sprite_type] < 0)
                 {
                     if (gForces.VerticalG > -40)
                     {
@@ -6511,7 +6511,7 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
                 }
             }
 
-            if (vehicle->vehicle_sprite_type != 8)
+            if (vehicle_sprite_type != 8)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -6520,12 +6520,12 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
     else if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH)
     {
         // No up stops bobsleigh type
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            auto gForces = vehicle->GetGForces();
+            auto gForces = GetGForces();
 
-            if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
+            if (dword_9A2970[vehicle_sprite_type] < 0)
             {
                 if (gForces.VerticalG > -45)
                 {
@@ -6540,7 +6540,7 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
                 }
             }
 
-            if (vehicle->vehicle_sprite_type != 8 && vehicle->vehicle_sprite_type != 55)
+            if (vehicle_sprite_type != 8 && vehicle_sprite_type != 55)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -9540,7 +9540,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     _vehicleMotionTrackFlags = 0;
     _vehicleStationIndex = STATION_INDEX_NULL;
 
-    vehicle_update_track_motion_up_stop_check(this);
+    UpdateTrackMotionUpStopCheck();
     check_and_apply_block_section_stop_site(this);
     update_velocity(this);
 

@@ -379,6 +379,7 @@ private:
     void UpdateReverserCarBogies();
     void UpdateHandleWaterSplash() const;
     void Claxon() const;
+    void UpdateTrackMotionUpStopCheck() const;
 };
 
 struct train_ref
