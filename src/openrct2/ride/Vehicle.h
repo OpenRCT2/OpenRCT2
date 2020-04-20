@@ -377,6 +377,7 @@ private:
     bool CanDepartSynchronised() const;
     void ReverseReverserCar();
     void UpdateReverserCarBogies();
+    void UpdateHandleWaterSplash() const;
 };
 
 struct train_ref

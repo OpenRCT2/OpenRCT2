@@ -7540,24 +7540,24 @@ static void vehicle_update_play_water_splash_sound()
  *
  *  rct2: 0x006DB59E
  */
-static void vehicle_update_handle_water_splash(Vehicle* vehicle)
+void Vehicle::UpdateHandleWaterSplash() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    int32_t trackType = vehicle->track_type >> 2;
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    int32_t trackType = track_type >> 2;
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND))
     {
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE)
         {
-            if (vehicle->IsHead())
+            if (IsHead())
             {
                 if (track_element_is_covered(trackType))
                 {
-                    Vehicle* nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+                    Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
                     Vehicle* nextNextVehicle = GET_VEHICLE(nextVehicle->next_vehicle_on_ride);
                     if (!track_element_is_covered(nextNextVehicle->track_type >> 2))
                     {
-                        if (vehicle->track_progress == 4)
+                        if (track_progress == 4)
                         {
                             vehicle_update_play_water_splash_sound();
                         }
@@ -7570,17 +7570,17 @@ static void vehicle_update_handle_water_splash(Vehicle* vehicle)
     {
         if (trackType == TRACK_ELEM_25_DEG_DOWN_TO_FLAT)
         {
-            if (vehicle->track_progress == 12)
+            if (track_progress == 12)
             {
                 vehicle_update_play_water_splash_sound();
             }
         }
     }
-    if (vehicle->IsHead())
+    if (IsHead())
     {
         if (trackType == TRACK_ELEM_WATER_SPLASH)
         {
-            if (vehicle->track_progress == 48)
+            if (track_progress == 48)
             {
                 vehicle_update_play_water_splash_sound();
             }
@@ -8222,7 +8222,7 @@ loc_6DAEB9:
     }
 
     track_progress = regs.ax;
-    vehicle_update_handle_water_splash(this);
+    UpdateHandleWaterSplash();
 
     // loc_6DB706
     moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
