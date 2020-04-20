@@ -1824,7 +1824,7 @@ static void window_ride_construction_construct(rct_window* w)
     // Used by some functions
     if (res->Error != GA_ERROR::OK)
     {
-        if (auto error = std::get_if<rct_string_id>(&res->ErrorMessage))
+        if (auto error = res->ErrorMessage.AsStringId())
             gGameCommandErrorText = *error;
         else
             gGameCommandErrorText = STR_NONE;

@@ -93,8 +93,7 @@ public:
                 { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags(), &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(
-                GA_ERROR::NO_CLEARANCE, std::get<rct_string_id>(res->ErrorTitle), gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
         if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
@@ -163,8 +162,7 @@ public:
                 { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(
-                GA_ERROR::NO_CLEARANCE, std::get<rct_string_id>(res->ErrorTitle), gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
         money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));

@@ -642,7 +642,7 @@ private:
             }
             default:
                 log_error("Invalid map selection %u", _selectionType);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, std::get<rct_string_id>(res->ErrorTitle));
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, res->ErrorTitle.GetStringId());
         } // switch selectionType
 
         // Raise / lower the land tool selection area

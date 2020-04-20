@@ -137,7 +137,7 @@ public:
             if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 }))
             {
                 return MakeResult(
-                    GA_ERROR::NO_CLEARANCE, std::get<rct_string_id>(res->ErrorTitle), gGameCommandErrorText, gCommonFormatArgs);
+                    GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
             }
 
             if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)

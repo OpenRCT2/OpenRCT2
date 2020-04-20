@@ -53,13 +53,13 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
 std::string GameActionResult::GetErrorTitle() const
 {
     std::string titlez;
-    if (auto title = std::get_if<std::string>(&ErrorTitle))
+    if (auto title = ErrorTitle.AsString())
     {
         titlez = *title;
     }
     else
     {
-        titlez = format_string(std::get<rct_string_id>(ErrorTitle), nullptr);
+        titlez = format_string(ErrorTitle.GetStringId(), nullptr);
     }
     return titlez;
 }
@@ -67,13 +67,13 @@ std::string GameActionResult::GetErrorTitle() const
 std::string GameActionResult::GetErrorMessage() const
 {
     std::string messagez;
-    if (auto message = std::get_if<std::string>(&ErrorMessage))
+    if (auto message = ErrorMessage.AsString())
     {
         messagez = *message;
     }
     else
     {
-        messagez = format_string(std::get<rct_string_id>(ErrorMessage), ErrorMessageArgs.data());
+        messagez = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
     }
     return messagez;
 }

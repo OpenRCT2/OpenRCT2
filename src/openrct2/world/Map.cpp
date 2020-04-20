@@ -1324,7 +1324,7 @@ static GameActionResult::Ptr map_can_construct_with_clear_at(
     if (tileElement == nullptr)
     {
         res->Error = GA_ERROR::UNKNOWN;
-        res->ErrorMessage = 0;
+        res->ErrorMessage = STR_NONE;
         return res;
     }
     do
@@ -1481,7 +1481,7 @@ bool map_can_construct_with_clear_at(
     uint8_t crossingMode)
 {
     GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
-    if (auto message = std::get_if<rct_string_id>(&res->ErrorMessage))
+    if (auto message = res->ErrorMessage.AsStringId())
         gGameCommandErrorText = *message;
     else
         gGameCommandErrorText = STR_NONE;
