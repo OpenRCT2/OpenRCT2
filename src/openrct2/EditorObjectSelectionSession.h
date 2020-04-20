@@ -14,6 +14,13 @@
 
 #include <vector>
 
+enum INPUT_FLAGS
+{
+    INPUT_FLAG_EDITOR_OBJECT_1 = (1 << 1),
+    INPUT_FLAG_EDITOR_OBJECT_2 = (1 << 2),
+    INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
+};
+
 extern bool _maxObjectsWasHit;
 extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[OBJECT_TYPE_COUNT];

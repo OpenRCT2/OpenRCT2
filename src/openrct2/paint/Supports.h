@@ -48,4 +48,9 @@ enum
     METAL_SUPPORTS_BOXED_COATED // Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
 };
 
+enum
+{
+    SUPPORTS_SLOPE_5 = 1 << 5
+};
+
 #endif

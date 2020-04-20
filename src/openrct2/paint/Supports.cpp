@@ -371,7 +371,7 @@ bool wooden_a_supports_paint_setup(
 
     // Draw base support (usually shaped to the slope)
     int32_t slope = session->Support.slope;
-    if (slope & (1 << 5))
+    if (slope & SUPPORTS_SLOPE_5)
     {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
@@ -765,7 +765,7 @@ bool metal_a_supports_paint_setup(
         segment = newSegment;
     }
     int16_t si = height;
-    if (supportSegments[segment].slope & (1 << 5) || height - supportSegments[segment].height < 6
+    if (supportSegments[segment].slope & SUPPORTS_SLOPE_5 || height - supportSegments[segment].height < 6
         || _97B15C[supportType].base_id == 0)
     {
         height = supportSegments[segment].height;

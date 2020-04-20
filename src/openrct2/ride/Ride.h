@@ -904,13 +904,28 @@ enum
 enum
 {
     RIDE_MODIFY_DEMOLISH,
-    RIDE_MODIFY_RENEW
+    RIDE_MODIFY_RENEW,
 };
 
 enum
 {
     RIDE_ISSUE_NONE = 0,
     RIDE_ISSUE_GUESTS_STUCK = (1 << 0),
+};
+
+enum
+{
+    TRACK_BLOCK_2 = (1 << 2)
+};
+
+enum
+{
+    TRACK_ELEMENT_SET_HIGHLIGHT_FALSE = (1 << 0),
+    TRACK_ELEMENT_SET_HIGHLIGHT_TRUE = (1 << 1),
+    TRACK_ELEMENT_SET_COLOUR_SCHEME = (1 << 2),
+    TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE = (1 << 3),
+    TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE = (1 << 4),
+    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
 };
 
 struct rct_ride_properties
