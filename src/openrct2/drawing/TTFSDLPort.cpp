@@ -995,6 +995,7 @@ void TTF_CloseFont(TTF_Font* font)
             fclose(font->src);
         }
         free(font);
+        delete font;
     }
 }
 
