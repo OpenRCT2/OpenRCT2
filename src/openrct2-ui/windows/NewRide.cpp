@@ -324,7 +324,7 @@ static void window_new_ride_populate_list()
 
         if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus)
         {
-            if (!RideGroupManager::RideTypeHasRideGroups(rideType))
+            if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
             }
@@ -367,7 +367,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
         // Ride entries
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
-        if (RideGroupManager::RideTypeHasRideGroups(rideType))
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             const RideGroup* rideEntryRideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
             const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
@@ -563,7 +563,7 @@ void window_new_ride_focus(ride_list_item rideItem)
             {
                 const RideGroup* irg = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
 
-                if (!RideGroupManager::RideTypeHasRideGroups(rideTypeIndex) || rideGroup->Equals(irg))
+                if (!RideTypeDescriptors[rideTypeIndex].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) || rideGroup->Equals(irg))
                 {
                     _windowNewRideHighlightedItem[0] = rideItem;
                     w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
@@ -948,7 +948,7 @@ static int32_t get_num_track_designs(ride_list_item item)
     }
 
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (rideEntry != nullptr && RideGroupManager::RideTypeHasRideGroups(item.type))
+    if (rideEntry != nullptr && RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
         auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
         if (rideGroup != nullptr)
@@ -1077,7 +1077,7 @@ static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_e
             continue;
 
         // Skip if vehicle does not belong to the same ride group
-        if (RideGroupManager::RideTypeHasRideGroups(rideType))
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             auto rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
             auto currentRideGroup = RideGroupManager::GetRideGroup(rideType, currentRideEntry);

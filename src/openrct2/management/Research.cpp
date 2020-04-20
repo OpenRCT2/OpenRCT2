@@ -208,7 +208,7 @@ void research_finish_item(ResearchItem* researchItem)
             rct_string_id availabilityString;
 
             // Determine if the ride group this entry belongs to was invented before.
-            if (RideGroupManager::RideTypeHasRideGroups(base_ride_type))
+            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 const RideGroup* rideGroup = RideGroupManager::GetRideGroup(base_ride_type, rideEntry);
 
@@ -265,7 +265,8 @@ void research_finish_item(ResearchItem* researchItem)
             // If a vehicle is the first to be invented for its ride group, show the ride group name.
             else if (
                 !ride_type_was_invented_before
-                || (RideGroupManager::RideTypeHasRideGroups(base_ride_type) && !ride_group_was_invented_before))
+                || (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS)
+                    && !ride_group_was_invented_before))
             {
                 rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;

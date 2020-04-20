@@ -5650,7 +5650,7 @@ void Ride::SetNameToDefault()
  */
 rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 {
-    if (RideGroupManager::RideTypeHasRideGroups(rideType))
+    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
         const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
         return rideGroup->Naming;
@@ -7803,7 +7803,7 @@ size_t Ride::FormatNameTo(void* argsV) const
                 rideTypeName = rideEntry->naming.name;
             }
         }
-        else if (RideGroupManager::RideTypeHasRideGroups(type))
+        else if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)

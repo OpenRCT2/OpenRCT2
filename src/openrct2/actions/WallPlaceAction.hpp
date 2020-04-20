@@ -462,7 +462,7 @@ private:
             return false;
         }
 
-        if (RideGroupManager::RideTypeHasRideGroups(ride->type))
+        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
