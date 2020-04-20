@@ -753,35 +753,42 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
 
 void Ride::FormatStatusTo(void* argsV) const
 {
-    auto args = static_cast<uint8_t*>(argsV);
+    Formatter ft(static_cast<uint8_t*>(argsV));
 
     if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_CRASHED);
+        ft.add<rct_string_id>(STR_CRASHED);
     }
     else if (lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_BROKEN_DOWN);
+        ft.add<rct_string_id>(STR_BROKEN_DOWN);
     }
     else if (status == RIDE_STATUS_CLOSED)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_CLOSED);
         if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
         {
             if (num_riders != 0)
             {
-                set_format_arg_on(args, 0, rct_string_id, num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
-                set_format_arg_on(args, 2, uint16_t, num_riders);
+                ft.add<rct_string_id>(num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
+                ft.add<uint16_t>(num_riders);
             }
+            else
+            {
+                ft.add<rct_string_id>(STR_CLOSED);
+            }
+        }
+        else
+        {
+            ft.add<rct_string_id>(STR_CLOSED);
         }
     }
     else if (status == RIDE_STATUS_SIMULATING)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_SIMULATING);
+        ft.add<rct_string_id>(STR_SIMULATING);
     }
     else if (status == RIDE_STATUS_TESTING)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_TEST_RUN);
+        ft.add<rct_string_id>(STR_TEST_RUN);
     }
     else if (
         mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
@@ -791,23 +798,23 @@ void Ride::FormatStatusTo(void* argsV) const
         if (sprite != nullptr && sprite->IsPeep())
         {
             auto peep = sprite->AsPeep();
-            set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
-            peep->FormatNameTo(args + 2);
+            ft.add<rct_string_id>(STR_RACE_WON_BY);
+            peep->FormatNameTo(ft.buf());
         }
         else
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
-            set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+            ft.add<rct_string_id>(STR_RACE_WON_BY);
+            ft.add<rct_string_id>(STR_NONE);
         }
     }
     else if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
     {
-        set_format_arg_on(args, 0, rct_string_id, num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
-        set_format_arg_on(args, 2, uint16_t, num_riders);
+        ft.add<rct_string_id>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
+        ft.add<uint16_t>(num_riders);
     }
     else
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_OPEN);
+        ft.add<rct_string_id>(STR_OPEN);
     }
 }
 
@@ -7777,13 +7784,13 @@ std::string Ride::GetName() const
 
 size_t Ride::FormatNameTo(void* argsV) const
 {
-    auto args = static_cast<uint8_t*>(argsV);
+    Formatter ft(static_cast<uint8_t*>(argsV));
     if (!custom_name.empty())
     {
         auto str = custom_name.c_str();
-        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
-        set_format_arg_on(args, 2, void*, str);
-        return sizeof(rct_string_id) + sizeof(void*);
+        ft.add<rct_string_id>(STR_STRING);
+        ft.add<void*>(str);
+        return ft.bytes();
     }
     else
     {
@@ -7808,9 +7815,7 @@ size_t Ride::FormatNameTo(void* argsV) const
                 }
             }
         }
-        set_format_arg_on(args, 0, rct_string_id, 1);
-        set_format_arg_on(args, 2, rct_string_id, rideTypeName);
-        set_format_arg_on(args, 4, uint16_t, default_name_number);
-        return sizeof(rct_string_id) + sizeof(rct_string_id) + sizeof(uint16_t);
+        ft.add<rct_string_id>(1).add<rct_string_id>(rideTypeName).add<uint16_t>(default_name_number);
+        return ft.bytes();
     }
 }

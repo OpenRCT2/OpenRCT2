@@ -262,16 +262,15 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                     {
                         // HACK until dropdown items have longer argument buffers
                         gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[numItems]));
                         if (ride->custom_name.empty())
                         {
-                            ride->FormatNameTo(&gDropdownItemsArgs[numItems]);
+                            ride->FormatNameTo(ft.buf());
                         }
                         else
                         {
                             gDropdownItemsFormat[numItems] = STR_OPTIONS_DROPDOWN_ITEM;
-                            set_format_arg_on(
-                                reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[numItems]), 0, const char*,
-                                ride->custom_name.c_str());
+                            ft.add<const char*>(ride->custom_name.c_str());
                         }
                         numItems++;
                     }

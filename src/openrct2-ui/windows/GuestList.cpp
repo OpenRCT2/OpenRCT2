@@ -282,6 +282,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
     _window_guest_list_tracking_only = false;
     _window_guest_list_filter_arguments = {};
 
+    Formatter ft(_window_guest_list_filter_arguments.args);
+
     switch (type)
     {
         case GLFT_GUESTS_ON_RIDE:
@@ -289,10 +291,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
             {
-                set_format_arg_on(
-                    _window_guest_list_filter_arguments.args, 0, rct_string_id,
-                    ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(_window_guest_list_filter_arguments.args + 2);
+                ft.add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ride->FormatNameTo(ft.buf());
 
                 _window_guest_list_selected_filter = 0;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -306,8 +306,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
             {
-                set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, STR_QUEUING_FOR);
-                ride->FormatNameTo(_window_guest_list_filter_arguments.args + 2);
+                ft.add<rct_string_id>(STR_QUEUING_FOR);
+                ride->FormatNameTo(ft.buf());
 
                 _window_guest_list_selected_filter = 0;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -321,8 +321,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
             {
-                set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, STR_NONE);
-                ride->FormatNameTo(_window_guest_list_filter_arguments.args + 2);
+                ft.add<rct_string_id>(STR_NONE);
+                ride->FormatNameTo(ft.buf());
 
                 _window_guest_list_selected_filter = 1;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -333,7 +333,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
         }
         case GLFT_GUESTS_THINKING_X:
         {
-            set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, PeepThoughts[index & 0xFF]);
+            ft.add<rct_string_id>(PeepThoughts[index & 0xFF]);
 
             _window_guest_list_selected_filter = 1;
             _window_guest_list_highlighted_index = 0xFFFF;
@@ -878,7 +878,7 @@ static int32_t window_guest_list_is_peep_in_filter(Peep* peep)
 
     if (_window_guest_list_filter_arguments.GetFirstStringId() == STR_NONE && _window_guest_list_selected_filter == 1)
     {
-        set_format_arg_on(peepArgs.args, 0, rct_string_id, STR_NONE);
+        Formatter(peepArgs.args).add<rct_string_id>(STR_NONE);
     }
 
     if (_window_guest_list_filter_arguments == peepArgs)

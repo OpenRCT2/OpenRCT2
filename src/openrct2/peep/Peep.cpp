@@ -1786,14 +1786,14 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
 void Peep::FormatActionTo(void* argsV) const
 {
-    auto args = (uint8_t*)argsV;
+    Formatter ft((uint8_t*)argsV);
     switch (state)
     {
         case PEEP_STATE_FALLING:
-            set_format_arg_on(args, 0, rct_string_id, action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
+            ft.add<rct_string_id>(action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
             break;
         case PEEP_STATE_1:
-            set_format_arg_on(args, 0, rct_string_id, STR_WALKING);
+            ft.add<rct_string_id>(STR_WALKING);
             break;
         case PEEP_STATE_ON_RIDE:
         case PEEP_STATE_LEAVING_RIDE:
@@ -1802,28 +1802,26 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                set_format_arg_on(
-                    args, 0, rct_string_id, ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(args + 2);
+                ft.add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ride->FormatNameTo(ft.buf());
             }
             else
             {
-                set_format_arg_on(args, 0, rct_string_id, STR_ON_RIDE);
-                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                ft.add<rct_string_id>(STR_ON_RIDE).add<rct_string_id>(STR_NONE);
             }
             break;
         }
         case PEEP_STATE_BUYING:
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_AT_RIDE);
+            ft.add<rct_string_id>(STR_AT_RIDE);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(args + 2);
+                ride->FormatNameTo(ft.buf());
             }
             else
             {
-                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                ft.add<rct_string_id>(STR_NONE);
             }
             break;
         }
@@ -1834,14 +1832,13 @@ void Peep::FormatActionTo(void* argsV) const
                 auto ride = get_ride(guest_heading_to_ride_id);
                 if (ride != nullptr)
                 {
-                    set_format_arg_on(args, 0, rct_string_id, STR_HEADING_FOR);
-                    ride->FormatNameTo(args + 2);
+                    ft.add<rct_string_id>(STR_HEADING_FOR);
+                    ride->FormatNameTo(ft.buf());
                 }
             }
             else
             {
-                set_format_arg_on(
-                    args, 0, rct_string_id, (peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
+                ft.add<rct_string_id>((peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
             }
             break;
         case PEEP_STATE_QUEUING_FRONT:
@@ -1850,13 +1847,13 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                set_format_arg_on(args, 0, rct_string_id, STR_QUEUING_FOR);
-                ride->FormatNameTo(args + 2);
+                ft.add<rct_string_id>(STR_QUEUING_FOR);
+                ride->FormatNameTo(ft.buf());
             }
             break;
         }
         case PEEP_STATE_SITTING:
-            set_format_arg_on(args, 0, rct_string_id, STR_SITTING);
+            ft.add<rct_string_id>(STR_SITTING);
             break;
         case PEEP_STATE_WATCHING:
             if (current_ride != RIDE_ID_NULL)
@@ -1864,100 +1861,97 @@ void Peep::FormatActionTo(void* argsV) const
                 auto ride = get_ride(current_ride);
                 if (ride != nullptr)
                 {
-                    set_format_arg_on(
-                        args, 0, rct_string_id, (current_seat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                    ride->FormatNameTo(args + 2);
+                    ft.add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
+                    ride->FormatNameTo(ft.buf());
                 }
             }
             else
             {
-                set_format_arg_on(
-                    args, 0, rct_string_id,
-                    (current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
+                ft.add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
             }
             break;
         case PEEP_STATE_PICKED:
-            set_format_arg_on(args, 0, rct_string_id, STR_SELECT_LOCATION);
+            ft.add<rct_string_id>(STR_SELECT_LOCATION);
             break;
         case PEEP_STATE_PATROLLING:
         case PEEP_STATE_ENTERING_PARK:
         case PEEP_STATE_LEAVING_PARK:
-            set_format_arg_on(args, 0, rct_string_id, STR_WALKING);
+            ft.add<rct_string_id>(STR_WALKING);
             break;
         case PEEP_STATE_MOWING:
-            set_format_arg_on(args, 0, rct_string_id, STR_MOWING_GRASS);
+            ft.add<rct_string_id>(STR_MOWING_GRASS);
             break;
         case PEEP_STATE_SWEEPING:
-            set_format_arg_on(args, 0, rct_string_id, STR_SWEEPING_FOOTPATH);
+            ft.add<rct_string_id>(STR_SWEEPING_FOOTPATH);
             break;
         case PEEP_STATE_WATERING:
-            set_format_arg_on(args, 0, rct_string_id, STR_WATERING_GARDENS);
+            ft.add<rct_string_id>(STR_WATERING_GARDENS);
             break;
         case PEEP_STATE_EMPTYING_BIN:
-            set_format_arg_on(args, 0, rct_string_id, STR_EMPTYING_LITTER_BIN);
+            ft.add<rct_string_id>(STR_EMPTYING_LITTER_BIN);
             break;
         case PEEP_STATE_ANSWERING:
             if (sub_state == 0)
             {
-                set_format_arg_on(args, 0, rct_string_id, STR_WALKING);
+                ft.add<rct_string_id>(STR_WALKING);
             }
             else if (sub_state == 1)
             {
-                set_format_arg_on(args, 0, rct_string_id, STR_ANSWERING_RADIO_CALL);
+                ft.add<rct_string_id>(STR_ANSWERING_RADIO_CALL);
             }
             else
             {
-                set_format_arg_on(args, 0, rct_string_id, STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
+                ft.add<rct_string_id>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
                 auto ride = get_ride(current_ride);
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(args + 2);
+                    ride->FormatNameTo(ft.buf());
                 }
                 else
                 {
-                    set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                    ft.add<rct_string_id>(STR_NONE);
                 }
             }
             break;
         case PEEP_STATE_FIXING:
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_FIXING_RIDE);
+            ft.add<rct_string_id>(STR_FIXING_RIDE);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(args + 2);
+                ride->FormatNameTo(ft.buf());
             }
             else
             {
-                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                ft.add<rct_string_id>(STR_NONE);
             }
             break;
         }
         case PEEP_STATE_HEADING_TO_INSPECTION:
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_HEADING_TO_RIDE_FOR_INSPECTION);
+            ft.add<rct_string_id>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(args + 2);
+                ride->FormatNameTo(ft.buf());
             }
             else
             {
-                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                ft.add<rct_string_id>(STR_NONE);
             }
             break;
         }
         case PEEP_STATE_INSPECTING:
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_INSPECTING_RIDE);
+            ft.add<rct_string_id>(STR_INSPECTING_RIDE);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(args + 2);
+                ride->FormatNameTo(ft.buf());
             }
             else
             {
-                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                ft.add<rct_string_id>(STR_NONE);
             }
             break;
         }
@@ -1966,7 +1960,7 @@ void Peep::FormatActionTo(void* argsV) const
 
 size_t Peep::FormatNameTo(void* argsV) const
 {
-    auto args = (uint8_t*)argsV;
+    Formatter ft((uint8_t*)argsV);
     if (name == nullptr)
     {
         if (type == PeepType::PEEP_TYPE_STAFF)
@@ -1984,28 +1978,23 @@ size_t Peep::FormatNameTo(void* argsV) const
                 staffNameIndex = 0;
             }
 
-            set_format_arg_on(args, 0, rct_string_id, staffNames[staffNameIndex]);
-            set_format_arg_on(args, 2, uint32_t, id);
-            return sizeof(rct_string_id) + sizeof(uint32_t);
+            ft.add<rct_string_id>(staffNames[staffNameIndex]);
+            ft.add<uint32_t>(id);
+            return ft.bytes();
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = get_real_name_string_id_from_id(id);
-            set_format_arg_on(args, 0, rct_string_id, realNameStringId);
-            return sizeof(rct_string_id);
+            return ft.add<rct_string_id>(realNameStringId).bytes();
         }
         else
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_GUEST_X);
-            set_format_arg_on(args, 2, uint32_t, id);
-            return sizeof(rct_string_id) + sizeof(uint32_t);
+            return ft.add<rct_string_id>(STR_GUEST_X).add<uint32_t>(id).bytes();
         }
     }
     else
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
-        set_format_arg_on(args, 2, const char*, name);
-        return sizeof(rct_string_id) + sizeof(const char*);
+        return ft.add<rct_string_id>(STR_STRING).add<const char*>(name).bytes();
     }
 }
 

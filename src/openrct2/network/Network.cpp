@@ -2451,7 +2451,7 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
                 log_info("Wrote desync report to '%s'", outputFile.c_str());
 
                 uint8_t args[32]{};
-                set_format_arg_on(args, 0, char*, uniqueFileName);
+                Formatter(args).add<char*>(uniqueFileName);
 
                 char str_desync[1024];
                 format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, args);

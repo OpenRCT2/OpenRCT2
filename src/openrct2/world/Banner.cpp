@@ -66,54 +66,43 @@ std::string Banner::GetText() const
 
 size_t Banner::FormatTextTo(void* argsV, bool addColour) const
 {
-    auto args = static_cast<uint8_t*>(argsV);
+    Formatter ft(static_cast<uint8_t*>(argsV));
 
-    int numColourArgs = 0;
     if (addColour)
     {
-        set_format_arg_on(args, numColourArgs, rct_string_id, STR_STRING_STRINGID);
-        numColourArgs += sizeof(rct_string_id);
-
-        set_format_arg_on(args, numColourArgs, const char*, colourToUtf8(text_colour));
-        numColourArgs += sizeof(const char*);
-
-        args += numColourArgs;
+        ft.add<rct_string_id>(STR_STRING_STRINGID).add<const char*>(colourToUtf8(text_colour));
     }
 
-    return numColourArgs + FormatTextTo(args);
+    return ft.bytes() + FormatTextTo(ft.buf());
 }
 
 size_t Banner::FormatTextTo(void* argsV) const
 {
-    auto args = static_cast<uint8_t*>(argsV);
+    Formatter ft(static_cast<uint8_t*>(argsV));
+
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_NO_ENTRY);
-        return sizeof(rct_string_id);
+        return ft.add<rct_string_id>(STR_NO_ENTRY).bytes();
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
         auto ride = get_ride(ride_index);
         if (ride != nullptr)
         {
-            return ride->FormatNameTo(args);
+            return ride->FormatNameTo(ft.buf());
         }
         else
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
-            return sizeof(rct_string_id);
+            return ft.add<rct_string_id>(STR_DEFAULT_SIGN).bytes();
         }
     }
     else if (text.empty())
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
-        return sizeof(rct_string_id);
+        return ft.add<rct_string_id>(STR_DEFAULT_SIGN).bytes();
     }
     else
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
-        set_format_arg_on(args, 2, const char*, text.c_str());
-        return sizeof(rct_string_id) + sizeof(const char*);
+        return ft.add<rct_string_id>(STR_STRING).add<const char*>(text.c_str()).bytes();
     }
 }
 
