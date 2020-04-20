@@ -374,7 +374,7 @@ public:
                     {
                         maxHeight = rideEntry->max_height;
                     }
-                    else if (RideGroupManager::RideTypeHasRideGroups(ride->type))
+                    else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
                     {
                         const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
                         maxHeight = rideGroup->MaximumHeight;

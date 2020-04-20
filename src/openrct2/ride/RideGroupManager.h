@@ -32,7 +32,6 @@ class RideGroupManager
 {
 public:
     static const RideGroup* GetRideGroup(const uint8_t trackType, const rct_ride_entry* rideEntry);
-    static bool RideTypeHasRideGroups(const uint8_t trackType);
     static const RideGroup* RideGroupFind(const uint8_t rideType, const uint8_t index);
 
     static const std::vector<const char*> GetPreferredRideEntryOrder(const uint8_t rideType);

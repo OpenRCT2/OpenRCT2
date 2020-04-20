@@ -1495,7 +1495,7 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
         uint8_t rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
-            if (RideGroupManager::RideTypeHasRideGroups(rideType))
+            if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideInfo.RideGroupIndex);
                 result = rideGroup->Naming.name;

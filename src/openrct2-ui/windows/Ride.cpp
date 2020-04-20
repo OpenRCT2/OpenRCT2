@@ -2364,7 +2364,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
                 continue;
 
             // Skip if vehicle does not belong to the same ride group
-            if (RideGroupManager::RideTypeHasRideGroups(ride->type) && !selectionShouldBeExpanded)
+            if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && !selectionShouldBeExpanded)
             {
                 const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
                 const RideGroup* currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
