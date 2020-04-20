@@ -6611,31 +6611,26 @@ static void apply_block_brakes(Vehicle* vehicle, bool is_block_brake_closed)
  *
  *  rct2: 0x006DAC43
  */
-static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
+void Vehicle::CheckAndApplyBlockSectionStopSite()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    auto vehicleEntry = vehicle->Entry();
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
         return;
 
     // Is chair lift type
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
     {
-        int32_t velocity = ride->speed << 16;
-        if (_vehicleBreakdown == 0)
-        {
-            velocity = 0;
-        }
-        vehicle->velocity = velocity;
-        vehicle->acceleration = 0;
+        velocity = _vehicleBreakdown == 0 ? 0 : curRide->speed << 16;
+        acceleration = 0;
     }
 
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = track_type >> 2;
 
-    TileElement* trackElement = map_get_track_element_at_of_type(vehicle->TrackLocation, trackType);
+    TileElement* trackElement = map_get_track_element_at_of_type(TrackLocation, trackType);
 
     if (trackElement == nullptr)
     {
@@ -6645,10 +6640,10 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
     switch (trackType)
     {
         case TRACK_ELEM_BLOCK_BRAKES:
-            if (ride->IsBlockSectioned())
-                apply_block_brakes(vehicle, trackElement->AsTrack()->BlockBrakeClosed());
+            if (curRide->IsBlockSectioned())
+                apply_block_brakes(this, trackElement->AsTrack()->BlockBrakeClosed());
             else
-                apply_non_stop_block_brake(vehicle, true);
+                apply_non_stop_block_brake(this, true);
 
             break;
         case TRACK_ELEM_END_STATION:
@@ -6661,13 +6656,13 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
         case TRACK_ELEM_CABLE_LIFT_HILL:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (ride->IsBlockSectioned())
+            if (curRide->IsBlockSectioned())
             {
                 if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->AsTrack()->BlockBrakeClosed())
                     {
-                        apply_block_brakes(vehicle, true);
+                        apply_block_brakes(this, true);
                     }
                 }
             }
@@ -9541,7 +9536,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     _vehicleStationIndex = STATION_INDEX_NULL;
 
     UpdateTrackMotionUpStopCheck();
-    check_and_apply_block_section_stop_site(this);
+    CheckAndApplyBlockSectionStopSite();
     update_velocity(this);
 
     Vehicle* vehicle = this;

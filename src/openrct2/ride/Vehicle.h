@@ -380,6 +380,7 @@ private:
     void UpdateHandleWaterSplash() const;
     void Claxon() const;
     void UpdateTrackMotionUpStopCheck() const;
+    void CheckAndApplyBlockSectionStopSite();
 };
 
 struct train_ref
