@@ -6178,18 +6178,13 @@ void vehicle_set_map_toolbar(const Vehicle* vehicle)
             if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
                 break;
 
-        size_t argPos = 0;
-        set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
-        argPos += sizeof(rct_string_id);
-        set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_STRINGID);
-        argPos += sizeof(rct_string_id);
-        argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
-        set_map_tooltip_format_arg(
-            argPos, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
-        argPos += sizeof(rct_string_id);
-        set_map_tooltip_format_arg(argPos, uint16_t, vehicleIndex + 1);
-        argPos += sizeof(uint16_t);
-        ride->FormatStatusTo(gMapTooltipFormatArgs + argPos);
+        auto ft = Formatter::MapTooltip();
+        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+        ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
+        ride->FormatNameTo(ft);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
+        ft.Add<uint16_t>(vehicleIndex + 1);
+        ride->FormatStatusTo(ft);
     }
 }
 

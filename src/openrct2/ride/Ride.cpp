@@ -751,6 +751,11 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
     return 0;
 }
 
+void Ride::FormatStatusTo(Formatter& ft) const
+{
+    FormatStatusTo(ft.Buf());
+}
+
 void Ride::FormatStatusTo(void* argsV) const
 {
     Formatter ft(static_cast<uint8_t*>(argsV));
@@ -3294,9 +3299,10 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-        auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
-        ride->FormatStatusTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+        auto ft = Formatter::MapTooltip();
+        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+        ride->FormatNameTo(ft);
+        ride->FormatStatusTo(ft);
     }
 }
 
@@ -3306,9 +3312,10 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-        auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
-        ride->FormatStatusTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+        auto ft = Formatter::MapTooltip();
+        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+        ride->FormatNameTo(ft);
+        ride->FormatStatusTo(ft);
     }
 }
 
@@ -3323,18 +3330,13 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
             if (ride->stations[i].Start.isNull())
                 stationIndex--;
 
-        size_t argPos = 0;
-        set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
-        argPos += sizeof(rct_string_id);
-        set_map_tooltip_format_arg(argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
-        argPos += sizeof(rct_string_id);
-        argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
-        set_map_tooltip_format_arg(
-            argPos, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].capitalised);
-        argPos += sizeof(rct_string_id);
-        set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
-        argPos += sizeof(uint16_t);
-        ride->FormatStatusTo(gMapTooltipFormatArgs + argPos);
+        auto ft = Formatter::MapTooltip();
+        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+        ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+        ride->FormatNameTo(ft);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].capitalised);
+        ft.Add<uint16_t>(stationIndex + 1);
+        ride->FormatStatusTo(ft);
     }
 }
 
@@ -3357,33 +3359,28 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             if (!ride_get_entrance_location(ride, stationIndex).isNull())
                 queueLength = ride->stations[stationIndex].QueueLength;
 
-            size_t argPos = 0;
-            set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
-            argPos += sizeof(rct_string_id);
-            set_map_tooltip_format_arg(
-                argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
-            argPos += sizeof(rct_string_id);
-            argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+            auto ft = Formatter::MapTooltip();
+            ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+            ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+            ride->FormatNameTo(ft);
 
             // String IDs have an extra pop16 for some reason
-            argPos += sizeof(uint16_t);
+            ft.Increment(sizeof(uint16_t));
 
-            set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
-            argPos += sizeof(uint16_t);
+            ft.Add<uint16_t>(stationIndex + 1);
             if (queueLength == 0)
             {
-                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_EMPTY);
+                ft.Add<rct_string_id>(STR_QUEUE_EMPTY);
             }
             else if (queueLength == 1)
             {
-                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_ONE_PERSON);
+                ft.Add<rct_string_id>(STR_QUEUE_ONE_PERSON);
             }
             else
             {
-                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_PEOPLE);
+                ft.Add<rct_string_id>(STR_QUEUE_PEOPLE);
             }
-            argPos += sizeof(rct_string_id);
-            set_map_tooltip_format_arg(argPos, uint16_t, queueLength);
+            ft.Add<uint16_t>(queueLength);
         }
         else
         {
@@ -3393,16 +3390,14 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 if (ride->stations[i].Start.isNull())
                     stationIndex--;
 
-            size_t argPos = 0;
-            set_map_tooltip_format_arg(
-                argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-            argPos += sizeof(rct_string_id);
-            argPos += ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+            auto ft = Formatter::MapTooltip();
+            ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+            ride->FormatNameTo(ft);
 
             // String IDs have an extra pop16 for some reason
-            argPos += sizeof(uint16_t);
+            ft.Increment(sizeof(uint16_t));
 
-            set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
+            ft.Add<uint16_t>(stationIndex + 1);
         }
     }
 }
@@ -7780,6 +7775,11 @@ std::string Ride::GetName() const
     uint8_t args[32]{};
     FormatNameTo(args);
     return format_string(STR_STRINGID, args);
+}
+
+void Ride::FormatNameTo(Formatter& ft) const
+{
+    ft.Increment(FormatNameTo(ft.Buf()));
 }
 
 size_t Ride::FormatNameTo(void* argsV) const
