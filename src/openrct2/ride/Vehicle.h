@@ -385,6 +385,7 @@ private:
     bool OpenRestraints();
     bool CloseRestraints();
     void CrashOnWater();
+    void CrashOnLand();
 };
 
 struct train_ref

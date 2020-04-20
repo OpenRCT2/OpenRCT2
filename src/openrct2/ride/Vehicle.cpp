@@ -5230,67 +5230,67 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
     }
 }
 
-static void vehicle_crash_on_land(Vehicle* vehicle)
+void Vehicle::CrashOnLand()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (ride->status == RIDE_STATUS_SIMULATING)
+    if (curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(vehicle);
+        vehicle_simulate_crash(this);
         return;
     }
-    vehicle->SetState(VEHICLE_STATUS_CRASHED, vehicle->sub_state);
+    SetState(VEHICLE_STATUS_CRASHED, sub_state);
 
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        auto frontVehicle = vehicle->GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        auto frontVehicle = GetHead();
+        auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
         if (!trainIndex)
         {
             return;
         }
 
-        ride->Crash(*trainIndex);
+        curRide->Crash(*trainIndex);
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (curRide->status != RIDE_STATUS_CLOSED)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
+            auto gameAction = RideSetStatusAction(curRide->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
         }
     }
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+    curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
-    if (vehicle->IsHead())
+    if (IsHead())
     {
-        vehicle_kill_all_passengers(vehicle);
+        vehicle_kill_all_passengers(this);
     }
 
-    vehicle->sub_state = 2;
-    audio_play_sound_at_location(SoundId::Crash, { vehicle->x, vehicle->y, vehicle->z });
+    sub_state = 2;
+    audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
-    sprite_misc_explosion_cloud_create(vehicle->x, vehicle->y, vehicle->z);
-    sprite_misc_explosion_flare_create(vehicle->x, vehicle->y, vehicle->z);
+    sprite_misc_explosion_cloud_create(x, y, z);
+    sprite_misc_explosion_flare_create(x, y, z);
 
-    uint8_t numParticles = std::min(vehicle->sprite_width, static_cast<uint8_t>(7));
+    uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        crashed_vehicle_particle_create(vehicle->colours, vehicle->x, vehicle->y, vehicle->z);
+        crashed_vehicle_particle_create(colours, x, y, z);
 
-    vehicle->flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
-    vehicle->animation_frame = 0;
-    vehicle->var_C8 = 0;
-    vehicle->sprite_width = 13;
-    vehicle->sprite_height_negative = 45;
-    vehicle->sprite_height_positive = 5;
+    flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
+    animation_frame = 0;
+    var_C8 = 0;
+    sprite_width = 13;
+    sprite_height_negative = 45;
+    sprite_height_positive = 5;
 
-    sprite_move(vehicle->x, vehicle->y, vehicle->z, vehicle);
-    vehicle->Invalidate();
+    sprite_move(x, y, z, this);
+    Invalidate();
 
-    vehicle->crash_z = 0;
+    crash_z = 0;
 }
 
 void Vehicle::CrashOnWater()
@@ -5398,7 +5398,7 @@ void Vehicle::UpdateCrash()
         }
         else if (curVehicle->sub_state == 1)
         {
-            vehicle_crash_on_land(curVehicle);
+            curVehicle->CrashOnLand();
             continue;
         }
 
@@ -5418,7 +5418,7 @@ void Vehicle::UpdateCrash()
         zDiff = curVehicle->z - height;
         if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16)
         {
-            vehicle_crash_on_land(curVehicle);
+            curVehicle->CrashOnLand();
             continue;
         }
 
@@ -5433,7 +5433,7 @@ void Vehicle::UpdateCrash()
 
         if (!map_is_location_valid(curPosition))
         {
-            vehicle_crash_on_land(curVehicle);
+            curVehicle->CrashOnLand();
             continue;
         }
 
