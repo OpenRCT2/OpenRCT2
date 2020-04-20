@@ -1790,10 +1790,10 @@ void Peep::FormatActionTo(void* argsV) const
     switch (state)
     {
         case PEEP_STATE_FALLING:
-            ft.add<rct_string_id>(action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
+            ft.Add<rct_string_id>(action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
             break;
         case PEEP_STATE_1:
-            ft.add<rct_string_id>(STR_WALKING);
+            ft.Add<rct_string_id>(STR_WALKING);
             break;
         case PEEP_STATE_ON_RIDE:
         case PEEP_STATE_LEAVING_RIDE:
@@ -1802,26 +1802,26 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ft.add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(ft.buf());
+                ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ride->FormatNameTo(ft.Buf());
             }
             else
             {
-                ft.add<rct_string_id>(STR_ON_RIDE).add<rct_string_id>(STR_NONE);
+                ft.Add<rct_string_id>(STR_ON_RIDE).Add<rct_string_id>(STR_NONE);
             }
             break;
         }
         case PEEP_STATE_BUYING:
         {
-            ft.add<rct_string_id>(STR_AT_RIDE);
+            ft.Add<rct_string_id>(STR_AT_RIDE);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.buf());
+                ride->FormatNameTo(ft.Buf());
             }
             else
             {
-                ft.add<rct_string_id>(STR_NONE);
+                ft.Add<rct_string_id>(STR_NONE);
             }
             break;
         }
@@ -1832,13 +1832,13 @@ void Peep::FormatActionTo(void* argsV) const
                 auto ride = get_ride(guest_heading_to_ride_id);
                 if (ride != nullptr)
                 {
-                    ft.add<rct_string_id>(STR_HEADING_FOR);
-                    ride->FormatNameTo(ft.buf());
+                    ft.Add<rct_string_id>(STR_HEADING_FOR);
+                    ride->FormatNameTo(ft.Buf());
                 }
             }
             else
             {
-                ft.add<rct_string_id>((peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
+                ft.Add<rct_string_id>((peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
             }
             break;
         case PEEP_STATE_QUEUING_FRONT:
@@ -1847,13 +1847,13 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ft.add<rct_string_id>(STR_QUEUING_FOR);
-                ride->FormatNameTo(ft.buf());
+                ft.Add<rct_string_id>(STR_QUEUING_FOR);
+                ride->FormatNameTo(ft.Buf());
             }
             break;
         }
         case PEEP_STATE_SITTING:
-            ft.add<rct_string_id>(STR_SITTING);
+            ft.Add<rct_string_id>(STR_SITTING);
             break;
         case PEEP_STATE_WATCHING:
             if (current_ride != RIDE_ID_NULL)
@@ -1861,97 +1861,97 @@ void Peep::FormatActionTo(void* argsV) const
                 auto ride = get_ride(current_ride);
                 if (ride != nullptr)
                 {
-                    ft.add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                    ride->FormatNameTo(ft.buf());
+                    ft.Add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
+                    ride->FormatNameTo(ft.Buf());
                 }
             }
             else
             {
-                ft.add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
+                ft.Add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
             }
             break;
         case PEEP_STATE_PICKED:
-            ft.add<rct_string_id>(STR_SELECT_LOCATION);
+            ft.Add<rct_string_id>(STR_SELECT_LOCATION);
             break;
         case PEEP_STATE_PATROLLING:
         case PEEP_STATE_ENTERING_PARK:
         case PEEP_STATE_LEAVING_PARK:
-            ft.add<rct_string_id>(STR_WALKING);
+            ft.Add<rct_string_id>(STR_WALKING);
             break;
         case PEEP_STATE_MOWING:
-            ft.add<rct_string_id>(STR_MOWING_GRASS);
+            ft.Add<rct_string_id>(STR_MOWING_GRASS);
             break;
         case PEEP_STATE_SWEEPING:
-            ft.add<rct_string_id>(STR_SWEEPING_FOOTPATH);
+            ft.Add<rct_string_id>(STR_SWEEPING_FOOTPATH);
             break;
         case PEEP_STATE_WATERING:
-            ft.add<rct_string_id>(STR_WATERING_GARDENS);
+            ft.Add<rct_string_id>(STR_WATERING_GARDENS);
             break;
         case PEEP_STATE_EMPTYING_BIN:
-            ft.add<rct_string_id>(STR_EMPTYING_LITTER_BIN);
+            ft.Add<rct_string_id>(STR_EMPTYING_LITTER_BIN);
             break;
         case PEEP_STATE_ANSWERING:
             if (sub_state == 0)
             {
-                ft.add<rct_string_id>(STR_WALKING);
+                ft.Add<rct_string_id>(STR_WALKING);
             }
             else if (sub_state == 1)
             {
-                ft.add<rct_string_id>(STR_ANSWERING_RADIO_CALL);
+                ft.Add<rct_string_id>(STR_ANSWERING_RADIO_CALL);
             }
             else
             {
-                ft.add<rct_string_id>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
+                ft.Add<rct_string_id>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
                 auto ride = get_ride(current_ride);
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(ft.buf());
+                    ride->FormatNameTo(ft.Buf());
                 }
                 else
                 {
-                    ft.add<rct_string_id>(STR_NONE);
+                    ft.Add<rct_string_id>(STR_NONE);
                 }
             }
             break;
         case PEEP_STATE_FIXING:
         {
-            ft.add<rct_string_id>(STR_FIXING_RIDE);
+            ft.Add<rct_string_id>(STR_FIXING_RIDE);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.buf());
+                ride->FormatNameTo(ft.Buf());
             }
             else
             {
-                ft.add<rct_string_id>(STR_NONE);
+                ft.Add<rct_string_id>(STR_NONE);
             }
             break;
         }
         case PEEP_STATE_HEADING_TO_INSPECTION:
         {
-            ft.add<rct_string_id>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
+            ft.Add<rct_string_id>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.buf());
+                ride->FormatNameTo(ft.Buf());
             }
             else
             {
-                ft.add<rct_string_id>(STR_NONE);
+                ft.Add<rct_string_id>(STR_NONE);
             }
             break;
         }
         case PEEP_STATE_INSPECTING:
         {
-            ft.add<rct_string_id>(STR_INSPECTING_RIDE);
+            ft.Add<rct_string_id>(STR_INSPECTING_RIDE);
             auto ride = get_ride(current_ride);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.buf());
+                ride->FormatNameTo(ft.Buf());
             }
             else
             {
-                ft.add<rct_string_id>(STR_NONE);
+                ft.Add<rct_string_id>(STR_NONE);
             }
             break;
         }
@@ -1978,23 +1978,23 @@ size_t Peep::FormatNameTo(void* argsV) const
                 staffNameIndex = 0;
             }
 
-            ft.add<rct_string_id>(staffNames[staffNameIndex]);
-            ft.add<uint32_t>(id);
-            return ft.bytes();
+            ft.Add<rct_string_id>(staffNames[staffNameIndex]);
+            ft.Add<uint32_t>(id);
+            return ft.NumBytes();
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = get_real_name_string_id_from_id(id);
-            return ft.add<rct_string_id>(realNameStringId).bytes();
+            return ft.Add<rct_string_id>(realNameStringId).NumBytes();
         }
         else
         {
-            return ft.add<rct_string_id>(STR_GUEST_X).add<uint32_t>(id).bytes();
+            return ft.Add<rct_string_id>(STR_GUEST_X).Add<uint32_t>(id).NumBytes();
         }
     }
     else
     {
-        return ft.add<rct_string_id>(STR_STRING).add<const char*>(name).bytes();
+        return ft.Add<rct_string_id>(STR_STRING).Add<const char*>(name).NumBytes();
     }
 }
 

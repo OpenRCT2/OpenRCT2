@@ -117,17 +117,17 @@ public:
     {
     }
 
-    auto buf()
+    auto Buf()
     {
         return CurrentBuf;
     }
 
-    std::size_t bytes() const
+    std::size_t NumBytes() const
     {
         return CurrentBuf - StartBuf;
     }
 
-    template<typename TSpecified, typename TDeduced> Formatter& add(TDeduced value)
+    template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
     {
         uintptr_t convertedValue;
         if constexpr (std::is_integral_v<TSpecified>)

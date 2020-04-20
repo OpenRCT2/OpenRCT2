@@ -115,17 +115,17 @@ private:
                 Formatter ft(args);
                 if (_downloadStatusInfo.Source.empty())
                 {
-                    ft.add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
-                    ft.add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                    ft.add<char*>(_downloadStatusInfo.Name.c_str());
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
+                    ft.Add<char*>(_downloadStatusInfo.Name.c_str());
                     format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
                 }
                 else
                 {
-                    ft.add<char*>(_downloadStatusInfo.Name.c_str());
-                    ft.add<char*>(_downloadStatusInfo.Source.c_str());
-                    ft.add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
-                    ft.add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
+                    ft.Add<char*>(_downloadStatusInfo.Name.c_str());
+                    ft.Add<char*>(_downloadStatusInfo.Source.c_str());
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, args);
                 }
 
