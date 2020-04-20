@@ -419,6 +419,7 @@ private:
     void KillAllPassengersInTrain();
     void KillPassengers(Ride* curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
+    int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
 };
 
 struct train_ref

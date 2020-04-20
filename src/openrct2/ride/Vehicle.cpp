@@ -8700,30 +8700,28 @@ loc_6DBE7F:
  *
  *
  */
-static int32_t vehicle_update_track_motion_mini_golf(Vehicle* vehicle, int32_t* outStation)
+int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 {
     registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return 0;
 
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry_vehicle* vehicleEntry = Entry();
 
     TileElement* tileElement = nullptr;
 
-    gCurrentVehicle = vehicle;
+    gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
-    vehicle->velocity += vehicle->acceleration;
-    _vehicleVelocityF64E08 = vehicle->velocity;
-    _vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
-    if (_vehicleVelocityF64E08 < 0)
-    {
-        vehicle = vehicle->TrainTail();
-    }
+    velocity += acceleration;
+    _vehicleVelocityF64E08 = velocity;
+    _vehicleVelocityF64E0C = (velocity >> 10) * 42;
+    Vehicle* vehicle = _vehicleVelocityF64E08 < 0 ? TrainTail() : this;
     _vehicleFrontVehicle = vehicle;
+    CoordsXYZ trackPos;
 
 loc_6DC40E:
     regs.ebx = vehicle->vehicle_sprite_type;
@@ -8843,7 +8841,6 @@ loc_6DC476:
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
         tileElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
     }
-    int16_t x, y, z;
     int32_t direction;
     {
         CoordsXYE output;
@@ -8854,9 +8851,7 @@ loc_6DC476:
             goto loc_6DC9BC;
         }
         tileElement = output.element;
-        x = output.x;
-        y = output.y;
-        z = outZ;
+        trackPos = { output.x, output.y, outZ };
         direction = outDirection;
     }
 
@@ -8877,7 +8872,7 @@ loc_6DC476:
         }
     }
 
-    vehicle->TrackLocation = { x, y, z };
+    vehicle->TrackLocation = trackPos;
 
     if (!vehicle->IsHead())
     {
@@ -8949,30 +8944,30 @@ loc_6DC743:
                 vehicle->track_progress++;
                 break;
             case 4: // loc_6DC820
-                z = moveInfo->z;
+                trackPos.z = moveInfo->z;
                 // When the ride is closed occasionally the peep is removed
                 // but the vehicle is still on the track. This will prevent
                 // it from crashing in that situation.
                 if (vehicle->peep[0] != SPRITE_INDEX_NULL)
                 {
-                    if (z == 2)
+                    if (trackPos.z == 2)
                     {
-                        Peep* peep = GET_PEEP(vehicle->peep[0]);
-                        if (peep->Id & 7)
+                        Peep* curPeep = GET_PEEP(vehicle->peep[0]);
+                        if (curPeep->Id & 7)
                         {
-                            z = 7;
+                            trackPos.z = 7;
                         }
                     }
-                    if (z == 6)
+                    if (trackPos.z == 6)
                     {
-                        Peep* peep = GET_PEEP(vehicle->peep[0]);
-                        if (peep->Id & 7)
+                        Peep* curPeep = GET_PEEP(vehicle->peep[0]);
+                        if (curPeep->Id & 7)
                         {
-                            z = 8;
+                            trackPos.z = 8;
                         }
                     }
                 }
-                vehicle->mini_golf_current_animation = static_cast<uint8_t>(z);
+                vehicle->mini_golf_current_animation = static_cast<uint8_t>(trackPos.z);
                 vehicle->animation_frame = 0;
                 vehicle->track_progress++;
                 break;
@@ -8993,9 +8988,8 @@ loc_6DC743:
     }
 
     // loc_6DC8A1
-    x = vehicle->TrackLocation.x + moveInfo->x;
-    y = vehicle->TrackLocation.y + moveInfo->y;
-    z = vehicle->TrackLocation.z + moveInfo->z + RideData5[ride->type].z_offset;
+    trackPos = { vehicle->TrackLocation.x + moveInfo->x, vehicle->TrackLocation.y + moveInfo->y,
+                 vehicle->TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset };
 
     // Investigate redundant code
     regs.ebx = 0;
@@ -9018,9 +9012,7 @@ loc_6DC743:
         vehicle->remaining_distance = 0;
     }
 
-    unk_F64E20.x = x;
-    unk_F64E20.y = y;
-    unk_F64E20.z = z;
+    unk_F64E20 = trackPos;
     vehicle->sprite_direction = moveInfo->direction;
     vehicle->bank_rotation = moveInfo->bank_rotation;
     vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
@@ -9040,7 +9032,7 @@ loc_6DC743:
         if (_vehicleVelocityF64E08 >= 0)
         {
             otherVehicleIndex = vehicle->prev_vehicle_on_ride;
-            vehicle_update_motion_collision_detection(vehicle, x, y, z, &otherVehicleIndex);
+            vehicle_update_motion_collision_detection(vehicle, trackPos.x, trackPos.y, trackPos.z, &otherVehicleIndex);
         }
     }
     goto loc_6DC99A;
@@ -9099,9 +9091,7 @@ loc_6DCA9A:
         {
             goto loc_6DC9BC;
         }
-        x = trackBeginEnd.begin_x;
-        y = trackBeginEnd.begin_y;
-        z = trackBeginEnd.begin_z;
+        trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         direction = trackBeginEnd.begin_direction;
         tileElement = trackBeginEnd.begin_element;
     }
@@ -9123,7 +9113,7 @@ loc_6DCA9A:
         }
     }
 
-    vehicle->TrackLocation = { x, y, z };
+    vehicle->TrackLocation = trackPos;
 
     if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
     {
@@ -9147,9 +9137,8 @@ loc_6DCC2C:
     vehicle->track_progress = regs.ax;
 
     moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, vehicle->track_progress);
-    x = vehicle->TrackLocation.x + moveInfo->x;
-    y = vehicle->TrackLocation.y + moveInfo->y;
-    z = vehicle->TrackLocation.z + moveInfo->z + RideData5[ride->type].z_offset;
+    trackPos = { vehicle->TrackLocation.x + moveInfo->x, vehicle->TrackLocation.y + moveInfo->y,
+                 vehicle->TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset };
 
     // Investigate redundant code
     regs.ebx = 0;
@@ -9172,9 +9161,7 @@ loc_6DCC2C:
         vehicle->remaining_distance = 0;
     }
 
-    unk_F64E20.x = x;
-    unk_F64E20.y = y;
-    unk_F64E20.z = z;
+    unk_F64E20 = trackPos;
     vehicle->sprite_direction = moveInfo->direction;
     vehicle->bank_rotation = moveInfo->bank_rotation;
     vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
@@ -9194,7 +9181,7 @@ loc_6DCC2C:
         if (_vehicleVelocityF64E08 >= 0)
         {
             otherVehicleIndex = vehicle->var_44;
-            if (vehicle_update_motion_collision_detection(vehicle, x, y, z, &otherVehicleIndex))
+            if (vehicle_update_motion_collision_detection(vehicle, trackPos.x, trackPos.y, trackPos.z, &otherVehicleIndex))
             {
                 goto loc_6DCD6B;
             }
@@ -9286,11 +9273,11 @@ loc_6DCE68:
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (vehicle->TrackLocation != ride->stations[i].Start)
+        if (vehicle->TrackLocation != curRide->stations[i].Start)
         {
             continue;
         }
-        if ((vehicle->TrackLocation.z) != ride->stations[i].GetBaseZ())
+        if ((vehicle->TrackLocation.z) != curRide->stations[i].GetBaseZ())
         {
             continue;
         }
@@ -9562,7 +9549,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
     {
-        return vehicle_update_track_motion_mini_golf(this, outStation);
+        return UpdateTrackMotionMiniGolf(outStation);
     }
 
     _vehicleF64E2C = 0;
