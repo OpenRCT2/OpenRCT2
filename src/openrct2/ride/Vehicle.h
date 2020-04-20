@@ -422,6 +422,7 @@ private:
     int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
     void UpdateTrackMotionMiniGolfVehicle(
         Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry, registers& regs);
+    bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
 };
 
 struct train_ref
