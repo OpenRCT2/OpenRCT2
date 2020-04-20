@@ -3484,12 +3484,12 @@ void Vehicle::CheckIfMissing()
     }
 }
 
-static void vehicle_simulate_crash(Vehicle* vehicle)
+void Vehicle::SimulateCrash() const
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide != nullptr)
     {
-        ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+        curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
     }
 }
 
@@ -3507,7 +3507,7 @@ void Vehicle::UpdateCollisionSetup()
 
     if (curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(this);
+        SimulateCrash();
         return;
     }
 
@@ -3589,7 +3589,7 @@ void Vehicle::UpdateCrashSetup()
     auto curRide = get_ride(ride);
     if (curRide != nullptr && curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(this);
+        SimulateCrash();
         return;
     }
     SetState(VEHICLE_STATUS_CRASHING, sub_state);
@@ -5238,7 +5238,7 @@ void Vehicle::CrashOnLand()
 
     if (curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(this);
+        SimulateCrash();
         return;
     }
     SetState(VEHICLE_STATUS_CRASHED, sub_state);
@@ -5301,7 +5301,7 @@ void Vehicle::CrashOnWater()
 
     if (curRide->status == RIDE_STATUS_SIMULATING)
     {
-        vehicle_simulate_crash(this);
+        SimulateCrash();
         return;
     }
     SetState(VEHICLE_STATUS_CRASHED, sub_state);
