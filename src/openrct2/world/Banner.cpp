@@ -70,10 +70,10 @@ size_t Banner::FormatTextTo(void* argsV, bool addColour) const
 
     if (addColour)
     {
-        ft.add<rct_string_id>(STR_STRING_STRINGID).add<const char*>(colourToUtf8(text_colour));
+        ft.Add<rct_string_id>(STR_STRING_STRINGID).Add<const char*>(colourToUtf8(text_colour));
     }
 
-    return ft.bytes() + FormatTextTo(ft.buf());
+    return ft.NumBytes() + FormatTextTo(ft.Buf());
 }
 
 size_t Banner::FormatTextTo(void* argsV) const
@@ -82,27 +82,27 @@ size_t Banner::FormatTextTo(void* argsV) const
 
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
-        return ft.add<rct_string_id>(STR_NO_ENTRY).bytes();
+        return ft.Add<rct_string_id>(STR_NO_ENTRY).NumBytes();
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
         auto ride = get_ride(ride_index);
         if (ride != nullptr)
         {
-            return ride->FormatNameTo(ft.buf());
+            return ride->FormatNameTo(ft.Buf());
         }
         else
         {
-            return ft.add<rct_string_id>(STR_DEFAULT_SIGN).bytes();
+            return ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
         }
     }
     else if (text.empty())
     {
-        return ft.add<rct_string_id>(STR_DEFAULT_SIGN).bytes();
+        return ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
     }
     else
     {
-        return ft.add<rct_string_id>(STR_STRING).add<const char*>(text.c_str()).bytes();
+        return ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str()).NumBytes();
     }
 }
 

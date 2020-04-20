@@ -757,11 +757,11 @@ void Ride::FormatStatusTo(void* argsV) const
 
     if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
-        ft.add<rct_string_id>(STR_CRASHED);
+        ft.Add<rct_string_id>(STR_CRASHED);
     }
     else if (lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        ft.add<rct_string_id>(STR_BROKEN_DOWN);
+        ft.Add<rct_string_id>(STR_BROKEN_DOWN);
     }
     else if (status == RIDE_STATUS_CLOSED)
     {
@@ -769,26 +769,26 @@ void Ride::FormatStatusTo(void* argsV) const
         {
             if (num_riders != 0)
             {
-                ft.add<rct_string_id>(num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
-                ft.add<uint16_t>(num_riders);
+                ft.Add<rct_string_id>(num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
+                ft.Add<uint16_t>(num_riders);
             }
             else
             {
-                ft.add<rct_string_id>(STR_CLOSED);
+                ft.Add<rct_string_id>(STR_CLOSED);
             }
         }
         else
         {
-            ft.add<rct_string_id>(STR_CLOSED);
+            ft.Add<rct_string_id>(STR_CLOSED);
         }
     }
     else if (status == RIDE_STATUS_SIMULATING)
     {
-        ft.add<rct_string_id>(STR_SIMULATING);
+        ft.Add<rct_string_id>(STR_SIMULATING);
     }
     else if (status == RIDE_STATUS_TESTING)
     {
-        ft.add<rct_string_id>(STR_TEST_RUN);
+        ft.Add<rct_string_id>(STR_TEST_RUN);
     }
     else if (
         mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
@@ -798,23 +798,23 @@ void Ride::FormatStatusTo(void* argsV) const
         if (sprite != nullptr && sprite->IsPeep())
         {
             auto peep = sprite->AsPeep();
-            ft.add<rct_string_id>(STR_RACE_WON_BY);
-            peep->FormatNameTo(ft.buf());
+            ft.Add<rct_string_id>(STR_RACE_WON_BY);
+            peep->FormatNameTo(ft.Buf());
         }
         else
         {
-            ft.add<rct_string_id>(STR_RACE_WON_BY);
-            ft.add<rct_string_id>(STR_NONE);
+            ft.Add<rct_string_id>(STR_RACE_WON_BY);
+            ft.Add<rct_string_id>(STR_NONE);
         }
     }
     else if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
     {
-        ft.add<rct_string_id>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
-        ft.add<uint16_t>(num_riders);
+        ft.Add<rct_string_id>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
+        ft.Add<uint16_t>(num_riders);
     }
     else
     {
-        ft.add<rct_string_id>(STR_OPEN);
+        ft.Add<rct_string_id>(STR_OPEN);
     }
 }
 
@@ -7788,9 +7788,9 @@ size_t Ride::FormatNameTo(void* argsV) const
     if (!custom_name.empty())
     {
         auto str = custom_name.c_str();
-        ft.add<rct_string_id>(STR_STRING);
-        ft.add<void*>(str);
-        return ft.bytes();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<void*>(str);
+        return ft.NumBytes();
     }
     else
     {
@@ -7815,7 +7815,7 @@ size_t Ride::FormatNameTo(void* argsV) const
                 }
             }
         }
-        ft.add<rct_string_id>(1).add<rct_string_id>(rideTypeName).add<uint16_t>(default_name_number);
-        return ft.bytes();
+        ft.Add<rct_string_id>(1).Add<rct_string_id>(rideTypeName).Add<uint16_t>(default_name_number);
+        return ft.NumBytes();
     }
 }
