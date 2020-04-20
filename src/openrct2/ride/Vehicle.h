@@ -381,6 +381,7 @@ private:
     void Claxon() const;
     void UpdateTrackMotionUpStopCheck() const;
     void CheckAndApplyBlockSectionStopSite();
+    void UpdateVelocity();
 };
 
 struct train_ref

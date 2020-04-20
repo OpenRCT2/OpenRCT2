@@ -6674,27 +6674,27 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
  *
  *  rct2: 0x006DADAE
  */
-static void update_velocity(Vehicle* vehicle)
+void Vehicle::UpdateVelocity()
 {
-    int32_t nextVelocity = vehicle->acceleration + vehicle->velocity;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ZERO_VELOCITY)
+    int32_t nextVelocity = acceleration + velocity;
+    if (update_flags & VEHICLE_UPDATE_FLAG_ZERO_VELOCITY)
     {
         nextVelocity = 0;
     }
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)
+    if (update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)
     {
-        vehicle->vertical_drop_countdown--;
-        if (vehicle->vertical_drop_countdown == -70)
+        vertical_drop_countdown--;
+        if (vertical_drop_countdown == -70)
         {
-            vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
+            update_flags &= ~VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
         }
-        if (vehicle->vertical_drop_countdown >= 0)
+        if (vertical_drop_countdown >= 0)
         {
             nextVelocity = 0;
-            vehicle->acceleration = 0;
+            acceleration = 0;
         }
     }
-    vehicle->velocity = nextVelocity;
+    velocity = nextVelocity;
 
     _vehicleVelocityF64E08 = nextVelocity;
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
@@ -9537,7 +9537,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     UpdateTrackMotionUpStopCheck();
     CheckAndApplyBlockSectionStopSite();
-    update_velocity(this);
+    UpdateVelocity();
 
     Vehicle* vehicle = this;
     if (_vehicleVelocityF64E08 < 0)
