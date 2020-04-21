@@ -111,7 +111,7 @@ std::vector<int32_t> ImageImporter::GetPixels(
 std::tuple<void*, size_t> ImageImporter::EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height)
 {
     auto bufferLength = width * height;
-    auto buffer = (uint8_t*)std::malloc(bufferLength);
+    auto buffer = new uint8_t[bufferLength];
     for (size_t i = 0; i < bufferLength; i++)
     {
         auto p = pixels[i];
