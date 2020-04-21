@@ -363,8 +363,9 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         }
 
         const int32_t bindingOffset = scrollWidth - 150;
-        set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
-        set_format_arg(2, rct_string_id, ShortcutList[i].StringId);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
+        ft.Add<rct_string_id>(ShortcutList[i].StringId);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, bindingOffset);
 
         char keybinding[128];
@@ -373,8 +374,9 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (strlen(keybinding) > 0)
         {
             const int32_t maxWidth = 150;
-            set_format_arg(0, rct_string_id, STR_STRING);
-            set_format_arg(2, char*, keybinding);
+            ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<char*>(keybinding);
             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, bindingOffset, y - 1, maxWidth);
         }
     }

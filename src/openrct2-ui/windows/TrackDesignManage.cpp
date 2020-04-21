@@ -233,7 +233,7 @@ static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetI
  */
 static void window_track_manage_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char*, _trackDesignFileReference->name);
+    Formatter::Common().Add<char*>(_trackDesignFileReference->name);
     window_draw_widgets(w, dpi);
 }
 

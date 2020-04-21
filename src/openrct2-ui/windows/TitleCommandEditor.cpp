@@ -774,7 +774,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         if (command.SpriteIndex != SPRITE_INDEX_NULL)
         {
             window_draw_viewport(dpi, w);
-            set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(command.SpriteName));
+            Formatter::Common().Add<uintptr_t>(reinterpret_cast<uintptr_t>(command.SpriteName));
         }
         else
         {
@@ -801,7 +801,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         }
         else
         {
-            set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(_sequence->Saves[command.SaveIndex]));
+            Formatter::Common().Add<uintptr_t>(reinterpret_cast<uintptr_t>(_sequence->Saves[command.SaveIndex]));
             gfx_draw_string_left_clipped(
                 dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
                 w->windowPos.y + w->widgets[WIDX_INPUT].top,
@@ -830,7 +830,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             {
                 nameString = STR_TITLE_COMMAND_EDITOR_MISSING_SCENARIO;
             }
-            set_format_arg(0, uintptr_t, name);
+            Formatter::Common().Add<const char*>(name);
             gfx_draw_string_left_clipped(
                 dpi, nameString, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
                 w->windowPos.y + w->widgets[WIDX_INPUT].top,
