@@ -104,10 +104,10 @@ size_t sawyercoding_decode_sc4(const uint8_t* src, uint8_t* dst, size_t length, 
     size_t decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 
     // Decode
-    for (size_t i = 0x60018; i <= std::min(decodedLength - 1, (size_t)0x1F8353); i++)
+    for (size_t i = 0x60018; i <= std::min(decodedLength - 1, static_cast<size_t>(0x1F8353)); i++)
         dst[i] = dst[i] ^ 0x9C;
 
-    for (size_t i = 0x60018; i <= std::min(decodedLength - 1, (size_t)0x1F8350); i += 4)
+    for (size_t i = 0x60018; i <= std::min(decodedLength - 1, static_cast<size_t> (0x1F8350)); i += 4)
     {
         dst[i + 1] = ror8(dst[i + 1], 3);
 
