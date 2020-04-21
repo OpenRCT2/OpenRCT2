@@ -29,5 +29,6 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
+   SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on

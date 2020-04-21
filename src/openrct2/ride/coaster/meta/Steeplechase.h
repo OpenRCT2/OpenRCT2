@@ -28,5 +28,6 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 5 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
+   SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on

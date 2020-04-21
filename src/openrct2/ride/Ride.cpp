@@ -361,7 +361,8 @@ money32 Ride::CalculateIncomePerHour() const
         priceMinusCost -= ShopItems[currentShopItem].Cost;
     }
 
-    currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[type] : entry->shop_item_secondary;
+    currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[type].PhotoItem
+                                                                       : entry->shop_item_secondary;
 
     if (currentShopItem != SHOP_ITEM_NONE)
     {

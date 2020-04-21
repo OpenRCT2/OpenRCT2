@@ -107,7 +107,7 @@ struct RideTypeDescriptor
 {
     uint8_t AlternateType;
     uint8_t Category;
-    // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
+    /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     uint64_t EnabledTrackPieces;
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
@@ -118,9 +118,11 @@ struct RideTypeDescriptor
     uint64_t Flags;
     RideNameConvention NameConvention;
     uint8_t AvailableBreakdowns;
-    /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
+    /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     rct_ride_lift_data LiftData;
     UpkeepCostsDescriptor UpkeepCosts;
+    /** rct2: 0x0097D7CB */
+    uint8_t PhotoItem;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -247,7 +249,6 @@ extern const uint8_t RideAvailableModes[];
 extern const uint8_t AllRideModesAvailable[];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
-extern const int32_t RidePhotoItems[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 
