@@ -178,7 +178,7 @@ public:
         ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
 
         ride->measurement = {};
-        ride->excitement = static_cast<ride_rating>(-1);
+        ride->excitement = RIDE_RATING_UNDEFINED;
         ride->cur_num_customers = 0;
         ride->num_customers_timeout = 0;
         ride->chairlift_bullwheel_rotation = 0;
