@@ -22,6 +22,7 @@
 #include <string_view>
 
 interface IObjectManager;
+class Formatter;
 class StationObject;
 struct Peep;
 struct Ride;
@@ -439,7 +440,9 @@ public:
 
     void SetNameToDefault();
     std::string GetName() const;
+    void FormatNameTo(Formatter&) const;
     size_t FormatNameTo(void* args) const;
+    void FormatStatusTo(Formatter&) const;
     void FormatStatusTo(void* args) const;
 
     static void UpdateAll();

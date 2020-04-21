@@ -64,6 +64,11 @@ std::string Banner::GetText() const
     return format_string(STR_STRINGID, args);
 }
 
+void Banner::FormatTextTo(Formatter& ft, bool addColour) const
+{
+    ft.Increment(FormatTextTo(ft.Buf(), addColour));
+}
+
 size_t Banner::FormatTextTo(void* argsV, bool addColour) const
 {
     Formatter ft(static_cast<uint8_t*>(argsV));
@@ -74,6 +79,11 @@ size_t Banner::FormatTextTo(void* argsV, bool addColour) const
     }
 
     return ft.NumBytes() + FormatTextTo(ft.Buf());
+}
+
+void Banner::FormatTextTo(Formatter& ft) const
+{
+    ft.Increment(FormatTextTo(ft.Buf()));
 }
 
 size_t Banner::FormatTextTo(void* argsV) const

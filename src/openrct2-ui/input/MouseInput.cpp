@@ -1082,7 +1082,8 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
     int32_t cursorId;
 
     cursorId = CURSOR_ARROW;
-    set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
+    auto ft = Formatter::MapTooltip();
+    ft.Add<rct_string_id>(STR_NONE);
     window = window_find_from_point(screenCoords);
 
     if (window != nullptr)

@@ -1784,6 +1784,11 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     return peep;
 }
 
+void Peep::FormatActionTo(Formatter& ft) const
+{
+    FormatActionTo(ft.Buf());
+}
+
 void Peep::FormatActionTo(void* argsV) const
 {
     Formatter ft((uint8_t*)argsV);
@@ -1956,6 +1961,11 @@ void Peep::FormatActionTo(void* argsV) const
             break;
         }
     }
+}
+
+void Peep::FormatNameTo(Formatter& ft) const
+{
+    ft.Increment(FormatNameTo(ft.Buf()));
 }
 
 size_t Peep::FormatNameTo(void* argsV) const
@@ -2205,19 +2215,19 @@ int32_t get_peep_face_sprite_large(Peep* peep)
 
 void peep_set_map_tooltip(Peep* peep)
 {
+    auto ft = Formatter::MapTooltip();
     if (peep->type == PEEP_TYPE_GUEST)
     {
-        set_map_tooltip_format_arg(
-            0, rct_string_id, (peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
-        set_map_tooltip_format_arg(2, uint32_t, get_peep_face_sprite_small(peep));
-        auto nameArgLen = peep->FormatNameTo(gMapTooltipFormatArgs + 6);
-        peep->FormatActionTo(gMapTooltipFormatArgs + 6 + nameArgLen);
+        ft.Add<rct_string_id>((peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
+        ft.Add<uint32_t>(get_peep_face_sprite_small(peep));
+        peep->FormatNameTo(ft);
+        peep->FormatActionTo(ft);
     }
     else
     {
-        set_map_tooltip_format_arg(0, rct_string_id, STR_STAFF_MAP_TIP);
-        auto nameArgLen = peep->FormatNameTo(gMapTooltipFormatArgs + 2);
-        peep->FormatActionTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+        ft.Add<rct_string_id>(STR_STAFF_MAP_TIP);
+        peep->FormatNameTo(ft);
+        peep->FormatActionTo(ft);
     }
 }
 
