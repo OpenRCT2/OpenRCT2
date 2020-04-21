@@ -297,8 +297,8 @@ static bool sprite_file_import(
         auto result = importer.Import(image, x_offset, y_offset, flags, (ImageImporter::IMPORT_MODE)mode);
 
         *outElement = result.Element;
-        *outBuffer = static_cast<uint8_t*>(result.Buffer);
-        *outBufferLength = static_cast<int>(result.BufferLength);
+        *outBuffer = static_cast<uint8_t*>(result.Buffer.data());
+        *outBufferLength = static_cast<int>(result.Buffer.size());
         return true;
     }
     catch (const std::exception& e)

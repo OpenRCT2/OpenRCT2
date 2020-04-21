@@ -28,8 +28,7 @@ namespace OpenRCT2::Drawing
         struct ImportResult
         {
             rct_g1_element Element{};
-            void* Buffer{};
-            size_t BufferLength{};
+            std::vector<uint8_t> Buffer;
         };
 
         enum class IMPORT_MODE
@@ -55,8 +54,8 @@ namespace OpenRCT2::Drawing
 
         static std::vector<int32_t> GetPixels(
             const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
-        static std::tuple<void*, size_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
-        static std::tuple<void*, size_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
+        static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
+        static std::vector<uint8_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
 
         static int32_t CalculatePaletteIndex(
             IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
