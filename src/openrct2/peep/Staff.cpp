@@ -441,7 +441,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
  */
 static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
-    uint16_t nearestLitterDist = static_cast<uint16_t>(-1);
+    uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
     Litter* litter = nullptr;
 
