@@ -906,7 +906,7 @@ static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetI
 
             mapgenSettings.simplex_low = _simplex_low;
             mapgenSettings.simplex_high = _simplex_high;
-            mapgenSettings.simplex_base_freq = (static_cast<float>(_simplex_base_freq) / 100.00f);
+            mapgenSettings.simplex_base_freq = (static_cast<float>(_simplex_base_freq)) / 100.00f;
             mapgenSettings.simplex_octaves = _simplex_octaves;
 
             mapgen_generate(&mapgenSettings);

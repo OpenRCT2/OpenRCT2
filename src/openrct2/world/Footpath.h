@@ -151,6 +151,13 @@ enum
     FOOTPATH_CONNECTION_NW = (1 << 7),
 };
 
+enum
+{
+    FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES = (1 << 0),
+    FOOTPATH_CONNECTED_MAP_EDGE_UNOWN = (1 << 5),
+    FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
+};
+
 extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;

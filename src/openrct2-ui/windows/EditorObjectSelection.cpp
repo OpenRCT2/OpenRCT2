@@ -260,7 +260,7 @@ struct list_item
 {
     const ObjectRepositoryItem* repositoryItem;
     rct_object_entry* entry;
-    rct_object_filters* filter;
+    std::unique_ptr<rct_object_filters> filter;
     uint8_t* flags;
 };
 
@@ -310,7 +310,7 @@ static void visible_list_refresh(rct_window* w)
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
             && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
-            rct_object_filters* filter = new rct_object_filters;
+            auto filter = std::make_unique<rct_object_filters>();
             filter->ride.category[0] = 0;
             filter->ride.category[1] = 0;
             filter->ride.ride_type = 0;
@@ -318,7 +318,7 @@ static void visible_list_refresh(rct_window* w)
             list_item currentListItem;
             currentListItem.repositoryItem = item;
             currentListItem.entry = const_cast<rct_object_entry*>(&item->ObjectEntry);
-            currentListItem.filter = filter;
+            currentListItem.filter = std::move(filter);
             currentListItem.flags = &_objectSelectionFlags[i];
             _listItems.push_back(std::move(currentListItem));
         }
@@ -1028,7 +1028,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (widget->type != WWT_EMPTY)
     {
         stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : static_cast<rct_string_id>(STR_NONE);
+                                                   : STR_NONE;
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
             w->windowPos.y + widget->top + 1, widget->right - widget->left);
@@ -1037,7 +1037,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (widget->type != WWT_EMPTY)
     {
         stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : static_cast<rct_string_id>(STR_NONE);
+                                                   : STR_NONE;
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->windowPos.x + widget->left + 1,
             w->windowPos.y + widget->top + 1, widget->right - widget->left);
@@ -1461,7 +1461,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
                     break;
                 }
             }
-            return (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems))) != 0;
+            return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
     }
     return true;
 }
@@ -1495,7 +1495,7 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
         uint8_t rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
-            if (RideGroupManager::RideTypeHasRideGroups(rideType))
+            if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideInfo.RideGroupIndex);
                 result = rideGroup->Naming.name;

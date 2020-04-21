@@ -1315,7 +1315,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
             continue;
         }
 
-        if (!(flags & (1 << 0)))
+        if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES))
         {
             if (tileElement->AsPath()->IsQueue())
             {
@@ -1323,13 +1323,13 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
             }
         }
 
-        if (flags & (1 << 5))
+        if (flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)
         {
             footpath_fix_ownership(targetPos);
         }
         edges = tileElement->AsPath()->GetEdges();
         direction = direction_reverse(direction);
-        if (!(flags & (1 << 7)))
+        if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
         {
             if (tileElement[1].GetType() == TILE_ELEMENT_TYPE_BANNER)
             {
@@ -1418,7 +1418,7 @@ searchFromFootpath:
 // TODO: Use GAME_COMMAND_FLAGS
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags)
 {
-    flags |= (1 << 0);
+    flags |= FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES;
     return footpath_is_connected_to_map_edge_recurse(footpathPos, direction, flags, 0, 0, 16);
 }
 
@@ -2260,5 +2260,5 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return (ride->type == RIDE_TYPE_MINIATURE_RAILWAY);
+    return RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
 }

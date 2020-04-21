@@ -31,7 +31,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "3"
+#define NETWORK_STREAM_VERSION "5"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -2451,7 +2451,7 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
                 log_info("Wrote desync report to '%s'", outputFile.c_str());
 
                 uint8_t args[32]{};
-                set_format_arg_on(args, 0, char*, uniqueFileName);
+                Formatter(args).Add<char*>(uniqueFileName);
 
                 char str_desync[1024];
                 format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, args);
@@ -3561,7 +3561,6 @@ GameActionResult::Ptr network_modify_groups(
         default:
             log_error("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-            break;
     }
 
     gNetwork.SaveGroups();

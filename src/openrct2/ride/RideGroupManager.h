@@ -16,8 +16,6 @@
 
 #define MAX_RIDE_GROUPS_PER_RIDE_TYPE 2
 
-extern const uint8_t gRideCategories[RIDE_TYPE_COUNT];
-
 struct RideGroup
 {
     uint8_t RideType;
@@ -34,12 +32,10 @@ class RideGroupManager
 {
 public:
     static const RideGroup* GetRideGroup(const uint8_t trackType, const rct_ride_entry* rideEntry);
-    static bool RideTypeHasRideGroups(const uint8_t trackType);
     static const RideGroup* RideGroupFind(const uint8_t rideType, const uint8_t index);
 
     static const std::vector<const char*> GetPreferredRideEntryOrder(const uint8_t rideType);
     static int32_t VehiclePreferenceCompare(const uint8_t rideType, const char* a, const char* b);
-    static bool RideTypeIsIndependent(const uint8_t rideType);
 };
 
 enum RideGroupFlags : uint8_t

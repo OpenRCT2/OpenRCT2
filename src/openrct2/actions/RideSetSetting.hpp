@@ -270,8 +270,8 @@ private:
 
     bool ride_is_valid_lift_hill_speed(Ride * ride) const
     {
-        int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
+        int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+        int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
         return _value >= minSpeed && _value <= maxSpeed;
     }
 

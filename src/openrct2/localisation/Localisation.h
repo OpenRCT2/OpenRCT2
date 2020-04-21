@@ -98,13 +98,55 @@ template<typename T> void constexpr set_format_arg(uint8_t* args, size_t offset,
         set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)(value), sizeof(type));                                      \
     } while (false)
 
-#define set_format_arg_on(args, offset, type, value) set_format_arg_body(args, offset, (uintptr_t)(value), sizeof(type))
+class Formatter
+{
+    const uint8_t* StartBuf;
+    uint8_t* CurrentBuf;
 
-#define set_map_tooltip_format_arg(offset, type, value)                                                                        \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large");                                                    \
-        set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)(value), sizeof(type));                                  \
-    } while (false)
+public:
+    explicit Formatter(uint8_t* buf)
+        : StartBuf(buf)
+        , CurrentBuf(buf)
+    {
+    }
+
+    static Formatter MapTooltip()
+    {
+        return Formatter(gMapTooltipFormatArgs);
+    }
+
+    auto Buf()
+    {
+        return CurrentBuf;
+    }
+
+    void Increment(std::size_t count)
+    {
+        CurrentBuf += count;
+    }
+
+    std::size_t NumBytes() const
+    {
+        return CurrentBuf - StartBuf;
+    }
+
+    template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
+    {
+        static_assert(sizeof(TSpecified) <= sizeof(uintptr_t), "Type too large");
+        static_assert(sizeof(TDeduced) <= sizeof(uintptr_t), "Type too large");
+        uintptr_t convertedValue;
+        if constexpr (std::is_integral_v<TSpecified>)
+        {
+            convertedValue = static_cast<uintptr_t>(value);
+        }
+        else
+        {
+            convertedValue = reinterpret_cast<uintptr_t>(value);
+        }
+        set_format_arg_body(CurrentBuf, 0, convertedValue, sizeof(TSpecified));
+        Increment(sizeof(TSpecified));
+        return *this;
+    }
+};
 
 #endif

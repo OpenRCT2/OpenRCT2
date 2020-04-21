@@ -15,7 +15,6 @@
 
 Vehicle* cable_lift_segment_create(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head);
-void cable_lift_update(Vehicle* vehicle);
 int32_t cable_lift_update_track_motion(Vehicle* cableLift);
 
 #endif

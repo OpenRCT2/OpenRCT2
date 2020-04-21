@@ -2559,17 +2559,18 @@ static money32 try_place_ghost_scenery(
                 { map_tile.x, map_tile.y, gSceneryPlaceZ, rotation }, quadrant, entryIndex, primaryColour, secondaryColour);
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             auto res = GameActions::Execute(&smallSceneryPlaceAction);
-            if (res->Error != GA_ERROR::OK)
+            auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
+            if (sspar == nullptr || res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
             gSceneryPlaceRotation = static_cast<uint16_t>(parameter_3 & 0xFF);
             gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
             gSceneryPlaceObject.EntryIndex = entryIndex;
 
-            tileElement = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->tileElement;
+            tileElement = sspar->tileElement;
             gSceneryGhostPosition = { map_tile, tileElement->GetBaseZ() };
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-            if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);
@@ -2646,15 +2647,16 @@ static money32 try_place_ghost_scenery(
             sceneryPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&sceneryPlaceAction);
-            if (res->Error != GA_ERROR::OK)
+            auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
+            if (lspar == nullptr || res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
             gSceneryPlaceRotation = loc.direction;
 
-            tileElement = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->tileElement;
+            tileElement = lspar->tileElement;
             gSceneryGhostPosition = { map_tile, tileElement->GetBaseZ() };
 
-            if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (lspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);

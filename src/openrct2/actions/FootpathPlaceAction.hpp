@@ -18,6 +18,7 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "GameAction.h"
@@ -182,16 +183,32 @@ private:
         }
 
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
-        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
+        bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
+        pathElement->SetIsQueue(isQueue);
+
+        rct_scenery_entry* elem = pathElement->GetAdditionEntry();
+        if (elem != nullptr)
         {
-            pathElement->SetIsQueue(true);
+            if (isQueue)
+            {
+                // remove any addition that isn't a TV or a lamp
+                if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0
+                    && (elem->path_bit.flags & PATH_BIT_FLAG_LAMP) == 0)
+                {
+                    pathElement->SetIsBroken(false);
+                    pathElement->SetAddition(0);
+                }
+            }
+            else
+            {
+                // remove all TVs
+                if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+                {
+                    pathElement->SetIsBroken(false);
+                    pathElement->SetAddition(0);
+                }
+            }
         }
-        else
-        {
-            pathElement->SetIsQueue(false);
-        }
-        pathElement->SetAddition(0);
-        pathElement->SetIsBroken(false);
 
         RemoveIntersectingWalls(pathElement);
         return res;

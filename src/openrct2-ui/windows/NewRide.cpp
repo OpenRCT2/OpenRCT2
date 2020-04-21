@@ -319,12 +319,12 @@ static void window_new_ride_populate_list()
         if (rideType == RIDE_TYPE_NULL)
             continue;
 
-        if (gRideCategories[rideType] != currentCategory)
+        if (RideTypeDescriptors[rideType].Category != currentCategory)
             continue;
 
         if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus)
         {
-            if (!RideGroupManager::RideTypeHasRideGroups(rideType))
+            if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
             }
@@ -367,7 +367,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
         // Ride entries
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
-        if (RideGroupManager::RideTypeHasRideGroups(rideType))
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             const RideGroup* rideEntryRideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
             const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
@@ -377,7 +377,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
         }
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (!RideGroupManager::RideTypeIsIndependent(rideType))
+        if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             if (strcmp(preferredVehicleName, "        \0") == 0)
             {
@@ -399,7 +399,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
         }
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if (RideGroupManager::RideTypeIsIndependent(rideType))
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             // Separate, draw apart
             allowDrawingOverLastButton = false;
@@ -537,7 +537,7 @@ void window_new_ride_focus(ride_list_item rideItem)
     rideEntry = get_ride_entry(rideItem.entry_index);
     uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
-    window_new_ride_set_page(w, gRideCategories[rideTypeIndex]);
+    window_new_ride_set_page(w, RideTypeDescriptors[rideTypeIndex].Category);
 
     for (ride_list_item* listItem = _windowNewRideListItems; listItem->type != RIDE_TYPE_NULL; listItem++)
     {
@@ -563,7 +563,7 @@ void window_new_ride_focus(ride_list_item rideItem)
             {
                 const RideGroup* irg = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
 
-                if (!RideGroupManager::RideTypeHasRideGroups(rideTypeIndex) || rideGroup->Equals(irg))
+                if (!RideTypeDescriptors[rideTypeIndex].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) || rideGroup->Equals(irg))
                 {
                     _windowNewRideHighlightedItem[0] = rideItem;
                     w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
@@ -941,14 +941,14 @@ static int32_t get_num_track_designs(ride_list_item item)
     if (item.type < 0x80)
     {
         rideEntry = get_ride_entry(item.entry_index);
-        if (RideGroupManager::RideTypeIsIndependent(item.type))
+        if (RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.entry_index);
         }
     }
 
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (rideEntry != nullptr && RideGroupManager::RideTypeHasRideGroups(item.type))
+    if (rideEntry != nullptr && RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
         auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
         if (rideGroup != nullptr)
@@ -1010,7 +1010,7 @@ static void window_new_ride_paint_ride_information(
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = RideConstructionDefaultTrackType[item.type];
+        int32_t unk2 = RideTypeDescriptors[item.type].StartTrackPiece;
         money32 price = RideTrackCosts[item.type].track_price;
         if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
@@ -1020,7 +1020,7 @@ static void window_new_ride_paint_ride_information(
         {
             price *= TrackPricing[unk2];
         }
-        price = (price >> 17) * 10 * RideData5[item.type].price;
+        price = (price >> 17) * 10 * RideData5[item.type].PriceEstimateMultiplier;
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
@@ -1060,7 +1060,7 @@ static void window_new_ride_select(rct_window* w)
 static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
 {
     std::fill_n(buffer, bufferLen, 0);
-    if (RideGroupManager::RideTypeIsIndependent(rideType))
+    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return;
     }
@@ -1077,7 +1077,7 @@ static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_e
             continue;
 
         // Skip if vehicle does not belong to the same ride group
-        if (RideGroupManager::RideTypeHasRideGroups(rideType))
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             auto rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
             auto currentRideGroup = RideGroupManager::GetRideGroup(rideType, currentRideEntry);

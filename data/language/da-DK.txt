@@ -3704,6 +3704,10 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
 STR_6362    :{SMALLFONT}{BLACK}Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
 STR_6363    :Kopierede tekst til udklipsholder
+STR_6364    :{RED}{COMMA16} person døde i forlystelsen {STRINGID}
+STR_6365    :Forlystelse tilskadekommende
+STR_6366    :Fastlåste eller blokerede køretøjer
+STR_6367    :{WINDOW_COLOUR_2}Animations billede:
 
 #############
 # Scenarios #

@@ -744,7 +744,7 @@ void theme_set_colour(rct_windowclass wc, uint8_t index, colour_t colour)
     UIThemeWindowEntry entry{};
     entry.WindowClass = wc;
 
-    auto currentEntry = (UIThemeWindowEntry*)ThemeManager::CurrentTheme->GetEntry(wc);
+    auto currentEntry = const_cast<UIThemeWindowEntry*>(ThemeManager::CurrentTheme->GetEntry(wc));
     if (currentEntry != nullptr)
     {
         entry.Theme = currentEntry->Theme;

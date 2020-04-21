@@ -188,7 +188,7 @@ constexpr int32_t OPTW = 220;                                            // Opti
 constexpr int32_t OPTH = 10;                                             // Option (checkbox) height (two columns)
 constexpr int32_t GROUP_SPACE = 6;
 
-#define YPL(ROW)        (static_cast<int16_t>((YOS + ((BTNH + YSPA) * ROW)))) 
+#define YPL(ROW)        (static_cast<int16_t>((YOS + ((BTNH + YSPA) * ROW))))
 #define HPL(ROW)        (static_cast<int16_t>(YPL(ROW) + BTNH))
 #define OHPL(ROW)       (static_cast<int16_t>(YPL(ROW) + OPTH))
 #define XPL(COL)        (static_cast<int16_t>(XOS + ((BTNW + XSPA) * COL)))

@@ -3678,6 +3678,10 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Lichteffekte an Fahrgeschäften aktivieren (experimentell)
 STR_6362    :{SMALLFONT}{BLACK}Falls aktiviert, werden Fahrzeuge für Streckenfahrgeschäfte in der Nacht leuchten.
 STR_6363    :Text in die Zwischenablage kopiert
+STR_6364    :{RED}{COMMA16} Person starb bei einem Unfall auf {STRINGID}
+STR_6365    :Opfer von Fahrgeschäften
+STR_6366    :Feststeckende Fahrzeuge
+STR_6367    :{WINDOW_COLOUR_2}Animations-Frame:
 
 #############
 # Scenarios #

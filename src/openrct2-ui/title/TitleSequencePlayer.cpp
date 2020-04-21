@@ -111,7 +111,7 @@ public:
         }
 
         // Check that position is valid
-        if (_position >= (int32_t)_sequence->NumCommands)
+        if (_position >= static_cast<int32_t>(_sequence->NumCommands))
         {
             _position = 0;
             return false;
@@ -173,7 +173,7 @@ public:
 
     void Seek(int32_t targetPosition) override
     {
-        if (targetPosition < 0 || targetPosition >= (int32_t)_sequence->NumCommands)
+        if (targetPosition < 0 || targetPosition >= static_cast<int32_t>(_sequence->NumCommands))
         {
             throw std::runtime_error("Invalid position.");
         }

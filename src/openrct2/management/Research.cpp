@@ -51,8 +51,6 @@ uint8_t gResearchExpectedMonth;
 uint8_t gResearchExpectedDay;
 std::optional<ResearchItem> gResearchNextItem;
 
-// 0x01358844[500]
-ResearchItem gResearchItems[MAX_RESEARCH_ITEMS];
 std::vector<ResearchItem> gResearchItemsUninvented;
 std::vector<ResearchItem> gResearchItemsInvented;
 
@@ -208,7 +206,7 @@ void research_finish_item(ResearchItem* researchItem)
             rct_string_id availabilityString;
 
             // Determine if the ride group this entry belongs to was invented before.
-            if (RideGroupManager::RideTypeHasRideGroups(base_ride_type))
+            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 const RideGroup* rideGroup = RideGroupManager::GetRideGroup(base_ride_type, rideEntry);
 
@@ -257,7 +255,7 @@ void research_finish_item(ResearchItem* researchItem)
             }
 
             // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
-            if (RideGroupManager::RideTypeIsIndependent(base_ride_type))
+            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
                 set_format_arg(0, rct_string_id, rideEntry->naming.name);
@@ -265,7 +263,8 @@ void research_finish_item(ResearchItem* researchItem)
             // If a vehicle is the first to be invented for its ride group, show the ride group name.
             else if (
                 !ride_type_was_invented_before
-                || (RideGroupManager::RideTypeHasRideGroups(base_ride_type) && !ride_group_was_invented_before))
+                || (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS)
+                    && !ride_group_was_invented_before))
             {
                 rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
@@ -570,22 +569,6 @@ bool ride_type_is_invented(uint32_t rideType)
 bool ride_entry_is_invented(int32_t rideEntryIndex)
 {
     return _researchedRideEntries[rideEntryIndex];
-}
-
-uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType)
-{
-    uint64_t baseVals = RideTypeDescriptors[rideType].EnabledTrackPieces;
-    uint64_t extendedVals = 0;
-    if (gCheatsEnableAllDrawableTrackPieces)
-    {
-        extendedVals = RideTypeDescriptors[rideType].ExtraTrackPieces;
-    }
-    return baseVals | extendedVals;
-}
-
-bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType)
-{
-    return (get_available_track_pieces_for_ride_type(rideType)) & (1ULL << trackType);
 }
 
 void ride_type_set_invented(uint32_t rideType)

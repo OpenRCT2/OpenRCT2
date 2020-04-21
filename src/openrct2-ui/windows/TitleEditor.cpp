@@ -339,7 +339,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1)
                 {
                     TitleSequenceRemovePark(_editingTitleSequence, w->selected_list_item);
-                    if (w->selected_list_item >= (int16_t)_editingTitleSequence->NumSaves)
+                    if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->NumSaves))
                     {
                         w->selected_list_item--;
                     }
@@ -358,7 +358,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             }
             break;
         case WIDX_TITLE_EDITOR_LOAD_SAVE:
-            if (w->selected_list_item >= 0 && w->selected_list_item < (int16_t)_editingTitleSequence->NumSaves)
+            if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumSaves))
             {
                 auto handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
                 auto stream = static_cast<IStream*>(handle->Stream);
@@ -416,7 +416,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands))
                 {
-                    for (int32_t i = w->selected_list_item; i < static_cast<int16_t>(_editingTitleSequence->NumCommands - 1);
+                    for (int32_t i = w->selected_list_item; i < static_cast<int16_t>(_editingTitleSequence->NumCommands) - 1;
                          i++)
                     {
                         _editingTitleSequence->Commands[i] = _editingTitleSequence->Commands[i + 1];
@@ -446,7 +446,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1
-                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands - 1))
+                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands) - 1)
                 {
                     TitleCommand* a = &_editingTitleSequence->Commands[w->selected_list_item];
                     TitleCommand* b = &_editingTitleSequence->Commands[w->selected_list_item + 1];
@@ -1032,7 +1032,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
         else
         {
             format_string(buffer + 1, 255, commandName, gCommonFormatArgs);
-            buffer[0] = static_cast<utf8>((error) ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
+            buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
         }
         set_format_arg(0, uintptr_t, &buffer);
         gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);

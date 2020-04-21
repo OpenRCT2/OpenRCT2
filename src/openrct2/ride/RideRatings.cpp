@@ -429,12 +429,12 @@ static void proximity_score_increment(int32_t type)
  */
 static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTileElement, int32_t direction)
 {
-    int32_t x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
-    int32_t y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
-    if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
+    auto scorePos = CoordsXY{ gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x,
+                              gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y };
+    if (!map_is_location_valid(scorePos))
         return;
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(scorePos);
     if (tileElement == nullptr)
         return;
     do
@@ -454,8 +454,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 }
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                if (abs(static_cast<int32_t>(inputTileElement->base_height) - static_cast<int32_t>(tileElement->base_height))
-                    <= 2)
+                if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
                 {
                     proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
                 }
@@ -463,9 +462,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
             case TILE_ELEMENT_TYPE_TRACK:
                 if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
-                    if (abs(static_cast<int32_t>(inputTileElement->base_height)
-                            - static_cast<int32_t>(tileElement->base_height))
-                        <= 2)
+                    if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
                     {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                     }
@@ -473,9 +470,9 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                if (tileElement->base_height < inputTileElement->clearance_height)
+                if (tileElement->GetBaseZ() < inputTileElement->GetClearanceZ())
                 {
-                    if (inputTileElement->base_height > tileElement->clearance_height)
+                    if (inputTileElement->GetBaseZ() > tileElement->GetClearanceZ())
                     {
                         proximity_score_increment(PROXIMITY_SCENERY_SIDE_ABOVE);
                     }
@@ -867,9 +864,9 @@ static void ride_ratings_calculate_value(Ride* ride)
 static uint16_t ride_compute_upkeep(Ride* ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
-    uint16_t upkeep = initialUpkeepCosts[ride->type];
+    uint16_t upkeep = RideTypeDescriptors[ride->type].UpkeepCosts.BaseCost;
 
-    uint16_t trackCost = costPerTrackPiece[ride->type];
+    uint16_t trackCost = RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrackPiece;
     uint8_t dropFactor = ride->drops;
 
     dropFactor >>= 6;
@@ -882,10 +879,7 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // rides that had tracks. The 0's were fixed rides like crooked house or
     // dodgems.
     // Data source is 0x0097E3AC
-    if (hasRunningTrack[ride->type])
-    {
-        totalLength *= 20;
-    }
+    totalLength *= RideTypeDescriptors[ride->type].UpkeepCosts.TrackLengthMultiplier;
     upkeep += static_cast<uint16_t>(totalLength >> 10);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -912,17 +906,12 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += costPerVehicle[ride->type] * ride->num_vehicles;
-
-    // either set to 3 or 0, extra boosts for some rides including mini golf
-    if (chargeUpkeepForTrainLength[ride->type])
-    {
-        upkeep += 3 * ride->num_cars_per_train;
-    }
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
-    upkeep += costPerStation[ride->type] * ride->num_stations;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerStation * ride->num_stations;
 
     if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
     {
@@ -1038,7 +1027,7 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple* ratings)
 static void set_unreliability_factor(Ride* ride)
 {
     // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8_t minLiftSpeed = RideLiftData[ride->type].minimum_speed;
+    uint8_t minLiftSpeed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
     ride->unreliability_factor += (ride->lift_hill_speed - minLiftSpeed) * 2;
 }
 

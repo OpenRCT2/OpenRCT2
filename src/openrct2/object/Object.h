@@ -176,6 +176,7 @@ private:
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<uint8_t> _sourceGames;
+    bool _isJsonObject{};
 
 protected:
     StringTable& GetStringTable()
@@ -198,6 +199,16 @@ protected:
 public:
     explicit Object(const rct_object_entry& entry);
     virtual ~Object();
+
+    void MarkAsJsonObject()
+    {
+        _isJsonObject = true;
+    }
+
+    bool IsJsonObject() const
+    {
+        return _isJsonObject;
+    };
 
     // Legacy data structures
     const char* GetIdentifier() const

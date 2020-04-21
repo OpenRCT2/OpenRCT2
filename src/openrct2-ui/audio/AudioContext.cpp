@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Audio
 {
-    class AudioContext : public IAudioContext
+    class AudioContext final : public IAudioContext
     {
     private:
         IAudioMixer* _audioMixer = nullptr;

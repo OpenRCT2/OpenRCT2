@@ -686,7 +686,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 break;
             case INFORMATION_TYPE_RUNNING_COST:
                 formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                if (ride->upkeep_cost != (money16)(uint16_t)0xFFFF)
+                if (ride->upkeep_cost != static_cast<money16>(0xFFFF))
                 {
                     formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
                     set_format_arg(2, int32_t, ride->upkeep_cost * 16);
@@ -784,7 +784,7 @@ void window_ride_list_refresh_list(rct_window* w)
     for (auto& ridec : GetRideManager())
     {
         auto ride = &ridec;
-        if (ride->GetClassification() != (RideClassification)w->page
+        if (ride->GetClassification() != static_cast<RideClassification>(w->page)
             || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(ride)))
             continue;
 
@@ -1010,7 +1010,7 @@ static void window_ride_list_close_all(rct_window* w)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_CLOSED && ride.GetClassification() == (RideClassification)w->page)
+        if (ride.status != RIDE_STATUS_CLOSED && ride.GetClassification() == static_cast<RideClassification>(w->page))
         {
             ride_set_status(&ride, RIDE_STATUS_CLOSED);
         }
@@ -1021,7 +1021,7 @@ static void window_ride_list_open_all(rct_window* w)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN && ride.GetClassification() == (RideClassification)w->page)
+        if (ride.status != RIDE_STATUS_OPEN && ride.GetClassification() == static_cast<RideClassification>(w->page))
         {
             ride_set_status(&ride, RIDE_STATUS_OPEN);
         }

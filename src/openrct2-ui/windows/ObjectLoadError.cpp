@@ -112,22 +112,20 @@ private:
             {
                 char str_downloading_objects[256]{};
                 uint8_t args[32]{};
+                Formatter ft(args);
                 if (_downloadStatusInfo.Source.empty())
                 {
-                    set_format_arg_on(args, 0, int16_t, static_cast<int16_t>(_downloadStatusInfo.Count));
-                    set_format_arg_on(args, 2, int16_t, static_cast<int16_t>(_downloadStatusInfo.Total));
-                    set_format_arg_on(args, 4, char*, _downloadStatusInfo.Name.c_str());
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
+                    ft.Add<char*>(_downloadStatusInfo.Name.c_str());
                     format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
                 }
                 else
                 {
-                    set_format_arg_on(args, 0, char*, _downloadStatusInfo.Name.c_str());
-                    set_format_arg_on(args, sizeof(char*), char*, _downloadStatusInfo.Source.c_str());
-                    set_format_arg_on(
-                        args, sizeof(char*) + sizeof(char*), int16_t, static_cast<int16_t>(_downloadStatusInfo.Count));
-                    set_format_arg_on(
-                        args, sizeof(char*) + sizeof(char*) + sizeof(int16_t), int16_t,
-                        static_cast<int16_t>(_downloadStatusInfo.Total));
+                    ft.Add<char*>(_downloadStatusInfo.Name.c_str());
+                    ft.Add<char*>(_downloadStatusInfo.Source.c_str());
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
+                    ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, args);
                 }
 

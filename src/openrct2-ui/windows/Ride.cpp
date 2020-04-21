@@ -1348,10 +1348,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         }
 
         // For any suspended rides, move image higher in the vehicle tab on the rides window
-        if (ride->type == RIDE_TYPE_COMPACT_INVERTED_COASTER || ride->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
-            || ride->type == RIDE_TYPE_INVERTED_IMPULSE_COASTER || ride->type == RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-            || ride->type == RIDE_TYPE_SUSPENDED_SWINGING_COASTER || ride->type == RIDE_TYPE_CHAIRLIFT
-            || ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER || ride->type == RIDE_TYPE_SUSPENDED_MONORAIL)
+        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
         {
             y /= 4;
         }
@@ -2367,7 +2364,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
                 continue;
 
             // Skip if vehicle does not belong to the same ride group
-            if (RideGroupManager::RideTypeHasRideGroups(ride->type) && !selectionShouldBeExpanded)
+            if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && !selectionShouldBeExpanded)
             {
                 const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
                 const RideGroup* currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
@@ -2490,7 +2487,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 {
                     dropdownIndex = gDropdownHighlightedIndex;
                 }
-                if (dropdownIndex < (int32_t)std::size(gDropdownItemsArgs))
+                if (dropdownIndex < static_cast<int32_t>(std::size(gDropdownItemsArgs)))
                 {
                     switch (gDropdownItemsArgs[dropdownIndex])
                     {
@@ -2780,7 +2777,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
             || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
             || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
         {
-            if (track_piece_is_available_for_ride_type(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
+            if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
                 *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments)) = STR_STOPPED_BY_BLOCK_BRAKES;
                 return STR_BLACK_STRING;
@@ -3505,15 +3502,15 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             window_ride_mode_tweak_decrease(w);
             break;
         case WIDX_LIFT_HILL_SPEED_INCREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
-            lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
+            upper_bound = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
+            lower_bound = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
             set_operating_setting(
                 w->number, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed + 1, lower_bound, upper_bound));
             break;
         case WIDX_LIFT_HILL_SPEED_DECREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
-            lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
+            upper_bound = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
+            lower_bound = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
             set_operating_setting(
                 w->number, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed - 1, lower_bound, upper_bound));
@@ -3646,10 +3643,10 @@ static void window_ride_operating_invalidate(rct_window* w)
         | (1ULL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
 
     // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
-    bool hasAlternativeType = (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE) != 0;
-    if (track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)
+    bool hasAlternativeType = RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
+    if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_LIFT_HILL)
         || (hasAlternativeType
-            && track_piece_is_available_for_ride_type(RideData4[ride->type].alternate_type, TRACK_LIFT_HILL)))
+            && RideTypeDescriptors[RideTypeDescriptors[ride->type].AlternateType].SupportsTrackPiece(TRACK_LIFT_HILL)))
     {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
@@ -4020,7 +4017,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             for (int32_t i = 0; i < 8; i++)
             {
                 assert(j < (int32_t)std::size(rideEntry->ride_type));
-                if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & static_cast<uint8_t>(1 << i))
+                if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                 {
                     if (i == BREAKDOWN_BRAKES_FAILURE
                         && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -4050,7 +4047,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 {
                     for (int32_t i = 0; i < 8; i++)
                     {
-                        if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & static_cast<uint8_t>(1 << i))
+                        if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                         {
                             if (i == BREAKDOWN_BRAKES_FAILURE
                                 && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -4163,7 +4160,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                 for (i = 0; i < BREAKDOWN_COUNT; i++)
                 {
                     assert(j < (int32_t)std::size(rideEntry->ride_type));
-                    if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & static_cast<uint8_t>(1 << i))
+                    if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE
                             && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -4236,7 +4233,7 @@ static void window_ride_maintenance_invalidate(rct_window* w)
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_EMPTY;
     }
 
-    if (RideAvailableBreakdowns[ride->type] == 0 || !(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+    if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0 || !(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
     {
         w->disabled_widgets |= (1 << WIDX_REFURBISH_RIDE);
         window_ride_maintenance_widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;
@@ -5341,7 +5338,7 @@ static void window_ride_music_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static rct_string_id get_rating_name(ride_rating rating)
 {
-    int32_t index = std::clamp<int32_t>(rating >> 8, 0, (int32_t)std::size(RatingNames) - 1);
+    int32_t index = std::clamp<int32_t>(rating >> 8, 0, static_cast<int32_t>(std::size(RatingNames)) - 1);
     return RatingNames[index];
 }
 

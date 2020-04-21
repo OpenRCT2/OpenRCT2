@@ -57,7 +57,6 @@ struct rct_ride_data_4
     uint8_t price;
     uint8_t price_secondary;
     uint8_t default_music;
-    uint8_t alternate_type;
 };
 
 struct ride_cost
@@ -73,9 +72,7 @@ struct rct_ride_data_5
     int8_t z_offset;
     uint8_t max_mass;
     uint8_t z;
-    uint8_t price;
-    uint8_t bonus_value; // Deprecated. Use rideBonusValue instead
-    uint8_t pad = 0;
+    uint8_t PriceEstimateMultiplier;
 };
 
 struct rct_ride_lift_data
@@ -85,16 +82,49 @@ struct rct_ride_lift_data
     uint8_t maximum_speed;
 };
 
+struct UpkeepCostsDescriptor
+{
+    /**
+     * Data about ride running costs. This is widely adjusted by the upkeep
+     * function, so values that don't make much sense here (a roller coaster having
+     * cheaper upkeep than a car ride) are fixed later on.
+     *
+     * Data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
+     */
+    uint8_t BaseCost;
+    /** rct2: 0x0097E3AC */
+    uint8_t TrackLengthMultiplier;
+    uint8_t CostPerTrackPiece;
+    /** rct2: 0x0097E3B4 */
+    uint8_t CostPerTrain;
+    /** rct2: 0x0097E3B6 */
+    uint8_t CostPerCar;
+    /** rct2: 0x0097E3B8 */
+    uint8_t CostPerStation;
+};
+
 struct RideTypeDescriptor
 {
+    uint8_t AlternateType;
+    uint8_t Category;
     // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
     uint64_t EnabledTrackPieces;
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     uint64_t ExtraTrackPieces;
+    /** rct2: 0x0097CC68 */
+    uint64_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     RideNameConvention NameConvention;
+    uint8_t AvailableBreakdowns;
+    /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
+    rct_ride_lift_data LiftData;
+    UpkeepCostsDescriptor UpkeepCosts;
+
+    bool HasFlag(uint64_t flag) const;
+    uint64_t GetAvailableTrackPieces() const;
+    bool SupportsTrackPiece(const uint64_t trackPiece) const;
 };
 
 #ifdef _WIN32
@@ -170,6 +200,11 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT = (1ULL << 45),
     RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1ULL << 46),
     RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED = (1ULL << 47), // This is only set on the Flying RC and its alternative type.
+
+    RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1ULL << 48),
+    RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1ULL << 49),
+    RIDE_TYPE_FLAG_IS_SUSPENDED = (1ULL << 50),
+    RIDE_TYPE_FLAG_HAS_RIDE_GROUPS = (1ULL << 51),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -185,13 +220,6 @@ constexpr const uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER = RIDE_TYPE_FLAG_HAS_G_F
 constexpr const uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT = RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER
     | RIDE_TYPE_FLAG_HAS_AIR_TIME | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT;
 
-extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
-extern const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT];
-extern const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT];
-
-extern const uint8_t costPerVehicle[RIDE_TYPE_COUNT];
-extern const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT];
-extern const uint8_t costPerStation[RIDE_TYPE_COUNT];
 extern const uint8_t rideBonusValue[RIDE_TYPE_COUNT];
 
 // clang-format off
@@ -217,9 +245,6 @@ constexpr const RideComponentName RideComponentNames[] =
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
 extern const uint8_t RideAvailableModes[];
 extern const uint8_t AllRideModesAvailable[];
-extern const uint8_t RideAvailableBreakdowns[];
-
-extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
 extern const int32_t RidePhotoItems[RIDE_TYPE_COUNT];
@@ -229,11 +254,8 @@ extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
-extern const uint16_t RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
-
-extern const uint8_t RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
