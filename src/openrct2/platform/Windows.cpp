@@ -221,7 +221,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         return false;
     }
 
-    std::unique_ptr<wchar_t> wSteamPath(new wchar_t[size]);
+    auto wSteamPath = std::make_unique<wchar_t[]>(size);
     result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath.get(), &size);
     if (result == ERROR_SUCCESS)
     {

@@ -39,8 +39,6 @@ ImportResult ImageImporter::Import(
     auto pixels = GetPixels(image.Pixels.data(), width, height, flags, mode);
     auto buffer = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height)
                                                             : EncodeRaw(pixels.data(), width, height);
-    //buffer = EncodeRaw(pixels.data(), width, height);
-    //auto buffer = EncodeRLE(pixels.data(), width, height);
 
     rct_g1_element outElement;
     outElement.offset = buffer.data();
@@ -53,7 +51,9 @@ ImportResult ImageImporter::Import(
 
     ImportResult result;
     result.Element = outElement;
-    result.Buffer = buffer;
+
+    //this ensures that outElement.offset remains valid with the variable
+    result.Buffer = std::move(buffer);
     return result;
 }
 
