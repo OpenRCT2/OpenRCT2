@@ -697,12 +697,6 @@ declare global {
         viewport: Viewport
     }
 
-    interface Tab {
-        image: number;
-        tooltip: string;
-        widgets: Widget[];
-    }
-
     interface Window {
         classification: number;
         number: number;
@@ -720,13 +714,6 @@ declare global {
         findWidget<T extends Widget>(name: string): T;
     }
 
-    interface TabbedWindow extends Window {
-        tabs: Tab[];
-        activeTabIndex: number;
-
-        onTabChanged: (index: number) => void;
-    }
-
     interface WindowDesc {
         classification: string;
         x?: number;
@@ -739,7 +726,6 @@ declare global {
         minHeight?: number;
         widgets?: Widget[];
         colours?: number[];
-        tabs?: Tab[];
 
         onClose?: () => void;
     }
