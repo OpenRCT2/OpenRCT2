@@ -4539,6 +4539,7 @@
 					"$(SRCROOT)/libxc/include/openssl",
 					"$(SRCROOT)/libxc/include/freetype2",
 					"$(SRCROOT)/src/",
+					"$(SRCROOT)/src/thirdparty/",
 				);
 				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4582,6 +4583,7 @@
 					"$(SRCROOT)/libxc/include/openssl",
 					"$(SRCROOT)/libxc/include/freetype2",
 					"$(SRCROOT)/src/",
+					"$(SRCROOT)/src/thirdparty/",
 				);
 				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4625,6 +4627,8 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 					"$(SRCROOT)/libxc/include/freetype2",
+					"$(SRCROOT)/src/",
+					"$(SRCROOT)/src/thirdparty/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4665,6 +4669,8 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 					"$(SRCROOT)/libxc/include/freetype2",
+					"$(SRCROOT)/src/",
+					"$(SRCROOT)/src/thirdparty/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4700,6 +4706,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 					"$(SRCROOT)/src/",
+					"$(SRCROOT)/src/thirdparty/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4733,6 +4740,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 					"$(SRCROOT)/src/",
+					"$(SRCROOT)/src/thirdparty/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
