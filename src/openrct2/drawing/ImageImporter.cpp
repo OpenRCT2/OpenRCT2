@@ -37,11 +37,13 @@ ImportResult ImageImporter::Import(
     const auto height = image.Height;
 
     auto pixels = GetPixels(image.Pixels.data(), width, height, flags, mode);
-    auto [buffer, bufferLength] = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height)
+    auto buffer = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height)
                                                             : EncodeRaw(pixels.data(), width, height);
+    //buffer = EncodeRaw(pixels.data(), width, height);
+    //auto buffer = EncodeRLE(pixels.data(), width, height);
 
     rct_g1_element outElement;
-    outElement.offset = (uint8_t*)buffer;
+    outElement.offset = buffer.data();
     outElement.width = width;
     outElement.height = height;
     outElement.flags = (flags & IMPORT_FLAGS::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
@@ -52,7 +54,6 @@ ImportResult ImageImporter::Import(
     ImportResult result;
     result.Element = outElement;
     result.Buffer = buffer;
-    result.BufferLength = bufferLength;
     return result;
 }
 
@@ -108,19 +109,19 @@ std::vector<int32_t> ImageImporter::GetPixels(
     return buffer;
 }
 
-std::tuple<void*, size_t> ImageImporter::EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height)
+std::vector<uint8_t> ImageImporter::EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height)
 {
-    auto bufferLength = width * height;
-    auto buffer = new uint8_t[bufferLength];
-    for (size_t i = 0; i < bufferLength; i++)
+    std::vector<uint8_t> buffer;
+    buffer.resize(width * height);
+    for (size_t i = 0; i < buffer.size(); i++)
     {
         auto p = pixels[i];
         buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : (uint8_t)p);
     }
-    return std::make_tuple(buffer, bufferLength);
+    return buffer;
 }
 
-std::tuple<void*, size_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height)
+std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height)
 {
     struct RLECode
     {
@@ -129,13 +130,25 @@ std::tuple<void*, size_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32
     };
 
     auto src = pixels;
-    auto buffer = (uint8_t*)std::malloc((height * 2) + (width * height * 16));
+   // auto buffer = (uint8_t*)std::malloc((height * 2) + (width * height * 16));
+
+    auto buffer = new uint8_t[(height * 2) + (width * height * 16)];
+
+    /*std::vector<uint8_t> buffer;
+    buffer.resize((height * 2) + (width * height * 16));
+    if (buffer.data() == nullptr)
+    {
+        throw std::bad_alloc();
+    }*/
     if (buffer == nullptr)
     {
         throw std::bad_alloc();
     }
 
-    std::fill_n(buffer, (height * 2) + (width * height * 16), 0x00);
+    //std::fill_n(buffer.begin(), (height * 2) + (width * height * 16), 0);
+    //auto yOffsets = (uint16_t*)buffer.data();
+    //auto dst = buffer.data() + (height * 2);
+
     auto yOffsets = (uint16_t*)buffer;
     auto dst = buffer + (height * 2);
     for (uint32_t y = 0; y < height; y++)
@@ -214,12 +227,17 @@ std::tuple<void*, size_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32
     }
 
     auto bufferLength = (size_t)(dst - buffer);
-    buffer = (uint8_t*)realloc(buffer, bufferLength);
-    if (buffer == nullptr)
+    //buffer.resize(bufferLength);
+    //buffer = (uint8_t*)realloc(buffer, bufferLength);
+    /*if (buffer == nullptr)
     {
         throw std::bad_alloc();
-    }
-    return std::make_tuple(buffer, bufferLength);
+    }*/
+    //return std::make_tuple(buffer, bufferLength);
+
+    std::vector<uint8_t> out(buffer, buffer + bufferLength);
+    delete[] buffer;
+    return out;
 }
 
 int32_t ImageImporter::CalculatePaletteIndex(
