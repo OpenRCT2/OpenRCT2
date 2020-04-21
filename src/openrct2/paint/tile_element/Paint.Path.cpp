@@ -447,17 +447,20 @@ static void sub_6A4101(
             uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
 
-            set_format_arg(0, uint32_t, 0);
-            set_format_arg(4, uint32_t, 0);
+            // This is required due to scrolling_test_setup doing a memcmp of another set
+            // of args and see if it matches these args
+            Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+
+            auto ft = Formatter::Common();
 
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-                ride->FormatNameTo(gCommonFormatArgs + 2);
+                ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
+                ride->FormatNameTo(ft);
             }
             else
             {
-                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
+                ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
             }
             if (gConfigGeneral.upper_case_banners)
             {
