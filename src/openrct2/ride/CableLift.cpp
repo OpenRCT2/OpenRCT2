@@ -124,7 +124,7 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
         acceleration = 0;
     }
 
-    if (!(cable_lift_update_track_motion(this) & (1 << 0)))
+    if (!(cable_lift_update_track_motion(this) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
         return;
 
     velocity = 0;
@@ -155,10 +155,10 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
     Vehicle* passengerVehicle = GET_VEHICLE(cable_lift_target);
     Vehicle* cableLiftSecondPart = GET_VEHICLE(prev_vehicle_on_ride);
 
-    int16_t dist_x = abs(passengerVehicle->x - cableLiftSecondPart->x);
-    int16_t dist_y = abs(passengerVehicle->y - cableLiftSecondPart->y);
+    int16_t distX = abs(passengerVehicle->x - cableLiftSecondPart->x);
+    int16_t distY = abs(passengerVehicle->y - cableLiftSecondPart->y);
 
-    if (dist_x + dist_y > 2)
+    if (distX + distY > 2)
         return;
 
     velocity = 0;
@@ -194,7 +194,7 @@ void Vehicle::CableLiftUpdateTravelling()
     if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
         return;
 
-    if (!(cable_lift_update_track_motion(this) & (1 << 1)))
+    if (!(cable_lift_update_track_motion(this) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
         return;
 
     velocity = 0;
