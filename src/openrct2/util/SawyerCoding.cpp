@@ -111,7 +111,7 @@ size_t sawyercoding_decode_sc4(const uint8_t* src, uint8_t* dst, size_t length, 
     {
         dst[i + 1] = ror8(dst[i + 1], 3);
 
-        uint32_t* code = (uint32_t*)&dst[i];
+        uint32_t* code = reinterpret_cast<uint32_t*>(&dst[i]);
         *code = rol32(*code, 9);
     }
 
@@ -128,7 +128,7 @@ size_t sawyercoding_encode_sv4(const uint8_t* src, uint8_t* dst, size_t length)
 
     // Append checksum
     checksum = sawyercoding_calculate_checksum(dst, encodedLength);
-    *((uint32_t*)&dst[encodedLength]) = checksum;
+    *(reinterpret_cast<uint32_t*>(&dst[encodedLength])) = checksum;
 
     return encodedLength + 4;
 }
@@ -151,7 +151,7 @@ size_t sawyercoding_encode_td6(const uint8_t* src, uint8_t* dst, size_t length)
     }
     checksum -= 0x1D4C1;
 
-    *((uint32_t*)&dst[output_length]) = checksum;
+    *(reinterpret_cast<uint32_t*>(&dst[output_length])) = checksum;
     output_length += 4;
     return output_length;
 }
