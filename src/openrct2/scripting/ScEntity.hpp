@@ -18,13 +18,13 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScThing
+    class ScEntity
     {
     protected:
         uint16_t _id = SPRITE_INDEX_NULL;
 
     public:
-        ScThing(uint16_t id)
+        ScEntity(uint16_t id)
             : _id(id)
         {
         }
@@ -32,17 +32,17 @@ namespace OpenRCT2::Scripting
     private:
         std::string type_get()
         {
-            auto thing = GetThing();
-            if (thing != nullptr)
+            auto entity = GetEntity();
+            if (entity != nullptr)
             {
-                switch (thing->sprite_identifier)
+                switch (entity->sprite_identifier)
                 {
                     case SPRITE_IDENTIFIER_VEHICLE:
                         return "car";
                     case SPRITE_IDENTIFIER_PEEP:
                         return "peep";
                     case SPRITE_IDENTIFIER_MISC:
-                        switch (thing->type)
+                        switch (entity->type)
                         {
                             case SPRITE_MISC_BALLOON:
                                 return "balloon";
@@ -60,52 +60,52 @@ namespace OpenRCT2::Scripting
         // x getter and setter
         int32_t x_get()
         {
-            auto thing = GetThing();
-            return thing != nullptr ? thing->x : 0;
+            auto entity = GetEntity();
+            return entity != nullptr ? entity->x : 0;
         }
         void x_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto thing = GetThing();
-            if (thing != nullptr)
+            auto entity = GetEntity();
+            if (entity != nullptr)
             {
-                sprite_move(value, thing->y, thing->z, thing);
+                sprite_move(value, entity->y, entity->z, entity);
             }
         }
 
         // y getter and setter
         int32_t y_get()
         {
-            auto thing = GetThing();
-            return thing != nullptr ? thing->y : 0;
+            auto entity = GetEntity();
+            return entity != nullptr ? entity->y : 0;
         }
         void y_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto thing = GetThing();
-            if (thing != nullptr)
+            auto entity = GetEntity();
+            if (entity != nullptr)
             {
-                sprite_move(thing->x, value, thing->z, thing);
+                sprite_move(entity->x, value, entity->z, entity);
             }
         }
 
         // z getter and setter
         int16_t z_get()
         {
-            auto thing = GetThing();
-            return thing != nullptr ? thing->z : 0;
+            auto entity = GetEntity();
+            return entity != nullptr ? entity->z : 0;
         }
         void z_set(int16_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto thing = GetThing();
-            if (thing != nullptr)
+            auto entity = GetEntity();
+            if (entity != nullptr)
             {
-                sprite_move(thing->x, thing->y, value, thing);
+                sprite_move(entity->x, entity->y, value, entity);
             }
         }
 
-        SpriteBase* GetThing()
+        SpriteBase* GetEntity()
         {
             return &get_sprite(_id)->generic;
         }
@@ -113,18 +113,18 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScThing::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScThing::x_get, &ScThing::x_set, "x");
-            dukglue_register_property(ctx, &ScThing::y_get, &ScThing::y_set, "y");
-            dukglue_register_property(ctx, &ScThing::z_get, &ScThing::z_set, "z");
+            dukglue_register_property(ctx, &ScEntity::type_get, nullptr, "type");
+            dukglue_register_property(ctx, &ScEntity::x_get, &ScEntity::x_set, "x");
+            dukglue_register_property(ctx, &ScEntity::y_get, &ScEntity::y_set, "y");
+            dukglue_register_property(ctx, &ScEntity::z_get, &ScEntity::z_set, "z");
         }
     };
 
-    class ScPeep : public ScThing
+    class ScPeep : public ScEntity
     {
     public:
         ScPeep(uint16_t id)
-            : ScThing(id)
+            : ScEntity(id)
         {
         }
 
@@ -166,7 +166,7 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScThing, ScPeep>(ctx);
+            dukglue_set_base_class<ScEntity, ScPeep>(ctx);
             dukglue_register_property(ctx, &ScPeep::tshirtColour_get, &ScPeep::tshirtColour_set, "tshirtColour");
             dukglue_register_property(ctx, &ScPeep::trousersColour_get, &ScPeep::trousersColour_set, "trousersColour");
         }

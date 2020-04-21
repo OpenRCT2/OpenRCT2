@@ -295,13 +295,13 @@ declare global {
     interface GameMap {
         readonly size: Coord2;
         readonly numRides: number;
-        readonly numThings: number;
+        readonly numEntities: number;
         readonly rides: Ride[];
 
         getRide(id: number): Ride;
         getTile(x: number, y: number): Tile;
-        getThing(id: number): Thing;
-        getAllThings(type: ThingType);
+        getEntity(id: number): Entity;
+        getAllEntities(type: EntityType);
     }
 
     type TileElementType =
@@ -491,27 +491,27 @@ declare global {
         totalCustomers: number;
     }
 
-    type ThingType =
+    type EntityType =
         "car" | "duck" | "peep";
 
     /**
-     * Represents an object "thing" on the map that can typically moves and has a sub-tile coordinate.
+     * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
      */
-    interface Thing {
+    interface Entity {
         /**
-         * The type of thing, e.g. car, duck, litter, or peep.
+         * The type of entity, e.g. car, duck, litter, or peep.
          */
-        readonly type: ThingType;
+        readonly type: EntityType;
         /**
-         * The x-coordinate of the thing in game units.
+         * The x-coordinate of the entity in game units.
          */
         x: number;
         /**
-         * The y-coordinate of the thing in game units.
+         * The y-coordinate of the entity in game units.
          */
         y: number;
         /**
-         * The z-coordinate of the thing in game units.
+         * The z-coordinate of the entity in game units.
          */
         z: number;
     }
@@ -519,7 +519,7 @@ declare global {
     /**
      * Represents a guest or staff member.
      */
-    interface Peep extends Thing {
+    interface Peep extends Entity {
         /**
          * Colour of the peep's t-shirt.
          */

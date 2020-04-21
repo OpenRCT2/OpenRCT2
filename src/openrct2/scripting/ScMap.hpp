@@ -15,8 +15,8 @@
 #    include "../ride/Ride.h"
 #    include "../world/Map.h"
 #    include "Duktape.hpp"
+#    include "ScEntity.hpp"
 #    include "ScRide.hpp"
-#    include "ScThing.hpp"
 #    include "ScTile.hpp"
 
 namespace OpenRCT2::Scripting
@@ -48,7 +48,7 @@ namespace OpenRCT2::Scripting
             return static_cast<int32_t>(GetRideManager().size());
         }
 
-        int32_t numThings_get()
+        int32_t numEntities_get()
         {
             return MAX_SPRITES;
         }
@@ -84,7 +84,7 @@ namespace OpenRCT2::Scripting
             return std::make_shared<ScTile>(coords);
         }
 
-        DukValue getThing(int32_t id)
+        DukValue getEntity(int32_t id)
         {
             if (id >= 0 && id < MAX_SPRITES)
             {
@@ -92,14 +92,14 @@ namespace OpenRCT2::Scripting
                 auto sprite = get_sprite(spriteId);
                 if (sprite != nullptr && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
                 {
-                    return GetThingAsDukValue(sprite);
+                    return GetEntityAsDukValue(sprite);
                 }
             }
             duk_push_null(_context);
             return DukValue::take_from_stack(_context);
         }
 
-        std::vector<DukValue> getAllThings(const std::string& type)
+        std::vector<DukValue> getAllEntities(const std::string& type)
         {
             SPRITE_LIST targetList{};
             uint8_t targetType{};
@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                duk_error(_context, DUK_ERR_ERROR, "Invalid thing type.");
+                duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
             }
 
             std::vector<DukValue> result;
@@ -160,14 +160,14 @@ namespace OpenRCT2::Scripting
                                 }
                                 else
                                 {
-                                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScThing>(carId)));
+                                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(carId)));
                                     carId = car->vehicle.next_vehicle_on_train;
                                 }
                             }
                         }
                         else
                         {
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScThing>(spriteId)));
+                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId)));
                         }
                     }
                     spriteId = sprite->generic.next;
@@ -180,16 +180,16 @@ namespace OpenRCT2::Scripting
         {
             dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
             dukglue_register_property(ctx, &ScMap::numRides_get, nullptr, "numRides");
-            dukglue_register_property(ctx, &ScMap::numThings_get, nullptr, "numThings");
+            dukglue_register_property(ctx, &ScMap::numEntities_get, nullptr, "numEntities");
             dukglue_register_property(ctx, &ScMap::rides_get, nullptr, "rides");
             dukglue_register_method(ctx, &ScMap::getRide, "getRide");
             dukglue_register_method(ctx, &ScMap::getTile, "getTile");
-            dukglue_register_method(ctx, &ScMap::getThing, "getThing");
-            dukglue_register_method(ctx, &ScMap::getAllThings, "getAllThings");
+            dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
+            dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
         }
 
     private:
-        DukValue GetThingAsDukValue(const rct_sprite* sprite)
+        DukValue GetEntityAsDukValue(const rct_sprite* sprite)
         {
             auto spriteId = sprite->generic.sprite_index;
             switch (sprite->generic.sprite_identifier)
@@ -197,7 +197,7 @@ namespace OpenRCT2::Scripting
                 case SPRITE_IDENTIFIER_PEEP:
                     return GetObjectAsDukValue(_context, std::make_shared<ScPeep>(spriteId));
                 default:
-                    return GetObjectAsDukValue(_context, std::make_shared<ScThing>(spriteId));
+                    return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));
             }
         }
     };

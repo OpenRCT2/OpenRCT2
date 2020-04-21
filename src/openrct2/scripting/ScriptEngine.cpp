@@ -25,12 +25,12 @@
 #    include "ScContext.hpp"
 #    include "ScDate.hpp"
 #    include "ScDisposable.hpp"
+#    include "ScEntity.hpp"
 #    include "ScMap.hpp"
 #    include "ScNetwork.hpp"
 #    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
-#    include "ScThing.hpp"
 #    include "ScTile.hpp"
 
 #    include <iostream>
@@ -382,7 +382,7 @@ void ScriptEngine::Initialise()
     ScRideObject::Register(ctx);
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
-    ScThing::Register(ctx);
+    ScEntity::Register(ctx);
     ScPeep::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
