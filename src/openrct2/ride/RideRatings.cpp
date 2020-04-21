@@ -429,12 +429,12 @@ static void proximity_score_increment(int32_t type)
  */
 static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTileElement, int32_t direction)
 {
-    int32_t x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
-    int32_t y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
-    if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
+    auto scorePos = CoordsXY{ gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x,
+                              gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y };
+    if (!map_is_location_valid(scorePos))
         return;
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(scorePos);
     if (tileElement == nullptr)
         return;
     do
