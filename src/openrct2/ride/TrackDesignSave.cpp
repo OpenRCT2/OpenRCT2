@@ -227,6 +227,12 @@ static void track_design_save_add_large_scenery(const CoordsXY& loc, LargeScener
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t direction, sequence;
 
+    if (tileElement == nullptr)
+    {
+        log_warning("Null tile element");
+        return;
+    }
+
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
@@ -403,6 +409,12 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t direction, sequence;
+
+    if (tileElement == nullptr)
+    {
+        log_warning("Null tile element");
+        return;
+    }
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);

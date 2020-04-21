@@ -85,7 +85,16 @@ namespace OpenRCT2
 
         public:
             explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
             ~X8DrawingEngine() override;
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
 
             void Initialise() override;
             void Resize(uint32_t width, uint32_t height) override;

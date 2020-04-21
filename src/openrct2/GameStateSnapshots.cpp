@@ -109,7 +109,7 @@ struct GameStateSnapshot_t
     }
 };
 
-struct GameStateSnapshots : public IGameStateSnapshots
+struct GameStateSnapshots final : public IGameStateSnapshots
 {
     virtual void Reset() override final
     {

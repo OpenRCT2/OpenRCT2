@@ -791,5 +791,3 @@ struct RCT12ResearchItem
 assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
-
-bool is_user_string_id(rct_string_id stringId);

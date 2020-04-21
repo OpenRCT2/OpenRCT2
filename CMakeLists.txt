@@ -69,7 +69,7 @@ endif ()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
-list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS)
+set(SUPPORTED_CHECK_CXX_COMPILER_FLAGS "")
 
 include(cmake/ipo.cmake)
 list(APPEND IPO_ENABLED_BUILDS RELEASE RELWITHDEBINFO MINSIZEREL)
@@ -122,16 +122,6 @@ if (ENABLE_LIGHTFX)
     add_definitions(-D__ENABLE_LIGHTFX__)
 endif ()
 
-if (CXX_WARN_SUGGEST_FINAL_TYPES)
-    # Disable -Wsuggest-final-types via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
-endif ()
-
-if (CXX_WARN_SUGGEST_FINAL_METHODS)
-    # Disable -Wsuggest-final-methods via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
-endif ()
-
 if (NOT DISABLE_DISCORD_RPC)
     if(EXISTS "${ROOT_DIR}/discord-rpc")
         # Don't build discord's examples, some of which are in C and do not honour
@@ -162,7 +152,7 @@ endif()
 function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
     CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
     if (${_CACHE_VAR})
-        list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS "${_FLAG}")
+        set(SUPPORTED_CHECK_CXX_COMPILER_FLAGS ${SUPPORTED_CHECK_CXX_COMPILER_FLAGS} ${_FLAG} PARENT_SCOPE)
     else ()
         message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
     endif ()
@@ -201,9 +191,6 @@ if (MSVC)
     endif ()
     add_definitions(-DNOMINMAX)
 else ()
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
@@ -215,7 +202,7 @@ else ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_LOGICAL_OP -Wlogical-op)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
-    ADD_CHECK_CXX_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
     # Disabled due to problems compiling OpenSSL on macOS.
     # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
 
@@ -223,6 +210,14 @@ else ()
     if (NOT MINGW)
         # Do not enable for MinGW, as its headers contain redundant declarations of builtin functions
         ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
+
+        # Currently used MinGW w/GCC 7.2 doesn't provide sane error messages for this
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
+    endif ()
+    # These have no workarounds available when building with LTO
+    if (NOT IPO_BUILD_ENABLED)
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
     endif ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
 
@@ -252,6 +247,16 @@ else ()
     else ()
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_TYPES)
+    # Disable -Wsuggest-final-types via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_METHODS)
+    # Disable -Wsuggest-final-methods via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()
 
 # Include sub-projects

@@ -79,7 +79,7 @@ using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
 {
-    class Context : public IContext
+    class Context final : public IContext
     {
     private:
         // Dependencies

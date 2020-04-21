@@ -51,8 +51,6 @@ uint8_t gResearchExpectedMonth;
 uint8_t gResearchExpectedDay;
 std::optional<ResearchItem> gResearchNextItem;
 
-// 0x01358844[500]
-ResearchItem gResearchItems[MAX_RESEARCH_ITEMS];
 std::vector<ResearchItem> gResearchItemsUninvented;
 std::vector<ResearchItem> gResearchItemsInvented;
 
