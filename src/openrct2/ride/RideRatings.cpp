@@ -429,12 +429,12 @@ static void proximity_score_increment(int32_t type)
  */
 static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTileElement, int32_t direction)
 {
-    int32_t x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
-    int32_t y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
-    if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
+    auto scorePos = CoordsXY{ gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x,
+                              gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y };
+    if (!map_is_location_valid(scorePos))
         return;
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(scorePos);
     if (tileElement == nullptr)
         return;
     do
@@ -454,8 +454,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 }
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                if (abs(static_cast<int32_t>(inputTileElement->base_height) - static_cast<int32_t>(tileElement->base_height))
-                    <= 2)
+                if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
                 {
                     proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
                 }
@@ -463,9 +462,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
             case TILE_ELEMENT_TYPE_TRACK:
                 if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
-                    if (abs(static_cast<int32_t>(inputTileElement->base_height)
-                            - static_cast<int32_t>(tileElement->base_height))
-                        <= 2)
+                    if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
                     {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                     }
@@ -473,9 +470,9 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                if (tileElement->base_height < inputTileElement->clearance_height)
+                if (tileElement->GetBaseZ() < inputTileElement->GetClearanceZ())
                 {
-                    if (inputTileElement->base_height > tileElement->clearance_height)
+                    if (inputTileElement->GetBaseZ() > tileElement->GetClearanceZ())
                     {
                         proximity_score_increment(PROXIMITY_SCENERY_SIDE_ABOVE);
                     }
