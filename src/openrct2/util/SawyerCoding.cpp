@@ -43,7 +43,7 @@ uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length)
  */
 size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer, sawyercoding_chunk_header chunkHeader)
 {
-    std::unique_ptr<uint8_t> encode_buffer, encode_buffer2;
+    std::unique_ptr<uint8_t[]> encode_buffer, encode_buffer2;
 
     if (!gUseRLE)
     {
@@ -62,15 +62,15 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
             // fwrite(buffer, 1, chunkHeader.length, file);
             break;
         case CHUNK_ENCODING_RLE:
-            encode_buffer = std::unique_ptr<uint8_t>(new uint8_t[0x600000]);
+            encode_buffer = std::make_unique<uint8_t[]>(0x600000);
             chunkHeader.length = static_cast<uint32_t>(encode_chunk_rle(buffer, encode_buffer.get(), chunkHeader.length));
             std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
             dst_file += sizeof(sawyercoding_chunk_header);
             std::memcpy(dst_file, encode_buffer.get(), chunkHeader.length);
             break;
         case CHUNK_ENCODING_RLECOMPRESSED:
-            encode_buffer = std::unique_ptr<uint8_t>(new uint8_t[chunkHeader.length * 2]);
-            encode_buffer2 = std::unique_ptr<uint8_t>(new uint8_t[0x600000]);
+            encode_buffer = std::make_unique<uint8_t[]>(chunkHeader.length * 2);
+            encode_buffer2 = std::make_unique<uint8_t[]>(0x600000);
 
             chunkHeader.length = static_cast<uint32_t>(encode_chunk_repeat(buffer, encode_buffer.get(), chunkHeader.length));
             chunkHeader.length = static_cast<uint32_t>(encode_chunk_rle(encode_buffer.get(), encode_buffer2.get(), chunkHeader.length));
@@ -79,7 +79,7 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
             std::memcpy(dst_file, encode_buffer2.get(), chunkHeader.length);
             break;
         case CHUNK_ENCODING_ROTATE:
-            encode_buffer = std::unique_ptr<uint8_t>(new uint8_t[chunkHeader.length]);
+            encode_buffer = std::make_unique<uint8_t[]>(chunkHeader.length);
             std::memcpy(encode_buffer.get(), buffer, chunkHeader.length);
             encode_chunk_rotate(encode_buffer.get(), chunkHeader.length);
             std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
