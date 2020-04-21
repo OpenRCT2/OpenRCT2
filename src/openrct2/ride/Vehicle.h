@@ -312,6 +312,11 @@ private:
     uint16_t GetSoundPriority() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
+    void CableLiftUpdateMovingToEndOfStation();
+    void CableLiftUpdateWaitingToDepart();
+    void CableLiftUpdateDeparting();
+    void CableLiftUpdateTravelling();
+    void CableLiftUpdateArriving();
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
     void UpdateWaitingToDepart();
@@ -350,11 +355,6 @@ private:
     bool CurrentTowerElementIsTop();
     bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
-    void CableLiftUpdateMovingToEndOfStation();
-    void CableLiftUpdateWaitingToDepart();
-    void CableLiftUpdateDeparting();
-    void CableLiftUpdateTravelling();
-    void CableLiftUpdateArriving();
 };
 
 struct train_ref
