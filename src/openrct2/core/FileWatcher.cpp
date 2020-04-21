@@ -109,7 +109,13 @@ FileWatcher::FileWatcher(const std::string& directoryPath)
 FileWatcher::~FileWatcher()
 {
 #ifdef _WIN32
+#    ifdef __MINGW32__
+    // TODO CancelIo is documented as not working across a different thread but
+    //      CancelIoEx is not available.
+    CancelIo(_directoryHandle);
+#    else
     CancelIoEx(_directoryHandle, nullptr);
+#    endif
     CloseHandle(_directoryHandle);
 #else
     _finished = true;
