@@ -350,6 +350,11 @@ private:
     bool CurrentTowerElementIsTop();
     bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    void CableLiftUpdateMovingToEndOfStation();
+    void CableLiftUpdateWaitingToDepart();
+    void CableLiftUpdateDeparting();
+    void CableLiftUpdateTravelling();
+    void CableLiftUpdateArriving();
 };
 
 struct train_ref
