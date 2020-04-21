@@ -132,6 +132,7 @@ namespace OpenRCT2::Scripting
 
         DukValue getAll(const std::string& ns)
         {
+            DukValue result;
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (IsValidNamespace(ns))
             {
@@ -142,18 +143,19 @@ namespace OpenRCT2::Scripting
                     {
                         obj.Set("general.showFps", gConfigGeneral.show_fps);
                     }
-                    return obj.Take();
+                    result = obj.Take();
                 }
                 else
                 {
                     auto obj = GetNamespaceObject(ns);
-                    return obj ? *obj : DukObject(ctx).Take();
+                    result = obj ? *obj : DukObject(ctx).Take();
                 }
             }
             else
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Namespace was invalid.");
             }
+            return result;
         }
 
         DukValue get(const std::string& key, const DukValue& defaultValue)
