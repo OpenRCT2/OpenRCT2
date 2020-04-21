@@ -132,28 +132,28 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
     auto src = pixels;
    // auto buffer = (uint8_t*)std::malloc((height * 2) + (width * height * 16));
 
-    auto buffer = new uint8_t[(height * 2) + (width * height * 16)];
-
-    /*std::vector<uint8_t> buffer;
+    //auto buffer = new uint8_t[(height * 2) + (width * height * 16)];
+    auto buffer = std::vector<uint8_t>();
     buffer.resize((height * 2) + (width * height * 16));
+
     if (buffer.data() == nullptr)
     {
         throw std::bad_alloc();
-    }*/
-    if (buffer == nullptr)
+    }
+    /*if (buffer == nullptr)
     {
         throw std::bad_alloc();
-    }
+    }*/
 
     //std::fill_n(buffer.begin(), (height * 2) + (width * height * 16), 0);
-    //auto yOffsets = (uint16_t*)buffer.data();
-    //auto dst = buffer.data() + (height * 2);
+    auto yOffsets = (uint16_t*)buffer.data();
+    auto dst = buffer.data() + (height * 2);
 
-    auto yOffsets = (uint16_t*)buffer;
-    auto dst = buffer + (height * 2);
+    //auto yOffsets = (uint16_t*)buffer;
+    //auto dst = buffer + (height * 2);
     for (uint32_t y = 0; y < height; y++)
     {
-        yOffsets[y] = (uint16_t)(dst - buffer);
+        yOffsets[y] = (uint16_t)(dst - buffer.data());
 
         auto previousCode = (RLECode*)nullptr;
         auto currentCode = (RLECode*)dst;
@@ -226,7 +226,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
         }
     }
 
-    auto bufferLength = (size_t)(dst - buffer);
+    auto bufferLength = (size_t)(dst - buffer.data());
     //buffer.resize(bufferLength);
     //buffer = (uint8_t*)realloc(buffer, bufferLength);
     /*if (buffer == nullptr)
@@ -235,9 +235,10 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
     }*/
     //return std::make_tuple(buffer, bufferLength);
 
-    std::vector<uint8_t> out(buffer, buffer + bufferLength);
-    delete[] buffer;
-    return out;
+    return std::vector<uint8_t>(buffer.begin(), buffer.begin() + bufferLength);
+    //buffer.resize(bufferLength);
+    //buffer.erase(buffer.begin() + bufferLength, buffer.end());
+    //return buffer;
 }
 
 int32_t ImageImporter::CalculatePaletteIndex(
