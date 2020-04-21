@@ -207,7 +207,6 @@ bool platform_file_delete(const utf8* path)
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)
 {
-    wchar_t* wSteamPath;
     HKEY hKey;
     DWORD type, size;
     LRESULT result;
@@ -222,15 +221,14 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         return false;
     }
 
-    wSteamPath = (wchar_t*)malloc(size);
-    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
+    std::unique_ptr<wchar_t> wSteamPath(new wchar_t[size]);
+    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath.get(), &size);
     if (result == ERROR_SUCCESS)
     {
-        auto utf8SteamPath = String::ToUtf8(wSteamPath);
+        auto utf8SteamPath = String::ToUtf8(wSteamPath.get());
         safe_strcpy(outPath, utf8SteamPath.c_str(), outSize);
         safe_strcat_path(outPath, "steamapps\\common", outSize);
     }
-    free(wSteamPath);
     RegCloseKey(hKey);
     return result == ERROR_SUCCESS;
 }
