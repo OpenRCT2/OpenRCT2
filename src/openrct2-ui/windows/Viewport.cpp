@@ -201,7 +201,7 @@ static void window_viewport_invalidate(rct_window* w)
     }
 
     // Set title
-    set_format_arg(0, uint32_t, w->number);
+    Formatter::Common().Add<uint32_t>(w->number);
 
     // Set disabled widgets
     w->disabled_widgets = 0;

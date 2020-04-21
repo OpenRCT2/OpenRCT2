@@ -453,7 +453,7 @@ static void window_track_list_invalidate(rct_window* w)
         stringId = rideName.name;
     }
 
-    set_format_arg(0, rct_string_id, stringId);
+    Formatter::Common().Add<rct_string_id>(stringId);
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
@@ -622,8 +622,9 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
 
             // Ride length
-            set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-            set_format_arg(2, uint16_t, _loadedTrackDesign->ride_length);
+            auto ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+            ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
             gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
             y += LIST_ROW_HEIGHT;
         }
@@ -683,15 +684,16 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (_loadedTrackDesign->space_required_x != 0xFF)
     {
         // Space required
-        set_format_arg(0, uint16_t, _loadedTrackDesign->space_required_x);
-        set_format_arg(2, uint16_t, _loadedTrackDesign->space_required_y);
+        auto ft = Formatter::Common();
+        ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
+        ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
 
     if (_loadedTrackDesign->cost != 0)
     {
-        set_format_arg(0, uint32_t, _loadedTrackDesign->cost);
+        Formatter::Common().Add<uint32_t>(_loadedTrackDesign->cost);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 }
@@ -755,8 +757,9 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
             }
 
             // Draw track name
-            set_format_arg(0, rct_string_id, STR_TRACK_LIST_NAME_FORMAT);
-            set_format_arg(2, utf8*, _trackDesigns[i].name);
+            auto ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
+            ft.Add<utf8*>(_trackDesigns[i].name);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y - 1);
         }
 

@@ -429,8 +429,9 @@ void screenshot_giant()
         WriteDpiToFile(path->c_str(), &dpi, renderedPalette);
 
         // Show user that screenshot saved successfully
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, path_get_filename(path->c_str()));
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<char*>(path_get_filename(path->c_str()));
         context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
     }
     catch (const std::exception& e)
