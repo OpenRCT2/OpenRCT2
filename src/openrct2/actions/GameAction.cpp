@@ -52,30 +52,30 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
 
 std::string GameActionResult::GetErrorTitle() const
 {
-    std::string titlez;
-    if (auto title = ErrorTitle.AsString())
+    std::string title;
+    if (auto error = ErrorTitle.AsString())
     {
-        titlez = *title;
+        title = *error;
     }
     else
     {
-        titlez = format_string(ErrorTitle.GetStringId(), nullptr);
+        title = format_string(ErrorTitle.GetStringId(), nullptr);
     }
-    return titlez;
+    return title;
 }
 
 std::string GameActionResult::GetErrorMessage() const
 {
-    std::string messagez;
-    if (auto message = ErrorMessage.AsString())
+    std::string message;
+    if (auto error = ErrorMessage.AsString())
     {
-        messagez = *message;
+        message = *error;
     }
     else
     {
-        messagez = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
+        message = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
     }
-    return messagez;
+    return message;
 }
 
 namespace GameActions

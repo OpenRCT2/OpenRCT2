@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2020 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ namespace OpenRCT2::Scripting
         std::string Text;
         DukValue Callback;
 
-        CustomToolbarMenuItem(std::shared_ptr<Plugin> owner, std::string text, DukValue callback)
+        CustomToolbarMenuItem(std::shared_ptr<Plugin> owner, const std::string& text, DukValue callback)
             : Owner(owner)
             , Text(text)
             , Callback(callback)
