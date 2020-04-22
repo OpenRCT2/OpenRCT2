@@ -529,7 +529,7 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
-// Flags used by PeepThoughtToActionMao
+// Flags used by PeepThoughtToActionMap
 enum PeepThoughtToAction : uint8_t
 {
     PEEP_THOUGHT_ACTION_FLAG_1 = (1 << 0),
