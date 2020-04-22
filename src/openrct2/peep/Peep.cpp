@@ -83,7 +83,7 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height);
 // clang-format off
 
 // Flags used by PeepThoughtToActionMap
-enum PeepThoughtToAction : uint8_t
+enum PeepThoughtToActionFlag : uint8_t
 {
     PEEP_THOUGHT_ACTION_NO_FLAGS = 0,
     PEEP_THOUGHT_ACTION_FLAG_RIDE = (1 << 0),
@@ -95,7 +95,7 @@ enum PeepThoughtToAction : uint8_t
 static struct
 {
     PeepActionType action;
-    PeepThoughtToAction flags;
+    PeepThoughtToActionFlag flags;
 } PeepThoughtToActionMap[] = {
     { PEEP_ACTION_SHAKE_HEAD, PEEP_THOUGHT_ACTION_FLAG_RIDE },
     { PEEP_ACTION_EMPTY_POCKETS, PEEP_THOUGHT_ACTION_NO_FLAGS },
@@ -2059,7 +2059,7 @@ void peep_thought_set_format_args(const rct_peep_thought* thought)
 {
     set_format_arg(0, rct_string_id, PeepThoughts[thought->type]);
 
-    PeepThoughtToAction flags = PeepThoughtToActionMap[thought->type].flags;
+    PeepThoughtToActionFlag flags = PeepThoughtToActionMap[thought->type].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
     {
         auto ride = get_ride(thought->item);
