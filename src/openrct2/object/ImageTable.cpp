@@ -45,10 +45,10 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         if (remainingBytes > imageDataSize)
         {
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size longer than expected.");
-            imageDataSize = (uint32_t)remainingBytes;
+            imageDataSize = static_cast<uint32_t>(remainingBytes);
         }
 
-        auto dataSize = (size_t)imageDataSize;
+        auto dataSize = static_cast<size_t>(imageDataSize);
         auto data = std::make_unique<uint8_t[]>(dataSize);
         if (data == nullptr)
         {
@@ -63,7 +63,7 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         {
             rct_g1_element g1Element;
 
-            uintptr_t imageDataOffset = (uintptr_t)stream->ReadValue<uint32_t>();
+            uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
             g1Element.offset = (uint8_t*)(imageDataBase + imageDataOffset);
 
             g1Element.width = stream->ReadValue<int16_t>();
@@ -77,7 +77,7 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         }
 
         // Read g1 element data
-        size_t readBytes = (size_t)stream->TryRead(data.get(), dataSize);
+        size_t readBytes = static_cast<size_t>(stream->TryRead(data.get(), dataSize));
 
         // If data is shorter than expected (some custom objects are unfortunately like that)
         size_t unreadBytes = dataSize - readBytes;

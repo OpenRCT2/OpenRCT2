@@ -34,7 +34,7 @@ int32_t NetworkConnection::ReadPacket()
     if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
     {
         // read packet size
-        void* buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
+        void* buffer = &(reinterpret_cast<char*>(&InboundPacket.Size))[InboundPacket.BytesTransferred];
         size_t bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
         size_t readBytes;
         NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
@@ -87,7 +87,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     uint16_t sizen = Convert::HostToNetwork(packet.Size);
     std::vector<uint8_t> tosend;
     tosend.reserve(sizeof(sizen) + packet.Size);
-    tosend.insert(tosend.end(), (uint8_t*)&sizen, (uint8_t*)&sizen + sizeof(sizen));
+    tosend.insert(tosend.end(), reinterpret_cast<uint8_t*>(&sizen), reinterpret_cast<uint8_t*>(&sizen) + sizeof(sizen));
     tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
 
     const void* buffer = &tosend[packet.BytesTransferred];
@@ -110,7 +110,7 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
 {
     if (AuthStatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
     {
-        packet->Size = (uint16_t)packet->Data->size();
+        packet->Size = static_cast<uint16_t>(packet->Data->size());
         if (front)
         {
             // If the first packet was already partially sent add new packet to second position
@@ -186,7 +186,7 @@ void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, v
 
 void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
 {
-    uint32_t packetSize = (uint32_t)packet.BytesTransferred;
+    uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
     uint32_t trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
 
     switch (packet.GetCommand())

@@ -20,7 +20,7 @@ namespace Json
         json_t* json = nullptr;
         auto fs = FileStream(path, FILE_MODE_OPEN);
 
-        size_t fileLength = (size_t)fs.GetLength();
+        size_t fileLength = static_cast<size_t>(fs.GetLength());
         if (fileLength > maxSize)
         {
             throw IOException("Json file too large.");

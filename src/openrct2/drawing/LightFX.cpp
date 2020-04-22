@@ -81,24 +81,24 @@ static rct_palette gPalette_light;
 
 static uint8_t calc_light_intensity_lantern(int32_t x, int32_t y)
 {
-    double distance = (double)(x * x + y * y);
+    double distance = static_cast<double>(x * x + y * y);
 
     double light = 0.03 + std::pow(10.0 / (1.0 + distance / 100.0), 0.55);
     light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.1f;
 
-    return (uint8_t)(std::min(255.0, light * 255.0));
+    return static_cast<uint8_t>(std::min(255.0, light * 255.0));
 }
 
 static uint8_t calc_light_intensity_spot(int32_t x, int32_t y)
 {
-    double distance = (double)(x * x + y * y);
+    double distance = static_cast<double>(x * x + y * y);
 
     double light = 0.3 + std::pow(10.0 / (1.0 + distance / 100.0), 0.75);
     light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.5f;
 
-    return (uint8_t)(std::min(255.0, light * 255.0)) >> 4;
+    return static_cast<uint8_t>(std::min(255.0, light * 255.0)) >> 4;
 }
 
 static void calc_rescale_light_half(uint8_t* target, uint8_t* source, uint32_t targetWidth, uint32_t targetHeight)
@@ -425,7 +425,7 @@ void lightfx_swap_buffers()
 
     tmp = _LightListBack;
     _LightListBack = _LightListFront;
-    _LightListFront = (lightlist_entry*)tmp;
+    _LightListFront = static_cast<lightlist_entry*>(tmp);
 
     LightListCurrentCountFront = LightListCurrentCountBack;
     LightListCurrentCountBack = 0x0;
@@ -470,7 +470,7 @@ void lightfx_render_lights_to_frontbuffer()
     for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
     {
         const uint8_t* bufReadBase = nullptr;
-        uint8_t* bufWriteBase = (uint8_t*)_light_rendered_buffer_front;
+        uint8_t* bufWriteBase = static_cast<uint8_t*>(_light_rendered_buffer_front);
         uint32_t bufReadWidth, bufReadHeight;
         int32_t bufWriteX, bufWriteY;
         int32_t bufWriteWidth, bufWriteHeight;
@@ -825,7 +825,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
 
 void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
-    float night = (float)(pow(gDayNightCycle, 1.5));
+    float night = static_cast<float>(pow(gDayNightCycle, 1.5));
 
     float natLightR = 1.0f;
     float natLightG = 1.0f;
@@ -842,9 +842,9 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     float sunLight = std::max(0.0f, std::min(1.0f, 2.0f - night * 3.0f));
 
     // Night version
-    natLightR = flerp(natLightR * 4.0f, 0.635f, (float)(std::pow(night, 0.035f + sunLight * 10.50f)));
-    natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(std::pow(night, 0.100f + sunLight * 5.50f)));
-    natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(std::pow(night, 0.200f + sunLight * 1.5f)));
+    natLightR = flerp(natLightR * 4.0f, 0.635f, (std::pow(night, 0.035f + sunLight * 10.50f)));
+    natLightG = flerp(natLightG * 4.0f, 0.650f, (std::pow(night, 0.100f + sunLight * 5.50f)));
+    natLightB = flerp(natLightB * 4.0f, 0.850f, (std::pow(night, 0.200f + sunLight * 1.5f)));
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
@@ -856,7 +856,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 
     if (gClimateCurrent.Temperature > 20)
     {
-        float offset = ((float)(gClimateCurrent.Temperature - 20)) * 0.04f;
+        float offset = (static_cast<float>(gClimateCurrent.Temperature - 20)) * 0.04f;
         offset *= 1.0f - night;
         lightAvg /= 1.0f + offset;
         //      overExpose += offset * 0.1f;
@@ -878,12 +878,12 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     natLightB *= 1.0f + overExpose;
     overExpose *= 255.0f;
 
-    float targetFogginess = (float)(gClimateCurrent.RainLevel) / 8.0f;
+    float targetFogginess = static_cast<float>(gClimateCurrent.RainLevel) / 8.0f;
     targetFogginess += (night * night) * 0.15f;
 
     if (gClimateCurrent.Temperature < 10)
     {
-        targetFogginess += ((float)(10 - gClimateCurrent.Temperature)) * 0.01f;
+        targetFogginess += (static_cast<float>(10 - gClimateCurrent.Temperature)) * 0.01f;
     }
 
     fogginess -= (fogginess - targetFogginess) * 0.00001f;
@@ -903,9 +903,10 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     float reduceColourNat = 1.0f;
     float reduceColourLit = 1.0f;
 
-    reduceColourLit *= night / (float)std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0);
+    reduceColourLit *= night / static_cast<float>(std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0));
 
-    float targetLightPollution = reduceColourLit * std::max(0.0f, 0.0f + 0.000001f * (float)lightfx_get_light_polution());
+    float targetLightPollution = reduceColourLit
+        * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(lightfx_get_light_polution()));
     lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
 
     //  lightPollution /= 1.0f + fogginess * 1.0f;
@@ -920,7 +921,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     natLightG /= 1.0f + lightPolution;
     natLightB /= 1.0f + lightPolution;
 
-    reduceColourLit += (float)(gClimateCurrent.RainLevel) / 2.0f;
+    reduceColourLit += static_cast<float>(gClimateCurrent.RainLevel) / 2.0f;
 
     reduceColourNat /= 1.0f + fogginess;
     reduceColourLit /= 1.0f + fogginess;
@@ -950,15 +951,15 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
         else if ((i % 16) < 7)
             boost = 1.001f * wetnessBoost;
         if (i > 230 && i < 232)
-            boost = ((float)(*b)) / 64.0f;
+            boost = (static_cast<float>(*b)) / 64.0f;
 
         if (false)
         {
             // This experiment shifts the colour of pixels as-if they are wet, but it is not a pretty solution at all
             if ((i % 16))
             {
-                float iVal = ((float)((i + 12) % 16)) / 16.0f;
-                float eff = (wetness * ((float)std::pow(iVal, 1.5) * 0.85f));
+                float iVal = (static_cast<float>((i + 12) % 16)) / 16.0f;
+                float eff = (wetness * (static_cast<float>(std::pow(iVal, 1.5)) * 0.85f));
                 reduceColourNat *= 1.0f - eff;
                 addLightNatR += fogR * eff * 3.95f;
                 addLightNatG += fogR * eff * 3.95f;
@@ -970,17 +971,26 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
         addLightNatG *= 1.0f - envFog;
         addLightNatB *= 1.0f - envFog;
 
-        *r = (uint8_t)(std::min(
-            255.0f, std::max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
-        *g = (uint8_t)(std::min(
-            255.0f, std::max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
-        *b = (uint8_t)(std::min(
-            255.0f, std::max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
+        *r = static_cast<uint8_t>(std::min(
+            255.0f,
+            std::max(
+                0.0f, (-overExpose + static_cast<float>(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
+        *g = static_cast<uint8_t>(std::min(
+            255.0f,
+            std::max(
+                0.0f, (-overExpose + static_cast<float>(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
+        *b = static_cast<uint8_t>(std::min(
+            255.0f,
+            std::max(
+                0.0f, (-overExpose + static_cast<float>(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
         rct_palette_entry* dstEntry = &gPalette_light.entries[i];
-        dstEntry->red = (uint8_t)(std::min<float>(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-        dstEntry->green = (uint8_t)(std::min<float>(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-        dstEntry->blue = (uint8_t)(std::min<float>(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
+        dstEntry->red = static_cast<uint8_t>(
+            std::min<float>(0xFF, (static_cast<float>(*r) * reduceColourLit * boost + lightFog) * elecMultR));
+        dstEntry->green = static_cast<uint8_t>(
+            std::min<float>(0xFF, (static_cast<float>(*g) * reduceColourLit * boost + lightFog) * elecMultG));
+        dstEntry->blue = static_cast<uint8_t>(
+            std::min<float>(0xFF, (static_cast<float>(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
 }
 
@@ -1002,7 +1012,7 @@ void lightfx_render_to_texture(
     lightfx_prepare_light_list();
     lightfx_render_lights_to_frontbuffer();
 
-    uint8_t* lightBits = (uint8_t*)lightfx_get_front_buffer();
+    uint8_t* lightBits = static_cast<uint8_t*>(lightfx_get_front_buffer());
     if (lightBits == nullptr)
     {
         return;
@@ -1010,7 +1020,7 @@ void lightfx_render_to_texture(
 
     for (uint32_t y = 0; y < height; y++)
     {
-        uintptr_t dstOffset = (uintptr_t)(y * dstPitch);
+        uintptr_t dstOffset = static_cast<uintptr_t>(y * dstPitch);
         uint32_t* dst = (uint32_t*)((uintptr_t)dstPixels + dstOffset);
         for (uint32_t x = 0; x < width; x++)
         {

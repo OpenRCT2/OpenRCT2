@@ -50,7 +50,7 @@ static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
         gSpriteMode = 2;
     Memory::Free(_mode);
 
-    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
+    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
     int32_t result = cmdline_for_sprite(argv, argc);
     if (result < 0)

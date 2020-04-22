@@ -37,7 +37,7 @@ public:
     }
     uint32_t GetCount() const
     {
-        return (uint32_t)_entries.size();
+        return static_cast<uint32_t>(_entries.size());
     }
     void AddImage(const rct_g1_element* g1);
 };

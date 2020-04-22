@@ -1088,7 +1088,7 @@ int32_t check_for_sprite_list_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
+                while (!index_is_in_list(cycle_next, static_cast<SPRITE_LIST>(i)))
                 {
                     rct_sprite* spr = get_sprite(cycle_next);
 
@@ -1166,7 +1166,7 @@ int32_t check_for_spatial_index_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
+                while (!index_is_in_list(cycle_next, static_cast<SPRITE_LIST>(i)))
                 {
                     rct_sprite* spr = get_sprite(cycle_next);
 

@@ -359,7 +359,7 @@ namespace ObjectFactory
             }
 
             json_error_t jsonLoadError;
-            auto jRoot = json_loadb((const char*)jsonBytes.data(), jsonBytes.size(), 0, &jsonLoadError);
+            auto jRoot = json_loadb(reinterpret_cast<const char*>(jsonBytes.data()), jsonBytes.size(), 0, &jsonLoadError);
             if (jRoot == nullptr)
             {
                 throw JsonException(&jsonLoadError);

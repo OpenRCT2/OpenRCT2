@@ -151,13 +151,13 @@ private:
         {
             const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
             assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), (size_t)8));
+            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
         }
         else
         {
             const char* vehObjName = RCT1::GetVehicleObject(td4Base.vehicle_type);
             assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), (size_t)8));
+            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
         }
         std::memcpy(&td->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
         td->vehicle_type = td4Base.vehicle_type;

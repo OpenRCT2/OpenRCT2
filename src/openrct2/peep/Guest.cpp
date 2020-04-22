@@ -693,7 +693,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
 
 void Guest::Tick128UpdateGuest(int32_t index)
 {
-    if ((uint32_t)(index & 0x1FF) == (gCurrentTicks & 0x1FF))
+    if (static_cast<uint32_t>(index & 0x1FF) == (gCurrentTicks & 0x1FF))
     {
         /* Effect of masking with 0x1FF here vs mask 0x7F,
          * which is the condition for calling this function, is
@@ -827,7 +827,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             PickRideToGoOn();
         }
 
-        if ((uint32_t)(index & 0x3FF) == (gCurrentTicks & 0x3FF))
+        if (static_cast<uint32_t>(index & 0x3FF) == (gCurrentTicks & 0x3FF))
         {
             /* Effect of masking with 0x3FF here vs mask 0x1FF,
              * which is used in the encompassing conditional, is
@@ -1044,7 +1044,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (state == PEEP_STATE_WALKING && nausea_target >= 128)
         {
-            if ((scenario_rand() & 0xFF) <= (uint8_t)((nausea - 128) / 2))
+            if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((nausea - 128) / 2))
             {
                 if (action >= PEEP_ACTION_NONE_1)
                 {
@@ -1586,7 +1586,7 @@ loc_69B119:
             if (happiness >= 180)
                 itemValue /= 2;
 
-            if (itemValue > ((money16)(scenario_rand() & 0x07)))
+            if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
             {
                 // "I'm not paying that much for x"
                 PeepThoughtType thought_type = static_cast<PeepThoughtType>(
@@ -1603,7 +1603,7 @@ loc_69B119:
 
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                if (itemValue >= (money32)(scenario_rand() & 0x07))
+                if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
                     PeepThoughtType thought_item = static_cast<PeepThoughtType>(
@@ -2204,7 +2204,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
 
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = ride_get_price(ride);
-                if (ridePrice > (money16)(value * 2))
+                if (ridePrice > static_cast<money16>(value * 2))
                 {
                     if (peepAtRide)
                     {
@@ -2220,7 +2220,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 }
 
                 // A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
-                if (ridePrice <= (money16)(value / 2) && peepAtRide)
+                if (ridePrice <= static_cast<money16>(value / 2) && peepAtRide)
                 {
                     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
                     {
@@ -2345,7 +2345,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
     cash_in_pocket = std::max(0, cash_in_pocket - amount);
     cash_spent += amount;
 
-    peep_expend_type += (money16)amount;
+    peep_expend_type += static_cast<money16>(amount);
 
     window_invalidate_by_number(WC_PEEP, sprite_index);
 
@@ -2462,11 +2462,11 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
     uint8_t chosen_car = scenario_rand();
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))
     {
-        chosen_car = (scenario_rand() & 1) ? 0 : (uint8_t)car_array.size() - 1;
+        chosen_car = (scenario_rand() & 1) ? 0 : static_cast<uint8_t>(car_array.size()) - 1;
     }
     else
     {
-        chosen_car = (chosen_car * (uint16_t)car_array.size()) >> 8;
+        chosen_car = (chosen_car * static_cast<uint16_t>(car_array.size())) >> 8;
     }
 
     peep->current_car = car_array[chosen_car];
@@ -2862,7 +2862,7 @@ static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->hunger) / 64;
     nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
-    peep->nausea_target = (uint8_t)std::min(peep->nausea_target + nauseaGrowthRateChange, 255u);
+    peep->nausea_target = static_cast<uint8_t>(std::min(peep->nausea_target + nauseaGrowthRateChange, 255u));
 }
 
 static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
@@ -3638,7 +3638,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
         waypoint.y = vehicle->y;
     }
 
-    Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= (size_t)(peep->var_37 / 4));
+    Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= static_cast<size_t>(peep->var_37 / 4));
     waypoint.x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][0].x;
     waypoint.y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][0].y;
 
@@ -4285,7 +4285,7 @@ void Guest::UpdateRideLeaveVehicle()
         waypointLoc.y = vehicle->y;
     }
 
-    Guard::Assert(vehicleEntry->peep_loading_waypoints.size() >= (size_t)(var_37 / 4));
+    Guard::Assert(vehicleEntry->peep_loading_waypoints.size() >= static_cast<size_t>(var_37 / 4));
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
     exitWaypointLoc.x += vehicleEntry->peep_loading_waypoints[var_37 / 4][2].x;
@@ -4612,7 +4612,7 @@ void Guest::UpdateRideApproachSpiralSlide()
         {
             if (ride->mode == RIDE_MODE_SINGLE_RIDE_PER_ADMISSION)
                 lastRide = true;
-            if ((uint8_t)(current_car - 1) > (scenario_rand() & 0xF))
+            if (static_cast<uint8_t>(current_car - 1) > (scenario_rand() & 0xF))
                 lastRide = true;
         }
 
@@ -5324,7 +5324,7 @@ void Guest::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!GetNextIsSurface()) && ((uint32_t)(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
+        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
             uint8_t pos_stnd = 0;

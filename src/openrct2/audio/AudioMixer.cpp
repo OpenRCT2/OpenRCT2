@@ -173,15 +173,15 @@ void Mixer_SetVolume(float volume)
 
 int32_t DStoMixerVolume(int32_t volume)
 {
-    return (int32_t)(MIXER_VOLUME_MAX * (std::pow(10.0f, (float)volume / 2000)));
+    return static_cast<int32_t>(MIXER_VOLUME_MAX * (std::pow(10.0f, static_cast<float>(volume) / 2000)));
 }
 
 float DStoMixerPan(int32_t pan)
 {
-    return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+    return ((static_cast<float>(pan) + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
 }
 
 double DStoMixerRate(int32_t frequency)
 {
-    return (double)frequency / 22050;
+    return static_cast<double>(frequency) / 22050;
 }

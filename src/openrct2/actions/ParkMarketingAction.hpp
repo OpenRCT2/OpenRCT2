@@ -53,7 +53,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if ((size_t)_type >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
         }

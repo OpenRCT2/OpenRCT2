@@ -246,7 +246,7 @@ private:
         WriteIndexFile(language, scanResult.Stats, allItems);
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        auto duration = (std::chrono::duration<float>)(endTime - startTime);
+        auto duration = std::chrono::duration<float>(endTime - startTime);
         Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
 
         return allItems;

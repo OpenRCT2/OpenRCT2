@@ -565,7 +565,7 @@ void load_palette()
         return;
     }
 
-    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
 
     uint32_t palette = 0x5FC;
 

@@ -8275,7 +8275,7 @@ loc_6DAEB9:
             if (_vehicleVelocityF64E08 >= 0)
             {
                 regs.bp = prev_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, (uint16_t*)&regs.bp))
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, reinterpret_cast<uint16_t*>(&regs.bp)))
                 {
                     goto loc_6DB967;
                 }
@@ -8537,7 +8537,8 @@ loc_6DBA33:;
     {
         UpdateCrossings();
 
-        if (!vehicle_update_track_motion_backwards_get_new_track(this, trackType, curRide, (uint16_t*)&regs.ax))
+        if (!vehicle_update_track_motion_backwards_get_new_track(
+                this, trackType, curRide, reinterpret_cast<uint16_t*>(&regs.ax)))
         {
             goto loc_6DBE5E;
         }
@@ -8586,7 +8587,7 @@ loc_6DBA33:;
             if (_vehicleVelocityF64E08 < 0)
             {
                 regs.bp = next_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, (uint16_t*)&regs.bp))
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, reinterpret_cast<uint16_t*>(&regs.bp)))
                 {
                     goto loc_6DBE7F;
                 }
@@ -8920,7 +8921,7 @@ loc_6DC743:
                         }
                     }
                 }
-                vehicle->mini_golf_current_animation = (uint8_t)z;
+                vehicle->mini_golf_current_animation = static_cast<uint8_t>(z);
                 vehicle->animation_frame = 0;
                 vehicle->track_progress++;
                 break;

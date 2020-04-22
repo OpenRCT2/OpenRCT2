@@ -66,12 +66,12 @@ void X8RainDrawer::Draw(int32_t x, int32_t y, int32_t width, int32_t height, int
         uint8_t patternX = pattern[patternYPos * 2];
         if (patternX != 0xFF)
         {
-            if (_rainPixelsCount < (_rainPixelsCapacity - (uint32_t)width))
+            if (_rainPixelsCount < (_rainPixelsCapacity - static_cast<uint32_t>(width)))
             {
                 uint32_t finalPixelOffset = width + pixelOffset;
 
                 uint32_t xPixelOffset = pixelOffset;
-                xPixelOffset += ((uint8_t)(patternX - patternStartXOffset)) % patternXSpace;
+                xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
 
                 uint8_t patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
@@ -158,8 +158,8 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 {
     left = std::max(left, 0);
     top = std::max(top, 0);
-    right = std::min(right, (int32_t)_width);
-    bottom = std::min(bottom, (int32_t)_height);
+    right = std::min(right, static_cast<int32_t>(_width));
+    bottom = std::min(bottom, static_cast<int32_t>(_height));
 
     if (left >= right)
         return;
@@ -238,9 +238,9 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
     // screen; hence the checks. This code should ultimately not be called when
     // zooming because this function is specific to updating the screen on move
     int32_t lmargin = std::min(x - dx, 0);
-    int32_t rmargin = std::min((int32_t)_width - (x - dx + width), 0);
+    int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
     int32_t tmargin = std::min(y - dy, 0);
-    int32_t bmargin = std::min((int32_t)_height - (y - dy + height), 0);
+    int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
     x -= lmargin;
     y -= tmargin;
     width += lmargin + rmargin;
@@ -699,7 +699,8 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
     // 00678B7E   00678C83
     // Location in screen buffer?
     uint8_t* dst = dpi->bits
-        + (uint32_t)((startY / dpi->zoom_level) * ((dpi->width / dpi->zoom_level) + dpi->pitch) + (startX / dpi->zoom_level));
+        + static_cast<uint32_t>(
+                       (startY / dpi->zoom_level) * ((dpi->width / dpi->zoom_level) + dpi->pitch) + (startX / dpi->zoom_level));
 
     // Find colour in colour table?
     uint16_t g1Index = palette_to_g1_offset[palette];

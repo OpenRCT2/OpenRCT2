@@ -720,15 +720,18 @@ static void sub_6A3F61(
                     {
                         case PATH_BIT_DRAW_TYPE_LIGHTS:
                             path_bit_lights_paint(
-                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_BINS:
                             path_bit_bins_paint(
-                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_BENCHES:
                             path_bit_benches_paint(
-                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
                             path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);

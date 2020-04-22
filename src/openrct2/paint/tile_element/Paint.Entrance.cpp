@@ -256,7 +256,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
             }
 
-            entrance = (rct_entrance_type*)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
+            entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0));
             if (entrance == nullptr)
             {
                 return;
@@ -312,7 +312,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
             break;
         case 1:
         case 2:
-            entrance = (rct_entrance_type*)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
+            entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0));
             if (entrance == nullptr)
             {
                 return;

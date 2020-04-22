@@ -224,7 +224,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->mode = (uint8_t)(mode & 0xFF);
+                        ride->mode = static_cast<uint8_t>(mode & 0xFF);
                         invalidate_test_results(ride);
                     }
                 }
@@ -777,7 +777,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "guest_initial_happiness" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gGuestInitialHappiness = calculate_guest_initial_happiness((uint8_t)int_val[0]);
+            gGuestInitialHappiness = calculate_guest_initial_happiness(static_cast<uint8_t>(int_val[0]));
             console.Execute("get guest_initial_happiness");
         }
         else if (argv[0] == "guest_initial_hunger" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -914,7 +914,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "window_scale" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            float newScale = (float)(0.001 * std::trunc(1000 * double_val[0]));
+            float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
             gConfigGeneral.window_scale = std::clamp(newScale, 0.5f, 5.0f);
             config_save_default();
             gfx_invalidate_screen();
@@ -1299,7 +1299,8 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     // YYYY OR YYYY MM (no day provided, preserve existing day)
     if (argv.size() <= 2)
     {
-        day = std::clamp(gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, 1, (int)days_in_month[month - 1]);
+        day = std::clamp(
+            gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, 1, static_cast<int>(days_in_month[month - 1]));
     }
 
     // YYYY MM DD (year, month, and day provided)

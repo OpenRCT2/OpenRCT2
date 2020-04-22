@@ -201,7 +201,7 @@ private:
         {
             return;
         }
-        utf8* file = (utf8*)_buffer.data();
+        utf8* file = reinterpret_cast<utf8*>(_buffer.data());
         utf8* content = String::SkipBOM(file);
         if (file != content)
         {
@@ -216,7 +216,7 @@ private:
         bool onNewLineCh = false;
         for (size_t i = 0; i < _buffer.size(); i++)
         {
-            char b = (char)_buffer[i];
+            char b = static_cast<char>(_buffer[i]);
             if (b == 0 || b == '\n' || b == '\r')
             {
                 if (!onNewLineCh)
@@ -363,7 +363,7 @@ private:
 
     std::string GetLine(size_t index)
     {
-        utf8* szBuffer = (utf8*)_buffer.data();
+        utf8* szBuffer = reinterpret_cast<utf8*>(_buffer.data());
         auto span = _lines[index];
         auto line = std::string(szBuffer + span.Start, span.Length);
         return line;

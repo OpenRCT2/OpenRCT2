@@ -35,7 +35,7 @@ NetworkUser* NetworkUser::FromJson(json_t* json)
         user->Name = std::string(name);
         if (!json_is_null(jsonGroupId))
         {
-            user->GroupId = (uint8_t)json_integer_value(jsonGroupId);
+            user->GroupId = static_cast<uint8_t>(json_integer_value(jsonGroupId));
         }
         user->Remove = false;
         return user;

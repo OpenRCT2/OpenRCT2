@@ -99,7 +99,7 @@ static std::string Encode(const std::string_view& src)
         }
         else if (codepoint <= std::numeric_limits<uint16_t>::max())
         {
-            dst.push_back((char)(uint8_t)0xFF);
+            dst.push_back(static_cast<char>(static_cast<uint8_t>(0xFF)));
             dst.push_back((codepoint >> 8) & 0xFF);
             dst.push_back(codepoint & 0xFF);
         }

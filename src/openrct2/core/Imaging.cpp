@@ -32,13 +32,13 @@ namespace Imaging
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
         auto istream = static_cast<std::istream*>(png_get_io_ptr(png_ptr));
-        istream->read((char*)data, length);
+        istream->read(reinterpret_cast<char*>(data), length);
     }
 
     static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
         auto ostream = static_cast<std::ostream*>(png_get_io_ptr(png_ptr));
-        ostream->write((const char*)data, length);
+        ostream->write(reinterpret_cast<const char*>(data), length);
     }
 
     static void PngFlush(png_structp png_ptr)
@@ -187,7 +187,7 @@ namespace Imaging
                 }
 
                 // Set the palette
-                png_palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
+                png_palette = static_cast<png_colorp>(png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color)));
                 if (png_palette == nullptr)
                 {
                     throw std::runtime_error("png_malloc failed.");
@@ -227,7 +227,7 @@ namespace Imaging
             auto pixels = image.Pixels.data();
             for (uint32_t y = 0; y < image.Height; y++)
             {
-                png_write_row(png_ptr, (png_byte*)pixels);
+                png_write_row(png_ptr, const_cast<png_byte*>(pixels));
                 pixels += image.Stride;
             }
 

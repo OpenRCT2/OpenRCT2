@@ -27,13 +27,13 @@ void mask_avx2(
         const __m256i zero = {};
         for (int32_t yy = 0; yy < height; yy++)
         {
-            const __m256i colour = _mm256_lddqu_si256((const __m256i*)(colourSrc + yy * colourWrapSIMD));
-            const __m256i mask = _mm256_lddqu_si256((const __m256i*)(maskSrc + yy * maskWrapSIMD));
-            const __m256i dest = _mm256_lddqu_si256((const __m256i*)(dst + yy * dstWrapSIMD));
+            const __m256i colour = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(colourSrc + yy * colourWrapSIMD));
+            const __m256i mask = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(maskSrc + yy * maskWrapSIMD));
+            const __m256i dest = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(dst + yy * dstWrapSIMD));
             const __m256i mc = _mm256_and_si256(colour, mask);
             const __m256i saturate = _mm256_cmpeq_epi8(mc, zero);
             const __m256i blended = _mm256_blendv_epi8(mc, dest, saturate);
-            _mm256_storeu_si256((__m256i*)(dst + yy * dstWrapSIMD), blended);
+            _mm256_storeu_si256(reinterpret_cast<__m256i*>(dst + yy * dstWrapSIMD), blended);
         }
     }
     else

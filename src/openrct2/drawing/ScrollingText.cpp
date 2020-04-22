@@ -46,7 +46,7 @@ void scrolling_text_initialise_bitmaps()
 {
     uint8_t drawingSurface[64];
     rct_drawpixelinfo dpi;
-    dpi.bits = (uint8_t*)&drawingSurface;
+    dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
     dpi.width = 8;
     dpi.height = 8;
 
@@ -1596,7 +1596,7 @@ static void scrolling_text_set_bitmap_for_ttf(
 
     int32_t pitch = surface->pitch;
     int32_t width = surface->w;
-    auto src = (const uint8_t*)surface->pixels;
+    auto src = static_cast<const uint8_t*>(surface->pixels);
 
     // Pitch offset
     src += 2 * pitch;

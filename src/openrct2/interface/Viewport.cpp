@@ -903,11 +903,11 @@ void viewport_paint(
     right = left + width;
     bottom = top + height;
 
-    int16_t x = (int16_t)(left - (int16_t)(viewport->viewPos.x & bitmask));
+    int16_t x = static_cast<int16_t>(left - static_cast<int16_t>(viewport->viewPos.x & bitmask));
     x = x / viewport->zoom;
     x += viewport->pos.x;
 
-    int16_t y = (int16_t)(top - (int16_t)(viewport->viewPos.y & bitmask));
+    int16_t y = static_cast<int16_t>(top - static_cast<int16_t>(viewport->viewPos.y & bitmask));
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
@@ -1252,7 +1252,7 @@ void viewport_set_visibility(uint8_t mode)
             case 5: // 6CB7D8
                 // Set underground off, invalidate if it was on
                 invalidate += vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                vp->flags &= ~((uint16_t)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                vp->flags &= ~(static_cast<uint16_t>(VIEWPORT_FLAG_UNDERGROUND_INSIDE));
                 break;
         }
         if (invalidate != 0)
@@ -1425,8 +1425,8 @@ static bool is_sprite_interacted_with_palette_set(
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             rct_drawpixelinfo zoomed_dpi = {
                 /* .bits = */ dpi->bits,
-                /* .x = */ (int16_t)(dpi->x >> 1),
-                /* .y = */ (int16_t)(dpi->y >> 1),
+                /* .x = */ static_cast<int16_t>(dpi->x >> 1),
+                /* .y = */ static_cast<int16_t>(dpi->y >> 1),
                 /* .height = */ dpi->height,
                 /* .width = */ dpi->width,
                 /* .pitch = */ dpi->pitch,
@@ -1645,8 +1645,8 @@ void get_map_coordinates_from_pos_window(
     {
         rct_viewport* myviewport = window->viewport;
         screenCoords -= myviewport->pos;
-        if (screenCoords.x >= 0 && screenCoords.x < (int32_t)myviewport->width && screenCoords.y >= 0
-            && screenCoords.y < (int32_t)myviewport->height)
+        if (screenCoords.x >= 0 && screenCoords.x < static_cast<int32_t>(myviewport->width) && screenCoords.y >= 0
+            && screenCoords.y < static_cast<int32_t>(myviewport->height))
         {
             screenCoords.x = screenCoords.x * myviewport->zoom;
             screenCoords.y = screenCoords.y * myviewport->zoom;
