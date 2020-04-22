@@ -34,7 +34,7 @@ namespace OpenRCT2::Scripting
         TileElement* _element;
 
     public:
-        ScTileElement(CoordsXY coords, TileElement* element)
+        ScTileElement(const CoordsXY& coords, TileElement* element)
             : _coords(coords)
             , _element(element)
         {
@@ -896,7 +896,7 @@ namespace OpenRCT2::Scripting
         CoordsXY _coords;
 
     public:
-        ScTile(CoordsXY coords)
+        ScTile(const CoordsXY& coords)
             : _coords(coords)
         {
         }
@@ -904,12 +904,12 @@ namespace OpenRCT2::Scripting
     private:
         int32_t x_get()
         {
-            return _coords.x / 32;
+            return _coords.x / COORDS_XY_STEP;
         }
 
         int32_t y_get()
         {
-            return _coords.y / 32;
+            return _coords.y / COORDS_XY_STEP;
         }
 
         size_t numElements_get()

@@ -1473,7 +1473,7 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
 void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_SCRIPTS;
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_SCRIPTS);
 #    ifdef __ENABLE_SCRIPTING__
     using namespace OpenRCT2::Scripting;
 
@@ -1490,18 +1490,18 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
     }
 
     log_verbose("Server sends %u scripts", pluginsToSend.size());
-    *packet << (uint32_t)pluginsToSend.size();
+    *packet << static_cast<uint32_t>(pluginsToSend.size());
     for (const auto& plugin : pluginsToSend)
     {
         const auto& metadata = plugin->GetMetadata();
         log_verbose("Script %s", metadata.Name.c_str());
 
         const auto& code = plugin->GetCode();
-        *packet << (uint32_t)code.size();
-        packet->Write((const uint8_t*)code.c_str(), code.size());
+        *packet << static_cast<uint32_t>(code.size());
+        packet->Write(reinterpret_cast<const uint8_t*>(code.c_str()), code.size());
     }
 #    else
-    *packet << (uint32_t)0;
+    *packet << static_cast<uint32_t>(0);
 #    endif
     connection.QueuePacket(std::move(packet));
 }
@@ -2451,7 +2451,7 @@ void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket
     {
         uint32_t codeLength{};
         packet >> codeLength;
-        auto code = std::string_view((const char*)packet.Read(codeLength), codeLength);
+        auto code = std::string_view(reinterpret_cast<const char*>(packet.Read(codeLength)), codeLength);
         scriptEngine.AddNetworkPlugin(code);
     }
 #    else
@@ -2886,6 +2886,42 @@ void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection,
     }
 }
 
+static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::string& text)
+{
+#    ifdef __ENABLE_SCRIPTING__
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto objIdx = duk_push_object(ctx);
+        duk_push_number(ctx, static_cast<int32_t>(player.Id));
+        duk_put_prop_string(ctx, objIdx, "player");
+        duk_push_string(ctx, text.c_str());
+        duk_put_prop_string(ctx, objIdx, "message");
+        auto e = DukValue::take_from_stack(ctx);
+
+        // Call the subscriptions
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e, false);
+
+        // Update text from object if subscriptions changed it
+        if (e["message"].type() != DukValue::Type::STRING)
+        {
+            // Subscription set text to non-string, do not relay message
+            return false;
+        }
+        text = e["message"].as_string();
+        if (text.empty())
+        {
+            // Subscription set text to empty string, do not relay message
+            return false;
+        }
+    }
+#    endif
+    return true;
+}
+
 void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto szText = packet.ReadString();
@@ -2904,37 +2940,11 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     std::string text = szText;
     if (connection.Player != nullptr)
     {
-#    ifdef __ENABLE_SCRIPTING__
-        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
+        if (!ProcessChatMessagePluginHooks(*connection.Player, text))
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-            // Create event args object
-            auto objIdx = duk_push_object(ctx);
-            duk_push_number(ctx, (int32_t)connection.Player->Id);
-            duk_put_prop_string(ctx, objIdx, "player");
-            duk_push_string(ctx, text.c_str());
-            duk_put_prop_string(ctx, objIdx, "message");
-            auto e = DukValue::take_from_stack(ctx);
-
-            // Call the subscriptions
-            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e, false);
-
-            // Update text from object if subscriptions changed it
-            if (e["message"].type() != DukValue::Type::STRING)
-            {
-                // Subscription set text to non-string, do not relay message
-                return;
-            }
-            text = e["message"].as_string();
-            if (text.empty())
-            {
-                // Subscription set text to empty string, do not relay message
-                return;
-            }
+            // Message not to be relayed
+            return;
         }
-#    endif
     }
 
     const char* formatted = FormatChat(connection.Player, text.c_str());

@@ -151,7 +151,6 @@ namespace OpenRCT2::Scripting
                 duk_set_top(_ctx, _top);
                 _ctx = {};
                 std::fprintf(stderr, "duktape stack was not returned to original state!");
-                // assert(false);
             }
             _ctx = {};
         }

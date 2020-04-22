@@ -89,7 +89,6 @@ namespace OpenRCT2::Scripting
         void Load();
         void Start();
         void Stop();
-        void Update();
 
     private:
         void LoadCodeFromFile();

@@ -31,7 +31,7 @@ using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum CUSTOM_WINDOW_WIDX
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -298,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
             windowFlags |= WF_RESIZABLE;
         }
 
-        rct_window* window;
+        rct_window* window{};
         if (desc.X && desc.Y)
         {
             window = window_create(
@@ -412,8 +412,8 @@ namespace OpenRCT2::Ui::Windows
                 const auto numItems = std::min<size_t>(items.size(), DROPDOWN_ITEMS_MAX_SIZE);
                 for (size_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = selectedIndex == (int32_t)i ? STR_OPTIONS_DROPDOWN_ITEM_SELECTED
-                                                                          : STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItemsFormat[i] = selectedIndex == static_cast<int32_t>(i) ? STR_OPTIONS_DROPDOWN_ITEM_SELECTED
+                                                                                       : STR_OPTIONS_DROPDOWN_ITEM;
                     auto sz = items[i].c_str();
                     std::memcpy(&gDropdownItemsArgs[i], &sz, sizeof(const char*));
                 }
@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
                     InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
 
                     auto& widget = w->widgets[widgetIndex - 1];
-                    widget.string = (utf8*)widgetDesc->Items[dropdownIndex].c_str();
+                    widget.string = const_cast<utf8*>(widgetDesc->Items[dropdownIndex].c_str());
 
                     widgetDesc->SelectedIndex = dropdownIndex;
                 }
@@ -568,7 +568,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 widget.type = WWT_BUTTON;
-                widget.string = (utf8*)desc.Text.c_str();
+                widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             }
             widgetList.push_back(widget);
@@ -576,7 +576,7 @@ namespace OpenRCT2::Ui::Windows
         else if (desc.Type == "checkbox")
         {
             widget.type = WWT_CHECKBOX;
-            widget.string = (utf8*)desc.Text.c_str();
+            widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             if (desc.IsChecked)
             {
@@ -589,7 +589,7 @@ namespace OpenRCT2::Ui::Windows
             widget.type = WWT_DROPDOWN;
             if (desc.SelectedIndex >= 0 && (size_t)desc.SelectedIndex < desc.Items.size())
             {
-                widget.string = (utf8*)desc.Items[desc.SelectedIndex].c_str();
+                widget.string = const_cast<utf8*>(desc.Items[desc.SelectedIndex].c_str());
             }
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
@@ -610,21 +610,21 @@ namespace OpenRCT2::Ui::Windows
         else if (desc.Type == "groupbox")
         {
             widget.type = WWT_GROUPBOX;
-            widget.string = (utf8*)desc.Text.c_str();
+            widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "label")
         {
             widget.type = WWT_LABEL;
-            widget.string = (utf8*)desc.Text.c_str();
+            widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "spinner")
         {
             widget.type = WWT_SPINNER;
-            widget.string = (utf8*)desc.Text.c_str();
+            widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
 

@@ -158,7 +158,7 @@ void game_load_or_quit_no_save_prompt();
 void load_from_sv6(const char* path);
 void game_load_init();
 void game_load_scripts();
-void game_finish();
+void game_unload_scripts();
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();

@@ -165,7 +165,7 @@ void FileWatcher::WatchDirectory()
                 int offset = 0;
                 while (offset < length)
                 {
-                    auto e = (inotify_event*)(eventData.data() + offset);
+                    auto e = reinterpret_cast<inotify_event*>(eventData.data() + offset);
                     if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
                     {
                         log_verbose("FileWatcher: inotify event received for %s", e->name);

@@ -597,7 +597,7 @@ void game_load_scripts()
 #endif
 }
 
-void game_finish()
+void game_unload_scripts()
 {
 #ifdef __ENABLE_SCRIPTING__
     GetContext()->GetScriptEngine().UnloadPlugins();
@@ -816,7 +816,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
 {
     if (result == MODAL_RESULT_OK)
     {
-        game_finish();
+        game_unload_scripts();
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
         game_load_scripts();
@@ -860,12 +860,12 @@ void game_load_or_quit_no_save_prompt()
             }
             gGameSpeed = 1;
             gFirstTimeSaving = true;
-            game_finish();
+            game_unload_scripts();
             title_load();
             break;
         }
         default:
-            game_finish();
+            game_unload_scripts();
             openrct2_finish();
             break;
     }

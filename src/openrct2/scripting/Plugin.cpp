@@ -98,10 +98,6 @@ void Plugin::Stop()
     _hasStarted = false;
 }
 
-void Plugin::Update()
-{
-}
-
 void Plugin::LoadCodeFromFile()
 {
     std::string code;

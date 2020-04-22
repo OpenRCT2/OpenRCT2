@@ -885,15 +885,19 @@ void ScriptEngine::LoadSharedStorage()
     auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
     try
     {
-        auto data = File::ReadAllBytes(path);
-        auto result = DuktapeTryParseJson(_context, std::string_view((const char*)data.data(), data.size()));
-        if (result)
+        if (File::Exists(path))
         {
-            _sharedStorage = std::move(*result);
+            auto data = File::ReadAllBytes(path);
+            auto result = DuktapeTryParseJson(_context, std::string_view((const char*)data.data(), data.size()));
+            if (result)
+            {
+                _sharedStorage = std::move(*result);
+            }
         }
     }
     catch (const std::exception&)
     {
+        fprintf(stderr, "Unable to read '%s'\n", path.c_str());
     }
 }
 
