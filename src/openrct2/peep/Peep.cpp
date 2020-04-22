@@ -2059,7 +2059,7 @@ void peep_thought_set_format_args(const rct_peep_thought* thought)
     set_format_arg(0, rct_string_id, PeepThoughts[thought->type]);
 
     PeepThoughtToAction flags = PeepThoughtToActionMap[thought->type].flags;
-    if (flags == PEEP_THOUGHT_ACTION_FLAG_1)
+    if (flags & PEEP_THOUGHT_ACTION_FLAG_1)
     {
         auto ride = get_ride(thought->item);
         if (ride != nullptr)
@@ -2071,11 +2071,11 @@ void peep_thought_set_format_args(const rct_peep_thought* thought)
             set_format_arg(2, rct_string_id, STR_NONE);
         }
     }
-    else if (flags == PEEP_THOUGHT_ACTION_FLAG_2)
+    else if (flags & PEEP_THOUGHT_ACTION_FLAG_2)
     {
         set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Singular);
     }
-    else if (flags == PEEP_THOUGHT_ACTION_FLAG_3)
+    else if (flags & PEEP_THOUGHT_ACTION_FLAG_3)
     {
         set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Indefinite);
     }
