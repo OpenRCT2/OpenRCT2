@@ -6,7 +6,8 @@ env:
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
   OPENRCT2_VERSION: 0.2.6
 jobs:
-  lint:
+  lint-commit:
+    name: Check Commit Message Formatting
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
