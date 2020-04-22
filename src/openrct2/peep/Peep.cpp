@@ -82,6 +82,14 @@ static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
 // clang-format off
 
+// Flags used by PeepThoughtToActionMap
+enum PeepThoughtToAction : uint8_t
+{
+    PEEP_THOUGHT_ACTION_FLAG_1 = (1 << 0),
+    PEEP_THOUGHT_ACTION_FLAG_2 = (1 << 1),
+    PEEP_THOUGHT_ACTION_FLAG_3 = (1 << 2),
+};
+
 /** rct2: 0x00981DB0 */
 static struct
 {
@@ -99,8 +107,8 @@ static struct
     { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_1 },
     { PEEP_ACTION_NONE_2, 0 },
     { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_1 },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_4 },
-    { PEEP_ACTION_SHAKE_HEAD, PEEP_THOUGHT_ACTION_FLAG_4 },
+    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_3 },
+    { PEEP_ACTION_SHAKE_HEAD, PEEP_THOUGHT_ACTION_FLAG_3 },
     { PEEP_ACTION_NONE_2, 0 },
     { PEEP_ACTION_NONE_2, 0 },
     { PEEP_ACTION_NONE_2, 0 },
