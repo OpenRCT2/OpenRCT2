@@ -529,6 +529,14 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
+// Flags used by PeepThoughtToActionMao
+enum PeepThoughtToAction : uint8_t
+{
+    PEEP_THOUGHT_ACTION_FLAG_1 = (1 << 0),
+    PEEP_THOUGHT_ACTION_FLAG_2 = (1 << 1),
+    PEEP_THOUGHT_ACTION_FLAG_4 = (1 << 2),
+};
+
 struct rct_peep_thought
 {
     PeepThoughtType type;  // 0
