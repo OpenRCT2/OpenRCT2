@@ -95,21 +95,21 @@ namespace OpenRCT2::Scripting
             map_invalidate_tile_full(_coords);
         }
 
-        uint8_t baseZ_get() const
+        uint8_t baseHeight_get() const
         {
             return _element->base_height;
         }
-        void baseZ_set(uint8_t newBaseHeight)
+        void baseHeight_set(uint8_t newBaseHeight)
         {
             ThrowIfGameStateNotMutable();
             _element->base_height = newBaseHeight;
         }
 
-        uint8_t clearanceZ_get() const
+        uint8_t clearanceHeight_get() const
         {
             return _element->clearance_height;
         }
-        void clearanceZ_set(uint8_t newClearanceHeight)
+        void clearanceHeight_set(uint8_t newClearanceHeight)
         {
             ThrowIfGameStateNotMutable();
             _element->clearance_height = newClearanceHeight;
@@ -824,8 +824,9 @@ namespace OpenRCT2::Scripting
         {
             // All
             dukglue_register_property(ctx, &ScTileElement::type_get, &ScTileElement::type_set, "type");
-            dukglue_register_property(ctx, &ScTileElement::baseZ_get, &ScTileElement::baseZ_set, "baseZ");
-            dukglue_register_property(ctx, &ScTileElement::clearanceZ_get, &ScTileElement::clearanceZ_set, "clearanceZ");
+            dukglue_register_property(ctx, &ScTileElement::baseHeight_get, &ScTileElement::baseHeight_set, "baseHeight");
+            dukglue_register_property(
+                ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
 
             // Some
             dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
