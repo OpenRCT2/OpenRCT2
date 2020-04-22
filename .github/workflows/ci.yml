@@ -7,7 +7,7 @@ env:
   OPENRCT2_VERSION: 0.2.6
 jobs:
   lint-commit:
-    name: Lint Commit Message
+    name: Lint Commit Message 
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
