@@ -753,10 +753,10 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
 
 void Ride::FormatStatusTo(Formatter& ft) const
 {
-    FormatStatusTo(ft.Buf());
+    ft.Increment(FormatStatusTo(ft.Buf()));
 }
 
-void Ride::FormatStatusTo(void* argsV) const
+size_t Ride::FormatStatusTo(void* argsV) const
 {
     Formatter ft(static_cast<uint8_t*>(argsV));
 
@@ -804,7 +804,7 @@ void Ride::FormatStatusTo(void* argsV) const
         {
             auto peep = sprite->AsPeep();
             ft.Add<rct_string_id>(STR_RACE_WON_BY);
-            peep->FormatNameTo(ft.Buf());
+            peep->FormatNameTo(ft);
         }
         else
         {
@@ -821,6 +821,7 @@ void Ride::FormatStatusTo(void* argsV) const
     {
         ft.Add<rct_string_id>(STR_OPEN);
     }
+    return ft.NumBytes();
 }
 
 int32_t ride_get_total_length(const Ride* ride)
