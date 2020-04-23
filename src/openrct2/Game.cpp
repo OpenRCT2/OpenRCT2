@@ -676,8 +676,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     size_t numAutosavesToDelete = 0;
 
     utf8 filter[MAX_PATH];
-
-    utf8** autosaveFiles = nullptr;
+    std::vector<std::unique_ptr<utf8[]>> autosaveFiles;
 
     if (processLandscapeFolder)
     {
@@ -707,47 +706,39 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         return;
     }
 
-    autosaveFiles = static_cast<utf8**>(malloc(sizeof(utf8*) * autosavesCount));
+    autosaveFiles.resize(autosavesCount);
 
     {
         auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            autosaveFiles[i] = static_cast<utf8*>(malloc(sizeof(utf8) * MAX_PATH));
-            std::memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
+            autosaveFiles[i] = std::make_unique<utf8[]>(MAX_PATH);
 
             if (scanner->Next())
             {
                 if (processLandscapeFolder)
                 {
-                    platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+                    platform_get_user_directory(autosaveFiles[i].get(), "landscape", sizeof(utf8) * MAX_PATH);
                 }
                 else
                 {
-                    platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+                    platform_get_user_directory(autosaveFiles[i].get(), "save", sizeof(utf8) * MAX_PATH);
                 }
-                safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
-                safe_strcat_path(autosaveFiles[i], scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
+                safe_strcat_path(autosaveFiles[i].get(), "autosave", sizeof(utf8) * MAX_PATH);
+                safe_strcat_path(autosaveFiles[i].get(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
         }
     }
 
-    qsort(autosaveFiles, autosavesCount, sizeof(char*), compare_autosave_file_paths);
+    qsort(autosaveFiles.data(), autosavesCount, sizeof(char*), compare_autosave_file_paths);
 
     // Calculate how many saves we need to delete.
     numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        platform_file_delete(autosaveFiles[i]);
+        platform_file_delete(autosaveFiles[i].get());
     }
-
-    for (size_t i = 0; i < autosavesCount; i++)
-    {
-        free(autosaveFiles[i]);
-    }
-
-    free(autosaveFiles);
 }
 
 void game_autosave()
