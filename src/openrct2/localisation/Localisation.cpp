@@ -879,7 +879,7 @@ static void format_date(char** dest, size_t* size, uint16_t value)
 {
     uint16_t args[] = { static_cast<uint16_t>(date_get_month(value)), static_cast<uint16_t>(date_get_year(value) + 1) };
     uint16_t* argsRef = args;
-    format_string_part(dest, size, STR_DATE_FORMAT_MY, (char**)&argsRef);
+    format_string_part(dest, size, STR_DATE_FORMAT_MY, reinterpret_cast<char**>(&argsRef));
 }
 
 static void format_length(char** dest, size_t* size, int16_t value)
@@ -893,7 +893,7 @@ static void format_length(char** dest, size_t* size, int16_t value)
     }
 
     int16_t* argRef = &value;
-    format_string_part(dest, size, stringId, (char**)&argRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argRef));
 }
 
 static void format_velocity(char** dest, size_t* size, uint16_t value)
@@ -916,7 +916,7 @@ static void format_velocity(char** dest, size_t* size, uint16_t value)
     }
 
     uint16_t* argRef = &value;
-    format_string_part(dest, size, stringId, (char**)&argRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argRef));
 }
 
 static constexpr const rct_string_id DurationFormats[][2] = {
@@ -952,7 +952,7 @@ static void format_duration(char** dest, size_t* size, uint16_t value)
 
     rct_string_id stringId = DurationFormats[minuteIndex][secondsIndex];
 
-    format_string_part(dest, size, stringId, (char**)&argsRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argsRef));
 }
 
 static constexpr const rct_string_id RealtimeFormats[][2] = {
@@ -988,7 +988,7 @@ static void format_realtime(char** dest, size_t* size, uint16_t value)
 
     rct_string_id stringId = RealtimeFormats[hourIndex][minuteIndex];
 
-    format_string_part(dest, size, stringId, (char**)&argsRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argsRef));
 }
 
 static void format_string_code(uint32_t format_code, char** dest, size_t* size, char** args)
@@ -1080,7 +1080,7 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_string_part(dest, size, (rct_string_id)value, args);
+            format_string_part(dest, size, static_cast<rct_string_id>(value), args);
             break;
         case FORMAT_STRING:
             // Pop argument
@@ -1095,14 +1095,15 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_date(dest, size, (uint16_t)value);
+            format_date(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_MONTH:
             // Pop argument
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int32_t)value)]));
+            format_append_string(
+                dest, size, language_get_string(DateGameMonthNames[date_get_month(static_cast<int32_t>(value))]));
             break;
         case FORMAT_VELOCITY:
             // Pop argument
@@ -1110,7 +1111,7 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             value = temp16;
             *args += 2;
 
-            format_velocity(dest, size, (uint16_t)value);
+            format_velocity(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_POP16:
             *args += 2;
@@ -1123,14 +1124,14 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_duration(dest, size, (uint16_t)value);
+            format_duration(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_REALTIME:
             // Pop argument
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_realtime(dest, size, (uint16_t)value);
+            format_realtime(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_LENGTH:
             // Pop argument
@@ -1138,7 +1139,7 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             value = temp16;
             *args += 2;
 
-            format_length(dest, size, (int16_t)value);
+            format_length(dest, size, static_cast<int16_t>(value));
             break;
         case FORMAT_SPRITE:
             // Pop argument
@@ -1211,7 +1212,7 @@ static void format_string_part_from_raw(utf8** dest, size_t* size, const utf8* s
         }
         else
         {
-            size_t codepointLength = (size_t)utf8_get_codepoint_length(code);
+            size_t codepointLength = static_cast<size_t>(utf8_get_codepoint_length(code));
             format_handle_overflow(codepointLength);
             if (*size > codepointLength)
             {

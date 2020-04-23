@@ -166,7 +166,7 @@ public:
         uint64_t remainingBytes = GetLength() - GetPosition();
         if (length <= remainingBytes)
         {
-            if (fread(buffer, (size_t)length, 1, _file) == 1)
+            if (fread(buffer, static_cast<size_t>(length), 1, _file) == 1)
             {
                 return;
             }
@@ -176,7 +176,7 @@ public:
 
     void Write(const void* buffer, uint64_t length) override
     {
-        if (fwrite(buffer, (size_t)length, 1, _file) != 1)
+        if (fwrite(buffer, static_cast<size_t>(length), 1, _file) != 1)
         {
             throw IOException("Unable to write to file.");
         }
@@ -187,7 +187,7 @@ public:
 
     uint64_t TryRead(void* buffer, uint64_t length) override
     {
-        size_t readBytes = fread(buffer, 1, (size_t)length, _file);
+        size_t readBytes = fread(buffer, 1, static_cast<size_t>(length), _file);
         return readBytes;
     }
 

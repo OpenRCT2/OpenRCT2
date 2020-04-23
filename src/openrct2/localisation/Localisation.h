@@ -110,6 +110,11 @@ public:
     {
     }
 
+    static Formatter Common()
+    {
+        return Formatter(gCommonFormatArgs);
+    }
+
     static Formatter MapTooltip()
     {
         return Formatter(gMapTooltipFormatArgs);

@@ -204,7 +204,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         return false;
     }
 
-    FcPattern* pat = FcNameParse((const FcChar8*)font->font_name);
+    FcPattern* pat = FcNameParse(reinterpret_cast<const FcChar8*>(font->font_name));
 
     FcConfigSubstitute(config, pat, FcMatchPattern);
     FcDefaultSubstitute(pat);
@@ -224,7 +224,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         // and instead rely on exact matches on the fonts predefined for each font family.
         FcChar8* matched_font_face = nullptr;
         if (FcPatternGetString(match, FC_FULLNAME, 0, &matched_font_face) == FcResultMatch
-            && strcmp(font->font_name, (const char*)matched_font_face) != 0)
+            && strcmp(font->font_name, reinterpret_cast<const char*>(matched_font_face)) != 0)
         {
             log_verbose("FontConfig provided substitute font %s -- disregarding.", matched_font_face);
             is_substitute = true;
@@ -234,7 +234,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         if (!is_substitute && FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
         {
             found = true;
-            safe_strcpy(buffer, (utf8*)filename, size);
+            safe_strcpy(buffer, reinterpret_cast<utf8*>(filename), size);
             log_verbose("FontConfig provided font %s", filename);
         }
 

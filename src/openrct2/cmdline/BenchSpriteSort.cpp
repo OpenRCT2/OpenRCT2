@@ -190,11 +190,11 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         }
         else
         {
-            argv_for_benchmark.push_back((char*)argv[i]);
+            argv_for_benchmark.push_back(const_cast<char*>(argv[i]));
         }
     }
     // Update argc with all the changes made
-    argc = (int)argv_for_benchmark.size();
+    argc = static_cast<int>(argv_for_benchmark.size());
     ::benchmark::Initialize(&argc, &argv_for_benchmark[0]);
     if (::benchmark::ReportUnrecognizedArguments(argc, &argv_for_benchmark[0]))
         return -1;
@@ -204,7 +204,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
 
 static exitcode_t HandleBenchSpriteSort(CommandLineArgEnumerator* argEnumerator)
 {
-    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
     int32_t result = cmdline_for_bench_sprite_sort(argc, argv);
     if (result < 0)

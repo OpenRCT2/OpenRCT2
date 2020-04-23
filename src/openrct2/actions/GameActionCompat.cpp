@@ -45,7 +45,7 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
 #pragma region SetParkEntranceFeeAction
 void park_set_entrance_fee(money32 fee)
 {
-    auto gameAction = SetParkEntranceFeeAction((money16)fee);
+    auto gameAction = SetParkEntranceFeeAction(static_cast<money16>(fee));
     GameActions::Execute(&gameAction);
 }
 #pragma endregion

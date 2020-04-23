@@ -30,7 +30,7 @@ const CommandLineCommand CommandLine::SimulateCommands[]{ // Main commands
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
 {
-    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
 
     if (argc < 2)

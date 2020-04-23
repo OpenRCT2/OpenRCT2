@@ -34,7 +34,7 @@ int32_t NetworkPacket::GetCommand() const
 {
     if (Data->size() >= sizeof(uint32_t))
     {
-        return ByteSwapBE(*(uint32_t*)(&(*Data)[0]));
+        return ByteSwapBE(*reinterpret_cast<uint32_t*>(&(*Data)[0]));
     }
     else
     {
@@ -90,7 +90,7 @@ const uint8_t* NetworkPacket::Read(size_t size)
 
 const utf8* NetworkPacket::ReadString()
 {
-    char* str = (char*)&GetData()[BytesRead];
+    char* str = reinterpret_cast<char*>(&GetData()[BytesRead]);
     char* strend = str;
     while (BytesRead < Size && *strend != 0)
     {

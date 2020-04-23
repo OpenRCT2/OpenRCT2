@@ -1075,7 +1075,7 @@ void map_invalidate_selection_rect()
 void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
-
+  
     std::vector<TileElement> new_tile_elements;
     new_tile_elements.resize(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL));
     TileElement* new_elements_pointer = new_tile_elements.data();

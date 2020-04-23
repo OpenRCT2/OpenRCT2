@@ -183,7 +183,7 @@ static void ttf_close_font(TTF_Font* font)
 
 static uint32_t ttf_surface_cache_hash(TTF_Font* font, const utf8* text)
 {
-    uint32_t hash = (uint32_t)((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
+    uint32_t hash = static_cast<uint32_t>((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
     for (const utf8* ch = text; *ch != 0; ch++)
     {
         hash = ror32(hash, 3) ^ (*ch * 13);
@@ -376,7 +376,7 @@ static TTFSurface* ttf_render(TTF_Font* font, const utf8* text)
 
 void ttf_free_surface(TTFSurface* surface)
 {
-    free((void*)surface->pixels);
+    free(const_cast<void*>(surface->pixels));
     free(surface);
 }
 

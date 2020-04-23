@@ -29,7 +29,7 @@ template<> struct ByteSwapT<2>
     using UIntType = uint16_t;
     static uint16_t SwapBE(uint16_t value)
     {
-        return (uint16_t)((value << 8) | (value >> 8));
+        return static_cast<uint16_t>((value << 8) | (value >> 8));
     }
 };
 
@@ -38,7 +38,8 @@ template<> struct ByteSwapT<4>
     using UIntType = uint32_t;
     static uint32_t SwapBE(uint32_t value)
     {
-        return (uint32_t)(((value << 24) | ((value << 8) & 0x00FF0000) | ((value >> 8) & 0x0000FF00) | (value >> 24)));
+        return static_cast<uint32_t>(
+            ((value << 24) | ((value << 8) & 0x00FF0000) | ((value >> 8) & 0x0000FF00) | (value >> 24)));
     }
 };
 

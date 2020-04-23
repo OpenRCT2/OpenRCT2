@@ -72,7 +72,7 @@ namespace ObjectJsonHelpers
                 if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomed_offset != 0)
                 {
                     // Fetch image for next zoom level
-                    next_zoom = std::make_unique<RequiredImage>((uint32_t)(idx - g1.zoomed_offset), getter);
+                    next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomed_offset), getter);
                     if (!next_zoom->HasData())
                     {
                         next_zoom = nullptr;
@@ -317,7 +317,7 @@ namespace ObjectJsonHelpers
         if (obj != nullptr)
         {
             auto& imgTable = static_cast<const Object*>(obj)->GetImageTable();
-            auto numImages = (int32_t)imgTable.GetCount();
+            auto numImages = static_cast<int32_t>(imgTable.GetCount());
             auto images = imgTable.GetImages();
             size_t placeHoldersAdded = 0;
             for (auto i : range)
@@ -325,7 +325,7 @@ namespace ObjectJsonHelpers
                 if (i >= 0 && i < numImages)
                 {
                     result.push_back(std::make_unique<RequiredImage>(
-                        (uint32_t)(i), [images](uint32_t idx) -> const rct_g1_element* { return &images[idx]; }));
+                        static_cast<uint32_t>(i), [images](uint32_t idx) -> const rct_g1_element* { return &images[idx]; }));
                 }
                 else
                 {
@@ -371,7 +371,7 @@ namespace ObjectJsonHelpers
                     for (auto i : range)
                     {
                         result.push_back(std::make_unique<RequiredImage>(
-                            (uint32_t)(SPR_CSG_BEGIN + i),
+                            static_cast<uint32_t>(SPR_CSG_BEGIN + i),
                             [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
                     }
                 }
@@ -384,8 +384,10 @@ namespace ObjectJsonHelpers
             {
                 for (auto i : range)
                 {
-                    result.push_back(std::make_unique<RequiredImage>(
-                        (uint32_t)(i), [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                    result.push_back(
+                        std::make_unique<RequiredImage>(static_cast<uint32_t>(i), [](uint32_t idx) -> const rct_g1_element* {
+                            return gfx_get_g1_element(idx);
+                        }));
                 }
             }
         }
@@ -436,7 +438,7 @@ namespace ObjectJsonHelpers
             auto flags = ImageImporter::IMPORT_FLAGS::NONE;
             if (!raw)
             {
-                flags = (ImageImporter::IMPORT_FLAGS)(flags | ImageImporter::IMPORT_FLAGS::RLE);
+                flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::RLE);
             }
             auto imageData = context->GetData(path);
             auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
@@ -541,8 +543,8 @@ namespace ObjectJsonHelpers
                     img = img->next_zoom.get();
 
                     // Set old image zoom offset to zoom image which we are about to add
-                    auto g1a = (rct_g1_element*)(&imageTable.GetImages()[tableIndex]);
-                    g1a->zoomed_offset = (int32_t)tableIndex - (int32_t)imageTable.GetCount();
+                    auto g1a = const_cast<rct_g1_element*>(&imageTable.GetImages()[tableIndex]);
+                    g1a->zoomed_offset = static_cast<int32_t>(tableIndex) - static_cast<int32_t>(imageTable.GetCount());
 
                     while (img != nullptr)
                     {

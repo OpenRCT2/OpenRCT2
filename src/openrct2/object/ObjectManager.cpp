@@ -67,7 +67,7 @@ public:
 
     Object* GetLoadedObject(int32_t objectType, size_t index) override
     {
-        if (index >= (size_t)object_entry_group_counts[objectType])
+        if (index >= static_cast<size_t>(object_entry_group_counts[objectType]))
         {
 #ifdef DEBUG
             log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
@@ -117,7 +117,7 @@ public:
                     loadedObject = GetOrLoadObject(ori);
                     if (loadedObject != nullptr)
                     {
-                        if (_loadedObjects.size() <= (size_t)slot)
+                        if (_loadedObjects.size() <= static_cast<size_t>(slot))
                         {
                             _loadedObjects.resize(slot + 1);
                         }
@@ -319,11 +319,11 @@ private:
             if (_loadedObjects.size() <= i)
             {
                 _loadedObjects.resize(i + 1);
-                return (int32_t)i;
+                return static_cast<int32_t>(i);
             }
             else if (_loadedObjects[i] == nullptr)
             {
-                return (int32_t)i;
+                return static_cast<int32_t>(i);
             }
         }
         return -1;
@@ -422,23 +422,23 @@ private:
                 switch (loadedObject->GetObjectType())
                 {
                     case OBJECT_TYPE_SMALL_SCENERY:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_LARGE_SCENERY:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_WALLS:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_BANNERS:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_PATH_BITS:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_SCENERY_GROUP:
@@ -707,7 +707,7 @@ private:
         {
             result += object_entry_group_counts[i];
         }
-        result += (int32_t)entryIndex;
+        result += static_cast<int32_t>(entryIndex);
         return result;
     }
 };

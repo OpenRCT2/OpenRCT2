@@ -23,7 +23,7 @@ using BannerIndex = uint16_t;
 
 constexpr uint8_t BANNER_NULL = 255;
 constexpr size_t MAX_BANNERS = 250;
-constexpr BannerIndex BANNER_INDEX_NULL = (BannerIndex)-1;
+constexpr BannerIndex BANNER_INDEX_NULL = static_cast<BannerIndex>(-1);
 
 constexpr uint8_t SCROLLING_MODE_NONE = 255;
 

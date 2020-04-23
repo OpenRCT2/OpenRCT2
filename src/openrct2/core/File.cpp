@@ -71,7 +71,7 @@ namespace File
         {
             result.resize(fsize);
             fs.seekg(0);
-            fs.read((char*)result.data(), result.size());
+            fs.read(reinterpret_cast<char*>(result.data()), result.size());
             fs.exceptions(fs.failbit);
         }
         return result;
@@ -96,7 +96,7 @@ namespace File
     {
         std::vector<std::string> lines;
         auto data = ReadAllBytes(path);
-        auto lineStart = (const char*)data.data();
+        auto lineStart = reinterpret_cast<const char*>(data.data());
         auto ch = lineStart;
         char lastC = 0;
         for (size_t i = 0; i < data.size(); i++)

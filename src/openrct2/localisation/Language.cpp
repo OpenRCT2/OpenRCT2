@@ -51,11 +51,11 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 // clang-format on
 
 // clang-format off
-const utf8 BlackUpArrowString[] =       { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB2, (utf8)(uint8_t)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xBC, (utf8)(uint8_t)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x97, (utf8)(uint8_t)0x80, (utf8)(uint8_t)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB6, (utf8)(uint8_t)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x9C, (utf8)(uint8_t)0x93, (utf8)(uint8_t)0x00 };
+const utf8 BlackUpArrowString[] =       { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x96)), static_cast<utf8>(static_cast<uint8_t>(0xB2)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 BlackDownArrowString[] =     { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x96)), static_cast<utf8>(static_cast<uint8_t>(0xBC)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 BlackLeftArrowString[] =     { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x97)), static_cast<utf8>(static_cast<uint8_t>(0x80)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 BlackRightArrowString[] =    { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x96)), static_cast<utf8>(static_cast<uint8_t>(0xB6)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 CheckBoxMarkString[] =       { static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x9C)), static_cast<utf8>(static_cast<uint8_t>(0x93)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
 // clang-format on
 
 void utf8_remove_format_codes(utf8* text, bool allowcolours)

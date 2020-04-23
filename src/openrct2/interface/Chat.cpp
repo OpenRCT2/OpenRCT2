@@ -196,7 +196,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 void chat_history_add(const char* src)
 {
     size_t bufferSize = strlen(src) + 64;
-    utf8* buffer = (utf8*)calloc(1, bufferSize);
+    utf8* buffer = static_cast<utf8*>(calloc(1, bufferSize));
 
     // Find the start of the text (after format codes)
     const char* ch = src;
@@ -213,7 +213,7 @@ void chat_history_add(const char* src)
     const char* srcText = ch;
 
     // Copy format codes to buffer
-    std::memcpy(buffer, src, std::min(bufferSize, (size_t)(srcText - src)));
+    std::memcpy(buffer, src, std::min(bufferSize, static_cast<size_t>(srcText - src)));
 
     // Prepend a timestamp
     time_t timer;

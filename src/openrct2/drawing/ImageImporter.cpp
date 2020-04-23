@@ -42,6 +42,7 @@ ImportResult ImageImporter::Import(
 
     rct_g1_element outElement;
     outElement.offset = buffer.data();
+  
     outElement.width = width;
     outElement.height = height;
     outElement.flags = (flags & IMPORT_FLAGS::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
@@ -76,7 +77,7 @@ std::vector<int32_t> ImageImporter::GetPixels(
     {
         for (uint32_t x = 0; x < height * width * 4; x++)
         {
-            rgbaSrc[x] = (int16_t)pixels[x];
+            rgbaSrc[x] = static_cast<int16_t>(pixels[x]);
         }
     }
 
@@ -114,9 +115,10 @@ std::vector<uint8_t> ImageImporter::EncodeRaw(const int32_t* pixels, uint32_t wi
     std::vector<uint8_t> buffer;
     buffer.resize(width * height);
     for (size_t i = 0; i < buffer.size(); i++)
+
     {
         auto p = pixels[i];
-        buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : (uint8_t)p);
+        buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : static_cast<uint8_t>(p));
     }
     return buffer;
 }
@@ -134,6 +136,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
     buffer.resize((height * 2) + (width * height * 16));
 
     if (buffer.data() == nullptr)
+
     {
         throw std::bad_alloc();
     }
@@ -146,7 +149,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
         yOffsets[y] = (uint16_t)(dst - buffer.data());
 
         auto previousCode = (RLECode*)nullptr;
-        auto currentCode = (RLECode*)dst;
+        auto currentCode = reinterpret_cast<RLECode*>(dst);
         dst += 2;
 
         auto startX = 0;
@@ -172,7 +175,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
                 }
 
                 npixels++;
-                *dst++ = (uint8_t)paletteIndex;
+                *dst++ = static_cast<uint8_t>(paletteIndex);
             }
             if (npixels == 127 || x == width - 1)
             {
@@ -192,7 +195,7 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
                         currentCode->NumPixels |= 0x80;
                     }
 
-                    currentCode = (RLECode*)dst;
+                    currentCode = reinterpret_cast<RLECode*>(dst);
                     dst += 2;
                 }
                 else
@@ -237,9 +240,9 @@ int32_t ImageImporter::CalculatePaletteIndex(
     {
         if (!IsTransparentPixel(rgbaSrc) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc)))
         {
-            auto dr = rgbaSrc[0] - (int16_t)(palette[paletteIndex].Red);
-            auto dg = rgbaSrc[1] - (int16_t)(palette[paletteIndex].Green);
-            auto db = rgbaSrc[2] - (int16_t)(palette[paletteIndex].Blue);
+            auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].Red);
+            auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].Green);
+            auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].Blue);
 
             if (x + 1 < width)
             {
@@ -297,8 +300,8 @@ int32_t ImageImporter::GetPaletteIndex(const PaletteBGRA* palette, int16_t* colo
     {
         for (int32_t i = 0; i < 256; i++)
         {
-            if ((int16_t)(palette[i].Red) == colour[0] && (int16_t)(palette[i].Green) == colour[1]
-                && (int16_t)(palette[i].Blue) == colour[2])
+            if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
+                && static_cast<int16_t>(palette[i].Blue) == colour[2])
             {
                 return i;
             }
@@ -334,17 +337,18 @@ bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
 
 int32_t ImageImporter::GetClosestPaletteIndex(const PaletteBGRA* palette, const int16_t* colour)
 {
-    auto smallestError = (uint32_t)-1;
+    auto smallestError = static_cast<uint32_t>(-1);
     auto bestMatch = PALETTE_TRANSPARENT;
     for (int32_t x = 0; x < 256; x++)
     {
         if (IsChangablePixel(x))
         {
-            uint32_t error = ((int16_t)(palette[x].Red) - colour[0]) * ((int16_t)(palette[x].Red) - colour[0])
-                + ((int16_t)(palette[x].Green) - colour[1]) * ((int16_t)(palette[x].Green) - colour[1])
-                + ((int16_t)(palette[x].Blue) - colour[2]) * ((int16_t)(palette[x].Blue) - colour[2]);
+            uint32_t error = (static_cast<int16_t>(palette[x].Red) - colour[0])
+                    * (static_cast<int16_t>(palette[x].Red) - colour[0])
+                + (static_cast<int16_t>(palette[x].Green) - colour[1]) * (static_cast<int16_t>(palette[x].Green) - colour[1])
+                + (static_cast<int16_t>(palette[x].Blue) - colour[2]) * (static_cast<int16_t>(palette[x].Blue) - colour[2]);
 
-            if (smallestError == (uint32_t)-1 || smallestError > error)
+            if (smallestError == static_cast<uint32_t>(-1) || smallestError > error)
             {
                 bestMatch = x;
                 smallestError = error;

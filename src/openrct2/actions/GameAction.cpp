@@ -327,7 +327,7 @@ namespace GameActions
 
         if (result->Error != GA_ERROR::OK)
         {
-            snprintf(temp, sizeof(temp), ") Failed, %u", (uint32_t)result->Error);
+            snprintf(temp, sizeof(temp), ") Failed, %u", static_cast<uint32_t>(result->Error));
         }
         else
         {
@@ -336,7 +336,7 @@ namespace GameActions
 
         output.Write(temp, strlen(temp) + 1);
 
-        const char* text = (const char*)output.GetData();
+        const char* text = static_cast<const char*>(output.GetData());
         log_verbose("%s", text);
 
         network_append_server_log(text);

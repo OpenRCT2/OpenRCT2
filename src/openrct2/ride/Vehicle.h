@@ -312,6 +312,11 @@ private:
     uint16_t GetSoundPriority() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
+    void CableLiftUpdateMovingToEndOfStation();
+    void CableLiftUpdateWaitingToDepart();
+    void CableLiftUpdateDeparting();
+    void CableLiftUpdateTravelling();
+    void CableLiftUpdateArriving();
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
     void UpdateWaitingToDepart();

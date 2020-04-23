@@ -70,7 +70,7 @@ static rct_large_scenery_text_glyph* large_scenery_sign_get_glyph(rct_large_scen
 {
     if (codepoint >= std::size(text->glyphs))
     {
-        return &text->glyphs[(size_t)'?'];
+        return &text->glyphs[static_cast<size_t>('?')];
     }
     return &text->glyphs[codepoint];
 }
@@ -284,7 +284,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        if (entry->large_scenery.tiles[1].x_offset != (int16_t)(uint16_t)0xFFFF)
+        if (entry->large_scenery.tiles[1].x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)))
         {
             int32_t sequenceDirection = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
             if (sequenceDirection != direction)

@@ -112,7 +112,7 @@ constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
 {
     if (codepoint <= 0x7F)
     {
-        dst[0] = (utf8)codepoint;
+        dst[0] = static_cast<utf8>(codepoint);
         return dst + 1;
     }
     else if (codepoint <= 0x7FF)
