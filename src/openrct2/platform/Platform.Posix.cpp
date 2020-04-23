@@ -99,6 +99,11 @@ namespace Platform
         }
         return isSupported;
     }
+
+    bool IsRunningInWine()
+    {
+        return false;
+    }
 } // namespace Platform
 
 #endif

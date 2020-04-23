@@ -3681,6 +3681,7 @@ STR_6364    :{RED}{COMMA16} person has died in an accident on {STRINGID}
 STR_6365    :Ride casualties
 STR_6366    :Stuck or stalled vehicles
 STR_6367    :{WINDOW_COLOUR_2}Animation frame:
+STR_6368    :For compatibility reasons, it is not recommended to run OpenRCT2 with Wine. OpenRCT2 has native support for macOS, Linux, FreeBSD and OpenBSD.
 
 #############
 # Scenarios #
