@@ -106,16 +106,16 @@ static bool sprite_file_open(const utf8* path)
     if (spriteFileHeader.num_entries > 0)
     {
         int32_t openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
-        rct_g1_element_32bit* openElements = static_cast<rct_g1_element_32bit*>(malloc(openEntryTableSize));
+
+        auto openElements = std::make_unique<rct_g1_element_32bit[]>(openEntryTableSize);
         if (openElements == nullptr)
         {
             fclose(file);
             return false;
         }
 
-        if (fread(openElements, openEntryTableSize, 1, file) != 1)
+        if (fread(openElements.get(), openEntryTableSize, 1, file) != 1)
         {
-            free(openElements);
             fclose(file);
             return false;
         }
@@ -124,7 +124,6 @@ static bool sprite_file_open(const utf8* path)
         if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {
             free(spriteFileData);
-            free(openElements);
             fclose(file);
             return false;
         }
@@ -133,7 +132,7 @@ static bool sprite_file_open(const utf8* path)
         spriteFileEntries = static_cast<rct_g1_element*>(malloc(entryTableSize));
         for (uint32_t i = 0; i < spriteFileHeader.num_entries; i++)
         {
-            rct_g1_element_32bit* inElement = &openElements[i];
+            rct_g1_element_32bit* inElement = &openElements.get()[i];
             rct_g1_element* outElement = &spriteFileEntries[i];
 
             outElement->offset = reinterpret_cast<uint8_t*>(
@@ -145,8 +144,6 @@ static bool sprite_file_open(const utf8* path)
             outElement->flags = inElement->flags;
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
-
-        free(openElements);
     }
 
     fclose(file);
