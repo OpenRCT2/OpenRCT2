@@ -1076,11 +1076,11 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    TileElement* new_tile_elements = (TileElement*)malloc(
-        3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(TileElement));
-    TileElement* new_elements_pointer = new_tile_elements;
+    std::vector<TileElement> new_tile_elements;
+    new_tile_elements.resize(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL));
+    TileElement* new_elements_pointer = new_tile_elements.data();
 
-    if (new_tile_elements == nullptr)
+    if (new_tile_elements.data() == nullptr)
     {
         log_fatal("Unable to allocate memory for map elements.");
         return;
@@ -1105,13 +1105,11 @@ void map_reorganise_elements()
         }
     }
 
-    num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements);
-    std::memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
+    num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements.data());
+    std::memcpy(gTileElements, new_tile_elements.data(), num_elements * sizeof(TileElement));
     std::memset(
         gTileElements + num_elements, 0,
         (3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) - num_elements) * sizeof(TileElement));
-
-    free(new_tile_elements);
 
     map_update_tile_pointers();
 }
