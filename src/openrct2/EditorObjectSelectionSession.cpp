@@ -334,7 +334,7 @@ void unload_unselected_objects()
         }
     }
 
-    object_manager_unload_objects(objectsToUnload.data(), numObjectsToUnload);
+    object_manager_unload_objects(objectsToUnload);
 }
 
 /**
