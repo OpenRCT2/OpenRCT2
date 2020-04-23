@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
     private:
         std::string TransformPermissionKeyToJS(const std::string& s)
         {
-            auto result = s.substr(11);
+            auto result = s.substr(sizeof("PERMISSION_") - 1);
             for (auto& c : result)
             {
                 c = std::tolower(c);
@@ -263,17 +263,13 @@ namespace OpenRCT2::Scripting
 #    ifndef DISABLE_NETWORK
             switch (network_get_mode())
             {
-                default:
-                case NETWORK_MODE_NONE:
-                    return "none";
                 case NETWORK_MODE_SERVER:
                     return "server";
                 case NETWORK_MODE_CLIENT:
                     return "client";
             }
-#    else
-            return "none";
 #    endif
+            return "none";
         }
         int32_t players_get()
         {

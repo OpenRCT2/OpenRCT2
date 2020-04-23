@@ -68,17 +68,8 @@ void HookEngine::UnsubscribeAll(std::shared_ptr<const Plugin> owner)
     for (auto& hookList : _hookMap)
     {
         auto& hooks = hookList.Hooks;
-        for (auto it = hooks.begin(); it != hooks.end();)
-        {
-            if (it->Owner == owner)
-            {
-                it = hooks.erase(it);
-            }
-            else
-            {
-                it++;
-            }
-        }
+        auto isOwner = [&](auto& obj) { return obj.Owner == owner; };
+        hooks.erase(std::remove_if(hooks.begin(), hooks.end(), isOwner), hooks.end());
     }
 }
 

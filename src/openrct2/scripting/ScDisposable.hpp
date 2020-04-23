@@ -23,7 +23,7 @@ namespace OpenRCT2::Scripting
         std::function<void()> _onDispose;
 
     public:
-        ScDisposable(std::function<void()> onDispose)
+        ScDisposable(const std::function<void()>& onDispose)
             : _onDispose(onDispose)
         {
         }

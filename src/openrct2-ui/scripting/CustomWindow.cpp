@@ -284,9 +284,9 @@ namespace OpenRCT2::Ui::Windows
     static CustomWindowInfo& GetInfo(rct_window* w);
     static rct_windownumber GetNewWindowNumber();
     static void RefreshWidgets(rct_window* w);
-    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler);
+    static void InvokeEventHandler(const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler);
     static void InvokeEventHandler(
-        std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
+        const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
 
     rct_window* window_custom_open(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {
@@ -706,13 +706,14 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler)
+    static void InvokeEventHandler(const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler)
     {
         std::vector<DukValue> args;
         InvokeEventHandler(owner, dukHandler, args);
     }
 
-    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args)
+    static void InvokeEventHandler(
+        const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler, const std::vector<DukValue>& args)
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         scriptEngine.ExecutePluginCall(owner, dukHandler, args, false);

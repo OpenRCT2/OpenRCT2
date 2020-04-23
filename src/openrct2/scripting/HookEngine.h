@@ -61,11 +61,7 @@ namespace OpenRCT2::Scripting
 
         HookList() = default;
         HookList(const HookList&) = delete;
-        HookList(HookList&& src) noexcept
-            : Type(std::move(src.Type))
-            , Hooks(std::move(src.Hooks))
-        {
-        }
+        HookList(HookList&& src) = default;
     };
 
     class HookEngine

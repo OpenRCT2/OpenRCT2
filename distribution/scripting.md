@@ -60,7 +60,7 @@ Yes, but the performance would be so dire that it would be a waste of their time
 
 > What are the limits?
 
-Scripts can conist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs.
+Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs.
 
 The APIs for OpenRCT2 try to mimic the internal data structures as close as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to submit a pull request afterwards.
 
