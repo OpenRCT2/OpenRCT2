@@ -4643,6 +4643,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -4688,6 +4689,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -4729,7 +4731,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRIVATE_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/PrivateHeaders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
@@ -4772,7 +4774,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRIVATE_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/PrivateHeaders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
@@ -4809,7 +4811,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -4844,7 +4846,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
