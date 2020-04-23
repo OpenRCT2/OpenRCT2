@@ -27,6 +27,6 @@ constexpr const RideTypeDescriptor CashMachineRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 40, 1, 0, 0, 0, 0 }),
-   SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on

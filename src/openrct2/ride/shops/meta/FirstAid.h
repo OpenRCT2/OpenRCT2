@@ -28,6 +28,6 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 45, 1, 0, 0, 0, 0 }),
-   SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on
