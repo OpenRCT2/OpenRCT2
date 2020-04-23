@@ -241,6 +241,17 @@ namespace Platform
         return result;
     }
 
+    bool IsRunningInWine()
+    {
+        HMODULE ntdllMod = GetModuleHandleW(L"ntdll.dll");
+
+        if (ntdllMod && GetProcAddress(ntdllMod, "wine_get_version"))
+        {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Checks if the current version of Windows supports ANSI colour codes.
      * From Windows 10, build 10586 ANSI escape colour codes can be used on stdout.

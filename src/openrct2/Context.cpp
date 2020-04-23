@@ -52,6 +52,7 @@
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
 #include "platform/Crash.h"
+#include "platform/Platform2.h"
 #include "platform/platform.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
@@ -386,6 +387,19 @@ namespace OpenRCT2
                 else
                 {
                     _uiContext->ShowMessageBox(elevationWarning);
+                }
+            }
+
+            if (Platform::IsRunningInWine())
+            {
+                std::string wineWarning = _localisationService->GetString(STR_WINE_NOT_RECOMMENDED);
+                if (gOpenRCT2Headless)
+                {
+                    Console::Error::WriteLine(wineWarning.c_str());
+                }
+                else
+                {
+                    _uiContext->ShowMessageBox(wineWarning);
                 }
             }
 
