@@ -443,7 +443,7 @@ public:
     void FormatNameTo(Formatter&) const;
     size_t FormatNameTo(void* args) const;
     void FormatStatusTo(Formatter&) const;
-    void FormatStatusTo(void* args) const;
+    size_t FormatStatusTo(void* args) const;
 
     static void UpdateAll();
     static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
