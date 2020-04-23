@@ -8,12 +8,13 @@
  *****************************************************************************/
 
 #include <array>
+#include <cstdio>
 #include <stdexcept>
 
 #ifdef _WIN32
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
-#else
+#elif defined(__linux__)
 #    include <fcntl.h>
 #    include <sys/inotify.h>
 #    include <sys/types.h>
@@ -24,7 +25,7 @@
 #include "FileSystem.hpp"
 #include "FileWatcher.h"
 
-#ifndef _WIN32
+#if defined(__linux__)
 FileWatcher::FileDescriptor::~FileDescriptor()
 {
     Close();
@@ -92,7 +93,7 @@ FileWatcher::FileWatcher(const std::string& directoryPath)
     {
         throw std::runtime_error("Unable to open directory '" + directoryPath + "'");
     }
-#else
+#elif defined(__linux__)
     _fileDesc.Initialise();
     _watchDescs.emplace_back(_fileDesc.Fd, directoryPath);
     for (auto& p : fs::recursive_directory_iterator(directoryPath))
@@ -102,6 +103,8 @@ FileWatcher::FileWatcher(const std::string& directoryPath)
             _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
     }
+#else
+    throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
     _watchThread = std::thread(std::bind(&FileWatcher::WatchDirectory, this));
 }
@@ -117,16 +120,18 @@ FileWatcher::~FileWatcher()
     CancelIoEx(_directoryHandle, nullptr);
 #    endif
     CloseHandle(_directoryHandle);
-#else
+#elif defined(__linux__)
     _finished = true;
     _fileDesc.Close();
+#else
+    return;
 #endif
     _watchThread.join();
 }
 
 void FileWatcher::WatchDirectory()
 {
-#ifdef _WIN32
+#if defined(_WIN32)
     std::array<char, 1024> eventData;
     DWORD bytesReturned;
     while (ReadDirectoryChangesW(
@@ -150,7 +155,7 @@ void FileWatcher::WatchDirectory()
             } while (notifyInfo->NextEntryOffset != 0);
         }
     }
-#else
+#elif defined(__linux__)
     log_verbose("FileWatcher: reading event data...");
     std::array<char, 1024> eventData;
     while (!_finished)
