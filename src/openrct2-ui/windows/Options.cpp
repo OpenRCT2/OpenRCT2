@@ -973,13 +973,29 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     if (rct1path)
                     {
                         // Check if this directory actually contains RCT1
-                        if (platform_original_rct1_data_exists(rct1path))
+                        if (Csg1datPresentAtLocation(rct1path))
                         {
-                            SafeFree(gConfigGeneral.rct1_path);
-                            gConfigGeneral.rct1_path = rct1path;
-                            gConfigInterface.scenarioselect_last_tab = 0;
-                            config_save_default();
-                            context_show_error(STR_RESTART_REQUIRED, STR_NONE);
+                            if (Csg1idatPresentAtLocation(rct1path))
+                            {
+                                if (CsgAtLocationIsUsable(rct1path))
+                                {
+                                    SafeFree(gConfigGeneral.rct1_path);
+                                    gConfigGeneral.rct1_path = rct1path;
+                                    gConfigInterface.scenarioselect_last_tab = 0;
+                                    config_save_default();
+                                    context_show_error(STR_RESTART_REQUIRED, STR_NONE);
+                                }
+                                else
+                                {
+                                    SafeFree(rct1path);
+                                    context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE);
+                                }
+                            }
+                            else
+                            {
+                                SafeFree(rct1path);
+                                context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE);
+                            }
                         }
                         else
                         {

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../drawing/Drawing.h"
 
 #include <string>
 
@@ -245,3 +246,11 @@ void config_set_defaults();
 void config_release();
 bool config_save_default();
 bool config_find_or_browse_install_directory();
+
+bool RCT1DataPresentAtLocation(const utf8* path);
+std::string FindCsg1datAtLocation(const utf8* path);
+bool Csg1datPresentAtLocation(const utf8* path);
+std::string FindCsg1idatAtLocation(const utf8* path);
+bool Csg1idatPresentAtLocation(const utf8* path);
+bool CsgIsUsable(rct_gx csg);
+bool CsgAtLocationIsUsable(const utf8* path);

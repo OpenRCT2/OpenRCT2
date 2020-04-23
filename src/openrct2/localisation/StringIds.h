@@ -3922,6 +3922,9 @@ enum
     STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS = 6369,
     STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP = 6370,
 
+    STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT = 6371,
+    STR_PATH_TO_RCT1_IS_WRONG_VERSION = 6372,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
