@@ -320,7 +320,8 @@ void unload_unselected_objects()
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     size_t numObjectsToUnload = 0;
-    rct_object_entry* objectsToUnload = static_cast<rct_object_entry*>(malloc(numItems * sizeof(rct_object_entry)));
+    auto objectsToUnload = std::vector<rct_object_entry>();
+    objectsToUnload.resize(numItems);
 
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -333,8 +334,7 @@ void unload_unselected_objects()
         }
     }
 
-    object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
-    free(objectsToUnload);
+    object_manager_unload_objects(objectsToUnload.data(), numObjectsToUnload);
 }
 
 /**
