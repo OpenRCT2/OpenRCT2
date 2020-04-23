@@ -896,7 +896,8 @@ void Peep::UpdateFalling()
 
         if (gConfigNotifications.guest_died)
         {
-            FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            FormatNameTo(ft);
             news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16));
         }
 
@@ -2056,7 +2057,8 @@ bool Peep::SetName(const std::string_view& value)
  */
 void peep_thought_set_format_args(const rct_peep_thought* thought)
 {
-    set_format_arg(0, rct_string_id, PeepThoughts[thought->type]);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(PeepThoughts[thought->type]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[thought->type].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
@@ -2064,20 +2066,20 @@ void peep_thought_set_format_args(const rct_peep_thought* thought)
         auto ride = get_ride(thought->item);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(gCommonFormatArgs + 2);
+            ride->FormatNameTo(ft);
         }
         else
         {
-            set_format_arg(2, rct_string_id, STR_NONE);
+            ft.Add<rct_string_id>(STR_NONE);
         }
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
     {
-        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Singular);
+        ft.Add<rct_string_id>(ShopItems[thought->item].Naming.Singular);
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
     {
-        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Indefinite);
+        ft.Add<rct_string_id>(ShopItems[thought->item].Naming.Indefinite);
     }
 }
 
@@ -2440,8 +2442,9 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->time_in_queue = 0;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
         {
-            auto nameArgLen = peep->FormatNameTo(gCommonFormatArgs);
-            ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
+            auto ft = Formatter::Common();
+            peep->FormatNameTo(ft);
+            ride->FormatNameTo(ft);
             if (gConfigNotifications.guest_queuing_for_ride)
             {
                 news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
@@ -2501,7 +2504,8 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             peep->var_37 = 0;
             if (peep->peep_flags & PEEP_FLAGS_TRACKING)
             {
-                peep->FormatNameTo(gCommonFormatArgs);
+                auto ft = Formatter::Common();
+                peep->FormatNameTo(ft);
                 if (gConfigNotifications.guest_left_park)
                 {
                     news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
@@ -2870,8 +2874,9 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->time_in_queue = 0;
                     if (peep->peep_flags & PEEP_FLAGS_TRACKING)
                     {
-                        auto nameArgLen = peep->FormatNameTo(gCommonFormatArgs);
-                        ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
+                        auto ft = Formatter::Common();
+                        peep->FormatNameTo(ft);
+                        ride->FormatNameTo(ft);
                         if (gConfigNotifications.guest_queuing_for_ride)
                         {
                             news_item_add_to_queue(
@@ -2976,8 +2981,9 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         ride->cur_num_customers++;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
         {
-            auto nameArgLen = peep->FormatNameTo(gCommonFormatArgs);
-            ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
+            auto ft = Formatter::Common();
+            peep->FormatNameTo(ft);
+            ride->FormatNameTo(ft);
             rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X
                                                                                              : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)

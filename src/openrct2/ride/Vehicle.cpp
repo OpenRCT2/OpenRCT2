@@ -3460,7 +3460,8 @@ void Vehicle::CheckIfMissing()
 
     if (gConfigNotifications.ride_stalled_vehicles)
     {
-        set_format_arg(0, rct_string_id, RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].number);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].number);
 
         uint8_t vehicleIndex = 0;
         for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
@@ -3468,11 +3469,9 @@ void Vehicle::CheckIfMissing()
                 break;
 
         vehicleIndex++;
-        set_format_arg(2, uint16_t, vehicleIndex);
-        auto nameArgLen = curRide->FormatNameTo(gCommonFormatArgs + 4);
-        set_format_arg(
-            4 + nameArgLen, rct_string_id,
-            RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
+        ft.Add<uint16_t>(vehicleIndex);
+        curRide->FormatNameTo(ft);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
 
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, ride);
     }
@@ -5172,7 +5171,8 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
         numFatalities += curVehicle->num_peeps;
     }
 
-    set_format_arg(0, uint16_t, numFatalities);
+    auto ft = Formatter::Common();
+    ft.Add<uint16_t>(numFatalities);
 
     uint8_t crashType = numFatalities == 0 ? RIDE_CRASH_TYPE_NO_FATALITIES : RIDE_CRASH_TYPE_FATALITIES;
 
@@ -5183,7 +5183,7 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
     {
         if (gConfigNotifications.ride_casualties)
         {
-            ride->FormatNameTo(gCommonFormatArgs + 2);
+            ride->FormatNameTo(ft);
             news_item_add_to_queue(
                 NEWS_ITEM_RIDE, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
         }

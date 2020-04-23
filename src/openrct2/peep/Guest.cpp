@@ -1686,8 +1686,9 @@ loc_69B221:
     UpdateSpriteType();
     if (peep_flags & PEEP_FLAGS_TRACKING)
     {
-        auto nameArgLen = FormatNameTo(gCommonFormatArgs);
-        set_format_arg(nameArgLen, rct_string_id, ShopItems[shopItem].Naming.Indefinite);
+        auto ft = Formatter::Common();
+        FormatNameTo(ft);
+        ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
@@ -3716,7 +3717,8 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
                 ride->last_issue_time = gCurrentTicks;
 
-                ride->FormatNameTo(gCommonFormatArgs);
+                auto ft = Formatter::Common();
+                ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
                     news_item_add_to_queue(NEWS_ITEM_RIDE, STR_GUESTS_GETTING_STUCK_ON_RIDE, current_ride);
