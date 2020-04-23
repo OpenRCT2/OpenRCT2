@@ -302,7 +302,7 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = window_create(
-                { desc.X.value(), desc.Y.value() }, desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
+                { *desc.X, *desc.Y }, desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
         }
         else
         {
