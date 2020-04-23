@@ -165,8 +165,9 @@ static bool sprite_file_save(const char* path)
     if (spriteFileHeader.num_entries > 0)
     {
         int32_t saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
-        rct_g1_element_32bit* saveElements = static_cast<rct_g1_element_32bit*>(malloc(saveEntryTableSize));
-        if (saveElements == nullptr)
+
+        auto saveElements = std::make_unique<rct_g1_element_32bit[]>(saveEntryTableSize);
+        if (saveElements.get() == nullptr)
         {
             fclose(file);
             return false;
@@ -175,7 +176,7 @@ static bool sprite_file_save(const char* path)
         for (uint32_t i = 0; i < spriteFileHeader.num_entries; i++)
         {
             rct_g1_element* inElement = &spriteFileEntries[i];
-            rct_g1_element_32bit* outElement = &saveElements[i];
+            rct_g1_element_32bit* outElement = &saveElements.get()[i];
 
             outElement->offset = static_cast<uint32_t>(
                 (reinterpret_cast<uintptr_t>(inElement->offset) - reinterpret_cast<uintptr_t>(spriteFileData)));
@@ -187,13 +188,11 @@ static bool sprite_file_save(const char* path)
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
 
-        if (fwrite(saveElements, saveEntryTableSize, 1, file) != 1)
+        if (fwrite(saveElements.get(), saveEntryTableSize, 1, file) != 1)
         {
-            free(saveElements);
             fclose(file);
             return false;
         }
-        free(saveElements);
 
         if (fwrite(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {
