@@ -130,7 +130,7 @@ public:
                 auto zLow = _loc.z;
                 auto zHigh = zLow + PATH_CLEARANCE;
                 wall_remove_intersecting_walls(
-                    { _loc, zLow, zHigh + (_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0 },
+                    { _loc, zLow, zHigh + ((_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0) },
                     direction_reverse(_direction));
                 wall_remove_intersecting_walls(
                     { _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh },
