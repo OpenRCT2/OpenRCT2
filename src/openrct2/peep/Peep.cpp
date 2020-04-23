@@ -3075,46 +3075,37 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         return;
     }
 
-
-    bool outside = false;
     if (newLoc.x <= 32 || newLoc.y <= 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
-        // apply same old behaviour
-        outside = true;
-
-    else
-    {
-        //check if peep is on peep spawn location
-        for (auto& peepSpawn : gPeepSpawns)
-        {
-            CoordsXYZ centeredPeepSpawn = peepSpawn.ToTileCentre();
-            auto tileCoord = TileCoordsXY(centeredPeepSpawn);
-
-            // check if either peep is on the edge of the map or anywhere else
-            if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits / COORDS_XY_STEP)-1 || tileCoord.y == 0
-                || tileCoord.y == (gMapSizeUnits / COORDS_XY_STEP)-1)
-            {
-                //do nothing
-            }
-
-            else if (
-                newLoc.ToTileCentre().x == centeredPeepSpawn.x && newLoc.ToTileCentre().y == centeredPeepSpawn.y
-                && height == centeredPeepSpawn.z
-                && direction == peepSpawn.direction)
-            {
-                // the moment the peep enter the tile with the same direction, it disappears
-                outside = true;
-                break;
-            }
-        }
-    }
-
-    // calling the routine to make peep disappear
-    if (outside)
     {
         if (outside_of_park)
             pathing_result |= PATHING_OUTSIDE_PARK;
         peep_return_to_centre_of_tile(this);
         return;
+    }
+    //check if peep is on peep spawn location
+    for (auto& peepSpawn : gPeepSpawns)
+    {
+        CoordsXYZ centeredPeepSpawn = peepSpawn.ToTileCentre();
+        auto tileCoord = TileCoordsXY(centeredPeepSpawn);
+
+        // check if either peep is on the edge of the map or anywhere else
+        if (tileCoord.x == 0 || tileCoord.x == (gMapSizeUnits / COORDS_XY_STEP)-1 || tileCoord.y == 0
+            || tileCoord.y == (gMapSizeUnits / COORDS_XY_STEP)-1)
+        {
+            //do nothing
+        }
+
+        else if (
+            newLoc.ToTileCentre().x == centeredPeepSpawn.x && newLoc.ToTileCentre().y == centeredPeepSpawn.y
+            && height == centeredPeepSpawn.z
+            && direction == peepSpawn.direction)
+        {
+            // the moment the peep enter the tile with the same direction, it disappears
+            if (outside_of_park)
+                pathing_result |= PATHING_OUTSIDE_PARK;
+            peep_return_to_centre_of_tile(this);
+            return;
+        }
     }
     
 
