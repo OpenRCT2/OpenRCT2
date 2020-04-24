@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
             window_close_all();
         }
 
-        std::shared_ptr<ScWindow> getWindow(DukValue a, DukValue b)
+        std::shared_ptr<ScWindow> getWindow(DukValue a)
         {
             if (a.type() == DukValue::Type::NUMBER)
             {

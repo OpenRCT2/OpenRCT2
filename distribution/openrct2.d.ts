@@ -640,7 +640,7 @@ declare global {
         readonly mainViewport: Viewport;
 
         getWindow(id: number): Window;
-        getWindow(classification: string, id?: number): Window;
+        getWindow(classification: string): Window;
         openWindow(desc: WindowDesc): Window;
         closeWindows(classification: string, id?: number): void;
         closeAllWindows(): void;
