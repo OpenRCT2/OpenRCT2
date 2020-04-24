@@ -41,17 +41,17 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        int32_t classification_get()
+        int32_t classification_get() const
         {
             return static_cast<int32_t>(_class);
         }
 
-        int32_t number_get()
+        int32_t number_get() const
         {
             return static_cast<int32_t>(_number);
         }
 
-        int32_t x_get()
+        int32_t x_get() const
         {
             return GetWindow()->windowPos.x;
         }
@@ -60,7 +60,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             window_set_position(w, { value, w->windowPos.y });
         }
-        int32_t y_get()
+        int32_t y_get() const
         {
             return GetWindow()->windowPos.y;
         }
@@ -69,21 +69,21 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             window_set_position(w, { w->windowPos.x, value });
         }
-        int32_t width_get()
+        int32_t width_get() const
         {
             return GetWindow()->width;
         }
-        int32_t height_get()
+        int32_t height_get() const
         {
             return GetWindow()->height;
         }
-        bool isSticky_get()
+        bool isSticky_get() const
         {
             auto flags = GetWindow()->flags;
             return (flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
         }
 
-        std::vector<std::shared_ptr<ScWidget>> widgets_get()
+        std::vector<std::shared_ptr<ScWidget>> widgets_get() const
         {
             std::vector<std::shared_ptr<ScWidget>> result;
             auto w = GetWindow();
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::vector<int32_t> colours_get()
+        std::vector<int32_t> colours_get() const
         {
             std::vector<int32_t> result;
             auto w = GetWindow();
@@ -126,7 +126,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::string title_get()
+        std::string title_get() const
         {
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
@@ -153,7 +153,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::shared_ptr<ScWidget> findWidget(std::string name)
+        std::shared_ptr<ScWidget> findWidget(std::string name) const
         {
             auto w = GetWindow();
             if (w != nullptr)

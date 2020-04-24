@@ -32,7 +32,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        DukValue size_get()
+        DukValue size_get() const
         {
             auto ctx = _context;
             auto objIdx = duk_push_object(ctx);
@@ -43,17 +43,17 @@ namespace OpenRCT2::Scripting
             return DukValue::take_from_stack(ctx);
         }
 
-        int32_t numRides_get()
+        int32_t numRides_get() const
         {
             return static_cast<int32_t>(GetRideManager().size());
         }
 
-        int32_t numEntities_get()
+        int32_t numEntities_get() const
         {
             return MAX_SPRITES;
         }
 
-        std::vector<std::shared_ptr<ScRide>> rides_get()
+        std::vector<std::shared_ptr<ScRide>> rides_get() const
         {
             std::vector<std::shared_ptr<ScRide>> result;
             auto rideManager = GetRideManager();
@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::shared_ptr<ScRide> getRide(int32_t id)
+        std::shared_ptr<ScRide> getRide(int32_t id) const
         {
             auto rideManager = GetRideManager();
             if (id >= 0 && id < static_cast<int32_t>(rideManager.size()))
@@ -78,13 +78,13 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::shared_ptr<ScTile> getTile(int32_t x, int32_t y)
+        std::shared_ptr<ScTile> getTile(int32_t x, int32_t y) const
         {
             auto coords = TileCoordsXY(x, y).ToCoordsXY();
             return std::make_shared<ScTile>(coords);
         }
 
-        DukValue getEntity(int32_t id)
+        DukValue getEntity(int32_t id) const
         {
             if (id >= 0 && id < MAX_SPRITES)
             {
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
             return DukValue::take_from_stack(_context);
         }
 
-        std::vector<DukValue> getAllEntities(const std::string& type)
+        std::vector<DukValue> getAllEntities(const std::string& type) const
         {
             SPRITE_LIST targetList{};
             uint8_t targetType{};
@@ -189,7 +189,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        DukValue GetEntityAsDukValue(const rct_sprite* sprite)
+        DukValue GetEntityAsDukValue(const rct_sprite* sprite) const
         {
             auto spriteId = sprite->generic.sprite_index;
             switch (sprite->generic.sprite_identifier)

@@ -36,7 +36,7 @@ namespace OpenRCT2::Scripting
             return _id;
         }
 
-        std::string name_get()
+        std::string name_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_group_index(_id);
@@ -55,7 +55,7 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
-        std::vector<std::string> permissions_get()
+        std::vector<std::string> permissions_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_group_index(_id);
@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string TransformPermissionKeyToJS(const std::string& s)
+        static std::string TransformPermissionKeyToJS(const std::string& s)
         {
             auto result = s.substr(sizeof("PERMISSION_") - 1);
             for (auto& c : result)
@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::string TransformPermissionKeyToInternal(const std::string& s)
+        static std::string TransformPermissionKeyToInternal(const std::string& s)
         {
             auto result = "PERMISSION_" + s;
             for (auto& c : result)
@@ -161,12 +161,12 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        int32_t id_get()
+        int32_t id_get() const
         {
             return _id;
         }
 
-        std::string name_get()
+        std::string name_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
@@ -178,7 +178,7 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
-        int32_t group_get()
+        int32_t group_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
@@ -197,7 +197,7 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
-        int32_t ping_get()
+        int32_t ping_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
@@ -209,7 +209,7 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
-        int32_t commandsRan_get()
+        int32_t commandsRan_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
@@ -221,7 +221,7 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
-        int32_t moneySpent_get()
+        int32_t moneySpent_get() const
         {
 #    ifndef DISABLE_NETWORK
             auto index = network_get_player_index(_id);
@@ -258,7 +258,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        std::string mode_get()
+        std::string mode_get() const
         {
 #    ifndef DISABLE_NETWORK
             switch (network_get_mode())
@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
 #    endif
             return "none";
         }
-        int32_t players_get()
+        int32_t players_get() const
         {
 #    ifndef DISABLE_NETWORK
             return network_get_num_players();
@@ -279,7 +279,7 @@ namespace OpenRCT2::Scripting
             return 0;
 #    endif
         }
-        int32_t groups_get()
+        int32_t groups_get() const
         {
 #    ifndef DISABLE_NETWORK
             return network_get_num_groups();
@@ -287,7 +287,7 @@ namespace OpenRCT2::Scripting
             return 0;
 #    endif
         }
-        int32_t defaultGroup_get()
+        int32_t defaultGroup_get() const
         {
 #    ifndef DISABLE_NETWORK
             return network_get_default_group();
@@ -303,7 +303,7 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
-        std::shared_ptr<ScPlayer> getPlayer(int32_t index)
+        std::shared_ptr<ScPlayer> getPlayer(int32_t index) const
         {
 #    ifndef DISABLE_NETWORK
             auto numPlayers = network_get_num_players();
@@ -316,7 +316,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        std::shared_ptr<ScPlayerGroup> getGroup(int32_t index)
+        std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const
         {
 #    ifndef DISABLE_NETWORK
             auto numGroups = network_get_num_groups();

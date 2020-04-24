@@ -37,7 +37,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        int32_t left_get()
+        int32_t left_get() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -55,7 +55,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t top_get()
+        int32_t top_get() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -73,7 +73,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t right_get()
+        int32_t right_get() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -91,7 +91,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t bottom_get()
+        int32_t bottom_get() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -109,7 +109,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t rotation_get()
+        int32_t rotation_get() const
         {
             return get_current_rotation();
         }
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t zoom_get()
+        int32_t zoom_get() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -146,7 +146,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t visibilityFlags_get()
+        uint32_t visibilityFlags_get() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue getCentrePosition()
+        DukValue getCentrePosition() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -242,7 +242,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_window* GetWindow()
+        rct_window* GetWindow() const
         {
             if (_class == WC_MAIN_WINDOW)
                 return window_get_main();
@@ -250,7 +250,7 @@ namespace OpenRCT2::Scripting
                 return window_find_by_number(_class, _number);
         }
 
-        rct_viewport* GetViewport()
+        rct_viewport* GetViewport() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -277,7 +277,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::optional<CoordsXYZ> GetCoordsFromObject(DukValue position)
+        std::optional<CoordsXYZ> GetCoordsFromObject(DukValue position) const
         {
             if (position.type() == DukValue::Type::OBJECT)
             {

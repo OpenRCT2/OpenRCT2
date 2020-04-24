@@ -30,7 +30,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string type_get()
+        std::string type_get() const
         {
             auto entity = GetEntity();
             if (entity != nullptr)
@@ -58,7 +58,7 @@ namespace OpenRCT2::Scripting
         }
 
         // x getter and setter
-        int32_t x_get()
+        int32_t x_get() const
         {
             auto entity = GetEntity();
             return entity != nullptr ? entity->x : 0;
@@ -74,7 +74,7 @@ namespace OpenRCT2::Scripting
         }
 
         // y getter and setter
-        int32_t y_get()
+        int32_t y_get() const
         {
             auto entity = GetEntity();
             return entity != nullptr ? entity->y : 0;
@@ -90,7 +90,7 @@ namespace OpenRCT2::Scripting
         }
 
         // z getter and setter
-        int16_t z_get()
+        int16_t z_get() const
         {
             auto entity = GetEntity();
             return entity != nullptr ? entity->z : 0;
@@ -105,7 +105,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        SpriteBase* GetEntity()
+        SpriteBase* GetEntity() const
         {
             return &get_sprite(_id)->generic;
         }
@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        uint8_t tshirtColour_get()
+        uint8_t tshirtColour_get() const
         {
             auto peep = GetPeep();
             return peep != nullptr ? peep->tshirt_colour : 0;
@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
                 peep->tshirt_colour = value;
             }
         }
-        uint8_t trousersColour_get()
+        uint8_t trousersColour_get() const
         {
             auto peep = GetPeep();
             return peep != nullptr ? peep->trousers_colour : 0;
@@ -158,7 +158,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        Peep* GetPeep()
+        Peep* GetPeep() const
         {
             return get_sprite(_id)->AsPeep();
         }

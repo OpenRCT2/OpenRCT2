@@ -67,17 +67,17 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string type_get()
+        std::string type_get() const
         {
             return std::string(ObjectTypeToString(_type));
         }
 
-        int32_t index_get()
+        int32_t index_get() const
         {
             return _index;
         }
 
-        std::string identifier_get()
+        std::string identifier_get() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
@@ -87,7 +87,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::string name_get()
+        std::string name_get() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
@@ -98,7 +98,7 @@ namespace OpenRCT2::Scripting
         }
 
     protected:
-        Object* GetObject()
+        Object* GetObject() const
         {
             auto& objManager = GetContext()->GetObjectManager();
             return objManager.GetLoadedObject(_type, _index);
@@ -121,7 +121,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string description_get()
+        std::string description_get() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::string capacity_get()
+        std::string capacity_get() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
@@ -142,7 +142,7 @@ namespace OpenRCT2::Scripting
         }
 
     protected:
-        RideObject* GetObject()
+        RideObject* GetObject() const
         {
             return static_cast<RideObject*>(ScObject::GetObject());
         }

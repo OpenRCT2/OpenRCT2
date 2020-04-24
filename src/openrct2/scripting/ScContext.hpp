@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue getObject(const std::string& typez, int32_t index)
+        DukValue getObject(const std::string& typez, int32_t index) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto& objManager = GetContext()->GetObjectManager();
@@ -85,7 +85,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::vector<DukValue> getAllObjects(const std::string& typez)
+        std::vector<DukValue> getAllObjects(const std::string& typez) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto& objManager = GetContext()->GetObjectManager();

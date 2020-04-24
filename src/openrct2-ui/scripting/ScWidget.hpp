@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string type_get()
+        std::string type_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -86,7 +86,7 @@ namespace OpenRCT2::Scripting
             return "unknown";
         }
 
-        int32_t x_get()
+        int32_t x_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -106,7 +106,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t y_get()
+        int32_t y_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -126,7 +126,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t width_get()
+        int32_t width_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -146,7 +146,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t height_get()
+        int32_t height_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -166,7 +166,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool isDisabled_get()
+        bool isDisabled_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -188,7 +188,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool isChecked_get()
+        bool isChecked_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -206,7 +206,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t image_get()
+        uint32_t image_get() const
         {
             if (IsCustomWindow())
             {
@@ -227,7 +227,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::string text_get()
+        std::string text_get() const
         {
             if (IsCustomWindow())
             {
@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::shared_ptr<ScViewport> viewport_get()
+        std::shared_ptr<ScViewport> viewport_get() const
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
@@ -281,7 +281,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_window* GetWindow()
+        rct_window* GetWindow() const
         {
             if (_class == WC_MAIN_WINDOW)
                 return window_get_main();
@@ -289,7 +289,7 @@ namespace OpenRCT2::Scripting
                 return window_find_by_number(_class, _number);
         }
 
-        rct_widget* GetWidget()
+        rct_widget* GetWidget() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -299,7 +299,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        bool IsCustomWindow()
+        bool IsCustomWindow() const
         {
             auto w = GetWindow();
             if (w != nullptr)

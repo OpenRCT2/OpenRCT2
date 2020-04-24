@@ -31,7 +31,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        int32_t id_get()
+        int32_t id_get() const
         {
             return _rideId;
         }
@@ -50,13 +50,13 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        int32_t type_get()
+        int32_t type_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->type : 0;
         }
 
-        std::string name_get()
+        std::string name_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->GetName() : std::string();
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t excitement_get()
+        int32_t excitement_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->excitement : 0;
@@ -86,7 +86,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t intensity_get()
+        int32_t intensity_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->intensity : 0;
@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t nausea_get()
+        int32_t nausea_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->nausea : 0;
@@ -116,7 +116,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t totalCustomers_get()
+        int32_t totalCustomers_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->total_customers : 0;
@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        Ride* GetRide()
+        Ride* GetRide() const
         {
             return get_ride(_rideId);
         }

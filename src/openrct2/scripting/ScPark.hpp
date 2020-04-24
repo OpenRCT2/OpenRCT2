@@ -27,7 +27,7 @@ namespace OpenRCT2::Scripting
     class ScPark
     {
     public:
-        money32 cash_get()
+        money32 cash_get() const
         {
             return gCash;
         }
@@ -39,7 +39,7 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        int32_t rating_get()
+        int32_t rating_get() const
         {
             return gParkRating;
         }
@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        money32 bankLoan_get()
+        money32 bankLoan_get() const
         {
             return gBankLoan;
         }
@@ -63,7 +63,7 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        money32 maxBankLoan_get()
+        money32 maxBankLoan_get() const
         {
             return gMaxBankLoan;
         }
@@ -109,7 +109,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        uint8_t GetParkMessageType(const std::string& key)
+        static uint8_t GetParkMessageType(const std::string& key)
         {
             static auto keys = { "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award",
                                  "chart" };

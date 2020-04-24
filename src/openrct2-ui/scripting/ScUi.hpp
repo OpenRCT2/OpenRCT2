@@ -50,16 +50,16 @@ namespace OpenRCT2::Scripting
         {
             return context_get_width();
         }
-        int32_t height_get()
+        int32_t height_get() const
         {
             return context_get_height();
         }
-        int32_t windows_get()
+        int32_t windows_get() const
         {
             return static_cast<int32_t>(g_window_list.size());
         }
 
-        std::shared_ptr<ScViewport> mainViewport_get()
+        std::shared_ptr<ScViewport> mainViewport_get() const
         {
             return std::make_shared<ScViewport>(WC_MAIN_WINDOW);
         }
@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
             window_close_all();
         }
 
-        std::shared_ptr<ScWindow> getWindow(DukValue a)
+        std::shared_ptr<ScWindow> getWindow(DukValue a) const
         {
             if (a.type() == DukValue::Type::NUMBER)
             {
@@ -150,7 +150,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_windowclass GetClassification(const std::string& key)
+        rct_windowclass GetClassification(const std::string& key) const
         {
             return WC_NULL;
         }

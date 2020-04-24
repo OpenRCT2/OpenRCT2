@@ -28,7 +28,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        void dispose()
+        void dispose() const
         {
             if (_onDispose)
             {

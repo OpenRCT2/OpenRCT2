@@ -149,7 +149,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t surfaceStyle_get()
+        uint32_t surfaceStyle_get() const
         {
             auto el = _element->AsSurface();
             if (el != nullptr)
@@ -166,7 +166,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t edgeStyle_get()
+        uint32_t edgeStyle_get() const
         {
             auto el = _element->AsSurface();
             if (el != nullptr)
@@ -183,7 +183,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t grassLength_get()
+        uint8_t grassLength_get() const
         {
             auto el = _element->AsSurface();
             if (el != nullptr)
@@ -201,7 +201,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool hasOwnership_get()
+        bool hasOwnership_get() const
         {
             auto el = _element->AsSurface();
             if (el != nullptr)
@@ -220,7 +220,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        uint8_t ownership_get()
+        uint8_t ownership_get() const
         {
             auto el = _element->AsSurface();
             if (el != nullptr)
@@ -237,7 +237,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t parkFences_get()
+        uint8_t parkFences_get() const
         {
             auto el = _element->AsSurface();
             if (el != nullptr)
@@ -254,7 +254,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t trackType_get()
+        uint8_t trackType_get() const
         {
             auto el = _element->AsTrack();
             if (el != nullptr)
@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t sequence_get()
+        uint8_t sequence_get() const
         {
             switch (_element->GetType())
             {
@@ -308,7 +308,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t ride_get()
+        uint8_t ride_get() const
         {
             switch (_element->GetType())
             {
@@ -356,7 +356,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t station_get()
+        uint8_t station_get() const
         {
             switch (_element->GetType())
             {
@@ -404,7 +404,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool hasChainLift_get()
+        bool hasChainLift_get() const
         {
             auto el = _element->AsTrack();
             if (el != nullptr)
@@ -421,7 +421,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t object_get()
+        uint32_t object_get() const
         {
             switch (_element->GetType())
             {
@@ -491,7 +491,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t age_get()
+        uint8_t age_get() const
         {
             auto el = _element->AsSmallScenery();
             if (el != nullptr)
@@ -508,7 +508,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t primaryColour_get()
+        uint8_t primaryColour_get() const
         {
             switch (_element->GetType())
             {
@@ -545,7 +545,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t secondaryColour_get()
+        uint8_t secondaryColour_get() const
         {
             switch (_element->GetType())
             {
@@ -802,7 +802,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t footpathObject_get()
+        uint8_t footpathObject_get() const
         {
             auto el = _element->AsEntrance();
             if (el != nullptr)
@@ -903,23 +903,23 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        int32_t x_get()
+        int32_t x_get() const
         {
             return _coords.x / COORDS_XY_STEP;
         }
 
-        int32_t y_get()
+        int32_t y_get() const
         {
             return _coords.y / COORDS_XY_STEP;
         }
 
-        size_t numElements_get()
+        size_t numElements_get() const
         {
             auto first = GetFirstElement();
             return GetNumElements(first);
         }
 
-        std::vector<std::shared_ptr<ScTileElement>> elements_get()
+        std::vector<std::shared_ptr<ScTileElement>> elements_get() const
         {
             std::vector<std::shared_ptr<ScTileElement>> result;
             auto first = GetFirstElement();
@@ -935,7 +935,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        DukValue data_get()
+        DukValue data_get() const
         {
             auto ctx = GetDukContext();
             auto first = map_get_first_element_at(_coords);
@@ -998,7 +998,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::shared_ptr<ScTileElement> getElement(size_t index)
+        std::shared_ptr<ScTileElement> getElement(size_t index) const
         {
             auto first = GetFirstElement();
             if (index < GetNumElements(first))
@@ -1069,7 +1069,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        TileElement* GetFirstElement()
+        TileElement* GetFirstElement() const
         {
             return map_get_first_element_at(_coords);
         }
@@ -1088,7 +1088,7 @@ namespace OpenRCT2::Scripting
             return count;
         }
 
-        duk_context* GetDukContext()
+        duk_context* GetDukContext() const
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();

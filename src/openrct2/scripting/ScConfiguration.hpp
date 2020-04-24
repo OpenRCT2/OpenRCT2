@@ -41,7 +41,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::pair<std::string_view, std::string_view> GetNextNamespace(const std::string_view& input)
+        std::pair<std::string_view, std::string_view> GetNextNamespace(const std::string_view& input) const
         {
             auto pos = input.find('.');
             if (pos == std::string_view::npos)
@@ -54,14 +54,14 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::pair<std::string_view, std::string_view> GetNamespaceAndKey(const std::string_view& input)
+        std::pair<std::string_view, std::string_view> GetNamespaceAndKey(const std::string_view& input) const
         {
             auto pos = input.find_last_of('.');
             return pos == std::string_view::npos ? std::make_pair(std::string_view(), input)
                                                  : std::make_pair(input.substr(0, pos), input.substr(pos + 1));
         }
 
-        std::optional<DukValue> GetNamespaceObject(const std::string_view& ns)
+        std::optional<DukValue> GetNamespaceObject(const std::string_view& ns) const
         {
             auto store = _backingObject;
             auto k = ns;
@@ -76,7 +76,7 @@ namespace OpenRCT2::Scripting
             return store.type() == DukValue::OBJECT ? std::make_optional(store) : std::nullopt;
         }
 
-        DukValue GetOrCreateNamespaceObject(duk_context* ctx, const std::string_view& ns)
+        DukValue GetOrCreateNamespaceObject(duk_context* ctx, const std::string_view& ns) const
         {
             auto store = _backingObject;
             if (!ns.empty())
@@ -106,7 +106,7 @@ namespace OpenRCT2::Scripting
             return store;
         }
 
-        bool IsValidNamespace(const std::string_view& ns)
+        bool IsValidNamespace(const std::string_view& ns) const
         {
             if (ns.empty() || ns[0] == '.' || ns[ns.size() - 1] == '.')
             {
@@ -122,12 +122,12 @@ namespace OpenRCT2::Scripting
             return true;
         }
 
-        bool IsValidKey(const std::string_view& key)
+        bool IsValidKey(const std::string_view& key) const
         {
             return !key.empty() && key.find('.') == std::string_view::npos;
         }
 
-        DukValue getAll(const std::string& ns)
+        DukValue getAll(const std::string& ns) const
         {
             DukValue result;
             auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -155,7 +155,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        DukValue get(const std::string& key, const DukValue& defaultValue)
+        DukValue get(const std::string& key, const DukValue& defaultValue) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (_isUserConfig)
@@ -193,7 +193,7 @@ namespace OpenRCT2::Scripting
             return defaultValue;
         }
 
-        void set(const std::string& key, const DukValue& value)
+        void set(const std::string& key, const DukValue& value) const
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();
@@ -246,7 +246,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool has(const std::string& key)
+        bool has(const std::string& key) const
         {
             auto val = get(key, DukValue());
             return val.type() != DukValue::Type::UNDEFINED;

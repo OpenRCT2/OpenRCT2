@@ -37,7 +37,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        uint32_t monthsElapsed_get()
+        uint32_t monthsElapsed_get() const
         {
             const auto& date = GetDate();
             return date.GetMonthsElapsed();
@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
             gDateMonthsElapsed = value;
         }
 
-        uint32_t monthProgress_get()
+        uint32_t monthProgress_get() const
         {
             const auto& date = GetDate();
             return date.GetMonthTicks();
@@ -61,7 +61,7 @@ namespace OpenRCT2::Scripting
             gDateMonthTicks = value;
         }
 
-        uint32_t yearsElapsed_get()
+        uint32_t yearsElapsed_get() const
         {
             const auto& date = GetDate();
             return date.GetMonthsElapsed() / 8;
@@ -72,26 +72,26 @@ namespace OpenRCT2::Scripting
             return gCurrentTicks;
         }
 
-        int32_t day_get()
+        int32_t day_get() const
         {
             const auto& date = GetDate();
             return date.GetDay() + 1;
         }
 
-        int32_t month_get()
+        int32_t month_get() const
         {
             const auto& date = GetDate();
             return date.GetMonth();
         }
 
-        int32_t year_get()
+        int32_t year_get() const
         {
             const auto& date = GetDate();
             return date.GetYear() + 1;
         }
 
     private:
-        const Date& GetDate()
+        const Date& GetDate() const
         {
             auto gameState = GetContext()->GetGameState();
             return gameState->GetDate();
