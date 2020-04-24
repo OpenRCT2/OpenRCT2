@@ -132,15 +132,8 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
     };
 
     auto src = pixels;
-    auto buffer = std::vector<uint8_t>();
-    buffer.resize((height * 2) + (width * height * 16));
+    auto buffer = std::vector<uint8_t>((height * 2) + (width * height * 16), 0);
 
-    if (buffer.data() == nullptr)
-
-    {
-        throw std::bad_alloc();
-    }
-    std::fill_n(buffer.begin(), (height * 2) + (width * height * 16), 0);
     auto yOffsets = (uint16_t*)buffer.data();
     auto dst = buffer.data() + (height * 2);
 

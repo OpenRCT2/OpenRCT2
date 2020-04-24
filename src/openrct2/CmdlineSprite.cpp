@@ -107,7 +107,7 @@ static bool sprite_file_open(const utf8* path)
     {
         int32_t openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
 
-        auto openElements = std::make_unique<rct_g1_element_32bit[]>(openEntryTableSize);
+        auto openElements = std::make_unique<rct_g1_element_32bit[]>(spriteFileHeader.num_entries);
         if (openElements == nullptr)
         {
             fclose(file);
