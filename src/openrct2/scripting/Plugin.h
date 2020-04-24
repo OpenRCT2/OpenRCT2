@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
         std::string Name;
         std::string Version;
         std::vector<std::string> Authors;
-        PluginType Type;
+        PluginType Type{};
         int32_t MinApiVersion{};
         DukValue Main;
     };
@@ -50,7 +50,7 @@ namespace OpenRCT2::Scripting
     private:
         duk_context* _context{};
         std::string _path;
-        PluginMetadata _metadata;
+        PluginMetadata _metadata{};
         std::string _code;
         bool _hasStarted{};
 

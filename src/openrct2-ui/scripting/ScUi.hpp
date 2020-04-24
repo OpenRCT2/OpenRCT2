@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        int32_t width_get()
+        int32_t width_get() const
         {
             return context_get_width();
         }

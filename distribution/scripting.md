@@ -2,7 +2,7 @@
 
 OpenRCT2 allows custom scripts (also known as plug-ins) to be written and executed in the game providing additional behaviour on top of the vanilla experience. This can range from extra windows providing information about the park to entire new multiplayer game modes.
 
-Each script is a single physical javascript file within the `plugin` directory in your OpenRCT2 user directory. This is usually `C:\Users\YourName\Documents\OpenRCT2` on Windows, or `/home/YourName/.config/openrct2` on Linux. OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
+Each script is a single physical javascript file within the `plugin` directory in your OpenRCT2 user directory. This is usually `C:\Users\YourName\Documents\OpenRCT2` on Windows, or `$XDG_CONFIG_HOME/OpenRCT2` or in its absence `$HOME/.config/OpenRCT2` on Linux. OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
 
 There are two types of scripts:
 * Local
@@ -44,7 +44,7 @@ The hot reload feature can be enabled by editing your `config.ini` file and sett
 
 > Why was JavaScript chosen instead of LUA or Python.
 
-JavaScript is a very mature and flexible language with a large, if not largest, resource base available. There are arguably more transpilers, tools, and libraries for JavaScript than any other language. That and also it using a familiar C-like syntax and 0-indexed arrays make it more suitable than LUA and Python. Of course if you would still like to use LUA or another language, there will likely be a JavaScript transpiler for it.
+JavaScript is a very mature and flexible language with a large, if not the largest, resource base available. There are arguably more transpilers, tools, and libraries for JavaScript than any other language. That and also it using a familiar C-like syntax and 0-indexed arrays make it more suitable than LUA and Python. Of course if you would still like to use LUA or another language, there will likely be a JavaScript transpiler for it.
 
 Another benefit of using JavaScript is that you get rich editor features such as completion and API documentation by using a TypeScript definition file which works for both TypeScript and JavaScript. [Visual Studio Code](https://code.visualstudio.com) is recommended, as that supports the workflow very well. See the [OpenRCT2 plugin hot-reload demo](https://www.youtube.com/watch?v=jmjWzEhmDjk) video for a demonstration of the editor functionality.
 
