@@ -67,7 +67,7 @@ namespace OpenRCT2::Scripting
             return date.GetMonthsElapsed() / 8;
         }
 
-        uint32_t ticksElapsed_get()
+        uint32_t ticksElapsed_get() const
         {
             return gCurrentTicks;
         }
