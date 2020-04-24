@@ -821,17 +821,8 @@ bool ScriptEngine::RegisterCustomAction(
 
 void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin)
 {
-    for (auto it = _customActions.begin(); it != _customActions.end();)
-    {
-        if (it->second.Owner == plugin)
-        {
-            it = _customActions.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
+    auto isOwner = [&] (auto& obj) { return obj.second.Owner == plugin; }
+    std::erase(std::remove_if(_customActions.begin(), _customActions.end(), isOwner), _customActions.end());
 }
 
 void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
