@@ -14,7 +14,7 @@
 
 #include <vector>
 
-enum INPUT_FLAGS
+enum EDITOR_INPUT_FLAGS
 {
     INPUT_FLAG_EDITOR_OBJECT_1 = (1 << 1),
     INPUT_FLAG_EDITOR_OBJECT_2 = (1 << 2),
