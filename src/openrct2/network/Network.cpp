@@ -311,7 +311,7 @@ private:
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
-    uint8_t* save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    std::string save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
     std::ofstream _chat_log_fs;
     std::ofstream _server_log_fs;
@@ -1522,8 +1522,12 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
     }
 
     size_t out_size;
-    uint8_t* header = save_for_network(out_size, objects);
-    if (header == nullptr)
+    std::string header;
+    try
+    {
+        header = save_for_network(out_size, objects);
+    }
+    catch (std::exception e)
     {
         if (connection)
         {
@@ -1532,13 +1536,14 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         }
         return;
     }
+
     size_t chunksize = CHUNK_SIZE;
     for (size_t i = 0; i < out_size; i += chunksize)
     {
         size_t datasize = std::min(chunksize, out_size - i);
         std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
         *packet << static_cast<uint32_t>(NETWORK_COMMAND_MAP) << static_cast<uint32_t>(out_size) << static_cast<uint32_t>(i);
-        packet->Write(&header[i], datasize);
+        packet->Write(reinterpret_cast<uint8_t*>(&header[i]), datasize);
         if (connection)
         {
             connection->QueuePacket(std::move(packet));
@@ -1548,12 +1553,11 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
             SendPacketToClients(*packet);
         }
     }
-    free(header);
 }
 
-uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const
+std::string Network::save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
-    uint8_t* header = nullptr;
+    std::string header;
     out_size = 0;
     bool RLEState = gUseRLE;
     gUseRLE = false;
@@ -1572,33 +1576,21 @@ uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const Obj
     try
     {
         auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size, &out_size);
-        header = reinterpret_cast<uint8_t*>(_strdup("open2_sv6_zlib"));
-        size_t header_len = strlen(reinterpret_cast<char*>(header)) + 1; // account for null terminator
-        header = static_cast<uint8_t*>(realloc(header, header_len + out_size));
-        if (header == nullptr)
-        {
-            log_error("Failed to allocate %u bytes.", header_len + out_size);
-        }
-        else
-        {
-            std::memcpy(&header[header_len], compressed.data(), out_size);
-            out_size += header_len;
-            log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-        }
+        //header = reinterpret_cast<uint8_t*>(_strdup("open2_sv6_zlib"));
+        header = "open2_sv6_zlib";
+        size_t header_len = strlen(reinterpret_cast<char*>(header.data())) + 1; // account for null terminator
+        header.resize(header_len + out_size);
+
+        std::memcpy(&header[header_len], compressed.data(), out_size);
+        out_size += header_len;
+        log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
     }
     catch(std::exception e)
     {
         log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-        header = static_cast<uint8_t*>(malloc(size));
-        if (header == nullptr)
-        {
-            log_error("Failed to allocate %u bytes.", size);
-        }
-        else
-        {
-            out_size = size;
-            std::memcpy(header, data, size);
-        }
+        header.resize(size);
+        out_size = size;
+        std::memcpy(header.data(), data, size);
     }
     return header;
 }
