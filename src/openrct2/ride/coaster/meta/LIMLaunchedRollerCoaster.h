@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../ShopItem.h"
 #include "../../Track.h"
 
 // clang-format off
@@ -28,5 +29,6 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::Null, 4, 6 }),
     SET_FIELD(UpkeepCosts, { 42, 20, 80, 9, 3, 10 }),
+    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on

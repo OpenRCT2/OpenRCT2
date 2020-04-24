@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../ShopItem.h"
 #include "../../Track.h"
 
 // clang-format off
@@ -32,5 +33,6 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 82, 20, 0, 10, 0, 10 }),
+    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),
 };
 // clang-format on
