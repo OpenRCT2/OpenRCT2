@@ -400,7 +400,7 @@ namespace GameActions
         }
 
         GameActionResult::Ptr result = QueryInternal(action, topLevel);
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
         if (result->Error == GA_ERROR::OK
             && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
@@ -444,7 +444,7 @@ namespace GameActions
 
             // Execute the action, changing the game state
             result = action->Execute();
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
             if (result->Error == GA_ERROR::OK)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();

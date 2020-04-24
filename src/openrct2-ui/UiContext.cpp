@@ -120,7 +120,7 @@ public:
 
     void Initialise() override
     {
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext()->GetScriptEngine();
         UiScriptExtensions::Extend(scriptEngine);
 #endif

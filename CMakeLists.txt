@@ -123,7 +123,7 @@ if (ENABLE_LIGHTFX)
     add_definitions(-D__ENABLE_LIGHTFX__)
 endif ()
 if (ENABLE_SCRIPTING)
-    add_definitions(-D__ENABLE_SCRIPTING__)
+    add_definitions(-DENABLE_SCRIPTING)
 endif ()
 
 if (NOT DISABLE_DISCORD_RPC)

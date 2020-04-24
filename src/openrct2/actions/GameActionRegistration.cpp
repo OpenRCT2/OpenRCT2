@@ -172,7 +172,7 @@ namespace GameActions
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
         Register<SetCheatAction>();
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
         Register<CustomAction>();
 #endif
     }

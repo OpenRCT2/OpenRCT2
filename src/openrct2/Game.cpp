@@ -592,14 +592,14 @@ void game_load_init()
 
 void game_load_scripts()
 {
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
     GetContext()->GetScriptEngine().LoadPlugins();
 #endif
 }
 
 void game_unload_scripts()
 {
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
     GetContext()->GetScriptEngine().UnloadPlugins();
 #endif
 }

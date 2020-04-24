@@ -269,7 +269,7 @@ void GameState::UpdateLogic()
         }
     }
 
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
 
@@ -279,7 +279,7 @@ void GameState::UpdateLogic()
     date_update();
     _date = Date(gDateMonthsElapsed, gDateMonthTicks);
 
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
     if (day != _date.GetDay())
     {
         hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);

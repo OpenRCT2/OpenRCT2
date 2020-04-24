@@ -1474,7 +1474,7 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << static_cast<uint32_t>(NETWORK_COMMAND_SCRIPTS);
-#    ifdef __ENABLE_SCRIPTING__
+#    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -2445,7 +2445,7 @@ void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket
     uint32_t numScripts{};
     packet >> numScripts;
 
-#    ifdef __ENABLE_SCRIPTING__
+#    ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();
     for (uint32_t i = 0; i < numScripts; i++)
     {
@@ -2888,7 +2888,7 @@ void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection,
 
 static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::string& text)
 {
-#    ifdef __ENABLE_SCRIPTING__
+#    ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
     {

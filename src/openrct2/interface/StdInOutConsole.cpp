@@ -56,7 +56,7 @@ void StdInOutConsole::Start()
 
 std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();
     return scriptEngine.Eval(s);
 #else
@@ -71,7 +71,7 @@ std::future<void> StdInOutConsole::Eval(const std::string& s)
 
 void StdInOutConsole::ProcessEvalQueue()
 {
-#ifndef __ENABLE_SCRIPTING__
+#ifndef ENABLE_SCRIPTING
     while (_evalQueue.size() > 0)
     {
         auto item = std::move(_evalQueue.front());

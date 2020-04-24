@@ -3288,7 +3288,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
         gDropdownItemsFormat[i++] = STR_MAPGEN_WINDOW_TITLE;
     }
 
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
     const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
     if (!customMenuItems.empty())
     {
@@ -3334,7 +3334,7 @@ static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex)
     }
     else
     {
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
         if (customMenuItems.size() > customIndex)

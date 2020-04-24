@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
 
 #    include "../interface/InteractiveConsole.h"
 #    include "Duktape.hpp"

@@ -103,7 +103,7 @@ namespace OpenRCT2
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
         ScriptEngine _scriptEngine;
 #endif
 
@@ -140,7 +140,7 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
             , _scriptEngine(_stdInOutConsole, *env)
 #endif
             , _painter(std::make_unique<Painter>(uiContext))
@@ -185,7 +185,7 @@ namespace OpenRCT2
             return _uiContext;
         }
 
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
         Scripting::ScriptEngine& GetScriptEngine() override
         {
             return _scriptEngine;
@@ -1032,7 +1032,7 @@ namespace OpenRCT2
 
             Twitch::Update();
             chat_update();
-#ifdef __ENABLE_SCRIPTING__
+#ifdef ENABLE_SCRIPTING
             _scriptEngine.Update();
 #endif
             _stdInOutConsole.ProcessEvalQueue();
