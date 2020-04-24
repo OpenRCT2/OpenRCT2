@@ -8,6 +8,8 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,8 +30,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean assetsCopied = false;
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+        int requestCode,
+        @NonNull String[] permissions,
+        @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (hasRequiredPermissions()) {
@@ -65,34 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
-
-        boolean success = false;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            display.getRealSize(pixelSize);
-            display.getRealMetrics(metrics);
-
-            success = true;
-        } else {
-            try {
-                Method getRawHeight = Display.class.getMethod("getRawHeight");
-                Method getRawWidth = Display.class.getMethod("getRawWidth");
-                pixelSize.x = (Integer) getRawWidth.invoke(display);
-                pixelSize.y = (Integer) getRawHeight.invoke(display);
-
-                success = true;
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (!success) {
-            // Fall back to viewport size
-            display.getSize(pixelSize);
-        }
+        display.getRealSize(pixelSize);
+        display.getRealMetrics(metrics);
 
         int rotation = display.getRotation();
         if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {

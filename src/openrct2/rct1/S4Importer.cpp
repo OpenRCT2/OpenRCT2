@@ -409,6 +409,8 @@ private:
     {
         size_t researchListCount;
         const rct1_research_item* researchList = GetResearchList(&researchListCount);
+        std::bitset<RCT1_RIDE_TYPE_COUNT> rideTypeInResearch = GetRideTypesPresentInResearchList(
+            researchList, researchListCount);
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item* researchItem = &researchList[i];
@@ -434,7 +436,12 @@ private:
                     AddEntryForRideType(researchItem->item);
                     break;
                 case RCT1_RESEARCH_TYPE_VEHICLE:
-                    AddEntryForVehicleType(researchItem->related_ride, researchItem->item);
+                    // For some bizarre reason, RCT1 research lists contain vehicles that aren't actually researched.
+                    // Extra bizarrely, this does not seem to apply to Loopy Landscapes saves/scenarios.
+                    if (rideTypeInResearch[researchItem->related_ride] || _gameVersion == FILE_VERSION_RCT1_LL)
+                    {
+                        AddEntryForVehicleType(researchItem->related_ride, researchItem->item);
+                    }
                     break;
             }
         }

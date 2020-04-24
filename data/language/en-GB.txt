@@ -890,7 +890,7 @@ STR_1506    :{SMALLFONT}“The litter here is really bad”
 STR_1507    :{SMALLFONT}“I can't find the park exit”
 STR_1508    :{SMALLFONT}“I want to get off {STRINGID}”
 STR_1509    :{SMALLFONT}“I want to get out of {STRINGID}”
-STR_1510    :{SMALLFONT}“I'm not going on {STRINGID} - It isn't safe”
+STR_1510    :{SMALLFONT}“I'm not going on {STRINGID} - it isn't safe”
 STR_1511    :{SMALLFONT}“This path is disgusting”
 STR_1512    :{SMALLFONT}“It's too crowded here”
 STR_1513    :{SMALLFONT}“The vandalism here is really bad”
@@ -2246,7 +2246,7 @@ STR_3131    :Cancel
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
-STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
+STR_3135    :{RED}(Vehicle design unavailable. Ride performance may be affected.)
 STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
@@ -2419,10 +2419,10 @@ STR_3327    :Starting positions for people not set
 STR_3328    :Can't advance to next editor stage...
 STR_3329    :Park entrance not yet built
 STR_3330    :Park must own some land
-STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
+STR_3331    :Path from park entrance to map edge either not complete or too complex. Path must be single-width with as few junctions and corners as possible.
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
-STR_3333    :Export plug-in objects with saved games
-STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
+STR_3333    :Export custom objects with saved games
+STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional custom object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Track Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3338    :{BLACK}Custom-designed layout
@@ -2448,7 +2448,7 @@ STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRIN
 STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
-STR_3361    :Too many track designs of this type - Some will not be listed.
+STR_3361    :Too many track designs of this type. Some will not be listed.
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ride
@@ -2469,7 +2469,7 @@ STR_3380    :Unable to install this track design...
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
-STR_3384    :An existing track design already has this name - Please select a new name for this design:
+STR_3384    :An existing track design already has this name. Please select a new name for this design:
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Too many items selected
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
@@ -3728,7 +3728,7 @@ STR_DTLS    :Several islands form the basis for this new park
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
 STR_PARK    :Katie's Dreamland
-STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+STR_DTLS    :A small theme park with a few rides and room for expansion. Your aim is to double the park value.
 
 <Pokey Park>
 STR_SCNR    :Pokey Park
@@ -3768,7 +3768,7 @@ STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+STR_DTLS    :A large park with well-designed but rather old rides. Replace the old rides or add new rides to make the park more popular.
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
@@ -3778,7 +3778,7 @@ STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
 STR_PARK    :Lightning Peaks
-STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers. Use the available land to attract a new thrill-seeking clientele.
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
@@ -3793,7 +3793,7 @@ STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists. Use the available space to build rides to attract more people.
 
 <Mega Park>
 STR_SCNR    :Mega Park
@@ -4258,7 +4258,7 @@ STR_DTLS    :Starting from scratch, build the rides in this Six Flags park
 <Build your own Six Flags Park>
 STR_SCNR    :Build your own Six Flags Park
 STR_PARK    :Six Flags
-STR_DTLS    :Build your own design of Six Flags park - Either build rides from other Six Flags parks or design and build your own rides
+STR_DTLS    :Build your own design of Six Flags park - either build rides from other Six Flags parks or design and build your own rides
 
 <Bumbly Bazaar>
 STR_SCNR    :Bumbly Bazaar
@@ -4268,7 +4268,7 @@ STR_DTLS    :Starting with a small market bazaar, your challenge is to increase 
 <Crazy Castle>
 STR_SCNR    :Crazy Castle
 STR_PARK    :Crazy Castle
-STR_DTLS    :You have inherited a large castle - Your job is to convert it into a small theme park.
+STR_DTLS    :You have inherited a large castle. Your job is to convert it into a small theme park.
 
 <Dusty Greens>
 STR_SCNR    :Dusty Greens
@@ -4303,7 +4303,7 @@ STR_DTLS    :Hired by a large amusement park chain, your task is to build them a
 <Gravity Gardens>
 STR_SCNR    :Gravity Gardens
 STR_PARK    :Gravity Gardens
-STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens - No other rides, just roller coasters!
+STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens. No other rides, just roller coasters!
 
 <Infernal Views>
 STR_SCNR    :Infernal Views
@@ -4328,7 +4328,7 @@ STR_DTLS    :Try your hand at running and improving this Six Flags park
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim: to attract more guests to the park!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holland
@@ -4338,12 +4338,12 @@ STR_DTLS    :Try your hand at running and improving this Six Flags park
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim: to repay your loan while keeping the park value up!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim: to attract more guests to the park!
 
 ###############################################################################
 ## Wacky Worlds Scenarios

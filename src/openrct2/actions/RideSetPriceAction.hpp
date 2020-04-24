@@ -126,7 +126,7 @@ public:
             shopItem = rideEntry->shop_item_secondary;
             if (shopItem == SHOP_ITEM_NONE)
             {
-                shopItem = RidePhotoItems[ride->type];
+                shopItem = RideTypeDescriptors[ride->type].PhotoItem;
                 if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
                 {
                     ride->price_secondary = _price;

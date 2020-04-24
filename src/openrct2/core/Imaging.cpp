@@ -11,6 +11,7 @@
 
 #include "Imaging.h"
 
+#include "../Version.h"
 #include "../drawing/Drawing.h"
 #include "Guard.hpp"
 #include "IStream.hpp"
@@ -173,6 +174,11 @@ namespace Imaging
                 throw std::runtime_error("png_create_write_struct failed.");
             }
 
+            png_text text_ptr[1];
+            text_ptr[0].key = const_cast<char*>("Software");
+            text_ptr[0].text = const_cast<char*>(gVersionInfoFull);
+            text_ptr[0].compression = PNG_TEXT_COMPRESSION_zTXt;
+
             auto info_ptr = png_create_info_struct(png_ptr);
             if (info_ptr == nullptr)
             {
@@ -218,6 +224,7 @@ namespace Imaging
                 png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
                 colourType = PNG_COLOR_TYPE_PALETTE;
             }
+            png_set_text(png_ptr, info_ptr, text_ptr, 1);
             png_set_IHDR(
                 png_ptr, info_ptr, image.Width, image.Height, 8, colourType, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
                 PNG_FILTER_TYPE_DEFAULT);

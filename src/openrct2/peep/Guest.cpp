@@ -4398,7 +4398,7 @@ void Guest::UpdateRideInExit()
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
-        uint8_t secondaryItem = RidePhotoItems[ride->type];
+        uint8_t secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
         if (DecideAndBuyItem(ride, secondaryItem, ride->price_secondary))
         {
             ride->no_secondary_items_sold++;

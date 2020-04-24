@@ -6408,7 +6408,7 @@ static void window_ride_income_toggle_secondary_price(rct_window* w)
 
     auto shop_item = rideEntry->shop_item_secondary;
     if (shop_item == SHOP_ITEM_NONE)
-        shop_item = RidePhotoItems[ride->type];
+        shop_item = RideTypeDescriptors[ride->type].PhotoItem;
 
     update_same_price_throughout_flags(shop_item);
 
@@ -6709,7 +6709,7 @@ static void window_ride_income_invalidate(rct_window* w)
     }
 
     // Get secondary item
-    auto secondaryItem = RidePhotoItems[ride->type];
+    auto secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
     {
         if ((secondaryItem = rideEntry->shop_item_secondary) != SHOP_ITEM_NONE)
@@ -6795,7 +6795,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += 44;
 
     // Secondary item profit / loss per item sold
-    secondaryItem = RidePhotoItems[ride->type];
+    secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
         secondaryItem = rideEntry->shop_item_secondary;
 
@@ -7045,7 +7045,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Secondary shop items sold / on-ride photos sold
-    shopItem = (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[ride->type]
+    shopItem = (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[ride->type].PhotoItem
                                                                       : ride->GetRideEntry()->shop_item_secondary;
     if (shopItem != SHOP_ITEM_NONE)
     {
