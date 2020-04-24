@@ -164,6 +164,22 @@ No problem, if there is something you need, post a new issue on the issue tracke
 
 Adding new APIs is most of time straight forward, so they can be added to new development builds quickly. Or if you are capable, make the change yourself to the OpenRCT2 source stream and create a pull request.
 
+> How do I prevent my script from running on older versions of OpenRCT2 that do not support all the APIs I require?
+
+When registering your plugin, you can specify a minimum required API version like below:
+```js
+registerPlugin({
+    name: 'Your Plugin',
+    version: '1.2', // Your plugin version
+    authors: ['Your Name'],
+    type: 'remote',
+    minApiVersion: 7, // OpenRCT2 plugin API v7 or higher is required to run your plugin
+    main: main
+});
+```
+
+When new APIs are introduced, or the behaviour of current APIs change, a new version number will be issued which you can find in the OpenRCT2 source code or changelog.
+
 > Where shall I keep the code for my script?
 
 We recommend [GitHub](https://github.com) (where OpenRCT2 is hosted), or another source control host such as [BitBucket](https://bitbucket.org) or [GitLab](https://gitlab.com). All of them offer private repositories if you want to keep your code private, or public repositories which allow others to easily contribute to your script.
