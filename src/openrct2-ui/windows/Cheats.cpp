@@ -1078,8 +1078,14 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gCheatsEnableAllDrawableTrackPieces);
             break;
         case WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS:
+        {
+            if (!gCheatsAllowTrackPlaceInvalidHeights)
+            {
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            }
             CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
-            break;
+        }
+        break;
     }
 }
 
