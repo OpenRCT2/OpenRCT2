@@ -546,7 +546,7 @@ constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
  * @return Returns a pointer to memory holding decompressed data or NULL on failure.
  * @note It is caller's responsibility to free() the returned pointer once done with it.
  */
-uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size)
+std::vector<uint8_t> util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size)
 {
     int32_t ret = Z_OK;
     uLongf out_size = static_cast<uLong>(*data_out_size);
@@ -559,30 +559,29 @@ uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_
         out_size = std::min(static_cast<uLongf>(MAX_ZLIB_REALLOC), out_size);
     }
     uLongf buffer_size = out_size;
-    uint8_t* buffer = static_cast<uint8_t*>(malloc(buffer_size));
+    //uint8_t* buffer = static_cast<uint8_t*>(malloc(buffer_size));
+    std::vector<uint8_t> buffer(buffer_size);
     do
     {
         if (ret == Z_BUF_ERROR)
         {
             buffer_size *= 2;
             out_size = buffer_size;
-            buffer = static_cast<uint8_t*>(realloc(buffer, buffer_size));
+            buffer.resize(buffer_size);
         }
         else if (ret == Z_STREAM_ERROR)
         {
             log_error("Your build is shipped with broken zlib. Please use the official build.");
-            free(buffer);
-            return nullptr;
+            throw std::runtime_error("Your build is shipped with broken zlib. Please use the official build.");
         }
         else if (ret < 0)
         {
             log_error("Error uncompressing data.");
-            free(buffer);
-            return nullptr;
+            throw std::runtime_error("Error uncompressing data.");
         }
-        ret = uncompress(buffer, &out_size, data, static_cast<uLong>(data_in_size));
+        ret = uncompress(buffer.data(), &out_size, data, static_cast<uLong>(data_in_size));
     } while (ret != Z_OK);
-    buffer = static_cast<uint8_t*>(realloc(buffer, out_size));
+    buffer.resize(out_size);
     *data_out_size = out_size;
     return buffer;
 }

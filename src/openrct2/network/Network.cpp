@@ -2656,17 +2656,20 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         GameActions::ResumeQueue();
 
         context_force_close_window_by_class(WC_NETWORK_STATUS);
-        bool has_to_free = false;
-        uint8_t* data = &chunk_buffer[0];
+        std::vector<uint8_t> data;
+
         size_t data_size = size;
         // zlib-compressed
         if (strcmp("open2_sv6_zlib", reinterpret_cast<char*>(&chunk_buffer[0])) == 0)
         {
             log_verbose("Received zlib-compressed sv6 map");
-            has_to_free = true;
             size_t header_len = strlen("open2_sv6_zlib") + 1;
-            data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
-            if (data == nullptr)
+
+            try
+            {
+                data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
+            }
+            catch(std::exception e)
             {
                 log_warning("Failed to decompress data sent from server.");
                 Close();
@@ -2678,7 +2681,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             log_verbose("Assuming received map is in plain sv6 format");
         }
 
-        auto ms = MemoryStream(data, data_size);
+        auto ms = MemoryStream(data.data(), data_size);
         if (LoadMap(&ms))
         {
             game_load_init();
@@ -2699,10 +2702,6 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             // Something went wrong, game is not loaded. Return to main screen.
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
             GameActions::Execute(&loadOrQuitAction);
-        }
-        if (has_to_free)
-        {
-            free(data);
         }
     }
 }
