@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
+#include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
@@ -225,21 +226,14 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
     if (!window_editor_bottom_toolbar_check_object_selection())
         return;
 
+    finish_object_selection();
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
-        set_every_ride_type_invented();
-        set_every_ride_entry_invented();
         context_open_window(WC_CONSTRUCT_RIDE);
-        gS6Info.editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
-        gfx_invalidate_screen();
     }
     else
     {
-        set_all_scenery_items_invented();
-        scenery_set_default_placement_configuration();
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
         context_open_window(WC_MAP);
-        gfx_invalidate_screen();
     }
 }
 
