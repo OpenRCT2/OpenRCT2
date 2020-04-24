@@ -31,7 +31,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "6"
+#define NETWORK_STREAM_VERSION "7"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -2729,6 +2729,7 @@ bool Network::LoadMap(IStream* stream)
         gGamePaused = stream->ReadValue<uint32_t>();
         _guestGenerationProbability = stream->ReadValue<uint32_t>();
         _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
+        gCheatsAllowTrackPlaceInvalidHeights = stream->ReadValue<uint8_t>() != 0;
         gCheatsEnableAllDrawableTrackPieces = stream->ReadValue<uint8_t>() != 0;
         gCheatsSandboxMode = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableClearanceChecks = stream->ReadValue<uint8_t>() != 0;
@@ -2777,6 +2778,7 @@ bool Network::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryI
         stream->WriteValue<uint32_t>(gGamePaused);
         stream->WriteValue<uint32_t>(_guestGenerationProbability);
         stream->WriteValue<uint32_t>(_suggestedGuestMaximum);
+        stream->WriteValue<uint8_t>(gCheatsAllowTrackPlaceInvalidHeights);
         stream->WriteValue<uint8_t>(gCheatsEnableAllDrawableTrackPieces);
         stream->WriteValue<uint8_t>(gCheatsSandboxMode);
         stream->WriteValue<uint8_t>(gCheatsDisableClearanceChecks);

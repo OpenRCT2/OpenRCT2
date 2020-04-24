@@ -3919,6 +3919,8 @@ enum
     STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME = 6367,
 
     STR_WINE_NOT_RECOMMENDED = 6368,
+    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS = 6369,
+    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP = 6370,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
