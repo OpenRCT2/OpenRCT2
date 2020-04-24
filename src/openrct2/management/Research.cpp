@@ -196,7 +196,7 @@ void research_finish_item(ResearchItem* researchItem)
     {
         // Ride
         uint32_t base_ride_type = researchItem->baseRideType;
-        int32_t rideEntryIndex = researchItem->entryIndex;
+        ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
@@ -224,12 +224,12 @@ void research_finish_item(ResearchItem* researchItem)
             bool seenRideEntry[MAX_RIDE_OBJECTS]{};
             for (auto const& researchItem3 : gResearchItemsUninvented)
             {
-                uint8_t index = researchItem3.entryIndex;
+                ObjectEntryIndex index = researchItem3.entryIndex;
                 seenRideEntry[index] = true;
             }
             for (auto const& researchItem3 : gResearchItemsInvented)
             {
-                uint8_t index = researchItem3.entryIndex;
+                ObjectEntryIndex index = researchItem3.entryIndex;
                 seenRideEntry[index] = true;
             }
 

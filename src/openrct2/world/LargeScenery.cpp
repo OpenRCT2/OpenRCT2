@@ -69,7 +69,7 @@ void LargeSceneryElement::SetIsAccounted(bool isAccounted)
     }
 }
 
-uint16_t LargeSceneryElement::GetEntryIndex() const
+ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
 {
     return EntryIndex;
 }
@@ -84,7 +84,7 @@ uint8_t LargeSceneryElement::GetSequenceIndex() const
     return SequenceIndex;
 }
 
-void LargeSceneryElement::SetEntryIndex(uint16_t newIndex)
+void LargeSceneryElement::SetEntryIndex(ObjectEntryIndex newIndex)
 {
     EntryIndex = newIndex;
 }
@@ -94,7 +94,7 @@ void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
     SequenceIndex = sequence;
 }
 
-rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)
+rct_scenery_entry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

@@ -49,6 +49,7 @@ constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
+constexpr const uint8_t RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
 
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
