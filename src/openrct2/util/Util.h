@@ -53,7 +53,7 @@ bool str_is_null_or_empty(const char* str);
 
 uint32_t util_rand();
 
-uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);
+std::vector<uint8_t> util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);
 std::vector<uint8_t> util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size);
 bool util_gzip_compress(FILE* source, FILE* dest);
 
