@@ -3,6 +3,7 @@
 - Feature: [#9029] Open doors with the tile inspector.
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
 - Feature: [#11306] Path additions are now kept when replacing the path.
+- Feature: [#10572] Cheat to allow building at invalid heights.
 - Change: [#11209] Warn when user is running OpenRCT2 through Wine.
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
 - Fix: [#1148] Research funding dropdown not shown in finances window.
@@ -14,7 +15,6 @@
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
 - Improved: [#11390] Build hash written to screenshot metadata.
-- Feature: [#10572] Cheat to allow building at invalid heights.
 
 0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
