@@ -2421,8 +2421,8 @@ STR_3329    :Entrada do parque ainda não construída
 STR_3330    :O parque deve ter um pouco de terreno
 STR_3331    :Caminho da entrada do parque a borda do mapa incompleta ou muito complexo - O caminho deve ter uma largura simples (um quadrado) com poucos cruzamentos e esquinas
 STR_3332    :Entrada do parque está ao contrário ou não tem caminho até a borda do mapa
-STR_3333    :Exportar plug-in de objetos com jogos salvos
-STR_3334    :{SMALLFONT}{BLACK}Selecione se deve salvar requerimento de qualquer plug-in de objeto adicional (dados adicionais não fornecidos no produto principal) nos dados de jogo salvo ou cenário, permitindo que sejam carregados por alguém que não tenha dados de objeto adicional
+STR_3333    :Exportar objetos personalizados com jogos salvos
+STR_3334    :{SMALLFONT}{BLACK}Selecione se deve salvar qualquer objeto customizado adicional requerido (dados adicionais não fornecidos no produto principal) nos dados de jogo salvo ou cenário, permitindo que sejam carregados por alguém que não tenha dados de objeto adicional
 STR_3335    :Construtor de Pista - Selecione o Tipo de Veículo e Atração
 STR_3336    :Gerenciador de Projetos de Pista - Selecione o Tipo de Atração
 STR_3338    :{BLACK}Projeto com Traçado Personalizado
