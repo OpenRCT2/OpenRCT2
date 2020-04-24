@@ -405,7 +405,7 @@ assert_struct_size(SmallSceneryElement, 16);
 struct LargeSceneryElement : TileElementBase
 {
 private:
-    uint16_t EntryIndex;
+    ObjectEntryIndex EntryIndex;
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
@@ -416,8 +416,8 @@ private:
 #pragma clang diagnostic pop
 
 public:
-    uint16_t GetEntryIndex() const;
-    void SetEntryIndex(uint16_t newIndex);
+    ObjectEntryIndex GetEntryIndex() const;
+    void SetEntryIndex(ObjectEntryIndex newIndex);
     rct_scenery_entry* GetEntry() const;
 
     uint8_t GetSequenceIndex() const;

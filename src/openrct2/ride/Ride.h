@@ -222,7 +222,7 @@ struct Ride
     uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
-    uint8_t subtype;
+    ObjectEntryIndex subtype;
     uint8_t mode;
     uint8_t colour_scheme_type;
     VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
@@ -1048,8 +1048,8 @@ struct RideManager
 RideManager GetRideManager();
 ride_id_t GetNextFreeRideId();
 Ride* GetOrAllocateRide(ride_id_t index);
-rct_ride_entry* get_ride_entry(int32_t index);
-std::string_view get_ride_entry_name(size_t index);
+rct_ride_entry* get_ride_entry(ObjectEntryIndex index);
+std::string_view get_ride_entry_name(ObjectEntryIndex index);
 RideMeasurement* get_ride_measurement(int32_t index);
 
 extern money16 gTotalRideValueForMoney;

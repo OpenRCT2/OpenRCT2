@@ -124,9 +124,9 @@ Ride* get_ride(ride_id_t index)
     return &gRideList[index];
 }
 
-rct_ride_entry* get_ride_entry(int index)
+rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;

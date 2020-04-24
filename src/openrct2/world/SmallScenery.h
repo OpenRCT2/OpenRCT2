@@ -54,4 +54,4 @@ enum
 };
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags);
-rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex);
+rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex);

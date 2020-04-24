@@ -173,7 +173,7 @@ rct_scenery_entry* SmallSceneryElement::GetEntry() const
     return get_small_scenery_entry(entryIndex);
 }
 
-rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex)
+rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
