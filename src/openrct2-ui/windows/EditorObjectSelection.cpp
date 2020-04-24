@@ -462,15 +462,10 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
+            window_close(w);
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
-                window_close(w);
                 finish_object_selection();
-            }
-            else
-            {
-                // Used for in-game object selection cheat
-                window_close(w);
             }
             break;
         case WIDX_FILTER_RIDE_TAB_ALL:

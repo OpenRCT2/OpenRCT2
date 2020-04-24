@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "Editor.h"
 #include "common.h"
 #include "object/Object.h"
 
