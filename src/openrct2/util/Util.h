@@ -14,6 +14,7 @@
 
 #include <cstdio>
 #include <ctime>
+#include <vector>
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres);
 int32_t metres_to_feet(int32_t metres);
@@ -53,7 +54,7 @@ bool str_is_null_or_empty(const char* str);
 uint32_t util_rand();
 
 uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);
-uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size);
+int util_zlib_inflate(std::vector<uint8_t>& data_in, std::vector<uint8_t>& data_out);
 bool util_gzip_compress(FILE* source, FILE* dest);
 
 int8_t add_clamp_int8_t(int8_t value, int8_t value_to_add);
