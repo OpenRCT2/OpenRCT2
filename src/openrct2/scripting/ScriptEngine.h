@@ -92,6 +92,7 @@ namespace OpenRCT2::Scripting
         DukContext(DukContext&& src) noexcept
             : _context(std::move(src._context))
         {
+            src._context = {};
         }
         ~DukContext();
 
