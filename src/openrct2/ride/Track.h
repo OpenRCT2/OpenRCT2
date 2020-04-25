@@ -13,6 +13,8 @@
 #include "../object/Object.h"
 #include "Ride.h"
 
+constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
+
 using track_type_t = uint16_t;
 
 #pragma pack(push, 1)

@@ -1361,7 +1361,7 @@ static void ride_construction_reset_current_piece()
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0)
     {
-        _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | 0x100;
+        _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
         _currentTrackSlopeEnd = 0;
         _currentTrackBankEnd = 0;
         _currentTrackLiftHill = 0;
@@ -1437,7 +1437,7 @@ void ride_construction_set_default_next_piece()
             {
                 if (track_element_is_booster(ride->type, trackType))
                 {
-                    curve = 0x100 | TRACK_ELEM_BOOSTER;
+                    curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
                 }
                 else
                 {
@@ -1501,7 +1501,7 @@ void ride_construction_set_default_next_piece()
             {
                 if (track_element_is_booster(ride->type, trackType))
                 {
-                    curve = 0x100 | TRACK_ELEM_BOOSTER;
+                    curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
                 }
                 else
                 {
@@ -1920,7 +1920,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
     if (ride == nullptr)
         return 0;
 
-    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | 0x100;
+    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = 0;
     _currentTrackBankEnd = 0;
     _currentTrackLiftHill = 0;
