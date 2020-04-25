@@ -980,7 +980,7 @@ struct RideManager
         friend RideManager;
 
     private:
-        RideManager& _rideManager;
+        RideManager* _rideManager;
         size_t _index{};
         size_t _endIndex{};
 
@@ -993,11 +993,11 @@ struct RideManager
 
     private:
         Iterator(RideManager& rideManager, size_t beginIndex, size_t endIndex)
-            : _rideManager(rideManager)
+            : _rideManager(&rideManager)
             , _index(beginIndex)
             , _endIndex(endIndex)
         {
-            if (_index < _endIndex && _rideManager[static_cast<ride_id_t>(_index)] == nullptr)
+            if (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr)
             {
                 ++(*this);
             }
@@ -1009,7 +1009,7 @@ struct RideManager
             do
             {
                 _index++;
-            } while (_index < _endIndex && _rideManager[static_cast<ride_id_t>(_index)] == nullptr);
+            } while (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr);
             return *this;
         }
         Iterator operator++(int)
@@ -1028,7 +1028,7 @@ struct RideManager
         }
         Ride& operator*()
         {
-            return *_rideManager[static_cast<ride_id_t>(_index)];
+            return *(*_rideManager)[static_cast<ride_id_t>(_index)];
         }
     };
 

@@ -10,6 +10,7 @@
 - Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
 - Fix: [#11259] Custom JSON object breaks saves.
+- Fix: [#11290] Perform funds checking for all peeps entering a ride. 
 - Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
 - Fix: [#11405] Building a path through walls does not always remove the walls.
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.

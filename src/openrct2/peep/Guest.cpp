@@ -2598,14 +2598,13 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         uint8_t num_seats = vehicle->num_seats;
         if (vehicle_is_used_in_pairs(vehicle))
         {
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
             if (vehicle->next_free_seat & 1)
             {
-                current_car = i;
-                peep_choose_seat_from_car(this, ride, vehicle);
-                GoToRideEntrance(ride);
-                return false;
+                car_array.clear();
+                car_array.push_back(i);
+                return true;
             }
+            num_seats &= VEHICLE_SEAT_NUM_MASK;
         }
         if (num_seats == vehicle->next_free_seat)
             continue;

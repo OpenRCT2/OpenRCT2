@@ -223,6 +223,15 @@ target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_replays)
 add_test(NAME replay_tests COMMAND test_replays)
 
+# Play tests
+set(PLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/PlayTests.cpp"
+                      "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_plays ${PLAY_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_plays)
+target_link_libraries(test_plays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_plays)
+add_test(NAME play_tests COMMAND test_plays)
+
 # Pathfinding test
 set(PATHFINDING_TEST_SOURCES  "${CMAKE_CURRENT_LIST_DIR}/Pathfinding.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
