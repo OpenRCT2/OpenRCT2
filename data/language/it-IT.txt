@@ -25,7 +25,7 @@ STR_0020    :Seggiovia
 STR_0021    :Ottovolante ad avvitamento
 STR_0022    :Labirinto
 STR_0023    :Scivolo a spirale
-STR_0024    :Go Kart
+STR_0024    :Go-kart
 STR_0025    :Tronchi
 STR_0026    :Rapide
 STR_0027    :Autoscontri
@@ -116,10 +116,10 @@ STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro p
 STR_0531    :Un ottovolante compatto su un percorso d'acciaio nel quale i treni viaggiano lungo avvitamenti e inversioni
 STR_0532    :Il labirinto è costituito da siepi o muri alti due metri, e al suo interno i visitatori cercano la via d'uscita
 STR_0533    :Un edificio di legno con una scala interna e uno scivolo a spirale esterno, da discendere utilizzando appositi tappetini
-STR_0534    :Go-kart a motore a benzina guidati dai visitatori
-STR_0535    :Delle barche a forma di tronchi viaggiano lungo un canale d'acqua, schizzando i passeggeri mentre volano giù per ripide discese
+STR_0534    :I visitatori gareggiano uno contro l'altro su un percorso d'asfalto
+STR_0535    :Delle barche viaggiano su un canale d'acqua, schizzando lungo ripide discese per bagnare i passeggeri
 STR_0536    :Delle barche rotonde scorrono lungo un largo canale d'acqua, schizzando attraverso cascate e spaventando i passeggeri con delle rapide schiumose
-STR_0537    :Autoscontri con veicoli guidabili
+STR_0537    :I visitatori si scontrano uno con l'altro a bordo di autoscontri elettrici
 STR_0538    :Nave dei pirati grande
 STR_0539    :La nave è appesa a un braccio dotato di un contrappeso al lato opposto, e oscilla in un intero giro a 360 gradi
 STR_0540    :Un chiosco presso il quale i visitatori acquistano cibo
@@ -158,7 +158,7 @@ STR_0578    :Le carrozze viaggiano lungo un percorso racchiuso da anelli circola
 STR_0579    :Un tranquillo gioco di golf in miniatura
 STR_0580    :Un gigante ottovolante di acciaio in grado di offrire morbide cadute e risalite a più di 90 metri di altezza
 STR_0581    :Un anello di sedie è posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
-STR_0582    :Veicoli galleggianti liberamente guidabili
+STR_0582    :I visitatori sono a bordo di veicoli fluttuanti guidabili liberamente
 STR_0583    :Un edificio contenente stanze distorte e corridoi ad angolo che disorientano i visitatori che vi camminano all'interno
 STR_0584    :Speciali biciclette viaggiano lungo un percorso a monorotaia di acciaio, spinte soltanto dalle pedalate dei passeggeri
 STR_0585    :I passeggeri viaggiano su coppie di sedili sospesi sotto al percorso, mentre viaggiano attraverso numerose inversioni e inclinazioni
@@ -2426,8 +2426,8 @@ STR_3329    :L'entrata del parco non è stata ancora costruita
 STR_3330    :Il parco deve possedere del terreno
 STR_3331    :Il percorso dall'entrata del parco al bordo della mappa non è completo o è troppo complesso. Dev'essere di larghezza singola con il minor numero possibile di collegamenti e curve
 STR_3332    :L'entrata del parco è orientata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
-STR_3333    :Esporta oggetti di plug-in insieme alle partite salvate
-STR_3334    :{SMALLFONT}{BLACK}Scegli se salvare gli eventuali dati necessari degli oggetti di plug-in (dati non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati addizionali
+STR_3333    :Esporta oggetti personalizzati con le partite salvate
+STR_3334    :{SMALLFONT}{BLACK}Scegliere se salvare gli eventuali dati necessari agli oggetti personalizzati (dati aggiuntivi non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati aggiuntivi
 STR_3335    :Editor di percorsi - Selezione tipo percorso e veicoli
 STR_3336    :Gestione percorsi personalizzati - Selezione tipo attrazione
 STR_3338    :{BLACK}Disposizione personalizzata
@@ -2480,11 +2480,6 @@ STR_3390    :Troppi oggetti selezionati
 STR_3437    :{SMALLFONT}{BLACK}Elimina gli alberi, i muri e i piccoli oggetti di scenario dal terreno
 STR_3438    :Impossibile rimuovere tutto lo scenario da qui...
 STR_3439    :Elimina scen.
-STR_3440    :Pagina 1
-STR_3441    :Pagina 2
-STR_3442    :Pagina 3
-STR_3443    :Pagina 4
-STR_3444    :Pagina 5
 STR_3445    :Imposta l'area da pattugliare
 STR_3446    :Annulla l'area da pattugliare
 
@@ -2684,8 +2679,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Casuale
 STR_5311    :{SMALLFONT}{BLACK}Strumenti di debug
 STR_5312    :Mostra console
-STR_5313    :Mostra analizzatore cella
-STR_5314    :Analizzatore cella
+STR_5313    :Mostra analizzatore celle
+STR_5314    :Analizzatore celle
 STR_5315    :Erba
 STR_5316    :Sabbia
 STR_5317    :Sporco
@@ -2850,7 +2845,7 @@ STR_5478    :Strumenti
 STR_5479    :Barra
 STR_5480    :Mostra i pulsanti nella barra per:
 STR_5481    :Temi
-STR_5482    :{WINDOW_COLOUR_2}Tempo dall'ultima inspezione: {BLACK}1 minuto
+STR_5482    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}1 minuto
 STR_5483    :{BLACK}({COMMA16} settimane rimaste)
 STR_5484    :{BLACK}({COMMA16} settimana rimasta)
 STR_5485    :{SMALLFONT}{STRING}
@@ -3180,7 +3175,7 @@ STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spess
 STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
 STR_5848    :{SMALLFONT}{BLACK}Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :{SMALLFONT}{BLACK}Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
-STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di inspezione{NEWLINE}nelle nuove attrazioni
+STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di ispezione{NEWLINE}nelle nuove attrazioni
 STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione di Twitch
 STR_5853    :{SMALLFONT}{BLACK}Abilita/Disabilita gli effetti sonori
 STR_5854    :{SMALLFONT}{BLACK}Abilita/Disabilita le musiche delle attrazioni
@@ -3660,7 +3655,43 @@ STR_6327    :Sfondo trasparente per schermata gigante
 STR_6328    :{SMALLFONT}{BLACK}Con questa opzione attivata, le schermate giganti avranno uno sfondo trasparente invece di quello nero
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Scaricamento [{STRING}] da {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Crea anatre
+STR_6332    :Rimuovi anatre
+STR_6333    :Aumenta fattore di scala
+STR_6334    :Diminuisci fattore di scala
+STR_6335    :Analizzatore celle: Inserisci elemento corrotto
+STR_6336    :Analizzatore celle: Copia elemento
+STR_6337    :Analizzatore celle: Incolla elemento
+STR_6338    :Analizzatore celle: Elimina elemento
+STR_6339    :Analizzatore celle: Sposta elemento in su
+STR_6340    :Analizzatore celle: Sposta elemento in giù
+STR_6341    :Analizzatore celle: Aumenta coordinata X
+STR_6342    :Analizzatore celle: Diminuisci coordinata X
+STR_6343    :Analizzatore celle: Aumenta coordinata Y
+STR_6344    :Analizzatore celle: Diminuisci coordinata Y
+STR_6345    :Analizzatore celle: Aumenta altezza elemento
+STR_6346    :Analizzatore celle: Diminuisci altezza elemento
+STR_6347    :Non possono essere collocati arredamenti del sentiero su un passaggio a livello!
+STR_6348    :Rimuovere prima il passaggio a livello!
+STR_6349    :Sequenza del titolo casuale
+STR_6350    :Sparpaglia
+STR_6351    :Strumento sparpaglia scenario
+STR_6352    :Densità
+STR_6353    :{SMALLFONT}{BLACK}Densità bassa
+STR_6354    :{SMALLFONT}{BLACK}Densità media
+STR_6355    :{SMALLFONT}{BLACK}Densità alta
+STR_6356    :{SMALLFONT}{BLACK}Fa apparire anatre se il parco contiene acqua
+STR_6357    :{SMALLFONT}{BLACK}Rimuove tutte le anatre dalla mappa
+STR_6358    :Pagina {UINT16}
+STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Attiva effetti di luce sulle attrazioni (sperimentale)
+STR_6362    :{SMALLFONT}{BLACK}Se abilitato, i veicoli delle attrazioni con percorso saranno illuminati di notte.
+STR_6363    :Testo copiato negli appunti
+STR_6365    :Vittime attrazioni
+STR_6366    :Veicoli fermi o incastrati
+STR_6364    :{RED}{COMMA16} persona rimasta uccisa in un incidente su {STRINGID}
+STR_6367    :{WINDOW_COLOUR_2}Fotogramma animazione:
 
 #############
 # Scenarios #
