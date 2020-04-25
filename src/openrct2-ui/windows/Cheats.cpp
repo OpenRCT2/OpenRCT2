@@ -108,8 +108,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_GUEST_NAUSEA_MIN,
     WIDX_GUEST_NAUSEA_TOLERANCE_MAX,
     WIDX_GUEST_NAUSEA_TOLERANCE_MIN,
-    WIDX_GUEST_BATHROOM_MAX,
-    WIDX_GUEST_BATHROOM_MIN,
+    WIDX_GUEST_TOILET_MAX,
+    WIDX_GUEST_TOILET_MIN,
     WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1,
     WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15,
     WIDX_GUEST_IGNORE_RIDE_INTENSITY,
@@ -248,8 +248,8 @@ static rct_widget window_cheats_guests_widgets[] =
     { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(5),         HPL(5),         STR_MIN,                            STR_NONE },                             // nausea min
     { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(6),         HPL(6),         STR_MAX,                            STR_NONE },                             // nausea tolerance max
     { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(6),         HPL(6),         STR_MIN,                            STR_NONE },                             // nausea tolerance min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(7),         HPL(7),         STR_MAX,                            STR_NONE },                             // bathroom max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(7),         HPL(7),         STR_MIN,                            STR_NONE },                             // bathroom min
+    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(7),         HPL(7),         STR_MAX,                            STR_NONE },                             // toilet max
+    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(7),         HPL(7),         STR_MIN,                            STR_NONE },                             // toilet min
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(9),         HPL(9),         STR_CHEAT_MORE_THAN_1,              STR_NONE },                             // ride intensity > 1
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(9),         HPL(9),         STR_CHEAT_LESS_THAN_15,             STR_NONE },                             // ride intensity < 15
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(10),        OHPL(10),       STR_CHEAT_IGNORE_INTENSITY,         STR_CHEAT_IGNORE_INTENSITY_TIP },       // guests ignore intensity
@@ -522,8 +522,8 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_GUEST_NAUSEA_MIN) |
     (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) |
     (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) |
-    (1ULL << WIDX_GUEST_BATHROOM_MAX) |
-    (1ULL << WIDX_GUEST_BATHROOM_MIN) |
+    (1ULL << WIDX_GUEST_TOILET_MAX) |
+    (1ULL << WIDX_GUEST_TOILET_MIN) |
     (1ULL << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) |
     (1ULL << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) |
     (1ULL << WIDX_GUEST_IGNORE_RIDE_INTENSITY) |
@@ -872,11 +872,11 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_NONE);
             break;
-        case WIDX_GUEST_BATHROOM_MAX:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_BATHROOM, PEEP_MAX_BATHROOM);
+        case WIDX_GUEST_TOILET_MAX:
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, PEEP_MAX_TOILET);
             break;
-        case WIDX_GUEST_BATHROOM_MIN:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_BATHROOM, 0);
+        case WIDX_GUEST_TOILET_MIN:
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, 0);
             break;
         case WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1:
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 1);
@@ -1250,8 +1250,7 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
             w->windowPos.y + YPL(6) + TXTO);
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_BATHROOM, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
-            w->windowPos.y + YPL(7) + TXTO);
+            dpi, STR_CHEAT_GUEST_TOILET, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(7) + TXTO);
         gfx_draw_string_left(
             dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
             w->windowPos.y + YPL(8) + TXTO);

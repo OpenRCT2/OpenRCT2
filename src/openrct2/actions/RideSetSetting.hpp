@@ -293,7 +293,7 @@ private:
                 return STR_CANT_CHANGE_SPEED;
             case RIDE_MODE_RACE:
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RIDE_MODE_BUMPERCAR:
+            case RIDE_MODE_DODGEMS:
                 return STR_CANT_CHANGE_TIME_LIMIT;
             case RIDE_MODE_SWING:
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;

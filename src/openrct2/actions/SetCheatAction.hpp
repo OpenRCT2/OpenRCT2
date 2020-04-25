@@ -333,9 +333,9 @@ private:
                     case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                                  { PEEP_NAUSEA_TOLERANCE_NONE, PEEP_NAUSEA_TOLERANCE_HIGH } };
-                    case GUEST_PARAMETER_BATHROOM:
+                    case GUEST_PARAMETER_TOILET:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { 0, PEEP_MAX_BATHROOM } };
+                                 { 0, PEEP_MAX_TOILET } };
                     case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, 255 } };
                     default:
@@ -601,7 +601,7 @@ private:
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                     peep->nausea_tolerance = value;
                     break;
-                case GUEST_PARAMETER_BATHROOM:
+                case GUEST_PARAMETER_TOILET:
                     peep->toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:

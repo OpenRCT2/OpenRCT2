@@ -2069,7 +2069,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
-        case RIDE_MODE_BUMPERCAR:
+        case RIDE_MODE_DODGEMS:
         case RIDE_MODE_SWING:
         case RIDE_MODE_ROTATION:
         case RIDE_MODE_FORWARD_ROTATION:
@@ -2551,7 +2551,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     switch (curRide->mode)
     {
-        case RIDE_MODE_BUMPERCAR:
+        case RIDE_MODE_DODGEMS:
             // Bumper mode uses sub_state / var_CE to tell how long
             // the vehicle has been ridden.
             SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);

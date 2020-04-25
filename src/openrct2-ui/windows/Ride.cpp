@@ -3324,7 +3324,7 @@ static void window_ride_mode_tweak_increase(rct_window* w)
         maxValue = 255;
     }
 
-    uint8_t increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+    uint8_t increment = ride->mode == RIDE_MODE_DODGEMS ? 10 : 1;
 
     set_operating_setting(
         w->number, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option + increment, minValue, maxValue));
@@ -3347,7 +3347,7 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
         maxValue = 255;
     }
 
-    uint8_t decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+    uint8_t decrement = ride->mode == RIDE_MODE_DODGEMS ? 10 : 1;
 
     set_operating_setting(
         w->number, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option - decrement, minValue, maxValue));
@@ -3801,7 +3801,7 @@ static void window_ride_operating_invalidate(rct_window* w)
             caption = STR_NUMBER_OF_LAPS;
             tooltip = STR_NUMBER_OF_LAPS_TIP;
             break;
-        case RIDE_MODE_BUMPERCAR:
+        case RIDE_MODE_DODGEMS:
             format = STR_RIDE_MODE_TIME_LIMIT_VALUE;
             caption = STR_TIME_LIMIT;
             tooltip = STR_TIME_LIMIT_TIP;

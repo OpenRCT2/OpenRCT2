@@ -1195,7 +1195,7 @@ void peep_problem_warnings_update()
     Ride* ride;
     uint16_t spriteIndex;
     uint32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
-             disgust_counter = 0, bathroom_counter = 0, vandalism_counter = 0;
+             disgust_counter = 0, toilet_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
     FOR_ALL_GUESTS (spriteIndex, peep)
@@ -1231,15 +1231,15 @@ void peep_problem_warnings_update()
                     thirst_counter++;
                 break;
 
-            case PEEP_THOUGHT_TYPE_BATHROOM:
+            case PEEP_THOUGHT_TYPE_TOILET:
                 if (peep->guest_heading_to_ride_id == 0xFF)
                 {
-                    bathroom_counter++;
+                    toilet_counter++;
                     break;
                 }
                 ride = get_ride(peep->guest_heading_to_ride_id);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_TOILET))
-                    bathroom_counter++;
+                    toilet_counter++;
                 break;
 
             case PEEP_THOUGHT_TYPE_BAD_LITTER: // 0x1a
@@ -1283,12 +1283,12 @@ void peep_problem_warnings_update()
 
     if (warning_throttle[2])
         --warning_throttle[2];
-    else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= gNumGuestsInPark / 16)
+    else if (toilet_counter >= PEEP_TOILET_WARNING_THRESHOLD && toilet_counter >= gNumGuestsInPark / 16)
     {
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_BATHROOM, 22);
+            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_TOILET, 22);
         }
     }
 
