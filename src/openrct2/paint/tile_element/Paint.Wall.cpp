@@ -426,6 +426,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 
     uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
+    if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
+    {
+        return;
+    }
+
     auto banner = tile_element->AsWall()->GetBanner();
     if (banner != nullptr && !banner->IsNull())
     {
