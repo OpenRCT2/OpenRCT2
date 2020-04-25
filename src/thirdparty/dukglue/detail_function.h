@@ -1,6 +1,8 @@
 #pragma once
 
 #include "detail_stack.h"
+#include "detail_types.h"
+#include "detail_primitive_types.h"
 
 namespace dukglue
 {

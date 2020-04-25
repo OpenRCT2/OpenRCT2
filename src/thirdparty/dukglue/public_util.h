@@ -2,6 +2,7 @@
 
 #include "dukexception.h"
 #include "detail_traits.h"  // for index_tuple/make_indexes
+#include "detail_types.h"
 
 // This file has some useful utility functions for users.
 // Hopefully this saves you from wading through the implementation.
@@ -125,7 +126,7 @@ typename std::enable_if<std::is_void<RetT>::value, RetT>::type dukglue_pcall_met
 	dukglue::detail::SafeMethodCallData<RetT, ObjT, ArgTs...> data {
 		&obj, method_name, std::tuple<ArgTs...>(args...), nullptr
 	};
-	
+
 	duk_idx_t rc = duk_safe_call(ctx, &dukglue::detail::call_method_safe<RetT, ObjT, ArgTs...>, (void*) &data, 0, 1);
 	if (rc != 0)
 		throw DukErrorException(ctx, rc);
@@ -234,11 +235,11 @@ typename std::enable_if<!std::is_void<RetT>::value, RetT>::type dukglue_pcall(du
 	dukglue::detail::SafeCallData<RetT, ObjT, ArgTs...> data{
 		&obj, std::tuple<ArgTs...>(args...), &result
 	};
-	
+
 	duk_int_t rc = duk_safe_call(ctx, &dukglue::detail::call_safe<RetT, ObjT, ArgTs...>, (void*) &data, 0, 1);
 	if (rc != 0)
 		throw DukErrorException(ctx, rc);
-	
+
 	duk_pop(ctx);  // remove result from stack
 	return std::move(result);
 }

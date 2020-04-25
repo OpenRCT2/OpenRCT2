@@ -145,7 +145,7 @@ namespace dukglue {
 			typedef typename Bare<T>::type BareType;
 			//typedef DukType<BareType> ThisDukType;
 			typedef typename DukType<BareType>::IsValueType IsValueType;
-		
+
 			static_assert(!IsValueType::value || !std::is_pointer<T>::value, "Cannot return pointer to value type.");
 			static_assert(!IsValueType::value ||
 				(!std::is_reference<T>::value || std::is_const<typename std::remove_reference<T>::type>::value),
@@ -156,5 +156,3 @@ namespace dukglue {
 		};
 	}
 }
-
-#include "detail_primitive_types.h"

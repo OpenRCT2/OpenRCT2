@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "detail_primitive_types.h"
 #include "detail_traits.h"
 #include "detail_types.h"
 

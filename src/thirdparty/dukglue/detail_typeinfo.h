@@ -1,5 +1,6 @@
 #pragma once
 
+#include <duktape.h>
 #include <typeindex>
 
 namespace dukglue
@@ -7,7 +8,7 @@ namespace dukglue
 	namespace detail
 	{
 		// same as duk_get_type_name, which is private for some reason *shakes fist*
-		static const char* get_type_name(duk_int_t type_idx) {
+		static inline const char* get_type_name(duk_int_t type_idx) {
 			static const char* names[] = {
 				"none",
 				"undefined",
@@ -21,7 +22,7 @@ namespace dukglue
 				"lightfunc"
 			};
 
-			if (type_idx >= 0 && type_idx < sizeof(names) / sizeof(names[0]))
+			if (type_idx >= 0 && type_idx < static_cast<duk_int_t>(sizeof(names) / sizeof(names[0])))
 				return names[type_idx];
 			else
 				return "unknown";

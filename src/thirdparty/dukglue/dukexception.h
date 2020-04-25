@@ -1,5 +1,6 @@
 #pragma once
 
+#include <duktape.h>
 #include <sstream>
 #include <exception>
 
