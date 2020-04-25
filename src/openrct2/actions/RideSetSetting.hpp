@@ -255,17 +255,7 @@ public:
 private:
     bool ride_is_mode_valid(Ride * ride) const
     {
-        const uint8_t* availableModes = ride_seek_available_modes(ride);
-
-        for (; *availableModes != 0xFF; availableModes++)
-        {
-            if (*availableModes == _value)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return RideTypeDescriptors[ride->type].RideModes & (1ULL << _value);
     }
 
     bool ride_is_valid_lift_hill_speed(Ride * ride) const
