@@ -120,35 +120,6 @@ bool platform_original_game_data_exists(const utf8* path)
     return platform_file_exists(checkPath);
 }
 
-bool platform_original_rct1_data_exists(const utf8* path)
-{
-    char buffer[MAX_PATH], checkPath1[MAX_PATH], checkPath2[MAX_PATH];
-    safe_strcpy(buffer, path, MAX_PATH);
-    safe_strcat_path(buffer, "Data", MAX_PATH);
-    safe_strcpy(checkPath1, buffer, MAX_PATH);
-    safe_strcpy(checkPath2, buffer, MAX_PATH);
-    safe_strcat_path(checkPath1, "CSG1.DAT", MAX_PATH);
-    safe_strcat_path(checkPath2, "CSG1.1", MAX_PATH);
-
-    // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
-    std::string path1result = Path::ResolveCasing(checkPath1);
-    if (!path1result.empty())
-    {
-        return true;
-    }
-    else
-    {
-        std::string path2result = Path::ResolveCasing(checkPath2);
-
-        if (!path2result.empty())
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 // Implement our own version of getumask(), as it is documented being
 // "a vaporware GNU extension".
 static mode_t openrct2_getumask()

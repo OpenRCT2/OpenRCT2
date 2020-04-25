@@ -111,19 +111,6 @@ bool platform_original_game_data_exists(const utf8* path)
     return platform_file_exists(checkPath);
 }
 
-bool platform_original_rct1_data_exists(const utf8* path)
-{
-    char checkPath[MAX_PATH];
-    char checkPath2[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcpy(checkPath2, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath2, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "csg1.dat", MAX_PATH);
-    safe_strcat_path(checkPath2, "csg1.1", MAX_PATH);
-    return platform_file_exists(checkPath) || platform_file_exists(checkPath2);
-}
-
 bool platform_ensure_directory_exists(const utf8* path)
 {
     if (platform_directory_exists(path))

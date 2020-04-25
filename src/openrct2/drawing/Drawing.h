@@ -14,6 +14,8 @@
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.hpp"
 
+#include <vector>
+
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
@@ -33,6 +35,22 @@ struct rct_g1_element
     int16_t y_offset;      // 0x0A
     uint16_t flags;        // 0x0C
     int32_t zoomed_offset; // 0x0E
+};
+
+#pragma pack(push, 1)
+struct rct_g1_header
+{
+    uint32_t num_entries;
+    uint32_t total_size;
+};
+assert_struct_size(rct_g1_header, 8);
+#pragma pack(pop)
+
+struct rct_gx
+{
+    rct_g1_header header;
+    std::vector<rct_g1_element> elements;
+    void* data;
 };
 
 struct rct_drawpixelinfo
