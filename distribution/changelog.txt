@@ -6,7 +6,7 @@
 - Feature: [#11306] Path additions are now kept when replacing the path.
 - Change: [#11209] Warn when user is running OpenRCT2 through Wine.
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
-- Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 and RCT3 parity).
+- Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1).
 - Fix: [#1148] Research funding dropdown not shown in finances window.
 - Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
