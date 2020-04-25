@@ -506,7 +506,8 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
         {
             char objectName[64];
             object_create_identifier_name(objectName, 64, &item->ObjectEntry);
-            set_format_arg(0, const char*, objectName);
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(objectName);
             set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
             return 0;
         }

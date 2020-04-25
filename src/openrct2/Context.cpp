@@ -638,7 +638,7 @@ namespace OpenRCT2
                         }
 
                         auto windowManager = _uiContext->GetWindowManager();
-                        set_format_arg(0, uint16_t, e.Flag);
+                        Formatter::Common().Add<uint16_t>(e.Flag);
                         windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
                     }
                     catch (const std::exception& e)

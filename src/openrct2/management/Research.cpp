@@ -254,11 +254,13 @@ void research_finish_item(ResearchItem* researchItem)
                 }
             }
 
+            auto ft = Formatter::Common();
+
             // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
             if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                set_format_arg(0, rct_string_id, rideEntry->naming.name);
+                ft.Add<rct_string_id>(rideEntry->naming.name);
             }
             // If a vehicle is the first to be invented for its ride group, show the ride group name.
             else if (
@@ -268,7 +270,7 @@ void research_finish_item(ResearchItem* researchItem)
             {
                 rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                set_format_arg(0, rct_string_id, naming.name);
+                ft.Add<rct_string_id>(naming.name);
             }
             // If the vehicle should not be listed separately and it isn't the first to be invented for its ride group,
             // report it as a new vehicle for the existing ride group.
@@ -277,8 +279,8 @@ void research_finish_item(ResearchItem* researchItem)
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
                 rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
 
-                set_format_arg(0, rct_string_id, baseRideNaming.name);
-                set_format_arg(2, rct_string_id, rideEntry->naming.name);
+                ft.Add<rct_string_id>(baseRideNaming.name);
+                ft.Add<rct_string_id>(rideEntry->naming.name);
             }
 
             if (!gSilentResearch)
@@ -300,7 +302,8 @@ void research_finish_item(ResearchItem* researchItem)
         {
             scenery_group_set_invented(researchItem->entryIndex);
 
-            set_format_arg(0, rct_string_id, sceneryGroupEntry->name);
+            auto ft = Formatter::Common();
+            ft.Add<rct_string_id>(sceneryGroupEntry->name);
 
             if (!gSilentResearch)
             {

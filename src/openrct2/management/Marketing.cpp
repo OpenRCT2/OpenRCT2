@@ -70,18 +70,19 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
 {
     if (gConfigNotifications.park_marketing_campaign_finished)
     {
+        auto ft = Formatter::Common();
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
             auto ride = get_ride(campaign.RideId);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(gCommonFormatArgs);
+                ride->FormatNameTo(ft);
             }
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            set_format_arg(0, rct_string_id, ShopItems[campaign.ShopItemType].Naming.Plural);
+            ft.Add<rct_string_id>(ShopItems[campaign.ShopItemType].Naming.Plural);
         }
 
         news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign.Type][2], 0);

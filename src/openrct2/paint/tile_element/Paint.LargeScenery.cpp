@@ -301,8 +301,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         }
         // 6B8331:
         // Draw sign text:
-        set_format_arg(0, uint32_t, 0);
-        set_format_arg(4, uint32_t, 0);
+        Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
         int32_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
         if (dword_F4387C)
         {
@@ -312,7 +311,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         auto banner = tileElement->AsLargeScenery()->GetBanner();
         if (banner != nullptr)
         {
-            banner->FormatTextTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            banner->FormatTextTo(ft);
             utf8 signString[256];
             format_string(signString, sizeof(signString), STR_STRINGID, gCommonFormatArgs);
             rct_large_scenery_text* text = entry->large_scenery.text;
@@ -429,7 +429,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     auto banner = tileElement->AsLargeScenery()->GetBanner();
     if (banner != nullptr)
     {
-        banner->FormatTextTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        banner->FormatTextTo(ft);
         utf8 signString[256];
         if (gConfigGeneral.upper_case_banners)
         {
