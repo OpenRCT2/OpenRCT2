@@ -1170,21 +1170,28 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     // Set tile index pointer to point to new element block
     gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x] = newTileElement;
 
-    // Copy all elements that are below the insert height
-    while (loc.z >= originalTileElement->GetBaseZ())
+    if (originalTileElement == nullptr)
     {
-        // Copy over map element
-        *newTileElement = *originalTileElement;
-        originalTileElement->base_height = 255;
-        originalTileElement++;
-        newTileElement++;
-
-        if ((newTileElement - 1)->IsLastForTile())
+        isLastForTile = true;
+    }
+    else
+    {
+        // Copy all elements that are below the insert height
+        while (loc.z >= originalTileElement->GetBaseZ())
         {
-            // No more elements above the insert element
-            (newTileElement - 1)->SetLastForTile(false);
-            isLastForTile = true;
-            break;
+            // Copy over map element
+            *newTileElement = *originalTileElement;
+            originalTileElement->base_height = 255;
+            originalTileElement++;
+            newTileElement++;
+
+            if ((newTileElement - 1)->IsLastForTile())
+            {
+                // No more elements above the insert element
+                (newTileElement - 1)->SetLastForTile(false);
+                isLastForTile = true;
+                break;
+            }
         }
     }
 
@@ -1317,7 +1324,7 @@ static GameActionResult::Ptr map_can_construct_with_clear_at(
     if (tileElement == nullptr)
     {
         res->Error = GA_ERROR::UNKNOWN;
-        res->ErrorMessage = 0;
+        res->ErrorMessage = STR_NONE;
         return res;
     }
     do
@@ -1474,7 +1481,10 @@ bool map_can_construct_with_clear_at(
     uint8_t crossingMode)
 {
     GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
-    gGameCommandErrorText = res->ErrorMessage;
+    if (auto message = res->ErrorMessage.AsStringId())
+        gGameCommandErrorText = *message;
+    else
+        gGameCommandErrorText = STR_NONE;
     std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
     if (price != nullptr)
     {

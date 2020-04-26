@@ -13,6 +13,7 @@
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/windows/tile_inspector.h>
+#include <string_view>
 
 using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
@@ -105,6 +106,7 @@ void window_title_command_editor_open(struct TitleSequence* sequence, int32_t co
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message);
+rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
 struct TrackDesign;
 rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);

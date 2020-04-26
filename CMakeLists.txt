@@ -49,6 +49,7 @@ option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
+option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
 
@@ -120,6 +121,9 @@ if (DISABLE_TTF)
 endif ()
 if (ENABLE_LIGHTFX)
     add_definitions(-D__ENABLE_LIGHTFX__)
+endif ()
+if (ENABLE_SCRIPTING)
+    add_definitions(-DENABLE_SCRIPTING)
 endif ()
 
 if (NOT DISABLE_DISCORD_RPC)
@@ -287,7 +291,9 @@ endif ()
 # Don't recurse, grab all *.txt and *.md files
 file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
 list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
-                      "${ROOT_DIR}/licence.txt")
+                      "${ROOT_DIR}/licence.txt"
+                      "${ROOT_DIR}/distribution/scripting.md"
+                      "${ROOT_DIR}/distribution/openrct2.d.ts")
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.

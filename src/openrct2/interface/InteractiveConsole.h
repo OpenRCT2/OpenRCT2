@@ -12,11 +12,9 @@
 #include "../common.h"
 #include "../localisation/FormatCodes.h"
 
-#include <deque>
 #include <future>
 #include <queue>
 #include <string>
-#include <tuple>
 
 struct rct_drawpixelinfo;
 struct TextInputSession;

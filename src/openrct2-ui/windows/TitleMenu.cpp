@@ -123,6 +123,7 @@ rct_window* window_title_menu_open()
 static void window_title_menu_scenarioselect_callback(const utf8* path)
 {
     context_load_park_from_file(path);
+    game_load_scripts();
 }
 
 static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)

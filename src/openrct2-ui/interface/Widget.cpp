@@ -361,8 +361,15 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     else
         t = w->windowPos.y + widget->top;
 
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        stringId = STR_STRING;
+        formatArgs = &widget->string;
+    }
     gfx_draw_string_centred_clipped(
-        dpi, widget->text, gCommonFormatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
+        dpi, stringId, formatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
 }
 
 /**
@@ -399,7 +406,14 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     else
         t = w->windowPos.y + widget->top;
 
-    gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        stringId = STR_STRING;
+        formatArgs = &widget->string;
+    }
+    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, l + 1, t, r - l);
 }
 
 /**
@@ -424,6 +438,26 @@ static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     widget_text(dpi, w, widgetIndex);
 }
 
+static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_widget* widget)
+{
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        if (widget->string == nullptr || widget->string[0] == '\0')
+        {
+            stringId = STR_NONE;
+            formatArgs = nullptr;
+        }
+        else
+        {
+            stringId = STR_STRING;
+            formatArgs = (void*)&widget->string;
+        }
+    }
+    return std::make_pair(stringId, formatArgs);
+}
+
 /**
  *
  *  rct2: 0x006EB535
@@ -441,7 +475,8 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     int32_t textRight = l;
 
     // Text
-    if (widget->text != STR_NONE)
+    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget->colour] & 0x7F;
         if (widget_is_disabled(w, widgetIndex))
@@ -449,7 +484,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
         utf8 buffer[512] = { 0 };
         uint8_t args[sizeof(uintptr_t)] = { 0 };
-        format_string(buffer, sizeof(buffer), widget->text, gCommonFormatArgs);
+        format_string(buffer, sizeof(buffer), stringId, formatArgs);
         Formatter(args).Add<utf8*>(buffer);
         gfx_draw_string_left(dpi, STR_STRING, args, colour, l, t);
         textRight = l + gfx_get_string_width(buffer) + 1;
@@ -610,7 +645,8 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget->text == STR_NONE)
         return;
 
-    gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
+    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, l + 14, yMid);
 }
 
 /**

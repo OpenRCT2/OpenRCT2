@@ -15,6 +15,7 @@
 #include "BannerSetStyleAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
+#include "CustomAction.hpp"
 #include "FootpathPlaceAction.hpp"
 #include "FootpathPlaceFromTrackAction.hpp"
 #include "FootpathRemoveAction.hpp"
@@ -171,5 +172,8 @@ namespace GameActions
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
         Register<SetCheatAction>();
+#ifdef ENABLE_SCRIPTING
+        Register<CustomAction>();
+#endif
     }
 } // namespace GameActions

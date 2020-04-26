@@ -136,3 +136,113 @@ rct_string_id language_allocate_object_string(const std::string& target)
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.AllocateObjectString(target);
 }
+
+std::string language_convert_string_to_tokens(const std::string_view& s)
+{
+    std::string result;
+    result.reserve(s.size() * 4);
+    std::string input = std::string(s);
+    auto readPtr = input.c_str();
+    while (true)
+    {
+        char32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        if (code == 0)
+        {
+            break;
+        }
+        else if (code == '\n')
+        {
+            result.push_back('\n');
+        }
+        else if (utf8_is_format_code(code))
+        {
+            auto token = format_get_token(code);
+            result.push_back('{');
+            result.append(token);
+            result.push_back('}');
+        }
+        else
+        {
+            char buffer[8]{};
+            utf8_write_codepoint(buffer, code);
+            result.append(buffer);
+        }
+    }
+    result.shrink_to_fit();
+    return result;
+}
+
+std::string language_convert_string(const std::string_view& s)
+{
+    enum class PARSE_STATE
+    {
+        DEFAULT,
+        CR,
+        TOKEN,
+    };
+
+    std::string result;
+    std::string token;
+    PARSE_STATE state{};
+    token.reserve(64);
+    result.reserve(s.size() * 2);
+    for (char c : s)
+    {
+        switch (state)
+        {
+            case PARSE_STATE::CR:
+                result.push_back(FORMAT_NEWLINE);
+                state = PARSE_STATE::DEFAULT;
+                [[fallthrough]];
+            case PARSE_STATE::DEFAULT:
+                switch (c)
+                {
+                    case '\r':
+                        state = PARSE_STATE::CR;
+                        break;
+                    case '\n':
+                        result.push_back(FORMAT_NEWLINE);
+                        break;
+                    case '{':
+                        token.clear();
+                        state = PARSE_STATE::TOKEN;
+                        break;
+                    default:
+                        if (c >= 32)
+                        {
+                            result.push_back(c);
+                        }
+                        break;
+                }
+                break;
+            case PARSE_STATE::TOKEN:
+                if (c == '}')
+                {
+                    auto code = format_get_code(token.c_str());
+                    if (code == 0)
+                    {
+                        int32_t number{};
+                        if (sscanf(token.c_str(), "%d", &number) == 1)
+                        {
+                            auto b = static_cast<uint8_t>(std::clamp(number, 0, 255));
+                            token.push_back(b);
+                        }
+                    }
+                    else
+                    {
+                        char buffer[8]{};
+                        utf8_write_codepoint(buffer, code);
+                        result.append(buffer);
+                    }
+                    state = PARSE_STATE::DEFAULT;
+                }
+                else
+                {
+                    token.push_back(c);
+                }
+                break;
+        }
+    }
+    result.shrink_to_fit();
+    return result;
+}

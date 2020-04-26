@@ -60,6 +60,59 @@ namespace GA_FLAGS
 #    pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
 
+class StringVariant
+{
+private:
+    rct_string_id StringId = STR_NONE;
+    std::string String;
+
+public:
+    StringVariant() = default;
+
+    StringVariant(rct_string_id stringId)
+        : StringId(stringId)
+    {
+    }
+
+    StringVariant(const std::string& s)
+        : String(s)
+    {
+    }
+
+    StringVariant(std::string&& s)
+        : String(s)
+    {
+    }
+
+    StringVariant(const char* s)
+        : String(s)
+    {
+    }
+
+    const std::string* AsString() const
+    {
+        if (!String.empty())
+        {
+            return &String;
+        }
+        return {};
+    }
+
+    const rct_string_id* AsStringId() const
+    {
+        if (String.empty())
+        {
+            return &StringId;
+        }
+        return {};
+    }
+
+    rct_string_id GetStringId() const
+    {
+        return String.empty() ? StringId : STR_NONE;
+    }
+};
+
 /**
  * Represents the result of a game action query or execution.
  */
@@ -69,8 +122,8 @@ public:
     using Ptr = std::unique_ptr<GameActionResult>;
 
     GA_ERROR Error = GA_ERROR::OK;
-    rct_string_id ErrorTitle = STR_NONE;
-    rct_string_id ErrorMessage = STR_NONE;
+    StringVariant ErrorTitle;
+    StringVariant ErrorMessage;
     std::array<uint8_t, 32> ErrorMessageArgs;
     CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
     money32 Cost = 0;
@@ -82,6 +135,9 @@ public:
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args);
     GameActionResult(const GameActionResult&) = delete;
     virtual ~GameActionResult(){};
+
+    std::string GetErrorTitle() const;
+    std::string GetErrorMessage() const;
 };
 
 struct GameAction

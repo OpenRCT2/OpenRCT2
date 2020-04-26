@@ -57,6 +57,8 @@
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
+#include "scripting/HookEngine.h"
+#include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
@@ -76,6 +78,7 @@ using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Paint;
+using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -100,6 +103,9 @@ namespace OpenRCT2
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
+#ifdef ENABLE_SCRIPTING
+        ScriptEngine _scriptEngine;
+#endif
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -134,6 +140,9 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+#ifdef ENABLE_SCRIPTING
+            , _scriptEngine(_stdInOutConsole, *env)
+#endif
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -175,6 +184,13 @@ namespace OpenRCT2
         {
             return _uiContext;
         }
+
+#ifdef ENABLE_SCRIPTING
+        Scripting::ScriptEngine& GetScriptEngine() override
+        {
+            return _scriptEngine;
+        }
+#endif
 
         GameState* GetGameState() override
         {
@@ -454,6 +470,7 @@ namespace OpenRCT2
             _gameState->InitAll(150);
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
+            _uiContext->Initialise();
             return true;
         }
 
@@ -799,7 +816,11 @@ namespace OpenRCT2
                         }
                         network_begin_server(gNetworkStartPort, gNetworkStartAddress);
                     }
+                    else
 #endif // DISABLE_NETWORK
+                    {
+                        game_load_scripts();
+                    }
                     break;
                 }
                 case STARTUP_ACTION_EDIT:
@@ -825,11 +846,7 @@ namespace OpenRCT2
             }
 #endif // DISABLE_NETWORK
 
-            // For now, only allow interactive console in headless mode
-            if (gOpenRCT2Headless)
-            {
-                _stdInOutConsole.Start();
-            }
+            _stdInOutConsole.Start();
             RunGameLoop();
         }
 
@@ -1015,6 +1032,9 @@ namespace OpenRCT2
 
             Twitch::Update();
             chat_update();
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.Update();
+#endif
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();
         }
@@ -1033,6 +1053,7 @@ namespace OpenRCT2
                     DIRID::TRACK,
                     DIRID::LANDSCAPE,
                     DIRID::HEIGHTMAP,
+                    DIRID::PLUGIN,
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,

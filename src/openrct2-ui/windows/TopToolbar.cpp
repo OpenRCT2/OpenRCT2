@@ -9,6 +9,7 @@
 
 #include "../UiContext.h"
 #include "../interface/InGameConsole.h"
+#include "../scripting/CustomMenu.h"
 
 #include <algorithm>
 #include <iterator>
@@ -305,6 +306,8 @@ static rct_window_event_list window_top_toolbar_events = {
 
 static void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex);
+static void top_toolbar_init_map_menu(rct_window* window, rct_widget* widget);
+static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_fastforward_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_rotate_menu(rct_window* window, rct_widget* widget);
@@ -521,20 +524,7 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
             top_toolbar_init_view_menu(w, widget);
             break;
         case WIDX_MAP:
-            gDropdownItemsFormat[0] = STR_SHORTCUT_SHOW_MAP;
-            gDropdownItemsFormat[1] = STR_EXTRA_VIEWPORT;
-            numItems = 2;
-
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
-            {
-                gDropdownItemsFormat[2] = STR_MAPGEN_WINDOW_TITLE;
-                numItems++;
-            }
-
-            window_dropdown_show_text(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
-                w->colours[1] | 0x80, 0, numItems);
-            gDropdownDefaultIndex = DDIDX_SHOW_MAP;
+            top_toolbar_init_map_menu(w, widget);
             break;
         case WIDX_FASTFORWARD:
             top_toolbar_init_fastforward_menu(w, widget);
@@ -651,18 +641,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
             top_toolbar_view_menu_dropdown(dropdownIndex);
             break;
         case WIDX_MAP:
-            switch (dropdownIndex)
-            {
-                case 0:
-                    context_open_window(WC_MAP);
-                    break;
-                case 1:
-                    context_open_window(WC_VIEWPORT);
-                    break;
-                case 2:
-                    context_open_window(WC_MAPGEN);
-                    break;
-            }
+            top_toolbar_map_menu_dropdown(dropdownIndex);
             break;
         case WIDX_FASTFORWARD:
             top_toolbar_fastforward_menu_dropdown(dropdownIndex);
@@ -1968,9 +1947,12 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     break;
                 }
 
-                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                if (auto message = res->ErrorMessage.AsStringId())
                 {
-                    break;
+                    if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
                 }
 
                 if (zAttemptRange != 1)
@@ -2018,9 +2000,12 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     break;
                 }
 
-                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                if (auto message = res->ErrorMessage.AsStringId())
                 {
-                    break;
+                    if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
                 }
 
                 if (zAttemptRange != 1)
@@ -3290,6 +3275,73 @@ static void window_top_toolbar_tool_abort(rct_window* w, rct_widgetindex widgetI
         case WIDX_CLEAR_SCENERY:
             hide_gridlines();
             break;
+    }
+}
+
+static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
+{
+    auto i = 0;
+    gDropdownItemsFormat[i++] = STR_SHORTCUT_SHOW_MAP;
+    gDropdownItemsFormat[i++] = STR_EXTRA_VIEWPORT;
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    {
+        gDropdownItemsFormat[i++] = STR_MAPGEN_WINDOW_TITLE;
+    }
+
+#ifdef ENABLE_SCRIPTING
+    const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+    if (!customMenuItems.empty())
+    {
+        gDropdownItemsFormat[i++] = STR_EMPTY;
+        for (const auto& item : customMenuItems)
+        {
+            gDropdownItemsFormat[i] = STR_STRING;
+            auto sz = item.Text.c_str();
+            std::memcpy(&gDropdownItemsArgs[i], &sz, sizeof(const char*));
+            i++;
+        }
+    }
+#endif
+
+    window_dropdown_show_text(
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0,
+        i);
+    gDropdownDefaultIndex = DDIDX_SHOW_MAP;
+}
+
+static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex)
+{
+    int32_t customStartIndex = 3;
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    {
+        customStartIndex++;
+    }
+
+    if (dropdownIndex < customStartIndex)
+    {
+        switch (dropdownIndex)
+        {
+            case 0:
+                context_open_window(WC_MAP);
+                break;
+            case 1:
+                context_open_window(WC_VIEWPORT);
+                break;
+            case 2:
+                context_open_window(WC_MAPGEN);
+                break;
+        }
+    }
+    else
+    {
+#ifdef ENABLE_SCRIPTING
+        const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+        auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
+        if (customMenuItems.size() > customIndex)
+        {
+            customMenuItems[customIndex].Invoke();
+        }
+#endif
     }
 }
 

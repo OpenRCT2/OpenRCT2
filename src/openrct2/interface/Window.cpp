@@ -1009,6 +1009,8 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
 void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
+    if (v == nullptr)
+        return;
 
     zoomLevel = std::clamp(zoomLevel, ZoomLevel::min(), ZoomLevel::max());
     if (v->zoom == zoomLevel)

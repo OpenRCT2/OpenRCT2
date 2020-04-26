@@ -19,6 +19,7 @@
 #include "../actions/PeepPickupAction.hpp"
 #include "../core/Guard.hpp"
 #include "../platform/platform.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
@@ -31,7 +32,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "8"
+#define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -193,6 +194,7 @@ public:
     void Client_Send_GAMEINFO();
     void Client_Send_OBJECTS(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    void Server_Send_SCRIPTS(NetworkConnection& connection) const;
 
     NetworkStats_t GetStats() const;
     json_t* GetServerInfoAsJson() const;
@@ -308,6 +310,7 @@ private:
     void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
@@ -343,6 +346,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
     client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
     client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
+    client_command_handlers[NETWORK_COMMAND_SCRIPTS] = &Network::Client_Handle_SCRIPTS;
     client_command_handlers[NETWORK_COMMAND_GAMESTATE] = &Network::Client_Handle_GAMESTATE;
     server_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
@@ -622,6 +626,8 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     listening_port = port;
     _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
     _advertiser = CreateServerAdvertiser(listening_port);
+
+    game_load_scripts();
 
     return true;
 }
@@ -1461,6 +1467,42 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
         packet->Write(reinterpret_cast<const uint8_t*>(object->ObjectEntry.name), 8);
         *packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
     }
+    connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
+{
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_SCRIPTS);
+#    ifdef ENABLE_SCRIPTING
+    using namespace OpenRCT2::Scripting;
+
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    const auto& plugins = scriptEngine.GetPlugins();
+    std::vector<std::shared_ptr<Plugin>> pluginsToSend;
+    for (const auto& plugin : plugins)
+    {
+        const auto& metadata = plugin->GetMetadata();
+        if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
+        {
+            pluginsToSend.push_back(plugin);
+        }
+    }
+
+    log_verbose("Server sends %u scripts", pluginsToSend.size());
+    *packet << static_cast<uint32_t>(pluginsToSend.size());
+    for (const auto& plugin : pluginsToSend)
+    {
+        const auto& metadata = plugin->GetMetadata();
+        log_verbose("Script %s", metadata.Name.c_str());
+
+        const auto& code = plugin->GetCode();
+        *packet << static_cast<uint32_t>(code.size());
+        packet->Write(reinterpret_cast<const uint8_t*>(code.c_str()), code.size());
+    }
+#    else
+    *packet << static_cast<uint32_t>(0);
+#    endif
     connection.QueuePacket(std::move(packet));
 }
 
@@ -2338,6 +2380,7 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         auto& objManager = context->GetObjectManager();
         auto objects = objManager.GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
+        Server_Send_SCRIPTS(connection);
 
         // Log player joining event
         std::string playerNameHash = player->Name + " (" + keyhash + ")";
@@ -2395,6 +2438,29 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         }
     }
     Client_Send_OBJECTS(requested_objects);
+}
+
+void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
+{
+    uint32_t numScripts{};
+    packet >> numScripts;
+
+#    ifdef ENABLE_SCRIPTING
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    for (uint32_t i = 0; i < numScripts; i++)
+    {
+        uint32_t codeLength{};
+        packet >> codeLength;
+        auto code = std::string_view(reinterpret_cast<const char*>(packet.Read(codeLength)), codeLength);
+        scriptEngine.AddNetworkPlugin(code);
+    }
+#    else
+    if (numScripts > 0)
+    {
+        connection.SetLastDisconnectReason("The server requires plugin support.");
+        Close();
+    }
+#    endif
 }
 
 void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)
@@ -2682,6 +2748,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         if (LoadMap(&ms))
         {
             game_load_init();
+            game_load_scripts();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
@@ -2819,8 +2886,48 @@ void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection,
     }
 }
 
+static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::string& text)
+{
+#    ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto objIdx = duk_push_object(ctx);
+        duk_push_number(ctx, static_cast<int32_t>(player.Id));
+        duk_put_prop_string(ctx, objIdx, "player");
+        duk_push_string(ctx, text.c_str());
+        duk_put_prop_string(ctx, objIdx, "message");
+        auto e = DukValue::take_from_stack(ctx);
+
+        // Call the subscriptions
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e, false);
+
+        // Update text from object if subscriptions changed it
+        if (e["message"].type() != DukValue::Type::STRING)
+        {
+            // Subscription set text to non-string, do not relay message
+            return false;
+        }
+        text = e["message"].as_string();
+        if (text.empty())
+        {
+            // Subscription set text to empty string, do not relay message
+            return false;
+        }
+    }
+#    endif
+    return true;
+}
+
 void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
+    auto szText = packet.ReadString();
+    if (szText == nullptr || szText[0] == '\0')
+        return;
+
     if (connection.Player)
     {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -2829,13 +2936,20 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
             return;
         }
     }
-    const char* text = packet.ReadString();
-    if (text)
+
+    std::string text = szText;
+    if (connection.Player != nullptr)
     {
-        const char* formatted = FormatChat(connection.Player, text);
-        chat_history_add(formatted);
-        Server_Send_CHAT(formatted);
+        if (!ProcessChatMessagePluginHooks(*connection.Player, text))
+        {
+            // Message not to be relayed
+            return;
+        }
     }
+
+    const char* formatted = FormatChat(connection.Player, text.c_str());
+    chat_history_add(formatted);
+    Server_Send_CHAT(formatted);
 }
 
 void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -2893,12 +3007,15 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
         return;
     }
 
-    // Check if player's group permission allows command to run
-    NetworkGroup* group = GetGroupByID(connection.Player->Group);
-    if (group == nullptr || group->CanPerformCommand(actionType) == false)
+    if (actionType != GAME_COMMAND_CUSTOM)
     {
-        Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
-        return;
+        // Check if player's group permission allows command to run
+        NetworkGroup* group = GetGroupByID(connection.Player->Group);
+        if (group == nullptr || group->CanPerformCommand(actionType) == false)
+        {
+            Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+            return;
+        }
     }
 
     // Create and enqueue the action.
@@ -3575,7 +3692,8 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExe
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
     if (player == nullptr)
     {
-        // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too early.
+        // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
+        // early.
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
     }
 

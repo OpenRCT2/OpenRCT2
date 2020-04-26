@@ -35,7 +35,7 @@
 #    include <filesystem>
 namespace fs = std::filesystem;
 #else
-#    include "../thirdparty/filesystem.hpp"
+#    include <filesystem.hpp>
 namespace fs = ghc::filesystem;
 #endif
 

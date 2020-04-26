@@ -56,6 +56,7 @@
             "includePath": [
                 "${workspaceRoot}",
                 "${workspaceRoot}/src",
+                "${workspaceRoot}/src/thirdparty",
                 "${workspaceRoot}/lib/Win32/include",
                 "${workspaceRoot}/lib/x64/include",
                 "${workspaceRoot}/lib/googletest/googletest/include"
@@ -63,7 +64,8 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "__ENABLE_SCRIPTING__"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

@@ -140,8 +140,14 @@ money32 maze_set_track(
 
     // NOTE: ride_construction_tooldown_construct requires them to be set.
     // Refactor result type once theres no C code referencing this function.
-    gGameCommandErrorText = res->ErrorMessage;
-    gGameCommandErrorTitle = res->ErrorTitle;
+    if (auto title = res->ErrorTitle.AsStringId())
+        gGameCommandErrorTitle = *title;
+    else
+        gGameCommandErrorTitle = STR_NONE;
+    if (auto message = res->ErrorMessage.AsStringId())
+        gGameCommandErrorText = *message;
+    else
+        gGameCommandErrorText = STR_NONE;
 
     if (res->Error != GA_ERROR::OK)
     {

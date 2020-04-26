@@ -64,6 +64,15 @@ struct widget_identifier
 
 extern widget_identifier gCurrentTextBox;
 
+using WidgetFlags = uint32_t;
+namespace WIDGET_FLAGS
+{
+    const WidgetFlags TEXT_IS_STRING = 1 << 0;
+    const WidgetFlags IS_ENABLED = 1 << 1;
+    const WidgetFlags IS_PRESSED = 1 << 2;
+    const WidgetFlags IS_DISABLED = 1 << 3;
+} // namespace WIDGET_FLAGS
+
 /**
  * Widget structure
  * size: 0x10
@@ -84,6 +93,9 @@ struct rct_widget
         utf8* string;
     };
     rct_string_id tooltip; // 0x0E
+
+    // New properties
+    WidgetFlags flags{};
 };
 
 /**
@@ -443,6 +455,7 @@ enum
     WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
     WC_CHAT = 223,
     WC_CONSOLE = 224,
+    WC_CUSTOM = 225,
 
     WC_NULL = 255,
 };

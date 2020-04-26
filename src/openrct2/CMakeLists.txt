@@ -100,6 +100,20 @@ if (NOT DISABLE_GOOGLE_BENCHMARK)
     endif ()
 endif ()
 
+if (ENABLE_SCRIPTING)
+    if (MSVC)
+        find_package(duktape REQUIRED)
+    else ()
+        PKG_CHECK_MODULES(DUKTAPE REQUIRED duktape)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${DUKTAPE_INCLUDE_DIRS})
+        if (STATIC)
+            target_link_libraries(${PROJECT_NAME} ${DUKTAPE_STATIC_LIBRARIES})
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${DUKTAPE_LIBRARIES})
+        endif ()
+    endif ()
+endif ()
+
 # Third party libraries
 if (MSVC)
     find_package(jansson CONFIG REQUIRED)
@@ -196,7 +210,8 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${JANSSON_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PNG_INCLUDE_DIRS}
-                                              ${ZLIB_INCLUDE_DIRS})
+                                                   ${ZLIB_INCLUDE_DIRS})
+include_directories(${PROJECT_NAME} SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these

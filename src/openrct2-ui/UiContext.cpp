@@ -17,6 +17,7 @@
 #include "input/KeyboardShortcuts.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
+#include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
@@ -38,6 +39,7 @@
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -46,6 +48,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Input;
+using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
@@ -113,6 +116,14 @@ public:
         delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         delete _platformUiContext;
+    }
+
+    void Initialise() override
+    {
+#ifdef ENABLE_SCRIPTING
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        UiScriptExtensions::Extend(scriptEngine);
+#endif
     }
 
     void Update() override

@@ -18,11 +18,16 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
 
 GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
 {
@@ -43,6 +48,34 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
     ErrorTitle = title;
     ErrorMessage = message;
     std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
+}
+
+std::string GameActionResult::GetErrorTitle() const
+{
+    std::string title;
+    if (auto error = ErrorTitle.AsString())
+    {
+        title = *error;
+    }
+    else
+    {
+        title = format_string(ErrorTitle.GetStringId(), nullptr);
+    }
+    return title;
+}
+
+std::string GameActionResult::GetErrorMessage() const
+{
+    std::string message;
+    if (auto error = ErrorMessage.AsString())
+    {
+        message = *error;
+    }
+    else
+    {
+        message = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
+    }
+    return message;
 }
 
 namespace GameActions
@@ -367,6 +400,15 @@ namespace GameActions
         }
 
         GameActionResult::Ptr result = QueryInternal(action, topLevel);
+#ifdef ENABLE_SCRIPTING
+        if (result->Error == GA_ERROR::OK
+            && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.RunGameActionHooks(*action, result, false);
+            // Script hooks may now have changed the game action result...
+        }
+#endif
         if (result->Error == GA_ERROR::OK)
         {
             if (topLevel)
@@ -402,6 +444,14 @@ namespace GameActions
 
             // Execute the action, changing the game state
             result = action->Execute();
+#ifdef ENABLE_SCRIPTING
+            if (result->Error == GA_ERROR::OK)
+            {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.RunGameActionHooks(*action, result, true);
+                // Script hooks may now have changed the game action result...
+            }
+#endif
 
             LogActionFinish(logContext, action, result);
 
@@ -486,9 +536,8 @@ namespace GameActions
 
         if (result->Error != GA_ERROR::OK && shouldShowError)
         {
-            // Show the error box
-            std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);
-            context_show_error(result->ErrorTitle, result->ErrorMessage);
+            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            windowManager->ShowError(result->GetErrorTitle(), result->GetErrorMessage());
         }
 
         return result;

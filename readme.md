@@ -110,6 +110,7 @@ The program can also be built as a command line program using CMake. This type o
 - icu (>= 59.0)
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
+- duktape (unless scripting is disabled)
 - cmake
 
 ---
