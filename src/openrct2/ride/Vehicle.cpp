@@ -1719,7 +1719,7 @@ void Vehicle::UpdateMeasurements()
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
 
-                int16_t curZ = z / 8 - curRide->start_drop_height;
+                int16_t curZ = z / COORDS_Z_STEP - curRide->start_drop_height;
                 if (curZ < 0)
                 {
                     curZ = abs(curZ);
@@ -1741,7 +1741,7 @@ void Vehicle::UpdateMeasurements()
             curRide->drops &= ~0x3F;
             curRide->drops |= drops;
 
-            curRide->start_drop_height = z / 8;
+            curRide->start_drop_height = z / COORDS_Z_STEP;
             testingFlags &= ~RIDE_TESTING_DROP_UP;
         }
 
@@ -1751,7 +1751,7 @@ void Vehicle::UpdateMeasurements()
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
 
-                int16_t curZ = z / 8 - curRide->start_drop_height;
+                int16_t curZ = z / COORDS_Z_STEP - curRide->start_drop_height;
                 if (curZ < 0)
                 {
                     curZ = abs(curZ);
@@ -1773,7 +1773,7 @@ void Vehicle::UpdateMeasurements()
             curRide->drops &= ~0x3F;
             curRide->drops |= drops;
 
-            curRide->start_drop_height = z / 8;
+            curRide->start_drop_height = z / COORDS_Z_STEP;
         }
 
         if (curRide->type == RIDE_TYPE_MINI_GOLF)
