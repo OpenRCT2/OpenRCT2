@@ -317,6 +317,7 @@ private:
     void CableLiftUpdateDeparting();
     void CableLiftUpdateTravelling();
     void CableLiftUpdateArriving();
+    void UpdateMeasurements();
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
     void UpdateWaitingToDepart();
