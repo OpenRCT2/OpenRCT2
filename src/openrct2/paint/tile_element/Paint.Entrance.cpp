@@ -165,9 +165,11 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
         && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
+        // clear next 8 bytes
+        Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
-        ft.Add<uint32_t>(0);
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
