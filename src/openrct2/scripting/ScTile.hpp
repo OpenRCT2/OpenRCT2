@@ -913,10 +913,10 @@ namespace OpenRCT2::Scripting
             return _coords.y / COORDS_XY_STEP;
         }
 
-        size_t numElements_get() const
+        uint32_t numElements_get() const
         {
             auto first = GetFirstElement();
-            return GetNumElements(first);
+            return static_cast<int32_t>(GetNumElements(first));
         }
 
         std::vector<std::shared_ptr<ScTileElement>> elements_get() const
@@ -998,17 +998,17 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::shared_ptr<ScTileElement> getElement(size_t index) const
+        std::shared_ptr<ScTileElement> getElement(uint32_t index) const
         {
             auto first = GetFirstElement();
-            if (index < GetNumElements(first))
+            if (static_cast<size_t>(index) < GetNumElements(first))
             {
                 return std::make_shared<ScTileElement>(_coords, &first[index]);
             }
             return {};
         }
 
-        std::shared_ptr<ScTileElement> insertElement(size_t index)
+        std::shared_ptr<ScTileElement> insertElement(uint32_t index)
         {
             ThrowIfGameStateNotMutable();
             std::shared_ptr<ScTileElement> result;
@@ -1058,7 +1058,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        void removeElement(size_t index)
+        void removeElement(uint32_t index)
         {
             ThrowIfGameStateNotMutable();
             auto first = GetFirstElement();
