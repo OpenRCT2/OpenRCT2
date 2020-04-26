@@ -523,11 +523,11 @@ declare global {
         /**
          * Colour of the peep's t-shirt.
          */
-        tshirt: number;
+        tshirtColour: number;
         /**
          * Colour of the peep's trousers.
          */
-        trousers: number;
+        trousersColour: number;
     }
 
     /**
