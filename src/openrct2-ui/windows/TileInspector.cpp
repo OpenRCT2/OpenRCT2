@@ -1923,15 +1923,17 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (track_element_is_station(tileElement))
                 {
                     int16_t stationIndex = trackElement->GetStationIndex();
-                    set_format_arg(0, rct_string_id, STR_COMMA16);
-                    set_format_arg(2, int16_t, stationIndex);
+                    auto ft = Formatter::Common();
+                    ft.Add<rct_string_id>(STR_COMMA16);
+                    ft.Add<int16_t>(stationIndex);
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE, x, y + 55);
                 }
                 else
                 {
                     const char* stationNone = "-";
-                    set_format_arg(0, rct_string_id, STR_STRING);
-                    set_format_arg(2, char*, stationNone);
+                    auto ft = Formatter::Common();
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<char*>(stationNone);
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE, x, y + 55);
                 }
 
@@ -2040,8 +2042,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_WHITE, x, y + 22);
                     // Station index
                     int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                    set_format_arg(0, rct_string_id, STR_COMMA16);
-                    set_format_arg(2, int16_t, stationIndex);
+                    auto ft = Formatter::Common();
+                    ft.Add<rct_string_id>(STR_COMMA16);
+                    ft.Add<int16_t>(stationIndex);
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE, x, y + 33);
                 }
 
@@ -2289,24 +2292,28 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
         // Undo relative scroll offset, but keep the 3 pixel padding
         const int32_t x = -w->widgets[WIDX_LIST].left;
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, typeName);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<char*>(typeName);
         gfx_draw_string_left_clipped(
             dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y, COL_X_BH); // 3px padding
 
         // Base height
-        set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
-        set_format_arg(2, int32_t, baseHeight);
+        ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
+        ft.Add<int32_t>(baseHeight);
         gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BH, y);
 
         // Clearance height
-        set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
-        set_format_arg(2, int32_t, clearanceHeight);
+        ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
+        ft.Add<int32_t>(clearanceHeight);
         gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_CH, y);
 
         // Checkmarks for ghost and last for tile
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, CheckBoxMarkString);
+        ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<char*>(CheckBoxMarkString);
         if (ghost)
         {
             gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_GF, y);

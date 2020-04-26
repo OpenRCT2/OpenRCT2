@@ -418,7 +418,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         }
         else
         {
-            set_format_arg(0, rct_string_id, StaffNamingConvention[selectedPeepType].plural);
+            Formatter::Common().Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
             context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE);
         }
     }
@@ -625,7 +625,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        set_format_arg(0, money32, gStaffWageTable[selectedTab]);
+        Formatter::Common().Add<money32>(gStaffWageTable[selectedTab]);
         gfx_draw_string_left(
             dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 155, w->windowPos.y + 0x20);
     }
@@ -644,8 +644,9 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         staffTypeStringId = StaffNamingConvention[selectedTab].singular;
     }
 
-    set_format_arg(0, uint16_t, static_cast<uint16_t>(StaffList.size()));
-    set_format_arg(2, rct_string_id, staffTypeStringId);
+    auto ft = Formatter::Common();
+    ft.Add<uint16_t>(StaffList.size());
+    ft.Add<rct_string_id>(staffTypeStringId);
 
     gfx_draw_string_left(
         dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 4,

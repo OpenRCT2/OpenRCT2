@@ -836,7 +836,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
         const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-        set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(activeThemeName));
+        Formatter::Common().Add<const utf8*>(activeThemeName);
         gfx_draw_string_left(
             dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->windowPos.x + 10,
             w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);

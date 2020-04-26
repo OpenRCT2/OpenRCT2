@@ -331,7 +331,9 @@ static void window_server_start_invalidate(rct_window* w)
     colour_scheme_update_by_class(w, WC_SERVER_LIST);
 
     widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-    set_format_arg(18, uint16_t, gConfigNetwork.maxplayers);
+    auto ft = Formatter::Common();
+    ft.Increment(18);
+    ft.Add<uint16_t>(gConfigNetwork.maxplayers);
 }
 
 static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
