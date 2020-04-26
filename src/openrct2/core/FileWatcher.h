@@ -25,10 +25,10 @@ class FileWatcher
 {
 private:
     std::thread _watchThread;
-#ifdef _WIN32
+#if defined(_WIN32)
     std::string _path;
     HANDLE _directoryHandle{};
-#else
+#elif defined(__linux__)
     struct FileDescriptor
     {
         int Fd = -1;
