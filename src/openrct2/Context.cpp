@@ -1053,6 +1053,7 @@ namespace OpenRCT2
                     DIRID::TRACK,
                     DIRID::LANDSCAPE,
                     DIRID::HEIGHTMAP,
+                    DIRID::PLUGIN,
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
