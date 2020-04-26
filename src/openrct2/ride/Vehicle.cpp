@@ -815,18 +815,87 @@ void Vehicle::Invalidate()
     invalidate_sprite_2(this);
 }
 
-static int32_t get_train_mass(const Vehicle* first_vehicle)
+namespace
+{
+    template<typename T> class TrainIterator;
+    template<typename T> class Train
+    {
+    public:
+        explicit Train(T* vehicle)
+            : FirstCar(vehicle)
+        {
+            assert(FirstCar->IsHead());
+        }
+        int32_t Mass();
+
+        friend class TrainIterator<T>;
+        using iterator = TrainIterator<T>;
+        iterator begin()
+        {
+            return iterator{ FirstCar };
+        }
+        iterator end()
+        {
+            return iterator{};
+        }
+
+    private:
+        T* FirstCar;
+    };
+    template<typename T> class TrainIterator
+    {
+    public:
+        using iterator = TrainIterator;
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using pointer = T*;
+        using reference = T&;
+
+        TrainIterator() = default;
+        explicit TrainIterator(T* vehicle)
+            : Current(vehicle)
+        {
+        }
+        reference operator*()
+        {
+            return *Current;
+        }
+        iterator& operator++()
+        {
+            if (NextVehicleId != SPRITE_INDEX_NULL)
+            {
+                Current = GET_VEHICLE(NextVehicleId);
+                NextVehicleId = Current->next_vehicle_on_train;
+            }
+            else
+            {
+                Current = nullptr;
+            }
+            return *this;
+        }
+        iterator operator++(int)
+        {
+            iterator temp = *this;
+            ++*this;
+            return temp;
+        }
+        bool operator!=(const iterator& other)
+        {
+            return Current != other.Current;
+        }
+
+    private:
+        T* Current = nullptr;
+        uint16_t NextVehicleId = SPRITE_INDEX_NULL;
+    };
+} // namespace
+
+template<typename T> int32_t Train<T>::Mass()
 {
     int32_t totalMass = 0;
-
-    for (const Vehicle* vehicle = first_vehicle; vehicle != nullptr;)
+    for (const auto& vehicle : *this)
     {
-        totalMass += vehicle->mass;
-
-        if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
-            break;
-
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        totalMass += vehicle.mass;
     }
 
     return totalMass;
@@ -884,8 +953,7 @@ bool Vehicle::SoundCanPlay() const
  */
 uint16_t Vehicle::GetSoundPriority() const
 {
-    int32_t trainMass = get_train_mass(this);
-    int32_t result = trainMass + (std::abs(velocity) >> 13);
+    int32_t result = Train(this).Mass() + (std::abs(velocity) >> 13);
     rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[0];
 
     while (vehicle_sound->id != sprite_index)
