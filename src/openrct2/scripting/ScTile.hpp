@@ -52,17 +52,17 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_TRACK:
                     return "track";
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                    return "small-scenery";
+                    return "small_scenery";
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                     return "entrance";
                 case TILE_ELEMENT_TYPE_WALL:
                     return "wall";
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                    return "large-scenery";
+                    return "large_scenery";
                 case TILE_ELEMENT_TYPE_BANNER:
                     return "banner";
                 case TILE_ELEMENT_TYPE_CORRUPT:
-                    return "openrct2-corrupt";
+                    return "openrct2_corrupt";
                 default:
                     return "unknown";
             }
@@ -77,17 +77,17 @@ namespace OpenRCT2::Scripting
                 type = TILE_ELEMENT_TYPE_PATH;
             else if (value == "track")
                 type = TILE_ELEMENT_TYPE_TRACK;
-            else if (value == "small-scenery")
+            else if (value == "small_scenery")
                 type = TILE_ELEMENT_TYPE_SMALL_SCENERY;
             else if (value == "entrance")
                 type = TILE_ELEMENT_TYPE_ENTRANCE;
             else if (value == "wall")
                 type = TILE_ELEMENT_TYPE_WALL;
-            else if (value == "large-scenery")
+            else if (value == "large_scenery")
                 type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
             else if (value == "banner")
                 type = TILE_ELEMENT_TYPE_BANNER;
-            else if (value == "openrct2-corrupt")
+            else if (value == "openrct2_corrupt")
                 type = TILE_ELEMENT_TYPE_CORRUPT;
             else
                 return;
