@@ -6286,7 +6286,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         location.x += Unk9A36C4[oldCollisionDirection + 1].x;
         location.y += Unk9A36C4[oldCollisionDirection + 1].y;
 
-        if (!UpdateDodgemsCollision(location.x, location.y, &collideSprite))
+        if (!DodgemsCarWouldCollideAt(location, &collideSprite))
         {
             Invalidate();
             sprite_move(location.x, location.y, location.z, this);
@@ -6315,7 +6315,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
-            if (UpdateDodgemsCollision(location.x, location.y, &collideSprite))
+            if (DodgemsCarWouldCollideAt(location, &collideSprite))
                 break;
 
             remaining_distance -= Unk9A36C4[direction].distance;
@@ -6396,24 +6396,30 @@ int32_t Vehicle::UpdateMotionDodgems()
  *
  *  rct2: 0x006DD365
  */
-bool Vehicle::UpdateDodgemsCollision(int16_t curX, int16_t curY, uint16_t* spriteId)
+static bool wouldCollideWithDodgemsTrackEdge(
+    CoordsXY coords, CoordsXY trackLocation, uint32_t trackType, uint16_t dodgemsCarRadius)
 {
-    uint16_t bp = (var_44 * 30) >> 9;
+    int16_t rideLeft = trackLocation.x + DodgemsTrackSize[trackType].left;
+    int16_t rideRight = trackLocation.x + DodgemsTrackSize[trackType].right;
+    int16_t rideTop = trackLocation.y + DodgemsTrackSize[trackType].top;
+    int16_t rideBottom = trackLocation.y + DodgemsTrackSize[trackType].bottom;
+
+    return coords.x - dodgemsCarRadius < rideLeft || coords.y - dodgemsCarRadius < rideTop
+        || coords.x + dodgemsCarRadius > rideRight || coords.y + dodgemsCarRadius > rideBottom;
+}
+
+bool Vehicle::DodgemsCarWouldCollideAt(CoordsXY coords, uint16_t* collidedWith) const
+{
     uint32_t trackType = track_type >> 2;
 
-    int16_t rideLeft = TrackLocation.x + DodgemsTrackSize[trackType].left;
-    int16_t rideRight = TrackLocation.x + DodgemsTrackSize[trackType].right;
-    int16_t rideTop = TrackLocation.y + DodgemsTrackSize[trackType].top;
-    int16_t rideBottom = TrackLocation.y + DodgemsTrackSize[trackType].bottom;
-
-    if (curX - bp < rideLeft || curY - bp < rideTop || curX + bp > rideRight || curY + bp > rideBottom)
+    if (wouldCollideWithDodgemsTrackEdge(coords, TrackLocation, trackType, (var_44 * 30) >> 9))
     {
-        if (spriteId != nullptr)
-            *spriteId = SPRITE_INDEX_NULL;
+        if (collidedWith != nullptr)
+            *collidedWith = SPRITE_INDEX_NULL;
         return true;
     }
 
-    auto location = CoordsXY{ curX, curY };
+    auto location = coords;
 
     ride_id_t rideIndex = ride;
     for (auto xy_offset : SurroundingTiles)
@@ -6435,11 +6441,11 @@ bool Vehicle::UpdateDodgemsCollision(int16_t curX, int16_t curY, uint16_t* sprit
             if (vehicle2->ride != rideIndex)
                 continue;
 
-            int32_t distX = abs(curX - vehicle2->x);
+            int32_t distX = abs(coords.x - vehicle2->x);
             if (distX > 32768)
                 continue;
 
-            int32_t distY = abs(curY - vehicle2->y);
+            int32_t distY = abs(coords.y - vehicle2->y);
             if (distY > 32768)
                 continue;
 
@@ -6448,8 +6454,8 @@ bool Vehicle::UpdateDodgemsCollision(int16_t curX, int16_t curY, uint16_t* sprit
             ecx >>= 8;
             if (std::max(distX, distY) < ecx)
             {
-                if (spriteId != nullptr)
-                    *spriteId = vehicle2->sprite_index;
+                if (collidedWith != nullptr)
+                    *collidedWith = vehicle2->sprite_index;
                 return true;
             }
         }

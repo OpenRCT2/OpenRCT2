@@ -4402,7 +4402,7 @@ static Vehicle* vehicle_create_car(
             vehicle->sprite_direction = scenario_rand() & 0x1E;
             chosenLoc.y = y + (scenario_rand() & 0xFF);
             chosenLoc.x = x + (scenario_rand() & 0xFF);
-        } while (vehicle->UpdateDodgemsCollision(chosenLoc.x, chosenLoc.y, nullptr));
+        } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc, nullptr));
 
         sprite_move(chosenLoc.x, chosenLoc.y, z, vehicle);
     }
