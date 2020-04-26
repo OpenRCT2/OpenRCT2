@@ -192,6 +192,9 @@ namespace OpenRCT2::Ui::Windows
         std::vector<CustomWidgetDesc> Widgets;
         std::vector<colour_t> Colours;
 
+        // Event handlers
+        DukValue OnClose;
+
         CustomWindowDesc() = default;
 
         bool IsResizable() const
@@ -234,6 +237,8 @@ namespace OpenRCT2::Ui::Windows
                     return c;
                 });
             }
+
+            result.OnClose = desc["onClose"];
 
             return result;
         }
@@ -338,8 +343,13 @@ namespace OpenRCT2::Ui::Windows
 
     static void window_custom_close(rct_window* w)
     {
-        delete static_cast<CustomWindowInfo*>(w->custom_info);
-        w->custom_info = nullptr;
+        auto info = static_cast<CustomWindowInfo*>(w->custom_info);
+        if (info != nullptr)
+        {
+            InvokeEventHandler(info->Owner, info->Desc.OnClose);
+            delete info;
+            w->custom_info = nullptr;
+        }
     }
 
     static void window_custom_mouseup(rct_window* w, rct_widgetindex widgetIndex)
