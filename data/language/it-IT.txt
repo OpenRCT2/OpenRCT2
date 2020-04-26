@@ -3692,6 +3692,9 @@ STR_6365    :Vittime attrazioni
 STR_6366    :Veicoli fermi o incastrati
 STR_6364    :{RED}{COMMA16} persona rimasta uccisa in un incidente su {STRINGID}
 STR_6367    :{WINDOW_COLOUR_2}Fotogramma animazione:
+STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
+STR_6369    :Permetti costruzione percorsi ad altezze non valide
+STR_6370    :{SMALLFONT}{BLACK}Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
 
 #############
 # Scenarios #

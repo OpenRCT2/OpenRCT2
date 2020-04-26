@@ -3350,7 +3350,7 @@ STR_6033    :Caminho para a instalação do RCT1:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Por favor, selecione o diretório do seu RCT1
 STR_6036    :{SMALLFONT}{BLACK}Limpar
-STR_6037    :Por favor, seleciona um diretório válido do RCT1
+STR_6037    :O diretório selecionado não contém uma instalação válida de RollerCoaster 1.
 STR_6038    :{SMALLFONT}{BLACK}Se você instalou o RCT1, defina esta opção para seu diretório para carregar cenários, músicas, etc.
 STR_6039    :{SMALLFONT}{BLACK}Demole atração rapidamente
 STR_6040    :Editar Opções do Cenário
@@ -3681,6 +3681,11 @@ STR_6364    :{RED}{COMMA16} pessoa morreu em um acidente em {STRINGID}
 STR_6365    :Acidentes em atrações
 STR_6366    :Veículos presos ou parados
 STR_6367    :{WINDOW_COLOUR_2}Quadro de animação:
+STR_6368    :Por questão de compatibilidade, não é recomendado executar o OpenRCT2 com Wine. O OpenRCT2 tem suporte nativo a macOS, Linux, FreeBSD e OpenBSD.
+STR_6369    :Permitir construção de trilhos em alturas inválidas
+STR_6370    :{SMALLFONT}{BLACK}Permite a construção de trilhos em qualquer intervalo de altura
+STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado do CD do RollerCoaster Tycoon 1 para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
+STR_6372    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas essa versão não é compatível. O OpenRCT2 precisa da instalação do Loopy Landscapes ou RCT Deluxe para usar os recursos do RollerCoaster Tycoon 1.
 
 #############
 # Scenarios #
