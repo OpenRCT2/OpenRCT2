@@ -57,6 +57,9 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // 
 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
+using RCT12ObjectEntryIndex = uint8_t;
+constexpr const RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+
 // Everything before this point has been researched
 constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
@@ -357,7 +360,7 @@ private:
     };
 
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetQueueBannerDirection() const;
     bool IsSloped() const;
     uint8_t GetSlopeDirection() const;
@@ -374,7 +377,7 @@ public:
     uint8_t GetRCT1PathType() const;
     uint8_t GetRCT1SupportType() const;
 
-    void SetPathEntryIndex(uint8_t newIndex);
+    void SetPathEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetQueueBannerDirection(uint8_t direction);
     void SetSloped(bool isSloped);
     void SetSlopeDirection(uint8_t newSlope);
@@ -468,14 +471,14 @@ private:
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetAge() const;
     uint8_t GetSceneryQuadrant() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
     bool NeedsSupports() const;
 
-    void SetEntryIndex(uint8_t newIndex);
+    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetAge(uint8_t newAge);
     void SetSceneryQuadrant(uint8_t newQuadrant);
     void SetPrimaryColour(colour_t colour);
@@ -514,7 +517,7 @@ private:
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
@@ -527,7 +530,7 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 
-    void SetEntryIndex(uint8_t newIndex);
+    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetSlope(uint8_t newslope);
     void SetPrimaryColour(colour_t newColour);
     void SetSecondaryColour(colour_t newColour);
@@ -777,7 +780,7 @@ struct RCT12ResearchItem
         uint32_t rawValue;
         struct
         {
-            uint8_t entryIndex;
+            RCT12ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
             uint8_t type; // 0: scenery entry, 1: ride entry
             uint8_t flags;
@@ -792,9 +795,6 @@ struct RCT12ResearchItem
 assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
-
-using RCT12ObjectEntryIndex = uint8_t;
-constexpr const RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
 RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(ObjectEntryIndex index);

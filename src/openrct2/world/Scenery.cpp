@@ -229,7 +229,7 @@ void scenery_remove_ghost_tool_placement()
     }
 }
 
-rct_scenery_entry* get_wall_entry(int32_t entryIndex)
+rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -241,7 +241,7 @@ rct_scenery_entry* get_wall_entry(int32_t entryIndex)
     return result;
 }
 
-rct_scenery_entry* get_banner_entry(int32_t entryIndex)
+rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -253,7 +253,7 @@ rct_scenery_entry* get_banner_entry(int32_t entryIndex)
     return result;
 }
 
-rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex)
+rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -265,7 +265,7 @@ rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex)
     return result;
 }
 
-rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex)
+rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_group_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

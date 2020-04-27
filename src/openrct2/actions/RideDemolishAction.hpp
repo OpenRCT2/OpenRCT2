@@ -140,7 +140,7 @@ private:
         for (BannerIndex i = 0; i < MAX_BANNERS; i++)
         {
             auto banner = GetBanner(i);
-            if (banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
+            if (!banner->IsNull() && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
             {
                 banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
                 banner->text = {};
