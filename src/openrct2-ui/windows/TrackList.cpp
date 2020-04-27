@@ -99,7 +99,7 @@ static rct_window_event_list window_track_list_events = {
 
 constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
 
-ride_list_item _window_track_list_item;
+RideSelection _window_track_list_item;
 
 static std::vector<track_design_file_ref> _trackDesigns;
 static utf8 _filterString[USER_STRING_MAX_LENGTH];
@@ -108,14 +108,14 @@ static uint16_t _loadedTrackDesignIndex;
 static std::unique_ptr<TrackDesign> _loadedTrackDesign;
 static std::vector<uint8_t> _trackDesignPreviewPixels;
 
-static void track_list_load_designs(ride_list_item item);
+static void track_list_load_designs(RideSelection item);
 static bool track_list_load_design_for_preview(utf8* path);
 
 /**
  *
  *  rct2: 0x006CF1A2
  */
-rct_window* window_track_list_open(ride_list_item item)
+rct_window* window_track_list_open(RideSelection item)
 {
     window_close_construction_windows();
     _window_track_list_item = item;
@@ -445,11 +445,11 @@ static void window_track_list_update(rct_window* w)
 static void window_track_list_invalidate(rct_window* w)
 {
     rct_string_id stringId = STR_NONE;
-    rct_ride_entry* entry = get_ride_entry(_window_track_list_item.entry_index);
+    rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
 
     if (entry != nullptr)
     {
-        rct_ride_name rideName = get_ride_naming(_window_track_list_item.type, entry);
+        rct_ride_name rideName = get_ride_naming(_window_track_list_item.Type, entry);
         stringId = rideName.name;
     }
 
@@ -768,32 +768,32 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     }
 }
 
-static void track_list_load_designs(ride_list_item item)
+static void track_list_load_designs(RideSelection item)
 {
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
+    if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
-        auto rideEntry = get_ride_entry(item.entry_index);
+        auto rideEntry = get_ride_entry(item.EntryIndex);
         if (rideEntry != nullptr)
         {
-            auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+            auto rideGroup = RideGroupManager::GetRideGroup(item.Type, rideEntry);
             if (rideGroup != nullptr)
             {
-                _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
+                _trackDesigns = repo->GetItemsForRideGroup(item.Type, rideGroup);
             }
         }
     }
     else
     {
         std::string entryName;
-        if (item.type < 0x80)
+        if (item.Type < 0x80)
         {
-            if (RideTypeDescriptors[item.type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
-                entryName = get_ride_entry_name(item.entry_index);
+                entryName = get_ride_entry_name(item.EntryIndex);
             }
         }
-        _trackDesigns = repo->GetItemsForObjectEntry(item.type, entryName);
+        _trackDesigns = repo->GetItemsForObjectEntry(item.Type, entryName);
     }
 
     window_track_list_filter_list();

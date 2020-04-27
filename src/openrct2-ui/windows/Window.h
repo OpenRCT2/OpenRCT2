@@ -125,7 +125,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
 rct_window* window_new_ride_open();
 rct_window* window_new_ride_open_research();
 void window_new_ride_init_vars();
-void window_new_ride_focus(ride_list_item rideItem);
+void window_new_ride_focus(RideSelection rideItem);
 
 rct_window* window_ride_list_open();
 void window_ride_list_refresh_list(rct_window* w);
@@ -136,8 +136,8 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle);
 void window_ride_measurements_design_cancel();
 
 // rct2: 0x00F635EE
-extern ride_list_item _window_track_list_item;
-rct_window* window_track_list_open(ride_list_item item);
+extern RideSelection _window_track_list_item;
+rct_window* window_track_list_open(RideSelection item);
 
 void window_map_tooltip_update_visibility();
 

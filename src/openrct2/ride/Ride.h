@@ -52,24 +52,6 @@ constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 constexpr const ObjectEntryIndex RIDE_ENTRY_INDEX_NULL = OBJECT_ENTRY_INDEX_NULL;
 
 #pragma pack(push, 1)
-
-/**
- * Couples a ride type and subtype together.
- */
-struct ride_list_item
-{
-    union
-    {
-        struct
-        {
-            uint8_t type;
-            uint8_t entry_index;
-        };
-        uint16_t ride_type_and_entry;
-    };
-};
-assert_struct_size(ride_list_item, 2);
-
 struct TrackColour
 {
     uint8_t main;
@@ -1107,7 +1089,7 @@ void ride_update_satisfaction(Ride* ride, uint8_t happiness);
 void ride_update_popularity(Ride* ride, uint8_t pop_amount);
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
-void ride_construct_new(ride_list_item listItem);
+void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
 bool ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);

@@ -225,8 +225,8 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_close(w);
 
             auto intent = Intent(WC_TRACK_DESIGN_LIST);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.type);
-            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.entry_index);
+            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
+            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
             context_open_intent(&intent);
             break;
     }

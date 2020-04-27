@@ -223,8 +223,8 @@ struct campaign_variables
 
 struct new_ride_variables
 {
-    int16_t selected_ride_id;    // 0x480
-    int16_t highlighted_ride_id; // 0x482
+    RideSelection SelectedRide;    // 0x480
+    RideSelection HighlightedRide; // 0x482
     uint16_t pad_484;
     uint16_t pad_486;
     uint16_t selected_ride_countdown; // 488
