@@ -55,13 +55,13 @@ void park_set_entrance_fee(money32 fee)
  *
  *  rct2: 0x006B4800
  */
-void ride_construct_new(ride_list_item listItem)
+void ride_construct_new(RideSelection listItem)
 {
-    int32_t rideEntryIndex = ride_get_entry_index(listItem.type, listItem.entry_index);
-    int32_t colour1 = ride_get_random_colour_preset_index(listItem.type);
+    int32_t rideEntryIndex = ride_get_entry_index(listItem.Type, listItem.EntryIndex);
+    int32_t colour1 = ride_get_random_colour_preset_index(listItem.Type);
     int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
 
-    auto gameAction = RideCreateAction(listItem.type, listItem.entry_index, colour1, colour2);
+    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
 
     gameAction.SetCallback([](const GameAction* ga, const RideCreateGameActionResult* result) {
         if (result->Error != GA_ERROR::OK)
