@@ -754,6 +754,12 @@ std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukV
     result->ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
     result->ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
     result->Cost = AsOrDefault<int32_t>(d["cost"]);
+
+    auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
+    if (!expenditureType.empty())
+    {
+        result->Expenditure = StringToExpenditureType(expenditureType);
+    }
     return result;
 }
 
@@ -769,6 +775,44 @@ DukValue ScriptEngine::PositionToDuk(const CoordsXYZ& position)
     duk_push_int(ctx, position.z);
     duk_put_prop_string(ctx, obj, "z");
     return DukValue::take_from_stack(ctx);
+}
+
+constexpr static const char* ExpenditureTypes[] = { "ride_construction",
+                                                    "ride_runningcosts",
+                                                    "land_purchase",
+                                                    "landscaping",
+                                                    "park_entrance_tickets",
+                                                    "park_ride_tickets",
+                                                    "shop_sales",
+                                                    "shop_stock",
+                                                    "food_drink_sales",
+                                                    "food_drink_stock",
+                                                    "wages",
+                                                    "marketing",
+                                                    "research",
+                                                    "interest" };
+
+std::string_view ScriptEngine::ExpenditureTypeToString(ExpenditureType expenditureType)
+{
+    auto index = static_cast<size_t>(expenditureType);
+    if (index >= 0 && index < std::size(ExpenditureTypes))
+    {
+        return ExpenditureTypes[index];
+    }
+    return {};
+}
+
+ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view expenditureType)
+{
+    size_t i = 0;
+    for (auto sz : ExpenditureTypes)
+    {
+        if (expenditureType == sz)
+        {
+            return static_cast<ExpenditureType>(i);
+        }
+    }
+    return ExpenditureType::Count;
 }
 
 DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result)
@@ -788,6 +832,11 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
     if (!result->Position.isNull())
     {
         obj.Set("position", PositionToDuk(result->Position));
+    }
+
+    if (result->Expenditure != ExpenditureType::Count)
+    {
+        obj.Set("expenditureType", ExpenditureTypeToString(result->Expenditure));
     }
 
     if (action.GetType() == GAME_COMMAND_CREATE_RIDE)
