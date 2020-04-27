@@ -59,6 +59,8 @@ namespace OpenRCT2::Scripting
             {
                 case OBJECT_TYPE_RIDE:
                     return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
+                case OBJECT_TYPE_SMALL_SCENERY:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
                 default:
                     return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
             }

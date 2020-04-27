@@ -375,6 +375,7 @@ void ScriptEngine::Initialise()
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
     ScObject::Register(ctx);
+    ScSmallSceneryObject::Register(ctx);
     ScPark::Register(ctx);
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
