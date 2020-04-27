@@ -540,8 +540,12 @@ bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, u
 {
     if (rideType != RIDE_TYPE_NULL)
     {
-        research_insert(
-            { static_cast<uint32_t>(RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex), category }, researched);
+        ResearchItem tmpItem = {};
+        tmpItem.type = RESEARCH_ENTRY_TYPE_RIDE;
+        tmpItem.baseRideType = rideType;
+        tmpItem.entryIndex = entryIndex;
+        tmpItem.category = category;
+        research_insert(tmpItem, researched);
         return true;
     }
 
@@ -560,7 +564,11 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 
 void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched)
 {
-    research_insert({ entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP }, researched);
+    ResearchItem tmpItem = {};
+    tmpItem.type = RESEARCH_ENTRY_TYPE_SCENERY;
+    tmpItem.entryIndex = entryIndex;
+    tmpItem.category = RESEARCH_CATEGORY_SCENERY_GROUP;
+    research_insert(tmpItem, researched);
 }
 
 bool ride_type_is_invented(uint32_t rideType)
@@ -895,7 +903,12 @@ bool ResearchItem::IsAlwaysResearched() const
 
 bool ResearchItem::IsNull() const
 {
-    return rawValue == RESEARCH_ITEM_NULL;
+    return entryIndex == OBJECT_ENTRY_INDEX_NULL;
+}
+
+void ResearchItem::SetNull()
+{
+    entryIndex = OBJECT_ENTRY_INDEX_NULL;
 }
 
 bool ResearchItem::Equals(const ResearchItem* otherItem) const

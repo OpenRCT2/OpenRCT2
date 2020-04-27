@@ -354,7 +354,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             break;
         case NEWS_ITEM_RESEARCH:
         {
-            auto item = ResearchItem(subject, 0);
+            auto item = ResearchItem(subject, 0, 0);
             if (item.type == RESEARCH_ENTRY_TYPE_RIDE)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);

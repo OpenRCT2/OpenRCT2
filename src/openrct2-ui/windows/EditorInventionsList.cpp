@@ -311,7 +311,7 @@ rct_window* window_editor_inventions_list_open()
     window_init_scroll_widgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;
-    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
+    _editorInventionsListDraggedItem.SetNull();
 
     w->min_width = WW;
     w->min_height = WH;
@@ -396,7 +396,7 @@ static void window_editor_inventions_list_update(rct_window* w)
     if (window_find_by_class(WC_EDITOR_INVENTION_LIST_DRAG) != nullptr)
         return;
 
-    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
+    _editorInventionsListDraggedItem.SetNull();
     w->Invalidate();
 }
 
@@ -808,7 +808,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, const Screen
     }
 
     window_close(w);
-    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
+    _editorInventionsListDraggedItem.SetNull();
     window_invalidate_by_class(WC_EDITOR_INVENTION_LIST);
 }
 

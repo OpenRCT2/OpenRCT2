@@ -246,7 +246,7 @@ void S6Exporter::Export()
     _s6.active_research_types = gResearchPriorities;
     _s6.research_progress_stage = gResearchProgressStage;
     if (gResearchLastItem.has_value())
-        _s6.last_researched_item_subject = gResearchLastItem->rawValue;
+        _s6.last_researched_item_subject = gResearchLastItem->ToRCT12ResearchItem().rawValue;
     else
         _s6.last_researched_item_subject = RCT12_RESEARCHED_ITEMS_SEPARATOR;
     // pad_01357CF8
@@ -254,8 +254,9 @@ void S6Exporter::Export()
 
     if (gResearchNextItem.has_value())
     {
-        _s6.next_research_item = gResearchNextItem->rawValue;
-        _s6.next_research_category = gResearchNextItem->category;
+        auto RCT2ResearchItem = gResearchNextItem->ToRCT12ResearchItem();
+        _s6.next_research_item = RCT2ResearchItem.rawValue;
+        _s6.next_research_category = RCT2ResearchItem.category;
     }
     else
     {
@@ -904,12 +905,12 @@ void S6Exporter::ExportResearchList()
     size_t i = 0;
     for (const auto& researchItem : gResearchItemsInvented)
     {
-        _s6.research_items[i++] = RCT12ResearchItem{ researchItem.rawValue, researchItem.category };
+        _s6.research_items[i++] = researchItem.ToRCT12ResearchItem();
     }
     _s6.research_items[i++] = { RCT12_RESEARCHED_ITEMS_SEPARATOR, 0 };
     for (const auto& researchItem : gResearchItemsUninvented)
     {
-        _s6.research_items[i++] = RCT12ResearchItem{ researchItem.rawValue, researchItem.category };
+        _s6.research_items[i++] = researchItem.ToRCT12ResearchItem();
     }
     _s6.research_items[i++] = { RCT12_RESEARCHED_ITEMS_END, 0 };
     _s6.research_items[i] = { RCT12_RESEARCHED_ITEMS_END_2, 0 };
