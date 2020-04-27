@@ -119,6 +119,7 @@ declare global {
          */
         getObject(type: ObjectType, index: number): Object;
         getObject(type: "ride", index: number): RideObject;
+        getObject(type: "small_scenery", index: number): SmallSceneryObject;
 
         getAllObjects(type: ObjectType): Object[];
         getAllObjects(type: "ride"): RideObject[];
@@ -451,6 +452,31 @@ declare global {
     }
 
     /**
+     * Represents the object definition of a small scenery item such a tree.
+     */
+    interface SmallSceneryObject extends Object {
+        /**
+         * Raw bit flags that describe characteristics of the scenery item.
+         */
+        readonly flags: number;
+
+        /**
+         * The default clearance height of the scenery item.
+         */
+        readonly height: number;
+
+        /**
+         * How much the scenery item costs to build.
+         */
+        readonly price: number;
+
+        /**
+         * How much the scenery item costs to remove.
+         */
+        readonly removalPrice: number;
+    }
+
+    /**
      * Represents a ride or stall within the park.
      */
     interface Ride {
@@ -607,10 +633,10 @@ declare global {
      * Park APIs
      */
 
-     /**
-      * The type of park message, including icon and behaviour.
-      */
-     type ParkMessageType =
+    /**
+     * The type of park message, including icon and behaviour.
+     */
+    type ParkMessageType =
         "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart";
 
     interface ParkMessage {
