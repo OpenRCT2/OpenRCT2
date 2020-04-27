@@ -58,11 +58,11 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
 // Everything before this point has been researched
-#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
-#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
-#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
