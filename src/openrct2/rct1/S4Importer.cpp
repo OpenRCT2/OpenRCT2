@@ -1122,17 +1122,14 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE));
+                    // If vehicle is the first car on a train add to train list
+                    auto llt = srcVehicle->type == VEHICLE_TYPE_HEAD ? SPRITE_LIST_TRAIN_HEAD : SPRITE_LIST_VEHICLE;
+
+                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE, llt));
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
                     ImportVehicle(vehicle, srcVehicle);
-
-                    // If vehicle is the first car on a train add to train list
-                    if (vehicle->IsHead())
-                    {
-                        move_sprite_to_list(vehicle, SPRITE_LIST_TRAIN_HEAD);
-                    }
                 }
             }
         }

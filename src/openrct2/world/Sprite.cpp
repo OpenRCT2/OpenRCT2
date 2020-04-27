@@ -50,6 +50,7 @@ static CoordsXYZ _spritelocations1[MAX_SPRITES];
 static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
+static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex);
 
 std::string rct_sprite_checksum::ToString() const
 {
@@ -358,32 +359,12 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linkedListIndex)
 {
     if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
         // No free sprites.
         return nullptr;
-    }
-
-    SPRITE_LIST linkedListIndex;
-    switch (spriteIdentifier)
-    {
-        case SPRITE_IDENTIFIER_VEHICLE:
-            linkedListIndex = SPRITE_LIST_VEHICLE;
-            break;
-        case SPRITE_IDENTIFIER_PEEP:
-            linkedListIndex = SPRITE_LIST_PEEP;
-            break;
-        case SPRITE_IDENTIFIER_MISC:
-            linkedListIndex = SPRITE_LIST_MISC;
-            break;
-        case SPRITE_IDENTIFIER_LITTER:
-            linkedListIndex = SPRITE_LIST_LITTER;
-            break;
-        default:
-            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
-            return nullptr;
     }
 
     if (linkedListIndex == SPRITE_LIST_MISC)
@@ -420,12 +401,36 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     return reinterpret_cast<rct_sprite*>(sprite);
 }
 
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+{
+    SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
+    switch (spriteIdentifier)
+    {
+        case SPRITE_IDENTIFIER_VEHICLE:
+            linkedListIndex = SPRITE_LIST_VEHICLE;
+            break;
+        case SPRITE_IDENTIFIER_PEEP:
+            linkedListIndex = SPRITE_LIST_PEEP;
+            break;
+        case SPRITE_IDENTIFIER_MISC:
+            linkedListIndex = SPRITE_LIST_MISC;
+            break;
+        case SPRITE_IDENTIFIER_LITTER:
+            linkedListIndex = SPRITE_LIST_LITTER;
+            break;
+        default:
+            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
+            return nullptr;
+    }
+    return create_sprite(spriteIdentifier, linkedListIndex);
+}
+
 /*
  * rct2: 0x0069ED0B
  * This function moves a sprite to the specified sprite linked list.
  * The game uses this list to categorise sprites by type.
  */
-void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
+static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
 {
     int32_t oldListIndex = sprite->linked_list_index;
 
