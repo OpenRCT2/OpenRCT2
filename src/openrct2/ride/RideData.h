@@ -13,6 +13,8 @@
 #include "../common.h"
 #include "../localisation/StringIds.h"
 #include "Ride.h"
+#include "ShopItem.h"
+#include "Track.h"
 #include "TrackPaint.h"
 
 struct RideComponentName
@@ -116,6 +118,9 @@ struct RideTypeDescriptor
     uint64_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
+    /** rct2: 0x0097C8AC */
+    uint64_t RideModes;
+    uint8_t DefaultMode;
     RideNameConvention NameConvention;
     uint8_t AvailableBreakdowns;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
@@ -245,8 +250,21 @@ constexpr const RideComponentName RideComponentNames[] =
 // clang-format on
 
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
-extern const uint8_t RideAvailableModes[];
-extern const uint8_t AllRideModesAvailable[];
+
+constexpr const uint64_t AllRideModesAvailable = (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)
+    | (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) | (1ULL << RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+    | (1ULL << RIDE_MODE_POWERED_LAUNCH_PASSTROUGH) | (1ULL << RIDE_MODE_SHUTTLE) | (1ULL << RIDE_MODE_NORMAL)
+    | (1ULL << RIDE_MODE_BOAT_HIRE) | (1ULL << RIDE_MODE_UPWARD_LAUNCH) | (1ULL << RIDE_MODE_ROTATING_LIFT)
+    | (1ULL << RIDE_MODE_STATION_TO_STATION) | (1ULL << RIDE_MODE_SINGLE_RIDE_PER_ADMISSION)
+    | (1ULL << RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION) | (1ULL << RIDE_MODE_MAZE) | (1ULL << RIDE_MODE_RACE)
+    | (1ULL << RIDE_MODE_DODGEMS) | (1ULL << RIDE_MODE_SWING) | (1ULL << RIDE_MODE_SHOP_STALL) | (1ULL << RIDE_MODE_ROTATION)
+    | (1ULL << RIDE_MODE_FORWARD_ROTATION) | (1ULL << RIDE_MODE_BACKWARD_ROTATION) | (1ULL << RIDE_MODE_FILM_AVENGING_AVIATORS)
+    | (1ULL << RIDE_MODE_3D_FILM_MOUSE_TAILS) | (1ULL << RIDE_MODE_SPACE_RINGS) | (1ULL << RIDE_MODE_BEGINNERS)
+    | (1ULL << RIDE_MODE_LIM_POWERED_LAUNCH) | (1ULL << RIDE_MODE_FILM_THRILL_RIDERS)
+    | (1ULL << RIDE_MODE_3D_FILM_STORM_CHASERS) | (1ULL << RIDE_MODE_3D_FILM_SPACE_RAIDERS) | (1ULL << RIDE_MODE_INTENSE)
+    | (1ULL << RIDE_MODE_BERSERK) | (1ULL << RIDE_MODE_HAUNTED_HOUSE) | (1ULL << RIDE_MODE_CIRCUS_SHOW)
+    | (1ULL << RIDE_MODE_DOWNWARD_LAUNCH) | (1ULL << RIDE_MODE_CROOKED_HOUSE) | (1ULL << RIDE_MODE_FREEFALL_DROP)
+    | (1ULL << RIDE_MODE_POWERED_LAUNCH) | RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
@@ -261,5 +279,25 @@ extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
 extern const rct_string_id RideModeNames[RIDE_MODE_COUNT];
+
+// clang-format off
+constexpr const RideTypeDescriptor DummyRTD =
+{
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(Category, RIDE_CATEGORY_NONE),
+    SET_FIELD(EnabledTrackPieces, 0),
+    SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
+    SET_FIELD(TrackPaintFunction, nullptr),
+    SET_FIELD(Flags, 0),
+    SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
+    SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(AvailableBreakdowns, 0),
+    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
+    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+};
+// clang-format on
 
 #endif

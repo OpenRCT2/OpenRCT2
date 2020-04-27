@@ -1361,7 +1361,7 @@ static void ride_construction_reset_current_piece()
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0)
     {
-        _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | 0x100;
+        _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
         _currentTrackSlopeEnd = 0;
         _currentTrackBankEnd = 0;
         _currentTrackLiftHill = 0;
@@ -1437,7 +1437,7 @@ void ride_construction_set_default_next_piece()
             {
                 if (track_element_is_booster(ride->type, trackType))
                 {
-                    curve = 0x100 | TRACK_ELEM_BOOSTER;
+                    curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
                 }
                 else
                 {
@@ -1501,7 +1501,7 @@ void ride_construction_set_default_next_piece()
             {
                 if (track_element_is_booster(ride->type, trackType))
                 {
-                    curve = 0x100 | TRACK_ELEM_BOOSTER;
+                    curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
                 }
                 else
                 {
@@ -1920,7 +1920,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
     if (ride == nullptr)
         return 0;
 
-    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | 0x100;
+    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = 0;
     _currentTrackBankEnd = 0;
     _currentTrackLiftHill = 0;
@@ -5498,22 +5498,7 @@ void Ride::StopGuestsQueuing()
 
 uint8_t Ride::GetDefaultMode() const
 {
-    const rct_ride_entry* rideEntry = get_ride_entry(subtype);
-    const uint8_t* availableModes = RideAvailableModes;
-
-    for (int32_t i = 0; i < type; i++)
-    {
-        while (*(availableModes++) != RIDE_MODE_NULL)
-        {
-        }
-    }
-    // Since this only selects a default mode and does not prevent other modes from being used, there is no need
-    // to check if select-by-track-type or the all-ride-modes cheat have been enabled.
-    if (rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES)
-    {
-        availableModes += 2;
-    }
-    return availableModes[0];
+    return GetRideTypeDescriptor().DefaultMode;
 }
 
 static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour* colours)
@@ -7130,29 +7115,6 @@ void ride_reset_all_names()
     }
 }
 
-const uint8_t* ride_seek_available_modes(Ride* ride)
-{
-    const uint8_t* availableModes;
-
-    if (!gCheatsShowAllOperatingModes)
-    {
-        availableModes = RideAvailableModes;
-
-        for (int32_t i = 0; i < ride->type; i++)
-        {
-            while (*(availableModes++) != 255)
-            {
-            }
-        }
-    }
-    else
-    {
-        availableModes = AllRideModesAvailable;
-    }
-
-    return availableModes;
-}
-
 // Gets the approximate value of customers per hour for this ride. Multiplies ride_customers_in_last_5_minutes() by 12.
 uint32_t ride_customers_per_hour(const Ride* ride)
 {
@@ -7819,4 +7781,17 @@ size_t Ride::FormatNameTo(void* argsV) const
         ft.Add<rct_string_id>(1).Add<rct_string_id>(rideTypeName).Add<uint16_t>(default_name_number);
         return ft.NumBytes();
     }
+}
+
+uint64_t Ride::GetAvailableModes() const
+{
+    if (gCheatsShowAllOperatingModes)
+        return AllRideModesAvailable;
+
+    return GetRideTypeDescriptor().RideModes;
+}
+
+const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
+{
+    return RideTypeDescriptors[type];
 }

@@ -35,7 +35,7 @@ void ride_update_station(Ride* ride, StationIndex stationIndex)
         case RIDE_MODE_RACE:
             ride_update_station_race(ride, stationIndex);
             break;
-        case RIDE_MODE_BUMPERCAR:
+        case RIDE_MODE_DODGEMS:
             ride_update_station_bumpercar(ride, stationIndex);
             break;
         case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:

@@ -3324,7 +3324,7 @@ static void window_ride_mode_tweak_increase(rct_window* w)
         maxValue = 255;
     }
 
-    uint8_t increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+    uint8_t increment = ride->mode == RIDE_MODE_DODGEMS ? 10 : 1;
 
     set_operating_setting(
         w->number, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option + increment, minValue, maxValue));
@@ -3347,7 +3347,7 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
         maxValue = 255;
     }
 
-    uint8_t decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+    uint8_t decrement = ride->mode == RIDE_MODE_DODGEMS ? 10 : 1;
 
     set_operating_setting(
         w->number, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option - decrement, minValue, maxValue));
@@ -3360,43 +3360,39 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
 static void window_ride_mode_dropdown(rct_window* w, rct_widget* widget)
 {
     rct_widget* dropdownWidget;
-    const uint8_t *availableModes, *mode;
-    int32_t i, numAvailableModes;
 
     dropdownWidget = widget - 1;
     auto ride = get_ride(w->number);
     if (ride == nullptr)
         return;
 
-    // Seek to available modes for this ride
-    availableModes = ride_seek_available_modes(ride);
-
-    // Count number of available modes
-    mode = availableModes;
-    numAvailableModes = -1;
-    do
-    {
-        numAvailableModes++;
-    } while (*(mode++) != 255);
+    auto availableModes = ride->GetAvailableModes();
 
     // Create dropdown list
-    for (i = 0; i < numAvailableModes; i++)
+    auto numAvailableModes = 0;
+    auto checkedIndex = -1;
+    for (auto i = 0; i < RIDE_MODE_COUNT; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = RideModeNames[availableModes[i]];
+        if (availableModes & (1ULL << i))
+        {
+            gDropdownItemsFormat[numAvailableModes] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[numAvailableModes] = RideModeNames[i];
+
+            if (ride->mode == i)
+                checkedIndex = numAvailableModes;
+
+            numAvailableModes++;
+        }
     }
+
     window_dropdown_show_text_custom_width(
         w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numAvailableModes,
         widget->right - dropdownWidget->left);
 
-    // Set checked item
-    for (i = 0; i < numAvailableModes; i++)
+    if (checkedIndex != -1)
     {
-        if (ride->mode == availableModes[i])
-        {
-            dropdown_set_checked(i, true);
-        }
+        dropdown_set_checked(checkedIndex, true);
     }
 }
 
@@ -3581,10 +3577,23 @@ static void window_ride_operating_dropdown(rct_window* w, rct_widgetindex widget
     {
         case WIDX_MODE_DROPDOWN:
         {
-            // Seek to available modes for this ride
-            auto availableModes = ride_seek_available_modes(ride);
-            if (availableModes != nullptr)
-                set_operating_setting(w->number, RideSetSetting::Mode, availableModes[dropdownIndex]);
+            uint8_t rideMode = RIDE_MODE_NULL;
+            auto availableModes = ride->GetAvailableModes();
+            auto modeInDropdownIndex = -1;
+            for (uint8_t rideModeIndex = 0; rideModeIndex < RIDE_MODE_COUNT; rideModeIndex++)
+            {
+                if (availableModes & (1ULL << rideModeIndex))
+                {
+                    modeInDropdownIndex++;
+                    if (modeInDropdownIndex == dropdownIndex)
+                    {
+                        rideMode = rideModeIndex;
+                        break;
+                    }
+                }
+            }
+            if (rideMode != RIDE_MODE_NULL)
+                set_operating_setting(w->number, RideSetSetting::Mode, rideMode);
             break;
         }
         case WIDX_LOAD_DROPDOWN:
@@ -3792,7 +3801,7 @@ static void window_ride_operating_invalidate(rct_window* w)
             caption = STR_NUMBER_OF_LAPS;
             tooltip = STR_NUMBER_OF_LAPS_TIP;
             break;
-        case RIDE_MODE_BUMPERCAR:
+        case RIDE_MODE_DODGEMS:
             format = STR_RIDE_MODE_TIME_LIMIT_VALUE;
             caption = STR_TIME_LIMIT;
             tooltip = STR_TIME_LIMIT_TIP;

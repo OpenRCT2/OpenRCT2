@@ -449,13 +449,13 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
         _currentTrackPieceDirection = direction & 3;
-        int32_t slope = _currentTrackCurve;
-        int32_t slopeEnd = _previousTrackSlopeEnd;
-        int32_t b2 = _currentTrackSlopeEnd;
-        int32_t bankEnd = _previousTrackBankEnd;
-        int32_t bankStart = _currentTrackBankEnd;
-        int32_t b5 = _currentTrackAlternative;
-        int32_t b4 = _currentTrackLiftHill;
+        int32_t savedCurrentTrackCurve = _currentTrackCurve;
+        int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
+        int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
+        int32_t savedPreviousTrackBankEnd = _previousTrackBankEnd;
+        int32_t savedCurrentTrackBankEnd = _currentTrackBankEnd;
+        int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
+        int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
         ride_construction_set_default_next_piece();
         window_ride_construction_update_active_elements();
         auto ride = get_ride(_currentRideIndex);
@@ -463,15 +463,15 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
         {
             ride_initialise_construction_window(ride);
             _currentTrackPieceDirection = direction & 3;
-            if (!(slope & 0x100))
+            if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
             {
-                _currentTrackCurve = slope;
-                _previousTrackSlopeEnd = slopeEnd;
-                _currentTrackSlopeEnd = b2;
-                _previousTrackBankEnd = bankEnd;
-                _currentTrackBankEnd = bankStart;
-                _currentTrackAlternative = b5;
-                _currentTrackLiftHill = b4;
+                _currentTrackCurve = savedCurrentTrackCurve;
+                _previousTrackSlopeEnd = savedPreviousTrackSlopeEnd;
+                _currentTrackSlopeEnd = savedCurrentTrackSlopeEnd;
+                _previousTrackBankEnd = savedPreviousTrackBankEnd;
+                _currentTrackBankEnd = savedCurrentTrackBankEnd;
+                _currentTrackAlternative = savedCurrentTrackAlternative;
+                _currentTrackLiftHill = savedCurrentTrackLiftHill;
                 window_ride_construction_update_active_elements();
             }
         }

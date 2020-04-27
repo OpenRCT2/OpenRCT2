@@ -418,7 +418,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].freshness <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
+        if (peep->thoughts[0].freshness <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_TOILET)
             guestsWhoNeedRestroom++;
     }
     return (guestsWhoNeedRestroom <= 16);

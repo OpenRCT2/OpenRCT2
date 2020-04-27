@@ -26,6 +26,7 @@ class Formatter;
 class StationObject;
 struct Peep;
 struct Ride;
+struct RideTypeDescriptor;
 struct Staff;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
@@ -449,6 +450,9 @@ public:
     static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
     std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+
+    uint64_t GetAvailableModes() const;
+    const RideTypeDescriptor& GetRideTypeDescriptor() const;
 };
 
 #pragma pack(push, 1)
@@ -523,9 +527,9 @@ enum
     RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME_DEPRECATED = 1 << 12, // Always set with SEPARATE_RIDE, and deprecated in favour of it.
     RIDE_ENTRY_FLAG_SEPARATE_RIDE_DEPRECATED = 1 << 13,      // Made redundant by ride groups
     RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN = 1 << 14,
-    RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE = 1 << 15,
+    RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE_DEPRECATED = 1 << 15,
     RIDE_ENTRY_FLAG_DISABLE_DOOR_CONSTRUCTION_DEPRECATED = 1 << 16,
-    RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES = 1 << 17,
+    RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES_DEPRECATED = 1 << 17,
     RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES = 1 << 18,
     RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB = 1 << 19,
     // Must be set with swing mode 1 as well.
@@ -649,7 +653,7 @@ enum
     RIDE_STATUS_SIMULATING,
 };
 
-enum
+enum : uint8_t
 {
     RIDE_MODE_NORMAL,
     RIDE_MODE_CONTINUOUS_CIRCUIT,
@@ -664,7 +668,7 @@ enum
     RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION = 10,
     RIDE_MODE_MAZE,
     RIDE_MODE_RACE,
-    RIDE_MODE_BUMPERCAR,
+    RIDE_MODE_DODGEMS,
     RIDE_MODE_SWING,
     RIDE_MODE_SHOP_STALL,
     RIDE_MODE_ROTATION,
@@ -689,7 +693,7 @@ enum
     RIDE_MODE_POWERED_LAUNCH, // RCT1 style, don't pass through station
     RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED,
 
-    RIDE_MOUNT_COUNT,
+    RIDE_MODE_COUNT,
     RIDE_MODE_NULL = 255,
 };
 
@@ -940,8 +944,6 @@ struct rct_ride_properties
     uint8_t booster_acceleration;
     int8_t booster_speed_factor; // The factor to shift the raw booster speed with
 };
-
-#define RIDE_MODE_COUNT 37
 
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_VALUE_UNDEFINED 0xFFFF
@@ -1209,7 +1211,6 @@ void sub_6CB945(Ride* ride);
 void sub_6C94D8();
 
 void ride_reset_all_names();
-const uint8_t* ride_seek_available_modes(Ride* ride);
 
 void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 

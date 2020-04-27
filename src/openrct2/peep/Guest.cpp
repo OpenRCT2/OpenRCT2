@@ -283,7 +283,7 @@ static constexpr const PeepThoughtType crowded_thoughts[] = {
     PEEP_THOUGHT_TYPE_WATCHED,
     PEEP_THOUGHT_TYPE_NOT_HUNGRY,
     PEEP_THOUGHT_TYPE_NOT_THIRSTY,
-    PEEP_THOUGHT_TYPE_BATHROOM,
+    PEEP_THOUGHT_TYPE_TOILET,
     PEEP_THOUGHT_TYPE_NONE,
     PEEP_THOUGHT_TYPE_NONE,
 };
@@ -602,10 +602,10 @@ void Guest::HandleEasterEggName()
         peep_flags |= PEEP_FLAGS_HUNGER;
     }
 
-    peep_flags &= ~PEEP_FLAGS_BATHROOM;
+    peep_flags &= ~PEEP_FLAGS_TOILET;
     if (CheckEasterEggName(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN))
     {
-        peep_flags |= PEEP_FLAGS_BATHROOM;
+        peep_flags |= PEEP_FLAGS_TOILET;
     }
 
     peep_flags &= ~PEEP_FLAGS_CROWDED;
@@ -732,7 +732,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 hunger -= 15;
         }
 
-        if (peep_flags & PEEP_FLAGS_BATHROOM)
+        if (peep_flags & PEEP_FLAGS_TOILET)
         {
             if (toilet <= 180)
                 toilet += 50;
@@ -863,7 +863,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                     if (toilet >= 160)
                     {
-                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_BATHROOM;
+                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TOILET;
                     }
 
                     if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && cash_in_pocket <= MONEY(9, 00) && happiness >= 105
@@ -894,7 +894,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         case PEEP_THOUGHT_TYPE_THIRSTY:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
                             break;
-                        case PEEP_THOUGHT_TYPE_BATHROOM:
+                        case PEEP_THOUGHT_TYPE_TOILET:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
                         case PEEP_THOUGHT_TYPE_RUNNING_OUT:
@@ -2270,7 +2270,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
             return false;
         }
 
-        // The amount that peeps are willing to pay to use the Toilets scales with their bathroom stat.
+        // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
         if (ride_get_price(ride) * 40 > toilet)
         {
@@ -2557,7 +2557,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 {
     uint8_t chosen_train = RideStation::NO_TRAIN;
 
-    if (ride->mode == RIDE_MODE_BUMPERCAR || ride->mode == RIDE_MODE_RACE)
+    if (ride->mode == RIDE_MODE_DODGEMS || ride->mode == RIDE_MODE_RACE)
     {
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;
@@ -3285,7 +3285,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
             thoughtType = PEEP_THOUGHT_TYPE_RUNNING_OUT;
             if (ride_type != RIDE_TYPE_CASH_MACHINE)
             {
-                thoughtType = PEEP_THOUGHT_TYPE_BATHROOM;
+                thoughtType = PEEP_THOUGHT_TYPE_TOILET;
                 if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     return;
@@ -6935,7 +6935,7 @@ void Guest::UpdateSpriteType()
 
     if (toilet > 220)
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_REQUIRE_BATHROOM);
+        SetSpriteType(PEEP_SPRITE_TYPE_REQUIRE_TOILET);
         return;
     }
 
