@@ -3370,7 +3370,7 @@ STR_6033    :Cesta k RCT1 instalaci:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Prosím vyberte složku s RCT1
 STR_6036    :{SMALLFONT}{BLACK}Zrušit
-STR_6037    :Prosím vyberte správnou složku s RCT1
+STR_6037    :Vybraná složka neobsahuje instalaci RollerCoaster Tycoon 1.
 STR_6038    :{SMALLFONT}{BLACK}Pokud máte nainstalovaný RCT1, použijte tuto volbu k nastavení cesty k RCT1 pro možnost nahrání scénářů, hudby a dalších.
 STR_6039    :{SMALLFONT}{BLACK}Rychle odebrat atrakci
 STR_6040    :Upravit nastavení scénáře
@@ -3701,6 +3701,11 @@ STR_6364    :{RED}{COMMA16} zemřel(a) při nehodě na {STRINGID}
 STR_6365    :Oběti atrakce
 STR_6366    :Zaseklá vozidla
 STR_6367    :{WINDOW_COLOUR_2}Snímek animace:
+STR_6368    :Z důvodů kompatibility není doporučeno spuštět OpenRCT2 pod Wine. OpenRCT2 má nativví podporu pro macOS, Linux, FreeBSD a OpenBSD.
+STR_6369    :Povolit stavbu trati v jakémkoliv výšce
+STR_6370    :{SMALLFONT}{BLACK}Umožní stavět dráhu v neplatné výšce
+STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z RollerCoaster Tycoon 1 instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1. 
+STR_6372    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale nelze použít jeho verzi. OpenRCT2 potřebuje buď Loopy Landscapes nebo RCT Deluxe verzi, aby bylo možné převzít grafiku.
 
 ###############################################################################
 ## RCT2 Scenarios
