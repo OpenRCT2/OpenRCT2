@@ -59,7 +59,7 @@ std::string GameActionResult::GetErrorTitle() const
     }
     else
     {
-        title = format_string(ErrorTitle.GetStringId(), nullptr);
+        title = format_string(ErrorTitle.GetStringId(), ErrorMessageArgs.data());
     }
     return title;
 }
