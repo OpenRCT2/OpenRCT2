@@ -562,13 +562,16 @@ declare global {
      */
     interface Network {
         readonly mode: NetworkMode;
-        readonly groups: number;
-        readonly players: number;
+        readonly numGroups: number;
+        readonly numPlayers: number;
+        readonly groups: PlayerGroup[];
+        readonly players: Player[];
         defaultGroup: number;
 
         getServerInfo(): ServerInfo;
+        addGroup(): void;
         getGroup(index: number): PlayerGroup;
-        setGroups(groups: PlayerGroup[]): void;
+        removeGroup(index: number): void;
         getPlayer(index: number): Player;
         kickPlayer(index: number): void;
         sendMessage(message: string): void;

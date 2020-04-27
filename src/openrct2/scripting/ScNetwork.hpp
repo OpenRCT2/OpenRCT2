@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
 #    endif
             return "none";
         }
-        int32_t players_get() const
+        int32_t numPlayers_get() const
         {
 #    ifndef DISABLE_NETWORK
             return network_get_num_players();
@@ -279,7 +279,7 @@ namespace OpenRCT2::Scripting
             return 0;
 #    endif
         }
-        int32_t groups_get() const
+        int32_t numGroups_get() const
         {
 #    ifndef DISABLE_NETWORK
             return network_get_num_groups();
@@ -301,6 +301,34 @@ namespace OpenRCT2::Scripting
             auto action = NetworkModifyGroupAction(ModifyGroupType::SetDefault, value);
             GameActions::Execute(&action);
 #    endif
+        }
+
+        std::vector<std::shared_ptr<ScPlayerGroup>> groups_get() const
+        {
+            std::vector<std::shared_ptr<ScPlayerGroup>> groups;
+#    ifndef DISABLE_NETWORK
+            auto numGroups = network_get_num_groups();
+            for (int32_t i = 0; i < numGroups; i++)
+            {
+                auto groupId = network_get_group_id(i);
+                groups.push_back(std::make_shared<ScPlayerGroup>(groupId));
+            }
+#    endif
+            return groups;
+        }
+
+        std::vector<std::shared_ptr<ScPlayer>> players_get() const
+        {
+            std::vector<std::shared_ptr<ScPlayer>> players;
+#    ifndef DISABLE_NETWORK
+            auto numPlayers = network_get_num_players();
+            for (int32_t i = 0; i < numPlayers; i++)
+            {
+                auto playerId = network_get_player_id(i);
+                players.push_back(std::make_shared<ScPlayer>(playerId));
+            }
+#    endif
+            return players;
         }
 
         std::shared_ptr<ScPlayer> getPlayer(int32_t index) const
@@ -327,6 +355,27 @@ namespace OpenRCT2::Scripting
             }
 #    endif
             return nullptr;
+        }
+
+        void addGroup()
+        {
+#    ifndef DISABLE_NETWORK
+            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::AddGroup);
+            GameActions::Execute(&networkModifyGroup);
+#    endif
+        }
+
+        void removeGroup(int32_t index)
+        {
+#    ifndef DISABLE_NETWORK
+            auto numGroups = network_get_num_groups();
+            if (index < numGroups)
+            {
+                auto groupId = network_get_group_id(index);
+                auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
+                GameActions::Execute(&networkAction);
+            }
+#    endif
         }
 
         void kickPlayer(int32_t index)
@@ -359,10 +408,14 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScNetwork::mode_get, nullptr, "mode");
+            dukglue_register_property(ctx, &ScNetwork::numGroups_get, nullptr, "numGroups");
+            dukglue_register_property(ctx, &ScNetwork::numPlayers_get, nullptr, "numPlayers");
             dukglue_register_property(ctx, &ScNetwork::groups_get, nullptr, "groups");
             dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
             dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");
+            dukglue_register_method(ctx, &ScNetwork::addGroup, "addGroup");
             dukglue_register_method(ctx, &ScNetwork::getGroup, "getGroup");
+            dukglue_register_method(ctx, &ScNetwork::removeGroup, "removeGroup");
             dukglue_register_method(ctx, &ScNetwork::getPlayer, "getPlayer");
             dukglue_register_method(ctx, &ScNetwork::kickPlayer, "kickPlayer");
             dukglue_register_method(ctx, &ScNetwork::sendMessage, "sendMessage");
