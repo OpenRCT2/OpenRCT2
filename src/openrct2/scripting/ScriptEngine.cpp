@@ -795,7 +795,7 @@ constexpr static const char* ExpenditureTypes[] = { "ride_construction",
 std::string_view ScriptEngine::ExpenditureTypeToString(ExpenditureType expenditureType)
 {
     auto index = static_cast<size_t>(expenditureType);
-    if (index >= 0 && index < std::size(ExpenditureTypes))
+    if (index < std::size(ExpenditureTypes))
     {
         return ExpenditureTypes[index];
     }
