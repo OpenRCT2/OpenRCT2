@@ -163,7 +163,7 @@ void reset_sprite_list()
         spr->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->generic.sprite_index = i;
         spr->generic.next = SPRITE_INDEX_NULL;
-        spr->generic.linked_list_index = 0;
+        spr->generic.linked_list_index = SPRITE_LIST_FREE;
 
         if (previous_spr != nullptr)
         {
@@ -827,7 +827,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
     {
         rct_sprite* sprite = get_sprite(spriteIndex);
         uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
-        if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             Litter* litter = &sprite->litter;
 
@@ -884,11 +884,10 @@ uint16_t remove_floating_sprites()
  */
 static bool sprite_should_tween(rct_sprite* sprite)
 {
-    switch (sprite->generic.linked_list_index)
+    switch (sprite->generic.sprite_identifier)
     {
-        case SPRITE_LIST_PEEP:
-        case SPRITE_LIST_TRAIN_HEAD:
-        case SPRITE_LIST_VEHICLE:
+        case SPRITE_IDENTIFIER_PEEP:
+        case SPRITE_IDENTIFIER_VEHICLE:
             return true;
     }
     return false;

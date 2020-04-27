@@ -434,7 +434,7 @@ void peep_update_all()
         else
         {
             peep_128_tick_update(peep, i);
-            if (peep->linked_list_index == SPRITE_LIST_PEEP)
+            if (peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 peep->Update();
             }
