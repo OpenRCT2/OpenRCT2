@@ -1251,7 +1251,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     for (BannerIndex i = 0; i < MAX_BANNERS; ++i)
     {
         auto banner = GetBanner(i);
-        if (banner->type != BANNER_NULL)
+        if (!banner->IsNull())
         {
             bannerCount++;
         }

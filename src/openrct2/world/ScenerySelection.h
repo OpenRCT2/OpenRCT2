@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../object/Object.h"
+
 #include <cstdint>
 #include <limits>
 
@@ -17,7 +19,7 @@ constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint
 struct ScenerySelection
 {
     uint8_t SceneryType;
-    uint16_t EntryIndex;
+    ObjectEntryIndex EntryIndex;
 
     inline bool operator==(const ScenerySelection& rhs)
     {

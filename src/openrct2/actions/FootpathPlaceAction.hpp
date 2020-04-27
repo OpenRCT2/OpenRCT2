@@ -28,12 +28,12 @@ DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActionResul
 private:
     CoordsXYZ _loc;
     uint8_t _slope;
-    uint8_t _type;
+    ObjectEntryIndex _type;
     Direction _direction = INVALID_DIRECTION;
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
+    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
