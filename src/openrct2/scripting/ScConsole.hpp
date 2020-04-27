@@ -51,10 +51,16 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
+        void executeLegacy(const std::string& command)
+        {
+            _console.Execute(command);
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_method(ctx, &ScConsole::clear, "clear");
             dukglue_register_method_varargs(ctx, &ScConsole::log, "log");
+            dukglue_register_method(ctx, &ScConsole::executeLegacy, "executeLegacy");
         }
     };
 } // namespace OpenRCT2::Scripting
