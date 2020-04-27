@@ -590,6 +590,8 @@ declare global {
         readonly ping: number;
         readonly commandsRan: number;
         readonly moneySpent: number;
+        readonly ipAddress: string;
+        readonly publicKeyHash: string;
     }
 
     interface PlayerGroup {

@@ -136,6 +136,7 @@ public:
     void ProcessDisconnectedClients();
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
+    NetworkConnection* GetPlayerConnection(uint8_t id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
     NetworkGroup* GetGroupByID(uint8_t id);
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
@@ -663,6 +664,22 @@ uint32_t Network::GetServerTick()
 uint8_t Network::GetPlayerID()
 {
     return player_id;
+}
+
+NetworkConnection* Network::GetPlayerConnection(uint8_t id)
+{
+    auto player = GetPlayerByID(id);
+    if (player != nullptr)
+    {
+        for (auto& connection : client_connection_list)
+        {
+            if (connection->Player == player)
+            {
+                return connection.get();
+            }
+        }
+    }
+    return nullptr;
 }
 
 void Network::Update()
@@ -3385,6 +3402,26 @@ money32 network_get_player_money_spent(uint32_t index)
     return gNetwork.player_list[index]->MoneySpent;
 }
 
+std::string network_get_player_ip_address(uint32_t id)
+{
+    auto conn = gNetwork.GetPlayerConnection(id);
+    if (conn != nullptr)
+    {
+        return conn->Socket->GetIpAddress();
+    }
+    return {};
+}
+
+std::string network_get_player_public_key_hash(uint32_t id)
+{
+    auto player = gNetwork.GetPlayerByID(id);
+    if (player != nullptr)
+    {
+        return player->KeyHash;
+    }
+    return {};
+}
+
 void network_add_player_money_spent(uint32_t index, money32 cost)
 {
     gNetwork.player_list[index]->AddMoneySpent(cost);
@@ -4053,6 +4090,14 @@ int32_t network_get_player_id(uint32_t index)
 money32 network_get_player_money_spent(uint32_t index)
 {
     return MONEY(0, 0);
+}
+std::string network_get_player_ip_address(uint32_t id)
+{
+    return {};
+}
+std::string network_get_player_public_key_hash(uint32_t id)
+{
+    return {};
 }
 void network_add_player_money_spent(uint32_t index, money32 cost)
 {

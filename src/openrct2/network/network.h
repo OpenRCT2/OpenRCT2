@@ -61,6 +61,8 @@ uint32_t network_get_player_flags(uint32_t index);
 int32_t network_get_player_ping(uint32_t index);
 int32_t network_get_player_id(uint32_t index);
 money32 network_get_player_money_spent(uint32_t index);
+std::string network_get_player_ip_address(uint32_t id);
+std::string network_get_player_public_key_hash(uint32_t id);
 void network_add_player_money_spent(uint32_t index, money32 cost);
 int32_t network_get_player_last_action(uint32_t index, int32_t time);
 void network_set_player_last_action(uint32_t index, int32_t command);

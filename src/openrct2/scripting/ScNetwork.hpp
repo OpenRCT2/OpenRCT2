@@ -233,6 +233,16 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
+        std::string ipAddress_get() const
+        {
+            return network_get_player_ip_address(_id);
+        }
+
+        std::string publicKeyHash_get() const
+        {
+            return network_get_player_public_key_hash(_id);
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScPlayer::id_get, nullptr, "id");
@@ -241,6 +251,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPlayer::ping_get, nullptr, "ping");
             dukglue_register_property(ctx, &ScPlayer::commandsRan_get, nullptr, "commandsRan");
             dukglue_register_property(ctx, &ScPlayer::moneySpent_get, nullptr, "moneySpent");
+            dukglue_register_property(ctx, &ScPlayer::ipAddress_get, nullptr, "ipAddress");
+            dukglue_register_property(ctx, &ScPlayer::publicKeyHash_get, nullptr, "publicKeyHash");
         }
     };
 

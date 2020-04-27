@@ -201,6 +201,7 @@ private:
     uint16_t _listeningPort = 0;
     SOCKET _socket = INVALID_SOCKET;
 
+    std::string _ipAddress;
     std::string _hostName;
     std::future<void> _connectFuture;
     std::string _error;
@@ -322,18 +323,21 @@ public:
             }
             else
             {
+                auto ipAddress = GetIpAddressFromSocket(reinterpret_cast<sockaddr_in*>(&client_addr));
+
                 char hostName[NI_MAXHOST];
                 int32_t rc = getnameinfo(
                     reinterpret_cast<struct sockaddr*>(&client_addr), client_len, hostName, sizeof(hostName), nullptr, 0,
                     NI_NUMERICHOST | NI_NUMERICSERV);
                 SetOption(socket, IPPROTO_TCP, TCP_NODELAY, true);
+
                 if (rc == 0)
                 {
-                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, hostName));
+                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, hostName, ipAddress));
                 }
                 else
                 {
-                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, ""));
+                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, "", ipAddress));
                 }
             }
         }
@@ -546,11 +550,17 @@ public:
         return _hostName.empty() ? nullptr : _hostName.c_str();
     }
 
+    std::string GetIpAddress() const override
+    {
+        return _ipAddress;
+    }
+
 private:
-    explicit TcpSocket(SOCKET socket, const std::string& hostName)
+    explicit TcpSocket(SOCKET socket, const std::string& hostName, const std::string& ipAddress)
     {
         _socket = socket;
         _hostName = hostName;
+        _ipAddress = ipAddress;
         _status = SOCKET_STATUS_CONNECTED;
     }
 
@@ -562,6 +572,32 @@ private:
             _socket = INVALID_SOCKET;
         }
         _status = SOCKET_STATUS_CLOSED;
+    }
+
+    std::string GetIpAddressFromSocket(const sockaddr_in* addr)
+    {
+        std::string result;
+#    if defined(__MINGW32__)
+        if (addr->sin_family == AF_INET)
+        {
+            result = inet_ntoa(addr->sin_addr);
+        }
+#    else
+        if (addr->sin_family == AF_INET)
+        {
+            char str[INET_ADDRSTRLEN]{};
+            inet_ntop(AF_INET, &addr->sin_addr, str, sizeof(str));
+            result = str;
+        }
+        else if (addr->sin_family == AF_INET6)
+        {
+            auto addrv6 = reinterpret_cast<const sockaddr_in6*>(&addr);
+            char str[INET6_ADDRSTRLEN]{};
+            inet_ntop(AF_INET6, &addrv6->sin6_addr, str, sizeof(str));
+            result = str;
+        }
+#    endif
+        return result;
     }
 };
 
