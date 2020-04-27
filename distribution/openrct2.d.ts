@@ -91,6 +91,16 @@ declare global {
     interface Console {
         clear(): void;
         log(message?: any, ...optionalParams: any[]): void;
+
+        /**
+         * Executes a command using the legacy console REPL. This should not be used
+         * by plugins, and exists only for servers to continue using old commands until
+         * all functionality can be accomplished with this scripting API.
+         * 
+         * @deprecated
+         * @param command The command and arguments to execute.
+         */
+        executeLegacy(command: string): void;
     }
 
     /**
