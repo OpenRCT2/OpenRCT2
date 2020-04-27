@@ -661,7 +661,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
 
             if (gLandToolTerrainSurface == type)
             {
-                gLandToolTerrainSurface = 255;
+                gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -678,7 +678,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
 
             if (gLandToolTerrainEdge == type)
             {
-                gLandToolTerrainEdge = 255;
+                gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -998,7 +998,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
 
             if (gLandToolTerrainSurface == type)
             {
-                gLandToolTerrainSurface = 255;
+                gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -1015,7 +1015,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
 
             if (gLandToolTerrainEdge == type)
             {
-                gLandToolTerrainEdge = 255;
+                gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
