@@ -133,7 +133,7 @@ union rct_sprite
     bool IsBalloon();
     bool IsDuck();
     bool IsMoneyEffect();
-    bool IsPeep();
+    bool IsPeep() const;
     Balloon* AsBalloon();
     Duck* AsDuck();
     MoneyEffect* AsMoneyEffect();

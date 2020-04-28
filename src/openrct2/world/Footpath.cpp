@@ -419,7 +419,7 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     {
         auto* entity = get_sprite(spriteIndex);
         uint16_t nextSpriteIndex = entity->generic.next_in_quadrant;
-        if (entity->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+        if (entity->IsPeep())
         {
             Peep* peep = &entity->peep;
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)

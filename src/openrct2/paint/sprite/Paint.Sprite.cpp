@@ -56,7 +56,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
         if (highlightPathIssues)
         {
-            if (spr->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (spr->IsPeep())
             {
                 Peep* peep = (Peep*)spr;
                 if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
