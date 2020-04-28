@@ -2425,8 +2425,8 @@ STR_3329    :Parkeingang noch nicht gebaut
 STR_3330    :Park muss Gelände besitzen
 STR_3331    :Fußweg vom Parkeingang zum Kartenrand entweder nicht vollständig oder zu komplex - Fußweg darf nicht zu breit sein und sollte so wenige Kreuzungen und Biegungen wie möglich aufweisen
 STR_3332    :Parkeingang liegt verkehrt herum oder besitzt keinen Fußweg zum Kartenrand
-STR_3333    :Zusatzobjekte bei gespeich. Spielen exportieren
-STR_3334    :{SMALLFONT}{BLACK}Wählen Sie aus, ob zusätzliche Plugin-Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
+STR_3333    :Benutzerobjekte bei gespeich. Spielen exportieren
+STR_3334    :{SMALLFONT}{BLACK}Bitte wählen Sie aus, ob zusätzliche benutzerdefinierte Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
 STR_3335    :Streckenentwurf-Designer - Bahnarten & Fahrzeuge auswählen
 STR_3336    :Streckenentwurf-Manager - Bahnart auswählen
 STR_3338    :{BLACK}Eigenes Layout entwerfen
@@ -3352,7 +3352,7 @@ STR_6033    :Pfad zur RCT1-Installation:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
 STR_6036    :{SMALLFONT}{BLACK}Leeren
-STR_6037    :Bitte wählen Sie ein valides RCT1-Verzeichnis
+STR_6037    :Das gewählte Verzeichnis enthält keine gültige „RollerCoaster Tycoon 1“-Installation.
 STR_6038    :{SMALLFONT}{BLACK}Falls Sie RCT1 installiert haben, setzen Sie diese Option zum Laden von Scenarios, Musik, usw. 
 STR_6039    :{SMALLFONT}{BLACK}Schnellabriss
 STR_6040    :Bearbeite Szenariooptionen
@@ -3682,6 +3682,11 @@ STR_6364    :{RED}{COMMA16} Person starb bei einem Unfall auf {STRINGID}
 STR_6365    :Opfer von Fahrgeschäften
 STR_6366    :Feststeckende Fahrzeuge
 STR_6367    :{WINDOW_COLOUR_2}Animations-Frame:
+STR_6368    :Aus Kompabilitätsgründen wird es nicht empfohlen, OpenRCT2 mit Wine auszuführen. OpenRCT2 funktioniert auf macOS, Linux, FreeBSD und OpenBSD.
+STR_6369    :Streckenbau an ungültigen Höhen erlauben
+STR_6370    :{SMALLFONT}{BLACK}Erlaubt Platzierung von Streckenteilen an beliebigen Höhenintervallen
+STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „RollerCoaster Tycoon 1“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
+STR_6372    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber diese Version ist ungeeignet. OpenRCT2 benötigt eine „Loopy Landscapes“- oder eine „RCT Deluxe“-Installation, um die „RollerCoaster Tycoon 1“-Mediendaten benutzen zu können.
 
 #############
 # Scenarios #

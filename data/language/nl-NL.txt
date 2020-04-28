@@ -3366,8 +3366,8 @@ STR_6033    :Locatie RCT1-bestanden:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :{SMALLFONT}{BLACK}Wissen
-STR_6037    :Selecteer een geldige RCT1-map.
-STR_6038    :{SMALLFONT}{BLACK}Als je RCT1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
+STR_6037    :De geselecteerde map bevat geen geldige RollerCoaster Tycoon 1-installatie.
+STR_6038    :{SMALLFONT}{BLACK}Als je RollerCoaster Tycoon 1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
 STR_6039    :{SMALLFONT}{BLACK}Snel afbreken
 STR_6040    :Scenario-opties bewerken
 STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
@@ -3697,6 +3697,11 @@ STR_6364    :{RED}{COMMA16} persoon is om het leven gekomen bij een ongeluk in {
 STR_6365    :Slachtoffers bij ongelukken in attracties
 STR_6366    :Vastgelopen of afgeslagen voertuigen
 STR_6367    :{WINDOW_COLOUR_2}Animatieframe:
+STR_6368    :Om compatibiliteitsredenen wordt het afgeraden om OpenRCT2 te draaien via Wine. OpenRCT2 heeft eigen versies voor macOS, Linux, FreeBSD en OpenBSD.
+STR_6369    :Sta bouwen van attracties op ongeldige hoogtes toe
+STR_6370    :{SMALLFONT}{BLACK}Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.
+STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van RollerCoaster Tycoon 1 naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
+STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes or RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
 
 #############
 # Scenarios #
