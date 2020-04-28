@@ -18,6 +18,8 @@
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
 - Improved: [#11390] Build hash written to screenshot metadata.
+- Technical: [#11517] Windows Vista is supported again (libzip regression in the previous release).
+- Technical: The required version of macOS has been increased to 10.14 (Mojave) for plugin support.
 
 0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
