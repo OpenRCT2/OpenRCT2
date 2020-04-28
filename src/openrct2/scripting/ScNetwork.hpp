@@ -408,7 +408,26 @@ namespace OpenRCT2::Scripting
 #    ifndef DISABLE_NETWORK
             if (players.is_array())
             {
-                duk_error(players.context(), DUK_ERR_ERROR, "Not yet supported");
+                if (network_get_mode() == NETWORK_MODE_SERVER)
+                {
+                    std::vector<uint8_t> playerIds;
+                    auto playerArray = players.as_array();
+                    for (const auto& item : playerArray)
+                    {
+                        if (item.type() == DukValue::Type::NUMBER)
+                        {
+                            playerIds.push_back(static_cast<uint8_t>(item.as_int()));
+                        }
+                    }
+                    if (!playerArray.empty())
+                    {
+                        network_send_chat(message.c_str(), playerIds);
+                    }
+                }
+                else
+                {
+                    duk_error(players.context(), DUK_ERR_ERROR, "Only servers can send private messages.");
+                }
             }
             else
             {

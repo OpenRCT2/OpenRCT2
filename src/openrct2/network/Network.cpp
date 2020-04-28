@@ -177,7 +177,7 @@ public:
     void Server_Send_TOKEN(NetworkConnection& connection);
     void Server_Send_MAP(NetworkConnection* connection = nullptr);
     void Client_Send_CHAT(const char* text);
-    void Server_Send_CHAT(const char* text);
+    void Server_Send_CHAT(const char* text, const std::vector<uint8_t>& playerIds = {});
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_TICK();
@@ -1671,12 +1671,27 @@ void Network::Client_Send_CHAT(const char* text)
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_CHAT(const char* text)
+void Network::Server_Send_CHAT(const char* text, const std::vector<uint8_t>& playerIds)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << static_cast<uint32_t>(NETWORK_COMMAND_CHAT);
     packet->WriteString(text);
-    SendPacketToClients(*packet);
+
+    if (playerIds.empty())
+    {
+        SendPacketToClients(*packet);
+    }
+    else
+    {
+        for (auto playerId : playerIds)
+        {
+            auto conn = GetPlayerConnection(playerId);
+            if (conn != nullptr && !conn->IsDisconnected)
+            {
+                conn->QueuePacket(NetworkPacket::Duplicate(*packet));
+            }
+        }
+    }
 }
 
 void Network::Client_Send_GAME_ACTION(const GameAction* action)
@@ -3972,7 +3987,7 @@ void network_send_map()
     gNetwork.Server_Send_MAP();
 }
 
-void network_send_chat(const char* text)
+void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
 {
     if (gNetwork.GetMode() == NETWORK_MODE_CLIENT)
     {
@@ -3987,8 +4002,12 @@ void network_send_chat(const char* text)
             if (player != nullptr)
             {
                 auto formatted = gNetwork.FormatChat(player, message.c_str());
-                chat_history_add(formatted);
-                gNetwork.Server_Send_CHAT(formatted);
+                if (playerIds.empty()
+                    || std::find(playerIds.begin(), playerIds.end(), gNetwork.GetPlayerID()) != playerIds.end())
+                {
+                    chat_history_add(formatted);
+                }
+                gNetwork.Server_Send_CHAT(formatted, playerIds);
             }
         }
     }
@@ -4311,7 +4330,7 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
 {
     return _pickup_peep_old_x;
 }
-void network_send_chat(const char* text)
+void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
 {
 }
 void network_send_password(const std::string& password)
