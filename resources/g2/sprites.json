@@ -6594,56 +6594,56 @@
     },
     {
         "path": "track/rmc/corkscrew_left_3_1.png",
-        "x_offset": -29,
+        "x_offset": -28,
         "y_offset": -40,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_3_2.png",
-        "x_offset": 3,
+        "x_offset": 4,
         "y_offset": -32,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_3_3.png",
-        "x_offset": -29,
+        "x_offset": -28,
         "y_offset": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_4_1.png",
         "x_offset": -87,
-        "y_offset": -68,
+        "y_offset": -67,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_4_2.png",
         "x_offset": -55,
-        "y_offset": -28,
+        "y_offset": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_4_3.png",
         "x_offset": -23,
-        "y_offset": -20,
+        "y_offset": -19,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_1_1.png",
         "x_offset": -23,
-        "y_offset": -68,
+        "y_offset": -67,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_1_2.png",
         "x_offset": -55,
-        "y_offset": -28,
+        "y_offset": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_1_3.png",
         "x_offset": -87,
-        "y_offset": -20,
+        "y_offset": -19,
         "palette": "keep"
     },
     {
@@ -6698,6 +6698,114 @@
         "path": "track/rmc/corkscrew_right_4_3.png",
         "x_offset": -28,
         "y_offset": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_1_1.png",
+        "x_offset": -40,
+        "y_offset": -71,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_1_2.png",
+        "x_offset": -28,
+        "y_offset": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_2_1.png",
+        "x_offset": -28,
+        "y_offset": -39,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_2_2.png",
+        "x_offset": -28,
+        "y_offset": -39,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_2_3.png",
+        "x_offset": -104,
+        "y_offset": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_3_1.png",
+        "x_offset": -33,
+        "y_offset": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_3_2.png",
+        "x_offset": -21,
+        "y_offset": -44,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_4_1.png",
+        "x_offset": -92,
+        "y_offset": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_left_bank_to_gentle_up_4_2.png",
+        "x_offset": -40,
+        "y_offset": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_1_1.png",
+        "x_offset": -40,
+        "y_offset": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_1_2.png",
+        "x_offset": -92,
+        "y_offset": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_2_1.png",
+        "x_offset": -28,
+        "y_offset": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_2_2.png",
+        "x_offset": -40,
+        "y_offset": -44,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_3_1.png",
+        "x_offset": -104,
+        "y_offset": -39,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_3_2.png",
+        "x_offset": -104,
+        "y_offset": -39,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_3_3.png",
+        "x_offset": -28,
+        "y_offset": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_4_1.png",
+        "x_offset": -21,
+        "y_offset": -71,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/small_turn_right_bank_to_gentle_up_4_2.png",
+        "x_offset": -33,
+        "y_offset": -23,
         "palette": "keep"
     },
     {
