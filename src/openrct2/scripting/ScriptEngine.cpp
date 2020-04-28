@@ -777,20 +777,22 @@ DukValue ScriptEngine::PositionToDuk(const CoordsXYZ& position)
     return DukValue::take_from_stack(ctx);
 }
 
-constexpr static const char* ExpenditureTypes[] = { "ride_construction",
-                                                    "ride_runningcosts",
-                                                    "land_purchase",
-                                                    "landscaping",
-                                                    "park_entrance_tickets",
-                                                    "park_ride_tickets",
-                                                    "shop_sales",
-                                                    "shop_stock",
-                                                    "food_drink_sales",
-                                                    "food_drink_stock",
-                                                    "wages",
-                                                    "marketing",
-                                                    "research",
-                                                    "interest" };
+constexpr static const char* ExpenditureTypes[] = {
+    "ride_construction",
+    "ride_runningcosts",
+    "land_purchase",
+    "landscaping",
+    "park_entrance_tickets",
+    "park_ride_tickets",
+    "shop_sales",
+    "shop_stock",
+    "food_drink_sales",
+    "food_drink_stock",
+    "wages",
+    "marketing",
+    "research",
+    "interest",
+};
 
 std::string_view ScriptEngine::ExpenditureTypeToString(ExpenditureType expenditureType)
 {
