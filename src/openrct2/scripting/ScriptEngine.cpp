@@ -12,6 +12,7 @@
 #    include "ScriptEngine.h"
 
 #    include "../PlatformEnvironment.h"
+#    include "../actions/CustomAction.hpp"
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.hpp"
 #    include "../config/Config.h"
@@ -811,7 +812,7 @@ bool ScriptEngine::RegisterCustomAction(
         return false;
     }
 
-    CustomAction customAction;
+    CustomActionInfo customAction;
     customAction.Owner = plugin;
     customAction.Name = std::move(actionz);
     customAction.Query = query;
@@ -835,6 +836,52 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
+class DukToGameActionParameterVisitor : public GameActionParameterVisitor
+{
+private:
+    DukValue _dukValue;
+
+public:
+    DukToGameActionParameterVisitor(DukValue&& dukValue)
+        : _dukValue(dukValue)
+    {
+    }
+
+    void Visit(const std::string_view& name, int32_t& param) override
+    {
+        param = _dukValue[name].as_int();
+    }
+
+    void Visit(const std::string_view& name, std::string& param) override
+    {
+        param = _dukValue[name].as_string();
+    }
+};
+
+class DukFromGameActionParameterVisitor : public GameActionParameterVisitor
+{
+private:
+    DukObject& _dukObject;
+
+public:
+    DukFromGameActionParameterVisitor(DukObject& dukObject)
+        : _dukObject(dukObject)
+    {
+    }
+
+    void Visit(const std::string_view& name, int32_t& param) override
+    {
+        std::string szName(name);
+        _dukObject.Set(szName.c_str(), param);
+    }
+
+    void Visit(const std::string_view& name, std::string& param) override
+    {
+        std::string szName(name);
+        _dukObject.Set(szName.c_str(), param);
+    }
+};
+
 void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
 {
     DukStackFrame frame(_context);
@@ -848,12 +895,8 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
         auto flags = action.GetActionFlags();
         obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
 
-        if (action.GetType() == GAME_COMMAND_CREATE_RIDE)
-        {
-            auto& rideCreateAction = static_cast<const RideCreateAction&>(action);
-            obj.Set("rideType", rideCreateAction.GetRideType());
-            obj.Set("rideObject", rideCreateAction.GetRideObject());
-        }
+        DukFromGameActionParameterVisitor visitor(obj);
+        const_cast<GameAction&>(action).AcceptParameters(visitor);
 
         obj.Set("result", GameActionResultToDuk(action, result));
         auto dukEventArgs = obj.Take();
@@ -870,6 +913,51 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
                 result->ErrorMessage = AsOrDefault<std::string>(dukEventArgs["errorMessage"]);
             }
         }
+    }
+}
+
+static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
+{
+    const static std::map<std::string, uint32_t> ActionNameToType = {
+        { "parksetname", GAME_COMMAND_SET_PARK_NAME },
+        { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
+        { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
+    };
+
+    auto result = ActionNameToType.find(actionid);
+    if (result != ActionNameToType.end())
+    {
+        return GameActions::Create(result->second);
+    }
+    return nullptr;
+}
+
+std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& actionid, const DukValue& args)
+{
+    auto action = CreateGameActionFromActionId(actionid);
+    if (action != nullptr)
+    {
+        DukValue argsCopy = args;
+        DukToGameActionParameterVisitor visitor(std::move(argsCopy));
+        action->AcceptParameters(visitor);
+        return action;
+    }
+    else
+    {
+        // Serialise args to json so that it can be sent
+        auto ctx = args.context();
+        if (args.type() == DukValue::Type::OBJECT)
+        {
+            args.push();
+        }
+        else
+        {
+            duk_push_object(ctx);
+        }
+        auto jsonz = duk_json_encode(ctx, -1);
+        auto json = std::string(jsonz);
+        duk_pop(ctx);
+        return std::make_unique<CustomAction>(actionid, json);
     }
 }
 

@@ -259,6 +259,22 @@ declare global {
         result: RideCreateGameActionResult;
     }
 
+    interface SmallSceneryPlaceEventArgs extends GameActionEventArgs {
+        readonly x: number;
+        readonly y: number;
+        readonly z: number;
+        readonly direction: number;
+        readonly quadrant: number;
+        readonly object: number;
+        readonly primaryColour: number;
+        readonly secondaryColour: number;
+    }
+
+    interface GuestSetNameActionEventArgs extends GameActionEventArgs {
+        readonly id: number;
+        readonly name: number;
+    }
+
     interface NetworkEventArgs {
         readonly player: number;
     }

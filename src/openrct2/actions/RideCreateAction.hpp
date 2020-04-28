@@ -60,6 +60,14 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("rideType", _rideType);
+        visitor.Visit("rideObject", _subType);
+        visitor.Visit("colour1", _colour1);
+        visitor.Visit("colour2", _colour2);
+    }
+
     int32_t GetRideType() const
     {
         return _rideType;

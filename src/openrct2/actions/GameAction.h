@@ -140,6 +140,38 @@ public:
     std::string GetErrorMessage() const;
 };
 
+/**
+ *
+ */
+class GameActionParameterVisitor
+{
+public:
+    virtual ~GameActionParameterVisitor() = default;
+
+    virtual void Visit(const std::string_view& name, int32_t& param)
+    {
+    }
+
+    virtual void Visit(const std::string_view& name, std::string& param)
+    {
+    }
+
+    void Visit(CoordsXYZD& param)
+    {
+        Visit("x", param.x);
+        Visit("y", param.y);
+        Visit("z", param.z);
+        Visit("direction", param.direction);
+    }
+
+    template<typename T> void Visit(const std::string_view& name, T& param)
+    {
+        auto value = static_cast<int32_t>(param);
+        Visit(name, value);
+        param = static_cast<T>(value);
+    }
+};
+
 struct GameAction
 {
 public:
@@ -163,6 +195,10 @@ public:
     virtual ~GameAction() = default;
 
     virtual const char* GetName() const = 0;
+
+    virtual void AcceptParameters(GameActionParameterVisitor&)
+    {
+    }
 
     NetworkPlayerId_t GetPlayer() const
     {
