@@ -2903,7 +2903,7 @@ void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection,
     }
 }
 
-static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::string& text)
+static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
 #    ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -2913,7 +2913,7 @@ static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::stri
 
         // Create event args object
         auto objIdx = duk_push_object(ctx);
-        duk_push_number(ctx, static_cast<int32_t>(player.Id));
+        duk_push_number(ctx, playerId);
         duk_put_prop_string(ctx, objIdx, "player");
         duk_push_string(ctx, text.c_str());
         duk_put_prop_string(ctx, objIdx, "message");
@@ -2957,7 +2957,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     std::string text = szText;
     if (connection.Player != nullptr)
     {
-        if (!ProcessChatMessagePluginHooks(*connection.Player, text))
+        if (!ProcessChatMessagePluginHooks(connection.Player->Id, text))
         {
             // Message not to be relayed
             return;
@@ -3875,10 +3875,17 @@ void network_send_chat(const char* text)
     }
     else if (gNetwork.GetMode() == NETWORK_MODE_SERVER)
     {
-        NetworkPlayer* player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
-        const char* formatted = gNetwork.FormatChat(player, text);
-        chat_history_add(formatted);
-        gNetwork.Server_Send_CHAT(formatted);
+        std::string message = text;
+        if (ProcessChatMessagePluginHooks(gNetwork.GetPlayerID(), message))
+        {
+            auto player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
+            if (player != nullptr)
+            {
+                auto formatted = gNetwork.FormatChat(player, message.c_str());
+                chat_history_add(formatted);
+                gNetwork.Server_Send_CHAT(formatted);
+            }
+        }
     }
 }
 
