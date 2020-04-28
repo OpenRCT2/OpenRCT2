@@ -49,8 +49,8 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK },
     )),
-    SET_FIELD(ColourPreview, { SPR_G2_PLACEHOLDER, SPR_G2_PLACEHOLDER }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
+  SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS }),
+  SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on
    
