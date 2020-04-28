@@ -25,6 +25,9 @@ HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
         { "interval.tick", HOOK_TYPE::INTERVAL_TICK },
         { "interval.day", HOOK_TYPE::INTERVAL_DAY },
         { "network.chat", HOOK_TYPE::NETWORK_CHAT },
+        { "network.authenticate", HOOK_TYPE::NETWORK_AUTHENTICATE },
+        { "network.join", HOOK_TYPE::NETWORK_JOIN },
+        { "network.leave", HOOK_TYPE::NETWORK_LEAVE },
     });
     auto result = LookupTable.find(name);
     return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;

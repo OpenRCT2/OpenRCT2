@@ -37,6 +37,11 @@ namespace OpenRCT2::Scripting
         return value.type() == DukValue::NUMBER ? value.as_int() : defaultValue;
     }
 
+    template<> inline bool AsOrDefault(const DukValue& value, const bool& defaultValue)
+    {
+        return value.type() == DukValue::BOOLEAN ? value.as_bool() : defaultValue;
+    }
+
     /**
      * Allows creation of an object on the duktape stack and setting properties on it before
      * retrieving the DukValue instance of it.

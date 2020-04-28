@@ -175,6 +175,7 @@ declare global {
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+        subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
     }
@@ -255,6 +256,13 @@ declare global {
 
     interface NetworkChatEventArgs extends NetworkEventArgs {
         message: string;
+    }
+
+    interface NetworkAuthenticateEventArgs {
+        readonly name: number;
+        readonly ipAddress: string;
+        readonly publicKeyHash: string;
+        cancel: boolean;
     }
 
     /**

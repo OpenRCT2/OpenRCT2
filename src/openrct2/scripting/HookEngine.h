@@ -33,6 +33,9 @@ namespace OpenRCT2::Scripting
         INTERVAL_TICK,
         INTERVAL_DAY,
         NETWORK_CHAT,
+        NETWORK_AUTHENTICATE,
+        NETWORK_JOIN,
+        NETWORK_LEAVE,
         COUNT,
         UNDEFINED = -1,
     };
