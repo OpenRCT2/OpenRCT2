@@ -50,6 +50,7 @@ static CoordsXYZ _spritelocations1[MAX_SPRITES];
 static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
+static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex);
 
 std::string rct_sprite_checksum::ToString() const
 {
@@ -163,7 +164,7 @@ void reset_sprite_list()
         spr->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->generic.sprite_index = i;
         spr->generic.next = SPRITE_INDEX_NULL;
-        spr->generic.linked_list_index = 0;
+        spr->generic.linked_list_index = SPRITE_LIST_FREE;
 
         if (previous_spr != nullptr)
         {
@@ -267,7 +268,7 @@ rct_sprite_checksum sprite_checksum()
                         break;
                 }
 
-                if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+                if (copy.IsPeep())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.name = {};
@@ -358,32 +359,12 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linkedListIndex)
 {
     if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
         // No free sprites.
         return nullptr;
-    }
-
-    SPRITE_LIST linkedListIndex;
-    switch (spriteIdentifier)
-    {
-        case SPRITE_IDENTIFIER_VEHICLE:
-            linkedListIndex = SPRITE_LIST_VEHICLE;
-            break;
-        case SPRITE_IDENTIFIER_PEEP:
-            linkedListIndex = SPRITE_LIST_PEEP;
-            break;
-        case SPRITE_IDENTIFIER_MISC:
-            linkedListIndex = SPRITE_LIST_MISC;
-            break;
-        case SPRITE_IDENTIFIER_LITTER:
-            linkedListIndex = SPRITE_LIST_LITTER;
-            break;
-        default:
-            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
-            return nullptr;
     }
 
     if (linkedListIndex == SPRITE_LIST_MISC)
@@ -420,12 +401,36 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     return reinterpret_cast<rct_sprite*>(sprite);
 }
 
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+{
+    SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
+    switch (spriteIdentifier)
+    {
+        case SPRITE_IDENTIFIER_VEHICLE:
+            linkedListIndex = SPRITE_LIST_VEHICLE;
+            break;
+        case SPRITE_IDENTIFIER_PEEP:
+            linkedListIndex = SPRITE_LIST_PEEP;
+            break;
+        case SPRITE_IDENTIFIER_MISC:
+            linkedListIndex = SPRITE_LIST_MISC;
+            break;
+        case SPRITE_IDENTIFIER_LITTER:
+            linkedListIndex = SPRITE_LIST_LITTER;
+            break;
+        default:
+            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
+            return nullptr;
+    }
+    return create_sprite(spriteIdentifier, linkedListIndex);
+}
+
 /*
  * rct2: 0x0069ED0B
  * This function moves a sprite to the specified sprite linked list.
  * The game uses this list to categorise sprites by type.
  */
-void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
+static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
 {
     int32_t oldListIndex = sprite->linked_list_index;
 
@@ -827,7 +832,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
     {
         rct_sprite* sprite = get_sprite(spriteIndex);
         uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
-        if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             Litter* litter = &sprite->litter;
 
@@ -884,11 +889,10 @@ uint16_t remove_floating_sprites()
  */
 static bool sprite_should_tween(rct_sprite* sprite)
 {
-    switch (sprite->generic.linked_list_index)
+    switch (sprite->generic.sprite_identifier)
     {
-        case SPRITE_LIST_PEEP:
-        case SPRITE_LIST_TRAIN_HEAD:
-        case SPRITE_LIST_VEHICLE:
+        case SPRITE_IDENTIFIER_PEEP:
+        case SPRITE_IDENTIFIER_VEHICLE:
             return true;
     }
     return false;

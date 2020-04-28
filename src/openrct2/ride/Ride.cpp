@@ -324,8 +324,6 @@ void ride_update_favourited_stat()
 
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->linked_list_index != SPRITE_LIST_PEEP)
-            return;
         if (peep->favourite_ride != RIDE_ID_NULL)
         {
             auto ride = get_ride(peep->favourite_ride);
@@ -4326,7 +4324,8 @@ static Vehicle* vehicle_create_car(
         return nullptr;
 
     auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle;
+    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE, carIndex == 0 ? SPRITE_LIST_TRAIN_HEAD : SPRITE_LIST_VEHICLE)
+                        ->vehicle;
     if (vehicle == nullptr)
         return nullptr;
 
@@ -4570,8 +4569,6 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
         }
         lastTrain = train;
 
-        // Add train to ride vehicle list
-        move_sprite_to_list(train.head, SPRITE_LIST_TRAIN_HEAD);
         for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)

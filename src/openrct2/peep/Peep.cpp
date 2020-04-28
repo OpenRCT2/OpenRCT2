@@ -324,7 +324,7 @@ const bool gSpriteTypeToSlowWalkMap[] = {
 
 // clang-format on
 
-bool rct_sprite::IsPeep()
+bool rct_sprite::IsPeep() const
 {
     return peep.sprite_identifier == SPRITE_IDENTIFIER_PEEP;
 }
@@ -388,7 +388,7 @@ Peep* try_get_guest(uint16_t spriteIndex)
     rct_sprite* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr)
         return nullptr;
-    if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_PEEP)
+    if (!sprite->IsPeep())
         return nullptr;
     if (sprite->peep.type != PEEP_TYPE_GUEST)
         return nullptr;
@@ -434,7 +434,7 @@ void peep_update_all()
         else
         {
             peep_128_tick_update(peep, i);
-            if (peep->linked_list_index == SPRITE_LIST_PEEP)
+            if (peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 peep->Update();
             }
@@ -2693,7 +2693,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
-        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+        if (sprite->IsPeep())
         {
             Peep* other_peep = reinterpret_cast<Peep*>(sprite);
             if (other_peep->state != PEEP_STATE_WALKING)
