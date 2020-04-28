@@ -121,8 +121,8 @@ rct_window* window_land_open()
     window_push_others_below(window);
 
     gLandToolSize = 1;
-    gLandToolTerrainSurface = 255;
-    gLandToolTerrainEdge = 255;
+    gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+    gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
     gLandMountainMode = false;
     gLandPaintMode = false;
     _selectedFloorTexture = TERRAIN_GRASS;
@@ -223,7 +223,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
 
             if (gLandToolTerrainSurface == type)
             {
-                gLandToolTerrainSurface = 255;
+                gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -240,7 +240,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
 
             if (gLandToolTerrainEdge == type)
             {
-                gLandToolTerrainEdge = 255;
+                gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -316,9 +316,9 @@ static void window_land_invalidate(rct_window* w)
     }
 
     w->pressed_widgets = (1 << WIDX_PREVIEW);
-    if (gLandToolTerrainSurface != 255)
+    if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
         w->pressed_widgets |= (1 << WIDX_FLOOR);
-    if (gLandToolTerrainEdge != 255)
+    if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
         w->pressed_widgets |= (1 << WIDX_WALL);
     if (gLandMountainMode)
         w->pressed_widgets |= (1 << WIDX_MOUNTAINMODE);
@@ -378,7 +378,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Draw paint price
         numTiles = gLandToolSize * gLandToolSize;
         price = 0;
-        if (gLandToolTerrainSurface != 255)
+        if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -389,7 +389,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        if (gLandToolTerrainEdge != 255)
+        if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
             price += numTiles * 100;
 
         if (price != 0)

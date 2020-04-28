@@ -12,6 +12,7 @@
 // Structures shared between both RCT1 and RCT2.
 
 #include "../common.h"
+#include "../object/Object.h"
 #include "../world/Location.hpp"
 
 #include <string>
@@ -49,7 +50,6 @@ constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
-constexpr const uint8_t RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
 
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
@@ -58,11 +58,11 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
 // Everything before this point has been researched
-#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
-#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
-#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -792,3 +792,9 @@ struct RCT12ResearchItem
 assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
+
+using RCT12ObjectEntryIndex = uint8_t;
+constexpr const RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+
+ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
+RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(ObjectEntryIndex index);

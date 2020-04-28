@@ -203,7 +203,7 @@ static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySel
     Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
     if (scenery_is_invented(selection) || gCheatsIgnoreResearchStatus)
     {
-        if (sceneryTabId != 0xFF)
+        if (sceneryTabId != OBJECT_ENTRY_INDEX_NULL)
         {
             for (int32_t i = 0; i < SCENERY_ENTRIES_PER_TAB; i++)
             {
