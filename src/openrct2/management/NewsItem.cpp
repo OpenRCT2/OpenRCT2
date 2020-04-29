@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -226,7 +226,14 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
         }
         case NEWS_ITEM_PEEP_ON_RIDE:
         {
-            Peep* peep = GET_PEEP(subject);
+            auto sprite = try_get_sprite(subject);
+            if (sprite == nullptr)
+                break;
+
+            auto peep = sprite->AsPeep();
+            if (peep == nullptr)
+                break;
+
             subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
             if (subjectLoc->x != LOCATION_NULL)
                 break;
@@ -246,25 +253,40 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
 
             // Find the first car of the train peep is on
-            Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+            sprite = try_get_sprite(ride->vehicles[peep->current_train]);
             // Find the actual car peep is on
-            for (int32_t i = 0; i < peep->current_car; i++)
+            for (int32_t i = 0; i < peep->current_car && sprite != nullptr; i++)
             {
-                vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+                sprite = try_get_sprite(sprite->vehicle.next_vehicle_on_train);
             }
-            subjectLoc = CoordsXYZ{ vehicle->x, vehicle->y, vehicle->z };
+            if (sprite != nullptr)
+            {
+                subjectLoc = CoordsXYZ{ sprite->vehicle.x, sprite->vehicle.y, sprite->vehicle.z };
+            }
             break;
         }
         case NEWS_ITEM_PEEP:
         {
-            Peep* peep = GET_PEEP(subject);
-            subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+            auto sprite = try_get_sprite(subject);
+            if (sprite != nullptr)
+            {
+                auto peep = sprite->AsPeep();
+                if (peep != nullptr)
+                {
+                    subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+                }
+            }
             break;
         }
         case NEWS_ITEM_BLANK:
         {
-            auto subjectXY = CoordsXY{ subject & 0xFFFF, subject >> 16 };
-            subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+            auto subjectUnsigned = static_cast<uint32_t>(subject);
+            auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
+                                       static_cast<int16_t>(subjectUnsigned >> 16) };
+            if (!subjectXY.isNull())
+            {
+                subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+            }
             break;
         }
         default:
@@ -327,9 +349,6 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
  */
 void news_item_open_subject(int32_t type, int32_t subject)
 {
-    Peep* peep;
-    rct_window* window;
-
     switch (type)
     {
         case NEWS_ITEM_RIDE:
@@ -342,11 +361,17 @@ void news_item_open_subject(int32_t type, int32_t subject)
         case NEWS_ITEM_PEEP_ON_RIDE:
         case NEWS_ITEM_PEEP:
         {
-            peep = GET_PEEP(subject);
-
-            auto intent = Intent(WC_PEEP);
-            intent.putExtra(INTENT_EXTRA_PEEP, peep);
-            context_open_intent(&intent);
+            auto sprite = try_get_sprite(subject);
+            if (sprite != nullptr)
+            {
+                auto peep = sprite->AsPeep();
+                if (peep != nullptr)
+                {
+                    auto intent = Intent(WC_PEEP);
+                    intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                    context_open_intent(&intent);
+                }
+            }
             break;
         }
         case NEWS_ITEM_MONEY:
@@ -365,7 +390,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             }
 
             // Check if window is already open
-            window = window_bring_to_front_by_class(WC_SCENERY);
+            auto window = window_bring_to_front_by_class(WC_SCENERY);
             if (window == nullptr)
             {
                 window = window_find_by_class(WC_TOP_TOOLBAR);
