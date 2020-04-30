@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
         std::mutex _changedPluginFilesMutex;
         std::vector<std::function<void(std::shared_ptr<Plugin>)>> _pluginStoppedSubscriptions;
 
-        struct CustomAction
+        struct CustomActionInfo
         {
             std::shared_ptr<Plugin> Owner;
             std::string Name;
@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
             DukValue Execute;
         };
 
-        std::unordered_map<std::string, CustomAction> _customActions;
+        std::unordered_map<std::string, CustomActionInfo> _customActions;
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
@@ -181,6 +181,7 @@ namespace OpenRCT2::Scripting
             const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query,
             const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute);
+        std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
 
         void SaveSharedStorage();
 

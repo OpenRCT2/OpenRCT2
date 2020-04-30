@@ -11,9 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../actions/CustomAction.hpp"
-#    include "../actions/ParkSetNameAction.hpp"
-#    include "../actions/SmallSceneryPlaceAction.hpp"
+#    include "../actions/GameAction.h"
 #    include "../object/ObjectManager.h"
 #    include "../scenario/Scenario.h"
 #    include "Duktape.hpp"
@@ -161,7 +159,7 @@ namespace OpenRCT2::Scripting
             auto ctx = scriptEngine.GetContext();
             try
             {
-                auto action = CreateGameAction(actionid, args);
+                auto action = scriptEngine.CreateGameAction(actionid, args);
                 if (action != nullptr)
                 {
                     auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
@@ -186,45 +184,6 @@ namespace OpenRCT2::Scripting
             catch (DukException&)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Invalid action parameters.");
-            }
-        }
-
-        std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args)
-        {
-            if (actionid == "parksetname")
-            {
-                auto name = args["name"].as_string();
-                return std::make_unique<ParkSetNameAction>(name);
-            }
-            else if (actionid == "smallsceneryplace")
-            {
-                CoordsXYZD loc;
-                loc.x = args["x"].as_int();
-                loc.y = args["y"].as_int();
-                loc.z = args["z"].as_int();
-                loc.direction = args["direction"].as_int();
-                uint8_t quadrant = args["quadrant"].as_int();
-                uint8_t sceneryType = args["object"].as_int();
-                uint8_t primaryColour = args["primaryColour"].as_int();
-                uint8_t secondaryColour = args["secondaryColour"].as_int();
-                return std::make_unique<SmallSceneryPlaceAction>(loc, quadrant, sceneryType, primaryColour, secondaryColour);
-            }
-            else
-            {
-                // Serialise args to json so that it can be sent
-                auto ctx = args.context();
-                if (args.type() == DukValue::Type::OBJECT)
-                {
-                    args.push();
-                }
-                else
-                {
-                    duk_push_object(ctx);
-                }
-                auto jsonz = duk_json_encode(ctx, -1);
-                auto json = std::string(jsonz);
-                duk_pop(ctx);
-                return std::make_unique<CustomAction>(actionid, json);
             }
         }
 
