@@ -330,7 +330,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto page = w->page;
+                    auto page = static_cast<size_t>(w->page);
                     if (Desc.Tabs.size() > page)
                     {
                         auto& widgets = Desc.Tabs[page].Widgets;
@@ -442,7 +442,7 @@ namespace OpenRCT2::Ui::Windows
             default:
             {
                 const auto& info = GetInfo(w);
-                if (widgetIndex >= WIDX_TAB_0 && widgetIndex < WIDX_TAB_0 + info.Desc.Tabs.size())
+                if (widgetIndex >= WIDX_TAB_0 && widgetIndex < static_cast<rct_widgetindex>(WIDX_TAB_0 + info.Desc.Tabs.size()))
                 {
                     window_custom_change_tab(w, widgetIndex - WIDX_TAB_0);
                     break;
@@ -558,7 +558,7 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_update(rct_window* w)
     {
         const auto& info = GetInfo(w);
-        if (info.Desc.Tabs.size() > w->page)
+        if (info.Desc.Tabs.size() > static_cast<size_t>(w->page))
         {
             const auto& tab = info.Desc.Tabs[w->page];
             if (tab.imageFrameCount != 0)
@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
                 auto l = w->windowPos.x + widget->left + tab.offsetX;
                 auto t = w->windowPos.y + widget->top + tab.offsetY;
                 auto image = tab.imageFrameBase;
-                if (w->page == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
+                if (static_cast<size_t>(w->page) == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
                 {
                     auto frame = w->frame_no / tab.imageFrameDuration;
                     auto imageOffset = frame % tab.imageFrameCount;
