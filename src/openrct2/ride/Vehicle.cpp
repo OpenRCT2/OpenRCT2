@@ -6397,7 +6397,7 @@ int32_t Vehicle::UpdateMotionDodgems()
  *  rct2: 0x006DD365
  */
 static bool wouldCollideWithDodgemsTrackEdge(
-    CoordsXY coords, CoordsXY trackLocation, uint32_t trackType, uint16_t dodgemsCarRadius)
+    const CoordsXY& coords, const CoordsXY& trackLocation, uint32_t trackType, uint16_t dodgemsCarRadius)
 {
     int16_t rideLeft = trackLocation.x + DodgemsTrackSize[trackType].left;
     int16_t rideRight = trackLocation.x + DodgemsTrackSize[trackType].right;
