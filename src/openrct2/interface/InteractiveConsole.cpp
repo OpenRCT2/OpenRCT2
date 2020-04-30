@@ -1094,7 +1094,8 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
                 rideType = rideEntry->ride_type[j];
-                research_insert_ride_entry(rideType, groupIndex, rideEntry->category[0], true);
+                uint8_t category = RideTypeDescriptors[rideType].Category;
+                research_insert_ride_entry(rideType, groupIndex, category, true);
             }
 
             gSilentResearch = true;

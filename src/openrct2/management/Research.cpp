@@ -488,7 +488,11 @@ void research_populate_list_random()
         int32_t researched = (scenario_rand() & 0xFF) > 128;
         for (auto rideType : rideEntry->ride_type)
         {
-            research_insert_ride_entry(rideType, i, rideEntry->category[0], researched);
+            if (rideType != RIDE_TYPE_NULL)
+            {
+                uint8_t category = RideTypeDescriptors[rideType].Category;
+                research_insert_ride_entry(rideType, i, category, researched);
+            }
         }
     }
 
@@ -521,10 +525,13 @@ bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, u
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 {
     rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-    uint8_t category = rideEntry->category[0];
     for (auto rideType : rideEntry->ride_type)
     {
-        research_insert_ride_entry(rideType, entryIndex, category, researched);
+        if (rideType != RIDE_TYPE_NULL)
+        {
+            uint8_t category = RideTypeDescriptors[rideType].Category;
+            research_insert_ride_entry(rideType, entryIndex, category, researched);
+        }
     }
 }
 

@@ -7509,15 +7509,8 @@ void fix_invalid_vehicle_sprite_sizes()
 
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category)
 {
-    for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
-    {
-        if (rideEntry->category[i] == category)
-        {
-            return true;
-        }
-    }
-
-    return false;
+    auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+    return RideTypeDescriptors[rideType].Category == category;
 }
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)

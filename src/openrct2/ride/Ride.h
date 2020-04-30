@@ -94,40 +94,36 @@ assert_struct_size(rct_ride_name, 4);
 
 /**
  * Ride type structure.
- * size: unknown
  */
 struct rct_ride_entry
 {
     rct_ride_name naming;
-    uint32_t images_offset; // 0x004. The first three images are previews. They correspond to the ride_type[] array.
-    uint32_t flags;         // 0x008
-    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY]; // 0x00C
-    uint8_t min_cars_in_train;                             // 0x00F
-    uint8_t max_cars_in_train;                             // 0x010
-    uint8_t cars_per_flat_ride;                            // 0x011
+    // The first three images are previews. They correspond to the ride_type[] array.
+    uint32_t images_offset;
+    uint32_t flags;
+    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+    uint8_t min_cars_in_train;
+    uint8_t max_cars_in_train;
+    uint8_t cars_per_flat_ride;
     // Number of cars that can't hold passengers
-    uint8_t zero_cars; // 0x012
-    // The index to the vehicle type displayed in
-    // the vehicle tab.
-    uint8_t tab_vehicle;     // 0x013
-    uint8_t default_vehicle; // 0x014
-    // Convert from first - fourth vehicle to
-    // vehicle structure
-    uint8_t front_vehicle;                                             // 0x015
-    uint8_t second_vehicle;                                            // 0x016
-    uint8_t rear_vehicle;                                              // 0x017
-    uint8_t third_vehicle;                                             // 0x018
-    uint8_t pad_019;                                                   // 0x019
-    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY]; // 0x01A
-    vehicle_colour_preset_list* vehicle_preset_list;                   // 0x1AE
-    int8_t excitement_multiplier;                                      // 0x1B2
-    int8_t intensity_multiplier;                                       // 0x1B3
-    int8_t nausea_multiplier;                                          // 0x1B4
-    uint8_t max_height;                                                // 0x1B5
-    uint64_t enabledTrackPieces;                                       // 0x1B6
-    uint8_t category[RCT2_MAX_CATEGORIES_PER_RIDE];                    // 0x1BE
-    uint8_t shop_item;                                                 // 0x1C0
-    uint8_t shop_item_secondary;                                       // 0x1C1
+    uint8_t zero_cars;
+    // The index to the vehicle type displayed in the vehicle tab.
+    uint8_t tab_vehicle;
+    uint8_t default_vehicle;
+    // Convert from first - fourth vehicle to vehicle structure
+    uint8_t front_vehicle;
+    uint8_t second_vehicle;
+    uint8_t rear_vehicle;
+    uint8_t third_vehicle;
+    uint8_t pad_019;
+    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
+    vehicle_colour_preset_list* vehicle_preset_list;
+    int8_t excitement_multiplier;
+    int8_t intensity_multiplier;
+    int8_t nausea_multiplier;
+    uint8_t max_height;
+    uint8_t shop_item;
+    uint8_t shop_item_secondary;
     rct_string_id capacity;
     void* obj;
 

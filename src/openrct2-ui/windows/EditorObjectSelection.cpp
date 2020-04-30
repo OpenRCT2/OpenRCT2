@@ -1293,7 +1293,8 @@ static void editor_load_selected_objects()
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
                         uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                        research_insert_ride_entry(rideType, entryIndex, rideEntry->category[0], true);
+                        uint8_t category = RideTypeDescriptors[rideType].Category;
+                        research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
                     else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
                     {
