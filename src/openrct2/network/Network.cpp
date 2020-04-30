@@ -1676,6 +1676,7 @@ void Network::Server_Send_CHAT(const char* text, const std::vector<uint8_t>& pla
 
     if (playerIds.empty())
     {
+        // Empty players / default value means send to all players
         SendPacketToClients(*packet);
     }
     else
@@ -3522,7 +3523,7 @@ money32 network_get_player_money_spent(uint32_t index)
 std::string network_get_player_ip_address(uint32_t id)
 {
     auto conn = gNetwork.GetPlayerConnection(id);
-    if (conn != nullptr)
+    if (conn != nullptr && conn->Socket != nullptr)
     {
         return conn->Socket->GetIpAddress();
     }
@@ -4002,6 +4003,7 @@ void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
                 if (playerIds.empty()
                     || std::find(playerIds.begin(), playerIds.end(), gNetwork.GetPlayerID()) != playerIds.end())
                 {
+                    // Server is one of the recipients
                     chat_history_add(formatted);
                 }
                 gNetwork.Server_Send_CHAT(formatted, playerIds);
