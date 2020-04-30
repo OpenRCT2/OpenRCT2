@@ -671,13 +671,10 @@ NetworkConnection* Network::GetPlayerConnection(uint8_t id)
     auto player = GetPlayerByID(id);
     if (player != nullptr)
     {
-        for (auto& connection : client_connection_list)
-        {
-            if (connection->Player == player)
-            {
-                return connection.get();
-            }
-        }
+        return std::find_if(
+                   client_connection_list.begin(), client_connection_list.end(),
+                   [player](const auto& conn) -> bool { return conn->Player == player; })
+            ->get();
     }
     return nullptr;
 }
