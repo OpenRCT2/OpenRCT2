@@ -538,13 +538,9 @@ void research_populate_list_researched()
 
 bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched)
 {
-    if (rideType != RIDE_TYPE_NULL)
+    if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        ResearchItem tmpItem = {};
-        tmpItem.type = RESEARCH_ENTRY_TYPE_RIDE;
-        tmpItem.baseRideType = rideType;
-        tmpItem.entryIndex = entryIndex;
-        tmpItem.category = category;
+        auto tmpItem = ResearchItem(RESEARCH_ENTRY_TYPE_RIDE, entryIndex, rideType, category, 0);
         research_insert(tmpItem, researched);
         return true;
     }
@@ -562,13 +558,16 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
     }
 }
 
-void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched)
+bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched)
 {
-    ResearchItem tmpItem = {};
-    tmpItem.type = RESEARCH_ENTRY_TYPE_SCENERY;
-    tmpItem.entryIndex = entryIndex;
-    tmpItem.category = RESEARCH_CATEGORY_SCENERY_GROUP;
-    research_insert(tmpItem, researched);
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    {
+        auto tmpItem = ResearchItem(
+            RESEARCH_ENTRY_TYPE_SCENERY, entryIndex, RIDE_TYPE_NULL, RESEARCH_CATEGORY_SCENERY_GROUP, 0);
+        research_insert(tmpItem, researched);
+        return true;
+    }
+    return false;
 }
 
 bool ride_type_is_invented(uint32_t rideType)

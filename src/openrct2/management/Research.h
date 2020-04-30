@@ -40,8 +40,16 @@ struct ResearchItem
     rct_string_id GetName() const;
 
     ResearchItem() = default;
-    constexpr ResearchItem(uint32_t _rawValue, uint8_t _flags, uint8_t _category)
+    constexpr ResearchItem(uint32_t _rawValue, uint8_t _category, uint8_t _flags)
         : rawValue(_rawValue)
+        , flags(_flags)
+        , category(_category)
+    {
+    }
+    ResearchItem(uint8_t _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, uint8_t _category, uint8_t _flags)
+        : entryIndex(_entryIndex)
+        , baseRideType(_baseRideType)
+        , type(_type)
         , flags(_flags)
         , category(_category)
     {
@@ -161,7 +169,7 @@ void research_remove(ResearchItem* researchItem);
 
 bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
-void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
+bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
 void ride_entry_set_invented(int32_t rideEntryIndex);
