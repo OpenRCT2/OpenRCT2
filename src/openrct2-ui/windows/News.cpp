@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -320,7 +320,14 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                         break;
                     }
 
-                    Peep* peep = GET_PEEP(newsItem->Assoc);
+                    auto sprite = try_get_sprite(newsItem->Assoc);
+                    if (sprite == nullptr)
+                        break;
+
+                    auto peep = sprite->AsPeep();
+                    if (peep == nullptr)
+                        break;
+
                     int32_t clip_x = 10, clip_y = 19;
 
                     // If normal peep set sprite to normal (no food)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -604,7 +604,14 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                 break;
             }
 
-            Peep* peep = GET_PEEP(newsItem->Assoc);
+            auto sprite = try_get_sprite(newsItem->Assoc);
+            if (sprite == nullptr)
+                break;
+
+            auto peep = sprite->AsPeep();
+            if (peep == nullptr)
+                return;
+
             int32_t clip_x = 10, clip_y = 19;
 
             if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)

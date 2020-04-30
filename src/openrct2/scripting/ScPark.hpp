@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -80,18 +80,29 @@ namespace OpenRCT2::Scripting
             ThrowIfGameStateNotMutable();
             try
             {
+                uint32_t assoc = std::numeric_limits<uint32_t>::max();
                 uint8_t type = NEWS_ITEM_BLANK;
                 std::string text;
                 if (message.type() == DukValue::Type::STRING)
                 {
-                    text = message.as_string();
+                    text = language_convert_string(message.as_string());
                 }
                 else
                 {
                     type = GetParkMessageType(message["type"].as_string());
-                    text = message["text"].as_string();
+                    text = language_convert_string(message["text"].as_string());
+                    if (type == NEWS_ITEM_BLANK)
+                    {
+                        assoc = static_cast<uint32_t>(((COORDS_NULL & 0xFFFF) << 16) | (COORDS_NULL & 0xFFFF));
+                    }
+
+                    auto dukSubject = message["subject"];
+                    if (dukSubject.type() == DukValue::Type::NUMBER)
+                    {
+                        assoc = static_cast<uint32_t>(dukSubject.as_int());
+                    }
                 }
-                news_item_add_to_queue_raw(type, text.c_str(), static_cast<uint32_t>(-1));
+                news_item_add_to_queue_raw(type, text.c_str(), assoc);
             }
             catch (const DukException&)
             {

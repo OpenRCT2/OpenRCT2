@@ -681,6 +681,13 @@ declare global {
     interface ParkMessage {
         type: ParkMessageType;
         text: string;
+
+        /**
+         * Ride ID for attraction.
+         * Entity ID for peep_on_attraction or peep.
+         * Researched item for research.
+         */
+        subject?: number;
     }
 
     interface Park {
