@@ -29,7 +29,7 @@ public:
         uint32_t hash = 27;
         for (size_t i = 0; i < bufferLength; i++)
         {
-            hash = (13 * hash) + ((uint8_t*)buffer)[i];
+            hash = (13 * hash) + (reinterpret_cast<uint8_t*>(buffer))[i];
         }
         return hash;
     }
