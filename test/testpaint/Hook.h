@@ -9,9 +9,7 @@
 
 #pragma once
 
-#ifndef NO_RCT2
-
-#    include <openrct2/common.h>
+#include <openrct2/common.h>
 
 enum
 {
@@ -27,5 +25,3 @@ enum
 using hook_function = uint8_t (*)(registers* regs);
 
 void addhook(uintptr_t address, hook_function function);
-
-#endif

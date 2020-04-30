@@ -7,35 +7,28 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Hook.h"
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <openrct2/common.h>
-
-#ifndef NO_RCT2
-
-#    ifdef _WIN32
-#        include <windows.h>
-#    else
-#        include <sys/mman.h>
-#    endif // _WIN32
-
-#    include "Hook.h"
+#include <sys/mman.h>
 
 void* _hookTableAddress = 0;
 int32_t _hookTableOffset = 0;
 int32_t _maxHooks = 1000;
-#    define HOOK_BYTE_COUNT (140)
+#define HOOK_BYTE_COUNT (140)
 
 registers gHookRegisters = {};
 
 // This macro writes a little-endian 4-byte long value into *data
 // It is used to avoid type punning.
-#    define write_address_strictalias(data, addr)                                                                              \
-        *(data + 0) = ((addr)&0x000000ff) >> 0;                                                                                \
-        *(data + 1) = ((addr)&0x0000ff00) >> 8;                                                                                \
-        *(data + 2) = ((addr)&0x00ff0000) >> 16;                                                                               \
-        *(data + 3) = ((addr)&0xff000000) >> 24;
+#define write_address_strictalias(data, addr)                                                                                  \
+    *(data + 0) = ((addr)&0x000000ff) >> 0;                                                                                    \
+    *(data + 1) = ((addr)&0x0000ff00) >> 8;                                                                                    \
+    *(data + 2) = ((addr)&0x00ff0000) >> 16;                                                                                   \
+    *(data + 3) = ((addr)&0xff000000) >> 24;
 
 static void hookfunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize)
 {
@@ -148,12 +141,8 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize
 
     data[i++] = 0xC3; // retn
 
-#    ifdef _WIN32
-    WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
-#    else
     // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
     memcpy((void*)address, data, i);
-#    endif // _WIN32
 }
 
 void addhook(uintptr_t address, hook_function function)
@@ -161,16 +150,12 @@ void addhook(uintptr_t address, hook_function function)
     if (!_hookTableAddress)
     {
         size_t size = _maxHooks * HOOK_BYTE_COUNT;
-#    ifdef _WIN32
-        _hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-#    else
         _hookTableAddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
         if (_hookTableAddress == MAP_FAILED)
         {
             perror("mmap");
             exit(1);
         }
-#    endif // _WIN32
     }
     if (_hookTableOffset > _maxHooks)
     {
@@ -185,9 +170,6 @@ void addhook(uintptr_t address, hook_function function)
     i += 4;
 
     data[i++] = 0xC3; // retn
-#    ifdef _WIN32
-    WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
-#    else
     // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
     int32_t err = mprotect((void*)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
     if (err != 0)
@@ -202,9 +184,6 @@ void addhook(uintptr_t address, hook_function function)
     {
         perror("mprotect");
     }
-#    endif // _WIN32
     hookfunc(hookaddress, (uintptr_t)function, 0);
     _hookTableOffset++;
 }
-
-#endif

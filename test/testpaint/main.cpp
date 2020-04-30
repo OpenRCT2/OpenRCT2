@@ -7,28 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <cstdarg>
-#include <cstdio>
-#include <cstring>
-#include <string>
-#include <vector>
-
-#if defined(__unix__)
-#    include <sys/mman.h>
-#    include <unistd.h>
-#endif // defined(__unix__)
-
 #include "Data.h"
 #include "PaintIntercept.hpp"
 #include "TestTrack.hpp"
 #include "Utils.hpp"
 
+#include <algorithm>
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
 #include <openrct2/rct2/RCT2.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
+#include <string>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <vector>
 
 struct TestCase
 {
@@ -83,11 +79,7 @@ static COLOUR_METHOD GetColourMethod()
         return COLOUR_METHOD_ANSI;
     }
 
-#ifdef __WINDOWS__
-    return COLOUR_METHOD_WINDOWS;
-#else
     return COLOUR_METHOD_NONE;
-#endif
 }
 
 static const char* GetAnsiColorCode(CLIColour color)
@@ -105,32 +97,6 @@ static const char* GetAnsiColorCode(CLIColour color)
     };
 }
 
-#ifdef __WINDOWS__
-
-static WORD GetCurrentWindowsConsoleAttribute(HANDLE hConsoleOutput)
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(hConsoleOutput, &csbi);
-    return csbi.wAttributes;
-}
-
-static WORD GetWindowsConsoleAttribute(CLIColour color, WORD defaultAttr)
-{
-    switch (color)
-    {
-        case RED:
-            return FOREGROUND_RED;
-        case GREEN:
-            return FOREGROUND_GREEN;
-        case YELLOW:
-            return FOREGROUND_RED | FOREGROUND_GREEN;
-        default:
-            return defaultAttr;
-    };
-}
-
-#endif
-
 static void Write_VA(Verbosity verbosity, CLIColour colour, const char* fmt, va_list args)
 {
     if (_verbosity < verbosity)
@@ -147,16 +113,6 @@ static void Write_VA(Verbosity verbosity, CLIColour colour, const char* fmt, va_
         printf("\033[0;3%sm", GetAnsiColorCode(colour));
         vprintf(fmt, args);
         printf("\033[m");
-    }
-    else if (colourMethod == COLOUR_METHOD_WINDOWS)
-    {
-#ifdef __WINDOWS__
-        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        WORD defaultAttr = GetCurrentWindowsConsoleAttribute(hStdOut);
-        SetConsoleTextAttribute(hStdOut, GetWindowsConsoleAttribute(colour, defaultAttr));
-        vprintf(fmt, args);
-        SetConsoleTextAttribute(hStdOut, defaultAttr);
-#endif
     }
 }
 
@@ -192,112 +148,6 @@ static void Write(const char* fmt, ...)
     va_end(args);
 }
 
-#if defined(__WINDOWS__)
-
-#    include <shellapi.h>
-
-int main(int argc, char* argv[]);
-
-#    define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
-
-static HMODULE _dllModule = nullptr;
-
-utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
-{
-    if (codepoint <= 0x7F)
-    {
-        dst[0] = (utf8)codepoint;
-        return dst + 1;
-    }
-    else if (codepoint <= 0x7FF)
-    {
-        dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
-        dst[1] = 0x80 | (codepoint & 0x3F);
-        return dst + 2;
-    }
-    else if (codepoint <= 0xFFFF)
-    {
-        dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
-        dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[2] = 0x80 | (codepoint & 0x3F);
-        return dst + 3;
-    }
-    else
-    {
-        dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
-        dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
-        dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[3] = 0x80 | (codepoint & 0x3F);
-        return dst + 4;
-    }
-}
-
-utf8* widechar_to_utf8(const wchar_t* src)
-{
-    utf8* result = (utf8*)malloc((wcslen(src) * 4) + 1);
-    utf8* dst = result;
-
-    for (; *src != 0; src++)
-    {
-        dst = utf8_write_codepoint(dst, *src);
-    }
-    *dst++ = 0;
-
-    size_t size = (size_t)(dst - result);
-    return (utf8*)realloc(result, size);
-}
-
-utf8** windows_get_command_line_args(int* outNumArgs)
-{
-    int argc;
-
-    // Get command line arguments as widechar
-    LPWSTR commandLine = GetCommandLineW();
-    LPWSTR* argvW = CommandLineToArgvW(commandLine, &argc);
-
-    // Convert to UTF-8
-    utf8** argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
-    for (int i = 0; i < argc; i++)
-    {
-        argvUtf8[i] = widechar_to_utf8(argvW[i]);
-    }
-    LocalFree(argvW);
-
-    *outNumArgs = argc;
-    return argvUtf8;
-}
-
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-{
-    _dllModule = (HMODULE)hModule;
-    return TRUE;
-}
-
-__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-    if (_dllModule == nullptr)
-    {
-        _dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
-    }
-
-    int argc;
-    char** argv = (char**)windows_get_command_line_args(&argc);
-
-    int gExitCode = main(argc, argv);
-
-    // Free argv
-    for (int i = 0; i < argc; i++)
-    {
-        free(argv[i]);
-    }
-    free(argv);
-
-    exit(gExitCode);
-    return gExitCode;
-}
-
-#endif
-
 char* segments = (char*)(GOOD_PLACE_FOR_DATA_SEGMENT);
 
 static uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length)
@@ -317,11 +167,9 @@ static uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t le
 static bool openrct2_setup_rct2_segment()
 {
     // OpenRCT2 on Linux and macOS is wired to have the original Windows PE sections loaded
-    // necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
-    // in some configurations err and len may be unused
+    // where necessary.
     [[maybe_unused]] int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
     [[maybe_unused]] int err = 0;
-#if defined(__unix__)
     int pageSize = getpagesize();
     int numPages = (len + pageSize - 1) / pageSize;
     unsigned char* dummy = (unsigned char*)malloc(numPages);
@@ -331,17 +179,12 @@ static bool openrct2_setup_rct2_segment()
     if (err != 0)
     {
         err = errno;
-#    ifdef __LINUX__
         // On Linux ENOMEM means all requested range is unmapped
         if (err != ENOMEM)
         {
             pagesMissing = true;
             perror("mincore");
         }
-#    else
-        pagesMissing = true;
-        perror("mincore");
-#    endif // __LINUX__
     }
     else
     {
@@ -375,7 +218,6 @@ static bool openrct2_setup_rct2_segment()
     {
         perror("mprotect");
     }
-#endif // defined(__unix__)
 
     // Check that the expected data is at various addresses.
     // Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
