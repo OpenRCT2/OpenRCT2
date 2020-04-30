@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -139,7 +139,15 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
 
     widget = &widgetWindow->widgets[widgetIndex];
     window_event_invalidate_call(widgetWindow);
-    if (widget->tooltip == 0xFFFF)
+
+    rct_string_id stringId = widget->tooltip;
+    if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
+    {
+        stringId = STR_STRING_TOOLTIP;
+        set_format_arg(0, const char*, widget->sztooltip);
+    }
+
+    if (stringId == STR_NONE)
         return;
 
     gTooltipWidget.window_classification = widgetWindow->classification;
@@ -149,7 +157,7 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
     if (window_event_tooltip_call(widgetWindow, widgetIndex) == STR_NONE)
         return;
 
-    window_tooltip_show(widget->tooltip, screenCords);
+    window_tooltip_show(stringId, screenCords);
 }
 
 /**

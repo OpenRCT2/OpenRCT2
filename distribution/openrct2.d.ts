@@ -733,6 +733,7 @@ declare global {
         width: number;
         height: number;
         name?: string;
+        tooltip?: string;
         isDisabled?: boolean;
     }
 

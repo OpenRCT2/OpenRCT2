@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,6 +99,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Name;
         ImageId Image;
         std::string Text;
+        std::string Tooltip;
         std::vector<std::string> Items;
         int32_t SelectedIndex{};
         bool IsChecked{};
@@ -126,12 +127,9 @@ namespace OpenRCT2::Ui::Windows
             result.Y = desc["y"].as_int();
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
-            if (desc["isDisabled"].type() == DukValue::Type::BOOLEAN)
-                result.IsDisabled = desc["isDisabled"].as_bool();
-            if (desc["name"].type() == DukValue::Type::STRING)
-            {
-                result.Name = desc["name"].as_string();
-            }
+            result.IsDisabled = AsOrDefault(desc["isDisabled"], false);
+            result.Name = AsOrDefault(desc["name"], "");
+            result.Tooltip = AsOrDefault(desc["tooltip"], "");
             if (result.Type == "button")
             {
                 auto dukImage = desc["image"];
@@ -178,10 +176,7 @@ namespace OpenRCT2::Ui::Windows
                 result.OnIncrement = desc["onIncrement"];
                 result.OnDecrement = desc["onDecrement"];
             }
-            if (desc["border"].type() == DukValue::Type::BOOLEAN)
-            {
-                result.HasBorder = desc["border"].as_bool();
-            }
+            result.HasBorder = AsOrDefault(desc["border"], result.HasBorder);
             return result;
         }
     };
@@ -710,7 +705,12 @@ namespace OpenRCT2::Ui::Windows
         widget.bottom = desc.Y + desc.Height - 1;
         widget.content = std::numeric_limits<uint32_t>::max();
         widget.tooltip = STR_NONE;
-        widget.flags = WIDGET_FLAGS::IS_ENABLED;
+        if (!desc.Tooltip.empty())
+        {
+            widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
+            widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
+        }
+        widget.flags |= WIDGET_FLAGS::IS_ENABLED;
         if (desc.IsDisabled)
             widget.flags |= WIDGET_FLAGS::IS_DISABLED;
 
