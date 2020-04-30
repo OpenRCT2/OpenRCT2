@@ -39,7 +39,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CLOSE,
         WIDX_CONTENT_PANEL,
         WIDX_TAB_0,
-        WIDX_CUSTOM_BEGIN,
     };
 
     static rct_widget CustomDefaultWidgets[] = {
@@ -853,6 +852,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Add custom widgets
+        auto firstCustomWidgetIndex = widgets.size();
         auto totalWidgets = info.Desc.Widgets.size();
         auto tabWidgetsOffset = totalWidgets;
         if (info.Desc.Tabs.size() != 0)
@@ -871,10 +871,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 info.WidgetIndexMap.push_back(widgetDescIndex);
             }
+        }
 
-            auto widgetIndex = widgets.size() - 1;
-            auto mask = 1ULL << widgetIndex;
-            auto flags = widgets[widgetIndex].flags;
+        for (size_t i = firstCustomWidgetIndex; i < widgets.size(); i++)
+        {
+            auto mask = 1ULL << i;
+            auto flags = widgets[i].flags;
             if (flags & WIDGET_FLAGS::IS_ENABLED)
             {
                 w->enabled_widgets |= mask;
