@@ -918,7 +918,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
 
 static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
 {
-    const static std::map<std::string, uint32_t> ActionNameToType = {
+    const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
         { "parksetname", GAME_COMMAND_SET_PARK_NAME },
         { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
         { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
