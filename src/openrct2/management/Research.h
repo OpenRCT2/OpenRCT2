@@ -161,7 +161,6 @@ void research_update_uncompleted_types();
 void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
-void research_populate_list_researched();
 
 void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem item, bool researched);

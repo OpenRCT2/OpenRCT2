@@ -506,36 +506,6 @@ void research_populate_list_random()
     }
 }
 
-void research_populate_list_researched()
-{
-    // Rides
-    for (int32_t i = 0; i < MAX_RIDE_OBJECTS; i++)
-    {
-        rct_ride_entry* rideEntry = get_ride_entry(i);
-        if (rideEntry == nullptr)
-        {
-            continue;
-        }
-
-        for (auto rideType : rideEntry->ride_type)
-        {
-            research_insert_ride_entry(rideType, i, rideEntry->category[0], true);
-        }
-    }
-
-    // Scenery
-    for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
-    {
-        rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(i);
-        if (sceneryGroupEntry == nullptr)
-        {
-            continue;
-        }
-
-        research_insert_scenery_group_entry(i, true);
-    }
-}
-
 bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched)
 {
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
