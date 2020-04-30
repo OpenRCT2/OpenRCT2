@@ -672,8 +672,8 @@ NetworkConnection* Network::GetPlayerConnection(uint8_t id)
     if (player != nullptr)
     {
         auto clientIt = std::find_if(
-                   client_connection_list.begin(), client_connection_list.end(),
-                   [player](const auto& conn) -> bool { return conn->Player == player; });
+            client_connection_list.begin(), client_connection_list.end(),
+            [player](const auto& conn) -> bool { return conn->Player == player; });
         return clientIt != client_connection_list.end() ? clientIt->get() : nullptr;
     }
     return nullptr;
