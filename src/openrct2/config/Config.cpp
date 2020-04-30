@@ -889,14 +889,13 @@ bool Csg1datPresentAtLocation(const utf8* path)
 
 std::string FindCsg1idatAtLocation(const utf8* path)
 {
-    char checkPath[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "CSG1I.DAT", MAX_PATH);
-
-    // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
-    std::string resolvedPath = Path::ResolveCasing(checkPath);
-    return resolvedPath;
+    auto result1 = Path::ResolveCasing(Path::Combine(path, "Data", "CSG1I.DAT"));
+    if (!result1.empty())
+    {
+        return result1;
+    }
+    auto result2 = Path::ResolveCasing(Path::Combine(path, "RCTdeluxe_install", "Data", "CSG1I.DAT"));
+    return result2;
 }
 
 bool Csg1idatPresentAtLocation(const utf8* path)
