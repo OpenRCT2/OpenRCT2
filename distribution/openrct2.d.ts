@@ -185,6 +185,7 @@ declare global {
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+        subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
     }
@@ -281,6 +282,13 @@ declare global {
 
     interface NetworkChatEventArgs extends NetworkEventArgs {
         message: string;
+    }
+
+    interface NetworkAuthenticateEventArgs {
+        readonly name: number;
+        readonly ipAddress: string;
+        readonly publicKeyHash: string;
+        cancel: boolean;
     }
 
     /**
@@ -588,13 +596,16 @@ declare global {
      */
     interface Network {
         readonly mode: NetworkMode;
-        readonly groups: number;
-        readonly players: number;
+        readonly numGroups: number;
+        readonly numPlayers: number;
+        readonly groups: PlayerGroup[];
+        readonly players: Player[];
         defaultGroup: number;
 
         getServerInfo(): ServerInfo;
+        addGroup(): void;
         getGroup(index: number): PlayerGroup;
-        setGroups(groups: PlayerGroup[]): void;
+        removeGroup(index: number): void;
         getPlayer(index: number): Player;
         kickPlayer(index: number): void;
         sendMessage(message: string): void;
@@ -613,6 +624,8 @@ declare global {
         readonly ping: number;
         readonly commandsRan: number;
         readonly moneySpent: number;
+        readonly ipAddress: string;
+        readonly publicKeyHash: string;
     }
 
     interface PlayerGroup {

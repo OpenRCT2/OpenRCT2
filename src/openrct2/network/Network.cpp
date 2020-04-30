@@ -136,6 +136,7 @@ public:
     void ProcessDisconnectedClients();
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
+    NetworkConnection* GetPlayerConnection(uint8_t id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
     NetworkGroup* GetGroupByID(uint8_t id);
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
@@ -176,7 +177,7 @@ public:
     void Server_Send_TOKEN(NetworkConnection& connection);
     void Server_Send_MAP(NetworkConnection* connection = nullptr);
     void Client_Send_CHAT(const char* text);
-    void Server_Send_CHAT(const char* text);
+    void Server_Send_CHAT(const char* text, const std::vector<uint8_t>& playerIds = {});
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_TICK();
@@ -663,6 +664,19 @@ uint32_t Network::GetServerTick()
 uint8_t Network::GetPlayerID()
 {
     return player_id;
+}
+
+NetworkConnection* Network::GetPlayerConnection(uint8_t id)
+{
+    auto player = GetPlayerByID(id);
+    if (player != nullptr)
+    {
+        auto clientIt = std::find_if(
+            client_connection_list.begin(), client_connection_list.end(),
+            [player](const auto& conn) -> bool { return conn->Player == player; });
+        return clientIt != client_connection_list.end() ? clientIt->get() : nullptr;
+    }
+    return nullptr;
 }
 
 void Network::Update()
@@ -1654,12 +1668,28 @@ void Network::Client_Send_CHAT(const char* text)
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_CHAT(const char* text)
+void Network::Server_Send_CHAT(const char* text, const std::vector<uint8_t>& playerIds)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << static_cast<uint32_t>(NETWORK_COMMAND_CHAT);
     packet->WriteString(text);
-    SendPacketToClients(*packet);
+
+    if (playerIds.empty())
+    {
+        // Empty players / default value means send to all players
+        SendPacketToClients(*packet);
+    }
+    else
+    {
+        for (auto playerId : playerIds)
+        {
+            auto conn = GetPlayerConnection(playerId);
+            if (conn != nullptr && !conn->IsDisconnected)
+            {
+                conn->QueuePacket(NetworkPacket::Duplicate(*packet));
+            }
+        }
+    }
 }
 
 void Network::Client_Send_GAME_ACTION(const GameAction* action)
@@ -1942,6 +1972,80 @@ void Network::ProcessPending()
     ProcessPlayerList();
 }
 
+static bool ProcessPlayerAuthenticatePluginHooks(
+    const NetworkConnection& connection, const std::string_view& name, const std::string_view& publicKeyHash)
+{
+#    ifdef ENABLE_SCRIPTING
+    using namespace OpenRCT2::Scripting;
+
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        DukObject eObj(ctx);
+        eObj.Set("name", name);
+        eObj.Set("publicKeyHash", publicKeyHash);
+        eObj.Set("ipAddress", connection.Socket->GetIpAddress());
+        eObj.Set("cancel", false);
+        auto e = eObj.Take();
+
+        // Call the subscriptions
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE, e, false);
+
+        // Check if any hook has cancelled the join
+        if (AsOrDefault(e["cancel"], false))
+        {
+            return false;
+        }
+    }
+#    endif
+    return true;
+}
+
+static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
+{
+#    ifdef ENABLE_SCRIPTING
+    using namespace OpenRCT2::Scripting;
+
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        DukObject eObj(ctx);
+        eObj.Set("player", playerId);
+        auto e = eObj.Take();
+
+        // Call the subscriptions
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN, e, false);
+    }
+#    endif
+}
+
+static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
+{
+#    ifdef ENABLE_SCRIPTING
+    using namespace OpenRCT2::Scripting;
+
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        DukObject eObj(ctx);
+        eObj.Set("player", playerId);
+        auto e = eObj.Take();
+
+        // Call the subscriptions
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE, e, false);
+    }
+#    endif
+}
+
 void Network::ProcessPlayerList()
 {
     if (GetMode() == NETWORK_MODE_SERVER)
@@ -1966,6 +2070,8 @@ void Network::ProcessPlayerList()
 
             // List of active players found in the list.
             std::vector<uint8_t> activePlayerIds;
+            std::vector<uint8_t> newPlayers;
+            std::vector<uint8_t> removedPlayers;
 
             for (auto&& pendingPlayer : itPending->second.players)
             {
@@ -1984,6 +2090,8 @@ void Network::ProcessPlayerList()
                             _serverConnection->Player = player;
                         }
                     }
+
+                    newPlayers.push_back(player->Id);
                 }
                 else
                 {
@@ -1993,18 +2101,34 @@ void Network::ProcessPlayerList()
             }
 
             // Remove any players that are not in newly received list
-            auto it = player_list.begin();
-            while (it != player_list.end())
+            for (const auto& player : player_list)
             {
-                if (std::find(activePlayerIds.begin(), activePlayerIds.end(), (*it)->Id) == activePlayerIds.end())
+                if (std::find(activePlayerIds.begin(), activePlayerIds.end(), player->Id) == activePlayerIds.end())
                 {
-                    it = player_list.erase(it);
-                }
-                else
-                {
-                    it++;
+                    removedPlayers.push_back(player->Id);
                 }
             }
+
+            // Run player removed hooks (must be before players removed from list)
+            for (auto playerId : removedPlayers)
+            {
+                ProcessPlayerLeftPluginHooks(playerId);
+            }
+
+            // Run player joined hooks (must be after players added to list)
+            for (auto playerId : newPlayers)
+            {
+                ProcessPlayerJoinedPluginHooks(playerId);
+            }
+
+            // Now actually remove removed players from player list
+            player_list.erase(
+                std::remove_if(
+                    player_list.begin(), player_list.end(),
+                    [&removedPlayers](const std::unique_ptr<NetworkPlayer>& player) {
+                        return std::find(removedPlayers.begin(), removedPlayers.end(), player->Id) != removedPlayers.end();
+                    }),
+                player_list.end());
 
             _pendingPlayerLists.erase(itPending);
             itPending = _pendingPlayerLists.begin();
@@ -2100,6 +2224,8 @@ void Network::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& conne
 
     // Log player disconnected event
     AppendServerLog(text);
+
+    ProcessPlayerLeftPluginHooks(connection_player->Id);
 }
 
 void Network::RemovePlayer(std::unique_ptr<NetworkConnection>& connection)
@@ -2367,9 +2493,9 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 
 void Network::Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection)
 {
-    NetworkPlayer* player = AddPlayer(name, keyhash);
+    auto player = AddPlayer(name, keyhash);
     connection.Player = player;
-    if (player)
+    if (player != nullptr)
     {
         char text[256];
         const char* player_name = static_cast<const char*>(player->Name.c_str());
@@ -2387,6 +2513,8 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         player_name = static_cast<const char*>(playerNameHash.c_str());
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         AppendServerLog(text);
+
+        ProcessPlayerJoinedPluginHooks(player->Id);
     }
 }
 
@@ -2668,9 +2796,16 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
         }
         else if (connection.AuthStatus == NETWORK_AUTH_VERIFIED)
         {
-            connection.AuthStatus = NETWORK_AUTH_OK;
             const std::string hash = connection.Key.PublicKeyHash();
-            Server_Client_Joined(name, hash, connection);
+            if (ProcessPlayerAuthenticatePluginHooks(connection, name, hash))
+            {
+                connection.AuthStatus = NETWORK_AUTH_OK;
+                Server_Client_Joined(name, hash, connection);
+            }
+            else
+            {
+                connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+            }
         }
         else if (connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD)
         {
@@ -2886,7 +3021,7 @@ void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection,
     }
 }
 
-static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::string& text)
+static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
 #    ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -2896,7 +3031,7 @@ static bool ProcessChatMessagePluginHooks(const NetworkPlayer& player, std::stri
 
         // Create event args object
         auto objIdx = duk_push_object(ctx);
-        duk_push_number(ctx, static_cast<int32_t>(player.Id));
+        duk_push_number(ctx, playerId);
         duk_put_prop_string(ctx, objIdx, "player");
         duk_push_string(ctx, text.c_str());
         duk_put_prop_string(ctx, objIdx, "message");
@@ -2940,7 +3075,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     std::string text = szText;
     if (connection.Player != nullptr)
     {
-        if (!ProcessChatMessagePluginHooks(*connection.Player, text))
+        if (!ProcessChatMessagePluginHooks(connection.Player->Id, text))
         {
             // Message not to be relayed
             return;
@@ -3383,6 +3518,26 @@ int32_t network_get_player_id(uint32_t index)
 money32 network_get_player_money_spent(uint32_t index)
 {
     return gNetwork.player_list[index]->MoneySpent;
+}
+
+std::string network_get_player_ip_address(uint32_t id)
+{
+    auto conn = gNetwork.GetPlayerConnection(id);
+    if (conn != nullptr && conn->Socket != nullptr)
+    {
+        return conn->Socket->GetIpAddress();
+    }
+    return {};
+}
+
+std::string network_get_player_public_key_hash(uint32_t id)
+{
+    auto player = gNetwork.GetPlayerByID(id);
+    if (player != nullptr)
+    {
+        return player->KeyHash;
+    }
+    return {};
 }
 
 void network_add_player_money_spent(uint32_t index, money32 cost)
@@ -3830,7 +3985,7 @@ void network_send_map()
     gNetwork.Server_Send_MAP();
 }
 
-void network_send_chat(const char* text)
+void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
 {
     if (gNetwork.GetMode() == NETWORK_MODE_CLIENT)
     {
@@ -3838,10 +3993,22 @@ void network_send_chat(const char* text)
     }
     else if (gNetwork.GetMode() == NETWORK_MODE_SERVER)
     {
-        NetworkPlayer* player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
-        const char* formatted = gNetwork.FormatChat(player, text);
-        chat_history_add(formatted);
-        gNetwork.Server_Send_CHAT(formatted);
+        std::string message = text;
+        if (ProcessChatMessagePluginHooks(gNetwork.GetPlayerID(), message))
+        {
+            auto player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
+            if (player != nullptr)
+            {
+                auto formatted = gNetwork.FormatChat(player, message.c_str());
+                if (playerIds.empty()
+                    || std::find(playerIds.begin(), playerIds.end(), gNetwork.GetPlayerID()) != playerIds.end())
+                {
+                    // Server is one of the recipients
+                    chat_history_add(formatted);
+                }
+                gNetwork.Server_Send_CHAT(formatted, playerIds);
+            }
+        }
     }
 }
 
@@ -4054,6 +4221,14 @@ money32 network_get_player_money_spent(uint32_t index)
 {
     return MONEY(0, 0);
 }
+std::string network_get_player_ip_address(uint32_t id)
+{
+    return {};
+}
+std::string network_get_player_public_key_hash(uint32_t id)
+{
+    return {};
+}
 void network_add_player_money_spent(uint32_t index, money32 cost)
 {
 }
@@ -4154,7 +4329,7 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
 {
     return _pickup_peep_old_x;
 }
-void network_send_chat(const char* text)
+void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
 {
 }
 void network_send_password(const std::string& password)

@@ -55,6 +55,7 @@ public:
     virtual SOCKET_STATUS GetStatus() const abstract;
     virtual const char* GetError() const abstract;
     virtual const char* GetHostName() const abstract;
+    virtual std::string GetIpAddress() const abstract;
 
     virtual void Listen(uint16_t port) abstract;
     virtual void Listen(const std::string& address, uint16_t port) abstract;
