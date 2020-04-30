@@ -129,7 +129,7 @@
                         Url="$(TitleSequencesUrl)"
                         Sha1="$(TitleSequencesSha1)"
                         CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)data\title" />
+                        OutputDirectory="$(TargetDir)data\sequence" />
   </Target>
 
   <!-- Target to download the objects -->
