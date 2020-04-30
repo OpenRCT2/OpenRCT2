@@ -451,7 +451,7 @@
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
-		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
+		D4EC48E81C2637710024B507 /* sequence in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* sequence */; };
 		F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70839911FFC0AFF002DCEFA /* Scenario.cpp */; };
 		F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */; };
 		F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */; };
@@ -568,7 +568,7 @@
 		F7D774A21EC6715C00BE6EBC /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		F7D774AD1EC6741D00BE6EBC /* shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
-		F7D774AE1EC6741D00BE6EBC /* title in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
+		F7D774AE1EC6741D00BE6EBC /* sequence in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* sequence */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -648,7 +648,7 @@
 			files = (
 				F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */,
 				F7D774AD1EC6741D00BE6EBC /* shaders in CopyFiles */,
-				F7D774AE1EC6741D00BE6EBC /* title in CopyFiles */,
+				F7D774AE1EC6741D00BE6EBC /* sequence in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1625,7 +1625,7 @@
 		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
-		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
+		D4EC48E51C2637710024B507 /* sequence */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sequence; path = data/sequence; sourceTree = SOURCE_ROOT; };
 		F70839911FFC0AFF002DCEFA /* Scenario.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenario.cpp; sourceTree = "<group>"; };
 		F73E320B2011589E00C4D975 /* RideRatings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideRatings.cpp; sourceTree = "<group>"; };
 		F73E320C2011589F00C4D975 /* RideRatings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideRatings.h; sourceTree = "<group>"; };
@@ -2611,7 +2611,7 @@
 				D4EC48E31C2637710024B507 /* g2.dat */,
 				D4EC48E41C2637710024B507 /* language */,
 				D43407E11D0E14CE00C2B3D4 /* shaders */,
-				D4EC48E51C2637710024B507 /* title */,
+				D4EC48E51C2637710024B507 /* sequence */,
 			);
 			name = data;
 			path = ../data;
@@ -3830,7 +3830,7 @@
 				D4EC48E71C2637710024B507 /* language in Resources */,
 				F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */,
 				D43407E21D0E14CE00C2B3D4 /* shaders in Resources */,
-				D4EC48E81C2637710024B507 /* title in Resources */,
+				D4EC48E81C2637710024B507 /* sequence in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3917,7 +3917,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/title\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/title\" ]]; then rm -r \"${SRCROOT}/data/title\"; fi\nmkdir -p \"${SRCROOT}/data/title\"\n\ncurl -L -o \"${SRCROOT}/data/title/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/title\" \"${SRCROOT}/data/title/$zipname\"\nrm \"${SRCROOT}/data/title/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
+			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/sequence\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/sequence\" ]]; then rm -r \"${SRCROOT}/data/sequence\"; fi\nmkdir -p \"${SRCROOT}/data/sequence\"\n\ncurl -L -o \"${SRCROOT}/data/sequence/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/sequence\" \"${SRCROOT}/data/sequence/$zipname\"\nrm \"${SRCROOT}/data/sequence/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
