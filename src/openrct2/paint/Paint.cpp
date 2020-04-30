@@ -150,7 +150,7 @@ static paint_struct* sub_9819_c(
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->tileElement = (TileElement*)session->CurrentlyDrawnItem;
+    ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
 
     return ps;
 }
@@ -817,7 +817,7 @@ paint_struct* sub_98196C(
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->tileElement = (TileElement*)session->CurrentlyDrawnItem;
+    ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
 
     session->LastRootPS = ps;
 

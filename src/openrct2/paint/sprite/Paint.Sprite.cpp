@@ -58,7 +58,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         {
             if (spr->generic.Is<Peep>())
             {
-                Peep* peep = (Peep*)spr;
+                const Peep* peep = reinterpret_cast<const Peep*>(spr);
                 if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
                 {
                     continue;
@@ -111,7 +111,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         switch (spr->generic.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_VEHICLE:
-                vehicle_paint(session, (Vehicle*)spr, image_direction);
+                vehicle_paint(session, reinterpret_cast<const Vehicle*>(spr), image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
                 {
@@ -120,13 +120,13 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 #endif
                 break;
             case SPRITE_IDENTIFIER_PEEP:
-                peep_paint(session, (Peep*)spr, image_direction);
+                peep_paint(session, reinterpret_cast<const Peep*>(spr), image_direction);
                 break;
             case SPRITE_IDENTIFIER_MISC:
                 misc_paint(session, spr, image_direction);
                 break;
             case SPRITE_IDENTIFIER_LITTER:
-                litter_paint(session, (Litter*)spr, image_direction);
+                litter_paint(session, reinterpret_cast<const Litter*>(spr), image_direction);
                 break;
             default:
                 assert(false);

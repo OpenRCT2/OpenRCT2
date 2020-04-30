@@ -828,11 +828,14 @@ static void record_session(const paint_session* session, std::vector<paint_sessi
     // Mind the offset needs to be calculated against the original `session`, not `session_copy`
     for (auto& ps : session_copy->PaintStructs)
     {
-        ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
+        ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>(
+            ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic)
+                                      : std::size(session->PaintStructs));
     }
     for (auto& quad : session_copy->Quadrants)
     {
-        quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
+        quad = reinterpret_cast<paint_struct*>(
+            quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
     }
 }
 

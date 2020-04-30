@@ -683,8 +683,7 @@ void save_game_as()
 
 static int32_t compare_autosave_file_paths(const void* a, const void* b)
 {
-    // TODO: CAST-IMPROVEMENT-NEEDED
-    return strcmp(*(char**)a, *(char**)b);
+    return strcmp(static_cast<const char*>(a), static_cast<const char*>(b));
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)

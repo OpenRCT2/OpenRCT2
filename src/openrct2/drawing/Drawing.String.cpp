@@ -46,7 +46,7 @@ int32_t gfx_get_string_width_new_lined(utf8* text)
     int32_t codepoint;
 
     int32_t maxWidth = 0;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0)
+    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
     {
         if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER)
         {
@@ -102,7 +102,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
     utf8* nextCh = text;
     utf8* clipCh = text;
     int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0)
+    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
     {
         if (utf8_is_format_code(codepoint))
         {
@@ -176,7 +176,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
     utf8* nextCh;
     int32_t codepoint;
     int32_t numCharactersOnLine = 0;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0)
+    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
     {
         if (codepoint == ' ')
         {
@@ -313,7 +313,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, (char*)"", COLOUR_BLACK, screenCoords);
+    gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
     screenCoords = { x, y };
     gCurrentFontFlags = 0;
 
@@ -429,7 +429,7 @@ void gfx_draw_string_centred_wrapped_partial(
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, (char*)"", colour, screenCoords);
+    gfx_draw_string(dpi, "", colour, screenCoords);
     format_string(buffer, 256, format, args);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -448,7 +448,7 @@ void gfx_draw_string_centred_wrapped_partial(
         utf8* ch = buffer;
         utf8* nextCh;
         int32_t codepoint;
-        while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0)
+        while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
         {
             if (!utf8_is_format_code(codepoint))
             {

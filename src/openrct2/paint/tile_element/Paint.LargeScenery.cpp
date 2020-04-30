@@ -103,7 +103,7 @@ static void large_scenery_sign_fit_text(const utf8* str, rct_large_scenery_text*
     safe_strcpy(fitStr, str, bufLen);
     int32_t w = 0;
     uint32_t codepoint;
-    while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, (const utf8**)&fitStrEnd)) != 0)
+    while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, const_cast<const utf8**>(&fitStrEnd))) != 0)
     {
         if (height)
         {
@@ -356,7 +356,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                             utf8* spacesrc = nullptr;
                             utf8* spacedst = nullptr;
                             int32_t w = 0;
-                            uint32_t codepoint = utf8_get_next(src, (const utf8**)&src);
+                            uint32_t codepoint = utf8_get_next(src, const_cast<const utf8**>(&src));
                             do
                             {
                                 w += large_scenery_sign_get_glyph(text, codepoint)->width;
@@ -367,7 +367,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                                 }
                             } while (w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) != nullptr
                                      && (srcold = src) != nullptr
-                                     && (codepoint = utf8_get_next(src, (const utf8**)&src)) != '\0');
+                                     && (codepoint = utf8_get_next(src, const_cast<const utf8**>(&src))) != '\0');
                             src = srcold;
                             if (spacesrc && codepoint)
                             {

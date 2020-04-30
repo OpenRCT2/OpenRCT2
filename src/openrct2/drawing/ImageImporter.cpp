@@ -142,7 +142,7 @@ std::tuple<void*, size_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32
     {
         yOffsets[y] = static_cast<uint16_t>(dst - buffer);
 
-        auto previousCode = (RLECode*)nullptr;
+        auto previousCode = static_cast<RLECode*>(nullptr);
         auto currentCode = reinterpret_cast<RLECode*>(dst);
         dst += 2;
 

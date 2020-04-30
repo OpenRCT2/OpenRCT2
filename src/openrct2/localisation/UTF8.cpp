@@ -179,7 +179,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours)
 
     while (true)
     {
-        char32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        char32_t code = utf8_get_next(readPtr, const_cast<const utf8**>(&readPtr));
 
         if (code == 0)
         {

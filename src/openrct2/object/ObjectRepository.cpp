@@ -523,7 +523,8 @@ private:
         chunkHeader.encoding = object_entry_group_encoding[objectType];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8_t*)data, chunkHeader);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+            encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
         // Save to file
         try
@@ -691,7 +692,7 @@ void* object_repository_load_object(const rct_object_entry* objectEntry)
             object->Load();
         }
     }
-    return (void*)object;
+    return static_cast<void*>(object);
 }
 
 void scenario_translate(scenario_index_entry* scenarioEntry)
@@ -786,7 +787,7 @@ bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)
 
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength)
 {
-    const uint8_t* entryBytePtr = (uint8_t*)entry;
+    const uint8_t* entryBytePtr = reinterpret_cast<const uint8_t*>(entry);
 
     uint32_t checksum = 0xF369A75B;
     checksum ^= entryBytePtr[0];
@@ -797,7 +798,7 @@ int32_t object_calculate_checksum(const rct_object_entry* entry, const void* dat
         checksum = rol32(checksum, 11);
     }
 
-    uint8_t* dataBytes = (uint8_t*)data;
+    const uint8_t* dataBytes = reinterpret_cast<const uint8_t*>(data);
     const size_t dataLength32 = dataLength - (dataLength & 31);
     for (size_t i = 0; i < 32; i++)
     {
