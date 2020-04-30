@@ -71,11 +71,105 @@ namespace OpenRCT2::Scripting
         }
         int32_t width_get() const
         {
-            return GetWindow()->width;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->width;
+            }
+            return 0;
+        }
+        void width_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_resize(w, value - w->width, 0);
+            }
         }
         int32_t height_get() const
         {
-            return GetWindow()->height;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->height;
+            }
+            return 0;
+        }
+        void height_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_resize(w, 0, value - w->height);
+            }
+        }
+        int32_t minWidth_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->min_width;
+            }
+            return 0;
+        }
+        void minWidth_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_set_resize(w, value, w->min_height, w->max_width, w->max_height);
+            }
+        }
+        int32_t maxWidth_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->max_width;
+            }
+            return 0;
+        }
+        void maxWidth_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_set_resize(w, w->min_width, w->min_height, value, w->max_height);
+            }
+        }
+        int32_t minHeight_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->min_height;
+            }
+            return 0;
+        }
+        void minHeight_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_set_resize(w, w->min_width, value, w->max_width, w->max_height);
+            }
+        }
+        int32_t maxHeight_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->max_height;
+            }
+            return 0;
+        }
+        void maxHeight_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                window_set_resize(w, w->min_width, w->min_height, w->max_width, value);
+            }
         }
         bool isSticky_get() const
         {
@@ -144,6 +238,16 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        int32_t tabIndex_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && w->classification == WC_CUSTOM)
+            {
+                return w->page;
+            }
+            return 0;
+        }
+
         void close()
         {
             auto w = GetWindow();
@@ -183,12 +287,17 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::number_get, nullptr, "number");
             dukglue_register_property(ctx, &ScWindow::x_get, &ScWindow::x_set, "x");
             dukglue_register_property(ctx, &ScWindow::y_get, &ScWindow::y_set, "y");
-            dukglue_register_property(ctx, &ScWindow::width_get, nullptr, "width");
-            dukglue_register_property(ctx, &ScWindow::height_get, nullptr, "height");
+            dukglue_register_property(ctx, &ScWindow::width_get, &ScWindow::width_set, "width");
+            dukglue_register_property(ctx, &ScWindow::height_get, &ScWindow::height_set, "height");
+            dukglue_register_property(ctx, &ScWindow::minWidth_get, &ScWindow::minWidth_set, "minWidth");
+            dukglue_register_property(ctx, &ScWindow::maxWidth_get, &ScWindow::maxWidth_set, "maxWidth");
+            dukglue_register_property(ctx, &ScWindow::minHeight_get, &ScWindow::minHeight_set, "minHeight");
+            dukglue_register_property(ctx, &ScWindow::maxHeight_get, &ScWindow::maxHeight_set, "maxHeight");
             dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
             dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
             dukglue_register_property(ctx, &ScWindow::colours_get, &ScWindow::colours_set, "colours");
             dukglue_register_property(ctx, &ScWindow::title_get, &ScWindow::title_set, "title");
+            dukglue_register_property(ctx, &ScWindow::tabIndex_get, nullptr, "tabIndex");
 
             dukglue_register_method(ctx, &ScWindow::close, "close");
             dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");

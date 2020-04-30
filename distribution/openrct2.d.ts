@@ -737,6 +737,11 @@ declare global {
     }
 
     interface ButtonWidget extends Widget {
+        /**
+         * Whether the button has a 3D border.
+         * By default, text buttons have borders and image buttons do not but it can be overridden.
+         */
+        border?: boolean;
         image: number;
         text: string;
         onClick: () => void;
@@ -745,18 +750,18 @@ declare global {
     interface CheckboxWidget extends Widget {
         text: string;
         isChecked: boolean;
-        onChanged: (isChecked: boolean) => void;
+        onChange: (isChecked: boolean) => void;
     }
 
     interface DropdownWidget extends Widget {
         items: string[];
         selectedIndex: number;
-        onChanged: (index: number) => void;
+        onChange: (index: number) => void;
     }
 
     interface LabelWidget extends Widget {
         text: string;
-        onChanged: (index: number) => void;
+        onChange: (index: number) => void;
     }
 
     interface SpinnerWidget extends Widget {
@@ -776,10 +781,15 @@ declare global {
         y: number;
         width: number;
         height: number;
+        minWidth: number;
+        maxWidth: number;
+        minHeight: number;
+        maxHeight: number;
         isSticky: boolean;
         colours: number[];
         title: string;
         widgets: Widget[];
+        tabIndex: number;
 
         close(): void;
         bringToFront(): void;
@@ -796,10 +806,28 @@ declare global {
         id?: number;
         minWidth?: number;
         minHeight?: number;
+        maxWidth?: number;
+        maxHeight?: number;
         widgets?: Widget[];
         colours?: number[];
+        tabs: WindowTabDesc[];
 
         onClose?: () => void;
+        onUpdate?: () => void;
+        tabChange?: () => void;
+    }
+
+    interface ImageAnimation {
+        frameBase: number;
+        frameCount?: number;
+        frameDuration?: number;
+        offsetX?: number;
+        offsetY?: number;
+    }
+
+    interface WindowTabDesc {
+        image: number | ImageAnimation;
+        widgets?: Widget[];
     }
 
     interface Viewport {

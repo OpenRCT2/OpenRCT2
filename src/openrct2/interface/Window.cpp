@@ -1317,8 +1317,8 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
     w->max_height = maxHeight;
 
     // Clamp width and height to minimum and maximum
-    int32_t width = std::clamp<int32_t>(w->width, minWidth, maxWidth);
-    int32_t height = std::clamp<int32_t>(w->height, minHeight, maxHeight);
+    int32_t width = std::clamp<int32_t>(w->width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
+    int32_t height = std::clamp<int32_t>(w->height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
 
     // Resize window if size has changed
     if (w->width != width || w->height != height)

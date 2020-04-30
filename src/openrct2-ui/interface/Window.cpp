@@ -146,6 +146,10 @@ rct_window* window_create(
     w->windowPos = screenCoords;
     w->width = width;
     w->height = height;
+    w->min_width = width;
+    w->max_width = width;
+    w->min_height = height;
+    w->max_height = height;
     w->viewport = nullptr;
     w->event_handlers = event_handlers;
     w->enabled_widgets = 0;

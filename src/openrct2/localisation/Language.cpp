@@ -208,7 +208,7 @@ std::string language_convert_string(const std::string_view& s)
                         state = PARSE_STATE::TOKEN;
                         break;
                     default:
-                        if (c >= 32)
+                        if (static_cast<uint8_t>(c) >= 32)
                         {
                             result.push_back(c);
                         }
