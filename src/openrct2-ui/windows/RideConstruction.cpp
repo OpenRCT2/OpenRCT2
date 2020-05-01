@@ -1870,7 +1870,7 @@ static void window_ride_construction_construct(rct_window* w)
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
-    int32_t x, y, z, direction, type;
+    int32_t direction, type;
     TileElement* tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -1901,47 +1901,41 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     }
 
     // Invalidate the selected track element or make sure it's at origin???
-    x = _currentTrackBegin.x;
-    y = _currentTrackBegin.y;
-    z = _currentTrackBegin.z;
     direction = _currentTrackPieceDirection;
     type = _currentTrackPieceType;
-    if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
+    auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+    if (newCoords == std::nullopt)
     {
         window_ride_construction_update_active_elements();
         return;
     }
 
     // Get the previous track element to go to after the selected track element is deleted
-    inputElement.x = x;
-    inputElement.y = y;
+    inputElement.x = newCoords->x;
+    inputElement.y = newCoords->y;
     inputElement.element = tileElement;
-    if (track_block_get_previous(x, y, tileElement, &trackBeginEnd))
+    if (track_block_get_previous(newCoords->x, newCoords->y, tileElement, &trackBeginEnd))
     {
-        x = trackBeginEnd.begin_x;
-        y = trackBeginEnd.begin_y;
-        z = trackBeginEnd.begin_z;
+        *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         direction = trackBeginEnd.begin_direction;
         type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         gGotoStartPlacementMode = false;
     }
-    else if (track_block_get_next(&inputElement, &outputElement, &z, &direction))
+    else if (track_block_get_next(&inputElement, &outputElement, &newCoords->z, &direction))
     {
-        x = outputElement.x;
-        y = outputElement.y;
+        newCoords->x = outputElement.x;
+        newCoords->y = outputElement.y;
         direction = outputElement.element->GetDirection();
         type = outputElement.element->AsTrack()->GetTrackType();
         gGotoStartPlacementMode = false;
     }
     else
     {
-        x = _currentTrackBegin.x;
-        y = _currentTrackBegin.y;
-        z = _currentTrackBegin.z;
         direction = _currentTrackPieceDirection;
         type = _currentTrackPieceType;
+        newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
 
-        if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
+        if (newCoords == std::nullopt)
         {
             window_ride_construction_update_active_elements();
             return;
@@ -1949,7 +1943,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
         const rct_preview_track* trackBlock = get_track_def_from_ride_index(
             _currentRideIndex, tileElement->AsTrack()->GetTrackType());
-        z = (tileElement->GetBaseZ()) - trackBlock->z;
+        newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
 
@@ -1968,7 +1962,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
             if (ride != nullptr)
             {
                 _stationConstructed = ride->num_stations != 0;
-                window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
+                window_ride_construction_mouseup_demolish_next_piece(newCoords->x, newCoords->y, newCoords->z, direction, type);
             }
         }
     });
@@ -2516,10 +2510,10 @@ void window_ride_construction_update_active_elements_impl()
     _selectedTrackType = 255;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
-        int32_t x = _currentTrackBegin.x;
-        int32_t y = _currentTrackBegin.y;
-        int32_t z = _currentTrackBegin.z;
-        if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0))
+        if (sub_6C683D(
+                { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
+                &tileElement, 0)
+            != std::nullopt)
         {
             _selectedTrackType = tileElement->AsTrack()->GetTrackType();
             if (track_element_has_speed_setting(tileElement->AsTrack()->GetTrackType()))
@@ -2622,24 +2616,25 @@ void sub_6C94D8()
             map_invalidate_tile_full({ x, y });
             break;
         case RIDE_CONSTRUCTION_STATE_SELECTED:
+        {
             _rideConstructionArrowPulseTime--;
             if (_rideConstructionArrowPulseTime >= 0)
                 break;
 
             _rideConstructionArrowPulseTime = 5;
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
-            x = _currentTrackBegin.x;
-            y = _currentTrackBegin.y;
-            z = _currentTrackBegin.z;
             direction = _currentTrackPieceDirection & 3;
             type = _currentTrackPieceType;
-            if (sub_6C683D(
-                    &x, &y, &z, direction, type, 0, nullptr, _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? 2 : 1))
+            auto newCoords = sub_6C683D(
+                { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr,
+                _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? 2 : 1);
+            if (newCoords == std::nullopt)
             {
                 ride_construction_remove_ghosts();
                 _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
             }
             break;
+        }
         case 6:
         case 7:
         case 8:
@@ -3409,11 +3404,9 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
  */
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation)
 {
-    int32_t x, y, z;
-    x = _currentTrackBegin.x;
-    y = _currentTrackBegin.y;
-    z = _currentTrackBegin.z;
-    sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, seatRotation, nullptr, (1 << 5));
+    sub_6C683D(
+        { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, seatRotation,
+        nullptr, (1 << 5));
     window_ride_construction_update_active_elements();
 }
 
@@ -3442,16 +3435,14 @@ static void loc_6C7502(int32_t al)
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
 {
     TileElement* tileElement;
-    int32_t x, y, z;
 
-    x = _currentTrackBegin.x;
-    y = _currentTrackBegin.y;
-    z = _currentTrackBegin.z;
-    if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0))
+    if (sub_6C683D(
+            { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
+            &tileElement, 0)
+        != std::nullopt)
     {
         auto trackSetBrakeSpeed = TrackSetBrakeSpeedAction(
-            { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z }, tileElement->AsTrack()->GetTrackType(),
-            brakesSpeed);
+            _currentTrackBegin, tileElement->AsTrack()->GetTrackType(), brakesSpeed);
         trackSetBrakeSpeed.SetCallback(
             [](const GameAction* ga, const GameActionResult* result) { window_ride_construction_update_active_elements(); });
         GameActions::Execute(&trackSetBrakeSpeed);
