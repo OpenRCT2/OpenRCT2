@@ -186,11 +186,15 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
+    auto newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-    if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, trackType, 0, &trackElement.element, 0))
+    if (newCoords == std::nullopt)
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
+    trackElement.x = newCoords->x;
+    trackElement.y = newCoords->y;
+    z = newCoords->z;
 
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
     // Used in the following loop to know when we have
@@ -241,11 +245,15 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         z = trackElement.element->GetBaseZ();
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
+        newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-        if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, trackType, 0, &trackElement.element, 0))
+        if (newCoords == std::nullopt)
         {
             break;
         }
+        trackElement.x = newCoords->x;
+        trackElement.y = newCoords->y;
+        z = newCoords->z;
 
         if (track_elements.size() > TD6MaxTrackElements)
         {

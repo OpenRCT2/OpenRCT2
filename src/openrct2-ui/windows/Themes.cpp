@@ -523,8 +523,8 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             }
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
             dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
             break;

@@ -1147,44 +1147,40 @@ void ride_clear_blocked_tiles(Ride* ride)
  * di : output_element
  * bp : flags
  */
-int32_t sub_6C683D(
-    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
-    uint16_t flags)
+std::optional<CoordsXYZ> sub_6C683D(
+    const CoordsXYZD& location, int32_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
-    auto location = CoordsXYZD{ *x, *y, *z, static_cast<Direction>(direction) };
     auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0);
     if (trackElement == nullptr)
     {
         trackElement = map_get_track_element_at_of_type(location, type);
         if (trackElement == nullptr)
         {
-            return 1;
+            return std::nullopt;
         }
     }
 
     // Possibly z should be & 0xF8
     auto trackBlock = get_track_def_from_ride_index(trackElement->GetRideIndex(), type);
     if (trackBlock == nullptr)
-        return 1;
+        return std::nullopt;
 
     // Now find all the elements that belong to this track piece
     int32_t sequence = trackElement->GetSequenceIndex();
     uint8_t mapDirection = trackElement->GetDirection();
 
     CoordsXY offsets = { trackBlock[sequence].x, trackBlock[sequence].y };
-    CoordsXY newCoords = { *x, *y };
+    CoordsXY newCoords = location;
     newCoords += offsets.Rotate(direction_reverse(mapDirection));
 
-    *x = newCoords.x;
-    *y = newCoords.y;
-    *z -= trackBlock[sequence].z;
+    auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock[sequence].z };
 
-    int32_t start_x = *x, start_y = *y, start_z = *z;
-    *z += trackBlock[0].z;
+    int32_t start_z = retCoordsXYZ.z;
+    retCoordsXYZ.z += trackBlock[0].z;
     for (int32_t i = 0; trackBlock[i].index != 0xFF; ++i)
     {
-        CoordsXY cur = { start_x, start_y };
+        CoordsXY cur = { retCoordsXYZ };
         offsets = { trackBlock[i].x, trackBlock[i].y };
         cur += offsets.Rotate(mapDirection);
         int32_t cur_z = start_z + trackBlock[i].z;
@@ -1192,10 +1188,10 @@ int32_t sub_6C683D(
         map_invalidate_tile_full(cur);
 
         trackElement = map_get_track_element_at_of_type_seq(
-            { cur.x, cur.y, cur_z, static_cast<Direction>(direction) }, type, trackBlock[i].index);
+            { cur, cur_z, static_cast<Direction>(location.direction) }, type, trackBlock[i].index);
         if (trackElement == nullptr)
         {
-            return 1;
+            return std::nullopt;
         }
         if (i == 0 && output_element != nullptr)
         {
@@ -1226,7 +1222,7 @@ int32_t sub_6C683D(
             trackElement->SetHasCableLift(false);
         }
     }
-    return 0;
+    return retCoordsXYZ;
 }
 
 void ride_restore_provisional_track_piece()
@@ -1316,15 +1312,12 @@ void ride_construction_remove_ghosts()
  */
 void ride_construction_invalidate_current_track()
 {
-    int32_t x, y, z;
-
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_SELECTED:
-            x = _currentTrackBegin.x;
-            y = _currentTrackBegin.y;
-            z = _currentTrackBegin.z;
-            sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, nullptr, 1);
+            sub_6C683D(
+                { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
+                nullptr, 1);
             break;
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
         case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
@@ -1544,13 +1537,11 @@ void ride_select_next_section()
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
         ride_construction_invalidate_current_track();
-        int32_t x = _currentTrackBegin.x;
-        int32_t y = _currentTrackBegin.y;
-        int32_t z = _currentTrackBegin.z;
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
-        if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
+        auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+        if (newCoords == std::nullopt)
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
             window_ride_construction_update_active_elements();
@@ -1561,13 +1552,13 @@ void ride_select_next_section()
         virtual_floor_invalidate();
 
         CoordsXYE inputElement, outputElement;
-        inputElement.x = x;
-        inputElement.y = y;
+        inputElement.x = newCoords->x;
+        inputElement.y = newCoords->y;
         inputElement.element = tileElement;
-        if (track_block_get_next(&inputElement, &outputElement, &z, &direction))
+        if (track_block_get_next(&inputElement, &outputElement, &newCoords->z, &direction))
         {
-            x = outputElement.x;
-            y = outputElement.y;
+            newCoords->x = outputElement.x;
+            newCoords->y = outputElement.y;
             tileElement = outputElement.element;
             if (!scenery_tool_is_active())
             {
@@ -1578,9 +1569,7 @@ void ride_select_next_section()
         else
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
-            _currentTrackBegin.x = outputElement.x;
-            _currentTrackBegin.y = outputElement.y;
-            _currentTrackBegin.z = z;
+            _currentTrackBegin = { outputElement, newCoords->z };
             _currentTrackPieceDirection = direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
@@ -1590,9 +1579,7 @@ void ride_select_next_section()
             return;
         }
 
-        _currentTrackBegin.x = x;
-        _currentTrackBegin.y = y;
-        _currentTrackBegin.z = z;
+        _currentTrackBegin = *newCoords;
         _currentTrackPieceDirection = tileElement->GetDirection();
         _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
         _currentTrackSelectionFlags = 0;
@@ -1617,13 +1604,11 @@ void ride_select_previous_section()
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
         ride_construction_invalidate_current_track();
-        int32_t x = _currentTrackBegin.x;
-        int32_t y = _currentTrackBegin.y;
-        int32_t z = _currentTrackBegin.z;
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
-        if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
+        auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+        if (newCoords == std::nullopt)
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
             window_ride_construction_update_active_elements();
@@ -1634,7 +1619,7 @@ void ride_select_previous_section()
         virtual_floor_invalidate();
 
         track_begin_end trackBeginEnd;
-        if (track_block_get_previous(x, y, tileElement, &trackBeginEnd))
+        if (track_block_get_previous(newCoords->x, newCoords->y, tileElement, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
             _currentTrackBegin.y = trackBeginEnd.begin_y;
@@ -1834,20 +1819,16 @@ bool ride_modify(CoordsXYE* input)
     if (tileElement.element == nullptr || tileElement.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return false;
 
-    int32_t x = tileElement.x;
-    int32_t y = tileElement.y;
-    int32_t z = tileElement.element->GetBaseZ();
-    int32_t direction = tileElement.element->GetDirection();
+    auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
+    auto direction = tileElement.element->GetDirection();
     int32_t type = tileElement.element->AsTrack()->GetTrackType();
-
-    if (sub_6C683D(&x, &y, &z, direction, type, 0, nullptr, 0))
+    auto newCoords = sub_6C683D({ tileCoords, direction }, type, 0, nullptr, 0);
+    if (newCoords == std::nullopt)
         return false;
 
     _currentRideIndex = rideIndex;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-    _currentTrackBegin.x = x;
-    _currentTrackBegin.y = y;
-    _currentTrackBegin.z = z;
+    _currentTrackBegin = *newCoords;
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
@@ -1867,9 +1848,7 @@ bool ride_modify(CoordsXYE* input)
     }
 
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-    _currentTrackBegin.x = x;
-    _currentTrackBegin.y = y;
-    _currentTrackBegin.z = z;
+    _currentTrackBegin = *newCoords;
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
@@ -1880,9 +1859,7 @@ bool ride_modify(CoordsXYE* input)
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_BACK)
     {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-        _currentTrackBegin.x = x;
-        _currentTrackBegin.y = y;
-        _currentTrackBegin.z = z;
+        _currentTrackBegin = *newCoords;
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
@@ -4154,14 +4131,12 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
         if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
             break;
 
-        int32_t x = trackBeginEnd.begin_x;
-        int32_t y = trackBeginEnd.begin_y;
-        int32_t z = trackBeginEnd.begin_z;
+        auto trackCoords = CoordsXYZ{ trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         int32_t direction = trackBeginEnd.begin_direction;
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-        sub_6C683D(&x, &y, &z, direction, trackType, 0, &returnTrackElement, 0);
-        returnX = x;
-        returnY = y;
+        auto newCoords = sub_6C683D({ trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnTrackElement, 0);
+        returnX = newCoords == std::nullopt ? trackCoords.x : newCoords->x;
+        returnY = newCoords == std::nullopt ? trackCoords.y : newCoords->y;
     };
 
     trackType = returnTrackElement->AsTrack()->GetTrackType();
@@ -4914,9 +4889,9 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         if (isApplying)
         {
             auto tmpLoc = CoordsXYZ{ it.current, tileElement->GetBaseZ() };
-            int32_t direction = tileElement->GetDirection();
+            auto direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
-            sub_6C683D(&tmpLoc.x, &tmpLoc.y, &tmpLoc.z, direction, trackType, 0, &tileElement, flags);
+            sub_6C683D({ tmpLoc, direction }, trackType, 0, &tileElement, flags);
         }
     }
     return true;

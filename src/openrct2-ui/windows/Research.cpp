@@ -463,7 +463,7 @@ static void window_research_funding_mousedown(rct_window* w, rct_widgetindex wid
         gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4,
         dropdownWidget->right - dropdownWidget->left - 3);
 

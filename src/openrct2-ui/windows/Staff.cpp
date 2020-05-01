@@ -567,10 +567,9 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
     gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
     int32_t extray = widget->bottom - widget->top + 1;
-    window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
+    window_dropdown_show_text(dropdownPos, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
 
     Peep* peep = GET_PEEP(w->number);
@@ -1433,11 +1432,10 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     // Get the dropdown box widget instead of button.
     widget--;
 
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
     int32_t extray = widget->bottom - widget->top + 1;
     int32_t width = widget->right - widget->left - 3;
-    window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
+    window_dropdown_show_text_custom_width(dropdownPos, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
     // See above note.
     if (checkedIndex != -1)

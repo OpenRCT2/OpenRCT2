@@ -1310,7 +1310,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text_custom_width(
-                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
                         w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
                     dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
@@ -1331,7 +1331,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text(
-                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
                         w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
 
                     dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
@@ -1345,7 +1345,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
                     window_dropdown_show_text_custom_width(
-                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
                         w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 
                     dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
@@ -2195,7 +2195,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
 {
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1], 0,
         DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
 }
 

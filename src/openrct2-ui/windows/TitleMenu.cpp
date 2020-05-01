@@ -185,7 +185,7 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
         window_dropdown_show_text(
-            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
             TRANSLUCENT(w->colours[0]), DROPDOWN_FLAG_STAY_OPEN, 5);
     }
 }

@@ -737,7 +737,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsArgs[i] = WeatherTypes[i];
             }
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
                 dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 6,
                 dropdownWidget->right - dropdownWidget->left - 3);
 
@@ -758,7 +758,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
                 dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3,
                 dropdownWidget->right - dropdownWidget->left - 3);
             dropdown_set_checked(_selectedStaffSpeed, true);
