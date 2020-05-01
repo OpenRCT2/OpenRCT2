@@ -54,6 +54,7 @@ namespace OpenRCT2::Scripting
 
         void range_set(DukValue value)
         {
+            map_invalidate_selection_rect();
             if (value.type() == DukValue::Type::OBJECT)
             {
                 auto range = GetMapRange(value);
@@ -96,6 +97,7 @@ namespace OpenRCT2::Scripting
 
         void tiles_set(DukValue value)
         {
+            map_invalidate_map_selection_tiles();
             gMapSelectionTiles.clear();
             if (value.is_array())
             {

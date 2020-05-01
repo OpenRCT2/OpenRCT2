@@ -719,6 +719,7 @@ declare global {
         readonly windows: number;
         readonly mainViewport: Viewport;
         readonly tileSelection: TileSelection;
+        readonly tool: Tool;
 
         getWindow(id: number): Window;
         getWindow(classification: string): Window;
@@ -741,44 +742,30 @@ declare global {
         tiles: Coord2[];
     }
 
-    /**
-     * The type of tool.
-     * Raw will provide only the screen coordinates of where the cursor is.
-     * Tile will provide a coordinates of the tile the cursor is over.
-     * Interact will provide information about the ride or entity the cursor is over.
-     */
-    type ToolType = "raw" | "tile" | "interact";
+    interface Tool {
+        id: string;
+        cursor: CursorType;
 
-    type InteractionType =
-        "none" |
-        "surface" |
-        "sprite" |
-        "ride" |
-        "water" |
-        "scenery" |
-        "footpath" |
-        "footpath_addition" |
-        "park" |
-        "wall" |
-        "large_scenery" |
-        "label" |
-        "banner";
+        cancel: () => void;
+    }
 
     interface ToolEventArgs {
-        kind: InteractionType;
-        screenCoords: Coord2;
-        mapCoords?: Coord3;
-        tileElementIndex?: number;
-        entity?: Entity;
+        readonly isDown: boolean;
+        readonly screenCoords: Coord2;
+        readonly mapCoords?: Coord3;
+        readonly tileElementIndex?: number;
+        readonly entityId?: number;
     }
 
     /**
      * Describes the properties and event handlers for a custom tool.
      */
     interface ToolDesc {
+        id: string;
         type: ToolType;
         cursor: CursorType;
 
+        onStart: () => void;
         onDown: (e: ToolEventArgs) => void;
         onMove: (e: ToolEventArgs) => void;
         onUp: (e: ToolEventArgs) => void;
