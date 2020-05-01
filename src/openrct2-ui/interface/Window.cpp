@@ -202,24 +202,20 @@ rct_window* window_create_auto_pos(
     // }
 
     // Place window in an empty corner of the screen
-    int32_t x = 0;
-    int32_t y = 30;
-    if (window_fits_within_space({ x, y }, width, height))
+    auto screenPos = ScreenCoordsXY{ 0, 30 };
+    if (window_fits_within_space(screenPos, width, height))
         goto foundSpace;
 
-    x = screenWidth - width;
-    y = 30;
-    if (window_fits_within_space({ x, y }, width, height))
+    screenPos = { screenWidth - width, 30 };
+    if (window_fits_within_space(screenPos, width, height))
         goto foundSpace;
 
-    x = 0;
-    y = screenHeight - 34 - height;
-    if (window_fits_within_space({ x, y }, width, height))
+    screenPos = { 0, screenHeight - 34 - height };
+    if (window_fits_within_space(screenPos, width, height))
         goto foundSpace;
 
-    x = screenWidth - width;
-    y = screenHeight - 34 - height;
-    if (window_fits_within_space({ x, y }, width, height))
+    screenPos = { screenWidth - width, screenHeight - 34 - height };
+    if (window_fits_within_space(screenPos, width, height))
         goto foundSpace;
 
     // Place window next to another
@@ -228,44 +224,36 @@ rct_window* window_create_auto_pos(
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        x = w->windowPos.x + w->width + 2;
-        y = w->windowPos.y;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x - w->width - 2;
-        y = w->windowPos.y;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x;
-        y = w->windowPos.y + w->height + 2;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x, w->windowPos.y + w->height + 2 };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x;
-        y = w->windowPos.y - w->height - 2;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x, w->windowPos.y - w->height - 2 };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x + w->width + 2;
-        y = w->windowPos.y - w->height - 2;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y - w->height - 2 };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x - w->width - 2;
-        y = w->windowPos.y - w->height - 2;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y - w->height - 2 };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x + w->width + 2;
-        y = w->windowPos.y + w->height + 2;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y + w->height + 2 };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x - w->width - 2;
-        y = w->windowPos.y + w->height + 2;
-        if (window_fits_within_space({ x, y }, width, height))
+        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y + w->height + 2 };
+        if (window_fits_within_space(screenPos, width, height))
             goto foundSpace;
     }
 
@@ -275,47 +263,42 @@ rct_window* window_create_auto_pos(
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        x = w->windowPos.x + w->width + 2;
-        y = w->windowPos.y;
-        if (window_fits_on_screen({ x, y }, width, height))
+        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y };
+        if (window_fits_on_screen(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x - w->width - 2;
-        y = w->windowPos.y;
-        if (window_fits_on_screen({ x, y }, width, height))
+        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y };
+        if (window_fits_on_screen(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x;
-        y = w->windowPos.y + w->height + 2;
-        if (window_fits_on_screen({ x, y }, width, height))
+        screenPos = { w->windowPos.x, w->windowPos.y + w->height + 2 };
+        if (window_fits_on_screen(screenPos, width, height))
             goto foundSpace;
 
-        x = w->windowPos.x;
-        y = w->windowPos.y - w->height - 2;
-        if (window_fits_on_screen({ x, y }, width, height))
+        screenPos = { w->windowPos.x, w->windowPos.y - w->height - 2 };
+        if (window_fits_on_screen(screenPos, width, height))
             goto foundSpace;
     }
 
     // Cascade
-    x = 0;
-    y = 30;
+    screenPos = { 0, 30 };
     for (auto& w : g_window_list)
     {
-        if (x == w->windowPos.x && y == w->windowPos.y)
+        if (screenPos == w->windowPos)
         {
-            x += 5;
-            y += 5;
+            screenPos.x += 5;
+            screenPos.y += 5;
         }
     }
 
     // Clamp to inside the screen
 foundSpace:
-    if (x < 0)
-        x = 0;
-    if (x + width > screenWidth)
-        x = screenWidth - width;
+    if (screenPos.x < 0)
+        screenPos.x = 0;
+    if (screenPos.x + width > screenWidth)
+        screenPos.x = screenWidth - width;
 
-    return window_create(ScreenCoordsXY(x, y), width, height, event_handlers, cls, flags);
+    return window_create(screenPos, width, height, event_handlers, cls, flags);
 }
 
 rct_window* window_create_centred(
@@ -325,9 +308,8 @@ rct_window* window_create_centred(
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
 
-    int32_t x = (screenWidth - width) / 2;
-    int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2);
-    return window_create(ScreenCoordsXY(x, y), width, height, event_handlers, cls, flags);
+    auto screenPos = ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
+    return window_create(screenPos, width, height, event_handlers, cls, flags);
 }
 
 static int32_t window_get_widget_index(rct_window* w, rct_widget* widget)

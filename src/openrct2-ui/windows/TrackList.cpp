@@ -123,21 +123,19 @@ rct_window* window_track_list_open(RideSelection item)
     String::Set(_filterString, sizeof(_filterString), "");
     track_list_load_designs(item);
 
-    int32_t x, y;
+    ScreenCoordsXY screenPos{};
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
-        x = screenWidth / 2 - 300;
-        y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
+        screenPos = { screenWidth / 2 - 300, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
     }
     else
     {
-        x = 0;
-        y = TOP_TOOLBAR_HEIGHT + 2;
+        screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
 
-    rct_window* w = window_create(ScreenCoordsXY(x, y), 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = window_create(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
