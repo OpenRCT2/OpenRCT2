@@ -140,6 +140,7 @@ The following people are not part of the development team, but have been contrib
 * (WantDiscussion)
 * Tomáš Žilínek (TomasZilinek)
 * Mustapha Elghoul (mustaphaelghoul)
+* Tyler Leamon (tylerleamon)
 
 ## Toolchain
 * (Balletie) - macOS
