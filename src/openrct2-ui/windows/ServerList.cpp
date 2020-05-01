@@ -272,8 +272,6 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         const auto& server = _serverList.GetServer(serverIndex);
 
         auto listWidget = &w->widgets[WIDX_LIST];
-        int32_t ddx = w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left;
-        int32_t ddy = w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top;
 
         gDropdownItemsFormat[0] = STR_JOIN_GAME;
         if (server.favourite)
@@ -284,7 +282,9 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         {
             gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
         }
-        window_dropdown_show_text({ ddx, ddy }, 0, COLOUR_GREY, 0, 2);
+        auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left,
+                                           w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top };
+        window_dropdown_show_text(dropdownPos, 0, COLOUR_GREY, 0, 2);
     }
 }
 
