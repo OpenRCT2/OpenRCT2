@@ -4407,7 +4407,7 @@ static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
     }
 }
 
-static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_t y)
+static void window_ride_set_track_colour_scheme(rct_window* w, const ScreenCoordsXY& screenPos)
 {
     TileElement* tileElement;
     uint8_t newColourScheme;
@@ -4416,9 +4416,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
     newColourScheme = static_cast<uint8_t>(w->ride_colour);
 
     CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos({ x, y }, VIEWPORT_INTERACTION_MASK_RIDE, mapCoord, &interactionType, &tileElement, nullptr);
-    x = mapCoord.x;
-    y = mapCoord.y;
+    get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_RIDE, mapCoord, &interactionType, &tileElement, nullptr);
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
@@ -4432,7 +4430,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
     z = tileElement->GetBaseZ();
     direction = tileElement->GetDirection();
     auto gameAction = RideSetColourSchemeAction(
-        CoordsXYZD{ x, y, z, static_cast<Direction>(direction) }, tileElement->AsTrack()->GetTrackType(), newColourScheme);
+        CoordsXYZD{ mapCoord, z, static_cast<Direction>(direction) }, tileElement->AsTrack()->GetTrackType(), newColourScheme);
     GameActions::Execute(&gameAction);
 }
 
@@ -4749,7 +4747,7 @@ static void window_ride_colour_update(rct_window* w)
 static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
-        window_ride_set_track_colour_scheme(w, screenCoords.x, screenCoords.y);
+        window_ride_set_track_colour_scheme(w, screenCoords);
 }
 
 /**
@@ -4759,7 +4757,7 @@ static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetInd
 static void window_ride_colour_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
-        window_ride_set_track_colour_scheme(w, screenCoords.x, screenCoords.y);
+        window_ride_set_track_colour_scheme(w, screenCoords);
 }
 
 /**
