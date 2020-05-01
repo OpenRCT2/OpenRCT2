@@ -5467,7 +5467,7 @@ void Vehicle::UpdateSound()
 
     switch (vehicleEntry->sound_range)
     {
-        case 3:
+        case SOUND_RANGE_WHISTLE:
             screamId = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
@@ -5486,7 +5486,7 @@ void Vehicle::UpdateSound()
             screamVolume = 255;
             break;
 
-        case 4:
+        case SOUND_RANGE_BELL:
             screamId = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
@@ -5511,7 +5511,7 @@ void Vehicle::UpdateSound()
                 screamId = UpdateScreamSound();
                 if (screamId == SoundId::NoScream)
                     screamId = SoundId::Null;
-                if (screamId == SoundId::Null)
+                else if (screamId == SoundId::Null)
                     goto loc_6D7A97;
                 break;
             }
@@ -5612,13 +5612,13 @@ produceScream:
         {
             switch (vehicleEntry->sound_range)
             {
-                case 0:
+                case SOUND_RANGE_SCREAMS_0:
                     scream_sound_id = byte_9A3A14[r % 2];
                     break;
-                case 1:
+                case SOUND_RANGE_SCREAMS_1:
                     scream_sound_id = byte_9A3A18[r % 7];
                     break;
-                case 2:
+                case SOUND_RANGE_SCREAMS_2:
                     scream_sound_id = byte_9A3A16[r % 2];
                     break;
                 default:

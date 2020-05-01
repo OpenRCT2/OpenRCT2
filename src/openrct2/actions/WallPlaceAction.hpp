@@ -260,7 +260,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -351,7 +351,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);

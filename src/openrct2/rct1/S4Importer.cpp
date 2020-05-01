@@ -2063,7 +2063,7 @@ private:
                 }
                 else
                 {
-                    uint8_t railingsEntryIndex;
+                    ObjectEntryIndex railingsEntryIndex;
                     switch (src2->GetRCT1SupportType())
                     {
                         case RCT1_PATH_SUPPORT_TYPE_COATED_WOOD:
@@ -2083,10 +2083,10 @@ private:
                 }
 
                 // Additions
-                uint8_t additionType = dst2->GetAddition();
+                ObjectEntryIndex additionType = dst2->GetAddition();
                 if (additionType != RCT1_PATH_ADDITION_NONE)
                 {
-                    uint8_t normalisedType = RCT1::NormalisePathAddition(additionType);
+                    ObjectEntryIndex normalisedType = RCT1::NormalisePathAddition(additionType);
                     entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
