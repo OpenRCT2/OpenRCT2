@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -758,7 +758,11 @@ std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukV
     auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
     if (!expenditureType.empty())
     {
-        result->Expenditure = StringToExpenditureType(expenditureType);
+        auto expenditure = StringToExpenditureType(expenditureType);
+        if (expenditure != ExpenditureType::Count)
+        {
+            result->Expenditure = expenditure;
+        }
     }
     return result;
 }
@@ -804,15 +808,12 @@ std::string_view ScriptEngine::ExpenditureTypeToString(ExpenditureType expenditu
     return {};
 }
 
-ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view expenditureType)
+ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view& expenditureType)
 {
-    size_t i = 0;
-    for (auto sz : ExpenditureTypes)
+    auto it = std::find(std::begin(ExpenditureTypes), std::end(ExpenditureTypes), expenditureType);
+    if (it != std::end(ExpenditureTypes))
     {
-        if (expenditureType == sz)
-        {
-            return static_cast<ExpenditureType>(i);
-        }
+        return static_cast<ExpenditureType>(std::distance(std::begin(ExpenditureTypes), it));
     }
     return ExpenditureType::Count;
 }

@@ -202,7 +202,7 @@ namespace OpenRCT2::Scripting
         DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result);
         DukValue PositionToDuk(const CoordsXYZ& position);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
-        static ExpenditureType StringToExpenditureType(const std::string_view expenditureType);
+        static ExpenditureType StringToExpenditureType(const std::string_view& expenditureType);
 
         void InitSharedStorage();
         void LoadSharedStorage();
