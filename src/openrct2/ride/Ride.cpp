@@ -4402,7 +4402,7 @@ static Vehicle* vehicle_create_car(
             vehicle->sprite_direction = scenario_rand() & 0x1E;
             chosenLoc.y = y + (scenario_rand() & 0xFF);
             chosenLoc.x = x + (scenario_rand() & 0xFF);
-        } while (vehicle_update_dodgems_collision(vehicle, chosenLoc.x, chosenLoc.y, nullptr));
+        } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc, nullptr));
 
         sprite_move(chosenLoc.x, chosenLoc.y, z, vehicle);
     }
@@ -4740,7 +4740,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
             {
                 Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
 
-                rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+                auto vehicleEntry = vehicle->Entry();
 
                 if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
                 {
@@ -7483,7 +7483,7 @@ void fix_invalid_vehicle_sprite_sizes()
                     break;
                 }
 
-                rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+                auto vehicleEntry = vehicle->Entry();
                 if (vehicleEntry == nullptr)
                 {
                     break;

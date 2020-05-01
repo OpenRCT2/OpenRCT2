@@ -725,7 +725,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             break;
         case RIDE_TYPE_MINE_TRAIN_COASTER:
         case RIDE_TYPE_GHOST_TRAIN:
-            if (vehicle == vehicle_get_head(vehicle))
+            if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
@@ -748,7 +748,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
         case RIDE_TYPE_SPLASH_BOATS:
         case RIDE_TYPE_WATER_COASTER:
         {
-            Vehicle* vehicle_draw = vehicle_get_head(vehicle);
+            Vehicle* vehicle_draw = vehicle->TrainHead();
             if (vehicle_draw->next_vehicle_on_train != SPRITE_INDEX_NULL)
             {
                 vehicle_draw = GET_VEHICLE(vehicle_draw->next_vehicle_on_train);
@@ -770,7 +770,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             lightfx_add_3d_light(
                 vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y, vehicle->z + 12,
                 LIGHTFX_LIGHT_TYPE_SPOT_2);
-            if (vehicle == vehicle_get_head(vehicle))
+            if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
@@ -783,7 +783,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
                     vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2,
                     LIGHTFX_LIGHT_TYPE_LANTERN_3);
             }
-            if (vehicle == vehicle_get_tail(vehicle))
+            if (vehicle == vehicle->TrainTail())
             {
                 place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
@@ -798,7 +798,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             }
             break;
         case RIDE_TYPE_MINIATURE_RAILWAY:
-            if (vehicle == vehicle_get_head(vehicle))
+            if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;

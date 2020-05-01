@@ -2974,18 +2974,19 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
  *
  *  rct2: 0x006D9EB0
  */
-void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle)
+void Vehicle::PeepEasterEggHereWeAre() const
 {
+    const Vehicle* vehicle = this;
     uint16_t spriteId = vehicle->sprite_index;
     do
     {
         vehicle = GET_VEHICLE(spriteId);
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
         {
-            Peep* peep = GET_PEEP(vehicle->peep[i]);
-            if (peep->peep_flags & PEEP_FLAGS_HERE_WE_ARE)
+            Peep* curPeep = GET_PEEP(vehicle->peep[i]);
+            if (curPeep->peep_flags & PEEP_FLAGS_HERE_WE_ARE)
             {
-                peep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
+                curPeep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, curPeep->current_ride);
             }
         }
     } while ((spriteId = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
@@ -3172,7 +3173,7 @@ void Vehicle::UpdateDeparting()
         }
 
         sub_state = 1;
-        vehicle_peep_easteregg_here_we_are(this);
+        PeepEasterEggHereWeAre();
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
@@ -4156,7 +4157,7 @@ void Vehicle::UpdateTravellingCableLift()
         }
 
         sub_state = 1;
-        vehicle_peep_easteregg_here_we_are(this);
+        PeepEasterEggHereWeAre();
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
             if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
@@ -4260,7 +4261,7 @@ void Vehicle::UpdateMotionBoatHire()
     _vehicleVelocityF64E08 = velocity;
     _vehicleVelocityF64E0C = (velocity >> 10) * 42;
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6180,8 +6181,9 @@ void vehicle_set_map_toolbar(const Vehicle* vehicle)
     }
 }
 
-Vehicle* vehicle_get_head(const Vehicle* vehicle)
+Vehicle* Vehicle::TrainHead() const
 {
+    const Vehicle* vehicle = this;
     Vehicle* prevVehicle;
 
     for (;;)
@@ -6198,8 +6200,9 @@ Vehicle* vehicle_get_head(const Vehicle* vehicle)
     return const_cast<Vehicle*>(vehicle);
 }
 
-Vehicle* vehicle_get_tail(const Vehicle* vehicle)
+Vehicle* Vehicle::TrainTail() const
 {
+    const Vehicle* vehicle = this;
     uint16_t spriteIndex;
 
     while ((spriteIndex = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL)
@@ -6283,7 +6286,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         location.x += Unk9A36C4[oldCollisionDirection + 1].x;
         location.y += Unk9A36C4[oldCollisionDirection + 1].y;
 
-        if (!vehicle_update_dodgems_collision(this, location.x, location.y, &collideSprite))
+        if (!DodgemsCarWouldCollideAt(location, &collideSprite))
         {
             Invalidate();
             sprite_move(location.x, location.y, location.z, this);
@@ -6312,7 +6315,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
-            if (vehicle_update_dodgems_collision(this, location.x, location.y, &collideSprite))
+            if (DodgemsCarWouldCollideAt(location, &collideSprite))
                 break;
 
             remaining_distance -= Unk9A36C4[direction].distance;
@@ -6393,26 +6396,32 @@ int32_t Vehicle::UpdateMotionDodgems()
  *
  *  rct2: 0x006DD365
  */
-bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId)
+static bool wouldCollideWithDodgemsTrackEdge(
+    const CoordsXY& coords, const CoordsXY& trackLocation, uint32_t trackType, uint16_t dodgemsCarRadius)
 {
-    uint16_t bp = (vehicle->var_44 * 30) >> 9;
-    uint32_t trackType = vehicle->track_type >> 2;
+    int16_t rideLeft = trackLocation.x + DodgemsTrackSize[trackType].left;
+    int16_t rideRight = trackLocation.x + DodgemsTrackSize[trackType].right;
+    int16_t rideTop = trackLocation.y + DodgemsTrackSize[trackType].top;
+    int16_t rideBottom = trackLocation.y + DodgemsTrackSize[trackType].bottom;
 
-    int16_t rideLeft = vehicle->TrackLocation.x + DodgemsTrackSize[trackType].left;
-    int16_t rideRight = vehicle->TrackLocation.x + DodgemsTrackSize[trackType].right;
-    int16_t rideTop = vehicle->TrackLocation.y + DodgemsTrackSize[trackType].top;
-    int16_t rideBottom = vehicle->TrackLocation.y + DodgemsTrackSize[trackType].bottom;
+    return coords.x - dodgemsCarRadius < rideLeft || coords.y - dodgemsCarRadius < rideTop
+        || coords.x + dodgemsCarRadius > rideRight || coords.y + dodgemsCarRadius > rideBottom;
+}
 
-    if (x - bp < rideLeft || y - bp < rideTop || x + bp > rideRight || y + bp > rideBottom)
+bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collidedWith) const
+{
+    uint32_t trackType = track_type >> 2;
+
+    if (wouldCollideWithDodgemsTrackEdge(coords, TrackLocation, trackType, (var_44 * 30) >> 9))
     {
-        if (spriteId != nullptr)
-            *spriteId = SPRITE_INDEX_NULL;
+        if (collidedWith != nullptr)
+            *collidedWith = SPRITE_INDEX_NULL;
         return true;
     }
 
-    auto location = CoordsXY{ x, y };
+    auto location = coords;
 
-    ride_id_t rideIndex = vehicle->ride;
+    ride_id_t rideIndex = ride;
     for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;
@@ -6423,7 +6432,7 @@ bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, ui
             Vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
             spriteIdx = vehicle2->next_in_quadrant;
 
-            if (vehicle2 == vehicle)
+            if (vehicle2 == this)
                 continue;
 
             if (vehicle2->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
@@ -6432,21 +6441,21 @@ bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, ui
             if (vehicle2->ride != rideIndex)
                 continue;
 
-            int32_t distX = abs(x - vehicle2->x);
+            int32_t distX = abs(coords.x - vehicle2->x);
             if (distX > 32768)
                 continue;
 
-            int32_t distY = abs(y - vehicle2->y);
+            int32_t distY = abs(coords.y - vehicle2->y);
             if (distY > 32768)
                 continue;
 
-            int32_t ecx = (vehicle->var_44 + vehicle2->var_44) / 2;
+            int32_t ecx = (var_44 + vehicle2->var_44) / 2;
             ecx *= 30;
             ecx >>= 8;
             if (std::max(distX, distY) < ecx)
             {
-                if (spriteId != nullptr)
-                    *spriteId = vehicle2->sprite_index;
+                if (collidedWith != nullptr)
+                    *collidedWith = vehicle2->sprite_index;
                 return true;
             }
         }
@@ -6461,7 +6470,7 @@ bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, ui
  */
 static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
 {
-    auto vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6596,7 +6605,7 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
     if (ride == nullptr)
         return;
 
-    auto vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
         return;
 
@@ -6884,7 +6893,7 @@ static void vehicle_update_swinging_car(Vehicle* vehicle)
         vehicle->var_4E += dword_F64E08 >> swingAmount;
     }
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7068,7 +7077,7 @@ static void vehicle_update_spinning_car(Vehicle* vehicle)
         return;
     }
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7203,7 +7212,7 @@ void Vehicle::UpdateAdditionalAnimation()
     uint32_t eax;
 
     uint32_t* curVar_C8 = reinterpret_cast<uint32_t*>(&var_C8);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -7594,7 +7603,7 @@ static bool vehicle_update_motion_collision_detection(
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_1)
         return false;
 
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    auto vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return false;
@@ -7662,11 +7671,11 @@ static bool vehicle_update_motion_collision_detection(
             if (collideVehicle->ride_subtype == RIDE_TYPE_NULL)
                 continue;
 
-            rct_ride_entry_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
-            if (collideType == nullptr)
+            auto collideVehicleEntry = collideVehicle->Entry();
+            if (collideVehicleEntry == nullptr)
                 continue;
 
-            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+            if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                 continue;
 
             uint32_t x_diff = abs(collideVehicle->x - x);
@@ -7691,7 +7700,7 @@ static bool vehicle_update_motion_collision_detection(
             if (x_diff + y_diff >= ecx)
                 continue;
 
-            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_GO_KART))
+            if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART))
             {
                 mayCollide = true;
                 break;
@@ -7805,7 +7814,7 @@ static void vehicle_reverse_reverser_car(Vehicle* vehicle)
  */
 static void sub_6DBF3E(Vehicle* vehicle)
 {
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
 
     vehicle->acceleration = vehicle->acceleration / _vehicleUnkF64E10;
     if (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK)
@@ -8011,7 +8020,7 @@ loc_6DB41D:
     vehicle->TrackLocation = location;
 
     // TODO check if getting the vehicle entry again is necessary
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
     if (vehicleEntry == nullptr)
     {
         return false;
@@ -8101,7 +8110,7 @@ loc_6DAEB9:
         if (track_progress == 80)
         {
             vehicle_type ^= 1;
-            vehicleEntry = vehicle_get_vehicle_entry(this);
+            vehicleEntry = Entry();
         }
         if (_vehicleVelocityF64E08 >= 0x40000)
         {
@@ -8173,7 +8182,7 @@ loc_6DAEB9:
             if (track_progress == 32)
             {
                 vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
-                vehicleEntry = vehicle_get_vehicle_entry(this);
+                vehicleEntry = Entry();
             }
         }
         else
@@ -8293,7 +8302,7 @@ loc_6DB967:
     remaining_distance = -1;
 
     // Might need to be bp rather than this, but hopefully not
-    Vehicle* head = vehicle_get_head(GET_VEHICLE(regs.bp));
+    auto head = (GET_VEHICLE(regs.bp))->TrainHead();
 
     regs.eax = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
@@ -8653,7 +8662,7 @@ static int32_t vehicle_update_track_motion_mini_golf(Vehicle* vehicle, int32_t* 
         return 0;
 
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
 
     TileElement* tileElement = nullptr;
 
@@ -8664,7 +8673,7 @@ static int32_t vehicle_update_track_motion_mini_golf(Vehicle* vehicle, int32_t* 
     _vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
     if (_vehicleVelocityF64E08 < 0)
     {
-        vehicle = vehicle_get_tail(vehicle);
+        vehicle = vehicle->TrainTail();
     }
     _vehicleFrontVehicle = vehicle;
 
@@ -9506,7 +9515,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         return 0;
 
     rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(this);
+    auto vehicleEntry = Entry();
 
     if (vehicleEntry == nullptr)
     {
@@ -9530,7 +9539,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     Vehicle* vehicle = this;
     if (_vehicleVelocityF64E08 < 0)
     {
-        vehicle = vehicle_get_tail(vehicle);
+        vehicle = vehicle->TrainTail();
     }
     // This will be the front vehicle even when traveling
     // backwards.
@@ -9540,7 +9549,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     while (spriteId != SPRITE_INDEX_NULL)
     {
         Vehicle* car = GET_VEHICLE(spriteId);
-        vehicleEntry = vehicle_get_vehicle_entry(car);
+        vehicleEntry = car->Entry();
         if (vehicleEntry == nullptr)
         {
             goto loc_6DBF3E;
@@ -9643,7 +9652,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // loc_6DC144
     vehicle = gCurrentVehicle;
 
-    vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    vehicleEntry = vehicle->Entry();
     // eax
     int32_t totalAcceleration = 0;
     // ebp
@@ -9755,14 +9764,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     return regs.eax;
 }
 
-rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle)
+rct_ride_entry_vehicle* Vehicle::Entry() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
     {
         return nullptr;
     }
-    return &rideEntry->vehicles[vehicle->vehicle_type];
+    return &rideEntry->vehicles[vehicle_type];
 }
 
 int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)
@@ -9795,7 +9804,7 @@ void vehicle_invalidate_window(Vehicle* vehicle)
 
 void Vehicle::UpdateCrossings() const
 {
-    if (vehicle_get_head(this) != this)
+    if (TrainHead() != this)
     {
         return;
     }
@@ -9808,11 +9817,11 @@ void Vehicle::UpdateCrossings() const
     if (travellingForwards)
     {
         frontVehicle = this;
-        backVehicle = vehicle_get_tail(this);
+        backVehicle = TrainTail();
     }
     else
     {
-        frontVehicle = vehicle_get_tail(this);
+        frontVehicle = TrainTail();
         backVehicle = this;
     }
 
