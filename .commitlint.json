@@ -27,9 +27,9 @@
           72
       ],
       "header-min-length": [
-          1,
+          2,
           "always",
-          20
+          10
       ],
       "scope-empty": [
           0
