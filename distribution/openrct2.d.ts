@@ -811,7 +811,7 @@ declare global {
         maxHeight?: number;
         widgets?: Widget[];
         colours?: number[];
-        tabs: WindowTabDesc[];
+        tabs?: WindowTabDesc[];
 
         onClose?: () => void;
         onUpdate?: () => void;
