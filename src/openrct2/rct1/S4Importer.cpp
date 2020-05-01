@@ -2548,7 +2548,7 @@ private:
 
                 ResearchItem tmpResearchItem = {};
                 ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
-                dst->Assoc = static_cast<uint32_t>(tmpResearchItem.rawValue);
+                dst->Assoc = tmpResearchItem.rawValue;
             }
             else
             {
@@ -2592,7 +2592,7 @@ private:
 
     void ConvertResearchEntry(ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
     {
-        dst->rawValue = RESEARCH_ITEM_NULL;
+        dst->SetNull();
         if (srcType == RCT1_RESEARCH_TYPE_RIDE)
         {
             auto entryIndex = _rideTypeToRideEntryMap[srcItem];
@@ -2603,11 +2603,12 @@ private:
 
                 if (rideEntry != nullptr)
                 {
+                    auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                     dst->entryIndex = entryIndex;
-                    dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                    dst->baseRideType = rideType;
                     dst->type = RESEARCH_ENTRY_TYPE_RIDE;
                     dst->flags = 0;
-                    dst->category = rideEntry->category[0];
+                    dst->category = RideTypeDescriptors[rideType].Category;
                 }
             }
         }
@@ -2621,11 +2622,12 @@ private:
 
                 if (rideEntry != nullptr)
                 {
+                    auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                     dst->entryIndex = entryIndex;
-                    dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                    dst->baseRideType = rideType;
                     dst->type = RESEARCH_ENTRY_TYPE_RIDE;
                     dst->flags = 0;
-                    dst->category = rideEntry->category[0];
+                    dst->category = RideTypeDescriptors[rideType].Category;
                 }
             }
         }

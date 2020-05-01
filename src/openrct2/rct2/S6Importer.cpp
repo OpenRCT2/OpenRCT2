@@ -264,12 +264,13 @@ public:
         gResearchPriorities = _s6.active_research_types;
         gResearchProgressStage = _s6.research_progress_stage;
         if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-            gResearchLastItem = ResearchItem(_s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT);
+            gResearchLastItem = ResearchItem(
+                RCT12ResearchItem{ _s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT });
         else
             gResearchLastItem = std::nullopt;
         // pad_01357CF8
         if (_s6.next_research_item != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-            gResearchNextItem = ResearchItem(_s6.next_research_item, _s6.next_research_category);
+            gResearchNextItem = ResearchItem(RCT12ResearchItem{ _s6.next_research_item, _s6.next_research_category });
         else
             gResearchNextItem = std::nullopt;
 
@@ -905,9 +906,9 @@ public:
 
             RCT12ResearchItem* ri = &_s6.research_items[i];
             if (invented)
-                gResearchItemsInvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+                gResearchItemsInvented.push_back(ResearchItem(*ri));
             else
-                gResearchItemsUninvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+                gResearchItemsUninvented.push_back(ResearchItem(*ri));
         }
     }
 

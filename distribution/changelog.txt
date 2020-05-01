@@ -10,6 +10,7 @@
 - Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
 - Fix: [#1148] Research funding dropdown not shown in finances window.
 - Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
+- Fix: [#7006] Submarine Ride is in the wrong research group.
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
 - Fix: [#11259] Custom JSON object breaks saves.
 - Fix: [#11290] Perform funds checking for all peeps entering a ride. 
