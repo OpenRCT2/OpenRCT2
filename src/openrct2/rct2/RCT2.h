@@ -103,7 +103,7 @@ struct rct2_ride
     uint8_t type; // 0x000
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
-    uint8_t subtype;                                             // 0x001
+    RCT12ObjectEntryIndex subtype;                               // 0x001
     uint16_t pad_002;                                            // 0x002
     uint8_t mode;                                                // 0x004
     uint8_t colour_scheme_type;                                  // 0x005

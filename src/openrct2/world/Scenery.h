@@ -269,10 +269,10 @@ void scenery_update_tile(const CoordsXY& sceneryPos);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
-rct_scenery_entry* get_wall_entry(int32_t entryIndex);
-rct_scenery_entry* get_banner_entry(int32_t entryIndex);
-rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex);
-rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex);
+rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex);
+rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex);
+rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
+rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
 int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
 

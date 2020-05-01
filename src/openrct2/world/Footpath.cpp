@@ -1535,7 +1535,7 @@ uint8_t PathElement::GetAddition() const
     return Additions;
 }
 
-uint8_t PathElement::GetAdditionEntryIndex() const
+ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
 {
     return GetAddition() - 1;
 }
