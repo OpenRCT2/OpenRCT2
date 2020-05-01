@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "CustomMenu.h"
+#    include "ScTileSelection.hpp"
 #    include "ScViewport.hpp"
 #    include "ScWindow.hpp"
 
@@ -62,6 +63,11 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScViewport> mainViewport_get() const
         {
             return std::make_shared<ScViewport>(WC_MAIN_WINDOW);
+        }
+
+        std::shared_ptr<ScTileSelection> tileSelection_get() const
+        {
+            return std::make_shared<ScTileSelection>(_scriptEngine.GetContext());
         }
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
@@ -142,6 +148,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScUi::width_get, nullptr, "width");
             dukglue_register_property(ctx, &ScUi::windows_get, nullptr, "windows");
             dukglue_register_property(ctx, &ScUi::mainViewport_get, nullptr, "mainViewport");
+            dukglue_register_property(ctx, &ScUi::tileSelection_get, nullptr, "tileSelection");
             dukglue_register_method(ctx, &ScUi::openWindow, "openWindow");
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");

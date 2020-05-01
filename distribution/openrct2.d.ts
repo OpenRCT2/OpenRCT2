@@ -72,6 +72,14 @@ declare global {
     }
 
     /**
+     * A rectangular area specified using two coordinates.
+     */
+    interface MapRange {
+        leftTop: Coord2;
+        rightBottom: Coord2;
+    }
+
+    /**
      * Represents information about the plugin such as type, name, author and version.
      * It also includes the entry point.
      */
@@ -710,6 +718,7 @@ declare global {
         readonly height: number;
         readonly windows: number;
         readonly mainViewport: Viewport;
+        readonly tileSelection: TileSelection;
 
         getWindow(id: number): Window;
         getWindow(classification: string): Window;
@@ -717,8 +726,93 @@ declare global {
         closeWindows(classification: string, id?: number): void;
         closeAllWindows(): void;
 
+        /**
+         * Begins a new tool session. The cursor will change to the style specified by the
+         * given tool descriptor and cursor events will be provided.
+         * @param tool The properties and event handlers for the tool.
+         */
+        activateTool(tool: ToolDesc): void;
+
         registerMenuItem(text: string, callback: () => void): void;
     }
+
+    interface TileSelection {
+        range: MapRange;
+        tiles: Coord2[];
+    }
+
+    /**
+     * The type of tool.
+     * Raw will provide only the screen coordinates of where the cursor is.
+     * Tile will provide a coordinates of the tile the cursor is over.
+     * Interact will provide information about the ride or entity the cursor is over.
+     */
+    type ToolType = "raw" | "tile" | "interact";
+
+    type InteractionType =
+        "none" |
+        "surface" |
+        "sprite" |
+        "ride" |
+        "water" |
+        "scenery" |
+        "footpath" |
+        "footpath_addition" |
+        "park" |
+        "wall" |
+        "large_scenery" |
+        "label" |
+        "banner";
+
+    interface ToolEventArgs {
+        kind: InteractionType;
+        screenCoords: Coord2;
+        mapCoords?: Coord3;
+        tileElementIndex?: number;
+        entity?: Entity;
+    }
+
+    /**
+     * Describes the properties and event handlers for a custom tool.
+     */
+    interface ToolDesc {
+        type: ToolType;
+        cursor: CursorType;
+
+        onDown: (e: ToolEventArgs) => void;
+        onMove: (e: ToolEventArgs) => void;
+        onUp: (e: ToolEventArgs) => void;
+        onFinish: () => void;
+    }
+
+    type CursorType =
+        "arrow" |
+        "blank" |
+        "up_arrow" |
+        "up_down_arrow" |
+        "hand_point" |
+        "zzz" |
+        "diagonal_arrows" |
+        "picker" |
+        "tree_down" |
+        "fountain_down" |
+        "statue_down" |
+        "bench_down" |
+        "cross_hair" |
+        "bin_down" |
+        "lamppost_down" |
+        "fence_down" |
+        "flower_down" |
+        "path_down" |
+        "dig_down" |
+        "water_down" |
+        "house_down" |
+        "volcano_down" |
+        "walk_down" |
+        "paint_down" |
+        "entrance_down" |
+        "hand_open" |
+        "hand_closed";
 
     /**
      * Represents the type of a widget, e.g. button or label.
