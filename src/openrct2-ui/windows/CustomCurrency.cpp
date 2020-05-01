@@ -138,8 +138,8 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
             gDropdownItemsArgs[1] = STR_SUFFIX;
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
 
             if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
             {

@@ -236,8 +236,8 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             widget--;
 
             window_dropdown_show_text_custom_width(
-                widget->left + w->windowPos.x, widget->top + w->windowPos.y, widget->bottom - widget->top + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 13, widget->right - widget->left - 3);
+                { widget->left + w->windowPos.x, widget->top + w->windowPos.y }, widget->bottom - widget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 13, widget->right - widget->left - 3);
 
             dropdown_set_checked(banner->text_colour - 1, true);
             break;

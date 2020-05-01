@@ -149,7 +149,7 @@ void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t col
         max_string_width = std::max(string_width, max_string_width);
     }
 
-    window_dropdown_show_text_custom_width(x, y, extray, colour, 0, flags, num_items, max_string_width + 3);
+    window_dropdown_show_text_custom_width({ x, y }, extray, colour, 0, flags, num_items, max_string_width + 3);
 }
 
 /**
@@ -165,7 +165,8 @@ void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t col
  * @param custom_height (ah) requires flag set as well
  */
 void window_dropdown_show_text_custom_width(
-    int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items, int32_t width)
+    const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
+    int32_t width)
 {
     rct_window* w;
 
@@ -198,17 +199,18 @@ void window_dropdown_show_text_custom_width(
     int32_t height = _dropdown_item_height * _dropdown_num_rows + 3;
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
-    if (x + width > screenWidth)
-        x = std::max(0, screenWidth - width);
-    if (y + height > screenHeight)
-        y = std::max(0, screenHeight - height);
+    auto boundedScreenPos = screenPos;
+    if (screenPos.x + width > screenWidth)
+        boundedScreenPos.x = std::max(0, screenWidth - width);
+    if (screenPos.y + height > screenHeight)
+        boundedScreenPos.y = std::max(0, screenHeight - height);
 
     window_dropdown_widgets[WIDX_BACKGROUND].right = width;
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
     w = window_create(
-        ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
+        boundedScreenPos + ScreenCoordsXY{ 0, extray }, window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)

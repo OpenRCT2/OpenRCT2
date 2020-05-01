@@ -1437,7 +1437,7 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     int32_t y = widget->top + w->windowPos.y;
     int32_t extray = widget->bottom - widget->top + 1;
     int32_t width = widget->right - widget->left - 3;
-    window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
+    window_dropdown_show_text_custom_width({ x, y }, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
     // See above note.
     if (checkedIndex != -1)
