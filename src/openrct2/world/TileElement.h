@@ -258,7 +258,7 @@ public:
 
     bool HasAddition() const;
     uint8_t GetAddition() const;
-    uint8_t GetAdditionEntryIndex() const;
+    ObjectEntryIndex GetAdditionEntryIndex() const;
     rct_scenery_entry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
 

@@ -198,7 +198,8 @@ static ScenerySelection window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_
  * Was part of 0x006DFA00
  * The same code repeated five times for every scenery entry type
  */
-static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySelection& selection, uint8_t sceneryTabId)
+static void init_scenery_entry(
+    rct_scenery_entry* sceneryEntry, const ScenerySelection& selection, ObjectEntryIndex sceneryTabId)
 {
     Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
     if (scenery_is_invented(selection) || gCheatsIgnoreResearchStatus)
@@ -278,7 +279,7 @@ void window_scenery_init()
     }
 
     // small scenery
-    for (uint16_t sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -288,7 +289,7 @@ void window_scenery_init()
     }
 
     // large scenery
-    for (uint16_t sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_large_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -298,7 +299,7 @@ void window_scenery_init()
     }
 
     // walls
-    for (uint16_t sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_wall_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -308,7 +309,7 @@ void window_scenery_init()
     }
 
     // banners
-    for (uint16_t sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_banner_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -318,7 +319,7 @@ void window_scenery_init()
     }
 
     // path bits
-    for (uint16_t sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_footpath_item_entry(sceneryId);
         if (sceneryEntry == nullptr)

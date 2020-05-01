@@ -21,7 +21,7 @@ struct WallElement;
 
 using BannerIndex = uint16_t;
 
-constexpr uint8_t BANNER_NULL = 255;
+constexpr ObjectEntryIndex BANNER_NULL = OBJECT_ENTRY_INDEX_NULL;
 constexpr size_t MAX_BANNERS = 250;
 constexpr BannerIndex BANNER_INDEX_NULL = static_cast<BannerIndex>(-1);
 
@@ -29,7 +29,7 @@ constexpr uint8_t SCROLLING_MODE_NONE = 255;
 
 struct Banner
 {
-    uint8_t type = BANNER_NULL;
+    ObjectEntryIndex type = BANNER_NULL;
     uint8_t flags{};
     std::string text;
     uint8_t colour{};

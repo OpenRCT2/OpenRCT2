@@ -125,7 +125,7 @@ void setup_in_use_selection_flags()
     tile_element_iterator_begin(&iter);
     do
     {
-        uint16_t type;
+        ObjectEntryIndex type;
 
         switch (iter.element->GetType())
         {

@@ -19,7 +19,7 @@ DEFINE_GAME_ACTION(BannerPlaceAction, GAME_COMMAND_PLACE_BANNER, GameActionResul
 {
 private:
     CoordsXYZD _loc;
-    uint8_t _bannerType{ std::numeric_limits<uint8_t>::max() };
+    ObjectEntryIndex _bannerType{ BANNER_NULL };
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     uint8_t _primaryColour;
 
@@ -91,7 +91,7 @@ public:
         }
 
         auto banner = GetBanner(_bannerIndex);
-        if (banner->type != BANNER_NULL)
+        if (!banner->IsNull())
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
@@ -129,7 +129,7 @@ public:
         }
 
         auto banner = GetBanner(_bannerIndex);
-        if (banner->type != BANNER_NULL)
+        if (!banner->IsNull())
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
