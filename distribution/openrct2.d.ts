@@ -724,7 +724,7 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "spinner" | "tabview" | "viewport";
+        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "spinner" | "viewport";
 
     interface Widget {
         type: WidgetType;
@@ -822,8 +822,7 @@ declare global {
         frameBase: number;
         frameCount?: number;
         frameDuration?: number;
-        offsetX?: number;
-        offsetY?: number;
+        offset?: Coord2;
     }
 
     interface WindowTabDesc {

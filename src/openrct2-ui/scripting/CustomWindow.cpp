@@ -185,8 +185,7 @@ namespace OpenRCT2::Ui::Windows
         ImageId imageFrameBase;
         uint32_t imageFrameCount;
         uint32_t imageFrameDuration;
-        int32_t offsetX;
-        int32_t offsetY;
+        ScreenCoordsXY offset;
         std::vector<CustomWidgetDesc> Widgets;
 
         static CustomTabDesc FromDukValue(const DukValue& desc)
@@ -202,8 +201,13 @@ namespace OpenRCT2::Ui::Windows
                 result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage["frameBase"].as_int()));
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
                 result.imageFrameDuration = AsOrDefault(dukImage["frameDuration"], 0);
-                result.offsetX = AsOrDefault(dukImage["offsetX"], 0);
-                result.offsetY = AsOrDefault(dukImage["offsetY"], 0);
+
+                auto dukCoord = dukImage["offset"];
+                if (dukCoord.type() == DukValue::Type::OBJECT)
+                {
+                    result.offset.x = AsOrDefault(dukCoord["x"], 0);
+                    result.offset.y = AsOrDefault(dukCoord["y"], 0);
+                }
             }
             if (desc["widgets"].is_array())
             {
@@ -611,8 +615,8 @@ namespace OpenRCT2::Ui::Windows
             auto widget = &w->widgets[widgetIndex];
             if (widget_is_enabled(w, widgetIndex))
             {
-                auto l = w->windowPos.x + widget->left + tab.offsetX;
-                auto t = w->windowPos.y + widget->top + tab.offsetY;
+                auto l = w->windowPos.x + widget->left + tab.offset.x;
+                auto t = w->windowPos.y + widget->top + tab.offset.y;
                 auto image = tab.imageFrameBase;
                 if (static_cast<size_t>(w->page) == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
                 {
