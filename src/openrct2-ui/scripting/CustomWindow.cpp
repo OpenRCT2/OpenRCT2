@@ -205,8 +205,7 @@ namespace OpenRCT2::Ui::Windows
                 auto dukCoord = dukImage["offset"];
                 if (dukCoord.type() == DukValue::Type::OBJECT)
                 {
-                    result.offset.x = AsOrDefault(dukCoord["x"], 0);
-                    result.offset.y = AsOrDefault(dukCoord["y"], 0);
+                    result.offset = { AsOrDefault(dukCoord["x"], 0), AsOrDefault(dukCoord["y"], 0) };
                 }
             }
             if (desc["widgets"].is_array())
