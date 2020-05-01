@@ -2996,14 +2996,13 @@ void Vehicle::PeepEasterEggHereWeAre() const
  * Performed when vehicle has completed a full circuit
  *  rct2: 0x006D7338
  */
-void vehicle_update_test_finish(Vehicle* vehicle)
+static bool test_finish(ride_id_t rideId)
 {
-    auto ride = get_ride(vehicle->ride);
+    auto ride = get_ride(rideId);
     if (ride == nullptr)
-        return;
+        return false;
 
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 
     for (int32_t i = ride->num_stations - 1; i >= 1; i--)
@@ -3028,19 +3027,25 @@ void vehicle_update_test_finish(Vehicle* vehicle)
 
     totalTime = std::max(totalTime, 1u);
     ride->average_speed = ride->average_speed / totalTime;
+    window_invalidate_by_number(WC_RIDE, rideId);
+    return true;
+}
 
-    window_invalidate_by_number(WC_RIDE, vehicle->ride);
+void Vehicle::UpdateTestFinish()
+{
+    if (!test_finish(ride))
+        return;
+
+    update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
 }
 
 /**
  *
  *  rct2: 0x006D6BE7
  */
-void vehicle_test_reset(Vehicle* vehicle)
+static void test_reset(ride_id_t rideId, StationIndex curStation)
 {
-    vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TESTING;
-
-    auto ride = get_ride(vehicle->ride);
+    auto ride = get_ride(rideId);
     if (ride == nullptr)
         return;
 
@@ -3075,8 +3080,14 @@ void vehicle_test_reset(Vehicle* vehicle)
         station.SegmentTime = 0;
     }
     ride->total_air_time = 0;
-    ride->current_test_station = vehicle->current_station;
-    window_invalidate_by_number(WC_RIDE, vehicle->ride);
+    ride->current_test_station = curStation;
+    window_invalidate_by_number(WC_RIDE, rideId);
+}
+
+void Vehicle::TestReset()
+{
+    update_flags |= VEHICLE_UPDATE_FLAG_TESTING;
+    test_reset(ride, current_station);
 }
 
 bool Vehicle::CurrentTowerElementIsTop()
@@ -3198,12 +3209,12 @@ void Vehicle::UpdateDeparting()
                 }
                 else
                 {
-                    vehicle_update_test_finish(this);
+                    UpdateTestFinish();
                 }
             }
             else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
             {
-                vehicle_test_reset(this);
+                TestReset();
             }
         }
     }
@@ -3582,7 +3593,7 @@ void Vehicle::UpdateCrashSetup()
     }
     SetState(VEHICLE_STATUS_CRASHING, sub_state);
 
-    if (vehicle_get_total_num_peeps(this) != 0)
+    if (NumPeepsUntilTrainTail() != 0)
     {
         audio_play_sound_at_location(SoundId::HauntedHouseScream2, { x, y, z });
     }
@@ -4063,7 +4074,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
                 && curRide->current_test_segment + 1 >= curRide->num_stations)
             {
-                vehicle_update_test_finish(this);
+                UpdateTestFinish();
             }
             SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
             return;
@@ -4103,7 +4114,7 @@ void Vehicle::UpdateUnloadingPassengers()
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
         && curRide->current_test_segment + 1 >= curRide->num_stations)
     {
-        vehicle_update_test_finish(this);
+        UpdateTestFinish();
     }
     SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
 }
@@ -4169,12 +4180,12 @@ void Vehicle::UpdateTravellingCableLift()
                 }
                 else
                 {
-                    vehicle_update_test_finish(this);
+                    UpdateTestFinish();
                 }
             }
             else if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
             {
-                vehicle_test_reset(this);
+                TestReset();
             }
         }
     }
@@ -5561,7 +5572,7 @@ SoundId Vehicle::UpdateScreamSound()
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    int32_t totalNumPeeps = vehicle_get_total_num_peeps(this);
+    int32_t totalNumPeeps = NumPeepsUntilTrainTail();
     if (totalNumPeeps == 0)
         return SoundId::Null;
 
@@ -9774,8 +9785,9 @@ rct_ride_entry_vehicle* Vehicle::Entry() const
     return &rideEntry->vehicles[vehicle_type];
 }
 
-int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)
+int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
+    const Vehicle* vehicle = this;
     uint16_t spriteIndex;
     int32_t numPeeps = 0;
     for (;;)
@@ -9795,10 +9807,10 @@ int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle)
  *
  *  rct2: 0x006DA1EC
  */
-void vehicle_invalidate_window(Vehicle* vehicle)
+void Vehicle::InvalidateWindow()
 {
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
-    intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
+    intent.putExtra(INTENT_EXTRA_VEHICLE, this);
     context_broadcast_intent(&intent);
 }
 
@@ -9974,7 +9986,7 @@ void Vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState)
 {
     status = vehicleStatus;
     sub_state = subState;
-    vehicle_invalidate_window(this);
+    InvalidateWindow();
 }
 
 bool Vehicle::IsGhost() const
