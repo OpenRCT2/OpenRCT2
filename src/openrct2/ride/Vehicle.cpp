@@ -6408,7 +6408,7 @@ static bool wouldCollideWithDodgemsTrackEdge(
         || coords.x + dodgemsCarRadius > rideRight || coords.y + dodgemsCarRadius > rideBottom;
 }
 
-bool Vehicle::DodgemsCarWouldCollideAt(CoordsXY coords, uint16_t* collidedWith) const
+bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collidedWith) const
 {
     uint32_t trackType = track_type >> 2;
 
