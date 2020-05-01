@@ -284,7 +284,7 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         {
             gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
         }
-        window_dropdown_show_text(ddx, ddy, 0, COLOUR_GREY, 0, 2);
+        window_dropdown_show_text({ ddx, ddy }, 0, COLOUR_GREY, 0, 2);
     }
 }
 

@@ -134,7 +134,7 @@ static rct_window_event_list window_dropdown_events = {
  * @param num_items (bx)
  * @param colour (al)
  */
-void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items)
+void window_dropdown_show_text(const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items)
 {
     int32_t string_width, max_string_width;
     char buffer[256];
@@ -149,7 +149,7 @@ void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t col
         max_string_width = std::max(string_width, max_string_width);
     }
 
-    window_dropdown_show_text_custom_width({ x, y }, extray, colour, 0, flags, num_items, max_string_width + 3);
+    window_dropdown_show_text_custom_width(screenPos, extray, colour, 0, flags, num_items, max_string_width + 3);
 }
 
 /**

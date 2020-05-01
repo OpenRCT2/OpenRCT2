@@ -1331,7 +1331,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text(
-                        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
                         w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
 
                     dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);

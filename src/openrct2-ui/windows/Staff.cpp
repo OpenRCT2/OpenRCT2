@@ -570,7 +570,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     int32_t x = widget->left + w->windowPos.x;
     int32_t y = widget->top + w->windowPos.y;
     int32_t extray = widget->bottom - widget->top + 1;
-    window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
+    window_dropdown_show_text({ x, y }, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
 
     Peep* peep = GET_PEEP(w->number);

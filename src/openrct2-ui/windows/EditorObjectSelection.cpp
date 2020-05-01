@@ -607,7 +607,7 @@ void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex wid
             }
 
             window_dropdown_show_text(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
                 w->colours[widget->colour], DROPDOWN_FLAG_STAY_OPEN, _numSourceGameItems + numSelectionItems);
 
             for (int32_t i = 0; i < _numSourceGameItems; i++)
