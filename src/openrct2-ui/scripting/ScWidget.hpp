@@ -101,6 +101,7 @@ namespace OpenRCT2::Scripting
             if (widget != nullptr)
             {
                 Invalidate();
+                widget->right = value + widget->right - widget->left;
                 widget->left = value;
                 Invalidate();
             }
@@ -121,6 +122,7 @@ namespace OpenRCT2::Scripting
             if (widget != nullptr)
             {
                 Invalidate();
+                widget->bottom = value + widget->bottom - widget->top;
                 widget->top = value;
                 Invalidate();
             }

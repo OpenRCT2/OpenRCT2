@@ -27,6 +27,11 @@ namespace OpenRCT2::Scripting
 
     template<typename T> T AsOrDefault(const DukValue& value, const T& defaultValue = {}) = delete;
 
+    inline std::string AsOrDefault(const DukValue& value, const std::string_view& defaultValue)
+    {
+        return value.type() == DukValue::STRING ? value.as_string() : std::string(defaultValue);
+    }
+
     template<> inline std::string AsOrDefault(const DukValue& value, const std::string& defaultValue)
     {
         return value.type() == DukValue::STRING ? value.as_string() : defaultValue;
