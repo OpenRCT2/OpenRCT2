@@ -995,7 +995,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006E3158
  */
-static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widgetIndex)
+static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widgetindex widgetIndex)
 {
     // ax, cx, bl
     int32_t type;
@@ -1008,7 +1008,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
     // not used
     rct_viewport* viewport;
     CoordsXY gridCoords;
-    get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &type, &tile_element, &viewport);
+    get_map_coordinates_from_pos(windowPos, flags, gridCoords, &type, &tile_element, &viewport);
 
     switch (type)
     {
@@ -1081,7 +1081,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
     }
 }
 
-static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex widgetIndex)
+static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_widgetindex widgetIndex)
 {
     auto flags = VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_WALL & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY
         & VIEWPORT_INTERACTION_MASK_BANNER & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
@@ -1090,7 +1090,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     TileElement* tileElement;
     rct_viewport* viewport;
     CoordsXY unusedCoords;
-    get_map_coordinates_from_pos({ x, y }, flags, unusedCoords, &type, &tileElement, &viewport);
+    get_map_coordinates_from_pos(windowPos, flags, unusedCoords, &type, &tileElement, &viewport);
 
     switch (type)
     {
@@ -1186,8 +1186,8 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
  * edi : parameter_3
  */
 static void sub_6E1F34(
-    int16_t x, int16_t y, ScenerySelection selection, CoordsXY& gridPos, uint32_t* parameter_1, uint32_t* parameter_2,
-    uint32_t* parameter_3)
+    const ScreenCoordsXY& sourceScreenPos, ScenerySelection selection, CoordsXY& gridPos, uint32_t* parameter_1,
+    uint32_t* parameter_2, uint32_t* parameter_3)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
@@ -1197,6 +1197,7 @@ static void sub_6E1F34(
         return;
     }
 
+    auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
     bool can_raise_item = false;
 
@@ -1251,7 +1252,7 @@ static void sub_6E1F34(
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 int32_t interaction_type;
                 CoordsXY unusedCoords;
-                get_map_coordinates_from_pos({ x, y }, flags, unusedCoords, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos(screenPos, flags, unusedCoords, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE)
                 {
@@ -1275,8 +1276,8 @@ static void sub_6E1F34(
             {
                 // SHIFT pressed
                 gSceneryShiftPressed = true;
-                gSceneryShiftPressX = x;
-                gSceneryShiftPressY = y;
+                gSceneryShiftPressX = screenPos.x;
+                gSceneryShiftPressY = screenPos.y;
                 gSceneryShiftPressZOffset = 0;
             }
         }
@@ -1285,7 +1286,7 @@ static void sub_6E1F34(
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
             {
                 // SHIFT pressed
-                gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4);
+                gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);
                 // Scale delta by zoom to match mouse position.
                 auto* mainWnd = window_get_main();
                 if (mainWnd && mainWnd->viewport)
@@ -1294,8 +1295,8 @@ static void sub_6E1F34(
                 }
                 gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
-                x = gSceneryShiftPressX;
-                y = gSceneryShiftPressY;
+                screenPos.x = gSceneryShiftPressX;
+                screenPos.y = gSceneryShiftPressY;
             }
             else
             {
@@ -1318,7 +1319,7 @@ static void sub_6E1F34(
                 // If CTRL not pressed
                 if (!gSceneryCtrlPressed)
                 {
-                    auto gridCoords = screen_get_map_xy_quadrant({ x, y }, &quadrant);
+                    auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
                     if (!gridCoords)
                     {
                         gridPos.setNull();
@@ -1351,7 +1352,7 @@ static void sub_6E1F34(
                 {
                     int16_t z = gSceneryCtrlPressZ;
 
-                    auto mapCoords = screen_get_map_xy_quadrant_with_z({ x, y }, z, &quadrant);
+                    auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
                     if (!mapCoords)
                     {
                         gridPos.setNull();
@@ -1404,7 +1405,7 @@ static void sub_6E1F34(
                 TileElement* tile_element;
                 CoordsXY gridCoords;
 
-                get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element, nullptr);
                 gridPos = gridCoords;
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1438,7 +1439,7 @@ static void sub_6E1F34(
             else
             {
                 int16_t z = gSceneryCtrlPressZ;
-                auto coords = screen_get_map_xy_with_z({ x, y }, z);
+                auto coords = screen_get_map_xy_with_z(screenPos, z);
                 if (coords)
                 {
                     gridPos = *coords;
@@ -1486,7 +1487,7 @@ static void sub_6E1F34(
             TileElement* tile_element;
             CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element, nullptr);
             gridPos = gridCoords;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1514,7 +1515,7 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                auto gridCoords = screen_get_map_xy_side({ x, y }, &cl);
+                auto gridCoords = screen_get_map_xy_side(screenPos, &cl);
                 if (!gridCoords)
                 {
                     gridPos.setNull();
@@ -1546,7 +1547,7 @@ static void sub_6E1F34(
             else
             {
                 int16_t z = gSceneryCtrlPressZ;
-                auto mapCoords = screen_get_map_xy_side_with_z({ x, y }, z, &cl);
+                auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &cl);
                 if (!mapCoords)
                 {
                     gridPos.setNull();
@@ -1582,7 +1583,7 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                const CoordsXY mapCoords = sub_68A15E({ x, y });
+                const CoordsXY mapCoords = sub_68A15E(screenPos);
                 gridPos = mapCoords;
 
                 if (gridPos.isNull())
@@ -1612,7 +1613,7 @@ static void sub_6E1F34(
             else
             {
                 int16_t z = gSceneryCtrlPressZ;
-                auto coords = screen_get_map_xy_with_z({ x, y }, z);
+                auto coords = screen_get_map_xy_with_z(screenPos, z);
                 if (coords)
                 {
                     gridPos = *coords;
@@ -1655,7 +1656,7 @@ static void sub_6E1F34(
             TileElement* tile_element;
             CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element, nullptr);
             gridPos = gridCoords;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1699,8 +1700,7 @@ static void sub_6E1F34_small_scenery(
     colour_t* outPrimaryColour, colour_t* outSecondaryColour)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(
-        screenCoords.x, screenCoords.y, { SCENERY_TYPE_SMALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(screenCoords, { SCENERY_TYPE_SMALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outQuadrant = parameter2 & 0xFF;
     *outPrimaryColour = (parameter2 >> 8) & 0xFF;
@@ -1710,9 +1710,7 @@ static void sub_6E1F34_small_scenery(
 static void sub_6E1F34_path_item(const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(
-        screenCoords.x, screenCoords.y, { SCENERY_TYPE_PATH_ITEM, sceneryIndex }, gridPos, &parameter1, &parameter2,
-        &parameter3);
+    sub_6E1F34(screenCoords, { SCENERY_TYPE_PATH_ITEM, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outZ = (parameter2 & 0xFF) * COORDS_Z_STEP;
 }
@@ -1721,8 +1719,7 @@ static void sub_6E1F34_wall(
     const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour, uint8_t* outEdges)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(
-        screenCoords.x, screenCoords.y, { SCENERY_TYPE_WALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(screenCoords, { SCENERY_TYPE_WALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outPrimaryColour = (parameter2 >> 8) & 0xFF;
     *outEdges = parameter2 & 0xFF;
@@ -1733,8 +1730,7 @@ static void sub_6E1F34_large_scenery(
     colour_t* outSecondaryColour, Direction* outDirection)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(
-        screenCoords.x, screenCoords.y, { SCENERY_TYPE_LARGE, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(screenCoords, { SCENERY_TYPE_LARGE, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outPrimaryColour = parameter2 & 0xFF;
     *outSecondaryColour = (parameter2 >> 8) & 0xFF;
@@ -1745,8 +1741,7 @@ static void sub_6E1F34_banner(
     const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, int32_t* outZ, Direction* outDirection)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(
-        screenCoords.x, screenCoords.y, { SCENERY_TYPE_BANNER, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(screenCoords, { SCENERY_TYPE_BANNER, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
 
     *outDirection = (parameter2 >> 8) & 0xFF;
     *outZ = (parameter2 & 0xFF) * COORDS_Z_PER_TINY_Z;
@@ -1756,17 +1751,17 @@ static void sub_6E1F34_banner(
  *
  *  rct2: 0x006E2CC6
  */
-static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_window* w, rct_widgetindex widgetIndex)
+static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_window* w, rct_widgetindex widgetIndex)
 {
     scenery_remove_ghost_tool_placement();
     if (gWindowSceneryPaintEnabled & 1)
     {
-        repaint_scenery_tool_down(x, y, widgetIndex);
+        repaint_scenery_tool_down(windowPos, widgetIndex);
         return;
     }
     else if (gWindowSceneryEyedropperEnabled)
     {
-        scenery_eyedropper_tool_down(x, y, widgetIndex);
+        scenery_eyedropper_tool_down(windowPos, widgetIndex);
         return;
     }
 
@@ -1786,7 +1781,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             uint8_t quadrant;
             colour_t primaryColour;
             colour_t secondaryColour;
-            sub_6E1F34_small_scenery({ x, y }, selectedScenery, gridPos, &quadrant, &primaryColour, &secondaryColour);
+            sub_6E1F34_small_scenery(windowPos, selectedScenery, gridPos, &quadrant, &primaryColour, &secondaryColour);
             if (gridPos.isNull())
                 return;
 
@@ -1906,7 +1901,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         case SCENERY_TYPE_PATH_ITEM:
         {
             int32_t z;
-            sub_6E1F34_path_item({ x, y }, selectedScenery, gridPos, &z);
+            sub_6E1F34_path_item(windowPos, selectedScenery, gridPos, &z);
             if (gridPos.isNull())
                 return;
 
@@ -1926,7 +1921,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         {
             colour_t primaryColour;
             uint8_t edges;
-            sub_6E1F34_wall({ x, y }, selectedScenery, gridPos, &primaryColour, &edges);
+            sub_6E1F34_wall(windowPos, selectedScenery, gridPos, &primaryColour, &edges);
             if (gridPos.isNull())
                 return;
 
@@ -1978,7 +1973,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             colour_t primaryColour;
             colour_t secondaryColour;
             Direction direction;
-            sub_6E1F34_large_scenery({ x, y }, selectedScenery, gridPos, &primaryColour, &secondaryColour, &direction);
+            sub_6E1F34_large_scenery(windowPos, selectedScenery, gridPos, &primaryColour, &secondaryColour, &direction);
             if (gridPos.isNull())
                 return;
 
@@ -2034,7 +2029,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         {
             int32_t z;
             Direction direction;
-            sub_6E1F34_banner({ x, y }, selectedScenery, gridPos, &z, &direction);
+            sub_6E1F34_banner(windowPos, selectedScenery, gridPos, &z, &direction);
             if (gridPos.isNull())
                 return;
 
@@ -2060,14 +2055,14 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
     }
 }
 
-static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
+static uint8_t top_toolbar_tool_update_land_paint(const ScreenCoordsXY& screenPos)
 {
     uint8_t state_changed = 0;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    auto mapTile = screen_get_map_xy({ x, y }, nullptr);
+    auto mapTile = screen_get_map_xy(screenPos, nullptr);
 
     if (!mapTile)
     {
@@ -2134,9 +2129,9 @@ static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
  *
  *  rct2: 0x0068E213
  */
-static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
+static void top_toolbar_tool_update_scenery_clear(const ScreenCoordsXY& screenPos)
 {
-    if (!top_toolbar_tool_update_land_paint(x, y))
+    if (!top_toolbar_tool_update_land_paint(screenPos))
         return;
 
     auto action = GetClearAction();
@@ -2153,7 +2148,7 @@ static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
  *
  *  rct2: 0x00664280
  */
-static void top_toolbar_tool_update_land(int16_t x, int16_t y)
+static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
 {
     const bool mapCtrlPressed = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
 
@@ -2185,8 +2180,8 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        screen_pos_to_map_pos({ x, y }, &selectionType);
-        mapTile = screen_get_map_xy_side({ x, y }, &side);
+        screen_pos_to_map_pos(screenPos, &selectionType);
+        mapTile = screen_get_map_xy_side(screenPos, &side);
 
         if (!mapTile)
         {
@@ -2263,7 +2258,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     }
 
     // Get map coordinates and the side of the tile that is being hovered over
-    mapTile = screen_get_map_xy_side({ x, y }, &side);
+    mapTile = screen_get_map_xy_side(screenPos, &side);
 
     if (!mapTile)
     {
@@ -2391,7 +2386,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
  *
  *  rct2: 0x006E6BDC
  */
-static void top_toolbar_tool_update_water(int16_t x, int16_t y)
+static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
 {
     map_invalidate_selection_rect();
 
@@ -2425,7 +2420,7 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
     CoordsXY mapTile = {};
     int32_t interaction_type = 0;
     get_map_coordinates_from_pos(
-        { x, y }, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapTile, &interaction_type, nullptr,
+        screenPos, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapTile, &interaction_type, nullptr,
         nullptr);
 
     if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -2693,7 +2688,7 @@ static money32 try_place_ghost_scenery(
  *
  *  rct2: 0x006E287B
  */
-static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
+static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 {
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
@@ -2724,7 +2719,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
     CoordsXY mapTile = {};
     uint32_t parameter1, parameter2, parameter3;
 
-    sub_6E1F34(x, y, selection, mapTile, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(screenPos, selection, mapTile, &parameter1, &parameter2, &parameter3);
 
     if (mapTile.isNull())
     {
@@ -2952,19 +2947,19 @@ static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widget
     switch (widgetIndex)
     {
         case WIDX_CLEAR_SCENERY:
-            top_toolbar_tool_update_scenery_clear(screenCoords.x, screenCoords.y);
+            top_toolbar_tool_update_scenery_clear(screenCoords);
             break;
         case WIDX_LAND:
             if (gLandPaintMode)
-                top_toolbar_tool_update_land_paint(screenCoords.x, screenCoords.y);
+                top_toolbar_tool_update_land_paint(screenCoords);
             else
-                top_toolbar_tool_update_land(screenCoords.x, screenCoords.y);
+                top_toolbar_tool_update_land(screenCoords);
             break;
         case WIDX_WATER:
-            top_toolbar_tool_update_water(screenCoords.x, screenCoords.y);
+            top_toolbar_tool_update_water(screenCoords);
             break;
         case WIDX_SCENERY:
-            top_toolbar_tool_update_scenery(screenCoords.x, screenCoords.y);
+            top_toolbar_tool_update_scenery(screenCoords);
             break;
     }
 }
@@ -3012,7 +3007,7 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
             }
             break;
         case WIDX_SCENERY:
-            window_top_toolbar_scenery_tool_down(screenCoords.x, screenCoords.y, w, widgetIndex);
+            window_top_toolbar_scenery_tool_down(screenCoords, w, widgetIndex);
             break;
     }
 }
@@ -3087,12 +3082,12 @@ static money32 selection_lower_land(uint8_t flags)
  *  part of window_top_toolbar_tool_drag(0x0066CB4E)
  *  rct2: 0x00664454
  */
-static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
+static void window_top_toolbar_land_tool_drag(const ScreenCoordsXY& screenPos)
 {
-    rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
+    rct_window* window = window_find_from_point(screenPos);
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
+    rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
@@ -3104,7 +3099,7 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
 
     int16_t tile_height = -16 / viewport->zoom;
 
-    int32_t y_diff = y - gInputDragLast.y;
+    int32_t y_diff = screenPos.y - gInputDragLast.y;
 
     if (y_diff <= tile_height)
     {
@@ -3130,12 +3125,12 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
  *  part of window_top_toolbar_tool_drag(0x0066CB4E)
  *  rct2: 0x006E6D4B
  */
-static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
+static void window_top_toolbar_water_tool_drag(const ScreenCoordsXY& screenPos)
 {
-    rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
+    rct_window* window = window_find_from_point(screenPos);
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
+    rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
@@ -3147,9 +3142,9 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
 
     int16_t dx = -16 / viewport->zoom;
 
-    y -= gInputDragLast.y;
+    auto offsetPos = screenPos - ScreenCoordsXY{ 0, gInputDragLast.y };
 
-    if (y <= dx)
+    if (offsetPos.y <= dx)
     {
         gInputDragLast.y += dx;
 
@@ -3165,7 +3160,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
 
     dx = -dx;
 
-    if (y >= dx)
+    if (offsetPos.y >= dx)
     {
         gInputDragLast.y += dx;
 
@@ -3216,21 +3211,21 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             {
                 if (!_landToolBlocked)
                 {
-                    window_top_toolbar_land_tool_drag(screenCoords.x, screenCoords.y);
+                    window_top_toolbar_land_tool_drag(screenCoords);
                 }
             }
             break;
         case WIDX_WATER:
             if (!_landToolBlocked)
             {
-                window_top_toolbar_water_tool_drag(screenCoords.x, screenCoords.y);
+                window_top_toolbar_water_tool_drag(screenCoords);
             }
             break;
         case WIDX_SCENERY:
             if (gWindowSceneryPaintEnabled & 1)
-                window_top_toolbar_scenery_tool_down(screenCoords.x, screenCoords.y, w, widgetIndex);
+                window_top_toolbar_scenery_tool_down(screenCoords, w, widgetIndex);
             if (gWindowSceneryEyedropperEnabled)
-                window_top_toolbar_scenery_tool_down(screenCoords.x, screenCoords.y, w, widgetIndex);
+                window_top_toolbar_scenery_tool_down(screenCoords, w, widgetIndex);
             break;
     }
 }
