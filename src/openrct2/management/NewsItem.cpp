@@ -295,6 +295,20 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
     return subjectLoc;
 }
 
+static NewsItem* news_item_first_open_queue_slot()
+{
+    NewsItem* newsItem = gNewsItems;
+
+    while (newsItem->Type != NEWS_ITEM_NULL)
+    {
+        if (newsItem + 1 >= &gNewsItems[10])
+            news_item_close_current();
+        else
+            newsItem++;
+    }
+    return newsItem;
+}
+
 /**
  *
  *  rct2: 0x0066DF55
@@ -311,18 +325,7 @@ NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t
 
 NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
 {
-    NewsItem* newsItem = gNewsItems;
-
-    // Find first open slot
-    while (newsItem->Type != NEWS_ITEM_NULL)
-    {
-        if (newsItem + 1 >= &gNewsItems[10])
-            news_item_close_current();
-        else
-            newsItem++;
-    }
-
-    // Now we have found an item slot to place the new news in
+    NewsItem* newsItem = news_item_first_open_queue_slot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc;
@@ -476,17 +479,7 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
 
 void news_item_add_to_queue_custom(NewsItem* newNewsItem)
 {
-    NewsItem* newsItem = gNewsItems;
-
-    // Find first open slot
-    while (newsItem->Type != NEWS_ITEM_NULL)
-    {
-        if (newsItem + 1 >= &gNewsItems[10])
-            news_item_close_current();
-        else
-            newsItem++;
-    }
-
+    NewsItem* newsItem = news_item_first_open_queue_slot();
     *newsItem = *newNewsItem;
     newsItem++;
     newsItem->Type = NEWS_ITEM_NULL;
