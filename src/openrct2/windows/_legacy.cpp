@@ -439,16 +439,15 @@ void window_ride_construction_do_station_check()
     }
 }
 
-void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
+void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
 {
     if (gGotoStartPlacementMode)
     {
-        z &= 0xFFF0;
-        _currentTrackBegin.z = z;
+        _currentTrackBegin.z = piecePos.z & 0xFFF0;
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
-        _currentTrackPieceDirection = direction & 3;
+        _currentTrackPieceDirection = piecePos.direction & 3;
         int32_t savedCurrentTrackCurve = _currentTrackCurve;
         int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
         int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
@@ -462,7 +461,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
         if (!ride_try_get_origin_element(ride, nullptr))
         {
             ride_initialise_construction_window(ride);
-            _currentTrackPieceDirection = direction & 3;
+            _currentTrackPieceDirection = piecePos.direction & 3;
             if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
             {
                 _currentTrackCurve = savedCurrentTrackCurve;
@@ -498,10 +497,8 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
         }
-        _currentTrackBegin.x = x;
-        _currentTrackBegin.y = y;
-        _currentTrackBegin.z = z;
-        _currentTrackPieceDirection = direction;
+        _currentTrackBegin = piecePos;
+        _currentTrackPieceDirection = piecePos.direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
