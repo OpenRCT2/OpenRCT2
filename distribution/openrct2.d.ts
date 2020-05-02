@@ -54,10 +54,18 @@ declare global {
     }
 
     /**
+     * A coordinate within the game's client screen in pixels.
+     */
+    interface ScreenCoordsXY {
+        x: number;
+        y: number;
+    }
+
+    /**
      * A coordinate within the game.
      * Each in-game tile is a size of 32x32.
      */
-    interface Coord2 {
+    interface CoordsXY {
         x: number;
         y: number;
     }
@@ -67,7 +75,7 @@ declare global {
      * Each in-game tile is a size of 32x32.
      * The z-coordinate raises 16 per land increment. A full-height wall is 32 in height.
      */
-    interface Coord3 extends Coord2 {
+    interface CoordsXYZ extends CoordsXY {
         z: number;
     }
 
@@ -75,8 +83,8 @@ declare global {
      * A rectangular area specified using two coordinates.
      */
     interface MapRange {
-        leftTop: Coord2;
-        rightBottom: Coord2;
+        leftTop: CoordsXY;
+        rightBottom: CoordsXY;
     }
 
     /**
@@ -253,7 +261,7 @@ declare global {
         error?: string;
         errorTitle?: string;
         errorMessage?: string;
-        position?: Coord3;
+        position?: CoordsXYZ;
         cost?: number;
         expenditureType?: ExpenditureType;
     }
@@ -336,7 +344,7 @@ declare global {
      * APIs for the map.
      */
     interface GameMap {
-        readonly size: Coord2;
+        readonly size: CoordsXY;
         readonly numRides: number;
         readonly numEntities: number;
         readonly rides: Ride[];
@@ -739,7 +747,7 @@ declare global {
 
     interface TileSelection {
         range: MapRange;
-        tiles: Coord2[];
+        tiles: CoordsXY[];
     }
 
     interface Tool {
@@ -751,8 +759,8 @@ declare global {
 
     interface ToolEventArgs {
         readonly isDown: boolean;
-        readonly screenCoords: Coord2;
-        readonly mapCoords?: Coord3;
+        readonly screenCoords: ScreenCoordsXY;
+        readonly mapCoords?: CoordsXYZ;
         readonly tileElementIndex?: number;
         readonly entityId?: number;
     }
@@ -902,7 +910,7 @@ declare global {
         frameBase: number;
         frameCount?: number;
         frameDuration?: number;
-        offset?: Coord2;
+        offset?: ScreenCoordsXY;
     }
 
     interface WindowTabDesc {
@@ -919,8 +927,8 @@ declare global {
         zoom: number;
         visibilityFlags: number;
 
-        getCentrePosition(): Coord2;
-        moveTo(position: Coord2 | Coord3): void;
-        scrollTo(position: Coord2 | Coord3): void;
+        getCentrePosition(): CoordsXY;
+        moveTo(position: CoordsXY | CoordsXYZ): void;
+        scrollTo(position: CoordsXY | CoordsXYZ): void;
     }
 }
