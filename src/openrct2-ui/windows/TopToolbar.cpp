@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2961,6 +2961,15 @@ static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widget
         case WIDX_SCENERY:
             top_toolbar_tool_update_scenery(screenCoords);
             break;
+#ifdef ENABLE_SCRIPTING
+        default:
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
+            {
+                customTool->OnUpdate(screenCoords);
+            }
+            break;
+#endif
     }
 }
 
@@ -3009,6 +3018,15 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
         case WIDX_SCENERY:
             window_top_toolbar_scenery_tool_down(screenCoords, w, widgetIndex);
             break;
+#ifdef ENABLE_SCRIPTING
+        default:
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
+            {
+                customTool->OnDown(screenCoords);
+            }
+            break;
+#endif
     }
 }
 
@@ -3227,6 +3245,15 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             if (gWindowSceneryEyedropperEnabled)
                 window_top_toolbar_scenery_tool_down(screenCoords, w, widgetIndex);
             break;
+#ifdef ENABLE_SCRIPTING
+        default:
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
+            {
+                customTool->OnDrag(screenCoords);
+            }
+            break;
+#endif
     }
 }
 
@@ -3254,6 +3281,15 @@ static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetInde
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gCurrentToolId = TOOL_CROSSHAIR;
             break;
+#ifdef ENABLE_SCRIPTING
+        default:
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
+            {
+                customTool->OnUp(screenCoords);
+            }
+            break;
+#endif
     }
 }
 
@@ -3270,6 +3306,16 @@ static void window_top_toolbar_tool_abort(rct_window* w, rct_widgetindex widgetI
         case WIDX_CLEAR_SCENERY:
             hide_gridlines();
             break;
+#ifdef ENABLE_SCRIPTING
+        default:
+            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            if (customTool)
+            {
+                customTool->OnAbort();
+                customTool = {};
+            }
+            break;
+#endif
     }
 }
 

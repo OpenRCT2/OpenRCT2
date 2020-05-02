@@ -13,6 +13,7 @@
 
 #    include <memory>
 #    include <openrct2/Context.h>
+#    include <openrct2/interface/Cursors.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
 #    include <string>
@@ -41,9 +42,39 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    struct CustomTool
+    {
+        std::shared_ptr<Plugin> Owner;
+        std::string Id;
+        CURSOR_ID Cursor{};
+        bool MouseDown{};
+
+        // Event handlers
+        DukValue onStart;
+        DukValue onDown;
+        DukValue onMove;
+        DukValue onUp;
+        DukValue onFinish;
+
+        void Start();
+        void OnUpdate(const ScreenCoordsXY& screenCoords);
+        void OnDown(const ScreenCoordsXY& screenCoords);
+        void OnDrag(const ScreenCoordsXY& screenCoords);
+        void OnUp(const ScreenCoordsXY& screenCoords);
+        void OnAbort();
+
+    private:
+        void InvokeEventHandler(const DukValue& dukHandler, const ScreenCoordsXY& screenCoords);
+    };
+
+    extern std::optional<CustomTool> ActiveCustomTool;
     extern std::vector<CustomToolbarMenuItem> CustomMenuItems;
 
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
+    void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);
+
+    template<> DukValue ToDuk(duk_context* ctx, const CURSOR_ID& value);
+    template<> CURSOR_ID FromDuk(const DukValue& s);
 
 } // namespace OpenRCT2::Scripting
 

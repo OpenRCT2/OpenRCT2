@@ -12,6 +12,7 @@
 #    include "UiExtensions.h"
 
 #    include "CustomMenu.h"
+#    include "ScTileSelection.hpp"
 #    include "ScUi.hpp"
 #    include "ScWidget.hpp"
 #    include "ScWindow.hpp"
@@ -26,6 +27,8 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
+    ScTileSelection::Register(ctx);
+    ScTool::Register(ctx);
     ScUi::Register(ctx);
     ScViewport::Register(ctx);
     ScWidget::Register(ctx);

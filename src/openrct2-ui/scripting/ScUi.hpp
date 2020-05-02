@@ -12,11 +12,14 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "CustomMenu.h"
+#    include "ScTileSelection.hpp"
 #    include "ScViewport.hpp"
 #    include "ScWindow.hpp"
 
+#    include <algorithm>
 #    include <memory>
 #    include <openrct2/Context.h>
+#    include <openrct2/Input.h>
 #    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
@@ -34,6 +37,41 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Scripting
 {
+    class ScTool
+    {
+    private:
+        duk_context* _ctx{};
+
+    public:
+        ScTool(duk_context* ctx)
+            : _ctx(ctx)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScTool::id_get, nullptr, "id");
+            dukglue_register_property(ctx, &ScTool::cursor_get, nullptr, "cursor");
+            dukglue_register_method(ctx, &ScTool::cancel, "cancel");
+        }
+
+    private:
+        std::string id_get() const
+        {
+            return ActiveCustomTool ? ActiveCustomTool->Id : "";
+        }
+
+        DukValue cursor_get() const
+        {
+            return ToDuk(_ctx, static_cast<CURSOR_ID>(gCurrentToolId));
+        }
+
+        void cancel()
+        {
+            tool_cancel();
+        }
+    };
+
     class ScUi
     {
     private:
@@ -62,6 +100,20 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScViewport> mainViewport_get() const
         {
             return std::make_shared<ScViewport>(WC_MAIN_WINDOW);
+        }
+
+        std::shared_ptr<ScTileSelection> tileSelection_get() const
+        {
+            return std::make_shared<ScTileSelection>(_scriptEngine.GetContext());
+        }
+
+        std::shared_ptr<ScTool> tool_get() const
+        {
+            if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+            {
+                return std::make_shared<ScTool>(_scriptEngine.GetContext());
+            }
+            return {};
         }
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
@@ -128,6 +180,11 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
+        void activateTool(const DukValue& desc)
+        {
+            InitialiseCustomTool(_scriptEngine, desc);
+        }
+
         void registerMenuItem(std::string text, DukValue callback)
         {
             auto& execInfo = _scriptEngine.GetExecInfo();
@@ -142,10 +199,13 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScUi::width_get, nullptr, "width");
             dukglue_register_property(ctx, &ScUi::windows_get, nullptr, "windows");
             dukglue_register_property(ctx, &ScUi::mainViewport_get, nullptr, "mainViewport");
+            dukglue_register_property(ctx, &ScUi::tileSelection_get, nullptr, "tileSelection");
+            dukglue_register_property(ctx, &ScUi::tool_get, nullptr, "tool");
             dukglue_register_method(ctx, &ScUi::openWindow, "openWindow");
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");
             dukglue_register_method(ctx, &ScUi::getWindow, "getWindow");
+            dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
         }
 

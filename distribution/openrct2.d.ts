@@ -54,10 +54,18 @@ declare global {
     }
 
     /**
+     * A coordinate within the game's client screen in pixels.
+     */
+    interface ScreenCoordsXY {
+        x: number;
+        y: number;
+    }
+
+    /**
      * A coordinate within the game.
      * Each in-game tile is a size of 32x32.
      */
-    interface Coord2 {
+    interface CoordsXY {
         x: number;
         y: number;
     }
@@ -67,8 +75,16 @@ declare global {
      * Each in-game tile is a size of 32x32.
      * The z-coordinate raises 16 per land increment. A full-height wall is 32 in height.
      */
-    interface Coord3 extends Coord2 {
+    interface CoordsXYZ extends CoordsXY {
         z: number;
+    }
+
+    /**
+     * A rectangular area specified using two coordinates.
+     */
+    interface MapRange {
+        leftTop: CoordsXY;
+        rightBottom: CoordsXY;
     }
 
     /**
@@ -245,7 +261,7 @@ declare global {
         error?: number;
         errorTitle?: string;
         errorMessage?: string;
-        position?: Coord3;
+        position?: CoordsXYZ;
         cost?: number;
         expenditureType?: ExpenditureType;
     }
@@ -328,7 +344,7 @@ declare global {
      * APIs for the map.
      */
     interface GameMap {
-        readonly size: Coord2;
+        readonly size: CoordsXY;
         readonly numRides: number;
         readonly numEntities: number;
         readonly rides: Ride[];
@@ -710,6 +726,8 @@ declare global {
         readonly height: number;
         readonly windows: number;
         readonly mainViewport: Viewport;
+        readonly tileSelection: TileSelection;
+        readonly tool: Tool;
 
         getWindow(id: number): Window;
         getWindow(classification: string): Window;
@@ -717,8 +735,78 @@ declare global {
         closeWindows(classification: string, id?: number): void;
         closeAllWindows(): void;
 
+        /**
+         * Begins a new tool session. The cursor will change to the style specified by the
+         * given tool descriptor and cursor events will be provided.
+         * @param tool The properties and event handlers for the tool.
+         */
+        activateTool(tool: ToolDesc): void;
+
         registerMenuItem(text: string, callback: () => void): void;
     }
+
+    interface TileSelection {
+        range: MapRange;
+        tiles: CoordsXY[];
+    }
+
+    interface Tool {
+        id: string;
+        cursor: CursorType;
+
+        cancel: () => void;
+    }
+
+    interface ToolEventArgs {
+        readonly isDown: boolean;
+        readonly screenCoords: ScreenCoordsXY;
+        readonly mapCoords?: CoordsXYZ;
+        readonly tileElementIndex?: number;
+        readonly entityId?: number;
+    }
+
+    /**
+     * Describes the properties and event handlers for a custom tool.
+     */
+    interface ToolDesc {
+        id: string;
+        cursor?: CursorType;
+
+        onStart: () => void;
+        onDown: (e: ToolEventArgs) => void;
+        onMove: (e: ToolEventArgs) => void;
+        onUp: (e: ToolEventArgs) => void;
+        onFinish: () => void;
+    }
+
+    type CursorType =
+        "arrow" |
+        "bench_down" |
+        "bin_down" |
+        "blank" |
+        "cross_hair" |
+        "diagonal_arrows" |
+        "dig_down" |
+        "entrance_down" |
+        "fence_down" |
+        "flower_down" |
+        "fountain_down" |
+        "hand_closed" |
+        "hand_open" |
+        "hand_point" |
+        "house_down" |
+        "lamppost_down" |
+        "paint_down" |
+        "path_down" |
+        "picker" |
+        "statue_down" |
+        "tree_down" |
+        "up_arrow" |
+        "up_down_arrow" |
+        "volcano_down" |
+        "walk_down" |
+        "water_down" |
+        "zzz";
 
     /**
      * Represents the type of a widget, e.g. button or label.
@@ -822,7 +910,7 @@ declare global {
         frameBase: number;
         frameCount?: number;
         frameDuration?: number;
-        offset?: Coord2;
+        offset?: ScreenCoordsXY;
     }
 
     interface WindowTabDesc {
@@ -839,8 +927,8 @@ declare global {
         zoom: number;
         visibilityFlags: number;
 
-        getCentrePosition(): Coord2;
-        moveTo(position: Coord2 | Coord3): void;
-        scrollTo(position: Coord2 | Coord3): void;
+        getCentrePosition(): CoordsXY;
+        moveTo(position: CoordsXY | CoordsXYZ): void;
+        scrollTo(position: CoordsXY | CoordsXYZ): void;
     }
 }
