@@ -238,8 +238,8 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndInvertedState, int32_t* _x,
-    int32_t* _y, int32_t* _z, int32_t* _properties)
+    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndInvertedState,
+    CoordsXYZ* _trackPos, int32_t* _properties)
 {
     ride_id_t rideIndex;
     uint8_t trackType, trackDirection;
@@ -384,12 +384,8 @@ bool window_ride_construction_update_state(
         *_rideIndex = rideIndex;
     if (_liftHillAndInvertedState != nullptr)
         *_liftHillAndInvertedState = liftHillAndInvertedState;
-    if (_x != nullptr)
-        *_x = x;
-    if (_y != nullptr)
-        *_y = y;
-    if (_z != nullptr)
-        *_z = z;
+    if (_trackPos != nullptr)
+        *_trackPos = { x, y, z };
     if (_properties != nullptr)
         *_properties = properties;
 
