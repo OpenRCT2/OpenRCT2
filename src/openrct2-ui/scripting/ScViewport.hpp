@@ -299,7 +299,7 @@ namespace OpenRCT2::Scripting
                     }
                 }
             }
-            return {};
+            return std::nullopt;
         }
     };
 } // namespace OpenRCT2::Scripting

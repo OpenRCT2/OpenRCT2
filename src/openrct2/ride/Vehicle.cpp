@@ -2210,7 +2210,7 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uin
         }
         else if (trainIndex >= std::size(ride->vehicles))
         {
-            return {};
+            return std::nullopt;
         }
     }
     return { trainIndex };

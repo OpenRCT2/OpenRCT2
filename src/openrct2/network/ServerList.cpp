@@ -92,7 +92,7 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
     if (name == nullptr || version == nullptr)
     {
         log_verbose("Cowardly refusing to add server without name or version specified.");
-        return {};
+        return std::nullopt;
     }
     else
     {
