@@ -556,22 +556,22 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
  *  rct2: 0x006C63D6
  */
 bool track_block_get_previous_from_zero(
-    int16_t x, int16_t y, int16_t z, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd)
+    const CoordsXYZ& startPos, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd)
 {
     uint8_t directionStart = direction;
     direction = direction_reverse(direction);
+    auto trackPos = startPos;
 
     if (!(direction & TRACK_BLOCK_2))
     {
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
+        trackPos += CoordsDirectionDelta[direction];
     }
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
     {
-        outTrackBeginEnd->end_x = x;
-        outTrackBeginEnd->end_y = y;
+        outTrackBeginEnd->end_x = trackPos.x;
+        outTrackBeginEnd->end_y = trackPos.y;
         outTrackBeginEnd->begin_element = nullptr;
         outTrackBeginEnd->begin_direction = direction_reverse(directionStart);
         return false;
@@ -605,16 +605,16 @@ bool track_block_get_previous_from_zero(
             continue;
 
         int16_t nextZ = nextTrackCoordinate->z_end - nextTrackBlock->z + tileElement->GetBaseZ();
-        if (nextZ != z)
+        if (nextZ != trackPos.z)
             continue;
 
         nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
             | (nextTrackCoordinate->rotation_begin & TRACK_BLOCK_2);
         outTrackBeginEnd->begin_element = tileElement;
-        outTrackBeginEnd->begin_x = x;
-        outTrackBeginEnd->begin_y = y;
-        outTrackBeginEnd->end_x = x;
-        outTrackBeginEnd->end_y = y;
+        outTrackBeginEnd->begin_x = trackPos.x;
+        outTrackBeginEnd->begin_y = trackPos.y;
+        outTrackBeginEnd->end_x = trackPos.x;
+        outTrackBeginEnd->end_y = trackPos.y;
 
         CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
         CoordsXY offsets = { nextTrackCoordinate->x, nextTrackCoordinate->y };
@@ -634,9 +634,9 @@ bool track_block_get_previous_from_zero(
         return true;
     } while (!(tileElement++)->IsLastForTile());
 
-    outTrackBeginEnd->end_x = x;
-    outTrackBeginEnd->end_y = y;
-    outTrackBeginEnd->begin_z = z;
+    outTrackBeginEnd->end_x = trackPos.x;
+    outTrackBeginEnd->end_y = trackPos.y;
+    outTrackBeginEnd->begin_z = trackPos.z;
     outTrackBeginEnd->begin_element = nullptr;
     outTrackBeginEnd->end_direction = direction_reverse(directionStart);
     return false;
@@ -687,7 +687,7 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
     rotation = ((trackCoordinate->rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
         | (trackCoordinate->rotation_begin & TRACK_BLOCK_2);
 
-    return track_block_get_previous_from_zero(coords.x, coords.y, z, ride, rotation, outTrackBeginEnd);
+    return track_block_get_previous_from_zero({ coords, z }, ride, rotation, outTrackBeginEnd);
 }
 
 /**
@@ -1379,7 +1379,7 @@ void ride_construction_set_default_next_piece()
     if (ride == nullptr)
         return;
 
-    int32_t x, y, z, direction, trackType, curve, bank, slope;
+    int32_t z, direction, trackType, curve, bank, slope;
     track_begin_end trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -1387,11 +1387,8 @@ void ride_construction_set_default_next_piece()
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_FRONT:
-            x = _currentTrackBegin.x;
-            y = _currentTrackBegin.y;
-            z = _currentTrackBegin.z;
             direction = _currentTrackPieceDirection;
-            if (!track_block_get_previous_from_zero(x, y, z, ride, direction, &trackBeginEnd))
+            if (!track_block_get_previous_from_zero(_currentTrackBegin, ride, direction, &trackBeginEnd))
             {
                 ride_construction_reset_current_piece();
                 return;
@@ -6232,9 +6229,7 @@ bool ride_select_backwards_from_front()
     {
         ride_construction_invalidate_current_track();
         track_begin_end trackBeginEnd;
-        if (track_block_get_previous_from_zero(
-                _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, ride, _currentTrackPieceDirection,
-                &trackBeginEnd))
+        if (track_block_get_previous_from_zero(_currentTrackBegin, ride, _currentTrackPieceDirection, &trackBeginEnd))
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
             _currentTrackBegin.x = trackBeginEnd.begin_x;

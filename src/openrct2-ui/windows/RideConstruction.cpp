@@ -1761,7 +1761,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
         }
 
         track_begin_end trackBeginEnd;
-        if (track_block_get_previous_from_zero(trackPos.x, trackPos.y, trackPos.z, ride, trackDirection, &trackBeginEnd))
+        if (track_block_get_previous_from_zero(trackPos, ride, trackDirection, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
             _currentTrackBegin.y = trackBeginEnd.begin_y;
