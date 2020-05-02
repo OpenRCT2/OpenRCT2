@@ -384,6 +384,9 @@ private:
     void UpdateVelocity();
     bool OpenRestraints();
     bool CloseRestraints();
+    void CrashOnWater();
+    void CrashOnLand();
+    void SimulateCrash() const;
 };
 
 struct train_ref
