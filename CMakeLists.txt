@@ -9,8 +9,10 @@ project(openrct2 CXX)
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
 
+# vcpkg includes its own copy of duktapeConfig.cmake; only include ours as needed.
 if (NOT MSVC)
     include(FindPkgConfig)
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 endif ()
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
