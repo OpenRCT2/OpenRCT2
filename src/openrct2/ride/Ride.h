@@ -1156,7 +1156,7 @@ bool track_block_get_next_from_zero(
     const CoordsXYZ& startPos, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
     bool isGhost);
 
-bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd);
+bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd);
 bool track_block_get_previous_from_zero(
     const CoordsXYZ& startPos, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
 

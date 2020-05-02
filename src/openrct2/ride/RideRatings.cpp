@@ -347,7 +347,7 @@ static void ride_ratings_update_state_5()
             loc.x = gRideRatingsCalcData.proximity_x;
             loc.y = gRideRatingsCalcData.proximity_y;
             track_begin_end trackBeginEnd;
-            if (!track_block_get_previous(loc.x, loc.y, tileElement, &trackBeginEnd))
+            if (!track_block_get_previous({ loc, tileElement }, &trackBeginEnd))
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;

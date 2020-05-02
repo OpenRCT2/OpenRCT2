@@ -308,7 +308,7 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
             auto input = CoordsXYE{ vehicle->TrackLocation, trackElement };
             track_begin_end output;
 
-            if (!track_block_get_previous(input.x, input.y, input.element, &output))
+            if (!track_block_get_previous(input, &output))
                 return false;
 
             if (TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].vangle_end != _vehicleVAngleEndF64E36

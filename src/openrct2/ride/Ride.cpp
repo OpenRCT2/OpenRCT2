@@ -650,12 +650,12 @@ bool track_block_get_previous_from_zero(
  * higher two bytes of ecx and edx where as outTrackBeginEnd.end_x and
  * outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
  */
-bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd)
+bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd)
 {
-    if (tileElement == nullptr)
+    if (trackPos.element == nullptr)
         return false;
 
-    auto trackElement = tileElement->AsTrack();
+    auto trackElement = trackPos.element->AsTrack();
     if (trackElement == nullptr)
         return false;
 
@@ -677,7 +677,7 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
     int32_t z = trackElement->GetBaseZ();
 
     uint8_t rotation = trackElement->GetDirection();
-    CoordsXY coords = { x, y };
+    CoordsXY coords = CoordsXY{ trackPos };
     CoordsXY offsets = { trackBlock->x, trackBlock->y };
     coords += offsets.Rotate(direction_reverse(rotation));
 
@@ -1610,7 +1610,7 @@ void ride_select_previous_section()
         virtual_floor_invalidate();
 
         track_begin_end trackBeginEnd;
-        if (track_block_get_previous(newCoords->x, newCoords->y, tileElement, &trackBeginEnd))
+        if (track_block_get_previous({ *newCoords, tileElement }, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
             _currentTrackBegin.y = trackBeginEnd.begin_y;
@@ -4024,7 +4024,7 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
     output->y = input->y;
     output->element = input->element;
     track_begin_end trackBeginEnd;
-    while (track_block_get_previous(output->x, output->y, output->element, &trackBeginEnd))
+    while (track_block_get_previous(*output, &trackBeginEnd))
     {
         output->x = trackBeginEnd.begin_x;
         output->y = trackBeginEnd.begin_y;
@@ -4116,7 +4116,7 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     int32_t startY = returnY;
     TileElement* returnTrackElement = startElement->element;
     track_begin_end trackBeginEnd;
-    while (track_block_get_previous(returnX, returnY, returnTrackElement, &trackBeginEnd))
+    while (track_block_get_previous({ returnX, returnY, returnTrackElement }, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
         if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
@@ -4583,7 +4583,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
     int32_t y = curTrackPos.y;
     auto trackElement = curTrackElement;
     track_begin_end trackBeginEnd;
-    while (track_block_get_previous(x, y, reinterpret_cast<TileElement*>(trackElement), &trackBeginEnd))
+    while (track_block_get_previous({ x, y, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
     {
         x = trackBeginEnd.end_x;
         y = trackBeginEnd.end_y;
@@ -5346,7 +5346,7 @@ void ride_get_start_of_track(CoordsXYE* output)
 {
     track_begin_end trackBeginEnd;
     CoordsXYE trackElement = *output;
-    if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd))
+    if (track_block_get_previous(trackElement, &trackBeginEnd))
     {
         TileElement* initial_map = trackElement.element;
         track_begin_end slowIt = trackBeginEnd;
@@ -5360,7 +5360,7 @@ void ride_get_start_of_track(CoordsXYE* output)
             };
 
             if (!track_block_get_previous(
-                    trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd))
+                    { trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element }, &trackBeginEnd))
             {
                 trackElement = lastGood;
                 break;
@@ -5369,7 +5369,7 @@ void ride_get_start_of_track(CoordsXYE* output)
             moveSlowIt = !moveSlowIt;
             if (moveSlowIt)
             {
-                if (!track_block_get_previous(slowIt.end_x, slowIt.end_y, slowIt.begin_element, &slowIt)
+                if (!track_block_get_previous({ slowIt.end_x, slowIt.end_y, slowIt.begin_element }, &slowIt)
                     || slowIt.begin_element == trackBeginEnd.begin_element)
                 {
                     break;

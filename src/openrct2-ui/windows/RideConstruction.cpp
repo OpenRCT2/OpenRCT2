@@ -1910,7 +1910,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     inputElement.x = newCoords->x;
     inputElement.y = newCoords->y;
     inputElement.element = tileElement;
-    if (track_block_get_previous(newCoords->x, newCoords->y, tileElement, &trackBeginEnd))
+    if (track_block_get_previous({ *newCoords, tileElement }, &trackBeginEnd))
     {
         *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         direction = trackBeginEnd.begin_direction;
