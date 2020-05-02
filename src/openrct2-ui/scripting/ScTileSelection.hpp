@@ -148,10 +148,7 @@ namespace OpenRCT2::Scripting
                     auto dukY = dukCoords["y"];
                     if (dukY.type() == DukValue::Type::NUMBER)
                     {
-                        CoordsXY coords;
-                        coords.x = dukX.as_int();
-                        coords.y = dukY.as_int();
-                        result = coords;
+                        result = { dukX.as_int(), dukY.as_int() };
                     }
                 }
             }

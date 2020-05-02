@@ -20,6 +20,53 @@ namespace OpenRCT2::Scripting
     std::optional<CustomTool> ActiveCustomTool;
     std::vector<CustomToolbarMenuItem> CustomMenuItems;
 
+    static constexpr std::array<std::string_view, CURSOR_COUNT> CursorNames = {
+        "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
+        "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
+        "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
+        "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
+    };
+
+    template<> DukValue ToDuk(duk_context* ctx, const CURSOR_ID& value)
+    {
+        if (value >= 0 && static_cast<size_t>(value) < std::size(CursorNames))
+        {
+            auto str = CursorNames[value];
+            duk_push_lstring(ctx, str.data(), str.size());
+            DukValue::take_from_stack(ctx);
+        }
+        return {};
+    }
+
+    template<> CURSOR_ID FromDuk(const DukValue& s)
+    {
+        if (s.type() == DukValue::Type::STRING)
+        {
+            auto it = std::find(std::begin(CursorNames), std::end(CursorNames), s.as_c_string());
+            if (it != std::end(CursorNames))
+            {
+                return static_cast<CURSOR_ID>(std::distance(std::begin(CursorNames), it));
+            }
+        }
+        return CURSOR_UNDEFINED;
+    }
+
+    template<> DukValue ToDuk(duk_context* ctx, const CoordsXY& coords)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", coords.x);
+        dukCoords.Set("y", coords.y);
+        return dukCoords.Take();
+    }
+
+    template<> DukValue ToDuk(duk_context* ctx, const ScreenCoordsXY& coords)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", coords.x);
+        dukCoords.Set("y", coords.y);
+        return dukCoords.Take();
+    }
+
     static void RemoveMenuItemsAndTool(std::shared_ptr<Plugin> owner)
     {
         if (ActiveCustomTool)
@@ -83,22 +130,6 @@ namespace OpenRCT2::Scripting
         scriptEngine.ExecutePluginCall(Owner, onFinish, {}, false);
     }
 
-    static DukValue CoordsXYToDuk(duk_context* ctx, const CoordsXY& coords)
-    {
-        DukObject dukCoords(ctx);
-        dukCoords.Set("x", coords.x);
-        dukCoords.Set("y", coords.y);
-        return dukCoords.Take();
-    }
-
-    static DukValue CoordsXYToDuk(duk_context* ctx, const ScreenCoordsXY& coords)
-    {
-        DukObject dukCoords(ctx);
-        dukCoords.Set("x", coords.x);
-        dukCoords.Set("y", coords.y);
-        return dukCoords.Take();
-    }
-
     void CustomTool::InvokeEventHandler(const DukValue& dukHandler, const ScreenCoordsXY& screenCoords)
     {
         if (dukHandler.is_function())
@@ -113,8 +144,8 @@ namespace OpenRCT2::Scripting
 
             DukObject obj(dukHandler.context());
             obj.Set("isDown", MouseDown);
-            obj.Set("screenCoords", CoordsXYToDuk(ctx, screenCoords));
-            obj.Set("mapCoords", CoordsXYToDuk(ctx, mapCoords));
+            obj.Set("screenCoords", ToDuk(ctx, screenCoords));
+            obj.Set("mapCoords", ToDuk(ctx, mapCoords));
 
             if (interactionType == VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement != nullptr)
             {
@@ -157,7 +188,11 @@ namespace OpenRCT2::Scripting
                 CustomTool customTool;
                 customTool.Owner = scriptEngine.GetExecInfo().GetCurrentPlugin();
                 customTool.Id = dukValue["id"].as_string();
-                customTool.Cursor = StringToCursor(dukValue["cursor"].as_string());
+                customTool.Cursor = FromDuk<CURSOR_ID>(dukValue["cursor"]);
+                if (customTool.Cursor == CURSOR_UNDEFINED)
+                {
+                    customTool.Cursor = CURSOR_ARROW;
+                }
                 customTool.onStart = dukValue["onStart"];
                 customTool.onDown = dukValue["onDown"];
                 customTool.onMove = dukValue["onMove"];
@@ -181,32 +216,6 @@ namespace OpenRCT2::Scripting
         {
             duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
         }
-    }
-
-    static constexpr const char* CursorNames[] = {
-        "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
-        "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
-        "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
-        "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
-    };
-
-    std::string CursorToString(int32_t cursor)
-    {
-        if (cursor >= 0 && static_cast<size_t>(cursor) < std::size(CursorNames))
-        {
-            return CursorNames[cursor];
-        }
-        return {};
-    }
-
-    CURSOR_ID StringToCursor(const std::string_view& cursor)
-    {
-        auto it = std::find(std::begin(CursorNames), std::end(CursorNames), cursor);
-        if (it != std::end(CursorNames))
-        {
-            return static_cast<CURSOR_ID>(std::distance(std::begin(CursorNames), it));
-        }
-        return CURSOR_UNDEFINED;
     }
 
 } // namespace OpenRCT2::Scripting

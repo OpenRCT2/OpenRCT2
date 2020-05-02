@@ -39,7 +39,15 @@ namespace OpenRCT2::Scripting
 {
     class ScTool
     {
+    private:
+        duk_context* _ctx{};
+
     public:
+        ScTool(duk_context* ctx)
+            : _ctx(ctx)
+        {
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScTool::id_get, nullptr, "id");
@@ -53,9 +61,9 @@ namespace OpenRCT2::Scripting
             return ActiveCustomTool ? ActiveCustomTool->Id : "";
         }
 
-        std::string cursor_get() const
+        DukValue cursor_get() const
         {
-            return CursorToString(gCurrentToolId);
+            return ToDuk(_ctx, static_cast<CURSOR_ID>(gCurrentToolId));
         }
 
         void cancel()
@@ -103,7 +111,7 @@ namespace OpenRCT2::Scripting
         {
             if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
             {
-                return std::make_shared<ScTool>();
+                return std::make_shared<ScTool>(_scriptEngine.GetContext());
             }
             return {};
         }

@@ -762,8 +762,7 @@ declare global {
      */
     interface ToolDesc {
         id: string;
-        type: ToolType;
-        cursor: CursorType;
+        cursor?: CursorType;
 
         onStart: () => void;
         onDown: (e: ToolEventArgs) => void;
@@ -774,32 +773,32 @@ declare global {
 
     type CursorType =
         "arrow" |
-        "blank" |
-        "up_arrow" |
-        "up_down_arrow" |
-        "hand_point" |
-        "zzz" |
-        "diagonal_arrows" |
-        "picker" |
-        "tree_down" |
-        "fountain_down" |
-        "statue_down" |
         "bench_down" |
-        "cross_hair" |
         "bin_down" |
-        "lamppost_down" |
+        "blank" |
+        "cross_hair" |
+        "diagonal_arrows" |
+        "dig_down" |
+        "entrance_down" |
         "fence_down" |
         "flower_down" |
-        "path_down" |
-        "dig_down" |
-        "water_down" |
+        "fountain_down" |
+        "hand_closed" |
+        "hand_open" |
+        "hand_point" |
         "house_down" |
+        "lamppost_down" |
+        "paint_down" |
+        "path_down" |
+        "picker" |
+        "statue_down" |
+        "tree_down" |
+        "up_arrow" |
+        "up_down_arrow" |
         "volcano_down" |
         "walk_down" |
-        "paint_down" |
-        "entrance_down" |
-        "hand_open" |
-        "hand_closed";
+        "water_down" |
+        "zzz";
 
     /**
      * Represents the type of a widget, e.g. button or label.
