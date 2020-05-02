@@ -4111,13 +4111,11 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
 {
     int32_t trackType = -1;
-    int32_t returnX = startElement->x;
-    int32_t returnY = startElement->y;
-    int32_t startX = returnX;
-    int32_t startY = returnY;
-    TileElement* returnTrackElement = startElement->element;
+    auto returnPos = *startElement;
+    int32_t startX = returnPos.x;
+    int32_t startY = returnPos.y;
     track_begin_end trackBeginEnd;
-    while (track_block_get_previous({ returnX, returnY, returnTrackElement }, &trackBeginEnd))
+    while (track_block_get_previous(returnPos, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
         if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
@@ -4126,16 +4124,15 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
         auto trackCoords = CoordsXYZ{ trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         int32_t direction = trackBeginEnd.begin_direction;
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-        auto newCoords = sub_6C683D({ trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnTrackElement, 0);
-        returnX = newCoords == std::nullopt ? trackCoords.x : newCoords->x;
-        returnY = newCoords == std::nullopt ? trackCoords.y : newCoords->y;
+        auto newCoords = sub_6C683D({ trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
+        returnPos = newCoords == std::nullopt ? CoordsXYE{ trackCoords, returnPos.element }
+                                              : CoordsXYE{ *newCoords, returnPos.element };
     };
 
-    trackType = returnTrackElement->AsTrack()->GetTrackType();
+    trackType = returnPos.element->AsTrack()->GetTrackType();
     int32_t elementReturnDirection = TrackCoordinates[trackType].rotation_begin;
-    ride->boat_hire_return_direction = returnTrackElement->GetDirectionWithOffset(elementReturnDirection);
-    ride->boat_hire_return_position.x = returnX >> 5;
-    ride->boat_hire_return_position.y = returnY >> 5;
+    ride->boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
+    ride->boat_hire_return_position = TileCoordsXY{ returnPos };
 }
 
 /**
@@ -4580,16 +4577,14 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
 
     assert(curTrackElement != nullptr);
 
-    int32_t x = curTrackPos.x;
-    int32_t y = curTrackPos.y;
+    CoordsXY trackPos = curTrackPos;
     auto trackElement = curTrackElement;
     track_begin_end trackBeginEnd;
-    while (track_block_get_previous({ x, y, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
+    while (track_block_get_previous({ trackPos, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
     {
-        x = trackBeginEnd.end_x;
-        y = trackBeginEnd.end_y;
+        trackPos = { trackBeginEnd.end_x, trackBeginEnd.end_y };
         trackElement = trackBeginEnd.begin_element->AsTrack();
-        if (x == curTrackPos.x && y == curTrackPos.y && trackElement == curTrackElement)
+        if (trackPos == curTrackPos && trackElement == curTrackElement)
         {
             break;
         }
@@ -4601,9 +4596,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             case TRACK_ELEM_60_DEG_UP_TO_FLAT:
                 if (trackElement->HasChain())
                 {
-                    outXYElement->x = x;
-                    outXYElement->y = y;
-                    outXYElement->element = reinterpret_cast<TileElement*>(trackElement);
+                    *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                     return;
                 }
                 break;
@@ -4626,9 +4619,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             case TRACK_ELEM_END_STATION:
             case TRACK_ELEM_CABLE_LIFT_HILL:
             case TRACK_ELEM_BLOCK_BRAKES:
-                outXYElement->x = x;
-                outXYElement->y = y;
-                outXYElement->element = reinterpret_cast<TileElement*>(trackElement);
+                *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                 return;
         }
     }

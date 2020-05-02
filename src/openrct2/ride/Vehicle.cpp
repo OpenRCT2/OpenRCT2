@@ -8348,9 +8348,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     bool nextTileBackwards = true;
     int32_t direction;
     // loc_6DBB08:;
-    int16_t x = vehicle->TrackLocation.x;
-    int16_t y = vehicle->TrackLocation.y;
-    int16_t z = 0;
+    auto trackPos = CoordsXYZ{ vehicle->TrackLocation.x, vehicle->TrackLocation.y, 0 };
 
     switch (vehicle->TrackSubposition)
     {
@@ -8374,7 +8372,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     {
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous({ x, y, tileElement }, &trackBeginEnd))
+        if (!track_block_get_previous({ trackPos, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -8406,9 +8404,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
             }
         }
 
-        x = trackBeginEnd.begin_x;
-        y = trackBeginEnd.begin_y;
-        z = trackBeginEnd.begin_z;
+        trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         direction = trackBeginEnd.begin_direction;
     }
     else
@@ -8418,21 +8414,19 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         CoordsXYE output;
         int32_t outputZ;
 
-        input.x = x;
-        input.y = y;
+        input.x = trackPos.x;
+        input.y = trackPos.y;
         input.element = tileElement;
         if (!track_block_get_next(&input, &output, &outputZ, &direction))
         {
             return false;
         }
         tileElement = output.element;
-        x = output.x;
-        y = output.y;
-        z = outputZ;
+        trackPos = { output, outputZ };
     }
 
     // loc_6DBC3B:
-    vehicle->TrackLocation = { x, y, z };
+    vehicle->TrackLocation = trackPos;
 
     if (vehicle->TrackSubposition >= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
         && vehicle->TrackSubposition <= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL)
