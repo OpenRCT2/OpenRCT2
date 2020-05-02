@@ -1237,11 +1237,9 @@ void ride_restore_provisional_track_piece()
         else
         {
             _currentTrackPrice = place_provisional_track_piece(
-<<<<<<< HEAD
+
+      
                 rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
-=======
-                rideIndex, type, direction, liftHillAndAlternativeState, { x, y, z });
->>>>>>> 02a5c10a5... Make place_provisional_track_piece() use CoordsXYZ
             window_ride_construction_update_active_elements();
         }
     }
