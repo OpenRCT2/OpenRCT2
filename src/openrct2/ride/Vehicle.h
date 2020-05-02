@@ -382,6 +382,8 @@ private:
     void UpdateTrackMotionUpStopCheck() const;
     void CheckAndApplyBlockSectionStopSite();
     void UpdateVelocity();
+    bool OpenRestraints();
+    bool CloseRestraints();
 };
 
 struct train_ref
