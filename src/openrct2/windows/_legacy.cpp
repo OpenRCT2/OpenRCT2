@@ -42,8 +42,8 @@ bool _deferClose;
  *  rct2: 0x006CA162
  */
 money32 place_provisional_track_piece(
-    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
-    int32_t z)
+    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
+    const CoordsXYZ& trackPos)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -55,14 +55,11 @@ money32 place_provisional_track_piece(
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST; // 105
-        result = maze_set_track(x, y, z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+        result = maze_set_track(trackPos.x, trackPos.y, trackPos.z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
             return result;
 
-        _unkF440C5.x = x;
-        _unkF440C5.y = y;
-        _unkF440C5.z = z;
-        _unkF440C5.direction = trackDirection;
+        _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         viewport_set_visibility(3);
         if (_currentTrackSlopeEnd != 0)
@@ -74,7 +71,7 @@ money32 place_provisional_track_piece(
         if (!scenery_tool_is_active())
         {
             // Set new virtual floor height.
-            virtual_floor_set_height(z);
+            virtual_floor_set_height(trackPos.z);
         }
 
         return result;
@@ -82,7 +79,7 @@ money32 place_provisional_track_piece(
     else
     {
         auto trackPlaceAction = TrackPlaceAction(
-            rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState,
+            rideIndex, trackType, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState,
             false);
         trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         // This command must not be sent over the network
@@ -104,12 +101,7 @@ money32 place_provisional_track_piece(
             z_end = z_begin = coords->z_begin;
         }
 
-        _unkF440C5.x = x;
-        _unkF440C5.y = y;
-        z += z_begin;
-
-        _unkF440C5.z = z;
-        _unkF440C5.direction = trackDirection;
+        _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         viewport_set_visibility((tpar->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
         if (_currentTrackSlopeEnd != 0)
@@ -121,7 +113,7 @@ money32 place_provisional_track_piece(
         if (!scenery_tool_is_active())
         {
             // Set height to where the next track piece would begin
-            virtual_floor_set_height(z - z_begin + z_end);
+            virtual_floor_set_height(trackPos.z - z_begin + z_end);
         }
 
         return result;

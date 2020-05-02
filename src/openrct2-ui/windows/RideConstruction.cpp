@@ -2587,7 +2587,7 @@ void sub_6C94D8()
                 else
                 {
                     _currentTrackPrice = place_provisional_track_piece(
-                        rideIndex, type, direction, liftHillAndAlternativeState, trackPos.x, trackPos.y, trackPos.z);
+                        rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                     window_ride_construction_update_active_elements();
                 }
             }
@@ -3548,7 +3548,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z,
                 nullptr);
             _currentTrackPrice = place_provisional_track_piece(
-                rideIndex, trackType, trackDirection, liftHillAndAlternativeState, mapCoords->x, mapCoords->y, z);
+                rideIndex, trackType, trackDirection, liftHillAndAlternativeState, { *mapCoords, z });
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
 
@@ -3570,7 +3570,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z, nullptr);
         _currentTrackPrice = place_provisional_track_piece(
-            rideIndex, trackType, trackDirection, liftHillAndAlternativeState, mapCoords->x, mapCoords->y, z);
+            rideIndex, trackType, trackDirection, liftHillAndAlternativeState, { *mapCoords, z });
         if (_currentTrackPrice != MONEY32_UNDEFINED)
             break;
 
@@ -3633,7 +3633,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                         &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z,
                         nullptr);
                     place_provisional_track_piece(
-                        rideIndex, trackType, trackDirection, liftHillAndAlternativeState, mapCoords->x, mapCoords->y, z);
+                        rideIndex, trackType, trackDirection, liftHillAndAlternativeState, { *mapCoords, z });
                     gMapSelectArrowDirection = _currentTrackPieceDirection;
                     break;
                 }
