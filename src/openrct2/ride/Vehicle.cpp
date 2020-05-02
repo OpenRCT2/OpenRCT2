@@ -45,8 +45,6 @@
 #include <algorithm>
 #include <iterator>
 
-static void vehicle_claxon(const Vehicle* vehicle);
-
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
@@ -6482,9 +6480,9 @@ bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collide
  *
  *  rct2: 0x006DAB90
  */
-static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
+void Vehicle::UpdateTrackMotionUpStopCheck() const
 {
-    auto vehicleEntry = vehicle->Entry();
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6493,14 +6491,14 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
     // No up stops (coaster types)
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            auto gForces = vehicle->GetGForces();
+            auto gForces = GetGForces();
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
-                if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
+                if (dword_9A2970[vehicle_sprite_type] < 0)
                 {
                     if (gForces.VerticalG > -40)
                     {
@@ -6513,7 +6511,7 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
                 }
             }
 
-            if (vehicle->vehicle_sprite_type != 8)
+            if (vehicle_sprite_type != 8)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -6522,12 +6520,12 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
     else if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH)
     {
         // No up stops bobsleigh type
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            auto gForces = vehicle->GetGForces();
+            auto gForces = GetGForces();
 
-            if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
+            if (dword_9A2970[vehicle_sprite_type] < 0)
             {
                 if (gForces.VerticalG > -45)
                 {
@@ -6542,7 +6540,7 @@ static void vehicle_update_track_motion_up_stop_check(Vehicle* vehicle)
                 }
             }
 
-            if (vehicle->vehicle_sprite_type != 8 && vehicle->vehicle_sprite_type != 55)
+            if (vehicle_sprite_type != 8 && vehicle_sprite_type != 55)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -6613,31 +6611,26 @@ static void apply_block_brakes(Vehicle* vehicle, bool is_block_brake_closed)
  *
  *  rct2: 0x006DAC43
  */
-static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
+void Vehicle::CheckAndApplyBlockSectionStopSite()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    auto vehicleEntry = vehicle->Entry();
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
         return;
 
     // Is chair lift type
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
     {
-        int32_t velocity = ride->speed << 16;
-        if (_vehicleBreakdown == 0)
-        {
-            velocity = 0;
-        }
-        vehicle->velocity = velocity;
-        vehicle->acceleration = 0;
+        velocity = _vehicleBreakdown == 0 ? 0 : curRide->speed << 16;
+        acceleration = 0;
     }
 
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = track_type >> 2;
 
-    TileElement* trackElement = map_get_track_element_at_of_type(vehicle->TrackLocation, trackType);
+    TileElement* trackElement = map_get_track_element_at_of_type(TrackLocation, trackType);
 
     if (trackElement == nullptr)
     {
@@ -6647,10 +6640,10 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
     switch (trackType)
     {
         case TRACK_ELEM_BLOCK_BRAKES:
-            if (ride->IsBlockSectioned())
-                apply_block_brakes(vehicle, trackElement->AsTrack()->BlockBrakeClosed());
+            if (curRide->IsBlockSectioned())
+                apply_block_brakes(this, trackElement->AsTrack()->BlockBrakeClosed());
             else
-                apply_non_stop_block_brake(vehicle, true);
+                apply_non_stop_block_brake(this, true);
 
             break;
         case TRACK_ELEM_END_STATION:
@@ -6663,13 +6656,13 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
         case TRACK_ELEM_CABLE_LIFT_HILL:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (ride->IsBlockSectioned())
+            if (curRide->IsBlockSectioned())
             {
                 if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->AsTrack()->BlockBrakeClosed())
                     {
-                        apply_block_brakes(vehicle, true);
+                        apply_block_brakes(this, true);
                     }
                 }
             }
@@ -6681,27 +6674,27 @@ static void check_and_apply_block_section_stop_site(Vehicle* vehicle)
  *
  *  rct2: 0x006DADAE
  */
-static void update_velocity(Vehicle* vehicle)
+void Vehicle::UpdateVelocity()
 {
-    int32_t nextVelocity = vehicle->acceleration + vehicle->velocity;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ZERO_VELOCITY)
+    int32_t nextVelocity = acceleration + velocity;
+    if (update_flags & VEHICLE_UPDATE_FLAG_ZERO_VELOCITY)
     {
         nextVelocity = 0;
     }
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)
+    if (update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)
     {
-        vehicle->vertical_drop_countdown--;
-        if (vehicle->vertical_drop_countdown == -70)
+        vertical_drop_countdown--;
+        if (vertical_drop_countdown == -70)
         {
-            vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
+            update_flags &= ~VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
         }
-        if (vehicle->vertical_drop_countdown >= 0)
+        if (vertical_drop_countdown >= 0)
         {
             nextVelocity = 0;
-            vehicle->acceleration = 0;
+            acceleration = 0;
         }
     }
-    vehicle->velocity = nextVelocity;
+    velocity = nextVelocity;
 
     _vehicleVelocityF64E08 = nextVelocity;
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
@@ -9542,9 +9535,9 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     _vehicleMotionTrackFlags = 0;
     _vehicleStationIndex = STATION_INDEX_NULL;
 
-    vehicle_update_track_motion_up_stop_check(this);
-    check_and_apply_block_section_stop_site(this);
-    update_velocity(this);
+    UpdateTrackMotionUpStopCheck();
+    CheckAndApplyBlockSectionStopSite();
+    UpdateVelocity();
 
     Vehicle* vehicle = this;
     if (_vehicleVelocityF64E08 < 0)
@@ -9869,7 +9862,7 @@ void Vehicle::UpdateCrossings() const
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
-                    vehicle_claxon(this);
+                    Claxon();
                 }
                 crossingBonus = 4;
                 pathElement->SetIsBlockedByVehicle(true);
@@ -9942,16 +9935,16 @@ void Vehicle::UpdateCrossings() const
     }
 }
 
-void vehicle_claxon(const Vehicle* vehicle)
+void Vehicle::Claxon() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    switch (rideEntry->vehicles[vehicle->vehicle_type].sound_range)
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    switch (rideEntry->vehicles[vehicle_type].sound_range)
     {
         case SOUND_RANGE_WHISTLE:
-            audio_play_sound_at_location(SoundId::TrainWhistle, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::TrainWhistle, { x, y, z });
             break;
         case SOUND_RANGE_BELL:
-            audio_play_sound_at_location(SoundId::Tram, { vehicle->x, vehicle->y, vehicle->z });
+            audio_play_sound_at_location(SoundId::Tram, { x, y, z });
             break;
     }
 }
