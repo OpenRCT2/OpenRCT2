@@ -1717,8 +1717,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
         }
 
         CoordsXYE next_track;
-        if (track_block_get_next_from_zero(
-                trackPos.x, trackPos.y, trackPos.z, ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
+        if (track_block_get_next_from_zero(trackPos, ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
         {
             _currentTrackBegin.x = next_track.x;
             _currentTrackBegin.y = next_track.y;

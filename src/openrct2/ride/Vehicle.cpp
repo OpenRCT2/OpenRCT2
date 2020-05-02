@@ -2529,9 +2529,7 @@ void Vehicle::UpdateWaitingToDepart()
         int32_t direction;
 
         uint8_t trackDirection = (track_direction & 0x3);
-        if (track_block_get_next_from_zero(
-                TrackLocation.x, TrackLocation.y, TrackLocation.z, curRide, trackDirection, &track, &zUnused, &direction,
-                false))
+        if (track_block_get_next_from_zero(TrackLocation, curRide, trackDirection, &track, &zUnused, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
