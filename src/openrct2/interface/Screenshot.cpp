@@ -141,7 +141,7 @@ static std::optional<std::string> screenshot_get_next_path()
     if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
     {
         log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
-        return {};
+        return std::nullopt;
     }
 
     auto parkName = screenshot_get_park_name();
@@ -165,7 +165,7 @@ static std::optional<std::string> screenshot_get_next_path()
     }
 
     log_error("You have too many saved screenshots saved at exactly the same date and time.");
-    return {};
+    return std::nullopt;
 };
 
 std::string screenshot_dump_png(rct_drawpixelinfo* dpi)

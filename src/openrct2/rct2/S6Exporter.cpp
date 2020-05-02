@@ -1622,7 +1622,7 @@ std::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& v
         _userStrings.emplace_back(value);
         return static_cast<uint16_t>(USER_STRING_START + nextId);
     }
-    return {};
+    return std::nullopt;
 }
 
 static std::string GetTruncatedRCT2String(const std::string_view& src)

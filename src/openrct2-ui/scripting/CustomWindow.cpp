@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
             }
             widgetIndex++;
         }
-        return 0;
+        return std::nullopt;
     }
 
     static void window_custom_update_viewport(rct_window* w)
@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
         }
-        return {};
+        return std::nullopt;
     }
 
 } // namespace OpenRCT2::Ui::Windows

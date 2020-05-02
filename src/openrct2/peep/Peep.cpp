@@ -610,7 +610,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     {
         if (xy_distance <= destination_tolerance)
         {
-            return {};
+            return std::nullopt;
         }
         int32_t nextDirection = 0;
         if (x_delta < y_delta)
