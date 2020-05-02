@@ -1238,8 +1238,7 @@ void ride_restore_provisional_track_piece()
         {
             _currentTrackPrice = place_provisional_track_piece(
 
-      
-                rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
+                rideIndex, type, direction, liftHillAndAlternativeState, { x, y, z });
             window_ride_construction_update_active_elements();
         }
     }
@@ -4117,12 +4116,8 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
     track_begin_end trackBeginEnd;
-<<<<<<< HEAD
 
-    while (track_block_get_previous(returnPos, &trackBeginEnd))
-=======
     while (track_block_get_previous({ returnX, returnY, returnTrackElement }, &trackBeginEnd))
->>>>>>> 28b3ac169... Make track_block_get_previous() use CoordsXYE
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
         if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)

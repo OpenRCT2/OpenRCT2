@@ -3545,8 +3545,12 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             window_ride_construction_update_state(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
             _currentTrackPrice = place_provisional_track_piece(
+<<<<<<< HEAD
 
                 rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
+=======
+                rideIndex, trackType, trackDirection, liftHillAndAlternativeState, { *mapCoords, z });
+>>>>>>> 02a5c10a5... Make place_provisional_track_piece() use CoordsXYZ
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
 
@@ -3570,9 +3574,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
         _currentTrackPrice = place_provisional_track_piece(
 
-            rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
-        mapCoords = trackPos;
-        z = trackPos.z;
+            rideIndex, trackType, trackDirection, liftHillAndAlternativeState, { *mapCoords, z });
         if (_currentTrackPrice != MONEY32_UNDEFINED)
             break;
 
@@ -3633,9 +3635,16 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
                     CoordsXYZ trackPos{};
                     window_ride_construction_update_state(
+<<<<<<< HEAD
 
                         &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
                     place_provisional_track_piece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
+=======
+                        &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z,
+                        nullptr);
+                    place_provisional_track_piece(
+                        rideIndex, trackType, trackDirection, liftHillAndAlternativeState, { *mapCoords, z });
+>>>>>>> 02a5c10a5... Make place_provisional_track_piece() use CoordsXYZ
                     gMapSelectArrowDirection = _currentTrackPieceDirection;
                     break;
                 }
