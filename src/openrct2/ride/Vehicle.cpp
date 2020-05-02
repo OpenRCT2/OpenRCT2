@@ -52,7 +52,6 @@ static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
 
 static void vehicle_kill_all_passengers(Vehicle* vehicle);
-static bool vehicle_can_depart_synchronised(Vehicle* vehicle);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
 constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
@@ -2515,7 +2514,7 @@ void Vehicle::UpdateWaitingToDepart()
         {
             if (update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
             {
-                if (!vehicle_can_depart_synchronised(this))
+                if (!CanDepartSynchronised())
                 {
                     return;
                 }
@@ -2771,13 +2770,12 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
  *  The vehicle flag VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT is cleared for those
  *  vehicles that depart in sync with the vehicle in the param.
  */
-static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
+static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationIndex station)
 {
-    auto ride = get_ride(vehicle->ride);
+    auto ride = get_ride(curRideId);
     if (ride == nullptr)
         return false;
 
-    StationIndex station = vehicle->current_station;
     auto location = ride->stations[station].GetStart();
     int32_t x = location.x;
     int32_t y = location.y;
@@ -2902,7 +2900,7 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
                     }
                     ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
                     // uint8_t currentStation = _synchronisedVehicles[0].station_id
-                    if (someRideIndex != vehicle->ride)
+                    if (someRideIndex != curRideId)
                     {
                         // Sync condition: the first station to sync is a different ride
                         return false;
@@ -2968,6 +2966,11 @@ static bool vehicle_can_depart_synchronised(Vehicle* vehicle)
     }
 
     return true;
+}
+
+bool Vehicle::CanDepartSynchronised() const
+{
+    return ride_station_can_depart_synchronised(ride, current_station);
 }
 
 /**
@@ -7537,24 +7540,24 @@ static void vehicle_update_play_water_splash_sound()
  *
  *  rct2: 0x006DB59E
  */
-static void vehicle_update_handle_water_splash(Vehicle* vehicle)
+void Vehicle::UpdateHandleWaterSplash() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    int32_t trackType = vehicle->track_type >> 2;
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    int32_t trackType = track_type >> 2;
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND))
     {
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE)
         {
-            if (vehicle->IsHead())
+            if (IsHead())
             {
                 if (track_element_is_covered(trackType))
                 {
-                    Vehicle* nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+                    Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
                     Vehicle* nextNextVehicle = GET_VEHICLE(nextVehicle->next_vehicle_on_ride);
                     if (!track_element_is_covered(nextNextVehicle->track_type >> 2))
                     {
-                        if (vehicle->track_progress == 4)
+                        if (track_progress == 4)
                         {
                             vehicle_update_play_water_splash_sound();
                         }
@@ -7567,17 +7570,17 @@ static void vehicle_update_handle_water_splash(Vehicle* vehicle)
     {
         if (trackType == TRACK_ELEM_25_DEG_DOWN_TO_FLAT)
         {
-            if (vehicle->track_progress == 12)
+            if (track_progress == 12)
             {
                 vehicle_update_play_water_splash_sound();
             }
         }
     }
-    if (vehicle->IsHead())
+    if (IsHead())
     {
         if (trackType == TRACK_ELEM_WATER_SPLASH)
         {
-            if (vehicle->track_progress == 48)
+            if (track_progress == 48)
             {
                 vehicle_update_play_water_splash_sound();
             }
@@ -7589,14 +7592,10 @@ static void vehicle_update_handle_water_splash(Vehicle* vehicle)
  *
  *  rct2: 0x006DB807
  */
-static void vehicle_update_reverser_car_bogies(Vehicle* vehicle)
+void Vehicle::UpdateReverserCarBogies()
 {
-    const rct_vehicle_info* moveInfo = vehicle_get_move_info(
-        vehicle->TrackSubposition, vehicle->track_type, vehicle->track_progress);
-    int32_t x = vehicle->TrackLocation.x + moveInfo->x;
-    int32_t y = vehicle->TrackLocation.y + moveInfo->y;
-    int32_t z = vehicle->z;
-    sprite_move(x, y, z, vehicle);
+    const auto moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    sprite_move(TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z, this);
 }
 
 /**
@@ -7804,19 +7803,19 @@ static bool vehicle_update_motion_collision_detection(
  *
  *  rct2: 0x006DB7D6
  */
-static void vehicle_reverse_reverser_car(Vehicle* vehicle)
+void Vehicle::ReverseReverserCar()
 {
-    Vehicle* previousVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
-    Vehicle* nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+    Vehicle* previousVehicle = GET_VEHICLE(prev_vehicle_on_ride);
+    Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
 
-    vehicle->track_progress = 168;
-    vehicle->vehicle_type ^= 1;
+    track_progress = 168;
+    vehicle_type ^= 1;
 
     previousVehicle->track_progress = 86;
     nextVehicle->track_progress = 158;
 
-    vehicle_update_reverser_car_bogies(nextVehicle);
-    vehicle_update_reverser_car_bogies(previousVehicle);
+    nextVehicle->UpdateReverserCarBogies();
+    previousVehicle->UpdateReverserCarBogies();
 }
 
 /**
@@ -8223,7 +8222,7 @@ loc_6DAEB9:
     }
 
     track_progress = regs.ax;
-    vehicle_update_handle_water_splash(this);
+    UpdateHandleWaterSplash();
 
     // loc_6DB706
     moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
@@ -8257,7 +8256,7 @@ loc_6DAEB9:
         if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
             && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
         {
-            vehicle_reverse_reverser_car(this);
+            ReverseReverserCar();
 
             const rct_vehicle_info* moveInfo2 = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
             curX = x + moveInfo2->x;
