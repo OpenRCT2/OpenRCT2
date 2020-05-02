@@ -942,6 +942,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
     if (_hookEngine.HasSubscriptions(hookType))
     {
         DukObject obj(_context);
+        obj.Set("player", action.GetPlayer());
         obj.Set("type", action.GetType());
 
         auto flags = action.GetActionFlags();
@@ -957,12 +958,16 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
 
         if (!isExecute)
         {
-            auto error = AsOrDefault<int32_t>(dukEventArgs["error"]);
-            if (error != 0)
+            auto dukResult = dukEventArgs["result"];
+            if (dukResult.type() == DukValue::Type::OBJECT)
             {
-                result->Error = static_cast<GA_ERROR>(error);
-                result->ErrorTitle = AsOrDefault<std::string>(dukEventArgs["errorTitle"]);
-                result->ErrorMessage = AsOrDefault<std::string>(dukEventArgs["errorMessage"]);
+                auto error = AsOrDefault<int32_t>(dukResult["error"]);
+                if (error != 0)
+                {
+                    result->Error = static_cast<GA_ERROR>(error);
+                    result->ErrorTitle = AsOrDefault<std::string>(dukResult["errorTitle"]);
+                    result->ErrorMessage = AsOrDefault<std::string>(dukResult["errorMessage"]);
+                }
             }
         }
     }

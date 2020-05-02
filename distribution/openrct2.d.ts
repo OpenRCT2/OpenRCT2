@@ -242,7 +242,7 @@ declare global {
     }
 
     interface GameActionResult {
-        error?: string;
+        error?: number;
         errorTitle?: string;
         errorMessage?: string;
         position?: Coord3;
