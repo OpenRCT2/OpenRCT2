@@ -1958,7 +1958,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
             if (ride != nullptr)
             {
                 _stationConstructed = ride->num_stations != 0;
-                window_ride_construction_mouseup_demolish_next_piece(newCoords->x, newCoords->y, newCoords->z, direction, type);
+                window_ride_construction_mouseup_demolish_next_piece({ *newCoords, static_cast<Direction>(direction) }, type);
             }
         }
     });
