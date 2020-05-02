@@ -4118,7 +4118,7 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     int32_t startY = returnPos.y;
     track_begin_end trackBeginEnd;
 
-    while (track_block_get_previous({ returnX, returnY, returnTrackElement }, &trackBeginEnd))
+    while (track_block_get_previous(returnPos, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
         if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
@@ -4584,7 +4584,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
     auto trackElement = curTrackElement;
     track_begin_end trackBeginEnd;
 
-    while (track_block_get_previous({ x, y, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
+    while (track_block_get_previous({ trackPos, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
     {
         trackPos = { trackBeginEnd.end_x, trackBeginEnd.end_y };
         trackElement = trackBeginEnd.begin_element->AsTrack();

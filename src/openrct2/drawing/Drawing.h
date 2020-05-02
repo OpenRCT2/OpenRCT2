@@ -532,9 +532,8 @@ void FASTCALL
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, int32_t x, int32_t y);
 
-void gfx_draw_string_left(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-// void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y);
+void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
+void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y);
 void gfx_draw_string_centred(
     rct_drawpixelinfo* dpi, rct_string_id format, int32_t x, int32_t y, uint8_t colour, const void* args);
 void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y);

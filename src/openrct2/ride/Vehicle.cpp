@@ -8373,7 +8373,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;
 
-        if (!track_block_get_previous({ x, y, tileElement }, &trackBeginEnd))
+        if (!track_block_get_previous({ trackPos, tileElement }, &trackBeginEnd))
         {
             return false;
         }
