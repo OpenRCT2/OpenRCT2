@@ -1236,7 +1236,7 @@ void ride_restore_provisional_track_piece()
         else
         {
             _currentTrackPrice = place_provisional_track_piece(
-                rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);
+                rideIndex, type, direction, liftHillAndAlternativeState, { x, y, z });
             window_ride_construction_update_active_elements();
         }
     }
