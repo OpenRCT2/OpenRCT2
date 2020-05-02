@@ -1237,7 +1237,11 @@ void ride_restore_provisional_track_piece()
         else
         {
             _currentTrackPrice = place_provisional_track_piece(
+<<<<<<< HEAD
                 rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
+=======
+                rideIndex, type, direction, liftHillAndAlternativeState, { x, y, z });
+>>>>>>> 02a5c10a5... Make place_provisional_track_piece() use CoordsXYZ
             window_ride_construction_update_active_elements();
         }
     }
@@ -4581,11 +4585,8 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
     CoordsXY trackPos = curTrackPos;
     auto trackElement = curTrackElement;
     track_begin_end trackBeginEnd;
-<<<<<<< HEAD
-    while (track_block_get_previous({ trackPos, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
-=======
+
     while (track_block_get_previous({ x, y, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
->>>>>>> 28b3ac169... Make track_block_get_previous() use CoordsXYE
     {
         trackPos = { trackBeginEnd.end_x, trackBeginEnd.end_y };
         trackElement = trackBeginEnd.begin_element->AsTrack();
