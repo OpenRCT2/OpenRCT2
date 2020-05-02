@@ -2143,56 +2143,56 @@ void Vehicle::UpdateMovingToEndOfStation()
  *
  *  rct2: 0x006D7FB4
  */
-static void train_ready_to_depart(Vehicle* vehicle, uint8_t num_peeps_on_train, uint8_t num_used_seats)
+void Vehicle::TrainReadToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats)
 {
     if (num_peeps_on_train != num_used_seats)
         return;
 
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return;
 
-    if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-        && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
+    if (curRide->status == RIDE_STATUS_OPEN && !(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        && !(update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
     }
 
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
-        if (ride->status != RIDE_STATUS_CLOSED || (ride->num_riders != 0 && ride->type != RIDE_TYPE_BOAT_HIRE))
+        if (curRide->status != RIDE_STATUS_CLOSED || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
         {
-            ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
-            vehicle->sub_state = 2;
+            curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            sub_state = 2;
             return;
         }
     }
 
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
+    if (curRide->mode == RIDE_MODE_FORWARD_ROTATION || curRide->mode == RIDE_MODE_BACKWARD_ROTATION)
     {
-        uint8_t peep = ((-vehicle->vehicle_sprite_type) / 8) & 0xF;
-        if (vehicle->peep[peep] != SPRITE_INDEX_NULL)
+        uint8_t seat = ((-vehicle_sprite_type) / 8) & 0xF;
+        if (peep[seat] != SPRITE_INDEX_NULL)
         {
-            ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
-            vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+            curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
             return;
         }
 
-        if (vehicle->num_peeps == 0)
+        if (num_peeps == 0)
             return;
 
-        ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
-        vehicle->sub_state = 2;
+        curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+        sub_state = 2;
         return;
     }
 
     if (num_peeps_on_train == 0)
         return;
 
-    ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
-    vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+    curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+    SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
 }
 
 static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
@@ -2283,7 +2283,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             if (time_waiting < 20)
             {
-                train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+                TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
         }
@@ -2291,7 +2291,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             if (num_peeps_on_train == 0)
             {
-                train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+                TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
         }
@@ -2302,7 +2302,7 @@ void Vehicle::UpdateWaitingForPassengers()
             {
                 if (curRide->min_waiting_time * 32 > time_waiting)
                 {
-                    train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+                    TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
@@ -2311,7 +2311,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 if (curRide->max_waiting_time * 32 < time_waiting)
                 {
                     update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                    train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+                    TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
@@ -2335,7 +2335,7 @@ void Vehicle::UpdateWaitingForPassengers()
                     if (train->current_station == current_station)
                     {
                         update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                        train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+                        TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
                         return;
                     }
                 }
@@ -2348,7 +2348,7 @@ void Vehicle::UpdateWaitingForPassengers()
             if (num_peeps_on_train == num_seats_on_train)
             {
                 update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+                TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
 
@@ -2366,12 +2366,12 @@ void Vehicle::UpdateWaitingForPassengers()
             if (num_peeps_on_train >= peepTarget)
                 update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
 
-            train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+            TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
             return;
         }
 
         update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-        train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
+        TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
         return;
     }
 
