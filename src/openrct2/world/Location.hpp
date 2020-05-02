@@ -85,6 +85,29 @@ struct ScreenCoordsXY
     }
 };
 
+struct ScreenSize
+{
+    int32_t width{};
+    int32_t height{};
+
+    ScreenSize() = default;
+    constexpr ScreenSize(int32_t _width, int32_t _height)
+        : width(_width)
+        , height(_height)
+    {
+    }
+
+    bool operator==(const ScreenSize& other) const
+    {
+        return width == other.width && height == other.height;
+    }
+
+    bool operator!=(const ScreenSize& other) const
+    {
+        return !(*this == other);
+    }
+};
+
 /**
  * Tile coordinates use 1 x/y increment per tile and 1 z increment per step.
  * Regular ('big', 'sprite') coordinates use 32 x/y increments per tile and 8 z increments per step.
