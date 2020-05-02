@@ -1,0 +1,68 @@
+
+{
+  "rules": {
+      "body-leading-blank": [
+          2,
+          "always"
+      ],
+      "body-max-length": [
+          0
+      ],
+      "body-min-length": [
+          0
+      ],
+      "footer-leading-blank": [
+          2,
+          "always"
+      ],
+      "footer-max-length": [
+          0
+      ],
+      "footer-min-length": [
+          0
+      ],
+      "header-max-length": [
+          2,
+          "always",
+          72
+      ],
+      "header-min-length": [
+          2,
+          "always",
+          10
+      ],
+      "scope-empty": [
+          0
+      ],
+      "subject-case": [
+          0
+      ],
+      "subject-empty": [
+          0
+      ],
+      "subject-full-stop": [
+          0
+      ],
+      "subject-max-length": [
+          0
+      ],
+      "subject-min-length": [
+          0
+      ],
+      "type-case": [
+          0
+      ],
+      "type-empty": [
+          0
+      ],
+      "type-enum": [
+          0
+      ],
+      "type-max-length": [
+          0
+      ],
+      "type-min-length": [
+          0
+      ]
+  }
+}
