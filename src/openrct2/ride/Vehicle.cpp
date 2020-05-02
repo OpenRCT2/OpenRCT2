@@ -6707,7 +6707,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
     CoordsXY slowLocation = location;
     do
     {
-        if (!track_block_get_previous(location.x, location.y, tileElement, &trackBeginEnd))
+        if (!track_block_get_previous({ location, tileElement }, &trackBeginEnd))
         {
             return;
         }
@@ -6726,7 +6726,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
         counter = !counter;
         if (counter)
         {
-            track_block_get_previous(slowLocation.x, slowLocation.y, &slowTileElement, &slowTrackBeginEnd);
+            track_block_get_previous({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
             slowLocation.x = slowTrackBeginEnd.end_x;
             slowLocation.y = slowTrackBeginEnd.end_y;
             slowTileElement = *(slowTrackBeginEnd.begin_element);
@@ -7967,7 +7967,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
 loc_6DB32A:
 {
     track_begin_end trackBeginEnd;
-    if (!track_block_get_previous(vehicle->TrackLocation.x, vehicle->TrackLocation.y, tileElement, &trackBeginEnd))
+    if (!track_block_get_previous({ vehicle->TrackLocation, tileElement }, &trackBeginEnd))
     {
         return false;
     }
@@ -8374,7 +8374,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     {
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous(x, y, tileElement, &trackBeginEnd))
+        if (!track_block_get_previous({ x, y, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -9048,7 +9048,7 @@ loc_6DCA9A:
     }
     {
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous(vehicle->TrackLocation.x, vehicle->TrackLocation.y, tileElement, &trackBeginEnd))
+        if (!track_block_get_previous({ vehicle->TrackLocation, tileElement }, &trackBeginEnd))
         {
             goto loc_6DC9BC;
         }
@@ -9886,7 +9886,7 @@ void Vehicle::UpdateCrossings() const
             }
             else
             {
-                if (!track_block_get_previous(xyElement.x, xyElement.y, xyElement.element, &output))
+                if (!track_block_get_previous(xyElement, &output))
                 {
                     break;
                 }
@@ -9916,7 +9916,7 @@ void Vehicle::UpdateCrossings() const
         {
             if (travellingForwards)
             {
-                if (track_block_get_previous(xyElement.x, xyElement.y, xyElement.element, &output))
+                if (track_block_get_previous(xyElement, &output))
                 {
                     xyElement.x = output.begin_x;
                     xyElement.y = output.begin_y;
