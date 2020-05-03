@@ -129,8 +129,7 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     peep->FormatNameTo(gCommonFormatArgs);
 
-    int32_t x = w->windowPos.x + WW / 2;
-    int32_t y = w->windowPos.y + (WH / 2) - 3;
+    ScreenCoordsXY coord(w->windowPos.x + WW / 2,w->windowPos.y + (WH / 2) - 3);
 
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, coord, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
 }

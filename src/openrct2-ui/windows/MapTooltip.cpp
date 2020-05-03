@@ -157,7 +157,7 @@ static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    gfx_draw_string_centred_wrapped(
-        dpi, gMapTooltipFormatArgs, w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2), w->width,
-        STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
+    ScreenCoordsXY coord(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
+
+    gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, coord, w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
 }

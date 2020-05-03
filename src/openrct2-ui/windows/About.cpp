@@ -218,37 +218,39 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t x, y, width;
+    int32_t width;
     rct_size16 logoSize;
 
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    x = w->windowPos.x + (w->width / 2);
-    y = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
+    ScreenCoordsXY coord(w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
     width = w->width - 20;
 
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + lineHeight;
+    coord.y += gfx_draw_string_centred_wrapped(dpi, nullptr, coord, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2])
+        + lineHeight;
 
     logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, x - (logoSize.width / 2), y, 0);
-    y += logoSize.height + lineHeight * 2;
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, coord.x - (logoSize.width / 2), coord.y, 0);
+    coord.y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
+    coord.y += gfx_draw_string_centred_wrapped(dpi, nullptr, coord, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
         + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
     // the text from overlapping the changelog button.
     if (!LocalisationService_UseTrueTypeFont())
     {
-        gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+        gfx_draw_string_centred_wrapped(dpi, nullptr, coord, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
     }
 
     // Version info
     utf8 buffer[256];
     utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-    gfx_draw_string_centred_wrapped(dpi, &ch, x, w->windowPos.y + WH - 25, width, STR_STRING, w->colours[2]);
+
+    coord.y = w->windowPos.y + WH - 25;
+    gfx_draw_string_centred_wrapped(dpi, &ch, coord, width, STR_STRING, w->colours[2]);
 }
 
 #pragma endregion OpenRCT2

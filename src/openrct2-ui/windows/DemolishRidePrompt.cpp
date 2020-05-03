@@ -223,9 +223,8 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
         set_format_arg(nameArgLen, money32, _demolishRideCost);
 
-        int32_t x = w->windowPos.x + WW / 2;
-        int32_t y = w->windowPos.y + (WH / 2) - 3;
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
+        ScreenCoordsXY coord(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, coord, WW - 4, stringId, COLOUR_BLACK);
     }
 }
 
@@ -240,8 +239,7 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
         set_format_arg(nameArgLen, money32, _demolishRideCost / 2);
 
-        int32_t x = w->windowPos.x + WW / 2;
-        int32_t y = w->windowPos.y + (WH / 2) - 3;
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
+        ScreenCoordsXY coord(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, coord, WW - 4, stringId, COLOUR_BLACK);
     }
 }
