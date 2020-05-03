@@ -350,6 +350,7 @@ private:
     void UpdateTravellingCableLift();
     void UpdateTravellingBoat();
     void UpdateMotionBoatHire();
+    void TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const CoordsXY& trackCoords);
     void UpdateDepartingBoatHire();
     void UpdateTravellingBoatHireSetup();
     void UpdateBoatLocation();

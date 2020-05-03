@@ -4304,27 +4304,27 @@ void Vehicle::UpdateTravellingBoat()
     UpdateMotionBoatHire();
 }
 
-static void loc_6DA9F9(Vehicle* vehicle, int32_t x, int32_t y, int32_t trackX, int32_t trackY)
+void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const CoordsXY& trackCoords)
 {
-    vehicle->remaining_distance = 0;
-    if (!vehicle_update_motion_collision_detection(vehicle, x, y, vehicle->z, nullptr))
+    remaining_distance = 0;
+    if (!vehicle_update_motion_collision_detection(this, currentBoatLocation.x, currentBoatLocation.y, z, nullptr))
     {
-        vehicle->TrackLocation.x = trackX;
-        vehicle->TrackLocation.y = trackY;
+        TrackLocation.x = trackCoords.x;
+        TrackLocation.y = trackCoords.y;
 
-        auto trackElement = map_get_track_element_at(vehicle->TrackLocation);
+        auto trackElement = map_get_track_element_at(TrackLocation);
 
-        auto ride = get_ride(vehicle->ride);
-        if (ride != nullptr)
+        auto curRide = get_ride(ride);
+        if (curRide != nullptr)
         {
-            vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
-            vehicle->BoatLocation.setNull();
+            track_type = (trackElement->GetTrackType() << 2) | (curRide->boat_hire_return_direction & 3);
+            BoatLocation.setNull();
         }
 
-        vehicle->track_progress = 0;
-        vehicle->SetState(VEHICLE_STATUS_TRAVELLING, vehicle->sub_state);
-        unk_F64E20.x = x;
-        unk_F64E20.y = y;
+        track_progress = 0;
+        SetState(VEHICLE_STATUS_TRAVELLING, sub_state);
+        unk_F64E20.x = currentBoatLocation.x;
+        unk_F64E20.y = currentBoatLocation.y;
     }
 }
 
@@ -4525,7 +4525,7 @@ void Vehicle::UpdateMotionBoatHire()
                         uint16_t bp = curY & 0x1F;
                         if (bp == 16)
                         {
-                            loc_6DA9F9(this, curX, curY, flooredLocation.x, flooredLocation.y);
+                            TryReconnectBoatToTrack({ curX, curY }, flooredLocation);
                             break;
                         }
                         if (bp <= 16)
@@ -4545,7 +4545,7 @@ void Vehicle::UpdateMotionBoatHire()
                         uint16_t bp = curX & 0x1F;
                         if (bp == 16)
                         {
-                            loc_6DA9F9(this, curX, curY, flooredLocation.x, flooredLocation.y);
+                            TryReconnectBoatToTrack({ curX, curY }, flooredLocation);
                             break;
                         }
                         if (bp <= 16)
