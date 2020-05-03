@@ -726,7 +726,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         set_format_arg(0, int32_t, static_cast<int32_t>(GuestList.size()));
         gfx_draw_string_left(
             dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
-            COLOUR_BLACK, x, y);
+            COLOUR_BLACK, { x, y });
     }
 }
 

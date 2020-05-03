@@ -354,7 +354,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         y += 15;
 
         set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     else
     {
@@ -389,7 +389,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
                 set_format_arg(4, rct_string_id, DateGameMonthNames[gResearchExpectedMonth]);
             }
         }
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 
     // Last development
@@ -572,7 +572,8 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
     int32_t currentResearchLevel = gResearchFundingLevel;
     money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
     gfx_draw_string_left(
-        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos.x + 10, w->windowPos.y + 77);
+        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK,
+        { w->windowPos.x + 10, w->windowPos.y + 77 });
 }
 
 #pragma endregion
