@@ -224,31 +224,6 @@ int32_t gfx_draw_string_left_wrapped(
 }
 
 int32_t gfx_draw_string_centred_wrapped(
-    rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
-{
-    utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    _legacyPaint.UnderlineText = false;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = TextAlignment::CENTRE;
-    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-
-    StaticLayout layout(buffer, _legacyPaint, width);
-
-    // The original tried to vertically centre the text, but used line count - 1
-    int32_t lineCount = layout.GetLineCount();
-    int32_t lineHeight = layout.GetHeight() / lineCount;
-    int32_t yOffset = (lineCount - 1) * lineHeight / 2;
-
-    layout.Draw(dpi, x - layout.GetWidth() / 2, y - yOffset);
-
-    return layout.GetHeight();
-}
-
-int32_t gfx_draw_string_centred_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
 {
     utf8 buffer[512];
