@@ -2529,9 +2529,7 @@ void Vehicle::UpdateWaitingToDepart()
         int32_t direction;
 
         uint8_t trackDirection = (track_direction & 0x3);
-        if (track_block_get_next_from_zero(
-                TrackLocation.x, TrackLocation.y, TrackLocation.z, curRide, trackDirection, &track, &zUnused, &direction,
-                false))
+        if (track_block_get_next_from_zero(TrackLocation, curRide, trackDirection, &track, &zUnused, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
@@ -6709,7 +6707,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
     CoordsXY slowLocation = location;
     do
     {
-        if (!track_block_get_previous(location.x, location.y, tileElement, &trackBeginEnd))
+        if (!track_block_get_previous({ location, tileElement }, &trackBeginEnd))
         {
             return;
         }
@@ -6728,7 +6726,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
         counter = !counter;
         if (counter)
         {
-            track_block_get_previous(slowLocation.x, slowLocation.y, &slowTileElement, &slowTrackBeginEnd);
+            track_block_get_previous({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
             slowLocation.x = slowTrackBeginEnd.end_x;
             slowLocation.y = slowTrackBeginEnd.end_y;
             slowTileElement = *(slowTrackBeginEnd.begin_element);
@@ -7969,7 +7967,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
 loc_6DB32A:
 {
     track_begin_end trackBeginEnd;
-    if (!track_block_get_previous(vehicle->TrackLocation.x, vehicle->TrackLocation.y, tileElement, &trackBeginEnd))
+    if (!track_block_get_previous({ vehicle->TrackLocation, tileElement }, &trackBeginEnd))
     {
         return false;
     }
@@ -8350,9 +8348,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     bool nextTileBackwards = true;
     int32_t direction;
     // loc_6DBB08:;
-    int16_t x = vehicle->TrackLocation.x;
-    int16_t y = vehicle->TrackLocation.y;
-    int16_t z = 0;
+    auto trackPos = CoordsXYZ{ vehicle->TrackLocation.x, vehicle->TrackLocation.y, 0 };
 
     switch (vehicle->TrackSubposition)
     {
@@ -8376,7 +8372,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     {
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous(x, y, tileElement, &trackBeginEnd))
+        if (!track_block_get_previous({ trackPos, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -8408,9 +8404,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
             }
         }
 
-        x = trackBeginEnd.begin_x;
-        y = trackBeginEnd.begin_y;
-        z = trackBeginEnd.begin_z;
+        trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         direction = trackBeginEnd.begin_direction;
     }
     else
@@ -8420,21 +8414,19 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         CoordsXYE output;
         int32_t outputZ;
 
-        input.x = x;
-        input.y = y;
+        input.x = trackPos.x;
+        input.y = trackPos.y;
         input.element = tileElement;
         if (!track_block_get_next(&input, &output, &outputZ, &direction))
         {
             return false;
         }
         tileElement = output.element;
-        x = output.x;
-        y = output.y;
-        z = outputZ;
+        trackPos = { output, outputZ };
     }
 
     // loc_6DBC3B:
-    vehicle->TrackLocation = { x, y, z };
+    vehicle->TrackLocation = trackPos;
 
     if (vehicle->TrackSubposition >= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
         && vehicle->TrackSubposition <= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL)
@@ -9050,7 +9042,7 @@ loc_6DCA9A:
     }
     {
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous(vehicle->TrackLocation.x, vehicle->TrackLocation.y, tileElement, &trackBeginEnd))
+        if (!track_block_get_previous({ vehicle->TrackLocation, tileElement }, &trackBeginEnd))
         {
             goto loc_6DC9BC;
         }
@@ -9888,7 +9880,7 @@ void Vehicle::UpdateCrossings() const
             }
             else
             {
-                if (!track_block_get_previous(xyElement.x, xyElement.y, xyElement.element, &output))
+                if (!track_block_get_previous(xyElement, &output))
                 {
                     break;
                 }
@@ -9918,7 +9910,7 @@ void Vehicle::UpdateCrossings() const
         {
             if (travellingForwards)
             {
-                if (track_block_get_previous(xyElement.x, xyElement.y, xyElement.element, &output))
+                if (track_block_get_previous(xyElement, &output))
                 {
                     xyElement.x = output.begin_x;
                     xyElement.y = output.begin_y;

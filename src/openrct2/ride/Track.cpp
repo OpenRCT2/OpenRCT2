@@ -969,7 +969,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
 
     if (it->first == nullptr)
     {
-        if (!track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+        if (!track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
             return false;
 
         it->current.x = trackBeginEnd.begin_x;
@@ -992,7 +992,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
         it->firstIteration = false;
         it->last = it->current;
 
-        if (track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+        if (track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
         {
             it->current.x = trackBeginEnd.end_x;
             it->current.y = trackBeginEnd.end_y;
@@ -1048,7 +1048,7 @@ void track_get_back(CoordsXYE* input, CoordsXYE* output)
     lastTrack = *input;
     do
     {
-        result = track_block_get_previous(lastTrack.x, lastTrack.y, lastTrack.element, &currentTrack);
+        result = track_block_get_previous(lastTrack, &currentTrack);
         if (result)
         {
             lastTrack.x = currentTrack.begin_x;

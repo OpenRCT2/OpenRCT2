@@ -1153,12 +1153,12 @@ void ride_construction_set_default_next_piece();
 
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
 bool track_block_get_next_from_zero(
-    int16_t x, int16_t y, int16_t z_start, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z,
-    int32_t* direction, bool isGhost);
+    const CoordsXYZ& startPos, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
+    bool isGhost);
 
-bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd);
+bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd);
 bool track_block_get_previous_from_zero(
-    int16_t x, int16_t y, int16_t z, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
+    const CoordsXYZ& startPos, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
 
 void ride_get_start_of_track(CoordsXYE* output);
 
@@ -1189,7 +1189,7 @@ void sub_6C94D8();
 
 void ride_reset_all_names();
 
-void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
+void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
 
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
