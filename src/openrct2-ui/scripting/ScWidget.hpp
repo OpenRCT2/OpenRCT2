@@ -26,7 +26,7 @@ namespace OpenRCT2::Scripting
 {
     class ScWidget
     {
-    private:
+    protected:
         rct_windowclass _class{};
         rct_windownumber _number{};
         rct_widgetindex _widgetIndex{};
@@ -38,6 +38,8 @@ namespace OpenRCT2::Scripting
             , _widgetIndex(widgetIndex)
         {
         }
+
+        static DukValue ToDuk(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
 
     private:
         std::string type_get() const
@@ -190,24 +192,6 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool isChecked_get() const
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                return widget_is_pressed(w, _widgetIndex);
-            }
-            return false;
-        }
-        void isChecked_set(bool value)
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
-            }
-        }
-
         uint32_t image_get() const
         {
             if (IsCustomWindow())
@@ -278,11 +262,10 @@ namespace OpenRCT2::Scripting
             // No so common
             dukglue_register_property(ctx, &ScWidget::image_get, &ScWidget::image_set, "image");
             dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");
-            dukglue_register_property(ctx, &ScWidget::isChecked_get, &ScWidget::isChecked_set, "isChecked");
             dukglue_register_property(ctx, &ScWidget::viewport_get, nullptr, "viewport");
         }
 
-    private:
+    protected:
         rct_window* GetWindow() const
         {
             if (_class == WC_MAIN_WINDOW)
@@ -316,6 +299,81 @@ namespace OpenRCT2::Scripting
             widget_invalidate_by_number(_class, _number, _widgetIndex);
         }
     };
+
+    class ScCheckBoxWidget : public ScWidget
+    {
+    public:
+        ScCheckBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScCheckBoxWidget>(ctx);
+            dukglue_register_property(ctx, &ScCheckBoxWidget::isChecked_get, &ScCheckBoxWidget::isChecked_set, "isChecked");
+        }
+
+    private:
+        bool isChecked_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return widget_is_pressed(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isChecked_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+            }
+        }
+    };
+
+    class ScListViewWidget : public ScWidget
+    {
+    public:
+        ScListViewWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScListViewWidget>(ctx);
+            dukglue_register_property(ctx, &ScListViewWidget::isStriped_get, &ScListViewWidget::isStriped_set, "isStriped");
+        }
+
+    private:
+        bool isStriped_get() const
+        {
+        }
+
+        void isStriped_set(bool value)
+        {
+        }
+    };
+
+    inline DukValue ScWidget::ToDuk(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
+    {
+        const auto& widget = w->widgets[widgetIndex];
+        auto c = w->classification;
+        auto n = w->number;
+        switch (widget.type)
+        {
+            case WWT_CHECKBOX:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
+            case WWT_SCROLL:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
+            default:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
+        }
+    }
+
 } // namespace OpenRCT2::Scripting
 
 #endif
