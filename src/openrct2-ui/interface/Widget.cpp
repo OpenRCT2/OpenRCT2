@@ -468,6 +468,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
+    ScreenCoordsXY coords = {w->windowPos.x + widget->left + 5, w->windowPos.y + widget->top};
     int32_t l = w->windowPos.x + widget->left + 5;
     int32_t t = w->windowPos.y + widget->top;
     int32_t r = w->windowPos.x + widget->right;
@@ -486,7 +487,8 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         uint8_t args[sizeof(uintptr_t)] = { 0 };
         format_string(buffer, sizeof(buffer), stringId, formatArgs);
 
-        gfx_draw_string_left(dpi, STR_STRING, args, colour, { l, t });
+        Formatter(args).Add<utf8*>(buffer);
+        gfx_draw_string_left(dpi, STR_STRING, args, colour, coords);
         textRight = l + gfx_get_string_width(buffer) + 1;
     }
 
