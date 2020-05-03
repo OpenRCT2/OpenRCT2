@@ -1099,7 +1099,7 @@ declare global {
         highlightedIndex?: number;
 
         onHighlight: (index: number) => void;
-        onSelect: (index: number) => void;
+        onClick: (index: number) => void;
 
         getCell(row: number, column: number): string;
         setCell(row: number, column: number, value: string): void;

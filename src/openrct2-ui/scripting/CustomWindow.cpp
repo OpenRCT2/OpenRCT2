@@ -22,6 +22,7 @@
 #    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/sprites.h>
+#    include <openrct2/util/Util.h>
 #    include <openrct2/world/Sprite.h>
 #    include <optional>
 #    include <string>
@@ -122,7 +123,7 @@ namespace OpenRCT2::Scripting
             result.MaxWidth = result.MinWidth;
             result.RatioWidth = std::nullopt;
         }
-        else
+        else if (!result.RatioWidth)
         {
             result.RatioWidth = 1;
         }
@@ -174,6 +175,7 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
     static void window_custom_update(rct_window* w);
     static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+    static void window_custom_scrollmousedrag(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
     static void window_custom_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
     static void window_custom_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
     static void window_custom_invalidate(rct_window* w);
@@ -198,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
                                                           nullptr,
                                                           window_custom_scrollgetsize,
                                                           window_custom_scrollmousedown,
-                                                          nullptr,
+                                                          window_custom_scrollmousedrag,
                                                           window_custom_scrollmouseover,
                                                           nullptr,
                                                           nullptr,
@@ -237,6 +239,7 @@ namespace OpenRCT2::Ui::Windows
         DukValue OnChange;
         DukValue OnIncrement;
         DukValue OnDecrement;
+        DukValue OnHighlight;
 
         static CustomWidgetDesc FromDukValue(DukValue desc)
         {
@@ -304,6 +307,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 result.ShowColumnHeaders = AsOrDefault(desc["showColumnHeaders"], false);
                 result.IsStriped = AsOrDefault(desc["isStriped"], false);
+                result.OnClick = desc["onClick"];
+                result.OnHighlight = desc["onHighlight"];
             }
             else if (result.Type == "spinner")
             {
@@ -441,38 +446,115 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
+    struct RowColumn
+    {
+        int32_t Row{};
+        int32_t Column{};
+
+        RowColumn() = default;
+        RowColumn(int32_t row, int32_t column)
+            : Row(row)
+            , Column(column)
+        {
+        }
+
+        bool operator==(const RowColumn& other) const
+        {
+            return Row == other.Row && Column == other.Column;
+        }
+
+        bool operator!=(const RowColumn& other) const
+        {
+            return !(*this == other);
+        }
+    };
+
     class CustomListViewInfo
     {
     private:
-        struct HitTestResult
-        {
-            static constexpr size_t HEADER_ROW = std::numeric_limits<size_t>::max();
-
-            size_t Row{};
-            size_t Column{};
-
-            bool IsHeader() const
-            {
-                return Row == HEADER_ROW;
-            }
-        };
+        static constexpr int32_t HEADER_ROW = -1;
+        std::vector<ListViewItem> Items;
 
     public:
         std::shared_ptr<Plugin> Owner;
         std::vector<ListViewColumn> Columns;
-        std::vector<ListViewItem> Items;
-        std::optional<size_t> HighlightedRow;
-        std::optional<size_t> HighlightedColumn;
-        std::optional<size_t> SelectedRow;
-        std::optional<size_t> SelectedColumn;
+        std::vector<size_t> SortedItems;
+        std::optional<RowColumn> HighlightedCell;
+        std::optional<RowColumn> LastHighlightedCell;
         std::optional<size_t> ColumnHeaderPressed;
+        bool ColumnHeaderPressedCurrentState{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
         ScreenSize LastKnownSize;
         ScrollbarType Scrollbars = ScrollbarType::Vertical;
+        ColumnSortOrder CurrentSortOrder{};
+        size_t CurrentSortColumn{};
+        bool LastIsMouseDown{};
+        bool IsMouseDown{};
 
+        DukValue OnClick;
         DukValue OnHighlight;
-        DukValue OnSelect;
+
+        void SetItems(const std::vector<ListViewItem>& items)
+        {
+            Items = items;
+            SortItems(0, ColumnSortOrder::None);
+        }
+
+        void SetItems(std::vector<ListViewItem>&& items)
+        {
+            Items = items;
+            SortItems(0, ColumnSortOrder::None);
+        }
+
+        bool SortItem(size_t indexA, size_t indexB, size_t column)
+        {
+            const auto& cellA = Items[indexA].Cells[column];
+            const auto& cellB = Items[indexB].Cells[column];
+            return strlogicalcmp(cellA.c_str(), cellB.c_str()) < 0;
+        }
+
+        void SortItems(size_t column)
+        {
+            auto sortOrder = ColumnSortOrder::Ascending;
+            if (CurrentSortColumn == column)
+            {
+                if (CurrentSortOrder == ColumnSortOrder::Ascending)
+                {
+                    sortOrder = ColumnSortOrder::Descending;
+                }
+                else if (CurrentSortOrder == ColumnSortOrder::Descending)
+                {
+                    sortOrder = ColumnSortOrder::None;
+                }
+            }
+            SortItems(column, sortOrder);
+        }
+
+        void SortItems(size_t column, ColumnSortOrder order)
+        {
+            // Reset the sorted index map
+            SortedItems.resize(Items.size());
+            for (size_t i = 0; i < SortedItems.size(); i++)
+            {
+                SortedItems[i] = i;
+            }
+
+            if (order != ColumnSortOrder::None)
+            {
+                std::sort(SortedItems.begin(), SortedItems.end(), [this, column](size_t a, size_t b) {
+                    return SortItem(a, b, column);
+                });
+                if (order == ColumnSortOrder::Descending)
+                {
+                    std::reverse(SortedItems.begin(), SortedItems.end());
+                }
+            }
+
+            CurrentSortOrder = order;
+            CurrentSortColumn = column;
+            Columns[column].SortOrder = order;
+        }
 
         void Resize(const ScreenSize& size)
         {
@@ -503,7 +585,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (column.RatioWidth)
+                    column.Width = 0;
+                    if (column.RatioWidth && *column.RatioWidth > 0)
                     {
                         column.Width = (size.width * *column.RatioWidth) / totalRatio;
                     }
@@ -520,36 +603,58 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize GetSize() const
+        ScreenSize GetSize()
         {
+            LastHighlightedCell = HighlightedCell;
+            HighlightedCell = std::nullopt;
+            ColumnHeaderPressedCurrentState = false;
+            LastIsMouseDown = IsMouseDown;
+            IsMouseDown = false;
+
             ScreenSize result;
             result.width = 0;
             result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
             return result;
         }
 
-        void MouseOver(const ScreenCoordsXY& pos)
+        void MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
         {
             auto hitResult = GetItemIndexAt(pos);
             if (hitResult)
             {
-                if (HighlightedRow != hitResult->Row || HighlightedColumn != hitResult->Column)
+                HighlightedCell = hitResult;
+                if (HighlightedCell != LastHighlightedCell)
                 {
-                    HighlightedRow = hitResult->Row;
-                    HighlightedColumn = hitResult->Column;
-                    if (!hitResult->IsHeader() && OnHighlight.context() != nullptr && OnHighlight.is_function())
+                    if (hitResult->Row != HEADER_ROW && OnHighlight.context() != nullptr && OnHighlight.is_function())
                     {
                         auto ctx = OnHighlight.context();
-                        duk_push_int(ctx, static_cast<int32_t>(*HighlightedRow));
+                        duk_push_int(ctx, static_cast<int32_t>(HighlightedCell->Row));
                         auto dukRow = DukValue::take_from_stack(ctx, -1);
-                        duk_push_int(ctx, static_cast<int32_t>(*HighlightedColumn));
+                        duk_push_int(ctx, static_cast<int32_t>(HighlightedCell->Column));
                         auto dukColumn = DukValue::take_from_stack(ctx, -1);
                         auto& scriptEngine = GetContext()->GetScriptEngine();
                         scriptEngine.ExecutePluginCall(Owner, OnHighlight, { dukRow, dukColumn }, false);
                     }
                 }
             }
-            ColumnHeaderPressed = std::nullopt;
+
+            // Update the header currently held down
+            if (isMouseDown)
+            {
+                if (hitResult && hitResult->Row == HEADER_ROW)
+                {
+                    ColumnHeaderPressedCurrentState = (hitResult->Column == ColumnHeaderPressed);
+                }
+                IsMouseDown = true;
+            }
+            else
+            {
+                if (LastIsMouseDown)
+                {
+                    MouseUp(pos);
+                }
+                IsMouseDown = false;
+            }
         }
 
         void MouseDown(const ScreenCoordsXY& pos)
@@ -557,30 +662,41 @@ namespace OpenRCT2::Ui::Windows
             auto hitResult = GetItemIndexAt(pos);
             if (hitResult)
             {
-                if (SelectedRow != hitResult->Row || SelectedColumn != hitResult->Column)
+                if (hitResult->Row != HEADER_ROW && OnClick.context() != nullptr && OnClick.is_function())
                 {
-                    SelectedRow = hitResult->Row;
-                    SelectedColumn = hitResult->Column;
-                    if (!hitResult->IsHeader() && OnSelect.context() != nullptr && OnSelect.is_function())
-                    {
-                        auto ctx = OnSelect.context();
-                        duk_push_int(ctx, static_cast<int32_t>(*SelectedRow));
-                        auto dukRow = DukValue::take_from_stack(ctx, -1);
-                        duk_push_int(ctx, static_cast<int32_t>(*SelectedColumn));
-                        auto dukColumn = DukValue::take_from_stack(ctx, -1);
-                        auto& scriptEngine = GetContext()->GetScriptEngine();
-                        scriptEngine.ExecutePluginCall(Owner, OnSelect, { dukRow, dukColumn }, false);
-                    }
+                    auto ctx = OnClick.context();
+                    duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
+                    auto dukRow = DukValue::take_from_stack(ctx, -1);
+                    duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
+                    auto dukColumn = DukValue::take_from_stack(ctx, -1);
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
                 }
             }
-            if (hitResult && hitResult->IsHeader())
+            if (hitResult && hitResult->Row == HEADER_ROW)
             {
-                ColumnHeaderPressed = hitResult->Column;
+                if (Columns[hitResult->Column].CanSort)
+                {
+                    ColumnHeaderPressed = hitResult->Column;
+                    ColumnHeaderPressedCurrentState = true;
+                }
             }
-            else
+            IsMouseDown = true;
+        }
+
+        void MouseUp(const ScreenCoordsXY& pos)
+        {
+            auto hitResult = GetItemIndexAt(pos);
+            if (hitResult && hitResult->Row == HEADER_ROW)
             {
-                ColumnHeaderPressed = std::nullopt;
+                if (hitResult->Column == ColumnHeaderPressed)
+                {
+                    SortItems(hitResult->Column);
+                }
             }
+
+            ColumnHeaderPressed = std::nullopt;
+            ColumnHeaderPressedCurrentState = false;
         }
 
         void Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
@@ -601,7 +717,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Background colour
                     auto isStriped = IsStriped && (i & 1);
-                    auto isHighlighted = i == HighlightedRow;
+                    auto isHighlighted = (HighlightedCell && i == HighlightedCell->Row);
                     if (isHighlighted)
                     {
                         gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
@@ -614,7 +730,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Columns
-                    const auto& item = Items[i];
+                    const auto& itemIndex = SortedItems[i];
+                    const auto& item = Items[itemIndex];
                     if (Columns.size() == 0)
                     {
                         const auto& text = item.Cells[0];
@@ -661,10 +778,14 @@ namespace OpenRCT2::Ui::Windows
                     auto columnWidth = column.Width;
                     if (columnWidth != 0)
                     {
-                        bool isPressed = ColumnHeaderPressed == j;
-                        PaintHeading(
-                            w, dpi, { x, y }, { column.Width, LIST_ROW_HEIGHT }, column.Header, ColumnSortOrder::None,
-                            isPressed);
+                        auto sortOrder = ColumnSortOrder::None;
+                        if (CurrentSortColumn == j)
+                        {
+                            sortOrder = CurrentSortOrder;
+                        }
+
+                        bool isPressed = ColumnHeaderPressed == j && ColumnHeaderPressedCurrentState;
+                        PaintHeading(w, dpi, { x, y }, { column.Width, LIST_ROW_HEIGHT }, column.Header, sortOrder, isPressed);
                         x += columnWidth;
                     }
                 }
@@ -697,7 +818,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter::Common();
                 ft.Add<rct_string_id>(STR_DOWN);
-                gfx_draw_string_right(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos.y + size.width - 1, pos.y);
+                gfx_draw_string_right(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos.x + size.width - 1, pos.y);
             }
         }
 
@@ -713,16 +834,16 @@ namespace OpenRCT2::Ui::Windows
             gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, pos.x, pos.y, size.width);
         }
 
-        std::optional<HitTestResult> GetItemIndexAt(const ScreenCoordsXY& pos)
+        std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos)
         {
-            std::optional<HitTestResult> result;
+            std::optional<RowColumn> result;
             if (pos.x >= 0)
             {
                 // Check if we pressed the header
                 if (ShowColumnHeaders && pos.y >= 0 && pos.y < LIST_ROW_HEIGHT)
                 {
-                    result = HitTestResult();
-                    result->Row = HitTestResult::HEADER_ROW;
+                    result = RowColumn();
+                    result->Row = HEADER_ROW;
                 }
                 else
                 {
@@ -731,8 +852,8 @@ namespace OpenRCT2::Ui::Windows
                     int32_t row = (pos.y - firstY) / LIST_ROW_HEIGHT;
                     if (row >= 0 && row < static_cast<int32_t>(Items.size()))
                     {
-                        result = HitTestResult();
-                        result->Row = static_cast<size_t>(row);
+                        result = RowColumn();
+                        result->Row = row;
                     }
                 }
 
@@ -749,7 +870,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             if (pos.x < x)
                             {
-                                result->Column = c;
+                                result->Column = static_cast<int32_t>(c);
                                 found = true;
                                 break;
                             }
@@ -1040,7 +1161,7 @@ namespace OpenRCT2::Ui::Windows
 
     static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
     {
-        const auto& info = GetInfo(w);
+        auto& info = GetInfo(w);
         if (scrollIndex < info.ListViews.size())
         {
             auto size = info.ListViews[scrollIndex].GetSize();
@@ -1058,12 +1179,21 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    static void window_custom_scrollmousedrag(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+        auto& info = GetInfo(w);
+        if (scrollIndex < info.ListViews.size())
+        {
+            info.ListViews[scrollIndex].MouseOver(screenCoords, true);
+        }
+    }
+
     static void window_custom_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto& info = GetInfo(w);
         if (scrollIndex < info.ListViews.size())
         {
-            info.ListViews[scrollIndex].MouseOver(screenCoords);
+            info.ListViews[scrollIndex].MouseOver(screenCoords, false);
         }
     }
 
@@ -1411,9 +1541,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 CustomListViewInfo listView;
                 listView.Columns = widgetDesc.ListViewColumns;
-                listView.Items = widgetDesc.ListViewItems;
+                listView.SetItems(widgetDesc.ListViewItems);
                 listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
                 listView.IsStriped = widgetDesc.IsStriped;
+                listView.OnClick = widgetDesc.OnClick;
+                listView.OnHighlight = widgetDesc.OnHighlight;
                 info.ListViews.push_back(std::move(listView));
             }
         }
