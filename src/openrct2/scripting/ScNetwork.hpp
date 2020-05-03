@@ -343,6 +343,16 @@ namespace OpenRCT2::Scripting
             return players;
         }
 
+        std::shared_ptr<ScPlayer> currentPlayer_get() const
+        {
+            std::shared_ptr<ScPlayer> player;
+#    ifndef DISABLE_NETWORK
+            auto playerId = network_get_current_player_id();
+            player = std::make_shared<ScPlayer>(playerId);
+#    endif
+            return player;
+        }
+
         std::shared_ptr<ScPlayer> getPlayer(int32_t index) const
         {
 #    ifndef DISABLE_NETWORK
@@ -443,6 +453,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScNetwork::numPlayers_get, nullptr, "numPlayers");
             dukglue_register_property(ctx, &ScNetwork::groups_get, nullptr, "groups");
             dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
+            dukglue_register_property(ctx, &ScNetwork::currentPlayer_get, nullptr, "currentPlayer");
             dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");
             dukglue_register_method(ctx, &ScNetwork::addGroup, "addGroup");
             dukglue_register_method(ctx, &ScNetwork::getGroup, "getGroup");

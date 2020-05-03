@@ -616,6 +616,7 @@ declare global {
         readonly numPlayers: number;
         readonly groups: PlayerGroup[];
         readonly players: Player[];
+        readonly currentPlayer: Player;
         defaultGroup: number;
 
         getServerInfo(): ServerInfo;
