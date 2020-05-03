@@ -233,6 +233,7 @@ namespace OpenRCT2::Ui::Windows
         bool HasBorder{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
+        bool CanSelect{};
 
         // Event handlers
         DukValue OnClick;
@@ -309,6 +310,7 @@ namespace OpenRCT2::Ui::Windows
                 result.IsStriped = AsOrDefault(desc["isStriped"], false);
                 result.OnClick = desc["onClick"];
                 result.OnHighlight = desc["onHighlight"];
+                result.CanSelect = AsOrDefault(desc["canSelect"], false);
             }
             else if (result.Type == "spinner")
             {
@@ -481,6 +483,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<size_t> SortedItems;
         std::optional<RowColumn> HighlightedCell;
         std::optional<RowColumn> LastHighlightedCell;
+        std::optional<RowColumn> SelectedCell;
         std::optional<size_t> ColumnHeaderPressed;
         bool ColumnHeaderPressedCurrentState{};
         bool ShowColumnHeaders{};
@@ -491,6 +494,7 @@ namespace OpenRCT2::Ui::Windows
         size_t CurrentSortColumn{};
         bool LastIsMouseDown{};
         bool IsMouseDown{};
+        bool CanSelect{};
 
         DukValue OnClick;
         DukValue OnHighlight;
@@ -664,6 +668,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (hitResult->Row != HEADER_ROW && OnClick.context() != nullptr && OnClick.is_function())
                 {
+                    if (CanSelect)
+                    {
+                        SelectedCell = hitResult;
+                    }
+
                     auto ctx = OnClick.context();
                     duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
                     auto dukRow = DukValue::take_from_stack(ctx, -1);
@@ -715,12 +724,22 @@ namespace OpenRCT2::Ui::Windows
 
                 if (y + LIST_ROW_HEIGHT >= dpi->y)
                 {
+                    const auto& itemIndex = SortedItems[i];
+                    const auto& item = Items[itemIndex];
+
                     // Background colour
                     auto isStriped = IsStriped && (i & 1);
-                    auto isHighlighted = (HighlightedCell && i == HighlightedCell->Row);
+                    auto isHighlighted = (HighlightedCell && itemIndex == HighlightedCell->Row);
+                    auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
                     if (isHighlighted)
                     {
                         gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
+                    }
+                    else if (isSelected)
+                    {
+                        // gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + LIST_ROW_HEIGHT - 1,
+                        // ColourMapA[w->colours[1]].dark);
+                        gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_2);
                     }
                     else if (isStriped)
                     {
@@ -730,8 +749,6 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Columns
-                    const auto& itemIndex = SortedItems[i];
-                    const auto& item = Items[itemIndex];
                     if (Columns.size() == 0)
                     {
                         const auto& text = item.Cells[0];
@@ -853,7 +870,7 @@ namespace OpenRCT2::Ui::Windows
                     if (row >= 0 && row < static_cast<int32_t>(Items.size()))
                     {
                         result = RowColumn();
-                        result->Row = row;
+                        result->Row = static_cast<int32_t>(SortedItems[row]);
                     }
                 }
 
@@ -1546,6 +1563,7 @@ namespace OpenRCT2::Ui::Windows
                 listView.IsStriped = widgetDesc.IsStriped;
                 listView.OnClick = widgetDesc.OnClick;
                 listView.OnHighlight = widgetDesc.OnHighlight;
+                listView.CanSelect = widgetDesc.CanSelect;
                 info.ListViews.push_back(std::move(listView));
             }
         }

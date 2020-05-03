@@ -1097,9 +1097,10 @@ declare global {
         items?: string[] | ListViewItem[];
         selectedIndex?: number;
         highlightedIndex?: number;
+        canSelect?: boolean;
 
-        onHighlight: (index: number) => void;
-        onClick: (index: number) => void;
+        onHighlight: (item: number, column: number) => void;
+        onClick: (item: number, column: number) => void;
 
         getCell(row: number, column: number): string;
         setCell(row: number, column: number, value: string): void;
