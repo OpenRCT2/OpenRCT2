@@ -62,7 +62,7 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_BANNER:
                     return "banner";
                 case TILE_ELEMENT_TYPE_CORRUPT:
-                    return "openrct2_corrupt";
+                    return "openrct2_corrupt_deprecated";
                 default:
                     return "unknown";
             }
@@ -87,7 +87,7 @@ namespace OpenRCT2::Scripting
                 type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
             else if (value == "banner")
                 type = TILE_ELEMENT_TYPE_BANNER;
-            else if (value == "openrct2_corrupt")
+            else if (value == "openrct2_corrupt_deprecated")
                 type = TILE_ELEMENT_TYPE_CORRUPT;
             else
                 return;

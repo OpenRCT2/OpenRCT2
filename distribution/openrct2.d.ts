@@ -356,7 +356,7 @@ declare global {
     }
 
     type TileElementType =
-        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner" | "openrct2_corrupt";
+        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner" | "openrct2_corrupt_deprecated";
 
     interface BaseTileElement {
         type: TileElementType;
