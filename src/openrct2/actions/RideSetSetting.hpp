@@ -81,7 +81,7 @@ public:
                     return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
                 }
 
-                if (!ride_is_mode_valid(ride))
+                if (!ride_is_mode_valid(ride) && !gCheatsShowAllOperatingModes)
                 {
                     log_warning("Invalid ride mode: %u", _value);
                     return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
