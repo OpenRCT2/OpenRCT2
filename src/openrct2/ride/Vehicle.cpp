@@ -2211,7 +2211,7 @@ void Vehicle::UpdateMovingToEndOfStation()
  *
  *  rct2: 0x006D7FB4
  */
-void Vehicle::TrainReadToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats)
+void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats)
 {
     if (num_peeps_on_train != num_used_seats)
         return;
@@ -2351,7 +2351,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             if (time_waiting < 20)
             {
-                TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+                TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
         }
@@ -2359,7 +2359,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             if (num_peeps_on_train == 0)
             {
-                TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+                TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
         }
@@ -2370,7 +2370,7 @@ void Vehicle::UpdateWaitingForPassengers()
             {
                 if (curRide->min_waiting_time * 32 > time_waiting)
                 {
-                    TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+                    TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
@@ -2379,7 +2379,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 if (curRide->max_waiting_time * 32 < time_waiting)
                 {
                     update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                    TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+                    TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
@@ -2403,7 +2403,7 @@ void Vehicle::UpdateWaitingForPassengers()
                     if (train->current_station == current_station)
                     {
                         update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                        TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+                        TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                         return;
                     }
                 }
@@ -2416,7 +2416,7 @@ void Vehicle::UpdateWaitingForPassengers()
             if (num_peeps_on_train == num_seats_on_train)
             {
                 update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+                TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
 
@@ -2434,12 +2434,12 @@ void Vehicle::UpdateWaitingForPassengers()
             if (num_peeps_on_train >= peepTarget)
                 update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
 
-            TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+            TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
             return;
         }
 
         update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-        TrainReadToDepart(num_peeps_on_train, num_used_seats_on_train);
+        TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
         return;
     }
 

@@ -387,7 +387,7 @@ private:
     void CrashOnWater();
     void CrashOnLand();
     void SimulateCrash() const;
-    void TrainReadToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
+    void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
 };
 
 struct train_ref
