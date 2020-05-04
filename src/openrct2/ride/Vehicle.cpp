@@ -9674,26 +9674,26 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     }
 
     vehicle = gCurrentVehicle;
-    regs.eax = (totalAcceleration / numVehicles) * 21;
-    if (regs.eax < 0)
+    int32_t newAcceleration = (totalAcceleration / numVehicles) * 21;
+    if (newAcceleration < 0)
     {
-        regs.eax += 511;
+        newAcceleration += 511;
     }
-    regs.eax >>= 9;
-    int32_t curAcceleration = regs.eax;
-    regs.eax = vehicle->velocity;
-    if (regs.eax < 0)
+    newAcceleration >>= 9;
+    int32_t curAcceleration = newAcceleration;
+    int32_t accelerationDecrease1 = vehicle->velocity;
+    if (accelerationDecrease1 < 0)
     {
-        regs.eax = -regs.eax;
-        regs.eax >>= 12;
-        regs.eax = -regs.eax;
+        accelerationDecrease1 = -accelerationDecrease1;
+        accelerationDecrease1 >>= 12;
+        accelerationDecrease1 = -accelerationDecrease1;
     }
     else
     {
-        regs.eax >>= 12;
+        accelerationDecrease1 >>= 12;
     }
 
-    curAcceleration -= regs.eax;
+    curAcceleration -= accelerationDecrease1;
     regs.edx = vehicle->velocity;
     regs.ebx = regs.edx;
     regs.edx >>= 8;
@@ -9703,13 +9703,13 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         regs.edx = -regs.edx;
     }
     regs.edx >>= 4;
-    regs.eax = regs.edx;
+    int32_t accelerationDecrease2 = regs.edx;
     // OpenRCT2: vehicles from different track types can have  0 mass.
     if (totalMass != 0)
     {
-        regs.eax = regs.eax / totalMass;
+        accelerationDecrease2 = accelerationDecrease2 / totalMass;
     }
-    curAcceleration -= regs.eax;
+    curAcceleration -= accelerationDecrease2;
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
     {
@@ -9750,13 +9750,10 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     vehicle->acceleration = curAcceleration;
 
-    regs.eax = _vehicleMotionTrackFlags;
-    regs.ebx = _vehicleStationIndex;
-
     // hook_setreturnregisters(&regs);
     if (outStation != nullptr)
-        *outStation = regs.ebx;
-    return regs.eax;
+        *outStation = _vehicleStationIndex;
+    return _vehicleMotionTrackFlags;
 }
 
 rct_ride_entry_vehicle* Vehicle::Entry() const
