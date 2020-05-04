@@ -8102,6 +8102,7 @@ loc_6DB41D:
 bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
     registers regs = {};
+    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
     regs.edi = track_type;
     regs.cx = track_type >> 2;
@@ -8278,8 +8279,8 @@ loc_6DAEB9:
         {
             if (_vehicleVelocityF64E08 >= 0)
             {
-                regs.bp = prev_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, reinterpret_cast<uint16_t*>(&regs.bp)))
+                otherVehicleIndex = prev_vehicle_on_ride;
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
                 {
                     goto loc_6DB967;
                 }
@@ -8303,7 +8304,7 @@ loc_6DB967:
     remaining_distance = -1;
 
     // Might need to be bp rather than this, but hopefully not
-    auto head = (GET_VEHICLE(regs.bp))->TrainHead();
+    auto head = (GET_VEHICLE(otherVehicleIndex))->TrainHead();
 
     regs.eax = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
@@ -8496,6 +8497,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
 bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
     registers regs = {};
+    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
 loc_6DBA33:;
     uint16_t trackType = track_type >> 2;
@@ -8584,8 +8586,8 @@ loc_6DBA33:;
         {
             if (_vehicleVelocityF64E08 < 0)
             {
-                regs.bp = next_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, reinterpret_cast<uint16_t*>(&regs.bp)))
+                otherVehicleIndex = next_vehicle_on_ride;
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
                 {
                     goto loc_6DBE7F;
                 }
@@ -8613,7 +8615,7 @@ loc_6DBE7F:
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
 
-    Vehicle* v3 = GET_VEHICLE(regs.bp);
+    Vehicle* v3 = GET_VEHICLE(otherVehicleIndex);
     Vehicle* v4 = gCurrentVehicle;
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
@@ -8651,6 +8653,7 @@ loc_6DBE7F:
 static int32_t vehicle_update_track_motion_mini_golf(Vehicle* vehicle, int32_t* outStation)
 {
     registers regs = {};
+    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
     auto ride = get_ride(vehicle->ride);
     if (ride == nullptr)
@@ -8986,8 +8989,8 @@ loc_6DC743:
     {
         if (_vehicleVelocityF64E08 >= 0)
         {
-            regs.bp = vehicle->prev_vehicle_on_ride;
-            vehicle_update_motion_collision_detection(vehicle, x, y, z, reinterpret_cast<uint16_t*>(&regs.bp));
+            otherVehicleIndex = vehicle->prev_vehicle_on_ride;
+            vehicle_update_motion_collision_detection(vehicle, x, y, z, &otherVehicleIndex);
         }
     }
     goto loc_6DC99A;
@@ -9140,8 +9143,8 @@ loc_6DCC2C:
     {
         if (_vehicleVelocityF64E08 >= 0)
         {
-            regs.bp = vehicle->var_44;
-            if (vehicle_update_motion_collision_detection(vehicle, x, y, z, reinterpret_cast<uint16_t*>(&regs.bp)))
+            otherVehicleIndex = vehicle->var_44;
+            if (vehicle_update_motion_collision_detection(vehicle, x, y, z, &otherVehicleIndex))
             {
                 goto loc_6DCD6B;
             }
@@ -9168,7 +9171,7 @@ loc_6DCD6B:
     _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
     vehicle->remaining_distance = 0x368A;
     {
-        Vehicle* vEBP = GET_VEHICLE(regs.bp);
+        Vehicle* vEBP = GET_VEHICLE(otherVehicleIndex);
         Vehicle* vEDI = gCurrentVehicle;
         regs.eax = abs(vEDI->velocity - vEBP->velocity);
         if (regs.eax > 0xE0000)
@@ -9270,15 +9273,15 @@ loc_6DCEB2:
 loc_6DCEFF:
     vehicle = gCurrentVehicle;
     regs.eax = 0;
-    regs.ebp = 0;
     regs.dx = 0;
     regs.ebx = 0;
+    uint16_t totalMass = 0;
 
     for (;;)
     {
         regs.ebx++;
         regs.dx |= vehicle->update_flags;
-        regs.bp += vehicle->mass;
+        totalMass += vehicle->mass;
         regs.eax += vehicle->acceleration;
         regs.si = vehicle->next_vehicle_on_train;
         if (static_cast<uint16_t>(regs.si) == SPRITE_INDEX_NULL)
@@ -9301,7 +9304,7 @@ loc_6DCEFF:
         regs.edx = -regs.edx;
     }
     regs.edx >>= 4;
-    regs.eax = regs.edx / regs.ebp;
+    regs.eax = regs.edx / totalMass;
     regs.ecx -= regs.eax;
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
@@ -9320,7 +9323,7 @@ loc_6DCEFF:
     regs.bx = vehicle->track_type >> 2;
     regs.ebx = regs.eax;
     regs.eax <<= 14;
-    regs.ebx *= regs.ebp;
+    regs.ebx *= totalMass;
     regs.ebx >>= 2;
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
     {
