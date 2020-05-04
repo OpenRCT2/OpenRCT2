@@ -899,6 +899,11 @@ public:
     {
     }
 
+    void Visit(const std::string_view& name, bool& param) override
+    {
+        param = _dukValue[name].as_bool();
+    }
+
     void Visit(const std::string_view& name, int32_t& param) override
     {
         param = _dukValue[name].as_int();
@@ -919,6 +924,12 @@ public:
     DukFromGameActionParameterVisitor(DukObject& dukObject)
         : _dukObject(dukObject)
     {
+    }
+
+    void Visit(const std::string_view& name, bool& param) override
+    {
+        std::string szName(name);
+        _dukObject.Set(szName.c_str(), param);
     }
 
     void Visit(const std::string_view& name, int32_t& param) override
@@ -976,9 +987,24 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
 static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
 {
     const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
-        { "parksetname", GAME_COMMAND_SET_PARK_NAME },
-        { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
         { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
+        { "parksetname", GAME_COMMAND_SET_PARK_NAME },
+        { "ridecreate", GAME_COMMAND_CREATE_RIDE },
+        { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
+        { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
+        { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
+        { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
+        { "ridesetcolourscheme.hpp", GAME_COMMAND_SET_COLOUR_SCHEME },
+        { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
+        { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
+        { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
+        { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
+        { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
+        { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
+        { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
+        { "trackplace", GAME_COMMAND_PLACE_TRACK },
+        { "trackremove", GAME_COMMAND_REMOVE_TRACK },
+        { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
     };
 
     auto result = ActionNameToType.find(actionid);

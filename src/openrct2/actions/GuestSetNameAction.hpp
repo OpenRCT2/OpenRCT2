@@ -39,7 +39,7 @@ public:
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override
     {
-        visitor.Visit("id", _spriteIndex);
+        visitor.Visit("peep", _spriteIndex);
         visitor.Visit("name", _name);
     }
 

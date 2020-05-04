@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,6 +72,18 @@ public:
         , _fromTrackDesign(fromTrackDesign)
     {
         _origin.direction &= 3;
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_origin);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("brakeSpeed", _brakeSpeed);
+        visitor.Visit("colour", _colour);
+        visitor.Visit("seatRotation", _seatRotation);
+        visitor.Visit("trackPlaceFlags", _trackPlaceFlags);
+        visitor.Visit("isFromTrackDesign", _fromTrackDesign);
     }
 
     uint16_t GetActionFlags() const override final
