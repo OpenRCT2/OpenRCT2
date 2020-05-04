@@ -1015,6 +1015,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
         set_format_arg(0, uint16_t, numSelected);
         set_format_arg(2, uint16_t, totalSelectable);
+
         gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 
