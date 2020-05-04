@@ -12,8 +12,8 @@
 
 #include "../common.h"
 
-#define STR_NONE ((rct_string_id)-1)
-#define STR_VIEWPORT ((rct_string_id)-2)
+constexpr const rct_string_id STR_NONE = 0xFFFF;
+constexpr const rct_string_id STR_VIEWPORT = 0xFFFE;
 
 enum
 {
