@@ -13,7 +13,6 @@
 #include "../common.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.hpp"
-//#include "../world/Location.hpp"
 
 #include <vector>
 struct ScreenCoordsXY;
