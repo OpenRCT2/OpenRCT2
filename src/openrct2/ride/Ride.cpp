@@ -3918,7 +3918,14 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
  */
 static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* output)
 {
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
+    if (input->element == nullptr)
+        return false;
+
+    const auto* trackElement = input->element->AsTrack();
+    if (trackElement == nullptr)
+        return false;
+
+    ride_id_t rideIndex = trackElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
         return true;
@@ -3966,7 +3973,14 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
  */
 static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output)
 {
-    auto rideIndex = input->element->AsTrack()->GetRideIndex();
+    if (input->element == nullptr)
+        return false;
+
+    const auto* trackElement = input->element->AsTrack();
+    if (trackElement == nullptr)
+        return false;
+
+    auto rideIndex = trackElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
@@ -5263,8 +5277,8 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
 
     if (ride->subtype != RIDE_ENTRY_INDEX_NULL)
     {
-        rct_ride_entry* rideType = get_ride_entry(ride->subtype);
-        if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+        rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
             gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
@@ -5273,7 +5287,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
                 return 0;
             }
         }
-        if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
         {
             gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
