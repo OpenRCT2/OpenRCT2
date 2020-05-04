@@ -29,6 +29,16 @@ public:
     {
     }
 
+    std::string GetId() const
+    {
+        return _id;
+    }
+
+    std::string GetJson() const
+    {
+        return _json;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;

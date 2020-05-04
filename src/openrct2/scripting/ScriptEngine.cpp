@@ -945,6 +945,48 @@ public:
     }
 };
 
+const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
+    { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
+    { "parksetname", GAME_COMMAND_SET_PARK_NAME },
+    { "ridecreate", GAME_COMMAND_CREATE_RIDE },
+    { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
+    { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
+    { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
+    { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
+    { "ridesetcolourscheme.hpp", GAME_COMMAND_SET_COLOUR_SCHEME },
+    { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
+    { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
+    { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
+    { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
+    { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
+    { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
+    { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
+    { "trackplace", GAME_COMMAND_PLACE_TRACK },
+    { "trackremove", GAME_COMMAND_REMOVE_TRACK },
+    { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
+};
+
+static std::string GetActionName(uint32_t commandId)
+{
+    auto it = std::find_if(
+        ActionNameToType.begin(), ActionNameToType.end(), [commandId](const auto& kvp) { return kvp.second == commandId; });
+    if (it != ActionNameToType.end())
+    {
+        return it->first;
+    }
+    return {};
+}
+
+static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
+{
+    auto result = ActionNameToType.find(actionid);
+    if (result != ActionNameToType.end())
+    {
+        return GameActions::Create(result->second);
+    }
+    return nullptr;
+}
+
 void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
 {
     DukStackFrame frame(_context);
@@ -953,14 +995,43 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
     if (_hookEngine.HasSubscriptions(hookType))
     {
         DukObject obj(_context);
+
+        auto actionId = action.GetType();
+        if (action.GetType() == GAME_COMMAND_CUSTOM)
+        {
+            auto customAction = static_cast<const CustomAction&>(action);
+            obj.Set("action", customAction.GetId());
+
+            auto dukArgs = DuktapeTryParseJson(_context, customAction.GetJson());
+            if (dukArgs)
+            {
+                obj.Set("args", *dukArgs);
+            }
+            else
+            {
+                DukObject args(_context);
+                obj.Set("args", args.Take());
+            }
+        }
+        else
+        {
+            auto actionName = GetActionName(actionId);
+            if (!actionName.empty())
+            {
+                obj.Set("action", actionName);
+            }
+
+            DukObject args(_context);
+            DukFromGameActionParameterVisitor visitor(args);
+            const_cast<GameAction&>(action).AcceptParameters(visitor);
+            obj.Set("args", args.Take());
+        }
+
         obj.Set("player", action.GetPlayer());
-        obj.Set("type", action.GetType());
+        obj.Set("type", actionId);
 
         auto flags = action.GetActionFlags();
         obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
-
-        DukFromGameActionParameterVisitor visitor(obj);
-        const_cast<GameAction&>(action).AcceptParameters(visitor);
 
         obj.Set("result", GameActionResultToDuk(action, result));
         auto dukEventArgs = obj.Take();
@@ -982,37 +1053,6 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
             }
         }
     }
-}
-
-static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
-{
-    const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
-        { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
-        { "parksetname", GAME_COMMAND_SET_PARK_NAME },
-        { "ridecreate", GAME_COMMAND_CREATE_RIDE },
-        { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
-        { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
-        { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
-        { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
-        { "ridesetcolourscheme.hpp", GAME_COMMAND_SET_COLOUR_SCHEME },
-        { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
-        { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
-        { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
-        { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
-        { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
-        { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
-        { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
-        { "trackplace", GAME_COMMAND_PLACE_TRACK },
-        { "trackremove", GAME_COMMAND_REMOVE_TRACK },
-        { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
-    };
-
-    auto result = ActionNameToType.find(actionid);
-    if (result != ActionNameToType.end())
-    {
-        return GameActions::Create(result->second);
-    }
-    return nullptr;
 }
 
 std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& actionid, const DukValue& args)
