@@ -5028,13 +5028,10 @@ static void ride_scroll_to_track_error(CoordsXYE* trackElement)
  *
  *  rct2: 0x006B4F6B
  */
-static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
+TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 {
-    auto ride = get_ride(rideIndex);
-    if (ride == nullptr)
-        return nullptr;
-
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    auto stationLoc = stations[stationIndex].Start;
+    TileElement* tileElement = map_get_first_element_at(stationLoc);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -5042,19 +5039,21 @@ static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_FLAT_RIDE)
+        auto* trackElement = tileElement->AsTrack();
+
+        if (RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_FLAT_RIDE)
         {
-            if (!(FlatRideTrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+            if (!(FlatRideTrackSequenceProperties[trackElement->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
         }
         else
         {
-            if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+            if (!(TrackSequenceProperties[trackElement->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
         }
 
-        if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
-            return tileElement;
+        if (trackElement->GetRideIndex() == id)
+            return trackElement;
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
@@ -5098,7 +5097,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
     auto startLoc = ride->stations[stationIndex].Start;
     trackElement.x = startLoc.x;
     trackElement.y = startLoc.y;
-    trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
+    trackElement.element = reinterpret_cast<TileElement*>(ride->GetOriginElement(stationIndex));
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
@@ -5234,7 +5233,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
     auto startLoc = ride->stations[stationIndex].Start;
     trackElement.x = startLoc.x;
     trackElement.y = startLoc.y;
-    trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
+    trackElement.element = reinterpret_cast<TileElement*>(ride->GetOriginElement(stationIndex));
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required

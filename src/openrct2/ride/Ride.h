@@ -431,6 +431,7 @@ public:
 
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
+    TrackElement* GetOriginElement(StationIndex stationIndex) const;
 };
 
 #pragma pack(push, 1)
