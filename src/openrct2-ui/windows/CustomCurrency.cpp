@@ -240,15 +240,15 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = w->windowPos.x + 10;
     y = w->windowPos.y + 30;
 
-    gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], x, y);
+    gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], { x, y });
 
     int32_t baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
     set_format_arg(0, int32_t, baseExchange);
-    gfx_draw_string_left(dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], x + 200, y);
+    gfx_draw_string_left(dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], { x + 200, y });
 
     y += 20;
 
-    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], x, y);
+    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], { x, y });
 
     gfx_draw_string(
         dpi, CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, w->colours[1],
@@ -258,13 +258,15 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
     {
         gfx_draw_string_left(
-            dpi, STR_PREFIX, w, w->colours[1], w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
+            dpi, STR_PREFIX, w, w->colours[1],
+            { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+              w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
     }
     else
     {
         gfx_draw_string_left(
-            dpi, STR_SUFFIX, w, w->colours[1], w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
+            dpi, STR_SUFFIX, w, w->colours[1],
+            { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+              w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
     }
 }

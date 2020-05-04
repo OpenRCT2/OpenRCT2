@@ -834,8 +834,8 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
             set_format_arg(0, uintptr_t, _sequenceName);
             gfx_draw_string_left(
-                dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1], w->windowPos.x + 10,
-                w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
+                dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
+                { w->windowPos.x + 10, w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
             gfx_draw_string_left_clipped(
                 dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
                 w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
@@ -909,7 +909,7 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
             buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_BLACK));
         }
         set_format_arg(0, uintptr_t, &buffer);
-        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
+        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], { x + 5, y });
     }
 }
 
@@ -1035,7 +1035,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
         }
         set_format_arg(0, uintptr_t, &buffer);
-        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
+        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], { x + 5, y });
     }
 }
 

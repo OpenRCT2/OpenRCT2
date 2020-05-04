@@ -1121,7 +1121,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     x = widget->right - widget->left - w->list_information_type;
     peep_thought_set_format_args(&peep->thoughts[i]);
-    gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, 0);
+    gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { x, 0 });
 }
 
 /**
@@ -1400,7 +1400,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Happiness
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     int32_t happiness = peep->happiness;
     if (happiness < 10)
@@ -1414,7 +1414,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Energy
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     int32_t energy = ((peep->energy - PEEP_MIN_ENERGY) * 255) / (PEEP_MAX_ENERGY - PEEP_MIN_ENERGY);
     ebp = COLOUR_BRIGHT_GREEN;
@@ -1428,7 +1428,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Hunger
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     int32_t hunger = peep->hunger;
     if (hunger > 190)
@@ -1450,7 +1450,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Thirst
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     int32_t thirst = peep->thirst;
     if (thirst > 190)
@@ -1472,7 +1472,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Nausea
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     int32_t nausea = peep->nausea - 32;
 
@@ -1490,7 +1490,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Toilet
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     int32_t toilet = peep->toilet - 32;
     if (toilet > 210)
@@ -1517,14 +1517,14 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         eax -= peep->time_in_park;
         eax >>= 11;
         set_format_arg(0, uint16_t, eax & 0xFFFF);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 
     y += LIST_ROW_HEIGHT + 9;
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, { x, y });
     y += LIST_ROW_HEIGHT;
 
     // Intensity
@@ -1540,7 +1540,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             string_id = STR_GUEST_STAT_PREFERRED_INTESITY_ABOVE;
     }
 
-    gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, COLOUR_BLACK, x + 4, y);
+    gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, COLOUR_BLACK, { x + 4, y });
 
     // Nausea tolerance
     static constexpr const rct_string_id nauseaTolerances[] = {
@@ -1552,7 +1552,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
     int32_t nausea_tolerance = peep->nausea_tolerance & 0x3;
     set_format_arg(0, rct_string_id, nauseaTolerances[nausea_tolerance]);
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 }
 
 /**
@@ -1691,7 +1691,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // dx
     int32_t y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
 
-    gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, nullptr, COLOUR_BLACK, { x, y });
 
     y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
@@ -1735,7 +1735,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         if (ride != nullptr)
         {
             ride->FormatNameTo(gCommonFormatArgs);
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 });
         }
     }
 }
@@ -1776,19 +1776,19 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Cash in pocket
     set_format_arg(0, money32, peep->cash_in_pocket);
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     // Cash spent
     y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->cash_spent);
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     y += LIST_ROW_HEIGHT * 2;
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
     set_format_arg(0, money32, peep->paid_to_enter);
-    gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     // Paid on rides
     y += LIST_ROW_HEIGHT;
@@ -1796,11 +1796,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(4, uint16_t, peep->no_of_rides);
     if (peep->no_of_rides != 1)
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     else
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 
     // Paid on food
@@ -1809,11 +1809,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(4, uint16_t, peep->no_of_food);
     if (peep->no_of_food != 1)
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     else
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 
     // Paid on drinks
@@ -1822,11 +1822,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(4, uint16_t, peep->no_of_drinks);
     if (peep->no_of_drinks != 1)
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     else
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 
     // Paid on souvenirs
@@ -1835,11 +1835,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(4, uint16_t, peep->no_of_souvenirs);
     if (peep->no_of_souvenirs != 1)
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     else
     {
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
 }
 
@@ -1884,7 +1884,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // dx
     int32_t y = w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-    gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, { x, y });
 
     y += 10;
     for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought)
@@ -2030,7 +2030,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t maxY = w->windowPos.y + w->height - 22;
         int32_t numItems = 0;
 
-        gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, { x, y });
         y += 10;
 
         for (int32_t item = 0; item < SHOP_ITEM_COUNT; item++)
@@ -2047,7 +2047,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         if (numItems == 0)
         {
-            gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, { x, y });
         }
     }
 }
@@ -2081,12 +2081,12 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto y = w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
     {
         set_format_arg(0, uint32_t, peep->sprite_index);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, { x, y });
     }
     y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->x, peep->y, peep->x };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, { x, y });
     }
     y += LIST_ROW_HEIGHT;
     {
@@ -2108,22 +2108,22 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->destination_x, peep->destination_y, peep->destination_tolerance };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_DEST, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_DEST, args, 0, { x, y });
     }
     y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z, peep->pathfind_goal.direction };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, { x, y });
     }
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY, nullptr, 0, x, y);
+    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY, nullptr, 0, { x, y });
     y += LIST_ROW_HEIGHT;
 
     x += 10;
     for (auto& point : peep->pathfind_history)
     {
         int32_t args[] = { point.x, point.y, point.z, point.direction };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, args, 0, { x, y });
         y += LIST_ROW_HEIGHT;
     }
     x -= 10;
