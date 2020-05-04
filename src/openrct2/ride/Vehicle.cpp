@@ -8102,6 +8102,7 @@ loc_6DB41D:
 bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
     registers regs = {};
+    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
     regs.edi = track_type;
     regs.cx = track_type >> 2;
@@ -8278,8 +8279,8 @@ loc_6DAEB9:
         {
             if (_vehicleVelocityF64E08 >= 0)
             {
-                regs.bp = prev_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, reinterpret_cast<uint16_t*>(&regs.bp)))
+                otherVehicleIndex = prev_vehicle_on_ride;
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
                 {
                     goto loc_6DB967;
                 }
@@ -8303,7 +8304,7 @@ loc_6DB967:
     remaining_distance = -1;
 
     // Might need to be bp rather than this, but hopefully not
-    auto head = (GET_VEHICLE(regs.bp))->TrainHead();
+    auto head = (GET_VEHICLE(otherVehicleIndex))->TrainHead();
 
     regs.eax = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
@@ -8496,6 +8497,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
 bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
     registers regs = {};
+    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
 loc_6DBA33:;
     uint16_t trackType = track_type >> 2;
@@ -8584,8 +8586,8 @@ loc_6DBA33:;
         {
             if (_vehicleVelocityF64E08 < 0)
             {
-                regs.bp = next_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, reinterpret_cast<uint16_t*>(&regs.bp)))
+                otherVehicleIndex = next_vehicle_on_ride;
+                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
                 {
                     goto loc_6DBE7F;
                 }
@@ -8613,7 +8615,7 @@ loc_6DBE7F:
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
 
-    Vehicle* v3 = GET_VEHICLE(regs.bp);
+    Vehicle* v3 = GET_VEHICLE(otherVehicleIndex);
     Vehicle* v4 = gCurrentVehicle;
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
