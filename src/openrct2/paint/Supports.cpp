@@ -114,19 +114,19 @@ static constexpr const uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
 
 /** rct2: 0x0097B142 */
 static constexpr const uint8_t supportTypeToHeight[] = {
-    6,
-    3,
-    3,
-    6,
-    3,
-    3,
-    6,
-    6,
-    6,
-    6,
-    4,
-    3,
-    6,
+    6, // METAL_SUPPORTS_TUBES
+    3, // METAL_SUPPORTS_FORK
+    3, // METAL_SUPPORTS_FORK_ALT
+    6, // METAL_SUPPORTS_BOXED
+    3, // METAL_SUPPORTS_STICK
+    3, // METAL_SUPPORTS_STICK_ALT
+    6, // METAL_SUPPORTS_THICK_CENTRED
+    6, // METAL_SUPPORTS_THICK
+    6, // METAL_SUPPORTS_THICK_ALT
+    6, // METAL_SUPPORTS_THICK_ALT_CENTRED
+    4, // METAL_SUPPORTS_TRUSS
+    3, // METAL_SUPPORTS_TUBES_INVERTED
+    6, // METAL_SUPPORTS_BOXED_COATED
 };
 
 struct metal_supports_images {
@@ -136,19 +136,19 @@ struct metal_supports_images {
 
 /** rct2: 0x0097B15C */
 static constexpr const metal_supports_images _97B15C[] = {
-    { 3243, 3209 },
-    { 3279, 3262 },
-    { 3298, 3262 },
-    { 3334, 3317 },
-    {    0, 3658 },
-    {    0, 3658 },
-    {    0, 3141 },
-    {    0, 3158 },
-    {    0, 3175 },
-    {    0, 3192 },
-    {    0, 3124 },
-    { 3243, 3209 },
-    { 3334, 3353 },
+    { 3243, 3209 }, // METAL_SUPPORTS_TUBES
+    { 3279, 3262 }, // METAL_SUPPORTS_FORK
+    { 3298, 3262 }, // METAL_SUPPORTS_FORK_ALT
+    { 3334, 3317 }, // METAL_SUPPORTS_BOXED
+    {    0, 3658 }, // METAL_SUPPORTS_STICK
+    {    0, 3658 }, // METAL_SUPPORTS_STICK_ALT
+    {    0, 3141 }, // METAL_SUPPORTS_THICK_CENTRED
+    {    0, 3158 }, // METAL_SUPPORTS_THICK
+    {    0, 3175 }, // METAL_SUPPORTS_THICK_ALT
+    {    0, 3192 }, // METAL_SUPPORTS_THICK_ALT_CENTRED
+    {    0, 3124 }, // METAL_SUPPORTS_TRUSS
+    { 3243, 3209 }, // METAL_SUPPORTS_TUBES_INVERTED
+    { 3334, 3353 }, // METAL_SUPPORTS_BOXED_COATED
 };
 
 /** rct2: 0x0097B190 */
