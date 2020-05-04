@@ -341,19 +341,20 @@ static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_left(
-        dpi, STR_PORT, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PORT_INPUT].top);
+        dpi, STR_PORT, nullptr, w->colours[1], { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PORT_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_NAME_INPUT].top);
+        dpi, STR_SERVER_NAME, nullptr, w->colours[1], { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_NAME_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1],
+        { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_DESCRIPTION_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_GREETING_INPUT].top);
+        dpi, STR_SERVER_GREETING, nullptr, w->colours[1],
+        { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_GREETING_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_PASSWORD, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PASSWORD_INPUT].top);
+        dpi, STR_PASSWORD, nullptr, w->colours[1],
+        { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PASSWORD_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_MAXPLAYERS].top);
+        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_MAXPLAYERS].top });
 }
 
 #endif

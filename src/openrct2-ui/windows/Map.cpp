@@ -848,7 +848,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
             {
                 gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + LIST_ROW_HEIGHT, y);
+                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, { x + LIST_ROW_HEIGHT, y });
                 y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
@@ -861,8 +861,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
         gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->windowPos.x + 4,
-            w->windowPos.y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
+            { w->windowPos.x + 4, w->windowPos.y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
     }
 }
 

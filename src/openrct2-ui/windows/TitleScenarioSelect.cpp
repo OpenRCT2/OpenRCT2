@@ -491,8 +491,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         const utf8* pathPtr = path;
         gfx_draw_string_left(
-            dpi, STR_STRING, static_cast<void*>(&pathPtr), w->colours[1], w->windowPos.x + 3,
-            w->windowPos.y + w->height - 3 - 11);
+            dpi, STR_STRING, static_cast<void*>(&pathPtr), w->colours[1],
+            { w->windowPos.x + 3, w->windowPos.y + w->height - 3 - 11 });
     }
 
     // Scenario name

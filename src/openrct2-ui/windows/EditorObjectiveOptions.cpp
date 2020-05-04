@@ -35,7 +35,8 @@
 #pragma region Widgets
 
 // clang-format off
-enum {
+enum
+{
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
@@ -56,7 +57,8 @@ static constexpr const rct_string_id ObjectiveDropdownOptionNames[] = {
     STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE,
 };
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -81,164 +83,145 @@ enum {
     WIDX_RIDES = 6
 };
 
-#define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
-    { WWT_FRAME,            0,  0,      449,    0,      228,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_CAPTION,          0,  1,      448,    1,      14,     STR_OBJECTIVE_SELECTION,    STR_WINDOW_TITLE_TIP                                }, \
-    { WWT_CLOSEBOX,         0,  437,    447,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                                }, \
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }
+#define MAIN_OBJECTIVE_OPTIONS_WIDGETS                                                                                         \
+    { WWT_FRAME, 0, 0, 449, 0, 228, STR_NONE, STR_NONE },                                                                      \
+        { WWT_CAPTION, 0, 1, 448, 1, 14, STR_OBJECTIVE_SELECTION, STR_WINDOW_TITLE_TIP },                                      \
+        { WWT_CLOSEBOX, 0, 437, 447, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },                                               \
+        { WWT_RESIZE, 1, 0, 279, 43, 148, STR_NONE, STR_NONE },                                                                \
+        { WWT_TAB, 1, 3, 33, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP },                     \
+    {                                                                                                                          \
+        WWT_TAB, 1, 34, 64, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                           \
+    }
 
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    { WWT_DROPDOWN,         1,  98,     441,    48,     59,     STR_NONE,                   STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-    { WWT_BUTTON,           1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-      SPINNER_WIDGETS      (1,  158,    277,    65,     76,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-    { WWT_BUTTON,           1,  370,    444,    99,     110,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
-    { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_SCENARIO_TIP                     },
-    { WWT_DROPDOWN,         1,  98,     277,    133,    144,    STR_NONE,                   STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_BUTTON,           1,  266,    276,    134,    143,    STR_DROPDOWN_GLYPH,         STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_BUTTON,           1,  370,    444,    150,    161,    STR_CHANGE,                 STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP     },
+    { WWT_DROPDOWN, 1, 98, 441, 48, 59, STR_NONE, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP },
+    { WWT_BUTTON, 1, 430, 440, 49, 58, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP },
+    SPINNER_WIDGETS(1, 158, 277, 65, 76, STR_NONE, STR_NONE), // NB: 3 widgets
+    SPINNER_WIDGETS(1, 158, 277, 82, 93, STR_NONE, STR_NONE), // NB: 3 widgets
+    { WWT_BUTTON, 1, 370, 444, 99, 110, STR_CHANGE, STR_CHANGE_NAME_OF_PARK_TIP },
+    { WWT_BUTTON, 1, 370, 444, 116, 127, STR_CHANGE, STR_CHANGE_NAME_OF_SCENARIO_TIP },
+    { WWT_DROPDOWN, 1, 98, 277, 133, 144, STR_NONE, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN },
+    { WWT_BUTTON, 1, 266, 276, 134, 143, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN },
+    { WWT_BUTTON, 1, 370, 444, 150, 161, STR_CHANGE, STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP },
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
-    MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    { WWT_SCROLL,           1,  3,      376,    60,     220,    SCROLL_VERTICAL,            STR_NONE                                            },
-    { WIDGETS_END }
+    MAIN_OBJECTIVE_OPTIONS_WIDGETS, { WWT_SCROLL, 1, 3, 376, 60, 220, SCROLL_VERTICAL, STR_NONE }, { WIDGETS_END }
 };
 
-static rct_widget *window_editor_objective_options_widgets[] = {
-    window_editor_objective_options_main_widgets,
-    window_editor_objective_options_rides_widgets
-};
+static rct_widget* window_editor_objective_options_widgets[] = { window_editor_objective_options_main_widgets,
+                                                                 window_editor_objective_options_rides_widgets };
 
 #pragma endregion
 
 #pragma region Events
 
-static void window_editor_objective_options_main_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_objective_options_main_resize(rct_window *w);
-static void window_editor_objective_options_main_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_editor_objective_options_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_editor_objective_options_main_update(rct_window *w);
-static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_editor_objective_options_main_invalidate(rct_window *w);
-static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_editor_objective_options_main_resize(rct_window* w);
+static void window_editor_objective_options_main_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_editor_objective_options_main_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_editor_objective_options_main_update(rct_window* w);
+static void window_editor_objective_options_main_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void window_editor_objective_options_main_invalidate(rct_window* w);
+static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_editor_objective_options_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_objective_options_rides_resize(rct_window *w);
-static void window_editor_objective_options_rides_update(rct_window *w);
-static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_editor_objective_options_rides_invalidate(rct_window *w);
-static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_editor_objective_options_rides_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_editor_objective_options_rides_resize(rct_window* w);
+static void window_editor_objective_options_rides_update(rct_window* w);
+static void window_editor_objective_options_rides_scrollgetheight(
+    rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_editor_objective_options_rides_scrollmousedown(
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_editor_objective_options_rides_scrollmouseover(
+    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_editor_objective_options_rides_invalidate(rct_window* w);
+static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events = {
-    nullptr,
-    window_editor_objective_options_main_mouseup,
-    window_editor_objective_options_main_resize,
-    window_editor_objective_options_main_mousedown,
-    window_editor_objective_options_main_dropdown,
-    nullptr,
-    window_editor_objective_options_main_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_main_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_main_invalidate,
-    window_editor_objective_options_main_paint,
-    nullptr
-};
+static rct_window_event_list window_objective_options_main_events = { nullptr,
+                                                                      window_editor_objective_options_main_mouseup,
+                                                                      window_editor_objective_options_main_resize,
+                                                                      window_editor_objective_options_main_mousedown,
+                                                                      window_editor_objective_options_main_dropdown,
+                                                                      nullptr,
+                                                                      window_editor_objective_options_main_update,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      window_editor_objective_options_main_textinput,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      nullptr,
+                                                                      window_editor_objective_options_main_invalidate,
+                                                                      window_editor_objective_options_main_paint,
+                                                                      nullptr };
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events = {
-    nullptr,
-    window_editor_objective_options_rides_mouseup,
-    window_editor_objective_options_rides_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_scrollgetheight,
-    window_editor_objective_options_rides_scrollmousedown,
-    nullptr,
-    window_editor_objective_options_rides_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_invalidate,
-    window_editor_objective_options_rides_paint,
-    window_editor_objective_options_rides_scrollpaint
-};
+static rct_window_event_list window_objective_options_rides_events = { nullptr,
+                                                                       window_editor_objective_options_rides_mouseup,
+                                                                       window_editor_objective_options_rides_resize,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       window_editor_objective_options_rides_update,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       window_editor_objective_options_rides_scrollgetheight,
+                                                                       window_editor_objective_options_rides_scrollmousedown,
+                                                                       nullptr,
+                                                                       window_editor_objective_options_rides_scrollmouseover,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       nullptr,
+                                                                       window_editor_objective_options_rides_invalidate,
+                                                                       window_editor_objective_options_rides_paint,
+                                                                       window_editor_objective_options_rides_scrollpaint };
 
-static rct_window_event_list *window_editor_objective_options_page_events[] = {
-    &window_objective_options_main_events,
-    &window_objective_options_rides_events
-};
+static rct_window_event_list* window_editor_objective_options_page_events[] = { &window_objective_options_main_events,
+                                                                                &window_objective_options_rides_events };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
 static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_OBJECTIVE) |
-    (1 << WIDX_OBJECTIVE_DROPDOWN) |
-    (1 << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_DECREASE) |
-    (1 << WIDX_PARK_NAME) |
-    (1 << WIDX_SCENARIO_NAME) |
-    (1 << WIDX_CATEGORY) |
-    (1 << WIDX_CATEGORY_DROPDOWN) |
-    (1 << WIDX_DETAILS),
+    (1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_OBJECTIVE) | (1 << WIDX_OBJECTIVE_DROPDOWN)
+        | (1 << WIDX_OBJECTIVE_ARG_1_INCREASE) | (1 << WIDX_OBJECTIVE_ARG_1_DECREASE) | (1 << WIDX_OBJECTIVE_ARG_2_INCREASE)
+        | (1 << WIDX_OBJECTIVE_ARG_2_DECREASE) | (1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME) | (1 << WIDX_CATEGORY)
+        | (1 << WIDX_CATEGORY_DROPDOWN) | (1 << WIDX_DETAILS),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2)
+    (1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
 };
 
-static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
-    (1 << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_DECREASE),
+static uint64_t window_editor_objective_options_page_hold_down_widgets[] = { (1 << WIDX_OBJECTIVE_ARG_1_INCREASE)
+                                                                                 | (1 << WIDX_OBJECTIVE_ARG_1_DECREASE)
+                                                                                 | (1 << WIDX_OBJECTIVE_ARG_2_INCREASE)
+                                                                                 | (1 << WIDX_OBJECTIVE_ARG_2_DECREASE),
 
-    0
-};
+                                                                             0 };
 // clang-format on
 
 #pragma endregion
@@ -854,6 +837,7 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
  *
  *  rct2: 0x0067161C
  */
+
 static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y, width;
@@ -866,13 +850,13 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     // Objective label
     x = w->windowPos.x + 8;
     y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top;
-    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, { x, y });
 
     // Objective value
     x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE].left + 1;
     y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top;
     stringId = ObjectiveDropdownOptionNames[gScenarioObjectiveType];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, { x, y });
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY)
     {
@@ -902,7 +886,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
                 break;
         }
-        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, { x, y });
 
         // Objective argument 1 value
         x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
@@ -930,21 +914,21 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 arg = gScenarioObjectiveCurrency;
                 break;
         }
-        gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, { x, y });
     }
-
+    printf("bonjour");
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WWT_EMPTY)
     {
         // Objective argument 2 label
         x = w->windowPos.x + 28;
         y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, { x, y });
 
         // Objective argument 2 value
         x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
         y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
         arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, { x, y });
     }
 
     // Park name
@@ -974,7 +958,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     // Scenario details label
     x = w->windowPos.x + 8;
     y = w->windowPos.y + w->widgets[WIDX_DETAILS].top;
-    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, { x, y });
 
     // Scenario details value
     x = w->windowPos.x + 16;
@@ -989,13 +973,13 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     // Scenario category label
     x = w->windowPos.x + 8;
     y = w->windowPos.y + w->widgets[WIDX_CATEGORY].top;
-    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, { x, y });
 
     // Scenario category value
     x = w->windowPos.x + w->widgets[WIDX_CATEGORY].left + 1;
     y = w->windowPos.y + w->widgets[WIDX_CATEGORY].top;
     stringId = ScenarioCategoryStringIds[gS6Info.category];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, { x, y });
 }
 
 /**
@@ -1136,8 +1120,8 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     gfx_draw_string_left(
-        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK, w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
+        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK,
+        { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
 }
 
 /**
@@ -1181,7 +1165,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             // Ride name
             uint32_t args[32]{};
             ride->FormatNameTo(args);
-            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, 15, y);
+            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, { 15, y });
         }
     }
 }

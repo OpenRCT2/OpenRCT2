@@ -1049,7 +1049,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, &gParkRating, COLOUR_BLACK, x + widget->left + 3, y + widget->top + 2);
+    gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, &gParkRating, COLOUR_BLACK, { x + widget->left + 3, y + widget->top + 2 });
 
     // Graph border
     gfx_fill_rect_inset(
@@ -1180,7 +1180,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Current value
     gfx_draw_string_left(
-        dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x + widget->left + 3, y + widget->top + 2);
+        dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, { x + widget->left + 3, y + widget->top + 2 });
 
     // Graph border
     gfx_fill_rect_inset(
@@ -1321,13 +1321,13 @@ static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto x = w->windowPos.x + w->widgets[WIDX_PAGE_BACKGROUND].left + 4;
     auto y = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 30;
-    gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, COLOUR_BLACK, { x, y });
 
     money32 parkEntranceFee = park_get_entrance_fee();
     auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
     x = w->windowPos.x + w->widgets[WIDX_PRICE].left + 1;
     y = w->windowPos.y + w->widgets[WIDX_PRICE].top + 1;
-    gfx_draw_string_left(dpi, stringId, &parkEntranceFee, w->colours[1], x, y);
+    gfx_draw_string_left(dpi, stringId, &parkEntranceFee, w->colours[1], { x, y });
 }
 
 #pragma endregion
@@ -1428,14 +1428,14 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         parkSize = squaredmetres_to_squaredfeet(parkSize);
     }
     set_format_arg(0, uint32_t, parkSize);
-    gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
     if (w->list_information_type != 0xFFFF)
     {
         set_format_arg(0, uint32_t, w->list_information_type);
-        gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     y += LIST_ROW_HEIGHT;
 
@@ -1443,14 +1443,14 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->numberOfStaff != -1)
     {
         set_format_arg(0, uint32_t, w->numberOfStaff);
-        gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, { x, y });
     }
     y += LIST_ROW_HEIGHT;
 
     // Draw number of guests in park
-    gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, { x, y });
     y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, COLOUR_BLACK, { x, y });
 }
 
 #pragma endregion
@@ -1600,7 +1600,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += 5;
 
     // Your objective:
-    gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, nullptr, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, nullptr, COLOUR_BLACK, { x, y });
     y += LIST_ROW_HEIGHT;
 
     // Objective
@@ -1744,7 +1744,7 @@ static void window_park_awards_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     if (count == 0)
-        gfx_draw_string_left(dpi, STR_NO_RECENT_AWARDS, nullptr, COLOUR_BLACK, x + 6, y + 6);
+        gfx_draw_string_left(dpi, STR_NO_RECENT_AWARDS, nullptr, COLOUR_BLACK, { x + 6, y + 6 });
 }
 
 #pragma endregion
