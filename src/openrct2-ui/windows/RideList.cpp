@@ -530,9 +530,9 @@ static void window_ride_list_invalidate(rct_window* w)
         w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
 
         const auto& rideManager = GetRideManager();
-        auto allClosed = false;
+        auto allClosed = true;
         auto allOpen = false;
-        if (std::size(rideManager) != 0)
+        if (w->no_list_items > 0 && std::size(rideManager) != 0)
         {
             auto c = static_cast<RideClassification>(w->page);
             allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
