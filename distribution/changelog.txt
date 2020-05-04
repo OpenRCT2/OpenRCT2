@@ -12,6 +12,7 @@
 - Fix: [#5451] Guests scream on every descent, no matter how small.
 - Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#7006] Submarine Ride is in the wrong research group.
+- Fix: [#11002] Rides list shows both red and green light activated.
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
 - Fix: [#11259] Custom JSON object breaks saves.
 - Fix: [#11290] Perform funds checking for all peeps entering a ride.
