@@ -181,36 +181,36 @@ STR_0771    :Intrattenitore {INT32}
 STR_0777    :Parco senza nome{POP16}{POP16}
 STR_0778    :Cartello
 STR_0779    :1°
-STR_0780    :2°
-STR_0781    :3°
-STR_0782    :4°
-STR_0783    :5°
-STR_0784    :6°
-STR_0785    :7°
-STR_0786    :8°
-STR_0787    :9°
-STR_0788    :10°
-STR_0789    :11°
-STR_0790    :12°
-STR_0791    :13°
-STR_0792    :14°
-STR_0793    :15°
-STR_0794    :16°
-STR_0795    :17°
-STR_0796    :18°
-STR_0797    :19°
-STR_0798    :20°
-STR_0799    :21°
-STR_0800    :22°
-STR_0801    :23°
-STR_0802    :24°
-STR_0803    :25°
-STR_0804    :26°
-STR_0805    :27°
-STR_0806    :28°
-STR_0807    :29°
-STR_0808    :30°
-STR_0809    :31°
+STR_0780    :2
+STR_0781    :3
+STR_0782    :4
+STR_0783    :5
+STR_0784    :6
+STR_0785    :7
+STR_0786    :8
+STR_0787    :9
+STR_0788    :10
+STR_0789    :11
+STR_0790    :12
+STR_0791    :13
+STR_0792    :14
+STR_0793    :15
+STR_0794    :16
+STR_0795    :17
+STR_0796    :18
+STR_0797    :19
+STR_0798    :20
+STR_0799    :21
+STR_0800    :22
+STR_0801    :23
+STR_0802    :24
+STR_0803    :25
+STR_0804    :26
+STR_0805    :27
+STR_0806    :28
+STR_0807    :29
+STR_0808    :30
+STR_0809    :31
 STR_0810    :Gen
 STR_0811    :Feb
 STR_0812    :Mar
@@ -3170,13 +3170,13 @@ STR_5841    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le novità nell
 STR_5842    :{SMALLFONT}{BLACK}Mostra scenari divisi per difficoltà (come in RCT2) o per gioco di origine (come in RCT1)
 STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco progressivo degli scenari (come in RCT1)
 STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multigiocatore{NEWLINE}anche in caso di asincronia o errori
-STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
+STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante nella barra{NEWLINE}per effettuare il debug.{NEWLINE}Abilita le scorciatoie da tastiera per la console sviluppatori
 STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
 STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
 STR_5848    :{SMALLFONT}{BLACK}Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :{SMALLFONT}{BLACK}Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
 STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di ispezione{NEWLINE}nelle nuove attrazioni
-STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione di Twitch
+STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione con Twitch
 STR_5853    :{SMALLFONT}{BLACK}Abilita/Disabilita gli effetti sonori
 STR_5854    :{SMALLFONT}{BLACK}Abilita/Disabilita le musiche delle attrazioni
 STR_5855    :{SMALLFONT}{BLACK}Imposta a tutto schermo, senza bordi della finestra{NEWLINE}o come finestra
@@ -3362,6 +3362,7 @@ STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :{SMALLFONT}{BLACK}Pulisci
 STR_6037    :Selezionare una cartella di installazione di RCT1 valida
+STR_6037    :La cartella selezionata non contiene un'installazione valida di RollerCoaster Tycoon 1.
 STR_6038    :{SMALLFONT}{BLACK}Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
 STR_6039    :{SMALLFONT}{BLACK}Demolizione veloce percorso
 STR_6040    :Modifica opzioni scenario
@@ -3651,8 +3652,8 @@ STR_6323    :Simulazione
 STR_6324    :Simula
 STR_6325    :{SMALLFONT}{BLACK}Simula attrazione
 STR_6326    :Non è stato possibile simulare {POP16}{POP16}{POP16}{STRINGID}...
-STR_6327    :Sfondo trasparente per schermata gigante
-STR_6328    :{SMALLFONT}{BLACK}Con questa opzione attivata, le schermate giganti avranno uno sfondo trasparente invece di quello nero
+STR_6327    :Cattura schermate giganti con sfondo trasparente
+STR_6328    :{SMALLFONT}{BLACK}Con questa opzione attivata, le schermate giganti (screenshot) saranno catturate con uno sfondo trasparente invece di quello nero
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Scaricamento [{STRING}] da {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Crea anatre
@@ -3685,7 +3686,7 @@ STR_6357    :{SMALLFONT}{BLACK}Rimuove tutte le anatre dalla mappa
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
-STR_6361    :Attiva effetti di luce sulle attrazioni (sperimentale)
+STR_6361    :Attiva effetti luce su attrazioni (sperimentale)
 STR_6362    :{SMALLFONT}{BLACK}Se abilitato, i veicoli delle attrazioni con percorso saranno illuminati di notte.
 STR_6363    :Testo copiato negli appunti
 STR_6365    :Vittime attrazioni
@@ -3695,6 +3696,8 @@ STR_6367    :{WINDOW_COLOUR_2}Fotogramma animazione:
 STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Permetti costruzione percorsi ad altezze non valide
 STR_6370    :{SMALLFONT}{BLACK}Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
+STR_6371    :La cartella specificata contiene un'installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev'essere copiato dal CD di RollerCoaster Tycoon 1 alla cartella “Data” dell'installazione su disco di RollerCoaster Tycoon 1. 
+STR_6372    :La cartella specificata contiene un'installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un'installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
 
 #############
 # Scenarios #
