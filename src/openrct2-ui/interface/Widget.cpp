@@ -468,9 +468,9 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    ScreenCoordsXY coords = {w->windowPos.x + widget->left + 5, w->windowPos.y + widget->top};
     int32_t l = w->windowPos.x + widget->left + 5;
     int32_t t = w->windowPos.y + widget->top;
+    ScreenCoordsXY coords = {l , t};
     int32_t r = w->windowPos.x + widget->right;
     int32_t b = w->windowPos.y + widget->bottom;
     int32_t textRight = l;
