@@ -98,7 +98,7 @@ int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
 
-TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
+TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
@@ -1076,8 +1076,7 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    TileElement* new_tile_elements = static_cast<TileElement*>(
-        malloc(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(TileElement)));
+    TileElement* new_tile_elements = static_cast<TileElement*>(malloc(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM * sizeof(TileElement)));
     TileElement* new_elements_pointer = new_tile_elements;
 
     if (new_tile_elements == nullptr)
@@ -1107,9 +1106,7 @@ void map_reorganise_elements()
 
     num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements);
     std::memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
-    std::memset(
-        gTileElements + num_elements, 0,
-        (3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) - num_elements) * sizeof(TileElement));
+    std::memset(gTileElements + num_elements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - num_elements) * sizeof(TileElement));
 
     free(new_tile_elements);
 
