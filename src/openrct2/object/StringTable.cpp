@@ -56,21 +56,18 @@ void StringTable::Read(IReadObjectContext* context, IStream* stream, uint8_t id)
         {
             uint8_t languageId = (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ? RCT2ToOpenRCT2LanguageId[rct2LanguageId]
                                                                                  : static_cast<uint8_t>(LANGUAGE_UNDEFINED);
-            StringTableEntry entry{};
-            entry.Id = id;
-            entry.LanguageId = languageId;
-
             std::string stringAsWin1252 = stream->ReadStdString();
             auto stringAsUtf8 = rct2_to_utf8(stringAsWin1252, rct2LanguageId);
 
-            if (StringIsBlank(stringAsUtf8.data()))
+            if (!StringIsBlank(stringAsUtf8.data()))
             {
-                entry.LanguageId = LANGUAGE_UNDEFINED;
+                stringAsUtf8 = String::Trim(stringAsUtf8);
+                StringTableEntry entry{};
+                entry.Id = id;
+                entry.LanguageId = languageId;
+                entry.Text = stringAsUtf8;
+                _strings.push_back(entry);
             }
-            stringAsUtf8 = String::Trim(stringAsUtf8);
-
-            entry.Text = stringAsUtf8;
-            _strings.push_back(entry);
         }
     }
     catch (const std::exception&)
