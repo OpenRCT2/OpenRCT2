@@ -674,11 +674,10 @@ static void window_loadsave_compute_max_date_width()
 static void window_loadsave_invalidate(rct_window* w)
 {
     window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        // close button has to move if it's on the right side
-        window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
-        window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+    // close button has to move if it's on the right side
+    window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+
     window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;
@@ -1144,14 +1143,11 @@ enum
     WIDX_OVERWRITE_CANCEL
 };
 
-#ifndef LEFT_CLOSEBOX
-    // close button on right of window
-    #define OVERWRITE_WINDOW_SKELETON \
-        { WWT_CLOSEBOX, 0, OVERWRITE_WW - 13, OVERWRITE_WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
-#else
-    #define OVERWRITE_WINDOW_SKELETON \
-        { WWT_CLOSEBOX, 0,                 2,               12, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
-#endif
+// close button on right of window
+#define OVERWRITE_WINDOW_SKELETON                                                                                              \
+    {                                                                                                                          \
+        WWT_CLOSEBOX, 0, OVERWRITE_WW - 13, OVERWRITE_WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP                         \
+    }
 
 static rct_widget window_overwrite_prompt_widgets[] = {
     { WWT_FRAME, 0, 0, OVERWRITE_WW - 1, 0, OVERWRITE_WH - 1, STR_NONE, STR_NONE },

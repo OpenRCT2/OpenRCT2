@@ -512,11 +512,11 @@ static void window_ride_list_invalidate(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        // if close buttton is on the right then it must move
-        w->widgets[WIDX_CLOSE].left = w->width - 13;
-        w->widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+
+    // if close buttton is on the right then it must move
+    w->widgets[WIDX_CLOSE].left = w->width - 13;
+    w->widgets[WIDX_CLOSE].right = w->width - 3;
+
     w->widgets[WIDX_LIST].right = w->width - 26;
     w->widgets[WIDX_LIST].bottom = w->height - 15;
     w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;

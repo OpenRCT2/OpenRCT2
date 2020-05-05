@@ -543,10 +543,8 @@ void window_staff_list_invalidate(rct_window* w)
     window_staff_list_widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].right = w->width - 1;
     window_staff_list_widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].bottom = w->height - 1;
     window_staff_list_widgets[WIDX_STAFF_LIST_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        window_staff_list_widgets[WIDX_STAFF_LIST_CLOSE].left = w->width - 2 - 11;
-        window_staff_list_widgets[WIDX_STAFF_LIST_CLOSE].right = w->width - 2 - 11 + 10;
-    #endif
+    window_staff_list_widgets[WIDX_STAFF_LIST_CLOSE].left = w->width - 2 - 11;
+    window_staff_list_widgets[WIDX_STAFF_LIST_CLOSE].right = w->width - 2 - 11 + 10;
     window_staff_list_widgets[WIDX_STAFF_LIST_LIST].right = w->width - 4;
     window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom = w->height - 15;
     window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = w->width - 77;

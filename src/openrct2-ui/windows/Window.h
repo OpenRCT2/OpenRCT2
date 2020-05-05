@@ -196,17 +196,9 @@ void window_tooltip_close();
 rct_window* window_scenery_scatter_open();
 
 // clang-format off
-#ifndef LEFT_CLOSEBOX
-    // close button on right of window
-    #define WINDOW_SKELETON(TITLE, WIDTH, HEIGHT) \
-          WWT_FRAME,    0,  0,          WIDTH - 1, 0, HEIGHT, 0xFFFFFFFF,  STR_NONE }, \
-        { WWT_CAPTION,  0,  1,          WIDTH - 2, 1, 14,     TITLE,       STR_WINDOW_TITLE_TIP }, \
-        { WWT_CLOSEBOX, 0,  WIDTH - 13, WIDTH - 3, 2, 13,     STR_CLOSE_X, STR_CLOSE_WINDOW_TIP
-#else
-    // close button on left of window
-    #define WINDOW_SKELETON(TITLE, WIDTH, HEIGHT) \
-          WWT_FRAME,    0,  0,  WIDTH - 1, 0, HEIGHT, 0xFFFFFFFF,  STR_NONE }, \
-        { WWT_CAPTION,  0,  13, WIDTH - 2, 1, 14,     TITLE,       STR_WINDOW_TITLE_TIP }, \
-        { WWT_CLOSEBOX, 0,  2,  12,        2, 13,     STR_CLOSE_X, STR_CLOSE_WINDOW_TIP
-#endif
+// close button on right of window
+#define WINDOW_SKELETON(TITLE, WIDTH, HEIGHT) \
+      WWT_FRAME,    0,  0,          WIDTH - 1, 0, HEIGHT, 0xFFFFFFFF,  STR_NONE }, \
+    { WWT_CAPTION,  0,  1,          WIDTH - 2, 1, 14,     TITLE,       STR_WINDOW_TITLE_TIP }, \
+    { WWT_CLOSEBOX, 0,  WIDTH - 13, WIDTH - 3, 2, 13,     STR_CLOSE_X, STR_CLOSE_WINDOW_TIP
 // clang-format on

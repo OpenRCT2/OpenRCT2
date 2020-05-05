@@ -641,10 +641,8 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
         window_new_ride_widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
         window_new_ride_widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
         window_new_ride_widgets[WIDX_TITLE].right = width - 2;
-        #ifndef LEFT_CLOSEBOX
-            window_new_ride_widgets[WIDX_CLOSE].left = width - 13;
-            window_new_ride_widgets[WIDX_CLOSE].right = width - 3;
-        #endif
+        window_new_ride_widgets[WIDX_CLOSE].left = width - 13;
+        window_new_ride_widgets[WIDX_CLOSE].right = width - 3;
 
         w->width = width;
         w->height = height;

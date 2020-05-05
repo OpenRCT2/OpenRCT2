@@ -261,10 +261,8 @@ static void window_shortcut_invalidate(rct_window* w)
     window_shortcut_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_shortcut_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_shortcut_widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        window_shortcut_widgets[WIDX_CLOSE].right = w->width - 3;
-        window_shortcut_widgets[WIDX_CLOSE].left = w->width - 13;
-    #endif
+    window_shortcut_widgets[WIDX_CLOSE].right = w->width - 3;
+    window_shortcut_widgets[WIDX_CLOSE].left = w->width - 13;
     window_shortcut_widgets[WIDX_SCROLL].right = w->width - 5;
     window_shortcut_widgets[WIDX_SCROLL].bottom = w->height - 18;
     window_shortcut_widgets[WIDX_RESET].top = w->height - 15;

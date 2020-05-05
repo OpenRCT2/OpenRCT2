@@ -452,8 +452,7 @@ rct_window* window_scenery_open()
     window_scenery_init();
 
     window = window_create(
-        ScreenCoordsXY(context_get_width() - WW, 0x1D), WW, WH,
-        &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
+        ScreenCoordsXY(context_get_width() - WW, 0x1D), WW, WH, &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
     window->widgets = window_scenery_widgets;
 
     window->enabled_widgets = (1 << WIDX_SCENERY_CLOSE) | (1 << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) | (1 << WIDX_SCENERY_TAB_1)
@@ -1089,10 +1088,8 @@ void window_scenery_invalidate(rct_window* w)
     window_scenery_widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].right = w->width - 1;
     window_scenery_widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].bottom = w->height - 1;
     window_scenery_widgets[WIDX_SCENERY_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        window_scenery_widgets[WIDX_SCENERY_CLOSE].left = w->width - 13;
-        window_scenery_widgets[WIDX_SCENERY_CLOSE].right = window_scenery_widgets[WIDX_SCENERY_CLOSE].left + 10;
-    #endif
+    window_scenery_widgets[WIDX_SCENERY_CLOSE].left = w->width - 13;
+    window_scenery_widgets[WIDX_SCENERY_CLOSE].right = window_scenery_widgets[WIDX_SCENERY_CLOSE].left + 10;
     window_scenery_widgets[WIDX_SCENERY_LIST].right = w->width - 26;
     window_scenery_widgets[WIDX_SCENERY_LIST].bottom = w->height - 14;
 

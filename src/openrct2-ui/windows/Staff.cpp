@@ -788,10 +788,8 @@ void window_staff_stats_invalidate(rct_window* w)
 
     window_staff_stats_widgets[WIDX_TITLE].right = w->width - 2;
 
-    #ifndef LEFT_CLOSEBOX
-        window_staff_stats_widgets[WIDX_CLOSE].left = w->width - 13;
-        window_staff_stats_widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+    window_staff_stats_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_staff_stats_widgets[WIDX_CLOSE].right = w->width - 3;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
 }
@@ -866,10 +864,8 @@ void window_staff_options_invalidate(rct_window* w)
     window_staff_options_widgets[WIDX_RESIZE].bottom = w->height - 1;
 
     window_staff_options_widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        window_staff_options_widgets[WIDX_CLOSE].left = w->width - 13;
-        window_staff_options_widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+    window_staff_options_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_staff_options_widgets[WIDX_CLOSE].right = w->width - 3;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
 }
@@ -909,10 +905,8 @@ void window_staff_overview_invalidate(rct_window* w)
     window_staff_overview_widgets[WIDX_BTM_LABEL].top = w->height - 13;
     window_staff_overview_widgets[WIDX_BTM_LABEL].bottom = w->height - 3;
 
-    #ifndef LEFT_CLOSEBOX
-        window_staff_overview_widgets[WIDX_CLOSE].left = w->width - 13;
-        window_staff_overview_widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+    window_staff_overview_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_staff_overview_widgets[WIDX_CLOSE].right = w->width - 3;
 
     window_staff_overview_widgets[WIDX_PICKUP].left = w->width - 25;
     window_staff_overview_widgets[WIDX_PICKUP].right = w->width - 2;

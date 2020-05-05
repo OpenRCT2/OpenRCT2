@@ -1,4 +1,4 @@
- /*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -24,9 +24,9 @@
 #include <openrct2/util/Util.h>
 #include <vector>
 
- static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_SCENARIO;
- static constexpr const int32_t WW = 734;
- static constexpr const int32_t WH = 334;
+static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_SCENARIO;
+static constexpr const int32_t WW = 734;
+static constexpr const int32_t WH = 334;
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
 // clang-format off
@@ -421,10 +421,8 @@ static void window_scenarioselect_invalidate(rct_window* w)
     int32_t windowWidth = w->width;
     window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
     window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
-    #ifndef LEFT_CLOSEBOX
-        window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
-        window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
-    #endif
+    window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
+    window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
     window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
 

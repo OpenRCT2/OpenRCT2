@@ -644,10 +644,8 @@ static void window_guest_list_invalidate(rct_window* w)
     window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].right = w->width - 1;
     window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].bottom = w->height - 1;
     window_guest_list_widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        window_guest_list_widgets[WIDX_CLOSE].left = w->width - 13;
-        window_guest_list_widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+    window_guest_list_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_guest_list_widgets[WIDX_CLOSE].right = w->width - 3;
     window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
     window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
     window_guest_list_widgets[WIDX_MAP].left = 273 - 350 + w->width;

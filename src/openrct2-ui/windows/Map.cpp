@@ -712,10 +712,8 @@ static void window_map_invalidate(rct_window* w)
     w->widgets[WIDX_RESIZE].right = w->width - 1;
     w->widgets[WIDX_RESIZE].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        w->widgets[WIDX_CLOSE].left = w->width - 2 - 11;
-        w->widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
-    #endif
+    w->widgets[WIDX_CLOSE].left = w->width - 2 - 11;
+    w->widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
     w->widgets[WIDX_MAP].right = w->width - 4;
 
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)

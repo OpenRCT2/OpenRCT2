@@ -117,10 +117,8 @@ static void window_viewport_anchor_border_widgets(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    #ifndef LEFT_CLOSEBOX
-        w->widgets[WIDX_CLOSE].left = w->width - 13;
-        w->widgets[WIDX_CLOSE].right = w->width - 3;
-    #endif
+    w->widgets[WIDX_CLOSE].left = w->width - 13;
+    w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
 static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
