@@ -651,12 +651,6 @@ static void window_finances_summary_invalidate(rct_window* w)
 
     window_finances_set_pressed_tab(w);
     set_format_arg(6, money32, gBankLoan);
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_TITLE].text = STR_FINANCIAL_SUMMARY;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_TITLE].right = 528;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_BACKGROUND].bottom = 310;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_BACKGROUND].right = 529;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_CLOSE].left = 517;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_CLOSE].right = 527;
 }
 
 /**
@@ -826,12 +820,6 @@ static void window_finances_financial_graph_invalidate(rct_window* w)
     }
 
     window_finances_set_pressed_tab(w);
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_TITLE].text = STR_FINANCIAL_GRAPH;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_TITLE].right = 528;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_BACKGROUND].bottom = 257;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_BACKGROUND].right = 529;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_CLOSE].left = 517;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_CLOSE].right = 527;
 }
 
 /**
@@ -925,8 +913,6 @@ static void window_finances_park_value_graph_update(rct_window* w)
         w->frame_no = 0;
 
     w->Invalidate();
-    _windowFinancesPageWidgets[WIDX_BACKGROUND]->bottom = 257;
-    _windowFinancesPageWidgets[WIDX_BACKGROUND]->right = 529;
 }
 
 /**
@@ -942,10 +928,6 @@ static void window_finances_park_value_graph_invalidate(rct_window* w)
     }
 
     window_finances_set_pressed_tab(w);
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_TITLE].text = STR_PARK_VALUE_GRAPH;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_TITLE].right = 528;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_CLOSE].left = 517;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_CLOSE].right = 527;
 }
 
 /**
@@ -1048,12 +1030,6 @@ static void window_finances_profit_graph_invalidate(rct_window* w)
     }
 
     window_finances_set_pressed_tab(w);
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_TITLE].text = STR_PROFIT_GRAPH;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_TITLE].right = 528;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_BACKGROUND].bottom = 257;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_BACKGROUND].right = 529;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_CLOSE].left = 517;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_CLOSE].right = 527;
 }
 
 /**
@@ -1187,12 +1163,6 @@ static void window_finances_marketing_invalidate(rct_window* w)
             campaignButton->type = WWT_EMPTY;
         }
     }
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_TITLE].text = STR_MARKETING;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_TITLE].right = 528;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_BACKGROUND].bottom = 257;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_BACKGROUND].right = 529;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_CLOSE].left = 517;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_CLOSE].right = 527;
 }
 
 /**
@@ -1378,12 +1348,6 @@ static void window_finances_research_update(rct_window* w)
  */
 static void window_finances_research_invalidate(rct_window* w)
 {
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_TITLE].text = STR_RESEARCH_FUNDING;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_TITLE].right = 318;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_BACKGROUND].bottom = 206;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_BACKGROUND].right = 319;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_CLOSE].left = 307;
-    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_CLOSE].right = 317;
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH];

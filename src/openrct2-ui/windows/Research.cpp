@@ -320,12 +320,6 @@ static void window_research_development_invalidate(rct_window* w)
             ? SPR_NEW_RIDE
             : SPR_NEW_SCENERY;
     }
-    window_research_development_widgets[WIDX_TITLE].text = STR_RESEARCH_AND_DEVELOPMENT;
-    window_research_development_widgets[WIDX_TITLE].right = 298;
-    window_research_development_widgets[WIDX_BACKGROUND].right = 299;
-    window_research_development_widgets[WIDX_BACKGROUND].bottom = 195;
-    window_research_development_widgets[WIDX_CLOSE].left = 287;
-    window_research_development_widgets[WIDX_CLOSE].right = 297;
 }
 
 /**
@@ -556,13 +550,6 @@ static void window_research_funding_invalidate(rct_window* w)
             w->pressed_widgets &= ~widgetMask;
         }
     }
-
-    window_research_funding_widgets[WIDX_TITLE].text = STR_RESEARCH_FUNDING;
-    window_research_funding_widgets[WIDX_TITLE].right = 318;
-    window_research_funding_widgets[WIDX_BACKGROUND].right = 319;
-    window_research_funding_widgets[WIDX_BACKGROUND].bottom = 206;
-    window_research_funding_widgets[WIDX_CLOSE].left = 307;
-    window_research_funding_widgets[WIDX_CLOSE].right = 317;
 }
 
 /**

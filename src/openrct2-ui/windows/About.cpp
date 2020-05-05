@@ -49,7 +49,7 @@ enum WINDOW_ABOUT_WIDGET_IDX {
       WINDOW_SKELETON(WINDOW_TITLE, WW, WH) }, \
     { WWT_IMGBTN,           1,  0,              WW - 1,         TABHEIGHT,  WH - 1,     0xFFFFFFFF,                             STR_NONE },             /* page background */ \
     { WWT_TAB,              1,  3,              93,             17,         TABHEIGHT,  IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },             /* about OpenRCT2 button */ \
-    { WWT_TAB,              1,  94,             184,            17,         TABHEIGHT,  IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE               /* about RCT2 button */
+    { WWT_TAB,              1,  94,             184,            17,         TABHEIGHT,  IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE                /* about RCT2 button */
 
 static rct_widget window_about_openrct2_widgets[] = {
     { WIDGETS_MAIN },

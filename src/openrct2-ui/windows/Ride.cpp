@@ -53,7 +53,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-
 using namespace OpenRCT2;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;

@@ -98,7 +98,8 @@ rct_window* window_clear_scenery_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(context_get_width() - 102, 29), 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+    window = window_create(
+        ScreenCoordsXY(context_get_width() - 102, 29), 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
