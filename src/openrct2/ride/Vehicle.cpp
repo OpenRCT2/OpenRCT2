@@ -6621,7 +6621,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
  * merely as a velocity regulator, in a closed state. When the brake is open, it
  * boosts the train to the speed limit
  */
-static void apply_non_stop_block_brake(Vehicle* vehicle, bool block_brake_closed)
+static void apply_non_stop_block_brake(Vehicle* vehicle, bool slowDownToBlockBrakeSpeed)
 {
     if (vehicle->velocity >= 0)
     {
@@ -6632,7 +6632,7 @@ static void apply_non_stop_block_brake(Vehicle* vehicle, bool block_brake_closed
             vehicle->velocity = BLOCK_BRAKE_BASE_SPEED;
             vehicle->acceleration = 0;
         }
-        else if (block_brake_closed)
+        else if (slowDownToBlockBrakeSpeed)
         {
             // Slow it down till the fixed block brake speed
             vehicle->velocity -= vehicle->velocity >> 4;
