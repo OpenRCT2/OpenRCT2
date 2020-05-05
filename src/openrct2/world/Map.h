@@ -33,7 +33,8 @@ constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
-#define MAX_TILE_ELEMENTS 196096 // 0x30000
+constexpr const uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x30000;
+constexpr const uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
 #define MAX_TILE_TILE_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
 #define MAX_PEEP_SPAWNS 2
 #define PEEP_SPAWN_UNDEFINED 0xFFFF
@@ -119,7 +120,7 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
 
-extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
+extern TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
