@@ -1160,7 +1160,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
             }
 
-            int32_t width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x);
+            int32_t width_limit = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x;
 
             if (ridePage)
             {
