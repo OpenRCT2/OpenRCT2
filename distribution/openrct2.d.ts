@@ -356,12 +356,15 @@ declare global {
     }
 
     type TileElementType =
-        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
+        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner"
+        /** This only exist to retrieve the types for existing corrupt elements. For hiding elements, use the isHidden field instead. */
+        | "openrct2_corrupt_deprecated";
 
     interface BaseTileElement {
         type: TileElementType;
         baseHeight: number;
         clearanceHeight: number;
+        isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
     }
 
     interface SurfaceElement extends BaseTileElement {
