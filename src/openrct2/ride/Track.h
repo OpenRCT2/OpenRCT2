@@ -15,6 +15,8 @@
 
 constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
 
+constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
+
 using track_type_t = uint16_t;
 
 #pragma pack(push, 1)
