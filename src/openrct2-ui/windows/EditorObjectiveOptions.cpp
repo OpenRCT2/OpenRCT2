@@ -86,7 +86,7 @@ enum {
 };
 
 #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
-    WINDOW_SKELETON, \
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) }, \
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                   STR_NONE                                            }, \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }

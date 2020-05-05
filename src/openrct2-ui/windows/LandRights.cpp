@@ -37,7 +37,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 };
 
 static rct_widget window_land_rights_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                             // preview box
     { WWT_TRNBTN,   2,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_RIGHTS_TIP },   // decrement size
     { WWT_TRNBTN,   2,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_RIGHTS_TIP },    // increment size

@@ -93,7 +93,7 @@ enum
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                },
     TAB_WIDGETS,
     { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
@@ -103,7 +103,7 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 
 static rct_widget _windowFinancesCashWidgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -111,7 +111,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -119,7 +119,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 
 static rct_widget _windowFinancesProfitWidgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -127,7 +127,7 @@ static rct_widget _windowFinancesProfitWidgets[] =
 
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
@@ -143,7 +143,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },

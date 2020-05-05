@@ -67,7 +67,7 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_options_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,          399,    43,     299,    0xFFFFFFFF,                     STR_NONE },             // tab content panel
     { WWT_TAB,              1,  3,          33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 1
     { WWT_TAB,              1,  34,         64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2

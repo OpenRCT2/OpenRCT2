@@ -34,7 +34,7 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
 
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_BUTTON,           0, 10,      94,         WH - 20,    WH - 9, STR_DEMOLISH,           STR_NONE },
     { WWT_BUTTON,           0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
     { WIDGETS_END }

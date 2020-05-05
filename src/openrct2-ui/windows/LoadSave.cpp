@@ -62,7 +62,7 @@ enum
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] =
 {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,       1,      0,                  WW - 1,         WH - 1,     WH - 1,     0xFFFFFFFF,                         STR_NONE },                 // tab content panel
     { WWT_BUTTON,       0,      4,                  87,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
     { WWT_BUTTON,       0,      88,                 171,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up

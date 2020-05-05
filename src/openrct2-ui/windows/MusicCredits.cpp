@@ -26,7 +26,7 @@ enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
 };
 
 static rct_widget window_music_credits_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_SCROLL,   0,  4,      505,    18, 309,    SCROLL_VERTICAL,            STR_NONE },             // scroll
     { WIDGETS_END },
 };

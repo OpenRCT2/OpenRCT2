@@ -39,7 +39,7 @@ constexpr int32_t MIN_WW = 300;
 constexpr int32_t MIN_WH = 200;
 
 static rct_widget window_changelog_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,          WW - 1, 14,     WH - 1,     0xFFFFFFFF,                     STR_NONE },             // content panel
     { WWT_SCROLL,           1,  3,          WW - 3, 16,     WH - 15,    SCROLL_BOTH,                    STR_NONE },             // scroll area
     { WIDGETS_END },

@@ -60,7 +60,7 @@ enum {
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
 static rct_widget window_track_place_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_FLATBTN,          0,  173,    196,    83,     106,    SPR_ROTATE_ARROW,               STR_ROTATE_90_TIP                           },
     { WWT_FLATBTN,          0,  173,    196,    59,     82,     SPR_MIRROR_ARROW,               STR_MIRROR_IMAGE_TIP                        },
     { WWT_BUTTON,           0,  4,      195,    109,    120,    STR_SELECT_A_DIFFERENT_DESIGN,  STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP  },

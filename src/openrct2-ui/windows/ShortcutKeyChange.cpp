@@ -28,7 +28,7 @@ enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_shortcut_change_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WIDGETS_END }
 };
 

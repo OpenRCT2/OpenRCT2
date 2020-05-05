@@ -111,7 +111,7 @@ constexpr int32_t MAX_WW = 500;
 constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
     { WWT_RESIZE,           1,  0,          319,        43,     269,    0xFFFFFFFF,         STR_NONE },                         // tab content panel
     { WWT_TAB,              1,  3,          33,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_HANDYMEN_TAB_TIP },       // handymen tab
     { WWT_TAB,              1,  34,         64,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_MECHANICS_TAB_TIP },      // mechanics tab

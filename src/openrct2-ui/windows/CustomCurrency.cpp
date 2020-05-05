@@ -34,7 +34,7 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 };
 
 static rct_widget window_custom_currency_widgets[] = {
-    WINDOW_SKELETON,
+    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
       SPINNER_WIDGETS      (1,  100,    200,    30,     40, STR_CHEAT_CURRENCY_FORMAT,          STR_NONE), // NB: 3 widgets
     { WWT_BUTTON,           1,  120,    200,    50,     60, 0,                                  STR_NONE },
     { WWT_DROPDOWN,         1,  220,    350,    50,     60, STR_NONE,                           STR_NONE },
