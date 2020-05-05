@@ -421,7 +421,8 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
 
     int16_t newBaseHeight = static_cast<int16_t>(tileElement->base_height + heightOffset);
     int16_t newClearanceHeight = static_cast<int16_t>(tileElement->clearance_height + heightOffset);
-    if (newBaseHeight < 0 || newBaseHeight > 0xff || newClearanceHeight < 0 || newClearanceHeight > 0xff)
+    if (newBaseHeight < 0 || newBaseHeight > MAX_ELEMENT_HEIGHT || newClearanceHeight < 0
+        || newClearanceHeight > MAX_ELEMENT_HEIGHT)
     {
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
     }

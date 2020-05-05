@@ -21,6 +21,8 @@ struct rct_scenery_entry;
 struct rct_footpath_entry;
 using track_type_t = uint16_t;
 
+constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
+
 #pragma pack(push, 1)
 
 enum

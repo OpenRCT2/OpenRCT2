@@ -530,8 +530,8 @@ namespace OpenRCT2::Scripting
                 const auto elementIndex = _element - map_get_first_element_at(_coords);
 
                 // Insert corrupt element at the end of the list for this tile
-                // Note: Z = 255 guarantee this
-                TileElement* insertedElement = tile_element_insert({ _coords, 0xFF }, 0);
+                // Note: Z = MAX_ELEMENT_HEIGHT to guarantee this
+                TileElement* insertedElement = tile_element_insert({ _coords, MAX_ELEMENT_HEIGHT }, 0);
                 if (insertedElement == nullptr)
                 {
                     // TODO: Show error
