@@ -5831,7 +5831,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 int32_t numLengths = 0;
                 for (int32_t i = 0; i < ride->num_stations; i++)
                 {
-                    length = ride->stations[numLengths].SegmentLength;
+                    length = ride->stations[i].SegmentLength;
                     if (length != 0)
                     {
                         length >>= 16;
