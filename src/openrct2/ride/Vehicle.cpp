@@ -6626,10 +6626,10 @@ static void apply_non_stop_block_brake(Vehicle* vehicle, bool block_brake_closed
     if (vehicle->velocity >= 0)
     {
         // If the vehicle is below the speed limit
-        if (vehicle->velocity <= 0x20364)
+        if (vehicle->velocity <= BLOCK_BRAKE_BASE_SPEED)
         {
             // Boost it to the fixed block brake speed
-            vehicle->velocity = 0x20364;
+            vehicle->velocity = BLOCK_BRAKE_BASE_SPEED;
             vehicle->acceleration = 0;
         }
         else if (block_brake_closed)
@@ -7587,7 +7587,7 @@ static void vehicle_update_handle_scenery_door(Vehicle* vehicle)
 
 static void vehicle_update_play_water_splash_sound()
 {
-    if (_vehicleVelocityF64E08 <= 0x20364)
+    if (_vehicleVelocityF64E08 <= BLOCK_BRAKE_BASE_SPEED)
     {
         return;
     }
