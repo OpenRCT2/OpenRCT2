@@ -25,7 +25,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
-#define WINDOW_TITLE STR_SIGN
+static constexpr const rct_string_id WINDOW_TITLE = STR_SIGN;
 constexpr int32_t WW = 113;
 constexpr int32_t WH = 96;
 

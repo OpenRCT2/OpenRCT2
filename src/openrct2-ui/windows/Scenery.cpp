@@ -26,9 +26,9 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
-#define WINDOW_TITLE 0xFFFFFFFF
-#define WW 634
-#define WH 180
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const int32_t WW = 634;
+static constexpr const int32_t WH = 180;
 constexpr int32_t WINDOW_SCENERY_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;

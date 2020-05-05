@@ -31,7 +31,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 
-#define WINDOW_TITLE STR_STRINGID
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 constexpr int32_t WW = 190;
 constexpr int32_t WH = 180;
 

@@ -16,9 +16,9 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/util/Util.h>
 
-#define WINDOW_TITLE STR_STRING
-#define WH 44
-#define WW 250
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const int32_t WH = 44;
+static constexpr const int32_t WW = 250;
 
 #pragma region Widgets
 

@@ -34,7 +34,7 @@ enum {
 
 constexpr int32_t WW = 500;
 constexpr int32_t WH = 400;
-#define WINDOW_TITLE STR_CHANGELOG_TITLE
+static constexpr const rct_string_id WINDOW_TITLE = STR_CHANGELOG_TITLE;
 constexpr int32_t MIN_WW = 300;
 constexpr int32_t MIN_WH = 200;
 

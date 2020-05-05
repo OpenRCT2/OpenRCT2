@@ -23,9 +23,9 @@
 
 using namespace OpenRCT2;
 
-#define WINDOW_TITLE STR_LAND
-#define WH 160
-#define WW 98
+static constexpr const rct_string_id WINDOW_TITLE = STR_LAND;
+static constexpr const int32_t WH = 160;
+static constexpr const int32_t WW = 98;
 
 // clang-format off
 enum WINDOW_LAND_WIDGET_IDX {

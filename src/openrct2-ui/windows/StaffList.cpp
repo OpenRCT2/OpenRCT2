@@ -104,7 +104,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_STAFF_LIST_MAP,
 };
 
-#define WINDOW_TITLE STR_STAFF
+static constexpr const rct_string_id WINDOW_TITLE = STR_STAFF;
 constexpr int32_t WW = 320;
 constexpr int32_t WH = 270;
 constexpr int32_t MAX_WW = 500;

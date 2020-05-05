@@ -18,7 +18,7 @@
 
 constexpr int32_t WW = 400;
 constexpr int32_t WH = 350;
-#define WINDOW_TITLE STR_ABOUT
+static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
 constexpr int32_t TABHEIGHT = 50;
 
 // clang-format off

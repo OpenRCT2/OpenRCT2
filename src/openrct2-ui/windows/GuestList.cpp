@@ -23,9 +23,9 @@
 #include <openrct2/world/Sprite.h>
 #include <vector>
 
-#define WINDOW_TITLE STR_GUESTS
-#define WH 330
-#define WW 350
+static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;
+static constexpr const int32_t WH = 330;
+static constexpr const int32_t WW = 350;
 
 // clang-format off
 enum {

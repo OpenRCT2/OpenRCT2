@@ -24,9 +24,9 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-#define WINDOW_TITLE STR_FOOTPATHS
-#define WH 381
-#define WW 106
+static constexpr const rct_string_id WINDOW_TITLE = STR_FOOTPATHS;
+static constexpr const int32_t WH = 381;
+static constexpr const int32_t WW = 106;
 
 // clang-format off
 enum

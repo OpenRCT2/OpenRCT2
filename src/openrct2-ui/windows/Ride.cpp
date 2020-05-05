@@ -56,9 +56,9 @@
 
 using namespace OpenRCT2;
 
-#define WINDOW_TITLE STR_RIDE_WINDOW_TITLE
-#define WH 207
-#define WW 316
+static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
+static constexpr const int32_t WH = 207;
+static constexpr const int32_t WW = 316;
 
 enum
 {

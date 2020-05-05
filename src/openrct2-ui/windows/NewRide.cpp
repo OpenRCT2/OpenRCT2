@@ -34,7 +34,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE 0xFFFFFFFF
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 constexpr size_t AVAILABILITY_STRING_SIZE = 256;
 constexpr int32_t WH = 382;
 constexpr int32_t WW = 601;

@@ -25,7 +25,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-#define WINDOW_TITLE STR_OPTIONS
+static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS;
 constexpr int32_t WW = 250;
 constexpr int32_t WH = 90;
 

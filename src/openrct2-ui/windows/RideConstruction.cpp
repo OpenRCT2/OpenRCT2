@@ -36,9 +36,9 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE STR_RIDE_CONSTRUCTION_WINDOW_TITLE
-#define WH 394
-#define WW 166
+static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const int32_t WH = 394;
+static constexpr const int32_t WW = 166;
 
 #pragma region Widgets
 

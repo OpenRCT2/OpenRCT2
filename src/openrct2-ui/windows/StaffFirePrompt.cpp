@@ -16,7 +16,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
 
-#define WINDOW_TITLE STR_SACK_STAFF
+static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
 constexpr int32_t WW = 200;
 constexpr int32_t WH = 100;
 

@@ -28,9 +28,9 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE STR_SCENARIO_OPTIONS_FINANCIAL
-#define WH 149
-#define WW 280
+static constexpr const rct_string_id WINDOW_TITLE = STR_SCENARIO_OPTIONS_FINANCIAL;
+static constexpr const int32_t WH = 149;
+static constexpr const int32_t WW = 280;
 
 #pragma region Widgets
 

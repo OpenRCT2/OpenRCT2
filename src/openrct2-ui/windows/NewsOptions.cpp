@@ -16,9 +16,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-#define WINDOW_TITLE STR_NOTIFICATION_SETTINGS
-#define WH 300
-#define WW 400
+static constexpr const rct_string_id WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+static constexpr const int32_t WH = 300;
+static constexpr const int32_t WW = 400;
 
 // clang-format off
 enum {

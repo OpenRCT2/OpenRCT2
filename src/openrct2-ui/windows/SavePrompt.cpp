@@ -20,9 +20,9 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
 
-#define WINDOW_TITLE 0
-#define WH 54
-#define WW 260
+static constexpr const rct_string_id WINDOW_TITLE = 0;
+static constexpr const int32_t WH = 54;
+static constexpr const int32_t WW = 260;
 
 // clang-format off
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {

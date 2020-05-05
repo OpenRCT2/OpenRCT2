@@ -28,7 +28,7 @@
 
 constexpr int32_t WW = 600;
 constexpr int32_t WH = 400;
-#define WINDOW_TITLE STR_INVENTION_LIST
+static constexpr const rct_string_id WINDOW_TITLE = STR_INVENTION_LIST;
 
 // clang-format off
 enum {

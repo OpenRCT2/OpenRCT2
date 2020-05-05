@@ -110,7 +110,7 @@ enum {
 
 #pragma region Widgets
 
-#define WINDOW_TITLE STR_MAPGEN_WINDOW_TITLE
+static constexpr const rct_string_id WINDOW_TITLE = STR_MAPGEN_WINDOW_TITLE;
 constexpr int32_t WW = 250;
 constexpr int32_t WH = 273;
 

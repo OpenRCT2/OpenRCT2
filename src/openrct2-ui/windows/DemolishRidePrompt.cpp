@@ -18,7 +18,7 @@
 
 constexpr int32_t WW = 200;
 constexpr int32_t WH = 100;
-#define WINDOW_TITLE STR_DEMOLISH_RIDE
+static constexpr const rct_string_id WINDOW_TITLE = STR_DEMOLISH_RIDE;
 
 static money32 _demolishRideCost;
 

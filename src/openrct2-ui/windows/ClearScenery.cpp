@@ -29,9 +29,9 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_FOOTPATH
 };
 
-#define WINDOW_TITLE STR_CLEAR_SCENERY
-#define WW 102
-#define WH 93
+static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr const int32_t WW = 102;
+static constexpr const int32_t WH = 93;
 
 static rct_widget window_clear_scenery_widgets[] = {
     { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },

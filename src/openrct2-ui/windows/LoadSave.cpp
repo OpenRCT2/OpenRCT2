@@ -38,7 +38,7 @@
 
 #pragma region Widgets
 
-#define WINDOW_TITLE STR_NONE
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 constexpr int32_t WW = 350;
 constexpr int32_t WH = 400;
 

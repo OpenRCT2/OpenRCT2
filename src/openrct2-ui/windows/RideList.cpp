@@ -25,9 +25,9 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE 0xFFFFFFFF
-#define WH 240
-#define WW 340
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const int32_t WH = 240;
+static constexpr const int32_t WW = 340;
 
 // clang-format off
 enum {

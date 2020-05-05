@@ -32,9 +32,9 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE STR_OBJECTIVE_SELECTION
-#define WH 229
-#define WW 450
+static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr const int32_t WH = 229;
+static constexpr const int32_t WW = 450;
 
 #pragma region Widgets
 

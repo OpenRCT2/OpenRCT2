@@ -14,9 +14,9 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 
-#define WINDOW_TITLE STR_MUSIC_ACKNOWLEDGEMENTS
-#define WH 314
-#define WW 510
+static constexpr const rct_string_id WINDOW_TITLE = STR_MUSIC_ACKNOWLEDGEMENTS;
+static constexpr const int32_t WH = 314;
+static constexpr const int32_t WW = 510;
 
 // clang-format off
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {

@@ -20,9 +20,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE STR_LAND_RIGHTS
-#define WH 94
-#define WW 98
+static constexpr const rct_string_id WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr const int32_t WH = 94;
+static constexpr const int32_t WW = 98;
 
 // clang-format off
 enum WINDOW_WATER_WIDGET_IDX {

@@ -19,9 +19,9 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Sprite.h>
 
-#define WINDOW_TITLE STR_RECENT_MESSAGES
-#define WH 300
-#define WW 400
+static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr const int32_t WH = 300;
+static constexpr const int32_t WW = 400;
 
 // clang-format off
 enum WINDOW_NEWS_WIDGET_IDX {

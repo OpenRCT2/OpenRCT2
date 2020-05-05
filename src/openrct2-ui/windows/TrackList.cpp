@@ -24,9 +24,9 @@
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
-#define WINDOW_TITLE STR_SELECT_DESIGN
-#define WH 431
-#define WW 600
+static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
+static constexpr const int32_t WH = 431;
+static constexpr const int32_t WW = 600;
 
 // clang-format off
 enum {

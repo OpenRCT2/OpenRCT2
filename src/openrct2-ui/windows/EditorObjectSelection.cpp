@@ -80,9 +80,9 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
-#define WINDOW_TITLE STR_OBJECT_SELECTION
-#define WH 400
-#define WW 600
+static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
+static constexpr const int32_t WH = 400;
+static constexpr const int32_t WW = 600;
 
 struct ObjectPageDesc
 {

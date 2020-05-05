@@ -27,9 +27,9 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
-#define WINDOW_TITLE 0
-#define WH 0
-#define WW 0
+static constexpr const rct_string_id WINDOW_TITLE = 0;
+static constexpr const int32_t WH = 0;
+static constexpr const int32_t WW = 0;
 
 // clang-format off
 enum

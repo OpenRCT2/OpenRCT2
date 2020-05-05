@@ -15,9 +15,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-#define WINDOW_TITLE STR_VIEWPORT_NO
-#define WH 0
-#define WW 0
+static constexpr const rct_string_id WINDOW_TITLE = STR_VIEWPORT_NO;
+static constexpr const int32_t WH = 0;
+static constexpr const int32_t WW = 0;
 constexpr int32_t INITIAL_WIDTH = 500;
 constexpr int32_t INITIAL_HEIGHT = 350;
 

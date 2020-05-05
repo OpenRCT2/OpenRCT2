@@ -24,7 +24,7 @@
 
 constexpr int32_t WW = 113;
 constexpr int32_t WH = 96;
-#define WINDOW_TITLE STR_BANNER_WINDOW_TITLE
+static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {

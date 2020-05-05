@@ -15,7 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
-#define WINDOW_TITLE STR_SHORTCUTS_TITLE
+static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUTS_TITLE;
 constexpr int32_t WW = 420;
 constexpr int32_t WH = 280;
 

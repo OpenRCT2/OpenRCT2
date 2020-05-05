@@ -24,9 +24,9 @@
 #include <openrct2/util/Util.h>
 #include <vector>
 
-#define WINDOW_TITLE STR_SELECT_SCENARIO
-#define WW 734
-#define WH 334
+ static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_SCENARIO;
+ static constexpr const int32_t WW = 734;
+ static constexpr const int32_t WH = 334;
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
 // clang-format off
