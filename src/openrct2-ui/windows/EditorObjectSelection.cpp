@@ -1160,10 +1160,11 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
             }
 
-            int32_t width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x) / 2;
+            int32_t width_limit = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x;
 
             if (ridePage)
             {
+                width_limit /= 2;
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
