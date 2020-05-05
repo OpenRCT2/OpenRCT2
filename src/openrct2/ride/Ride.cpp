@@ -1315,7 +1315,7 @@ void ride_construction_invalidate_current_track()
         case RIDE_CONSTRUCTION_STATE_SELECTED:
             sub_6C683D(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                nullptr, 1);
+                nullptr, TRACK_ELEMENT_SET_HIGHLIGHT_FALSE);
             break;
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
         case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
@@ -4849,14 +4849,14 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         tileElement = it.current.element;
         int32_t trackType = tileElement->AsTrack()->GetTrackType();
 
-        uint16_t flags = 16;
+        uint16_t flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE;
         switch (state)
         {
             case STATE_FIND_CABLE_LIFT:
                 // Search for a cable lift hill track element
                 if (trackType == TRACK_ELEM_CABLE_LIFT_HILL)
                 {
-                    flags = 8;
+                    flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
                     state = STATE_FIND_STATION;
                 }
                 break;
@@ -4872,7 +4872,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
                     case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
                     case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
                     case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
-                        flags = 8;
+                        flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
                         break;
                     case TRACK_ELEM_END_STATION:
                         state = STATE_REST_OF_TRACK;
