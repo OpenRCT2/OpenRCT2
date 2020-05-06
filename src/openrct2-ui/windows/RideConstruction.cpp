@@ -2619,9 +2619,9 @@ void sub_6C94D8()
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             direction = _currentTrackPieceDirection & 3;
             type = _currentTrackPieceType;
-            auto newCoords = sub_6C683D(
-                { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr,
-                _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? 2 : 1);
+            uint16_t flags = _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? TRACK_ELEMENT_SET_HIGHLIGHT_TRUE
+                                                                                      : TRACK_ELEMENT_SET_HIGHLIGHT_FALSE;
+            auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, flags);
             if (newCoords == std::nullopt)
             {
                 ride_construction_remove_ghosts();
@@ -3396,7 +3396,7 @@ static void ride_selected_track_set_seat_rotation(int32_t seatRotation)
 {
     sub_6C683D(
         { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, seatRotation,
-        nullptr, (1 << 5));
+        nullptr, TRACK_ELEMENT_SET_SEAT_ROTATION);
     window_ride_construction_update_active_elements();
 }
 
