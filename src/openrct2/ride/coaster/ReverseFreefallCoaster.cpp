@@ -385,6 +385,29 @@ static void paint_reverse_freefall_rc_vertical(
     }
 }
 
+static void paint_reverse_freefall_rc_on_ride_photo(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    if (direction & 1)
+    {
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
+        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+    }
+    else
+    {
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
+        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+    }
+
+    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    track_paint_util_onride_photo_paint(session, direction, height + 2, tileElement);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
@@ -399,6 +422,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int32_t trackT
             return paint_reverse_freefall_rc_slope;
         case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
             return paint_reverse_freefall_rc_vertical;
+        case TRACK_ELEM_ON_RIDE_PHOTO:
+            return paint_reverse_freefall_rc_on_ride_photo;
     }
     return nullptr;
 }
