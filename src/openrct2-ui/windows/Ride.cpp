@@ -5721,13 +5721,15 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
     {
         rct_widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
-        ScreenCoordsXY coord(w->windowPos.x + (widget->right - widget->left) / 2, w->windowPos.y + widget->top + 40);
-        gfx_draw_string_centred_wrapped(dpi, nullptr, coord, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
+        ScreenCoordsXY widgetCoords(w->windowPos.x + (widget->right - widget->left) / 2, w->windowPos.y + widget->top + 40);
+        gfx_draw_string_centred_wrapped(
+            dpi, nullptr, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
 
-        coord.x = w->windowPos.x + 4;
-        coord.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
+        widgetCoords.x = w->windowPos.x + 4;
+        widgetCoords.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
         gfx_fill_rect_inset(
-            dpi, coord.x, coord.y, w->windowPos.x + 312, coord.y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+            dpi, widgetCoords.x, widgetCoords.y, w->windowPos.x + 312, widgetCoords.y + 1, w->colours[1],
+            INSET_RECT_FLAG_BORDER_INSET);
     }
     else
     {
@@ -6192,9 +6194,9 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     if (measurement == nullptr)
     {
         // No measurement message
-        ScreenCoordsXY coord((widget->right - widget->left) / 2, (widget->bottom - widget->top) / 2 - 5);
+        ScreenCoordsXY stringCoords((widget->right - widget->left) / 2, (widget->bottom - widget->top) / 2 - 5);
         int32_t width = widget->right - widget->left - 2;
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, coord, width, stringId, COLOUR_BLACK);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, width, stringId, COLOUR_BLACK);
         return;
     }
 

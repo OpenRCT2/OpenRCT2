@@ -460,9 +460,9 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<rct_string_id>(ScenarioCategoryStringIds[i]);
         }
 
-        ScreenCoordsXY coord(
+        ScreenCoordsXY stringCoords(
             (widget->left + widget->right) / 2 + w->windowPos.x, (widget->top + widget->bottom) / 2 + w->windowPos.y - 3);
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, coord, 87, format, COLOUR_AQUAMARINE);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, 87, format, COLOUR_AQUAMARINE);
     }
 
     // Return if no scenario highlighted

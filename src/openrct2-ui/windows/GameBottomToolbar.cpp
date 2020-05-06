@@ -681,7 +681,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
-    ScreenCoordsXY coord(
+    ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2,
         w->windowPos.y + middleOutsetWidget->top + line_height + 1);
     int32_t width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
@@ -691,12 +691,13 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
-        gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, coord, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
+        gfx_draw_string_centred_wrapped(
+            dpi, gMapTooltipFormatArgs, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
     }
     else
     {
         // Show tooltip in bottom toolbar
-        gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, coord, width, STR_STRINGID, w->colours[0]);
+        gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, middleWidgetCoords, width, STR_STRINGID, w->colours[0]);
     }
 }
 
