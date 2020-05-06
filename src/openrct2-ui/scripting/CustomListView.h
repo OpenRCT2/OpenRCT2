@@ -92,11 +92,11 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         static constexpr int32_t HEADER_ROW = -1;
+        std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
 
     public:
         std::shared_ptr<Plugin> Owner;
-        std::vector<ListViewColumn> Columns;
         std::vector<size_t> SortedItems;
         std::optional<RowColumn> HighlightedCell;
         std::optional<RowColumn> LastHighlightedCell;
@@ -116,6 +116,9 @@ namespace OpenRCT2::Ui::Windows
         DukValue OnClick;
         DukValue OnHighlight;
 
+        const std::vector<ListViewColumn>& GetColumns() const;
+        void SetColumns(const std::vector<ListViewColumn>& columns);
+        const std::vector<ListViewItem>& GetItems() const;
         void SetItems(const std::vector<ListViewItem>& items);
         void SetItems(std::vector<ListViewItem>&& items);
         bool SortItem(size_t indexA, size_t indexB, int32_t column);
@@ -149,8 +152,11 @@ namespace OpenRCT2::Scripting
     template<> std::optional<int32_t> FromDuk(const DukValue& d);
     template<> ListViewColumn FromDuk(const DukValue& d);
     template<> ListViewItem FromDuk(const DukValue& d);
+    template<> std::vector<ListViewColumn> FromDuk(const DukValue& d);
+    template<> std::vector<ListViewItem> FromDuk(const DukValue& d);
     template<> std::optional<RowColumn> FromDuk(const DukValue& d);
     template<> DukValue ToDuk(duk_context* ctx, const RowColumn& value);
+    template<> DukValue ToDuk(duk_context* ctx, const ListViewColumn& value);
 } // namespace OpenRCT2::Scripting
 
 #endif

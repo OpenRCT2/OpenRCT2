@@ -35,6 +35,19 @@ namespace OpenRCT2::Scripting
         return ColumnSortOrder::None;
     }
 
+    template<> DukValue ToDuk(duk_context* ctx, const ColumnSortOrder& value)
+    {
+        switch (value)
+        {
+            case ColumnSortOrder::Ascending:
+                return ToDuk(ctx, "ascending");
+            case ColumnSortOrder::Descending:
+                return ToDuk(ctx, "descending");
+            default:
+                return ToDuk(ctx, "none");
+        }
+    }
+
     template<> std::optional<int32_t> FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::NUMBER)
@@ -67,6 +80,20 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
+    template<> DukValue ToDuk(duk_context* ctx, const ListViewColumn& value)
+    {
+        DukObject obj(ctx);
+        obj.Set("canSort", value.CanSort);
+        obj.Set("sortOrder", ToDuk(ctx, value.SortOrder));
+        obj.Set("header", value.Header);
+        obj.Set("headerTooltip", value.HeaderTooltip);
+        obj.Set("minWidth", value.MinWidth);
+        obj.Set("maxWidth", value.MaxWidth);
+        obj.Set("ratioWidth", value.RatioWidth);
+        obj.Set("width", value.Width);
+        return obj.Take();
+    }
+
     template<> ListViewItem FromDuk(const DukValue& d)
     {
         ListViewItem result;
@@ -82,6 +109,34 @@ namespace OpenRCT2::Scripting
                 cells.push_back(ProcessString(dukCell));
             }
             result = ListViewItem(std::move(cells));
+        }
+        return result;
+    }
+
+    template<> std::vector<ListViewColumn> FromDuk(const DukValue& d)
+    {
+        std::vector<ListViewColumn> result;
+        if (d.is_array())
+        {
+            auto dukColumns = d.as_array();
+            for (const auto& dukColumn : dukColumns)
+            {
+                result.push_back(FromDuk<ListViewColumn>(dukColumn));
+            }
+        }
+        return result;
+    }
+
+    template<> std::vector<ListViewItem> FromDuk(const DukValue& d)
+    {
+        std::vector<ListViewItem> result;
+        if (d.is_array())
+        {
+            auto dukItems = d.as_array();
+            for (const auto& dukItem : dukItems)
+            {
+                result.push_back(FromDuk<ListViewItem>(dukItem));
+            }
         }
         return result;
     }
@@ -109,8 +164,27 @@ namespace OpenRCT2::Scripting
     }
 } // namespace OpenRCT2::Scripting
 
+const std::vector<ListViewColumn>& CustomListView::GetColumns() const
+{
+    return Columns;
+}
+
+void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns)
+{
+    SelectedCell = std::nullopt;
+    Columns = columns;
+    LastKnownSize = {};
+    SortItems(0, ColumnSortOrder::None);
+}
+
+const std::vector<ListViewItem>& CustomListView::CustomListView::GetItems() const
+{
+    return Items;
+}
+
 void CustomListView::SetItems(const std::vector<ListViewItem>& items)
 {
+    SelectedCell = std::nullopt;
     Items = items;
     SortItems(0, ColumnSortOrder::None);
 }

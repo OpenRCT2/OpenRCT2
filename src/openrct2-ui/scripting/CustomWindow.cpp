@@ -171,22 +171,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "listview")
             {
-                if (desc["columns"].is_array())
-                {
-                    auto dukColumns = desc["columns"].as_array();
-                    for (const auto& dukColumn : dukColumns)
-                    {
-                        result.ListViewColumns.push_back(FromDuk<ListViewColumn>(dukColumn));
-                    }
-                }
-                if (desc["items"].is_array())
-                {
-                    auto dukItems = desc["items"].as_array();
-                    for (const auto& dukItem : dukItems)
-                    {
-                        result.ListViewItems.push_back(FromDuk<ListViewItem>(dukItem));
-                    }
-                }
+                result.ListViewColumns = FromDuk<std::vector<ListViewColumn>>(desc["columns"]);
+                result.ListViewItems = FromDuk<std::vector<ListViewItem>>(desc["items"]);
                 result.ShowColumnHeaders = AsOrDefault(desc["showColumnHeaders"], false);
                 result.IsStriped = AsOrDefault(desc["isStriped"], false);
                 result.OnClick = desc["onClick"];
@@ -986,7 +972,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetDesc.Type == "listview")
             {
                 CustomListView listView;
-                listView.Columns = widgetDesc.ListViewColumns;
+                listView.SetColumns(widgetDesc.ListViewColumns);
                 listView.SetItems(widgetDesc.ListViewItems);
                 listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
                 listView.IsStriped = widgetDesc.IsStriped;

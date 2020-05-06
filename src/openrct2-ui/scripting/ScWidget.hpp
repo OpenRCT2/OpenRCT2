@@ -373,6 +373,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScListViewWidget::highlightedCell_get, nullptr, "highlightedCell");
             dukglue_register_property(
                 ctx, &ScListViewWidget::selectedCell_get, &ScListViewWidget::selectedCell_set, "selectedCell");
+            dukglue_register_property(ctx, &ScListViewWidget::columns_get, &ScListViewWidget::columns_set, "columns");
+            dukglue_register_property(ctx, &ScListViewWidget::items_get, &ScListViewWidget::items_set, "items");
         }
 
     private:
@@ -461,6 +463,53 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->SelectedCell = FromDuk<std::optional<RowColumn>>(value);
+            }
+        }
+
+        std::vector<std::vector<std::string>> items_get()
+        {
+            std::vector<std::vector<std::string>> result;
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                for (const auto& item : listView->GetItems())
+                {
+                    result.push_back(item.Cells);
+                }
+            }
+            return result;
+        }
+
+        void items_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SetItems(FromDuk<std::vector<ListViewItem>>(value));
+            }
+        }
+
+        std::vector<DukValue> columns_get()
+        {
+            std::vector<DukValue> result;
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                for (const auto& column : listView->GetColumns())
+                {
+                    result.push_back(ToDuk(ctx, column));
+                }
+            }
+            return result;
+        }
+
+        void columns_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SetColumns(FromDuk<std::vector<ListViewColumn>>(value));
             }
         }
 
