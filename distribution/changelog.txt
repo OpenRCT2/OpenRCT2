@@ -6,6 +6,7 @@
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
 - Feature: [#11306] Path additions are now kept when replacing the path.
 - Feature: [#11320] Support for custom JavaScript plugins.
+- Feature: [#11661] Allow building on-ride photo sections on the Air Powered Vertical and Reverse Freefall Coasters.
 - Change: [#11209] Warn when user is running OpenRCT2 through Wine.
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
 - Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
