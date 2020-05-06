@@ -366,13 +366,35 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScListViewWidget>(ctx);
+            dukglue_register_property(ctx, &ScListViewWidget::canSelect_get, &ScListViewWidget::canSelect_set, "canSelect");
             dukglue_register_property(ctx, &ScListViewWidget::isStriped_get, &ScListViewWidget::isStriped_set, "isStriped");
+            dukglue_register_property(
+                ctx, &ScListViewWidget::showColumnHeaders_get, &ScListViewWidget::showColumnHeaders_set, "showColumnHeaders");
             dukglue_register_property(ctx, &ScListViewWidget::highlightedCell_get, nullptr, "highlightedCell");
             dukglue_register_property(
                 ctx, &ScListViewWidget::selectedCell_get, &ScListViewWidget::selectedCell_set, "selectedCell");
         }
 
     private:
+        bool canSelect_get() const
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return listView->CanSelect;
+            }
+            return false;
+        }
+
+        void canSelect_set(bool value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->CanSelect = value;
+            }
+        }
+
         bool isStriped_get() const
         {
             auto listView = GetListView();
@@ -389,6 +411,25 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->IsStriped = value;
+            }
+        }
+
+        bool showColumnHeaders_get() const
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return listView->ShowColumnHeaders;
+            }
+            return false;
+        }
+
+        void showColumnHeaders_set(bool value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->ShowColumnHeaders = value;
             }
         }
 
