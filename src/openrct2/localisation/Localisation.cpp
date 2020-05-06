@@ -882,7 +882,7 @@ static void format_date(char** dest, size_t* size, uint16_t value)
     format_string_part(dest, size, STR_DATE_FORMAT_MY, reinterpret_cast<char**>(&argsRef));
 }
 
-static void format_length(char** dest, size_t* size, int16_t value)
+static void format_length(char** dest, size_t* size, int32_t value)
 {
     rct_string_id stringId = STR_UNIT_SUFFIX_METRES;
 
@@ -892,7 +892,7 @@ static void format_length(char** dest, size_t* size, int16_t value)
         stringId = STR_UNIT_SUFFIX_FEET;
     }
 
-    int16_t* argRef = &value;
+    int32_t* argRef = &value;
     format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argRef));
 }
 
@@ -1135,11 +1135,10 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_LENGTH:
             // Pop argument
-            std::memcpy(&temp16, *args, sizeof(int16_t));
-            value = temp16;
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_length(dest, size, static_cast<int16_t>(value));
+            format_length(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_SPRITE:
             // Pop argument
