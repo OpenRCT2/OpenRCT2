@@ -1106,11 +1106,11 @@ namespace OpenRCT2::Ui::Windows
     {
         if (w->custom_info != nullptr)
         {
-            auto& customInfo = GetInfo(w);
+            auto& info = GetInfo(w);
             auto scrollIndex = window_get_scroll_data_index(w, widgetIndex);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
             {
-                return &customInfo.ListViews[scrollIndex];
+                return &info.ListViews[scrollIndex];
             }
         }
         return nullptr;

@@ -1089,14 +1089,19 @@ declare global {
 
     type ListViewItem = string[];
 
+    interface RowColumn {
+        row: number;
+        column: number;
+    }
+
     interface ListView extends Widget {
         scroll?: ScrollType;
         isStriped?: boolean;
         showColumnHeaders?: boolean;
         columns?: ListViewColumn[];
         items?: string[] | ListViewItem[];
-        selectedIndex?: number;
-        highlightedIndex?: number;
+        selectedCell?: RowColumn;
+        readonly highlightedCell?: RowColumn;
         canSelect?: boolean;
 
         onHighlight: (item: number, column: number) => void;

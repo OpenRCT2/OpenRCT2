@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        static DukValue ToDuk(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
+        static DukValue ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
 
     private:
         std::string type_get() const
@@ -347,6 +347,9 @@ namespace OpenRCT2::Scripting
         {
             dukglue_set_base_class<ScWidget, ScListViewWidget>(ctx);
             dukglue_register_property(ctx, &ScListViewWidget::isStriped_get, &ScListViewWidget::isStriped_set, "isStriped");
+            dukglue_register_property(ctx, &ScListViewWidget::highlightedCell_get, nullptr, "highlightedCell");
+            dukglue_register_property(
+                ctx, &ScListViewWidget::selectedCell_get, &ScListViewWidget::selectedCell_set, "selectedCell");
         }
 
     private:
@@ -369,6 +372,37 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        DukValue highlightedCell_get()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return ToDuk(ctx, listView->LastHighlightedCell);
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        DukValue selectedCell_get()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return ToDuk(ctx, listView->SelectedCell);
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void selectedCell_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SelectedCell = FromDuk<std::optional<RowColumn>>(value);
+            }
+        }
+
         CustomListView* GetListView() const
         {
             auto w = GetWindow();
@@ -380,7 +414,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    inline DukValue ScWidget::ToDuk(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
+    inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
     {
         const auto& widget = w->widgets[widgetIndex];
         auto c = w->classification;

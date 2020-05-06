@@ -149,6 +149,8 @@ namespace OpenRCT2::Scripting
     template<> std::optional<int32_t> FromDuk(const DukValue& d);
     template<> ListViewColumn FromDuk(const DukValue& d);
     template<> ListViewItem FromDuk(const DukValue& d);
+    template<> std::optional<RowColumn> FromDuk(const DukValue& d);
+    template<> DukValue ToDuk(duk_context* ctx, const RowColumn& value);
 } // namespace OpenRCT2::Scripting
 
 #endif

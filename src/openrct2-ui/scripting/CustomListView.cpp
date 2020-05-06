@@ -85,6 +85,28 @@ namespace OpenRCT2::Scripting
         }
         return result;
     }
+
+    template<> std::optional<RowColumn> FromDuk(const DukValue& d)
+    {
+        if (d.type() == DukValue::Type::OBJECT)
+        {
+            auto dukRow = d["row"];
+            auto dukColumn = d["column"];
+            if (dukRow.type() == DukValue::Type::NUMBER && dukColumn.type() == DukValue::Type::NUMBER)
+            {
+                return RowColumn(dukRow.as_int(), dukColumn.as_int());
+            }
+        }
+        return std::nullopt;
+    }
+
+    template<> DukValue ToDuk(duk_context* ctx, const RowColumn& value)
+    {
+        DukObject obj(ctx);
+        obj.Set("row", value.Row);
+        obj.Set("column", value.Column);
+        return obj.Take();
+    }
 } // namespace OpenRCT2::Scripting
 
 void CustomListView::SetItems(const std::vector<ListViewItem>& items)

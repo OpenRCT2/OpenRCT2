@@ -188,7 +188,7 @@ namespace OpenRCT2::Scripting
                 rct_widgetindex widgetIndex = 0;
                 for (auto widget = w->widgets; widget->type != WWT_LAST; widget++)
                 {
-                    result.push_back(ScWidget::ToDuk(ctx, w, widgetIndex));
+                    result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
                     widgetIndex++;
                 }
             }
@@ -268,7 +268,7 @@ namespace OpenRCT2::Scripting
                 auto widgetIndex = FindWidgetIndexByName(w, name);
                 if (widgetIndex)
                 {
-                    return ScWidget::ToDuk(ctx, w, *widgetIndex);
+                    return ScWidget::ToDukValue(ctx, w, *widgetIndex);
                 }
             }
             return GetObjectAsDukValue<ScWidget>(ctx, nullptr);
