@@ -1102,6 +1102,33 @@ namespace OpenRCT2::Ui::Windows
         return std::nullopt;
     }
 
+    std::string GetWidgetName(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            const auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->Name;
+            }
+        }
+        return {};
+    }
+
+    void SetWidgetName(rct_window* w, rct_widgetindex widgetIndex, const std::string_view& name)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->Name = std::string(name);
+            }
+        }
+    }
+
     CustomListView* GetCustomListView(rct_window* w, rct_widgetindex widgetIndex)
     {
         if (w->custom_info != nullptr)

@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<RowColumn> HighlightedCell;
         std::optional<RowColumn> LastHighlightedCell;
         std::optional<RowColumn> SelectedCell;
-        std::optional<size_t> ColumnHeaderPressed;
+        std::optional<int32_t> ColumnHeaderPressed;
         bool ColumnHeaderPressedCurrentState{};
         bool ShowColumnHeaders{};
         bool IsStriped{};

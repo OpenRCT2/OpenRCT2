@@ -43,6 +43,25 @@ namespace OpenRCT2::Scripting
         static DukValue ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
 
     private:
+        std::string name_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                return OpenRCT2::Ui::Windows::GetWidgetName(w, _widgetIndex);
+            }
+            return {};
+        }
+
+        void name_set(const std::string& value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                OpenRCT2::Ui::Windows::SetWidgetName(w, _widgetIndex, value);
+            }
+        }
+
         std::string type_get() const
         {
             auto widget = GetWidget();
@@ -253,6 +272,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             // Common
+            dukglue_register_property(ctx, &ScWidget::name_get, &ScWidget::name_set, "name");
             dukglue_register_property(ctx, &ScWidget::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScWidget::x_get, &ScWidget::x_set, "x");
             dukglue_register_property(ctx, &ScWidget::y_get, &ScWidget::y_set, "y");
