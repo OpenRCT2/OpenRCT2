@@ -1,0 +1,491 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2020 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#ifdef ENABLE_SCRIPTING
+
+#    include "CustomListView.h"
+
+#    include "../interface/Window.h"
+
+#    include <openrct2/Context.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/util/Util.h>
+
+using namespace OpenRCT2::Scripting;
+using namespace OpenRCT2::Ui::Windows;
+
+namespace OpenRCT2::Scripting
+{
+    template<> ColumnSortOrder FromDuk(const DukValue& d)
+    {
+        if (d.type() == DukValue::Type::STRING)
+        {
+            auto s = d.as_string();
+            if (s == "ascending")
+                return ColumnSortOrder::Ascending;
+            if (s == "descending")
+                return ColumnSortOrder::Descending;
+        }
+        return ColumnSortOrder::None;
+    }
+
+    template<> std::optional<int32_t> FromDuk(const DukValue& d)
+    {
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            return d.as_int();
+        }
+        return std::nullopt;
+    }
+
+    template<> ListViewColumn FromDuk(const DukValue& d)
+    {
+        ListViewColumn result;
+        result.CanSort = AsOrDefault(d["canSort"], false);
+        result.SortOrder = FromDuk<ColumnSortOrder>(d["sortOrder"]);
+        result.Header = AsOrDefault(d["header"], "");
+        result.HeaderTooltip = AsOrDefault(d["headerTooltip"], "");
+        result.MinWidth = FromDuk<std::optional<int32_t>>(d["minWidth"]);
+        result.MaxWidth = FromDuk<std::optional<int32_t>>(d["maxWidth"]);
+        result.RatioWidth = FromDuk<std::optional<int32_t>>(d["ratioWidth"]);
+        if (d["width"].type() == DukValue::Type::NUMBER)
+        {
+            result.MinWidth = d["width"].as_int();
+            result.MaxWidth = result.MinWidth;
+            result.RatioWidth = std::nullopt;
+        }
+        else if (!result.RatioWidth)
+        {
+            result.RatioWidth = 1;
+        }
+        return result;
+    }
+
+    template<> ListViewItem FromDuk(const DukValue& d)
+    {
+        ListViewItem result;
+        if (d.type() == DukValue::Type::STRING)
+        {
+            result = ListViewItem(ProcessString(d));
+        }
+        else if (d.is_array())
+        {
+            std::vector<std::string> cells;
+            for (const auto& dukCell : d.as_array())
+            {
+                cells.push_back(ProcessString(dukCell));
+            }
+            result = ListViewItem(std::move(cells));
+        }
+        return result;
+    }
+} // namespace OpenRCT2::Scripting
+
+void CustomListView::SetItems(const std::vector<ListViewItem>& items)
+{
+    Items = items;
+    SortItems(0, ColumnSortOrder::None);
+}
+
+void CustomListView::SetItems(std::vector<ListViewItem>&& items)
+{
+    Items = items;
+    SortItems(0, ColumnSortOrder::None);
+}
+
+bool CustomListView::SortItem(size_t indexA, size_t indexB, size_t column)
+{
+    const auto& cellA = Items[indexA].Cells[column];
+    const auto& cellB = Items[indexB].Cells[column];
+    return strlogicalcmp(cellA.c_str(), cellB.c_str()) < 0;
+}
+
+void CustomListView::SortItems(size_t column)
+{
+    auto sortOrder = ColumnSortOrder::Ascending;
+    if (CurrentSortColumn == column)
+    {
+        if (CurrentSortOrder == ColumnSortOrder::Ascending)
+        {
+            sortOrder = ColumnSortOrder::Descending;
+        }
+        else if (CurrentSortOrder == ColumnSortOrder::Descending)
+        {
+            sortOrder = ColumnSortOrder::None;
+        }
+    }
+    SortItems(column, sortOrder);
+}
+
+void CustomListView::SortItems(size_t column, ColumnSortOrder order)
+{
+    // Reset the sorted index map
+    SortedItems.resize(Items.size());
+    for (size_t i = 0; i < SortedItems.size(); i++)
+    {
+        SortedItems[i] = i;
+    }
+
+    if (order != ColumnSortOrder::None)
+    {
+        std::sort(
+            SortedItems.begin(), SortedItems.end(), [this, column](size_t a, size_t b) { return SortItem(a, b, column); });
+        if (order == ColumnSortOrder::Descending)
+        {
+            std::reverse(SortedItems.begin(), SortedItems.end());
+        }
+    }
+
+    CurrentSortOrder = order;
+    CurrentSortColumn = column;
+    Columns[column].SortOrder = order;
+}
+
+void CustomListView::Resize(const ScreenSize& size)
+{
+    if (size == LastKnownSize)
+        return;
+
+    LastKnownSize = size;
+
+    // Calculate the total of all ratios
+    int32_t totalRatio = 0;
+    for (size_t c = 0; c < Columns.size(); c++)
+    {
+        auto& column = Columns[c];
+        if (column.RatioWidth)
+        {
+            totalRatio += *column.RatioWidth;
+        }
+    }
+
+    // Calculate column widths
+    int32_t widthRemaining = size.width;
+    for (size_t c = 0; c < Columns.size(); c++)
+    {
+        auto& column = Columns[c];
+        if (c == Columns.size() - 1)
+        {
+            column.Width = widthRemaining;
+        }
+        else
+        {
+            column.Width = 0;
+            if (column.RatioWidth && *column.RatioWidth > 0)
+            {
+                column.Width = (size.width * *column.RatioWidth) / totalRatio;
+            }
+            if (column.MinWidth)
+            {
+                column.Width = std::max(column.Width, *column.MinWidth);
+            }
+            if (column.MaxWidth)
+            {
+                column.Width = std::min(column.Width, *column.MaxWidth);
+            }
+        }
+        widthRemaining -= column.Width;
+    }
+}
+
+ScreenSize CustomListView::GetSize()
+{
+    LastHighlightedCell = HighlightedCell;
+    HighlightedCell = std::nullopt;
+    ColumnHeaderPressedCurrentState = false;
+    LastIsMouseDown = IsMouseDown;
+    IsMouseDown = false;
+
+    ScreenSize result;
+    result.width = 0;
+    result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
+    return result;
+}
+
+void CustomListView::MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
+{
+    auto hitResult = GetItemIndexAt(pos);
+    if (hitResult)
+    {
+        HighlightedCell = hitResult;
+        if (HighlightedCell != LastHighlightedCell)
+        {
+            if (hitResult->Row != HEADER_ROW && OnHighlight.context() != nullptr && OnHighlight.is_function())
+            {
+                auto ctx = OnHighlight.context();
+                duk_push_int(ctx, static_cast<int32_t>(HighlightedCell->Row));
+                auto dukRow = DukValue::take_from_stack(ctx, -1);
+                duk_push_int(ctx, static_cast<int32_t>(HighlightedCell->Column));
+                auto dukColumn = DukValue::take_from_stack(ctx, -1);
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.ExecutePluginCall(Owner, OnHighlight, { dukRow, dukColumn }, false);
+            }
+        }
+    }
+
+    // Update the header currently held down
+    if (isMouseDown)
+    {
+        if (hitResult && hitResult->Row == HEADER_ROW)
+        {
+            ColumnHeaderPressedCurrentState = (hitResult->Column == ColumnHeaderPressed);
+        }
+        IsMouseDown = true;
+    }
+    else
+    {
+        if (LastIsMouseDown)
+        {
+            MouseUp(pos);
+        }
+        IsMouseDown = false;
+    }
+}
+
+void CustomListView::MouseDown(const ScreenCoordsXY& pos)
+{
+    auto hitResult = GetItemIndexAt(pos);
+    if (hitResult)
+    {
+        if (hitResult->Row != HEADER_ROW && OnClick.context() != nullptr && OnClick.is_function())
+        {
+            if (CanSelect)
+            {
+                SelectedCell = hitResult;
+            }
+
+            auto ctx = OnClick.context();
+            duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
+            auto dukRow = DukValue::take_from_stack(ctx, -1);
+            duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
+            auto dukColumn = DukValue::take_from_stack(ctx, -1);
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
+        }
+    }
+    if (hitResult && hitResult->Row == HEADER_ROW)
+    {
+        if (Columns[hitResult->Column].CanSort)
+        {
+            ColumnHeaderPressed = hitResult->Column;
+            ColumnHeaderPressedCurrentState = true;
+        }
+    }
+    IsMouseDown = true;
+}
+
+void CustomListView::MouseUp(const ScreenCoordsXY& pos)
+{
+    auto hitResult = GetItemIndexAt(pos);
+    if (hitResult && hitResult->Row == HEADER_ROW)
+    {
+        if (hitResult->Column == ColumnHeaderPressed)
+        {
+            SortItems(hitResult->Column);
+        }
+    }
+
+    ColumnHeaderPressed = std::nullopt;
+    ColumnHeaderPressedCurrentState = false;
+}
+
+void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
+{
+    auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
+    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, paletteIndex);
+
+    int32_t y = ShowColumnHeaders ? LIST_ROW_HEIGHT + 1 : 0;
+    for (size_t i = 0; i < Items.size(); i++)
+    {
+        if (y > dpi->y + dpi->height)
+        {
+            // Past the scroll view area
+            break;
+        }
+
+        if (y + LIST_ROW_HEIGHT >= dpi->y)
+        {
+            const auto& itemIndex = static_cast<int32_t>(SortedItems[i]);
+            const auto& item = Items[itemIndex];
+
+            // Background colour
+            auto isStriped = IsStriped && (i & 1);
+            auto isHighlighted = (HighlightedCell && itemIndex == HighlightedCell->Row);
+            auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
+            if (isHighlighted)
+            {
+                gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
+            }
+            else if (isSelected)
+            {
+                // gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + LIST_ROW_HEIGHT - 1,
+                // ColourMapA[w->colours[1]].dark);
+                gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_2);
+            }
+            else if (isStriped)
+            {
+                gfx_fill_rect(
+                    dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1),
+                    ColourMapA[w->colours[1]].lighter | 0x1000000);
+            }
+
+            // Columns
+            if (Columns.size() == 0)
+            {
+                const auto& text = item.Cells[0];
+                if (!text.empty())
+                {
+                    ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
+                    PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
+                }
+            }
+            else
+            {
+                int32_t x = 0;
+                for (size_t j = 0; j < Columns.size(); j++)
+                {
+                    const auto& column = Columns[j];
+                    if (item.Cells.size() > j)
+                    {
+                        const auto& text = item.Cells[j];
+                        if (!text.empty())
+                        {
+                            ScreenSize cellSize = { column.Width, LIST_ROW_HEIGHT };
+                            PaintCell(dpi, { x, y }, cellSize, text.c_str(), isHighlighted);
+                        }
+                    }
+                    x += column.Width;
+                }
+            }
+        }
+
+        y += LIST_ROW_HEIGHT;
+    }
+
+    if (ShowColumnHeaders)
+    {
+        y = scroll->v_top;
+
+        auto bgColour = ColourMapA[w->colours[1]].mid_light;
+        gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + 12, bgColour);
+
+        int32_t x = 0;
+        for (size_t j = 0; j < Columns.size(); j++)
+        {
+            const auto& column = Columns[j];
+            auto columnWidth = column.Width;
+            if (columnWidth != 0)
+            {
+                auto sortOrder = ColumnSortOrder::None;
+                if (CurrentSortColumn == j)
+                {
+                    sortOrder = CurrentSortOrder;
+                }
+
+                bool isPressed = ColumnHeaderPressed == j && ColumnHeaderPressedCurrentState;
+                PaintHeading(w, dpi, { x, y }, { column.Width, LIST_ROW_HEIGHT }, column.Header, sortOrder, isPressed);
+                x += columnWidth;
+            }
+        }
+    }
+}
+
+void CustomListView::PaintHeading(
+    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    ColumnSortOrder sortOrder, bool isPressed) const
+{
+    auto boxFlags = 0;
+    if (isPressed)
+    {
+        boxFlags = INSET_RECT_FLAG_BORDER_INSET;
+    }
+    gfx_fill_rect_inset(dpi, pos.x, pos.y, pos.x + size.width - 1, pos.y + size.height - 1, w->colours[1], boxFlags);
+    if (!text.empty())
+    {
+        PaintCell(dpi, pos, size, text.c_str(), false);
+    }
+
+    if (sortOrder == ColumnSortOrder::Ascending)
+    {
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_UP);
+        gfx_draw_string_right(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos.x + size.width - 1, pos.y);
+    }
+    else if (sortOrder == ColumnSortOrder::Descending)
+    {
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_DOWN);
+        gfx_draw_string_right(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos.x + size.width - 1, pos.y);
+    }
+}
+
+void CustomListView::PaintCell(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
+{
+    rct_string_id stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
+
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(text);
+    gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, pos.x, pos.y, size.width);
+}
+
+std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)
+{
+    std::optional<RowColumn> result;
+    if (pos.x >= 0)
+    {
+        // Check if we pressed the header
+        if (ShowColumnHeaders && pos.y >= 0 && pos.y < LIST_ROW_HEIGHT)
+        {
+            result = RowColumn();
+            result->Row = HEADER_ROW;
+        }
+        else
+        {
+            // Check what row we pressed
+            int32_t firstY = ShowColumnHeaders ? LIST_ROW_HEIGHT + 1 : 0;
+            int32_t row = (pos.y - firstY) / LIST_ROW_HEIGHT;
+            if (row >= 0 && row < static_cast<int32_t>(Items.size()))
+            {
+                result = RowColumn();
+                result->Row = static_cast<int32_t>(SortedItems[row]);
+            }
+        }
+
+        // Check what column we pressed if there are any
+        if (result && Columns.size() > 0)
+        {
+            bool found = false;
+            int32_t x = 0;
+            for (size_t c = 0; c < Columns.size(); c++)
+            {
+                const auto& column = Columns[c];
+                x += column.Width;
+                if (column.Width != 0)
+                {
+                    if (pos.x < x)
+                    {
+                        result->Column = static_cast<int32_t>(c);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (!found)
+            {
+                // Past all columns
+                return std::nullopt;
+            }
+        }
+    }
+    return result;
+}
+
+#endif

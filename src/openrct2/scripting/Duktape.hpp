@@ -190,6 +190,8 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    std::string ProcessString(const DukValue& value);
+
     template<typename T> DukValue ToDuk(duk_context* ctx, const T& value) = delete;
     template<typename T> T FromDuk(const DukValue& s) = delete;
 

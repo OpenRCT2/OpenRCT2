@@ -65,7 +65,7 @@
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",
-                "__ENABLE_SCRIPTING__"
+                "ENABLE_SCRIPTING"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

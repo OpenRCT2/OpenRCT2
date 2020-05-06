@@ -13,6 +13,7 @@
 
 #    include "../interface/Widget.h"
 #    include "../interface/Window.h"
+#    include "CustomListView.h"
 #    include "CustomWindow.h"
 #    include "ScViewport.hpp"
 
@@ -351,10 +352,31 @@ namespace OpenRCT2::Scripting
     private:
         bool isStriped_get() const
         {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return listView->IsStriped;
+            }
+            return false;
         }
 
         void isStriped_set(bool value)
         {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->IsStriped = value;
+            }
+        }
+
+        CustomListView* GetListView() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return GetCustomListView(w, _widgetIndex);
+            }
+            return nullptr;
         }
     };
 
