@@ -21,6 +21,9 @@
 
 enum
 {
+    SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE = 22164,
+    SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE = 22165,
+
     SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE = 22226,
     SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
     SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE = 22228,
@@ -893,6 +896,39 @@ static void air_powered_vertical_rc_track_vertical_slope_down(
         session, rideIndex, 6 - trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
+static void air_powered_vertical_rc_track_booster(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    // The booster piece is borrowed from the Reverse Freefall Colour.
+    // It has two track colours, instead of the one that the APVC has.
+    uint32_t colour = session->TrackColours[SCHEME_TRACK];
+    if (!tileElement->IsGhost() && !tileElement->AsTrack()->IsHighlighted())
+    {
+        // Replace remap colour 2 (bits 24-28) with a copy of remap colour 1 (bits 19-23).
+        colour_t colour1 = (colour >> 19) & 31;
+        colour &= ~0x1F000000;
+        colour |= (colour1 << 24);
+    }
+
+    if (direction & 1)
+    {
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | colour;
+        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+    }
+    else
+    {
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | colour;
+        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+    }
+
+    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
@@ -935,6 +971,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t tr
             return air_powered_vertical_rc_track_vertical_down;
         case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
             return air_powered_vertical_rc_track_vertical_slope_down;
+        case TRACK_ELEM_BOOSTER:
+            return air_powered_vertical_rc_track_booster;
     }
     return nullptr;
 }
