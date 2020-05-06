@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize LastKnownSize;
         ScrollbarType Scrollbars = ScrollbarType::Vertical;
         ColumnSortOrder CurrentSortOrder{};
-        size_t CurrentSortColumn{};
+        int32_t CurrentSortColumn{};
         bool LastIsMouseDown{};
         bool IsMouseDown{};
         bool CanSelect{};
@@ -118,9 +118,9 @@ namespace OpenRCT2::Ui::Windows
 
         void SetItems(const std::vector<ListViewItem>& items);
         void SetItems(std::vector<ListViewItem>&& items);
-        bool SortItem(size_t indexA, size_t indexB, size_t column);
-        void SortItems(size_t column);
-        void SortItems(size_t column, ColumnSortOrder order);
+        bool SortItem(size_t indexA, size_t indexB, int32_t column);
+        void SortItems(int32_t column);
+        void SortItems(int32_t column, ColumnSortOrder order);
         void Resize(const ScreenSize& size);
         ScreenSize GetSize();
         void MouseOver(const ScreenCoordsXY& pos, bool isMouseDown);

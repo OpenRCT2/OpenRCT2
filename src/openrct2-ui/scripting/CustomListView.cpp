@@ -121,14 +121,14 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items)
     SortItems(0, ColumnSortOrder::None);
 }
 
-bool CustomListView::SortItem(size_t indexA, size_t indexB, size_t column)
+bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 {
     const auto& cellA = Items[indexA].Cells[column];
     const auto& cellB = Items[indexB].Cells[column];
     return strlogicalcmp(cellA.c_str(), cellB.c_str()) < 0;
 }
 
-void CustomListView::SortItems(size_t column)
+void CustomListView::SortItems(int32_t column)
 {
     auto sortOrder = ColumnSortOrder::Ascending;
     if (CurrentSortColumn == column)
@@ -145,7 +145,7 @@ void CustomListView::SortItems(size_t column)
     SortItems(column, sortOrder);
 }
 
-void CustomListView::SortItems(size_t column, ColumnSortOrder order)
+void CustomListView::SortItems(int32_t column, ColumnSortOrder order)
 {
     // Reset the sorted index map
     SortedItems.resize(Items.size());
@@ -398,7 +398,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
         gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + 12, bgColour);
 
         int32_t x = 0;
-        for (size_t j = 0; j < Columns.size(); j++)
+        for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
         {
             const auto& column = Columns[j];
             auto columnWidth = column.Width;
