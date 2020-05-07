@@ -82,7 +82,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
             }
-            return {};
+            return ToDuk(ctx, nullptr);
         }
 
         std::vector<DukValue> getAllObjects(const std::string& typez) const
