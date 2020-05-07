@@ -480,10 +480,18 @@ declare global {
         readonly index: number;
 
         /**
-         * The unique name identifier of the object, e.g. "BURGB   ".
-         * This may have trailing spaces if the name is shorter than 8 characters.
+         * The unique identifier of the object, e.g. "rct2.burgb".
+         * Only JSON objects will have an identifier.
          */
         readonly identifier: string;
+
+        /**
+         * The original unique identifier of the object, e.g. "BURGB   ".
+         * This may have trailing spaces if the name is shorter than 8 characters.
+         * Only .DAT objects or JSON objects based on .DAT objects will have legacy identifiers.
+         */
+        readonly legacyIdentifier: string;
+
         /**
          * The name in the user's current language.
          */

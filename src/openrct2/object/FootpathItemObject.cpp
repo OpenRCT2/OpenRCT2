@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, IStream* stream
 
     // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
-    auto identifier = GetIdentifier();
+    auto identifier = GetLegacyIdentifier();
 
     auto& objectRepository = context->GetObjectRepository();
     auto item = objectRepository.FindObject(identifier);

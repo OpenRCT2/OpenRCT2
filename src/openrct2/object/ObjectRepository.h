@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -67,7 +67,7 @@ interface IObjectRepository
     virtual void Construct(int32_t language) abstract;
     virtual size_t GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem* GetObjects() const abstract;
-    virtual const ObjectRepositoryItem* FindObject(const utf8* name) const abstract;
+    virtual const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
 
     virtual Object* LoadObject(const ObjectRepositoryItem* ori) abstract;

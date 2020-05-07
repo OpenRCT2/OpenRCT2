@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,15 +198,14 @@ public:
         }
     }
 
-    rct_string_id GetObjectOverrideStringId(const char* objectIdentifier, uint8_t index) override
+    rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) override
     {
-        Guard::ArgumentNotNull(objectIdentifier);
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
         int32_t ooIndex = 0;
         for (const ObjectOverride& objectOverride : _objectOverrides)
         {
-            if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
+            if (std::string_view(objectOverride.name, 8) == legacyIdentifier)
             {
                 if (objectOverride.strings[index].empty())
                 {
