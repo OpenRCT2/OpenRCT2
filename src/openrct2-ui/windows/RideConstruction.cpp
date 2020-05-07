@@ -3546,6 +3546,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
             _currentTrackPrice = place_provisional_track_piece(
                 rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
+            z = trackPos.z;
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
 

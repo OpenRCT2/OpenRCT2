@@ -431,7 +431,7 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
 {
     if (gGotoStartPlacementMode)
     {
-        _currentTrackBegin.z = piecePos.z & 0xFFF0;
+        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
