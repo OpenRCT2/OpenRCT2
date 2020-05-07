@@ -510,6 +510,75 @@ declare global {
          * A text description describing the capacity of the ride in the player's current language.
          */
         readonly capacity: string;
+
+        readonly flags: number;
+        readonly rideType: number[];
+        readonly minCarsInTrain: number;
+        readonly maxCarsInTrain: number;
+        readonly carsPerFlatRide: number;
+        readonly zeroCars: number;
+        readonly tabVehicle: number;
+        readonly defaultVehicle: number;
+        readonly frontVehicle: number;
+        readonly secondVehicle: number;
+        readonly rearVehicle: number;
+        readonly thirdVehicle: number;
+        readonly vehicles: RideObjectVehicle[];
+        readonly excitementMultiplier: number;
+        readonly intensityMultiplier: number;
+        readonly nauseaMultiplier: number;
+        readonly maxHeight: number;
+        readonly shopItem: number;
+        readonly shopItemSecondary: number;
+    }
+
+    /**
+     * Represents a defined vehicle within a Ride object definition.
+     */
+    interface RideObjectVehicle {
+        readonly rotationFrameMask: number;
+        readonly numVerticalFrames: number;
+        readonly numHorizontalFrames: number;
+        readonly spacing: number;
+        readonly carMass: number;
+        readonly tabHeight: number;
+        readonly numSeats: number;
+        readonly spriteFlags: number;
+        readonly spriteWidth: number;
+        readonly spriteHeightNegative: number;
+        readonly spriteHeightPositive: number;
+        readonly animation: number;
+        readonly flags: number;
+        readonly baseNumFrames: number;
+        readonly baseImageId: number;
+        readonly restraintImageId: number;
+        readonly gentleSlopeImageId: number;
+        readonly steepSlopeImageId: number;
+        readonly verticalSlopeImageId: number;
+        readonly diagonalSlopeImageId: number;
+        readonly bankedImageId: number;
+        readonly inlineTwistImageId: number;
+        readonly flatToGentleBankImageId: number;
+        readonly diagonalToGentleSlopeBankImageId: number;
+        readonly gentleSlopeToBankImageId: number;
+        readonly gentleSlopeBankTurnImageId: number;
+        readonly flatBankToGentleSlopeImageId: number;
+        readonly curvedLiftHillImageId: number;
+        readonly corkscrewImageId: number;
+        readonly noVehicleImages: number;
+        readonly noSeatingRows: number;
+        readonly spinningInertia: number;
+        readonly spinningFriction: number;
+        readonly frictionSoundId: number;
+        readonly logFlumeReverserVehicleType: number;
+        readonly soundRange: number;
+        readonly doubleSoundFrequency: number;
+        readonly poweredAcceleration: number;
+        readonly poweredMaxSpeed: number;
+        readonly carVisual: number;
+        readonly effectVisual: number;
+        readonly drawOrder: number;
+        readonly numVerticalFramesOverride: number;
     }
 
     /**
