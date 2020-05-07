@@ -748,7 +748,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
 
     // "Command:" label
     gfx_draw_string_left(
-        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY - 14);
+        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], { w->windowPos.x + WS, w->windowPos.y + BY - 14 });
 
     // Command dropdown name
     gfx_draw_string_left_clipped(
@@ -758,7 +758,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
 
     // Label (e.g. "Location:")
     gfx_draw_string_left(
-        dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY2 - 14);
+        dpi, command_info.descStringId, nullptr, w->colours[1], { w->windowPos.x + WS, w->windowPos.y + BY2 - 14 });
 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {

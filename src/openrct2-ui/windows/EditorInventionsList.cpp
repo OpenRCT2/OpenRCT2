@@ -559,12 +559,12 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Pre-researched items label
     x = w->windowPos.x + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left;
     y = w->windowPos.y + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11;
-    gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, x, y - 1);
+    gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, { x, y - 1 });
 
     // Research order label
     x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left;
     y = w->windowPos.y + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11;
-    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, x, y - 1);
+    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, { x, y - 1 });
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
@@ -619,7 +619,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Item category
     x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
     stringId = EditorInventionsResearchCategories[researchItem->category];
-    gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, { x, y });
 }
 
 /**
@@ -824,7 +824,7 @@ static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixe
     x = w->windowPos.x;
     y = w->windowPos.y + 2;
     drawString = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
-    gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
+    gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, { x, y });
 }
 
 static rct_string_id window_editor_inventions_list_prepare_name(const ResearchItem* researchItem, bool withGap)

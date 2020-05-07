@@ -400,12 +400,12 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Received stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, { x, y });
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, x + 200, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, { x + 200, y });
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
@@ -417,12 +417,12 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Sent stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, { x, y });
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesOutSec);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, x + 200, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, { x + 200, y });
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);

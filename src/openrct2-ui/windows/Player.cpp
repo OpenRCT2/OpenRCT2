@@ -386,7 +386,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + 24;
 
     set_format_arg(0, rct_string_id, STR_PING);
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, { x, y });
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
     gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
@@ -548,12 +548,12 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     set_format_arg(0, uint32_t, network_get_player_commands_ran(player));
-    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 
     y += LIST_ROW_HEIGHT;
 
     set_format_arg(0, uint32_t, network_get_player_money_spent(player));
-    gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, { x, y });
 }
 
 static void window_player_set_page(rct_window* w, int32_t page)

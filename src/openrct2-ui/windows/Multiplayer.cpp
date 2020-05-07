@@ -509,21 +509,21 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
         const utf8* providerName = network_get_server_provider_name();
         if (!str_is_null_or_empty(providerName))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_NAME, static_cast<void*>(&providerName), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_PROVIDER_NAME, static_cast<void*>(&providerName), COLOUR_BLACK, { x, y });
             y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerEmail = network_get_server_provider_email();
         if (!str_is_null_or_empty(providerEmail))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail), COLOUR_BLACK, { x, y });
             y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerWebsite = network_get_server_provider_website();
         if (!str_is_null_or_empty(providerWebsite))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite), COLOUR_BLACK, { x, y });
         }
     }
 }
@@ -638,7 +638,7 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
     stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
     x = w->windowPos.x + 4;
     y = w->windowPos.y + w->widgets[WIDX_LIST].bottom + 2;
-    gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], x, y);
+    gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], { x, y });
 }
 
 static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -914,7 +914,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
     int32_t x = w->windowPos.x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
     int32_t y = w->windowPos.y + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4;
 
-    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], x, y);
+    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], { x, y });
 
     y += 20;
 
@@ -970,7 +970,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
 
             // Draw action name
             set_format_arg(0, uint16_t, network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, y);
+            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { 10, y });
         }
         y += SCROLLABLE_ROW_HEIGHT;
     }
