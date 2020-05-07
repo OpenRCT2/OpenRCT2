@@ -167,7 +167,8 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* a
     gfx_draw_string_right(dpi, format, args, colour, { x, y });
 }
 
-void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
+void gfx_draw_string_right(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
 {
     DrawTextCompat(dpi, coords.x, coords.y, format, args, colour, TextAlignment::RIGHT);
 }
