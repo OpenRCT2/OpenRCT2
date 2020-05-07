@@ -1941,8 +1941,8 @@ STR_2728    :{UINT16} ч. {UINT16} мин.
 STR_2729    :{UINT16} ч. {UINT16} мин.
 STR_2730    :{UINT16} ч. {UINT16} мин.
 STR_2731    :{UINT16} ч. {UINT16} мин.
-STR_2732    :{COMMA16}фут
-STR_2733    :{COMMA16}метр
+STR_2732    :{COMMA32}фут
+STR_2733    :{COMMA32}метр
 STR_2734    :{COMMA16}миль/час
 STR_2735    :{COMMA16}км/ч
 STR_2736    :{MONTH}, год {COMMA16}

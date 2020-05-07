@@ -1948,8 +1948,8 @@ STR_2728    :{UINT16}tunti:{UINT16}min
 STR_2729    :{UINT16}tunti:{UINT16}minuuttia
 STR_2730    :{UINT16}tuntia:{UINT16}min
 STR_2731    :{UINT16}tuntia:{UINT16}minuuttias
-STR_2732    :{COMMA16}jalka
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}jalka
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Vuosi {COMMA16}

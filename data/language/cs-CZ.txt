@@ -1945,8 +1945,8 @@ STR_2728    :{UINT16}hod:{UINT16}min
 STR_2729    :{UINT16}hod:{UINT16}min
 STR_2730    :{UINT16}hod:{UINT16}min
 STR_2731    :{UINT16}hod:{UINT16}min
-STR_2732    :{COMMA16} stop
-STR_2733    :{COMMA16} metrů
+STR_2732    :{COMMA32} stop
+STR_2733    :{COMMA32} metrů
 STR_2734    :{COMMA16} mílí za hodinu
 STR_2735    :{COMMA16} km/h
 STR_2736    :{MONTH}, rok {COMMA16}
