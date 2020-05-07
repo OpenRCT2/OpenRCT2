@@ -951,7 +951,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     int32_t x, y, width;
     rct_widget* widget;
     rct_string_id stringId;
-
+    ScreenCoordsXY coords;
     window_draw_widgets(w, dpi);
 
     // Draw tabs
@@ -1007,7 +1007,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         x = w->windowPos.x + 3;
         y = w->windowPos.y + w->height - 13;
-
+        coords = {w->windowPos.x + 3 , w->windowPos.y + w->height - 13 };
         int32_t numSelected = _numSelectedObjectsForType[get_selected_object_type(w)];
         int32_t totalSelectable = object_entry_group_counts[get_selected_object_type(w)];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -1015,7 +1015,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
         set_format_arg(0, uint16_t, numSelected);
         set_format_arg(2, uint16_t, totalSelectable);
-        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, coords);
     }
 
     // Draw sort button text
