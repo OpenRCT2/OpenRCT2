@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -122,13 +122,13 @@ std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::Get
     return std::make_tuple(result0, result1, result2);
 }
 
-rct_string_id LocalisationService::GetObjectOverrideStringId(const char* identifier, uint8_t index) const
+rct_string_id LocalisationService::GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) const
 {
     if (_languageCurrent == nullptr)
     {
         return STR_NONE;
     }
-    return _languageCurrent->GetObjectOverrideStringId(identifier, index);
+    return _languageCurrent->GetObjectOverrideStringId(legacyIdentifier, index);
 }
 
 rct_string_id LocalisationService::AllocateObjectString(const std::string& target)

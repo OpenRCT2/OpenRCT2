@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -156,14 +156,14 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream* stream)
 // clang-format off
 void SmallSceneryObject::PerformFixes()
 {
-    std::string identifier = GetIdentifier();
+    auto identifier = GetLegacyIdentifier();
     static const rct_object_entry scgWalls = Object::GetScgWallsHeader();
 
     // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
-    if (String::Equals(identifier, "XXBBCL01") ||
-        String::Equals(identifier, "XXBBMD01") ||
-        String::Equals(identifier, "XXBBBR01") ||
-        String::Equals(identifier, "ARBASE2 "))
+    if (identifier == "XXBBCL01" ||
+        identifier == "XXBBMD01" ||
+        identifier == "XXBBBR01" ||
+        identifier == "ARBASE2 ")
     {
         SetPrimarySceneryGroup(&scgWalls);
 
@@ -171,48 +171,48 @@ void SmallSceneryObject::PerformFixes()
     }
 
     // ToonTowner's regular roofs. Put them in the Walls and Roofs group.
-    if (String::Equals(identifier, "TTRFTL02") ||
-        String::Equals(identifier, "TTRFTL03") ||
-        String::Equals(identifier, "TTRFTL04") ||
-        String::Equals(identifier, "TTRFTL07") ||
-        String::Equals(identifier, "TTRFTL08"))
+    if (identifier == "TTRFTL02" ||
+        identifier == "TTRFTL03" ||
+        identifier == "TTRFTL04" ||
+        identifier == "TTRFTL07" ||
+        identifier == "TTRFTL08")
     {
         SetPrimarySceneryGroup(&scgWalls);
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
-    if (String::Equals(identifier, "TTPIRF02") ||
-        String::Equals(identifier, "TTPIRF03") ||
-        String::Equals(identifier, "TTPIRF04") ||
-        String::Equals(identifier, "TTPIRF05") ||
-        String::Equals(identifier, "TTPIRF07") ||
-        String::Equals(identifier, "TTPIRF08") ||
-        String::Equals(identifier, "TTPRF09 ") ||
-        String::Equals(identifier, "TTPRF10 ") ||
-        String::Equals(identifier, "TTPRF11 "))
+    if (identifier == "TTPIRF02" ||
+        identifier == "TTPIRF03" ||
+        identifier == "TTPIRF04" ||
+        identifier == "TTPIRF05" ||
+        identifier == "TTPIRF07" ||
+        identifier == "TTPIRF08" ||
+        identifier == "TTPRF09 " ||
+        identifier == "TTPRF10 " ||
+        identifier == "TTPRF11 ")
     {
         static const rct_object_entry scgPirat = GetScgPiratHeader();
         SetPrimarySceneryGroup(&scgPirat);
     }
 
     // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
-    if (String::Equals(identifier, "TTRFWD01") ||
-        String::Equals(identifier, "TTRFWD02") ||
-        String::Equals(identifier, "TTRFWD03") ||
-        String::Equals(identifier, "TTRFWD04") ||
-        String::Equals(identifier, "TTRFWD05") ||
-        String::Equals(identifier, "TTRFWD06") ||
-        String::Equals(identifier, "TTRFWD07") ||
-        String::Equals(identifier, "TTRFWD08"))
+    if (identifier == "TTRFWD01" ||
+        identifier == "TTRFWD02" ||
+        identifier == "TTRFWD03" ||
+        identifier == "TTRFWD04" ||
+        identifier == "TTRFWD05" ||
+        identifier == "TTRFWD06" ||
+        identifier == "TTRFWD07" ||
+        identifier == "TTRFWD08")
     {
         static const rct_object_entry scgMine = GetScgMineHeader();
         SetPrimarySceneryGroup(&scgMine);
     }
 
     // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
-    if (String::Equals(identifier, "TTRFGL01") ||
-        String::Equals(identifier, "TTRFGL02") ||
-        String::Equals(identifier, "TTRFGL03"))
+    if (identifier == "TTRFGL01" ||
+        identifier == "TTRFGL02" ||
+        identifier == "TTRFGL03")
     {
         static const rct_object_entry scgAbstr = GetScgAbstrHeader();
         SetPrimarySceneryGroup(&scgAbstr);
