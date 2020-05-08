@@ -35,7 +35,22 @@
 #    include <filesystem>
 namespace fs = std::filesystem;
 #else
+#    ifdef _WIN32
+#        ifndef NOMINMAX
+#            define NOMINMAX
+#        endif
+#        ifndef WIN32_LEAN_AND_MEAN
+#            define WIN32_LEAN_AND_MEAN
+#        endif
+#        define BITMAP WIN32_BITMAP
+#    endif
 #    include <filesystem.hpp>
+#    ifdef _WIN32
+#        undef CreateDirectory
+#        undef CreateWindow
+#        undef GetMessage
+#        undef BITMAP
+#    endif
 namespace fs = ghc::filesystem;
 #endif
 
