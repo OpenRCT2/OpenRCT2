@@ -17,6 +17,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/RideAbortConstructionAction.hpp>
 #include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
 #include <openrct2/actions/TrackPlaceAction.hpp>
 #include <openrct2/actions/TrackRemoveAction.hpp>
@@ -638,7 +640,12 @@ static void window_ride_construction_close(rct_window* w)
     {
         int32_t previousPauseState = gGamePaused;
         gGamePaused = 0;
-        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+
+        // issue a ride abort construction action
+        auto gameAction = RideAbortConstructionAction(ride->id);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_APPLY);
+        GameActions::Execute(&gameAction);
+
         gGamePaused = previousPauseState;
     }
 }

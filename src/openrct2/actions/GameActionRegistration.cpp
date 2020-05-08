@@ -50,6 +50,7 @@
 #include "PlacePeepSpawnAction.hpp"
 #include "PlayerKickAction.hpp"
 #include "PlayerSetGroupAction.hpp"
+#include "RideAbortConstructionAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
 #include "RideEntranceExitPlaceAction.hpp"
@@ -131,6 +132,7 @@ namespace GameActions
         Register<RideSetAppearanceAction>();
         Register<RideSetVehicleAction>();
         Register<RideSetSettingAction>();
+        Register<RideAbortConstructionAction>();
         Register<ScenarioSetSettingAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();

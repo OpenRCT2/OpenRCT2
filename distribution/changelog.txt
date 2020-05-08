@@ -9,6 +9,7 @@
 - Change: [#11209] Warn when user is running OpenRCT2 through Wine.
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
 - Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
+- Fix: [#11632] Rides ids get freed at all times when the ride construction window is closed with empty ride in multiplayer.
 - Fix: [#1013] Negative length displayed in Ride window.
 - Fix: [#1148] Research funding dropdown not shown in finances window.
 - Fix: [#5451] Guests scream on every descent, no matter how small.

@@ -99,6 +99,7 @@ enum GAME_COMMAND
     GAME_COMMAND_GUEST_SET_FLAGS,              // GA
     GAME_COMMAND_SET_DATE,                     // GA
     GAME_COMMAND_CUSTOM,                       // GA
+    GAME_COMMAND_RIDE_ABORT_CONSTRUCTION,
     GAME_COMMAND_COUNT,
 };
 
