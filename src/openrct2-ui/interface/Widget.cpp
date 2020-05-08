@@ -638,7 +638,8 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_pressed(w, widgetIndex))
     {
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), ScreenCoordsXY(l, yMid - 5));
+        gfx_draw_string(
+            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), ScreenCoordsXY(l, yMid - 5));
     }
 
     // draw the text
@@ -790,7 +791,8 @@ static void widget_vscrollbar_draw(
     gfx_fill_rect_inset(
         dpi, l, b - (SCROLLBAR_WIDTH - 1), r, b, colour,
         ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, ScreenCoordsXY(l + 1, b - (SCROLLBAR_WIDTH - 1)));
+    gfx_draw_string(
+        dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, ScreenCoordsXY(l + 1, b - (SCROLLBAR_WIDTH - 1)));
 }
 
 /**
