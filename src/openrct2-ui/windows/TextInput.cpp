@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,6 +94,11 @@ static rct_windownumber calling_number = 0;
 static int32_t calling_widget = 0;
 static int32_t _maxInputLength;
 
+static std::string _title;
+static std::string _description;
+static std::function<void(const std::string_view&)> _callback;
+static std::function<void()> _cancelCallback;
+
 void window_text_input_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
     rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
@@ -144,16 +149,81 @@ void window_text_input_raw_open(
     window_text_input_widgets[WIDX_TITLE].text = title;
 
     // Save calling window details so that the information can be passed back to the correct window & widget
-    calling_class = call_w->classification;
-    calling_number = call_w->number;
-    calling_widget = call_widget;
+    if (call_w == nullptr)
+    {
+        calling_class = WC_NULL;
+        calling_number = 0;
+        calling_widget = 0;
+    }
+    else
+    {
+        calling_class = call_w->classification;
+        calling_number = call_w->number;
+        calling_widget = call_widget;
+    }
 
     gTextInput = context_start_text_input(text_input, maxLength);
 
     window_init_scroll_widgets(w);
-    w->colours[0] = call_w->colours[0];
-    w->colours[1] = call_w->colours[1];
-    w->colours[2] = call_w->colours[2];
+
+    if (call_w == nullptr)
+    {
+        w->colours[0] = COLOUR_GREY;
+        w->colours[1] = COLOUR_GREY;
+        w->colours[2] = COLOUR_GREY;
+    }
+    else
+    {
+        w->colours[0] = call_w->colours[0];
+        w->colours[1] = call_w->colours[1];
+        w->colours[2] = call_w->colours[2];
+    }
+}
+
+void window_text_input_open(
+    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
+    std::function<void(const std::string_view&)> callback, std::function<void()> cancelCallback)
+{
+    _title = title;
+    _description = description;
+    _callback = callback;
+    _cancelCallback = cancelCallback;
+
+    std::string szInitialValue(initialValue);
+    auto szDescription = _description.c_str();
+    std::memcpy(TextInputDescriptionArgs, &szDescription, sizeof(const char*));
+    maxLength = std::min(sizeof(text_input) - 1, maxLength);
+    window_text_input_raw_open(nullptr, 0, STR_STRING, STR_STRING, szInitialValue.c_str(), static_cast<int32_t>(maxLength));
+}
+
+static void window_text_input_execute_callback(bool hasValue)
+{
+    if (calling_class == WC_NULL)
+    {
+        if (hasValue)
+        {
+            if (_callback)
+            {
+                _callback(text_input);
+            }
+        }
+        else
+        {
+            if (_cancelCallback)
+            {
+                _cancelCallback();
+            }
+        }
+    }
+    else
+    {
+        auto calling_w = window_find_by_number(calling_class, calling_number);
+        if (calling_w != nullptr)
+        {
+            auto value = hasValue ? text_input : nullptr;
+            window_event_textinput_call(calling_w, calling_widget, value);
+        }
+    }
 }
 
 /**
@@ -161,26 +231,17 @@ void window_text_input_raw_open(
  */
 static void window_text_input_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_window* calling_w;
-
-    calling_w = window_find_by_number(calling_class, calling_number);
     switch (widgetIndex)
     {
         case WIDX_CANCEL:
         case WIDX_CLOSE:
             context_stop_text_input();
-            // Pass back the text that has been entered.
-            // ecx when zero means text input failed
-            if (calling_w != nullptr)
-                window_event_textinput_call(calling_w, calling_widget, nullptr);
+            window_text_input_execute_callback(false);
             window_close(w);
             break;
         case WIDX_OKAY:
             context_stop_text_input();
-            // Pass back the text that has been entered.
-            // ecx when nonzero means text input success
-            if (calling_w != nullptr)
-                window_event_textinput_call(calling_w, calling_widget, text_input);
+            window_text_input_execute_callback(true);
             window_close(w);
     }
 }
@@ -285,32 +346,24 @@ void window_text_input_key(rct_window* w, char keychar)
     if (keychar == '\r')
     {
         context_stop_text_input();
+        window_text_input_execute_callback(true);
         window_close(w);
-        // Window was closed and its unique_ptr is gone,
-        // don't try invalidating it.
-        w = window_find_by_number(calling_class, calling_number);
-        // Pass back the text that has been entered.
-        // ecx when nonzero means text input success
-        if (w)
-            window_event_textinput_call(w, calling_widget, text_input);
-
-        // Update the window pointer, as it may have been closed by textinput handler
-        w = window_find_by_number(calling_class, calling_number);
     }
-
-    if (w)
-        w->Invalidate();
+    w->Invalidate();
 }
 
 void window_text_input_periodic_update(rct_window* w)
 {
-    rct_window* calling_w = window_find_by_number(calling_class, calling_number);
-    // If the calling window is closed then close the text
-    // input window.
-    if (!calling_w)
+    if (calling_class != WC_NULL)
     {
-        window_close(w);
-        return;
+        auto calling_w = window_find_by_number(calling_class, calling_number);
+        // If the calling window is closed then close the text
+        // input window.
+        if (!calling_w)
+        {
+            window_close(w);
+            return;
+        }
     }
 
     // Used to blink the cursor.
@@ -326,6 +379,11 @@ static void window_text_input_close(rct_window* w)
     // Make sure that we take it out of the text input
     // mode otherwise problems may occur.
     context_stop_text_input();
+
+    _title = {};
+    _description = {};
+    _callback = {};
+    _cancelCallback = {};
 }
 
 static void window_text_input_invalidate(rct_window* w)
@@ -356,6 +414,9 @@ static void window_text_input_invalidate(rct_window* w)
     window_text_input_widgets[WIDX_CANCEL].bottom = height - 9;
 
     window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
+
+    // Set window title argument
+    set_format_arg(0, const char*, _title.c_str());
 }
 
 static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursorY)
