@@ -183,5 +183,7 @@ target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2m
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
 target_link_libraries(openrct2-cli openrct2 android stdc++ GLESv1_CM GLESv2)
 
+target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
+target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")

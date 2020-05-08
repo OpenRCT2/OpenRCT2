@@ -72,7 +72,7 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 void OpenGLFramebuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _id);
-    glViewport(0, 0, (GLsizei)_width, (GLsizei)_height);
+    glViewport(0, 0, static_cast<GLsizei>(_width), static_cast<GLsizei>(_height));
 }
 
 void OpenGLFramebuffer::BindDraw() const

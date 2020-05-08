@@ -198,12 +198,13 @@ static ScenerySelection window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_
  * Was part of 0x006DFA00
  * The same code repeated five times for every scenery entry type
  */
-static void init_scenery_entry(rct_scenery_entry* sceneryEntry, const ScenerySelection& selection, uint8_t sceneryTabId)
+static void init_scenery_entry(
+    rct_scenery_entry* sceneryEntry, const ScenerySelection& selection, ObjectEntryIndex sceneryTabId)
 {
     Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
     if (scenery_is_invented(selection) || gCheatsIgnoreResearchStatus)
     {
-        if (sceneryTabId != 0xFF)
+        if (sceneryTabId < SCENERY_WINDOW_TABS)
         {
             for (int32_t i = 0; i < SCENERY_ENTRIES_PER_TAB; i++)
             {
@@ -278,7 +279,7 @@ void window_scenery_init()
     }
 
     // small scenery
-    for (uint16_t sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -288,7 +289,7 @@ void window_scenery_init()
     }
 
     // large scenery
-    for (uint16_t sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_large_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -298,7 +299,7 @@ void window_scenery_init()
     }
 
     // walls
-    for (uint16_t sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_wall_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -308,7 +309,7 @@ void window_scenery_init()
     }
 
     // banners
-    for (uint16_t sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_banner_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -318,7 +319,7 @@ void window_scenery_init()
     }
 
     // path bits
-    for (uint16_t sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
     {
         rct_scenery_entry* sceneryEntry = get_footpath_item_entry(sceneryId);
         if (sceneryEntry == nullptr)
@@ -705,8 +706,7 @@ static void window_scenery_mousedown(rct_window* w, rct_widgetindex widgetIndex,
         w->Invalidate();
         gSceneryPlaceCost = MONEY32_UNDEFINED;
 
-        // HACK: for 3210 Ensures that window_scenery_update_scroll gets called one time
-        w->max_height = 60;
+        window_scenery_update_scroll(w);
     }
 }
 
@@ -721,15 +721,15 @@ static void window_scenery_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
 
     if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
     {
-        gWindowSceneryPrimaryColour = (uint8_t)dropdownIndex;
+        gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
     }
     else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
     {
-        gWindowScenerySecondaryColour = (uint8_t)dropdownIndex;
+        gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
     }
     else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
     {
-        gWindowSceneryTertiaryColour = (uint8_t)dropdownIndex;
+        gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
     }
 
     w->Invalidate();
@@ -1182,7 +1182,8 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             w->windowPos.y + w->height - 13);
     }
 
-    set_format_arg(0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE);
+    set_format_arg(
+        0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
     gfx_draw_string_left_clipped(
         dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 3, w->windowPos.y + w->height - 13,
         w->width - 19);

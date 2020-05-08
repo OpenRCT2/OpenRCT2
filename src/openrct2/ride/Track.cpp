@@ -969,7 +969,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
 
     if (it->first == nullptr)
     {
-        if (!track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+        if (!track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
             return false;
 
         it->current.x = trackBeginEnd.begin_x;
@@ -992,7 +992,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
         it->firstIteration = false;
         it->last = it->current;
 
-        if (track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+        if (track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
         {
             it->current.x = trackBeginEnd.end_x;
             it->current.y = trackBeginEnd.end_y;
@@ -1048,7 +1048,7 @@ void track_get_back(CoordsXYE* input, CoordsXYE* output)
     lastTrack = *input;
     do
     {
-        result = track_block_get_previous(lastTrack.x, lastTrack.y, lastTrack.element, &currentTrack);
+        result = track_block_get_previous(lastTrack, &currentTrack);
         if (result)
         {
             lastTrack.x = currentTrack.begin_x;
@@ -1133,7 +1133,7 @@ int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
 
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 {
-    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+    if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
     {
         if (isInverted)
         {

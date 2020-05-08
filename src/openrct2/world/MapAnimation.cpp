@@ -53,7 +53,7 @@ void map_animation_create(int32_t type, const CoordsXYZ& loc)
         if (_mapAnimations.size() < MAX_ANIMATED_OBJECTS)
         {
             // Create new animation
-            _mapAnimations.push_back({ (uint8_t)type, loc });
+            _mapAnimations.push_back({ static_cast<uint8_t>(type), loc });
         }
         else
         {
@@ -202,7 +202,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                 for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->generic.next_in_quadrant)
                 {
                     sprite = get_sprite(spriteIdx);
-                    if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
+                    if (!sprite->IsPeep())
                         continue;
 
                     peep = &sprite->peep;

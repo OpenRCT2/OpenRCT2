@@ -111,7 +111,7 @@ public:
         }
 
         // Check that position is valid
-        if (_position >= (int32_t)_sequence->NumCommands)
+        if (_position >= static_cast<int32_t>(_sequence->NumCommands))
         {
             _position = 0;
             return false;
@@ -173,7 +173,7 @@ public:
 
     void Seek(int32_t targetPosition) override
     {
-        if (targetPosition < 0 || targetPosition >= (int32_t)_sequence->NumCommands)
+        if (targetPosition < 0 || targetPosition >= static_cast<int32_t>(_sequence->NumCommands))
         {
             throw std::runtime_error("Invalid position.");
         }
@@ -222,7 +222,7 @@ private:
     void IncrementPosition()
     {
         _position++;
-        if (_position >= (int32_t)_sequence->NumCommands)
+        if (_position >= static_cast<int32_t>(_sequence->NumCommands))
         {
             _position = 0;
         }
@@ -250,7 +250,7 @@ private:
             case TITLE_SCRIPT_WAIT:
                 // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms /
                 // 25 ms/tick
-                _waitCounter = std::max<int32_t>(1, command->Milliseconds / (uint32_t)GAME_UPDATE_TIME_MS);
+                _waitCounter = std::max<int32_t>(1, command->Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS));
                 break;
             case TITLE_SCRIPT_LOCATION:
             {
@@ -280,7 +280,7 @@ private:
                 TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
-                    loadSuccess = LoadParkFromStream((IStream*)parkHandle->Stream, parkHandle->HintPath);
+                    loadSuccess = LoadParkFromStream(static_cast<IStream*>(parkHandle->Stream), parkHandle->HintPath);
                     TitleSequenceCloseParkHandle(parkHandle);
                 }
                 if (!loadSuccess)

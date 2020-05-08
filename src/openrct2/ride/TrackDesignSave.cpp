@@ -141,7 +141,7 @@ static int32_t tile_element_get_total_element_count(TileElement* tileElement)
             {
                 tile++;
                 elementCount++;
-            } while (tile->x_offset != (int16_t)(uint16_t)0xFFFF);
+            } while (tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)));
             return elementCount;
 
         default:
@@ -226,6 +226,12 @@ static void track_design_save_add_large_scenery(const CoordsXY& loc, LargeScener
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t direction, sequence;
+
+    if (tileElement == nullptr)
+    {
+        log_warning("Null tile element");
+        return;
+    }
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
@@ -403,6 +409,12 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t direction, sequence;
+
+    if (tileElement == nullptr)
+    {
+        log_warning("Null tile element");
+        return;
+    }
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);

@@ -447,17 +447,20 @@ static void sub_6A4101(
             uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
 
-            set_format_arg(0, uint32_t, 0);
-            set_format_arg(4, uint32_t, 0);
+            // This is required due to scrolling_test_setup doing a memcmp of another set
+            // of args and see if it matches these args
+            Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+
+            auto ft = Formatter::Common();
 
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-                ride->FormatNameTo(gCommonFormatArgs + 2);
+                ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
+                ride->FormatNameTo(ft);
             }
             else
             {
-                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
+                ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
             }
             if (gConfigGeneral.upper_case_banners)
             {
@@ -720,15 +723,18 @@ static void sub_6A3F61(
                     {
                         case PATH_BIT_DRAW_TYPE_LIGHTS:
                             path_bit_lights_paint(
-                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_BINS:
                             path_bit_bins_paint(
-                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_BENCHES:
                             path_bit_benches_paint(
-                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
                             path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);

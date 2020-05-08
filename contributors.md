@@ -86,6 +86,7 @@ The following people are not part of the development team, but have been contrib
 * Anton Scharnowski (scrapes) - Added Scenery Scatter Options Window.
 * Chad Ian Anderson (pizza2004) - Added New Game option, bug fixes, misc.
 * Peter Ryszkiewicz (pRizz) - Added horizontal grid lines to finance charts.
+* Hudson Oliveira (hdpoliveira) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -138,6 +139,9 @@ The following people are not part of the development team, but have been contrib
 * Kevin Laframboise (klaframboise)
 * Tushar Sariya (TusharSariya)
 * (WantDiscussion)
+* Tomáš Žilínek (TomasZilinek)
+* Mustapha Elghoul (mustaphaelghoul)
+* Tyler Leamon (tylerleamon)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -175,7 +179,7 @@ The following people are not part of the development team, but have been contrib
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
 * Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
-* Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
+* Japanese - Aaron van Geffen (AaronVanGeffen), Haruna Chinzei, Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)

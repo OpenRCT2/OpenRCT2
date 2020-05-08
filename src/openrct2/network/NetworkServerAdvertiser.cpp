@@ -227,7 +227,7 @@ private:
         json_t* jsonStatus = json_object_get(jsonRoot, "status");
         if (json_is_integer(jsonStatus))
         {
-            int32_t status = (int32_t)json_integer_value(jsonStatus);
+            int32_t status = static_cast<int32_t>(json_integer_value(jsonStatus));
             if (status == MASTER_SERVER_STATUS_OK)
             {
                 json_t* jsonToken = json_object_get(jsonRoot, "token");
@@ -264,7 +264,7 @@ private:
         json_t* jsonStatus = json_object_get(jsonRoot, "status");
         if (json_is_integer(jsonStatus))
         {
-            int32_t status = (int32_t)json_integer_value(jsonStatus);
+            int32_t status = static_cast<int32_t>(json_integer_value(jsonStatus));
             if (status == MASTER_SERVER_STATUS_OK)
             {
                 // Master server has successfully updated our server status

@@ -60,8 +60,7 @@ public:
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-        int32_t x = _loc.x, y = _loc.y, z = _loc.z;
-        sub_6C683D(&x, &y, &z, _loc.direction, _trackType, _newColourScheme, nullptr, 4);
+        sub_6C683D(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
 
         return res;
     }

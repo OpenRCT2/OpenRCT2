@@ -307,7 +307,7 @@ static uint32_t get_surface_image(
     const paint_session* session, uint8_t index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
-    auto image = (uint32_t)SPR_NONE;
+    auto image = static_cast<uint32_t>(SPR_NONE);
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
@@ -323,7 +323,7 @@ static uint32_t get_surface_image(
 
 static uint32_t get_surface_pattern(uint8_t index, int32_t offset)
 {
-    auto image = (uint32_t)SPR_NONE;
+    auto image = static_cast<uint32_t>(SPR_NONE);
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
@@ -386,11 +386,22 @@ static uint32_t get_edge_image(uint8_t index, uint8_t type)
     return result;
 }
 
-static uint32_t get_tunnel_image(uint8_t index, uint8_t type)
+static uint32_t get_tunnel_image(ObjectEntryIndex index, uint8_t type)
 {
-    static constexpr uint32_t offsets[] = {
-        36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 36, 48, 60, 72,
-    };
+    static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
+                                                             36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
+
+    bool hasDoors = false;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, index);
+    if (obj != nullptr)
+    {
+        auto tobj = static_cast<TerrainEdgeObject*>(obj);
+        hasDoors = tobj->HasDoors;
+    }
+
+    if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
+        type = TUNNEL_0;
 
     uint32_t result = 0;
     if (type < std::size(offsets))
@@ -954,13 +965,13 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     tile_descriptor selfDescriptor = {
         TileCoordsXY(base),
         tileElement,
-        (uint8_t)terrain_type,
+        static_cast<uint8_t>(terrain_type),
         surfaceShape,
         {
-            (uint8_t)(height / 16 + cornerHeights.top),
-            (uint8_t)(height / 16 + cornerHeights.right),
-            (uint8_t)(height / 16 + cornerHeights.bottom),
-            (uint8_t)(height / 16 + cornerHeights.left),
+            static_cast<uint8_t>(height / 16 + cornerHeights.top),
+            static_cast<uint8_t>(height / 16 + cornerHeights.right),
+            static_cast<uint8_t>(height / 16 + cornerHeights.bottom),
+            static_cast<uint8_t>(height / 16 + cornerHeights.left),
         },
     };
 
@@ -971,8 +982,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     {
         const LocationXY16& offset = viewport_surface_paint_data[i][rotation];
         const CoordsXY position = {
-            (int32_t)(base.x + offset.x),
-            (int32_t)(base.y + offset.y),
+            static_cast<int32_t>(base.x + offset.x),
+            static_cast<int32_t>(base.y + offset.y),
         };
 
         tile_descriptor& descriptor = tileDescriptors[i + 1];

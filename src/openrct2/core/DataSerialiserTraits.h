@@ -113,7 +113,7 @@ template<> struct DataSerializerTraits<std::string>
 {
     static void encode(IStream* stream, const std::string& str)
     {
-        uint16_t len = (uint16_t)str.size();
+        uint16_t len = static_cast<uint16_t>(str.size());
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
         stream->WriteArray(str.c_str(), len);

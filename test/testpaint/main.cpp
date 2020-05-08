@@ -522,7 +522,7 @@ int main(int argc, char* argv[])
 
         if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
-            testCase.trackTypes.push_back(RideConstructionDefaultTrackType[rideType]);
+            testCase.trackTypes.push_back(RideTypeDescriptors[rideType].StartTrackPiece);
         }
         else
         {

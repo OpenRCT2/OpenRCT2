@@ -453,13 +453,14 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
         int32_t y = (widget->top + widget->bottom) / 2 + w->windowPos.y - 3;
 
+        auto ft = Formatter::Common();
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
-            set_format_arg(0, rct_string_id, ScenarioOriginStringIds[i]);
+            ft.Add<rct_string_id>(ScenarioOriginStringIds[i]);
         }
         else
         { // old-style
-            set_format_arg(0, rct_string_id, ScenarioCategoryStringIds[i]);
+            ft.Add<rct_string_id>(ScenarioCategoryStringIds[i]);
         }
         gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, COLOUR_AQUAMARINE);
     }
@@ -490,27 +491,31 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         const utf8* pathPtr = path;
         gfx_draw_string_left(
-            dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->windowPos.x + 3, w->windowPos.y + w->height - 3 - 11);
+            dpi, STR_STRING, static_cast<void*>(&pathPtr), w->colours[1], w->windowPos.x + 3,
+            w->windowPos.y + w->height - 3 - 11);
     }
 
     // Scenario name
     int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
     int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, scenario->name);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(scenario->name);
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);
     y += 15;
 
     // Scenario details
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, scenario->details);
+    ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(scenario->details);
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
 
     // Scenario objective
-    set_format_arg(0, rct_string_id, ObjectiveNames[scenario->objective_type]);
-    set_format_arg(2, int16_t, scenario->objective_arg_3);
-    set_format_arg(4, int16_t, date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
-    set_format_arg(6, int32_t, scenario->objective_arg_2);
+    ft = Formatter::Common();
+    ft.Add<rct_string_id>(ObjectiveNames[scenario->objective_type]);
+    ft.Add<int16_t>(scenario->objective_arg_3);
+    ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+    ft.Add<int32_t>(scenario->objective_arg_2);
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
     // Scenario score
@@ -522,9 +527,10 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             completedByName = scenario->highscore->name;
         }
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char*, completedByName);
-        set_format_arg(2 + sizeof(const char*), money32, scenario->highscore->company_value);
+        ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(completedByName);
+        ft.Add<money32>(scenario->highscore->company_value);
         y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
     }
 }
@@ -587,10 +593,11 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 // Draw scenario name
                 char buffer[64];
                 safe_strcpy(buffer, scenario->name, sizeof(buffer));
-                rct_string_id format = isDisabled ? (rct_string_id)STR_STRINGID
+                rct_string_id format = isDisabled ? static_cast<rct_string_id>(STR_STRINGID)
                                                   : (isHighlighted ? highlighted_format : unhighlighted_format);
-                set_format_arg(0, rct_string_id, STR_STRING);
-                set_format_arg(2, char*, buffer);
+                auto ft = Formatter::Common();
+                ft.Add<rct_string_id>(STR_STRING);
+                ft.Add<char*>(buffer);
                 colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
                 if (isDisabled)
                 {
@@ -611,9 +618,10 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                         completedByName = scenario->highscore->name;
                     }
                     safe_strcpy(buffer, completedByName, 64);
-                    set_format_arg(0, rct_string_id, STR_COMPLETED_BY);
-                    set_format_arg(2, rct_string_id, STR_STRING);
-                    set_format_arg(4, char*, buffer);
+                    ft = Formatter::Common();
+                    ft.Add<rct_string_id>(STR_COMPLETED_BY);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<char*>(buffer);
                     gfx_draw_string_centred(
                         dpi, format, wide ? 270 : 210, y + scenarioTitleHeight + 1, COLOUR_BLACK, gCommonFormatArgs);
                 }

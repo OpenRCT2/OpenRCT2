@@ -546,7 +546,7 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT,
         dropdownWidget->right - dropdownWidget->left - 3);
     dropdown_set_checked(gClimate, true);
@@ -787,7 +787,7 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
         x = w->windowPos.x + w->widgets[WIDX_INTEREST_RATE].left + 1;
         y = w->windowPos.y + w->widgets[WIDX_INTEREST_RATE].top;
 
-        int16_t interestRate = std::clamp<int16_t>((int16_t)gBankLoanInterestRate, INT16_MIN, INT16_MAX);
+        int16_t interestRate = std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX);
         gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, x, y);
     }
 }
@@ -1245,7 +1245,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
                 dropdownWidget->bottom - dropdownWidget->top - 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3,
                 dropdownWidget->right - dropdownWidget->left - 3);
 
@@ -1284,7 +1284,7 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
             break;
         }
         case WIDX_CLIMATE_DROPDOWN:
-            if (gClimate != (uint8_t)dropdownIndex)
+            if (gClimate != static_cast<uint8_t>(dropdownIndex))
             {
                 auto gameAction = ClimateSetAction(dropdownIndex);
                 GameActions::Execute(&gameAction);

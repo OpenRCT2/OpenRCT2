@@ -33,6 +33,7 @@ extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
+extern bool gCheatsAllowTrackPlaceInvalidHeights;
 
 enum class CheatType : int32_t
 {
@@ -85,6 +86,7 @@ enum class CheatType : int32_t
     EnableAllDrawableTrackPieces,
     CreateDucks,
     RemoveDucks,
+    AllowTrackPlaceInvalidHeights,
     Count,
 };
 
@@ -96,7 +98,7 @@ enum
     GUEST_PARAMETER_THIRST,
     GUEST_PARAMETER_NAUSEA,
     GUEST_PARAMETER_NAUSEA_TOLERANCE,
-    GUEST_PARAMETER_BATHROOM,
+    GUEST_PARAMETER_TOILET,
     GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY
 };
 

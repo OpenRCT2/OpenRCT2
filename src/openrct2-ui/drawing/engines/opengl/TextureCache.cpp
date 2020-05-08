@@ -86,7 +86,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
     // Load new texture.
     unique_lock lock(_mutex);
 
-    index = (uint32_t)_textureCache.size();
+    index = static_cast<uint32_t>(_textureCache.size());
 
     AtlasTextureInfo info = LoadImageTexture(image);
 
@@ -105,7 +105,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
     {
         shared_lock lock(_mutex);
 
-        std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t*)&glyphId.Palette);
+        std::copy_n(palette, sizeof(glyphId.Palette), reinterpret_cast<uint8_t*>(&glyphId.Palette));
 
         auto kvp = _glyphTextureMap.find(glyphId);
         if (kvp != _glyphTextureMap.end())
@@ -271,13 +271,13 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     }
 
     // If there is no such atlas, then create a new one
-    if ((int32_t)_atlases.size() >= _atlasesTextureIndicesLimit)
+    if (static_cast<int32_t>(_atlases.size()) >= _atlasesTextureIndicesLimit)
     {
         throw std::runtime_error("more texture atlases required, but device limit reached!");
     }
 
     auto atlasIndex = static_cast<int32_t>(_atlases.size());
-    int32_t atlasSize = powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
+    int32_t atlasSize = powf(2, static_cast<float>(Atlas::CalculateImageSizeOrder(imageWidth, imageHeight)));
 
 #    ifdef DEBUG
     log_verbose("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);

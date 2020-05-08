@@ -26,7 +26,7 @@
 
 #define PEEP_HUNGER_WARNING_THRESHOLD 25
 #define PEEP_THIRST_WARNING_THRESHOLD 25
-#define PEEP_BATHROOM_WARNING_THRESHOLD 28
+#define PEEP_TOILET_WARNING_THRESHOLD 28
 #define PEEP_LITTER_WARNING_THRESHOLD 23
 #define PEEP_DISGUST_WARNING_THRESHOLD 22
 #define PEEP_VANDALISM_WARNING_THRESHOLD 15
@@ -38,12 +38,13 @@
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
 #define PEEP_MAX_HUNGER 255
-#define PEEP_MAX_BATHROOM 255
+#define PEEP_MAX_TOILET 255
 #define PEEP_MAX_NAUSEA 255
 #define PEEP_MAX_THIRST 255
 
 constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
+class Formatter;
 struct TileElement;
 struct Ride;
 
@@ -79,7 +80,7 @@ enum PeepThoughtType : uint8_t
     PEEP_THOUGHT_TYPE_TIRED = 19,             // "I'm tired"
     PEEP_THOUGHT_TYPE_HUNGRY = 20,            // "I'm hungry"
     PEEP_THOUGHT_TYPE_THIRSTY = 21,           // "I'm thirsty"
-    PEEP_THOUGHT_TYPE_BATHROOM = 22,          // "I need to go to the bathroom"
+    PEEP_THOUGHT_TYPE_TOILET = 22,            // "I need to go to the toilet"
     PEEP_THOUGHT_TYPE_CANT_FIND = 23,         // "I can't find X"
     PEEP_THOUGHT_TYPE_NOT_PAYING = 24,        // "I'm not paying that much to use X"
     PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING = 25, // "I'm not going on X while it's raining"
@@ -361,7 +362,7 @@ enum PeepFlags : uint32_t
     PEEP_FLAGS_LITTER = (1 << 9),     // Makes the peep throw litter
     PEEP_FLAGS_LOST = (1 << 10),      // Makes the peep feel lost (animation triggered)
     PEEP_FLAGS_HUNGER = (1 << 11),    // Makes the peep become hungry quicker
-    PEEP_FLAGS_BATHROOM = (1 << 12),  // Makes the peep want to go to the bathroom
+    PEEP_FLAGS_TOILET = (1 << 12),    // Makes the peep want to go to the toilet
     PEEP_FLAGS_CROWDED = (1 << 13),   // The peep will start feeling crowded
     PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
     PEEP_FLAGS_NAUSEA = (1 << 15),    // Makes the peep feel sick (e.g. after an extreme ride)
@@ -487,7 +488,7 @@ enum PeepSpriteType : uint8_t
     PEEP_SPRITE_TYPE_HEAD_DOWN = 26,
     PEEP_SPRITE_TYPE_NAUSEOUS = 27,
     PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 28,
-    PEEP_SPRITE_TYPE_REQUIRE_BATHROOM = 29,
+    PEEP_SPRITE_TYPE_REQUIRE_TOILET = 29,
     PEEP_SPRITE_TYPE_HAT = 30,
     PEEP_SPRITE_TYPE_HOT_DOG = 31,
     PEEP_SPRITE_TYPE_TENTACLE = 32,
@@ -720,7 +721,9 @@ public: // Peep
     void RemoveFromQueue();
     void RemoveFromRide();
     void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void FormatActionTo(Formatter&) const;
     void FormatActionTo(void* args) const;
+    void FormatNameTo(Formatter&) const;
     size_t FormatNameTo(void* args) const;
     std::string GetName() const;
     bool SetName(const std::string_view& value);

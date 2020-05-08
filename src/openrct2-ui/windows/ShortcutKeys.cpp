@@ -80,91 +80,131 @@ static rct_window_event_list window_shortcut_events = {
     window_shortcut_scrollpaint
 };
 
-const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
-    STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW,
-    STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,
-    STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE,
-    STR_SHORTCUT_PAUSE_GAME,
-    STR_SHORTCUT_ZOOM_VIEW_OUT,
-    STR_SHORTCUT_ZOOM_VIEW_IN,
-    STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE,
-    STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE,
-    STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT,
-    STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE,
-    STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE,
-    STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE,
-    STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE,
-    STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE,
-    STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE,
-    STR_SHORTCUT_INVISIBLE_PEOPLE_TOGGLE,
-    STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE,
-    STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE,
-    STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE,
-    STR_SHORTCUT_ADJUST_LAND,
-    STR_SHORTCUT_ADJUST_WATER,
-    STR_SHORTCUT_BUILD_SCENERY,
-    STR_SHORTCUT_BUILD_PATHS,
-    STR_SHORTCUT_BUILD_NEW_RIDE,
-    STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION,
-    STR_SHORTCUT_SHOW_RESEARCH_INFORMATION,
-    STR_SHORTCUT_SHOW_RIDES_LIST,
-    STR_SHORTCUT_SHOW_PARK_INFORMATION,
-    STR_SHORTCUT_SHOW_GUEST_LIST,
-    STR_SHORTCUT_SHOW_STAFF_LIST,
-    STR_SHORTCUT_SHOW_RECENT_MESSAGES,
-    STR_SHORTCUT_SHOW_MAP,
-    STR_SHORTCUT_SCREENSHOT,
-    STR_SHORTCUT_REDUCE_GAME_SPEED,
-    STR_SHORTCUT_INCREASE_GAME_SPEED,
-    STR_SHORTCUT_OPEN_CHEATS_WINDOW,
-    STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS,
-    STR_SHORTCUT_SCROLL_MAP_UP,
-    STR_SHORTCUT_SCROLL_MAP_LEFT,
-    STR_SHORTCUT_SCROLL_MAP_DOWN,
-    STR_SHORTCUT_SCROLL_MAP_RIGHT,
-    STR_SEND_MESSAGE,
-    STR_SHORTCUT_QUICK_SAVE_GAME,
-    STR_SHORTCUT_SHOW_OPTIONS,
-    STR_SHORTCUT_MUTE_SOUND,
-    STR_SHORTCUT_WINDOWED_MODE_TOGGLE,
-    STR_SHORTCUT_SHOW_MULTIPLAYER,
-    STR_SHORTCUT_PAINT_ORIGINAL,
-    STR_SHORTCUT_DEBUG_PAINT_TOGGLE,
-    STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT,
-    STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT,
-    STR_LOAD_GAME,
-    STR_SHORTCUT_CLEAR_SCENERY,
-    STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,
-    STR_SHORTCUT_VIEW_CLIPPING,
-    STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
-    STR_SHORTCUT_OPEN_TILE_INSPECTOR,
-    STR_ADVANCE_TO_NEXT_TICK,
-    STR_SHORTCUT_OPEN_SCENERY_PICKER,
-    STR_SHORTCUT_SCALE_UP,
-    STR_SHORTCUT_SCALE_DOWN,
-    STR_SHORTCUT_INSERT_CORRPUT_ELEMENT,
-    STR_SHORTCUT_COPY_ELEMENT,
-    STR_SHORTCUT_PASTE_ELEMENT,
-    STR_SHORTCUT_REMOVE_ELEMENT,
-    STR_SHORTCUT_MOVE_ELEMENT_UP,
-    STR_SHORTCUT_MOVE_ELEMENT_DOWN,
-    STR_SHORTCUT_INCREASE_X_COORD,
-    STR_SHORTCUT_DECREASE_X_COORD,
-    STR_SHORTCUT_INCREASE_Y_COORD,
-    STR_SHORTCUT_DECREASE_Y_COORD,
-    STR_SHORTCUT_INCREASE_ELEM_HEIGHT,
-    STR_SHORTCUT_DECREASE_ELEM_HEIGHT,
+struct ShortcutStringPair
+{
+    KeyboardShortcut ShortcutId;
+    rct_string_id StringId;
+};
+
+static const ShortcutStringPair ShortcutList[] =
+{
+    { SHORTCUT_CLOSE_TOP_MOST_WINDOW,                 STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW },
+    { SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,            STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS },
+    { SHORTCUT_CANCEL_CONSTRUCTION_MODE,              STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE },
+    { SHORTCUT_REMOVE_TOP_BOTTOM_TOOLBAR_TOGGLE,      STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_PAUSE_GAME,                            STR_SHORTCUT_PAUSE_GAME },
+    { SHORTCUT_REDUCE_GAME_SPEED,                     STR_SHORTCUT_REDUCE_GAME_SPEED },
+    { SHORTCUT_INCREASE_GAME_SPEED,                   STR_SHORTCUT_INCREASE_GAME_SPEED },
+    { SHORTCUT_LOAD_GAME,                             STR_LOAD_GAME },
+    { SHORTCUT_QUICK_SAVE_GAME,                       STR_SHORTCUT_QUICK_SAVE_GAME },
+    { SHORTCUT_SHOW_OPTIONS,                          STR_SHORTCUT_SHOW_OPTIONS },
+    { SHORTCUT_SCREENSHOT,                            STR_SHORTCUT_SCREENSHOT },
+    { SHORTCUT_MUTE_SOUND,                            STR_SHORTCUT_MUTE_SOUND },
+    { SHORTCUT_OPEN_CHEAT_WINDOW,                     STR_SHORTCUT_OPEN_CHEATS_WINDOW },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_ZOOM_VIEW_OUT,                         STR_SHORTCUT_ZOOM_VIEW_OUT },
+    { SHORTCUT_ZOOM_VIEW_IN,                          STR_SHORTCUT_ZOOM_VIEW_IN },
+    { SHORTCUT_ROTATE_VIEW_CLOCKWISE,                 STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE },
+    { SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE,             STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE },
+    { SHORTCUT_SHOW_MAP,                              STR_SHORTCUT_SHOW_MAP },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_CLEAR_SCENERY,                         STR_SHORTCUT_CLEAR_SCENERY },
+    { SHORTCUT_ADJUST_LAND,                           STR_SHORTCUT_ADJUST_LAND },
+    { SHORTCUT_ADJUST_WATER,                          STR_SHORTCUT_ADJUST_WATER },
+    { SHORTCUT_BUILD_SCENERY,                         STR_SHORTCUT_BUILD_SCENERY },
+    { SHORTCUT_BUILD_PATHS,                           STR_SHORTCUT_BUILD_PATHS },
+    { SHORTCUT_BUILD_NEW_RIDE,                        STR_SHORTCUT_BUILD_NEW_RIDE },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_SHOW_FINANCIAL_INFORMATION,            STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION },
+    { SHORTCUT_SHOW_RESEARCH_INFORMATION,             STR_SHORTCUT_SHOW_RESEARCH_INFORMATION },
+    { SHORTCUT_SHOW_RIDES_LIST,                       STR_SHORTCUT_SHOW_RIDES_LIST },
+    { SHORTCUT_SHOW_PARK_INFORMATION,                 STR_SHORTCUT_SHOW_PARK_INFORMATION },
+    { SHORTCUT_SHOW_GUEST_LIST,                       STR_SHORTCUT_SHOW_GUEST_LIST },
+    { SHORTCUT_SHOW_STAFF_LIST,                       STR_SHORTCUT_SHOW_STAFF_LIST },
+    { SHORTCUT_SHOW_RECENT_MESSAGES,                  STR_SHORTCUT_SHOW_RECENT_MESSAGES },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_SHOW_MULTIPLAYER,                      STR_SHORTCUT_SHOW_MULTIPLAYER },
+    { SHORTCUT_OPEN_CHAT_WINDOW,                      STR_SEND_MESSAGE },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_UNDERGROUND_VIEW_TOGGLE,               STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE },
+    { SHORTCUT_REMOVE_BASE_LAND_TOGGLE,               STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE },
+    { SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE,           STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE },
+    { SHORTCUT_SEE_THROUGH_RIDES_TOGGLE,              STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE },
+    { SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE,            STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE },
+    { SHORTCUT_SEE_THROUGH_PATHS_TOGGLE,              STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE },
+    { SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE,             STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE },
+    { SHORTCUT_INVISIBLE_PEOPLE_TOGGLE,               STR_SHORTCUT_INVISIBLE_PEOPLE_TOGGLE },
+    { SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE,           STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE },
+    { SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE,    STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE },
+    { SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE,          STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE },
+    { SHORTCUT_VIEW_CLIPPING,                         STR_SHORTCUT_VIEW_CLIPPING },
+    { SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,          STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE },
+    { SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,              STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_SCENERY_PICKER,                        STR_SHORTCUT_OPEN_SCENERY_PICKER },
+    { SHORTCUT_ROTATE_CONSTRUCTION_OBJECT,            STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT },
+    { SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT,           STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT },
+    { SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT,          STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT },
+    { SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT,   STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT },
+    { SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN,          STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN },
+    { SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP,            STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP },
+    { SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE,   STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE },
+    { SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT,           STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT },
+    { SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT,          STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT },
+    { SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK,      STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK },
+    { SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK,          STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK },
+    { SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT,       STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT },
+    { SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT,    STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_SCROLL_MAP_UP,                         STR_SHORTCUT_SCROLL_MAP_UP },
+    { SHORTCUT_SCROLL_MAP_LEFT,                       STR_SHORTCUT_SCROLL_MAP_LEFT },
+    { SHORTCUT_SCROLL_MAP_DOWN,                       STR_SHORTCUT_SCROLL_MAP_DOWN },
+    { SHORTCUT_SCROLL_MAP_RIGHT,                      STR_SHORTCUT_SCROLL_MAP_RIGHT },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_WINDOWED_MODE_TOGGLE,                  STR_SHORTCUT_WINDOWED_MODE_TOGGLE },
+    { SHORTCUT_SCALE_UP,                              STR_SHORTCUT_SCALE_UP },
+    { SHORTCUT_SCALE_DOWN,                            STR_SHORTCUT_SCALE_DOWN },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_TILE_INSPECTOR,                        STR_SHORTCUT_OPEN_TILE_INSPECTOR },
+    { SHORTCUT_INSERT_CORRUPT_ELEMENT,                STR_SHORTCUT_INSERT_CORRPUT_ELEMENT },
+    { SHORTCUT_COPY_ELEMENT,                          STR_SHORTCUT_COPY_ELEMENT },
+    { SHORTCUT_PASTE_ELEMENT,                         STR_SHORTCUT_PASTE_ELEMENT },
+    { SHORTCUT_REMOVE_ELEMENT,                        STR_SHORTCUT_REMOVE_ELEMENT },
+    { SHORTCUT_MOVE_ELEMENT_UP,                       STR_SHORTCUT_MOVE_ELEMENT_UP },
+    { SHORTCUT_MOVE_ELEMENT_DOWN,                     STR_SHORTCUT_MOVE_ELEMENT_DOWN },
+    { SHORTCUT_INCREASE_X_COORD,                      STR_SHORTCUT_INCREASE_X_COORD },
+    { SHORTCUT_DECREASE_X_COORD,                      STR_SHORTCUT_DECREASE_X_COORD },
+    { SHORTCUT_INCREASE_Y_COORD,                      STR_SHORTCUT_INCREASE_Y_COORD },
+    { SHORTCUT_DECREASE_Y_COORD,                      STR_SHORTCUT_DECREASE_Y_COORD },
+    { SHORTCUT_INCREASE_ELEM_HEIGHT,                  STR_SHORTCUT_INCREASE_ELEM_HEIGHT },
+    { SHORTCUT_DECREASE_ELEM_HEIGHT,                  STR_SHORTCUT_DECREASE_ELEM_HEIGHT },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
+    { SHORTCUT_ADVANCE_TO_NEXT_TICK,                  STR_ADVANCE_TO_NEXT_TICK },
+    { SHORTCUT_PAINT_ORIGINAL_TOGGLE,                 STR_SHORTCUT_PAINT_ORIGINAL },
+    { SHORTCUT_DEBUG_PAINT_TOGGLE,                    STR_SHORTCUT_DEBUG_PAINT_TOGGLE },
 };
 // clang-format on
 
@@ -183,7 +223,7 @@ rct_window* window_shortcut_keys_open()
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
         window_init_scroll_widgets(w);
 
-        w->no_list_items = SHORTCUT_COUNT;
+        w->no_list_items = static_cast<uint16_t>(std::size(ShortcutList));
         w->selected_list_item = -1;
         w->min_width = WW;
         w->min_height = WH;
@@ -258,7 +298,12 @@ static void window_shortcut_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     if (selected_item >= w->no_list_items)
         return;
 
-    window_shortcut_change_open(selected_item);
+    // Is this a separator?
+    if (ShortcutList[selected_item].ShortcutId == SHORTCUT_UNDEFINED)
+        return;
+
+    auto& shortcut = ShortcutList[selected_item];
+    window_shortcut_change_open(shortcut.ShortcutId, shortcut.StringId);
 }
 
 /**
@@ -284,6 +329,10 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
+    // TODO: the line below is a workaround for what is presumably a bug with dpi->width
+    //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
+    const auto scrollWidth = w->width - SCROLLBAR_WIDTH - 10;
+
     for (int32_t i = 0; i < w->no_list_items; ++i)
     {
         int32_t y = 1 + i * SCROLLABLE_ROW_HEIGHT;
@@ -297,20 +346,38 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             continue;
         }
 
+        // Is this a separator?
+        if (ShortcutList[i].ShortcutId == SHORTCUT_UNDEFINED)
+        {
+            const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
+            gfx_fill_rect(dpi, 0, top, scrollWidth, top, ColourMapA[w->colours[0]].mid_dark);
+            gfx_fill_rect(dpi, 0, top + 1, scrollWidth, top + 1, ColourMapA[w->colours[0]].lightest);
+            continue;
+        }
+
         int32_t format = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y - 1, 800, y + (SCROLLABLE_ROW_HEIGHT - 2), PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), PALETTE_DARKEN_1);
         }
 
-        char templateString[128];
-        keyboard_shortcuts_format_string(templateString, 128, i);
+        const int32_t bindingOffset = scrollWidth - 150;
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
+        ft.Add<rct_string_id>(ShortcutList[i].StringId);
+        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, bindingOffset);
 
-        set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
-        set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
-        set_format_arg(4, rct_string_id, STR_STRING);
-        set_format_arg(6, char*, templateString);
-        gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+        char keybinding[128];
+        keyboard_shortcuts_format_string(keybinding, 128, ShortcutList[i].ShortcutId);
+
+        if (strlen(keybinding) > 0)
+        {
+            const int32_t maxWidth = 150;
+            ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<char*>(keybinding);
+            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, bindingOffset, y - 1, maxWidth);
+        }
     }
 }

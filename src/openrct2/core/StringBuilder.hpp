@@ -36,7 +36,7 @@ public:
 
     void Append(int32_t codepoint)
     {
-        Append((codepoint_t)codepoint);
+        Append(static_cast<codepoint_t>(codepoint));
     }
 
     /**
@@ -178,7 +178,7 @@ private:
         if (_capacity > capacity)
             return;
 
-        _capacity = std::max((size_t)8, _capacity);
+        _capacity = std::max(static_cast<size_t>(8), _capacity);
         while (_capacity < capacity)
         {
             _capacity *= 2;

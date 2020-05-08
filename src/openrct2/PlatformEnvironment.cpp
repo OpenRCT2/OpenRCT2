@@ -34,7 +34,7 @@ public:
 
     std::string GetDirectoryPath(DIRBASE base) const override
     {
-        return _basePath[(size_t)base];
+        return _basePath[static_cast<size_t>(base)];
     }
 
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
@@ -46,12 +46,12 @@ public:
             default:
             case DIRBASE::RCT1:
             case DIRBASE::RCT2:
-                directoryName = DirectoryNamesRCT2[(size_t)did];
+                directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
             case DIRBASE::CONFIG:
-                directoryName = DirectoryNamesOpenRCT2[(size_t)did];
+                directoryName = DirectoryNamesOpenRCT2[static_cast<size_t>(did)];
                 break;
         }
 
@@ -62,13 +62,13 @@ public:
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
-        auto fileName = FileNames[(size_t)pathid];
+        auto fileName = FileNames[static_cast<size_t>(pathid)];
         return Path::Combine(basePath, fileName);
     }
 
     void SetBasePath(DIRBASE base, const std::string& path) override
     {
-        _basePath[(size_t)base] = path;
+        _basePath[static_cast<size_t>(base)] = path;
     }
 
 private:
@@ -152,7 +152,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     if (basePaths[(size_t)DIRBASE::DOCUMENTATION].empty())
     {
-        basePaths[(size_t)DIRBASE::DOCUMENTATION] = basePaths[(size_t)DIRBASE::OPENRCT2];
+        basePaths[(size_t)DIRBASE::DOCUMENTATION] = basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)];
     }
 
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
@@ -194,6 +194,7 @@ const char * PlatformEnvironment::DirectoryNamesRCT2[] =
     nullptr,                // LOG_SERVER
     nullptr,                // NETWORK_KEY
     "ObjData",              // OBJECT
+    nullptr,                // PLUGIN
     "Saved Games",          // SAVE
     "Scenarios",            // SCENARIO
     nullptr,                // SCREENSHOT
@@ -212,6 +213,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "serverlogs",           // LOG_SERVER
     "keys",                 // NETWORK_KEY
     "object",               // OBJECT
+    "plugin",               // PLUGIN
     "save",                 // SAVE
     "scenario",             // SCENARIO
     "screenshot",           // SCREENSHOT
@@ -238,6 +240,7 @@ const char * PlatformEnvironment::FileNames[] =
     "highscores.dat",       // SCORES
     "scores.dat",           // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
-    "changelog.txt"         // CHANGELOG
+    "changelog.txt",        // CHANGELOG
+    "plugin.store.json"     // PLUGIN_STORE
 };
 // clang-format on

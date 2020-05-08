@@ -1,5 +1,5 @@
-Last updated:    2020-03-24
-Release version: 0.2.4
+Last updated:    2020-04-17
+Release version: 0.2.6
 ------------------------------------------------------------------------
 
 
@@ -30,7 +30,7 @@ includes some 3rd party software under different licenses. See the section
 ---- ----------
 The easiest way to contact the OpenRCT2 team is by submitting issues on GitHub
 (https://github.com/OpenRCT2/OpenRCT2) in the form of questions or bug reports.
-You can also chat with us on gitter (https://gitter.im/OpenRCT2/OpenRCT2).
+You can also chat with us on Discord (https://discordapp.com/invite/fsEwSWs).
 
 2.1) Reporting bugs
 ---- --------------
@@ -141,6 +141,8 @@ OpenRCT2 is licensed under the GNU General Public Licence version 3.0. For
 the complete licence text, see the file 'licence.txt'. This licence applies
 to all files in this distribution, except as noted below.
 
+dukglue          | MIT licence.
+duktape          | MIT licence.
 Jansson          | MIT licence.
 libcURL          | MIT (or Modified BSD-style) licence.
 libicu           | Unicode licence.

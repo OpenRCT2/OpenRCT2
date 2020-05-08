@@ -35,6 +35,12 @@ namespace OpenRCT2
     interface IReplayManager
     {
     public:
+        enum class RecordType
+        {
+            NORMAL,
+            SILENT,
+        };
+
         virtual ~IReplayManager() = default;
 
         virtual void Update() = 0;
@@ -42,11 +48,14 @@ namespace OpenRCT2
         virtual bool IsReplaying() const = 0;
         virtual bool IsRecording() const = 0;
         virtual bool IsNormalising() const = 0;
+        virtual bool ShouldDisplayNotice() const = 0;
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) = 0;
 
-        virtual bool StartRecording(const std::string& name, uint32_t maxTicks = k_MaxReplayTicks) = 0;
-        virtual bool StopRecording() = 0;
+        virtual bool StartRecording(
+            const std::string& name, uint32_t maxTicks = k_MaxReplayTicks, RecordType rt = RecordType::NORMAL)
+            = 0;
+        virtual bool StopRecording(bool discard = false) = 0;
         virtual bool GetCurrentReplayInfo(ReplayRecordInfo & info) const = 0;
 
         virtual bool StartPlayback(const std::string& file) = 0;

@@ -55,7 +55,7 @@ struct ObjectRepositoryItem
         if (Sources.empty())
             return OBJECT_SOURCE_CUSTOM;
         else
-            return (OBJECT_SOURCE_GAME)Sources[0];
+            return static_cast<OBJECT_SOURCE_GAME>(Sources[0]);
     }
 };
 

@@ -59,6 +59,7 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::n_acute, CSChar::n_acute - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::n_caron_uc, SPR_G2_N_CARON_UPPER - SPR_CHAR_START },
     { UnicodeChar::n_caron, SPR_G2_N_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::o_macron, CSChar::o_circumflex - CS_SPRITE_FONT_OFFSET }, // No visual difference
     { UnicodeChar::o_double_acute_uc, SPR_G2_O_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
     { UnicodeChar::o_double_acute, SPR_G2_O_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
     { UnicodeChar::r_caron_uc, SPR_G2_R_CARON_UPPER - SPR_CHAR_START },
@@ -231,7 +232,7 @@ void font_sprite_initialise_characters()
                 }
             }
 
-            _spriteFontCharacterWidths[fontSize][glyphIndex] = (uint8_t)width;
+            _spriteFontCharacterWidths[fontSize][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
@@ -247,7 +248,7 @@ void font_sprite_initialise_characters()
                 width = g1->width + (2 * g1->x_offset) - 1;
             }
 
-            _additionalSpriteFontCharacterWidth[fontSize][glyphIndex] = (uint8_t)width;
+            _additionalSpriteFontCharacterWidth[fontSize][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
@@ -273,10 +274,10 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
 
 int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint)
 {
-    if (fontSpriteBase == (uint16_t)FONT_SPRITE_BASE_MEDIUM_DARK
-        || fontSpriteBase == (uint16_t)FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
+    if (fontSpriteBase == static_cast<uint16_t>(FONT_SPRITE_BASE_MEDIUM_DARK)
+        || fontSpriteBase == static_cast<uint16_t>(FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK))
     {
-        fontSpriteBase = (uint16_t)FONT_SPRITE_BASE_MEDIUM;
+        fontSpriteBase = static_cast<uint16_t>(FONT_SPRITE_BASE_MEDIUM);
     }
 
     int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
@@ -285,14 +286,14 @@ int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoi
     {
         glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
 
-        if (glyphIndex >= (int32_t)std::size(_additionalSpriteFontCharacterWidth[baseFontIndex]))
+        if (glyphIndex >= static_cast<int32_t>(std::size(_additionalSpriteFontCharacterWidth[baseFontIndex])))
         {
             log_warning("Invalid glyph index %u", glyphIndex);
             glyphIndex = 0;
         }
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
     }
-    else if (glyphIndex < 0 || glyphIndex >= (int32_t)FONT_SPRITE_GLYPH_COUNT)
+    else if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
     {
         log_warning("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;

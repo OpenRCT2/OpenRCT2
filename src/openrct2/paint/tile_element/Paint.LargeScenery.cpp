@@ -70,7 +70,7 @@ static rct_large_scenery_text_glyph* large_scenery_sign_get_glyph(rct_large_scen
 {
     if (codepoint >= std::size(text->glyphs))
     {
-        return &text->glyphs[(size_t)'?'];
+        return &text->glyphs[static_cast<size_t>('?')];
     }
     return &text->glyphs[codepoint];
 }
@@ -284,7 +284,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        if (entry->large_scenery.tiles[1].x_offset != (int16_t)(uint16_t)0xFFFF)
+        if (entry->large_scenery.tiles[1].x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)))
         {
             int32_t sequenceDirection = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
             if (sequenceDirection != direction)
@@ -301,8 +301,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         }
         // 6B8331:
         // Draw sign text:
-        set_format_arg(0, uint32_t, 0);
-        set_format_arg(4, uint32_t, 0);
+        Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
         int32_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
         if (dword_F4387C)
         {
@@ -312,7 +311,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         auto banner = tileElement->AsLargeScenery()->GetBanner();
         if (banner != nullptr)
         {
-            banner->FormatTextTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            banner->FormatTextTo(ft);
             utf8 signString[256];
             format_string(signString, sizeof(signString), STR_STRINGID, gCommonFormatArgs);
             rct_large_scenery_text* text = entry->large_scenery.text;
@@ -429,7 +429,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     auto banner = tileElement->AsLargeScenery()->GetBanner();
     if (banner != nullptr)
     {
-        banner->FormatTextTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        banner->FormatTextTo(ft);
         utf8 signString[256];
         if (gConfigGeneral.upper_case_banners)
         {

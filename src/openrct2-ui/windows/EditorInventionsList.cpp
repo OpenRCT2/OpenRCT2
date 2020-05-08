@@ -311,7 +311,7 @@ rct_window* window_editor_inventions_list_open()
     window_init_scroll_widgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;
-    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
+    _editorInventionsListDraggedItem.SetNull();
 
     w->min_width = WW;
     w->min_height = WH;
@@ -396,7 +396,7 @@ static void window_editor_inventions_list_update(rct_window* w)
     if (window_find_by_class(WC_EDITOR_INVENTION_LIST_DRAG) != nullptr)
         return;
 
-    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
+    _editorInventionsListDraggedItem.SetNull();
     w->Invalidate();
 }
 
@@ -409,11 +409,11 @@ static void window_editor_inventions_list_scrollgetheight(rct_window* w, int32_t
     *height = 0;
     if (scrollIndex == 0)
     {
-        *height += (int32_t)gResearchItemsInvented.size() * SCROLLABLE_ROW_HEIGHT;
+        *height += static_cast<int32_t>(gResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
     }
     else
     {
-        *height += (int32_t)gResearchItemsUninvented.size() * SCROLLABLE_ROW_HEIGHT;
+        *height += static_cast<int32_t>(gResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -691,12 +691,13 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         rct_string_id itemNameId = researchItem.GetName();
 
         if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE
-            && !RideGroupManager::RideTypeIsIndependent(researchItem.baseRideType))
+            && !RideTypeDescriptors[researchItem.baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
             const rct_string_id rideGroupName = get_ride_naming(researchItem.baseRideType, rideEntry).name;
             format_string(
-                groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*)&rideGroupName);
+                groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
+                static_cast<const void*>(&rideGroupName));
             format_string(vehicleNamePtr, std::size(vehicleNameBuffer), itemNameId, nullptr);
         }
         else
@@ -735,7 +736,8 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     rct_string_id stringId = researchItem->GetName();
 
     ptr = buffer;
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+        && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         const auto rideEntry = get_ride_entry(researchItem->entryIndex);
         const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, rideEntry).name;
@@ -806,7 +808,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, const Screen
     }
 
     window_close(w);
-    _editorInventionsListDraggedItem.rawValue = RESEARCH_ITEM_NULL;
+    _editorInventionsListDraggedItem.SetNull();
     window_invalidate_by_class(WC_EDITOR_INVENTION_LIST);
 }
 
@@ -830,7 +832,8 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
     rct_string_id drawString;
     rct_string_id stringId = researchItem->GetName();
 
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+        && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
         rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))

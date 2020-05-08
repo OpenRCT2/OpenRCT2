@@ -90,7 +90,8 @@ public:
                     GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
             }
 
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED) || RideAvailableBreakdowns[ride->type] == 0)
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+                || RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
             {
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
@@ -139,7 +140,7 @@ private:
         for (BannerIndex i = 0; i < MAX_BANNERS; i++)
         {
             auto banner = GetBanner(i);
-            if (banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
+            if (!banner->IsNull() && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
             {
                 banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
                 banner->text = {};
@@ -259,6 +260,7 @@ private:
 
         // Refresh windows that display the ride name
         auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 

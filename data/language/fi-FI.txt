@@ -1135,8 +1135,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Aikarajoitusta ajelulle ei voitu muuttaa...
 STR_1752    :{SMALLFONT}{BLACK}Näytä puiston yksittäiset vieraat
 STR_1753    :{SMALLFONT}{BLACK}Näytä puiston vieraat yhteenvetona
-STR_1754    :{BLACK}{COMMA16} vieraat
-STR_1755    :{BLACK}{COMMA16} vieras
+STR_1754    :{BLACK}{COMMA32} vieraat
+STR_1755    :{BLACK}{COMMA32} vieras
 STR_1756    :{WINDOW_COLOUR_2}Sisäänpääsymaksu:
 STR_1757    :{WINDOW_COLOUR_2}Luotettavuus: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Rakennustoiminto
@@ -1194,7 +1194,7 @@ STR_1813    :Sekalaiset tavarat
 STR_1814    :Toiminnat
 STR_1815    :Ajatukset
 STR_1816    :{SMALLFONT}{BLACK}Valitse näytettävä tietotyyppi vieras listalle
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Kaikki vieraat
 STR_1819    :{WINDOW_COLOUR_2}Kaikki vieraat (yhteenvetona)
 STR_1820    :{WINDOW_COLOUR_2}Vieraat {STRINGID}
@@ -1223,9 +1223,9 @@ STR_1842    :{COMMA16} vieraan lempilaite
 STR_1843    :{COMMA16} vieraan lempilaite
 STR_1844    :{SMALLFONT}{BLACK}valitse tietotyyppi laite-/kohdelistalle
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} vierasta
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} vierasta
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} vierasta
+STR_1846    :{COMMA32} vierasta
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} vierasta
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} vierasta
 STR_1849    :{WINDOW_COLOUR_2}Toista musiikkia
 STR_1850    :{SMALLFONT}{BLACK}Valitse mitä musiikkia toistetaan tälle ajelulle
 STR_1851    :{WINDOW_COLOUR_2}Käyttökustannus: {BLACK}{CURRENCY2DP} per tunti
@@ -1583,7 +1583,7 @@ STR_2219    :{RED}{COMMA16} ihmistä kuoli tapaturmassa kohteessa {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Puiston luokitus: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Puiston luokitus: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Vieraiden määrä: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Vieraiden määrä: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Kassa: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Kassa: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Puiston arvo: {BLACK}{CURRENCY}
@@ -1948,8 +1948,8 @@ STR_2728    :{UINT16}tunti:{UINT16}min
 STR_2729    :{UINT16}tunti:{UINT16}minuuttia
 STR_2730    :{UINT16}tuntia:{UINT16}min
 STR_2731    :{UINT16}tuntia:{UINT16}minuuttias
-STR_2732    :{COMMA16}jalka
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}jalka
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Vuosi {COMMA16}
@@ -1985,7 +1985,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ikkuna #{COMMA16}
 STR_2780    :Ylimääräinen ikkuna
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Muuta näppäimistön pikanäppäintä
@@ -2308,7 +2308,6 @@ STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Puiston sisäänkäynti
 STR_3193    :Vesi
-STR_3194    :Scenario Description
 STR_3195    :Keksintölista
 STR_3196    :{WINDOW_COLOUR_2}Tutkimusryhmä: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:

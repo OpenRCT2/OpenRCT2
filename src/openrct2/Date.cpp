@@ -55,7 +55,7 @@ void Date::Update()
     }
     else
     {
-        _monthTicks = (uint16_t)monthTicks;
+        _monthTicks = static_cast<uint16_t>(monthTicks);
     }
 }
 

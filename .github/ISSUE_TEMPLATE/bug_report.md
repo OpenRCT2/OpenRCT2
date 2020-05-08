@@ -1,8 +1,17 @@
+---
+name: Bug Report
+about: Describe an issue you encountered when playing OpenRCT2
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 <!--
   Fill in the placeholders below. Delete any headings and placeholders that you do not fill in.
 -->
 **OS:** [e.g. Windows 10]
-**Version:** [e.g. 0.2.5]
+**Version:** [e.g. 0.2.6]
 **Commit/Build:** [e.g. 426e106]
 
 <!-- Explanation of the issue -->

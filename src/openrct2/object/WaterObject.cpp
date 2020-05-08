@@ -110,8 +110,8 @@ void WaterObject::ReadJsonPalette(const json_t* jPalette)
 
     rct_g1_element g1 = {};
     g1.offset = data.get();
-    g1.width = (int16_t)numColours;
-    g1.x_offset = (int16_t)paletteStartIndex;
+    g1.width = static_cast<int16_t>(numColours);
+    g1.x_offset = static_cast<int16_t>(paletteStartIndex);
     g1.flags = G1_FLAG_PALETTE;
 
     auto& imageTable = GetImageTable();

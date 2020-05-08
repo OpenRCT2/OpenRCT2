@@ -26,7 +26,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t* json)
         throw std::runtime_error("Missing group data");
     }
 
-    group.Id = (uint8_t)json_integer_value(jsonId);
+    group.Id = static_cast<uint8_t>(json_integer_value(jsonId));
     group._name = std::string(json_string_value(jsonName));
     std::fill(group.ActionsAllowed.begin(), group.ActionsAllowed.end(), 0);
 

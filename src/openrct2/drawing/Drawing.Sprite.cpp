@@ -27,22 +27,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-#pragma pack(push, 1)
-struct rct_g1_header
-{
-    uint32_t num_entries;
-    uint32_t total_size;
-};
-assert_struct_size(rct_g1_header, 8);
-#pragma pack(pop)
-
-struct rct_gx
-{
-    rct_g1_header header;
-    std::vector<rct_g1_element> elements;
-    void* data;
-};
-
 // clang-format off
 constexpr struct
 {
@@ -119,7 +103,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
-            elements[i].offset = (uint8_t*)(uintptr_t)src.offset;
+            elements[i].offset = (uint8_t*)static_cast<uintptr_t>(src.offset);
             elements[i].width = src.width;
             elements[i].height = src.height;
             elements[i].x_offset = src.x_offset;
@@ -128,7 +112,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
-                elements[i].zoomed_offset = (int32_t)(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+                elements[i].zoomed_offset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
             }
             else
             {
@@ -158,7 +142,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
-            elements[i].offset = (uint8_t*)(uintptr_t)src.offset;
+            elements[i].offset = (uint8_t*)static_cast<uintptr_t>(src.offset);
             elements[i].width = src.width;
             elements[i].height = src.height;
             elements[i].x_offset = src.x_offset;
@@ -191,30 +175,6 @@ void mask_scalar(
         colourSrc += colourWrap;
         dst += dstWrap;
     }
-}
-
-static std::string gfx_get_csg_header_path()
-{
-    auto path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1i.dat"));
-    if (path.empty())
-    {
-        path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "RCTdeluxe_install", "Data", "csg1i.dat"));
-    }
-    return path;
-}
-
-static std::string gfx_get_csg_data_path()
-{
-    // csg1.1 and csg1.dat are the same file.
-    // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
-    // In the GOG version, it's always called csg1.1.
-    // In the Steam version, it's called csg1.dat in the "disk" folder and csg1.1 in the "CD" folder.
-    auto path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1.1"));
-    if (path.empty())
-    {
-        path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1.dat"));
-    }
-    return path;
 }
 
 static rct_gx _g1 = {};
@@ -350,8 +310,8 @@ bool gfx_load_csg()
         return false;
     }
 
-    auto pathHeaderPath = gfx_get_csg_header_path();
-    auto pathDataPath = gfx_get_csg_data_path();
+    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.rct1_path);
+    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.rct1_path);
     try
     {
         auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);
@@ -359,10 +319,10 @@ bool gfx_load_csg()
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 
-        _csg.header.num_entries = (uint32_t)(fileHeaderSize / sizeof(rct_g1_element_32bit));
-        _csg.header.total_size = (uint32_t)fileDataSize;
+        _csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(rct_g1_element_32bit));
+        _csg.header.total_size = static_cast<uint32_t>(fileDataSize);
 
-        if (_csg.header.num_entries < 69917)
+        if (!CsgIsUsable(_csg))
         {
             log_warning("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
             return false;
@@ -626,7 +586,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     else if (!(g1->flags & G1_FLAG_1))
     {
         // Move the pointer to the start point of the source
-        auto source_pointer = g1->offset + (((size_t)g1->width * source_start_y) + source_start_x);
+        auto source_pointer = g1->offset + ((static_cast<size_t>(g1->width) * source_start_y) + source_start_x);
         gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
     }
 }
@@ -701,7 +661,7 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
 {
     openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
 
-    auto offset = (size_t)image_id;
+    auto offset = static_cast<size_t>(image_id);
     if (offset == 0x7FFFF)
     {
         return nullptr;
@@ -777,14 +737,14 @@ void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1)
         {
             if (imageId < SPR_RCTC_G1_END)
             {
-                if (imageId < (int32_t)_g1.elements.size())
+                if (imageId < static_cast<int32_t>(_g1.elements.size()))
                 {
                     _g1.elements[imageId] = *g1;
                 }
             }
             else
             {
-                size_t idx = (size_t)imageId - SPR_IMAGE_LIST_BEGIN;
+                size_t idx = static_cast<size_t>(imageId) - SPR_IMAGE_LIST_BEGIN;
                 // Grow the element buffer if necessary
                 while (idx >= _imageListElements.size())
                 {

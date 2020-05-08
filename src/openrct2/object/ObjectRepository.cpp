@@ -128,7 +128,7 @@ protected:
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
-        uint8_t sourceLength = (uint8_t)item.Sources.size();
+        uint8_t sourceLength = static_cast<uint8_t>(item.Sources.size());
         stream->WriteValue(sourceLength);
         for (auto source : item.Sources)
         {
@@ -150,7 +150,7 @@ protected:
                 stream->WriteValue<uint8_t>(item.RideInfo.RideGroupIndex);
                 break;
             case OBJECT_TYPE_SCENERY_GROUP:
-                stream->WriteValue<uint16_t>((uint16_t)item.SceneryGroupInfo.Entries.size());
+                stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
                 for (const auto& entry : item.SceneryGroupInfo.Entries)
                 {
                     stream->WriteValue<rct_object_entry>(entry);
@@ -488,8 +488,8 @@ private:
                 size_t newDataSize = dataSize + extraBytesCount;
                 uint8_t* newData = Memory::Allocate<uint8_t>(newDataSize);
                 uint8_t* newDataSaltOffset = newData + dataSize;
-                std::copy_n((const uint8_t*)data, dataSize, newData);
-                std::copy_n((const uint8_t*)extraBytes, extraBytesCount, newDataSaltOffset);
+                std::copy_n(static_cast<const uint8_t*>(data), dataSize, newData);
+                std::copy_n(static_cast<const uint8_t*>(extraBytes), extraBytesCount, newDataSaltOffset);
 
                 try
                 {
@@ -523,7 +523,7 @@ private:
         uint8_t objectType = entry->GetType();
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
-        chunkHeader.length = (uint32_t)dataSize;
+        chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
         size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8_t*)data, chunkHeader);
 
@@ -656,8 +656,16 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
         return false;
     }
 
-    // Validate the object is not one from base game or expansion pack
-    return !(object->ObjectEntry.flags & 0xF0);
+    switch (object->GetFirstSourceGame())
+    {
+        case OBJECT_SOURCE_RCT2:
+        case OBJECT_SOURCE_WACKY_WORLDS:
+        case OBJECT_SOURCE_TIME_TWISTER:
+        case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+            return false;
+        default:
+            return true;
+    }
 }
 
 const rct_object_entry* object_list_find(rct_object_entry* entry)
@@ -807,5 +815,5 @@ int32_t object_calculate_checksum(const rct_object_entry* entry, const void* dat
         checksum = rol32(checksum, 11);
     }
 
-    return (int32_t)checksum;
+    return static_cast<int32_t>(checksum);
 }

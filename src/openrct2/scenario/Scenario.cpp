@@ -189,7 +189,7 @@ static void scenario_end()
  */
 void scenario_failure()
 {
-    gScenarioCompletedCompanyValue = 0x80000001;
+    gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
     scenario_end();
 }
 
@@ -326,7 +326,7 @@ static void scenario_week_update()
     ride_check_all_reachable();
     ride_update_favourited_stat();
 
-    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
@@ -359,7 +359,7 @@ static void scenario_update_daynight_cycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
     {
-        float monthFraction = gDateMonthTicks / (float)0x10000;
+        float monthFraction = gDateMonthTicks / static_cast<float>(0x10000);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -514,7 +514,7 @@ uint32_t scenario_rand_max(uint32_t max)
         return 0;
     if ((max & (max - 1)) == 0)
         return scenario_rand() & (max - 1);
-    uint32_t rand, cap = ~((uint32_t)0) - (~((uint32_t)0) % max) - 1;
+    uint32_t rand, cap = ~(static_cast<uint32_t>(0)) - (~(static_cast<uint32_t>(0)) % max) - 1;
     do
     {
         rand = scenario_rand();
@@ -825,7 +825,7 @@ static void scenario_objective_check_guests_and_rating()
             gGuestInitialHappiness = 50;
         }
     }
-    else if (gScenarioCompletedCompanyValue != (money32)0x80000001)
+    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
     {
         gScenarioParkRatingWarningDays = 0;
     }

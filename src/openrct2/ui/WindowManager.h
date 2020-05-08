@@ -30,6 +30,7 @@ namespace OpenRCT2::Ui
         virtual rct_window* OpenIntent(Intent * intent) abstract;
         virtual void BroadcastIntent(const Intent& intent) abstract;
         virtual rct_window* ShowError(rct_string_id title, rct_string_id message) abstract;
+        virtual rct_window* ShowError(const std::string_view& title, const std::string_view& message) abstract;
         virtual void ForceClose(rct_windowclass windowClass) abstract;
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;

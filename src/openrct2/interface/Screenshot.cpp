@@ -141,7 +141,7 @@ static std::optional<std::string> screenshot_get_next_path()
     if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
     {
         log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
-        return {};
+        return std::nullopt;
     }
 
     auto parkName = screenshot_get_park_name();
@@ -165,7 +165,7 @@ static std::optional<std::string> screenshot_get_next_path()
     }
 
     log_error("You have too many saved screenshots saved at exactly the same date and time.");
-    return {};
+    return std::nullopt;
 };
 
 std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
@@ -198,7 +198,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
         return "";
     }
 
-    const auto pixels8 = (const uint8_t*)pixels;
+    const auto pixels8 = static_cast<const uint8_t*>(pixels);
     const auto pixelsLen = width * 4 * height;
 
     try
@@ -333,7 +333,7 @@ static rct_drawpixelinfo CreateDPI(const rct_viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(dpi.bits, PALETTE_INDEX_0, (size_t)dpi.width * dpi.height);
+        std::memset(dpi.bits, PALETTE_INDEX_0, static_cast<size_t>(dpi.width) * dpi.height);
     }
 
     return dpi;
@@ -429,8 +429,9 @@ void screenshot_giant()
         WriteDpiToFile(path->c_str(), &dpi, renderedPalette);
 
         // Show user that screenshot saved successfully
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, path_get_filename(path->c_str()));
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<char*>(path_get_filename(path->c_str()));
         context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
     }
     catch (const std::exception& e)

@@ -758,11 +758,13 @@ static void paint_monorail_track_s_bend_left(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, (int8_t)offset.y, (int8_t)offset.x, bounds.y, bounds.x, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -862,11 +864,13 @@ static void paint_monorail_track_s_bend_right(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, (int8_t)offset.y, (int8_t)offset.x, bounds.y, bounds.x, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
     }
 
     if (direction == 0 || direction == 2)

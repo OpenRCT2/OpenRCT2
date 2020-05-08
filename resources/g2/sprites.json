@@ -284,76 +284,76 @@
     },
     {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
-		"x_offset": -8,
-		"y_offset": 1
+        "x_offset": -8,
+        "y_offset": 1
     },
     {
         "path": "track/railway/gravel_sw_ne.png",
-		"x_offset": -33,
-		"y_offset": -2
+        "x_offset": -33,
+        "y_offset": -2
     },
     {
         "path": "track/railway/gravel_nw_se.png",
-		"x_offset": -21,
-		"y_offset": -2
+        "x_offset": -21,
+        "y_offset": -2
     },
     {
         "path": "track/railway/grooved_sw_ne.png",
-		"x_offset": -28,
-		"y_offset": -1
+        "x_offset": -28,
+        "y_offset": -1
     },
     {
         "path": "track/railway/grooved_nw_se.png",
-		"x_offset": -14,
-		"y_offset": -2
+        "x_offset": -14,
+        "y_offset": -2
     },
     {
         "path": "track/railway/grooved_sw_ne_trans.png",
-		"x_offset": -28,
-		"y_offset": -1,
-		"palette": "keep"
+        "x_offset": -28,
+        "y_offset": -1,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_nw_se_trans.png",
-		"x_offset": -14,
-		"y_offset": -2,
-		"palette": "keep"
+        "x_offset": -14,
+        "y_offset": -2,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_end_ne_trans.png",
-		"x_offset": -28,
-		"y_offset": -1,
-		"palette": "keep"
+        "x_offset": -28,
+        "y_offset": -1,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_end_se_trans.png",
-		"x_offset": -14,
-		"y_offset": -2,
-		"palette": "keep"
+        "x_offset": -14,
+        "y_offset": -2,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_end_nw_trans.png",
-		"x_offset": -14,
-		"y_offset": -2,
-		"palette": "keep"
+        "x_offset": -14,
+        "y_offset": -2,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_end_sw_trans.png",
-		"x_offset": -26,
-		"y_offset": -2,
-		"palette": "keep"
+        "x_offset": -26,
+        "y_offset": -2,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_end_sw_ne_trans.png",
-		"x_offset": -28,
-		"y_offset": -1,
-		"palette": "keep"
+        "x_offset": -28,
+        "y_offset": -1,
+        "palette": "keep"
     },
     {
         "path": "track/railway/grooved_end_nw_se_trans.png",
-		"x_offset": -14,
-		"y_offset": -2,
-		"palette": "keep"
+        "x_offset": -14,
+        "y_offset": -2,
+        "palette": "keep"
     },
     {
         "path": "icons/search.png"

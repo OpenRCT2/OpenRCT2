@@ -143,6 +143,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
 void staff_update_greyed_patrol_areas()
 {
     Peep* peep;
+    uint16_t sprite_index;
 
     for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
@@ -152,12 +153,9 @@ void staff_update_greyed_patrol_areas()
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        for (uint16_t sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL;
-             sprite_index = peep->next)
+        FOR_ALL_STAFF (sprite_index, peep)
         {
-            peep = GET_PEEP(sprite_index);
-
-            if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
+            if (peep->staff_type == staff_type)
             {
                 int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -392,7 +390,7 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
     int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
     int32_t offset = (x | y) >> 5;
     int32_t bitIndex = (x | y) & 0x1F;
-    return gStaffPatrolAreas[peepOffset + offset] & (((uint32_t)1) << bitIndex);
+    return gStaffPatrolAreas[peepOffset + offset] & (1UL << bitIndex);
 }
 
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
@@ -443,7 +441,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
  */
 static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
-    uint16_t nearestLitterDist = (uint16_t)-1;
+    uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
     Litter* litter = nullptr;
 
@@ -886,7 +884,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
             return staff_mechanic_direction_path_rand(peep, pathDirections);
         }
 
-        return (uint8_t)pathfindDirection;
+        return static_cast<uint8_t>(pathfindDirection);
     }
     return staff_mechanic_direction_path_rand(peep, pathDirections);
 }
@@ -1815,7 +1813,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
     {
         sprite = get_sprite(sprite_id);
 
-        if (sprite->generic.linked_list_index != SPRITE_LIST_LITTER)
+        if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_LITTER)
             continue;
 
         uint16_t z_diff = abs(peep->z - sprite->litter.z);
@@ -2443,7 +2441,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
 
         Direction stationDirection = 0;
         track_begin_end trackBeginEnd;
-        while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd))
+        while (track_block_get_previous(input, &trackBeginEnd))
         {
             if (track_element_is_station(trackBeginEnd.begin_element))
             {

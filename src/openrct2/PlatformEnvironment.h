@@ -38,6 +38,7 @@ namespace OpenRCT2
         LOG_SERVER,  // Contains server logs.
         NETWORK_KEY, // Contains the user's public and private keys.
         OBJECT,      // Contains objects.
+        PLUGIN,      // Contains plugins (.js).
         SAVE,        // Contains saved games (SV6).
         SCENARIO,    // Contains scenarios (SC6).
         SCREENSHOT,  // Contains screenshots.
@@ -65,6 +66,7 @@ namespace OpenRCT2
         SCORES_LEGACY,   // Scenario scores, legacy (scores.dat).
         SCORES_RCT2,     // Scenario scores, rct2 (\Saved Games\scores.dat).
         CHANGELOG,       // Notable changes to the game between versions, distributed with the game.
+        PLUGIN_STORE,    // Shared storage for plugins.
     };
 
     /**

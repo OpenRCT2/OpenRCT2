@@ -59,16 +59,16 @@ static void fence_paint_door(
         paint_struct* ps;
 
         ps = sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsR1.x, boundsR1.y, (int8_t)boundsR1.z, offset.z,
-            boundsR1_.x, boundsR1_.y, boundsR1_.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsR1.x, boundsR1.y,
+            static_cast<int8_t>(boundsR1.z), offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
         }
 
         ps = sub_98197C(
-            session, imageId + 1, (int8_t)offset.x, (int8_t)offset.y, boundsR2.x, boundsR2.y, (int8_t)boundsR2.z, offset.z,
-            boundsR2_.x, boundsR2_.y, boundsR2_.z);
+            session, imageId + 1, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsR2.x, boundsR2.y,
+            static_cast<int8_t>(boundsR2.z), offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
@@ -79,16 +79,16 @@ static void fence_paint_door(
         paint_struct* ps;
 
         ps = sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsL1.x, boundsL1.y, (int8_t)boundsL1.z, offset.z,
-            boundsL1_.x, boundsL1_.y, boundsL1_.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsL1.x, boundsL1.y,
+            static_cast<int8_t>(boundsL1.z), offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
         }
 
         ps = sub_98199C(
-            session, imageId + 1, (int8_t)offset.x, (int8_t)offset.y, boundsL1.x, boundsL1.y, (int8_t)boundsL1.z, offset.z,
-            boundsL1_.x, boundsL1_.y, boundsL1_.z);
+            session, imageId + 1, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsL1.x, boundsL1.y,
+            static_cast<int8_t>(boundsL1.z), offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
@@ -117,14 +117,14 @@ static void fence_paint_wall(
         }
 
         sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
-            boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
+            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
         if (dword_141F710 == 0)
         {
             imageId = baseImageId + dword_141F718;
             sub_98199C(
-                session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
-                boundsOffset.x, boundsOffset.y, boundsOffset.z);
+                session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
+                static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
         }
     }
     else
@@ -140,8 +140,8 @@ static void fence_paint_wall(
         }
 
         paint_struct* paint = sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
-            boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
+            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
         if (paint != nullptr)
         {
             paint->tertiary_colour = tertiaryColour;
@@ -426,6 +426,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 
     uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
+    if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
+    {
+        return;
+    }
+
     auto banner = tile_element->AsWall()->GetBanner();
     if (banner != nullptr && !banner->IsNull())
     {

@@ -17,11 +17,13 @@
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
+#include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "actions/LoadOrQuitAction.hpp"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
+#include "core/Path.hpp"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
@@ -44,6 +46,7 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
+#include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
@@ -63,6 +66,7 @@
 #include "world/Water.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <iterator>
 #include <memory>
 
@@ -139,7 +143,7 @@ enum
  */
 void update_palette_effects()
 {
-    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
 
     if (gClimateLightningFlash == 1)
     {
@@ -208,7 +212,7 @@ void update_palette_effects()
             }
         }
         uint32_t j = gPaletteEffectFrame;
-        j = (((uint16_t)((~j / 2) * 128) * 15) >> 16);
+        j = ((static_cast<uint16_t>((~j / 2) * 128) * 15) >> 16);
         uint32_t waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
         {
@@ -259,7 +263,7 @@ void update_palette_effects()
             }
         }
 
-        j = ((uint16_t)(gPaletteEffectFrame * -960) * 3) >> 16;
+        j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
         waterId = SPR_GAME_PALETTE_4;
         g1 = gfx_get_g1_element(shade + waterId);
         if (g1 != nullptr)
@@ -330,7 +334,7 @@ void utf8_to_rct2_self(char* buffer, size_t length)
     char* dst = buffer;
     while (*src != 0 && i < length - 1)
     {
-        if (*src == (char)(uint8_t)0xFF)
+        if (*src == static_cast<char>(static_cast<uint8_t>(0xFF)))
         {
             if (i < length - 3)
             {
@@ -459,7 +463,8 @@ void game_fix_save_vars()
                 peep->current_ride = RIDE_ID_NULL;
                 continue;
             }
-            set_format_arg(0, uint32_t, peep->id);
+            auto ft = Formatter::Common();
+            ft.Add<uint32_t>(peep->id);
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
@@ -585,6 +590,20 @@ void game_load_init()
     gGameSpeed = 1;
 }
 
+void game_load_scripts()
+{
+#ifdef ENABLE_SCRIPTING
+    GetContext()->GetScriptEngine().LoadPlugins();
+#endif
+}
+
+void game_unload_scripts()
+{
+#ifdef ENABLE_SCRIPTING
+    GetContext()->GetScriptEngine().UnloadPlugins();
+#endif
+}
+
 /**
  *
  *  rct2: 0x0069E9A7
@@ -656,13 +675,14 @@ void* create_save_game_as_intent()
 
 void save_game_as()
 {
-    auto* intent = (Intent*)create_save_game_as_intent();
+    auto* intent = static_cast<Intent*>(create_save_game_as_intent());
     context_open_intent(intent);
     delete intent;
 }
 
 static int32_t compare_autosave_file_paths(const void* a, const void* b)
 {
+    // TODO: CAST-IMPROVEMENT-NEEDED
     return strcmp(*(char**)a, *(char**)b);
 }
 
@@ -703,13 +723,13 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         return;
     }
 
-    autosaveFiles = (utf8**)malloc(sizeof(utf8*) * autosavesCount);
+    autosaveFiles = static_cast<utf8**>(malloc(sizeof(utf8*) * autosavesCount));
 
     {
         auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            autosaveFiles[i] = (utf8*)malloc(sizeof(utf8) * MAX_PATH);
+            autosaveFiles[i] = static_cast<utf8*>(malloc(sizeof(utf8) * MAX_PATH));
             std::memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
 
             if (scanner->Next())
@@ -788,15 +808,18 @@ void game_autosave()
         platform_file_copy(path, backupPath, true);
     }
 
-    scenario_save(path, saveFlags);
+    if (!scenario_save(path, saveFlags))
+        std::fprintf(stderr, "Could not autosave the scenario. Is the save folder writeable?\n");
 }
 
 static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8* path)
 {
     if (result == MODAL_RESULT_OK)
     {
+        game_unload_scripts();
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
+        game_load_scripts();
     }
 }
 
@@ -821,7 +844,7 @@ void game_load_or_quit_no_save_prompt()
             {
                 auto intent = Intent(WC_LOADSAVE);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)game_load_or_quit_no_save_prompt_callback);
+                intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_load_or_quit_no_save_prompt_callback));
                 context_open_intent(&intent);
             }
             break;
@@ -837,11 +860,55 @@ void game_load_or_quit_no_save_prompt()
             }
             gGameSpeed = 1;
             gFirstTimeSaving = true;
+            game_unload_scripts();
             title_load();
             break;
         }
         default:
+            game_unload_scripts();
             openrct2_finish();
             break;
     }
+}
+
+void start_silent_record()
+{
+    std::string name = Path::Combine(
+        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.sv6r");
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
+    {
+        OpenRCT2::ReplayRecordInfo info;
+        replayManager->GetCurrentReplayInfo(info);
+        safe_strcpy(gSilentRecordingName, info.FilePath.c_str(), MAX_PATH);
+
+        const char* logFmt = "Silent replay recording started: (%s) %s\n";
+        printf(logFmt, info.Name.c_str(), info.FilePath.c_str());
+    }
+}
+
+bool stop_silent_record()
+{
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (!replayManager->IsRecording() && !replayManager->IsNormalising())
+    {
+        return false;
+    }
+
+    OpenRCT2::ReplayRecordInfo info;
+    replayManager->GetCurrentReplayInfo(info);
+
+    if (replayManager->StopRecording())
+    {
+        const char* logFmt = "Replay recording stopped: (%s) %s\n"
+                             "  Ticks: %u\n"
+                             "  Commands: %u\n"
+                             "  Checksums: %u";
+
+        printf(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+
+        return true;
+    }
+
+    return false;
 }

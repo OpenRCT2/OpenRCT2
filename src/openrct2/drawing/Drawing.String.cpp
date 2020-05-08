@@ -327,7 +327,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32
         {
             ch = nextCh;
         }
-        text = (char*)(ch + 1);
+        text = const_cast<char*>(ch + 1);
 
         y += font_get_line_height(gCurrentFontSpriteBase);
     }
@@ -556,7 +556,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, const utf8* text, te
         int32_t skipY = drawY - dpi->y;
         info->x += width;
 
-        auto src = (const uint8_t*)surface->pixels;
+        auto src = static_cast<const uint8_t*>(surface->pixels);
         uint8_t* dst = dpi->bits;
 
         if (skipX < 0)
@@ -690,11 +690,11 @@ static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* t
     switch (codepoint)
     {
         case FORMAT_MOVE_X:
-            info->x = info->startX + (uint8_t)(*nextCh++);
+            info->x = info->startX + static_cast<uint8_t>(*nextCh++);
             break;
         case FORMAT_ADJUST_PALETTE:
         {
-            uint16_t eax = palette_to_g1_offset[(uint8_t)*nextCh++];
+            uint16_t eax = palette_to_g1_offset[static_cast<uint8_t>(*nextCh++)];
             const rct_g1_element* g1 = gfx_get_g1_element(eax);
             if (g1 != nullptr)
             {
@@ -821,7 +821,7 @@ static const utf8* ttf_process_glyph_run(rct_drawpixelinfo* dpi, const utf8* tex
     }
     else
     {
-        size_t length = (size_t)(ch - text);
+        size_t length = static_cast<size_t>(ch - text);
         std::memcpy(buffer, text, length);
         buffer[length] = 0;
         ttf_draw_string_raw(dpi, buffer, info);
@@ -866,10 +866,10 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
-        if ((int16_t)info->font_sprite_base < 0)
+        if (static_cast<int16_t>(info->font_sprite_base) < 0)
         {
             info->flags |= TEXT_DRAW_FLAG_DARK;
-            if ((int16_t)info->font_sprite_base == FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
+            if (static_cast<int16_t>(info->font_sprite_base) == FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
             {
                 info->flags |= TEXT_DRAW_FLAG_EXTRA_DARK;
             }
@@ -885,7 +885,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
             if (!(info->flags & TEXT_DRAW_FLAG_INSET))
             {
                 uint16_t flags = info->flags;
-                colour_char_window(colour, &flags, (uint8_t*)&info->palette);
+                colour_char_window(colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
             }
         }
         else
@@ -1020,7 +1020,7 @@ void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t ava
     size_t length = strlen(path);
 
     // Return full string if it fits
-    if (gfx_get_string_width((char*)path) <= availableWidth)
+    if (gfx_get_string_width(const_cast<char*>(path)) <= availableWidth)
     {
         safe_strcpy(buffer, path, bufferSize);
         return;

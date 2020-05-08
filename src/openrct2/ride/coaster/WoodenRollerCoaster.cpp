@@ -425,11 +425,12 @@ static void wooden_rc_track_paint_bb(paint_session* session, const sprite_bb_2* 
     uint32_t railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour(session);
 
     sub_98197C(
-        session, imageId, (int8_t)bb->offset.x, (int8_t)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (int8_t)bb->bb_size.z,
-        height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
+        session, imageId, static_cast<int8_t>(bb->offset.x), static_cast<int8_t>(bb->offset.y), bb->bb_size.x, bb->bb_size.y,
+        static_cast<int8_t>(bb->bb_size.z), height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
     sub_98199C(
-        session, railsImageId, (int8_t)bb->offset.x, (int8_t)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (int8_t)bb->bb_size.z,
-        height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
+        session, railsImageId, static_cast<int8_t>(bb->offset.x), static_cast<int8_t>(bb->offset.y), bb->bb_size.x,
+        bb->bb_size.y, static_cast<int8_t>(bb->bb_size.z), height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y,
+        height + bb->bb_offset.z);
 }
 
 /** rct2: 0x008AC568 */

@@ -237,6 +237,9 @@ public:
             case CheatType::RemoveDucks:
                 duck_remove_all();
                 break;
+            case CheatType::AllowTrackPlaceInvalidHeights:
+                gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
+                break;
             default:
             {
                 log_error("Unabled cheat: %d", _cheatType.id);
@@ -330,9 +333,9 @@ private:
                     case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                                  { PEEP_NAUSEA_TOLERANCE_NONE, PEEP_NAUSEA_TOLERANCE_HIGH } };
-                    case GUEST_PARAMETER_BATHROOM:
+                    case GUEST_PARAMETER_TOILET:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { 0, PEEP_MAX_BATHROOM } };
+                                 { 0, PEEP_MAX_TOILET } };
                     case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, 255 } };
                     default:
@@ -598,7 +601,7 @@ private:
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                     peep->nausea_tolerance = value;
                     break;
-                case GUEST_PARAMETER_BATHROOM:
+                case GUEST_PARAMETER_TOILET:
                     peep->toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
@@ -642,7 +645,7 @@ private:
 
     void RemoveAllGuests() const
     {
-        uint16_t spriteIndex, nextSpriteIndex;
+        uint16_t spriteIndex;
         for (auto& ride : GetRideManager())
         {
             ride.num_riders = 0;
@@ -685,10 +688,12 @@ private:
             }
         }
 
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
+        // will be fetched on a deleted peep.
+        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
         {
-            auto peep = &(get_sprite(spriteIndex)->peep);
-            nextSpriteIndex = peep->next;
+            auto peep = GET_PEEP(spriteIndex);
+            spriteIndex = peep->next;
             if (peep->type == PEEP_TYPE_GUEST)
             {
                 peep->Remove();

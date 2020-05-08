@@ -23,10 +23,14 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 #include <vector>
+
+using namespace OpenRCT2;
 
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
 constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
@@ -221,8 +225,8 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_close(w);
 
             auto intent = Intent(WC_TRACK_DESIGN_LIST);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.type);
-            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.entry_index);
+            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
+            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
             context_open_intent(&intent);
             break;
     }
@@ -391,8 +395,9 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
 
     // Unable to build track
     audio_play_sound_at_location(SoundId::Error, trackLoc);
-    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
-    context_show_error(res->ErrorTitle, res->ErrorMessage);
+
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->ShowError(res->GetErrorTitle(), res->GetErrorMessage());
 }
 
 /**

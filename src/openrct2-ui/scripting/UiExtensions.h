@@ -9,14 +9,17 @@
 
 #pragma once
 
-#include "../../RideData.h"
-#include "../../Track.h"
+#ifdef ENABLE_SCRIPTING
 
-// clang-format off
-constexpr const RideTypeDescriptor ShopRTD =
+namespace OpenRCT2::Scripting
 {
-    SET_FIELD(EnabledTrackPieces, 0),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_water_rc),
-};
-// clang-format on
+    class ScriptEngine;
+
+    class UiScriptExtensions
+    {
+    public:
+        static void Extend(ScriptEngine& scriptEngine);
+    };
+} // namespace OpenRCT2::Scripting
+
+#endif

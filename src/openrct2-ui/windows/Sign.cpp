@@ -214,9 +214,8 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_SIGN_DEMOLISH:
         {
             auto banner = GetBanner(w->number);
-            int32_t x = banner->position.x << 5;
-            int32_t y = banner->position.y << 5;
-            auto tile_element = map_get_first_element_at({ x, y });
+            auto bannerCoords = banner->position.ToCoordsXY();
+            auto tile_element = map_get_first_element_at(bannerCoords);
             if (tile_element == nullptr)
                 return;
             while (1)
@@ -235,7 +234,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
 
             auto sceneryRemoveAction = LargeSceneryRemoveAction(
-                { x, y, tile_element->GetBaseZ(), tile_element->GetDirection() },
+                { bannerCoords, tile_element->GetBaseZ(), tile_element->GetDirection() },
                 tile_element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&sceneryRemoveAction);
             break;
@@ -255,10 +254,10 @@ static void window_sign_mousedown(rct_window* w, rct_widgetindex widgetIndex, rc
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8_t)w->list_information_type);
+            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->list_information_type));
             break;
         case WIDX_TEXT_COLOUR:
-            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8_t)w->var_492);
+            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->var_492));
             break;
     }
 }
@@ -458,9 +457,8 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_SIGN_DEMOLISH:
         {
             auto banner = GetBanner(w->number);
-            int32_t x = banner->position.x << 5;
-            int32_t y = banner->position.y << 5;
-            auto tile_element = map_get_first_element_at({ x, y });
+            auto bannerCoords = banner->position.ToCoordsXY();
+            auto tile_element = map_get_first_element_at(bannerCoords);
             if (tile_element == nullptr)
                 return;
             while (true)
@@ -476,7 +474,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 }
                 tile_element++;
             }
-            CoordsXYZD wallLocation = { x, y, tile_element->GetBaseZ(), tile_element->GetDirection() };
+            CoordsXYZD wallLocation = { bannerCoords, tile_element->GetBaseZ(), tile_element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
             break;

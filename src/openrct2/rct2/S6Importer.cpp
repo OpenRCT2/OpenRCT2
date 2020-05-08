@@ -264,12 +264,13 @@ public:
         gResearchPriorities = _s6.active_research_types;
         gResearchProgressStage = _s6.research_progress_stage;
         if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-            gResearchLastItem = ResearchItem(_s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT);
+            gResearchLastItem = ResearchItem(
+                RCT12ResearchItem{ _s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT });
         else
             gResearchLastItem = std::nullopt;
         // pad_01357CF8
         if (_s6.next_research_item != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-            gResearchNextItem = ResearchItem(_s6.next_research_item, _s6.next_research_category);
+            gResearchNextItem = ResearchItem(RCT12ResearchItem{ _s6.next_research_item, _s6.next_research_category });
         else
             gResearchNextItem = std::nullopt;
 
@@ -841,7 +842,7 @@ public:
         {
             int32_t quadIndex = rideType >> 5;
             int32_t bitIndex = rideType & 0x1F;
-            bool invented = (_s6.researched_ride_types[quadIndex] & ((uint32_t)1 << bitIndex));
+            bool invented = (_s6.researched_ride_types[quadIndex] & (1UL << bitIndex));
 
             if (invented)
                 ride_type_set_invented(rideType);
@@ -856,7 +857,7 @@ public:
         {
             int32_t quadIndex = rideEntryIndex >> 5;
             int32_t bitIndex = rideEntryIndex & 0x1F;
-            bool invented = (_s6.researched_ride_entries[quadIndex] & ((uint32_t)1 << bitIndex));
+            bool invented = (_s6.researched_ride_entries[quadIndex] & (1UL << bitIndex));
 
             if (invented)
                 ride_entry_set_invented(rideEntryIndex);
@@ -871,7 +872,7 @@ public:
         {
             int32_t quadIndex = sceneryEntryIndex >> 5;
             int32_t bitIndex = sceneryEntryIndex & 0x1F;
-            bool invented = (_s6.researched_scenery_items[quadIndex] & ((uint32_t)1 << bitIndex));
+            bool invented = (_s6.researched_scenery_items[quadIndex] & (1UL << bitIndex));
 
             if (invented)
             {
@@ -905,9 +906,9 @@ public:
 
             RCT12ResearchItem* ri = &_s6.research_items[i];
             if (invented)
-                gResearchItemsInvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+                gResearchItemsInvented.push_back(ResearchItem(*ri));
             else
-                gResearchItemsUninvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+                gResearchItemsUninvented.push_back(ResearchItem(*ri));
         }
     }
 
@@ -1018,7 +1019,7 @@ public:
             }
             else
             {
-                auto tileElementType = (RCT12TileElementType)src->GetType();
+                auto tileElementType = static_cast<RCT12TileElementType>(src->GetType());
                 // Todo: replace with setting invisibility bit
                 if (tileElementType == RCT12TileElementType::Corrupt
                     || tileElementType == RCT12TileElementType::EightCarsCorrupt14
@@ -1103,6 +1104,8 @@ public:
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
+                dst2->SetSeatRotation(src2->GetSeatRotation());
+                // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
                 if (track_element_has_speed_setting(trackType))
@@ -1114,13 +1117,9 @@ public:
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
 
-                // Skipping IsHighlighted()
+                // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
-                if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
-                {
-                    dst2->SetSeatRotation(src2->GetSeatRotation());
-                }
-                else if (rideType == RIDE_TYPE_MAZE)
+                if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
@@ -1245,7 +1244,7 @@ public:
             if (_s6.campaign_weeks_left[i] & CAMPAIGN_ACTIVE_FLAG)
             {
                 MarketingCampaign campaign{};
-                campaign.Type = (uint8_t)i;
+                campaign.Type = static_cast<uint8_t>(i);
                 campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
                 if ((_s6.campaign_weeks_left[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
                 {
@@ -1288,7 +1287,7 @@ public:
         switch (src->unknown.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_NULL:
-                ImportSpriteCommonProperties((SpriteBase*)dst, &src->unknown);
+                ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), &src->unknown);
                 break;
             case SPRITE_IDENTIFIER_VEHICLE:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
@@ -1303,7 +1302,7 @@ public:
                 ImportSpriteLitter(&dst->litter, &src->litter);
                 break;
             default:
-                ImportSpriteCommonProperties((SpriteBase*)dst, (const RCT12SpriteBase*)src);
+                ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), reinterpret_cast<const RCT12SpriteBase*>(src));
                 log_warning("Sprite identifier %d can not be imported.", src->unknown.sprite_identifier);
                 break;
         }
@@ -1313,7 +1312,7 @@ public:
     {
         const auto& ride = _s6.rides[src->ride];
 
-        ImportSpriteCommonProperties((SpriteBase*)dst, src);
+        ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
@@ -1324,15 +1323,17 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
-        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE)
+        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE || src->status != VEHICLE_STATUS_TRAVELLING_BOAT)
         {
             dst->BoatLocation.setNull();
+            dst->track_type = src->track_type;
         }
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+            dst->track_type = 0;
         }
-        dst->track_type = src->track_type;
+
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
@@ -1394,7 +1395,7 @@ public:
 
     void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
-        ImportSpriteCommonProperties((SpriteBase*)dst, src);
+        ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
         if (is_user_string_id(src->name_string_idx))
         {
             dst->SetName(GetUserString(src->name_string_idx));
@@ -1402,10 +1403,10 @@ public:
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * COORDS_Z_STEP };
         dst->next_flags = src->next_flags;
         dst->outside_of_park = src->outside_of_park;
-        dst->state = (PeepState)src->state;
+        dst->state = static_cast<PeepState>(src->state);
         dst->sub_state = src->sub_state;
-        dst->sprite_type = (PeepSpriteType)src->sprite_type;
-        dst->type = (PeepType)src->peep_type;
+        dst->sprite_type = static_cast<PeepSpriteType>(src->sprite_type);
+        dst->type = static_cast<PeepType>(src->peep_type);
         dst->no_of_rides = src->no_of_rides;
         dst->tshirt_colour = src->tshirt_colour;
         dst->trousers_colour = src->trousers_colour;
@@ -1441,10 +1442,10 @@ public:
         dst->current_train = src->current_train;
         dst->time_to_sitdown = src->time_to_sitdown;
         dst->special_sprite = src->special_sprite;
-        dst->action_sprite_type = (PeepActionSpriteType)src->action_sprite_type;
-        dst->next_action_sprite_type = (PeepActionSpriteType)src->next_action_sprite_type;
+        dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
+        dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->action = (PeepActionType)src->action;
+        dst->action = static_cast<PeepActionType>(src->action);
         dst->action_frame = src->action_frame;
         dst->step_progress = src->step_progress;
         dst->next_in_queue = src->next_in_queue;
@@ -1466,7 +1467,7 @@ public:
         {
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->thoughts[i];
-            dstThought->type = (PeepThoughtType)srcThought->type;
+            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
             dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
@@ -1514,16 +1515,16 @@ public:
         {
             case SPRITE_MISC_STEAM_PARTICLE:
             {
-                auto src = (const RCT12SpriteSteamParticle*)csrc;
-                auto dst = (SteamParticle*)cdst;
+                auto src = static_cast<const RCT12SpriteSteamParticle*>(csrc);
+                auto dst = static_cast<SteamParticle*>(cdst);
                 dst->time_to_move = src->time_to_move;
                 dst->frame = src->frame;
                 break;
             }
             case SPRITE_MISC_MONEY_EFFECT:
             {
-                auto src = (const RCT12SpriteMoneyEffect*)csrc;
-                auto dst = (MoneyEffect*)cdst;
+                auto src = static_cast<const RCT12SpriteMoneyEffect*>(csrc);
+                auto dst = static_cast<MoneyEffect*>(cdst);
                 dst->move_delay = src->move_delay;
                 dst->num_movements = src->num_movements;
                 dst->vertical = src->vertical;
@@ -1534,8 +1535,8 @@ public:
             }
             case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
             {
-                auto src = (const RCT12SpriteCrashedVehicleParticle*)csrc;
-                auto dst = (VehicleCrashParticle*)cdst;
+                auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(csrc);
+                auto dst = static_cast<VehicleCrashParticle*>(cdst);
                 dst->frame = src->frame;
                 dst->time_to_live = src->time_to_live;
                 dst->frame = src->frame;
@@ -1554,16 +1555,16 @@ public:
             case SPRITE_MISC_EXPLOSION_FLARE:
             case SPRITE_MISC_CRASH_SPLASH:
             {
-                auto src = (const RCT12SpriteParticle*)csrc;
-                auto dst = (SpriteGeneric*)cdst;
+                auto src = static_cast<const RCT12SpriteParticle*>(csrc);
+                auto dst = static_cast<SpriteGeneric*>(cdst);
                 dst->frame = src->frame;
                 break;
             }
             case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
             case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
             {
-                auto* src = (const RCT12SpriteJumpingFountain*)csrc;
-                auto* dst = (JumpingFountain*)cdst;
+                auto* src = static_cast<const RCT12SpriteJumpingFountain*>(csrc);
+                auto* dst = static_cast<JumpingFountain*>(cdst);
                 dst->NumTicksAlive = src->num_ticks_alive;
                 dst->frame = src->frame;
                 dst->FountainFlags = src->fountain_flags;
@@ -1574,8 +1575,8 @@ public:
             }
             case SPRITE_MISC_BALLOON:
             {
-                auto src = (const RCT12SpriteBalloon*)csrc;
-                auto dst = (Balloon*)cdst;
+                auto src = static_cast<const RCT12SpriteBalloon*>(csrc);
+                auto dst = static_cast<Balloon*>(cdst);
                 dst->popped = src->popped;
                 dst->time_to_move = src->time_to_move;
                 dst->frame = src->frame;
@@ -1584,8 +1585,8 @@ public:
             }
             case SPRITE_MISC_DUCK:
             {
-                auto src = (const RCT12SpriteDuck*)csrc;
-                auto dst = (Duck*)cdst;
+                auto src = static_cast<const RCT12SpriteDuck*>(csrc);
+                auto dst = static_cast<Duck*>(cdst);
                 dst->frame = src->frame;
                 dst->target_x = src->target_x;
                 dst->target_y = src->target_y;
@@ -1631,8 +1632,9 @@ public:
     {
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
-        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
-        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        utf8_remove_format_codes(asUtf8.data(), /*allow colour*/ false);
+        return asUtf8.data();
     }
 
     std::vector<rct_object_entry> GetRequiredObjects()

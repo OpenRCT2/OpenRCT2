@@ -29,7 +29,7 @@ OpenGLShader::OpenGLShader(const char* name, GLenum type)
     auto sourceCodeStr = sourceCode.c_str();
 
     _id = glCreateShader(type);
-    glShaderSource(_id, 1, (const GLchar**)&sourceCodeStr, nullptr);
+    glShaderSource(_id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
     glCompileShader(_id);
 
     GLint status;
@@ -83,8 +83,8 @@ std::string OpenGLShader::ReadSourceCode(const std::string& path)
         throw IOException("Shader source too large.");
     }
 
-    auto fileData = std::string((size_t)fileLength + 1, '\0');
-    fs.Read((void*)fileData.data(), fileLength);
+    auto fileData = std::string(static_cast<size_t>(fileLength) + 1, '\0');
+    fs.Read(static_cast<void*>(fileData.data()), fileLength);
     return fileData;
 }
 

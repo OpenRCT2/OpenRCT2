@@ -67,9 +67,9 @@ public:
         // Update each staff member's uniform
         int32_t spriteIndex;
         Peep* peep;
-        FOR_ALL_PEEPS (spriteIndex, peep)
+        FOR_ALL_STAFF (spriteIndex, peep)
         {
-            if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == _staffType)
+            if (peep->staff_type == _staffType)
             {
                 peep->tshirt_colour = _colour;
                 peep->trousers_colour = _colour;

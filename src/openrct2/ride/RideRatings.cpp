@@ -347,7 +347,7 @@ static void ride_ratings_update_state_5()
             loc.x = gRideRatingsCalcData.proximity_x;
             loc.y = gRideRatingsCalcData.proximity_y;
             track_begin_end trackBeginEnd;
-            if (!track_block_get_previous(loc.x, loc.y, tileElement, &trackBeginEnd))
+            if (!track_block_get_previous({ loc, tileElement }, &trackBeginEnd))
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
@@ -429,12 +429,12 @@ static void proximity_score_increment(int32_t type)
  */
 static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTileElement, int32_t direction)
 {
-    int32_t x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
-    int32_t y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
-    if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
+    auto scorePos = CoordsXY{ gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x,
+                              gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y };
+    if (!map_is_location_valid(scorePos))
         return;
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(scorePos);
     if (tileElement == nullptr)
         return;
     do
@@ -454,7 +454,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 }
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2)
+                if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
                 {
                     proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
                 }
@@ -462,7 +462,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
             case TILE_ELEMENT_TYPE_TRACK:
                 if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
-                    if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2)
+                    if (abs(inputTileElement->GetBaseZ() - tileElement->GetBaseZ()) <= 2 * COORDS_Z_STEP)
                     {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                     }
@@ -470,9 +470,9 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                if (tileElement->base_height < inputTileElement->clearance_height)
+                if (tileElement->GetBaseZ() < inputTileElement->GetClearanceZ())
                 {
-                    if (inputTileElement->base_height > tileElement->clearance_height)
+                    if (inputTileElement->GetBaseZ() > tileElement->GetClearanceZ())
                     {
                         proximity_score_increment(PROXIMITY_SCENERY_SIDE_ABOVE);
                     }
@@ -500,7 +500,8 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
         {
             case TILE_ELEMENT_TYPE_PATH:
             {
-                int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
+                int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
+                    - static_cast<int32_t>(inputTileElement->base_height);
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
@@ -513,7 +514,8 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
                 bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1) != 0;
                 if (elementsAreAt90DegAngle)
                 {
-                    int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
+                    int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
+                        - static_cast<int32_t>(inputTileElement->base_height);
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
@@ -669,7 +671,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                     }
                     if (inputTileElement->clearance_height + 2 == tileElement->base_height)
                     {
-                        if ((uint8_t)(inputTileElement->clearance_height + 10) >= tileElement->base_height)
+                        if (static_cast<uint8_t>(inputTileElement->clearance_height + 10) >= tileElement->base_height)
                         {
                             proximity_score_increment(PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                         }
@@ -862,9 +864,9 @@ static void ride_ratings_calculate_value(Ride* ride)
 static uint16_t ride_compute_upkeep(Ride* ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
-    uint16_t upkeep = initialUpkeepCosts[ride->type];
+    uint16_t upkeep = RideTypeDescriptors[ride->type].UpkeepCosts.BaseCost;
 
-    uint16_t trackCost = costPerTrackPiece[ride->type];
+    uint16_t trackCost = RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrackPiece;
     uint8_t dropFactor = ride->drops;
 
     dropFactor >>= 6;
@@ -877,11 +879,8 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // rides that had tracks. The 0's were fixed rides like crooked house or
     // dodgems.
     // Data source is 0x0097E3AC
-    if (hasRunningTrack[ride->type])
-    {
-        totalLength *= 20;
-    }
-    upkeep += (uint16_t)(totalLength >> 10);
+    totalLength *= RideTypeDescriptors[ride->type].UpkeepCosts.TrackLengthMultiplier;
+    upkeep += static_cast<uint16_t>(totalLength >> 10);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
@@ -907,17 +906,12 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += costPerVehicle[ride->type] * ride->num_vehicles;
-
-    // either set to 3 or 0, extra boosts for some rides including mini golf
-    if (chargeUpkeepForTrainLength[ride->type])
-    {
-        upkeep += 3 * ride->num_cars_per_train;
-    }
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
-    upkeep += costPerStation[ride->type] * ride->num_stations;
+    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerStation * ride->num_stations;
 
     if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
     {
@@ -963,13 +957,13 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
 
     // Apply ride entry multipliers
     ride_ratings_add(
-        ratings, (((int32_t)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
-        (((int32_t)ratings->intensity * rideEntry->intensity_multiplier) >> 7),
-        (((int32_t)ratings->nausea * rideEntry->nausea_multiplier) >> 7));
+        ratings, ((static_cast<int32_t>(ratings->excitement) * rideEntry->excitement_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings->intensity) * rideEntry->intensity_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings->nausea) * rideEntry->nausea_multiplier) >> 7));
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME)
+    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         uint16_t totalAirTime = ride->total_air_time;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
@@ -988,7 +982,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
         }
     }
 #else
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME)
+    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         int32_t excitementModifier;
         int32_t nauseaModifier;
@@ -1033,7 +1027,7 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple* ratings)
 static void set_unreliability_factor(Ride* ride)
 {
     // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8_t minLiftSpeed = RideLiftData[ride->type].minimum_speed;
+    uint8_t minLiftSpeed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
     ride->unreliability_factor += (ride->lift_hill_speed - minLiftSpeed) * 2;
 }
 
@@ -1265,7 +1259,8 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
-    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
+    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                            static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1303,7 +1298,8 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
     intensity += inversionsRating.intensity;
     nausea += inversionsRating.nausea;
 
-    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
+    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                            static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1341,7 +1337,8 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 
-    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
+    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                            static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1423,10 +1420,10 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
  */
 static int32_t ride_ratings_get_scenery_score(Ride* ride)
 {
-    auto i = ride_get_first_valid_station_start(ride);
+    auto stationIndex = ride_get_first_valid_station_start(ride);
     CoordsXY location;
 
-    if (i == STATION_INDEX_NULL)
+    if (stationIndex == STATION_INDEX_NULL)
     {
         return 0;
     }
@@ -1437,13 +1434,13 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     }
     else
     {
-        location = ride->stations[i].Start;
+        location = ride->stations[stationIndex].Start;
     }
 
     int32_t z = tile_element_height(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-    if (z > ride->stations[i].GetBaseZ())
+    if (z > ride->stations[stationIndex].GetBaseZ())
     {
         return 40;
     }

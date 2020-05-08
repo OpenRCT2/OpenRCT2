@@ -48,7 +48,7 @@ DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, La
 {
 private:
     CoordsXYZD _loc;
-    uint8_t _sceneryType{ std::numeric_limits<uint8_t>::max() };
+    ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
@@ -56,7 +56,7 @@ private:
 public:
     LargeSceneryPlaceAction() = default;
 
-    LargeSceneryPlaceAction(const CoordsXYZD& loc, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    LargeSceneryPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _sceneryType(sceneryType)
         , _primaryColour(primaryColour)
@@ -138,7 +138,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -211,6 +211,7 @@ public:
     {
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
@@ -252,7 +253,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);

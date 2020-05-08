@@ -359,7 +359,7 @@ namespace ObjectFactory
             }
 
             json_error_t jsonLoadError;
-            auto jRoot = json_loadb((const char*)jsonBytes.data(), jsonBytes.size(), 0, &jsonLoadError);
+            auto jRoot = json_loadb(reinterpret_cast<const char*>(jsonBytes.data()), jsonBytes.size(), 0, &jsonLoadError);
             if (jRoot == nullptr)
             {
                 throw JsonException(&jsonLoadError);
@@ -429,6 +429,7 @@ namespace ObjectFactory
                 std::memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
+                result->MarkAsJsonObject();
                 auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
                 result->ReadJson(&readContext, jRoot);
                 if (readContext.WasError())

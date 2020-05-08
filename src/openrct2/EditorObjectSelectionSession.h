@@ -14,6 +14,13 @@
 
 #include <vector>
 
+enum EDITOR_INPUT_FLAGS
+{
+    INPUT_FLAG_EDITOR_OBJECT_1 = (1 << 1),
+    INPUT_FLAG_EDITOR_OBJECT_2 = (1 << 2),
+    INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
+};
+
 extern bool _maxObjectsWasHit;
 extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
@@ -23,6 +30,7 @@ void editor_object_flags_free();
 void unload_unselected_objects();
 void sub_6AB211();
 void reset_selected_object_count_and_size();
+void finish_object_selection();
 int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry* entry);
 
 /**

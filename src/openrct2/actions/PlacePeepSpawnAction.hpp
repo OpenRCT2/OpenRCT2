@@ -101,9 +101,9 @@ public:
         // If we have reached our max peep spawns, remove the oldest spawns
         while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
         {
-            auto oldestSpawn = gPeepSpawns.begin();
-            gPeepSpawns.erase(oldestSpawn);
-            map_invalidate_tile_full(*oldestSpawn);
+            PeepSpawn oldestSpawn = *gPeepSpawns.begin();
+            gPeepSpawns.erase(gPeepSpawns.begin());
+            map_invalidate_tile_full(oldestSpawn);
         }
 
         // Shift the spawn point to the edge of the tile

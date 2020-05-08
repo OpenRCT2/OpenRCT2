@@ -1132,8 +1132,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Impossible de changer la limite de temps pour l'attraction...
 STR_1752    :{SMALLFONT}{BLACK}Afficher la liste de tous les visiteurs dans le parc
 STR_1753    :{SMALLFONT}{BLACK}Afficher la liste résumée des visiteurs dans le parc
-STR_1754    :{BLACK}{COMMA16} visiteurs
-STR_1755    :{BLACK}{COMMA16} visiteur
+STR_1754    :{BLACK}{COMMA32} visiteurs
+STR_1755    :{BLACK}{COMMA32} visiteur
 STR_1756    :{WINDOW_COLOUR_2}Prix d'entrée :
 STR_1757    :{WINDOW_COLOUR_2}Fiabilité : {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Mode construction
@@ -1191,7 +1191,7 @@ STR_1813    :Objets divers
 STR_1814    :Actions
 STR_1815    :Pensées
 STR_1816    :{SMALLFONT}{BLACK}Choisir le type d'informations à afficher dans la liste des visiteurs
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tous les visiteurs
 STR_1819    :{WINDOW_COLOUR_2}Tous les visiteurs (résumé)
 STR_1820    :{WINDOW_COLOUR_2}Visiteurs {STRINGID}
@@ -1220,9 +1220,9 @@ STR_1842    :Préférée de : {COMMA16} visiteur
 STR_1843    :Préférée de : {COMMA16} visiteurs
 STR_1844    :{SMALLFONT}{BLACK}Sélectionnez le type d'information à afficher dans la liste des attractions
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} visiteurs
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visiteurs
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visiteurs
+STR_1846    :{COMMA32} visiteurs
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} visiteurs
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} visiteurs
 STR_1849    :{WINDOW_COLOUR_2}Jouer de la musique
 STR_1850    :{SMALLFONT}{BLACK}Choisir si vous souhaitez de la musique pour cette attraction
 STR_1851    :{WINDOW_COLOUR_2}Coût de fonctionnement : {BLACK}{CURRENCY2DP} par heure
@@ -1576,11 +1576,11 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sur {STRINGID} n'est pas encore revenu à {STRINGID}!{NEWLINE}Vérifiez s'il est coincé ou au point mort
-STR_2219    :{RED}{COMMA16} personnes sont mortes dans un accident sur {STRINGID}
+STR_2219    :{RED}{COMMA16} personnes sont décédées dans un accident sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Evaluation du parc : {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Evaluation du parc : {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Visiteurs dans le parc : {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Visiteurs dans le parc : {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Argent : {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Argent : {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Valeur du parc : {BLACK}{CURRENCY}
@@ -1945,8 +1945,8 @@ STR_2728    :{UINT16}h {UINT16}m
 STR_2729    :{UINT16}h {UINT16}m
 STR_2730    :{UINT16}h {UINT16}m
 STR_2731    :{UINT16}h {UINT16}m
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, année {COMMA16}
@@ -1982,7 +1982,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
 STR_2779    :Vue #{COMMA16}
 STR_2780    :Vue supplémentaire
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Modifier raccourci clavier
@@ -3689,6 +3689,13 @@ STR_6357    :{SMALLFONT}{BLACK}Supprime tous les cannards de la carte
 STR_6358    :Page {UINT16}
 STR_6359    :{POP16}{POP16}Page {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Activer les effets de lumières sur les attractions (expérimental)
+STR_6362    :{SMALLFONT}{BLACK}Si activé, les véhicules sur les attractions sur rails seront éclairées la nuit.
+STR_6363    :Texte copié au presse-papier
+STR_6364    :{RED}{COMMA16} personne est décédée dans un accident sur {STRINGID}
+STR_6365    :Victimes de l'attraction
+STR_6366    :Véhicules coincés ou au point mort
+STR_6367    :{WINDOW_COLOUR_2}Image de l'animation :
 
 #############
 # Scenarios #

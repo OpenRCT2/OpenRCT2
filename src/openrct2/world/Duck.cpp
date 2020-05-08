@@ -84,7 +84,7 @@ Duck* rct_sprite::AsDuck()
     Duck* result = nullptr;
     if (IsDuck())
     {
-        return (Duck*)this;
+        return reinterpret_cast<Duck*>(this);
     }
     return result;
 }
@@ -351,7 +351,7 @@ void create_duck(const CoordsXY& pos)
 
 void duck_update(Duck* duck)
 {
-    switch ((DUCK_STATE)duck->state)
+    switch (static_cast<DUCK_STATE>(duck->state))
     {
         case DUCK_STATE::FLY_TO_WATER:
             duck->UpdateFlyToWater();

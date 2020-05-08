@@ -19,31 +19,79 @@ struct rct_ride_entry;
 
 struct ResearchItem
 {
-    // Bit 16 (0: scenery entry, 1: ride entry)
     union
     {
         uint32_t rawValue;
         struct
         {
-            uint8_t entryIndex;
+            ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
             uint8_t type; // 0: scenery entry, 1: ride entry
-            uint8_t flags;
         };
     };
+    uint8_t flags;
     uint8_t category;
 
     bool IsNull() const;
+    void SetNull();
     bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
     bool IsAlwaysResearched() const;
     rct_string_id GetName() const;
 
     ResearchItem() = default;
-    constexpr ResearchItem(uint32_t _rawValue, int32_t _category)
+    constexpr ResearchItem(uint32_t _rawValue, uint8_t _category, uint8_t _flags)
         : rawValue(_rawValue)
+        , flags(_flags)
         , category(_category)
     {
+    }
+    ResearchItem(uint8_t _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, uint8_t _category, uint8_t _flags)
+        : entryIndex(_entryIndex)
+        , baseRideType(_baseRideType)
+        , type(_type)
+        , flags(_flags)
+        , category(_category)
+    {
+    }
+
+    RCT12ResearchItem ToRCT12ResearchItem() const
+    {
+        RCT12ResearchItem retItem = {};
+        if (IsNull())
+        {
+            retItem.rawValue = RCT12_RESEARCHED_ITEMS_SEPARATOR;
+        }
+        else
+        {
+            retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
+            retItem.baseRideType = baseRideType;
+            retItem.type = type;
+            retItem.flags = flags;
+            retItem.category = category;
+        }
+
+        return retItem;
+    }
+
+    ResearchItem(const RCT12ResearchItem& oldResearchItem)
+    {
+        if (oldResearchItem.IsInventedEndMarker() || oldResearchItem.IsUninventedEndMarker()
+            || oldResearchItem.IsRandomEndMarker())
+        {
+            rawValue = 0;
+            flags = 0;
+            category = 0;
+            SetNull();
+        }
+        else
+        {
+            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
+            baseRideType = oldResearchItem.baseRideType;
+            type = oldResearchItem.type;
+            flags = oldResearchItem.flags;
+            category = oldResearchItem.category;
+        }
     }
 };
 
@@ -64,8 +112,6 @@ enum
 
 #define MAX_RESEARCH_ITEMS 500
 
-#define RESEARCH_ENTRY_RIDE_MASK 0x10000
-
 enum
 {
     RESEARCH_FUNDING_NONE,
@@ -85,7 +131,7 @@ enum
     RESEARCH_STAGE_FINISHED_ALL
 };
 
-enum
+enum : uint8_t
 {
     RESEARCH_CATEGORY_TRANSPORT,
     RESEARCH_CATEGORY_GENTLE,
@@ -115,7 +161,6 @@ void research_update_uncompleted_types();
 void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
-void research_populate_list_researched();
 
 void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem item, bool researched);
@@ -123,7 +168,7 @@ void research_remove(ResearchItem* researchItem);
 
 bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
-void research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
+bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
 void ride_entry_set_invented(int32_t rideEntryIndex);
@@ -131,8 +176,6 @@ void scenery_set_invented(const ScenerySelection& sceneryItem);
 void scenery_set_not_invented(const ScenerySelection& sceneryItem);
 bool ride_type_is_invented(uint32_t rideType);
 bool ride_entry_is_invented(int32_t rideEntryIndex);
-uint64_t get_available_track_pieces_for_ride_type(uint8_t rideType);
-bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType);
 bool scenery_group_is_invented(int32_t sgIndex);
 void scenery_group_set_invented(int32_t sgIndex);
 bool scenery_is_invented(const ScenerySelection& sceneryItem);

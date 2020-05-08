@@ -163,7 +163,7 @@ static void window_changelog_scrollgetsize(
     *width = _changelogLongestLineWidth + 4;
 
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    *height = (int32_t)(_changelogLines.size() * lineHeight);
+    *height = static_cast<int32_t>(_changelogLines.size() * lineHeight);
 }
 
 static void window_changelog_invalidate(rct_window* w)
@@ -199,7 +199,7 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         if (y + lineHeight < dpi->y || y >= dpi->y + dpi->height)
             continue;
 
-        gfx_draw_string(dpi, (char*)line, w->colours[0], x, y);
+        gfx_draw_string(dpi, static_cast<const char*>(line), w->colours[0], x, y);
     }
 }
 
@@ -243,7 +243,7 @@ static bool window_changelog_read_file()
     }
 
     // Non-const cast required until C++17 is enabled
-    auto* start = (char*)_changelogText.data();
+    auto* start = static_cast<char*>(_changelogText.data());
     if (_changelogText.size() >= 3 && utf8_is_bom(start))
     {
         start += 3;

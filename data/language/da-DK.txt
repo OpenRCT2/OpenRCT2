@@ -1131,8 +1131,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Kan ikke ændre tidsbegrænsning for denne forlystelse...
 STR_1752    :{SMALLFONT}{BLACK}Vis liste over individuelle gæster i parken
 STR_1753    :{SMALLFONT}{BLACK}Vis en samlet liste over gæster i parken
-STR_1754    :{BLACK}{COMMA16} gæst
-STR_1755    :{BLACK}{COMMA16} gæster
+STR_1754    :{BLACK}{COMMA32} gæst
+STR_1755    :{BLACK}{COMMA32} gæster
 STR_1756    :{WINDOW_COLOUR_2}Entrépris:
 STR_1757    :{WINDOW_COLOUR_2}Pålidelighed: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Bygge tilstand
@@ -1191,7 +1191,7 @@ STR_1813    :Forskellige objekter
 STR_1814    :Aktiviteter
 STR_1815    :Tanker
 STR_1816    :{SMALLFONT}{BLACK}Vælg typen af information der vises i gæste listen
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle gæster
 STR_1819    :{WINDOW_COLOUR_2}Alle gæster (opsummeret)
 STR_1820    :{WINDOW_COLOUR_2}Gæster {STRINGID}
@@ -1220,9 +1220,9 @@ STR_1842    :Favorit hos: {COMMA16} gæst
 STR_1843    :Favorit hos: {COMMA16} gæster
 STR_1844    :{SMALLFONT}{BLACK}Vælg hvilken informationstype der skal vises i listen over forlystelser
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} gæster
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gæster
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gæster
+STR_1846    :{COMMA32} gæster
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} gæster
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} gæster
 STR_1849    :{WINDOW_COLOUR_2}Spil musik
 STR_1850    :{SMALLFONT}{BLACK}Vælg om der skal spilles musik i denne forlystelse
 STR_1851    :{WINDOW_COLOUR_2}Driftsomkostninger: {BLACK}{CURRENCY2DP} per time
@@ -1580,7 +1580,7 @@ STR_2219    :{RED}{COMMA16} personer er døde i ulykken på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Vurdering: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park Vurdering: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Gæster i parken: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Gæster i parken: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Penge: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Penge: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park værdi: {BLACK}{CURRENCY}
@@ -1945,8 +1945,8 @@ STR_2728    :{UINT16}time:{UINT16}min
 STR_2729    :{UINT16}time:{UINT16}min
 STR_2730    :{UINT16}timer:{UINT16}min
 STR_2731    :{UINT16}timer:{UINT16}min
-STR_2732    :{COMMA16}fod
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}fod
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, år {COMMA16}
@@ -1982,7 +1982,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Visning #{COMMA16}
 STR_2780    :Ekstra visning
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Skift tastatur genvej
@@ -2305,7 +2305,6 @@ STR_3190    :Sti udstyr
 STR_3191    :Sceneri Grupper
 STR_3192    :Park indgang
 STR_3193    :Vand
-STR_3194    :Scenarie Beskrivelse
 STR_3195    :Opfindelses liste
 STR_3196    :{WINDOW_COLOUR_2}forskningsgruppe: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Enheder der er tilgængelig i starten af spillet:
@@ -3704,6 +3703,11 @@ STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
 STR_6362    :{SMALLFONT}{BLACK}Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
+STR_6363    :Kopierede tekst til udklipsholder
+STR_6364    :{RED}{COMMA16} person døde i forlystelsen {STRINGID}
+STR_6365    :Forlystelse tilskadekommende
+STR_6366    :Fastlåste eller blokerede køretøjer
+STR_6367    :{WINDOW_COLOUR_2}Animations billede:
 
 #############
 # Scenarios #

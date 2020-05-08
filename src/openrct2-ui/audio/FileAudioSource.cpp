@@ -51,7 +51,7 @@ namespace OpenRCT2::Audio
             int64_t currentPosition = SDL_RWtell(_rw);
             if (currentPosition != -1)
             {
-                size_t bytesToRead = (size_t)std::min<uint64_t>(len, _dataLength - offset);
+                size_t bytesToRead = static_cast<size_t>(std::min<uint64_t>(len, _dataLength - offset));
                 int64_t dataOffset = _dataBegin + offset;
                 if (currentPosition != dataOffset)
                 {

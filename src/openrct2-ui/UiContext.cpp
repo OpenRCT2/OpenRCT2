@@ -17,6 +17,7 @@
 #include "input/KeyboardShortcuts.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
+#include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
@@ -38,6 +39,7 @@
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -46,6 +48,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Input;
+using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
@@ -115,6 +118,14 @@ public:
         delete _platformUiContext;
     }
 
+    void Initialise() override
+    {
+#ifdef ENABLE_SCRIPTING
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        UiScriptExtensions::Extend(scriptEngine);
+#endif
+    }
+
     void Update() override
     {
         _inGameConsole.Update();
@@ -151,7 +162,7 @@ public:
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
         static constexpr const int32_t SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
-        uint32_t windowFlags = SDLFSFlags[(int32_t)mode];
+        uint32_t windowFlags = SDLFSFlags[static_cast<int32_t>(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
@@ -499,7 +510,7 @@ public:
 
                         // Zoom gesture
                         constexpr int32_t tolerance = 128;
-                        int32_t gesturePixels = (int32_t)(_gestureRadius * _width);
+                        int32_t gesturePixels = static_cast<int32_t>(_gestureRadius * _width);
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
@@ -661,7 +672,7 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
-        SetFullscreenMode((FULLSCREEN_MODE)gConfigGeneral.fullscreen_mode);
+        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 
         TriggerResize();
     }
@@ -669,8 +680,8 @@ private:
     void OnResize(int32_t width, int32_t height)
     {
         // Scale the native window size to the game's canvas size
-        _width = (int32_t)(width / gConfigGeneral.window_scale);
-        _height = (int32_t)(height / gConfigGeneral.window_scale);
+        _width = static_cast<int32_t>(width / gConfigGeneral.window_scale);
+        _height = static_cast<int32_t>(height / gConfigGeneral.window_scale);
 
         drawing_engine_resize();
 
@@ -713,13 +724,13 @@ private:
 
         // Get resolutions
         auto resolutions = std::vector<Resolution>();
-        float desktopAspectRatio = (float)mode.w / mode.h;
+        float desktopAspectRatio = static_cast<float>(mode.w) / mode.h;
         for (int32_t i = 0; i < numDisplayModes; i++)
         {
             SDL_GetDisplayMode(displayIndex, i, &mode);
             if (mode.w > 0 && mode.h > 0)
             {
-                float aspectRatio = (float)mode.w / mode.h;
+                float aspectRatio = static_cast<float>(mode.w) / mode.h;
                 if (std::fabs(desktopAspectRatio - aspectRatio) < 0.1f)
                 {
                     resolutions.push_back({ mode.w, mode.h });

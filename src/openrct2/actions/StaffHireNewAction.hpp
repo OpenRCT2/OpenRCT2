@@ -158,8 +158,6 @@ private:
         }
         else
         {
-            move_sprite_to_list(newPeep, SPRITE_LIST_PEEP);
-
             newPeep->sprite_identifier = 1;
             newPeep->window_invalidate_flags = 0;
             newPeep->action = PEEP_ACTION_NONE_2;
@@ -175,6 +173,7 @@ private:
             newPeep->paid_on_rides = 0;
             newPeep->paid_on_food = 0;
             newPeep->paid_on_souvenirs = 0;
+            newPeep->favourite_ride = RIDE_ID_NULL;
             newPeep->staff_orders = _staffOrders;
 
             uint16_t idSearchSpriteIndex;
@@ -314,7 +313,7 @@ private:
             // No walking guests; pick random park entrance
             if (!gParkEntrances.empty())
             {
-                auto rand = scenario_rand_max((uint32_t)gParkEntrances.size());
+                auto rand = scenario_rand_max(static_cast<uint32_t>(gParkEntrances.size()));
                 const auto& entrance = gParkEntrances[rand];
                 auto dir = entrance.direction;
                 x = entrance.x;

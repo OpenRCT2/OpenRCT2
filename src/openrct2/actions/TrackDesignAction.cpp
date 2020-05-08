@@ -52,7 +52,7 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     }
 
     // The rest of the cases are handled by the code in ride_create()
-    if (RideGroupManager::RideTypeHasRideGroups(_td.type) && entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (RideTypeDescriptors[_td.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
         const ObjectRepositoryItem* ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != nullptr)
@@ -144,7 +144,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     }
 
     // The rest of the cases are handled by the code in ride_create()
-    if (RideGroupManager::RideTypeHasRideGroups(_td.type) && entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (RideTypeDescriptors[_td.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
         const ObjectRepositoryItem* ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != nullptr)
@@ -211,7 +211,10 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         {
             operation = PTD_OPERATION_PLACE;
         }
-
+        if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
+        {
+            operation |= PTD_OPERATION_FLAG_IS_REPLAY;
+        }
         cost = place_virtual_track(_td, operation, placeScenery, ride, _loc);
     }
 

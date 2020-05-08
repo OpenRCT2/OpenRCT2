@@ -86,7 +86,7 @@ static rct_widget window_map_widgets[] = {
       SPINNER_WIDGETS      (1,  104,    198,    229,    240,    STR_MAP_SIZE_VALUE,                     STR_NONE), // NB: 3 widgets
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_BUY_LAND_RIGHTS,                    STR_SELECT_PARK_OWNED_LAND_TIP },
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_PARK_ENTRANCE,                      STR_BUILD_PARK_ENTRANCE_TIP },
-    { WWT_FLATBTN,          1,  28,     51,     1,      24,     (uint32_t) SPR_NONE,                      STR_SET_STARTING_POSITIONS_TIP },
+    { WWT_FLATBTN,          1,  28,     51,     1,      24,     static_cast<uint32_t>(SPR_NONE),        STR_SET_STARTING_POSITIONS_TIP },
     { WWT_IMGBTN,           1,  4,      47,     17,     48,     SPR_LAND_TOOL_SIZE_0,                   STR_NONE },
     { WWT_TRNBTN,           1,  5,      20,     18,     33,     IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },
     { WWT_TRNBTN,           1,  31,     46,     32,     47,     IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },
@@ -1102,7 +1102,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
     Vehicle *train, *vehicle;
     uint16_t train_index, vehicle_index;
 
-    for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
+    for (train_index = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
     {
         train = GET_VEHICLE(train_index);
         for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train)
@@ -1552,7 +1552,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
     if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
-    const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
+    const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(ElementTypeAddColour));
     auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     while (!(tileElement++)->IsLastForTile())
     {

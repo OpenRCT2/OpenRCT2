@@ -99,7 +99,7 @@ static rct_window_event_list window_track_list_events = {
 
 constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
 
-ride_list_item _window_track_list_item;
+RideSelection _window_track_list_item;
 
 static std::vector<track_design_file_ref> _trackDesigns;
 static utf8 _filterString[USER_STRING_MAX_LENGTH];
@@ -108,14 +108,14 @@ static uint16_t _loadedTrackDesignIndex;
 static std::unique_ptr<TrackDesign> _loadedTrackDesign;
 static std::vector<uint8_t> _trackDesignPreviewPixels;
 
-static void track_list_load_designs(ride_list_item item);
+static void track_list_load_designs(RideSelection item);
 static bool track_list_load_design_for_preview(utf8* path);
 
 /**
  *
  *  rct2: 0x006CF1A2
  */
-rct_window* window_track_list_open(ride_list_item item)
+rct_window* window_track_list_open(RideSelection item)
 {
     window_close_construction_windows();
     _window_track_list_item = item;
@@ -123,21 +123,19 @@ rct_window* window_track_list_open(ride_list_item item)
     String::Set(_filterString, sizeof(_filterString), "");
     track_list_load_designs(item);
 
-    int32_t x, y;
+    ScreenCoordsXY screenPos{};
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
-        x = screenWidth / 2 - 300;
-        y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
+        screenPos = { screenWidth / 2 - 300, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
     }
     else
     {
-        x = 0;
-        y = TOP_TOOLBAR_HEIGHT + 2;
+        screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
 
-    rct_window* w = window_create(ScreenCoordsXY(x, y), 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = window_create(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
@@ -184,7 +182,7 @@ static void window_track_list_filter_list()
     utf8 filterStringLower[sizeof(_filterString)];
     String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
     for (int32_t i = 0; filterStringLower[i] != '\0'; i++)
-        filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
+        filterStringLower[i] = static_cast<utf8>(tolower(filterStringLower[i]));
 
     // Fill the set with indices for tracks that match the filter
     for (uint16_t i = 0; i < _trackDesigns.size(); i++)
@@ -192,7 +190,7 @@ static void window_track_list_filter_list()
         utf8 trackNameLower[USER_STRING_MAX_LENGTH];
         String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
         for (int32_t j = 0; trackNameLower[j] != '\0'; j++)
-            trackNameLower[j] = (utf8)tolower(trackNameLower[j]);
+            trackNameLower[j] = static_cast<utf8>(tolower(trackNameLower[j]));
 
         if (strstr(trackNameLower, filterStringLower) != nullptr)
         {
@@ -295,7 +293,7 @@ static int32_t window_track_list_get_list_item_index_from_position(const ScreenC
     }
 
     int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-    if (index < 0 || (uint32_t)index >= maxItems)
+    if (index < 0 || static_cast<uint32_t>(index) >= maxItems)
     {
         index = -1;
     }
@@ -368,7 +366,7 @@ static void window_track_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
         numItems++;
     }
 
-    *height = (int32_t)(numItems * SCROLLABLE_ROW_HEIGHT);
+    *height = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
 }
 
 /**
@@ -445,15 +443,15 @@ static void window_track_list_update(rct_window* w)
 static void window_track_list_invalidate(rct_window* w)
 {
     rct_string_id stringId = STR_NONE;
-    rct_ride_entry* entry = get_ride_entry(_window_track_list_item.entry_index);
+    rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
 
     if (entry != nullptr)
     {
-        rct_ride_name rideName = get_ride_naming(_window_track_list_item.type, entry);
+        rct_ride_name rideName = get_ride_naming(_window_track_list_item.Type, entry);
         stringId = rideName.name;
     }
 
-    set_format_arg(0, rct_string_id, stringId);
+    Formatter::Common().Add<rct_string_id>(stringId);
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
@@ -622,8 +620,9 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
 
             // Ride length
-            set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-            set_format_arg(2, uint16_t, _loadedTrackDesign->ride_length);
+            auto ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+            ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
             gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
             y += LIST_ROW_HEIGHT;
         }
@@ -683,15 +682,16 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (_loadedTrackDesign->space_required_x != 0xFF)
     {
         // Space required
-        set_format_arg(0, uint16_t, _loadedTrackDesign->space_required_x);
-        set_format_arg(2, uint16_t, _loadedTrackDesign->space_required_y);
+        auto ft = Formatter::Common();
+        ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
+        ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
 
     if (_loadedTrackDesign->cost != 0)
     {
-        set_format_arg(0, uint32_t, _loadedTrackDesign->cost);
+        Formatter::Common().Add<uint32_t>(_loadedTrackDesign->cost);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 }
@@ -721,7 +721,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     {
         // Build custom track item
         rct_string_id stringId;
-        if (listIndex == (size_t)w->selected_list_item)
+        if (listIndex == static_cast<size_t>(w->selected_list_item))
         {
             // Highlight
             gfx_filter_rect(dpi, x, y, w->width, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
@@ -743,7 +743,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
         if (y + SCROLLABLE_ROW_HEIGHT >= dpi->y && y < dpi->y + dpi->height)
         {
             rct_string_id stringId;
-            if (listIndex == (size_t)w->selected_list_item)
+            if (listIndex == static_cast<size_t>(w->selected_list_item))
             {
                 // Highlight
                 gfx_filter_rect(dpi, x, y, w->width, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
@@ -755,8 +755,9 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
             }
 
             // Draw track name
-            set_format_arg(0, rct_string_id, STR_TRACK_LIST_NAME_FORMAT);
-            set_format_arg(2, utf8*, _trackDesigns[i].name);
+            auto ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
+            ft.Add<utf8*>(_trackDesigns[i].name);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y - 1);
         }
 
@@ -765,32 +766,32 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     }
 }
 
-static void track_list_load_designs(ride_list_item item)
+static void track_list_load_designs(RideSelection item)
 {
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (RideGroupManager::RideTypeHasRideGroups(item.type))
+    if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
-        auto rideEntry = get_ride_entry(item.entry_index);
+        auto rideEntry = get_ride_entry(item.EntryIndex);
         if (rideEntry != nullptr)
         {
-            auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+            auto rideGroup = RideGroupManager::GetRideGroup(item.Type, rideEntry);
             if (rideGroup != nullptr)
             {
-                _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
+                _trackDesigns = repo->GetItemsForRideGroup(item.Type, rideGroup);
             }
         }
     }
     else
     {
         std::string entryName;
-        if (item.type < 0x80)
+        if (item.Type < 0x80)
         {
-            if (RideGroupManager::RideTypeIsIndependent(item.type))
+            if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
-                entryName = get_ride_entry_name(item.entry_index);
+                entryName = get_ride_entry_name(item.EntryIndex);
             }
         }
-        _trackDesigns = repo->GetItemsForObjectEntry(item.type, entryName);
+        _trackDesigns = repo->GetItemsForObjectEntry(item.Type, entryName);
     }
 
     window_track_list_filter_list();

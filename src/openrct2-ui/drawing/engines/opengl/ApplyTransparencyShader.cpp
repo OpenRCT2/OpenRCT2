@@ -39,9 +39,11 @@ ApplyTransparencyShader::ApplyTransparencyShader()
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, position));
     glVertexAttribPointer(
-        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, texturecoordinate));
+        vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, position)));
+    glVertexAttribPointer(
+        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct),
+        reinterpret_cast<void*>(offsetof(VDStruct, texturecoordinate)));
 
     glEnableVertexAttribArray(vPosition);
     glEnableVertexAttribArray(vTextureCoordinate);

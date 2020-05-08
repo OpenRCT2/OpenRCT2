@@ -22,9 +22,11 @@
 #include <string_view>
 
 interface IObjectManager;
+class Formatter;
 class StationObject;
 struct Peep;
 struct Ride;
+struct RideTypeDescriptor;
 struct Staff;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
@@ -51,24 +53,6 @@ constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 constexpr const ObjectEntryIndex RIDE_ENTRY_INDEX_NULL = OBJECT_ENTRY_INDEX_NULL;
 
 #pragma pack(push, 1)
-
-/**
- * Couples a ride type and subtype together.
- */
-struct ride_list_item
-{
-    union
-    {
-        struct
-        {
-            uint8_t type;
-            uint8_t entry_index;
-        };
-        uint16_t ride_type_and_entry;
-    };
-};
-assert_struct_size(ride_list_item, 2);
-
 struct TrackColour
 {
     uint8_t main;
@@ -110,40 +94,36 @@ assert_struct_size(rct_ride_name, 4);
 
 /**
  * Ride type structure.
- * size: unknown
  */
 struct rct_ride_entry
 {
     rct_ride_name naming;
-    uint32_t images_offset; // 0x004. The first three images are previews. They correspond to the ride_type[] array.
-    uint32_t flags;         // 0x008
-    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY]; // 0x00C
-    uint8_t min_cars_in_train;                             // 0x00F
-    uint8_t max_cars_in_train;                             // 0x010
-    uint8_t cars_per_flat_ride;                            // 0x011
+    // The first three images are previews. They correspond to the ride_type[] array.
+    uint32_t images_offset;
+    uint32_t flags;
+    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+    uint8_t min_cars_in_train;
+    uint8_t max_cars_in_train;
+    uint8_t cars_per_flat_ride;
     // Number of cars that can't hold passengers
-    uint8_t zero_cars; // 0x012
-    // The index to the vehicle type displayed in
-    // the vehicle tab.
-    uint8_t tab_vehicle;     // 0x013
-    uint8_t default_vehicle; // 0x014
-    // Convert from first - fourth vehicle to
-    // vehicle structure
-    uint8_t front_vehicle;                                             // 0x015
-    uint8_t second_vehicle;                                            // 0x016
-    uint8_t rear_vehicle;                                              // 0x017
-    uint8_t third_vehicle;                                             // 0x018
-    uint8_t pad_019;                                                   // 0x019
-    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY]; // 0x01A
-    vehicle_colour_preset_list* vehicle_preset_list;                   // 0x1AE
-    int8_t excitement_multiplier;                                      // 0x1B2
-    int8_t intensity_multiplier;                                       // 0x1B3
-    int8_t nausea_multiplier;                                          // 0x1B4
-    uint8_t max_height;                                                // 0x1B5
-    uint64_t enabledTrackPieces;                                       // 0x1B6
-    uint8_t category[RCT2_MAX_CATEGORIES_PER_RIDE];                    // 0x1BE
-    uint8_t shop_item;                                                 // 0x1C0
-    uint8_t shop_item_secondary;                                       // 0x1C1
+    uint8_t zero_cars;
+    // The index to the vehicle type displayed in the vehicle tab.
+    uint8_t tab_vehicle;
+    uint8_t default_vehicle;
+    // Convert from first - fourth vehicle to vehicle structure
+    uint8_t front_vehicle;
+    uint8_t second_vehicle;
+    uint8_t rear_vehicle;
+    uint8_t third_vehicle;
+    uint8_t pad_019;
+    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
+    vehicle_colour_preset_list* vehicle_preset_list;
+    int8_t excitement_multiplier;
+    int8_t intensity_multiplier;
+    int8_t nausea_multiplier;
+    uint8_t max_height;
+    uint8_t shop_item;
+    uint8_t shop_item_secondary;
     rct_string_id capacity;
     void* obj;
 
@@ -221,7 +201,7 @@ struct Ride
     uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
-    uint8_t subtype;
+    ObjectEntryIndex subtype;
     uint8_t mode;
     uint8_t colour_scheme_type;
     VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
@@ -439,13 +419,19 @@ public:
 
     void SetNameToDefault();
     std::string GetName() const;
+    void FormatNameTo(Formatter&) const;
     size_t FormatNameTo(void* args) const;
-    void FormatStatusTo(void* args) const;
+    void FormatStatusTo(Formatter&) const;
+    size_t FormatStatusTo(void* args) const;
 
     static void UpdateAll();
     static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
     std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+
+    uint64_t GetAvailableModes() const;
+    const RideTypeDescriptor& GetRideTypeDescriptor() const;
+    TrackElement* GetOriginElement(StationIndex stationIndex) const;
 };
 
 #pragma pack(push, 1)
@@ -520,9 +506,9 @@ enum
     RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME_DEPRECATED = 1 << 12, // Always set with SEPARATE_RIDE, and deprecated in favour of it.
     RIDE_ENTRY_FLAG_SEPARATE_RIDE_DEPRECATED = 1 << 13,      // Made redundant by ride groups
     RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN = 1 << 14,
-    RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE = 1 << 15,
+    RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE_DEPRECATED = 1 << 15,
     RIDE_ENTRY_FLAG_DISABLE_DOOR_CONSTRUCTION_DEPRECATED = 1 << 16,
-    RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES = 1 << 17,
+    RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES_DEPRECATED = 1 << 17,
     RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES = 1 << 18,
     RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB = 1 << 19,
     // Must be set with swing mode 1 as well.
@@ -646,7 +632,7 @@ enum
     RIDE_STATUS_SIMULATING,
 };
 
-enum
+enum : uint8_t
 {
     RIDE_MODE_NORMAL,
     RIDE_MODE_CONTINUOUS_CIRCUIT,
@@ -661,7 +647,7 @@ enum
     RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION = 10,
     RIDE_MODE_MAZE,
     RIDE_MODE_RACE,
-    RIDE_MODE_BUMPERCAR,
+    RIDE_MODE_DODGEMS,
     RIDE_MODE_SWING,
     RIDE_MODE_SHOP_STALL,
     RIDE_MODE_ROTATION,
@@ -686,7 +672,7 @@ enum
     RIDE_MODE_POWERED_LAUNCH, // RCT1 style, don't pass through station
     RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED,
 
-    RIDE_MOUNT_COUNT,
+    RIDE_MODE_COUNT,
     RIDE_MODE_NULL = 255,
 };
 
@@ -704,7 +690,9 @@ enum
     RIDE_CATEGORY_ROLLERCOASTER,
     RIDE_CATEGORY_THRILL,
     RIDE_CATEGORY_WATER,
-    RIDE_CATEGORY_SHOP
+    RIDE_CATEGORY_SHOP,
+
+    RIDE_CATEGORY_NONE = 255,
 };
 
 enum
@@ -840,54 +828,6 @@ enum
     RIDE_ELEMENT_WHIRLPOOL = 1 << 7
 };
 
-enum ride_type_flags : uint32_t
-{
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,
-    RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION = 1 << 3, // Set by flat rides, tower rides and shops/stalls.
-    RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
-    RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
-    RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6, // used only by boat Hire and submarine ride
-    RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
-    RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = 1
-        << 8, // used by rides that can't have gaps, like those with a vertical tower, such as the observation tower
-    RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
-    RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
-    RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
-    RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = 1
-        << 12, // used by rides with two varieties, like the u and o shapes of the dinghy slide and the dry and submerged track
-               // of the water coaster
-    RIDE_TYPE_FLAG_NO_VEHICLES = 1 << 13, // used only by maze, spiral slide and shops
-    RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
-    RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
-    RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = 1 << 16, // Set by flat rides where the vehicle is integral to the structure, like
-                                                  // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
-    RIDE_TYPE_FLAG_TRACK_NO_WALLS = 1 << 18, // if set, wall scenery can not share a tile with the ride's track
-    RIDE_TYPE_FLAG_FLAT_RIDE = 1 << 19,
-    RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = 1 << 20, // whether or not guests will go on the ride again if they liked it (this is
-                                                   // usually applied to everything apart from transport rides)
-    RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = 1 << 21, // used by toilets and first aid to mark that peep should go inside
-                                                             // the building (rather than 'buying' at the counter)
-    RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,                        // peeps are "IN" (ride) rather than "ON" (ride)
-    RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 23,
-    RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
-    RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
-    RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = 1 << 26, // whether or not vehicle colours can be set
-    RIDE_TYPE_FLAG_CHECK_FOR_STALLING = 1 << 27,
-    RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
-    RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = 1 << 29, // Only set by lift
-    RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30,        // whether the ride supports large (45 degree turn) curves
-    RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
-};
-// Hack for MSVC which thinks RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31 is signed and generates narrowing
-// conversion warnings
-constexpr inline uint32_t operator|(ride_type_flags a, ride_type_flags b)
-{
-    return static_cast<ride_type_flags>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
-}
-
 enum
 {
     RIDE_CRASH_TYPE_NONE = 0,
@@ -950,7 +890,7 @@ enum
 enum
 {
     RIDE_MODIFY_DEMOLISH,
-    RIDE_MODIFY_RENEW
+    RIDE_MODIFY_RENEW,
 };
 
 enum
@@ -959,9 +899,23 @@ enum
     RIDE_ISSUE_GUESTS_STUCK = (1 << 0),
 };
 
+enum
+{
+    TRACK_BLOCK_2 = (1 << 2)
+};
+
+enum
+{
+    TRACK_ELEMENT_SET_HIGHLIGHT_FALSE = (1 << 0),
+    TRACK_ELEMENT_SET_HIGHLIGHT_TRUE = (1 << 1),
+    TRACK_ELEMENT_SET_COLOUR_SCHEME = (1 << 2),
+    TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE = (1 << 3),
+    TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE = (1 << 4),
+    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
+};
+
 struct rct_ride_properties
 {
-    uint32_t flags;
     uint8_t min_value;
     uint8_t max_value;
     uint8_t max_brakes_speed;
@@ -969,8 +923,6 @@ struct rct_ride_properties
     uint8_t booster_acceleration;
     int8_t booster_speed_factor; // The factor to shift the raw booster speed with
 };
-
-#define RIDE_MODE_COUNT 37
 
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_VALUE_UNDEFINED 0xFFFF
@@ -1009,7 +961,7 @@ struct RideManager
         friend RideManager;
 
     private:
-        RideManager& _rideManager;
+        RideManager* _rideManager;
         size_t _index{};
         size_t _endIndex{};
 
@@ -1022,11 +974,11 @@ struct RideManager
 
     private:
         Iterator(RideManager& rideManager, size_t beginIndex, size_t endIndex)
-            : _rideManager(rideManager)
+            : _rideManager(&rideManager)
             , _index(beginIndex)
             , _endIndex(endIndex)
         {
-            if (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr)
+            if (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr)
             {
                 ++(*this);
             }
@@ -1038,7 +990,7 @@ struct RideManager
             do
             {
                 _index++;
-            } while (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr);
+            } while (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr);
             return *this;
         }
         Iterator operator++(int)
@@ -1057,7 +1009,7 @@ struct RideManager
         }
         Ride& operator*()
         {
-            return *_rideManager[(ride_id_t)_index];
+            return *(*_rideManager)[static_cast<ride_id_t>(_index)];
         }
     };
 
@@ -1066,19 +1018,19 @@ struct RideManager
     Iterator end();
     Iterator begin() const
     {
-        return ((RideManager*)this)->begin();
+        return (const_cast<RideManager*>(this))->begin();
     }
     Iterator end() const
     {
-        return ((RideManager*)this)->end();
+        return (const_cast<RideManager*>(this))->end();
     }
 };
 
 RideManager GetRideManager();
 ride_id_t GetNextFreeRideId();
 Ride* GetOrAllocateRide(ride_id_t index);
-rct_ride_entry* get_ride_entry(int32_t index);
-std::string_view get_ride_entry_name(size_t index);
+rct_ride_entry* get_ride_entry(ObjectEntryIndex index);
+std::string_view get_ride_entry_name(ObjectEntryIndex index);
 RideMeasurement* get_ride_measurement(int32_t index);
 
 extern money16 gTotalRideValueForMoney;
@@ -1136,7 +1088,7 @@ void ride_update_satisfaction(Ride* ride, uint8_t happiness);
 void ride_update_popularity(Ride* ride, uint8_t pop_amount);
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
-void ride_construct_new(ride_list_item listItem);
+void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
 bool ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);
@@ -1157,9 +1109,8 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
 int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
-int32_t sub_6C683D(
-    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
-    uint16_t flags);
+std::optional<CoordsXYZ> sub_6C683D(
+    const CoordsXYZD& location, int32_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 int32_t ride_music_params_update(
     const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
@@ -1196,19 +1147,19 @@ int32_t get_turn_count_4_plus_elements(Ride* ride, uint8_t type);
 
 uint8_t ride_get_helix_sections(Ride* ride);
 
-bool ride_type_has_flag(int32_t rideType, uint32_t flag);
+bool ride_type_has_flag(int32_t rideType, uint64_t flag);
 bool ride_has_any_track_elements(const Ride* ride);
 
 void ride_construction_set_default_next_piece();
 
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
 bool track_block_get_next_from_zero(
-    int16_t x, int16_t y, int16_t z_start, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z,
-    int32_t* direction, bool isGhost);
+    const CoordsXYZ& startPos, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
+    bool isGhost);
 
-bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd);
+bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd);
 bool track_block_get_previous_from_zero(
-    int16_t x, int16_t y, int16_t z, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
+    const CoordsXYZ& startPos, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
 
 void ride_get_start_of_track(CoordsXYE* output);
 
@@ -1238,9 +1189,8 @@ void sub_6CB945(Ride* ride);
 void sub_6C94D8();
 
 void ride_reset_all_names();
-const uint8_t* ride_seek_available_modes(Ride* ride);
 
-void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
+void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
 
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);

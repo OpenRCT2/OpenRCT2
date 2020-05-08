@@ -1220,7 +1220,7 @@ STR_1842    :Nejoblíbenější: {COMMA16} návštěvníka
 STR_1843    :Nejoblíbenější: {COMMA16} návštěvníků
 STR_1844    :{SMALLFONT}{BLACK}Vyberte informaci k zobrazení v seznamu atrakcí
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} návštěvníků
+STR_1846    :{COMMA32} návštěvníků
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} návštěvníků
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} návštěvníků
 STR_1849    :{WINDOW_COLOUR_2}Hrát hudbu
@@ -1945,8 +1945,8 @@ STR_2728    :{UINT16}hod:{UINT16}min
 STR_2729    :{UINT16}hod:{UINT16}min
 STR_2730    :{UINT16}hod:{UINT16}min
 STR_2731    :{UINT16}hod:{UINT16}min
-STR_2732    :{COMMA16} stop
-STR_2733    :{COMMA16} metrů
+STR_2732    :{COMMA32} stop
+STR_2733    :{COMMA32} metrů
 STR_2734    :{COMMA16} mílí za hodinu
 STR_2735    :{COMMA16} km/h
 STR_2736    :{MONTH}, rok {COMMA16}
@@ -1982,7 +1982,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Pohled #{COMMA16}
 STR_2780    :Extra pohled
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Změnit klávesovou zkratku
@@ -3370,7 +3370,7 @@ STR_6033    :Cesta k RCT1 instalaci:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Prosím vyberte složku s RCT1
 STR_6036    :{SMALLFONT}{BLACK}Zrušit
-STR_6037    :Prosím vyberte správnou složku s RCT1
+STR_6037    :Vybraná složka neobsahuje instalaci RollerCoaster Tycoon 1.
 STR_6038    :{SMALLFONT}{BLACK}Pokud máte nainstalovaný RCT1, použijte tuto volbu k nastavení cesty k RCT1 pro možnost nahrání scénářů, hudby a dalších.
 STR_6039    :{SMALLFONT}{BLACK}Rychle odebrat atrakci
 STR_6040    :Upravit nastavení scénáře
@@ -3697,6 +3697,15 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Povolit světelné efekty na atrakcích (experimentální)
 STR_6362    :{SMALLFONT}{BLACK}Zapne noční osvětlené atrakcí na kolejích.
 STR_6363    :Text zkopírován do schránky
+STR_6364    :{RED}{COMMA16} zemřel(a) při nehodě na {STRINGID}
+STR_6365    :Oběti atrakce
+STR_6366    :Zaseklá vozidla
+STR_6367    :{WINDOW_COLOUR_2}Snímek animace:
+STR_6368    :Z důvodů kompatibility není doporučeno spuštět OpenRCT2 pod Wine. OpenRCT2 má nativví podporu pro macOS, Linux, FreeBSD a OpenBSD.
+STR_6369    :Povolit stavbu trati v jakémkoliv výšce
+STR_6370    :{SMALLFONT}{BLACK}Umožní stavět dráhu v neplatné výšce
+STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z RollerCoaster Tycoon 1 instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1. 
+STR_6372    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale nelze použít jeho verzi. OpenRCT2 potřebuje buď Loopy Landscapes nebo RCT Deluxe verzi, aby bylo možné převzít grafiku.
 
 ###############################################################################
 ## RCT2 Scenarios

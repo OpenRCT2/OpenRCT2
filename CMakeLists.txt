@@ -24,11 +24,11 @@ set(CMAKE_MACOSX_RPATH 1)
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.13/objects.zip")
-set(OBJECTS_SHA1 "86cfb7f33763078d9f5e8009bb1b5bf3c674a263")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.14/objects.zip")
+set(OBJECTS_SHA1 "31a0ed0047b4bdb1428071044130192b3c0a30fa")
 
-set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.8/replays.zip")
-set(REPLAYS_SHA1 "3309db1a932709312150124b1e3bbe57c7fb45d0")
+set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.12/replays.zip")
+set(REPLAYS_SHA1 "E85C23FB63AD6C7344AA80779C6CE03FAC2A7100")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -49,6 +49,7 @@ option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
+option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
 
@@ -69,7 +70,7 @@ endif ()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
-list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS)
+set(SUPPORTED_CHECK_CXX_COMPILER_FLAGS "")
 
 include(cmake/ipo.cmake)
 list(APPEND IPO_ENABLED_BUILDS RELEASE RELWITHDEBINFO MINSIZEREL)
@@ -121,15 +122,8 @@ endif ()
 if (ENABLE_LIGHTFX)
     add_definitions(-D__ENABLE_LIGHTFX__)
 endif ()
-
-if (CXX_WARN_SUGGEST_FINAL_TYPES)
-    # Disable -Wsuggest-final-types via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
-endif ()
-
-if (CXX_WARN_SUGGEST_FINAL_METHODS)
-    # Disable -Wsuggest-final-methods via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
+if (ENABLE_SCRIPTING)
+    add_definitions(-DENABLE_SCRIPTING)
 endif ()
 
 if (NOT DISABLE_DISCORD_RPC)
@@ -162,7 +156,7 @@ endif()
 function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
     CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
     if (${_CACHE_VAR})
-        list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS "${_FLAG}")
+        set(SUPPORTED_CHECK_CXX_COMPILER_FLAGS ${SUPPORTED_CHECK_CXX_COMPILER_FLAGS} ${_FLAG} PARENT_SCOPE)
     else ()
         message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
     endif ()
@@ -201,9 +195,6 @@ if (MSVC)
     endif ()
     add_definitions(-DNOMINMAX)
 else ()
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
@@ -215,7 +206,7 @@ else ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_LOGICAL_OP -Wlogical-op)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
-    ADD_CHECK_CXX_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
     # Disabled due to problems compiling OpenSSL on macOS.
     # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
 
@@ -223,6 +214,14 @@ else ()
     if (NOT MINGW)
         # Do not enable for MinGW, as its headers contain redundant declarations of builtin functions
         ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
+
+        # Currently used MinGW w/GCC 7.2 doesn't provide sane error messages for this
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
+    endif ()
+    # These have no workarounds available when building with LTO
+    if (NOT IPO_BUILD_ENABLED)
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
     endif ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
 
@@ -254,6 +253,16 @@ else ()
     endif ()
 endif ()
 
+if (CXX_WARN_SUGGEST_FINAL_TYPES)
+    # Disable -Wsuggest-final-types via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_METHODS)
+    # Disable -Wsuggest-final-methods via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
+endif ()
+
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
 include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
@@ -282,20 +291,22 @@ endif ()
 # Don't recurse, grab all *.txt and *.md files
 file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
 list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
-                      "${ROOT_DIR}/licence.txt")
+                      "${ROOT_DIR}/licence.txt"
+                      "${ROOT_DIR}/distribution/scripting.md"
+                      "${ROOT_DIR}/distribution/openrct2.d.ts")
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
 if (DOWNLOAD_TITLE_SEQUENCES)
-    # If openrct2.parkseq or data/title/ exists, assume all the title sequences are already present
+    # If openrct2.parkseq or data/sequence/ exists, assume all the title sequences are already present
     install(CODE
-        "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/openrct2.parkseq\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/title/)\n\
+        "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/openrct2.parkseq\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/)\n\
             message(\"Using cached title sequences\")\n\
         else () \n\
-            file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)\n\
-            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xf title-sequences.zip)\n\
-            file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)\n\
+            file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)\n\
+            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/ \"${CMAKE_COMMAND}\" -E tar xf title-sequences.zip)\n\
+            file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/title-sequences.zip)\n\
         endif ()")
 endif ()
 if (DOWNLOAD_OBJECTS)

@@ -157,14 +157,14 @@ void* get_loaded_object_chunk(size_t index)
 
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
 {
-    bufferSize = std::min((size_t)DAT_NAME_LENGTH + 1, bufferSize);
+    bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
     std::memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }
 
-void* object_entry_get_chunk(int32_t objectType, size_t index)
+void* object_entry_get_chunk(int32_t objectType, ObjectEntryIndex index)
 {
-    size_t objectIndex = index;
+    ObjectEntryIndex objectIndex = index;
     for (int32_t i = 0; i < objectType; i++)
     {
         objectIndex += object_entry_group_counts[i];
@@ -180,7 +180,7 @@ void* object_entry_get_chunk(int32_t objectType, size_t index)
     return result;
 }
 
-const rct_object_entry* object_entry_get_entry(int32_t objectType, size_t index)
+const rct_object_entry* object_entry_get_entry(int32_t objectType, ObjectEntryIndex index)
 {
     const rct_object_entry* result = nullptr;
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();

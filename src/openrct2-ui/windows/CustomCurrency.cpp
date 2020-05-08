@@ -138,8 +138,8 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
             gDropdownItemsArgs[1] = STR_SUFFIX;
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
 
             if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
             {
@@ -167,7 +167,7 @@ static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widget
         case WIDX_RATE:
             window_text_input_open(
                 w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, STR_FORMAT_INTEGER,
-                (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate, CURRENCY_RATE_MAX_NUM_DIGITS);
+                static_cast<uint32_t>(CurrencyDescriptors[CURRENCY_CUSTOM].rate), CURRENCY_RATE_MAX_NUM_DIGITS);
             break;
     }
 }

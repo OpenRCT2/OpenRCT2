@@ -16,6 +16,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -281,6 +282,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
     _window_guest_list_tracking_only = false;
     _window_guest_list_filter_arguments = {};
 
+    Formatter ft(_window_guest_list_filter_arguments.args);
+
     switch (type)
     {
         case GLFT_GUESTS_ON_RIDE:
@@ -288,10 +291,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
             {
-                set_format_arg_on(
-                    _window_guest_list_filter_arguments.args, 0, rct_string_id,
-                    ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(_window_guest_list_filter_arguments.args + 2);
+                ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ride->FormatNameTo(ft.Buf());
 
                 _window_guest_list_selected_filter = 0;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -305,8 +306,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
             {
-                set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, STR_QUEUING_FOR);
-                ride->FormatNameTo(_window_guest_list_filter_arguments.args + 2);
+                ft.Add<rct_string_id>(STR_QUEUING_FOR);
+                ride->FormatNameTo(ft.Buf());
 
                 _window_guest_list_selected_filter = 0;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -320,8 +321,8 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
             {
-                set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, STR_NONE);
-                ride->FormatNameTo(_window_guest_list_filter_arguments.args + 2);
+                ft.Add<rct_string_id>(STR_NONE);
+                ride->FormatNameTo(ft.Buf());
 
                 _window_guest_list_selected_filter = 1;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -332,7 +333,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
         }
         case GLFT_GUESTS_THINKING_X:
         {
-            set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, PeepThoughts[index & 0xFF]);
+            ft.Add<rct_string_id>(PeepThoughts[index & 0xFF]);
 
             _window_guest_list_selected_filter = 1;
             _window_guest_list_highlighted_index = 0xFFFF;
@@ -382,7 +383,7 @@ static void window_guest_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             {
                 window_text_input_open(
                     w, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, STR_STRING,
-                    (uintptr_t)&_window_guest_list_filter_name, sizeof(_window_guest_list_filter_name));
+                    reinterpret_cast<uintptr_t>(&_window_guest_list_filter_name), sizeof(_window_guest_list_filter_name));
             }
             break;
     }
@@ -444,13 +445,13 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             widget = &w->widgets[widgetIndex - 1];
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, _window_guest_list_num_pages, widget->right - widget->left - 3);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, _window_guest_list_num_pages, widget->right - widget->left - 3);
 
             for (i = 0; i < _window_guest_list_num_pages; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                uint16_t* args = (uint16_t*)&gDropdownItemsArgs[i];
+                uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
                 args[0] = STR_PAGE_X;
                 args[1] = i + 1;
             }
@@ -466,8 +467,8 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             }
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
 
             dropdown_set_checked(_window_guest_list_selected_view, true);
             break;
@@ -877,7 +878,7 @@ static int32_t window_guest_list_is_peep_in_filter(Peep* peep)
 
     if (_window_guest_list_filter_arguments.GetFirstStringId() == STR_NONE && _window_guest_list_selected_filter == 1)
     {
-        set_format_arg_on(peepArgs.args, 0, rct_string_id, STR_NONE);
+        Formatter(peepArgs.args).Add<rct_string_id>(STR_NONE);
     }
 
     if (_window_guest_list_filter_arguments == peepArgs)

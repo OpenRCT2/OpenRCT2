@@ -222,7 +222,14 @@ namespace Platform
         if (hModule != nullptr)
         {
             using RtlGetVersionPtr = NTSTATUS(WINAPI*)(PRTL_OSVERSIONINFOW);
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wcast-function-type"
+#    endif
             auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic pop
+#    endif
             if (fn != nullptr)
             {
                 RTL_OSVERSIONINFOW rovi{};
@@ -239,6 +246,17 @@ namespace Platform
             }
         }
         return result;
+    }
+
+    bool IsRunningInWine()
+    {
+        HMODULE ntdllMod = GetModuleHandleW(L"ntdll.dll");
+
+        if (ntdllMod && GetProcAddress(ntdllMod, "wine_get_version"))
+        {
+            return true;
+        }
+        return false;
     }
 
     /**

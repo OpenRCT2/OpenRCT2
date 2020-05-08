@@ -28,10 +28,10 @@ constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
 using PathSurfaceIndex = uint16_t;
-constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = (PathSurfaceIndex)-1;
+constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = static_cast<PathSurfaceIndex>(-1);
 
 using PathRailingsIndex = uint8_t;
-constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = (PathRailingsIndex)-1;
+constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = static_cast<PathRailingsIndex>(-1);
 
 enum class RailingEntrySupportType : uint8_t
 {
@@ -149,6 +149,13 @@ enum
     FOOTPATH_CONNECTION_SW = (1 << 5),
     FOOTPATH_CONNECTION_E = (1 << 6),
     FOOTPATH_CONNECTION_NW = (1 << 7),
+};
+
+enum
+{
+    FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES = (1 << 0),
+    FOOTPATH_CONNECTED_MAP_EDGE_UNOWN = (1 << 5),
+    FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
 };
 
 extern uint8_t gFootpathProvisionalFlags;

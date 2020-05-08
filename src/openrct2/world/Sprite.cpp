@@ -50,6 +50,7 @@ static CoordsXYZ _spritelocations1[MAX_SPRITES];
 static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
+static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex);
 
 std::string rct_sprite_checksum::ToString() const
 {
@@ -92,8 +93,7 @@ rct_sprite* get_sprite(size_t sprite_idx)
 
 uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
 {
-    int32_t offset = ((x & 0x1FE0) << 3) | (y >> 5);
-    return gSpriteSpatialIndex[offset];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(x, y)];
 }
 
 static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
@@ -164,7 +164,7 @@ void reset_sprite_list()
         spr->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->generic.sprite_index = i;
         spr->generic.next = SPRITE_INDEX_NULL;
-        spr->generic.linked_list_index = 0;
+        spr->generic.linked_list_index = SPRITE_LIST_FREE;
 
         if (previous_spr != nullptr)
         {
@@ -220,7 +220,10 @@ static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
         index = (flooredX << 3) | tileY;
     }
 
-    openrct2_assert(index < sizeof(gSpriteSpatialIndex), "GetSpatialIndexOffset out of range");
+    if (index >= sizeof(gSpriteSpatialIndex))
+    {
+        return SPATIAL_INDEX_LOCATION_NULL;
+    }
     return index;
 }
 
@@ -265,7 +268,7 @@ rct_sprite_checksum sprite_checksum()
                         break;
                 }
 
-                if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+                if (copy.IsPeep())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.name = {};
@@ -352,34 +355,16 @@ void sprite_clear_all_unused()
     }
 }
 
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
+
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linkedListIndex)
 {
     if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
         // No free sprites.
         return nullptr;
-    }
-
-    SPRITE_LIST linkedListIndex;
-    switch (spriteIdentifier)
-    {
-        case SPRITE_IDENTIFIER_VEHICLE:
-            linkedListIndex = SPRITE_LIST_VEHICLE;
-            break;
-        case SPRITE_IDENTIFIER_PEEP:
-            linkedListIndex = SPRITE_LIST_PEEP;
-            break;
-        case SPRITE_IDENTIFIER_MISC:
-            linkedListIndex = SPRITE_LIST_MISC;
-            break;
-        case SPRITE_IDENTIFIER_LITTER:
-            linkedListIndex = SPRITE_LIST_LITTER;
-            break;
-        default:
-            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
-            return nullptr;
     }
 
     if (linkedListIndex == SPRITE_LIST_MISC)
@@ -411,10 +396,33 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     sprite->flags = 0;
     sprite->sprite_left = LOCATION_NULL;
 
-    sprite->next_in_quadrant = gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL];
-    gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL] = sprite->sprite_index;
+    SpriteSpatialInsert(sprite, { LOCATION_NULL, 0 });
 
-    return (rct_sprite*)sprite;
+    return reinterpret_cast<rct_sprite*>(sprite);
+}
+
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+{
+    SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
+    switch (spriteIdentifier)
+    {
+        case SPRITE_IDENTIFIER_VEHICLE:
+            linkedListIndex = SPRITE_LIST_VEHICLE;
+            break;
+        case SPRITE_IDENTIFIER_PEEP:
+            linkedListIndex = SPRITE_LIST_PEEP;
+            break;
+        case SPRITE_IDENTIFIER_MISC:
+            linkedListIndex = SPRITE_LIST_MISC;
+            break;
+        case SPRITE_IDENTIFIER_LITTER:
+            linkedListIndex = SPRITE_LIST_LITTER;
+            break;
+        default:
+            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
+            return nullptr;
+    }
+    return create_sprite(spriteIdentifier, linkedListIndex);
 }
 
 /*
@@ -422,7 +430,7 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
  * This function moves a sprite to the specified sprite linked list.
  * The game uses this list to categorise sprites by type.
  */
-void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
+static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
 {
     int32_t oldListIndex = sprite->linked_list_index;
 
@@ -565,19 +573,19 @@ static void sprite_misc_update(rct_sprite* sprite)
     switch (sprite->generic.type)
     {
         case SPRITE_MISC_STEAM_PARTICLE:
-            sprite_steam_particle_update((SteamParticle*)sprite);
+            sprite_steam_particle_update(reinterpret_cast<SteamParticle*>(sprite));
             break;
         case SPRITE_MISC_MONEY_EFFECT:
             sprite->money_effect.Update();
             break;
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
-            crashed_vehicle_particle_update((VehicleCrashParticle*)sprite);
+            crashed_vehicle_particle_update(reinterpret_cast<VehicleCrashParticle*>(sprite));
             break;
         case SPRITE_MISC_EXPLOSION_CLOUD:
             sprite_misc_explosion_cloud_update(sprite);
             break;
         case SPRITE_MISC_CRASH_SPLASH:
-            crash_splash_update((CrashSplashParticle*)sprite);
+            crash_splash_update(reinterpret_cast<CrashSplashParticle*>(sprite));
             break;
         case SPRITE_MISC_EXPLOSION_FLARE:
             sprite_misc_explosion_flare_update(sprite);
@@ -613,6 +621,58 @@ void sprite_misc_update_all()
     }
 }
 
+// Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
+{
+    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
+
+    auto* next = &gSpriteSpatialIndex[newIndex];
+    while (sprite->sprite_index < *next && *next != SPRITE_INDEX_NULL)
+    {
+        auto sprite2 = &get_sprite(*next)->generic;
+        next = &sprite2->next_in_quadrant;
+    }
+
+    sprite->next_in_quadrant = *next;
+    *next = sprite->sprite_index;
+}
+
+static void SpriteSpatialRemove(SpriteBase* sprite)
+{
+    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    auto* index = &gSpriteSpatialIndex[currentIndex];
+
+    // This indicates that the spatial index data is incorrect.
+    if (*index == SPRITE_INDEX_NULL)
+    {
+        log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
+        reset_sprite_spatial_index();
+    }
+
+    auto* sprite2 = &get_sprite(*index)->generic;
+    while (sprite != sprite2)
+    {
+        index = &sprite2->next_in_quadrant;
+        if (*index == SPRITE_INDEX_NULL)
+        {
+            break;
+        }
+        sprite2 = &get_sprite(*index)->generic;
+    }
+    *index = sprite->next_in_quadrant;
+}
+
+static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
+{
+    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
+    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    if (newIndex == currentIndex)
+        return;
+
+    SpriteSpatialRemove(sprite);
+    SpriteSpatialInsert(sprite, newLoc);
+}
+
 /**
  * Moves a sprite to a new location.
  *  rct2: 0x0069E9D3
@@ -629,30 +689,7 @@ void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
         x = LOCATION_NULL;
     }
 
-    size_t newIndex = GetSpatialIndexOffset(x, y);
-    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    if (newIndex != currentIndex)
-    {
-        uint16_t* spriteIndex = &gSpriteSpatialIndex[currentIndex];
-        if (*spriteIndex != SPRITE_INDEX_NULL)
-        {
-            rct_sprite* sprite2 = get_sprite(*spriteIndex);
-            while (sprite != &sprite2->generic)
-            {
-                spriteIndex = &sprite2->generic.next_in_quadrant;
-                if (*spriteIndex == SPRITE_INDEX_NULL)
-                {
-                    break;
-                }
-                sprite2 = get_sprite(*spriteIndex);
-            }
-        }
-        *spriteIndex = sprite->next_in_quadrant;
-
-        int32_t tempSpriteIndex = gSpriteSpatialIndex[newIndex];
-        gSpriteSpatialIndex[newIndex] = sprite->sprite_index;
-        sprite->next_in_quadrant = tempSpriteIndex;
-    }
+    SpriteSpatialMove(sprite, { x, y });
 
     if (x == LOCATION_NULL)
     {
@@ -687,7 +724,7 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
  */
 void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = ((rct_sprite*)sprite)->AsPeep();
+    auto peep = (reinterpret_cast<rct_sprite*>(sprite))->AsPeep();
     if (peep != nullptr)
     {
         peep->SetName({});
@@ -769,7 +806,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
         }
     }
 
-    Litter* litter = (Litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
+    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
     if (litter == nullptr)
         return;
 
@@ -795,7 +832,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
     {
         rct_sprite* sprite = get_sprite(spriteIndex);
         uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
-        if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             Litter* litter = &sprite->litter;
 
@@ -852,11 +889,10 @@ uint16_t remove_floating_sprites()
  */
 static bool sprite_should_tween(rct_sprite* sprite)
 {
-    switch (sprite->generic.linked_list_index)
+    switch (sprite->generic.sprite_identifier)
     {
-        case SPRITE_LIST_PEEP:
-        case SPRITE_LIST_VEHICLE_HEAD:
-        case SPRITE_LIST_VEHICLE:
+        case SPRITE_IDENTIFIER_PEEP:
+        case SPRITE_IDENTIFIER_VEHICLE:
             return true;
     }
     return false;
@@ -1056,7 +1092,7 @@ int32_t check_for_sprite_list_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
+                while (!index_is_in_list(cycle_next, static_cast<SPRITE_LIST>(i)))
                 {
                     rct_sprite* spr = get_sprite(cycle_next);
 
@@ -1134,7 +1170,7 @@ int32_t check_for_spatial_index_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
+                while (!index_is_in_list(cycle_next, static_cast<SPRITE_LIST>(i)))
                 {
                     rct_sprite* spr = get_sprite(cycle_next);
 

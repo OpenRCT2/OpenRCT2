@@ -12,6 +12,7 @@
 // Structures shared between both RCT1 and RCT2.
 
 #include "../common.h"
+#include "../object/Object.h"
 #include "../world/Location.hpp"
 
 #include <string>
@@ -56,12 +57,15 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // 
 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
+using RCT12ObjectEntryIndex = uint8_t;
+constexpr const RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+
 // Everything before this point has been researched
-#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
-#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
-#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -276,7 +280,8 @@ struct RCT12TileElement : public RCT12TileElementBase
     uint8_t pad_04[4];
     template<typename TType, RCT12TileElementType TClass> TType* as() const
     {
-        return (RCT12TileElementType)GetType() == TClass ? (TType*)this : nullptr;
+        // TODO: CAST-IMPROVEMENT-NEEDED
+        return static_cast<RCT12TileElementType>(GetType()) == TClass ? (TType*)this : nullptr;
     }
 
     RCT12SurfaceElement* AsSurface() const
@@ -355,7 +360,7 @@ private:
     };
 
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetQueueBannerDirection() const;
     bool IsSloped() const;
     uint8_t GetSlopeDirection() const;
@@ -372,7 +377,7 @@ public:
     uint8_t GetRCT1PathType() const;
     uint8_t GetRCT1SupportType() const;
 
-    void SetPathEntryIndex(uint8_t newIndex);
+    void SetPathEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetQueueBannerDirection(uint8_t direction);
     void SetSloped(bool isSloped);
     void SetSlopeDirection(uint8_t newSlope);
@@ -466,14 +471,14 @@ private:
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetAge() const;
     uint8_t GetSceneryQuadrant() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
     bool NeedsSupports() const;
 
-    void SetEntryIndex(uint8_t newIndex);
+    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetAge(uint8_t newAge);
     void SetSceneryQuadrant(uint8_t newQuadrant);
     void SetPrimaryColour(colour_t colour);
@@ -512,7 +517,7 @@ private:
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
@@ -525,7 +530,7 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 
-    void SetEntryIndex(uint8_t newIndex);
+    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetSlope(uint8_t newslope);
     void SetPrimaryColour(colour_t newColour);
     void SetSecondaryColour(colour_t newColour);
@@ -775,7 +780,7 @@ struct RCT12ResearchItem
         uint32_t rawValue;
         struct
         {
-            uint8_t entryIndex;
+            RCT12ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
             uint8_t type; // 0: scenery entry, 1: ride entry
             uint8_t flags;
@@ -791,9 +796,5 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
 
-bool is_user_string_id(rct_string_id stringId);
-
-namespace RCT12
-{
-    std::string RemoveFormatCodes(const std::string_view& s);
-}
+ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
+RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(ObjectEntryIndex index);

@@ -484,7 +484,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     numItems++;
 
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
         dropdownWidget->right - dropdownWidget->left - 3);
 
@@ -512,7 +512,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
         gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
     }
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5,
         dropdownWidget->right - dropdownWidget->left - 3);
     dropdown_set_checked(gS6Info.category, true);
@@ -716,14 +716,14 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
     {
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
-            newObjectiveType = (uint8_t)(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
+            newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjectiveType != newObjectiveType)
                 window_editor_objective_options_set_objective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
-            if (gS6Info.category != (uint8_t)dropdownIndex)
+            if (gS6Info.category != static_cast<uint8_t>(dropdownIndex))
             {
-                gS6Info.category = (uint8_t)dropdownIndex;
+                gS6Info.category = static_cast<uint8_t>(dropdownIndex);
                 w->Invalidate();
             }
             break;
@@ -1175,7 +1175,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             {
                 gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
                                                                                   : FONT_SPRITE_BASE_MEDIUM_DARK;
-                gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
+                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, 2, y);
             }
 
             // Ride name

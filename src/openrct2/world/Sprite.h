@@ -31,7 +31,7 @@ enum SPRITE_IDENTIFIER
 enum SPRITE_LIST
 {
     SPRITE_LIST_FREE,
-    SPRITE_LIST_VEHICLE_HEAD,
+    SPRITE_LIST_TRAIN_HEAD,
     SPRITE_LIST_PEEP,
     SPRITE_LIST_MISC,
     SPRITE_LIST_LITTER,
@@ -133,7 +133,7 @@ union rct_sprite
     bool IsBalloon();
     bool IsDuck();
     bool IsMoneyEffect();
-    bool IsPeep();
+    bool IsPeep() const;
     Balloon* AsBalloon();
     Duck* AsDuck();
     MoneyEffect* AsMoneyEffect();
@@ -204,10 +204,10 @@ extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 extern const rct_string_id litterNames[12];
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linkedListIndex);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
-void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newList);
 void sprite_misc_update_all();
 void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);

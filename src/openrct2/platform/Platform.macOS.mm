@@ -44,7 +44,8 @@ namespace Platform
 
     static std::string GetBundlePath()
     {
-        @autoreleasepool {
+        @autoreleasepool
+        {
             NSBundle* bundle = [NSBundle mainBundle];
             if (bundle)
             {
@@ -105,14 +106,16 @@ namespace Platform
 
     uintptr_t StrDecompToPrecomp(utf8* input)
     {
-        @autoreleasepool {
+        @autoreleasepool
+        {
             if (input == NULL)
             {
                 return 0;
             }
 
             NSString* inputDecomp = [NSString stringWithUTF8String:input];
-            return reinterpret_cast<uintptr_t>(strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]));
+            return reinterpret_cast<uintptr_t>(
+                strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]));
         }
     }
 

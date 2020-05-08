@@ -167,7 +167,7 @@ void TileElement::ClearAs(uint8_t newType)
 
 void TileElementBase::Remove()
 {
-    tile_element_remove((TileElement*)this);
+    tile_element_remove(static_cast<TileElement*>(this));
 }
 
 // Rotate both of the values amount
@@ -177,7 +177,6 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
     {
         case 0:
             return QuarterTile{ *this };
-            break;
         case 1:
         {
             auto rotVal1 = _val << 1;

@@ -68,8 +68,8 @@ void date_reset()
 void date_set(int32_t year, int32_t month, int32_t day)
 {
     year = std::clamp(year, 1, MAX_YEAR);
-    month = std::clamp(month, 1, (int)MONTH_COUNT);
-    day = std::clamp(day, 1, (int)days_in_month[month - 1]);
+    month = std::clamp(month, 1, static_cast<int>(MONTH_COUNT));
+    day = std::clamp(day, 1, static_cast<int>(days_in_month[month - 1]));
     gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;
     gDateMonthTicks = 0x10000 / days_in_month[month - 1] * (day - 1) + 4;
 }
@@ -84,7 +84,7 @@ void date_update()
     }
     else
     {
-        gDateMonthTicks = floor2((uint16_t)monthTicks, 4);
+        gDateMonthTicks = floor2(static_cast<uint16_t>(monthTicks), 4);
     }
 }
 

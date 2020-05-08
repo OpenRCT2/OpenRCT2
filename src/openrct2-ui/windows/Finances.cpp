@@ -811,7 +811,8 @@ static void window_finances_financial_graph_update(rct_window* w)
     // Tab animation
     if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_2);
+
+    w->Invalidate();
 }
 
 /**
@@ -918,7 +919,8 @@ static void window_finances_park_value_graph_update(rct_window* w)
     // Tab animation
     if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_2);
+
+    w->Invalidate();
 }
 
 /**
@@ -1144,7 +1146,7 @@ static void window_finances_marketing_invalidate(rct_window* w)
     window_finances_set_pressed_tab(w);
 
     // Count number of active campaigns
-    int32_t numActiveCampaigns = (int32_t)gMarketingCampaigns.size();
+    int32_t numActiveCampaigns = static_cast<int32_t>(gMarketingCampaigns.size());
     int32_t y = std::max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
 
     // Update group box positions
@@ -1315,7 +1317,7 @@ static void window_finances_research_mousedown(rct_window* w, rct_widgetindex wi
         gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4,
         dropdownWidget->right - dropdownWidget->left - 3);
 
@@ -1365,6 +1367,11 @@ static void window_finances_research_invalidate(rct_window* w)
     {
         _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
         _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
+    }
+    else
+    {
+        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WWT_DROPDOWN;
+        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_BUTTON;
     }
     int32_t currentResearchLevel = gResearchFundingLevel;
 

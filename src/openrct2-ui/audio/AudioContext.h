@@ -50,13 +50,13 @@ namespace OpenRCT2::Audio
 
     interface ISDLAudioSource : public IAudioSource
     {
-        virtual AudioFormat GetFormat() const abstract;
+        [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
     };
 
     interface ISDLAudioChannel : public IAudioChannel
     {
-        virtual AudioFormat GetFormat() const abstract;
-        virtual SpeexResamplerState* GetResampler() const abstract;
+        [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
+        [[nodiscard]] virtual SpeexResamplerState* GetResampler() const abstract;
         virtual void SetResampler(SpeexResamplerState * value) abstract;
     };
 

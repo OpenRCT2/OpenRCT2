@@ -183,7 +183,7 @@ private:
     {
         // Read PEM data via BIO buffer
         // HACK first parameter is not const on MINGW for some reason
-        auto bio = BIO_new_mem_buf((void*)pem.data(), (int)pem.size());
+        auto bio = BIO_new_mem_buf((void*)pem.data(), static_cast<int>(pem.size()));
         if (bio == nullptr)
         {
             throw std::runtime_error("BIO_new_mem_buf failed");

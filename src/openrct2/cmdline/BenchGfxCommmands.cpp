@@ -19,7 +19,7 @@ const CommandLineCommand CommandLine::BenchGfxCommands[]{
 
 static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator)
 {
-    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
     int32_t result = cmdline_for_gfxbench(argv, argc);
     if (result < 0)

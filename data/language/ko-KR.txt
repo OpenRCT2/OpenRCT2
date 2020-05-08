@@ -1944,8 +1944,8 @@ STR_2728    :{UINT16}시간 {UINT16}분
 STR_2729    :{UINT16}시간 {UINT16}분
 STR_2730    :{UINT16}시간 {UINT16}분
 STR_2731    :{UINT16}시간 {UINT16}분
-STR_2732    :{COMMA16}피트
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}피트
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{POP16}{COMMA16}년 {PUSH16}{PUSH16}{MONTH}
@@ -1981,7 +1981,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :외부화면 #{COMMA16}
 STR_2780    :추가 외부화면
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :키보드 단축키 변경
@@ -2428,7 +2428,7 @@ STR_3330    :공원이 소유한 땅이 하나도 없습니다
 STR_3331    :공원 입구에서 지도 가장자리로 이어지는 길이 이어지지 않았거나 너무 복잡합니다. 1칸 너비의 길을 코너나 교차로가 최대한 없도록 하여 만들어야 합니다.
 STR_3332    :공원 입구가 잘못된 방향을 향하고 있거나 지도 가장자리로 가는 길이 없습니다
 STR_3333    :게임 저장시 사용한 오브젝트를 같이 포함하여 저장
-STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
+STR_3334    :{SMALLFONT}{BLACK}필요한 경우 커스텀 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
 STR_3335    :트랙 디자이너 - 놀이기구 종류 & 차량을 선택하세요
 STR_3336    :트랙 디자인 관리자 - 놀이기구 종류를 선택하세요
 STR_3338    :{BLACK}커스텀 디자인 구조
@@ -3358,7 +3358,7 @@ STR_6033    :RCT1 설치 경로:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1이 설치된 폴더를 선택하세요
 STR_6036    :{SMALLFONT}{BLACK}초기화
-STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요
+STR_6037    :선택한 폴더에는 RollerCoaster Tycoon 1이 올바르게 설치되어 있지 않습니다.
 STR_6038    :{SMALLFONT}{BLACK}RCT1을 설치했다면, 이 설정을 이용해서 시나리오나 음악 등을 불러오기 위해 RCT1이 설치된 폴더를 지정하세요.
 STR_6039    :{SMALLFONT}{BLACK}빠른 놀이기구 파괴
 STR_6040    :시나리오 설정 편집
@@ -3685,6 +3685,15 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :차량 조명 효과 (실험적 기능)
 STR_6362    :{SMALLFONT}{BLACK}이 설정을 켜면, 밤에 트랙형 놀이기구의 차량에 조명이 들어옵니다.
 STR_6363    :텍스트를 클립보드에 복사하였습니다
+STR_6364    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
+STR_6365    :놀이기구 사상자
+STR_6366    :끼거나 움직이지 않는 놀이기구
+STR_6367    :{WINDOW_COLOUR_2}애니메이션 프레임:
+STR_6368    :호환성의 이유로, OpenRCT2를 Wine에서 실행하는 것을 권장하지 않습니다. OpenRCT2는 macOS, Linux, FreeBSD, OpenBSD에서 실행하는 것을 기본적으로 지원합니다.
+STR_6369    :올바르지 않은 높이에 트랙 짓기 허용
+STR_6370    :{SMALLFONT}{BLACK}어떤 높이에나 트랙 조각을 놓을 수 있게 됩니다
+STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, "csg1i.dat" 파일이 존재하지 않습니다. RollerCoaster Tycoon 1 CD 안의 "Data" 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
+STR_6372    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, 버전이 알맞지 않습니다. RollerCoaster Tycoon 1의 에셋을 사용하려면 OpenRCT2는 루피 랜드스케이프나 RCT 디럭스가 필요합니다.
 
 #############
 # Scenarios #
@@ -3764,7 +3773,7 @@ STR_DTLS    :비밀스런 숲 속 언덕에 처음부터 놀이공원을 건설�
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :평화로운 피라미드
-STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔 보세요.
+STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔보세요.
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods

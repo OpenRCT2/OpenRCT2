@@ -162,7 +162,7 @@ void window_update_all()
 static void window_close_surplus(int32_t cap, int8_t avoid_classification)
 {
     // find the amount of windows that are currently open
-    auto count = (int32_t)g_window_list.size();
+    auto count = static_cast<int32_t>(g_window_list.size());
     // difference between amount open and cap = amount to close
     auto diff = count - WINDOW_LIMIT_RESERVED - cap;
     for (auto i = 0; i < diff; i++)
@@ -846,8 +846,8 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             bool found = false;
             while (!found)
             {
-                int16_t x2 = w->viewport->pos.x + (int16_t)(w->viewport->width * window_scroll_locations[i][0]);
-                int16_t y2 = w->viewport->pos.y + (int16_t)(w->viewport->height * window_scroll_locations[i][1]);
+                int16_t x2 = w->viewport->pos.x + static_cast<int16_t>(w->viewport->width * window_scroll_locations[i][0]);
+                int16_t y2 = w->viewport->pos.y + static_cast<int16_t>(w->viewport->height * window_scroll_locations[i][1]);
 
                 auto it = window_get_iterator(w);
                 for (; it != g_window_list.end(); it++)
@@ -870,7 +870,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
                 {
                     found = true;
                 }
-                if (i >= (int32_t)std::size(window_scroll_locations))
+                if (i >= static_cast<int32_t>(std::size(window_scroll_locations)))
                 {
                     i = 0;
                     found = true;
@@ -883,8 +883,8 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             if (!(w->flags & WF_NO_SCROLLING))
             {
                 w->savedViewPos = screenCoords
-                    - ScreenCoordsXY{ (int16_t)(w->viewport->view_width * window_scroll_locations[i][0]),
-                                      (int16_t)(w->viewport->view_height * window_scroll_locations[i][1]) };
+                    - ScreenCoordsXY{ static_cast<int16_t>(w->viewport->view_width * window_scroll_locations[i][0]),
+                                      static_cast<int16_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
                 w->flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
@@ -1009,6 +1009,8 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
 void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
+    if (v == nullptr)
+        return;
 
     zoomLevel = std::clamp(zoomLevel, ZoomLevel::min(), ZoomLevel::max());
     if (v->zoom == zoomLevel)
@@ -1315,8 +1317,8 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
     w->max_height = maxHeight;
 
     // Clamp width and height to minimum and maximum
-    int32_t width = std::clamp<int32_t>(w->width, minWidth, maxWidth);
-    int32_t height = std::clamp<int32_t>(w->height, minHeight, maxHeight);
+    int32_t width = std::clamp<int32_t>(w->width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
+    int32_t height = std::clamp<int32_t>(w->height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
 
     // Resize window if size has changed
     if (w->width != width || w->height != height)
@@ -2082,7 +2084,7 @@ void window_follow_sprite(rct_window* w, size_t spriteIndex)
 {
     if (spriteIndex < MAX_SPRITES || spriteIndex == SPRITE_INDEX_NULL)
     {
-        w->viewport_smart_follow_sprite = (uint16_t)spriteIndex;
+        w->viewport_smart_follow_sprite = static_cast<uint16_t>(spriteIndex);
     }
 }
 
@@ -2157,8 +2159,8 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
         {
             double barPosition = (scroll->h_thumb_right * 1.0) / view_size;
 
-            scroll->h_thumb_left = (uint16_t)std::lround(scroll->h_thumb_left - (20 * barPosition));
-            scroll->h_thumb_right = (uint16_t)std::lround(scroll->h_thumb_right + (20 * (1 - barPosition)));
+            scroll->h_thumb_left = static_cast<uint16_t>(std::lround(scroll->h_thumb_left - (20 * barPosition)));
+            scroll->h_thumb_right = static_cast<uint16_t>(std::lround(scroll->h_thumb_right + (20 * (1 - barPosition))));
         }
     }
 
@@ -2186,8 +2188,8 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
         {
             double barPosition = (scroll->v_thumb_bottom * 1.0) / view_size;
 
-            scroll->v_thumb_top = (uint16_t)std::lround(scroll->v_thumb_top - (20 * barPosition));
-            scroll->v_thumb_bottom = (uint16_t)std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition)));
+            scroll->v_thumb_top = static_cast<uint16_t>(std::lround(scroll->v_thumb_top - (20 * barPosition)));
+            scroll->v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
 }

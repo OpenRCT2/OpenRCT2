@@ -52,10 +52,13 @@
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
 #include "platform/Crash.h"
+#include "platform/Platform2.h"
 #include "platform/platform.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
+#include "scripting/HookEngine.h"
+#include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
@@ -75,11 +78,12 @@ using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Paint;
+using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
 {
-    class Context : public IContext
+    class Context final : public IContext
     {
     private:
         // Dependencies
@@ -99,6 +103,9 @@ namespace OpenRCT2
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
+#ifdef ENABLE_SCRIPTING
+        ScriptEngine _scriptEngine;
+#endif
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -133,6 +140,9 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+#ifdef ENABLE_SCRIPTING
+            , _scriptEngine(_stdInOutConsole, *env)
+#endif
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -174,6 +184,13 @@ namespace OpenRCT2
         {
             return _uiContext;
         }
+
+#ifdef ENABLE_SCRIPTING
+        Scripting::ScriptEngine& GetScriptEngine() override
+        {
+            return _scriptEngine;
+        }
+#endif
 
         GameState* GetGameState() override
         {
@@ -389,6 +406,19 @@ namespace OpenRCT2
                 }
             }
 
+            if (Platform::IsRunningInWine())
+            {
+                std::string wineWarning = _localisationService->GetString(STR_WINE_NOT_RECOMMENDED);
+                if (gOpenRCT2Headless)
+                {
+                    Console::Error::WriteLine(wineWarning.c_str());
+                }
+                else
+                {
+                    _uiContext->ShowMessageBox(wineWarning);
+                }
+            }
+
             if (!gOpenRCT2Headless)
             {
                 _uiContext->CreateWindow();
@@ -440,6 +470,7 @@ namespace OpenRCT2
             _gameState->InitAll(150);
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
+            _uiContext->Initialise();
             return true;
         }
 
@@ -450,7 +481,7 @@ namespace OpenRCT2
             _drawingEngineType = gConfigGeneral.drawing_engine;
 
             auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
-            auto drawingEngine = drawingEngineFactory->Create((DRAWING_ENGINE_TYPE)_drawingEngineType, _uiContext);
+            auto drawingEngine = drawingEngineFactory->Create(static_cast<DRAWING_ENGINE_TYPE>(_drawingEngineType), _uiContext);
 
             if (drawingEngine == nullptr)
             {
@@ -587,6 +618,12 @@ namespace OpenRCT2
                         {
                             network_send_map();
                         }
+#ifdef USE_BREAKPAD
+                        if (network_get_mode() == NETWORK_MODE_NONE)
+                        {
+                            start_silent_record();
+                        }
+#endif
                         return true;
                     }
                     catch (const ObjectLoadException& e)
@@ -601,8 +638,9 @@ namespace OpenRCT2
                         // which the window function doesn't like
                         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                         intent.putExtra(INTENT_EXTRA_PATH, path);
+                        // TODO: CAST-IMPROVEMENT-NEEDED
                         intent.putExtra(INTENT_EXTRA_LIST, (void*)e.MissingObjects.data());
-                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32_t)e.MissingObjects.size());
+                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                         auto windowManager = _uiContext->GetWindowManager();
                         windowManager->OpenIntent(&intent);
@@ -617,7 +655,7 @@ namespace OpenRCT2
                         }
 
                         auto windowManager = _uiContext->GetWindowManager();
-                        set_format_arg(0, uint16_t, e.Flag);
+                        Formatter::Common().Add<uint16_t>(e.Flag);
                         windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
                     }
                     catch (const std::exception& e)
@@ -778,7 +816,11 @@ namespace OpenRCT2
                         }
                         network_begin_server(gNetworkStartPort, gNetworkStartAddress);
                     }
+                    else
 #endif // DISABLE_NETWORK
+                    {
+                        game_load_scripts();
+                    }
                     break;
                 }
                 case STARTUP_ACTION_EDIT:
@@ -804,11 +846,7 @@ namespace OpenRCT2
             }
 #endif // DISABLE_NETWORK
 
-            // For now, only allow interactive console in headless mode
-            if (gOpenRCT2Headless)
-            {
-                _stdInOutConsole.Start();
-            }
+            _stdInOutConsole.Start();
             RunGameLoop();
         }
 
@@ -941,7 +979,7 @@ namespace OpenRCT2
 
             if (draw)
             {
-                const float alpha = std::min((float)_accumulator / GAME_UPDATE_TIME_MS, 1.0f);
+                const float alpha = std::min(static_cast<float>(_accumulator) / GAME_UPDATE_TIME_MS, 1.0f);
                 sprite_position_tween_all(alpha);
 
                 _drawingEngine->BeginDraw();
@@ -994,6 +1032,9 @@ namespace OpenRCT2
 
             Twitch::Update();
             chat_update();
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.Update();
+#endif
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();
         }
@@ -1012,6 +1053,7 @@ namespace OpenRCT2
                     DIRID::TRACK,
                     DIRID::LANDSCAPE,
                     DIRID::HEIGHTMAP,
+                    DIRID::PLUGIN,
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
@@ -1142,7 +1184,7 @@ bool context_load_park_from_file(const utf8* path)
 
 bool context_load_park_from_stream(void* stream)
 {
-    return GetContext()->LoadParkFromStream((IStream*)stream, "");
+    return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
 
 void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize)
@@ -1157,7 +1199,7 @@ void openrct2_finish()
 
 void context_setcurrentcursor(int32_t cursor)
 {
-    GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
+    GetContext()->GetUiContext()->SetCursor(static_cast<CURSOR_ID>(cursor));
 }
 
 void context_update_cursor_scale()
@@ -1230,7 +1272,7 @@ void context_trigger_resize()
 
 void context_set_fullscreen_mode(int32_t mode)
 {
-    return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
+    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FULLSCREEN_MODE>(mode));
 }
 
 void context_recreate_window()
@@ -1336,7 +1378,7 @@ bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc,
     try
     {
         FileDialogDesc desc2;
-        desc2.Type = (FILE_DIALOG_TYPE)desc->type;
+        desc2.Type = static_cast<FILE_DIALOG_TYPE>(desc->type);
         desc2.Title = String::ToStd(desc->title);
         desc2.InitialDirectory = String::ToStd(desc->initial_directory);
         desc2.DefaultFilename = String::ToStd(desc->default_filename);

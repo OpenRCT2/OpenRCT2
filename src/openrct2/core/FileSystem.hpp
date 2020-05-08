@@ -19,6 +19,8 @@
 #    define HAVE_STD_FILESYSTEM 1
 #elif defined(__APPLE__) // XCode has the header, but reports error when included.
 #    define HAVE_STD_FILESYSTEM 0
+#elif defined(__ANDROID__)
+#    define HAVE_STD_FILESYSTEM 0
 #elif defined(__has_include) // For GCC/Clang check if the header exists.
 #    if __has_include(<filesystem>)
 #        define HAVE_STD_FILESYSTEM 1
@@ -33,7 +35,7 @@
 #    include <filesystem>
 namespace fs = std::filesystem;
 #else
-#    include "../thirdparty/filesystem.hpp"
+#    include <filesystem.hpp>
 namespace fs = ghc::filesystem;
 #endif
 

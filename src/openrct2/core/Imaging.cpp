@@ -11,6 +11,7 @@
 
 #include "Imaging.h"
 
+#include "../Version.h"
 #include "../drawing/Drawing.h"
 #include "Guard.hpp"
 #include "IStream.hpp"
@@ -32,13 +33,13 @@ namespace Imaging
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
         auto istream = static_cast<std::istream*>(png_get_io_ptr(png_ptr));
-        istream->read((char*)data, length);
+        istream->read(reinterpret_cast<char*>(data), length);
     }
 
     static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
         auto ostream = static_cast<std::ostream*>(png_get_io_ptr(png_ptr));
-        ostream->write((const char*)data, length);
+        ostream->write(reinterpret_cast<const char*>(data), length);
     }
 
     static void PngFlush(png_structp png_ptr)
@@ -173,6 +174,11 @@ namespace Imaging
                 throw std::runtime_error("png_create_write_struct failed.");
             }
 
+            png_text text_ptr[1];
+            text_ptr[0].key = const_cast<char*>("Software");
+            text_ptr[0].text = const_cast<char*>(gVersionInfoFull);
+            text_ptr[0].compression = PNG_TEXT_COMPRESSION_zTXt;
+
             auto info_ptr = png_create_info_struct(png_ptr);
             if (info_ptr == nullptr)
             {
@@ -187,7 +193,7 @@ namespace Imaging
                 }
 
                 // Set the palette
-                png_palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
+                png_palette = static_cast<png_colorp>(png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color)));
                 if (png_palette == nullptr)
                 {
                     throw std::runtime_error("png_malloc failed.");
@@ -218,6 +224,7 @@ namespace Imaging
                 png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
                 colourType = PNG_COLOR_TYPE_PALETTE;
             }
+            png_set_text(png_ptr, info_ptr, text_ptr, 1);
             png_set_IHDR(
                 png_ptr, info_ptr, image.Width, image.Height, 8, colourType, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
                 PNG_FILTER_TYPE_DEFAULT);
@@ -227,7 +234,7 @@ namespace Imaging
             auto pixels = image.Pixels.data();
             for (uint32_t y = 0; y < image.Height; y++)
             {
-                png_write_row(png_ptr, (png_byte*)pixels);
+                png_write_row(png_ptr, const_cast<png_byte*>(pixels));
                 pixels += image.Stride;
             }
 

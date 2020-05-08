@@ -697,7 +697,8 @@ static void window_park_entrance_mousedown(rct_window* w, rct_widgetindex widget
         gDropdownItemsArgs[0] = STR_CLOSE_PARK;
         gDropdownItemsArgs[1] = STR_OPEN_PARK;
         window_dropdown_show_text(
-            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, 2);
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1], 0,
+            2);
 
         if (park_is_open())
         {
@@ -1431,7 +1432,7 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
-    if (w->list_information_type != (uint16_t)-1)
+    if (w->list_information_type != 0xFFFF)
     {
         set_format_arg(0, uint32_t, w->list_information_type);
         gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1613,7 +1614,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
     {
-        if ((uint32_t)gScenarioCompletedCompanyValue == 0x80000001)
+        if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
             // Objective failed
             gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);

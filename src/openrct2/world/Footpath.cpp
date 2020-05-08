@@ -395,7 +395,7 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
     {
         Litter* sprite = &get_sprite(spriteIndex)->litter;
         uint16_t nextSpriteIndex = sprite->next_in_quadrant;
-        if (sprite->linked_list_index == SPRITE_LIST_LITTER)
+        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             int32_t distanceZ = abs(sprite->z - footpathPos.z);
             if (distanceZ <= 32)
@@ -417,10 +417,11 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        Peep* peep = &get_sprite(spriteIndex)->peep;
-        uint16_t nextSpriteIndex = peep->next_in_quadrant;
-        if (peep->linked_list_index == SPRITE_LIST_PEEP)
+        auto* entity = get_sprite(spriteIndex);
+        uint16_t nextSpriteIndex = entity->generic.next_in_quadrant;
+        if (entity->IsPeep())
         {
+            Peep* peep = &entity->peep;
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
             {
                 if (peep->z == footpathPos.z)
@@ -584,16 +585,16 @@ struct rct_neighbour_list
 
 static int32_t rct_neighbour_compare(const void* a, const void* b)
 {
-    uint8_t va = ((rct_neighbour*)a)->order;
-    uint8_t vb = ((rct_neighbour*)b)->order;
+    uint8_t va = (static_cast<const rct_neighbour*>(a))->order;
+    uint8_t vb = (static_cast<const rct_neighbour*>(b))->order;
     if (va < vb)
         return 1;
     else if (va > vb)
         return -1;
     else
     {
-        uint8_t da = ((rct_neighbour*)a)->direction;
-        uint8_t db = ((rct_neighbour*)b)->direction;
+        uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
+        uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
         if (da < db)
             return -1;
         else if (da > db)
@@ -634,7 +635,7 @@ static bool neighbour_list_pop(rct_neighbour_list* neighbourList, rct_neighbour*
 static void neighbour_list_remove(rct_neighbour_list* neighbourList, size_t index)
 {
     Guard::ArgumentInRange<size_t>(index, 0, neighbourList->count - 1);
-    int32_t itemsRemaining = (int32_t)(neighbourList->count - index) - 1;
+    int32_t itemsRemaining = static_cast<int32_t>(neighbourList->count - index) - 1;
     if (itemsRemaining > 0)
     {
         memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(rct_neighbour) * itemsRemaining);
@@ -1315,7 +1316,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
             continue;
         }
 
-        if (!(flags & (1 << 0)))
+        if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES))
         {
             if (tileElement->AsPath()->IsQueue())
             {
@@ -1323,13 +1324,13 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
             }
         }
 
-        if (flags & (1 << 5))
+        if (flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)
         {
             footpath_fix_ownership(targetPos);
         }
         edges = tileElement->AsPath()->GetEdges();
         direction = direction_reverse(direction);
-        if (!(flags & (1 << 7)))
+        if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
         {
             if (tileElement[1].GetType() == TILE_ELEMENT_TYPE_BANNER)
             {
@@ -1418,7 +1419,7 @@ searchFromFootpath:
 // TODO: Use GAME_COMMAND_FLAGS
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags)
 {
-    flags |= (1 << 0);
+    flags |= FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES;
     return footpath_is_connected_to_map_edge_recurse(footpathPos, direction, flags, 0, 0, 16);
 }
 
@@ -1534,7 +1535,7 @@ uint8_t PathElement::GetAddition() const
     return Additions;
 }
 
-uint8_t PathElement::GetAdditionEntryIndex() const
+ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
 {
     return GetAddition() - 1;
 }
@@ -1612,7 +1613,7 @@ bool PathElement::ShouldDrawPathOverSupports()
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
 {
-    log_verbose("Setting 'draw path over supports' to %d", (size_t)on);
+    log_verbose("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
 }
 
 /**
@@ -2170,9 +2171,9 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
     if (obj != nullptr)
     {
         if (entryIndex < MAX_PATH_OBJECTS)
-            result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+            result = (static_cast<FootpathObject*>(obj))->GetPathSurfaceEntry();
         else
-            result = ((FootpathObject*)obj)->GetQueueEntry();
+            result = (static_cast<FootpathObject*>(obj))->GetQueueEntry();
     }
     return result;
 }
@@ -2184,7 +2185,7 @@ PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
     if (obj != nullptr)
     {
-        result = ((FootpathObject*)obj)->GetPathRailingsEntry();
+        result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();
     }
     return result;
 }
@@ -2260,5 +2261,5 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return (ride->type == RIDE_TYPE_MINIATURE_RAILWAY);
+    return RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
 }

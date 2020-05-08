@@ -13,6 +13,10 @@
 #include "../object/Object.h"
 #include "Ride.h"
 
+constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
+
+constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
+
 using track_type_t = uint16_t;
 
 #pragma pack(push, 1)
@@ -88,6 +92,7 @@ enum
 
 #define MAX_STATION_PLATFORM_LENGTH 32
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
+constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
 enum
 {
@@ -157,6 +162,8 @@ enum
     TRACK_CORKSCREW_INVERTED,
     TRACK_HEARTLINE_TRANSFER,
     TRACK_MINI_GOLF_HOLE,
+
+    TRACK_GROUP_COUNT,
 };
 
 enum

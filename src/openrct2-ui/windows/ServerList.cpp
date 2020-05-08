@@ -161,7 +161,7 @@ rct_window* window_server_list_open()
     safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
 
     _serverList.ReadAndAddFavourites();
-    window->no_list_items = (uint16_t)_serverList.GetCount();
+    window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
     server_list_fetch_servers_begin();
 
@@ -187,7 +187,7 @@ static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_LIST:
         {
             int32_t serverIndex = w->selected_list_item;
-            if (serverIndex >= 0 && serverIndex < (int32_t)_serverList.GetCount())
+            if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
             {
                 const auto& server = _serverList.GetServer(serverIndex);
                 if (server.IsVersionValid())
@@ -222,7 +222,7 @@ static void window_server_list_resize(rct_window* w)
 static void window_server_list_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     auto serverIndex = w->selected_list_item;
-    if (serverIndex >= 0 && serverIndex < (int32_t)_serverList.GetCount())
+    if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
     {
         auto& server = _serverList.GetServer(serverIndex);
         switch (dropdownIndex)
@@ -267,13 +267,11 @@ static void window_server_list_scroll_getsize(rct_window* w, int32_t scrollIndex
 static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t serverIndex = w->selected_list_item;
-    if (serverIndex >= 0 && serverIndex < (int32_t)_serverList.GetCount())
+    if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
     {
         const auto& server = _serverList.GetServer(serverIndex);
 
         auto listWidget = &w->widgets[WIDX_LIST];
-        int32_t ddx = w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left;
-        int32_t ddy = w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top;
 
         gDropdownItemsFormat[0] = STR_JOIN_GAME;
         if (server.favourite)
@@ -284,7 +282,9 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         {
             gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
         }
-        window_dropdown_show_text(ddx, ddy, 0, COLOUR_GREY, 0, 2);
+        auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left,
+                                           w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top };
+        window_dropdown_show_text(dropdownPos, 0, COLOUR_GREY, 0, 2);
     }
 }
 
@@ -398,7 +398,7 @@ static void window_server_list_invalidate(rct_window* w)
     window_server_list_widgets[WIDX_START_SERVER].top = buttonTop;
     window_server_list_widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
-    w->no_list_items = (uint16_t)_serverList.GetCount();
+    w->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 }
 
 static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -413,11 +413,12 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     std::string version = network_get_version();
     const char* versionCStr = version.c_str();
     gfx_draw_string_left(
-        dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->windowPos.x + 324,
+        dpi, STR_NETWORK_VERSION, static_cast<void*>(&versionCStr), COLOUR_WHITE, w->windowPos.x + 324,
         w->windowPos.y + w->widgets[WIDX_START_SERVER].top + 1);
 
     gfx_draw_string_left(
-        dpi, _statusText, (void*)&_numPlayersOnline, COLOUR_WHITE, w->windowPos.x + 8, w->windowPos.y + w->height - 15);
+        dpi, _statusText, static_cast<void*>(&_numPlayersOnline), COLOUR_WHITE, w->windowPos.x + 8,
+        w->windowPos.y + w->height - 15);
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

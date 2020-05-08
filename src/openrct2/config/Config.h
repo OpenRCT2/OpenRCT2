@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../drawing/Drawing.h"
 
 #include <string>
 
@@ -169,8 +170,10 @@ struct NotificationConfiguration
     bool park_rating_warnings;
     bool ride_broken_down;
     bool ride_crashed;
+    bool ride_casualties;
     bool ride_warnings;
     bool ride_researched;
+    bool ride_stalled_vehicles;
     bool guest_warnings;
     bool guest_lost;
     bool guest_left_park;
@@ -198,6 +201,11 @@ struct FontConfiguration
     int32_t height_big;
     bool enable_hinting;
     int32_t hinting_threshold;
+};
+
+struct PluginConfiguration
+{
+    bool enable_hot_reloading;
 };
 
 enum SORT
@@ -235,6 +243,7 @@ extern TwitchConfiguration gConfigTwitch;
 extern NetworkConfiguration gConfigNetwork;
 extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
+extern PluginConfiguration gConfigPlugin;
 
 bool config_open(const utf8* path);
 bool config_save(const utf8* path);
@@ -243,3 +252,11 @@ void config_set_defaults();
 void config_release();
 bool config_save_default();
 bool config_find_or_browse_install_directory();
+
+bool RCT1DataPresentAtLocation(const utf8* path);
+std::string FindCsg1datAtLocation(const utf8* path);
+bool Csg1datPresentAtLocation(const utf8* path);
+std::string FindCsg1idatAtLocation(const utf8* path);
+bool Csg1idatPresentAtLocation(const utf8* path);
+bool CsgIsUsable(rct_gx csg);
+bool CsgAtLocationIsUsable(const utf8* path);

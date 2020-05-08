@@ -92,18 +92,19 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
     if (name == nullptr || version == nullptr)
     {
         log_verbose("Cowardly refusing to add server without name or version specified.");
-        return {};
+        return std::nullopt;
     }
     else
     {
         ServerListEntry entry;
-        entry.address = String::StdFormat("%s:%d", json_string_value(addressIp), (int32_t)json_integer_value(port));
+        entry.address = String::StdFormat(
+            "%s:%d", json_string_value(addressIp), static_cast<int32_t>(json_integer_value(port)));
         entry.name = (name == nullptr ? "" : json_string_value(name));
         entry.description = (description == nullptr ? "" : json_string_value(description));
         entry.version = json_string_value(version);
         entry.requiresPassword = json_is_true(requiresPassword);
-        entry.players = (uint8_t)json_integer_value(players);
-        entry.maxplayers = (uint8_t)json_integer_value(maxPlayers);
+        entry.players = static_cast<uint8_t>(json_integer_value(players));
+        entry.maxplayers = static_cast<uint8_t>(json_integer_value(maxPlayers));
         return entry;
     }
 }
@@ -219,7 +220,7 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
     try
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
-        fs.WriteValue<uint32_t>((uint32_t)entries.size());
+        fs.WriteValue<uint32_t>(static_cast<uint32_t>(entries.size()));
         for (const auto& entry : entries)
         {
             fs.WriteString(entry.address);
@@ -361,7 +362,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
                 throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
             }
 
-            auto status = (int32_t)json_integer_value(jsonStatus);
+            auto status = static_cast<int32_t>(json_integer_value(jsonStatus));
             if (status != 200)
             {
                 throw MasterServerException(STR_SERVER_LIST_MASTER_SERVER_FAILED);

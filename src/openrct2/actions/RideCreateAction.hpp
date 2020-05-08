@@ -60,6 +60,24 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("rideType", _rideType);
+        visitor.Visit("rideObject", _subType);
+        visitor.Visit("colour1", _colour1);
+        visitor.Visit("colour2", _colour2);
+    }
+
+    int32_t GetRideType() const
+    {
+        return _rideType;
+    }
+
+    int32_t GetRideObject() const
+    {
+        return _subType;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
@@ -166,7 +184,7 @@ public:
         ride->min_waiting_time = 10;
         ride->max_waiting_time = 60;
         ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT)
+        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
         }
@@ -175,10 +193,10 @@ public:
         auto rideProperties = RideProperties[ride->type];
         ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
 
-        ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
+        ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
 
         ride->measurement = {};
-        ride->excitement = (ride_rating)-1;
+        ride->excitement = RIDE_RATING_UNDEFINED;
         ride->cur_num_customers = 0;
         ride->num_customers_timeout = 0;
         ride->chairlift_bullwheel_rotation = 0;
@@ -218,7 +236,7 @@ public:
                     money32 price = ride_get_common_price(ride);
                     if (price != MONEY32_UNDEFINED)
                     {
-                        ride->price = (money16)price;
+                        ride->price = static_cast<money16>(price);
                     }
                 }
             }
@@ -230,7 +248,7 @@ public:
                     money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
                     if (price != MONEY32_UNDEFINED)
                     {
-                        ride->price = (money16)price;
+                        ride->price = static_cast<money16>(price);
                     }
                 }
             }
@@ -242,7 +260,7 @@ public:
                     money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
                     if (price != MONEY32_UNDEFINED)
                     {
-                        ride->price_secondary = (money16)price;
+                        ride->price_secondary = static_cast<money16>(price);
                     }
                 }
             }
@@ -253,7 +271,7 @@ public:
                 money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
                 if (price != MONEY32_UNDEFINED)
                 {
-                    ride->price_secondary = (money16)price;
+                    ride->price_secondary = static_cast<money16>(price);
                 }
             }
         }

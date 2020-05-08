@@ -120,35 +120,6 @@ bool platform_original_game_data_exists(const utf8* path)
     return platform_file_exists(checkPath);
 }
 
-bool platform_original_rct1_data_exists(const utf8* path)
-{
-    char buffer[MAX_PATH], checkPath1[MAX_PATH], checkPath2[MAX_PATH];
-    safe_strcpy(buffer, path, MAX_PATH);
-    safe_strcat_path(buffer, "Data", MAX_PATH);
-    safe_strcpy(checkPath1, buffer, MAX_PATH);
-    safe_strcpy(checkPath2, buffer, MAX_PATH);
-    safe_strcat_path(checkPath1, "CSG1.DAT", MAX_PATH);
-    safe_strcat_path(checkPath2, "CSG1.1", MAX_PATH);
-
-    // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
-    std::string path1result = Path::ResolveCasing(checkPath1);
-    if (!path1result.empty())
-    {
-        return true;
-    }
-    else
-    {
-        std::string path2result = Path::ResolveCasing(checkPath2);
-
-        if (!path2result.empty())
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 // Implement our own version of getumask(), as it is documented being
 // "a vaporware GNU extension".
 static mode_t openrct2_getumask()
@@ -373,7 +344,7 @@ bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite
     size_t file_offset = 0;
 
     // Copy file in FILE_BUFFER_SIZE-d chunks
-    char* buffer = (char*)malloc(FILE_BUFFER_SIZE);
+    char* buffer = static_cast<char*>(malloc(FILE_BUFFER_SIZE));
     while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile)))
     {
         fwrite(buffer, amount_read, 1, dstFile);
@@ -463,7 +434,7 @@ datetime64 platform_get_datetime_now_utc()
 
     // Epoch starts from: 1970-01-01T00:00:00Z
     // Convert to ticks from 0001-01-01T00:00:00Z
-    uint64_t utcEpochTicks = (uint64_t)tv.tv_sec * 10000000ULL + tv.tv_usec * 10;
+    uint64_t utcEpochTicks = static_cast<uint64_t>(tv.tv_sec) * 10000000ULL + tv.tv_usec * 10;
     datetime64 utcNow = epochAsTicks + utcEpochTicks;
     return utcNow;
 }

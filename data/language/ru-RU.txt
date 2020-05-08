@@ -1129,8 +1129,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Нельзя изменить время на поездку…
 STR_1752    :{SMALLFONT}{BLACK}Показать список отдельных гостей в парке
 STR_1753    :{SMALLFONT}{BLACK}Показать суммированный список гостей
-STR_1754    :{BLACK}{COMMA16} гостей
-STR_1755    :{BLACK}{COMMA16} гость
+STR_1754    :{BLACK}{COMMA32} гостей
+STR_1755    :{BLACK}{COMMA32} гость
 STR_1756    :{WINDOW_COLOUR_2}Цена за вход:
 STR_1757    :{WINDOW_COLOUR_2}Надёжность: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Режим стройки
@@ -1188,7 +1188,7 @@ STR_1813    :Разные объекты
 STR_1814    :Действия
 STR_1815    :Мысли
 STR_1816    :{SMALLFONT}{BLACK}Выберите тип информации для отображения
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Все гости
 STR_1819    :{WINDOW_COLOUR_2}Гости (в общем)
 STR_1820    :{WINDOW_COLOUR_2}Гости {STRINGID}
@@ -1217,9 +1217,9 @@ STR_1842    :Любимый у: {COMMA16} гос.
 STR_1843    :Любимый у: {COMMA16} гос.
 STR_1844    :{SMALLFONT}{BLACK}Выберите тип информации для показа
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} гостей
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} гостей
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} гостей
+STR_1846    :{COMMA32} гостей
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} гостей
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} гостей
 STR_1849    :{WINDOW_COLOUR_2}Играть музыку
 STR_1850    :{SMALLFONT}{BLACK}Выберите, играть ли музыку для аттракциона
 STR_1851    :{WINDOW_COLOUR_2}Стоимость: {BLACK}{CURRENCY2DP} в час
@@ -1575,7 +1575,7 @@ STR_2219    :{RED}{COMMA16} людей погибло на {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Рейтинг парка: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Рейтинг парка: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Гостей в парке: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Гостей в парке: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Деньги: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Деньги: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Стоимость парка: {BLACK}{CURRENCY}
@@ -1941,8 +1941,8 @@ STR_2728    :{UINT16} ч. {UINT16} мин.
 STR_2729    :{UINT16} ч. {UINT16} мин.
 STR_2730    :{UINT16} ч. {UINT16} мин.
 STR_2731    :{UINT16} ч. {UINT16} мин.
-STR_2732    :{COMMA16}фут
-STR_2733    :{COMMA16}метр
+STR_2732    :{COMMA32}фут
+STR_2733    :{COMMA32}метр
 STR_2734    :{COMMA16}миль/час
 STR_2735    :{COMMA16}км/ч
 STR_2736    :{MONTH}, год {COMMA16}
@@ -1978,7 +1978,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Вид #{COMMA16}
 STR_2780    :Дополнительный вид
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Изменить горячую клавишу
@@ -2301,7 +2301,6 @@ STR_3190    :Доп. пути
 STR_3191    :Группы пейзажа
 STR_3192    :Вход в парк
 STR_3193    :Вода
-STR_3194    :Описание сценария
 STR_3195    :Изобретения
 STR_3196    :{WINDOW_COLOUR_2} Разработка:  {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Разработано до начала игры:

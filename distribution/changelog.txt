@@ -1,12 +1,65 @@
-0.2.5+ (in development)
+0.2.6+ (in development)
+------------------------------------------------------------------------
+- Feature: [#7648] "Enable all drawable track pieces" now enables more pieces for the Twister, Vertical and Air Powered Vertical coasters.
+- Feature: [#9029] Open doors with the tile inspector.
+- Feature: [#10572] Cheat to allow building at invalid heights.
+- Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
+- Feature: [#11306] Path additions are now kept when replacing the path.
+- Feature: [#11320] Support for custom JavaScript plugins.
+- Change: [#11209] Warn when user is running OpenRCT2 through Wine.
+- Change: [#11358] Switch copy and paste button positions in tile inspector.
+- Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
+- Fix: [#1013] Negative length displayed in Ride window.
+- Fix: [#1148] Research funding dropdown not shown in finances window.
+- Fix: [#5451] Guests scream on every descent, no matter how small.
+- Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
+- Fix: [#7006] Submarine Ride is in the wrong research group.
+- Fix: [#11002] Rides list shows both red and green light activated.
+- Fix: [#11072] Land and water tools working out of bounds (original bug).
+- Fix: [#11259] Custom JSON object breaks saves.
+- Fix: [#11290] Perform funds checking for all peeps entering a ride.
+- Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
+- Fix: [#11405] Building a path through walls does not always remove the walls.
+- Fix: [#11450] Rides with unsuitable track can't be opened even with "Enable all drawable track pieces" cheat.
+- Fix: [#11455] Object Selection window cuts off scenery names.
+- Fix: [#11640] Objects with a blank description in one language do not fall back to other languages anymore.
+- Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
+- Improved: [#6530] Allow water and land height changes on park borders.
+- Improved: [#11390] Build hash written to screenshot metadata.
+- Technical: [#8110] OpenRCT2 now uses a single directory name for title sequences instead of three.
+- Technical: [#11517] Windows Vista is supported again (libzip regression in the previous release).
+- Technical: The required version of macOS has been increased to 10.14 (Mojave) for plugin support.
+
+0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
+- Feature: [#11218] load_park command for console
+- Feature: [#11272] Option for toggling notifications for 'Ride casualties' and 'Stuck or stalled vehicles'.
+- Feature: [#11281] add_news_item command for console
+- Feature: [#11300] Add powered launch and reverse incline launched shuttle mode to the Stand-Up Roller Coaster (for RCT1 parity).
 - Fix: [#475] Water sides drawn incorrectly (original bug).
 - Fix: [#6123, #7907, #9472, #11028] Cannot build some track designs with 4 stations (original bug).
+- Fix: [#6238] Invalid tile elem iteration in Guest::UpdateUsingBin
 - Fix: [#7094] Back wall edge texture in water missing.
+- Fix: [#9719] Hacked walls in RCT1 saves are imported incorrectly.
+- Fix: [#10372, #10509, #10806] Lift base sections incorrectly exporting, causing various lift related bugs.
+- Fix: [#10928] File browser's date column is too narrow.
+- Fix: [#10951, #11160] Attempting to place park entrances creates ghost entrances in random locations.
 - Fix: [#11005] Company value overflows.
 - Fix: [#11027] Third color on walls becomes black when saving.
+- Fix: [#11063] Scrolling position persists when switching tabs in the scenery window.
+- Fix: [#11106] Crash on getting invalid vehicle index.
+- Fix: [#11126] Cannot place Frightmare track design.
+- Fix: [#11208] Cannot export parks with RCT2 DLC objects.
+- Fix: [#11230] Seat Rotation not imported correctly for hacked rides.
+- Fix: [#11225] Replay manager cannot handle track designs.
+- Fix: [#11246] Fix Various Import/Export issues with Boat locations, balloon frame number.
+- Fix: [#11258] Properly remove format codes from imported strings.
+- Fix: [#11286] Fix banner tooltip colour.
+- Fix: Small red gardens in RCT1 saves are imported in the wrong colour.
+- Improved: [#6024] The close button in the object selection now advances to the next step.
+- Improved: [#11157] Slimmer virtual floor lines.
 
 0.2.5 (2020-03-24)
 ------------------------------------------------------------------------

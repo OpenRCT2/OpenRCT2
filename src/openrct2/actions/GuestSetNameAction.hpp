@@ -37,6 +37,22 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("id", _spriteIndex);
+        visitor.Visit("name", _name);
+    }
+
+    uint16_t GetSpriteIndex() const
+    {
+        return _spriteIndex;
+    }
+
+    std::string GetGuestName() const
+    {
+        return _name;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;

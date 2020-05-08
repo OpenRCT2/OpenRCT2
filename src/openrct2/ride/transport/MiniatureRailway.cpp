@@ -950,8 +950,8 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
             CoordsXYZ boundsOffset = CoordsXYZ(offset, 0);
 
             sub_98199C(
-                session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, 2, height, boundsOffset.x,
-                boundsOffset.y, height + boundsOffset.z);
+                session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsLength.x, boundsLength.y,
+                2, height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
         }
     }
     if (direction == 0 && trackSequence == 0)
@@ -1066,8 +1066,8 @@ static void paint_miniature_railway_track_s_bend_left(
     if (!isSupported)
     {
         sub_98197C_rotated(
-            session, direction, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y,
-            height);
+            session, direction, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 2,
+            height, offset.x, offset.y, height);
     }
     else
     {
@@ -1078,8 +1078,8 @@ static void paint_miniature_railway_track_s_bend_left(
         imageId = miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]
             | session->TrackColours[SCHEME_TRACK];
         sub_98199C_rotated(
-            session, direction, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y,
-            height);
+            session, direction, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 2,
+            height, offset.x, offset.y, height);
     }
     if (direction == 0 || direction == 2)
     {
@@ -1166,8 +1166,8 @@ static void paint_miniature_railway_track_s_bend_right(
     if (!isSupported)
     {
         sub_98197C_rotated(
-            session, direction, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y,
-            height);
+            session, direction, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 2,
+            height, offset.x, offset.y, height);
     }
     else
     {
@@ -1178,8 +1178,8 @@ static void paint_miniature_railway_track_s_bend_right(
         imageId = miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]
             | session->TrackColours[SCHEME_TRACK];
         sub_98199C_rotated(
-            session, direction, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y,
-            height);
+            session, direction, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 2,
+            height, offset.x, offset.y, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -1306,8 +1306,8 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         CoordsXYZ boundsOffset(offset, 0);
 
         sub_98199C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, 3, height, boundsOffset.x,
-            boundsOffset.y, height + boundsOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsLength.x, boundsLength.y, 3,
+            height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
     }
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
@@ -1442,7 +1442,8 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
                 bounds = miniature_railway_track_pieces_right_eight_to_orthog_bounds[direction][index];
                 offset = miniature_railway_track_pieces_right_eight_to_orthog_offset[direction][index];
             }
-            sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, (int8_t)bounds.z, height, offset.x, offset.y, height);
+            sub_98197C(
+                session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
         }
     }
     else
@@ -1451,7 +1452,8 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
             | session->TrackColours[SCHEME_SUPPORTS];
         CoordsXY offset = miniature_railway_track_floor_pieces_left_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[direction][trackSequence];
-        sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, (int8_t)bounds.z, height, offset.x, offset.y, height);
+        sub_98197C(
+            session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
 
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1459,7 +1461,8 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
             imageId = miniature_railway_track_pieces_left_eight_to_diag[direction][index] | session->TrackColours[SCHEME_TRACK];
             offset = miniature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
-            sub_98199C(session, imageId, 0, 0, bounds.x, bounds.y, (int8_t)bounds.z, height, offset.x, offset.y, height);
+            sub_98199C(
+                session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
         }
     }
 
@@ -1580,7 +1583,8 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
                 bounds = miniature_railway_track_pieces_left_eight_to_orthog_bounds[direction][index];
                 offset = miniature_railway_track_pieces_left_eight_to_orthog_offset[direction][index];
             }
-            sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, (int8_t)bounds.z, height, offset.x, offset.y, height);
+            sub_98197C(
+                session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
         }
     }
     else
@@ -1589,7 +1593,8 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
             | session->TrackColours[SCHEME_SUPPORTS];
         CoordsXY offset = miniature_railway_track_floor_pieces_right_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[direction][trackSequence];
-        sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, (int8_t)bounds.z, height, offset.x, offset.y, height);
+        sub_98197C(
+            session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
 
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1598,7 +1603,8 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
                 | session->TrackColours[SCHEME_TRACK];
             offset = miniature_railway_track_pieces_right_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_right_eight_to_diag_bounds[direction][index];
-            sub_98199C(session, imageId, 0, 0, bounds.x, bounds.y, (int8_t)bounds.z, height, offset.x, offset.y, height);
+            sub_98199C(
+                session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
         }
     }
 

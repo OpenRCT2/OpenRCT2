@@ -105,7 +105,7 @@ public:
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++)
         {
-            _freeSlots[i] = (GLuint)i;
+            _freeSlots[i] = static_cast<GLuint>(i);
         }
     }
 
@@ -146,7 +146,7 @@ public:
 
     [[nodiscard]] int32_t GetFreeSlots() const
     {
-        return (int32_t)_freeSlots.size();
+        return static_cast<int32_t>(_freeSlots.size());
     }
 
     static int32_t CalculateImageSizeOrder(int32_t actualWidth, int32_t actualHeight)
@@ -158,7 +158,7 @@ public:
             actualSize = TEXTURE_CACHE_SMALLEST_SLOT;
         }
 
-        return (int32_t)ceil(log2f((float)actualSize));
+        return static_cast<int32_t>(ceil(log2f(static_cast<float>(actualSize))));
     }
 
 private:
@@ -178,10 +178,10 @@ private:
     [[nodiscard]] vec4 NormalizeCoordinates(const ivec4& coords) const
     {
         return vec4{
-            coords.x / (float)_atlasWidth,
-            coords.y / (float)_atlasHeight,
-            coords.z / (float)_atlasWidth,
-            coords.w / (float)_atlasHeight,
+            coords.x / static_cast<float>(_atlasWidth),
+            coords.y / static_cast<float>(_atlasHeight),
+            coords.z / static_cast<float>(_atlasWidth),
+            coords.w / static_cast<float>(_atlasHeight),
         };
     }
 };

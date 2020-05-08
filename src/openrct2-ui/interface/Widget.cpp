@@ -197,7 +197,7 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
 
-    if ((int32_t)widget->image == -2)
+    if (static_cast<int32_t>(widget->image) == -2)
     {
         // Draw border with no fill
         gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | INSET_RECT_FLAG_FILL_NONE);
@@ -219,7 +219,7 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if ((int32_t)widget->image == -1)
+    if (static_cast<int32_t>(widget->image) == -1)
         return;
 
     // Draw widgets that aren't explicitly disabled.
@@ -278,7 +278,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
     // Check if the button is pressed down
     if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
     {
-        if ((int32_t)widget->image == -2)
+        if (static_cast<int32_t>(widget->image) == -2)
         {
             // Draw border with no fill
             gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
@@ -361,8 +361,15 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     else
         t = w->windowPos.y + widget->top;
 
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        stringId = STR_STRING;
+        formatArgs = &widget->string;
+    }
     gfx_draw_string_centred_clipped(
-        dpi, widget->text, gCommonFormatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
+        dpi, stringId, formatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
 }
 
 /**
@@ -399,7 +406,14 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     else
         t = w->windowPos.y + widget->top;
 
-    gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        stringId = STR_STRING;
+        formatArgs = &widget->string;
+    }
+    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, l + 1, t, r - l);
 }
 
 /**
@@ -424,6 +438,26 @@ static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     widget_text(dpi, w, widgetIndex);
 }
 
+static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_widget* widget)
+{
+    auto stringId = widget->text;
+    void* formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        if (widget->string == nullptr || widget->string[0] == '\0')
+        {
+            stringId = STR_NONE;
+            formatArgs = nullptr;
+        }
+        else
+        {
+            stringId = STR_STRING;
+            formatArgs = (void*)&widget->string;
+        }
+    }
+    return std::make_pair(stringId, formatArgs);
+}
+
 /**
  *
  *  rct2: 0x006EB535
@@ -441,7 +475,8 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     int32_t textRight = l;
 
     // Text
-    if (widget->text != STR_NONE)
+    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget->colour] & 0x7F;
         if (widget_is_disabled(w, widgetIndex))
@@ -449,8 +484,8 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
         utf8 buffer[512] = { 0 };
         uint8_t args[sizeof(uintptr_t)] = { 0 };
-        format_string(buffer, sizeof(buffer), widget->text, gCommonFormatArgs);
-        set_format_arg_on(args, 0, uintptr_t, buffer);
+        format_string(buffer, sizeof(buffer), stringId, formatArgs);
+        Formatter(args).Add<utf8*>(buffer);
         gfx_draw_string_left(dpi, STR_STRING, args, colour, l, t);
         textRight = l + gfx_get_string_width(buffer) + 1;
     }
@@ -603,14 +638,15 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_pressed(w, widgetIndex))
     {
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string(dpi, (char*)CheckBoxMarkString, NOT_TRANSLUCENT(colour), l, yMid - 5);
+        gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), l, yMid - 5);
     }
 
     // draw the text
     if (widget->text == STR_NONE)
         return;
 
-    gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
+    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, l + 14, yMid);
 }
 
 /**
@@ -646,17 +682,21 @@ static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
 
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
-        widget_hscrollbar_draw(dpi, scroll, l, b - 10, ((scroll->flags & VSCROLLBAR_VISIBLE) ? r - 11 : r), b, colour);
+        widget_hscrollbar_draw(
+            dpi, scroll, l, b - SCROLLBAR_WIDTH, ((scroll->flags & VSCROLLBAR_VISIBLE) ? r - (SCROLLBAR_WIDTH + 1) : r), b,
+            colour);
 
     // Vertical scrollbar
     if (scroll->flags & VSCROLLBAR_VISIBLE)
-        widget_vscrollbar_draw(dpi, scroll, r - 10, t, r, ((scroll->flags & HSCROLLBAR_VISIBLE) ? b - 11 : b), colour);
+        widget_vscrollbar_draw(
+            dpi, scroll, r - SCROLLBAR_WIDTH, t, r, ((scroll->flags & HSCROLLBAR_VISIBLE) ? b - (SCROLLBAR_WIDTH + 1) : b),
+            colour);
 
     // Contents
     if (scroll->flags & HSCROLLBAR_VISIBLE)
-        b -= 11;
+        b -= (SCROLLBAR_WIDTH + 1);
     if (scroll->flags & VSCROLLBAR_VISIBLE)
-        r -= 11;
+        r -= (SCROLLBAR_WIDTH + 1);
 
     b++;
     r++;
@@ -689,25 +729,25 @@ static void widget_hscrollbar_draw(
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, l + 10, t, r - 10, b, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t, r - SCROLLBAR_WIDTH, b, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t, r - SCROLLBAR_WIDTH, b, 0x1000000 | ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 2, r - SCROLLBAR_WIDTH, t + 2, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 3, r - SCROLLBAR_WIDTH, t + 3, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 7, r - SCROLLBAR_WIDTH, t + 7, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 8, r - SCROLLBAR_WIDTH, t + 8, ColourMapA[colour].lighter);
 
     // Left button
     {
         uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, flags);
-        gfx_draw_string(dpi, (char*)BlackLeftArrowString, COLOUR_BLACK, l + 1, t);
+        gfx_fill_rect_inset(dpi, l, t, l + (SCROLLBAR_WIDTH - 1), b, colour, flags);
+        gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, l + 1, t);
     }
 
     // Thumb
     {
-        int16_t left = std::max(l + 10, l + scroll->h_thumb_left - 1);
-        int16_t right = std::min(r - 10, l + scroll->h_thumb_right - 1);
+        int16_t left = std::max(l + SCROLLBAR_WIDTH, l + scroll->h_thumb_left - 1);
+        int16_t right = std::min(r - SCROLLBAR_WIDTH, l + scroll->h_thumb_right - 1);
         uint8_t flags = (scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, left, t, right, b, colour, flags);
@@ -717,8 +757,8 @@ static void widget_hscrollbar_draw(
     {
         uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, flags);
-        gfx_draw_string(dpi, (char*)BlackRightArrowString, COLOUR_BLACK, r - 6, t);
+        gfx_fill_rect_inset(dpi, r - (SCROLLBAR_WIDTH - 1), t, r, b, colour, flags);
+        gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, r - 6, t);
     }
 }
 
@@ -727,27 +767,30 @@ static void widget_vscrollbar_draw(
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, l, t + 10, r, b - 10, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, l, t + SCROLLBAR_WIDTH, r, b - SCROLLBAR_WIDTH, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, l, t + SCROLLBAR_WIDTH, r, b - SCROLLBAR_WIDTH, 0x1000000 | ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, l + 2, t + SCROLLBAR_WIDTH, l + 2, b - SCROLLBAR_WIDTH, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, l + 3, t + SCROLLBAR_WIDTH, l + 3, b - SCROLLBAR_WIDTH, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, l + 7, t + SCROLLBAR_WIDTH, l + 7, b - SCROLLBAR_WIDTH, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, l + 8, t + SCROLLBAR_WIDTH, l + 8, b - SCROLLBAR_WIDTH, ColourMapA[colour].lighter);
 
     // Up button
     gfx_fill_rect_inset(
-        dpi, l, t, r, t + 9, colour, ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackUpArrowString, COLOUR_BLACK, l + 1, t - 1);
+        dpi, l, t, r, t + (SCROLLBAR_WIDTH - 1), colour,
+        ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+    gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, l + 1, t - 1);
 
     // Thumb
     gfx_fill_rect_inset(
-        dpi, l, std::max(t + 10, t + scroll->v_thumb_top - 1), r, std::min(b - 10, t + scroll->v_thumb_bottom - 1), colour,
+        dpi, l, std::max(t + SCROLLBAR_WIDTH, t + scroll->v_thumb_top - 1), r,
+        std::min(b - SCROLLBAR_WIDTH, t + scroll->v_thumb_bottom - 1), colour,
         ((scroll->flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
     gfx_fill_rect_inset(
-        dpi, l, b - 9, r, b, colour, ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackDownArrowString, COLOUR_BLACK, l + 1, b - 9);
+        dpi, l, b - (SCROLLBAR_WIDTH - 1), r, b, colour,
+        ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, l + 1, b - (SCROLLBAR_WIDTH - 1));
 }
 
 /**
@@ -882,15 +925,16 @@ void widget_scroll_get_part(
         }
     }
 
-    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w->windowPos.y + widget->bottom - 11))
+    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE)
+        && screenCoords.y >= (w->windowPos.y + widget->bottom - (SCROLLBAR_WIDTH + 1)))
     {
         // horizontal scrollbar
         int32_t rightOffset = 0;
-        int32_t iteratorLeft = widget->left + w->windowPos.x + 10;
-        int32_t iteratorRight = widget->right + w->windowPos.x - 10;
+        int32_t iteratorLeft = widget->left + w->windowPos.x + SCROLLBAR_WIDTH;
+        int32_t iteratorRight = widget->right + w->windowPos.x - SCROLLBAR_WIDTH;
         if (!(w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE))
         {
-            rightOffset = 11;
+            rightOffset = SCROLLBAR_WIDTH + 1;
         }
 
         if (screenCoords.x <= iteratorLeft)
@@ -901,7 +945,7 @@ void widget_scroll_get_part(
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
-        else if (screenCoords.x >= iteratorRight + rightOffset - 10)
+        else if (screenCoords.x >= iteratorRight + rightOffset - SCROLLBAR_WIDTH)
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
         }
@@ -918,15 +962,17 @@ void widget_scroll_get_part(
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
         }
     }
-    else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w->windowPos.x + widget->right - 11))
+    else if (
+        (w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE)
+        && (screenCoords.x >= w->windowPos.x + widget->right - (SCROLLBAR_WIDTH + 1)))
     {
         // vertical scrollbar
         int32_t bottomOffset = 0;
-        int32_t iteratorTop = widget->top + w->windowPos.y + 10;
+        int32_t iteratorTop = widget->top + w->windowPos.y + SCROLLBAR_WIDTH;
         int32_t iteratorBottom = widget->bottom + w->windowPos.y;
         if (w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE)
         {
-            bottomOffset = 11;
+            bottomOffset = (SCROLLBAR_WIDTH + 1);
         }
 
         if (screenCoords.y <= iteratorTop)
@@ -937,7 +983,7 @@ void widget_scroll_get_part(
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
-        else if (screenCoords.y >= (iteratorBottom - bottomOffset - 10))
+        else if (screenCoords.y >= (iteratorBottom - bottomOffset - SCROLLBAR_WIDTH))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
         }
@@ -1049,7 +1095,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     int32_t cur_x = l + gfx_get_string_width(temp_string) + 3;
 
     int32_t width = 6;
-    if ((uint32_t)gTextInput->SelectionStart < strlen(gTextBoxInput))
+    if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
     {
         // Make a new 1 character wide string for measuring the width
         // of the character that the cursor is under.

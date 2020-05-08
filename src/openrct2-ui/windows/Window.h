@@ -13,6 +13,7 @@
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/windows/tile_inspector.h>
+#include <string_view>
 
 using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
@@ -34,6 +35,7 @@ extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
 rct_window* window_about_open();
+void WindowCampaignRefreshRides();
 rct_window* window_changelog_open();
 rct_window* window_cheats_open();
 rct_window* window_clear_scenery_open();
@@ -60,7 +62,7 @@ rct_window* window_save_prompt_open();
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
 #endif
-rct_window* window_shortcut_change_open(int32_t selected_key);
+rct_window* window_shortcut_change_open(int32_t selected_key, rct_string_id key_string_id);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
 rct_window* window_staff_open(Peep* peep);
@@ -104,6 +106,7 @@ void window_title_command_editor_open(struct TitleSequence* sequence, int32_t co
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message);
+rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
 struct TrackDesign;
 rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
@@ -122,7 +125,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
 rct_window* window_new_ride_open();
 rct_window* window_new_ride_open_research();
 void window_new_ride_init_vars();
-void window_new_ride_focus(ride_list_item rideItem);
+void window_new_ride_focus(RideSelection rideItem);
 
 rct_window* window_ride_list_open();
 void window_ride_list_refresh_list(rct_window* w);
@@ -133,8 +136,8 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle);
 void window_ride_measurements_design_cancel();
 
 // rct2: 0x00F635EE
-extern ride_list_item _window_track_list_item;
-rct_window* window_track_list_open(ride_list_item item);
+extern RideSelection _window_track_list_item;
+rct_window* window_track_list_open(RideSelection item);
 
 void window_map_tooltip_update_visibility();
 

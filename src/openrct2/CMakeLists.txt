@@ -8,6 +8,11 @@ endif ()
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
 file(GLOB_RECURSE OPENRCT2_CORE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
+list(REMOVE_ITEM OPENRCT2_CORE_HEADERS
+    "${CMAKE_CURRENT_LIST_DIR}/thirdparty/filesystem.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/thirdparty/linenoise.hpp"
+)
+
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
     set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
@@ -18,7 +23,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
 # GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (NOT MINGW)
+if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_link_libraries(${PROJECT_NAME} stdc++fs)
     endif()
@@ -92,6 +97,20 @@ if (NOT DISABLE_GOOGLE_BENCHMARK)
         target_include_directories(${PROJECT_NAME} PRIVATE ${benchmark_INCLUDE_DIRS})
     else ()
         message("Google benchmark not found, disabling support")
+    endif ()
+endif ()
+
+if (ENABLE_SCRIPTING)
+    if (MSVC)
+        find_package(duktape REQUIRED)
+    else ()
+        PKG_CHECK_MODULES(DUKTAPE REQUIRED duktape)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${DUKTAPE_INCLUDE_DIRS})
+        if (STATIC)
+            target_link_libraries(${PROJECT_NAME} ${DUKTAPE_STATIC_LIBRARIES})
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${DUKTAPE_LIBRARIES})
+        endif ()
     endif ()
 endif ()
 
@@ -191,7 +210,8 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${JANSSON_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PNG_INCLUDE_DIRS}
-                                              ${ZLIB_INCLUDE_DIRS})
+                                                   ${ZLIB_INCLUDE_DIRS})
+include_directories(${PROJECT_NAME} SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these

@@ -123,6 +123,7 @@ rct_window* window_title_menu_open()
 static void window_title_menu_scenarioselect_callback(const utf8* path)
 {
     context_load_park_from_file(path);
+    game_load_scripts();
 }
 
 static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -184,7 +185,7 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
         window_dropdown_show_text(
-            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
             TRANSLUCENT(w->colours[0]), DROPDOWN_FLAG_STAY_OPEN, 5);
     }
 }

@@ -25,7 +25,8 @@ void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.wall.height = stream->ReadValue<uint8_t>();
     _legacyType.wall.flags2 = stream->ReadValue<uint8_t>();
     _legacyType.wall.price = stream->ReadValue<uint16_t>();
-    _legacyType.wall.scenery_tab_id = stream->ReadValue<uint8_t>();
+    _legacyType.wall.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    stream->Seek(1, STREAM_SEEK_CURRENT);
     _legacyType.wall.scrolling_mode = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);

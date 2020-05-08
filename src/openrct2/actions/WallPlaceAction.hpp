@@ -21,6 +21,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "GameAction.h"
 
 class WallPlaceActionResult final : public GameActionResult
@@ -150,7 +151,7 @@ public:
             targetHeight = surfaceElement->GetBaseZ();
 
             uint8_t slope = surfaceElement->GetSlope();
-            edgeSlope = EdgeSlopes[slope][_edge & 3];
+            edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
                 targetHeight += 16;
@@ -259,7 +260,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -324,7 +325,7 @@ public:
             targetHeight = surfaceElement->GetBaseZ();
 
             uint8_t slope = surfaceElement->GetSlope();
-            edgeSlope = EdgeSlopes[slope][_edge & 3];
+            edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
                 targetHeight += 16;
@@ -350,7 +351,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -401,8 +402,7 @@ public:
         WallElement* wallElement = tileElement->AsWall();
         wallElement->clearance_height = clearanceHeight;
         wallElement->SetDirection(_edge);
-        // TODO: Normalise the edge slope code.
-        wallElement->SetSlope(edgeSlope >> 6);
+        wallElement->SetSlope(edgeSlope);
 
         wallElement->SetPrimaryColour(_primaryColour);
         wallElement->SetSecondaryColour(_secondaryColour);
@@ -436,59 +436,6 @@ public:
     }
 
 private:
-#pragma region Edge Slopes Table
-
-    // clang-format off
-    enum EDGE_SLOPE
-    {
-        EDGE_SLOPE_ELEVATED     = (1 << 0), // 0x01
-        EDGE_SLOPE_UPWARDS      = (1 << 6), // 0x40
-        EDGE_SLOPE_DOWNWARDS    = (1 << 7), // 0x80
-
-        EDGE_SLOPE_UPWARDS_ELEVATED     = EDGE_SLOPE_UPWARDS | EDGE_SLOPE_ELEVATED,
-        EDGE_SLOPE_DOWNWARDS_ELEVATED   = EDGE_SLOPE_DOWNWARDS | EDGE_SLOPE_ELEVATED,
-    };
-
-    /** rct2: 0x009A3FEC */
-    static constexpr const uint8_t EdgeSlopes[][4] = {
-    //  Top right                        Bottom right                   Bottom left                       Top left
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },
-        { 0,                             0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS          },
-        { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS          },
-        { EDGE_SLOPE_DOWNWARDS,          0,                             0,                             EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_DOWNWARDS,          0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED           },
-        { EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED           },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0,                             0                             },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          0                             },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS          },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS          },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          0,                             EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED           },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED           },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED,   EDGE_SLOPE_DOWNWARDS_ELEVATED },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED,   EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS          },
-        { 0,                             0,                             0,                             0                             },
-        { EDGE_SLOPE_UPWARDS_ELEVATED,   EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED   },
-        { 0,                             0,                             0,                             0                             },
-    };
-    // clang-format on
-
-#pragma endregion
-
     /**
      *
      *  rct2: 0x006E5CBA
@@ -515,7 +462,7 @@ private:
             return false;
         }
 
-        if (RideGroupManager::RideTypeHasRideGroups(ride->type))
+        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
         {
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
@@ -532,7 +479,7 @@ private:
                 return false;
             }
         }
-        else if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
+        else if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
         {
             return false;
         }

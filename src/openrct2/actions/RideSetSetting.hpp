@@ -81,7 +81,7 @@ public:
                     return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
                 }
 
-                if (!ride_is_mode_valid(ride))
+                if (!ride_is_mode_valid(ride) && !gCheatsShowAllOperatingModes)
                 {
                     log_warning("Invalid ride mode: %u", _value);
                     return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
@@ -255,23 +255,13 @@ public:
 private:
     bool ride_is_mode_valid(Ride * ride) const
     {
-        const uint8_t* availableModes = ride_seek_available_modes(ride);
-
-        for (; *availableModes != 0xFF; availableModes++)
-        {
-            if (*availableModes == _value)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return RideTypeDescriptors[ride->type].RideModes & (1ULL << _value);
     }
 
     bool ride_is_valid_lift_hill_speed(Ride * ride) const
     {
-        int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
+        int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+        int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
         return _value >= minSpeed && _value <= maxSpeed;
     }
 
@@ -303,7 +293,7 @@ private:
                 return STR_CANT_CHANGE_SPEED;
             case RIDE_MODE_RACE:
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RIDE_MODE_BUMPERCAR:
+            case RIDE_MODE_DODGEMS:
                 return STR_CANT_CHANGE_TIME_LIMIT;
             case RIDE_MODE_SWING:
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;

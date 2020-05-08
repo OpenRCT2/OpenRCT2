@@ -176,6 +176,15 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
     VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
 };
 
+struct Ride;
+struct rct_ride_entry;
+
+struct GForces
+{
+    int32_t VerticalG{};
+    int32_t LateralG{};
+};
+
 struct Vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type;
@@ -302,11 +311,83 @@ struct Vehicle : SpriteBase
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
+    bool DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* spriteId) const;
+    int32_t UpdateTrackMotion(int32_t* outStation);
+    GForces GetGForces() const;
+    void SetMapToolbar() const;
+    int32_t IsUsedInPairs() const;
+    rct_ride_entry_vehicle* Entry() const;
+    Vehicle* TrainHead() const;
+    Vehicle* TrainTail() const;
 
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
+    void CableLiftUpdate();
+    void CableLiftUpdateMovingToEndOfStation();
+    void CableLiftUpdateWaitingToDepart();
+    void CableLiftUpdateDeparting();
+    void CableLiftUpdateTravelling();
+    void CableLiftUpdateArriving();
+    void UpdateMeasurements();
+    void UpdateMovingToEndOfStation();
+    void UpdateWaitingForPassengers();
+    void UpdateWaitingToDepart();
+    void UpdateCrash();
+    void UpdateDodgemsMode();
+    void UpdateSwinging();
+    void UpdateSimulatorOperating();
+    void UpdateTopSpinOperating();
+    void UpdateFerrisWheelRotating();
+    void UpdateSpaceRingsOperating();
+    void UpdateHauntedHouseOperating();
+    void UpdateCrookedHouseOperating();
+    void UpdateRotating();
+    void UpdateDeparting();
+    void FinishDeparting();
+    void UpdateTravelling();
+    void UpdateTravellingCableLift();
+    void UpdateTravellingBoat();
+    void UpdateMotionBoatHire();
+    void UpdateDepartingBoatHire();
+    void UpdateTravellingBoatHireSetup();
+    void UpdateBoatLocation();
+    void UpdateArriving();
+    void UpdateUnloadingPassengers();
+    void UpdateWaitingForCableLift();
+    void UpdateShowingFilm();
+    void UpdateDoingCircusShow();
+    void UpdateCrossings() const;
+    void UpdateSound();
+    SoundId UpdateScreamSound();
+    void UpdateCrashSetup();
+    void UpdateCollisionSetup();
+    int32_t UpdateMotionDodgems();
+    void UpdateAdditionalAnimation();
+    void CheckIfMissing();
+    bool CurrentTowerElementIsTop();
+    bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    int32_t NumPeepsUntilTrainTail() const;
+    void InvalidateWindow();
+    void TestReset();
+    void UpdateTestFinish();
+    void PeepEasterEggHereWeAre() const;
+    bool CanDepartSynchronised() const;
+    void ReverseReverserCar();
+    void UpdateReverserCarBogies();
+    void UpdateHandleWaterSplash() const;
+    void Claxon() const;
+    void UpdateTrackMotionUpStopCheck() const;
+    void CheckAndApplyBlockSectionStopSite();
+    void UpdateVelocity();
+    bool OpenRestraints();
+    bool CloseRestraints();
+    void CrashOnWater();
+    void CrashOnLand();
+    void SimulateCrash() const;
+    void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
 };
 
 struct train_ref
@@ -493,30 +574,11 @@ enum
 #define VEHICLE_SEAT_PAIR_FLAG 0x80
 #define VEHICLE_SEAT_NUM_MASK 0x7F
 
-struct GForces
-{
-    int32_t VerticalG{};
-    int32_t LateralG{};
-};
-
 Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-GForces vehicle_get_g_forces(const Vehicle* vehicle);
-void vehicle_set_map_toolbar(const Vehicle* vehicle);
-int32_t vehicle_is_used_in_pairs(const Vehicle* vehicle);
-int32_t vehicle_update_track_motion(Vehicle* vehicle, int32_t* outStation);
-rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const Vehicle* vehicle);
-int32_t vehicle_get_total_num_peeps(const Vehicle* vehicle);
-void vehicle_invalidate_window(Vehicle* vehicle);
-void vehicle_update_test_finish(Vehicle* vehicle);
-void vehicle_test_reset(Vehicle* vehicle);
-void vehicle_peep_easteregg_here_we_are(const Vehicle* vehicle);
-Vehicle* vehicle_get_head(const Vehicle* vehicle);
-Vehicle* vehicle_get_tail(const Vehicle* vehicle);
 const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
-bool vehicle_update_dodgems_collision(Vehicle* vehicle, int16_t x, int16_t y, uint16_t* spriteId);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;

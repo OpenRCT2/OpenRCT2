@@ -165,16 +165,19 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
         && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
-        set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-        set_format_arg(4, uint32_t, 0);
+        // clear next 8 bytes
+        Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            ride->FormatNameTo(gCommonFormatArgs + 2);
+            ride->FormatNameTo(ft);
         }
         else
         {
-            set_format_arg(2, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
+            ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
         }
 
         utf8 entrance_string[256];
@@ -256,7 +259,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
             }
 
-            entrance = (rct_entrance_type*)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
+            entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0));
             if (entrance == nullptr)
             {
                 return;
@@ -270,20 +273,20 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 break;
 
             {
-                set_format_arg(0, uint32_t, 0);
-                set_format_arg(4, uint32_t, 0);
+                Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+                auto ft = Formatter::Common();
 
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
                     const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                     auto name = park.Name.c_str();
-                    set_format_arg(0, rct_string_id, STR_STRING);
-                    set_format_arg(2, const char*, name);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<const char*>(name);
                 }
                 else
                 {
-                    set_format_arg(0, rct_string_id, STR_BANNER_TEXT_CLOSED);
-                    set_format_arg(2, uint32_t, 0);
+                    ft.Add<rct_string_id>(STR_BANNER_TEXT_CLOSED);
+                    ft.Add<uint32_t>(0);
                 }
 
                 utf8 park_name[256];
@@ -312,7 +315,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
             break;
         case 1:
         case 2:
-            entrance = (rct_entrance_type*)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
+            entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0));
             if (entrance == nullptr)
             {
                 return;

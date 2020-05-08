@@ -1134,8 +1134,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Nie można zmienić limitu czasu przejazdu...
 STR_1752    :{SMALLFONT}{BLACK}Pokaż listę gości parku
 STR_1753    :{SMALLFONT}{BLACK}Pokaż zbiorczą listę gości w parku
-STR_1754    :{BLACK}{COMMA16} goście
-STR_1755    :{BLACK}{COMMA16} gość
+STR_1754    :{BLACK}{COMMA32} goście
+STR_1755    :{BLACK}{COMMA32} gość
 STR_1756    :{WINDOW_COLOUR_2}Cena wejściówki:
 STR_1757    :{WINDOW_COLOUR_2}Niezawodność: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Tryb budowania
@@ -1193,7 +1193,7 @@ STR_1813    :Różne obiekty
 STR_1814    :Akcje
 STR_1815    :Myśli
 STR_1816    :{SMALLFONT}{BLACK}Wybierz typ informacji wyświetlany na liście gości
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Wszyscy goście
 STR_1819    :{WINDOW_COLOUR_2}Wszyscy goście (pogrupowani)
 STR_1820    :{WINDOW_COLOUR_2}Goście {STRINGID}
@@ -1222,9 +1222,9 @@ STR_1842    :Ulubiony dla: {COMMA16} gościa
 STR_1843    :Ulubiony dla: {COMMA16} gości
 STR_1844    :{SMALLFONT}{BLACK}Wybierz rodzaj informacji do pokazania
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} gości
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gości
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gości
+STR_1846    :{COMMA32} gości
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} gości
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} gości
 STR_1849    :{WINDOW_COLOUR_2}Odtwarzaj muzykę
 STR_1850    :{SMALLFONT}{BLACK}Wybierz, czy na tej atrakcji ma grać muzyka
 STR_1851    :{WINDOW_COLOUR_2}Koszty utrzymania: {BLACK}{CURRENCY2DP} na godzinę
@@ -1580,7 +1580,7 @@ STR_2219    :{RED}{COMMA16} ludzi zginęło w wypadku na atrakcji {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Ocena parku: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Ocena Parku: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Gości w parku: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Gości w parku: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Gotówka: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Gotówka: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Wartość parku: {BLACK}{CURRENCY}
@@ -1945,8 +1945,8 @@ STR_2728    :{UINT16}godz:{UINT16}min
 STR_2729    :{UINT16}godz:{UINT16}min
 STR_2730    :{UINT16}godz:{UINT16}min
 STR_2731    :{UINT16}godz:{UINT16}min
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Rok {COMMA16}
@@ -1982,7 +1982,7 @@ STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Podgląd #{COMMA16}
 STR_2780    :Dodatkowe okno podglądu
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Zmień skrót klawiszowy
@@ -2306,7 +2306,6 @@ STR_3190    :Dodatki drogowe
 STR_3191    :Grupa scenerii
 STR_3192    :Wejście do parku
 STR_3193    :Woda
-STR_3194    :Opis scenariusza
 STR_3195    :Lista wynalazków
 STR_3196    :{WINDOW_COLOUR_2}Grupa badawcza: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Rzeczy wynalezione na początku gry:

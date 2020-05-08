@@ -55,13 +55,13 @@ public:
         auto normRange = _range.Normalise();
         auto x0 = std::max(normRange.GetLeft(), 32);
         auto y0 = std::max(normRange.GetTop(), 32);
-        auto x1 = std::min(normRange.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(normRange.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto x1 = std::min(normRange.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
+        auto y1 = std::min(normRange.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
 
         MapRange validRange{ x0, y0, x1, y1 };
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        if (_surfaceStyle != 0xFF)
+        if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
         {
             if (_surfaceStyle > 0x1F)
             {
@@ -79,7 +79,7 @@ public:
             }
         }
 
-        if (_edgeStyle != 0xFF)
+        if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
         {
             if (_edgeStyle > 0xF)
             {
@@ -131,7 +131,7 @@ public:
                     continue;
                 }
 
-                if (_surfaceStyle != 0xFF)
+                if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
                 {
                     uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
 
@@ -146,7 +146,7 @@ public:
                     }
                 }
 
-                if (_edgeStyle != 0xFF)
+                if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
                 {
                     uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
 
@@ -171,8 +171,8 @@ public:
         auto normRange = _range.Normalise();
         auto x0 = std::max(normRange.GetLeft(), 32);
         auto y0 = std::max(normRange.GetTop(), 32);
-        auto x1 = std::min(normRange.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(normRange.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto x1 = std::min(normRange.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
+        auto y1 = std::min(normRange.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
 
         MapRange validRange{ x0, y0, x1, y1 };
 
@@ -203,7 +203,7 @@ public:
                     continue;
                 }
 
-                if (_surfaceStyle != 0xFF)
+                if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
                 {
                     uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
 
@@ -224,7 +224,7 @@ public:
                     }
                 }
 
-                if (_edgeStyle != 0xFF)
+                if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
                 {
                     uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
 
