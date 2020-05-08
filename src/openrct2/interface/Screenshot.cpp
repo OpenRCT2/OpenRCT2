@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -757,4 +757,90 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     drawing_engine_dispose();
 
     return exitCode;
+}
+
+static bool IsPathChildOf(fs::path x, const fs::path& parent)
+{
+    auto xp = x.parent_path();
+    while (xp != x)
+    {
+        if (xp == parent)
+        {
+            return true;
+        }
+        x = xp;
+        xp = x.parent_path();
+    }
+    return false;
+}
+
+static std::string ResolveFilenameForCapture(const fs::path& filename)
+{
+    if (filename.empty())
+    {
+        // Automatic filename
+        auto path = screenshot_get_next_path();
+        if (!path)
+        {
+            throw std::runtime_error("Unable to generate a filename for capture.");
+        }
+        return *path;
+    }
+    else
+    {
+        auto screenshotDirectory = fs::u8path(screenshot_get_directory());
+        auto screenshotPath = fs::absolute(screenshotDirectory / filename);
+
+        // Check the filename isn't attempting to leave the screenshot directory for security
+        if (!IsPathChildOf(screenshotPath, screenshotDirectory))
+        {
+            throw std::runtime_error("Filename is not a child of the screenshot directory.");
+        }
+
+        auto directory = screenshotPath.parent_path();
+        if (!fs::is_directory(directory))
+        {
+            if (!fs::create_directory(directory, screenshotDirectory))
+            {
+                throw std::runtime_error("Unable to create directory.");
+            }
+        }
+
+        return screenshotPath.string();
+    }
+}
+
+void CaptureImage(const CaptureOptions& options)
+{
+    rct_viewport viewport{};
+    if (options.View)
+    {
+        viewport.width = options.View->Width;
+        viewport.height = options.View->Height;
+        viewport.view_width = viewport.width;
+        viewport.view_height = viewport.height;
+
+        auto z = tile_element_height(options.View->Position);
+        CoordsXYZ coords3d(options.View->Position, z);
+        auto coords2d = translate_3d_to_2d_with_z(options.Rotation, coords3d);
+        viewport.viewPos = { coords2d.x - ((viewport.view_width * options.Zoom) / 2),
+                             coords2d.y - ((viewport.view_height * options.Zoom) / 2) };
+        viewport.zoom = options.Zoom;
+    }
+    else
+    {
+        viewport = GetGiantViewport(gMapSize, options.Rotation, options.Zoom);
+    }
+
+    auto backupRotation = gCurrentRotation;
+    gCurrentRotation = options.Rotation;
+
+    auto outputPath = ResolveFilenameForCapture(options.Filename);
+    auto dpi = CreateDPI(viewport);
+    RenderViewport(nullptr, viewport, dpi);
+    auto renderedPalette = screenshot_get_rendered_palette();
+    WriteDpiToFile(outputPath, &dpi, renderedPalette);
+    ReleaseDPI(dpi);
+
+    gCurrentRotation = backupRotation;
 }
