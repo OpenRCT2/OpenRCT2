@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,7 +87,7 @@ private:
     IObjectRepository& _objectRepository;
     const IFileDataRetriever* _fileDataRetriever;
 
-    std::string _identifier;
+    std::string _objectName;
     bool _loadImages;
     std::string _basePath;
     bool _wasWarning = false;
@@ -104,18 +104,13 @@ public:
     }
 
     ReadObjectContext(
-        IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
+        IObjectRepository& objectRepository, const std::string& objectName, bool loadImages,
         const IFileDataRetriever* fileDataRetriever)
         : _objectRepository(objectRepository)
         , _fileDataRetriever(fileDataRetriever)
-        , _identifier(identifier)
+        , _objectName(objectName)
         , _loadImages(loadImages)
     {
-    }
-
-    std::string_view GetObjectIdentifier() override
-    {
-        return _identifier;
     }
 
     IObjectRepository& GetObjectRepository() override
@@ -143,7 +138,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
+            Console::Error::WriteLine("[%s] Warning (%d): %s", _objectName.c_str(), code, text);
         }
     }
 
@@ -153,7 +148,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
+            Console::Error::WriteLine("[%s] Error (%d): %s", _objectName.c_str(), code, text);
         }
     }
 };
@@ -434,7 +429,6 @@ namespace ObjectFactory
                 std::memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
-                result->SetIdentifier(id);
                 result->MarkAsJsonObject();
                 auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
                 result->ReadJson(&readContext, jRoot);

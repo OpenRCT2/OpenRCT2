@@ -403,12 +403,12 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
             gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, x, y);
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, ScreenCoordsXY(x + 70, y));
 
             gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, x + 200, y);
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, ScreenCoordsXY(x + 300, y));
             y += textHeight + padding;
 
             window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
@@ -420,12 +420,12 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
             gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, x, y);
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesOutSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, ScreenCoordsXY(x + 70, y));
 
             gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, x + 200, y);
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, ScreenCoordsXY(x + 300, y));
             y += textHeight + padding;
 
             window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
@@ -442,7 +442,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
                 gfx_fill_rect(dpi, x, y + 4, x + 4, y + 6, NetworkTrafficGroupColors[i]);
 
                 // Draw text.
-                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 10, y);
+                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, ScreenCoordsXY(x + 10, y));
 
                 gfx_get_string_width(textBuffer);
 

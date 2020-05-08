@@ -592,7 +592,7 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
             gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].light);
 
         // Draw the actual object entry's name...
-        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT - 3, y);
+        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, ScreenCoordsXY(NAME_COL_LEFT - 3, y));
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(

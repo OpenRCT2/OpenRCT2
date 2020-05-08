@@ -312,7 +312,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = colourFormatStr + _consoleLines[index];
-        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y);
+        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, ScreenCoordsXY(x, y));
         y += lineHeight;
     }
 
@@ -320,7 +320,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Draw current line
     lineBuffer = colourFormatStr + _consoleCurrentLine;
-    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y);
+    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, ScreenCoordsXY(x, y));
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

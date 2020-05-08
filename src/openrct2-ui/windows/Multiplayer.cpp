@@ -677,7 +677,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 safe_strcpy(lineCh, network_get_player_name(i), sizeof(buffer) - (lineCh - buffer));
             }
             gfx_clip_string(buffer, 230);
-            gfx_draw_string(dpi, buffer, colour, 0, y);
+            gfx_draw_string(dpi, buffer, colour, ScreenCoordsXY(0, y));
 
             // Draw group name
             lineCh = buffer;
@@ -687,7 +687,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
                 safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
                 gfx_clip_string(buffer, 80);
-                gfx_draw_string(dpi, buffer, colour, 173, y);
+                gfx_draw_string(dpi, buffer, colour, ScreenCoordsXY(173, y));
             }
 
             // Draw last action
@@ -715,7 +715,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
             }
             snprintf(lineCh, sizeof(buffer) - (lineCh - buffer), "%d ms", ping);
-            gfx_draw_string(dpi, buffer, colour, 356, y);
+            gfx_draw_string(dpi, buffer, colour, ScreenCoordsXY(356, y));
         }
         y += SCROLLABLE_ROW_HEIGHT;
     }
@@ -964,7 +964,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
                     lineCh = utf8_write_codepoint(lineCh, UnicodeChar::tick);
-                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y);
+                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, ScreenCoordsXY(0, y));
                 }
             }
 

@@ -251,7 +251,7 @@ void gfx_draw_string_left_centred(
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
+    gfx_draw_string(dpi, buffer, colour, ScreenCoordsXY(x, y - (height / 2)));
 }
 
 /**
@@ -312,13 +312,13 @@ static void colour_char_window(uint8_t colour, const uint16_t* current_font_flag
 void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t numLines, char* text)
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, (char*)"", COLOUR_BLACK, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char*)"", COLOUR_BLACK, ScreenCoordsXY(dpi->x, dpi->y));
     gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = gfx_get_string_width(text);
-        gfx_draw_string(dpi, text, TEXT_COLOUR_254, x - (width / 2), y);
+        gfx_draw_string(dpi, text, TEXT_COLOUR_254, ScreenCoordsXY(x - (width / 2), y));
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -426,7 +426,7 @@ void gfx_draw_string_centred_wrapped_partial(
     utf8* buffer = gCommonStringFormatBuffer;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, (char*)"", colour, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char*)"", colour, ScreenCoordsXY(dpi->x, dpi->y));
     format_string(buffer, 256, format, args);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -459,7 +459,7 @@ void gfx_draw_string_centred_wrapped_partial(
             ch = nextCh;
         }
 
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x - halfWidth, lineY);
+        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, ScreenCoordsXY(x - halfWidth, lineY));
 
         if (numCharactersDrawn > numCharactersToDraw)
         {

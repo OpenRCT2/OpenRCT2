@@ -150,6 +150,15 @@ void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t co
     DrawText(dpi, x, y, &_legacyPaint, buffer);
 }
 
+void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
+{
+    _legacyPaint.UnderlineText = false;
+    _legacyPaint.Colour = colour;
+    _legacyPaint.Alignment = TextAlignment::LEFT;
+    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
+    DrawText(dpi, coords.x, coords.y, &_legacyPaint, buffer);
+}
+
 // Basic
 void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
 {

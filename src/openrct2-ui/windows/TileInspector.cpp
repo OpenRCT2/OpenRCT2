@@ -1783,8 +1783,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw coordinates
-    gfx_draw_string(dpi, (char*)"X:", COLOUR_WHITE, w->windowPos.x + 5, w->windowPos.y + 24);
-    gfx_draw_string(dpi, (char*)"Y:", COLOUR_WHITE, w->windowPos.x + 74, w->windowPos.y + 24);
+    gfx_draw_string(dpi, (char*)"X:", COLOUR_WHITE, ScreenCoordsXY(w->windowPos.x + 5, w->windowPos.y + 24));
+    gfx_draw_string(dpi, (char*)"Y:", COLOUR_WHITE, ScreenCoordsXY(w->windowPos.x + 74, w->windowPos.y + 24));
     if (windowTileInspectorTileSelected)
     {
         auto tileCoords = TileCoordsXY{ windowTileInspectorToolMap };
@@ -1793,8 +1793,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else
     {
-        gfx_draw_string(dpi, (char*)"-", COLOUR_WHITE, w->windowPos.x + 43 - 7, w->windowPos.y + 24);
-        gfx_draw_string(dpi, (char*)"-", COLOUR_WHITE, w->windowPos.x + 113 - 7, w->windowPos.y + 24);
+        gfx_draw_string(dpi, (char*)"-", COLOUR_WHITE, ScreenCoordsXY(w->windowPos.x + 43 - 7, w->windowPos.y + 24));
+        gfx_draw_string(dpi, (char*)"-", COLOUR_WHITE, ScreenCoordsXY(w->windowPos.x + 113 - 7, w->windowPos.y + 24));
     }
 
     if (windowTileInspectorSelectedIndex != -1)

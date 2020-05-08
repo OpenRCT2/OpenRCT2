@@ -185,5 +185,5 @@ static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t x = w->windowPos.x + (w->width / 2);
     int32_t y = w->windowPos.y + (w->height / 2);
     x -= gfx_get_string_width(buffer) / 2;
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, ScreenCoordsXY(x, y));
 }

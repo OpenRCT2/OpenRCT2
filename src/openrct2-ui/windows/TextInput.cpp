@@ -224,7 +224,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t cursorY = 0;
     for (int32_t line = 0; line <= no_lines; line++)
     {
-        gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->windowPos.x + 12, y);
+        gfx_draw_string(dpi, wrap_pointer, w->colours[1], ScreenCoordsXY(w->windowPos.x + 12, y));
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -368,5 +368,5 @@ static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursor
 
     gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
     gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
-    gfx_draw_string(dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, x, y);
+    gfx_draw_string(dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, ScreenCoordsXY(x, y));
 }

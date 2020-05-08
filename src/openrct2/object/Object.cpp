@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,22 +9,28 @@
 
 #include "Object.h"
 
-#include "../Context.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
-#include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
 #include "ObjectLimits.h"
 
 #include <algorithm>
-#include <cstring>
 #include <stdexcept>
 
 Object::Object(const rct_object_entry& entry)
 {
     _objectEntry = entry;
+
+    char name[DAT_NAME_LENGTH + 1] = { 0 };
+    std::copy_n(entry.name, DAT_NAME_LENGTH, name);
+    _identifier = String::Duplicate(name);
+}
+
+Object::~Object()
+{
+    Memory::Free(_identifier);
 }
 
 void* Object::GetLegacyData()
@@ -39,9 +45,8 @@ void Object::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
 std::string Object::GetOverrideString(uint8_t index) const
 {
-    auto legacyIdentifier = GetLegacyIdentifier();
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    auto stringId = localisationService.GetObjectOverrideStringId(legacyIdentifier, index);
+    const char* identifier = GetIdentifier();
+    rct_string_id stringId = language_get_object_override_string_id(identifier, index);
 
     const utf8* result = nullptr;
     if (stringId != STR_NONE)
@@ -108,12 +113,6 @@ std::string Object::GetName() const
 std::string Object::GetName(int32_t language) const
 {
     return GetString(language, OBJ_STRING_ID_NAME);
-}
-
-void rct_object_entry::SetName(const std::string_view& value)
-{
-    std::memset(name, ' ', sizeof(name));
-    std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
 }
 
 std::optional<uint8_t> rct_object_entry::GetSceneryType() const

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,8 +43,8 @@ void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     }
 
     // Autofix this object (will be turned into an official object later).
-    auto identifier = GetLegacyIdentifier();
-    if (identifier == "XXWLBR03")
+    auto identifier = GetIdentifier();
+    if (String::Equals(identifier, "XXWLBR03"))
     {
         _legacyType.wall.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
         _legacyType.wall.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;

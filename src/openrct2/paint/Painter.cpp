@@ -97,7 +97,7 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     x = x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
-        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, x, y);
+        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, ScreenCoordsXY(x, y));
 
     // Make area dirty so the text doesn't get drawn over the last
     gfx_set_dirty_blocks(x, y, x + stringWidth, y + 16);
@@ -123,7 +123,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     // Draw Text
     int32_t stringWidth = gfx_get_string_width(buffer);
     x = x - (stringWidth / 2);
-    gfx_draw_string(dpi, buffer, 0, x, y);
+    gfx_draw_string(dpi, buffer, 0, ScreenCoordsXY(x, y));
 
     // Make area dirty so the text doesn't get drawn over the last
     gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);

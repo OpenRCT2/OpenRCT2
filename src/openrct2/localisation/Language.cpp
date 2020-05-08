@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -123,6 +123,12 @@ void language_free_object_string(rct_string_id stringId)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     localisationService.FreeObjectString(stringId);
+}
+
+rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index)
+{
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    return localisationService.GetObjectOverrideStringId(identifier, index);
 }
 
 rct_string_id language_allocate_object_string(const std::string& target)

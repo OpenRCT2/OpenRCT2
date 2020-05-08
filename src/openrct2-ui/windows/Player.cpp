@@ -389,7 +389,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
-    gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
+    gfx_draw_string(dpi, ping, w->colours[2], ScreenCoordsXY(x + 30, y));
 
     // Draw last action
     x = w->windowPos.x + (w->width / 2);

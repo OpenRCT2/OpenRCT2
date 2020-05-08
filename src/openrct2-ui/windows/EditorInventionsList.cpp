@@ -708,13 +708,13 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
 
         // Draw group name
         gfx_clip_string(groupNameBuffer, columnSplitOffset);
-        gfx_draw_string(dpi, groupNameBuffer, colour, 1, itemY);
+        gfx_draw_string(dpi, groupNameBuffer, colour, ScreenCoordsXY(1, itemY));
 
         // Draw vehicle name
         if (vehicleNamePtr)
         {
             gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
-            gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
+            gfx_draw_string(dpi, vehicleNameBuffer, colour, ScreenCoordsXY(columnSplitOffset + 1, itemY));
         }
     }
 }

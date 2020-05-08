@@ -460,11 +460,11 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         // Draw server information
         if (highlighted && !serverDetails.description.empty())
         {
-            gfx_draw_string(dpi, serverDetails.description.c_str(), colour, 3, y + 3);
+            gfx_draw_string(dpi, serverDetails.description.c_str(), colour, ScreenCoordsXY(3, y + 3));
         }
         else
         {
-            gfx_draw_string(dpi, serverDetails.name.c_str(), colour, 3, y + 3);
+            gfx_draw_string(dpi, serverDetails.name.c_str(), colour, ScreenCoordsXY(3, y + 3));
         }
 
         int32_t right = width - 3 - 14;
@@ -502,7 +502,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             snprintf(players, 32, "%d/%d", serverDetails.players, serverDetails.maxplayers);
         }
         int32_t numPlayersStringWidth = gfx_get_string_width(players);
-        gfx_draw_string(dpi, players, w->colours[1], right - numPlayersStringWidth, y + 3);
+        gfx_draw_string(dpi, players, w->colours[1], ScreenCoordsXY(right - numPlayersStringWidth, y + 3));
 
         y += ITEM_HEIGHT;
     }

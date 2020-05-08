@@ -921,8 +921,8 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 {
                     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
                     gfx_draw_string(
-                        dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, _button_offset_x + 12 * j,
-                        y + _check_offset_y);
+                        dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F,
+                        ScreenCoordsXY(_button_offset_x + 12 * j, y + _check_offset_y));
                 }
             }
         }

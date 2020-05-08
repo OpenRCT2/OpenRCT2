@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,6 +105,7 @@ std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId)
 std::string utf8_to_rct2(const std::string_view& src);
 bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
+rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index);
 rct_string_id language_allocate_object_string(const std::string& target);
 std::string language_convert_string_to_tokens(const std::string_view& s);
 std::string language_convert_string(const std::string_view& s);

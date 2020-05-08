@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -252,10 +252,12 @@ public:
         return _items.data();
     }
 
-    const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const override
+    const ObjectRepositoryItem* FindObject(const utf8* name) const override
     {
         rct_object_entry entry = {};
-        entry.SetName(legacyIdentifier);
+        utf8 entryName[9] = { ' ' };
+        String::Set(entryName, sizeof(entryName), name);
+        std::copy_n(entryName, 8, entry.name);
 
         auto kvp = _itemMap.find(entry);
         if (kvp != _itemMap.end())
