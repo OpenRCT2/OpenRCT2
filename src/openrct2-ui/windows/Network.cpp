@@ -404,13 +404,15 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, screenCoords.x + 200, screenCoords.y);
+            gfx_draw_string_left(
+                dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, screenCoords.x + 200, screenCoords.y);
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
             screenCoords.y += textHeight + padding;
 
-            window_network_draw_graph(w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
+            window_network_draw_graph(
+                w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
             screenCoords.y += graphHeight + padding;
         }
 
@@ -427,7 +429,8 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
             screenCoords.y += textHeight + padding;
 
-            window_network_draw_graph(w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
+            window_network_draw_graph(
+                w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
             screenCoords.y += graphHeight + padding;
         }
 
@@ -438,7 +441,9 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
                 format_string(textBuffer, sizeof(textBuffer), NetworkTrafficGroupNames[i], nullptr);
 
                 // Draw color stripe.
-                gfx_fill_rect(dpi, screenCoords.x, screenCoords.y + 4, screenCoords.x + 4, screenCoords.y + 6, NetworkTrafficGroupColors[i]);
+                gfx_fill_rect(
+                    dpi, screenCoords.x, screenCoords.y + 4, screenCoords.x + 4, screenCoords.y + 6,
+                    NetworkTrafficGroupColors[i]);
 
                 // Draw text.
                 gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(10, 0));

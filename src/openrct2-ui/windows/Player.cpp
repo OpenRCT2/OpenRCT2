@@ -400,7 +400,8 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
     }
-    gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords.x, screenCoords.y, width);
+    gfx_draw_string_centred_clipped(
+        dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords.x, screenCoords.y, width);
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {

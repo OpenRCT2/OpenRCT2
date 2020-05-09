@@ -1169,7 +1169,8 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords.x, screenCoords.y, width_limit - 15);
+                gfx_draw_string_left_clipped(
+                    dpi, STR_STRING, &bufferWithColour, colour, screenCoords.x, screenCoords.y, width_limit - 15);
                 screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
@@ -1182,7 +1183,8 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
                 *buffer = 0;
             }
-            gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords.x, screenCoords.y, width_limit);
+            gfx_draw_string_left_clipped(
+                dpi, STR_STRING, &bufferWithColour, colour, screenCoords.x, screenCoords.y, width_limit);
         }
         screenCoords.y += 12;
     }

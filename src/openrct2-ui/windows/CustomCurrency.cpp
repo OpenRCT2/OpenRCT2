@@ -244,7 +244,8 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     int32_t baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
     set_format_arg(0, int32_t, baseExchange);
-    gfx_draw_string_left(dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], screenCoords.x + 200, screenCoords.y);
+    gfx_draw_string_left(
+        dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], screenCoords.x + 200, screenCoords.y);
 
     screenCoords.y += 20;
 

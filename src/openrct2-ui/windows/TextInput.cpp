@@ -198,7 +198,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t no_lines = 0;
     int32_t font_height = 0;
 
-    gfx_draw_string_centred(dpi, input_text_description, w->windowPos.x + WW / 2, screenCoords.y, w->colours[1], &TextInputDescriptionArgs);
+    gfx_draw_string_centred(
+        dpi, input_text_description, w->windowPos.x + WW / 2, screenCoords.y, w->colours[1], &TextInputDescriptionArgs);
 
     screenCoords.y += 25;
 
@@ -213,7 +214,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + 10, screenCoords.y, w->windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
+        dpi, w->windowPos.x + 10, screenCoords.y, w->windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3,
+        w->colours[1], INSET_RECT_F_60);
 
     screenCoords.y += 1;
 
@@ -367,7 +369,8 @@ static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursor
     int width = compositionWidth;
     int height = 10;
 
-    gfx_fill_rect(dpi, screenCoords.x - 1, screenCoords.y - 1, screenCoords.x + width + 1, screenCoords.y + height + 1, PALETTE_INDEX_12);
+    gfx_fill_rect(
+        dpi, screenCoords.x - 1, screenCoords.y - 1, screenCoords.x + width + 1, screenCoords.y + height + 1, PALETTE_INDEX_12);
     gfx_fill_rect(dpi, screenCoords.x, screenCoords.y, screenCoords.x + width, screenCoords.y + height, PALETTE_INDEX_0);
     gfx_draw_string(dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, screenCoords);
 }
