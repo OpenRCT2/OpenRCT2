@@ -49,8 +49,6 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
 
-static void vehicle_kill_all_passengers(Vehicle* vehicle);
-
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
 constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING = 700;
@@ -3600,7 +3598,7 @@ void Vehicle::UpdateCollisionSetup()
 
     curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
     curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-    vehicle_kill_all_passengers(this);
+    KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
     uint16_t spriteId = sprite_index;
@@ -5226,24 +5224,8 @@ static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
     return nullptr;
 }
 
-/**
- *
- *  rct2: 0x006DE6C6
- */
-static void vehicle_kill_all_passengers(Vehicle* vehicle)
+static void ride_train_crash(Ride* ride, uint16_t numFatalities)
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
-        return;
-
-    uint16_t numFatalities = 0;
-    uint16_t spriteId = vehicle->sprite_index;
-    for (Vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train)
-    {
-        curVehicle = GET_VEHICLE(spriteId);
-        numFatalities += curVehicle->num_peeps;
-    }
-
     auto ft = Formatter::Common();
     ft.Add<uint16_t>(numFatalities);
 
@@ -5258,7 +5240,7 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
         {
             ride->FormatNameTo(ft);
             news_item_add_to_queue(
-                NEWS_ITEM_RIDE, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
+                NEWS_ITEM_RIDE, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id);
         }
 
         if (gParkRatingCasualtyPenalty < 500)
@@ -5266,34 +5248,50 @@ static void vehicle_kill_all_passengers(Vehicle* vehicle)
             gParkRatingCasualtyPenalty += 200;
         }
     }
+}
+/**
+ *
+ *  rct2: 0x006DE6C6
+ */
+void Vehicle::KillAllPassengersInTrain()
+{
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
+        return;
 
-    spriteId = vehicle->sprite_index;
+    ride_train_crash(curRide, NumPeepsUntilTrainTail());
+
+    uint16_t spriteId = sprite_index;
     for (Vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train)
     {
         curVehicle = GET_VEHICLE(spriteId);
-
-        if (curVehicle->num_peeps != curVehicle->next_free_seat)
-            continue;
-
-        if (curVehicle->num_peeps == 0)
-            continue;
-
-        for (uint8_t i = 0; i < curVehicle->num_peeps; i++)
-        {
-            Peep* peep = GET_PEEP(curVehicle->peep[i]);
-            if (peep->outside_of_park == 0)
-            {
-                decrement_guests_in_park();
-                auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-                context_broadcast_intent(&intent);
-            }
-            ride->num_riders--;
-            peep_sprite_remove(peep);
-        }
-
-        curVehicle->num_peeps = 0;
-        curVehicle->next_free_seat = 0;
+        curVehicle->KillPassengers(curRide);
     }
+}
+
+void Vehicle::KillPassengers(Ride* curRide)
+{
+    if (num_peeps != next_free_seat)
+        return;
+
+    if (num_peeps == 0)
+        return;
+
+    for (uint8_t i = 0; i < num_peeps; i++)
+    {
+        Peep* curPeep = GET_PEEP(peep[i]);
+        if (curPeep->outside_of_park == 0)
+        {
+            decrement_guests_in_park();
+            auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+            context_broadcast_intent(&intent);
+        }
+        curRide->num_riders--;
+        peep_sprite_remove(curPeep);
+    }
+
+    num_peeps = 0;
+    next_free_seat = 0;
 }
 
 void Vehicle::CrashOnLand()
@@ -5332,7 +5330,7 @@ void Vehicle::CrashOnLand()
 
     if (IsHead())
     {
-        vehicle_kill_all_passengers(this);
+        KillAllPassengersInTrain();
     }
 
     sub_state = 2;
@@ -5395,7 +5393,7 @@ void Vehicle::CrashOnWater()
 
     if (IsHead())
     {
-        vehicle_kill_all_passengers(this);
+        KillAllPassengersInTrain();
     }
 
     sub_state = 2;

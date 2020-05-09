@@ -388,6 +388,8 @@ private:
     void CrashOnWater();
     void CrashOnLand();
     void SimulateCrash() const;
+    void KillAllPassengersInTrain();
+    void KillPassengers(Ride* curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
 };
 
