@@ -430,6 +430,7 @@ bool title_is_previewing_sequence()
 void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 {
     utf8 buffer[256];
+    ScreenCoordsXY screenCoords(x, y);
 
     // Write format codes
     utf8* ch = buffer;
@@ -439,7 +440,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 
     // Write name and version information
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5 - 13));
 
     // Invalidate screen area
     int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer));
@@ -447,5 +448,5 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 
     // Write platform information
     snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5));
 }

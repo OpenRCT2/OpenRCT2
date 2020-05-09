@@ -1108,44 +1108,45 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
  */
 static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t x, y, colour, colour2;
+    int32_t colour, colour2;
+    ScreenCoordsXY screenCoords;
 
     bool ridePage = (get_selected_object_type(w) == OBJECT_TYPE_RIDE);
 
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    y = 0;
+    screenCoords.y = 0;
     for (const auto& listItem : _listItems)
     {
-        if (y + 12 >= dpi->y && y <= dpi->y + dpi->height)
+        if (screenCoords.y + 12 >= dpi->y && screenCoords.y <= dpi->y + dpi->height)
         {
             // Draw checkbox
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
+                gfx_fill_rect_inset(dpi, 2, screenCoords.y, 11, screenCoords.y + 10, w->colours[1], INSET_RECT_F_E0);
 
             // Highlight background
             colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
             if (listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6))
             {
-                gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_DARKEN_1);
+                gfx_filter_rect(dpi, 0, screenCoords.y, w->width, screenCoords.y + 11, PALETTE_DARKEN_1);
                 colour = COLOUR_BRIGHT_GREEN;
             }
 
             // Draw checkmark
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
             {
-                x = 2;
+                screenCoords.x = 2;
                 gCurrentFontSpriteBase = colour == COLOUR_BRIGHT_GREEN ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
                                                                        : FONT_SPRITE_BASE_MEDIUM_DARK;
                 colour2 = NOT_TRANSLUCENT(w->colours[1]);
                 if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
                     colour2 |= COLOUR_FLAG_INSET;
 
-                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), colour2, x, y);
+                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), colour2, screenCoords);
             }
 
-            x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+            screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
             char* bufferWithColour = gCommonStringFormatBuffer;
             char* buffer = utf8_write_codepoint(bufferWithColour, colour);
@@ -1160,7 +1161,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
             }
 
-            int32_t width_limit = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x;
+            int32_t width_limit = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - screenCoords.x;
 
             if (ridePage)
             {
@@ -1168,8 +1169,8 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, x, y, width_limit - 15);
-                x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
+                gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords.x, screenCoords.y, width_limit - 15);
+                screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
             // Draw text
@@ -1181,9 +1182,9 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
                 *buffer = 0;
             }
-            gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, x, y, width_limit);
+            gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords.x, screenCoords.y, width_limit);
         }
-        y += 12;
+        screenCoords.y += 12;
     }
 }
 

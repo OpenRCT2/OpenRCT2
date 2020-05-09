@@ -81,8 +81,7 @@ void Painter::Paint(IDrawingEngine& de)
 
 void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
 {
-    int32_t x = _uiContext->GetWidth() / 2;
-    int32_t y = _uiContext->GetHeight() - 44;
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
     // Format string
     utf8 buffer[64] = { 0 };
@@ -94,19 +93,18 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     snprintf(ch, 64 - (ch - buffer), "%s", text);
 
     int32_t stringWidth = gfx_get_string_width(buffer);
-    x = x - stringWidth;
+    screenCoords.x = screenCoords.x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
-        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, x, y);
+        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, screenCoords);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks(x, y, x + stringWidth, y + 16);
+    gfx_set_dirty_blocks(screenCoords.x, screenCoords.y, screenCoords.x + stringWidth, screenCoords.y + 16);
 }
 
 void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 {
-    int32_t x = _uiContext->GetWidth() / 2;
-    int32_t y = 2;
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
     // Measure FPS
     MeasureFPS();
@@ -122,11 +120,11 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 
     // Draw Text
     int32_t stringWidth = gfx_get_string_width(buffer);
-    x = x - (stringWidth / 2);
-    gfx_draw_string(dpi, buffer, 0, x, y);
+    screenCoords.x = screenCoords.x - (stringWidth / 2);
+    gfx_draw_string(dpi, buffer, 0, screenCoords);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);
+    gfx_set_dirty_blocks(screenCoords.x - 16, screenCoords.y - 4, gLastDrawStringX + 16, 16);
 }
 
 void Painter::MeasureFPS()

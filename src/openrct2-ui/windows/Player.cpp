@@ -382,18 +382,17 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw ping
-    int32_t x = w->windowPos.x + 90;
-    int32_t y = w->windowPos.y + 24;
+    ScreenCoordsXY screenCoords(w->windowPos.x + 90, w->windowPos.y + 24);
 
     set_format_arg(0, rct_string_id, STR_PING);
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
-    gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
+    gfx_draw_string(dpi, ping, w->colours[2], screenCoords + ScreenCoordsXY(30, 0));
 
     // Draw last action
-    x = w->windowPos.x + (w->width / 2);
-    y = w->windowPos.y + w->height - 13;
+    screenCoords.x = w->windowPos.x + (w->width / 2);
+    screenCoords.y = w->windowPos.y + w->height - 13;
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
     set_format_arg(0, rct_string_id, STR_ACTION_NA);
@@ -401,7 +400,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
     }
-    gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords.x, screenCoords.y, width);
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {

@@ -251,7 +251,7 @@ void gfx_draw_string_left_centred(
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
+    gfx_draw_string(dpi, buffer, colour, ScreenCoordsXY(x, y - (height / 2)));
 }
 
 /**
@@ -311,14 +311,17 @@ static void colour_char_window(uint8_t colour, const uint16_t* current_font_flag
  */
 void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t numLines, char* text)
 {
+    ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, (char*)"", COLOUR_BLACK, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char*)"", COLOUR_BLACK, screenCoords);
+    screenCoords.y = y;
     gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = gfx_get_string_width(text);
-        gfx_draw_string(dpi, text, TEXT_COLOUR_254, x - (width / 2), y);
+        screenCoords.x = x - (width / 2);
+        gfx_draw_string(dpi, text, TEXT_COLOUR_254, screenCoords);
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -329,7 +332,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32
         }
         text = const_cast<char*>(ch + 1);
 
-        y += font_get_line_height(gCurrentFontSpriteBase);
+        screenCoords.y += font_get_line_height(gCurrentFontSpriteBase);
     }
 }
 
@@ -424,9 +427,10 @@ void gfx_draw_string_centred_wrapped_partial(
 {
     int32_t numLines, fontSpriteBase, lineHeight, lineY;
     utf8* buffer = gCommonStringFormatBuffer;
+    ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, (char*)"", colour, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char*)"", colour, screenCoords);
     format_string(buffer, 256, format, args);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -459,7 +463,9 @@ void gfx_draw_string_centred_wrapped_partial(
             ch = nextCh;
         }
 
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x - halfWidth, lineY);
+        screenCoords.x = x - halfWidth;
+        screenCoords.y = lineY;
+        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {

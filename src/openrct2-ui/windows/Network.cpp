@@ -395,41 +395,40 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
     {
         dpi = &clippedDPI;
 
-        int32_t x = padding;
-        int32_t y = heightTab + padding;
+        ScreenCoordsXY screenCoords(padding, heightTab + padding);
 
         // Received stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, screenCoords.x, screenCoords.y);
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, x + 200, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, screenCoords.x + 200, screenCoords.y);
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
-            y += textHeight + padding;
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
+            screenCoords.y += textHeight + padding;
 
-            window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
-            y += graphHeight + padding;
+            window_network_draw_graph(w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
+            screenCoords.y += graphHeight + padding;
         }
 
         // Sent stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, screenCoords.x, screenCoords.y);
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesOutSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, x + 200, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, screenCoords.x + 200, screenCoords.y);
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
-            y += textHeight + padding;
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
+            screenCoords.y += textHeight + padding;
 
-            window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
-            y += graphHeight + padding;
+            window_network_draw_graph(w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
+            screenCoords.y += graphHeight + padding;
         }
 
         // Draw legend
@@ -439,14 +438,14 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
                 format_string(textBuffer, sizeof(textBuffer), NetworkTrafficGroupNames[i], nullptr);
 
                 // Draw color stripe.
-                gfx_fill_rect(dpi, x, y + 4, x + 4, y + 6, NetworkTrafficGroupColors[i]);
+                gfx_fill_rect(dpi, screenCoords.x, screenCoords.y + 4, screenCoords.x + 4, screenCoords.y + 6, NetworkTrafficGroupColors[i]);
 
                 // Draw text.
-                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 10, y);
+                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(10, 0));
 
                 gfx_get_string_width(textBuffer);
 
-                x += gfx_get_string_width(textBuffer) + 20;
+                screenCoords.x += gfx_get_string_width(textBuffer) + 20;
             }
         }
     }

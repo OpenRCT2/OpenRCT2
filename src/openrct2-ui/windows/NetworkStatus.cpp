@@ -182,8 +182,7 @@ static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
     lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
     safe_strcpy(lineCh, window_network_status_text, sizeof(buffer) - (lineCh - buffer));
     gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
-    int32_t x = w->windowPos.x + (w->width / 2);
-    int32_t y = w->windowPos.y + (w->height / 2);
-    x -= gfx_get_string_width(buffer) / 2;
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    ScreenCoordsXY screenCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
+    screenCoords.x -= gfx_get_string_width(buffer) / 2;
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords);
 }

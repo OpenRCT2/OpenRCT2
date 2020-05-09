@@ -191,15 +191,14 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    int32_t x = 3;
-    int32_t y = 3 - lineHeight;
+    ScreenCoordsXY screenCoords(3, 3 - lineHeight);
     for (auto line : _changelogLines)
     {
-        y += lineHeight;
-        if (y + lineHeight < dpi->y || y >= dpi->y + dpi->height)
+        screenCoords.y += lineHeight;
+        if (screenCoords.y + lineHeight < dpi->y || screenCoords.y >= dpi->y + dpi->height)
             continue;
 
-        gfx_draw_string(dpi, static_cast<const char*>(line), w->colours[0], x, y);
+        gfx_draw_string(dpi, static_cast<const char*>(line), w->colours[0], screenCoords);
     }
 }
 

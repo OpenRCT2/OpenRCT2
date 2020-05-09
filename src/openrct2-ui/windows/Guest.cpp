@@ -2077,18 +2077,19 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_debug_tab_paint(w, dpi);
 
     auto peep = GET_PEEP(w->number);
-    auto x = w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    auto y = w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    ScreenCoordsXY screenCoords;
+    screenCoords.x = w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    screenCoords.y = w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
     {
         set_format_arg(0, uint32_t, peep->sprite_index);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
     }
-    y += LIST_ROW_HEIGHT;
+    screenCoords.y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->x, peep->y, peep->x };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, screenCoords.x, screenCoords.y);
     }
-    y += LIST_ROW_HEIGHT;
+    screenCoords.y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->NextLoc.x, peep->NextLoc.y, peep->NextLoc.z };
         format_string(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, args);
@@ -2103,28 +2104,28 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
             format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, args2);
             safe_strcat(buffer, buffer2, sizeof(buffer));
         }
-        gfx_draw_string(dpi, buffer, 0, x, y);
+        gfx_draw_string(dpi, buffer, 0, screenCoords);
     }
-    y += LIST_ROW_HEIGHT;
+    screenCoords.y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->destination_x, peep->destination_y, peep->destination_tolerance };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_DEST, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_DEST, args, 0, screenCoords.x, screenCoords.y);
     }
-    y += LIST_ROW_HEIGHT;
+    screenCoords.y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z, peep->pathfind_goal.direction };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, x, y);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, screenCoords.x, screenCoords.y);
     }
-    y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY, nullptr, 0, x, y);
-    y += LIST_ROW_HEIGHT;
+    screenCoords.y += LIST_ROW_HEIGHT;
+    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY, nullptr, 0, screenCoords.x, screenCoords.y);
+    screenCoords.y += LIST_ROW_HEIGHT;
 
-    x += 10;
+    screenCoords.x += 10;
     for (auto& point : peep->pathfind_history)
     {
         int32_t args[] = { point.x, point.y, point.z, point.direction };
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, args, 0, x, y);
-        y += LIST_ROW_HEIGHT;
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, args, 0, screenCoords.x, screenCoords.y);
+        screenCoords.y += LIST_ROW_HEIGHT;
     }
-    x -= 10;
+    screenCoords.x -= 10;
 }

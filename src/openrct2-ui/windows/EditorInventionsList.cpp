@@ -706,15 +706,19 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             vehicleNamePtr = nullptr;
         }
 
+        ScreenCoordsXY screenCoords(1, itemY);
+
         // Draw group name
         gfx_clip_string(groupNameBuffer, columnSplitOffset);
-        gfx_draw_string(dpi, groupNameBuffer, colour, 1, itemY);
+        gfx_draw_string(dpi, groupNameBuffer, colour, screenCoords);
 
         // Draw vehicle name
         if (vehicleNamePtr)
         {
+            screenCoords.x = columnSplitOffset + 1;
+            screenCoords.y = itemY;
             gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
-            gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
+            gfx_draw_string(dpi, vehicleNameBuffer, colour, screenCoords);
         }
     }
 }
