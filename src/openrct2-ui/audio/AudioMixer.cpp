@@ -381,7 +381,8 @@ namespace OpenRCT2::Audio
         int32_t ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
         {
             float volumeAdjust = _volume;
-            volumeAdjust *= gConfigSound.master_sound_enabled ? (static_cast<float>(gConfigSound.master_volume) / 100.0f) : 0.0f;
+            volumeAdjust *= gConfigSound.master_sound_enabled ? (static_cast<float>(gConfigSound.master_volume) / 100.0f)
+                                                              : 0.0f;
 
             switch (channel->GetGroup())
             {
