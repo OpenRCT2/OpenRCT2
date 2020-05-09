@@ -121,12 +121,12 @@ namespace OpenRCT2::Ui::Windows
 
         CustomListView(rct_window* parent, size_t scrollIndex);
         ScrollbarType GetScrollbars() const;
-        void SetScrollbars(ScrollbarType value);
+        void SetScrollbars(ScrollbarType value, bool initialising = false);
         const std::vector<ListViewColumn>& GetColumns() const;
-        void SetColumns(const std::vector<ListViewColumn>& columns);
+        void SetColumns(const std::vector<ListViewColumn>& columns, bool initialising = false);
         const std::vector<ListViewItem>& GetItems() const;
-        void SetItems(const std::vector<ListViewItem>& items);
-        void SetItems(std::vector<ListViewItem>&& items);
+        void SetItems(const std::vector<ListViewItem>& items, bool initialising = false);
+        void SetItems(std::vector<ListViewItem>&& items, bool initialising = false);
         bool SortItem(size_t indexA, size_t indexB, int32_t column);
         void SortItems(int32_t column);
         void SortItems(int32_t column, ColumnSortOrder order);

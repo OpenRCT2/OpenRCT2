@@ -417,8 +417,6 @@ namespace OpenRCT2::Ui::Windows
             window->max_height = desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
         }
         RefreshWidgets(window);
-        window_init_scroll_widgets(window);
-        window_custom_update_viewport(window);
         return window;
     }
 
@@ -983,8 +981,9 @@ namespace OpenRCT2::Ui::Windows
             if (widgetDesc.Type == "listview")
             {
                 CustomListView listView(w, info.ListViews.size());
-                listView.SetColumns(widgetDesc.ListViewColumns);
-                listView.SetItems(widgetDesc.ListViewItems);
+                listView.SetScrollbars(widgetDesc.Scrollbars, true);
+                listView.SetColumns(widgetDesc.ListViewColumns, true);
+                listView.SetItems(widgetDesc.ListViewItems, true);
                 listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
                 listView.IsStriped = widgetDesc.IsStriped;
                 listView.OnClick = widgetDesc.OnClick;
@@ -1014,6 +1013,9 @@ namespace OpenRCT2::Ui::Windows
 
         widgets.push_back({ WIDGETS_END });
         w->widgets = widgets.data();
+
+        window_init_scroll_widgets(w);
+        window_custom_update_viewport(w);
     }
 
     static void InvokeEventHandler(const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler)

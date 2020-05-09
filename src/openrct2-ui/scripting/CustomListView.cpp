@@ -14,6 +14,7 @@
 #    include "../interface/Widget.h"
 #    include "../interface/Window.h"
 
+#    include <numeric>
 #    include <openrct2/Context.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/util/Util.h>
@@ -205,28 +206,32 @@ ScrollbarType CustomListView::GetScrollbars() const
     return Scrollbars;
 }
 
-void CustomListView::SetScrollbars(ScrollbarType value)
+void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
 {
     Scrollbars = value;
 
-    size_t scrollIndex = 0;
-    for (auto widget = ParentWindow->widgets; widget->type != WWT_LAST; widget++)
+    if (!initialising)
     {
-        if (widget->type == WWT_SCROLL)
+        size_t scrollIndex = 0;
+        for (auto widget = ParentWindow->widgets; widget->type != WWT_LAST; widget++)
         {
-            if (scrollIndex == ScrollIndex)
+            if (widget->type == WWT_SCROLL)
             {
-                if (value == ScrollbarType::Horizontal)
-                    widget->content = SCROLL_HORIZONTAL;
-                else if (value == ScrollbarType::Vertical)
-                    widget->content = SCROLL_VERTICAL;
-                else if (value == ScrollbarType::Both)
-                    widget->content = SCROLL_BOTH;
-                else
-                    widget->content = 0;
+                if (scrollIndex == ScrollIndex)
+                {
+                    if (value == ScrollbarType::Horizontal)
+                        widget->content = SCROLL_HORIZONTAL;
+                    else if (value == ScrollbarType::Vertical)
+                        widget->content = SCROLL_VERTICAL;
+                    else if (value == ScrollbarType::Both)
+                        widget->content = SCROLL_BOTH;
+                    else
+                        widget->content = 0;
+                }
+                scrollIndex++;
             }
-            scrollIndex++;
         }
+        window_init_scroll_widgets(ParentWindow);
     }
 }
 
@@ -235,12 +240,14 @@ const std::vector<ListViewColumn>& CustomListView::GetColumns() const
     return Columns;
 }
 
-void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns)
+void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool initialising)
 {
     SelectedCell = std::nullopt;
     Columns = columns;
     LastKnownSize = {};
     SortItems(0, ColumnSortOrder::None);
+    if (!initialising)
+        window_init_scroll_widgets(ParentWindow);
 }
 
 const std::vector<ListViewItem>& CustomListView::CustomListView::GetItems() const
@@ -248,17 +255,21 @@ const std::vector<ListViewItem>& CustomListView::CustomListView::GetItems() cons
     return Items;
 }
 
-void CustomListView::SetItems(const std::vector<ListViewItem>& items)
+void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initialising)
 {
     SelectedCell = std::nullopt;
     Items = items;
     SortItems(0, ColumnSortOrder::None);
+    if (!initialising)
+        window_update_scroll_widgets(ParentWindow);
 }
 
-void CustomListView::SetItems(std::vector<ListViewItem>&& items)
+void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialising)
 {
     Items = items;
     SortItems(0, ColumnSortOrder::None);
+    if (!initialising)
+        window_init_scroll_widgets(ParentWindow);
 }
 
 bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
@@ -328,11 +339,13 @@ void CustomListView::Resize(const ScreenSize& size)
     }
 
     // Calculate column widths
+    bool hasHorizontalScroll = Scrollbars == ScrollbarType::Horizontal || Scrollbars == ScrollbarType::Both;
     int32_t widthRemaining = size.width;
     for (size_t c = 0; c < Columns.size(); c++)
     {
         auto& column = Columns[c];
-        if (c == Columns.size() - 1)
+        auto isLastColumn = c == Columns.size() - 1;
+        if (!hasHorizontalScroll && isLastColumn)
         {
             column.Width = widthRemaining;
         }
@@ -341,7 +354,14 @@ void CustomListView::Resize(const ScreenSize& size)
             column.Width = 0;
             if (column.RatioWidth && *column.RatioWidth > 0)
             {
-                column.Width = (size.width * *column.RatioWidth) / totalRatio;
+                if (isLastColumn)
+                {
+                    column.Width = widthRemaining;
+                }
+                else
+                {
+                    column.Width = (size.width * *column.RatioWidth) / totalRatio;
+                }
             }
             if (column.MinWidth)
             {
@@ -352,8 +372,10 @@ void CustomListView::Resize(const ScreenSize& size)
                 column.Width = std::min(column.Width, *column.MaxWidth);
             }
         }
-        widthRemaining -= column.Width;
+        widthRemaining = std::max(0, widthRemaining - column.Width);
     }
+
+    window_init_scroll_widgets(ParentWindow);
 }
 
 ScreenSize CustomListView::GetSize()
@@ -365,8 +387,18 @@ ScreenSize CustomListView::GetSize()
     IsMouseDown = false;
 
     ScreenSize result;
-    result.width = 0;
-    result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
+    if (Scrollbars == ScrollbarType::Horizontal || Scrollbars == ScrollbarType::Both)
+    {
+        result.width = std::accumulate(
+            Columns.begin(), Columns.end(), 0, [](int32_t acc, const ListViewColumn& column) { return acc + column.Width; });
+
+        // Fixes an off-by-one error that causes the scrollbar thumb to not fill when the widget is wide enough
+        result.width--;
+    }
+    if (Scrollbars == ScrollbarType::Vertical || Scrollbars == ScrollbarType::Both)
+    {
+        result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
+    }
     return result;
 }
 
