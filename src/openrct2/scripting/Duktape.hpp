@@ -208,36 +208,28 @@ namespace OpenRCT2::Scripting
 
     template<typename T> DukValue ToDuk(duk_context* ctx, const T& value) = delete;
     template<typename T> T FromDuk(const DukValue& s) = delete;
+
     template<> inline DukValue ToDuk(duk_context* ctx, const std::nullptr_t&)
     {
         duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
+
     template<> inline DukValue ToDuk(duk_context* ctx, const std::string_view& value)
     {
         duk_push_lstring(ctx, value.data(), value.size());
         return DukValue::take_from_stack(ctx);
     }
+
     template<size_t TLen> inline DukValue ToDuk(duk_context* ctx, const char (&value)[TLen])
     {
         duk_push_string(ctx, value);
         return DukValue::take_from_stack(ctx);
     }
+
     template<typename T> DukValue ToDuk(duk_context* ctx, const std::optional<T>& value)
     {
         return value ? ToDuk(ctx, *value) : ToDuk(ctx, nullptr);
-    }
-
-    template<> inline DukValue ToDuk(duk_context* ctx, const std::nullptr_t&)
-    {
-        duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
-    }
-
-    template<> inline DukValue ToDuk(duk_context* ctx, const std::string_view& value)
-    {
-        duk_push_lstring(ctx, value.data(), value.size());
-        return DukValue::take_from_stack(ctx);
     }
 
 } // namespace OpenRCT2::Scripting
