@@ -768,17 +768,17 @@ static void sub_6A3F61(
         if (sloped && direction == EDGE_NE)
         {
             // Path going down into the tunnel
-            paint_util_push_tunnel_right(session, height + 16, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height + 16, TUNNEL_PATH_AND_MINI_GOLF);
         }
         else if (connectedEdges & EDGE_NE)
         {
             // Flat path with edge to the right (north-east)
-            paint_util_push_tunnel_right(session, height, TUNNEL_11);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_11);
         }
         else
         {
             // Path going up, or flat and not connected to the right
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
         }
     }
 
@@ -791,17 +791,17 @@ static void sub_6A3F61(
     if (sloped && direction == EDGE_SE)
     {
         // Path going down into the tunnel
-        paint_util_push_tunnel_left(session, height + 16, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height + 16, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else if (connectedEdges & EDGE_NW)
     {
         // Flat path with edge to the left (north-west)
-        paint_util_push_tunnel_left(session, height, TUNNEL_11);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_11);
     }
     else
     {
         // Path going up, or flat and not connected to the left
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 }
 

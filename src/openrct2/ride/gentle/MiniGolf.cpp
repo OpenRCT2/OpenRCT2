@@ -491,13 +491,13 @@ static void paint_mini_golf_track_flat(
     {
         imageId = SPR_MINI_GOLF_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
-        paint_util_push_tunnel_right(session, height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else
     {
         imageId = SPR_MINI_GOLF_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -589,7 +589,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
         case 1:
             paint_util_push_tunnel_right(session, height, TUNNEL_2);
@@ -598,7 +598,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(
             paint_util_push_tunnel_left(session, height, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
     }
 
@@ -631,10 +631,10 @@ static void paint_mini_golf_track_25_deg_up_to_flat(
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_PATH_AND_MINI_GOLF);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_PATH_AND_MINI_GOLF);
             break;
         case 3:
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
@@ -705,7 +705,7 @@ static void paint_mini_golf_station(
         track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, stationObj, height);
 
         // Was leftwards tunnel in game, seems odd
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
@@ -727,7 +727,7 @@ static void paint_mini_golf_station(
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
         track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, stationObj, height);
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -756,7 +756,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             if (!shouldDrawFence)
                 break;
 
@@ -774,7 +774,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         case 2:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             if (!shouldDrawFence)
                 break;
 
@@ -783,8 +783,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         case 3:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             if (!shouldDrawFence)
                 break;
 
@@ -838,11 +838,11 @@ static void paint_mini_golf_hole_ab(
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1))
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
     if (direction & 1)
@@ -906,11 +906,11 @@ static void paint_mini_golf_hole_c(
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1))
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
     if (direction & 1)
@@ -978,12 +978,12 @@ static void paint_mini_golf_hole_d(
     {
         case 0x00:
         case 0x12:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
 
         case 0x02:
         case 0x30:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
     }
 
@@ -1068,12 +1068,12 @@ static void paint_mini_golf_hole_e(
     {
         case 0x00:
         case 0x12:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
 
         case 0x02:
         case 0x30:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
     }
 

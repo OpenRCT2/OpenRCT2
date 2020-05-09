@@ -260,7 +260,7 @@ static void chairlift_paint_station_ne_sw(
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
@@ -351,7 +351,7 @@ static void chairlift_paint_station_se_nw(
         imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 16, 30, 1, 1, 7, height + 2, 16, 1, height + 2); // bound offset x is wrong?
 
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -382,13 +382,13 @@ static void chairlift_paint_flat(
     {
         imageId = SPR_CHAIRLIFT_CABLE_FLAT_SE_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         imageId = SPR_CHAIRLIFT_CABLE_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -407,25 +407,25 @@ static void chairlift_paint_25_deg_up(
         case 0:
             imageId = SPR_CHAIRLIFT_CABLE_UP_SW_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
             break;
 
         case 1:
             imageId = SPR_CHAIRLIFT_CABLE_UP_NW_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
         case 2:
             imageId = SPR_CHAIRLIFT_CABLE_UP_NE_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
         case 3:
             imageId = SPR_CHAIRLIFT_CABLE_UP_SE_NW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
 
@@ -449,7 +449,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = SPR_20520 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -459,7 +459,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = SPR_20521 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
             break;
 
         case 2:
@@ -469,7 +469,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = SPR_20522 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
             break;
 
         case 3:
@@ -479,7 +479,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = SPR_20523 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -504,7 +504,7 @@ static void chairlift_paint_25_deg_up_to_flat(
             imageId = SPR_20524 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -534,7 +534,7 @@ static void chairlift_paint_25_deg_up_to_flat(
             imageId = SPR_20527 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -586,7 +586,7 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             imageId = SPR_20536 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 4, height);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -610,7 +610,7 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             imageId = SPR_20538 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height);
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 3:
@@ -623,8 +623,8 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             imageId = SPR_20539 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
