@@ -77,7 +77,9 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
+                invalidate_sprite_2(entity);
                 sprite_move(value, entity->y, entity->z, entity);
+                invalidate_sprite_2(entity);
             }
         }
 
@@ -93,7 +95,9 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
+                invalidate_sprite_2(entity);
                 sprite_move(entity->x, value, entity->z, entity);
+                invalidate_sprite_2(entity);
             }
         }
 
@@ -109,7 +113,9 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
+                invalidate_sprite_2(entity);
                 sprite_move(entity->x, entity->y, value, entity);
+                invalidate_sprite_2(entity);
             }
         }
 
@@ -165,6 +171,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 peep->tshirt_colour = value;
+                peep->Invalidate();
             }
         }
 
@@ -180,6 +187,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 peep->trousers_colour = value;
+                peep->Invalidate();
             }
         }
 
