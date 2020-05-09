@@ -92,8 +92,12 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         static constexpr int32_t HEADER_ROW = -1;
+
+        rct_window* ParentWindow{};
+        size_t ScrollIndex{};
         std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
+        ScrollbarType Scrollbars = ScrollbarType::Vertical;
 
     public:
         std::shared_ptr<Plugin> Owner;
@@ -106,7 +110,6 @@ namespace OpenRCT2::Ui::Windows
         bool ShowColumnHeaders{};
         bool IsStriped{};
         ScreenSize LastKnownSize;
-        ScrollbarType Scrollbars = ScrollbarType::Vertical;
         ColumnSortOrder CurrentSortOrder{};
         int32_t CurrentSortColumn{};
         bool LastIsMouseDown{};
@@ -116,6 +119,9 @@ namespace OpenRCT2::Ui::Windows
         DukValue OnClick;
         DukValue OnHighlight;
 
+        CustomListView(rct_window* parent, size_t scrollIndex);
+        ScrollbarType GetScrollbars() const;
+        void SetScrollbars(ScrollbarType value);
         const std::vector<ListViewColumn>& GetColumns() const;
         void SetColumns(const std::vector<ListViewColumn>& columns);
         const std::vector<ListViewItem>& GetItems() const;
@@ -157,6 +163,8 @@ namespace OpenRCT2::Scripting
     template<> std::optional<RowColumn> FromDuk(const DukValue& d);
     template<> DukValue ToDuk(duk_context* ctx, const RowColumn& value);
     template<> DukValue ToDuk(duk_context* ctx, const ListViewColumn& value);
+    template<> ScrollbarType FromDuk(const DukValue& d);
+    template<> DukValue ToDuk(duk_context* ctx, const ScrollbarType& value);
 } // namespace OpenRCT2::Scripting
 
 #endif

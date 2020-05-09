@@ -11,6 +11,7 @@
 
 #    include "CustomListView.h"
 
+#    include "../interface/Widget.h"
 #    include "../interface/Window.h"
 
 #    include <openrct2/Context.h>
@@ -162,7 +163,72 @@ namespace OpenRCT2::Scripting
         obj.Set("column", value.Column);
         return obj.Take();
     }
+
+    template<> ScrollbarType FromDuk(const DukValue& d)
+    {
+        auto value = AsOrDefault(d, "");
+        if (value == "horizontal")
+            return ScrollbarType::Horizontal;
+        if (value == "vertical")
+            return ScrollbarType::Vertical;
+        if (value == "both")
+            return ScrollbarType::Both;
+        return ScrollbarType::None;
+    }
+
+    template<> DukValue ToDuk(duk_context* ctx, const ScrollbarType& value)
+    {
+        switch (value)
+        {
+            default:
+            case ScrollbarType::None:
+                return ToDuk(ctx, "none");
+            case ScrollbarType::Horizontal:
+                return ToDuk(ctx, "horizontal");
+            case ScrollbarType::Vertical:
+                return ToDuk(ctx, "vertical");
+            case ScrollbarType::Both:
+                return ToDuk(ctx, "both");
+        }
+    }
+
 } // namespace OpenRCT2::Scripting
+
+CustomListView::CustomListView(rct_window* parent, size_t scrollIndex)
+    : ParentWindow(parent)
+    , ScrollIndex(scrollIndex)
+{
+}
+
+ScrollbarType CustomListView::GetScrollbars() const
+{
+    return Scrollbars;
+}
+
+void CustomListView::SetScrollbars(ScrollbarType value)
+{
+    Scrollbars = value;
+
+    size_t scrollIndex = 0;
+    for (auto widget = ParentWindow->widgets; widget->type != WWT_LAST; widget++)
+    {
+        if (widget->type == WWT_SCROLL)
+        {
+            if (scrollIndex == ScrollIndex)
+            {
+                if (value == ScrollbarType::Horizontal)
+                    widget->content = SCROLL_HORIZONTAL;
+                else if (value == ScrollbarType::Vertical)
+                    widget->content = SCROLL_VERTICAL;
+                else if (value == ScrollbarType::Both)
+                    widget->content = SCROLL_BOTH;
+                else
+                    widget->content = 0;
+            }
+            scrollIndex++;
+        }
+    }
+}
 
 const std::vector<ListViewColumn>& CustomListView::GetColumns() const
 {

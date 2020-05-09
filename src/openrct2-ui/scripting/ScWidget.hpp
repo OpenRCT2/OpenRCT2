@@ -368,6 +368,7 @@ namespace OpenRCT2::Scripting
             dukglue_set_base_class<ScWidget, ScListViewWidget>(ctx);
             dukglue_register_property(ctx, &ScListViewWidget::canSelect_get, &ScListViewWidget::canSelect_set, "canSelect");
             dukglue_register_property(ctx, &ScListViewWidget::isStriped_get, &ScListViewWidget::isStriped_set, "isStriped");
+            dukglue_register_property(ctx, &ScListViewWidget::scrollbars_get, &ScListViewWidget::scrollbars_set, "scrollbars");
             dukglue_register_property(
                 ctx, &ScListViewWidget::showColumnHeaders_get, &ScListViewWidget::showColumnHeaders_set, "showColumnHeaders");
             dukglue_register_property(ctx, &ScListViewWidget::highlightedCell_get, nullptr, "highlightedCell");
@@ -413,6 +414,27 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->IsStriped = value;
+            }
+        }
+
+        DukValue scrollbars_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto scrollType = ScrollbarType::None;
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                scrollType = listView->GetScrollbars();
+            }
+            return ToDuk(ctx, scrollType);
+        }
+
+        void scrollbars_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SetScrollbars(FromDuk<ScrollbarType>(value));
             }
         }
 

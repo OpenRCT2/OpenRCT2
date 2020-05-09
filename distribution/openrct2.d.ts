@@ -1074,7 +1074,7 @@ declare global {
 
     type SortOrder = "none" | "ascending" | "descending";
 
-    type ScrollType = "none" | "horizontal" | "vertical" | "both";
+    type ScrollbarType = "none" | "horizontal" | "vertical" | "both";
 
     interface ListViewColumn {
         canSort?: boolean;
@@ -1095,7 +1095,7 @@ declare global {
     }
 
     interface ListView extends Widget {
-        scroll?: ScrollType;
+        scrollbars?: ScrollbarType;
         isStriped?: boolean;
         showColumnHeaders?: boolean;
         columns?: ListViewColumn[];

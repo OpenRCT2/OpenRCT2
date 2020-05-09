@@ -108,6 +108,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<std::string> Items;
         std::vector<ListViewItem> ListViewItems;
         std::vector<ListViewColumn> ListViewColumns;
+        ScrollbarType Scrollbars{};
         int32_t SelectedIndex{};
         bool IsChecked{};
         bool IsDisabled{};
@@ -178,6 +179,10 @@ namespace OpenRCT2::Ui::Windows
                 result.OnClick = desc["onClick"];
                 result.OnHighlight = desc["onHighlight"];
                 result.CanSelect = AsOrDefault(desc["canSelect"], false);
+                if (desc["scrollbars"].type() == DukValue::UNDEFINED)
+                    result.Scrollbars = ScrollbarType::Vertical;
+                else
+                    result.Scrollbars = FromDuk<ScrollbarType>(desc["scrollbars"]);
             }
             else if (result.Type == "spinner")
             {
@@ -663,11 +668,11 @@ namespace OpenRCT2::Ui::Windows
                 auto& listView = info.ListViews[scrollIndex];
                 auto width = widget->right - widget->left + 1 - 2;
                 auto height = widget->bottom - widget->top + 1 - 2;
-                if (listView.Scrollbars == ScrollbarType::Horizontal || listView.Scrollbars == ScrollbarType::Both)
+                if (listView.GetScrollbars() == ScrollbarType::Horizontal || listView.GetScrollbars() == ScrollbarType::Both)
                 {
                     height -= SCROLLBAR_WIDTH + 1;
                 }
-                if (listView.Scrollbars == ScrollbarType::Vertical || listView.Scrollbars == ScrollbarType::Both)
+                if (listView.GetScrollbars() == ScrollbarType::Vertical || listView.GetScrollbars() == ScrollbarType::Both)
                 {
                     width -= SCROLLBAR_WIDTH + 1;
                 }
@@ -869,7 +874,13 @@ namespace OpenRCT2::Ui::Windows
         else if (desc.Type == "listview")
         {
             widget.type = WWT_SCROLL;
-            widget.text = SCROLL_VERTICAL;
+            widget.content = 0;
+            if (desc.Scrollbars == ScrollbarType::Horizontal)
+                widget.content = SCROLL_HORIZONTAL;
+            else if (desc.Scrollbars == ScrollbarType::Vertical)
+                widget.content = SCROLL_VERTICAL;
+            else if (desc.Scrollbars == ScrollbarType::Both)
+                widget.content = SCROLL_BOTH;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "spinner")
@@ -971,7 +982,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (widgetDesc.Type == "listview")
             {
-                CustomListView listView;
+                CustomListView listView(w, info.ListViews.size());
                 listView.SetColumns(widgetDesc.ListViewColumns);
                 listView.SetItems(widgetDesc.ListViewItems);
                 listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
