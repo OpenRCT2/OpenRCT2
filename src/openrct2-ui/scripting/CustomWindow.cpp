@@ -580,11 +580,14 @@ namespace OpenRCT2::Ui::Windows
     {
         const auto& info = GetInfo(w);
         auto numTabs = info.Desc.Tabs.size();
-        for (size_t i = 0; i < numTabs; i++)
+        if (numTabs != 0)
         {
-            w->pressed_widgets &= ~(1 << (WIDX_TAB_0 + i));
+            for (size_t i = 0; i < numTabs; i++)
+            {
+                w->pressed_widgets &= ~(1 << (WIDX_TAB_0 + i));
+            }
+            w->pressed_widgets |= 1LL << (WIDX_TAB_0 + w->page);
         }
-        w->pressed_widgets |= 1LL << (WIDX_TAB_0 + w->page);
     }
 
     static void window_custom_invalidate(rct_window* w)
