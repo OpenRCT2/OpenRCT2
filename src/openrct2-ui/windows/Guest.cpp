@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1528,15 +1528,15 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Intensity
-    int32_t intensity = peep->intensity / 16;
-    set_format_arg(0, uint16_t, intensity);
+    auto maxIntensity = peep->intensity.GetMaximum();
+    set_format_arg(0, uint16_t, maxIntensity);
     int32_t string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BELOW;
-    if (peep->intensity & 0xF)
+    if (peep->intensity.GetMinimum() != 0)
     {
-        set_format_arg(0, uint16_t, peep->intensity & 0xF);
-        set_format_arg(2, uint16_t, intensity);
+        set_format_arg(0, uint16_t, peep->intensity.GetMinimum());
+        set_format_arg(2, uint16_t, maxIntensity);
         string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BETWEEN;
-        if (intensity == 15)
+        if (maxIntensity == 15)
             string_id = STR_GUEST_STAT_PREFERRED_INTESITY_ABOVE;
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1463,7 +1463,7 @@ private:
         dst->litter_count = src->litter_count;
         dst->disgusting_count = src->disgusting_count;
 
-        dst->intensity = src->intensity;
+        dst->intensity = static_cast<IntensityRange>(src->intensity);
         dst->nausea_tolerance = src->nausea_tolerance;
         dst->window_invalidate_flags = 0;
 
