@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../windows/Window.h"
 #    include "CustomMenu.h"
 #    include "ScTileSelection.hpp"
 #    include "ScViewport.hpp"
@@ -180,6 +181,30 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
+        void showTextInput(const DukValue& desc)
+        {
+            try
+            {
+                auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
+                auto title = desc["title"].as_string();
+                auto description = desc["description"].as_string();
+                auto initialValue = AsOrDefault(desc["maxLength"], "");
+                auto maxLength = AsOrDefault(desc["maxLength"], std::numeric_limits<int32_t>::max());
+                auto callback = desc["callback"];
+                window_text_input_open(
+                    title, description, initialValue, std::max(0, maxLength),
+                    [this, plugin, callback](const std::string_view& value) {
+                        auto dukValue = ToDuk(_scriptEngine.GetContext(), value);
+                        _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
+                    },
+                    {});
+            }
+            catch (const DukException&)
+            {
+                duk_error(_scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
+            }
+        }
+
         void activateTool(const DukValue& desc)
         {
             InitialiseCustomTool(_scriptEngine, desc);
@@ -205,6 +230,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");
             dukglue_register_method(ctx, &ScUi::getWindow, "getWindow");
+            dukglue_register_method(ctx, &ScUi::showTextInput, "showTextInput");
             dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
         }

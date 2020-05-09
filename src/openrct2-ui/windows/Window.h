@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -155,6 +155,10 @@ void window_text_input_open(
 void window_text_input_raw_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
     const_utf8string existing_text, int32_t maxLength);
+
+void window_text_input_open(
+    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
+    std::function<void(const std::string_view&)> okCallback, std::function<void()> cancelCallback);
 
 rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
 

@@ -940,6 +940,12 @@ declare global {
         closeAllWindows(): void;
 
         /**
+         * Shows a text input prompt and calls the given callback when entered.
+         * @param desc The parameters for the text input window.
+         */
+        showTextInput(desc: TextInputDesc): void;
+
+        /**
          * Begins a new tool session. The cursor will change to the style specified by the
          * given tool descriptor and cursor events will be provided.
          * @param tool The properties and event handlers for the tool.
@@ -947,6 +953,36 @@ declare global {
         activateTool(tool: ToolDesc): void;
 
         registerMenuItem(text: string, callback: () => void): void;
+    }
+
+    /**
+     * Parameters for the text input window.
+     */
+    interface TextInputDesc {
+        /**
+         * The title of the text input window.
+         */
+        title: string;
+
+        /**
+         * The description to show above the text box.
+         */
+        description: string;
+
+        /**
+         * The current value of the text box.
+         */
+        initialValue?: string;
+
+        /**
+         * The maximum length the value can be.
+         */
+        maxLength?: number;
+
+        /**
+         * The function to call when the user has entered a new value and pressed OK.
+         */
+        callback: (value: string) => void;
     }
 
     interface TileSelection {
