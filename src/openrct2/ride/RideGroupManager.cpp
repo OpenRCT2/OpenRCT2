@@ -69,7 +69,7 @@ static constexpr const RideGroup ride_group_monster_trucks = {
 
 static constexpr const RideGroup ride_group_steel_twister_rc = {
     /*.RideType =*/RIDE_TYPE_TWISTER_ROLLER_COASTER,
-    /*.MaximumHeight =*/42,
+    /*.MaximumHeight =*/40,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END)
         | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE)
         | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND)
