@@ -53,6 +53,7 @@ public:
     void AcceptParameters(GameActionParameterVisitor & visitor) override
     {
         visitor.Visit(_loc);
+        // TODO visit the track design (it has a lot of sub fields)
     }
 
     uint16_t GetActionFlags() const override
