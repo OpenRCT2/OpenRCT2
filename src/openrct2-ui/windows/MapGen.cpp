@@ -111,8 +111,8 @@ enum {
 #pragma region Widgets
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_MAPGEN_WINDOW_TITLE;
-constexpr int32_t WW = 250;
-constexpr int32_t WH = 273;
+static constexpr const int32_t WW = 250;
+static constexpr const int32_t WH = 273;
 
 #define SHARED_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \

@@ -201,8 +201,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS_TITLE;
-constexpr int32_t WW = 310;
-constexpr int32_t WH = 332;
+static constexpr const int32_t WW = 310;
+static constexpr const int32_t WH = 332;
 
 #ifndef DISABLE_TWITCH
     #define TWITCH_TAB_SPRITE   IMAGE_TYPE_REMAP | SPR_TAB

@@ -206,8 +206,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 static constexpr const rct_string_id WINDOW_TITLE = STR_TILE_INSPECTOR_TITLE;
 
 // Window sizes
-constexpr int32_t WW = 400;
-constexpr int32_t WH = 170;
+static constexpr const int32_t WW = 400;
+static constexpr const int32_t WH = 170;
 constexpr int32_t MIN_WW = WW;
 constexpr int32_t MAX_WW = WW;
 constexpr int32_t MIN_WH = 130;

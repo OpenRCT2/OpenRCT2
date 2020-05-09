@@ -16,8 +16,8 @@
 #include <openrct2/localisation/Localisation.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
-constexpr int32_t WW = 250;
-constexpr int32_t WH = 60;
+static constexpr const int32_t WW = 250;
+static constexpr const int32_t WH = 60;
 
 // clang-format off
 enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {

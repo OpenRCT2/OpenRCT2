@@ -16,8 +16,8 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
 
-constexpr int32_t WW = 400;
-constexpr int32_t WH = 350;
+static constexpr const int32_t WW = 400;
+static constexpr const int32_t WH = 350;
 static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
 constexpr int32_t TABHEIGHT = 50;
 

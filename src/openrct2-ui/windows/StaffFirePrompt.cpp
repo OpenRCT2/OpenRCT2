@@ -17,8 +17,8 @@
 #include <openrct2/world/Sprite.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
-constexpr int32_t WW = 200;
-constexpr int32_t WH = 100;
+static constexpr const int32_t WW = 200;
+static constexpr const int32_t WH = 100;
 
 // clang-format off
 enum WINDOW_STAFF_FIRE_WIDGET_IDX {

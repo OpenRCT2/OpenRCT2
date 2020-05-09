@@ -26,8 +26,8 @@
 #include <openrct2/world/Wall.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SIGN;
-constexpr int32_t WW = 113;
-constexpr int32_t WH = 96;
+static constexpr const int32_t WW = 113;
+static constexpr const int32_t WH = 96;
 
 // clang-format off
 enum WINDOW_SIGN_WIDGET_IDX {

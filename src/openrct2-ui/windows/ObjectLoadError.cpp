@@ -260,9 +260,9 @@ enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_DOWNLOAD_ALL
 };
 
-constexpr int32_t WW = 450;
-constexpr int32_t WH = 400;
-constexpr int32_t WW_LESS_PADDING = WW - 5;
+static constexpr const int32_t WW = 450;
+static constexpr const int32_t WH = 400;
+static constexpr const int32_t WW_LESS_PADDING = WW - 5;
 constexpr int32_t NAME_COL_LEFT = 4;
 constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
 constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;

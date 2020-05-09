@@ -39,8 +39,8 @@
 #pragma region Widgets
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
-constexpr int32_t WW = 350;
-constexpr int32_t WH = 400;
+static constexpr const int32_t WW = 350;
+static constexpr const int32_t WH = 400;
 
 // clang-format off
 enum

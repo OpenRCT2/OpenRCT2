@@ -35,9 +35,9 @@ enum {
 };
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
-constexpr int32_t WW = 380;
-constexpr int32_t WH = 448;
-constexpr int32_t WW_LESS_PADDING = WW - 4;
+static constexpr const int32_t WW = 380;
+static constexpr const int32_t WH = 448;
+static constexpr const int32_t WW_LESS_PADDING = WW - 4;
 constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
 constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 

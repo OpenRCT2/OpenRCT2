@@ -177,8 +177,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
 #pragma region MEASUREMENTS
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_CHEAT_TITLE;
-constexpr int32_t WW = 249;
-constexpr int32_t WH = 300;
+static constexpr const int32_t WW = 249;
+static constexpr const int32_t WH = 300;
 constexpr int32_t TAB_HEIGHT = 43;
 constexpr int32_t XSPA = 5;                                              // X spacing
 constexpr int32_t YSPA = 5;                                              // Y spacing

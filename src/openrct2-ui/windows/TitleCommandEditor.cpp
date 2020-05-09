@@ -69,12 +69,12 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_CANCEL
 };
 
-constexpr int32_t WW = 200;
-constexpr int32_t WH = 120;
+static constexpr const int32_t WW = 200;
+static constexpr const int32_t WH = 120;
 constexpr int32_t BY = 32;
 constexpr int32_t BY2 = 70;
 constexpr int32_t WS = 16;
-constexpr int32_t WHA = (WW-WS*2)/2;
+static constexpr const int32_t WHA = (WW-WS*2)/2;
 
 static bool _window_title_command_editor_insert;
 static int32_t _window_title_command_editor_index;

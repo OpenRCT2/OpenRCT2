@@ -26,8 +26,8 @@
 #include <openrct2/util/Util.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS;
-constexpr int32_t WW = 250;
-constexpr int32_t WH = 90;
+static constexpr const int32_t WW = 250;
+static constexpr const int32_t WH = 90;
 
 // clang-format off
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {

@@ -14,8 +14,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-constexpr int32_t WW = 232;
-constexpr int32_t WH = 136;
+static constexpr const int32_t WW = 232;
+static constexpr const int32_t WH = 136;
 
 enum
 {

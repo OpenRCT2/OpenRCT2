@@ -36,8 +36,8 @@
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 constexpr size_t AVAILABILITY_STRING_SIZE = 256;
-constexpr int32_t WH = 382;
-constexpr int32_t WW = 601;
+static constexpr const int32_t WH = 382;
+static constexpr const int32_t WW = 601;
 
 static uint8_t _windowNewRideCurrentTab;
 static RideSelection _windowNewRideHighlightedItem[6];

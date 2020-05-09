@@ -22,8 +22,8 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-constexpr int32_t WW = 113;
-constexpr int32_t WH = 96;
+static constexpr const int32_t WW = 113;
+static constexpr const int32_t WH = 96;
 static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off

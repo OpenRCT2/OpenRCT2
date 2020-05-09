@@ -26,8 +26,8 @@
 
 #pragma region Widgets
 
-constexpr int32_t WW = 600;
-constexpr int32_t WH = 400;
+static constexpr const int32_t WW = 600;
+static constexpr const int32_t WH = 400;
 static constexpr const rct_string_id WINDOW_TITLE = STR_INVENTION_LIST;
 
 // clang-format off

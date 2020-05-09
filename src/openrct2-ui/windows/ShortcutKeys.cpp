@@ -16,11 +16,11 @@
 #include <openrct2/localisation/Localisation.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUTS_TITLE;
-constexpr int32_t WW = 420;
-constexpr int32_t WH = 280;
+static constexpr const int32_t WW = 420;
+static constexpr const int32_t WH = 280;
 
-constexpr int32_t WW_SC_MAX = 1200;
-constexpr int32_t WH_SC_MAX = 800;
+static constexpr const int32_t WW_SC_MAX = 1200;
+static constexpr const int32_t WH_SC_MAX = 800;
 
 // clang-format off
 enum WINDOW_SHORTCUT_WIDGET_IDX {
