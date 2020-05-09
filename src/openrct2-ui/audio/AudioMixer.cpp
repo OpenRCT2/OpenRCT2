@@ -381,7 +381,7 @@ namespace OpenRCT2::Audio
         int32_t ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
         {
             float volumeAdjust = _volume;
-            volumeAdjust *= gConfigSound.master_sound_enabled ? (static_cast<float>(gConfigSound.master_volume) / 100.0f) : 0;
+            volumeAdjust *= gConfigSound.master_sound_enabled ? (static_cast<float>(gConfigSound.master_volume) / 100.0f) : 0.0f;
 
             switch (channel->GetGroup())
             {
@@ -429,7 +429,7 @@ namespace OpenRCT2::Audio
 
         static void EffectPanS16(const IAudioChannel* channel, int16_t* data, int32_t length)
         {
-            const float dt = 1.0f / static_cast<float>(length * 2);
+            const float dt = 1.0f / static_cast<float>(length * 2.0f);
             float volumeL = channel->GetOldVolumeL();
             float volumeR = channel->GetOldVolumeR();
             const float d_left = dt * (channel->GetVolumeL() - channel->GetOldVolumeL());
@@ -437,8 +437,8 @@ namespace OpenRCT2::Audio
 
             for (int32_t i = 0; i < length * 2; i += 2)
             {
-                data[i + 0] = volumeL * static_cast<float>(data[i + 0]);
-                data[i + 1] = volumeR * static_cast<float>(data[i + 1]);
+                data[i + 0] = static_cast<int16_t>(volumeL * static_cast<float>(data[i + 0]));
+                data[i + 1] = static_cast<int16_t>(volumeR * static_cast<float>(data[i + 1]));
                 volumeL += d_left;
                 volumeR += d_right;
             }
@@ -453,7 +453,7 @@ namespace OpenRCT2::Audio
 
             for (int32_t i = 0; i < length * 2; i += 2)
             {
-                float t = static_cast<float>(i) / static_cast<float>(length * 2);
+                float t = static_cast<float>(i) / static_cast<float>(length * 2.0f);
                 data[i] = static_cast<uint8_t>(data[i] * ((1.0 - t) * oldVolumeL + t * volumeL));
                 data[i + 1] = static_cast<uint8_t>(data[i + 1] * ((1.0 - t) * oldVolumeR + t * volumeR));
             }
@@ -467,8 +467,8 @@ namespace OpenRCT2::Audio
             float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;
             for (int32_t i = 0; i < length; i++)
             {
-                float t = (float)i / length;
-                data[i] = static_cast<float>(data[i]) * ((1 - t) * startvolume_f + t * endvolume_f);
+                float t = static_cast<float>(i) / length;
+                data[i] = static_cast<int16_t>(data[i] * ((1.0f - t) * startvolume_f + t * endvolume_f));
             }
         }
 
@@ -481,7 +481,7 @@ namespace OpenRCT2::Audio
             for (int32_t i = 0; i < length; i++)
             {
                 float t = static_cast<float>(i) / length;
-                data[i] = static_cast<float>(data[i]) * ((1 - t) * startvolume_f + t * endvolume_f);
+                data[i] = static_cast<uint8_t>(data[i] * ((1.0f - t) * startvolume_f + t * endvolume_f));
             }
         }
 
