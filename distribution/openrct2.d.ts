@@ -139,6 +139,13 @@ declare global {
         sharedStorage: Configuration;
 
         /**
+         * Render the current state of the map and save to disc.
+         * Useful for server administration and timelapse creation.
+         * @param options Options that control the capture and output file.
+         */
+        captureImage(options: CaptureOptions): void;
+
+        /**
          * Gets the loaded object at the given index.
          * @param type The object type.
          * @param index The index.
@@ -212,6 +219,42 @@ declare global {
         get<T>(key: string, defaultValue: T): T;
         set<T>(key: string, value: T): void;
         has(key: string): boolean;
+    }
+
+    interface CaptureOptions {
+        /**
+         * A relative filename from the screenshot directory to save the capture as.
+         * By default, the filename will be automatically generated using the system date and time.
+         */
+        filename?: string;
+
+        /**
+         * Width of the capture in pixels.
+         * Do not set if you would like a giant screenshot.
+         */
+        width?: number;
+
+        /**
+         * Height of the capture in pixels.
+         * Do not set if you would like a giant screenshot.
+         */
+        height?: number;
+
+        /**
+         * Map position to centre the view on in map units.
+         * Do not set if you would like a giant screenshot.
+         */
+        position?: CoordsXY;
+
+        /**
+         * The zoom level, 0 is 1:1, 1 is 2:1, 2 is 4:1 etc.
+         */
+        zoom: number;
+
+        /**
+         * Rotation of the camera from 0 to 3.
+         */
+        rotation: number;
     }
 
     type ObjectType =

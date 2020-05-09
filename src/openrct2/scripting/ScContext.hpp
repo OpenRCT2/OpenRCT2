@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../actions/GameAction.h"
+#    include "../interface/Screenshot.h"
 #    include "../object/ObjectManager.h"
 #    include "../scenario/Scenario.h"
 #    include "Duktape.hpp"
@@ -49,6 +50,39 @@ namespace OpenRCT2::Scripting
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             return std::make_shared<ScConfiguration>(scriptEngine.GetSharedStorage());
+        }
+
+        void captureImage(const DukValue& options)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            try
+            {
+                CaptureOptions captureOptions;
+                captureOptions.Filename = fs::u8path(AsOrDefault(options["filename"], ""));
+                captureOptions.Rotation = options["rotation"].as_int() & 3;
+                captureOptions.Zoom = ZoomLevel(options["zoom"].as_int());
+
+                auto dukPosition = options["position"];
+                if (dukPosition.type() == DukValue::Type::OBJECT)
+                {
+                    CaptureView view;
+                    view.Width = options["width"].as_int();
+                    view.Height = options["height"].as_int();
+                    view.Position.x = dukPosition["x"].as_int();
+                    view.Position.y = dukPosition["y"].as_int();
+                    captureOptions.View = view;
+                }
+
+                CaptureImage(captureOptions);
+            }
+            catch (const DukException&)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid options.");
+            }
+            catch (const std::exception& ex)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, ex.what());
+            }
         }
 
         static DukValue CreateScObject(duk_context* ctx, uint8_t type, int32_t index)
@@ -247,6 +281,7 @@ namespace OpenRCT2::Scripting
         {
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
+            dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
