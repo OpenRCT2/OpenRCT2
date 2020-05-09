@@ -1106,9 +1106,6 @@ declare global {
 
         onHighlight: (item: number, column: number) => void;
         onClick: (item: number, column: number) => void;
-
-        getCell(row: number, column: number): string;
-        setCell(row: number, column: number, value: string): void;
     }
 
     interface SpinnerWidget extends Widget {
