@@ -1776,7 +1776,7 @@ static void clear_elements_at(const CoordsXY& loc)
     gPeepSpawns.erase(
         std::remove_if(
             gPeepSpawns.begin(), gPeepSpawns.end(),
-            [x = loc.x, y = loc.y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
+            [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
         gPeepSpawns.end());
 
     TileElement* tileElement = map_get_first_element_at(loc);
