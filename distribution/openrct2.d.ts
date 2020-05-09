@@ -655,6 +655,10 @@ declare global {
      */
     interface Entity {
         /**
+         * The entity index within the entity list.
+         */
+        readonly id: number;
+        /**
          * The type of entity, e.g. car, duck, litter, or peep.
          */
         readonly type: EntityType;
@@ -677,13 +681,89 @@ declare global {
      */
     interface Peep extends Entity {
         /**
+         * Name of the peep.
+         */
+        name: string;
+
+        /**
          * Colour of the peep's t-shirt.
          */
         tshirtColour: number;
+
         /**
          * Colour of the peep's trousers.
          */
         trousersColour: number;
+
+        /**
+         * How tired the guest is between 32 and 128 where lower is more tired.
+         */
+        energy: number;
+
+        /**
+         * The target energy value. Energy will increase / decrease slowly towards this value.
+         */
+        energyTarget: number;
+
+        /**
+         * How happy the guest is between 0 and 255.
+         */
+        happiness: number;
+
+        /**
+         * The target happiness value. Happiness will increase / decrease slowly towards this value.
+         */
+        happinessTarget: number;
+
+        /**
+         * How nauseated the guest is between 0 and 255.
+         */
+        nausea: number;
+
+        /**
+         * The target nausea value. Nausea will increase / decrease slowly towards this value.
+         */
+        nauseaTarget: number;
+
+        /**
+         * How hungry the guest is between 0 and 255. Lower is more hungry.
+         */
+        hunger: number;
+
+        /**
+         * How thirsty the guest is between 0 and 255. Lower is more thirsty.
+         */
+        thirst: number;
+
+        /**
+         * How much the guest requires the need to go to the toilet between 0 and 255.
+         */
+        toilet: number;
+
+        /**
+         * The mass of the guest. Affects vehicle mass.
+         */
+        mass: number;
+
+        /**
+         * The guest's minimum preferred intensity between 0 and 15.
+         */
+        minIntensity: number;
+
+        /**
+         * The guest's maximum preferred intensity between 0 and 15.
+         */
+        maxIntensity: number;
+
+        /**
+         * The guest's tolerance to nauseating rides between 0 and 3.
+         */
+        nauseaTolerance: number;
+
+        /**
+         * Amount of cash in the guest's pocket.
+         */
+        cash: number;
     }
 
     /**

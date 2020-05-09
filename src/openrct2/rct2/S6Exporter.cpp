@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1160,7 +1160,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->toilet = src->toilet;
     dst->mass = src->mass;
     dst->time_to_consume = src->time_to_consume;
-    dst->intensity = src->intensity;
+    dst->intensity = static_cast<uint8_t>(src->intensity);
     dst->nausea_tolerance = src->nausea_tolerance;
     dst->window_invalidate_flags = src->window_invalidate_flags;
     dst->paid_on_drink = src->paid_on_drink;

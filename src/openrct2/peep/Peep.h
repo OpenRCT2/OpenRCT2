@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
 
+#include <algorithm>
 #include <bitset>
 #include <optional>
 
@@ -541,6 +542,58 @@ struct rct_peep_thought
 struct Guest;
 struct Staff;
 
+struct IntensityRange
+{
+private:
+    uint8_t _value{};
+
+public:
+    explicit IntensityRange(uint8_t value)
+        : _value(value)
+    {
+    }
+
+    IntensityRange(uint8_t min, uint8_t max)
+        : _value(std::min<uint8_t>(min, 15) | (std::min<uint8_t>(max, 15) << 4))
+    {
+    }
+
+    uint8_t GetMinimum() const
+    {
+        return _value & 0x0F;
+    }
+
+    uint8_t GetMaximum() const
+    {
+        return _value >> 4;
+    }
+
+    IntensityRange WithMinimum(uint8_t value) const
+    {
+        return IntensityRange(value, GetMaximum());
+    }
+
+    IntensityRange WithMaximum(uint8_t value) const
+    {
+        return IntensityRange(GetMinimum(), value);
+    }
+
+    explicit operator uint8_t() const
+    {
+        return _value;
+    }
+
+    friend bool operator==(const IntensityRange& lhs, const IntensityRange& rhs)
+    {
+        return lhs._value == rhs._value;
+    }
+
+    friend bool operator!=(const IntensityRange& lhs, const IntensityRange& rhs)
+    {
+        return lhs._value != rhs._value;
+    }
+};
+
 struct Peep : SpriteBase
 {
     char* name;
@@ -573,7 +626,7 @@ struct Peep : SpriteBase
     uint8_t toilet;
     uint8_t mass;
     uint8_t time_to_consume;
-    uint8_t intensity; // The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
+    IntensityRange intensity;
     uint8_t nausea_tolerance;
     uint8_t window_invalidate_flags;
     money16 paid_on_drink;

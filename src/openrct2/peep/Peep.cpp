@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1680,7 +1680,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
         intensityHighest = 15;
     }
 
-    peep->intensity = (intensityHighest << 4) | intensityLowest;
+    peep->intensity = IntensityRange(intensityLowest, intensityHighest);
 
     uint8_t nauseaTolerance = scenario_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
