@@ -197,9 +197,9 @@ rct_window* window_scenery_scatter_open();
 
 // clang-format off
 #define WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, CLOSE_STR) \
-    { WWT_FRAME,    0,  0,          WIDTH - 1, 0, HEIGHT, 0xFFFFFFFF,  STR_NONE }, \
-    { WWT_CAPTION,  0,  1,          WIDTH - 2, 1, 14,     TITLE,       STR_WINDOW_TITLE_TIP }, \
-    { WWT_CLOSEBOX, 0,  WIDTH - 13, WIDTH - 3, 2, 13,     CLOSE_STR, STR_CLOSE_WINDOW_TIP }
+    { WWT_FRAME,    0,  0,          WIDTH - 1, 0, HEIGHT - 1, 0xFFFFFFFF,  STR_NONE }, \
+    { WWT_CAPTION,  0,  1,          WIDTH - 2, 1, 14,         TITLE,       STR_WINDOW_TITLE_TIP }, \
+    { WWT_CLOSEBOX, 0,  WIDTH - 13, WIDTH - 3, 2, 13,         CLOSE_STR, STR_CLOSE_WINDOW_TIP }
 
 #define WINDOW_SHIM(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X)
 #define WINDOW_SHIM_WHITE(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X_WHITE)

@@ -16,10 +16,8 @@
 #include <openrct2/sprites.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_VIEWPORT_NO;
-static constexpr const int32_t WH = 0;
-static constexpr const int32_t WW = 0;
-constexpr int32_t INITIAL_WIDTH = 500;
-constexpr int32_t INITIAL_HEIGHT = 350;
+static constexpr const int32_t WH = 500;
+static constexpr const int32_t WW = 350;
 
 // clang-format off
 enum {
@@ -89,7 +87,7 @@ static int32_t _viewportNumber = 1;
  */
 rct_window* window_viewport_open()
 {
-    rct_window* w = window_create_auto_pos(INITIAL_WIDTH, INITIAL_HEIGHT, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
+    rct_window* w = window_create_auto_pos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);
     w->number = _viewportNumber++;

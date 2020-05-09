@@ -20,9 +20,11 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = 0;
-static constexpr const int32_t WH = 0;
-static constexpr const int32_t WW = 0;
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const int32_t WH_DEVELOPMENT = 196;
+static constexpr const int32_t WW_DEVELOPMENT = 300;
+static constexpr const int32_t WH_FUNDING = 207;
+static constexpr const int32_t WW_FUNDING = 320;
 
 // clang-format off
 enum {
@@ -59,32 +61,32 @@ enum {
 #pragma region Widgets
 
 static rct_widget window_research_development_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,      299,    43,     195,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
-    { WWT_GROUPBOX,         2,  3,      292,    47,     116,    STR_CURRENTLY_IN_DEVELOPMENT,           STR_NONE },
-    { WWT_GROUPBOX,         2,  3,      292,    124,    188,    STR_LAST_DEVELOPMENT,                   STR_NONE },
-    { WWT_FLATBTN,          2,  265,    288,    161,    184,    0xFFFFFFFF,                             STR_RESEARCH_SHOW_DETAILS_TIP },
+    WINDOW_SHIM(WINDOW_TITLE, WW_DEVELOPMENT, WH_DEVELOPMENT),
+    { WWT_RESIZE,           1,  0,      299,    43,     WH_DEVELOPMENT - 1, 0xFFFFFFFF,                      STR_NONE },
+    { WWT_TAB,              1,  3,      33,     17,     43,                 IMAGE_TYPE_REMAP | SPR_TAB,      STR_RESEARCH_AND_DEVELOPMENT_TIP },
+    { WWT_TAB,              1,  34,     64,     17,     43,                 IMAGE_TYPE_REMAP | SPR_TAB,      STR_FINANCES_RESEARCH_TIP },
+    { WWT_GROUPBOX,         2,  3,      292,    47,     116,                STR_CURRENTLY_IN_DEVELOPMENT,    STR_NONE },
+    { WWT_GROUPBOX,         2,  3,      292,    124,    188,                STR_LAST_DEVELOPMENT,            STR_NONE },
+    { WWT_FLATBTN,          2,  265,    288,    161,    184,                0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP },
     { WIDGETS_END },
 };
 
 static rct_widget window_research_funding_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
-    { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
-    { WWT_DROPDOWN,         2,  8,      167,    59,     72,     0xFFFFFFFF,                             STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-    { WWT_BUTTON,           2,  156,    166,    60,     71,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-    { WWT_GROUPBOX,         2,  3,      316,    96,     202,    STR_RESEARCH_PRIORITIES,                STR_NONE },
-    { WWT_CHECKBOX,         2,  8,      311,    108,    119,    STR_RESEARCH_NEW_TRANSPORT_RIDES,       STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    121,    132,    STR_RESEARCH_NEW_GENTLE_RIDES,          STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    134,    145,    STR_RESEARCH_NEW_ROLLER_COASTERS,       STR_RESEARCH_NEW_ROLLER_COASTERS_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    147,    158,    STR_RESEARCH_NEW_THRILL_RIDES,          STR_RESEARCH_NEW_THRILL_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    160,    171,    STR_RESEARCH_NEW_WATER_RIDES,           STR_RESEARCH_NEW_WATER_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    173,    184,    STR_RESEARCH_NEW_SHOPS_AND_STALLS,      STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    186,    197,    STR_RESEARCH_NEW_SCENERY_AND_THEMING,   STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP },
+    WINDOW_SHIM(WINDOW_TITLE, WW_FUNDING, WH_FUNDING),
+    { WWT_RESIZE,           1,  0,      319,    43,     WH_FUNDING - 1,  0xFFFFFFFF,                             STR_NONE },
+    { WWT_TAB,              1,  3,      33,     17,     43,              IMAGE_TYPE_REMAP | SPR_TAB,             STR_RESEARCH_AND_DEVELOPMENT_TIP },
+    { WWT_TAB,              1,  34,     64,     17,     43,              IMAGE_TYPE_REMAP | SPR_TAB,             STR_FINANCES_RESEARCH_TIP },
+    { WWT_GROUPBOX,         2,  3,      316,    47,     91,              STR_RESEARCH_FUNDING_,                  STR_NONE },
+    { WWT_DROPDOWN,         2,  8,      167,    59,     72,              0xFFFFFFFF,                             STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+    { WWT_BUTTON,           2,  156,    166,    60,     71,              STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+    { WWT_GROUPBOX,         2,  3,      316,    96,     202,             STR_RESEARCH_PRIORITIES,                STR_NONE },
+    { WWT_CHECKBOX,         2,  8,      311,    108,    119,             STR_RESEARCH_NEW_TRANSPORT_RIDES,       STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
+    { WWT_CHECKBOX,         2,  8,      311,    121,    132,             STR_RESEARCH_NEW_GENTLE_RIDES,          STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
+    { WWT_CHECKBOX,         2,  8,      311,    134,    145,             STR_RESEARCH_NEW_ROLLER_COASTERS,       STR_RESEARCH_NEW_ROLLER_COASTERS_TIP },
+    { WWT_CHECKBOX,         2,  8,      311,    147,    158,             STR_RESEARCH_NEW_THRILL_RIDES,          STR_RESEARCH_NEW_THRILL_RIDES_TIP },
+    { WWT_CHECKBOX,         2,  8,      311,    160,    171,             STR_RESEARCH_NEW_WATER_RIDES,           STR_RESEARCH_NEW_WATER_RIDES_TIP },
+    { WWT_CHECKBOX,         2,  8,      311,    173,    184,             STR_RESEARCH_NEW_SHOPS_AND_STALLS,      STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP },
+    { WWT_CHECKBOX,         2,  8,      311,    186,    197,             STR_RESEARCH_NEW_SCENERY_AND_THEMING,   STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP },
     { WIDGETS_END },
 };
 
@@ -235,7 +237,7 @@ rct_window* window_research_open()
     w = window_bring_to_front_by_class(WC_RESEARCH);
     if (w == nullptr)
     {
-        w = window_create_auto_pos(530, 257, window_research_page_events[0], WC_RESEARCH, WF_10);
+        w = window_create_auto_pos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
         w->widgets = window_research_page_widgets[0];
         w->enabled_widgets = window_research_page_enabled_widgets[0];
         w->number = 0;
@@ -247,8 +249,8 @@ rct_window* window_research_open()
 
     w->page = 0;
     w->Invalidate();
-    w->width = 300;
-    w->height = 196;
+    w->width = WW_DEVELOPMENT;
+    w->height = WH_DEVELOPMENT;
     w->Invalidate();
 
     w->widgets = window_research_page_widgets[0];
@@ -603,13 +605,13 @@ static void window_research_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     if (w->page == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
     {
-        w->width = 300;
-        w->height = 196;
+        w->width = WW_DEVELOPMENT;
+        w->height = WH_DEVELOPMENT;
     }
     else
     {
-        w->width = 320;
-        w->height = 207;
+        w->width = WW_FUNDING;
+        w->height = WH_FUNDING;
     }
     window_event_resize_call(w);
     window_event_invalidate_call(w);

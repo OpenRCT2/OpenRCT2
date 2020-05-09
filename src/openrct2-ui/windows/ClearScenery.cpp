@@ -30,8 +30,8 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 };
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
-static constexpr const int32_t WW = 102;
-static constexpr const int32_t WH = 93;
+static constexpr const int32_t WW = 98;
+static constexpr const int32_t WH = 94;
 
 static rct_widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
@@ -99,7 +99,7 @@ rct_window* window_clear_scenery_open()
         return window;
 
     window = window_create(
-        ScreenCoordsXY(context_get_width() - 102, 29), 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+        ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);

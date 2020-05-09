@@ -20,7 +20,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = 0;
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 107;
 static constexpr const int32_t WW = 350;
 constexpr uint16_t SELECTED_RIDE_UNDEFINED = 0xFFFF;
