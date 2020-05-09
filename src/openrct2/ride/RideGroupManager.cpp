@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@ static constexpr const RideGroup ride_group_hypercoaster = {
         | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE)
         | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)
         | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES)
-        | (1ULL << TRACK_SLOPE_STEEP_LONG),
+        | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_BOOSTER),
     /*.Naming =*/{ STR_HYPERCOASTER_GROUP, STR_HYPERCOASTER_GROUP_DESC },
     /*.Flags =*/0,
 };
@@ -61,14 +61,15 @@ static constexpr const RideGroup ride_group_monster_trucks = {
     /*.RideType =*/RIDE_TYPE_CAR_RIDE,
     /*.MaximumHeight =*/18,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE)
-        | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_RAPIDS),
+        | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)
+        | (1ULL << TRACK_RAPIDS) | (1ULL << TRACK_SPINNING_TUNNEL),
     /*.Naming =*/{ STR_MONSTER_TRUCKS_GROUP, STR_MONSTER_TRUCKS_GROUP_DESC },
     /*.Flags =*/RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK,
 };
 
 static constexpr const RideGroup ride_group_steel_twister_rc = {
     /*.RideType =*/RIDE_TYPE_TWISTER_ROLLER_COASTER,
-    /*.MaximumHeight =*/40,
+    /*.MaximumHeight =*/42,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END)
         | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE)
         | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND)
@@ -84,13 +85,14 @@ static constexpr const RideGroup ride_group_steel_twister_rc = {
 
 static constexpr const RideGroup ride_group_hyper_twister = {
     /*.RideType =*/RIDE_TYPE_TWISTER_ROLLER_COASTER,
-    /*.MaximumHeight =*/54,
+    /*.MaximumHeight =*/68,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END)
         | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP)
         | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL)
         | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO)
         | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING)
-        | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_CURVE_VERTICAL),
+        | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_CURVE_VERTICAL)
+        | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_BOOSTER),
     /*.Naming =*/{ STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC },
     /*.Flags =*/0,
 };
