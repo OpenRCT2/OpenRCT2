@@ -297,6 +297,7 @@ declare global {
         readonly player: number;
         readonly type: string;
         readonly isClientOnly: boolean;
+        readonly args: object;
         result: GameActionResult;
     }
 
@@ -311,28 +312,6 @@ declare global {
 
     interface RideCreateGameActionResult extends GameActionResult {
         readonly ride: number;
-    }
-
-    interface RideCreateActionEventArgs extends GameActionEventArgs {
-        readonly rideType: number;
-        readonly rideObject: number;
-        result: RideCreateGameActionResult;
-    }
-
-    interface SmallSceneryPlaceEventArgs extends GameActionEventArgs {
-        readonly x: number;
-        readonly y: number;
-        readonly z: number;
-        readonly direction: number;
-        readonly quadrant: number;
-        readonly object: number;
-        readonly primaryColour: number;
-        readonly secondaryColour: number;
-    }
-
-    interface GuestSetNameActionEventArgs extends GameActionEventArgs {
-        readonly id: number;
-        readonly name: number;
     }
 
     interface NetworkEventArgs {

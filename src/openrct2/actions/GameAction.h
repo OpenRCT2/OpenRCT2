@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -148,12 +148,22 @@ class GameActionParameterVisitor
 public:
     virtual ~GameActionParameterVisitor() = default;
 
+    virtual void Visit(const std::string_view& name, bool& param)
+    {
+    }
+
     virtual void Visit(const std::string_view& name, int32_t& param)
     {
     }
 
     virtual void Visit(const std::string_view& name, std::string& param)
     {
+    }
+
+    void Visit(CoordsXY& param)
+    {
+        Visit("x", param.x);
+        Visit("y", param.y);
     }
 
     void Visit(CoordsXYZD& param)
@@ -170,6 +180,11 @@ public:
         auto value = static_cast<int32_t>(param);
         Visit(name, value);
         param = static_cast<T>(value);
+    }
+
+    template<typename T, size_t _TypeID> void Visit(const std::string_view& name, NetworkObjectId_t<T, _TypeID>& param)
+    {
+        Visit(name, param.id);
     }
 };
 
