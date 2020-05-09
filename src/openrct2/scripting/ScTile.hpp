@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -98,7 +98,7 @@ namespace OpenRCT2::Scripting
             }
 
             _element->type = type;
-            map_invalidate_tile_full(_coords);
+            Invalidate();
         }
 
         uint8_t baseHeight_get() const
@@ -109,6 +109,7 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             _element->base_height = newBaseHeight;
+            Invalidate();
         }
 
         uint8_t clearanceHeight_get() const
@@ -119,6 +120,7 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             _element->clearance_height = newClearanceHeight;
+            Invalidate();
         }
 
         uint8_t slope_get() const
@@ -135,6 +137,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetSlope(value);
+                Invalidate();
             }
         }
 
@@ -152,6 +155,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetWaterHeight(value);
+                Invalidate();
             }
         }
 
@@ -169,6 +173,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetSurfaceStyle(value);
+                Invalidate();
             }
         }
 
@@ -186,6 +191,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetEdgeStyle(value);
+                Invalidate();
             }
         }
 
@@ -204,6 +210,7 @@ namespace OpenRCT2::Scripting
             {
                 // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
                 el->SetGrassLengthAndInvalidate(value, _coords);
+                Invalidate();
             }
         }
 
@@ -240,6 +247,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetOwnership(value);
+                Invalidate();
             }
         }
 
@@ -257,6 +265,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetParkFences(value);
+                Invalidate();
             }
         }
 
@@ -274,6 +283,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetTrackType(value);
+                Invalidate();
             }
         }
 
@@ -303,12 +313,14 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsTrack();
                     el->SetSequenceIndex(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetSequenceIndex(value);
+                    Invalidate();
                     break;
                 }
             }
@@ -345,18 +357,21 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsPath();
                     el->SetRideIndex(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_TRACK:
                 {
                     auto el = _element->AsTrack();
                     el->SetRideIndex(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetRideIndex(value);
+                    Invalidate();
                     break;
                 }
             }
@@ -393,18 +408,21 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsPath();
                     el->SetStationIndex(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_TRACK:
                 {
                     auto el = _element->AsTrack();
                     el->SetStationIndex(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetStationIndex(value);
+                    Invalidate();
                     break;
                 }
             }
@@ -424,6 +442,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetHasChain(value);
+                Invalidate();
             }
         }
 
@@ -468,30 +487,35 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsPath();
                     el->SetSurfaceEntryIndex(value & 0xFF);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 {
                     auto el = _element->AsSmallScenery();
                     el->SetEntryIndex(value & 0xFF);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
                     el->SetEntryIndex(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_WALL:
                 {
                     auto el = _element->AsWall();
                     el->SetEntryIndex(value & 0xFFFF);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
                     el->SetEntranceType(value & 0xFF);
+                    Invalidate();
                     break;
                 }
             }
@@ -570,7 +594,7 @@ namespace OpenRCT2::Scripting
                 _element--;
             }
 
-            map_invalidate_tile_full(_coords);
+            Invalidate();
         }
 
         uint8_t age_get() const
@@ -587,6 +611,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetAge(value);
+                Invalidate();
             }
         }
 
@@ -616,12 +641,14 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsSmallScenery();
                     el->SetPrimaryColour(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
                     el->SetPrimaryColour(value);
+                    Invalidate();
                     break;
                 }
             }
@@ -653,12 +680,14 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsSmallScenery();
                     el->SetSecondaryColour(value);
+                    Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
                     el->SetSecondaryColour(value);
+                    Invalidate();
                     break;
                 }
             }
@@ -676,6 +705,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetRailingEntryIndex(value);
+                Invalidate();
             }
         }
 
@@ -691,6 +721,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetEdgesAndCorners(value);
+                Invalidate();
             }
         }
 
@@ -723,6 +754,7 @@ namespace OpenRCT2::Scripting
                     el->SetSloped(false);
                     el->SetSlopeDirection(0);
                 }
+                Invalidate();
             }
         }
 
@@ -738,6 +770,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetIsQueue(value);
+                Invalidate();
             }
         }
 
@@ -769,6 +802,7 @@ namespace OpenRCT2::Scripting
                     el->SetHasQueueBanner(false);
                     el->SetQueueBannerDirection(0);
                 }
+                Invalidate();
             }
         }
 
@@ -784,6 +818,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetIsBlockedByVehicle(value);
+                Invalidate();
             }
         }
 
@@ -799,6 +834,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetWide(value);
+                Invalidate();
             }
         }
 
@@ -836,6 +872,7 @@ namespace OpenRCT2::Scripting
                 {
                     el->SetAddition(0);
                 }
+                Invalidate();
             }
         }
 
@@ -851,6 +888,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetAdditionStatus(value);
+                Invalidate();
             }
         }
 
@@ -866,6 +904,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetIsBroken(value);
+                Invalidate();
             }
         }
 
@@ -881,6 +920,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetAdditionIsGhost(value);
+                Invalidate();
             }
         }
 
@@ -898,7 +938,13 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 el->SetPathType(value);
+                Invalidate();
             }
+        }
+
+        void Invalidate()
+        {
+            map_invalidate_tile_full(_coords);
         }
 
     public:
