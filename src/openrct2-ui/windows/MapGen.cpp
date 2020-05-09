@@ -115,7 +115,7 @@ constexpr int32_t WW = 250;
 constexpr int32_t WH = 273;
 
 #define SHARED_WIDGETS \
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) }, /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
     { WWT_RESIZE,   1,  0,          WW - 1, 43, WH - 2, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_PAGE_BACKGROUND */ \
     { WWT_TAB,      1,  3,          33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_1 */ \
     { WWT_TAB,      1,  34,         64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_2 */ \

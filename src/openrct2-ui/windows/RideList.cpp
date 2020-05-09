@@ -56,7 +56,7 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 };
 
 static rct_widget window_ride_list_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                                 // tab page background
     { WWT_FLATBTN,          1,  315,    338,    60,     83,     SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES },              // open / close all toggle
     { WWT_DROPDOWN,         1,  150,    273,    46,     57,     0xFFFFFFFF,                 STR_NONE },                                 // current information type

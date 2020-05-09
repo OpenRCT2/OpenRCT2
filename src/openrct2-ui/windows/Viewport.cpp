@@ -34,7 +34,7 @@ enum {
 };
 
 static rct_widget window_viewport_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,  0,  14, 0,  0xFFFFFFFF,         STR_NONE                },  // resize
     { WWT_VIEWPORT,         0,  3,  0,  17, 0,  0xFFFFFFFF,         STR_NONE                },  // viewport
 

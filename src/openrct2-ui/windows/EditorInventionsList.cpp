@@ -46,7 +46,7 @@ enum {
 };
 
 static rct_widget window_editor_inventions_list_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE          },
     { WWT_SCROLL,           1,  4,      371,    56,     216,    SCROLL_VERTICAL,        STR_NONE                },

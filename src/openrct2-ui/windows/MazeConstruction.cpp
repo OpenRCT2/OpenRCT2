@@ -47,7 +47,7 @@ enum {
 };
 
 static rct_widget window_maze_construction_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_GROUPBOX,         0,  3,      162,    17,     71,     STR_RIDE_CONSTRUCTION_MODE,         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },

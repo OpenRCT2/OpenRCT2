@@ -68,7 +68,7 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
 };
 
 static rct_widget window_guest_list_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
     { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_ARG_4_PAGE_X,       STR_NONE },                     // page dropdown
     { WWT_BUTTON,           1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button

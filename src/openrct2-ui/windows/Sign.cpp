@@ -43,7 +43,7 @@ enum WINDOW_SIGN_WIDGET_IDX {
 
 // 0x9AEE00
 static rct_widget window_sign_widgets[] = {
-        { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },             // close x button
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),             // close x button
         { WWT_VIEWPORT, 1, 3,       WW - 26,    17,         WH - 20,    STR_VIEWPORT,   STR_NONE },                         // Viewport
         { WWT_FLATBTN,  1, WW - 25, WW - 2,     19,         42,         SPR_RENAME,     STR_CHANGE_SIGN_TEXT_TIP },         // change sign button
         { WWT_FLATBTN,  1, WW - 25, WW - 2,     67,         90,         SPR_DEMOLISH,   STR_DEMOLISH_SIGN_TIP },            // demolish button

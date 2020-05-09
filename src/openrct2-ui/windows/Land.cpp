@@ -42,7 +42,7 @@ enum WINDOW_LAND_WIDGET_IDX {
 };
 
 static rct_widget window_land_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
 
     { WWT_FLATBTN,  1,  19, 42, 19, 42,         SPR_RIDE_CONSTRUCTION_SLOPE_UP,         STR_ENABLE_MOUNTAIN_TOOL_TIP }, // mountain mode
     { WWT_FLATBTN,  1,  55, 78, 19, 42,         SPR_PAINTBRUSH,                         STR_DISABLE_ELEVATION },        // paint mode

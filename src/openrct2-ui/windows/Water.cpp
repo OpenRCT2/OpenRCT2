@@ -31,7 +31,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 };
 
 static rct_widget window_water_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_IMGBTN,   0,  16, 59, 17, 48, SPR_LAND_TOOL_SIZE_0,                   STR_NONE },                         // preview box
     { WWT_TRNBTN,   2,  17, 32, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_WATER_TIP },     // decrement size
     { WWT_TRNBTN,   2,  43, 58, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_WATER_TIP },      // increment size

@@ -41,7 +41,7 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 };
 
 static rct_widget window_new_campaign_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_LABEL,            0,      14,     139,    24,     35,         0,                                              STR_NONE },             // ride label
     { WWT_DROPDOWN,         0,      100,    341,    24,     35,         0,                                              STR_NONE },             // ride dropdown
     { WWT_BUTTON,           0,      330,    340,    25,     34,         STR_DROPDOWN_GLYPH,                             STR_NONE },             // ride dropdown button

@@ -45,7 +45,7 @@ enum {
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
 static rct_widget window_track_list_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_TABLE_HEADER,     0,  4,      221,    18,     30,     STR_SELECT_OTHER_RIDE,      STR_NONE                            },
     { WWT_TEXT_BOX,         1,  4,      127,    32,     44,     STR_NONE,                   STR_NONE                            },
     { WWT_BUTTON,           0,  130,    221,    32,     44,     STR_OBJECT_SEARCH_CLEAR,    STR_NONE                            },

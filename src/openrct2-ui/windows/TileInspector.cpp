@@ -251,7 +251,7 @@ constexpr int32_t BUTTONH = 17;
 #define CHK(x, y) x, x + 13, y + 2, y + 15
 
 #define MAIN_TILE_INSPECTOR_WIDGETS \
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) }, \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     { WWT_SCROLL,       1,  3,              WW - 4,             57,             WH - PADDING_BOTTOM,    2,              STR_NONE },                 /* Element list */          \
       SPINNER_WIDGETS  (1,  20,             70,                 23,             34,         STR_NONE,                   STR_NONE),                  /* Spinner X (3 widgets) */ \
       SPINNER_WIDGETS  (1,  90,             140,                23,             34,         STR_NONE,                   STR_NONE),                  /* Spinner Y (3 widgets) */ \

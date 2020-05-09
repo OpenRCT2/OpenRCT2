@@ -213,7 +213,7 @@ constexpr int32_t WH = 332;
 #endif
 
 #define MAIN_OPTIONS_WIDGETS \
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) }, \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     { WWT_RESIZE,           1,  0,      WW-1,   43,     WH-1,   0xFFFFFFFF,             STR_NONE }, \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_DISPLAY_TIP }, \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_RENDERING_TIP }, \

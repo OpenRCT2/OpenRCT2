@@ -58,7 +58,7 @@ static constexpr const rct_string_id BannerColouredTextFormats[] = {
 };
 
 static rct_widget window_banner_widgets[] = {
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_VIEWPORT,         1,  3,          WW - 26,17,     WH - 20,    0x0FFFFFFFE,                STR_NONE},                          // tab content panel
     { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 19,     42,         SPR_RENAME,                 STR_CHANGE_BANNER_TEXT_TIP},        // change banner button
     { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 43,     66,         SPR_NO_ENTRY,               STR_SET_AS_NO_ENTRY_BANNER_TIP},    // no entry button

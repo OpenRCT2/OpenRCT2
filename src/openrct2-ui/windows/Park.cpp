@@ -79,7 +79,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 #pragma region Widgets
 
 #define MAIN_PARK_WIDGETS(WW) \
-    { WINDOW_SKELETON(WINDOW_TITLE, WW, WH) }, \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     { WWT_RESIZE,           1,  0,          WW - 1,      43,     173,    0xFFFFFFFF,                           STR_NONE },                     /* tab content panel  */    \
     { WWT_TAB,              1,  3,          33,          17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
     { WWT_TAB,              1,  34,         64,          17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
