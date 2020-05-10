@@ -59,8 +59,6 @@ constexpr int32_t MAX_NEWS_ITEMS = 61;
 
 extern const uint8_t news_type_properties[10];
 
-extern NewsItem gNewsItems[MAX_NEWS_ITEMS];
-
 void news_item_init_queue();
 
 void news_item_update_current();

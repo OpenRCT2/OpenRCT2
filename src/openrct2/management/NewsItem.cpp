@@ -23,7 +23,7 @@
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
 
-NewsItem gNewsItems[MAX_NEWS_ITEMS];
+static NewsItem gNewsItems[MAX_NEWS_ITEMS];
 
 /** rct2: 0x0097BE7C */
 const uint8_t news_type_properties[] = {

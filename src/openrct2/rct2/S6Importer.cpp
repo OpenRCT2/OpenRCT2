@@ -419,7 +419,7 @@ public:
         for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
         {
             const rct12_news_item* src = &_s6.news_items[i];
-            NewsItem* dst = &gNewsItems[i];
+            NewsItem* dst = news_item_get(static_cast<int32_t>(i));
             if (src->Type < std::size(news_type_properties))
             {
                 dst->Type = src->Type;
