@@ -946,6 +946,13 @@ declare global {
         closeAllWindows(): void;
 
         /**
+         * Show a red error box.
+         * @param title The title / first line of the box.
+         * @param message The message / second line of the box.
+         */
+        showError(title: string, message: string): void;
+
+        /**
          * Shows a text input prompt and calls the given callback when entered.
          * @param desc The parameters for the text input window.
          */
