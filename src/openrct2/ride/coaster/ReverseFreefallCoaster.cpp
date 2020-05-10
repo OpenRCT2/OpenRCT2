@@ -385,7 +385,7 @@ static void paint_reverse_freefall_rc_vertical(
     }
 }
 
-static void reverse_freefall_rc_on_ride_photo(
+static void paint_reverse_freefall_rc_on_ride_photo(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
