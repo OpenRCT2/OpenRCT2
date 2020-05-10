@@ -376,7 +376,8 @@ declare global {
         getRide(id: number): Ride;
         getTile(x: number, y: number): Tile;
         getEntity(id: number): Entity;
-        getAllEntities(type: EntityType);
+        getAllEntities(type: EntityType): Entity[];
+        getAllEntities(type: "peep"): Peep[];
     }
 
     type TileElementType =
