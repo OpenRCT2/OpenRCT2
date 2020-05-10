@@ -13,6 +13,7 @@
 
 #    include "../interface/Widget.h"
 #    include "../interface/Window.h"
+#    include "CustomListView.h"
 #    include "CustomWindow.h"
 #    include "ScViewport.hpp"
 
@@ -26,7 +27,7 @@ namespace OpenRCT2::Scripting
 {
     class ScWidget
     {
-    private:
+    protected:
         rct_windowclass _class{};
         rct_windownumber _number{};
         rct_widgetindex _widgetIndex{};
@@ -39,7 +40,28 @@ namespace OpenRCT2::Scripting
         {
         }
 
+        static DukValue ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
+
     private:
+        std::string name_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                return OpenRCT2::Ui::Windows::GetWidgetName(w, _widgetIndex);
+            }
+            return {};
+        }
+
+        void name_set(const std::string& value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                OpenRCT2::Ui::Windows::SetWidgetName(w, _widgetIndex, value);
+            }
+        }
+
         std::string type_get() const
         {
             auto widget = GetWidget();
@@ -190,24 +212,6 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool isChecked_get() const
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                return widget_is_pressed(w, _widgetIndex);
-            }
-            return false;
-        }
-        void isChecked_set(bool value)
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
-            }
-        }
-
         uint32_t image_get() const
         {
             if (IsCustomWindow())
@@ -268,6 +272,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             // Common
+            dukglue_register_property(ctx, &ScWidget::name_get, &ScWidget::name_set, "name");
             dukglue_register_property(ctx, &ScWidget::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScWidget::x_get, &ScWidget::x_set, "x");
             dukglue_register_property(ctx, &ScWidget::y_get, &ScWidget::y_set, "y");
@@ -278,11 +283,10 @@ namespace OpenRCT2::Scripting
             // No so common
             dukglue_register_property(ctx, &ScWidget::image_get, &ScWidget::image_set, "image");
             dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");
-            dukglue_register_property(ctx, &ScWidget::isChecked_get, &ScWidget::isChecked_set, "isChecked");
             dukglue_register_property(ctx, &ScWidget::viewport_get, nullptr, "viewport");
         }
 
-    private:
+    protected:
         rct_window* GetWindow() const
         {
             if (_class == WC_MAIN_WINDOW)
@@ -316,6 +320,248 @@ namespace OpenRCT2::Scripting
             widget_invalidate_by_number(_class, _number, _widgetIndex);
         }
     };
+
+    class ScCheckBoxWidget : public ScWidget
+    {
+    public:
+        ScCheckBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScCheckBoxWidget>(ctx);
+            dukglue_register_property(ctx, &ScCheckBoxWidget::isChecked_get, &ScCheckBoxWidget::isChecked_set, "isChecked");
+        }
+
+    private:
+        bool isChecked_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return widget_is_pressed(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isChecked_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+            }
+        }
+    };
+
+    class ScListViewWidget : public ScWidget
+    {
+    public:
+        ScListViewWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScListViewWidget>(ctx);
+            dukglue_register_property(ctx, &ScListViewWidget::canSelect_get, &ScListViewWidget::canSelect_set, "canSelect");
+            dukglue_register_property(ctx, &ScListViewWidget::isStriped_get, &ScListViewWidget::isStriped_set, "isStriped");
+            dukglue_register_property(ctx, &ScListViewWidget::scrollbars_get, &ScListViewWidget::scrollbars_set, "scrollbars");
+            dukglue_register_property(
+                ctx, &ScListViewWidget::showColumnHeaders_get, &ScListViewWidget::showColumnHeaders_set, "showColumnHeaders");
+            dukglue_register_property(ctx, &ScListViewWidget::highlightedCell_get, nullptr, "highlightedCell");
+            dukglue_register_property(
+                ctx, &ScListViewWidget::selectedCell_get, &ScListViewWidget::selectedCell_set, "selectedCell");
+            dukglue_register_property(ctx, &ScListViewWidget::columns_get, &ScListViewWidget::columns_set, "columns");
+            dukglue_register_property(ctx, &ScListViewWidget::items_get, &ScListViewWidget::items_set, "items");
+        }
+
+    private:
+        bool canSelect_get() const
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return listView->CanSelect;
+            }
+            return false;
+        }
+
+        void canSelect_set(bool value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->CanSelect = value;
+            }
+        }
+
+        bool isStriped_get() const
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return listView->IsStriped;
+            }
+            return false;
+        }
+
+        void isStriped_set(bool value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->IsStriped = value;
+            }
+        }
+
+        DukValue scrollbars_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto scrollType = ScrollbarType::None;
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                scrollType = listView->GetScrollbars();
+            }
+            return ToDuk(ctx, scrollType);
+        }
+
+        void scrollbars_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SetScrollbars(FromDuk<ScrollbarType>(value));
+            }
+        }
+
+        bool showColumnHeaders_get() const
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return listView->ShowColumnHeaders;
+            }
+            return false;
+        }
+
+        void showColumnHeaders_set(bool value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->ShowColumnHeaders = value;
+            }
+        }
+
+        DukValue highlightedCell_get()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return ToDuk(ctx, listView->LastHighlightedCell);
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        DukValue selectedCell_get()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                return ToDuk(ctx, listView->SelectedCell);
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void selectedCell_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SelectedCell = FromDuk<std::optional<RowColumn>>(value);
+            }
+        }
+
+        std::vector<std::vector<std::string>> items_get()
+        {
+            std::vector<std::vector<std::string>> result;
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                for (const auto& item : listView->GetItems())
+                {
+                    result.push_back(item.Cells);
+                }
+            }
+            return result;
+        }
+
+        void items_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SetItems(FromDuk<std::vector<ListViewItem>>(value));
+            }
+        }
+
+        std::vector<DukValue> columns_get()
+        {
+            std::vector<DukValue> result;
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                for (const auto& column : listView->GetColumns())
+                {
+                    result.push_back(ToDuk(ctx, column));
+                }
+            }
+            return result;
+        }
+
+        void columns_set(const DukValue& value)
+        {
+            auto listView = GetListView();
+            if (listView != nullptr)
+            {
+                listView->SetColumns(FromDuk<std::vector<ListViewColumn>>(value));
+            }
+        }
+
+        CustomListView* GetListView() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return GetCustomListView(w, _widgetIndex);
+            }
+            return nullptr;
+        }
+    };
+
+    inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
+    {
+        const auto& widget = w->widgets[widgetIndex];
+        auto c = w->classification;
+        auto n = w->number;
+        switch (widget.type)
+        {
+            case WWT_CHECKBOX:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
+            case WWT_SCROLL:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
+            default:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
+        }
+    }
+
 } // namespace OpenRCT2::Scripting
 
 #endif

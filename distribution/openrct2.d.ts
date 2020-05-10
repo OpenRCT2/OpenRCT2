@@ -1072,7 +1072,7 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "spinner" | "viewport";
+        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
 
     interface Widget {
         type: WidgetType;
@@ -1111,6 +1111,42 @@ declare global {
     interface LabelWidget extends Widget {
         text: string;
         onChange: (index: number) => void;
+    }
+
+    type SortOrder = "none" | "ascending" | "descending";
+
+    type ScrollbarType = "none" | "horizontal" | "vertical" | "both";
+
+    interface ListViewColumn {
+        canSort?: boolean;
+        sortOrder?: SortOrder;
+        header?: string;
+        headerTooltip?: string;
+        width?: number;
+        ratioWidth?: number;
+        minWidth?: number;
+        maxWidth?: number;
+    }
+
+    type ListViewItem = string[];
+
+    interface RowColumn {
+        row: number;
+        column: number;
+    }
+
+    interface ListView extends Widget {
+        scrollbars?: ScrollbarType;
+        isStriped?: boolean;
+        showColumnHeaders?: boolean;
+        columns?: ListViewColumn[];
+        items?: string[] | ListViewItem[];
+        selectedCell?: RowColumn;
+        readonly highlightedCell?: RowColumn;
+        canSelect?: boolean;
+
+        onHighlight: (item: number, column: number) => void;
+        onClick: (item: number, column: number) => void;
     }
 
     interface SpinnerWidget extends Widget {

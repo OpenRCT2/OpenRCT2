@@ -10,6 +10,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../interface/Dropdown.h"
+#    include "CustomListView.h"
 #    include "ScUi.hpp"
 #    include "ScWindow.hpp"
 
@@ -54,8 +55,13 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_resize(rct_window* w);
     static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
     static void window_custom_update(rct_window* w);
+    static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+    static void window_custom_scrollmousedrag(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+    static void window_custom_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+    static void window_custom_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
     static void window_custom_invalidate(rct_window* w);
     static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi);
+    static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
     static void window_custom_update_viewport(rct_window* w);
 
     static rct_window_event_list window_custom_events = { window_custom_close,
@@ -73,10 +79,10 @@ namespace OpenRCT2::Ui::Windows
                                                           nullptr,
                                                           nullptr,
                                                           nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
+                                                          window_custom_scrollgetsize,
+                                                          window_custom_scrollmousedown,
+                                                          window_custom_scrollmousedrag,
+                                                          window_custom_scrollmouseover,
                                                           nullptr,
                                                           nullptr,
                                                           nullptr,
@@ -85,7 +91,7 @@ namespace OpenRCT2::Ui::Windows
                                                           nullptr,
                                                           window_custom_invalidate,
                                                           window_custom_paint,
-                                                          nullptr };
+                                                          window_custom_scrollpaint };
 
     struct CustomWidgetDesc
     {
@@ -100,23 +106,23 @@ namespace OpenRCT2::Ui::Windows
         std::string Text;
         std::string Tooltip;
         std::vector<std::string> Items;
+        std::vector<ListViewItem> ListViewItems;
+        std::vector<ListViewColumn> ListViewColumns;
+        ScrollbarType Scrollbars{};
         int32_t SelectedIndex{};
         bool IsChecked{};
         bool IsDisabled{};
         bool HasBorder{};
+        bool ShowColumnHeaders{};
+        bool IsStriped{};
+        bool CanSelect{};
 
         // Event handlers
         DukValue OnClick;
         DukValue OnChange;
         DukValue OnIncrement;
         DukValue OnDecrement;
-
-        static std::string ProcessString(const DukValue& value)
-        {
-            if (value.type() == DukValue::Type::STRING)
-                return language_convert_string(value.as_string());
-            return {};
-        }
+        DukValue OnHighlight;
 
         static CustomWidgetDesc FromDukValue(DukValue desc)
         {
@@ -157,17 +163,26 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "dropdown")
             {
-                auto dukItems = desc["items"].as_array();
-                for (const auto& dukItem : dukItems)
-                {
-                    result.Items.push_back(ProcessString(dukItem));
-                }
                 result.SelectedIndex = desc["selectedIndex"].as_int();
                 result.OnChange = desc["onChange"];
             }
             else if (result.Type == "groupbox" || result.Type == "label")
             {
                 result.Text = ProcessString(desc["text"]);
+            }
+            else if (result.Type == "listview")
+            {
+                result.ListViewColumns = FromDuk<std::vector<ListViewColumn>>(desc["columns"]);
+                result.ListViewItems = FromDuk<std::vector<ListViewItem>>(desc["items"]);
+                result.ShowColumnHeaders = AsOrDefault(desc["showColumnHeaders"], false);
+                result.IsStriped = AsOrDefault(desc["isStriped"], false);
+                result.OnClick = desc["onClick"];
+                result.OnHighlight = desc["onHighlight"];
+                result.CanSelect = AsOrDefault(desc["canSelect"], false);
+                if (desc["scrollbars"].type() == DukValue::UNDEFINED)
+                    result.Scrollbars = ScrollbarType::Vertical;
+                else
+                    result.Scrollbars = FromDuk<ScrollbarType>(desc["scrollbars"]);
             }
             else if (result.Type == "spinner")
             {
@@ -312,6 +327,7 @@ namespace OpenRCT2::Ui::Windows
         CustomWindowDesc Desc;
         std::vector<rct_widget> Widgets;
         std::vector<size_t> WidgetIndexMap;
+        std::vector<CustomListView> ListViews;
 
         CustomWindowInfo(std::shared_ptr<Plugin> owner, const CustomWindowDesc& desc)
             : Owner(owner)
@@ -401,8 +417,6 @@ namespace OpenRCT2::Ui::Windows
             window->max_height = desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
         }
         RefreshWidgets(window);
-        window_init_scroll_widgets(window);
-        window_custom_update_viewport(window);
         return window;
     }
 
@@ -576,6 +590,44 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+    {
+        auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            auto size = info.ListViews[scrollIndex].GetSize();
+            *width = size.width;
+            *height = size.height;
+        }
+    }
+
+    static void window_custom_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+        auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            info.ListViews[scrollIndex].MouseDown(screenCoords);
+        }
+    }
+
+    static void window_custom_scrollmousedrag(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+        auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            info.ListViews[scrollIndex].MouseOver(screenCoords, true);
+        }
+    }
+
+    static void window_custom_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+        auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            info.ListViews[scrollIndex].MouseOver(screenCoords, false);
+        }
+    }
+
     static void window_custom_set_pressed_tab(rct_window* w)
     {
         const auto& info = GetInfo(w);
@@ -604,6 +656,28 @@ namespace OpenRCT2::Ui::Windows
 
         const auto& desc = GetInfo(w).Desc;
         set_format_arg(0, void*, desc.Title.c_str());
+
+        auto& info = GetInfo(w);
+        size_t scrollIndex = 0;
+        for (auto widget = w->widgets; widget->type != WWT_LAST; widget++)
+        {
+            if (widget->type == WWT_SCROLL)
+            {
+                auto& listView = info.ListViews[scrollIndex];
+                auto width = widget->right - widget->left + 1 - 2;
+                auto height = widget->bottom - widget->top + 1 - 2;
+                if (listView.GetScrollbars() == ScrollbarType::Horizontal || listView.GetScrollbars() == ScrollbarType::Both)
+                {
+                    height -= SCROLLBAR_WIDTH + 1;
+                }
+                if (listView.GetScrollbars() == ScrollbarType::Vertical || listView.GetScrollbars() == ScrollbarType::Both)
+                {
+                    width -= SCROLLBAR_WIDTH + 1;
+                }
+                listView.Resize({ width, height });
+                scrollIndex++;
+            }
+        }
     }
 
     static void window_custom_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
@@ -639,6 +713,15 @@ namespace OpenRCT2::Ui::Windows
         if (w->viewport != nullptr)
         {
             window_draw_viewport(dpi, w);
+        }
+    }
+
+    static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+    {
+        const auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            info.ListViews[scrollIndex].Paint(w, dpi, &w->scrolls[scrollIndex]);
         }
     }
 
@@ -752,6 +835,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.string = const_cast<utf8*>(desc.Items[desc.SelectedIndex].c_str());
             }
+            else
+            {
+                widget.string = const_cast<utf8*>("");
+            }
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
 
@@ -780,6 +867,18 @@ namespace OpenRCT2::Ui::Windows
             widget.type = WWT_LABEL;
             widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "listview")
+        {
+            widget.type = WWT_SCROLL;
+            widget.content = 0;
+            if (desc.Scrollbars == ScrollbarType::Horizontal)
+                widget.content = SCROLL_HORIZONTAL;
+            else if (desc.Scrollbars == ScrollbarType::Vertical)
+                widget.content = SCROLL_VERTICAL;
+            else if (desc.Scrollbars == ScrollbarType::Both)
+                widget.content = SCROLL_BOTH;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "spinner")
@@ -827,6 +926,7 @@ namespace OpenRCT2::Ui::Windows
 
         widgets.clear();
         info.WidgetIndexMap.clear();
+        info.ListViews.clear();
 
         // Add default widgets (window shim)
         widgets.insert(widgets.begin(), std::begin(CustomDefaultWidgets), std::end(CustomDefaultWidgets));
@@ -877,6 +977,20 @@ namespace OpenRCT2::Ui::Windows
             {
                 info.WidgetIndexMap.push_back(widgetDescIndex);
             }
+
+            if (widgetDesc.Type == "listview")
+            {
+                CustomListView listView(w, info.ListViews.size());
+                listView.SetScrollbars(widgetDesc.Scrollbars, true);
+                listView.SetColumns(widgetDesc.ListViewColumns, true);
+                listView.SetItems(widgetDesc.ListViewItems, true);
+                listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
+                listView.IsStriped = widgetDesc.IsStriped;
+                listView.OnClick = widgetDesc.OnClick;
+                listView.OnHighlight = widgetDesc.OnHighlight;
+                listView.CanSelect = widgetDesc.CanSelect;
+                info.ListViews.push_back(std::move(listView));
+            }
         }
 
         for (size_t i = firstCustomWidgetIndex; i < widgets.size(); i++)
@@ -899,6 +1013,9 @@ namespace OpenRCT2::Ui::Windows
 
         widgets.push_back({ WIDGETS_END });
         w->widgets = widgets.data();
+
+        window_init_scroll_widgets(w);
+        window_custom_update_viewport(w);
     }
 
     static void InvokeEventHandler(const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler)
@@ -982,6 +1099,47 @@ namespace OpenRCT2::Ui::Windows
             }
         }
         return std::nullopt;
+    }
+
+    std::string GetWidgetName(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            const auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->Name;
+            }
+        }
+        return {};
+    }
+
+    void SetWidgetName(rct_window* w, rct_widgetindex widgetIndex, const std::string_view& name)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->Name = std::string(name);
+            }
+        }
+    }
+
+    CustomListView* GetCustomListView(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& info = GetInfo(w);
+            auto scrollIndex = window_get_scroll_data_index(w, widgetIndex);
+            if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+            {
+                return &info.ListViews[scrollIndex];
+            }
+        }
+        return nullptr;
     }
 
 } // namespace OpenRCT2::Ui::Windows

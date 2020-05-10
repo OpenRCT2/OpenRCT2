@@ -113,6 +113,20 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
+        template<typename T> void Set(const char* name, const std::optional<T>& value)
+        {
+            if (value)
+            {
+                EnsureObjectPushed();
+                duk_push_null(_ctx);
+                duk_put_prop_string(_ctx, _idx, name);
+            }
+            else
+            {
+                Set(name, *value);
+            }
+        }
+
         DukValue Take()
         {
             EnsureObjectPushed();
@@ -190,6 +204,8 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    std::string ProcessString(const DukValue& value);
+
     template<typename T> DukValue ToDuk(duk_context* ctx, const T& value) = delete;
     template<typename T> T FromDuk(const DukValue& s) = delete;
 
@@ -203,6 +219,17 @@ namespace OpenRCT2::Scripting
     {
         duk_push_lstring(ctx, value.data(), value.size());
         return DukValue::take_from_stack(ctx);
+    }
+
+    template<size_t TLen> inline DukValue ToDuk(duk_context* ctx, const char (&value)[TLen])
+    {
+        duk_push_string(ctx, value);
+        return DukValue::take_from_stack(ctx);
+    }
+
+    template<typename T> DukValue ToDuk(duk_context* ctx, const std::optional<T>& value)
+    {
+        return value ? ToDuk(ctx, *value) : ToDuk(ctx, nullptr);
     }
 
 } // namespace OpenRCT2::Scripting
