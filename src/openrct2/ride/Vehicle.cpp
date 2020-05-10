@@ -8712,11 +8712,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(
     _vehicleUnkF64E10 = 1;
     acceleration = dword_9A2970[vehicle_sprite_type];
     remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
-    if (remaining_distance < 0)
-    {
-        goto loc_6DCA7A;
-    }
-    if (remaining_distance < 0x368A)
+    if (remaining_distance >= 0 && remaining_distance < 0x368A)
     {
         goto loc_6DCE02;
     }
@@ -8725,6 +8721,8 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(
     unk_F64E20.y = y;
     unk_F64E20.z = z;
     Invalidate();
+    if (remaining_distance < 0)
+        goto loc_6DCA9A;
 
 loc_6DC462:
     if (var_D3 == 0)
@@ -9043,17 +9041,6 @@ loc_6DC9BC:
     _vehicleVelocityF64E0C -= remaining_distance + 1;
     remaining_distance = -1;
     goto loc_6DCD2B;
-
-    /////////////////////////////////////////
-    // Dead code: 0x006DC9D9 to 0x006DCA79 //
-    /////////////////////////////////////////
-
-loc_6DCA7A:
-    sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-    unk_F64E20.x = x;
-    unk_F64E20.y = y;
-    unk_F64E20.z = z;
-    Invalidate();
 
 loc_6DCA9A:
     regs.ax = track_progress - 1;
