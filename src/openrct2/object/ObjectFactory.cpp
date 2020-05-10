@@ -419,7 +419,7 @@ namespace ObjectFactory
             auto objectType = ParseObjectType(json_string_value(jObjectType));
             if (objectType != 0xFF)
             {
-                auto id = json_string_value(json_object_get(jRoot, "id"));
+                auto id = json_string_value(json_object_get(jRoot, "PeepId"));
 
                 rct_object_entry entry = {};
                 auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));

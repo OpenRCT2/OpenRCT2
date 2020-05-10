@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScTool::id_get, nullptr, "id");
+            dukglue_register_property(ctx, &ScTool::id_get, nullptr, "PeepId");
             dukglue_register_property(ctx, &ScTool::cursor_get, nullptr, "cursor");
             dukglue_register_method(ctx, &ScTool::cancel, "cancel");
         }

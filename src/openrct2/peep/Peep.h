@@ -240,7 +240,7 @@ enum PeepRideSubState
     PEEP_RIDE_AT_ENTRANCE = 0,
     PEEP_RIDE_IN_ENTRANCE = 1,
     PEEP_RIDE_FREE_VEHICLE_CHECK = 2, // Spend money on ride
-    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what direction and where to go after commiting to entering vehicle
+    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what SomePeepDirection and where to go after commiting to entering vehicle
     PEEP_RIDE_APPROACH_VEHICLE = 4,
     PEEP_RIDE_ENTER_VEHICLE = 5,
     PEEP_RIDE_ON_RIDE = 6,
@@ -642,43 +642,43 @@ struct Peep : SpriteBase
     {
         struct
         {
-            uint8_t current_car;
-            uint8_t current_seat;
+            uint8_t CurrentCar;
+            uint8_t CurrentSeat;
         };
-        uint16_t time_to_sitdown;
+        uint16_t TimeToSitdown;
         struct
         {
-            uint8_t time_to_stand;
-            uint8_t standing_flags;
+            uint8_t TimeToStand;
+            uint8_t StandingFlags;
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;
-    PeepActionSpriteType action_sprite_type;
+    uint8_t SpecialSprite;
+    PeepActionSpriteType ActionSpriteType;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    PeepActionSpriteType next_action_sprite_type;
-    uint8_t action_sprite_image_offset;
-    PeepActionType action;
-    uint8_t action_frame;
-    uint8_t step_progress;
+    PeepActionSpriteType NextActionSpriteType;
+    uint8_t ActionSpriteImageOffset;
+    PeepActionType Action;
+    uint8_t ActionFrame;
+    uint8_t StepProgress;
     union
     {
-        uint16_t mechanic_time_since_call; // time getting to ride to fix
-        uint16_t next_in_queue;
+        uint16_t MechanicTimeSinceCall; // time getting to ride to fix
+        uint16_t NextInQueue;
     };
     union
     {
-        uint8_t maze_last_edge;
-        Direction direction; // Direction ?
+        uint8_t MazeLastEdge;
+        Direction SomePeepDirection; // Direction ?
     };
-    uint8_t interaction_ride_index;
-    uint16_t time_in_queue;
-    uint8_t rides_been_on[32];
+    uint8_t InteractionRideIndex;
+    uint16_t TimeInQueue;
+    uint8_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32_t id;
-    money32 cash_in_pocket;
+    uint32_t PeepId;
+    money32 CashInPocket;
     money32 cash_spent;
     int32_t time_in_park;
     int8_t rejoin_queue_timeout; // whilst waiting for a free vehicle (or pair) in the entrance

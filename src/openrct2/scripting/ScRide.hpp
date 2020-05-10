@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
+            dukglue_register_property(ctx, &ScRide::id_get, nullptr, "PeepId");
             dukglue_register_property(ctx, &ScRide::object_get, nullptr, "object");
             dukglue_register_property(ctx, &ScRide::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScRide::name_get, &ScRide::name_set, "name");

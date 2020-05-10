@@ -149,7 +149,7 @@ namespace GameActions
     {
         if (ga->GetPlayer() == -1 && network_get_mode() != NETWORK_MODE_NONE)
         {
-            // Server can directly invoke actions and will have no player id assigned
+            // Server can directly invoke actions and will have no player PeepId assigned
             // as that normally happens when receiving them over network.
             ga->SetPlayer(network_get_current_player_id());
         }
@@ -525,7 +525,7 @@ namespace GameActions
         // In network mode the error should be only shown to the issuer of the action.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            // If the action was never networked and query fails locally the player id is not assigned.
+            // If the action was never networked and query fails locally the player PeepId is not assigned.
             // So compare only if the action went into the queue otherwise show errors by default.
             const bool isActionFromNetwork = (action->GetFlags() & GAME_COMMAND_FLAG_NETWORKED) != 0;
             if (isActionFromNetwork && action->GetPlayer() != network_get_current_player_id())

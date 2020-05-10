@@ -77,7 +77,7 @@ TEST_F(LanguagePackTest, language_pack_multibyte)
     delete lang;
 }
 
-const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
+const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string PeepId number.\n"
                                              "# Everything after the colon and before the new line will be saved as the "
                                              "string.\n"
                                              "# Use # at the beginning of a line to leave a comment.\n"

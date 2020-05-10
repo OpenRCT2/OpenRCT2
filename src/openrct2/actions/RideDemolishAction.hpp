@@ -160,17 +160,17 @@ private:
             uint8_t ride_id_bit = _rideIndex % 8;
             uint8_t ride_id_offset = _rideIndex / 8;
 
-            // clear ride from potentially being in rides_been_on
-            peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
+            // clear ride from potentially being in RidesBeenOn
+            peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
             if (peep->State == PEEP_STATE_WATCHING)
             {
                 if (peep->CurrentRide == _rideIndex)
                 {
                     peep->CurrentRide = RIDE_ID_NULL;
-                    if (peep->time_to_stand >= 50)
+                    if (peep->TimeToStand >= 50)
                     {
                         // make peep stop watching the ride
-                        peep->time_to_stand = 50;
+                        peep->TimeToStand = 50;
                     }
                 }
             }

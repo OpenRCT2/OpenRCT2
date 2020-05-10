@@ -79,7 +79,7 @@ void LocalisationService::OpenLanguage(int32_t id, IObjectManager& objectManager
     CloseLanguages();
     if (id == LANGUAGE_UNDEFINED)
     {
-        throw std::invalid_argument("id was undefined");
+        throw std::invalid_argument("PeepId was undefined");
     }
 
     std::string filename;

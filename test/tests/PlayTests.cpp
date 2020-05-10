@@ -115,7 +115,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Insert a rich guest
     auto richGuest = gs->GetPark().GenerateGuest();
-    richGuest->cash_in_pocket = 3000;
+    richGuest->CashInPocket = 3000;
 
     // Wait for rich guest to get in queue
     bool matched = updateUntil(*gs, 1000, [&]() { return richGuest->State == PEEP_STATE_QUEUING; });
@@ -123,7 +123,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Insert poor guest
     auto poorGuest = gs->GetPark().GenerateGuest();
-    poorGuest->cash_in_pocket = 5;
+    poorGuest->CashInPocket = 5;
 
     // Wait for poor guest to get in queue
     matched = updateUntil(*gs, 1000, [&]() { return poorGuest->State == PEEP_STATE_QUEUING; });

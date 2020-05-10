@@ -16,7 +16,7 @@
 #include "GameAction.h"
 
 // There is also the BannerSetColourAction that sets primary colour but this action takes banner index rather than x, y, z,
-// direction
+// SomePeepDirection
 enum class BannerSetStyleType : uint8_t
 {
     PrimaryColour,

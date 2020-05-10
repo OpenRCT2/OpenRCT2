@@ -160,11 +160,11 @@ private:
         {
             newPeep->sprite_identifier = 1;
             newPeep->WindowInvalidateFlags = 0;
-            newPeep->action = PEEP_ACTION_NONE_2;
-            newPeep->special_sprite = 0;
-            newPeep->action_sprite_image_offset = 0;
+            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->SpecialSprite = 0;
+            newPeep->ActionSpriteImageOffset = 0;
             newPeep->no_action_frame_num = 0;
-            newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
+            newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->path_check_optimisation = 0;
             newPeep->Type = PEEP_TYPE_STAFF;
             newPeep->OutsideOfPark = 0;
@@ -179,7 +179,7 @@ private:
             uint16_t idSearchSpriteIndex;
             Peep* idSearchPeep;
 
-            // We search for the first available id for a given staff type
+            // We search for the first available PeepId for a given staff type
             uint32_t newStaffId = 0;
             for (;;)
             {
@@ -191,7 +191,7 @@ private:
                     if (idSearchPeep->StaffType != _staffType)
                         continue;
 
-                    if (idSearchPeep->id == newStaffId)
+                    if (idSearchPeep->PeepId == newStaffId)
                     {
                         found = true;
                         break;
@@ -202,7 +202,7 @@ private:
                     break;
             }
 
-            newPeep->id = newStaffId;
+            newPeep->PeepId = newStaffId;
             newPeep->StaffType = _staffType;
 
             PeepSpriteType spriteType = spriteTypes[_staffType];

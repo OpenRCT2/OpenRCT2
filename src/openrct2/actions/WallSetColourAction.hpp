@@ -74,7 +74,7 @@ public:
         if (wallElement == nullptr)
         {
             log_error(
-                "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
+                "Could not find wall element at: x = %d, y = %d, z = %d, SomePeepDirection = %u", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }
@@ -127,7 +127,7 @@ public:
         if (wallElement == nullptr)
         {
             log_error(
-                "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
+                "Could not find wall element at: x = %d, y = %d, z = %d, SomePeepDirection = %u", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }

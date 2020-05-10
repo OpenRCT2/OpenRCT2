@@ -166,13 +166,13 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    console.WriteFormatLine("rides set type <ride id> <ride type>");
-                    console.WriteFormatLine("rides set mode [<ride id> <operating mode>]");
-                    console.WriteFormatLine("rides set mass <ride id> <mass value>");
-                    console.WriteFormatLine("rides set excitement <ride id> <excitement value>");
-                    console.WriteFormatLine("rides set intensity <ride id> <intensity value>");
-                    console.WriteFormatLine("rides set nausea <ride id> <nausea value>");
-                    console.WriteFormatLine("rides set price <ride id / all [type]> <price>");
+                    console.WriteFormatLine("rides set type <ride PeepId> <ride type>");
+                    console.WriteFormatLine("rides set mode [<ride PeepId> <operating mode>]");
+                    console.WriteFormatLine("rides set mass <ride PeepId> <mass value>");
+                    console.WriteFormatLine("rides set excitement <ride PeepId> <excitement value>");
+                    console.WriteFormatLine("rides set intensity <ride PeepId> <intensity value>");
+                    console.WriteFormatLine("rides set nausea <ride PeepId> <nausea value>");
+                    console.WriteFormatLine("rides set price <ride PeepId / all [type]> <price>");
                 }
                 return 0;
             }
@@ -443,15 +443,15 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->StaffType, peep->Energy, name.c_str());
+                    "staff PeepId %03d type: %02u energy %03u name %s", i, peep->StaffType, peep->Energy, name.c_str());
             }
         }
         else if (argv[0] == "set")
         {
             if (argv.size() < 4)
             {
-                console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
-                console.WriteFormatLine("staff set costume <staff id> <costume id>");
+                console.WriteFormatLine("staff set energy <staff PeepId> <value 0-255>");
+                console.WriteFormatLine("staff set costume <staff PeepId> <costume PeepId>");
                 for (int32_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
                 {
                     char costume_name[128] = { 0 };
@@ -1683,7 +1683,7 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
         console.WriteLine("    8 (NEWS_ITEM_AWARD)");
         console.WriteLine("    9 (NEWS_ITEM_GRAPH)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
-        console.WriteLine("assoc is the associated id of ride/peep/tile/etc.");
+        console.WriteLine("assoc is the associated PeepId of ride/peep/tile/etc.");
         return 1;
     }
     auto type = atoi(argv[0].c_str());

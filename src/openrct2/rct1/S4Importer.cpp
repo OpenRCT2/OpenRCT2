@@ -1392,18 +1392,18 @@ private:
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
         dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
-        dst->action = static_cast<PeepActionType>(src->action);
-        dst->special_sprite = src->special_sprite;
-        dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
-        dst->action_sprite_image_offset = src->action_sprite_image_offset;
+        dst->Action = static_cast<PeepActionType>(src->action);
+        dst->SpecialSprite = src->special_sprite;
+        dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
+        dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->no_action_frame_num = src->no_action_frame_num;
-        dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
-        dst->action_frame = src->action_frame;
+        dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
+        dst->ActionFrame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
+        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
+        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
 
         sprite_move(src->x, src->y, src->z, dst);
         invalidate_sprite_2(dst);
@@ -1424,7 +1424,7 @@ private:
         dst->NextFlags = src->next_flags;
         dst->Var37 = src->var_37;
         dst->TimeToConsume = src->time_to_consume;
-        dst->step_progress = src->step_progress;
+        dst->StepProgress = src->step_progress;
         dst->vandalism_seen = src->vandalism_seen;
 
         dst->Type = static_cast<PeepType>(src->type);
@@ -1447,7 +1447,7 @@ private:
         dst->DestinationX = src->destination_x;
         dst->DestinationY = src->destination_y;
         dst->DestinationTolerance = src->destination_tolerance;
-        dst->direction = src->direction;
+        dst->SomePeepDirection = src->direction;
 
         dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;
@@ -1470,15 +1470,15 @@ private:
         dst->CurrentRide = src->current_ride;
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
-        dst->current_car = src->current_car;
-        dst->current_seat = src->current_seat;
+        dst->CurrentCar = src->current_car;
+        dst->CurrentSeat = src->current_seat;
         dst->time_on_ride = src->time_on_ride;
         dst->days_in_queue = src->days_in_queue;
 
-        dst->interaction_ride_index = src->interaction_ride_index;
+        dst->InteractionRideIndex = src->interaction_ride_index;
 
-        dst->id = src->id;
-        dst->cash_in_pocket = src->cash_in_pocket;
+        dst->PeepId = src->id;
+        dst->CashInPocket = src->cash_in_pocket;
         dst->cash_spent = src->cash_spent;
         dst->time_in_park = src->time_in_park;
 
@@ -1504,7 +1504,7 @@ private:
 
         for (size_t i = 0; i < 32; i++)
         {
-            dst->rides_been_on[i] = src->rides_been_on[i];
+            dst->RidesBeenOn[i] = src->rides_been_on[i];
         }
         for (size_t i = 0; i < 16; i++)
         {
@@ -1531,7 +1531,7 @@ private:
         // Doubles as staff orders
         dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
         // The ID is fixed later
-        dst->next_in_queue = src->next_in_queue;
+        dst->NextInQueue = src->next_in_queue;
 
         dst->peep_flags = 0;
         dst->pathfind_goal.x = 0xFF;
@@ -1582,7 +1582,7 @@ private:
 
     void FixPeepNextInQueue(Peep* peep, const uint16_t* spriteIndexMap)
     {
-        peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
+        peep->NextInQueue = MapSpriteIndex(peep->NextInQueue, spriteIndexMap);
     }
 
     void ImportStaffPatrolArea(Peep* staffmember)

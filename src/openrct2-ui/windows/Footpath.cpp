@@ -364,7 +364,7 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
         return;
     }
 
-    // Get path id
+    // Get path PeepId
     int32_t pathId = dropdownIndex;
     if (pathId == -1)
     {
@@ -396,7 +396,7 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
         pathId = i;
     }
 
-    // Set selected path id
+    // Set selected path PeepId
     gFootpathSelectedId = pathId;
     footpath_provisional_update();
     _window_footpath_cost = MONEY32_UNDEFINED;

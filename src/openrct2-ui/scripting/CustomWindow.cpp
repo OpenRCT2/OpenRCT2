@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
             result.MinHeight = GetOptionalInt(desc["minHeight"]);
             result.MaxHeight = GetOptionalInt(desc["maxHeight"]);
             result.Title = language_convert_string(desc["title"].as_string());
-            result.Id = GetOptionalInt(desc["id"]);
+            result.Id = GetOptionalInt(desc["PeepId"]);
 
             if (desc["widgets"].is_array())
             {

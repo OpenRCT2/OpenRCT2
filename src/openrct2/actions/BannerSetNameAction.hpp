@@ -51,7 +51,7 @@ public:
     {
         if (_bannerIndex >= MAX_BANNERS)
         {
-            log_warning("Invalid game command for setting banner name, banner id = %d", _bannerIndex);
+            log_warning("Invalid game command for setting banner name, banner PeepId = %d", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
         return MakeResult();

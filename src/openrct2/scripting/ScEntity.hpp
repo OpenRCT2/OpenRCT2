@@ -163,7 +163,7 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScEntity::id_get, nullptr, "id");
+            dukglue_register_property(ctx, &ScEntity::id_get, nullptr, "PeepId");
             dukglue_register_property(ctx, &ScEntity::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScEntity::x_get, &ScEntity::x_set, "x");
             dukglue_register_property(ctx, &ScEntity::y_get, &ScEntity::y_set, "y");
@@ -426,7 +426,7 @@ namespace OpenRCT2::Scripting
         int32_t cash_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->cash_in_pocket : 0;
+            return peep != nullptr ? peep->CashInPocket : 0;
         }
         void cash_set(int32_t value)
         {
@@ -434,7 +434,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->cash_in_pocket = std::max(0, value);
+                peep->CashInPocket = std::max(0, value);
             }
         }
 

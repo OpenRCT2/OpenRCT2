@@ -197,24 +197,24 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(CurrentRide);
     COMPARE_FIELD(CurrentRideStation);
     COMPARE_FIELD(CurrentTrain);
-    COMPARE_FIELD(time_to_sitdown);
-    COMPARE_FIELD(special_sprite);
-    COMPARE_FIELD(action_sprite_type);
-    COMPARE_FIELD(next_action_sprite_type);
-    COMPARE_FIELD(action_sprite_image_offset);
-    COMPARE_FIELD(action);
-    COMPARE_FIELD(action_frame);
-    COMPARE_FIELD(step_progress);
-    COMPARE_FIELD(next_in_queue);
-    COMPARE_FIELD(maze_last_edge);
-    COMPARE_FIELD(interaction_ride_index);
-    COMPARE_FIELD(time_in_queue);
+    COMPARE_FIELD(TimeToSitdown);
+    COMPARE_FIELD(SpecialSprite);
+    COMPARE_FIELD(ActionSpriteType);
+    COMPARE_FIELD(NextActionSpriteType);
+    COMPARE_FIELD(ActionSpriteImageOffset);
+    COMPARE_FIELD(Action);
+    COMPARE_FIELD(ActionFrame);
+    COMPARE_FIELD(StepProgress);
+    COMPARE_FIELD(NextInQueue);
+    COMPARE_FIELD(MazeLastEdge);
+    COMPARE_FIELD(InteractionRideIndex);
+    COMPARE_FIELD(TimeInQueue);
     for (int i = 0; i < 32; i++)
     {
-        COMPARE_FIELD(rides_been_on[i]);
+        COMPARE_FIELD(RidesBeenOn[i]);
     }
-    COMPARE_FIELD(id);
-    COMPARE_FIELD(cash_in_pocket);
+    COMPARE_FIELD(PeepId);
+    COMPARE_FIELD(CashInPocket);
     COMPARE_FIELD(cash_spent);
     COMPARE_FIELD(time_in_park);
     COMPARE_FIELD(rejoin_queue_timeout);

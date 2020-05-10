@@ -100,7 +100,7 @@ public:
         {
             peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
         }
-        peep->action_frame = 0;
+        peep->ActionFrame = 0;
         peep->UpdateCurrentActionSpriteType();
         peep->Invalidate();
 

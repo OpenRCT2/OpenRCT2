@@ -233,7 +233,7 @@ void footpath_provisional_update()
 
 /**
  * Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
- * then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
+ * then return the location of the ground tile. Besides the location it also computes the SomePeepDirection of the yellow arrow
  * when we are going to build a footpath bridge/tunnel.
  *  rct2: 0x00689726
  *  In:
@@ -242,7 +242,7 @@ void footpath_provisional_update()
  *  Out:
  *      x: ax
  *      y: bx
- *      direction: ecx
+ *      SomePeepDirection: ecx
  *      tileElement: edx
  */
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
@@ -337,7 +337,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
  * screenY: ebx
  * x: ax
  * y: bx
- * direction: cl
+ * SomePeepDirection: cl
  * tileElement: edx
  */
 CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
@@ -440,7 +440,7 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
 }
 
 /**
- * Returns true if the edge of tile x, y specified by direction is occupied by a fence
+ * Returns true if the edge of tile x, y specified by SomePeepDirection is occupied by a fence
  * between heights z0 and z1.
  *
  * Note that there may still be a fence on the opposing tile.
@@ -502,7 +502,7 @@ static PathElement* footpath_connect_corners_get_neighbour(const CoordsXYZ& foot
 
 /**
  * Sets the corner edges of four path tiles.
- * The function will search for a path in the direction given, then check clockwise to see if it there is a path and again until
+ * The function will search for a path in the SomePeepDirection given, then check clockwise to see if it there is a path and again until
  * it reaches the initial path. In other words, checks if there are four paths together so that it can set the inner corners of
  * each one.
  *
@@ -925,7 +925,7 @@ loc_6A6FD2:
     }
 }
 
-// TODO: Change this into a simple check that validates if the direction should be fully checked with loc_6A6D7E and move the
+// TODO: Change this into a simple check that validates if the SomePeepDirection should be fully checked with loc_6A6D7E and move the
 // calling of loc_6A6D7E into the parent function.
 static void loc_6A6C85(
     const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, rct_neighbour_list* neighbourList)
@@ -1158,7 +1158,7 @@ void footpath_chain_ride_queue(
         if (lastPathElement->AsPath()->IsQueue())
         {
             lastPathElement->AsPath()->SetHasQueueBanner(true);
-            lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
+            lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign SomePeepDirection
 
             map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPath, lastPathElement->GetBaseZ() });
         }
@@ -1361,11 +1361,11 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
     return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
 
 searchFromFootpath:
-    // Exclude direction we came from
+    // Exclude SomePeepDirection we came from
     targetPos.z = tileElement->GetBaseZ();
     edges &= ~(1 << direction);
 
-    // Find next direction to go
+    // Find next SomePeepDirection to go
     int32_t newDirection{};
     if (!get_next_direction(edges, &newDirection))
     {
@@ -1376,7 +1376,7 @@ searchFromFootpath:
     edges &= ~(1 << direction);
     if (edges == 0)
     {
-        // Only possible direction to go
+        // Only possible SomePeepDirection to go
         if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
         {
             targetPos.z += PATH_HEIGHT_STEP;
@@ -1983,7 +1983,7 @@ static void footpath_remove_edges_towards(const CoordsXYRangedZ& footPathPos, in
     } while (!(tileElement++)->IsLastForTile());
 }
 
-// Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
+// Returns true when there is an element at the given coordinates that want to connect to a path with the given SomePeepDirection (ride
 // entrances and exits, shops, paths).
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved)
 {
@@ -2002,7 +2002,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                 if (tileElement->base_height == coords.z)
                 {
                     if (!tileElement->AsPath()->IsSloped())
-                        // The footpath is flat, it can be connected to from any direction
+                        // The footpath is flat, it can be connected to from any SomePeepDirection
                         return true;
                     else if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
                         // The footpath is sloped and its lowest point matches the edge connection
@@ -2032,7 +2032,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
                         if (FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))
                         {
-                            // Track element has the flags required for the given direction
+                            // Track element has the flags required for the given SomePeepDirection
                             return true;
                         }
                     }
@@ -2043,7 +2043,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                 {
                     if (entrance_has_direction(tileElement, coords.direction - tileElement->GetDirection()))
                     {
-                        // Entrance wants to be connected towards the given direction
+                        // Entrance wants to be connected towards the given SomePeepDirection
                         return true;
                     }
                 }

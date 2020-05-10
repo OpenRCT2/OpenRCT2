@@ -1183,7 +1183,7 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
             *
             * Effects: First enlarges bounding box.
             * Second, xstart has to start ahead of its normal spot in the
-            * negative direction of the negative minx value.
+            * negative SomePeepDirection of the negative minx value.
             * (pushes everything to the right).
             *
             * This will make the memory copy of the glyph bitmap data

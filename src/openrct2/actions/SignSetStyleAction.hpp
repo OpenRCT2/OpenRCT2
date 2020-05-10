@@ -53,7 +53,7 @@ public:
     {
         if (_bannerIndex >= MAX_BANNERS)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' out of range", _bannerIndex);
+            log_warning("Invalid game command for setting sign style, banner PeepId '%d' out of range", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -62,12 +62,12 @@ public:
             TileElement* tileElement = banner_get_tile_element(_bannerIndex);
             if (tileElement == nullptr)
             {
-                log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+                log_warning("Invalid game command for setting sign style, banner PeepId '%d' not found", _bannerIndex);
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
-                log_warning("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
+                log_warning("Invalid game command for setting sign style, banner PeepId '%d' is not large", _bannerIndex);
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
         }
@@ -77,7 +77,7 @@ public:
 
             if (!wallElement)
             {
-                log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+                log_warning("Invalid game command for setting sign style, banner PeepId '%d' not found", _bannerIndex);
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
         }

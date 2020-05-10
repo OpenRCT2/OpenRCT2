@@ -1137,7 +1137,7 @@ static uint8_t vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params* so
 /*  Returns the vehicle sound for a sound_param.
  *
  *  If already playing returns sound.
- *  If not playing allocates a sound slot to sound_param->id.
+ *  If not playing allocates a sound slot to sound_param->PeepId.
  *  If no free slots returns nullptr.
  */
 static rct_vehicle_sound* vehicle_sounds_update_get_vehicle_sound(rct_vehicle_sound_params* sound_params)
@@ -2883,7 +2883,7 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
     x = location.x;
     y = location.y;
 
-    // Other search direction.
+    // Other search SomePeepDirection.
     direction = direction_reverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
@@ -7168,7 +7168,7 @@ static void vehicle_update_spinning_car(Vehicle* vehicle)
             // On a rotation control track element
             spinningInertia += 6;
             spinSpeed = dword_F64E08 >> spinningInertia;
-            // Alternate the spin direction (roughly). Perhaps in future save a value to the track
+            // Alternate the spin SomePeepDirection (roughly). Perhaps in future save a value to the track
             if (vehicle->sprite_index & 1)
             {
                 vehicle->spin_speed -= spinSpeed;
@@ -8976,7 +8976,7 @@ loc_6DC743:
                     if (z == 2)
                     {
                         Peep* peep = GET_PEEP(vehicle->peep[0]);
-                        if (peep->id & 7)
+                        if (peep->PeepId & 7)
                         {
                             z = 7;
                         }
@@ -8984,7 +8984,7 @@ loc_6DC743:
                     if (z == 6)
                     {
                         Peep* peep = GET_PEEP(vehicle->peep[0]);
-                        if (peep->id & 7)
+                        if (peep->PeepId & 7)
                         {
                             z = 8;
                         }

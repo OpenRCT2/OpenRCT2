@@ -723,7 +723,7 @@ void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1)
 
 #ifdef DEBUG
     openrct2_assert(!gOpenRCT2NoGraphics, "gfx_set_g1_element called on headless instance");
-    openrct2_assert(isValid || isTemp, "gfx_set_g1_element called with unexpected image id");
+    openrct2_assert(isValid || isTemp, "gfx_set_g1_element called with unexpected image PeepId");
     openrct2_assert(g1 != nullptr, "g1 was nullptr");
 #endif
 

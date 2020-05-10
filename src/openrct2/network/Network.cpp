@@ -1096,7 +1096,7 @@ NetworkGroup* Network::AddGroup()
 {
     NetworkGroup* addedgroup = nullptr;
     int32_t newid = -1;
-    // Find first unused group id
+    // Find first unused group PeepId
     for (int32_t id = 0; id < 255; id++)
     {
         if (std::find_if(
@@ -2250,7 +2250,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
     int32_t newid = -1;
     if (GetMode() == NETWORK_MODE_SERVER)
     {
-        // Find first unused player id
+        // Find first unused player PeepId
         for (int32_t id = 0; id < 255; id++)
         {
             if (std::find_if(

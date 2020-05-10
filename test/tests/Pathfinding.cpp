@@ -80,13 +80,13 @@ protected:
         // an actual ride to walk to the entrance of.
         peep->guest_heading_to_ride_id = targetRideID;
 
-        // Pick the direction the peep should initially move in, given the goal position.
+        // Pick the SomePeepDirection the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
         gPeepPathFindGoalPosition = goal;
         const Direction moveDir = peep_pathfind_choose_direction(*pos, peep);
         if (moveDir == INVALID_DIRECTION)
         {
-            // Couldn't determine a direction to move off in
+            // Couldn't determine a SomePeepDirection to move off in
             return false;
         }
 
@@ -94,7 +94,7 @@ protected:
         // 'destination' which is a close position that they will walk towards in a straight line - in this case, one
         // tile away. Stepping the peep will move them towards their destination, and once they reach it, a new
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
-        peep->direction = moveDir;
+        peep->SomePeepDirection = moveDir;
         peep->DestinationX = peep->x + CoordsDirectionDelta[moveDir].x;
         peep->DestinationY = peep->y + CoordsDirectionDelta[moveDir].y;
         peep->DestinationTolerance = 2;

@@ -210,12 +210,12 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                         continue;
                     if (peep->z != loc.z)
                         continue;
-                    if (peep->action < PEEP_ACTION_NONE_1)
+                    if (peep->Action < PEEP_ACTION_NONE_1)
                         continue;
 
-                    peep->action = PEEP_ACTION_CHECK_TIME;
-                    peep->action_frame = 0;
-                    peep->action_sprite_image_offset = 0;
+                    peep->Action = PEEP_ACTION_CHECK_TIME;
+                    peep->ActionFrame = 0;
+                    peep->ActionSpriteImageOffset = 0;
                     peep->UpdateCurrentActionSpriteType();
                     invalidate_sprite_1(peep);
                     break;

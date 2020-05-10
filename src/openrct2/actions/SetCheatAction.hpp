@@ -630,7 +630,7 @@ private:
             switch (object)
             {
                 case OBJECT_MONEY:
-                    peep->cash_in_pocket = MONEY(1000, 00);
+                    peep->CashInPocket = MONEY(1000, 00);
                     break;
                 case OBJECT_PARK_MAP:
                     peep->item_standard_flags |= PEEP_ITEM_MAP;

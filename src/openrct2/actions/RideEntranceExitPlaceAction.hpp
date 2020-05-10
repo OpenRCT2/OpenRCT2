@@ -43,7 +43,7 @@ public:
     void AcceptParameters(GameActionParameterVisitor & visitor) override
     {
         visitor.Visit(_loc);
-        visitor.Visit("direction", _direction);
+        visitor.Visit("SomePeepDirection", _direction);
         visitor.Visit("ride", _rideIndex);
         visitor.Visit("station", _stationNum);
         visitor.Visit("isExit", _isExit);

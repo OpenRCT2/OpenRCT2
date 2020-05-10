@@ -253,24 +253,24 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, CurrentRide);
         COMPARE_FIELD(Peep, CurrentRideStation);
         COMPARE_FIELD(Peep, CurrentTrain);
-        COMPARE_FIELD(Peep, time_to_sitdown);
-        COMPARE_FIELD(Peep, special_sprite);
-        COMPARE_FIELD(Peep, action_sprite_type);
-        COMPARE_FIELD(Peep, next_action_sprite_type);
-        COMPARE_FIELD(Peep, action_sprite_image_offset);
-        COMPARE_FIELD(Peep, action);
-        COMPARE_FIELD(Peep, action_frame);
-        COMPARE_FIELD(Peep, step_progress);
-        COMPARE_FIELD(Peep, next_in_queue);
-        COMPARE_FIELD(Peep, maze_last_edge);
-        COMPARE_FIELD(Peep, interaction_ride_index);
-        COMPARE_FIELD(Peep, time_in_queue);
+        COMPARE_FIELD(Peep, TimeToSitdown);
+        COMPARE_FIELD(Peep, SpecialSprite);
+        COMPARE_FIELD(Peep, ActionSpriteType);
+        COMPARE_FIELD(Peep, NextActionSpriteType);
+        COMPARE_FIELD(Peep, ActionSpriteImageOffset);
+        COMPARE_FIELD(Peep, Action);
+        COMPARE_FIELD(Peep, ActionFrame);
+        COMPARE_FIELD(Peep, StepProgress);
+        COMPARE_FIELD(Peep, NextInQueue);
+        COMPARE_FIELD(Peep, MazeLastEdge);
+        COMPARE_FIELD(Peep, InteractionRideIndex);
+        COMPARE_FIELD(Peep, TimeInQueue);
         for (int i = 0; i < 32; i++)
         {
-            COMPARE_FIELD(Peep, rides_been_on[i]);
+            COMPARE_FIELD(Peep, RidesBeenOn[i]);
         }
-        COMPARE_FIELD(Peep, id);
-        COMPARE_FIELD(Peep, cash_in_pocket);
+        COMPARE_FIELD(Peep, PeepId);
+        COMPARE_FIELD(Peep, CashInPocket);
         COMPARE_FIELD(Peep, cash_spent);
         COMPARE_FIELD(Peep, time_in_park);
         COMPARE_FIELD(Peep, rejoin_queue_timeout);

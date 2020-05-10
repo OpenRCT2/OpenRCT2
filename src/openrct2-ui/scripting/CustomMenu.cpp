@@ -187,7 +187,7 @@ namespace OpenRCT2::Scripting
             {
                 CustomTool customTool;
                 customTool.Owner = scriptEngine.GetExecInfo().GetCurrentPlugin();
-                customTool.Id = dukValue["id"].as_string();
+                customTool.Id = dukValue["PeepId"].as_string();
                 customTool.Cursor = FromDuk<CURSOR_ID>(dukValue["cursor"]);
                 if (customTool.Cursor == CURSOR_UNDEFINED)
                 {

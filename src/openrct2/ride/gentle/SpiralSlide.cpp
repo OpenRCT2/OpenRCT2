@@ -42,7 +42,7 @@ enum
     SPIRAL_SLIDE_FENCE_BOTTOM_LEFT = 20566,
     SPIRAL_SLIDE_FENCE_TOP_LEFT = 20567,
 
-    SPIRAL_SLIDE_PEEP = 20568, // 46 sprites per direction
+    SPIRAL_SLIDE_PEEP = 20568, // 46 sprites per SomePeepDirection
 };
 
 static void spiral_slide_paint_tile_right(

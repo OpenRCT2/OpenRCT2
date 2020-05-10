@@ -1033,7 +1033,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     }
     else
     {
-        // Track direction and type are in the same field
+        // Track SomePeepDirection and type are in the same field
         dst->track_direction = src->track_direction;
         // dst->track_type = src->track_type;
     }
@@ -1125,7 +1125,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
-            dst->name_string_idx = get_real_name_string_id_from_id(src->id);
+            dst->name_string_idx = get_real_name_string_id_from_id(src->PeepId);
         }
         else
         {
@@ -1175,24 +1175,24 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->current_ride = src->CurrentRide;
     dst->current_ride_station = src->CurrentRideStation;
     dst->current_train = src->CurrentTrain;
-    dst->time_to_sitdown = src->time_to_sitdown;
-    dst->special_sprite = src->special_sprite;
-    dst->action_sprite_type = static_cast<uint8_t>(src->action_sprite_type);
-    dst->next_action_sprite_type = static_cast<uint8_t>(src->next_action_sprite_type);
-    dst->action_sprite_image_offset = src->action_sprite_image_offset;
-    dst->action = static_cast<uint8_t>(src->action);
-    dst->action_frame = src->action_frame;
-    dst->step_progress = src->step_progress;
-    dst->next_in_queue = src->next_in_queue;
-    dst->direction = src->direction;
-    dst->interaction_ride_index = src->interaction_ride_index;
-    dst->time_in_queue = src->time_in_queue;
-    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+    dst->time_to_sitdown = src->TimeToSitdown;
+    dst->special_sprite = src->SpecialSprite;
+    dst->action_sprite_type = static_cast<uint8_t>(src->ActionSpriteType);
+    dst->next_action_sprite_type = static_cast<uint8_t>(src->NextActionSpriteType);
+    dst->action_sprite_image_offset = src->ActionSpriteImageOffset;
+    dst->action = static_cast<uint8_t>(src->Action);
+    dst->action_frame = src->ActionFrame;
+    dst->step_progress = src->StepProgress;
+    dst->next_in_queue = src->NextInQueue;
+    dst->direction = src->SomePeepDirection;
+    dst->interaction_ride_index = src->InteractionRideIndex;
+    dst->time_in_queue = src->TimeInQueue;
+    for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)
     {
-        dst->rides_been_on[i] = src->rides_been_on[i];
+        dst->rides_been_on[i] = src->RidesBeenOn[i];
     }
-    dst->id = src->id;
-    dst->cash_in_pocket = src->cash_in_pocket;
+    dst->id = src->PeepId;
+    dst->cash_in_pocket = src->CashInPocket;
     dst->cash_spent = src->cash_spent;
     dst->time_in_park = src->time_in_park;
     dst->rejoin_queue_timeout = src->rejoin_queue_timeout;

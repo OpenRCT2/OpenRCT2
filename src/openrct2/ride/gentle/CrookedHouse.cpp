@@ -87,7 +87,7 @@ static void paint_crooked_house(
         case 3:
             paint_crooked_house_structure(session, direction, 32, 224, 0, height);
             break;
-        // case 5: sub_88ABA4(direction, 0, 224, 1, height); break;
+        // case 5: sub_88ABA4(SomePeepDirection, 0, 224, 1, height); break;
         case 6:
             paint_crooked_house_structure(session, direction, 224, 32, 4, height);
             break;

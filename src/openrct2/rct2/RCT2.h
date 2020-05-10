@@ -333,7 +333,7 @@ struct rct_td6_scenery_element
     int8_t x;                        // 0x10
     int8_t y;                        // 0x11
     int8_t z;                        // 0x12
-    uint8_t flags;                   // 0x13 direction quadrant tertiary colour
+    uint8_t flags;                   // 0x13 SomePeepDirection quadrant tertiary colour
     uint8_t primary_colour;          // 0x14
     uint8_t secondary_colour;        // 0x15
 };

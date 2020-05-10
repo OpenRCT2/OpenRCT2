@@ -273,7 +273,7 @@ Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->next_in_queue;
+        spriteIndex = peep->NextInQueue;
         result = peep;
     }
     return result;
@@ -286,7 +286,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->next_in_queue;
+        spriteIndex = peep->NextInQueue;
         count++;
     }
     stations[stationIndex].QueueLength = count;
@@ -297,7 +297,7 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
     assert(stationIndex < MAX_STATIONS);
     assert(peep != nullptr);
 
-    peep->next_in_queue = SPRITE_INDEX_NULL;
+    peep->NextInQueue = SPRITE_INDEX_NULL;
     Peep* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
@@ -305,7 +305,7 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
     }
     else
     {
-        queueHeadGuest->next_in_queue = peep->sprite_index;
+        queueHeadGuest->NextInQueue = peep->sprite_index;
     }
     UpdateQueueLength(peep->CurrentRideStation);
 }
@@ -548,7 +548,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
 }
 
 /**
- * Returns the begin position / direction and end position / direction of the
+ * Returns the begin position / SomePeepDirection and end position / SomePeepDirection of the
  * track piece that proceeds the given location. Gets the previous track block
  * coordinates from the coordinates of the first of element of a track block.
  * Use track_block_get_previous if you are unsure if you are on the first
@@ -1040,7 +1040,7 @@ void ride_remove_peeps(Ride* ride)
     // Find first station
     auto stationIndex = ride_get_first_valid_station_start(ride);
 
-    // Get exit position and direction
+    // Get exit position and SomePeepDirection
     auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
     if (stationIndex != STATION_INDEX_NULL)
     {
@@ -1053,7 +1053,7 @@ void ride_remove_peeps(Ride* ride)
             exitPosition.y += (DirectionOffsets[direction].y * 20) + (COORDS_XY_STEP / 2);
             exitPosition.z += 2;
 
-            // Reverse direction
+            // Reverse SomePeepDirection
             exitPosition.direction = direction_reverse(exitPosition.direction);
 
             exitPosition.direction *= 8;
@@ -1137,7 +1137,7 @@ void ride_clear_blocked_tiles(Ride* ride)
  * Gets the origin track element (sequence 0). Seems to do more than that though and even invalidates track.
  *  rct2: 0x006C683D
  * ax : x
- * bx : direction << 8, type
+ * bx : SomePeepDirection << 8, type
  * cx : y
  * dx : z
  * si : extra_params
@@ -3225,7 +3225,7 @@ static void ride_shop_connected(Ride* ride)
     uint8_t tile_direction = trackElement->GetDirection();
     entrance_directions = rol4(entrance_directions, tile_direction);
 
-    // Now each bit in entrance_directions stands for an entrance direction to check
+    // Now each bit in entrance_directions stands for an entrance SomePeepDirection to check
     if (entrance_directions == 0)
         return;
 
@@ -3238,7 +3238,7 @@ static void ride_shop_connected(Ride* ride)
         }
         entrance_directions >>= 1;
 
-        // Flip direction north<->south, east<->west
+        // Flip SomePeepDirection north<->south, east<->west
         uint8_t face_direction = direction_reverse(count);
 
         int32_t y2 = shopLoc.y - TileDirectionDelta[face_direction].y;
@@ -4118,8 +4118,8 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 }
 
 /**
- * Sets the position and direction of the returning point on the track of a boat hire ride. This will either be the end of the
- * station or the last track piece from the end of the direction.
+ * Sets the position and SomePeepDirection of the returning point on the track of a boat hire ride. This will either be the end of the
+ * station or the last track piece from the end of the SomePeepDirection.
  *  rct2: 0x006B4D39
  */
 static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
@@ -7216,7 +7216,7 @@ TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tol
 }
 
 /**
- * Check for an adjacent station to x,y,z in direction.
+ * Check for an adjacent station to x,y,z in SomePeepDirection.
  */
 static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, uint8_t direction)
 {

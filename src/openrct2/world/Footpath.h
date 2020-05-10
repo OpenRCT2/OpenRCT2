@@ -172,7 +172,7 @@ extern uint8_t gFootpathConstructValidDirections;
 extern money32 gFootpathPrice;
 extern uint8_t gFootpathGroundFlags;
 
-// Given a direction, this will return how to increase/decrease the x and y coordinates.
+// Given a SomePeepDirection, this will return how to increase/decrease the x and y coordinates.
 extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
 extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
 extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];

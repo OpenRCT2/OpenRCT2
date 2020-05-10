@@ -17,7 +17,7 @@
 NetworkGroup NetworkGroup::FromJson(const json_t* json)
 {
     NetworkGroup group;
-    json_t* jsonId = json_object_get(json, "id");
+    json_t* jsonId = json_object_get(json, "PeepId");
     json_t* jsonName = json_object_get(json, "name");
     json_t* jsonPermissions = json_object_get(json, "permissions");
 
@@ -50,7 +50,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t* json)
 json_t* NetworkGroup::ToJson() const
 {
     json_t* jsonGroup = json_object();
-    json_object_set_new(jsonGroup, "id", json_integer(Id));
+    json_object_set_new(jsonGroup, "PeepId", json_integer(Id));
     json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
     json_t* actionsArray = json_array();
     for (size_t i = 0; i < NetworkActions::Actions.size(); i++)

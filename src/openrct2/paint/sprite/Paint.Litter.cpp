@@ -73,9 +73,9 @@ void litter_paint(paint_session* session, const Litter* litter, int32_t imageDir
     if (dpi->zoom_level > 0)
         return; // If zoomed at all no litter drawn
 
-    // litter has no sprite direction so remove that
+    // litter has no sprite SomePeepDirection so remove that
     imageDirection >>= 3;
-    // Some litter types have only 1 direction so remove
+    // Some litter types have only 1 SomePeepDirection so remove
     // anything that isn't required.
     imageDirection &= litter_sprites[litter->type].direction_mask;
 

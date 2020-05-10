@@ -515,7 +515,7 @@ private:
         uint8_t banner_index; // 5
     };
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
-    uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t animation; // 7 0b_dfff_ft00 d = SomePeepDirection, f = frame num, t = across track flag (not used)
 public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;

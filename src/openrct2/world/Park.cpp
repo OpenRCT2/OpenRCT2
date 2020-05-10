@@ -728,7 +728,7 @@ Peep* Park::GenerateGuest()
             peep->DestinationY = (peep->y & 0xFFE0) + 16;
 
             peep->DestinationTolerance = 5;
-            peep->direction = direction;
+            peep->SomePeepDirection = direction;
             peep->Var37 = 0;
             peep->State = PEEP_STATE_ENTERING_PARK;
         }

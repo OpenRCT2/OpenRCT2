@@ -94,7 +94,7 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+        log_warning("Invalid game command for track placement, ride PeepId = %d", rideIndex);
         return MakeResult(GA_ERROR::UNKNOWN);
     }
 
@@ -186,7 +186,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+        log_warning("Invalid game command for track placement, ride PeepId = %d", rideIndex);
         return MakeResult(GA_ERROR::UNKNOWN);
     }
 

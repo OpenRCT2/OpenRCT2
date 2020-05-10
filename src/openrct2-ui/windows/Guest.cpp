@@ -1777,7 +1777,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Cash in pocket
-    set_format_arg(0, money32, peep->cash_in_pocket);
+    set_format_arg(0, money32, peep->CashInPocket);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Cash spent

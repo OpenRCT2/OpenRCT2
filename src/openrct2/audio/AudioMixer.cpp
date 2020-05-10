@@ -44,7 +44,7 @@ void* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, dou
     {
         if (static_cast<uint32_t>(id) >= RCT2SoundCount)
         {
-            log_error("Tried to play an invalid sound id. %i", id);
+            log_error("Tried to play an invalid sound PeepId. %i", id);
         }
         else
         {

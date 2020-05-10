@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScPlayerGroup::id_get, nullptr, "id");
+            dukglue_register_property(ctx, &ScPlayerGroup::id_get, nullptr, "PeepId");
             dukglue_register_property(ctx, &ScPlayerGroup::name_get, &ScPlayerGroup::name_set, "name");
             dukglue_register_property(ctx, &ScPlayerGroup::permissions_get, &ScPlayerGroup::permissions_set, "permissions");
         }
@@ -245,7 +245,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScPlayer::id_get, nullptr, "id");
+            dukglue_register_property(ctx, &ScPlayer::id_get, nullptr, "PeepId");
             dukglue_register_property(ctx, &ScPlayer::name_get, nullptr, "name");
             dukglue_register_property(ctx, &ScPlayer::group_get, &ScPlayer::group_set, "group");
             dukglue_register_property(ctx, &ScPlayer::ping_get, nullptr, "ping");

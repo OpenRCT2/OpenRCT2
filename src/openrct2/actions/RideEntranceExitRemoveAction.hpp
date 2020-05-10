@@ -58,7 +58,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
+            log_warning("Invalid ride PeepId %d for entrance/exit removal", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -121,7 +121,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
+            log_warning("Invalid ride PeepId %d for entrance/exit removal", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 

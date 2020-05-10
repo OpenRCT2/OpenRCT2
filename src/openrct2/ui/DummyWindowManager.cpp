@@ -22,7 +22,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        rct_window* OpenDetails(uint8_t /*type*/, int32_t /*id*/) override
+        rct_window* OpenDetails(uint8_t /*type*/, int32_t /*PeepId*/) override
         {
             return nullptr;
         }
