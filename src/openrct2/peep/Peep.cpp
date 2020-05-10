@@ -1785,9 +1785,9 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
-    uint8_t _energy = (scenario_rand() % 64) + 65;
-    peep->energy = _energy;
-    peep->energy_target = _energy;
+    uint8_t energy = (scenario_rand() % 64) + 65;
+    peep->energy = energy;
+    peep->energy_target = energy;
 
     increment_guests_heading_for_park();
 

@@ -38,22 +38,22 @@ MoneyEffect* rct_sprite::AsMoneyEffect()
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money32 _value, int32_t _x, int32_t _y, int32_t _z, bool _vertical)
+void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
 {
-    if (_value == MONEY(0, 00))
+    if (value == MONEY(0, 00))
         return;
 
     MoneyEffect* moneyEffect = &create_sprite(SPRITE_IDENTIFIER_MISC)->money_effect;
     if (moneyEffect == nullptr)
         return;
 
-    moneyEffect->value = _value;
-    moneyEffect->vertical = (_vertical ? 1 : 0);
+    moneyEffect->value = value;
+    moneyEffect->vertical = (vertical ? 1 : 0);
     moneyEffect->sprite_width = 64;
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-    sprite_move(_x, _y, _z, moneyEffect);
+    sprite_move(x, y, z, moneyEffect);
     moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
     moneyEffect->num_movements = 0;
     moneyEffect->move_delay = 0;
@@ -75,7 +75,7 @@ void MoneyEffect::CreateAt(money32 _value, int32_t _x, int32_t _y, int32_t _z, b
  *
  *  rct2: 0x0069C5D0
  */
-void MoneyEffect::Create(money32 _value, CoordsXYZ loc)
+void MoneyEffect::Create(money32 value, CoordsXYZ loc)
 {
     if (loc.isNull())
     {
@@ -100,7 +100,7 @@ void MoneyEffect::Create(money32 _value, CoordsXYZ loc)
         loc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
     }
     loc.z += 10;
-    CreateAt(-_value, loc.x, loc.y, loc.z, false);
+    CreateAt(-value, loc.x, loc.y, loc.z, false);
 }
 
 /**
