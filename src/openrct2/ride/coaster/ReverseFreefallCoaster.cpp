@@ -389,7 +389,7 @@ static void reverse_freefall_rc_on_ride_photo(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr const std::array<uint32_t, 4> imageIds = {
         SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
         SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
         SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
