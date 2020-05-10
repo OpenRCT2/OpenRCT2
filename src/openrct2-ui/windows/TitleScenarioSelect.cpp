@@ -450,9 +450,6 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget->type == WWT_EMPTY)
             continue;
 
-        int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
-        int32_t y = (widget->top + widget->bottom) / 2 + w->windowPos.y - 3;
-
         auto ft = Formatter::Common();
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
@@ -462,7 +459,10 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         { // old-style
             ft.Add<rct_string_id>(ScenarioCategoryStringIds[i]);
         }
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, COLOUR_AQUAMARINE);
+
+        ScreenCoordsXY stringCoords(
+            (widget->left + widget->right) / 2 + w->windowPos.x, (widget->top + widget->bottom) / 2 + w->windowPos.y - 3);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, 87, format, COLOUR_AQUAMARINE);
     }
 
     // Return if no scenario highlighted

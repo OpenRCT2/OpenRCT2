@@ -229,7 +229,7 @@ int32_t gfx_draw_string_left_wrapped(
 }
 
 int32_t gfx_draw_string_centred_wrapped(
-    rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
+    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
@@ -248,7 +248,7 @@ int32_t gfx_draw_string_centred_wrapped(
     int32_t lineHeight = layout.GetHeight() / lineCount;
     int32_t yOffset = (lineCount - 1) * lineHeight / 2;
 
-    layout.Draw(dpi, x - layout.GetWidth() / 2, y - yOffset);
+    layout.Draw(dpi, coords.x - layout.GetWidth() / 2, coords.y - yOffset);
 
     return layout.GetHeight();
 }

@@ -202,55 +202,62 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
 {
     window_draw_widgets(w, dpi);
 
-    int32_t x1, x2, y;
+    const auto& aboutOpenRCT2 = w->widgets[WIDX_TAB_ABOUT_OPENRCT2];
+    const auto& aboutRCT2 = w->widgets[WIDX_TAB_ABOUT_RCT2];
 
-    x1 = w->windowPos.x + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->left + 45;
-    x2 = w->windowPos.x + (&w->widgets[WIDX_TAB_ABOUT_RCT2])->left + 45;
-    y = w->windowPos.y + (((&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->top + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->bottom) / 2)
-        - 3;
+    int32_t y = w->windowPos.y + ((aboutOpenRCT2.top + aboutOpenRCT2.bottom) / 2) - 3;
+    ScreenCoordsXY aboutOpenRCT2Coords(w->windowPos.x + aboutOpenRCT2.left + 45, y);
+    ScreenCoordsXY aboutRCT2Coords(w->windowPos.x + aboutRCT2.left + 45, y);
 
     set_format_arg(0, rct_string_id, STR_TITLE_SEQUENCE_OPENRCT2);
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x1, y, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    gfx_draw_string_centred_wrapped(
+        dpi, gCommonFormatArgs, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
 
     set_format_arg(0, rct_string_id, STR_TITLE_SEQUENCE_RCT2);
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x2, y, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    gfx_draw_string_centred_wrapped(
+        dpi, gCommonFormatArgs, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
 }
 
 static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t x, y, width;
+    int32_t width;
     rct_size16 logoSize;
 
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    x = w->windowPos.x + (w->width / 2);
-    y = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
+    ScreenCoordsXY aboutCoords(
+        w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
     width = w->width - 20;
 
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + lineHeight;
+    aboutCoords.y += gfx_draw_string_centred_wrapped(
+                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2])
+        + lineHeight;
 
     logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, x - (logoSize.width / 2), y, 0);
-    y += logoSize.height + lineHeight * 2;
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, aboutCoords.x - (logoSize.width / 2), aboutCoords.y, 0);
+    aboutCoords.y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
+    aboutCoords.y += gfx_draw_string_centred_wrapped(
+                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
         + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
     // the text from overlapping the changelog button.
     if (!LocalisationService_UseTrueTypeFont())
     {
-        gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+        gfx_draw_string_centred_wrapped(dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
     }
 
     // Version info
     utf8 buffer[256];
     utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-    gfx_draw_string_centred_wrapped(dpi, &ch, x, w->windowPos.y + WH - 25, width, STR_STRING, w->colours[2]);
+
+    aboutCoords.y = w->windowPos.y + WH - 25;
+    gfx_draw_string_centred_wrapped(dpi, &ch, aboutCoords, width, STR_STRING, w->colours[2]);
 }
 
 #pragma endregion OpenRCT2

@@ -1240,9 +1240,9 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, char*, _window_overwrite_prompt_name);
 
-    int32_t x = w->windowPos.x + w->width / 2;
-    int32_t y = w->windowPos.y + (w->height / 2) - 3;
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
+    ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
+    gfx_draw_string_centred_wrapped(
+        dpi, gCommonFormatArgs, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 
 #pragma endregion

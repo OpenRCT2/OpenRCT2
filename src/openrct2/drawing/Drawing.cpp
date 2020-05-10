@@ -17,6 +17,7 @@
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
+#include "../world/Location.hpp"
 #include "../world/Water.h"
 
 // HACK These were originally passed back through registers
