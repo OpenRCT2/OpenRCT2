@@ -23,7 +23,8 @@
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
 
-static NewsItem gNewsItems[MAX_NEWS_ITEMS];
+static NewsItem gRecentNewsItems[MAX_RECENT_NEWS_ITEMS];
+static NewsItem gOldNewsItems[MAX_OLD_NEWS_ITEMS];
 
 /** rct2: 0x0097BE7C */
 const uint8_t news_type_properties[] = {
@@ -55,7 +56,10 @@ NewsItem* news_item_get(int32_t index)
 {
     if (news_item_is_valid_idx(index))
     {
-        return &gNewsItems[index];
+        if (index < MAX_RECENT_NEWS_ITEMS)
+            return &gRecentNewsItems[index];
+        else
+            return &gOldNewsItems[index - MAX_RECENT_NEWS_ITEMS];
     }
     else
     {
@@ -143,22 +147,20 @@ void news_item_update_current()
  */
 void news_item_close_current()
 {
-    int32_t i;
-    NewsItem* newsItems = gNewsItems;
 
     // Check if there is a current message
     if (news_item_is_queue_empty())
         return;
 
     // Find an available history news item slot for current message
-    i = news_item_get_new_history_slot();
+    int32_t i = news_item_get_new_history_slot() - MAX_RECENT_NEWS_ITEMS;
 
     // Set the history news item slot to the current news item
-    newsItems[i] = newsItems[0];
+    gOldNewsItems[i] = gRecentNewsItems[0];
 
     // Set the end of the end of the history list
-    if (i < MAX_NEWS_ITEMS - 1)
-        newsItems[i + 1].Type = NEWS_ITEM_NULL;
+    if (i < MAX_OLD_NEWS_ITEMS - 1)
+        gOldNewsItems[i + 1].Type = NEWS_ITEM_NULL;
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
@@ -166,9 +168,9 @@ void news_item_close_current()
     // Dequeue the current news item, shift news up
     for (i = 0; i < MAX_RECENT_NEWS_ITEMS - 1; i++)
     {
-        newsItems[i] = newsItems[i + 1];
+        gRecentNewsItems[i] = gRecentNewsItems[i + 1];
     }
-    newsItems[MAX_RECENT_NEWS_ITEMS - 1].Type = NEWS_ITEM_NULL;
+    gRecentNewsItems[MAX_RECENT_NEWS_ITEMS - 1].Type = NEWS_ITEM_NULL;
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -297,16 +299,15 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
 
 static NewsItem* news_item_first_open_queue_slot()
 {
-    NewsItem* newsItem = gNewsItems;
-
-    while (newsItem->Type != NEWS_ITEM_NULL)
+    int32_t i = 0;
+    for (;gRecentNewsItems[i].Type != NEWS_ITEM_NULL;)
     {
-        if (newsItem + 1 >= &gNewsItems[MAX_RECENT_NEWS_ITEMS - 1])
+        if (i >= MAX_RECENT_NEWS_ITEMS - 2)
             news_item_close_current();
         else
-            newsItem++;
+            i++;
     }
-    return newsItem;
+    return &gRecentNewsItems[i];
 }
 
 /**
