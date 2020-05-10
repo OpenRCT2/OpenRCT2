@@ -53,7 +53,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             auto [stringId, value] = moneyEffect->GetStringId();
             paint_floating_money_effect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z,
-                const_cast<int8_t*>(&money_wave[moneyEffect->wiggle % 22]), moneyEffect->offset_x, session->CurrentRotation);
+                const_cast<int8_t*>(&money_wave[moneyEffect->Wiggle % 22]), moneyEffect->OffsetX, session->CurrentRotation);
             break;
         }
 

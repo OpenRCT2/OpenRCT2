@@ -75,12 +75,12 @@ struct Duck : SpriteGeneric
 
 struct MoneyEffect : SpriteBase
 {
-    uint16_t move_delay;
-    uint8_t num_movements;
-    uint8_t vertical;
-    money32 value;
-    int16_t offset_x;
-    uint16_t wiggle;
+    uint16_t MoveDelay;
+    uint8_t NumMovements;
+    uint8_t Vertical;
+    money32 Value;
+    int16_t OffsetX;
+    uint16_t Wiggle;
 
     static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
     static void Create(money32 value, CoordsXYZ loc);
