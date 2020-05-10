@@ -269,7 +269,7 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
-    template<typename T> DukValue ToDuk(duk_context* ctx, const std::optional<T>& value)
+    template<typename T> inline DukValue ToDuk(duk_context* ctx, const std::optional<T>& value)
     {
         return value ? ToDuk(ctx, *value) : ToDuk(ctx, nullptr);
     }
@@ -290,21 +290,78 @@ namespace OpenRCT2::Scripting
         return dukCoords.Take();
     }
 
-    template<> DukValue inline ToDuk(duk_context* ctx, const CoordsXYZ& coords)
-    {
-        DukObject dukCoords(ctx);
-        dukCoords.Set("x", coords.x);
-        dukCoords.Set("y", coords.y);
-        dukCoords.Set("z", coords.z);
-        return dukCoords.Take();
-    }
-
     template<> DukValue inline ToDuk(duk_context* ctx, const ScreenCoordsXY& coords)
     {
         DukObject dukCoords(ctx);
         dukCoords.Set("x", coords.x);
         dukCoords.Set("y", coords.y);
         return dukCoords.Take();
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const CoordsXYZ& value)
+    {
+        if (value.isNull())
+        {
+            return ToDuk(ctx, nullptr);
+        }
+        else
+        {
+            DukObject dukCoords(ctx);
+            dukCoords.Set("x", value.x);
+            dukCoords.Set("y", value.y);
+            dukCoords.Set("z", value.z);
+            return dukCoords.Take();
+        }
+    }
+
+    template<> inline CoordsXYZ FromDuk(const DukValue& value)
+    {
+        CoordsXYZ result;
+        if (value.type() == DukValue::Type::OBJECT)
+        {
+            result.x = AsOrDefault(value["x"], 0);
+            result.y = AsOrDefault(value["y"], 0);
+            result.z = AsOrDefault(value["z"], 0);
+        }
+        else
+        {
+            result.setNull();
+        }
+        return result;
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const CoordsXYZD& value)
+    {
+        if (value.isNull())
+        {
+            return ToDuk(ctx, nullptr);
+        }
+        else
+        {
+            DukObject dukCoords(ctx);
+            dukCoords.Set("x", value.x);
+            dukCoords.Set("y", value.y);
+            dukCoords.Set("z", value.z);
+            dukCoords.Set("direction", value.direction);
+            return dukCoords.Take();
+        }
+    }
+
+    template<> inline CoordsXYZD FromDuk(const DukValue& value)
+    {
+        CoordsXYZD result;
+        if (value.type() == DukValue::Type::OBJECT)
+        {
+            result.x = AsOrDefault(value["x"], 0);
+            result.y = AsOrDefault(value["y"], 0);
+            result.z = AsOrDefault(value["z"], 0);
+            result.direction = AsOrDefault(value["direction"], 0);
+        }
+        else
+        {
+            result.setNull();
+        }
+        return result;
     }
 
 } // namespace OpenRCT2::Scripting

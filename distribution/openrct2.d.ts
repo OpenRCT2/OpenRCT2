@@ -82,6 +82,16 @@ declare global {
     }
 
     /**
+     * A coordinate within the game.
+     * Each in-game tile is a size of 32x32.
+     * The z-coordinate raises 16 per land increment. A full-height wall is 32 in height.
+     * The direction is between 0 and 3.
+     */
+    interface CoordsXYZD extends CoordsXYZ {
+        direction: number;
+    }
+
+    /**
      * A rectangular area specified using two coordinates.
      */
     interface MapRange {
@@ -648,37 +658,144 @@ declare global {
          * The object metadata for this ride.
          */
         readonly object: RideObject;
+
         /**
          * The unique ID / index of the ride.
          */
         readonly id: number;
+
         /**
          * The type of the ride represented as the internal built-in ride type ID.
          */
         type: number;
+
+        /**
+         * Whether the ride is a ride, shop or facility.
+         */
+        readonly classification: RideClassification;
+
         /**
          * The generated or custom name of the ride.
          */
         name: string;
+
+        /**
+         * Whether the ride is open, closed or testing.
+         */
+        readonly status: RideStatus;
+
+        /**
+         * Various flags related to the operation of the ride.
+         */
+        lifecycleFlags: number;
+
+        /**
+         * The operation mode.
+         */
+        mode: number;
+
+        /**
+         * Flags related to how trains depart.
+         */
+        departFlags: number;
+
+        /**
+         * The minimum time a train will wait at the station before departing.
+         */
+        minimumWaitingTime: number;
+
+        /**
+         * The maximum time a train will wait at the station before departing.
+         */
+        maximumWaitingTime: number;
+
+        /**
+         * The head vehicle IDs associated with the ride, one for each train.
+         */
+        readonly vehicles: number[];
+
+        /**
+         * The colour for each vehicle when the ride opens. Modifying this directly will not
+         * change the colour of any currently running trains nor will it reflect them if they
+         * have been modified.
+         */
+        vehicleColours: VehicleColour[];
+
+        /**
+         * The track colour schemes for the ride.
+         */
+        colourSchemes: TrackColour[];
+
+        /**
+         * The style used for the station, entrance, and exit building.
+         */
+        stationStyle: number;
+
+        /**
+         * The music track to play at each station.
+         */
+        music: number;
+
+        /**
+         * Information about each station.
+         */
+        readonly stations: RideStation[];
+
+        /**
+         * The admission price for the ride or the cost of the primary item of the stall.
+         */
+        price: number;
+
+        /**
+         * The price of the on-ride photo or the cost of the secondary item of the stall.
+         */
+        priceSecondary: number;
+
         /**
          * The excitement metric of the ride represented as a 2 decimal point fixed integer.
          * For example, `652` equates to `6.52`.
          */
         excitement: number;
+
         /**
          * The intensity metric of the ride represented as a 2 decimal point fixed integer.
          * For example, `652` equates to `6.52`.
          */
         intensity: number;
+
         /**
          * The nausea metric of the ride represented as a 2 decimal point fixed integer.
          * For example, `652` equates to `6.52`.
          */
         nausea: number;
+
         /**
          * The total number of customers the ride has served since it was built.
          */
         totalCustomers: number;
+    }
+
+    type RideClassification = "ride" | "stall" | "facility";
+
+    type RideStatus = "closed" | "open" | "testing" | "simulating";
+
+    interface TrackColour {
+        main: number;
+        additional: number;
+        supports: number;
+    }
+
+    interface VehicleColour {
+        body: number;
+        trim: number;
+        ternary: number;
+    }
+
+    interface RideStation {
+        start: CoordsXYZ;
+        length: number;
+        entrance: CoordsXYZD;
+        exit: CoordsXYZD;
     }
 
     type EntityType =

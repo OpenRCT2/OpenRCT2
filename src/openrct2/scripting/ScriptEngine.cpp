@@ -384,6 +384,7 @@ void ScriptEngine::Initialise()
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
     ScRide::Register(ctx);
+    ScRideStation::Register(ctx);
     ScRideObject::Register(ctx);
     ScRideObjectVehicle::Register(ctx);
     ScTile::Register(ctx);
