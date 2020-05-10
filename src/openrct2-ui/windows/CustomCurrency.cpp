@@ -233,14 +233,11 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 
 static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    ScreenCoordsXY screenCoords;
-
     set_format_arg(0, int32_t, 100);
 
     window_draw_widgets(w, dpi);
 
-    screenCoords.x = w->windowPos.x + 10;
-    screenCoords.y = w->windowPos.y + 30;
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 10, w->windowPos.y + 30 };
 
     gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], screenCoords.x, screenCoords.y);
 

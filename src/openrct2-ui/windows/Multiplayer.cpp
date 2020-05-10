@@ -942,7 +942,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
 
 static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    ScreenCoordsXY sreenCoords(0, 0);
+    ScreenCoordsXY screenCoords(0, 0);
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
@@ -950,14 +950,14 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
     {
         if (i == w->selected_list_item)
         {
-            gfx_filter_rect(dpi, 0, sreenCoords.y, 800, sreenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
         }
-        if (sreenCoords.y > dpi->y + dpi->height)
+        if (screenCoords.y > dpi->y + dpi->height)
         {
             break;
         }
 
-        if (sreenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
+        if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
             char buffer[300] = { 0 };
             int32_t groupindex = network_get_group_index(_selectedGroup);
@@ -968,15 +968,16 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
                     lineCh = utf8_write_codepoint(lineCh, UnicodeChar::tick);
-                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, sreenCoords);
+                    screenCoords.x = 0;
+                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords);
                 }
             }
 
             // Draw action name
             set_format_arg(0, uint16_t, network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, sreenCoords.y);
+            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, screenCoords.y);
         }
-        sreenCoords.y += SCROLLABLE_ROW_HEIGHT;
+        screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 
