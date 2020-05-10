@@ -38,8 +38,9 @@
 
 #pragma region Widgets
 
-constexpr int32_t WW = 350;
-constexpr int32_t WH = 400;
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const int32_t WW = 350;
+static constexpr const int32_t WH = 400;
 
 // clang-format off
 enum
@@ -61,9 +62,7 @@ enum
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] =
 {
-    { WWT_FRAME,        0,      0,                  WW - 1,         0,          WH - 1,     STR_NONE,                           STR_NONE },
-    { WWT_CAPTION,      0,      1,                  WW - 2,         1,          14,         STR_NONE,                           STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,     0,      WW - 13,            WW - 3,         2,          13,         STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },     //Window close button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,       1,      0,                  WW - 1,         WH - 1,     WH - 1,     0xFFFFFFFF,                         STR_NONE },                 // tab content panel
     { WWT_BUTTON,       0,      4,                  87,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
     { WWT_BUTTON,       0,      88,                 171,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
@@ -675,8 +674,10 @@ static void window_loadsave_compute_max_date_width()
 static void window_loadsave_invalidate(rct_window* w)
 {
     window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
+    // close button has to move if it's on the right side
     window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
     window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+
     window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;
@@ -1143,9 +1144,7 @@ enum
 };
 
 static rct_widget window_overwrite_prompt_widgets[] = {
-    { WWT_FRAME, 0, 0, OVERWRITE_WW - 1, 0, OVERWRITE_WH - 1, STR_NONE, STR_NONE },
-    { WWT_CAPTION, 0, 1, OVERWRITE_WW - 2, 1, 14, STR_FILEBROWSER_OVERWRITE_TITLE, STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX, 0, OVERWRITE_WW - 13, OVERWRITE_WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
+    WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
     { WWT_BUTTON, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
     { WWT_BUTTON, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_SAVE_PROMPT_CANCEL,
       STR_NONE },

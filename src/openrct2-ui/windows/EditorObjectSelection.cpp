@@ -80,6 +80,10 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
+static constexpr const int32_t WH = 400;
+static constexpr const int32_t WW = 600;
+
 struct ObjectPageDesc
 {
     rct_string_id Caption;
@@ -137,9 +141,7 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
 static bool _window_editor_object_selection_widgets_initialised;
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
-    { WWT_FRAME,            0,  0,      599,    0,      399,    0xFFFFFFFF,                     STR_NONE },
-    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_OBJECT_SELECTION,           STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      599,    43,     399,    0xFFFFFFFF,                     STR_NONE },
     { WWT_BUTTON,           0,  470,    591,    23,     34,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
     { WWT_SCROLL,           1,  4,      291,    60,     386,    SCROLL_VERTICAL,                STR_NONE },

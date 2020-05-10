@@ -15,8 +15,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-constexpr int32_t INITIAL_WIDTH = 500;
-constexpr int32_t INITIAL_HEIGHT = 350;
+static constexpr const rct_string_id WINDOW_TITLE = STR_VIEWPORT_NO;
+static constexpr const int32_t WH = 500;
+static constexpr const int32_t WW = 350;
 
 // clang-format off
 enum {
@@ -31,9 +32,7 @@ enum {
 };
 
 static rct_widget window_viewport_widgets[] = {
-    { WWT_FRAME,            0,  0,  0,  0,  0,  0xFFFFFFFF,         STR_NONE                },  // panel / background
-    { WWT_CAPTION,          0,  1,  0,  1,  14, STR_VIEWPORT_NO,    STR_WINDOW_TITLE_TIP    },  // title bar
-    { WWT_CLOSEBOX,         0,  0,  0,  2,  13, STR_CLOSE_X,        STR_CLOSE_WINDOW_TIP    },  // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,  0,  14, 0,  0xFFFFFFFF,         STR_NONE                },  // resize
     { WWT_VIEWPORT,         0,  3,  0,  17, 0,  0xFFFFFFFF,         STR_NONE                },  // viewport
 
@@ -88,7 +87,7 @@ static int32_t _viewportNumber = 1;
  */
 rct_window* window_viewport_open()
 {
-    rct_window* w = window_create_auto_pos(INITIAL_WIDTH, INITIAL_HEIGHT, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
+    rct_window* w = window_create_auto_pos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);
     w->number = _viewportNumber++;

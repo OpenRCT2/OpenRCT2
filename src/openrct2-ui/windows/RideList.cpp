@@ -25,6 +25,10 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const int32_t WH = 240;
+static constexpr const int32_t WW = 340;
+
 // clang-format off
 enum {
     PAGE_RIDES,
@@ -52,9 +56,7 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 };
 
 static rct_widget window_ride_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      339,    0,      239,    0xFFFFFFFF,                 STR_NONE },                                 // panel / background
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     0xFFFFFFFF,                 STR_WINDOW_TITLE_TIP },                     // title bar
-    { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },                     // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                                 // tab page background
     { WWT_FLATBTN,          1,  315,    338,    60,     83,     SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES },              // open / close all toggle
     { WWT_DROPDOWN,         1,  150,    273,    46,     57,     0xFFFFFFFF,                 STR_NONE },                                 // current information type
@@ -510,8 +512,11 @@ static void window_ride_list_invalidate(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
+
+    // if close buttton is on the right then it must move
     w->widgets[WIDX_CLOSE].left = w->width - 13;
     w->widgets[WIDX_CLOSE].right = w->width - 3;
+
     w->widgets[WIDX_LIST].right = w->width - 26;
     w->widgets[WIDX_LIST].bottom = w->height - 15;
     w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;

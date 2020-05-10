@@ -16,8 +16,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
 
-constexpr int32_t WW = 200;
-constexpr int32_t WH = 100;
+static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr const int32_t WW = 200;
+static constexpr const int32_t WH = 100;
 
 // clang-format off
 enum WINDOW_STAFF_FIRE_WIDGET_IDX {
@@ -30,9 +31,7 @@ enum WINDOW_STAFF_FIRE_WIDGET_IDX {
 
 // 0x9AFB4C
 static rct_widget window_staff_fire_widgets[] = {
-    { WWT_FRAME,            0,  0,          WW - 1,     0,          WH - 1,     STR_NONE,               STR_NONE },
-    { WWT_CAPTION,          0,  1,          WW - 2,     1,          14,         STR_SACK_STAFF,         STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  WW-13,      WW - 3,     2,          13,         STR_CLOSE_X_WHITE,       STR_CLOSE_WINDOW_TIP },
+    WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     { WWT_BUTTON,           0,  10,         94,         WH - 20,    WH - 9,     STR_YES,                STR_NONE },
     { WWT_BUTTON,           0,  WW - 95,    WW - 11,    WH - 20,    WH - 9,     STR_SAVE_PROMPT_CANCEL, STR_NONE },
     { WIDGETS_END }

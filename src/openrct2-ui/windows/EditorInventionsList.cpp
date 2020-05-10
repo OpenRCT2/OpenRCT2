@@ -26,8 +26,9 @@
 
 #pragma region Widgets
 
-constexpr int32_t WW = 600;
-constexpr int32_t WH = 400;
+static constexpr const int32_t WW = 600;
+static constexpr const int32_t WH = 400;
+static constexpr const rct_string_id WINDOW_TITLE = STR_INVENTION_LIST;
 
 // clang-format off
 enum {
@@ -45,9 +46,7 @@ enum {
 };
 
 static rct_widget window_editor_inventions_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      599,    0,      399,    STR_NONE,               STR_NONE                },
-    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_INVENTION_LIST,     STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP    },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE          },
     { WWT_SCROLL,           1,  4,      371,    56,     216,    SCROLL_VERTICAL,        STR_NONE                },

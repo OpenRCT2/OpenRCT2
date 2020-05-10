@@ -32,6 +32,9 @@
 
 using namespace OpenRCT2;
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const int32_t WH = 124;
+static constexpr const int32_t WW = 200;
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
 constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
 constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
@@ -57,9 +60,7 @@ enum {
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
 static rct_widget window_track_place_widgets[] = {
-    { WWT_FRAME,            0,  0,      199,    0,      123,    0xFFFFFFFF,                     STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      198,    1,      14,     STR_STRING,                     STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  187,    197,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_FLATBTN,          0,  173,    196,    83,     106,    SPR_ROTATE_ARROW,               STR_ROTATE_90_TIP                           },
     { WWT_FLATBTN,          0,  173,    196,    59,     82,     SPR_MIRROR_ARROW,               STR_MIRROR_IMAGE_TIP                        },
     { WWT_BUTTON,           0,  4,      195,    109,    120,    STR_SELECT_A_DIFFERENT_DESIGN,  STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP  },

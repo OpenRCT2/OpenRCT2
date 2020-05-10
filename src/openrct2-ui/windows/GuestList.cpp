@@ -23,6 +23,10 @@
 #include <openrct2/world/Sprite.h>
 #include <vector>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;
+static constexpr const int32_t WH = 330;
+static constexpr const int32_t WW = 350;
+
 // clang-format off
 enum {
     PAGE_INDIVIDUAL,
@@ -64,9 +68,7 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
 };
 
 static rct_widget window_guest_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      349,    0,  329,    0xFFFFFFFF,             STR_NONE },                     // panel / background
-    { WWT_CAPTION,          0,  1,      348,    1,  14,     STR_GUESTS,             STR_WINDOW_TITLE_TIP },         // title bar
-    { WWT_CLOSEBOX,         0,  337,    347,    2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },         // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
     { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_ARG_4_PAGE_X,       STR_NONE },                     // page dropdown
     { WWT_BUTTON,           1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button

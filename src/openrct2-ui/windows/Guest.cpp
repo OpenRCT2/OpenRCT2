@@ -31,6 +31,10 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const int32_t WH = 157;
+static constexpr const int32_t WW = 192;
+
 // clang-format off
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,
@@ -71,9 +75,7 @@ validate_global_widx(WC_PEEP, WIDX_PICKUP);
 static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS \
-    { WWT_FRAME,    0, 0,   191,            0,   156, 0xFFFFFFFF,                   STR_NONE },                         /* Panel / Background */    \
-    { WWT_CAPTION,  0, 1,   190,            1,   14,  STR_STRINGID,                 STR_WINDOW_TITLE_TIP },             /* Title */                 \
-    { WWT_CLOSEBOX, 0, 179, 189,            2,   13,  STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP },             /* Close x button */        \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     { WWT_RESIZE,   1, 0,   191,            43,  156, 0xFFFFFFFF,                   STR_NONE },                         /* Resize */                \
     { WWT_TAB,      1, 3,   TabWidth + 3,   17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_VIEW_TIP },          /* Tab 1 */                 \
     { WWT_TAB,      1, 34,  TabWidth + 34,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_NEEDS_TIP },         /* Tab 2 */                 \

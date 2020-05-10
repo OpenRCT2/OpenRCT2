@@ -32,6 +32,10 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr const int32_t WH = 229;
+static constexpr const int32_t WW = 450;
+
 #pragma region Widgets
 
 // clang-format off
@@ -82,9 +86,7 @@ enum {
 };
 
 #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
-    { WWT_FRAME,            0,  0,      449,    0,      228,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_CAPTION,          0,  1,      448,    1,      14,     STR_OBJECTIVE_SELECTION,    STR_WINDOW_TITLE_TIP                                }, \
-    { WWT_CLOSEBOX,         0,  437,    447,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                                }, \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                   STR_NONE                                            }, \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }

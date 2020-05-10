@@ -20,6 +20,10 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr const int32_t WH = 94;
+static constexpr const int32_t WW = 98;
+
 // clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -33,9 +37,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 };
 
 static rct_widget window_land_rights_widgets[] = {
-    { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                             // panel / background
-    { WWT_CAPTION,  0,  1,  96, 1,  14, STR_LAND_RIGHTS,                            STR_WINDOW_TITLE_TIP },                 // title bar
-    { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP },                 // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                             // preview box
     { WWT_TRNBTN,   2,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_RIGHTS_TIP },   // decrement size
     { WWT_TRNBTN,   2,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_RIGHTS_TIP },    // increment size

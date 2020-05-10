@@ -19,6 +19,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Sprite.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr const int32_t WH = 300;
+static constexpr const int32_t WW = 400;
+
 // clang-format off
 enum WINDOW_NEWS_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -29,9 +33,7 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_widgets[] = {
-    { WWT_FRAME,            0,  0,          399,    0,      299,    0xFFFFFFFF,             STR_NONE },             // panel / background
-    { WWT_CAPTION,          0,  1,          398,    1,      14,     STR_RECENT_MESSAGES,    STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX,         0,  387,        397,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_FLATBTN,          0,  372,        395,    18,     41,     SPR_TAB_GEARS_0,        STR_NONE },             // settings
     { WWT_SCROLL,           0,  4,          395,    44,     295,    SCROLL_VERTICAL,                        STR_NONE },             // scroll
     { WIDGETS_END },

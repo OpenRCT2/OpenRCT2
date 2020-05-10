@@ -104,15 +104,14 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_STAFF_LIST_MAP,
 };
 
-constexpr int32_t WW = 320;
-constexpr int32_t WH = 270;
+static constexpr const rct_string_id WINDOW_TITLE = STR_STAFF;
+static constexpr const int32_t WW = 320;
+static constexpr const int32_t WH = 270;
 constexpr int32_t MAX_WW = 500;
 constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
-    { WWT_FRAME,            0,  0,          319,        0,      269,    0xFFFFFFFF,         STR_NONE },                         // panel / background
-    { WWT_CAPTION,          0,  1,          318,        1,      14,     STR_STAFF,              STR_WINDOW_TITLE_TIP },             // title bar
-    { WWT_CLOSEBOX,         0,  307,        317,        2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },             // close button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,          319,        43,     269,    0xFFFFFFFF,         STR_NONE },                         // tab content panel
     { WWT_TAB,              1,  3,          33,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_HANDYMEN_TAB_TIP },       // handymen tab
     { WWT_TAB,              1,  34,         64,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_MECHANICS_TAB_TIP },      // mechanics tab

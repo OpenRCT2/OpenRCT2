@@ -135,15 +135,15 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 
 // Increase BW if certain languages do not fit
 // BW should be a multiple of 4
-constexpr int32_t WW = 320;
-constexpr int32_t WH = 270;
+static constexpr const int32_t WW = 320;
+static constexpr const int32_t WH = 270;
 constexpr int32_t BX = 8;
 constexpr int32_t BW = 72;
 constexpr int32_t BY = 52;
 constexpr int32_t BH = 63;
 constexpr int32_t BS = 18;
 constexpr int32_t SCROLL_WIDTH = 350;
-constexpr int32_t WH2 = 127;
+static constexpr const int32_t WH2 = 127;
 
 static rct_widget window_title_editor_widgets[] = {
     { WWT_FRAME,            0,  0,      WW-1,   0,      WH2-1,  0xFFFFFFFF,             STR_NONE },                             // panel / background

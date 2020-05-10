@@ -31,8 +31,9 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 
-constexpr int32_t WW = 190;
-constexpr int32_t WH = 180;
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const int32_t WW = 190;
+static constexpr const int32_t WH = 180;
 
 // clang-format off
 enum WINDOW_STAFF_PAGE {
@@ -70,9 +71,7 @@ validate_global_widx(WC_PEEP, WIDX_PATROL);
 validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
 static rct_widget window_staff_overview_widgets[] = {
-    { WWT_FRAME,    0, 0,       WW - 1,     0,          WH - 1, 0xFFFFFFFF,             STR_NONE },             // Panel / Background
-    { WWT_CAPTION,  0, 1,       WW - 2,     1,          14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
-    { WWT_CLOSEBOX, 0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,   1, 0,       WW - 1,     43,         WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
     { WWT_TAB,      1, 3,       33,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
     { WWT_TAB,      1, 34,      64,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
@@ -90,9 +89,7 @@ static rct_widget window_staff_overview_widgets[] = {
 
 //0x9AF910
 static rct_widget window_staff_options_widgets[] = {
-    { WWT_FRAME,            0, 0,       WW - 1, 0,      WH - 1, 0xFFFFFFFF,             STR_NONE },             // Panel / Background
-    { WWT_CAPTION,          0, 1,       WW - 2, 1,      14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
-    { WWT_CLOSEBOX,         0, WW - 13, WW - 3, 2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1, 0,       WW - 1, 43,     WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
     { WWT_TAB,              1, 3,       33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
     { WWT_TAB,              1, 34,      64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
@@ -109,9 +106,7 @@ static rct_widget window_staff_options_widgets[] = {
 
 //0x9AF9F4
 static rct_widget window_staff_stats_widgets[] = {
-    { WWT_FRAME,    0, 0,       WW - 1, 0,  WH - 1, 0xFFFFFFFF,             STR_NONE },             // Panel / Background
-    { WWT_CAPTION,  0, 1,       WW - 2, 1,  14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
-    { WWT_CLOSEBOX, 0, WW - 13, WW - 3, 2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,   1, 0,       WW - 1, 43, WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
     { WWT_TAB,      1, 3,       33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
     { WWT_TAB,      1, 34,      64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
@@ -865,7 +860,6 @@ void window_staff_options_invalidate(rct_window* w)
     window_staff_options_widgets[WIDX_RESIZE].bottom = w->height - 1;
 
     window_staff_options_widgets[WIDX_TITLE].right = w->width - 2;
-
     window_staff_options_widgets[WIDX_CLOSE].left = w->width - 13;
     window_staff_options_widgets[WIDX_CLOSE].right = w->width - 3;
 

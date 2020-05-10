@@ -27,6 +27,13 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const int32_t WH_SUMMARY = 309;
+static constexpr const int32_t WH_RESEARCH = 207;
+static constexpr const int32_t WH_OTHER_TABS = 257;
+static constexpr const int32_t WW_RESEARCH = 320;
+static constexpr const int32_t WW_OTHER_TABS = 530;
+
 // clang-format off
 enum
 {
@@ -89,10 +96,8 @@ enum
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,  309,    0xFFFFFFFF,                 STR_NONE                                }, \
-    { WWT_CAPTION,          0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP                    }, \
-    { WWT_CLOSEBOX,         0,  517,    527,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                    }, \
-    { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                }, \
+    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_SUMMARY),
+    { WWT_RESIZE,           1,  0,      529,    43, WH_SUMMARY - 1,    0xFFFFFFFF,                 STR_NONE                                },
     TAB_WIDGETS,
     { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
       SPINNER_WIDGETS      (1,  64,     160,    279,    292,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE), // NB: 3 widgets.
@@ -101,40 +106,32 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 
 static rct_widget _windowFinancesCashWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_GRAPH,    STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
+    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
 };
 
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PARK_VALUE_GRAPH,   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
+    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
 };
 
 static rct_widget _windowFinancesProfitWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PROFIT_GRAPH,       STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
+    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
 };
 
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_MARKETING,                          STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,                             STR_NONE },
+    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
     { WWT_GROUPBOX,         2,  3,      526,    47,     252,    STR_MARKETING_CAMPAIGNS_AVAILABLE,      STR_NONE },
@@ -149,9 +146,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      319,    0,      206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,                   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SHIM(WINDOW_TITLE, WW_RESEARCH, WH_RESEARCH),
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
@@ -528,7 +523,7 @@ rct_window* window_finances_open()
     w = window_bring_to_front_by_class(WC_FINANCES);
     if (w == nullptr)
     {
-        w = window_create_auto_pos(530, 310, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
+        w = window_create_auto_pos(WW_OTHER_TABS, WH_SUMMARY, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;
 
@@ -537,8 +532,8 @@ rct_window* window_finances_open()
 
     w->page = WINDOW_FINANCES_PAGE_SUMMARY;
     w->Invalidate();
-    w->width = 530;
-    w->height = 310;
+    w->width = WW_OTHER_TABS;
+    w->height = WH_SUMMARY;
     w->Invalidate();
 
     w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
@@ -1249,7 +1244,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             // Draw button text
             money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
             gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, x + 4, y);
-            gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y);
+            gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + WH_SUMMARY, y);
 
             y += BUTTON_FACE_HEIGHT + 2;
         }
@@ -1445,18 +1440,18 @@ static void window_finances_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     if (w->page == WINDOW_FINANCES_PAGE_RESEARCH)
     {
-        w->width = 320;
-        w->height = 207;
+        w->width = WW_RESEARCH;
+        w->height = WH_RESEARCH;
     }
     else if (w->page == WINDOW_FINANCES_PAGE_SUMMARY)
     {
-        w->width = 530;
-        w->height = 310;
+        w->width = WW_OTHER_TABS;
+        w->height = WH_SUMMARY;
     }
     else
     {
-        w->width = 530;
-        w->height = 257;
+        w->width = WW_OTHER_TABS;
+        w->height = WH_OTHER_TABS;
     }
     window_event_resize_call(w);
     window_event_invalidate_call(w);

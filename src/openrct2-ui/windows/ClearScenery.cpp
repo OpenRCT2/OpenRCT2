@@ -29,10 +29,12 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_FOOTPATH
 };
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr const int32_t WW = 98;
+static constexpr const int32_t WH = 94;
+
 static rct_widget window_clear_scenery_widgets[] = {
-    { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                         // panel / background
-    { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP },             // title bar
-    { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP },             // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
     { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
     { WWT_TRNBTN,   1,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size
@@ -97,7 +99,7 @@ rct_window* window_clear_scenery_open()
         return window;
 
     window = window_create(
-        ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+        ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);

@@ -22,8 +22,9 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-constexpr int32_t WW = 113;
-constexpr int32_t WH = 96;
+static constexpr const int32_t WW = 113;
+static constexpr const int32_t WH = 96;
+static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {
@@ -57,9 +58,7 @@ static constexpr const rct_string_id BannerColouredTextFormats[] = {
 };
 
 static rct_widget window_banner_widgets[] = {
-    { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     0xFFFFFFFF,                 STR_NONE},                          // panel / background
-    { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_BANNER_WINDOW_TITLE,    STR_WINDOW_TITLE_TIP},              // title bar
-    { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP},              // close x button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_VIEWPORT,         1,  3,          WW - 26,17,     WH - 20,    0x0FFFFFFFE,                STR_NONE},                          // tab content panel
     { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 19,     42,         SPR_RENAME,                 STR_CHANGE_BANNER_TEXT_TIP},        // change banner button
     { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 43,     66,         SPR_NO_ENTRY,               STR_SET_AS_NO_ENTRY_BANNER_TIP},    // no entry button

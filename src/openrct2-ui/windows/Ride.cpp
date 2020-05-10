@@ -55,6 +55,10 @@
 #include <openrct2/world/Park.h>
 using namespace OpenRCT2;
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
+static constexpr const int32_t WH = 207;
+static constexpr const int32_t WW = 316;
+
 enum
 {
     WINDOW_RIDE_PAGE_MAIN,
@@ -205,9 +209,7 @@ enum {
 constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
 #define MAIN_RIDE_WIDGETS \
-    { WWT_FRAME,            0,  0,      315,    0,      206,    0xFFFFFFFF,                     STR_NONE                                    }, \
-    { WWT_CAPTION,          0,  1,      314,    1,      14,     STR_RIDE_WINDOW_TITLE,          STR_WINDOW_TITLE_TIP                        }, \
-    { WWT_CLOSEBOX,         0,  303,    313,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        }, \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     { WWT_RESIZE,           1,  0,      315,    43,     179,    0xFFFFFFFF,                     STR_NONE                                    }, \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
     { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
