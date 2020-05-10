@@ -314,7 +314,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_draw_string(dpi, (char*)"", COLOUR_BLACK, screenCoords);
-    screenCoords.y = y;
+    screenCoords = { x, y };
     gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
