@@ -643,15 +643,16 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
 
 static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t y = 0;
+    ScreenCoordsXY screenCoords;
+    screenCoords.y = 0;
     for (int32_t i = 0; i < network_get_num_players(); i++)
     {
-        if (y > dpi->y + dpi->height)
+        if (screenCoords.y > dpi->y + dpi->height)
         {
             break;
         }
 
-        if (y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
+        if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
             char buffer[300];
 
@@ -660,7 +661,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             int32_t colour = COLOUR_BLACK;
             if (i == w->selected_list_item)
             {
-                gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+                gfx_filter_rect(dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
                 safe_strcpy(buffer, network_get_player_name(i), sizeof(buffer));
                 colour = w->colours[2];
             }
@@ -676,8 +677,9 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 }
                 safe_strcpy(lineCh, network_get_player_name(i), sizeof(buffer) - (lineCh - buffer));
             }
+            screenCoords.x = 0;
             gfx_clip_string(buffer, 230);
-            gfx_draw_string(dpi, buffer, colour, 0, y);
+            gfx_draw_string(dpi, buffer, colour, screenCoords);
 
             // Draw group name
             lineCh = buffer;
@@ -685,9 +687,10 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             if (group != -1)
             {
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
+                screenCoords.x = 173;
                 safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
                 gfx_clip_string(buffer, 80);
-                gfx_draw_string(dpi, buffer, colour, 173, y);
+                gfx_draw_string(dpi, buffer, colour, screenCoords);
             }
 
             // Draw last action
@@ -697,7 +700,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
             }
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, 256, y, 100);
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, 256, screenCoords.y, 100);
 
             // Draw ping
             lineCh = buffer;
@@ -715,9 +718,10 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
             }
             snprintf(lineCh, sizeof(buffer) - (lineCh - buffer), "%d ms", ping);
-            gfx_draw_string(dpi, buffer, colour, 356, y);
+            screenCoords.x = 356;
+            gfx_draw_string(dpi, buffer, colour, screenCoords);
         }
-        y += SCROLLABLE_ROW_HEIGHT;
+        screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -938,7 +942,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
 
 static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t y = 0;
+    ScreenCoordsXY sreenCoords(0, 0);
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
@@ -946,14 +950,14 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
     {
         if (i == w->selected_list_item)
         {
-            gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, sreenCoords.y, 800, sreenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
         }
-        if (y > dpi->y + dpi->height)
+        if (sreenCoords.y > dpi->y + dpi->height)
         {
             break;
         }
 
-        if (y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
+        if (sreenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
             char buffer[300] = { 0 };
             int32_t groupindex = network_get_group_index(_selectedGroup);
@@ -964,15 +968,15 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
                     lineCh = utf8_write_codepoint(lineCh, UnicodeChar::tick);
-                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y);
+                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, sreenCoords);
                 }
             }
 
             // Draw action name
             set_format_arg(0, uint16_t, network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, y);
+            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, sreenCoords.y);
         }
-        y += SCROLLABLE_ROW_HEIGHT;
+        sreenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 

@@ -576,32 +576,40 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
-        int32_t y = i * SCROLLABLE_ROW_HEIGHT;
-        if (y > dpi->y + dpi->height)
+        ScreenCoordsXY screenCoords;
+        screenCoords.y = i * SCROLLABLE_ROW_HEIGHT;
+        if (screenCoords.y > dpi->y + dpi->height)
             break;
 
-        if (y + SCROLLABLE_ROW_HEIGHT < dpi->y)
+        if (screenCoords.y + SCROLLABLE_ROW_HEIGHT < dpi->y)
             continue;
 
         // If hovering over item, change the color and fill the backdrop.
         if (i == w->selected_list_item)
-            gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].darker);
+            gfx_fill_rect(
+                dpi, 0, screenCoords.y, list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                ColourMapA[w->colours[1]].darker);
         else if (i == highlighted_index)
-            gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(
+                dpi, 0, screenCoords.y, list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                ColourMapA[w->colours[1]].mid_dark);
         else if ((i & 1) != 0) // odd / even check
-            gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].light);
+            gfx_fill_rect(
+                dpi, 0, screenCoords.y, list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                ColourMapA[w->colours[1]].light);
 
         // Draw the actual object entry's name...
-        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT - 3, y);
+        screenCoords.x = NAME_COL_LEFT - 3;
+        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, screenCoords);
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(
             object_entry_get_source_game_legacy(&_invalid_entries[i]));
-        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT - 3, y);
+        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT - 3, screenCoords.y);
 
         // ... and type
         rct_string_id type = get_object_type_string(&_invalid_entries[i]);
-        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT - 3, y);
+        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT - 3, screenCoords.y);
     }
 }
 

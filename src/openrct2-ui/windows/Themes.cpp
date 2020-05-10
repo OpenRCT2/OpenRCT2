@@ -855,7 +855,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t y;
+    ScreenCoordsXY screenCoords;
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
         return;
@@ -864,14 +864,14 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
         // gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
         // ColourMapA[w->colours[1]].mid_light);
         gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
-    y = 0;
+    screenCoords.y = 0;
     for (int32_t i = 0; i < get_colour_scheme_tab_count(); i++)
     {
-        if (y > dpi->y + dpi->height)
+        if (screenCoords.y > dpi->y + dpi->height)
         {
             break;
         }
-        if (y + _row_height >= dpi->y)
+        if (screenCoords.y + _row_height >= dpi->y)
         {
             if (i + 1 < get_colour_scheme_tab_count())
             {
@@ -881,22 +881,22 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                     translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
                     gfx_filter_rect(
-                        dpi, 0, y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 2,
-                        windowPalette.highlight);
+                        dpi, 0, screenCoords.y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right,
+                        screenCoords.y + _row_height - 2, windowPalette.highlight);
                     gfx_filter_rect(
-                        dpi, 0, y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 1,
-                        windowPalette.shadow);
+                        dpi, 0, screenCoords.y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right,
+                        screenCoords.y + _row_height - 1, windowPalette.shadow);
                 }
                 else
                 {
                     colour = ColourMapA[w->colours[1]].mid_dark;
                     gfx_fill_rect(
-                        dpi, 0, y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 2,
-                        colour);
+                        dpi, 0, screenCoords.y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right,
+                        screenCoords.y + _row_height - 2, colour);
                     colour = ColourMapA[w->colours[1]].lightest;
                     gfx_fill_rect(
-                        dpi, 0, y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 1,
-                        colour);
+                        dpi, 0, screenCoords.y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right,
+                        screenCoords.y + _row_height - 1, colour);
                 }
             }
 
@@ -904,7 +904,7 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
             int32_t numColours = theme_desc_get_num_colours(wc);
             for (uint8_t j = 0; j < numColours; j++)
             {
-                gfx_draw_string_left(dpi, theme_desc_get_name(wc), nullptr, w->colours[1], 2, y + 4);
+                gfx_draw_string_left(dpi, theme_desc_get_name(wc), nullptr, w->colours[1], 2, screenCoords.y + 4);
 
                 uint8_t colour = theme_get_colour(wc, j);
                 uint32_t image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN;
@@ -912,21 +912,20 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 {
                     image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN_PRESSED;
                 }
-                gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
+                gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, screenCoords.y + _button_offset_y, 0);
 
                 gfx_fill_rect_inset(
-                    dpi, _button_offset_x + 12 * j, y + _check_offset_y, _button_offset_x + 12 * j + 9,
-                    y + _check_offset_y + 10, w->colours[1], INSET_RECT_F_E0);
+                    dpi, _button_offset_x + 12 * j, screenCoords.y + _check_offset_y, _button_offset_x + 12 * j + 9,
+                    screenCoords.y + _check_offset_y + 10, w->colours[1], INSET_RECT_F_E0);
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
                     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-                    gfx_draw_string(
-                        dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, _button_offset_x + 12 * j,
-                        y + _check_offset_y);
+                    screenCoords = { _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
+                    gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, screenCoords);
                 }
             }
         }
 
-        y += _row_height;
+        screenCoords.y += _row_height;
     }
 }

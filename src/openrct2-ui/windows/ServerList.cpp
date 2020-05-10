@@ -428,11 +428,12 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
     int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
 
-    int32_t y = 0;
+    ScreenCoordsXY screenCoords;
+    screenCoords.y = 0;
     w->widgets[WIDX_LIST].tooltip = STR_NONE;
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
-        if (y >= dpi->y + dpi->height)
+        if (screenCoords.y >= dpi->y + dpi->height)
             continue;
         // if (y + ITEM_HEIGHT < dpi->y) continue;
 
@@ -442,7 +443,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         // Draw hover highlight
         if (highlighted)
         {
-            gfx_filter_rect(dpi, 0, y, width, y + ITEM_HEIGHT, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT, PALETTE_DARKEN_1);
             _version = serverDetails.version;
             w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
         }
@@ -457,14 +458,16 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             colour = COLOUR_MOSS_GREEN;
         }
 
+        screenCoords.x = 3;
+
         // Draw server information
         if (highlighted && !serverDetails.description.empty())
         {
-            gfx_draw_string(dpi, serverDetails.description.c_str(), colour, 3, y + 3);
+            gfx_draw_string(dpi, serverDetails.description.c_str(), colour, screenCoords + ScreenCoordsXY{ 0, 3 });
         }
         else
         {
-            gfx_draw_string(dpi, serverDetails.name.c_str(), colour, 3, y + 3);
+            gfx_draw_string(dpi, serverDetails.name.c_str(), colour, screenCoords + ScreenCoordsXY{ 0, 3 });
         }
 
         int32_t right = width - 3 - 14;
@@ -483,14 +486,14 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             bool correctVersion = serverDetails.version == network_get_version();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
-        gfx_draw_sprite(dpi, compatibilitySpriteId, right, y + 1, 0);
+        gfx_draw_sprite(dpi, compatibilitySpriteId, right, screenCoords.y + 1, 0);
         right -= 4;
 
         // Draw lock icon
         right -= 8;
         if (serverDetails.requiresPassword)
         {
-            gfx_draw_sprite(dpi, SPR_G2_LOCKED, right, y + 4, 0);
+            gfx_draw_sprite(dpi, SPR_G2_LOCKED, right, screenCoords.y + 4, 0);
         }
         right -= 6;
 
@@ -502,9 +505,10 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             snprintf(players, 32, "%d/%d", serverDetails.players, serverDetails.maxplayers);
         }
         int32_t numPlayersStringWidth = gfx_get_string_width(players);
-        gfx_draw_string(dpi, players, w->colours[1], right - numPlayersStringWidth, y + 3);
+        screenCoords.x = right - numPlayersStringWidth;
+        gfx_draw_string(dpi, players, w->colours[1], screenCoords + ScreenCoordsXY{ 0, 3 });
 
-        y += ITEM_HEIGHT;
+        screenCoords.y += ITEM_HEIGHT;
     }
 }
 

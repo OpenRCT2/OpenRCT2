@@ -141,13 +141,13 @@ static void DrawTextEllipsisedCompat(
     DrawText(dpi, x, y, &_legacyPaint, buffer);
 }
 
-void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, int32_t x, int32_t y)
+void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
 {
     _legacyPaint.UnderlineText = false;
     _legacyPaint.Colour = colour;
     _legacyPaint.Alignment = TextAlignment::LEFT;
     _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-    DrawText(dpi, x, y, &_legacyPaint, buffer);
+    DrawText(dpi, coords.x, coords.y, &_legacyPaint, buffer);
 }
 
 // Basic
