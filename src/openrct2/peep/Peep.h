@@ -513,7 +513,7 @@ enum PeepSpriteType : uint8_t
     PEEP_SPRITE_TYPE_INVALID = 255
 };
 
-// Flags used by peep->window_invalidate_flags
+// Flags used by peep->WindowInvalidateFlags
 enum PeepInvalidate
 {
     PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
@@ -617,27 +617,27 @@ struct Peep : SpriteBase
     uint8_t Var37;
     uint8_t Energy;
     uint8_t EnergyTarget;
-    uint8_t happiness;
-    uint8_t happiness_target;
-    uint8_t nausea;
-    uint8_t nausea_target;
-    uint8_t hunger;
-    uint8_t thirst;
-    uint8_t toilet;
-    uint8_t mass;
-    uint8_t time_to_consume;
-    IntensityRange intensity;
-    uint8_t nausea_tolerance;
-    uint8_t window_invalidate_flags;
-    money16 paid_on_drink;
-    uint8_t ride_types_been_on[16];
-    uint32_t item_extra_flags;
-    uint8_t photo2_ride_ref;
-    uint8_t photo3_ride_ref;
-    uint8_t photo4_ride_ref;
-    uint8_t current_ride;
-    StationIndex current_ride_station;
-    uint8_t current_train;
+    uint8_t Happiness;
+    uint8_t HappinessTarget;
+    uint8_t Nausea;
+    uint8_t NauseaTarget;
+    uint8_t Hunger;
+    uint8_t Thirst;
+    uint8_t Toilet;
+    uint8_t Mass;
+    uint8_t TimeToConsume;
+    IntensityRange Intensity;
+    uint8_t NauseaTolerance;
+    uint8_t WindowInvalidateFlags;
+    money16 PaidOnDrink;
+    uint8_t RideTypesBeenOn[16];
+    uint32_t ItemExtraFlags;
+    uint8_t Photo2RideRef;
+    uint8_t Photo3RideRef;
+    uint8_t Photo4RideRef;
+    uint8_t CurrentRide;
+    StationIndex CurrentRideStation;
+    uint8_t CurrentTrain;
     union
     {
         struct

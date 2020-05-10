@@ -582,8 +582,8 @@ private:
             switch (parameter)
             {
                 case GUEST_PARAMETER_HAPPINESS:
-                    peep->happiness = value;
-                    peep->happiness_target = value;
+                    peep->Happiness = value;
+                    peep->HappinessTarget = value;
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
@@ -596,23 +596,23 @@ private:
                     peep->EnergyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
-                    peep->hunger = value;
+                    peep->Hunger = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
-                    peep->thirst = value;
+                    peep->Thirst = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
-                    peep->nausea = value;
-                    peep->nausea_target = value;
+                    peep->Nausea = value;
+                    peep->NauseaTarget = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                    peep->nausea_tolerance = value;
+                    peep->NauseaTolerance = value;
                     break;
                 case GUEST_PARAMETER_TOILET:
-                    peep->toilet = value;
+                    peep->Toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                    peep->intensity = IntensityRange(value, 15);
+                    peep->Intensity = IntensityRange(value, 15);
                     break;
             }
             peep->UpdateSpriteType();
@@ -678,7 +678,7 @@ private:
                         auto peep = GET_PEEP(vehicle->peep[i + offset]);
                         if (peep != nullptr)
                         {
-                            vehicle->mass -= peep->mass;
+                            vehicle->mass -= peep->Mass;
                         }
                     }
 

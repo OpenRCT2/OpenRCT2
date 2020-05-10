@@ -245,7 +245,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
 
             // Find which ride peep is on
-            Ride* ride = get_ride(peep->current_ride);
+            Ride* ride = get_ride(peep->CurrentRide);
             if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 subjectLoc = std::nullopt;
@@ -253,7 +253,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
 
             // Find the first car of the train peep is on
-            sprite = try_get_sprite(ride->vehicles[peep->current_train]);
+            sprite = try_get_sprite(ride->vehicles[peep->CurrentTrain]);
             // Find the actual car peep is on
             for (int32_t i = 0; i < peep->current_car && sprite != nullptr; i++)
             {

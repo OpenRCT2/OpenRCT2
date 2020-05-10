@@ -689,10 +689,10 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE
             || (peep->State == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
         {
-            auto ride = get_ride(peep->current_ride);
+            auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
-                auto train = GET_VEHICLE(ride->vehicles[peep->current_train]);
+                auto train = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
                 if (train != nullptr)
                 {
                     auto car = train->GetCar(peep->current_car);
@@ -706,7 +706,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         }
         if (peep->x == LOCATION_NULL && overallFocus)
         {
-            auto ride = get_ride(peep->current_ride);
+            auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr)
             {
                 auto xy = ride->overall_view.ToTileCentre();

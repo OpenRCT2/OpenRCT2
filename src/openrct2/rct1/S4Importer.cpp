@@ -1423,7 +1423,7 @@ private:
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
         dst->NextFlags = src->next_flags;
         dst->Var37 = src->var_37;
-        dst->time_to_consume = src->time_to_consume;
+        dst->TimeToConsume = src->time_to_consume;
         dst->step_progress = src->step_progress;
         dst->vandalism_seen = src->vandalism_seen;
 
@@ -1451,25 +1451,25 @@ private:
 
         dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;
-        dst->happiness = src->happiness;
-        dst->happiness_target = src->happiness_target;
-        dst->nausea = src->nausea;
-        dst->nausea_target = src->nausea_target;
-        dst->hunger = src->hunger;
-        dst->thirst = src->thirst;
-        dst->toilet = src->toilet;
-        dst->mass = src->mass;
+        dst->Happiness = src->happiness;
+        dst->HappinessTarget = src->happiness_target;
+        dst->Nausea = src->nausea;
+        dst->NauseaTarget = src->nausea_target;
+        dst->Hunger = src->hunger;
+        dst->Thirst = src->thirst;
+        dst->Toilet = src->toilet;
+        dst->Mass = src->mass;
 
         dst->litter_count = src->litter_count;
         dst->disgusting_count = src->disgusting_count;
 
-        dst->intensity = static_cast<IntensityRange>(src->intensity);
-        dst->nausea_tolerance = src->nausea_tolerance;
-        dst->window_invalidate_flags = 0;
+        dst->Intensity = static_cast<IntensityRange>(src->intensity);
+        dst->NauseaTolerance = src->nausea_tolerance;
+        dst->WindowInvalidateFlags = 0;
 
-        dst->current_ride = src->current_ride;
-        dst->current_ride_station = src->current_ride_station;
-        dst->current_train = src->current_train;
+        dst->CurrentRide = src->current_ride;
+        dst->CurrentRideStation = src->current_ride_station;
+        dst->CurrentTrain = src->current_train;
         dst->current_car = src->current_car;
         dst->current_seat = src->current_seat;
         dst->time_on_ride = src->time_on_ride;
@@ -1491,7 +1491,7 @@ private:
 
         dst->paid_to_enter = src->paid_to_enter;
         dst->paid_on_rides = src->paid_on_rides;
-        dst->paid_on_drink = src->paid_on_drink;
+        dst->PaidOnDrink = src->paid_on_drink;
         dst->paid_on_food = src->paid_on_food;
         dst->paid_on_souvenirs = src->paid_on_souvenirs;
 
@@ -1508,7 +1508,7 @@ private:
         }
         for (size_t i = 0; i < 16; i++)
         {
-            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
 
         dst->photo1_ride_ref = src->photo1_ride_ref;
@@ -3005,7 +3005,7 @@ private:
             Peep* peep;
             FOR_ALL_GUESTS (i, peep)
             {
-                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
                     peep->SetState(PEEP_STATE_FALLING);

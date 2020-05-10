@@ -276,7 +276,7 @@ rct_sprite_checksum sprite_checksum()
                     // We set this to 0 because as soon the client selects a guest the window will remove the
                     // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect
                     // game state.
-                    copy.peep.window_invalidate_flags = 0;
+                    copy.peep.WindowInvalidateFlags = 0;
                 }
 
                 _spriteHashAlg->Update(&copy, sizeof(copy));

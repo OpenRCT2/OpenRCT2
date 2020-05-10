@@ -391,7 +391,7 @@ int32_t Park::CalculateParkRating() const
         {
             if (peep->OutsideOfPark == 0)
             {
-                if (peep->happiness > 128)
+                if (peep->Happiness > 128)
                 {
                     happyGuestCount++;
                 }

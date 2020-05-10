@@ -201,7 +201,7 @@ struct rct2_ride
     uint8_t start_drop_height;   // 0x116
     uint8_t highest_drop_height; // 0x117
     int32_t sheltered_length;    // 0x118
-    // Unused always 0? Should affect nausea
+    // Unused always 0? Should affect Nausea
     uint16_t var_11C;               // 0x11C
     uint8_t num_sheltered_sections; // 0x11E (?abY YYYY)
     // see cur_test_track_location

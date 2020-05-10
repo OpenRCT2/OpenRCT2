@@ -164,9 +164,9 @@ private:
             peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
             if (peep->State == PEEP_STATE_WATCHING)
             {
-                if (peep->current_ride == _rideIndex)
+                if (peep->CurrentRide == _rideIndex)
                 {
-                    peep->current_ride = RIDE_ID_NULL;
+                    peep->CurrentRide = RIDE_ID_NULL;
                     if (peep->time_to_stand >= 50)
                     {
                         // make peep stop watching the ride
@@ -192,25 +192,25 @@ private:
                     peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO2)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO2)
             {
-                if (peep->photo2_ride_ref == _rideIndex)
+                if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO2;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO3)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO3)
             {
-                if (peep->photo3_ride_ref == _rideIndex)
+                if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO3;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO4)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO4)
             {
-                if (peep->photo4_ride_ref == _rideIndex)
+                if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO4;
                 }
             }
 
