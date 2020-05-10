@@ -21,6 +21,8 @@ declare global {
     /**
      * Global context for accessing all other APIs.
      */
+    /** APIs for cheats. */
+    var cheats: Cheats;
     /** APIs for interacting with the stdout console. */
     var console: Console;
     /** Core APIs for plugins. */
@@ -897,6 +899,31 @@ declare global {
 
         postMessage(message: string): void;
         postMessage(message: ParkMessage): void;
+    }
+
+    interface Cheats {
+        allowArbitraryRideTypeChanges: boolean;
+        allowTrackPlaceInvalidHeights: boolean;
+        buildInPauseMode: boolean;
+        disableAllBreakdowns: boolean;
+        disableBrakesFailure: boolean;
+        disableClearanceChecks: boolean;
+        disableLittering: boolean;
+        disablePlantAging: boolean;
+        disableRideValueAging: boolean;
+        disableSupportLimits: boolean;
+        disableTrainLengthLimit: boolean;
+        disableVandalism: boolean;
+        enableAllDrawableTrackPieces: boolean;
+        enableChainLiftOnAllTrack: boolean;
+        fastLiftHill: boolean;
+        freezeWeather: boolean;
+        ignoreResearchStatus: boolean;
+        ignoreRideIntensity: boolean;
+        neverendingMarketing: boolean;
+        sandboxMode: boolean;
+        showAllOperatingModes: boolean;
+        showVehiclesFromOtherTrackTypes: boolean;
     }
 
     /**
