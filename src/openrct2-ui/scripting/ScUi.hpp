@@ -181,6 +181,11 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
+        void showError(const std::string& title, const std::string& message)
+        {
+            window_error_open(title, message);
+        }
+
         void showTextInput(const DukValue& desc)
         {
             try
@@ -230,6 +235,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");
             dukglue_register_method(ctx, &ScUi::getWindow, "getWindow");
+            dukglue_register_method(ctx, &ScUi::showError, "showError");
             dukglue_register_method(ctx, &ScUi::showTextInput, "showTextInput");
             dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
