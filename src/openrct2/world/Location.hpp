@@ -254,6 +254,13 @@ struct TileCoordsXY
 
     CoordsXY ToCoordsXY() const
     {
+        if (isNull())
+        {
+            CoordsXY ret{};
+            ret.setNull();
+            return ret;
+        }
+
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP };
     }
 
@@ -404,6 +411,12 @@ struct TileCoordsXYZ : public TileCoordsXY
 
     CoordsXYZ ToCoordsXYZ() const
     {
+        if (isNull())
+        {
+            CoordsXYZ ret{};
+            ret.setNull();
+            return ret;
+        }
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP };
     }
 };
@@ -562,6 +575,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
 
     CoordsXYZD ToCoordsXYZD() const
     {
+        if (isNull())
+        {
+            CoordsXYZD ret{};
+            ret.setNull();
+            return ret;
+        }
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP, direction };
     }
 };
