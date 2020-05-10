@@ -54,8 +54,9 @@ struct NewsItem
     utf8 Text[256];
 };
 
-constexpr int32_t NEWS_ITEM_HISTORY_START = 11;
-constexpr int32_t MAX_NEWS_ITEMS = 61;
+constexpr int32_t MAX_RECENT_NEWS_ITEMS = 11;
+constexpr int32_t MAX_OLD_NEWS_ITEMS = 50;
+constexpr int32_t MAX_NEWS_ITEMS = MAX_RECENT_NEWS_ITEMS + MAX_OLD_NEWS_ITEMS;
 
 extern const uint8_t news_type_properties[10];
 

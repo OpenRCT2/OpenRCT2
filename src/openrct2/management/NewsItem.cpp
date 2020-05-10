@@ -164,11 +164,11 @@ void news_item_close_current()
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    for (i = 0; i < NEWS_ITEM_HISTORY_START - 1; i++)
+    for (i = 0; i < MAX_RECENT_NEWS_ITEMS - 1; i++)
     {
         newsItems[i] = newsItems[i + 1];
     }
-    newsItems[NEWS_ITEM_HISTORY_START - 1].Type = NEWS_ITEM_NULL;
+    newsItems[MAX_RECENT_NEWS_ITEMS - 1].Type = NEWS_ITEM_NULL;
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -190,7 +190,7 @@ static void news_item_shift_history_up()
 static int32_t news_item_get_new_history_slot()
 {
     // Find an available history news item slot
-    for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             return i;
@@ -301,7 +301,7 @@ static NewsItem* news_item_first_open_queue_slot()
 
     while (newsItem->Type != NEWS_ITEM_NULL)
     {
-        if (newsItem + 1 >= &gNewsItems[NEWS_ITEM_HISTORY_START - 1])
+        if (newsItem + 1 >= &gNewsItems[MAX_RECENT_NEWS_ITEMS - 1])
             news_item_close_current();
         else
             newsItem++;
@@ -438,7 +438,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
 void news_item_disable_news(uint8_t type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    for (int32_t i = 0; i < NEWS_ITEM_HISTORY_START; i++)
+    for (int32_t i = 0; i < MAX_RECENT_NEWS_ITEMS; i++)
     {
         if (!news_item_is_empty(i))
         {
@@ -459,7 +459,7 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
         }
     }
 
-    for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
     {
         if (!news_item_is_empty(i))
         {

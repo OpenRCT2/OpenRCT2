@@ -150,7 +150,7 @@ static void window_news_update(rct_window* w)
 
     j = w->news.var_480;
     w->news.var_480 = -1;
-    for (i = 11; i < 61; i++)
+    for (i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             return;
@@ -188,7 +188,7 @@ static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_
     int32_t itemHeight = window_news_get_item_height();
 
     *height = 0;
-    for (int32_t i = 11; i < 61; i++)
+    for (int32_t i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             break;
@@ -208,7 +208,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
 
     buttonIndex = 0;
     auto mutableScreenCoords = screenCoords;
-    for (i = 11; i < 61; i++)
+    for (i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             break;
@@ -266,7 +266,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
     int32_t i, x, y, yy, press;
 
     y = 0;
-    for (i = 11; i < 61; i++)
+    for (i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
     {
         NewsItem* const newsItem = news_item_get(i);
         if (news_item_is_empty(i))
