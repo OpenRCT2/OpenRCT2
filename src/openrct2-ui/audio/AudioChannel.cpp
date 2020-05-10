@@ -10,21 +10,20 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-#include <SDL.h>
 #include <algorithm>
 #include <cmath>
-#include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioSource.h>
-#include <openrct2/audio/audio.h>
 #include <openrct2/common.h>
 #include <speex/speex_resampler.h>
 
 namespace OpenRCT2::Audio
 {
-    class AudioChannelImpl : public ISDLAudioChannel
+    template<typename AudioSource_ = ISDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
     {
+        static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
+
     private:
-        ISDLAudioSource* _source = nullptr;
+        AudioSource_* _source = nullptr;
         SpeexResamplerState* _resampler = nullptr;
 
         int32_t _group = MIXER_GROUP_SOUND;
@@ -118,12 +117,12 @@ namespace OpenRCT2::Audio
             return false;
         }
 
-        [[nodiscard]] virtual int32_t GetLoop() const override
+        [[nodiscard]] int32_t GetLoop() const override
         {
             return _loop;
         }
 
-        virtual void SetLoop(int32_t value) override
+        void SetLoop(int32_t value) override
         {
             _loop = value;
         }
@@ -227,7 +226,7 @@ namespace OpenRCT2::Audio
 
         void Play(IAudioSource* source, int32_t loop) override
         {
-            _source = static_cast<ISDLAudioSource*>(source);
+            _source = static_cast<AudioSource_*>(source);
             _loop = loop;
             _offset = 0;
             _done = false;
