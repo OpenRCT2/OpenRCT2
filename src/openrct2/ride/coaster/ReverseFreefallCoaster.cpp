@@ -389,6 +389,10 @@ static void reverse_freefall_rc_on_ride_photo(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    // The station piece is used as the car does not actually gain speed
+    // through an on-ride photo section - on-ride photos and boosters like
+    // the RFC's straight track piece cannot be combined together without
+    // the booster losing its function.
     static constexpr const std::array<uint32_t, 4> imageIds = {
         SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
         SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
