@@ -33,7 +33,7 @@ declare global {
     var network: Network;
     /** APIs for the park and management of it. */
     var park: Park;
-    /** 
+    /**
      * APIs for controlling the user interface.
      * These will only be available to servers and clients that are not running headless mode.
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
@@ -112,7 +112,7 @@ declare global {
          * Executes a command using the legacy console REPL. This should not be used
          * by plugins, and exists only for servers to continue using old commands until
          * all functionality can be accomplished with this scripting API.
-         * 
+         *
          * @deprecated
          * @param command The command and arguments to execute.
          */
@@ -211,6 +211,7 @@ declare global {
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
+        subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
     }
 
     interface Configuration {
@@ -275,7 +276,8 @@ declare global {
 
     type HookType =
         "interval.tick" | "interval.day" |
-        "network.chat" | "network.action" | "network.join" | "network.leave";
+        "network.chat" | "network.action" | "network.join" | "network.leave" |
+        "ride.ratings.calculate";
 
     type ExpenditureType =
         "ride_construction" |
@@ -327,6 +329,13 @@ declare global {
         readonly ipAddress: string;
         readonly publicKeyHash: string;
         cancel: boolean;
+    }
+
+    interface RideRatingsCalculateArgs {
+        readonly rideId: number;
+        excitement: number;
+        intensity: number;
+        nausea: number;
     }
 
     /**
