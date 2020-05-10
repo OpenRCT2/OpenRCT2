@@ -206,7 +206,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                         continue;
 
                     peep = &sprite->peep;
-                    if (peep->state != PEEP_STATE_WALKING)
+                    if (peep->State != PEEP_STATE_WALKING)
                         continue;
                     if (peep->z != loc.z)
                         continue;

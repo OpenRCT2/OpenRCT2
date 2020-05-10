@@ -162,7 +162,7 @@ private:
 
             // clear ride from potentially being in rides_been_on
             peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
-            if (peep->state == PEEP_STATE_WATCHING)
+            if (peep->State == PEEP_STATE_WATCHING)
             {
                 if (peep->current_ride == _rideIndex)
                 {

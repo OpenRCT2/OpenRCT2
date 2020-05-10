@@ -1113,7 +1113,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     }
     if (generateName)
     {
-        if (src->type == PeepType::PEEP_TYPE_STAFF)
+        if (src->Type == PeepType::PEEP_TYPE_STAFF)
         {
             static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,
@@ -1121,7 +1121,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
                 STR_SECURITY_GUARD_X,
                 STR_ENTERTAINER_X,
             };
-            dst->name_string_idx = staffNames[src->staff_type % sizeof(staffNames)];
+            dst->name_string_idx = staffNames[src->StaffType % sizeof(staffNames)];
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
@@ -1136,21 +1136,21 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->next_x = src->NextLoc.x;
     dst->next_y = src->NextLoc.y;
     dst->next_z = src->NextLoc.z / COORDS_Z_STEP;
-    dst->next_flags = src->next_flags;
-    dst->outside_of_park = src->outside_of_park;
-    dst->state = static_cast<uint8_t>(src->state);
-    dst->sub_state = src->sub_state;
-    dst->sprite_type = static_cast<uint8_t>(src->sprite_type);
-    dst->peep_type = static_cast<uint8_t>(src->type);
-    dst->no_of_rides = src->no_of_rides;
-    dst->tshirt_colour = src->tshirt_colour;
-    dst->trousers_colour = src->trousers_colour;
-    dst->destination_x = src->destination_x;
-    dst->destination_y = src->destination_y;
-    dst->destination_tolerance = src->destination_tolerance;
-    dst->var_37 = src->var_37;
-    dst->energy = src->energy;
-    dst->energy_target = src->energy_target;
+    dst->next_flags = src->NextFlags;
+    dst->outside_of_park = src->OutsideOfPark;
+    dst->state = static_cast<uint8_t>(src->State);
+    dst->sub_state = src->SubState;
+    dst->sprite_type = static_cast<uint8_t>(src->SpriteType);
+    dst->peep_type = static_cast<uint8_t>(src->Type);
+    dst->no_of_rides = src->NoOfRides;
+    dst->tshirt_colour = src->TshirtColour;
+    dst->trousers_colour = src->TrousersColour;
+    dst->destination_x = src->DestinationX;
+    dst->destination_y = src->DestinationY;
+    dst->destination_tolerance = src->DestinationTolerance;
+    dst->var_37 = src->Var37;
+    dst->energy = src->Energy;
+    dst->energy_target = src->EnergyTarget;
     dst->happiness = src->happiness;
     dst->happiness_target = src->happiness_target;
     dst->nausea = src->nausea;

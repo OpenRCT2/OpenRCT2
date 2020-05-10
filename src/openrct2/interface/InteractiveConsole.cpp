@@ -443,7 +443,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name.c_str());
+                    "staff id %03d type: %02u energy %03u name %s", i, peep->StaffType, peep->Energy, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -474,8 +474,8 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 {
                     Peep* peep = GET_PEEP(int_val[0]);
 
-                    peep->energy = int_val[1];
-                    peep->energy_target = int_val[1];
+                    peep->Energy = int_val[1];
+                    peep->EnergyTarget = int_val[1];
                 }
             }
             else if (argv[1] == "costume")
@@ -491,8 +491,8 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     return 1;
                 }
                 peep = GET_PEEP(int_val[0]);
-                bool is_entertainer = peep != nullptr && peep->type == PEEP_TYPE_STAFF
-                    && peep->staff_type == STAFF_TYPE_ENTERTAINER;
+                bool is_entertainer = peep != nullptr && peep->Type == PEEP_TYPE_STAFF
+                    && peep->StaffType == STAFF_TYPE_ENTERTAINER;
                 if (!is_entertainer)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
@@ -1604,7 +1604,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
                 auto* peep = peeps[0];
                 if (peeps.size() > 1)
                     peep = peeps[util_rand() % peeps.size() - 1];
-                peep->tshirt_colour = util_rand() & 0xFF;
+                peep->TshirtColour = util_rand() & 0xFF;
                 invalidate_sprite_0(peep);
             }
             break;

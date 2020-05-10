@@ -72,7 +72,7 @@ protected:
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
-        peep->outside_of_park = 0;
+        peep->OutsideOfPark = 0;
 
         // An earlier iteration of this code just gave peeps a target position to walk to, but it turns out
         // that with no actual ride to head towards, when a peep reaches a junction they use the 'aimless'
@@ -95,9 +95,9 @@ protected:
         // tile away. Stepping the peep will move them towards their destination, and once they reach it, a new
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
         peep->direction = moveDir;
-        peep->destination_x = peep->x + CoordsDirectionDelta[moveDir].x;
-        peep->destination_y = peep->y + CoordsDirectionDelta[moveDir].y;
-        peep->destination_tolerance = 2;
+        peep->DestinationX = peep->x + CoordsDirectionDelta[moveDir].x;
+        peep->DestinationY = peep->y + CoordsDirectionDelta[moveDir].y;
+        peep->DestinationTolerance = 2;
 
         // Repeatedly step the peep, until they reach the target position or until the expected number of steps have
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data

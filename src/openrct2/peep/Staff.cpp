@@ -155,7 +155,7 @@ void staff_update_greyed_patrol_areas()
 
         FOR_ALL_STAFF (sprite_index, peep)
         {
-            if (peep->staff_type == staff_type)
+            if (peep->StaffType == staff_type)
             {
                 int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -223,7 +223,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
      * both of these tiles are connected wide paths, the wide flag can be
      * ignored. */
 
-    if (staff->type != PEEP_TYPE_STAFF)
+    if (staff->Type != PEEP_TYPE_STAFF)
         return false;
 
     if (!staff_is_location_on_patrol_edge(staff, x, y))
@@ -688,12 +688,12 @@ bool Staff::DoHandymanPathFinding()
     }
 
     direction = newDirection;
-    destination_x = chosenTile.x + 16;
-    destination_y = chosenTile.y + 16;
-    destination_tolerance = 3;
-    if (state == PEEP_STATE_QUEUING)
+    DestinationX = chosenTile.x + 16;
+    DestinationY = chosenTile.y + 16;
+    DestinationTolerance = 3;
+    if (State == PEEP_STATE_QUEUING)
     {
-        destination_tolerance = (scenario_rand() & 7) + 2;
+        DestinationTolerance = (scenario_rand() & 7) + 2;
     }
     return false;
 }
@@ -746,7 +746,7 @@ static uint8_t staff_mechanic_direction_surface(Peep* peep)
     uint8_t direction = scenario_rand() & 3;
 
     auto ride = get_ride(peep->current_ride);
-    if (ride != nullptr && (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION)
+    if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
         && (scenario_rand() & 1))
     {
         auto location = ride_get_exit_location(ride, peep->current_ride_station);
@@ -823,23 +823,23 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
-        if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
+        if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
         {
             return direction;
         }
 
-        if (peep->sub_state != 2)
+        if (peep->SubState != 2)
         {
             return direction;
         }
-        peep->sub_state = 3;
+        peep->SubState = 3;
     }
 
     pathDirections |= (1 << direction);
 
     // Mechanic is heading to ride (either broken down or for inspection).
     auto ride = get_ride(peep->current_ride);
-    if (ride != nullptr && (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION))
+    if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION))
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
@@ -922,9 +922,9 @@ bool Staff::DoMechanicPathFinding()
     }
 
     direction = newDirection;
-    destination_x = chosenTile.x + 16;
-    destination_y = chosenTile.y + 16;
-    destination_tolerance = (scenario_rand() & 7) + 2;
+    DestinationX = chosenTile.x + 16;
+    DestinationY = chosenTile.y + 16;
+    DestinationTolerance = (scenario_rand() & 7) + 2;
 
     return false;
 }
@@ -937,7 +937,7 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
 {
     Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
-    if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
+    if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
     {
         pathDirections &= validDirections;
     }
@@ -1005,9 +1005,9 @@ bool Staff::DoMiscPathFinding()
     }
 
     direction = newDirection;
-    destination_x = chosenTile.x + 16;
-    destination_y = chosenTile.y + 16;
-    destination_tolerance = (scenario_rand() & 7) + 2;
+    DestinationX = chosenTile.x + 16;
+    DestinationY = chosenTile.y + 16;
+    DestinationTolerance = (scenario_rand() & 7) + 2;
 
     return false;
 }
@@ -1039,11 +1039,11 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
         if (y_dist > 96)
             continue;
 
-        if (peep->state == PEEP_STATE_WALKING)
+        if (peep->State == PEEP_STATE_WALKING)
         {
             peep->happiness_target = std::min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
         }
-        else if (peep->state == PEEP_STATE_QUEUING)
+        else if (peep->State == PEEP_STATE_QUEUING)
         {
             if (peep->time_in_queue > 200)
             {
@@ -1083,7 +1083,7 @@ bool Staff::DoEntertainerPathFinding()
  */
 bool Staff::DoPathFinding()
 {
-    switch (staff_type)
+    switch (StaffType)
     {
         case STAFF_TYPE_HANDYMAN:
             return DoHandymanPathFinding();
@@ -1196,23 +1196,23 @@ void Staff::UpdateMowing()
             return;
         }
 
-        var_37++;
+        Var37++;
 
-        if (var_37 == 1)
+        if (Var37 == 1)
         {
             SwitchToSpecialSprite(2);
         }
 
-        if (var_37 == std::size(_MowingWaypoints))
+        if (Var37 == std::size(_MowingWaypoints))
         {
             StateReset();
             return;
         }
 
-        destination_x = _MowingWaypoints[var_37].x + NextLoc.x;
-        destination_y = _MowingWaypoints[var_37].y + NextLoc.y;
+        DestinationX = _MowingWaypoints[Var37].x + NextLoc.x;
+        DestinationY = _MowingWaypoints[Var37].y + NextLoc.y;
 
-        if (var_37 != 7)
+        if (Var37 != 7)
             continue;
 
         auto surfaceElement = map_get_surface_element_at(NextLoc);
@@ -1233,7 +1233,7 @@ void Staff::UpdateMowing()
 void Staff::UpdateWatering()
 {
     staff_mowing_timeout = 0;
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         if (!CheckForPath())
             return;
@@ -1243,15 +1243,15 @@ void Staff::UpdateWatering()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction = (var_37 & 3) << 3;
+        sprite_direction = (Var37 & 3) << 3;
         action = PEEP_ACTION_STAFF_WATERING;
         action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
 
-        sub_state = 1;
+        SubState = 1;
     }
-    else if (sub_state == 1)
+    else if (SubState == 1)
     {
         if (action != PEEP_ACTION_NONE_2)
         {
@@ -1260,7 +1260,7 @@ void Staff::UpdateWatering()
             return;
         }
 
-        auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[var_37];
+        auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[Var37];
 
         TileElement* tile_element = map_get_first_element_at(actionLoc);
         if (tile_element == nullptr)
@@ -1297,7 +1297,7 @@ void Staff::UpdateEmptyingBin()
 {
     staff_mowing_timeout = 0;
 
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         if (!CheckForPath())
             return;
@@ -1307,15 +1307,15 @@ void Staff::UpdateEmptyingBin()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction = (var_37 & 3) << 3;
+        sprite_direction = (Var37 & 3) << 3;
         action = PEEP_ACTION_STAFF_EMPTY_BIN;
         action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
 
-        sub_state = 1;
+        SubState = 1;
     }
-    else if (sub_state == 1)
+    else if (SubState == 1)
     {
         if (action == PEEP_ACTION_NONE_2)
         {
@@ -1361,7 +1361,7 @@ void Staff::UpdateEmptyingBin()
             return;
         }
 
-        uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << var_37) << var_37);
+        uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << Var37) << Var37);
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
@@ -1394,8 +1394,8 @@ void Staff::UpdateSweeping()
         return;
     }
 
-    var_37++;
-    if (var_37 != 2)
+    Var37++;
+    if (Var37 != 2)
     {
         action = PEEP_ACTION_STAFF_SWEEP;
         action_frame = 0;
@@ -1432,14 +1432,14 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         mechanic_time_since_call = 0;
         peep_reset_pathfind_goal(this);
-        sub_state = 2;
+        SubState = 2;
     }
 
-    if (sub_state <= 3)
+    if (SubState <= 3)
     {
         mechanic_time_since_call++;
         if (mechanic_time_since_call > 2500)
@@ -1485,17 +1485,17 @@ void Staff::UpdateHeadingToInspect()
         int32_t destX = NextLoc.x + 16 + DirectionOffsets[direction].x * 53;
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[direction].y * 53;
 
-        destination_x = destX;
-        destination_y = destY;
-        destination_tolerance = 2;
+        DestinationX = destX;
+        DestinationY = destY;
+        DestinationTolerance = 2;
         sprite_direction = direction << 3;
 
         z = rideEntranceExitElement->base_height * 4;
-        sub_state = 4;
+        SubState = 4;
         // Falls through into sub_state 4
     }
 
-    int16_t delta_y = abs(y - destination_y);
+    int16_t delta_y = abs(y - DestinationY);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[current_ride_station].GetBaseZ();
@@ -1510,7 +1510,7 @@ void Staff::UpdateHeadingToInspect()
     }
 
     SetState(PEEP_STATE_INSPECTING);
-    sub_state = 0;
+    SubState = 0;
 }
 
 /**
@@ -1526,7 +1526,7 @@ void Staff::UpdateAnswering()
         return;
     }
 
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         action = PEEP_ACTION_STAFF_ANSWER_CALL;
         action_frame = 0;
@@ -1534,15 +1534,15 @@ void Staff::UpdateAnswering()
 
         UpdateCurrentActionSpriteType();
 
-        sub_state = 1;
+        SubState = 1;
         peep_window_state_update(this);
         return;
     }
-    else if (sub_state == 1)
+    else if (SubState == 1)
     {
         if (action == PEEP_ACTION_NONE_2)
         {
-            sub_state = 2;
+            SubState = 2;
             peep_window_state_update(this);
             mechanic_time_since_call = 0;
             peep_reset_pathfind_goal(this);
@@ -1552,7 +1552,7 @@ void Staff::UpdateAnswering()
         Invalidate();
         return;
     }
-    else if (sub_state <= 3)
+    else if (SubState <= 3)
     {
         mechanic_time_since_call++;
         if (mechanic_time_since_call > 2500)
@@ -1596,17 +1596,17 @@ void Staff::UpdateAnswering()
         int32_t destX = NextLoc.x + 16 + DirectionOffsets[direction].x * 53;
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[direction].y * 53;
 
-        destination_x = destX;
-        destination_y = destY;
-        destination_tolerance = 2;
+        DestinationX = destX;
+        DestinationY = destY;
+        DestinationTolerance = 2;
         sprite_direction = direction << 3;
 
         z = rideEntranceExitElement->base_height * 4;
-        sub_state = 4;
+        SubState = 4;
         // Falls through into sub_state 4
     }
 
-    int16_t delta_y = abs(y - destination_y);
+    int16_t delta_y = abs(y - DestinationY);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[current_ride_station].GetBaseZ();
@@ -1621,7 +1621,7 @@ void Staff::UpdateAnswering()
     }
 
     SetState(PEEP_STATE_FIXING);
-    sub_state = 0;
+    SubState = 0;
 }
 
 /** rct2: 0x00992A5C */
@@ -1688,12 +1688,12 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
             }
 
             peep->SetState(PEEP_STATE_WATERING);
-            peep->var_37 = chosen_position;
+            peep->Var37 = chosen_position;
 
-            peep->sub_state = 0;
-            peep->destination_x = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
-            peep->destination_y = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
-            peep->destination_tolerance = 3;
+            peep->SubState = 0;
+            peep->DestinationX = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
+            peep->DestinationY = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
+            peep->DestinationTolerance = 3;
 
             return 1;
         } while (!(tile_element++)->IsLastForTile());
@@ -1756,13 +1756,13 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     if (chosen_position == 4)
         return 0;
 
-    peep->var_37 = chosen_position;
+    peep->Var37 = chosen_position;
     peep->SetState(PEEP_STATE_EMPTYING_BIN);
 
-    peep->sub_state = 0;
-    peep->destination_x = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
-    peep->destination_y = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
-    peep->destination_tolerance = 3;
+    peep->SubState = 0;
+    peep->DestinationX = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
+    peep->DestinationY = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
+    peep->DestinationTolerance = 3;
     return 1;
 }
 
@@ -1787,11 +1787,11 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
         {
             peep->SetState(PEEP_STATE_MOWING);
-            peep->var_37 = 0;
+            peep->Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
-            peep->destination_x = peep->NextLoc.x + _MowingWaypoints[0].x;
-            peep->destination_y = peep->NextLoc.y + _MowingWaypoints[0].y;
-            peep->destination_tolerance = 3;
+            peep->DestinationX = peep->NextLoc.x + _MowingWaypoints[0].x;
+            peep->DestinationY = peep->NextLoc.y + _MowingWaypoints[0].y;
+            peep->DestinationTolerance = 3;
             return 1;
         }
     }
@@ -1822,10 +1822,10 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
             continue;
 
         peep->SetState(PEEP_STATE_SWEEPING);
-        peep->var_37 = 0;
-        peep->destination_x = sprite->litter.x;
-        peep->destination_y = sprite->litter.y;
-        peep->destination_tolerance = 5;
+        peep->Var37 = 0;
+        peep->DestinationX = sprite->litter.x;
+        peep->DestinationY = sprite->litter.y;
+        peep->DestinationTolerance = 5;
         return 1;
     }
 
@@ -1834,17 +1834,17 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 
 void Staff::Tick128UpdateStaff()
 {
-    if (staff_type != STAFF_TYPE_SECURITY)
+    if (StaffType != STAFF_TYPE_SECURITY)
         return;
 
     PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
-    if (state != PEEP_STATE_PATROLLING)
+    if (State != PEEP_STATE_PATROLLING)
         newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
 
-    if (sprite_type == newSpriteType)
+    if (SpriteType == newSpriteType)
         return;
 
-    sprite_type = newSpriteType;
+    SpriteType = newSpriteType;
     action_sprite_image_offset = 0;
     no_action_frame_num = 0;
     if (action < PEEP_ACTION_NONE_1)
@@ -1862,12 +1862,12 @@ void Staff::Tick128UpdateStaff()
 
 bool Staff::IsMechanic() const
 {
-    return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && type == PEEP_TYPE_STAFF && staff_type == STAFF_TYPE_MECHANIC);
+    return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && Type == PEEP_TYPE_STAFF && StaffType == STAFF_TYPE_MECHANIC);
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)
 {
-    switch (state)
+    switch (State)
     {
         case PEEP_STATE_PATROLLING:
             UpdatePatrolling();
@@ -1933,7 +1933,7 @@ void Staff::UpdatePatrolling()
         }
     }
 
-    if (staff_type != STAFF_TYPE_HANDYMAN)
+    if (StaffType != STAFF_TYPE_HANDYMAN)
         return;
 
     if (peep_update_patrolling_find_sweeping(this))
@@ -2065,20 +2065,20 @@ void Staff::UpdateFixing(int32_t steps)
     bool progressToNextSubstate = true;
     bool firstRun = true;
 
-    if ((state == PEEP_STATE_INSPECTING)
+    if ((State == PEEP_STATE_INSPECTING)
         && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
-        state = PEEP_STATE_FIXING;
+        State = PEEP_STATE_FIXING;
     }
 
     while (progressToNextSubstate)
     {
-        switch (sub_state)
+        switch (SubState)
         {
             case PEEP_FIXING_ENTER_STATION:
-                next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+                NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
                 progressToNextSubstate = UpdateFixingEnterStation(ride);
                 break;
 
@@ -2141,10 +2141,10 @@ void Staff::UpdateFixing(int32_t steps)
             break;
         }
 
-        int32_t subState = sub_state;
+        int32_t subState = SubState;
         uint32_t sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
 
-        if (state != PEEP_STATE_INSPECTING)
+        if (State != PEEP_STATE_INSPECTING)
         {
             sub_state_sequence_mask = FixingSubstatesForBreakdown[ride->breakdown_reason_pending];
         }
@@ -2154,7 +2154,7 @@ void Staff::UpdateFixing(int32_t steps)
             subState++;
         } while ((sub_state_sequence_mask & (1 << subState)) == 0);
 
-        sub_state = subState & 0xFF;
+        SubState = subState & 0xFF;
     }
 }
 
@@ -2212,9 +2212,9 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
         }
 
         CoordsXY offset = DirectionOffsets[direction];
-        destination_x = (offset.x * -12) + vehicle->x;
-        destination_y = (offset.y * -12) + vehicle->y;
-        destination_tolerance = 2;
+        DestinationX = (offset.x * -12) + vehicle->x;
+        DestinationY = (offset.y * -12) + vehicle->y;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2355,18 +2355,18 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
         stationPos.x += 16 + offset.x;
         if (offset.x == 0)
         {
-            stationPos.x = destination_x;
+            stationPos.x = DestinationX;
         }
 
         stationPos.y += 16 + offset.y;
         if (offset.y == 0)
         {
-            stationPos.y = destination_y;
+            stationPos.y = DestinationY;
         }
 
-        destination_x = stationPos.x;
-        destination_y = stationPos.y;
-        destination_tolerance = 2;
+        DestinationX = stationPos.x;
+        DestinationY = stationPos.y;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2465,18 +2465,18 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
         destinationX -= offset.x;
         if (offset.x == 0)
         {
-            destinationX = destination_x;
+            destinationX = DestinationX;
         }
 
         destinationY -= offset.y;
         if (offset.y == 0)
         {
-            destinationY = destination_y;
+            destinationY = DestinationY;
         }
 
-        destination_x = destinationX;
-        destination_y = destinationY;
-        destination_tolerance = 2;
+        DestinationX = destinationX;
+        DestinationY = destinationY;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2589,9 +2589,9 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
         stationPosition.x += stationPlatformDirection.x * 20;
         stationPosition.y += stationPlatformDirection.y * 20;
 
-        destination_x = stationPosition.x;
-        destination_y = stationPosition.y;
-        destination_tolerance = 2;
+        DestinationX = stationPosition.x;
+        DestinationY = stationPosition.y;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2616,7 +2616,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
 
-        if (state == PEEP_STATE_INSPECTING)
+        if (State == PEEP_STATE_INSPECTING)
         {
             UpdateRideInspected(current_ride);
 
@@ -2676,9 +2676,9 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
         exitPosition.x -= ebx_direction.x * 19;
         exitPosition.y -= ebx_direction.y * 19;
 
-        destination_x = exitPosition.x;
-        destination_y = exitPosition.y;
-        destination_tolerance = 2;
+        DestinationX = exitPosition.x;
+        DestinationY = exitPosition.y;
+        DestinationTolerance = 2;
     }
 
     int16_t xy_distance;

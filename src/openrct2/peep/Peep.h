@@ -37,7 +37,7 @@
 #define PEEP_MAX_HAPPINESS 255
 #define PEEP_MIN_ENERGY 32
 #define PEEP_MAX_ENERGY 128
-#define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
+#define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max Energy!
 #define PEEP_MAX_HUNGER 255
 #define PEEP_MAX_TOILET 255
 #define PEEP_MAX_NAUSEA 255
@@ -598,25 +598,25 @@ struct Peep : SpriteBase
 {
     char* name;
     CoordsXYZ NextLoc;
-    uint8_t next_flags;
-    uint8_t outside_of_park;
-    PeepState state;
-    uint8_t sub_state;
-    PeepSpriteType sprite_type;
-    PeepType type;
+    uint8_t NextFlags;
+    uint8_t OutsideOfPark;
+    PeepState State;
+    uint8_t SubState;
+    PeepSpriteType SpriteType;
+    PeepType Type;
     union
     {
-        uint8_t staff_type;
-        uint8_t no_of_rides;
+        uint8_t StaffType;
+        uint8_t NoOfRides;
     };
-    uint8_t tshirt_colour;
-    uint8_t trousers_colour;
-    uint16_t destination_x; // Location that the peep is trying to get to
-    uint16_t destination_y;
-    uint8_t destination_tolerance; // How close to destination before next action/state 0 = exact
-    uint8_t var_37;
-    uint8_t energy;
-    uint8_t energy_target;
+    uint8_t TshirtColour;
+    uint8_t TrousersColour;
+    uint16_t DestinationX; // Location that the peep is trying to get to
+    uint16_t DestinationY;
+    uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
+    uint8_t Var37;
+    uint8_t Energy;
+    uint8_t EnergyTarget;
     uint8_t happiness;
     uint8_t happiness_target;
     uint8_t nausea;

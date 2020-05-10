@@ -166,8 +166,8 @@ private:
             newPeep->no_action_frame_num = 0;
             newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->path_check_optimisation = 0;
-            newPeep->type = PEEP_TYPE_STAFF;
-            newPeep->outside_of_park = 0;
+            newPeep->Type = PEEP_TYPE_STAFF;
+            newPeep->OutsideOfPark = 0;
             newPeep->peep_flags = 0;
             newPeep->paid_to_enter = 0;
             newPeep->paid_on_rides = 0;
@@ -188,7 +188,7 @@ private:
 
                 FOR_ALL_STAFF (idSearchSpriteIndex, idSearchPeep)
                 {
-                    if (idSearchPeep->staff_type != _staffType)
+                    if (idSearchPeep->StaffType != _staffType)
                         continue;
 
                     if (idSearchPeep->id == newStaffId)
@@ -203,7 +203,7 @@ private:
             }
 
             newPeep->id = newStaffId;
-            newPeep->staff_type = _staffType;
+            newPeep->StaffType = _staffType;
 
             PeepSpriteType spriteType = spriteTypes[_staffType];
             if (_staffType == STAFF_TYPE_ENTERTAINER)
@@ -211,7 +211,7 @@ private:
                 spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
             }
             newPeep->name = nullptr;
-            newPeep->sprite_type = spriteType;
+            newPeep->SpriteType = spriteType;
 
             const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
             newPeep->sprite_width = spriteBounds->sprite_width;
@@ -225,7 +225,7 @@ private:
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->state = PEEP_STATE_PICKED;
+                newPeep->State = PEEP_STATE_PICKED;
 
                 sprite_move(newPeep->x, newPeep->y, newPeep->z, newPeep);
                 invalidate_sprite_2(newPeep);
@@ -239,12 +239,12 @@ private:
             newPeep->pathfind_goal.direction = INVALID_DIRECTION;
 
             uint8_t colour = staff_get_colour(_staffType);
-            newPeep->tshirt_colour = colour;
-            newPeep->trousers_colour = colour;
+            newPeep->TshirtColour = colour;
+            newPeep->TrousersColour = colour;
 
-            // Staff energy determines their walking speed
-            newPeep->energy = 0x60;
-            newPeep->energy_target = 0x60;
+            // Staff Energy determines their walking speed
+            newPeep->Energy = 0x60;
+            newPeep->EnergyTarget = 0x60;
             newPeep->staff_mowing_timeout = 0;
 
             newPeep->staff_id = staffIndex;
@@ -266,7 +266,7 @@ private:
     {
         // Find a location to place new staff member
 
-        newPeep->state = PEEP_STATE_FALLING;
+        newPeep->State = PEEP_STATE_FALLING;
 
         int16_t x, y, z;
         uint32_t count = 0;
@@ -277,7 +277,7 @@ private:
         // Count number of walking guests
         FOR_ALL_GUESTS (sprite_index, guest)
         {
-            if (guest->state == PEEP_STATE_WALKING)
+            if (guest->State == PEEP_STATE_WALKING)
             {
                 // Check the walking guest's tile. Only count them if they're on a path tile.
                 guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
@@ -292,7 +292,7 @@ private:
             uint32_t rand = scenario_rand_max(count);
             FOR_ALL_GUESTS (sprite_index, guest)
             {
-                if (guest->state == PEEP_STATE_WALKING)
+                if (guest->State == PEEP_STATE_WALKING)
                 {
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
@@ -325,7 +325,7 @@ private:
             else
             {
                 // User must pick a location
-                newPeep->state = PEEP_STATE_PICKED;
+                newPeep->State = PEEP_STATE_PICKED;
                 x = newPeep->x;
                 y = newPeep->y;
                 z = newPeep->z;

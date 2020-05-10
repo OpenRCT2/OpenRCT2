@@ -137,7 +137,7 @@ namespace OpenRCT2::Scripting
                         auto peep = static_cast<Peep*>(entity);
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
                         // vehicle car having an unsupported peep capacity.
-                        if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
+                        if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE)
                         {
                             duk_error(ctx, DUK_ERR_ERROR, "Removing a peep that is on a ride is currently unsupported.");
                         }
@@ -199,7 +199,7 @@ namespace OpenRCT2::Scripting
         uint8_t tshirtColour_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->tshirt_colour : 0;
+            return peep != nullptr ? peep->TshirtColour : 0;
         }
         void tshirtColour_set(uint8_t value)
         {
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->tshirt_colour = value;
+                peep->TshirtColour = value;
                 peep->Invalidate();
             }
         }
@@ -215,7 +215,7 @@ namespace OpenRCT2::Scripting
         uint8_t trousersColour_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->trousers_colour : 0;
+            return peep != nullptr ? peep->TrousersColour : 0;
         }
         void trousersColour_set(uint8_t value)
         {
@@ -223,7 +223,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->trousers_colour = value;
+                peep->TrousersColour = value;
                 peep->Invalidate();
             }
         }
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
         uint8_t energy_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy : 0;
+            return peep != nullptr ? peep->Energy : 0;
         }
         void energy_set(uint8_t value)
         {
@@ -239,14 +239,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy = value;
+                peep->Energy = value;
             }
         }
 
         uint8_t energyTarget_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy_target : 0;
+            return peep != nullptr ? peep->EnergyTarget : 0;
         }
         void energyTarget_set(uint8_t value)
         {
@@ -254,7 +254,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy_target = value;
+                peep->EnergyTarget = value;
             }
         }
 

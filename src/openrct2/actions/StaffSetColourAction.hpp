@@ -69,10 +69,10 @@ public:
         Peep* peep;
         FOR_ALL_STAFF (spriteIndex, peep)
         {
-            if (peep->staff_type == _staffType)
+            if (peep->StaffType == _staffType)
             {
-                peep->tshirt_colour = _colour;
-                peep->trousers_colour = _colour;
+                peep->TshirtColour = _colour;
+                peep->TrousersColour = _colour;
             }
         }
 

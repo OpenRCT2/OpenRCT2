@@ -389,7 +389,7 @@ int32_t Park::CalculateParkRating() const
         Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
-            if (peep->outside_of_park == 0)
+            if (peep->OutsideOfPark == 0)
             {
                 if (peep->happiness > 128)
                 {
@@ -724,13 +724,13 @@ Peep* Park::GenerateGuest()
             peep->sprite_direction = direction << 3;
 
             // Get the centre point of the tile the peep is on
-            peep->destination_x = (peep->x & 0xFFE0) + 16;
-            peep->destination_y = (peep->y & 0xFFE0) + 16;
+            peep->DestinationX = (peep->x & 0xFFE0) + 16;
+            peep->DestinationY = (peep->y & 0xFFE0) + 16;
 
-            peep->destination_tolerance = 5;
+            peep->DestinationTolerance = 5;
             peep->direction = direction;
-            peep->var_37 = 0;
-            peep->state = PEEP_STATE_ENTERING_PARK;
+            peep->Var37 = 0;
+            peep->State = PEEP_STATE_ENTERING_PARK;
         }
     }
     return peep;

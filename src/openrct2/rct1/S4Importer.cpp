@@ -1391,7 +1391,7 @@ private:
     {
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
-        dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
+        dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->action = static_cast<PeepActionType>(src->action);
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
@@ -1400,7 +1400,7 @@ private:
         dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->action_frame = src->action_frame;
 
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
+        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
         dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
         dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
         dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
@@ -1416,21 +1416,21 @@ private:
             dst->SetName(GetUserString(src->name_string_idx));
         }
 
-        dst->outside_of_park = src->outside_of_park;
+        dst->OutsideOfPark = src->outside_of_park;
 
-        dst->state = static_cast<PeepState>(src->state);
-        dst->sub_state = src->sub_state;
+        dst->State = static_cast<PeepState>(src->state);
+        dst->SubState = src->sub_state;
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
-        dst->next_flags = src->next_flags;
-        dst->var_37 = src->var_37;
+        dst->NextFlags = src->next_flags;
+        dst->Var37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
         dst->step_progress = src->step_progress;
         dst->vandalism_seen = src->vandalism_seen;
 
-        dst->type = static_cast<PeepType>(src->type);
+        dst->Type = static_cast<PeepType>(src->type);
 
-        dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
-        dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
+        dst->TshirtColour = RCT1::GetColour(src->tshirt_colour);
+        dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
         dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
         dst->hat_colour = RCT1::GetColour(src->hat_colour);
 
@@ -1444,13 +1444,13 @@ private:
             dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
         }
 
-        dst->destination_x = src->destination_x;
-        dst->destination_y = src->destination_y;
-        dst->destination_tolerance = src->destination_tolerance;
+        dst->DestinationX = src->destination_x;
+        dst->DestinationY = src->destination_y;
+        dst->DestinationTolerance = src->destination_tolerance;
         dst->direction = src->direction;
 
-        dst->energy = src->energy;
-        dst->energy_target = src->energy_target;
+        dst->Energy = src->energy;
+        dst->EnergyTarget = src->energy_target;
         dst->happiness = src->happiness;
         dst->happiness_target = src->happiness_target;
         dst->nausea = src->nausea;
@@ -1483,7 +1483,7 @@ private:
         dst->time_in_park = src->time_in_park;
 
         // This doubles as staff type
-        dst->no_of_rides = src->no_of_rides;
+        dst->NoOfRides = src->no_of_rides;
 
         dst->no_of_drinks = src->no_of_drinks;
         dst->no_of_food = src->no_of_food;
@@ -1554,9 +1554,9 @@ private:
 
         dst->item_standard_flags = src->item_standard_flags;
 
-        if (dst->type == PEEP_TYPE_GUEST)
+        if (dst->Type == PEEP_TYPE_GUEST)
         {
-            if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
+            if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
             {
                 increment_guests_heading_for_park();
             }
@@ -3005,7 +3005,7 @@ private:
             Peep* peep;
             FOR_ALL_GUESTS (i, peep)
             {
-                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
                 {
                     peep->RemoveFromQueue();
                     peep->SetState(PEEP_STATE_FALLING);

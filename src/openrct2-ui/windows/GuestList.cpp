@@ -253,7 +253,7 @@ void window_guest_list_refresh_list()
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         sprite_set_flashing(peep, false);
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
         if (_window_guest_list_selected_filter != -1)
         {
@@ -945,13 +945,13 @@ static void window_guest_list_find_groups()
 
     // Set all guests to unassigned
     FOR_ALL_GUESTS (spriteIndex, peep)
-        if (peep->outside_of_park == 0)
+        if (peep->OutsideOfPark == 0)
             peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
 
     // For each guest / group
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
+        if (peep->OutsideOfPark != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
             continue;
 
         // New group, cap at 240 though
@@ -974,7 +974,7 @@ static void window_guest_list_find_groups()
         // Find more peeps that belong to same group
         FOR_ALL_GUESTS (spriteIndex2, peep2)
         {
-            if (peep2->outside_of_park != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
+            if (peep2->OutsideOfPark != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
                 continue;
 
             // Get and check if in same group

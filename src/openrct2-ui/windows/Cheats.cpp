@@ -237,8 +237,8 @@ static rct_widget window_cheats_guests_widgets[] =
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(0),         HPL(12.5),      STR_CHEAT_SET_GUESTS_PARAMETERS,    STR_NONE },                             // Guests parameters group frame
     { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(1),         HPL(1),         STR_MAX,                            STR_NONE },                             // happiness max
     { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(1),         HPL(1),         STR_MIN,                            STR_NONE },                             // happiness min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(2),         HPL(2),         STR_MAX,                            STR_NONE },                             // energy max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(2),         HPL(2),         STR_MIN,                            STR_NONE },                             // energy min
+    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(2),         HPL(2),         STR_MAX,                            STR_NONE },                             // Energy max
+    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(2),         HPL(2),         STR_MIN,                            STR_NONE },                             // Energy min
     { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(3),         HPL(3),         STR_MAX,                            STR_NONE },                             // hunger max
     { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(3),         HPL(3),         STR_MIN,                            STR_NONE },                             // hunger min
     { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(4),         HPL(4),         STR_MAX,                            STR_NONE },                             // thirst max

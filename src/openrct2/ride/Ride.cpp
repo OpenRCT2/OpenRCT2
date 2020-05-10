@@ -1065,14 +1065,14 @@ void ride_remove_peeps(Ride* ride)
     Peep* peep;
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
-        if (peep->state == PEEP_STATE_QUEUING_FRONT || peep->state == PEEP_STATE_ENTERING_RIDE
-            || peep->state == PEEP_STATE_LEAVING_RIDE || peep->state == PEEP_STATE_ON_RIDE)
+        if (peep->State == PEEP_STATE_QUEUING_FRONT || peep->State == PEEP_STATE_ENTERING_RIDE
+            || peep->State == PEEP_STATE_LEAVING_RIDE || peep->State == PEEP_STATE_ON_RIDE)
         {
             if (peep->current_ride != ride->id)
                 continue;
 
             peep_decrement_num_riders(peep);
-            if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
+            if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->SubState == PEEP_RIDE_AT_ENTRANCE)
                 peep->RemoveFromQueue();
 
             peep->Invalidate();
@@ -1092,7 +1092,7 @@ void ride_remove_peeps(Ride* ride)
             }
 
             peep->Invalidate();
-            peep->state = PEEP_STATE_FALLING;
+            peep->State = PEEP_STATE_FALLING;
             peep->SwitchToSpecialSprite(0);
 
             peep->happiness = std::min(peep->happiness, peep->happiness_target) / 2;
@@ -2135,7 +2135,7 @@ void Ride::UpdateSpiralSlide()
         slide_in_use--;
 
         Peep* peep = GET_PEEP(slide_peep);
-        peep->destination_x++;
+        peep->DestinationX++;
     }
 
     const uint8_t current_rotation = get_current_rotation();
@@ -2569,7 +2569,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         {
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING)
+                || (mechanic->State != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->State != PEEP_STATE_ANSWERING)
                 || mechanic->current_ride != ride->id)
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
@@ -2582,8 +2582,8 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         {
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_FIXING
-                    && mechanic->state != PEEP_STATE_INSPECTING && mechanic->state != PEEP_STATE_ANSWERING))
+                || (mechanic->State != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->State != PEEP_STATE_FIXING
+                    && mechanic->State != PEEP_STATE_INSPECTING && mechanic->State != PEEP_STATE_ANSWERING))
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2601,7 +2601,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
 static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection)
 {
     mechanic->SetState(forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING);
-    mechanic->sub_state = 0;
+    mechanic->SubState = 0;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     ride->mechanic = mechanic->sprite_index;
@@ -2659,17 +2659,17 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
     closestDistance = UINT_MAX;
     FOR_ALL_STAFF (spriteIndex, peep)
     {
-        if (peep->staff_type != STAFF_TYPE_MECHANIC)
+        if (peep->StaffType != STAFF_TYPE_MECHANIC)
             continue;
 
         if (!forInspection)
         {
-            if (peep->state == PEEP_STATE_HEADING_TO_INSPECTION)
+            if (peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
             {
-                if (peep->sub_state >= 4)
+                if (peep->SubState >= 4)
                     continue;
             }
-            else if (peep->state != PEEP_STATE_PATROLLING)
+            else if (peep->State != PEEP_STATE_PATROLLING)
                 continue;
 
             if (!(peep->staff_orders & STAFF_ORDERS_FIX_RIDES))
@@ -2677,7 +2677,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
         }
         else
         {
-            if (peep->state != PEEP_STATE_PATROLLING || !(peep->staff_orders & STAFF_ORDERS_INSPECT_RIDES))
+            if (peep->State != PEEP_STATE_PATROLLING || !(peep->staff_orders & STAFF_ORDERS_INSPECT_RIDES))
                 continue;
         }
 
@@ -5454,7 +5454,7 @@ void Ride::StopGuestsQueuing()
 
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
-        if (peep->state != PEEP_STATE_QUEUING)
+        if (peep->State != PEEP_STATE_QUEUING)
             continue;
         if (peep->current_ride != id)
             continue;
