@@ -696,6 +696,12 @@ declare global {
          * The z-coordinate of the entity in game units.
          */
         z: number;
+
+        /**
+         * Removes the entity from the map.
+         * Note: removing vehicles and peeps that are on rides is currently unsupported.
+         */
+        remove(): void;
     }
 
     /**

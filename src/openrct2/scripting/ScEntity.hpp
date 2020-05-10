@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../Context.h"
 #    include "../common.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
@@ -119,6 +120,41 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void remove()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto entity = GetEntity();
+            if (entity != nullptr)
+            {
+                invalidate_sprite_2(entity);
+                switch (entity->sprite_identifier)
+                {
+                    case SPRITE_IDENTIFIER_VEHICLE:
+                        duk_error(ctx, DUK_ERR_ERROR, "Removing a vehicle is currently unsupported.");
+                        break;
+                    case SPRITE_IDENTIFIER_PEEP:
+                    {
+                        auto peep = static_cast<Peep*>(entity);
+                        // We can't remove a single peep from a ride at the moment as this can cause complications with the
+                        // vehicle car having an unsupported peep capacity.
+                        if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
+                        {
+                            duk_error(ctx, DUK_ERR_ERROR, "Removing a peep that is on a ride is currently unsupported.");
+                        }
+                        else
+                        {
+                            peep->Remove();
+                        }
+                        break;
+                    }
+                    case SPRITE_IDENTIFIER_MISC:
+                    case SPRITE_IDENTIFIER_LITTER:
+                        sprite_remove(entity);
+                        break;
+                }
+            }
+        }
+
         SpriteBase* GetEntity() const
         {
             return &get_sprite(_id)->generic;
@@ -132,6 +168,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScEntity::x_get, &ScEntity::x_set, "x");
             dukglue_register_property(ctx, &ScEntity::y_get, &ScEntity::y_set, "y");
             dukglue_register_property(ctx, &ScEntity::z_get, &ScEntity::z_set, "z");
+            dukglue_register_method(ctx, &ScEntity::remove, "remove");
         }
     };
 
