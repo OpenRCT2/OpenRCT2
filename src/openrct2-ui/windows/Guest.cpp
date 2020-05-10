@@ -2077,7 +2077,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_debug_tab_paint(w, dpi);
 
     auto peep = GET_PEEP(w->number);
-    auto screenCoords  = ScreenCoordsXY{ w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                                          w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
     {
         set_format_arg(0, uint32_t, peep->sprite_index);
