@@ -638,8 +638,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_pressed(w, widgetIndex))
     {
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string(
-            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { l, yMid - 5 });
+        gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { l, yMid - 5 });
     }
 
     // draw the text
