@@ -251,7 +251,7 @@ void gfx_draw_string_left_centred(
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, ScreenCoordsXY(x, y - (height / 2)));
+    gfx_draw_string(dpi, buffer, colour, { x, y - (height / 2) });
 }
 
 /**
@@ -320,8 +320,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = gfx_get_string_width(text);
-        screenCoords.x = x - (width / 2);
-        gfx_draw_string(dpi, text, TEXT_COLOUR_254, screenCoords);
+        gfx_draw_string(dpi, text, TEXT_COLOUR_254, screenCoords - ScreenCoordsXY{ width / 2, 0 });
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -463,8 +462,7 @@ void gfx_draw_string_centred_wrapped_partial(
             ch = nextCh;
         }
 
-        screenCoords.x = x - halfWidth;
-        screenCoords.y = lineY;
+        screenCoords = { x - halfWidth, lineY };
         gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords);
 
         if (numCharactersDrawn > numCharactersToDraw)

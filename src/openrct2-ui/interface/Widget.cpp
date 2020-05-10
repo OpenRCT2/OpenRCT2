@@ -639,7 +639,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     {
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         gfx_draw_string(
-            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), ScreenCoordsXY(l, yMid - 5));
+            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { l, yMid - 5 });
     }
 
     // draw the text
@@ -737,16 +737,12 @@ static void widget_hscrollbar_draw(
     gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 7, r - SCROLLBAR_WIDTH, t + 7, ColourMapA[colour].mid_dark);
     gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 8, r - SCROLLBAR_WIDTH, t + 8, ColourMapA[colour].lighter);
 
-    ScreenCoordsXY screenCoords;
-
     // Left button
     {
         uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        screenCoords.x = l + 1;
-        screenCoords.y = t;
         gfx_fill_rect_inset(dpi, l, t, l + (SCROLLBAR_WIDTH - 1), b, colour, flags);
-        gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, screenCoords);
+        gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, { l + 1, t });
     }
 
     // Thumb
@@ -762,10 +758,8 @@ static void widget_hscrollbar_draw(
     {
         uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        screenCoords.x = r - 6;
-        screenCoords.y = t;
         gfx_fill_rect_inset(dpi, r - (SCROLLBAR_WIDTH - 1), t, r, b, colour, flags);
-        gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, screenCoords);
+        gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, { r - 6, t });
     }
 }
 
@@ -785,8 +779,7 @@ static void widget_vscrollbar_draw(
     gfx_fill_rect_inset(
         dpi, l, t, r, t + (SCROLLBAR_WIDTH - 1), colour,
         ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    ScreenCoordsXY screenCoords(l + 1, t - 1);
-    gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, screenCoords);
+    gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, { l + 1, t - 1 });
 
     // Thumb
     gfx_fill_rect_inset(
@@ -798,8 +791,7 @@ static void widget_vscrollbar_draw(
     gfx_fill_rect_inset(
         dpi, l, b - (SCROLLBAR_WIDTH - 1), r, b, colour,
         ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    screenCoords.y = b - (SCROLLBAR_WIDTH - 1);
-    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, screenCoords);
+    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, { l + 1, b - (SCROLLBAR_WIDTH - 1) });
 }
 
 /**
@@ -1076,7 +1068,6 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontFlags = 0;
-    ScreenCoordsXY screenCoords(l + 2, t);
 
     if (!active || gTextInput == nullptr)
     {
@@ -1084,7 +1075,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
             gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
-            gfx_draw_string(dpi, wrapped_string, w->colours[1], screenCoords);
+            gfx_draw_string(dpi, wrapped_string, w->colours[1], { l + 2, t });
         }
         return;
     }
@@ -1095,7 +1086,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
 
-    gfx_draw_string(dpi, wrapped_string, w->colours[1], screenCoords);
+    gfx_draw_string(dpi, wrapped_string, w->colours[1], { l + 2, t });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 

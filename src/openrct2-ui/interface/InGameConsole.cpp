@@ -304,7 +304,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
-    ScreenCoordsXY screenCoords(_consoleLeft + CONSOLE_EDGE_PADDING, _consoleTop + CONSOLE_EDGE_PADDING);
+    auto screenCoords = ScreenCoordsXY{_consoleLeft + CONSOLE_EDGE_PADDING, _consoleTop + CONSOLE_EDGE_PADDING};
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)

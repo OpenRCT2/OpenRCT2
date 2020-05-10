@@ -382,7 +382,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw ping
-    ScreenCoordsXY screenCoords(w->windowPos.x + 90, w->windowPos.y + 24);
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 90, w->windowPos.y + 24 };
 
     set_format_arg(0, rct_string_id, STR_PING);
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
@@ -391,8 +391,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, ping, w->colours[2], screenCoords + ScreenCoordsXY(30, 0));
 
     // Draw last action
-    screenCoords.x = w->windowPos.x + (w->width / 2);
-    screenCoords.y = w->windowPos.y + w->height - 13;
+    screenCoords = { w->windowPos.x + (w->width / 2), w->windowPos.y + w->height - 13 };
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
     set_format_arg(0, rct_string_id, STR_ACTION_NA);

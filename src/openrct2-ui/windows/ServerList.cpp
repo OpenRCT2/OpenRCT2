@@ -459,19 +459,17 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         }
 
         screenCoords.x = 3;
-        screenCoords.y += 3;
 
         // Draw server information
         if (highlighted && !serverDetails.description.empty())
         {
-            gfx_draw_string(dpi, serverDetails.description.c_str(), colour, screenCoords);
+            gfx_draw_string(dpi, serverDetails.description.c_str(), colour, screenCoords + ScreenCoordsXY{ 0, 3 });
         }
         else
         {
-            gfx_draw_string(dpi, serverDetails.name.c_str(), colour, screenCoords);
+            gfx_draw_string(dpi, serverDetails.name.c_str(), colour, screenCoords + ScreenCoordsXY{ 0, 3 });
         }
 
-        screenCoords.y -= 3;
         int32_t right = width - 3 - 14;
 
         // Draw compatibility icon
@@ -508,9 +506,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         }
         int32_t numPlayersStringWidth = gfx_get_string_width(players);
         screenCoords.x = right - numPlayersStringWidth;
-        screenCoords.y += 3;
-        gfx_draw_string(dpi, players, w->colours[1], screenCoords);
-        screenCoords.y -= 3;
+        gfx_draw_string(dpi, players, w->colours[1], screenCoords + ScreenCoordsXY{ 0, 3 });
 
         screenCoords.y += ITEM_HEIGHT;
     }
