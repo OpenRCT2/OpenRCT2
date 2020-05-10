@@ -390,7 +390,7 @@ void ScriptEngine::Initialise()
     ScEntity::Register(ctx);
     ScPeep::Register(ctx);
 
-    dukglue_register_global(ctx, std::make_shared<ScCheats>(ctx), "cheats");
+    dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");

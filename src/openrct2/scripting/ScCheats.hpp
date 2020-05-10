@@ -19,15 +19,7 @@ namespace OpenRCT2::Scripting
 {
     class ScCheats
     {
-    private:
-        duk_context* _ctx;
-
     public:
-        ScCheats(duk_context* ctx)
-            : _ctx(ctx)
-        {
-        }
-
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(
