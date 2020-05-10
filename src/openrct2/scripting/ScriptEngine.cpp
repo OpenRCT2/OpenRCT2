@@ -963,6 +963,7 @@ const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
     { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
     { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
     { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
+    { "setcheataction", GAME_COMMAND_CHEAT },
     { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
     { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
     { "trackplace", GAME_COMMAND_PLACE_TRACK },
