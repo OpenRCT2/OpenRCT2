@@ -63,8 +63,11 @@ constexpr int32_t MAX_RECENT_NEWS_ITEMS = 11;
 constexpr int32_t MAX_OLD_NEWS_ITEMS = 50;
 constexpr int32_t MAX_NEWS_ITEMS = MAX_RECENT_NEWS_ITEMS + MAX_OLD_NEWS_ITEMS;
 
+extern const uint8_t news_type_properties[10];
+
 struct NewsItemQueue
 {
+    NewsItem& operator[](size_t index);
     NewsItem* At(int32_t index);
     bool IsEmpty() const;
     void Init();
@@ -117,7 +120,7 @@ private:
     NewsItem Old[MAX_OLD_NEWS_ITEMS];
 };
 
-extern const uint8_t news_type_properties[10];
+extern NewsItemQueue gNewsItems;
 
 void news_item_init_queue();
 

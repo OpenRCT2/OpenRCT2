@@ -23,7 +23,7 @@
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
 
-static NewsItemQueue gNewsItems;
+NewsItemQueue gNewsItems;
 
 /** rct2: 0x0097BE7C */
 const uint8_t news_type_properties[] = {
@@ -54,14 +54,19 @@ NewsItem* news_item_get(int32_t index)
     return gNewsItems.At(index);
 }
 
+NewsItem& NewsItemQueue::operator[](size_t index)
+{
+    if (index < MAX_RECENT_NEWS_ITEMS)
+        return Recent[index];
+    else
+        return Old[index - MAX_RECENT_NEWS_ITEMS];
+}
+
 NewsItem* NewsItemQueue::At(int32_t index)
 {
     if (news_item_is_valid_idx(index))
     {
-        if (index < MAX_RECENT_NEWS_ITEMS)
-            return &Recent[index];
-        else
-            return &Old[index - MAX_RECENT_NEWS_ITEMS];
+        return &(*this)[index];
     }
     else
     {

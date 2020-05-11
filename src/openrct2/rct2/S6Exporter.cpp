@@ -399,7 +399,7 @@ void S6Exporter::Export()
     // News items
     for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
     {
-        const NewsItem* src = news_item_get(static_cast<int32_t>(i));
+        const NewsItem* src = &gNewsItems[i];
         rct12_news_item* dst = &_s6.news_items[i];
 
         dst->Type = src->Type;

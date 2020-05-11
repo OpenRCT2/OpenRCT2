@@ -2531,7 +2531,7 @@ private:
         for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
         {
             const rct12_news_item* src = &_s4.messages[i];
-            NewsItem* dst = news_item_get(static_cast<int32_t>(i));
+            NewsItem* dst = &gNewsItems[i];
 
             dst->Type = src->Type;
             dst->Flags = src->Flags;
