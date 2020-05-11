@@ -2950,7 +2950,6 @@ STR_5595    :Ride has crashed
 STR_5596    :Ride warnings
 STR_5597    :Ride / scenery researched
 STR_5598    :Guest warnings
-STR_5599    :Guest is lost
 STR_5600    :Guest has left the park
 STR_5601    :Guest is queuing for ride
 STR_5602    :Guest is on ride
