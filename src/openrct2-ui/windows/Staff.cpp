@@ -1111,23 +1111,23 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case STAFF_TYPE_HANDYMAN:
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->staff_lawns_mown), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_GARDENS_WATERED, static_cast<void*>(&peep->staff_gardens_watered), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_GARDENS_WATERED, static_cast<void*>(&peep->StaffGardensWatered), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->staff_litter_swept), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->StaffLitterSwept), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->staff_bins_emptied), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->StaffBinsEmptied), COLOUR_BLACK, x, y);
             break;
         case STAFF_TYPE_MECHANIC:
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->staff_rides_inspected), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->StaffRidesInspected), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->staff_rides_fixed), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->StaffRidesFixed), COLOUR_BLACK, x, y);
             break;
     }
 }

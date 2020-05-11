@@ -702,42 +702,42 @@ struct Peep : SpriteBase
     rct12_xyzd8 PathfindHistory[4];
     uint8_t NoActionFrameNum;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t litter_count;
+    uint8_t LitterCount;
     union
     {
-        uint8_t time_on_ride;
-        uint8_t staff_mowing_timeout;
+        uint8_t TimeOnRide;
+        uint8_t StaffMowingTimeout;
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t disgusting_count;
+    uint8_t DisgustingCount;
     union
     {
-        money16 paid_to_enter;
-        uint16_t staff_lawns_mown;
-        uint16_t staff_rides_fixed;
+        money16 PaidToEnter;
+        uint16_t StaffLawnsMown;
+        uint16_t StaffRidesFixed;
     };
     union
     {
-        money16 paid_on_rides;
-        uint16_t staff_gardens_watered;
-        uint16_t staff_rides_inspected;
+        money16 PaidOnRides;
+        uint16_t StaffGardensWatered;
+        uint16_t StaffRidesInspected;
     };
     union
     {
-        money16 paid_on_food;
-        uint16_t staff_litter_swept;
+        money16 PaidOnFood;
+        uint16_t StaffLitterSwept;
     };
     union
     {
-        money16 paid_on_souvenirs;
-        uint16_t staff_bins_emptied;
+        money16 PaidOnSouvenirs;
+        uint16_t StaffBinsEmptied;
     };
-    uint8_t no_of_food;
-    uint8_t no_of_drinks;
-    uint8_t no_of_souvenirs;
-    uint8_t vandalism_seen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-    uint8_t voucher_type;
-    uint8_t voucher_arguments; // ride_id or string_offset_id
+    uint8_t NoOfFood;
+    uint8_t NoOfDrinks;
+    uint8_t NoOfSouvenirs;
+    uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+    uint8_t VoucherType;
+    uint8_t VoucherArguments; // ride_id or string_offset_id
     uint8_t surroundings_thought_timeout;
     uint8_t angriness;
     uint8_t time_lost; // the time the peep has been lost when it reaches 254 generates the lost thought

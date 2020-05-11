@@ -169,10 +169,10 @@ private:
             newPeep->Type = PEEP_TYPE_STAFF;
             newPeep->OutsideOfPark = 0;
             newPeep->PeepFlags = 0;
-            newPeep->paid_to_enter = 0;
-            newPeep->paid_on_rides = 0;
-            newPeep->paid_on_food = 0;
-            newPeep->paid_on_souvenirs = 0;
+            newPeep->PaidToEnter = 0;
+            newPeep->PaidOnRides = 0;
+            newPeep->PaidOnFood = 0;
+            newPeep->PaidOnSouvenirs = 0;
             newPeep->favourite_ride = RIDE_ID_NULL;
             newPeep->StaffOrders = _staffOrders;
 
@@ -245,7 +245,7 @@ private:
             // Staff Energy determines their walking speed
             newPeep->Energy = 0x60;
             newPeep->EnergyTarget = 0x60;
-            newPeep->staff_mowing_timeout = 0;
+            newPeep->StaffMowingTimeout = 0;
 
             newPeep->StaffId = staffIndex;
 

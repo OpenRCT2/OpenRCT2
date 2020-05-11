@@ -776,18 +776,18 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (State == PEEP_STATE_ON_RIDE || State == PEEP_STATE_ENTERING_RIDE)
         {
-            time_on_ride = std::min(255, time_on_ride + 1);
+            TimeOnRide = std::min(255, TimeOnRide + 1);
 
             if (PeepFlags & PEEP_FLAGS_WOW)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_WOW2, PEEP_THOUGHT_ITEM_NONE);
             }
 
-            if (time_on_ride > 15)
+            if (TimeOnRide > 15)
             {
                 HappinessTarget = std::max(0, HappinessTarget - 5);
 
-                if (time_on_ride > 22)
+                if (TimeOnRide > 22)
                 {
                     auto ride = get_ride(CurrentRide);
                     if (ride != nullptr)
@@ -1481,8 +1481,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
-        && (voucher_arguments == shopItem))
+    if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+        && (VoucherArguments == shopItem))
     {
         hasVoucher = true;
     }
@@ -1696,20 +1696,20 @@ loc_69B221:
     }
 
     if (shop_item_is_food(shopItem))
-        no_of_food++;
+        NoOfFood++;
 
     if (shop_item_is_drink(shopItem))
-        no_of_drinks++;
+        NoOfDrinks++;
 
     if (shop_item_is_souvenir(shopItem))
-        no_of_souvenirs++;
+        NoOfSouvenirs++;
 
-    money16* expend_type = &paid_on_souvenirs;
+    money16* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (shop_item_is_food(shopItem))
     {
-        expend_type = &paid_on_food;
+        expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
@@ -2413,8 +2413,8 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->item_standard_flags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
-        && peep->voucher_arguments == ride->id;
+    return peep->item_standard_flags & PEEP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+        && peep->VoucherArguments == ride->id;
 }
 
 /**
@@ -2548,7 +2548,7 @@ void Guest::GoToRideEntrance(Ride* ride)
     SubState = PEEP_RIDE_IN_ENTRANCE;
 
     RejoinQueueTimeout = 0;
-    time_on_ride = 0;
+    TimeOnRide = 0;
 
     RemoveFromQueue();
 }
@@ -2634,8 +2634,8 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
-        && peep->voucher_arguments == peep->CurrentRide)
+    if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+        && peep->VoucherArguments == peep->CurrentRide)
         return true;
 
     if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -3857,8 +3857,8 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_RIDE_FREE)
-            && (voucher_arguments == CurrentRide))
+        if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
+            && (VoucherArguments == CurrentRide))
         {
             item_standard_flags &= ~PEEP_ITEM_VOUCHER;
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -3867,7 +3867,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         {
             ride->total_profit += ridePrice;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-            SpendMoney(paid_on_rides, ridePrice, ExpenditureType::ParkRideTickets);
+            SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }
     }
 
@@ -4079,7 +4079,7 @@ void Guest::UpdateRideEnterVehicle()
                     vehicle->mass += seatedPeepAsGuest->Mass;
                     seatedPeepAsGuest->MoveTo(LOCATION_NULL, 0, 0);
                     seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
-                    seatedPeepAsGuest->time_on_ride = 0;
+                    seatedPeepAsGuest->TimeOnRide = 0;
                     seatedPeepAsGuest->SubState = PEEP_RIDE_ON_RIDE;
                     seatedPeepAsGuest->OnEnterRide(CurrentRide);
                 }
@@ -4095,7 +4095,7 @@ void Guest::UpdateRideEnterVehicle()
 
             SetState(PEEP_STATE_ON_RIDE);
 
-            time_on_ride = 0;
+            TimeOnRide = 0;
             SubState = PEEP_RIDE_ON_RIDE;
             OnEnterRide(CurrentRide);
         }
@@ -6211,7 +6211,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         if (peep->State != PEEP_STATE_WALKING)
             return;
 
-        if ((peep->litter_count & 0xC0) != 0xC0 && (peep->disgusting_count & 0xC0) != 0xC0)
+        if ((peep->LitterCount & 0xC0) != 0xC0 && (peep->DisgustingCount & 0xC0) != 0xC0)
             return;
 
         if ((scenario_rand() & 0xFFFF) > 3276)

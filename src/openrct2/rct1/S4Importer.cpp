@@ -1425,7 +1425,7 @@ private:
         dst->Var37 = src->var_37;
         dst->TimeToConsume = src->time_to_consume;
         dst->StepProgress = src->step_progress;
-        dst->vandalism_seen = src->vandalism_seen;
+        dst->VandalismSeen = src->vandalism_seen;
 
         dst->Type = static_cast<PeepType>(src->type);
 
@@ -1460,8 +1460,8 @@ private:
         dst->Toilet = src->toilet;
         dst->Mass = src->mass;
 
-        dst->litter_count = src->litter_count;
-        dst->disgusting_count = src->disgusting_count;
+        dst->LitterCount = src->litter_count;
+        dst->DisgustingCount = src->disgusting_count;
 
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
         dst->NauseaTolerance = src->nausea_tolerance;
@@ -1472,7 +1472,7 @@ private:
         dst->CurrentTrain = src->current_train;
         dst->CurrentCar = src->current_car;
         dst->CurrentSeat = src->current_seat;
-        dst->time_on_ride = src->time_on_ride;
+        dst->TimeOnRide = src->time_on_ride;
         dst->days_in_queue = src->days_in_queue;
 
         dst->InteractionRideIndex = src->interaction_ride_index;
@@ -1485,18 +1485,18 @@ private:
         // This doubles as staff type
         dst->NoOfRides = src->no_of_rides;
 
-        dst->no_of_drinks = src->no_of_drinks;
-        dst->no_of_food = src->no_of_food;
-        dst->no_of_souvenirs = src->no_of_souvenirs;
+        dst->NoOfDrinks = src->no_of_drinks;
+        dst->NoOfFood = src->no_of_food;
+        dst->NoOfSouvenirs = src->no_of_souvenirs;
 
-        dst->paid_to_enter = src->paid_to_enter;
-        dst->paid_on_rides = src->paid_on_rides;
+        dst->PaidToEnter = src->paid_to_enter;
+        dst->PaidOnRides = src->paid_on_rides;
         dst->PaidOnDrink = src->paid_on_drink;
-        dst->paid_on_food = src->paid_on_food;
-        dst->paid_on_souvenirs = src->paid_on_souvenirs;
+        dst->PaidOnFood = src->paid_on_food;
+        dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
-        dst->voucher_arguments = src->voucher_arguments;
-        dst->voucher_type = src->voucher_type;
+        dst->VoucherArguments = src->voucher_arguments;
+        dst->VoucherType = src->voucher_type;
 
         dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
         dst->angriness = src->angriness;

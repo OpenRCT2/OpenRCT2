@@ -367,12 +367,12 @@ void staff_reset_stats()
     FOR_ALL_STAFF (spriteIndex, peep)
     {
         peep->TimeInPark = gDateMonthsElapsed;
-        peep->staff_lawns_mown = 0;
-        peep->staff_rides_fixed = 0;
-        peep->staff_gardens_watered = 0;
-        peep->staff_rides_inspected = 0;
-        peep->staff_litter_swept = 0;
-        peep->staff_bins_emptied = 0;
+        peep->StaffLawnsMown = 0;
+        peep->StaffRidesFixed = 0;
+        peep->StaffGardensWatered = 0;
+        peep->StaffRidesInspected = 0;
+        peep->StaffLitterSwept = 0;
+        peep->StaffBinsEmptied = 0;
     }
 }
 
@@ -611,7 +611,7 @@ int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
  */
 bool Staff::DoHandymanPathFinding()
 {
-    staff_mowing_timeout++;
+    StaffMowingTimeout++;
 
     uint8_t litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
@@ -622,7 +622,7 @@ bool Staff::DoHandymanPathFinding()
     }
 
     Direction newDirection = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (StaffOrders & STAFF_ORDERS_MOWING) && staff_mowing_timeout >= 12)
+    if (litterDirection == INVALID_DIRECTION && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
     {
         newDirection = staff_handyman_direction_to_uncut_grass(this, validDirections);
     }
@@ -1221,7 +1221,7 @@ void Staff::UpdateMowing()
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
             map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
-        staff_lawns_mown++;
+        StaffLawnsMown++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1232,7 +1232,7 @@ void Staff::UpdateMowing()
  */
 void Staff::UpdateWatering()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
     if (SubState == 0)
     {
         if (!CheckForPath())
@@ -1281,7 +1281,7 @@ void Staff::UpdateWatering()
 
             tile_element->AsSmallScenery()->SetAge(0);
             map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-            staff_gardens_watered++;
+            StaffGardensWatered++;
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
@@ -1295,7 +1295,7 @@ void Staff::UpdateWatering()
  */
 void Staff::UpdateEmptyingBin()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
 
     if (SubState == 0)
     {
@@ -1365,7 +1365,7 @@ void Staff::UpdateEmptyingBin()
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-        staff_bins_emptied++;
+        StaffBinsEmptied++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1376,7 +1376,7 @@ void Staff::UpdateEmptyingBin()
  */
 void Staff::UpdateSweeping()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
     if (!CheckForPath())
         return;
 
@@ -1384,7 +1384,7 @@ void Staff::UpdateSweeping()
     {
         // Remove sick at this location
         litter_remove_at(x, y, z);
-        staff_litter_swept++;
+        StaffLitterSwept++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction())
@@ -1775,7 +1775,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
     if (!(peep->StaffOrders & STAFF_ORDERS_MOWING))
         return 0;
 
-    if (peep->staff_mowing_timeout < 12)
+    if (peep->StaffMowingTimeout < 12)
         return 0;
 
     if (!(peep->GetNextIsSurface()))
@@ -2620,13 +2620,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         {
             UpdateRideInspected(CurrentRide);
 
-            staff_rides_inspected++;
+            StaffRidesInspected++;
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
             return true;
         }
 
-        staff_rides_fixed++;
+        StaffRidesFixed++;
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = SomePeepDirection << 3;
