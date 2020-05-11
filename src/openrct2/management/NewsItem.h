@@ -52,6 +52,11 @@ struct NewsItem
     uint16_t MonthYear;
     uint8_t Day;
     utf8 Text[256];
+
+    constexpr bool IsEmpty() const noexcept
+    {
+        return Type == NEWS_ITEM_NULL;
+    }
 };
 
 constexpr int32_t MAX_RECENT_NEWS_ITEMS = 11;

@@ -40,7 +40,7 @@ const uint8_t news_type_properties[] = {
     NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
-static int32_t news_item_get_new_history_slot();
+static void news_item_append_to_old_history(NewsItem& item);
 
 bool news_item_is_valid_idx(int32_t index)
 {
@@ -70,12 +70,12 @@ NewsItem* news_item_get(int32_t index)
 bool news_item_is_empty(int32_t index)
 {
     NewsItem* news = news_item_get(index);
-    return news != nullptr && news->Type == NEWS_ITEM_NULL;
+    return news != nullptr && news->IsEmpty();
 }
 
 bool news_item_is_queue_empty()
 {
-    return news_item_is_empty(0);
+    return gRecentNewsItems[0].IsEmpty();
 }
 
 /**
@@ -84,8 +84,8 @@ bool news_item_is_queue_empty()
  */
 void news_item_init_queue()
 {
-    news_item_get(0)->Type = NEWS_ITEM_NULL;
-    news_item_get(NEWS_ITEM_HISTORY_START)->Type = NEWS_ITEM_NULL;
+    gRecentNewsItems[0].Type = NEWS_ITEM_NULL;
+    gOldNewsItems[0].Type = NEWS_ITEM_NULL;
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
@@ -100,7 +100,7 @@ void news_item_init_queue()
 static void news_item_tick_current()
 {
     int32_t ticks;
-    ticks = ++news_item_get(0)->Ticks;
+    ticks = ++gRecentNewsItems[0].Ticks;
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
@@ -112,12 +112,13 @@ static void news_item_tick_current()
 static bool news_item_is_current_old()
 {
     int32_t remove_time = 320;
-    if (!news_item_is_empty(5) && !news_item_is_empty(4) && !news_item_is_empty(3) && !news_item_is_empty(2))
+    if (!gRecentNewsItems[5].IsEmpty() && !gRecentNewsItems[4].IsEmpty() && !gRecentNewsItems[3].IsEmpty()
+        && !gRecentNewsItems[2].IsEmpty())
     {
         remove_time = 256;
     }
 
-    return news_item_get(0)->Ticks >= remove_time;
+    return gRecentNewsItems[0].Ticks >= remove_time;
 }
 
 /**
@@ -147,29 +148,17 @@ void news_item_update_current()
  */
 void news_item_close_current()
 {
-
     // Check if there is a current message
     if (news_item_is_queue_empty())
         return;
 
-    // Find an available history news item slot for current message
-    int32_t i = news_item_get_new_history_slot() - MAX_RECENT_NEWS_ITEMS;
-
-    // Set the history news item slot to the current news item
-    gOldNewsItems[i] = gRecentNewsItems[0];
-
-    // Set the end of the end of the history list
-    if (i < MAX_OLD_NEWS_ITEMS - 1)
-        gOldNewsItems[i + 1].Type = NEWS_ITEM_NULL;
+    news_item_append_to_old_history(gRecentNewsItems[0]);
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    for (i = 0; i < MAX_RECENT_NEWS_ITEMS - 1; i++)
-    {
-        gRecentNewsItems[i] = gRecentNewsItems[i + 1];
-    }
+    memmove(gRecentNewsItems, gRecentNewsItems + 1, sizeof(NewsItem) * (std::size(gRecentNewsItems) - 1));
     gRecentNewsItems[MAX_RECENT_NEWS_ITEMS - 1].Type = NEWS_ITEM_NULL;
 
     // Invalidate current news item bar
@@ -177,30 +166,28 @@ void news_item_close_current()
     context_broadcast_intent(&intent);
 }
 
-static void news_item_shift_history_up()
-{
-    const int32_t history_idx = NEWS_ITEM_HISTORY_START;
-    NewsItem* history_start = news_item_get(history_idx);
-    const size_t count = sizeof(NewsItem) * (MAX_NEWS_ITEMS - 1 - history_idx);
-    memmove(history_start, history_start + 1, count);
-}
-
 /**
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
  */
-static int32_t news_item_get_new_history_slot()
+static void news_item_append_to_old_history(NewsItem& item)
 {
-    // Find an available history news item slot
-    for (int32_t i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
+    auto it = std::begin(gOldNewsItems);
+    for (; it < std::end(gOldNewsItems); ++it)
     {
-        if (news_item_is_empty(i))
-            return i;
+        if (it->IsEmpty())
+        {
+            *it = item;
+            ++it;
+            if (it != std::end(gOldNewsItems))
+                it->Type = NEWS_ITEM_NULL;
+            return;
+        }
     }
 
     // Dequeue the first history news item, shift history up
-    news_item_shift_history_up();
-    return MAX_NEWS_ITEMS - 1;
+    memmove(gOldNewsItems, gOldNewsItems + 1, sizeof(NewsItem) * (std::size(gOldNewsItems) - 1));
+    gOldNewsItems[MAX_OLD_NEWS_ITEMS - 1] = item;
 }
 
 /**
@@ -299,15 +286,15 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
 
 static NewsItem* news_item_first_open_queue_slot()
 {
-    int32_t i = 0;
-    for (;gRecentNewsItems[i].Type != NEWS_ITEM_NULL;)
+    auto it = std::begin(gRecentNewsItems);
+    for (; !it->IsEmpty();)
     {
-        if (i >= MAX_RECENT_NEWS_ITEMS - 2)
+        if (it + 2 >= std::end(gRecentNewsItems))
             news_item_close_current();
         else
-            i++;
+            it++;
     }
-    return &gRecentNewsItems[i];
+    return &*it;
 }
 
 /**
@@ -439,41 +426,29 @@ void news_item_open_subject(int32_t type, int32_t subject)
 void news_item_disable_news(uint8_t type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    for (int32_t i = 0; i < MAX_RECENT_NEWS_ITEMS; i++)
+    for (auto it = std::begin(gRecentNewsItems); it < std::end(gRecentNewsItems); ++it)
     {
-        if (!news_item_is_empty(i))
-        {
-            NewsItem* const newsItem = news_item_get(i);
-            if (type == newsItem->Type && assoc == newsItem->Assoc)
-            {
-                newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
-                if (i == 0)
-                {
-                    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-                    context_broadcast_intent(&intent);
-                }
-            }
-        }
-        else
-        {
+        if (it->IsEmpty())
             break;
+        if (type == it->Type && assoc == it->Assoc)
+        {
+            it->Flags |= NEWS_FLAG_HAS_BUTTON;
+            if (it == std::begin(gRecentNewsItems))
+            {
+                auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+                context_broadcast_intent(&intent);
+            }
         }
     }
 
-    for (int32_t i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
+    for (auto it = std::begin(gOldNewsItems); it < std::end(gOldNewsItems); ++it)
     {
-        if (!news_item_is_empty(i))
-        {
-            NewsItem* const newsItem = news_item_get(i);
-            if (type == newsItem->Type && assoc == newsItem->Assoc)
-            {
-                newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
-                window_invalidate_by_class(WC_RECENT_NEWS);
-            }
-        }
-        else
-        {
+        if (it->IsEmpty())
             break;
+        if (type == it->Type && assoc == it->Assoc)
+        {
+            it->Flags |= NEWS_FLAG_HAS_BUTTON;
+            window_invalidate_by_class(WC_RECENT_NEWS);
         }
     }
 }
