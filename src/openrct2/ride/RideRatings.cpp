@@ -10,9 +10,11 @@
 #include "RideRatings.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
+#include "../scripting/ScriptEngine.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Surface.h"
@@ -23,6 +25,9 @@
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 enum
 {
@@ -760,6 +765,36 @@ static void ride_ratings_calculate(Ride* ride)
         ride->ratings.excitement = max(0, ride->ratings.excitement);
         ride->ratings.intensity = max(0, ride->ratings.intensity);
         ride->ratings.nausea = max(0, ride->ratings.nausea);
+    }
+#endif
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto originalExcitement = ride->excitement;
+        auto originalIntensity = ride->intensity;
+        auto originalNausea = ride->nausea;
+
+        // Create event args object
+        auto obj = DukObject(ctx);
+        obj.Set("rideId", ride->id);
+        obj.Set("excitement", originalExcitement);
+        obj.Set("intensity", originalIntensity);
+        obj.Set("nausea", originalNausea);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::RIDE_RATINGS_CALCULATE, e, true);
+
+        auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalExcitement));
+        auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalIntensity));
+        auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalNausea));
+
+        ride->excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
+        ride->intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);
+        ride->nausea = std::clamp<int32_t>(scriptNausea, 0, INT16_MAX);
     }
 #endif
 }

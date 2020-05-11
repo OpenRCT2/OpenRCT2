@@ -36,6 +36,7 @@ namespace OpenRCT2::Scripting
         NETWORK_AUTHENTICATE,
         NETWORK_JOIN,
         NETWORK_LEAVE,
+        RIDE_RATINGS_CALCULATE,
         COUNT,
         UNDEFINED = -1,
     };
