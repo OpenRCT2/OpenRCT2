@@ -2963,7 +2963,6 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
                         return false;
                     }
                     ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
-                    // uint8_t currentStation = _synchronisedVehicles[0].station_id
                     if (someRideIndex != curRideId)
                     {
                         // Sync condition: the first station to sync is a different ride

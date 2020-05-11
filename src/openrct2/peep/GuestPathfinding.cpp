@@ -1884,8 +1884,6 @@ static StationIndex guest_pathfinding_select_random_station(
  */
 int32_t guest_path_finding(Guest* peep)
 {
-    // int16_t x, y, z;
-
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     pathfind_logging_enable(peep);
     if (gPathFindDebug)

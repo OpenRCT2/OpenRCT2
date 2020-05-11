@@ -909,9 +909,6 @@ static void window_park_init_viewport(rct_window* w)
     }
     else
     {
-        // if (w->var_482 == x && w->var_484 == y && w->var_486 == z && (uint16_t)w->var_488 >> 8 == r)
-        //  return;
-
         viewport = w->viewport;
         w->viewport = nullptr;
         viewportFlags = viewport->flags;
