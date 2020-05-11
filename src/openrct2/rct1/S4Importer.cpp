@@ -937,8 +937,8 @@ private:
 
         // Finance / customers
         dst->upkeep_cost = src->upkeep_cost;
-        dst->price = src->price;
-        dst->price_secondary = src->price_secondary;
+        dst->price[0] = src->price;
+        dst->price[1] = src->price_secondary;
         dst->income_per_hour = src->income_per_hour;
         dst->total_customers = src->total_customers;
         dst->profit = src->profit;

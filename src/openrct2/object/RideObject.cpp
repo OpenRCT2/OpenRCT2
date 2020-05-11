@@ -62,8 +62,8 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.max_height = stream->ReadValue<uint8_t>();
     // Skipping a uint64_t for the enabled track pieces and two uint8_ts for the categories.
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.shop_item = stream->ReadValue<uint8_t>();
-    _legacyType.shop_item_secondary = stream->ReadValue<uint8_t>();
+    _legacyType.shop_item[0] = stream->ReadValue<uint8_t>();
+    _legacyType.shop_item[1] = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable().Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
@@ -549,8 +549,10 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
     _legacyType.max_height = ObjectJsonHelpers::GetInteger(properties, "maxHeight");
 
     // This needs to be set for both shops/facilities _and_ regular rides.
-    _legacyType.shop_item = SHOP_ITEM_NONE;
-    _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
+    for (auto& item : _legacyType.shop_item)
+    {
+        item = SHOP_ITEM_NONE;
+    }
 
     _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
 
@@ -571,7 +573,8 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
 
         // Shop item
         auto rideSells = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
-        for (size_t i = 0; i < rideSells.size(); i++)
+        auto numShopItems = std::min(static_cast<size_t>(NUM_SHOP_ITEMS_PER_RIDE), rideSells.size());
+        for (size_t i = 0; i < numShopItems; i++)
         {
             auto shopItem = ParseShopItem(rideSells[i]);
             if (shopItem == SHOP_ITEM_NONE)
@@ -579,18 +582,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
                 context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown shop item");
             }
 
-            if (i == 0)
-            {
-                _legacyType.shop_item = ParseShopItem(rideSells[0]);
-            }
-            else if (i == 1)
-            {
-                _legacyType.shop_item_secondary = ParseShopItem(rideSells[1]);
-            }
-            else
-            {
-                // More than 2 shop items not supported yet!
-            }
+            _legacyType.shop_item[i] = ParseShopItem(rideSells[i]);
         }
     }
     else

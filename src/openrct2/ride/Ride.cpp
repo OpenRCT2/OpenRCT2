@@ -353,21 +353,21 @@ money32 Ride::CalculateIncomePerHour() const
     money32 customersPerHour = ride_customers_per_hour(this);
     money32 priceMinusCost = ride_get_price(this);
 
-    int32_t currentShopItem = entry->shop_item;
+    int32_t currentShopItem = entry->shop_item[0];
     if (currentShopItem != SHOP_ITEM_NONE)
     {
         priceMinusCost -= ShopItems[currentShopItem].Cost;
     }
 
     currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[type].PhotoItem
-                                                                       : entry->shop_item_secondary;
+                                                                       : entry->shop_item[1];
 
     if (currentShopItem != SHOP_ITEM_NONE)
     {
-        priceMinusCost += price_secondary;
+        priceMinusCost += price[1];
         priceMinusCost -= ShopItems[currentShopItem].Cost;
 
-        if (entry->shop_item != SHOP_ITEM_NONE)
+        if (entry->shop_item[0] != SHOP_ITEM_NONE)
             priceMinusCost /= 2;
     }
 
@@ -5571,7 +5571,7 @@ money32 ride_get_common_price(Ride* forRide)
     {
         if (ride.type == forRide->type && &ride != forRide)
         {
-            return ride.price;
+            return ride.price[0];
         }
     }
 
@@ -7175,7 +7175,7 @@ money16 ride_get_price(const Ride* ride)
             return 0;
         }
     }
-    return ride->price;
+    return ride->price[0];
 }
 
 /**

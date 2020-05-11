@@ -887,7 +887,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetLegacyData();
             if (entry != nullptr)
             {
-                return entry->shop_item;
+                return entry->shop_item[0];
             }
             return 0;
         }
@@ -897,7 +897,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetLegacyData();
             if (entry != nullptr)
             {
-                return entry->shop_item_secondary;
+                return entry->shop_item[1];
             }
             return 0;
         }

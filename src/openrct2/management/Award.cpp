@@ -320,9 +320,9 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
         auto rideEntry = get_ride_entry(ride.subtype);
         if (rideEntry != nullptr)
         {
-            if (!(shopTypes & (1ULL << rideEntry->shop_item)))
+            if (!(shopTypes & (1ULL << rideEntry->shop_item[0])))
             {
-                shopTypes |= (1ULL << rideEntry->shop_item);
+                shopTypes |= (1ULL << rideEntry->shop_item[0]);
                 uniqueShops++;
             }
         }
@@ -366,9 +366,9 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
         auto rideEntry = ride.GetRideEntry();
         if (rideEntry != nullptr)
         {
-            if (!(shopTypes & (1ULL << rideEntry->shop_item)))
+            if (!(shopTypes & (1ULL << rideEntry->shop_item[0])))
             {
-                shopTypes |= (1ULL << rideEntry->shop_item);
+                shopTypes |= (1ULL << rideEntry->shop_item[0]);
                 uniqueShops++;
             }
         }

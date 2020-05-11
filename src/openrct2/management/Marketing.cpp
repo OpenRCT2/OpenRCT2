@@ -57,7 +57,7 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
         {
             auto ride = get_ride(campaign->RideId);
-            if (ride == nullptr || ride->price < MONEY(0, 30))
+            if (ride == nullptr || ride->price[0] < MONEY(0, 30))
                 probability /= 8;
             break;
         }
@@ -196,10 +196,12 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
                 auto rideEntry = ride.GetRideEntry();
                 if (rideEntry != nullptr)
                 {
-                    if (shop_item_is_food_or_drink(rideEntry->shop_item)
-                        || shop_item_is_food_or_drink(rideEntry->shop_item_secondary))
+                    for (auto& item : rideEntry->shop_item)
                     {
-                        return true;
+                        if (ShopItems[item].IsFoodOrDrink())
+                        {
+                            return true;
+                        }
                     }
                 }
             }

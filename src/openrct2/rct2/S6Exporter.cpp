@@ -664,7 +664,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->num_customers[i] = src->num_customers[i];
     }
 
-    dst->price = src->price;
+    dst->price = src->price[0];
 
     for (uint8_t i = 0; i < 2; i++)
     {
@@ -714,7 +714,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->broken_car = src->broken_car;
     dst->breakdown_reason = src->breakdown_reason;
 
-    dst->price_secondary = src->price_secondary;
+    dst->price_secondary = src->price[1];
 
     dst->reliability = src->reliability;
     dst->unreliability_factor = src->unreliability_factor;

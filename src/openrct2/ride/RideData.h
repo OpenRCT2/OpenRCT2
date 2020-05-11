@@ -56,8 +56,7 @@ struct RideNameConvention
 
 struct rct_ride_data_4
 {
-    uint8_t price;
-    uint8_t price_secondary;
+    uint8_t price[NUM_SHOP_ITEMS_PER_RIDE];
     uint8_t default_music;
 };
 

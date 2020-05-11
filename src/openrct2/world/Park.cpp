@@ -540,7 +540,7 @@ money16 Park::CalculateTotalRideValueForMoney() const
         // Add ride value
         if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money16 rideValue = static_cast<money16>(ride.value - ride.price);
+            money16 rideValue = static_cast<money16>(ride.value - ride.price[0]);
             if (rideValue > 0)
             {
                 totalRideValue += rideValue * 2;
