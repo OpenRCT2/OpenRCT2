@@ -78,6 +78,15 @@ public:
             return res;
         }
 
+        if (_status >= RIDE_STATUS_COUNT)
+        {
+            log_warning("Invalid ride status", uint32_t(_rideIndex));
+            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+            res->ErrorMessage = STR_NONE;
+            return res;
+        }
+
         res->ErrorTitle = _StatusErrorTitles[_status];
         ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
         if (_status != ride->status)
