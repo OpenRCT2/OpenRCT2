@@ -536,7 +536,8 @@ template<> struct DataSerializerTraits<CoordsXYZD>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, SomePeepDirection = %d)", coord.x, coord.y, coord.z, coord.direction);
+            msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, SomePeepDirection = %d)", coord.x, coord.y, coord.z,
+            coord.direction);
         stream->Write(msg, strlen(msg));
     }
 };

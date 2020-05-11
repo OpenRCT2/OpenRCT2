@@ -88,8 +88,8 @@ private:
         if (largeElement == nullptr)
         {
             log_error(
-                "Could not find large scenery at: x = %d, y = %d, z = %d, SomePeepDirection = %d, tileIndex = %u", _loc.x, _loc.y,
-                _loc.z, _loc.direction, _tileIndex);
+                "Could not find large scenery at: x = %d, y = %d, z = %d, SomePeepDirection = %d, tileIndex = %u", _loc.x,
+                _loc.y, _loc.z, _loc.direction, _tileIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }
 
@@ -134,8 +134,8 @@ private:
             if (tileElement == nullptr)
             {
                 log_error(
-                    "Large scenery element not found at: x = %d, y = %d, z = %d, SomePeepDirection = %d", _loc.x, _loc.y, _loc.z,
-                    _loc.direction);
+                    "Large scenery element not found at: x = %d, y = %d, z = %d, SomePeepDirection = %d", _loc.x, _loc.y,
+                    _loc.z, _loc.direction);
                 return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
             }
             if (isExecuting)

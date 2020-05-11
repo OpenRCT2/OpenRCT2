@@ -4118,9 +4118,8 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 }
 
 /**
- * Sets the position and SomePeepDirection of the returning point on the track of a boat hire ride. This will either be the end of the
- * station or the last track piece from the end of the SomePeepDirection.
- *  rct2: 0x006B4D39
+ * Sets the position and SomePeepDirection of the returning point on the track of a boat hire ride. This will either be the end
+ * of the station or the last track piece from the end of the SomePeepDirection. rct2: 0x006B4D39
  */
 static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
 {

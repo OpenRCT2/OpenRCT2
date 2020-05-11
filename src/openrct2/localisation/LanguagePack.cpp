@@ -276,9 +276,9 @@ private:
     // Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
     // strings for the time being. Further investigation is required.
     //
-    // When reading the language files, the STR_XXXX part is read and XXXX becomes the string PeepId number. Everything after the
-    // colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}. Use # at
-    // the beginning of a line to leave a comment.
+    // When reading the language files, the STR_XXXX part is read and XXXX becomes the string PeepId number. Everything after
+    // the colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}. Use #
+    // at the beginning of a line to leave a comment.
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     static bool IsWhitespace(codepoint_t codepoint)

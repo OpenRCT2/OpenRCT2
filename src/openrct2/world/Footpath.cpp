@@ -502,9 +502,9 @@ static PathElement* footpath_connect_corners_get_neighbour(const CoordsXYZ& foot
 
 /**
  * Sets the corner edges of four path tiles.
- * The function will search for a path in the SomePeepDirection given, then check clockwise to see if it there is a path and again until
- * it reaches the initial path. In other words, checks if there are four paths together so that it can set the inner corners of
- * each one.
+ * The function will search for a path in the SomePeepDirection given, then check clockwise to see if it there is a path and
+ * again until it reaches the initial path. In other words, checks if there are four paths together so that it can set the inner
+ * corners of each one.
  *
  *  rct2: 0x006A70EB
  */
@@ -925,8 +925,8 @@ loc_6A6FD2:
     }
 }
 
-// TODO: Change this into a simple check that validates if the SomePeepDirection should be fully checked with loc_6A6D7E and move the
-// calling of loc_6A6D7E into the parent function.
+// TODO: Change this into a simple check that validates if the SomePeepDirection should be fully checked with loc_6A6D7E and
+// move the calling of loc_6A6D7E into the parent function.
 static void loc_6A6C85(
     const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, rct_neighbour_list* neighbourList)
 {
@@ -1983,8 +1983,8 @@ static void footpath_remove_edges_towards(const CoordsXYRangedZ& footPathPos, in
     } while (!(tileElement++)->IsLastForTile());
 }
 
-// Returns true when there is an element at the given coordinates that want to connect to a path with the given SomePeepDirection (ride
-// entrances and exits, shops, paths).
+// Returns true when there is an element at the given coordinates that want to connect to a path with the given
+// SomePeepDirection (ride entrances and exits, shops, paths).
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved)
 {
     TileElement* tileElement = map_get_first_element_at(coords.ToCoordsXY());

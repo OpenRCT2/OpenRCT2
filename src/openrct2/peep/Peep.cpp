@@ -2845,7 +2845,8 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()
-                    == direction_reverse(peep->SomePeepDirection)) // Ride sign is facing the SomePeepDirection the peep is walking
+                    == direction_reverse(
+                        peep->SomePeepDirection)) // Ride sign is facing the SomePeepDirection the peep is walking
             )
             {
                 /* Peep is approaching the entrance of a ride queue.

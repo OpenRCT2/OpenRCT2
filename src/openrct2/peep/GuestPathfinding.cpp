@@ -1179,8 +1179,8 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     if (gPathFindDebug)
     {
         log_verbose(
-            "Choose SomePeepDirection for %s for goal %d,%d,%d from %d,%d,%d", gPathFindDebugPeepName, goal.x, goal.y, goal.z, loc.x,
-            loc.y, loc.z);
+            "Choose SomePeepDirection for %s for goal %d,%d,%d from %d,%d,%d", gPathFindDebugPeepName, goal.x, goal.y, goal.z,
+            loc.x, loc.y, loc.z);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -2159,7 +2159,9 @@ int32_t guest_path_finding(Guest* peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
-            log_info("Completed guest_path_finding for %s - failed to choose a SomePeepDirection == aimless.", gPathFindDebugPeepName);
+            log_info(
+                "Completed guest_path_finding for %s - failed to choose a SomePeepDirection == aimless.",
+                gPathFindDebugPeepName);
         }
         pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
