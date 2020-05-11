@@ -3481,7 +3481,7 @@ void Guest::UpdateRideAtEntrance()
                 auto entrance = ride_get_entrance_location(ride, current_ride_station).ToCoordsXYZ();
                 actionZ = entrance.z + 2;
             }
-            MoveTo({ loc->x, loc->y, actionZ });
+            MoveTo({ *loc, actionZ });
         }
         else
         {
@@ -3687,7 +3687,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             actionZ += RideData5[ride->type].z;
         }
 
-        MoveTo({ loc->x, loc->y, actionZ });
+        MoveTo({ *loc, actionZ });
         return;
     }
 
@@ -4039,7 +4039,7 @@ void Guest::UpdateRideApproachVehicle()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
     sub_state = PEEP_RIDE_ENTER_VEHICLE;
@@ -4361,7 +4361,7 @@ void Guest::UpdateRideApproachExit()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
@@ -4387,12 +4387,12 @@ void Guest::UpdateRideInExit()
             int16_t actionZ = ride->stations[current_ride_station].GetBaseZ();
 
             actionZ += RideData5[ride->type].z;
-            MoveTo({ loc->x, loc->y, actionZ });
+            MoveTo({ *loc, actionZ });
             return;
         }
 
         SwitchToSpecialSprite(0);
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -4443,7 +4443,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         {
             actionZ = z;
         }
-        MoveTo({ loc->x, loc->y, actionZ });
+        MoveTo({ *loc, actionZ });
         return;
     }
 
@@ -4513,7 +4513,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             actionZ = z;
         }
-        MoveTo({ loc->x, loc->y, actionZ });
+        MoveTo({ *loc, actionZ });
         return;
     }
 
@@ -4589,7 +4589,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
@@ -4720,7 +4720,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
@@ -4747,7 +4747,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
     // waypoint 0. Then it readies to leave the ride by the entrance.
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
@@ -4822,7 +4822,7 @@ void Guest::UpdateRideMazePathfinding()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
@@ -4965,7 +4965,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 }
@@ -4982,7 +4982,7 @@ void Guest::UpdateRideLeaveExit()
     {
         if (ride != nullptr)
         {
-            MoveTo({ loc->x, loc->y, ride->stations[current_ride_station].GetBaseZ() });
+            MoveTo({ *loc, ride->stations[current_ride_station].GetBaseZ() });
         }
         return;
     }
@@ -5035,7 +5035,7 @@ void Guest::UpdateRideShopApproach()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
@@ -5105,7 +5105,7 @@ void Guest::UpdateRideShopLeave()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
 
         if ((x & 0xFFE0) != NextLoc.x)
             return;
@@ -5672,7 +5672,7 @@ void Guest::UpdateEnteringPark()
     }
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
     SetState(PEEP_STATE_FALLING);
@@ -5703,7 +5703,7 @@ void Guest::UpdateLeavingPark()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo({ loc->x, loc->y, z });
+        MoveTo({ *loc, z });
         return;
     }
 
