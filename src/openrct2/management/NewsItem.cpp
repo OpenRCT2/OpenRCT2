@@ -172,17 +172,15 @@ void news_item_close_current()
  */
 static void news_item_append_to_old_history(NewsItem& item)
 {
-    auto it = std::begin(gOldNewsItems);
-    for (; it < std::end(gOldNewsItems); ++it)
+    auto it = std::find_if(
+        std::begin(gOldNewsItems), std::end(gOldNewsItems), [](const auto& newsItem) { return newsItem.IsEmpty(); });
+    if (it != std::end(gOldNewsItems))
     {
-        if (it->IsEmpty())
-        {
-            *it = item;
-            ++it;
-            if (it != std::end(gOldNewsItems))
-                it->Type = NEWS_ITEM_NULL;
-            return;
-        }
+        *it = item;
+        ++it;
+        if (it != std::end(gOldNewsItems))
+            it->Type = NEWS_ITEM_NULL;
+        return;
     }
 
     // Dequeue the first history news item, shift history up
@@ -426,14 +424,14 @@ void news_item_open_subject(int32_t type, int32_t subject)
 void news_item_disable_news(uint8_t type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    for (auto it = std::begin(gRecentNewsItems); it < std::end(gRecentNewsItems); ++it)
+    for (auto& newsItem : gRecentNewsItems)
     {
-        if (it->IsEmpty())
+        if (newsItem.IsEmpty())
             break;
-        if (type == it->Type && assoc == it->Assoc)
+        if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
-            it->Flags |= NEWS_FLAG_HAS_BUTTON;
-            if (it == std::begin(gRecentNewsItems))
+            newsItem.Flags |= NEWS_FLAG_HAS_BUTTON;
+            if (&newsItem == &*std::begin(gRecentNewsItems))
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
                 context_broadcast_intent(&intent);
@@ -441,13 +439,13 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
         }
     }
 
-    for (auto it = std::begin(gOldNewsItems); it < std::end(gOldNewsItems); ++it)
+    for (auto& newsItem : gOldNewsItems)
     {
-        if (it->IsEmpty())
+        if (newsItem.IsEmpty())
             break;
-        if (type == it->Type && assoc == it->Assoc)
+        if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
-            it->Flags |= NEWS_FLAG_HAS_BUTTON;
+            newsItem.Flags |= NEWS_FLAG_HAS_BUTTON;
             window_invalidate_by_class(WC_RECENT_NEWS);
         }
     }
