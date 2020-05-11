@@ -443,7 +443,6 @@ namespace Config
             model->ride_researched = reader->GetBoolean("ride_researched", true);
             model->ride_stalled_vehicles = reader->GetBoolean("ride_stalled_vehicles", true);
             model->guest_warnings = reader->GetBoolean("guest_warnings", true);
-            model->guest_lost = reader->GetBoolean("guest_lost", false);
             model->guest_left_park = reader->GetBoolean("guest_left_park", true);
             model->guest_queuing_for_ride = reader->GetBoolean("guest_queuing_for_ride", true);
             model->guest_on_ride = reader->GetBoolean("guest_on_ride", true);
@@ -469,7 +468,6 @@ namespace Config
         writer->WriteBoolean("ride_researched", model->ride_researched);
         writer->WriteBoolean("ride_stalled_vehicles", model->ride_stalled_vehicles);
         writer->WriteBoolean("guest_warnings", model->guest_warnings);
-        writer->WriteBoolean("guest_lost", model->guest_lost);
         writer->WriteBoolean("guest_left_park", model->guest_left_park);
         writer->WriteBoolean("guest_queuing_for_ride", model->guest_queuing_for_ride);
         writer->WriteBoolean("guest_on_ride", model->guest_on_ride);
