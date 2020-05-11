@@ -109,5 +109,5 @@ enum
 extern const ShopItemDescriptor ShopItems[SHOP_ITEM_COUNT];
 extern uint64_t gSamePriceThroughoutPark;
 
-money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem);
-bool shop_item_has_common_price(int32_t shopItem);
+money32 shop_item_get_common_price(Ride* forRide, const int32_t shopItem);
+bool shop_item_has_common_price(const int32_t shopItem);

@@ -76,7 +76,7 @@ const ShopItemDescriptor ShopItems[SHOP_ITEM_COUNT] = {
 };
 // clang-format on
 
-money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem)
+money32 shop_item_get_common_price(Ride* forRide, const int32_t shopItem)
 {
     for (const auto& ride : GetRideManager())
     {
@@ -105,7 +105,7 @@ money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem)
     return MONEY32_UNDEFINED;
 }
 
-bool shop_item_has_common_price(int32_t shopItem)
+bool shop_item_has_common_price(const int32_t shopItem)
 {
     return (gSamePriceThroughoutPark & (1ULL << shopItem)) != 0;
 }
