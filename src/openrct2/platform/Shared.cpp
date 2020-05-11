@@ -144,7 +144,7 @@ static void platform_ticks_init()
 #ifdef _WIN32
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
-    _frequency = (uint32_t)(freq.QuadPart / 1000);
+    _frequency = static_cast<uint32_t>(freq.QuadPart / 1000);
     QueryPerformanceCounter(&_entryTimestamp);
 #endif
 }
@@ -158,9 +158,9 @@ uint32_t platform_get_ticks()
     LARGE_INTEGER runningDelta;
     runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
 
-    return (uint32_t)(runningDelta.QuadPart / _frequency);
+    return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
 #elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    return (uint32_t)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
+    return static_cast<uint32_t>(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)

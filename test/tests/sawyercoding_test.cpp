@@ -37,7 +37,7 @@ protected:
         MemoryStream ms(encodedDataBuffer, encodedDataSize);
         SawyerChunkReader reader(&ms);
         auto chunk = reader.ReadChunk();
-        ASSERT_EQ((uint8_t)chunk->GetEncoding(), chdr_in.encoding);
+        ASSERT_EQ(static_cast<uint8_t>(chunk->GetEncoding()), chdr_in.encoding);
         ASSERT_EQ(chunk->GetLength(), chdr_in.length);
         auto result = memcmp(chunk->GetData(), randomdata, sizeof(randomdata));
         ASSERT_EQ(result, 0);
@@ -54,7 +54,7 @@ protected:
         MemoryStream ms(data, size);
         SawyerChunkReader reader(&ms);
         auto chunk = reader.ReadChunk();
-        ASSERT_EQ((uint8_t)chunk->GetEncoding(), chdr_in->encoding);
+        ASSERT_EQ(static_cast<uint8_t>(chunk->GetEncoding()), chdr_in->encoding);
         ASSERT_EQ(chunk->GetLength(), sizeof(randomdata));
         auto result = memcmp(chunk->GetData(), randomdata, sizeof(randomdata));
         ASSERT_EQ(result, 0);

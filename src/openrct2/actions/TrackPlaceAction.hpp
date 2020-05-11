@@ -104,13 +104,13 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {
-            log_warning("Invalid ride subtype for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -429,14 +429,14 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {
-            log_warning("Invalid ride subtype for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 

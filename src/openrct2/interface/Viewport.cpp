@@ -1885,7 +1885,9 @@ uint8_t get_current_rotation()
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (rotation != rotation_masked)
     {
-        log_error("Found wrong rotation %d! Will return %d instead.", (uint32_t)rotation, (uint32_t)rotation_masked);
+        log_error(
+            "Found wrong rotation %d! Will return %d instead.", static_cast<uint32_t>(rotation),
+            static_cast<uint32_t>(rotation_masked));
     }
 #endif // DEBUG_LEVEL_1
     return rotation_masked;

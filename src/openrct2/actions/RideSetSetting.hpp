@@ -70,7 +70,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
+            log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
@@ -175,7 +175,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
+            log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 

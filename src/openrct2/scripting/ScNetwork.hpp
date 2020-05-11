@@ -110,11 +110,12 @@ namespace OpenRCT2::Scripting
 
             for (size_t i = 0; i < enabledPermissions.size(); i++)
             {
-                auto toggle = (enabledPermissions[i] != (network_can_perform_action(groupIndex, (uint32_t)i) != 0));
+                auto toggle
+                    = (enabledPermissions[i] != (network_can_perform_action(groupIndex, static_cast<uint32_t>(i)) != 0));
                 if (toggle)
                 {
                     auto networkAction2 = NetworkModifyGroupAction(
-                        ModifyGroupType::SetPermissions, _id, "", (uint32_t)i, PermissionState::Toggle);
+                        ModifyGroupType::SetPermissions, _id, "", static_cast<uint32_t>(i), PermissionState::Toggle);
                     GameActions::Execute(&networkAction2);
                 }
             }

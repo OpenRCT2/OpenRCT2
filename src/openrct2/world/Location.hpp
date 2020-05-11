@@ -13,7 +13,7 @@
 
 #include <algorithm>
 
-#define LOCATION_NULL ((int16_t)(uint16_t)0x8000)
+constexpr const int16_t LOCATION_NULL = -32768;
 
 constexpr const int32_t COORDS_XY_STEP = 32;
 constexpr const int32_t COORDS_Z_STEP = 8;

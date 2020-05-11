@@ -714,8 +714,8 @@ paint_struct* sub_98196C(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
-    assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
-    assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
+    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
+    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
     session->LastRootPS = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -923,8 +923,8 @@ paint_struct* sub_98198C(
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
-    assert((uint16_t)bound_box_length_x == bound_box_length_x);
-    assert((uint16_t)bound_box_length_y == bound_box_length_y);
+    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
+    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
     session->LastRootPS = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -965,8 +965,8 @@ paint_struct* sub_98199C(
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
-    assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
-    assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
+    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
+    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
     if (session->LastRootPS == nullptr)
     {

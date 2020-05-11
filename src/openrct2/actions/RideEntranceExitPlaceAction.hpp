@@ -73,7 +73,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
+            log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
@@ -148,7 +148,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
+            log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 

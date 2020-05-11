@@ -4027,7 +4027,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
             for (int32_t i = 0; i < 8; i++)
             {
-                assert(j < (int32_t)std::size(rideEntry->ride_type));
+                assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
                 if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                 {
                     if (i == BREAKDOWN_BRAKES_FAILURE
@@ -4170,7 +4170,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                 int32_t num_items = 1;
                 for (i = 0; i < BREAKDOWN_COUNT; i++)
                 {
-                    assert(j < (int32_t)std::size(rideEntry->ride_type));
+                    assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
                     if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE

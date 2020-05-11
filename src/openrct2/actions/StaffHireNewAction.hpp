@@ -100,7 +100,7 @@ private:
         if (_staffType >= STAFF_TYPE_COUNT)
         {
             // Invalid staff type.
-            log_error("Tried to use invalid staff type: %u", (uint32_t)_staffType);
+            log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
@@ -115,7 +115,7 @@ private:
             if (_entertainerType >= ENTERTAINER_COSTUME_COUNT)
             {
                 // Invalid entertainer costume
-                log_error("Tried to use invalid entertainer type: %u", (uint32_t)_entertainerType);
+                log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
@@ -124,7 +124,7 @@ private:
             if (!(availableCostumes & (1 << _entertainerType)))
             {
                 // Entertainer costume unavailable
-                log_error("Tried to use unavailable entertainer type: %u", (uint32_t)_entertainerType);
+                log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }

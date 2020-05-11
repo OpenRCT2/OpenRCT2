@@ -112,7 +112,7 @@ char* strndup(const char* src, size_t size);
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
 using datetime64 = uint64_t;
 
-#define DATETIME64_MIN ((datetime64)0)
+constexpr const datetime64 DATETIME64_MIN = 0;
 
 // Represent fixed point numbers. dp = decimal point
 using fixed8_1dp = uint8_t;

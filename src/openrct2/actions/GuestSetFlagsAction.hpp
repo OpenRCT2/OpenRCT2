@@ -48,7 +48,7 @@ public:
         Peep* peep = GET_PEEP(_peepId);
         if (peep == nullptr)
         {
-            log_error("Used invalid sprite index for peep: %u", (uint32_t)_peepId);
+            log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
         }
         return std::make_unique<GameActionResult>();
@@ -59,7 +59,7 @@ public:
         Peep* peep = GET_PEEP(_peepId);
         if (peep == nullptr)
         {
-            log_error("Used invalid sprite index for peep: %u", (uint32_t)_peepId);
+            log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
         }
 

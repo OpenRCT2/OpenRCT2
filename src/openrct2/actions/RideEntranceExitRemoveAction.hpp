@@ -58,7 +58,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
+            log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -108,8 +108,8 @@ public:
         if (!found)
         {
             log_warning(
-                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, (int32_t)_rideIndex,
-                _stationNum);
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
+                static_cast<int32_t>(_rideIndex), _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -121,7 +121,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
+            log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -168,8 +168,8 @@ public:
         if (!found)
         {
             log_warning(
-                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, (int32_t)_rideIndex,
-                _stationNum);
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
+                static_cast<int32_t>(_rideIndex), _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
