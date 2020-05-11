@@ -881,10 +881,6 @@ bool metal_a_supports_paint_setup(
     }
 
     return true;
-
-    // int32_t eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-    // RCT2_CALLFUNC_X(0x00663105, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-    // return eax & 0xFF;
 }
 
 /**

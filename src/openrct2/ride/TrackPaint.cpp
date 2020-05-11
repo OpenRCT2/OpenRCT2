@@ -1904,24 +1904,6 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
     }
 }
 
-// void track_paint_util_left_quarter_turn_3_tiles_paint_2(int16_t height, int32_t direction, uint8_t rotation, uint8_t
-// trackSequence, uint32_t colourFlags, const sprite_bb sprites[][5])
-// {
-//  int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
-//  if (sprite < 0) {
-//      return;
-//  }
-//
-//  const sprite_bb *spriteBB = &sprites[direction][sprite];
-//  uint32_t imageId = spriteBB->SpriteId | colourFlags;
-//  sub_98197C(session, imageId,
-//              (int8_t)spriteBB->offset.x, (int8_t)spriteBB->offset.y,
-//              spriteBB->bb_size.x, spriteBB->bb_size.y, (int8_t)spriteBB->bb_size.z,
-//              height + spriteBB->offset.z,
-//              spriteBB->bb_offset.x, spriteBB->bb_offset.y, height + spriteBB->bb_offset.z,
-//              rotation);
-// }
-
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(
     paint_session* session, int16_t height, uint8_t tunnelType, uint8_t direction, uint8_t trackSequence)
 {

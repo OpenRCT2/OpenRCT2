@@ -279,7 +279,6 @@ void lightfx_prepare_light_list()
         {
             int32_t totalSamplePoints = 5;
             int32_t startSamplePoint = 1;
-            // int32_t lastSampleCount = 0;
 
             if ((entry->lightIDqualifier & 0xF) == LIGHTFX_LIGHT_QUALIFIER_MAP)
             {
@@ -371,28 +370,16 @@ void lightfx_prepare_light_list()
                 else if (pat == 8)
                 {
                     break;
-                    // if (_current_view_zoom_front > 0)
-                    //  break;
-                    // int32_t newSampleCount = lightIntensityOccluded / 900;
-                    // if (abs(newSampleCount - lastSampleCount) < 10)
-                    //  break;
-                    // totalSamplePoints += 4;
                 }
             }
 
             totalSamplePoints -= startSamplePoint;
-
-            //  lightIntensityOccluded = totalSamplePoints * 100;
-
-            //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded);
 
             if (lightIntensityOccluded == 0)
             {
                 entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
                 continue;
             }
-
-            //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
             entry->lightIntensity = std::min<uint32_t>(
                 0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));

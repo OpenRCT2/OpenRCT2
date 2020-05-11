@@ -71,7 +71,6 @@ uint8_t gPeepWarningThrottle[16];
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
 ride_id_t gPeepPathFindQueueRideIndex;
-// uint32_t gPeepPathFindAltStationNum;
 
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;

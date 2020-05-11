@@ -58,7 +58,6 @@ static void FASTCALL DrawRLESprite2(
         while (!isEndOfLine)
         {
             const uint8_t* copySrc = lineData;
-            // uint8_t* copyDest = loop_dest_pointer;
 
             // Read chunk metadata
             uint8_t dataSize = *copySrc++;

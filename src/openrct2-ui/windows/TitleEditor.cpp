@@ -867,10 +867,6 @@ static void window_title_editor_scrollpaint(rct_window* w, rct_drawpixelinfo* dp
 static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t currentSaveIndex = -1;
-    // ITitleSequencePlayer * player = window_title_editor_get_player();
-    // int32_t position = title_sequence_player_get_current_position(player);
-    // const TitleCommand * command = &_editingTitleSequence->Commands[position];
-
     int32_t x = 0;
     int32_t y = 0;
     if (_editingTitleSequence == nullptr)
