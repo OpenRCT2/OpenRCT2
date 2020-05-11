@@ -6620,7 +6620,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
  * merely as a velocity regulator, in a closed state. When the brake is open, it
  * boosts the train to the speed limit
  */
-static void apply_non_stop_block_brake(Vehicle* vehicle, bool slowDownToBlockBrakeSpeed)
+static void apply_non_stop_block_brake(Vehicle* vehicle)
 {
     if (vehicle->velocity >= 0)
     {
@@ -6631,7 +6631,7 @@ static void apply_non_stop_block_brake(Vehicle* vehicle, bool slowDownToBlockBra
             vehicle->velocity = BLOCK_BRAKE_BASE_SPEED;
             vehicle->acceleration = 0;
         }
-        else if (slowDownToBlockBrakeSpeed)
+        else
         {
             // Slow it down till the fixed block brake speed
             vehicle->velocity -= vehicle->velocity >> 4;
@@ -6664,11 +6664,7 @@ static void apply_block_brakes(Vehicle* vehicle, bool is_block_brake_closed)
     }
     else
     {
-#ifdef NEW_BLOCK_BRAKES
-        apply_non_stop_block_brake(vehicle, false);
-#else
-        apply_non_stop_block_brake(vehicle, true);
-#endif
+        apply_non_stop_block_brake(vehicle);
     }
 }
 
@@ -6708,7 +6704,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
             if (curRide->IsBlockSectioned())
                 apply_block_brakes(this, trackElement->AsTrack()->BlockBrakeClosed());
             else
-                apply_non_stop_block_brake(this, true);
+                apply_non_stop_block_brake(this);
 
             break;
         case TRACK_ELEM_END_STATION:
