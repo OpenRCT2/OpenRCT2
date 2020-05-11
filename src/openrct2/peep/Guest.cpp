@@ -1230,7 +1230,7 @@ void Guest::UpdateSitting()
 
         auto loc = CoordsXYZ{ x, y, z }.ToTileStart() + CoordsXYZ{ BenchUseOffsets[var_37 & 0x7], 0 };
 
-        MoveTo(loc.x, loc.y, loc.z);
+        MoveTo(loc);
 
         sprite_direction = ((var_37 + 2) & 3) * 8;
         action = PEEP_ACTION_NONE_1;
@@ -3481,7 +3481,7 @@ void Guest::UpdateRideAtEntrance()
                 auto entrance = ride_get_entrance_location(ride, current_ride_station).ToCoordsXYZ();
                 actionZ = entrance.z + 2;
             }
-            MoveTo((*loc).x, (*loc).y, actionZ);
+            MoveTo({ loc->x, loc->y, actionZ });
         }
         else
         {
@@ -3687,7 +3687,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             actionZ += RideData5[ride->type].z;
         }
 
-        MoveTo((*loc).x, (*loc).y, actionZ);
+        MoveTo({ loc->x, loc->y, actionZ });
         return;
     }
 
@@ -3806,7 +3806,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
 {
     z += RideData5[ride->type].z;
 
-    peep->MoveTo(x, y, z);
+    peep->MoveTo({ x, y, z });
 
     Guard::Assert(peep->current_ride_station < MAX_STATIONS);
     auto exit = ride_get_exit_location(ride, peep->current_ride_station);
@@ -4039,7 +4039,7 @@ void Guest::UpdateRideApproachVehicle()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
     sub_state = PEEP_RIDE_ENTER_VEHICLE;
@@ -4077,7 +4077,7 @@ void Guest::UpdateRideEnterVehicle()
                     ride->cur_num_customers++;
 
                     vehicle->mass += seatedPeepAsGuest->mass;
-                    seatedPeepAsGuest->MoveTo(LOCATION_NULL, 0, 0);
+                    seatedPeepAsGuest->MoveTo({ LOCATION_NULL, 0, 0 });
                     seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
                     seatedPeepAsGuest->time_on_ride = 0;
                     seatedPeepAsGuest->sub_state = PEEP_RIDE_ON_RIDE;
@@ -4091,7 +4091,7 @@ void Guest::UpdateRideEnterVehicle()
             vehicle->mass += mass;
             invalidate_sprite_2(vehicle);
 
-            MoveTo(LOCATION_NULL, 0, 0);
+            MoveTo({ LOCATION_NULL, 0, 0 });
 
             SetState(PEEP_STATE_ON_RIDE);
 
@@ -4295,7 +4295,7 @@ void Guest::UpdateRideLeaveVehicle()
     if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         exitWaypointLoc.z += 15;
 
-    MoveTo(exitWaypointLoc.x, exitWaypointLoc.y, exitWaypointLoc.z);
+    MoveTo(exitWaypointLoc);
 
     waypointLoc.x += vehicleEntry->peep_loading_waypoints[var_37 / 4][1].x;
     waypointLoc.y += vehicleEntry->peep_loading_waypoints[var_37 / 4][1].y;
@@ -4361,7 +4361,7 @@ void Guest::UpdateRideApproachExit()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 
@@ -4387,12 +4387,12 @@ void Guest::UpdateRideInExit()
             int16_t actionZ = ride->stations[current_ride_station].GetBaseZ();
 
             actionZ += RideData5[ride->type].z;
-            MoveTo((*loc).x, (*loc).y, actionZ);
+            MoveTo({ loc->x, loc->y, actionZ });
             return;
         }
 
         SwitchToSpecialSprite(0);
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -4443,7 +4443,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         {
             actionZ = z;
         }
-        MoveTo((*loc).x, (*loc).y, actionZ);
+        MoveTo({ loc->x, loc->y, actionZ });
         return;
     }
 
@@ -4513,7 +4513,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             actionZ = z;
         }
-        MoveTo((*loc).x, (*loc).y, actionZ);
+        MoveTo({ loc->x, loc->y, actionZ });
         return;
     }
 
@@ -4589,7 +4589,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 
@@ -4601,7 +4601,7 @@ void Guest::UpdateRideApproachSpiralSlide()
         destination_x = 0;
         destination_y = 0;
         var_37 = (var_37 / 4) & 0xC;
-        MoveTo(LOCATION_NULL, y, z);
+        MoveTo({ LOCATION_NULL, y, z });
         return;
     }
     else if (waypoint == 2)
@@ -4706,7 +4706,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 newLocation.x += _SpiralSlideEnd[dir].x;
                 newLocation.y += _SpiralSlideEnd[dir].y;
 
-                MoveTo(newLocation.x, newLocation.y, z);
+                MoveTo({ newLocation, z });
 
                 sprite_direction = (var_37 & 0xC) * 2;
 
@@ -4720,7 +4720,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 
@@ -4747,7 +4747,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
     // waypoint 0. Then it readies to leave the ride by the entrance.
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 
@@ -4822,7 +4822,7 @@ void Guest::UpdateRideMazePathfinding()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 
@@ -4965,7 +4965,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 }
@@ -4982,7 +4982,7 @@ void Guest::UpdateRideLeaveExit()
     {
         if (ride != nullptr)
         {
-            MoveTo((*loc).x, (*loc).y, ride->stations[current_ride_station].GetBaseZ());
+            MoveTo({ loc->x, loc->y, ride->stations[current_ride_station].GetBaseZ() });
         }
         return;
     }
@@ -5022,7 +5022,7 @@ void Guest::UpdateRideLeaveExit()
         if (z_diff > 0 || z_diff < -16)
             continue;
 
-        MoveTo(x, y, height);
+        MoveTo({ x, y, height });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -5035,7 +5035,7 @@ void Guest::UpdateRideShopApproach()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 
@@ -5105,7 +5105,7 @@ void Guest::UpdateRideShopLeave()
 {
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
 
         if ((x & 0xFFE0) != NextLoc.x)
             return;
@@ -5387,7 +5387,7 @@ void Guest::UpdateWalking()
             int32_t water_height = surfaceElement->GetWaterHeight();
             if (water_height > 0)
             {
-                MoveTo(x, y, water_height);
+                MoveTo({ x, y, water_height });
                 SetState(PEEP_STATE_FALLING);
                 return;
             }
@@ -5672,7 +5672,7 @@ void Guest::UpdateEnteringPark()
     }
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
     SetState(PEEP_STATE_FALLING);
@@ -5703,7 +5703,7 @@ void Guest::UpdateLeavingPark()
 
     if (auto loc = UpdateAction())
     {
-        MoveTo((*loc).x, (*loc).y, z);
+        MoveTo({ loc->x, loc->y, z });
         return;
     }
 

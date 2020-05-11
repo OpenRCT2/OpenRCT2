@@ -79,7 +79,7 @@ namespace OpenRCT2::Scripting
             if (entity != nullptr)
             {
                 invalidate_sprite_2(entity);
-                sprite_move(value, entity->y, entity->z, entity);
+                entity->MoveTo({ value, entity->y, entity->z });
                 invalidate_sprite_2(entity);
             }
         }
@@ -97,7 +97,7 @@ namespace OpenRCT2::Scripting
             if (entity != nullptr)
             {
                 invalidate_sprite_2(entity);
-                sprite_move(entity->x, value, entity->z, entity);
+                entity->MoveTo({ entity->x, value, entity->z });
                 invalidate_sprite_2(entity);
             }
         }
@@ -115,7 +115,7 @@ namespace OpenRCT2::Scripting
             if (entity != nullptr)
             {
                 invalidate_sprite_2(entity);
-                sprite_move(entity->x, entity->y, value, entity);
+                entity->MoveTo({ entity->x, entity->y, value });
                 invalidate_sprite_2(entity);
             }
         }

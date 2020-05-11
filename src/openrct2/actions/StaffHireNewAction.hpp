@@ -227,7 +227,7 @@ private:
                 // NOTE: This state is required for the window to act.
                 newPeep->state = PEEP_STATE_PICKED;
 
-                sprite_move(newPeep->x, newPeep->y, newPeep->z, newPeep);
+                newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
                 invalidate_sprite_2(newPeep);
             }
 
@@ -332,7 +332,7 @@ private:
             }
         }
 
-        sprite_move(x, y, z + 16, newPeep);
+        newPeep->MoveTo({ x, y, z + 16 });
         invalidate_sprite_2(newPeep);
     }
 };

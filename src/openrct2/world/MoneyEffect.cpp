@@ -53,7 +53,7 @@ void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool 
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-    sprite_move(x, y, z, moneyEffect);
+    moneyEffect->MoveTo({ x, y, z });
     moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
     moneyEffect->num_movements = 0;
     moneyEffect->move_delay = 0;
@@ -134,7 +134,7 @@ void MoneyEffect::Update()
     newY += _moneyEffectMoveOffset[get_current_rotation()].y;
     newX += _moneyEffectMoveOffset[get_current_rotation()].x;
 
-    sprite_move(newX, newY, newZ, this);
+    MoveTo({ newX, newY, newZ });
 
     num_movements++;
     if (num_movements < 55)

@@ -70,7 +70,6 @@ struct Duck : SpriteGeneric
     void Invalidate();
     bool IsFlying();
     void Remove();
-    void MoveTo(const CoordsXYZ& destination);
 };
 
 struct MoneyEffect : SpriteBase
@@ -209,7 +208,6 @@ void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void sprite_misc_update_all();
-void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
 void invalidate_sprite_0(SpriteBase* sprite);
 void invalidate_sprite_1(SpriteBase* sprite);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../common.h"
+#include "Location.hpp"
 
 struct SpriteBase
 {
@@ -29,6 +30,8 @@ struct SpriteBase
     int16_t sprite_bottom;
 
     uint8_t sprite_direction;
+
+    void MoveTo(const CoordsXYZ& newLocation);
 };
 
 struct SpriteGeneric : SpriteBase
