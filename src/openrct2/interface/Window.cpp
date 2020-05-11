@@ -272,7 +272,7 @@ template<typename _TPred> static void window_close_by_condition(_TPred pred, uin
         };
 
         // The closest to something like for_each_if is using find_if in order to avoid duplicate code
-        // to change the loop SomePeepDirection.
+        // to change the loop PeepDirection.
         auto windowList = g_window_list;
         if ((flags & WindowCloseFlags::IterateReverse) != 0)
             listUpdated = std::find_if(windowList.rbegin(), windowList.rend(), closeSingle) != windowList.rend();
@@ -903,7 +903,7 @@ static void call_event_viewport_rotate_on_all_windows()
 /**
  *
  *  rct2: 0x0068881A
- * SomePeepDirection can be used to alter the camera rotation:
+ * PeepDirection can be used to alter the camera rotation:
  *      1: clockwise
  *      -1: anti-clockwise
  */

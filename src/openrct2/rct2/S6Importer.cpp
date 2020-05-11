@@ -1449,7 +1449,7 @@ public:
         dst->ActionFrame = src->action_frame;
         dst->StepProgress = src->step_progress;
         dst->NextInQueue = src->next_in_queue;
-        dst->SomePeepDirection = src->direction;
+        dst->PeepDirection = src->direction;
         dst->InteractionRideIndex = src->interaction_ride_index;
         dst->TimeInQueue = src->time_in_queue;
         for (size_t i = 0; i < std::size(src->rides_been_on); i++)

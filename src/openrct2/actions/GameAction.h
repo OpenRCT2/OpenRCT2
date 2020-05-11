@@ -171,7 +171,7 @@ public:
         Visit("x", param.x);
         Visit("y", param.y);
         Visit("z", param.z);
-        Visit("SomePeepDirection", param.direction);
+        Visit("PeepDirection", param.direction);
     }
 
     template<typename T> void Visit(const std::string_view& name, T& param)

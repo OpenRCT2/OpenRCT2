@@ -2369,7 +2369,7 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
- * @param SomePeepDirection The SomePeepDirection (0 - 3).
+ * @param PeepDirection The PeepDirection (0 - 3).
  */
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex)
 {

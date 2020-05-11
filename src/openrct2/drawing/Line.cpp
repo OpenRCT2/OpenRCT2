@@ -109,7 +109,7 @@ void gfx_draw_line_software(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int3
         x1 = temp_y2;
     }
 
-    // If line is right to left swap SomePeepDirection
+    // If line is right to left swap PeepDirection
     if (x1 > x2)
     {
         int32_t temp_y2 = y2;

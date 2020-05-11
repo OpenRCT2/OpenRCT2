@@ -240,7 +240,7 @@ enum PeepRideSubState
     PEEP_RIDE_AT_ENTRANCE = 0,
     PEEP_RIDE_IN_ENTRANCE = 1,
     PEEP_RIDE_FREE_VEHICLE_CHECK = 2, // Spend money on ride
-    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what SomePeepDirection and where to go after commiting to entering vehicle
+    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what PeepDirection and where to go after commiting to entering vehicle
     PEEP_RIDE_APPROACH_VEHICLE = 4,
     PEEP_RIDE_ENTER_VEHICLE = 5,
     PEEP_RIDE_ON_RIDE = 6,
@@ -670,7 +670,7 @@ struct Peep : SpriteBase
     union
     {
         uint8_t MazeLastEdge;
-        Direction SomePeepDirection; // Direction ?
+        Direction PeepDirection; // Direction ?
     };
     uint8_t InteractionRideIndex;
     uint16_t TimeInQueue;

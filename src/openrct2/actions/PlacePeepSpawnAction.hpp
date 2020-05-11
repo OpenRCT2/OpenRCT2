@@ -112,7 +112,7 @@ public:
         // remove that peep spawn instead.
         if (!gPeepSpawns.empty())
         {
-            // When searching for existing spawns, ignore the SomePeepDirection.
+            // When searching for existing spawns, ignore the PeepDirection.
             auto foundSpawn = std::find_if(gPeepSpawns.begin(), gPeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
                 {
                     return existingSpawn.ToTileStart() == spawn.ToTileStart();

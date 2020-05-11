@@ -1904,7 +1904,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
     }
 }
 
-// void track_paint_util_left_quarter_turn_3_tiles_paint_2(int16_t height, int32_t SomePeepDirection, uint8_t rotation, uint8_t
+// void track_paint_util_left_quarter_turn_3_tiles_paint_2(int16_t height, int32_t PeepDirection, uint8_t rotation, uint8_t
 // trackSequence, uint32_t colourFlags, const sprite_bb sprites[][5])
 // {
 //  int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1912,7 +1912,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
 //      return;
 //  }
 //
-//  const sprite_bb *spriteBB = &sprites[SomePeepDirection][sprite];
+//  const sprite_bb *spriteBB = &sprites[PeepDirection][sprite];
 //  uint32_t imageId = spriteBB->SpriteId | colourFlags;
 //  sub_98197C(session, imageId,
 //              (int8_t)spriteBB->offset.x, (int8_t)spriteBB->offset.y,

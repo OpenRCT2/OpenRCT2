@@ -2883,7 +2883,7 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
     x = location.x;
     y = location.y;
 
-    // Other search SomePeepDirection.
+    // Other search PeepDirection.
     direction = direction_reverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
@@ -7168,7 +7168,7 @@ static void vehicle_update_spinning_car(Vehicle* vehicle)
             // On a rotation control track element
             spinningInertia += 6;
             spinSpeed = dword_F64E08 >> spinningInertia;
-            // Alternate the spin SomePeepDirection (roughly). Perhaps in future save a value to the track
+            // Alternate the spin PeepDirection (roughly). Perhaps in future save a value to the track
             if (vehicle->sprite_index & 1)
             {
                 vehicle->spin_speed -= spinSpeed;

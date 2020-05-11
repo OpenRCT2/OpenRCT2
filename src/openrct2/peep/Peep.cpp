@@ -1019,7 +1019,7 @@ void Peep::Update1()
     DestinationX = x;
     DestinationY = y;
     DestinationTolerance = 10;
-    SomePeepDirection = sprite_direction >> 3;
+    PeepDirection = sprite_direction >> 3;
 }
 
 void Peep::SetState(PeepState new_state)
@@ -2338,7 +2338,7 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
  */
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
-    peep->SomePeepDirection = direction_reverse(peep->SomePeepDirection);
+    peep->PeepDirection = direction_reverse(peep->PeepDirection);
     peep->DestinationX = (peep->x & 0xFFE0) + 16;
     peep->DestinationY = (peep->y & 0xFFE0) + 16;
     peep->DestinationTolerance = 5;
@@ -2470,9 +2470,9 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         }
 
         uint8_t entranceDirection = tile_element->GetDirection();
-        if (entranceDirection != peep->SomePeepDirection)
+        if (entranceDirection != peep->PeepDirection)
         {
-            if (direction_reverse(entranceDirection) != peep->SomePeepDirection)
+            if (direction_reverse(entranceDirection) != peep->PeepDirection)
             {
                 peep_return_to_centre_of_tile(peep);
                 return;
@@ -2495,8 +2495,8 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
                 }
             }
 
-            peep->DestinationX += CoordsDirectionDelta[peep->SomePeepDirection].x;
-            peep->DestinationY += CoordsDirectionDelta[peep->SomePeepDirection].y;
+            peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
+            peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
             peep->DestinationTolerance = 9;
             peep->MoveTo(x, y, peep->z);
             peep->SetState(PEEP_STATE_LEAVING_PARK);
@@ -2636,8 +2636,8 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
         peep->Var37 = 1;
-        peep->DestinationX += CoordsDirectionDelta[peep->SomePeepDirection].x;
-        peep->DestinationY += CoordsDirectionDelta[peep->SomePeepDirection].y;
+        peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
+        peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
         peep->DestinationTolerance = 7;
         peep->MoveTo(x, y, peep->z);
     }
@@ -2845,8 +2845,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()
-                    == direction_reverse(
-                        peep->SomePeepDirection)) // Ride sign is facing the SomePeepDirection the peep is walking
+                    == direction_reverse(peep->PeepDirection)) // Ride sign is facing the PeepDirection the peep is walking
             )
             {
                 /* Peep is approaching the entrance of a ride queue.

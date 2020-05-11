@@ -308,7 +308,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
             mapLocation -= _trackPreviewOrigin;
 
-            // Rotate entrance coordinates backwards to the correct SomePeepDirection
+            // Rotate entrance coordinates backwards to the correct PeepDirection
             auto rotatedMapLocation = mapLocation.Rotate(0 - _saveDirection);
             entrance.x = rotatedMapLocation.x;
             entrance.y = rotatedMapLocation.y;
@@ -507,7 +507,7 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
 
                 // Direction of connection on path
                 uint8_t direction = scenery.flags & 0xF;
-                // Rotate the SomePeepDirection by the track SomePeepDirection
+                // Rotate the PeepDirection by the track PeepDirection
                 direction = ((direction << 4) >> _saveDirection);
 
                 scenery.flags &= 0xF0;

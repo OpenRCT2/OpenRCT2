@@ -57,8 +57,7 @@ public:
         if (bannerElement == nullptr)
         {
             log_error(
-                "Invalid banner location, x = %d, y = %d, z = %d, SomePeepDirection = %d", _loc.x, _loc.y, _loc.z,
-                _loc.direction);
+                "Invalid banner location, x = %d, y = %d, z = %d, PeepDirection = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 
@@ -97,8 +96,7 @@ public:
         if (bannerElement == nullptr)
         {
             log_error(
-                "Invalid banner location, x = %d, y = %d, z = %d, SomePeepDirection = %d", _loc.x, _loc.y, _loc.z,
-                _loc.direction);
+                "Invalid banner location, x = %d, y = %d, z = %d, PeepDirection = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 

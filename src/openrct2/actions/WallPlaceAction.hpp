@@ -638,7 +638,7 @@ private:
     }
 
     /**
-     * Gets whether the given track type can have a wall placed on the edge of the given SomePeepDirection.
+     * Gets whether the given track type can have a wall placed on the edge of the given PeepDirection.
      * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
      */
     static bool TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, uint8_t direction)

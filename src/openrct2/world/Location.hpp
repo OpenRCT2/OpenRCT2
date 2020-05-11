@@ -451,7 +451,7 @@ const Direction INVALID_DIRECTION = 0xFF;
 constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 
 /**
- * Given a SomePeepDirection, return the SomePeepDirection that points the other way,
+ * Given a PeepDirection, return the PeepDirection that points the other way,
  * on the same axis.
  */
 [[maybe_unused]] static constexpr Direction direction_reverse(Direction dir)
@@ -465,7 +465,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 }
 
 /**
- * Given a SomePeepDirection, return the next cardinal SomePeepDirection, wrapping around if necessary.
+ * Given a PeepDirection, return the next cardinal PeepDirection, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
 [[maybe_unused]] static constexpr Direction direction_next(Direction dir)
@@ -474,7 +474,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 }
 
 /**
- * Given a SomePeepDirection, return the previous cardinal SomePeepDirection, wrapping around if necessary.
+ * Given a PeepDirection, return the previous cardinal PeepDirection, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
 [[maybe_unused]] static constexpr Direction direction_prev(Direction dir)

@@ -447,7 +447,7 @@ private:
     colour_t colour_2;           // 07
     colour_t colour_3;           // 08
     BannerIndex banner_index;    // 09
-    uint8_t animation;           // 0A 0b_dfff_ft00 d = SomePeepDirection, f = frame num, t = across track flag (not used)
+    uint8_t animation;           // 0A 0b_dfff_ft00 d = PeepDirection, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0C[4];

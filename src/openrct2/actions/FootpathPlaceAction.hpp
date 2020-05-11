@@ -89,7 +89,7 @@ public:
 
         if (_direction != INVALID_DIRECTION && !direction_valid(_direction))
         {
-            log_error("Direction invalid. SomePeepDirection = %u", _direction);
+            log_error("Direction invalid. PeepDirection = %u", _direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
 

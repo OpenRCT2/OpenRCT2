@@ -116,7 +116,7 @@ public:
 
         if (!direction_valid(_origin.direction))
         {
-            log_warning("Invalid SomePeepDirection for track placement, SomePeepDirection = %d", _origin.direction);
+            log_warning("Invalid PeepDirection for track placement, PeepDirection = %d", _origin.direction);
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 

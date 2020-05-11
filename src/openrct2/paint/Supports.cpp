@@ -329,7 +329,7 @@ static constexpr const uint16_t word_97B3C4[] = {
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
- * @param supportType (edi) Type and SomePeepDirection of supports.
+ * @param supportType (edi) Type and PeepDirection of supports.
  * @param special (ax) Used for curved supports.
  * @param height (dx) The height of the supports.
  * @param imageColourFlags (ebp) The colour and palette flags for the support sprites.

@@ -50,7 +50,7 @@ std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
 
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
-    // Flat paths want to connect to other paths in any SomePeepDirection
+    // Flat paths want to connect to other paths in any PeepDirection
     const TileElement* const pathElement = map_get_footpath_element(TileCoordsXYZ{ 19, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(pathElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 0 }, nullptr));
@@ -81,7 +81,7 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 
 TEST_F(TileElementWantsFootpathConnection, Stall)
 {
-    // Stalls usually have one path SomePeepDirection flag, but can have multiple (info kiosk for example)
+    // Stalls usually have one path PeepDirection flag, but can have multiple (info kiosk for example)
     auto tileCoords = TileCoordsXYZ{ 19, 15, 14 };
     const TrackElement* const stallElement = map_get_track_element_at(tileCoords.ToCoordsXYZ());
     ASSERT_NE(stallElement, nullptr);
@@ -94,7 +94,7 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 
 TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 {
-    // Ride entrances and exits want a connection in one SomePeepDirection
+    // Ride entrances and exits want a connection in one PeepDirection
     const EntranceElement* const entranceElement = map_get_ride_entrance_element_at(
         TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(entranceElement, nullptr);
@@ -107,7 +107,7 @@ TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 
 TEST_F(TileElementWantsFootpathConnection, RideExit)
 {
-    // The exit has been rotated; it wants a path connection in SomePeepDirection 1, but not 0 like the entrance
+    // The exit has been rotated; it wants a path connection in PeepDirection 1, but not 0 like the entrance
     const EntranceElement* const exitElement = map_get_ride_exit_element_at(TileCoordsXYZ{ 18, 10, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(exitElement, nullptr);
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 14, 0 }, nullptr));

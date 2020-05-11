@@ -1033,7 +1033,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     }
     else
     {
-        // Track SomePeepDirection and type are in the same field
+        // Track PeepDirection and type are in the same field
         dst->track_direction = src->track_direction;
         // dst->track_type = src->track_type;
     }
@@ -1184,7 +1184,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->action_frame = src->ActionFrame;
     dst->step_progress = src->StepProgress;
     dst->next_in_queue = src->NextInQueue;
-    dst->direction = src->SomePeepDirection;
+    dst->direction = src->PeepDirection;
     dst->interaction_ride_index = src->InteractionRideIndex;
     dst->time_in_queue = src->TimeInQueue;
     for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)

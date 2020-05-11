@@ -84,8 +84,7 @@ private:
         if (bannerElement == nullptr)
         {
             log_error(
-                "Could not find banner at: x = %d, y = %d, z = %d, SomePeepDirection = %u", _loc.x, _loc.y, _loc.z,
-                _loc.direction);
+                "Could not find banner at: x = %d, y = %d, z = %d, PeepDirection = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
             return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
         }
 

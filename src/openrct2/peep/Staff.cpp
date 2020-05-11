@@ -599,7 +599,7 @@ int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
         break;
     }
     // If it tries all directions this is required
-    // to make it back to the first SomePeepDirection and
+    // to make it back to the first PeepDirection and
     // override validDirections
     newDirection %= NumOrthogonalDirections;
     return newDirection;
@@ -658,10 +658,10 @@ bool Staff::DoHandymanPathFinding()
                 }
                 else
                 {
-                    pathDirections &= ~(1 << direction_reverse(SomePeepDirection));
+                    pathDirections &= ~(1 << direction_reverse(PeepDirection));
                     if (pathDirections == 0)
                     {
-                        pathDirections |= 1 << direction_reverse(SomePeepDirection);
+                        pathDirections |= 1 << direction_reverse(PeepDirection);
                     }
                 }
 
@@ -687,7 +687,7 @@ bool Staff::DoHandymanPathFinding()
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    SomePeepDirection = newDirection;
+    PeepDirection = newDirection;
     DestinationX = chosenTile.x + 16;
     DestinationY = chosenTile.y + 16;
     DestinationTolerance = 3;
@@ -703,7 +703,7 @@ static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
     uint8_t direction = initialDirection;
     for (int32_t i = 0; i < 3; ++i)
     {
-        // Looks left and right from initial SomePeepDirection
+        // Looks left and right from initial PeepDirection
         switch (i)
         {
             case 1:
@@ -781,8 +781,8 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
 {
     if (scenario_rand() & 1)
     {
-        if (pathDirections & (1 << peep->SomePeepDirection))
-            return peep->SomePeepDirection;
+        if (pathDirections & (1 << peep->PeepDirection))
+            return peep->PeepDirection;
     }
 
     // Modified from original to spam scenario_rand less
@@ -794,7 +794,7 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
             return direction;
     }
     // This will never happen as pathDirections always has a bit set.
-    return peep->SomePeepDirection;
+    return peep->PeepDirection;
 }
 
 /**
@@ -812,11 +812,11 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         return staff_mechanic_direction_surface(peep);
     }
 
-    // Check if this is dead end - i.e. only way out is the reverse SomePeepDirection.
-    pathDirections &= ~(1 << direction_reverse(peep->SomePeepDirection));
+    // Check if this is dead end - i.e. only way out is the reverse PeepDirection.
+    pathDirections &= ~(1 << direction_reverse(peep->PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << direction_reverse(peep->SomePeepDirection));
+        pathDirections |= (1 << direction_reverse(peep->PeepDirection));
     }
 
     direction = bitscanforward(pathDirections);
@@ -921,7 +921,7 @@ bool Staff::DoMechanicPathFinding()
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    SomePeepDirection = newDirection;
+    PeepDirection = newDirection;
     DestinationX = chosenTile.x + 16;
     DestinationY = chosenTile.y + 16;
     DestinationTolerance = (scenario_rand() & 7) + 2;
@@ -947,10 +947,10 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
         return staff_direction_surface(peep, scenario_rand() & 3);
     }
 
-    pathDirections &= ~(1 << direction_reverse(peep->SomePeepDirection));
+    pathDirections &= ~(1 << direction_reverse(peep->PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << direction_reverse(peep->SomePeepDirection));
+        pathDirections |= (1 << direction_reverse(peep->PeepDirection));
     }
 
     direction = bitscanforward(pathDirections);
@@ -1004,7 +1004,7 @@ bool Staff::DoMiscPathFinding()
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    SomePeepDirection = newDirection;
+    PeepDirection = newDirection;
     DestinationX = chosenTile.x + 16;
     DestinationY = chosenTile.y + 16;
     DestinationTolerance = (scenario_rand() & 7) + 2;
@@ -1480,15 +1480,15 @@ void Staff::UpdateHeadingToInspect()
             }
         }
 
-        SomePeepDirection = rideEntranceExitElement->GetDirection();
+        PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets[SomePeepDirection].x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets[SomePeepDirection].y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         DestinationX = destX;
         DestinationY = destY;
         DestinationTolerance = 2;
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
         SubState = 4;
@@ -1591,15 +1591,15 @@ void Staff::UpdateAnswering()
             }
         }
 
-        SomePeepDirection = rideEntranceExitElement->GetDirection();
+        PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets[SomePeepDirection].x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets[SomePeepDirection].y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         DestinationX = destX;
         DestinationY = destY;
         DestinationTolerance = 2;
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
         SubState = 4;
@@ -2211,7 +2211,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
 
-        CoordsXY offset = DirectionOffsets[SomePeepDirection];
+        CoordsXY offset = DirectionOffsets[PeepDirection];
         DestinationX = (offset.x * -12) + vehicle->x;
         DestinationY = (offset.y * -12) + vehicle->y;
         DestinationTolerance = 2;
@@ -2239,7 +2239,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
 
         Action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
         ActionSpriteImageOffset = 0;
@@ -2281,7 +2281,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
         Action = PEEP_ACTION_STAFF_FIX_3;
         ActionSpriteImageOffset = 0;
         ActionFrame = 0;
@@ -2388,7 +2388,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
 {
     if (!firstRun)
     {
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
         Action = PEEP_ACTION_STAFF_CHECKBOARD;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -2504,7 +2504,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
             return true;
         }
 
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
 
         Action = PEEP_ACTION_STAFF_FIX;
         ActionFrame = 0;
@@ -2532,7 +2532,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
 
         Action = PEEP_ACTION_STAFF_FIX_GROUND;
         ActionFrame = 0;
@@ -2585,7 +2585,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 
         stationPosition = stationPosition.ToTileCentre();
 
-        CoordsXY stationPlatformDirection = DirectionOffsets[SomePeepDirection];
+        CoordsXY stationPlatformDirection = DirectionOffsets[PeepDirection];
         stationPosition.x += stationPlatformDirection.x * 20;
         stationPosition.y += stationPlatformDirection.y * 20;
 
@@ -2629,7 +2629,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         StaffRidesFixed++;
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
-        sprite_direction = SomePeepDirection << 3;
+        sprite_direction = PeepDirection << 3;
         Action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -2672,7 +2672,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 
         exitPosition = exitPosition.ToTileCentre();
 
-        CoordsXY ebx_direction = DirectionOffsets[SomePeepDirection];
+        CoordsXY ebx_direction = DirectionOffsets[PeepDirection];
         exitPosition.x -= ebx_direction.x * 19;
         exitPosition.y -= ebx_direction.y * 19;
 

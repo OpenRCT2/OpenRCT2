@@ -37,7 +37,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         return;
     }
     SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
-    // RCT2_CALLPROC_X(0x6DFF47, 0, 0, SomePeepDirection, height, (int32_t)tileElement, 0, 0); return;
+    // RCT2_CALLPROC_X(0x6DFF47, 0, 0, PeepDirection, height, (int32_t)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;

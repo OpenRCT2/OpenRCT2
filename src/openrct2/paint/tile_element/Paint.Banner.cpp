@@ -86,7 +86,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     image_id++;
     sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
 
-    // Opposite SomePeepDirection
+    // Opposite PeepDirection
     direction = direction_reverse(direction);
     direction--;
     // If text not showing / ghost
