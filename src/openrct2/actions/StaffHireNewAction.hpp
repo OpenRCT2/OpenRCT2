@@ -163,18 +163,18 @@ private:
             newPeep->Action = PEEP_ACTION_NONE_2;
             newPeep->SpecialSprite = 0;
             newPeep->ActionSpriteImageOffset = 0;
-            newPeep->no_action_frame_num = 0;
+            newPeep->NoActionFrameNum = 0;
             newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
-            newPeep->path_check_optimisation = 0;
+            newPeep->PathCheckOptimisation = 0;
             newPeep->Type = PEEP_TYPE_STAFF;
             newPeep->OutsideOfPark = 0;
-            newPeep->peep_flags = 0;
+            newPeep->PeepFlags = 0;
             newPeep->paid_to_enter = 0;
             newPeep->paid_on_rides = 0;
             newPeep->paid_on_food = 0;
             newPeep->paid_on_souvenirs = 0;
             newPeep->favourite_ride = RIDE_ID_NULL;
-            newPeep->staff_orders = _staffOrders;
+            newPeep->StaffOrders = _staffOrders;
 
             uint16_t idSearchSpriteIndex;
             Peep* idSearchPeep;
@@ -232,11 +232,11 @@ private:
             }
 
             // Staff uses this
-            newPeep->time_in_park = gDateMonthsElapsed;
-            newPeep->pathfind_goal.x = 0xFF;
-            newPeep->pathfind_goal.y = 0xFF;
-            newPeep->pathfind_goal.z = 0xFF;
-            newPeep->pathfind_goal.direction = INVALID_DIRECTION;
+            newPeep->TimeInPark = gDateMonthsElapsed;
+            newPeep->PathfindGoal.x = 0xFF;
+            newPeep->PathfindGoal.y = 0xFF;
+            newPeep->PathfindGoal.z = 0xFF;
+            newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
             uint8_t colour = staff_get_colour(_staffType);
             newPeep->TshirtColour = colour;
@@ -247,7 +247,7 @@ private:
             newPeep->EnergyTarget = 0x60;
             newPeep->staff_mowing_timeout = 0;
 
-            newPeep->staff_id = staffIndex;
+            newPeep->StaffId = staffIndex;
 
             gStaffModes[staffIndex] = STAFF_MODE_WALK;
 

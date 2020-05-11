@@ -95,10 +95,10 @@ public:
 
         auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
         peep->SpriteType = spriteType;
-        peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
+        peep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
         if (peep_slow_walking_types[spriteType])
         {
-            peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
+            peep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
         }
         peep->ActionFrame = 0;
         peep->UpdateCurrentActionSpriteType();

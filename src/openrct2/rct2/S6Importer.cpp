@@ -1458,31 +1458,31 @@ public:
         }
         dst->PeepId = src->id;
         dst->CashInPocket = src->cash_in_pocket;
-        dst->cash_spent = src->cash_spent;
-        dst->time_in_park = src->time_in_park;
-        dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
-        dst->previous_ride = src->previous_ride;
-        dst->previous_ride_time_out = src->previous_ride_time_out;
+        dst->CashSpent = src->cash_spent;
+        dst->TimeInPark = src->time_in_park;
+        dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
+        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRideTimeOut = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
             auto srcThought = &src->thoughts[i];
-            auto dstThought = &dst->thoughts[i];
+            auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
             dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
-        dst->path_check_optimisation = src->path_check_optimisation;
-        dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
-        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
-        dst->photo1_ride_ref = src->photo1_ride_ref;
-        dst->peep_flags = src->peep_flags;
-        dst->pathfind_goal = src->pathfind_goal;
+        dst->PathCheckOptimisation = src->path_check_optimisation;
+        dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
+        dst->PeepIsLostCountdown = src->peep_is_lost_countdown;
+        dst->Photo1RideRef = src->photo1_ride_ref;
+        dst->PeepFlags = src->peep_flags;
+        dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
         {
-            dst->pathfind_history[i] = src->pathfind_history[i];
+            dst->PathfindHistory[i] = src->pathfind_history[i];
         }
-        dst->no_action_frame_num = src->no_action_frame_num;
+        dst->NoActionFrameNum = src->no_action_frame_num;
         dst->litter_count = src->litter_count;
         dst->time_on_ride = src->time_on_ride;
         dst->disgusting_count = src->disgusting_count;

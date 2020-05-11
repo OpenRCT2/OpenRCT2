@@ -63,7 +63,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
         }
 
-        peep->peep_flags = _newFlags;
+        peep->PeepFlags = _newFlags;
 
         return std::make_unique<GameActionResult>();
     }

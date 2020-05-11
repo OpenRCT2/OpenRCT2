@@ -67,7 +67,7 @@ public:
     {
         Peep* peep = GET_PEEP(_spriteIndex);
 
-        peep->staff_orders = _ordersId;
+        peep->StaffOrders = _ordersId;
 
         window_invalidate_by_number(WC_PEEP, _spriteIndex);
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);

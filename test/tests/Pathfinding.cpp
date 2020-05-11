@@ -78,7 +78,7 @@ protected:
         // that with no actual ride to head towards, when a peep reaches a junction they use the 'aimless'
         // pathfinder instead of pursuing their original pathfinding target. So, we always need to give them
         // an actual ride to walk to the entrance of.
-        peep->guest_heading_to_ride_id = targetRideID;
+        peep->GuestHeadingToRideId = targetRideID;
 
         // Pick the SomePeepDirection the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.

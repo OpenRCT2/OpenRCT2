@@ -724,7 +724,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_TRACK:
         {
-            uint32_t flags = peep->peep_flags ^ PEEP_FLAGS_TRACKING;
+            uint32_t flags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
             auto guestSetFlagsAction = GuestSetFlagsAction(w->number, flags);
             GameActions::Execute(&guestSetFlagsAction);
@@ -1105,12 +1105,12 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t i = 0;
     for (; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+        if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
         {
             w->list_information_type = 0;
             return;
         }
-        if (peep->thoughts[i].freshness == 1)
+        if (peep->Thoughts[i].freshness == 1)
         { // If a fresh thought
             break;
         }
@@ -1122,7 +1122,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     x = widget->right - widget->left - w->list_information_type;
-    peep_thought_set_format_args(&peep->thoughts[i]);
+    peep_thought_set_format_args(&peep->Thoughts[i]);
     gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, 0);
 }
 
@@ -1136,7 +1136,7 @@ void window_guest_overview_invalidate(rct_window* w)
 
     auto peep = GET_PEEP(w->number);
     w->pressed_widgets &= ~(1 << WIDX_TRACK);
-    if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+    if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
     {
         w->pressed_widgets |= (1 << WIDX_TRACK);
     }
@@ -1513,10 +1513,10 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Time in park
     y += LIST_ROW_HEIGHT + 1;
-    if (peep->time_in_park != -1)
+    if (peep->TimeInPark != -1)
     {
         int32_t eax = gScenarioTicks;
-        eax -= peep->time_in_park;
+        eax -= peep->TimeInPark;
         eax >>= 11;
         set_format_arg(0, uint16_t, eax & 0xFFFF);
         gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1573,7 +1573,7 @@ void window_guest_rides_update(rct_window* w)
     if (guest != nullptr)
     {
         // Every 2048 ticks do a full window_invalidate
-        int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
+        int32_t number_of_ticks = gScenarioTicks - peep->TimeInPark;
         if (!(number_of_ticks & 0x7FF))
             w->Invalidate();
 
@@ -1782,7 +1782,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Cash spent
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->cash_spent);
+    set_format_arg(0, money32, peep->CashSpent);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     y += LIST_ROW_HEIGHT * 2;
@@ -1889,7 +1889,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, x, y);
 
     y += 10;
-    for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought)
+    for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
     {
         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
             return;
@@ -1946,7 +1946,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
-            ride = get_ride(peep->photo1_ride_ref);
+            ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
@@ -2114,7 +2114,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
-        int32_t args[] = { peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z, peep->pathfind_goal.direction };
+        int32_t args[] = { peep->PathfindGoal.x, peep->PathfindGoal.y, peep->PathfindGoal.z, peep->PathfindGoal.direction };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, screenCoords.x, screenCoords.y);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -2122,7 +2122,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += LIST_ROW_HEIGHT;
 
     screenCoords.x += 10;
-    for (auto& point : peep->pathfind_history)
+    for (auto& point : peep->PathfindHistory)
     {
         int32_t args[] = { point.x, point.y, point.z, point.direction };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, args, 0, screenCoords.x, screenCoords.y);

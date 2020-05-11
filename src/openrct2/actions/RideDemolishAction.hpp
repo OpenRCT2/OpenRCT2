@@ -187,7 +187,7 @@ private:
             // remove any photos of this ride from peep
             if (peep->item_standard_flags & PEEP_ITEM_PHOTO)
             {
-                if (peep->photo1_ride_ref == _rideIndex)
+                if (peep->Photo1RideRef == _rideIndex)
                 {
                     peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
                 }
@@ -214,9 +214,9 @@ private:
                 }
             }
 
-            if (peep->guest_heading_to_ride_id == _rideIndex)
+            if (peep->GuestHeadingToRideId == _rideIndex)
             {
-                peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+                peep->GuestHeadingToRideId = RIDE_ID_NULL;
             }
             if (peep->favourite_ride == _rideIndex)
             {
@@ -227,15 +227,15 @@ private:
             {
                 // Don't touch items after the first NONE thought as they are not valid
                 // fixes issues with clearing out bad thought data in multiplayer
-                if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+                if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
                     break;
 
-                if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->thoughts[i].item == _rideIndex)
+                if (peep->Thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->Thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
-                    memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
+                    memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
                     // Next iteration, check the new thought at this index
                     i--;
                 }

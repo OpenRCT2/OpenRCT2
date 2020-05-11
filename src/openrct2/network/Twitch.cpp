@@ -423,12 +423,12 @@ namespace Twitch
                     }
                 }
 
-                if (peep->peep_flags & PEEP_FLAGS_TWITCH)
+                if (peep->PeepFlags & PEEP_FLAGS_TWITCH)
                 {
                     if (member == nullptr)
                     {
                         // Member no longer peep name worthy
-                        uint32_t flags = peep->peep_flags & ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+                        uint32_t flags = peep->PeepFlags & ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
 
                         auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
                         GameActions::Execute(&guestSetFlagsAction);
@@ -437,7 +437,7 @@ namespace Twitch
                     }
                     else
                     {
-                        uint32_t flags = peep->peep_flags;
+                        uint32_t flags = peep->PeepFlags;
                         if (member->ShouldTrack)
                         {
                             flags |= (PEEP_FLAGS_TRACKING);
@@ -446,17 +446,17 @@ namespace Twitch
                         {
                             flags &= ~(PEEP_FLAGS_TRACKING);
                         }
-                        if (flags != peep->peep_flags)
+                        if (flags != peep->PeepFlags)
                         {
                             auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
                             GameActions::Execute(&guestSetFlagsAction);
                         }
                     }
                 }
-                else if (member != nullptr && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+                else if (member != nullptr && !(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Peep with same name already exists but not twitch
-                    uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
+                    uint32_t flags = peep->PeepFlags | PEEP_FLAGS_TWITCH;
                     if (member->ShouldTrack)
                     {
                         flags |= PEEP_FLAGS_TRACKING;
@@ -488,7 +488,7 @@ namespace Twitch
                 }
 
                 AudienceMember* member = &members[memberIndex];
-                if (peep->name == nullptr && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+                if (peep->name == nullptr && !(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Rename peep and add flags
                     auto memLen = std::strlen(member->Name) + 1;
@@ -497,7 +497,7 @@ namespace Twitch
                     {
                         std::memcpy(peep->name, member->Name, memLen);
 
-                        uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
+                        uint32_t flags = peep->PeepFlags | PEEP_FLAGS_TWITCH;
                         if (member->ShouldTrack)
                         {
                             flags |= PEEP_FLAGS_TRACKING;

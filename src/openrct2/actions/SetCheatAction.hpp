@@ -587,7 +587,7 @@ private:
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
-                        peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+                        peep->PeepFlags &= ~PEEP_FLAGS_ANGRY;
                         peep->angriness = 0;
                     }
                     break;
@@ -720,7 +720,7 @@ private:
         {
             if (scenario_rand_max(6) == 0)
             {
-                peep->peep_flags |= PEEP_FLAGS_EXPLODE;
+                peep->PeepFlags |= PEEP_FLAGS_EXPLODE;
             }
         }
     }
