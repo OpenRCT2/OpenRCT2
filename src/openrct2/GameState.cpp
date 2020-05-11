@@ -270,21 +270,13 @@ void GameState::UpdateLogic()
     }
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
-
+    // Stash the current day number before updating the date so that we
+    // know if the day number changes on this tick.
     auto day = _date.GetDay();
 #endif
 
     date_update();
     _date = Date(gDateMonthsElapsed, gDateMonthTicks);
-
-#ifdef ENABLE_SCRIPTING
-    if (day != _date.GetDay())
-    {
-        hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
-    }
-#endif
 
     scenario_update();
     climate_update();
@@ -331,6 +323,16 @@ void GameState::UpdateLogic()
     gCurrentTicks++;
     gScenarioTicks++;
     gSavedAge++;
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
+
+    if (day != _date.GetDay())
+    {
+        hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
+    }
+#endif
 }
 
 void GameState::CreateStateSnapshot()
