@@ -213,7 +213,7 @@ private:
                     auto jresponse = Json::FromString(response.body);
                     if (jresponse != nullptr)
                     {
-                        auto objName = json_string_value(json_object_get(jresponse, "name"));
+                        auto objName = json_string_value(json_object_get(jresponse, "Name"));
                         auto source = json_string_value(json_object_get(jresponse, "source"));
                         auto downloadLink = json_string_value(json_object_get(jresponse, "download"));
                         if (downloadLink != nullptr)

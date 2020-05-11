@@ -42,7 +42,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::index_get, nullptr, "index");
             dukglue_register_property(ctx, &ScObject::identifier_get, nullptr, "identifier");
             dukglue_register_property(ctx, &ScObject::legacyIdentifier_get, nullptr, "legacyIdentifier");
-            dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
+            dukglue_register_property(ctx, &ScObject::name_get, nullptr, "Name");
         }
 
         static std::optional<uint8_t> StringToObjectType(const std::string_view& type)

@@ -142,7 +142,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::id_get, nullptr, "PeepId");
             dukglue_register_property(ctx, &ScRide::object_get, nullptr, "object");
             dukglue_register_property(ctx, &ScRide::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScRide::name_get, &ScRide::name_set, "name");
+            dukglue_register_property(ctx, &ScRide::name_get, &ScRide::name_set, "Name");
             dukglue_register_property(ctx, &ScRide::excitement_get, &ScRide::excitement_set, "excitement");
             dukglue_register_property(ctx, &ScRide::intensity_get, &ScRide::intensity_set, "intensity");
             dukglue_register_property(ctx, &ScRide::nausea_get, &ScRide::nausea_set, "nausea");

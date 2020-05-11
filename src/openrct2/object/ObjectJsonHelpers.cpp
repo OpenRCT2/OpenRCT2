@@ -463,7 +463,7 @@ namespace ObjectJsonHelpers
 
     static uint8_t ParseStringId(const std::string& s)
     {
-        if (s == "name")
+        if (s == "Name")
             return OBJ_STRING_ID_NAME;
         if (s == "description")
             return OBJ_STRING_ID_DESCRIPTION;

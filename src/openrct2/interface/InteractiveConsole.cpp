@@ -145,7 +145,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = ride.GetName();
                 console.WriteFormatLine(
-                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", ride.id, ride.type, ride.subtype,
+                    "ride: %03d type: %02u subtype %03u operating mode: %02u Name: %s", ride.id, ride.type, ride.subtype,
                     ride.mode, name.c_str());
             }
         }
@@ -443,7 +443,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff PeepId %03d type: %02u energy %03u name %s", i, peep->StaffType, peep->Energy, name.c_str());
+                    "staff PeepId %03d type: %02u energy %03u Name %s", i, peep->StaffType, peep->Energy, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -1769,13 +1769,13 @@ static constexpr const console_command console_command_table[] = {
                                     "load_object <objectfilenodat>" },
     { "load_park", cc_load_park, "Load park from save directory or by absolute path", "load_park <filename>" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
-    { "open", cc_open, "Opens the window with the give name.", "open <window>." },
+    { "open", cc_open, "Opens the window with the give Name.", "open <window>." },
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
     { "remove_floating_objects", cc_remove_floating_objects, "Removes floating objects", "remove_floating_objects"},
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
-    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
+    { "save_park", cc_save_park, "Save current state of park. If no Name specified default path will be used.", "save_park [Name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },
     { "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
@@ -1784,9 +1784,9 @@ static constexpr const console_command console_command_table[] = {
     { "twitch", cc_twitch, "Twitch API", "twitch" },
     { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
     { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
-    { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <name> [max_ticks]"},
+    { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <Name> [max_ticks]"},
     { "replay_stoprecord", cc_replay_stoprecord, "Stops recording a new replay.", "replay_stoprecord"},
-    { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
+    { "replay_start", cc_replay_start, "Starts a replay", "replay_start <Name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
     { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},

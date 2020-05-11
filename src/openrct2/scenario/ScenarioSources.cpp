@@ -403,7 +403,7 @@ namespace ScenarioSources
         {
             if (nameLength >= 4 && (name[3] == '1' || name[3] == '2'))
             {
-                log_verbose("Stripping RCT/1/2 from name: %s", name);
+                log_verbose("Stripping RCT/1/2 from Name: %s", name);
                 String::Set(buffer, bufferSize, name + 4);
             }
             else

@@ -371,7 +371,7 @@ json_t* UITheme::ToJson() const
 
     // Create theme object
     json_t* jsonTheme = json_object();
-    json_object_set_new(jsonTheme, "name", json_string(Name.c_str()));
+    json_object_set_new(jsonTheme, "Name", json_string(Name.c_str()));
     json_object_set_new(jsonTheme, "entries", jsonEntries);
 
     json_object_set_new(jsonTheme, "useLightsRide", json_boolean(Flags & UITHEME_FLAG_USE_LIGHTS_RIDE));
@@ -404,7 +404,7 @@ bool UITheme::WriteToFile(const std::string& path) const
 
 UITheme* UITheme::FromJson(const json_t* json)
 {
-    const char* themeName = json_string_value(json_object_get(json, "name"));
+    const char* themeName = json_string_value(json_object_get(json, "Name"));
     if (themeName == nullptr)
     {
         ThrowThemeLoadException();

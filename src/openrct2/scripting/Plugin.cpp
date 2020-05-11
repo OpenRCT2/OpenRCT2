@@ -124,7 +124,7 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
     PluginMetadata metadata;
     if (dukMetadata.type() == DukValue::Type::OBJECT)
     {
-        metadata.Name = TryGetString(dukMetadata["name"], "Plugin name not specified.");
+        metadata.Name = TryGetString(dukMetadata["Name"], "Plugin Name not specified.");
         metadata.Version = TryGetString(dukMetadata["version"], "Plugin version not specified.");
         metadata.Type = ParsePluginType(TryGetString(dukMetadata["type"], "Plugin type not specified."));
 

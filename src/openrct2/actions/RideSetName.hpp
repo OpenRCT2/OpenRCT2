@@ -41,7 +41,7 @@ public:
     void AcceptParameters(GameActionParameterVisitor & visitor) override
     {
         visitor.Visit("ride", _rideIndex);
-        visitor.Visit("name", _name);
+        visitor.Visit("Name", _name);
     }
 
     uint16_t GetActionFlags() const override

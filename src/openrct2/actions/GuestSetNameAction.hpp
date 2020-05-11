@@ -40,7 +40,7 @@ public:
     void AcceptParameters(GameActionParameterVisitor & visitor) override
     {
         visitor.Visit("peep", _spriteIndex);
-        visitor.Visit("name", _name);
+        visitor.Visit("Name", _name);
     }
 
     uint16_t GetSpriteIndex() const

@@ -596,7 +596,7 @@ public:
 
 struct Peep : SpriteBase
 {
-    char* name;
+    char* Name;
     CoordsXYZ NextLoc;
     uint8_t NextFlags;
     uint8_t OutsideOfPark;

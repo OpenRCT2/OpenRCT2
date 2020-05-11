@@ -583,7 +583,7 @@ static std::string LegacyScriptWrite(TitleSequence* seq)
             case TITLE_SCRIPT_LOADSC:
                 if (command->Scenario[0] == '\0')
                 {
-                    sb.Append("LOADSC <No scenario name>");
+                    sb.Append("LOADSC <No scenario Name>");
                 }
                 else
                 {

@@ -447,7 +447,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScEntity, ScPeep>(ctx);
-            dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
+            dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "Name");
             dukglue_register_property(ctx, &ScPeep::tshirtColour_get, &ScPeep::tshirtColour_set, "tshirtColour");
             dukglue_register_property(ctx, &ScPeep::trousersColour_get, &ScPeep::trousersColour_set, "trousersColour");
             dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");

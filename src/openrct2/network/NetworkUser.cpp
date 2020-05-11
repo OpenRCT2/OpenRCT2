@@ -24,7 +24,7 @@ constexpr const utf8* USER_STORE_FILENAME = "users.json";
 NetworkUser* NetworkUser::FromJson(json_t* json)
 {
     const char* hash = json_string_value(json_object_get(json, "hash"));
-    const char* name = json_string_value(json_object_get(json, "name"));
+    const char* name = json_string_value(json_object_get(json, "Name"));
     const json_t* jsonGroupId = json_object_get(json, "groupId");
 
     NetworkUser* user = nullptr;
@@ -51,7 +51,7 @@ json_t* NetworkUser::ToJson() const
 json_t* NetworkUser::ToJson(json_t* json) const
 {
     json_object_set_new(json, "hash", json_string(Hash.c_str()));
-    json_object_set_new(json, "name", json_string(Name.c_str()));
+    json_object_set_new(json, "Name", json_string(Name.c_str()));
 
     json_t* jsonGroupId;
     if (GroupId.HasValue())

@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
             result.IsDisabled = AsOrDefault(desc["isDisabled"], false);
-            result.Name = AsOrDefault(desc["name"], "");
+            result.Name = AsOrDefault(desc["Name"], "");
             result.Tooltip = AsOrDefault(desc["tooltip"], "");
             if (result.Type == "button")
             {

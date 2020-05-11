@@ -79,7 +79,7 @@ bool ServerListEntry::IsVersionValid() const
 std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
 {
     auto port = json_object_get(server, "port");
-    auto name = json_object_get(server, "name");
+    auto name = json_object_get(server, "Name");
     auto description = json_object_get(server, "description");
     auto requiresPassword = json_object_get(server, "requiresPassword");
     auto version = json_object_get(server, "version");
@@ -91,7 +91,7 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
 
     if (name == nullptr || version == nullptr)
     {
-        log_verbose("Cowardly refusing to add server without name or version specified.");
+        log_verbose("Cowardly refusing to add server without Name or version specified.");
         return std::nullopt;
     }
     else

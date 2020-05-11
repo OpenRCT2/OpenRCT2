@@ -1817,7 +1817,7 @@ void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const 
 json_t* Network::GetServerInfoAsJson() const
 {
     json_t* obj = json_object();
-    json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name.c_str()));
+    json_object_set_new(obj, "Name", json_string(gConfigNetwork.server_name.c_str()));
     json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
     json_object_set_new(obj, "version", json_string(network_get_version().c_str()));
     json_object_set_new(obj, "players", json_integer(player_list.size()));
@@ -1837,7 +1837,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 
     // Provider details
     json_t* jsonProvider = json_object();
-    json_object_set_new(jsonProvider, "name", json_string(gConfigNetwork.provider_name.c_str()));
+    json_object_set_new(jsonProvider, "Name", json_string(gConfigNetwork.provider_name.c_str()));
     json_object_set_new(jsonProvider, "email", json_string(gConfigNetwork.provider_email.c_str()));
     json_object_set_new(jsonProvider, "website", json_string(gConfigNetwork.provider_website.c_str()));
     json_object_set_new(obj, "provider", jsonProvider);
@@ -1985,7 +1985,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
 
         // Create event args object
         DukObject eObj(ctx);
-        eObj.Set("name", name);
+        eObj.Set("Name", name);
         eObj.Set("publicKeyHash", publicKeyHash);
         eObj.Set("ipAddress", connection.Socket->GetIpAddress());
         eObj.Set("cancel", false);
@@ -3384,14 +3384,14 @@ void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connect
     json_error_t error;
     json_t* root = json_loads(jsonString, 0, &error);
 
-    ServerName = json_stdstring_value(json_object_get(root, "name"));
+    ServerName = json_stdstring_value(json_object_get(root, "Name"));
     ServerDescription = json_stdstring_value(json_object_get(root, "description"));
     ServerGreeting = json_stdstring_value(json_object_get(root, "greeting"));
 
     json_t* jsonProvider = json_object_get(root, "provider");
     if (jsonProvider != nullptr)
     {
-        ServerProviderName = json_stdstring_value(json_object_get(jsonProvider, "name"));
+        ServerProviderName = json_stdstring_value(json_object_get(jsonProvider, "Name"));
         ServerProviderEmail = json_stdstring_value(json_object_get(jsonProvider, "email"));
         ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
     }
