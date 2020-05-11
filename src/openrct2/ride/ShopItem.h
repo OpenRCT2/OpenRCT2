@@ -90,7 +90,7 @@ struct ShopItemDescriptor
     ShopItemStrings Naming;
     uint16_t Flags;
 
-    bool HasFlag(uint16_t flag) const;
+    bool HasFlag(const uint16_t flag) const;
     bool IsFood() const;
     bool IsDrink() const;
     bool IsFoodOrDrink() const;

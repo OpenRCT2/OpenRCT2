@@ -110,7 +110,7 @@ bool shop_item_has_common_price(int32_t shopItem)
     return (gSamePriceThroughoutPark & (1ULL << shopItem)) != 0;
 }
 
-bool ShopItemDescriptor::HasFlag(uint16_t flag) const
+bool ShopItemDescriptor::HasFlag(const uint16_t flag) const
 {
     return (Flags & flag) != 0;
 }
