@@ -260,7 +260,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
 {
     static void encode(IStream* stream, const _Ty (&val)[_Size])
     {
-        uint16_t len = (uint16_t)_Size;
+        uint16_t len = static_cast<uint16_t>(_Size);
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
@@ -318,7 +318,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
 {
     static void encode(IStream* stream, const std::array<_Ty, _Size>& val)
     {
-        uint16_t len = (uint16_t)_Size;
+        uint16_t len = static_cast<uint16_t>(_Size);
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
@@ -360,7 +360,7 @@ template<typename _Ty> struct DataSerializerTraits<std::vector<_Ty>>
 {
     static void encode(IStream* stream, const std::vector<_Ty>& val)
     {
-        uint16_t len = (uint16_t)val.size();
+        uint16_t len = static_cast<uint16_t>(val.size());
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 

@@ -402,8 +402,8 @@ uint8_t platform_get_locale_date_format()
     wchar_t first[sizeof(dateFormat)];
     wchar_t second[sizeof(dateFormat)];
     if (swscanf_s(
-            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, (uint32_t)std::size(first), second,
-            (uint32_t)std::size(second))
+            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, static_cast<uint32_t>(std::size(first)), second,
+            static_cast<uint32_t>(std::size(second)))
         != 2)
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
