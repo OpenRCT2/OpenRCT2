@@ -63,6 +63,48 @@ constexpr int32_t MAX_RECENT_NEWS_ITEMS = 11;
 constexpr int32_t MAX_OLD_NEWS_ITEMS = 50;
 constexpr int32_t MAX_NEWS_ITEMS = MAX_RECENT_NEWS_ITEMS + MAX_OLD_NEWS_ITEMS;
 
+struct NewsItemQueue
+{
+    NewsItem* At(int32_t index);
+    bool IsEmpty() const;
+    void Init();
+    uint16_t IncrementTicks();
+    NewsItem& Current() { return Recent[0]; }
+    const NewsItem& Current() const { return Recent[0]; }
+    NewsItem& Oldest() { return Old[0]; }
+    const NewsItem& Oldest() const { return Old[0]; }
+    bool IsCurrentOld() const;
+    void MoveCurrentToOld();
+    NewsItem* FirstOpenSlot();
+
+    template<typename Predicate> void ForeachRecentNews(Predicate&& p)
+    {
+        for (auto& newsItem : Recent)
+        {
+            if (newsItem.IsEmpty())
+                break;
+            p(newsItem);
+        }
+    }
+
+    template<typename Predicate> void ForeachOldNews(Predicate&& p)
+    {
+        for (auto& newsItem : Old)
+        {
+            if (newsItem.IsEmpty())
+                break;
+            p(newsItem);
+        }
+    }
+
+private:
+    int32_t RemoveTime() const;
+    void AppendToOld(NewsItem& item);
+
+    NewsItem Recent[MAX_RECENT_NEWS_ITEMS];
+    NewsItem Old[MAX_OLD_NEWS_ITEMS];
+};
+
 extern const uint8_t news_type_properties[10];
 
 void news_item_init_queue();
