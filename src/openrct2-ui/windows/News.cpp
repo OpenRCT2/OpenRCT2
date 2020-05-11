@@ -238,7 +238,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
 
     if (buttonIndex != 0)
     {
-        w->news.var_480 = i - 11;
+        w->news.var_480 = i - MAX_RECENT_NEWS_ITEMS;
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
         w->Invalidate();
@@ -301,7 +301,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             press = 0;
             if (w->news.var_480 != -1)
             {
-                const uint8_t idx = 11 + w->news.var_480;
+                const uint8_t idx = MAX_RECENT_NEWS_ITEMS + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
@@ -378,7 +378,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             press = 0;
             if (w->news.var_480 != -1)
             {
-                const uint8_t idx = 11 + w->news.var_480;
+                const uint8_t idx = MAX_RECENT_NEWS_ITEMS + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 2)
                     press = 0x20;
