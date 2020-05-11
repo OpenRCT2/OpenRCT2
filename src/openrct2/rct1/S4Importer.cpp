@@ -1431,17 +1431,17 @@ private:
 
         dst->TshirtColour = RCT1::GetColour(src->tshirt_colour);
         dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
-        dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
-        dst->hat_colour = RCT1::GetColour(src->hat_colour);
+        dst->UmbrellaColour = RCT1::GetColour(src->umbrella_colour);
+        dst->HatColour = RCT1::GetColour(src->hat_colour);
 
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->balloon_colour = COLOUR_LIGHT_BLUE;
+            dst->BalloonColour = COLOUR_LIGHT_BLUE;
         }
         else
         {
-            dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
+            dst->BalloonColour = RCT1::GetColour(src->balloon_colour);
         }
 
         dst->DestinationX = src->destination_x;
@@ -1473,7 +1473,7 @@ private:
         dst->CurrentCar = src->current_car;
         dst->CurrentSeat = src->current_seat;
         dst->TimeOnRide = src->time_on_ride;
-        dst->days_in_queue = src->days_in_queue;
+        dst->DaysInQueue = src->days_in_queue;
 
         dst->InteractionRideIndex = src->interaction_ride_index;
 
@@ -1498,9 +1498,9 @@ private:
         dst->VoucherArguments = src->voucher_arguments;
         dst->VoucherType = src->voucher_type;
 
-        dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
-        dst->angriness = src->angriness;
-        dst->time_lost = src->time_lost;
+        dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
+        dst->Angriness = src->angriness;
+        dst->TimeLost = src->time_lost;
 
         for (size_t i = 0; i < 32; i++)
         {
@@ -1543,16 +1543,16 @@ private:
         // Set it to N/A if the save comes from the original or AA.
         if (_gameVersion == FILE_VERSION_RCT1_LL)
         {
-            dst->favourite_ride = src->favourite_ride;
-            dst->favourite_ride_rating = src->favourite_ride_rating;
+            dst->FavouriteRide = src->favourite_ride;
+            dst->FavouriteRideRating = src->favourite_ride_rating;
         }
         else
         {
-            dst->favourite_ride = RIDE_ID_NULL;
-            dst->favourite_ride_rating = 0;
+            dst->FavouriteRide = RIDE_ID_NULL;
+            dst->FavouriteRideRating = 0;
         }
 
-        dst->item_standard_flags = src->item_standard_flags;
+        dst->ItemStandardFlags = src->item_standard_flags;
 
         if (dst->Type == PEEP_TYPE_GUEST)
         {

@@ -1483,9 +1483,9 @@ void peep_update_days_in_queue()
     {
         if (peep->OutsideOfPark == 0 && peep->State == PEEP_STATE_QUEUING)
         {
-            if (peep->days_in_queue < 255)
+            if (peep->DaysInQueue < 255)
             {
-                peep->days_in_queue += 1;
+                peep->DaysInQueue += 1;
             }
         }
     }
@@ -1635,8 +1635,8 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->NoActionFrameNum = 0;
     peep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->PeepFlags = 0;
-    peep->favourite_ride = RIDE_ID_NULL;
-    peep->favourite_ride_rating = 0;
+    peep->FavouriteRide = RIDE_ID_NULL;
+    peep->FavouriteRideRating = 0;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->SpriteType].sprite_bounds;
     peep->sprite_width = spriteBounds[peep->ActionSpriteType].sprite_width;
@@ -1759,7 +1759,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->PathfindGoal.y = 0xFF;
     peep->PathfindGoal.z = 0xFF;
     peep->PathfindGoal.direction = INVALID_DIRECTION;
-    peep->item_standard_flags = 0;
+    peep->ItemStandardFlags = 0;
     peep->ItemExtraFlags = 0;
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->LitterCount = 0;
@@ -1773,9 +1773,9 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->NoOfFood = 0;
     peep->NoOfDrinks = 0;
     peep->NoOfSouvenirs = 0;
-    peep->surroundings_thought_timeout = 0;
-    peep->angriness = 0;
-    peep->time_lost = 0;
+    peep->SurroundingsThoughtTimeout = 0;
+    peep->Angriness = 0;
+    peep->TimeLost = 0;
 
     uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
     peep->TshirtColour = tshirt_colours[tshirtColour];
@@ -2173,7 +2173,7 @@ static constexpr const int32_t face_sprite_large[] = {
 static int32_t get_face_sprite_offset(Peep* peep)
 {
     // ANGRY
-    if (peep->angriness > 0)
+    if (peep->Angriness > 0)
         return PEEP_FACE_OFFSET_ANGRY;
 
     // VERY_VERY_SICK
@@ -2411,7 +2411,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             return;
         }
 
-        peep->time_lost = 0;
+        peep->TimeLost = 0;
         auto stationNum = tile_element->AsEntrance()->GetStationIndex();
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
@@ -2436,7 +2436,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         peep->CurrentRide = rideIndex;
         peep->CurrentRideStation = stationNum;
-        peep->days_in_queue = 0;
+        peep->DaysInQueue = 0;
         peep->SetState(PEEP_STATE_QUEUING);
         peep->SubState = 11;
         peep->TimeInQueue = 0;
@@ -2602,18 +2602,18 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         money16 entranceFee = park_get_entrance_fee();
         if (entranceFee != 0)
         {
-            if (peep->item_standard_flags & PEEP_ITEM_VOUCHER)
+            if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
             {
                 if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
-                    peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+                    peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
-                    peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+                    peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
@@ -2840,7 +2840,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
         else
         {
             // Peep is not queuing.
-            peep->time_lost = 0;
+            peep->TimeLost = 0;
             auto stationNum = tile_element->AsPath()->GetStationIndex();
 
             if ((tile_element->AsPath()->HasQueueBanner())
@@ -2866,7 +2866,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->CurrentRide = rideIndex;
                     peep->CurrentRideStation = stationNum;
                     peep->State = PEEP_STATE_QUEUING;
-                    peep->days_in_queue = 0;
+                    peep->DaysInQueue = 0;
                     peep_window_state_update(peep);
 
                     peep->SubState = 10;
@@ -2930,7 +2930,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         return true;
     }
 
-    peep->time_lost = 0;
+    peep->TimeLost = 0;
 
     if (ride->status != RIDE_STATUS_OPEN)
     {
@@ -2952,7 +2952,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
-        peep->time_lost = 0;
+        peep->TimeLost = 0;
         if (!guest->ShouldGoOnRide(ride, 0, false, false))
         {
             peep_return_to_centre_of_tile(peep);
@@ -3393,13 +3393,13 @@ void decrement_guests_heading_for_park()
 
 static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 {
-    if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
+    if (peep->ItemStandardFlags & PEEP_ITEM_BALLOON)
     {
-        peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
+        peep->ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
 
         if (peep->SpriteType == PEEP_SPRITE_TYPE_BALLOON && peep->x != LOCATION_NULL)
         {
-            create_balloon(peep->x, peep->y, spawn_height, peep->balloon_colour, false);
+            create_balloon(peep->x, peep->y, spawn_height, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             peep->UpdateSpriteType();
         }
