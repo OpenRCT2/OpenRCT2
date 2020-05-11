@@ -1493,7 +1493,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         return false;
     }
 
-    if (shop_item_is_food_or_drink(shopItem))
+    if (ShopItems[shopItem].IsFoodOrDrink())
     {
         int32_t food = -1;
         if ((food = HasFoodStandardFlag()) != 0)
@@ -1523,13 +1523,13 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-    if (shop_item_is_food(shopItem) && (hunger > 75))
+    if (ShopItems[shopItem].IsFood() && (hunger > 75))
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
-    if (shop_item_is_drink(shopItem) && (thirst > 75))
+    if (ShopItems[shopItem].IsDrink() && (thirst > 75))
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
         return false;
@@ -1538,7 +1538,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
     if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
         goto loc_69B119;
 
-    if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !hasVoucher)
+    if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > happiness)
             return false;
@@ -1695,25 +1695,25 @@ loc_69B221:
         }
     }
 
-    if (shop_item_is_food(shopItem))
+    if (ShopItems[shopItem].IsFood())
         no_of_food++;
 
-    if (shop_item_is_drink(shopItem))
+    if (ShopItems[shopItem].IsDrink())
         no_of_drinks++;
 
-    if (shop_item_is_souvenir(shopItem))
+    if (ShopItems[shopItem].IsSouvenir())
         no_of_souvenirs++;
 
     money16* expend_type = &paid_on_souvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
-    if (shop_item_is_food(shopItem))
+    if (ShopItems[shopItem].IsFood())
     {
         expend_type = &paid_on_food;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (shop_item_is_drink(shopItem))
+    if (ShopItems[shopItem].IsDrink())
     {
         expend_type = &paid_on_drink;
         expenditure = ExpenditureType::FoodDrinkStock;
@@ -3417,22 +3417,22 @@ void Guest::UpdateBuying()
             {
                 return;
             }
-            if (ride_type->shop_item_secondary != SHOP_ITEM_NONE)
+            if (ride_type->shop_item[1] != SHOP_ITEM_NONE)
             {
-                money16 price = ride->price_secondary;
+                money16 price = ride->price[1];
 
-                item_bought = DecideAndBuyItem(ride, ride_type->shop_item_secondary, price);
+                item_bought = DecideAndBuyItem(ride, ride_type->shop_item[1], price);
                 if (item_bought)
                 {
                     ride->no_secondary_items_sold++;
                 }
             }
 
-            if (!item_bought && ride_type->shop_item != SHOP_ITEM_NONE)
+            if (!item_bought && ride_type->shop_item[0] != SHOP_ITEM_NONE)
             {
-                money16 price = ride->price;
+                money16 price = ride->price[0];
 
-                item_bought = DecideAndBuyItem(ride, ride_type->shop_item, price);
+                item_bought = DecideAndBuyItem(ride, ride_type->shop_item[0], price);
                 if (item_bought)
                 {
                     ride->no_primary_items_sold++;
@@ -4398,7 +4398,7 @@ void Guest::UpdateRideInExit()
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
         uint8_t secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
-        if (DecideAndBuyItem(ride, secondaryItem, ride->price_secondary))
+        if (DecideAndBuyItem(ride, secondaryItem, ride->price[1]))
         {
             ride->no_secondary_items_sold++;
         }

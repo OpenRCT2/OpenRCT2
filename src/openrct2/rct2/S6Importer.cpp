@@ -657,7 +657,7 @@ public:
             dst->num_customers[i] = src->num_customers[i];
         }
 
-        dst->price = src->price;
+        dst->price[0] = src->price;
 
         for (uint8_t i = 0; i < 2; i++)
         {
@@ -708,7 +708,7 @@ public:
         dst->broken_car = src->broken_car;
         dst->breakdown_reason = src->breakdown_reason;
 
-        dst->price_secondary = src->price_secondary;
+        dst->price[1] = src->price_secondary;
 
         dst->reliability = src->reliability;
         dst->unreliability_factor = src->unreliability_factor;

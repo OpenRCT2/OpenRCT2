@@ -201,32 +201,37 @@ public:
         ride->num_customers_timeout = 0;
         ride->chairlift_bullwheel_rotation = 0;
 
-        ride->price = 0;
-        ride->price_secondary = 0;
+        for (auto& price : ride->price)
+        {
+            price = 0;
+        }
+
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            ride->price = RideData4[ride->type].price;
-            ride->price_secondary = RideData4[ride->type].price_secondary;
+            for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
+            {
+                ride->price[i] = RideData4[ride->type].price[i];
+            }
 
-            if (rideEntry->shop_item == SHOP_ITEM_NONE)
+            if (rideEntry->shop_item[0] == SHOP_ITEM_NONE)
             {
                 if (!park_ride_prices_unlocked())
                 {
-                    ride->price = 0;
+                    ride->price[0] = 0;
                 }
             }
             else
             {
-                ride->price = ShopItems[rideEntry->shop_item].DefaultPrice;
+                ride->price[0] = ShopItems[rideEntry->shop_item[0]].DefaultPrice;
             }
-            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
+            if (rideEntry->shop_item[1] != SHOP_ITEM_NONE)
             {
-                ride->price_secondary = ShopItems[rideEntry->shop_item_secondary].DefaultPrice;
+                ride->price[1] = ShopItems[rideEntry->shop_item[1]].DefaultPrice;
             }
 
             if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
             {
-                ride->price = 0;
+                ride->price[0] = 0;
             }
 
             if (ride->type == RIDE_TYPE_TOILETS)
@@ -236,31 +241,22 @@ public:
                     money32 price = ride_get_common_price(ride);
                     if (price != MONEY32_UNDEFINED)
                     {
-                        ride->price = static_cast<money16>(price);
+                        ride->price[0] = static_cast<money16>(price);
                     }
                 }
             }
 
-            if (rideEntry->shop_item != SHOP_ITEM_NONE)
+            for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
             {
-                if (shop_item_has_common_price(rideEntry->shop_item))
+                if (rideEntry->shop_item[i] != SHOP_ITEM_NONE)
                 {
-                    money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
-                    if (price != MONEY32_UNDEFINED)
+                    if (shop_item_has_common_price(rideEntry->shop_item[i]))
                     {
-                        ride->price = static_cast<money16>(price);
-                    }
-                }
-            }
-
-            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
-            {
-                if (shop_item_has_common_price(rideEntry->shop_item_secondary))
-                {
-                    money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
-                    if (price != MONEY32_UNDEFINED)
-                    {
-                        ride->price_secondary = static_cast<money16>(price);
+                        money32 price = shop_item_get_common_price(ride, rideEntry->shop_item[i]);
+                        if (price != MONEY32_UNDEFINED)
+                        {
+                            ride->price[i] = static_cast<money16>(price);
+                        }
                     }
                 }
             }
@@ -271,7 +267,7 @@ public:
                 money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
                 if (price != MONEY32_UNDEFINED)
                 {
-                    ride->price_secondary = static_cast<money16>(price);
+                    ride->price[1] = static_cast<money16>(price);
                 }
             }
         }

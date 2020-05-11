@@ -52,6 +52,8 @@ constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
 constexpr const ObjectEntryIndex RIDE_ENTRY_INDEX_NULL = OBJECT_ENTRY_INDEX_NULL;
 
+constexpr const uint8_t NUM_SHOP_ITEMS_PER_RIDE = 2;
+
 #pragma pack(push, 1)
 struct TrackColour
 {
@@ -122,8 +124,7 @@ struct rct_ride_entry
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
     uint8_t max_height;
-    uint8_t shop_item;
-    uint8_t shop_item_secondary;
+    uint8_t shop_item[NUM_SHOP_ITEMS_PER_RIDE];
     rct_string_id capacity;
     void* obj;
 
@@ -271,7 +272,7 @@ struct Ride
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
-    money16 price;
+    money16 price[NUM_SHOP_ITEMS_PER_RIDE];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
@@ -316,7 +317,6 @@ struct Ride
     uint8_t broken_vehicle;
     uint8_t broken_car;
     uint8_t breakdown_reason;
-    money16 price_secondary;
     union
     {
         struct
