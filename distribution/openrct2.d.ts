@@ -773,6 +773,16 @@ declare global {
          * The date in months when the ride was built.
          */
         buildDate: number;
+
+        /**
+         * The running cost of the ride billed every fortnight. Multiply this by 16 to get the cost per hour (~ 1 year).
+         */
+        runningCost: number;
+
+        /**
+         * How often the ride should be inspected by a mechanic.
+         */
+        inspectionInterval: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";

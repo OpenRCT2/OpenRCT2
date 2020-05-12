@@ -561,6 +561,36 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        int16_t runningCost_get() const
+        {
+            auto ride = GetRide();
+            return ride != nullptr ? ride->upkeep_cost : 0;
+        }
+        void runningCost_set(int16_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->upkeep_cost = value;
+            }
+        }
+
+        uint8_t inspectionInterval_get() const
+        {
+            auto ride = GetRide();
+            return ride != nullptr ? ride->inspection_interval : 0;
+        }
+        void inspectionInterval_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->inspection_interval = std::clamp<uint8_t>(value, RIDE_INSPECTION_EVERY_10_MINUTES, RIDE_INSPECTION_NEVER);
+            }
+        }
+
         Ride* GetRide() const
         {
             return get_ride(_rideId);
@@ -593,6 +623,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::nausea_get, &ScRide::nausea_set, "nausea");
             dukglue_register_property(ctx, &ScRide::totalCustomers_get, &ScRide::totalCustomers_set, "totalCustomers");
             dukglue_register_property(ctx, &ScRide::buildDate_get, &ScRide::buildDate_set, "buildDate");
+            dukglue_register_property(ctx, &ScRide::runningCost_get, &ScRide::runningCost_set, "runningCost");
+            dukglue_register_property(
+                ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
         }
     };
 } // namespace OpenRCT2::Scripting
