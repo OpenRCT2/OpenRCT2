@@ -355,6 +355,61 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScDropdownWidget : public ScWidget
+    {
+    public:
+        ScDropdownWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScDropdownWidget>(ctx);
+            dukglue_register_property(ctx, &ScDropdownWidget::items_get, &ScDropdownWidget::items_set, "items");
+            dukglue_register_property(
+                ctx, &ScDropdownWidget::selectedIndex_get, &ScDropdownWidget::selectedIndex_set, "selectedIndex");
+        }
+
+    private:
+        int32_t selectedIndex_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return GetWidgetSelectedIndex(w, _widgetIndex);
+            }
+            return -1;
+        }
+        void selectedIndex_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                UpdateWidgetSelectedIndex(w, _widgetIndex, value);
+            }
+        }
+
+        std::vector<std::string> items_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return GetWidgetItems(w, _widgetIndex);
+            }
+            return {};
+        }
+
+        void items_set(const std::vector<std::string>& value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                UpdateWidgetItems(w, _widgetIndex, value);
+            }
+        }
+    };
+
     class ScListViewWidget : public ScWidget
     {
     public:
@@ -555,6 +610,8 @@ namespace OpenRCT2::Scripting
         {
             case WWT_CHECKBOX:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
+            case WWT_DROPDOWN:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
             case WWT_SCROLL:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
             default:
