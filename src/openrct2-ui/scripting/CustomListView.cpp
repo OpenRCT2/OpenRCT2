@@ -317,7 +317,10 @@ void CustomListView::SortItems(int32_t column, ColumnSortOrder order)
 
     CurrentSortOrder = order;
     CurrentSortColumn = column;
-    Columns[column].SortOrder = order;
+    if (column >= 0 && static_cast<size_t>(column) < Columns.size())
+    {
+        Columns[column].SortOrder = order;
+    }
 }
 
 void CustomListView::Resize(const ScreenSize& size)
