@@ -44,7 +44,7 @@ STR_0039    :Óriáskerék
 STR_0040    :Mozgásszimulátor
 STR_0041    :3D mozi
 STR_0042    :Top Spin
-STR_0043    :Űrgyűrűk 
+STR_0043    :Űrgyűrűk
 STR_0044    :Fordított szabadeséses hullámvasút
 STR_0045    :Lift
 STR_0046    :Függőleges esésű hullámvasút
@@ -2335,6 +2335,10 @@ STR_3252    :A maximum kölcsön összege nem növelhető tovább!
 STR_3253    :A maximum kölcsön összege nem csökkenthető tovább!
 STR_3254    :A kamatláb nem növelhető tovább!
 STR_3255    :A kamatláb nem csökkenthető tovább!
+STR_3256    :A vendégek a kevésbé intenzív játékokat részesítik előnyben
+STR_3257    :{SMALLFONT}{BLACK}Válaszd ki, hogy a vendégek általában csak a kevésbé intenzív játékokat részesítsék előnyben
+STR_3258    :A vendégek az intenzívebb játékokat részesítik előnyben
+STR_3259    :{SMALLFONT}{BLACK}Válaszd ki, hogy a vendégek általában csak a intenzívebb játékokat részesítsék előnyben
 STR_3260    :{WINDOW_COLOUR_2}Készpénz/vendég (átlagosan):
 STR_3261    :{WINDOW_COLOUR_2}Vendégek kezdeti boldogsága:
 STR_3262    :{WINDOW_COLOUR_2}Vendégek kezdeti éhsége:
@@ -2344,6 +2348,14 @@ STR_3265    :Nem csökkenthető jobban!
 STR_3266    :{SMALLFONT}{BLACK}Válaszd ki a park belépőjének és játékainak fizetési módját
 STR_3267    :Fák eltávolításának tiltása
 STR_3268    :{SMALLFONT}{BLACK}A magas fák eltávolításának tiltása
+STR_3269    :Tájváltoztatás tiltása
+STR_3270    :{SMALLFONT}{BLACK}Minden tájváltoztatás tiltott
+STR_3271    :Magas építkezés tiltása
+STR_3272    :{SMALLFONT}{BLACK}Minden magas építkezés tiltása
+STR_3273    :A park értékelését nehezebb növelni és megtartani
+STR_3274    :{SMALLFONT}{BLACK}A park értékelése jelentsen nagyobb kihívást
+STR_3275    :A vendégeket nehezebb bevonzani
+STR_3276    :{SMALLFONT}{BLACK}Legyen nehezebb bevonzani a vendégeket a parkba
 STR_3277    :{WINDOW_COLOUR_2}Földvásárlás költsége:
 STR_3278    :{WINDOW_COLOUR_2}Építési jogok vásárlási költsége:
 STR_3279    :Ingyenes parkbelépő / Fizetős játékok
@@ -2397,8 +2409,8 @@ STR_3329    :Még nem épült parkbejárat
 STR_3330    :A parknak birtokolnia kell némi földet
 STR_3331    :A park bejáratától a térkép széléig vezető út nem teljes, vagy túl bonyolult - Az út egyszeres szélességű kell, hogy legyen, a lehető legkevesebb elágazással és kanyarral
 STR_3332    :A parkbejárat rossz irányba néz, vagy nem vezet tőle út a térkép széléig
-STR_3333    :Plug-in objektumok exportálása a mentett játékokkal
-STR_3334    :{SMALLFONT}{BLACK} Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott plug-in objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
+STR_3333    :Egyedi objektumok exportálása a mentett játékokkal
+STR_3334    :{SMALLFONT}{BLACK} Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott egyedi objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
 STR_3335    :Játéktervező - Válaszd ki a játék típusát és a járműveket
 STR_3336    :Játékterv-kezelő - Válaszd ki a játék típusát
 STR_3338    :{BLACK}Egyedi tervezés
@@ -2884,7 +2896,7 @@ STR_5551    :év/nap/hónap
 STR_5552    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Játék megállítása, ha a Steam Átfedés nyitva van
 STR_5554    :{SMALLFONT}{BLACK}A hegy-eszköz bekapcsolása
-STR_5555    :Más pályatípusok járműveinek megjelenítése
+STR_5555    :Más pályatípusok járműveinek mutatása
 STR_5556    :{SMALLFONT}{BLACK}Játékos kirúgása
 STR_5557    :Kapcsolat fenntartása hiba esetén (többjátékos mód)
 STR_5558    :A beállítás érvénybe lépéséhez újraindítás szükséges
@@ -3164,7 +3176,10 @@ STR_5892    :{SMALLFONT}{BLACK}Vissza az alapértelmezett mappába
 STR_5893    :Árfolyam
 STR_5894    :Írd be az árfolyamot
 STR_5895    :Terv mentése
+STR_5896    :Pálya mentése sikertelen!
 STR_5900    :Eredeti rajzolókód használata
+STR_5901    :Szegmensek magasságának mutatása
+STR_5902    :Határolókeretek mutatása
 STR_5904    :Dátum visszaállítása
 STR_5905    :{SMALLFONT}{BLACK}Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
@@ -3236,8 +3251,8 @@ STR_5973    :Következőhöz erősítés
 STR_5974    :{SMALLFONT}{BLACK}Megváltoztatja az alap- és a felszín feletti magasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
 STR_5975    :Elhajlás:
 STR_5976    :Egyenes
-STR_5977    :Jobbra fel
-STR_5978    :Balra fel
+STR_5977    :Jobbról felfelé
+STR_5978    :Balról felfelé
 STR_5979    :{WINDOW_COLOUR_2}Fal típusa: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Hirdetőtábla szövege: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Nem hirdetőtábla
@@ -3296,7 +3311,7 @@ STR_6033    :Az RCT1 telepítési útvonala:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Kérlek válaszd ki az RCT1 mappádat
 STR_6036    :{SMALLFONT}{BLACK}Törlés
-STR_6037    :Kérlek válassz egy érvényes RCT1 mappát
+STR_6037    :A kiválasztott könyvtár nem tartalmaz érvényes RollerCoaster Tycoon 1 telepítést.
 STR_6038    :{SMALLFONT}{BLACK}Ha az RCT1 telepítve van, itt add meg a mappája helyét, hogy betölthesd a pályákat, zenét stb.
 STR_6039    :{SMALLFONT}{BLACK}Játék/épület gyors lerombolása
 STR_6040    :Pályabeállítások módosítása
@@ -3371,6 +3386,7 @@ STR_6108    :Acél csavaró
 STR_6109    :Hiper-csavaró
 STR_6110    :Kezdő hullámvasút
 STR_6111    :Klasszikus mini hullámvasút
+STR_6118    :Egy szelíd hullámvasút azok számára, akikben még nincs meg a bátorság, ahhoz, hogy szembenézzenek a nagyobbakkal
 STR_6119    :Ez a hullámvasút olcsó és könnyen építhető, de csak korlátozott magasságig
 STR_6120    :{BABYBLUE}Új jármű érhető el {STRINGID} számára:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Kiterjeszti a park által birtokolt területet egészen a térkép széléig
@@ -3453,6 +3469,7 @@ STR_6199    :Dátum beállítása
 STR_6200    :Dátum visszaállítása
 STR_6201    :{MONTH}
 STR_6202    :Virtuális padló stílusa:
+STR_6203    :{SMALLFONT}{BLACK}Ha be van kapcsolva, egy virtuális padló lesz megjelenítve a Ctrl vagy a Shift lenyomásával, hogy megkönnyítse az elemek vertikális elhelyezését.
 STR_6204    :Tégla
 STR_6205    :Vas
 STR_6206    :Szürke díszvakolat
@@ -3616,6 +3633,12 @@ STR_6363    :A szöveg a vágólapra másolva
 STR_6364    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_6365    :Játékok áldozatai
 STR_6366    :Beragadt vagy elakadt járművek
+STR_6367    :{WINDOW_COLOUR_2}Animációs képkocka:
+STR_6368    :Kompatibilitási okok miatt nem javasolt az OpenRCT2 Wine-al történő futtatása. Az OpenRCT2 natív macOS, Linux, FreeBSD és OpenBSD támogatással rendelkezik.
+STR_6369    :Pályaépítés érvénytelen magasságokban
+STR_6370    :{SMALLFONT}{BLACK}Lehetővé teszi, hogy bármely köztes magasságban lehessen pályarészeket elhelyezni
+STR_6371    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de a „csg1i.dat” fájl hiányzik. Ezt a fájlt át kell másolni a RollerCoaster Tycoon 1 CD-ről a merevlemezedre telepített RollerCoaster Tycoon 1 „Data” mappájába.
+STR_6372    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de ez a verzió nem megfelelő. Az OpenRCT2-nek egy Loopy Landscapes, vagy RCT Deluxe telepítésre van szüksége a RollerCoaster Tycoon 1 fájljainak használatához.
 
 #############
 # Scenarios #

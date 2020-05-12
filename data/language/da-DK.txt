@@ -2440,8 +2440,8 @@ STR_3329    :Park indgang endnu ikke bygget
 STR_3330    :Parken skal eje noget land
 STR_3331    :Stien fra park indgang til kanten af kortet er enten ikke komplet eller for kompleks - Stien skal være et felt bred, med så få samlinger og sving som muligt
 STR_3332    :Park indgang vender forkert, eller har ikke nogen stiforbindelse til kanten af kortet
-STR_3333    :Eksporter plug-in objekter med gemte spil
-STR_3334    :{SMALLFONT}{BLACK}Vælg om ekstra plug-in objektdata kræves (add-in data der ikke følger med hovedspillet) i gemte spil eller scenarie filer, og tillader dem blive indlæst af en person, der ikke har de ekstra objektdata
+STR_3333    :Eksporter brugerdefinerede objekter med gemte spil
+STR_3334    :{SMALLFONT}{BLACK}Vælg om brugerdefinerede objektdata kræves (add-in data der ikke følger med hovedspillet) i gemte spil eller scenarie filer, og tillader dem blive indlæst af en person, der ikke har de ekstra objektdata
 STR_3335    :Banedesigner - Vælg forlystelsestyper & vogne
 STR_3336    :Banedesign Manager - Vælg forlystelsestyper
 STR_3338    :{BLACK}Specialdesignet layout
@@ -3377,7 +3377,7 @@ STR_6033    :Sti til RCT1 installation:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vælg venligst din RCT1 filmappe
 STR_6036    :{SMALLFONT}{BLACK}Ryd
-STR_6037    :Vælg venligst en gyldigt RCT1 filmappe
+STR_6037    :Den valgte folder indeholder ikke en gyldig, RollerCoaster Tycoon 1 installation.
 STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
 STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
 STR_6040    :Edit Scenario Options
@@ -3708,6 +3708,11 @@ STR_6364    :{RED}{COMMA16} person døde i forlystelsen {STRINGID}
 STR_6365    :Forlystelse tilskadekommende
 STR_6366    :Fastlåste eller blokerede køretøjer
 STR_6367    :{WINDOW_COLOUR_2}Animations billede:
+STR_6368    :Af kompatibilitetshensyn anbefales det ikke at køre OpenRCT2 med Wine. OpenRCT2 har indbygget understøttelse af macOS, Linux, FreeBSD og OpenBSD.
+STR_6369    :Tillad bygning af spor i ugyldige højder
+STR_6370    :{SMALLFONT}{BLACK}Gør det muligt at placere sporstykker i ethvert højdeniveauiveau
+STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men filen “csg1i.dat” mangler. Det er nødvendigt at kopiere denne fil fra RollerCoaster Tycoon 1 CD'en, til “Data” folderen under RollerCoaster Tycoon 1 installationen på din harddisk.
+STR_6372    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men denne version er ikke korrekt. OpenRCT2 har brug for, Loopy Landscapes eller RCT Deluxe installationen for at kunne bruge RollerCoaster Tycoon 1 aktiver.
 
 #############
 # Scenarios #
