@@ -80,7 +80,7 @@ public:
 
         if (_status >= RIDE_STATUS_COUNT)
         {
-            log_warning("Invalid ride status", uint32_t(_rideIndex));
+            log_warning("Invalid ride status %u for ride %u", uint32_t(_status), uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
             res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
             res->ErrorMessage = STR_NONE;
