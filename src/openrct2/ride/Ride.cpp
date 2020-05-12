@@ -248,6 +248,37 @@ int32_t ride_get_count()
     return static_cast<int32_t>(GetRideManager().size());
 }
 
+size_t Ride::GetNumPrices() const
+{
+    size_t result = 0;
+    if (type == RIDE_TYPE_CASH_MACHINE || type == RIDE_TYPE_FIRST_AID)
+    {
+        result = 0;
+    }
+    else if (type == RIDE_TYPE_TOILETS)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = 1;
+
+        auto rideEntry = GetRideEntry();
+        if (rideEntry != nullptr)
+        {
+            if (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+            {
+                result++;
+            }
+            else if (rideEntry->shop_item[1] != SHOP_ITEM_NONE)
+            {
+                result++;
+            }
+        }
+    }
+    return result;
+}
+
 int32_t Ride::GetAge() const
 {
     return static_cast<int32_t>(gDateMonthsElapsed) - build_date;

@@ -411,6 +411,7 @@ public:
 
     rct_ride_entry* GetRideEntry() const;
 
+    size_t GetNumPrices() const;
     int32_t GetAge() const;
     int32_t GetTotalQueueLength() const;
     int32_t GetMaxQueueTime() const;

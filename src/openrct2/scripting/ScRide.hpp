@@ -457,35 +457,32 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        int32_t price_get() const
+        std::vector<int32_t> price_get() const
         {
-            auto ride = GetRide();
-            return ride != nullptr ? ride->price : 0;
-        }
-
-        void price_set(int32_t value)
-        {
-            ThrowIfGameStateNotMutable();
+            std::vector<int32_t> result;
             auto ride = GetRide();
             if (ride != nullptr)
             {
-                ride->price = static_cast<money16>(value);
+                auto numPrices = ride->GetNumPrices();
+                for (size_t i = 0; i < numPrices; i++)
+                {
+                    result.push_back(ride->price[i]);
+                };
             }
+            return result;
         }
 
-        int32_t priceSecondary_get() const
-        {
-            auto ride = GetRide();
-            return ride != nullptr ? ride->price_secondary : 0;
-        }
-
-        void priceSecondary_set(int32_t value)
+        void price_set(const std::vector<int32_t>& value)
         {
             ThrowIfGameStateNotMutable();
             auto ride = GetRide();
             if (ride != nullptr)
             {
-                ride->price_secondary = static_cast<money16>(value);
+                auto numPrices = std::min(value.size(), ride->GetNumPrices());
+                for (size_t i = 0; i < numPrices; i++)
+                {
+                    ride->price[i] = static_cast<money16>(value[i]);
+                }
             }
         }
 
@@ -591,7 +588,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::music_get, &ScRide::music_set, "music");
             dukglue_register_property(ctx, &ScRide::stations_get, nullptr, "stations");
             dukglue_register_property(ctx, &ScRide::price_get, &ScRide::price_set, "price");
-            dukglue_register_property(ctx, &ScRide::priceSecondary_get, &ScRide::priceSecondary_set, "priceSecondary");
             dukglue_register_property(ctx, &ScRide::excitement_get, &ScRide::excitement_set, "excitement");
             dukglue_register_property(ctx, &ScRide::intensity_get, &ScRide::intensity_set, "intensity");
             dukglue_register_property(ctx, &ScRide::nausea_get, &ScRide::nausea_set, "nausea");

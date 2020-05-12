@@ -742,14 +742,9 @@ declare global {
         readonly stations: RideStation[];
 
         /**
-         * The admission price for the ride or the cost of the primary item of the stall.
+         * The admission price for the ride and the price of the on-ride photo, or the cost of each item of the stall.
          */
-        price: number;
-
-        /**
-         * The price of the on-ride photo or the cost of the secondary item of the stall.
-         */
-        priceSecondary: number;
+        price: number[];
 
         /**
          * The excitement metric of the ride represented as a 2 decimal point fixed integer.
