@@ -232,6 +232,7 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
             }
         }
         window_init_scroll_widgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -247,7 +248,10 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     LastKnownSize = {};
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
+    {
         window_init_scroll_widgets(ParentWindow);
+        Invalidate();
+    }
 }
 
 const std::vector<ListViewItem>& CustomListView::CustomListView::GetItems() const
@@ -261,7 +265,10 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
     Items = items;
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
+    {
         window_update_scroll_widgets(ParentWindow);
+        Invalidate();
+    }
 }
 
 void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialising)
@@ -269,7 +276,10 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     Items = items;
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
+    {
         window_init_scroll_widgets(ParentWindow);
+        Invalidate();
+    }
 }
 
 bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
@@ -321,6 +331,7 @@ void CustomListView::SortItems(int32_t column, ColumnSortOrder order)
     {
         Columns[column].SortOrder = order;
     }
+    Invalidate();
 }
 
 void CustomListView::Resize(const ScreenSize& size)
@@ -379,6 +390,7 @@ void CustomListView::Resize(const ScreenSize& size)
     }
 
     window_init_scroll_widgets(ParentWindow);
+    Invalidate();
 }
 
 ScreenSize CustomListView::GetSize()
@@ -423,6 +435,7 @@ void CustomListView::MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.ExecutePluginCall(Owner, OnHighlight, { dukRow, dukColumn }, false);
             }
+            Invalidate();
         }
     }
 
@@ -432,6 +445,7 @@ void CustomListView::MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
         if (hitResult && hitResult->Row == HEADER_ROW)
         {
             ColumnHeaderPressedCurrentState = (hitResult->Column == ColumnHeaderPressed);
+            Invalidate();
         }
         IsMouseDown = true;
     }
@@ -455,6 +469,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
             if (CanSelect)
             {
                 SelectedCell = hitResult;
+                Invalidate();
             }
 
             auto ctx = OnClick.context();
@@ -472,6 +487,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
         {
             ColumnHeaderPressed = hitResult->Column;
             ColumnHeaderPressedCurrentState = true;
+            Invalidate();
         }
     }
     IsMouseDown = true;
@@ -488,8 +504,12 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
         }
     }
 
-    ColumnHeaderPressed = std::nullopt;
-    ColumnHeaderPressedCurrentState = false;
+    if (!ColumnHeaderPressedCurrentState)
+    {
+        ColumnHeaderPressed = std::nullopt;
+        ColumnHeaderPressedCurrentState = false;
+        Invalidate();
+    }
 }
 
 void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
@@ -681,6 +701,11 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         }
     }
     return result;
+}
+
+void CustomListView::Invalidate()
+{
+    ParentWindow->Invalidate();
 }
 
 #endif
