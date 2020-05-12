@@ -53,21 +53,37 @@ namespace OpenRCT2::Scripting
 
         int32_t x_get() const
         {
-            return GetWindow()->windowPos.x;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->windowPos.x;
+            }
+            return 0;
         }
         void x_set(int32_t value)
         {
             auto w = GetWindow();
-            window_set_position(w, { value, w->windowPos.y });
+            if (w != nullptr)
+            {
+                window_set_position(w, { value, w->windowPos.y });
+            }
         }
         int32_t y_get() const
         {
-            return GetWindow()->windowPos.y;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return w->windowPos.y;
+            }
+            return 0;
         }
         void y_set(int32_t value)
         {
             auto w = GetWindow();
-            window_set_position(w, { w->windowPos.x, value });
+            if (w != nullptr)
+            {
+                window_set_position(w, { w->windowPos.x, value });
+            }
         }
         int32_t width_get() const
         {
