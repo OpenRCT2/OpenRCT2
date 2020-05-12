@@ -773,6 +773,11 @@ declare global {
          * The total number of customers the ride has served since it was built.
          */
         totalCustomers: number;
+
+        /**
+         * The date in months when the ride was built.
+         */
+        buildDate: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";

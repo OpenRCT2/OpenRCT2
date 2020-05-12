@@ -549,6 +549,21 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        int16_t buildDate_get() const
+        {
+            auto ride = GetRide();
+            return ride != nullptr ? ride->build_date : 0;
+        }
+        void buildDate_set(int16_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->build_date = value;
+            }
+        }
+
         Ride* GetRide() const
         {
             return get_ride(_rideId);
@@ -581,6 +596,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::intensity_get, &ScRide::intensity_set, "intensity");
             dukglue_register_property(ctx, &ScRide::nausea_get, &ScRide::nausea_set, "nausea");
             dukglue_register_property(ctx, &ScRide::totalCustomers_get, &ScRide::totalCustomers_set, "totalCustomers");
+            dukglue_register_property(ctx, &ScRide::buildDate_get, &ScRide::buildDate_set, "buildDate");
         }
     };
 } // namespace OpenRCT2::Scripting
