@@ -173,9 +173,9 @@ void window_text_input_raw_open(
     }
     else
     {
-        w->colours[0] = call_w->colours[0];
+        w->colours[0] = call_w->colours[1];
         w->colours[1] = call_w->colours[1];
-        w->colours[2] = call_w->colours[2];
+        w->colours[2] = call_w->colours[1];
     }
 }
 
