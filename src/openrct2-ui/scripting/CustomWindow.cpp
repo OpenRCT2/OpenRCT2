@@ -163,6 +163,11 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "dropdown")
             {
+                auto dukItems = desc["items"].as_array();
+                for (const auto& dukItem : dukItems)
+                {
+                    result.Items.push_back(ProcessString(dukItem));
+                }
                 result.SelectedIndex = desc["selectedIndex"].as_int();
                 result.OnChange = desc["onChange"];
             }
