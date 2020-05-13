@@ -266,7 +266,7 @@ void window_guest_list_refresh_list()
         GuestList.push_back(spriteIndex);
     }
 
-    std::sort(GuestList.begin(), GuestList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(&a, &b) < 0; });
+    std::sort(GuestList.begin(), GuestList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
 }
 
 /**

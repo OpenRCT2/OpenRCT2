@@ -163,7 +163,7 @@ JNIEXPORT jlong JNICALL Java_io_openrct2_ZipArchive_allocBytes(JNIEnv* env, jcla
 
     env->ReleaseByteArrayElements(input, bufferPtr, 0);
 
-    return (uintptr_t)data;
+    return reinterpret_cast<uintptr_t>(data);
 }
 
 #endif // __ANDROID__

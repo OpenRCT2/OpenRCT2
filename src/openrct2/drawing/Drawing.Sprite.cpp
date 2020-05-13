@@ -103,7 +103,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
-            elements[i].offset = (uint8_t*)static_cast<uintptr_t>(src.offset);
+            elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
             elements[i].x_offset = src.x_offset;
@@ -142,7 +142,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
-            elements[i].offset = (uint8_t*)static_cast<uintptr_t>(src.offset);
+            elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
             elements[i].x_offset = src.x_offset;
@@ -218,7 +218,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g1.header.num_entries; i++)
         {
-            _g1.elements[i].offset += (uintptr_t)_g1.data;
+            _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data);
         }
         return true;
     }
@@ -281,7 +281,7 @@ bool gfx_load_g2()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g2.header.num_entries; i++)
         {
-            _g2.elements[i].offset += (uintptr_t)_g2.data;
+            _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data);
         }
         return true;
     }
@@ -338,7 +338,7 @@ bool gfx_load_csg()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _csg.header.num_entries; i++)
         {
-            _csg.elements[i].offset += (uintptr_t)_csg.data;
+            _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data);
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
             if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {

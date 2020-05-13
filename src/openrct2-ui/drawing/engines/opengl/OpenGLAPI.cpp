@@ -24,7 +24,7 @@ static const char* TryLoadAllProcAddresses()
 {
 #        define OPENGL_PROC(TYPE, PROC)                                                                                        \
             {                                                                                                                  \
-                PROC = (TYPE)SDL_GL_GetProcAddress(#PROC);                                                                     \
+                PROC = reinterpret_cast<TYPE>(SDL_GL_GetProcAddress(#PROC));                                                   \
                 if (PROC == nullptr)                                                                                           \
                 {                                                                                                              \
                     return #PROC;                                                                                              \

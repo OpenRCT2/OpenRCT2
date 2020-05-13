@@ -46,9 +46,8 @@ static void fixup_pointers(paint_session* s, size_t paint_session_entries, size_
             }
             else
             {
-                s[i].PaintStructs[j].basic.next_quadrant_ps = &s[i].PaintStructs
-                                                                   [(uintptr_t)s[i].PaintStructs[j].basic.next_quadrant_ps]
-                                                                       .basic;
+                auto nextQuadrantPs = reinterpret_cast<uintptr_t>(s[i].PaintStructs[j].basic.next_quadrant_ps);
+                s[i].PaintStructs[j].basic.next_quadrant_ps = &s[i].PaintStructs[nextQuadrantPs].basic;
             }
         }
         for (size_t j = 0; j < quadrant_entries; j++)

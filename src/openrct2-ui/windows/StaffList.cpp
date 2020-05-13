@@ -200,7 +200,7 @@ void WindowStaffListRefresh()
         StaffList.push_back(spriteIndex);
     }
 
-    std::sort(StaffList.begin(), StaffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(&a, &b) < 0; });
+    std::sort(StaffList.begin(), StaffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
 }
 
 static void window_staff_list_cancel_tools(rct_window* w)

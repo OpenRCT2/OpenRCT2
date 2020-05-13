@@ -1044,7 +1044,7 @@ void peep_window_state_update(Peep* peep);
 void peep_decrement_num_riders(Peep* peep);
 
 void peep_set_map_tooltip(Peep* peep);
-int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b);
+int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_b);
 
 void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
 void peep_update_names(bool realNames);
