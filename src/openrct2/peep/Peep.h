@@ -762,7 +762,7 @@ public: // Peep
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
-    void MoveTo(int16_t destX, int16_t destY, int16_t destZ);
+    void MoveTo(const CoordsXYZ& newLocation);
     uint8_t GetNextDirection() const;
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;

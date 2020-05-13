@@ -3628,7 +3628,7 @@ void Vehicle::UpdateCollisionSetup()
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
 
-        sprite_move(train->x, train->y, train->z, train);
+        train->MoveTo({ train->x, train->y, train->z });
         invalidate_sprite_2(train);
 
         train->var_4E = 0;
@@ -4581,7 +4581,7 @@ void Vehicle::UpdateMotionBoatHire()
             _vehicleUnkF64E10++;
         }
 
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, this);
+        MoveTo(unk_F64E20);
         Invalidate();
     }
 
@@ -5352,7 +5352,7 @@ void Vehicle::CrashOnLand()
     sprite_height_negative = 45;
     sprite_height_positive = 5;
 
-    sprite_move(x, y, z, this);
+    MoveTo({ x, y, z });
     Invalidate();
 
     crash_z = 0;
@@ -5416,7 +5416,7 @@ void Vehicle::CrashOnWater()
     sprite_height_negative = 45;
     sprite_height_positive = 5;
 
-    sprite_move(x, y, z, this);
+    MoveTo({ x, y, z });
     Invalidate();
 
     crash_z = -1;
@@ -5502,7 +5502,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        sprite_move(curPosition.x, curPosition.y, curPosition.z, curVehicle);
+        curVehicle->MoveTo(curPosition);
         invalidate_sprite_2(curVehicle);
 
         if (curVehicle->sub_state == 1)
@@ -6366,7 +6366,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         if (!DodgemsCarWouldCollideAt(location, &collideSprite))
         {
             Invalidate();
-            sprite_move(location.x, location.y, location.z, this);
+            MoveTo(location);
             Invalidate();
         }
     }
@@ -6434,7 +6434,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             }
         }
 
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, this);
+        MoveTo(unk_F64E20);
         Invalidate();
     }
 
@@ -7266,7 +7266,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
         steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;
-        sprite_move(x, y, z, steam);
+        steam->MoveTo({ x, y, z });
     }
 }
 
@@ -7649,7 +7649,7 @@ void Vehicle::UpdateHandleWaterSplash() const
 void Vehicle::UpdateReverserCarBogies()
 {
     const auto moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
-    sprite_move(TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z, this);
+    MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z });
 }
 
 /**
@@ -9251,7 +9251,7 @@ loc_6DCD6B:
     goto loc_6DC99A;
 
 loc_6DCDE4:
-    sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, vehicle);
+    vehicle->MoveTo(unk_F64E20);
     vehicle->Invalidate();
 
 loc_6DCE02:
@@ -9686,7 +9686,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             }
         }
         // loc_6DBF20
-        sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, car);
+        car->MoveTo(unk_F64E20);
         invalidate_sprite_2(car);
 
     loc_6DBF3E:

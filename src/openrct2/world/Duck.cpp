@@ -105,11 +105,6 @@ void Duck::Remove()
     sprite_remove(this);
 }
 
-void Duck::MoveTo(const CoordsXYZ& destination)
-{
-    sprite_move(destination.x, destination.y, destination.z, this);
-}
-
 void Duck::UpdateFlyToWater()
 {
     if ((gCurrentTicks & 3) != 0)
@@ -344,7 +339,7 @@ void create_duck(const CoordsXY& pos)
             break;
     }
     sprite->duck.sprite_direction = direction << 3;
-    sprite_move(targetPos.x, targetPos.y, 496, &sprite->duck);
+    sprite->duck.MoveTo({ targetPos.x, targetPos.y, 496 });
     sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
     sprite->duck.frame = 0;
 }

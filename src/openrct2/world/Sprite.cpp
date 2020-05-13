@@ -489,7 +489,7 @@ static void sprite_steam_particle_update(SteamParticle* steam)
     if (steam->time_to_move >= 4)
     {
         steam->time_to_move = 1;
-        sprite_move(steam->x, steam->y, steam->z + 1, steam);
+        steam->MoveTo({ steam->x, steam->y, steam->z + 1 });
     }
     steam->frame += 64;
     if (steam->frame >= (56 * 64))
@@ -511,7 +511,7 @@ void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z + 4, sprite);
+        sprite->MoveTo({ x, y, z + 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_CLOUD;
         sprite->frame = 0;
     }
@@ -544,7 +544,7 @@ void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z + 4, sprite);
+        sprite->MoveTo({ x, y, z + 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_FLARE;
         sprite->frame = 0;
     }
@@ -682,25 +682,26 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
  * @param z (dx)
  * @param sprite (esi)
  */
-void sprite_move(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
+void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
 {
-    if (!map_is_location_valid({ x, y }))
+    auto loc = newLocation;
+    if (!map_is_location_valid(loc))
     {
-        x = LOCATION_NULL;
+        loc.x = LOCATION_NULL;
     }
 
-    SpriteSpatialMove(sprite, { x, y });
+    SpriteSpatialMove(this, loc);
 
-    if (x == LOCATION_NULL)
+    if (loc.x == LOCATION_NULL)
     {
-        sprite->sprite_left = LOCATION_NULL;
-        sprite->x = x;
-        sprite->y = y;
-        sprite->z = z;
+        sprite_left = LOCATION_NULL;
+        x = loc.x;
+        y = loc.y;
+        z = loc.z;
     }
     else
     {
-        sprite_set_coordinates(x, y, z, sprite);
+        sprite_set_coordinates(loc.x, loc.y, loc.z, this);
     }
 }
 
@@ -816,7 +817,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     litter->sprite_height_positive = 3;
     litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
     litter->type = type;
-    sprite_move(x, y, z, litter);
+    litter->MoveTo({ x, y, z });
     invalidate_sprite_0(litter);
     litter->creationTick = gScenarioTicks;
 }

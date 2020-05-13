@@ -2,6 +2,8 @@
 
 #include "../common.h"
 
+struct CoordsXYZ;
+
 struct SpriteBase
 {
     uint8_t sprite_identifier;
@@ -29,6 +31,8 @@ struct SpriteBase
     int16_t sprite_bottom;
 
     uint8_t sprite_direction;
+
+    void MoveTo(const CoordsXYZ& newLocation);
 };
 
 struct SpriteGeneric : SpriteBase
