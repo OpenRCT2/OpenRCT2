@@ -213,22 +213,23 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
 static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
     int32_t month, day;
+    auto ft = Formatter::Common();
 
     switch (widgetIndex)
     {
         case WIDX_MONEY:
-            set_format_arg(0, int32_t, gCurrentProfit);
-            set_format_arg(4, int32_t, gParkValue);
+            ft.Add<int32_t>(gCurrentProfit);
+            ft.Add<int32_t>(gParkValue);
             break;
         case WIDX_PARK_RATING:
-            set_format_arg(0, int16_t, gParkRating);
+            ft.Add<int16_t>(gParkRating);
             break;
         case WIDX_DATE:
             month = date_get_month(gDateMonthsElapsed);
             day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
-            set_format_arg(0, rct_string_id, DateDayNames[day]);
-            set_format_arg(2, rct_string_id, DateGameMonthNames[month]);
+            ft.Add<rct_string_id>(DateDayNames[day]);
+            ft.Add<rct_string_id>(DateGameMonthNames[month]);
             break;
     }
 }
@@ -424,7 +425,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         int32_t x = w->windowPos.x + (widget.left + widget.right) / 2;
         int32_t y = w->windowPos.y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6);
 
-        set_format_arg(0, money32, gCash);
+        auto ft = Formatter::Common();
+        ft.Add<money32>(gCash);
         gfx_draw_string_centred(
             dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), x, y,
             (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
@@ -514,9 +516,10 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-    set_format_arg(0, rct_string_id, DateDayNames[day]);
-    set_format_arg(2, int16_t, month);
-    set_format_arg(4, int16_t, year);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(DateDayNames[day]);
+    ft.Add<int16_t>(month);
+    ft.Add<int16_t>(year);
     gfx_draw_string_centred(
         dpi, stringId, x, y,
         (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
@@ -538,7 +541,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
         temperature = climate_celsius_to_fahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
     }
-    set_format_arg(0, int16_t, temperature);
+    ft = Formatter::Common();
+    ft.Add<int16_t>(temperature);
     gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, x, y + 6);
     x += 30;
 

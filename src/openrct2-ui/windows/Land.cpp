@@ -396,7 +396,8 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         if (price != 0)
         {
-            set_format_arg(0, money32, price);
+            auto ft = Formatter::Common();
+            ft.Add<money32>(price);
             gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
         }
     }

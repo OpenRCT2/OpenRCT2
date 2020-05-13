@@ -355,7 +355,8 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
         y += 15;
 
-        set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
     else
@@ -379,17 +380,17 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         y += 15;
 
         // Expected
-        set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
-        if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
+        auto ft = Formatter::Common();
+        if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
         {
-            uint16_t expectedDay = gResearchExpectedDay;
-            if (expectedDay != 255)
-            {
-                // TODO: Should probably use game date format setting
-                set_format_arg(0, rct_string_id, STR_RESEARCH_EXPECTED_FORMAT);
-                set_format_arg(2, rct_string_id, DateDayNames[expectedDay]);
-                set_format_arg(4, rct_string_id, DateGameMonthNames[gResearchExpectedMonth]);
-            }
+            // TODO: Should probably use game date format setting
+            ft.Add<rct_string_id>(STR_RESEARCH_EXPECTED_FORMAT);
+            ft.Add<rct_string_id>(DateDayNames[gResearchExpectedDay]);
+            ft.Add<rct_string_id>(DateGameMonthNames[gResearchExpectedMonth]);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         }
         gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }

@@ -233,7 +233,8 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 
 static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, int32_t, 100);
+    auto ft = Formatter::Common();
+    ft.Add<int32_t>(100);
 
     window_draw_widgets(w, dpi);
 
@@ -242,7 +243,8 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], screenCoords.x, screenCoords.y);
 
     int32_t baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
-    set_format_arg(0, int32_t, baseExchange);
+    ft = Formatter::Common();
+    ft.Add<int32_t>(baseExchange);
     gfx_draw_string_left(
         dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], screenCoords.x + 200, screenCoords.y);
 

@@ -419,7 +419,8 @@ static void window_text_input_invalidate(rct_window* w)
     window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
 
     // Set window title argument
-    set_format_arg(0, const char*, _title.c_str());
+    auto ft = Formatter::Common();
+    ft.Add<const char*>(_title.c_str());
 }
 
 static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursorY)

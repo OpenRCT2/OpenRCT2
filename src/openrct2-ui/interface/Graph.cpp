@@ -27,7 +27,8 @@ static void graph_draw_months_uint8_t(
         if (history[i] != 255 && yearOver32 % 4 == 0)
         {
             // Draw month text
-            set_format_arg(0, uint32_t, DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
+            auto ft = Formatter::Common();
+            ft.Add<uint32_t>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
             gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, gCommonFormatArgs);
 
             // Draw month mark

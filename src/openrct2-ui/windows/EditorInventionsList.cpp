@@ -830,6 +830,7 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
 {
     rct_string_id drawString;
     rct_string_id stringId = researchItem->GetName();
+    auto ft = Formatter::Common();
 
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
         && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
@@ -837,13 +838,13 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
         rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))
                                           .name;
-        set_format_arg(0, rct_string_id, rideGroupName);
-        set_format_arg(2, rct_string_id, stringId);
+        ft.Add<rct_string_id>(rideGroupName);
+        ft.Add<rct_string_id>(stringId);
     }
     else
     {
         drawString = STR_WINDOW_COLOUR_2_STRINGID;
-        set_format_arg(0, rct_string_id, stringId);
+        ft.Add<rct_string_id>(stringId);
     }
 
     return drawString;

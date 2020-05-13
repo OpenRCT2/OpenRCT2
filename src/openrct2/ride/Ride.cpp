@@ -2998,8 +2998,9 @@ std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride)
     }
     else
     {
-        set_format_arg(0, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
-        set_format_arg(2, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
         return { measurement.get(), STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES };
     }
 }

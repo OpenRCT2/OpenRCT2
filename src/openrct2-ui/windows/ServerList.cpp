@@ -196,7 +196,8 @@ static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetInde
                 }
                 else
                 {
-                    set_format_arg(0, void*, server.version.c_str());
+                    auto ft = Formatter::Common();
+                    ft.Add<void*>(server.version.c_str());
                     context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
                 }
             }
@@ -234,7 +235,8 @@ static void window_server_list_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 else
                 {
-                    set_format_arg(0, void*, server.version.c_str());
+                    auto ft = Formatter::Common();
+                    ft.Add<void*>(server.version.c_str());
                     context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
                 }
                 break;
@@ -374,7 +376,8 @@ static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIn
 
 static void window_server_list_invalidate(rct_window* w)
 {
-    set_format_arg(0, char*, _version.c_str());
+    auto ft = Formatter::Common();
+    ft.Add<char*>(_version.c_str());
     window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_server_list_widgets[WIDX_TITLE].right = w->width - 2;

@@ -746,8 +746,9 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
             continue;
 
         // Month heading
-        set_format_arg(0, rct_string_id, STR_FINANCES_SUMMARY_MONTH_HEADING);
-        set_format_arg(2, uint16_t, monthyear);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
+        ft.Add<uint16_t>(monthyear);
         draw_string_right_underline(
             dpi, monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs,
             COLOUR_BLACK, x + EXPENDITURE_COLUMN_WIDTH, y);
@@ -1187,6 +1188,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             continue;
 
         noCampaignsActive = 0;
+        auto ft = Formatter::Common();
 
         // Set special parameters
         switch (i)
@@ -1201,19 +1203,19 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
                 }
                 else
                 {
-                    set_format_arg(0, rct_string_id, STR_NONE);
+                    ft.Add<rct_string_id>(STR_NONE);
                 }
                 break;
             }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                set_format_arg(0, rct_string_id, ShopItems[campaign->ShopItemType].Naming.Plural);
+                ft.Add<rct_string_id>(ShopItems[campaign->ShopItemType].Naming.Plural);
                 break;
             default:
             {
                 auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                 auto parkName = park.Name.c_str();
-                set_format_arg(0, rct_string_id, STR_STRING);
-                set_format_arg(2, const char*, parkName);
+                ft.Add<rct_string_id>(STR_STRING);
+                ft.Add<const char*>(parkName);
             }
         }
 
