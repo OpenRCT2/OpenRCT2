@@ -559,19 +559,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetDesc->Type == "dropdown")
             {
-                if (dropdownIndex >= 0 && (size_t)dropdownIndex < widgetDesc->Items.size())
-                {
-                    std::vector<DukValue> args;
-                    auto ctx = widgetDesc->OnChange.context();
-                    duk_push_int(ctx, dropdownIndex);
-                    args.push_back(DukValue::take_from_stack(ctx));
-                    InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
-
-                    auto& widget = w->widgets[widgetIndex - 1];
-                    widget.string = const_cast<utf8*>(widgetDesc->Items[dropdownIndex].c_str());
-
-                    widgetDesc->SelectedIndex = dropdownIndex;
-                }
+                UpdateWidgetSelectedIndex(w, widgetIndex - 1, dropdownIndex);
             }
         }
     }
@@ -1068,6 +1056,95 @@ namespace OpenRCT2::Ui::Windows
                 widget_invalidate(w, widgetIndex);
             }
         }
+    }
+
+    void UpdateWidgetItems(rct_window* w, rct_widgetindex widgetIndex, const std::vector<std::string>& items)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->Items = items;
+                UpdateWidgetSelectedIndex(w, widgetIndex, customWidgetInfo->SelectedIndex);
+            }
+        }
+    }
+
+    void UpdateWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex, int32_t selectedIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                auto& widget = w->widgets[widgetIndex];
+
+                auto lastSelectedIndex = customWidgetInfo->SelectedIndex;
+                if (customWidgetInfo->Items.size() == 0)
+                {
+                    selectedIndex = -1;
+                }
+                else
+                {
+                    if (selectedIndex < 0 || static_cast<size_t>(selectedIndex) >= customWidgetInfo->Items.size())
+                    {
+                        selectedIndex = 0;
+                    }
+                }
+
+                if (selectedIndex == -1)
+                {
+                    widget.string = const_cast<utf8*>("");
+                }
+                else
+                {
+                    widget.string = const_cast<utf8*>(customWidgetInfo->Items[selectedIndex].c_str());
+                }
+                customWidgetInfo->SelectedIndex = selectedIndex;
+
+                widget_invalidate(w, widgetIndex);
+
+                if (lastSelectedIndex != selectedIndex)
+                {
+                    std::vector<DukValue> args;
+                    auto ctx = customWidgetInfo->OnChange.context();
+                    duk_push_int(ctx, selectedIndex);
+                    args.push_back(DukValue::take_from_stack(ctx));
+                    InvokeEventHandler(customInfo.Owner, customWidgetInfo->OnChange, args);
+                }
+            }
+        }
+    }
+
+    std::vector<std::string> GetWidgetItems(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->Items;
+            }
+        }
+        return {};
+    }
+
+    int32_t GetWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->SelectedIndex;
+            }
+        }
+        return -1;
     }
 
     rct_window* FindCustomWindowByClassification(const std::string_view& classification)
