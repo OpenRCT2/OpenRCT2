@@ -13,6 +13,7 @@
 
 #    include "../Context.h"
 #    include "../config/Config.h"
+#    include "../localisation/LocalisationService.h"
 #    include "Duktape.hpp"
 #    include "ScriptEngine.h"
 
@@ -138,6 +139,7 @@ namespace OpenRCT2::Scripting
                     DukObject obj(ctx);
                     if (ns == "general")
                     {
+                        obj.Set("general.language", gConfigGeneral.language);
                         obj.Set("general.showFps", gConfigGeneral.show_fps);
                     }
                     result = obj.Take();
@@ -160,7 +162,19 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (_isUserConfig)
             {
-                if (key == "general.showFps")
+                if (key == "general.language")
+                {
+                    auto& localisationService = GetContext()->GetLocalisationService();
+                    auto language = localisationService.GetCurrentLanguage();
+                    auto locale = "";
+                    if (language >= 0 && static_cast<size_t>(language) < std::size(LanguagesDescriptors))
+                    {
+                        locale = LanguagesDescriptors[language].locale;
+                    }
+                    duk_push_string(ctx, locale);
+                    return DukValue::take_from_stack(ctx);
+                }
+                else if (key == "general.showFps")
                 {
                     duk_push_boolean(ctx, gConfigGeneral.show_fps);
                     return DukValue::take_from_stack(ctx);
