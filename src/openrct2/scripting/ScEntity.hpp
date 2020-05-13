@@ -196,6 +196,72 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint32_t flags_get() const
+        {
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->peep_flags : 0;
+        }
+
+        void flags_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                peep->peep_flags = value;
+                peep->Invalidate();
+            }
+        }
+
+        DukValue destination_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                return ToDuk(ctx, CoordsXY(peep->destination_x, peep->destination_y));
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void destination_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                auto pos = FromDuk<CoordsXY>(value);
+                peep->destination_x = pos.x;
+                peep->destination_y = pos.y;
+                peep->Invalidate();
+            }
+        }
+
+        DukValue pathfindGoal_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                return ToDuk(ctx, CoordsXY(peep->destination_x, peep->destination_y));
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void pathfindGoal_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                auto pos = FromDuk<CoordsXY>(value);
+                peep->pathfind_goal.x = pos.x;
+                peep->pathfind_goal.y = pos.y;
+                peep->pathfind_goal.z = pos.z;
+                peep->Invalidate();
+            }
+        }
+
         uint8_t tshirtColour_get() const
         {
             auto peep = GetPeep();
@@ -448,6 +514,8 @@ namespace OpenRCT2::Scripting
         {
             dukglue_set_base_class<ScEntity, ScPeep>(ctx);
             dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
+            dukglue_register_property(ctx, &ScPeep::flags_get, &ScPeep::flags_set, "flags");
+            dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
             dukglue_register_property(ctx, &ScPeep::tshirtColour_get, &ScPeep::tshirtColour_set, "tshirtColour");
             dukglue_register_property(ctx, &ScPeep::trousersColour_get, &ScPeep::trousersColour_set, "trousersColour");
             dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");

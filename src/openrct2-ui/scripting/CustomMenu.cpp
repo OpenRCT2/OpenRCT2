@@ -51,22 +51,6 @@ namespace OpenRCT2::Scripting
         return CURSOR_UNDEFINED;
     }
 
-    template<> DukValue ToDuk(duk_context* ctx, const CoordsXY& coords)
-    {
-        DukObject dukCoords(ctx);
-        dukCoords.Set("x", coords.x);
-        dukCoords.Set("y", coords.y);
-        return dukCoords.Take();
-    }
-
-    template<> DukValue ToDuk(duk_context* ctx, const ScreenCoordsXY& coords)
-    {
-        DukObject dukCoords(ctx);
-        dukCoords.Set("x", coords.x);
-        dukCoords.Set("y", coords.y);
-        return dukCoords.Take();
-    }
-
     static void RemoveMenuItemsAndTool(std::shared_ptr<Plugin> owner)
     {
         if (ActiveCustomTool)

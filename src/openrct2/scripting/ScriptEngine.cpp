@@ -772,20 +772,6 @@ std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukV
     return result;
 }
 
-DukValue ScriptEngine::PositionToDuk(const CoordsXYZ& position)
-{
-    DukStackFrame frame(_context);
-    duk_context* ctx = _context;
-    auto obj = duk_push_object(ctx);
-    duk_push_int(ctx, position.x);
-    duk_put_prop_string(ctx, obj, "x");
-    duk_push_int(ctx, position.y);
-    duk_put_prop_string(ctx, obj, "y");
-    duk_push_int(ctx, position.z);
-    duk_put_prop_string(ctx, obj, "z");
-    return DukValue::take_from_stack(ctx);
-}
-
 constexpr static const char* ExpenditureTypes[] = {
     "ride_construction",
     "ride_runningcosts",
@@ -839,7 +825,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
     }
     if (!result->Position.isNull())
     {
-        obj.Set("position", PositionToDuk(result->Position));
+        obj.Set("position", ToDuk(_context, result->Position));
     }
 
     if (result->Expenditure != ExpenditureType::Count)

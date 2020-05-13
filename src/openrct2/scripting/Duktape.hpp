@@ -11,6 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../world/Map.h"
+
 #    include <cstdio>
 #    include <dukglue/dukglue.h>
 #    include <duktape.h>
@@ -230,6 +232,39 @@ namespace OpenRCT2::Scripting
     template<typename T> DukValue ToDuk(duk_context* ctx, const std::optional<T>& value)
     {
         return value ? ToDuk(ctx, *value) : ToDuk(ctx, nullptr);
+    }
+
+    template<> CoordsXY inline FromDuk(const DukValue& d)
+    {
+        CoordsXY result;
+        result.x = AsOrDefault(d["x"], 0);
+        result.y = AsOrDefault(d["y"], 0);
+        return result;
+    }
+
+    template<> DukValue inline ToDuk(duk_context* ctx, const CoordsXY& coords)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", coords.x);
+        dukCoords.Set("y", coords.y);
+        return dukCoords.Take();
+    }
+
+    template<> DukValue inline ToDuk(duk_context* ctx, const CoordsXYZ& coords)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", coords.x);
+        dukCoords.Set("y", coords.y);
+        dukCoords.Set("z", coords.z);
+        return dukCoords.Take();
+    }
+
+    template<> DukValue inline ToDuk(duk_context* ctx, const ScreenCoordsXY& coords)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", coords.x);
+        dukCoords.Set("y", coords.y);
+        return dukCoords.Take();
     }
 
 } // namespace OpenRCT2::Scripting
