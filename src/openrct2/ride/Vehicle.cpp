@@ -4521,13 +4521,13 @@ void Vehicle::UpdateMotionBoatHire()
 
                     if (!(curRide->boat_hire_return_direction & 1))
                     {
-                        uint16_t bp = curY & 0x1F;
-                        if (bp == 16)
+                        uint16_t tilePart = curY % COORDS_XY_STEP;
+                        if (tilePart == COORDS_XY_HALF_TILE)
                         {
                             TryReconnectBoatToTrack({ curX, curY }, flooredLocation);
                             break;
                         }
-                        if (bp <= 16)
+                        if (tilePart <= COORDS_XY_HALF_TILE)
                         {
                             curX = unk_F64E20.x;
                             curY = unk_F64E20.y + 1;
@@ -4541,13 +4541,13 @@ void Vehicle::UpdateMotionBoatHire()
                     else
                     {
                         // loc_6DA9A2:
-                        uint16_t bp = curX & 0x1F;
-                        if (bp == 16)
+                        uint16_t tilePart = curX % COORDS_XY_STEP;
+                        if (tilePart == COORDS_XY_HALF_TILE)
                         {
                             TryReconnectBoatToTrack({ curX, curY }, flooredLocation);
                             break;
                         }
-                        if (bp <= 16)
+                        if (tilePart <= COORDS_XY_HALF_TILE)
                         {
                             curX = unk_F64E20.x + 1;
                             curY = unk_F64E20.y;
