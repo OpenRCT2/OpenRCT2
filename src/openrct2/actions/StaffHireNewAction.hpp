@@ -228,7 +228,6 @@ private:
                 newPeep->state = PEEP_STATE_PICKED;
 
                 newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
-                invalidate_sprite_2(newPeep);
             }
 
             // Staff uses this
@@ -333,6 +332,5 @@ private:
         }
 
         newPeep->MoveTo({ x, y, z + 16 });
-        invalidate_sprite_2(newPeep);
     }
 };

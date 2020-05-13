@@ -1075,8 +1075,6 @@ void ride_remove_peeps(Ride* ride)
             if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
                 peep->RemoveFromQueue();
 
-            peep->Invalidate();
-
             if (exitPosition.direction == INVALID_DIRECTION)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
@@ -1091,7 +1089,6 @@ void ride_remove_peeps(Ride* ride)
                 peep->sprite_direction = exitPosition.direction;
             }
 
-            peep->Invalidate();
             peep->state = PEEP_STATE_FALLING;
             peep->SwitchToSpecialSprite(0);
 

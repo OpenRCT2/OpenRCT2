@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../common.h"
-#include "Location.hpp"
+
+struct CoordsXYZ;
 
 struct SpriteBase
 {

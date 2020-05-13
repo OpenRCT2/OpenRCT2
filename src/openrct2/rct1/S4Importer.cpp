@@ -1247,7 +1247,6 @@ private:
         dst->mini_golf_flags = src->mini_golf_flags;
 
         dst->MoveTo({ src->x, src->y, src->z });
-        invalidate_sprite_2(dst);
 
         dst->num_peeps = src->num_peeps;
         dst->next_free_seat = src->next_free_seat;
