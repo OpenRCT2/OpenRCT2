@@ -1008,7 +1008,7 @@ void lightfx_render_to_texture(
     for (uint32_t y = 0; y < height; y++)
     {
         uintptr_t dstOffset = static_cast<uintptr_t>(y * dstPitch);
-        uint32_t* dst = (uint32_t*)((uintptr_t)dstPixels + dstOffset);
+        uint32_t* dst = reinterpret_cast<uint32_t*>(reinterpret_cast<uintptr_t>(dstPixels) + dstOffset);
         for (uint32_t x = 0; x < width; x++)
         {
             uint8_t* src = &bits[y * width + x];

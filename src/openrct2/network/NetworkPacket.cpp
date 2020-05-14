@@ -71,7 +71,7 @@ void NetworkPacket::Write(const uint8_t* bytes, size_t size)
 
 void NetworkPacket::WriteString(const utf8* string)
 {
-    Write((uint8_t*)string, strlen(string) + 1);
+    Write(reinterpret_cast<const uint8_t*>(string), strlen(string) + 1);
 }
 
 const uint8_t* NetworkPacket::Read(size_t size)

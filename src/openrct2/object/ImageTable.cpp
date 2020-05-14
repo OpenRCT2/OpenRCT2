@@ -57,7 +57,7 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         }
 
         // Read g1 element headers
-        uintptr_t imageDataBase = (uintptr_t)data.get();
+        uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(data.get());
         std::vector<rct_g1_element> newEntries;
         for (uint32_t i = 0; i < numImages; i++)
         {

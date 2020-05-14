@@ -85,7 +85,7 @@ namespace String
         icu::UnicodeString str = icu::UnicodeString::fromUTF32(reinterpret_cast<const UChar32*>(src.data()), src.length());
 #    elif U_SIZEOF_WCHAR_T == 2
         std::wstring wstr = std::wstring(src);
-        icu::UnicodeString str = icu::UnicodeString((const wchar_t*)wstr.c_str());
+        icu::UnicodeString str = icu::UnicodeString(static_cast<const wchar_t*>(wstr.c_str()));
 #    else
 #        error Unsupported U_SIZEOF_WCHAR_T size
 #    endif
@@ -120,7 +120,7 @@ namespace String
 
 #    elif U_SIZEOF_WCHAR_T == 2
         const char16_t* buffer = str.getBuffer();
-        std::wstring result = (wchar_t*)buffer;
+        std::wstring result = static_cast<wchar_t*>(buffer);
 
 #    else
 #        error Unsupported U_SIZEOF_WCHAR_T size
