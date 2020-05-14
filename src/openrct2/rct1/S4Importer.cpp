@@ -1551,7 +1551,7 @@ private:
             dst->favourite_ride_rating = 0;
         }
 
-        dst->item_standard_flags = src->item_standard_flags;
+        dst->ItemStandardFlags = src->item_standard_flags;
 
         if (dst->type == PEEP_TYPE_GUEST)
         {

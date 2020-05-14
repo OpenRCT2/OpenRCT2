@@ -266,7 +266,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(hat_colour);
     COMPARE_FIELD(favourite_ride);
     COMPARE_FIELD(favourite_ride_rating);
-    COMPARE_FIELD(item_standard_flags);
+    COMPARE_FIELD(ItemStandardFlags);
 }
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)

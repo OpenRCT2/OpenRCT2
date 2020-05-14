@@ -633,15 +633,15 @@ private:
                     peep->cash_in_pocket = MONEY(1000, 00);
                     break;
                 case OBJECT_PARK_MAP:
-                    peep->item_standard_flags |= PEEP_ITEM_MAP;
+                    peep->ItemStandardFlags |= PEEP_ITEM_MAP;
                     break;
                 case OBJECT_BALLOON:
-                    peep->item_standard_flags |= PEEP_ITEM_BALLOON;
+                    peep->ItemStandardFlags |= PEEP_ITEM_BALLOON;
                     peep->balloon_colour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;
                 case OBJECT_UMBRELLA:
-                    peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
+                    peep->ItemStandardFlags |= PEEP_ITEM_UMBRELLA;
                     peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;

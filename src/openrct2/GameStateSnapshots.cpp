@@ -313,7 +313,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, hat_colour);
         COMPARE_FIELD(Peep, favourite_ride);
         COMPARE_FIELD(Peep, favourite_ride_rating);
-        COMPARE_FIELD(Peep, item_standard_flags);
+        COMPARE_FIELD(Peep, ItemStandardFlags);
     }
 
     void CompareSpriteDataVehicle(

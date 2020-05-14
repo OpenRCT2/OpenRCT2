@@ -446,10 +446,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->item_standard_flags & PEEP_ITEM_PIZZA))
+    if ((passingPeep->ItemStandardFlags & PEEP_ITEM_PIZZA))
         return;
 
-    passingPeep->item_standard_flags |= PEEP_ITEM_PIZZA;
+    passingPeep->ItemStandardFlags |= PEEP_ITEM_PIZZA;
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -485,10 +485,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->item_standard_flags & PEEP_ITEM_ICE_CREAM)
+    if (passingPeep->ItemStandardFlags & PEEP_ITEM_ICE_CREAM)
         return;
 
-    passingPeep->item_standard_flags |= PEEP_ITEM_ICE_CREAM;
+    passingPeep->ItemStandardFlags |= PEEP_ITEM_ICE_CREAM;
     passingPeep->UpdateSpriteType();
 }
 
@@ -822,7 +822,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((item_standard_flags & PEEP_ITEM_MAP) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & PEEP_ITEM_MAP) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1085,12 +1085,12 @@ void Guest::Tick128UpdateGuest(int32_t index)
             int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
             if (chosen_food != -1)
             {
-                item_standard_flags &= ~(1 << chosen_food);
+                ItemStandardFlags &= ~(1 << chosen_food);
 
                 uint8_t discard_container = peep_item_containers[chosen_food];
                 if (discard_container != 0xFF)
                 {
-                    item_standard_flags |= (1 << discard_container);
+                    ItemStandardFlags |= (1 << discard_container);
                 }
 
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1108,7 +1108,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         if (discard_container >= 32)
                             item_extra_flags |= (1 << (discard_container - 32));
                         else
-                            item_standard_flags |= (1 << discard_container);
+                            ItemStandardFlags |= (1 << discard_container);
                     }
 
                     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1320,7 +1320,7 @@ bool Guest::HasItem(int32_t peepItem) const
 {
     if (peepItem < 32)
     {
-        return item_standard_flags & (1u << peepItem);
+        return ItemStandardFlags & (1u << peepItem);
     }
     else
     {
@@ -1330,7 +1330,7 @@ bool Guest::HasItem(int32_t peepItem) const
 
 int32_t Guest::HasFoodStandardFlag() const
 {
-    return item_standard_flags
+    return ItemStandardFlags
         & (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS | PEEP_ITEM_PIZZA
            | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE | PEEP_ITEM_DOUGHNUT
            | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
@@ -1347,7 +1347,7 @@ int32_t Guest::HasFoodExtraFlag() const
 
 bool Guest::HasDrinkStandardFlag() const
 {
-    return item_standard_flags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
+    return ItemStandardFlags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
 }
 
 bool Guest::HasDrinkExtraFlag() const
@@ -1367,7 +1367,7 @@ bool Guest::HasDrink() const
 
 int32_t Guest::HasEmptyContainerStandardFlag() const
 {
-    return item_standard_flags
+    return ItemStandardFlags
         & (PEEP_ITEM_EMPTY_CAN | PEEP_ITEM_EMPTY_BURGER_BOX | PEEP_ITEM_EMPTY_CUP | PEEP_ITEM_RUBBISH | PEEP_ITEM_EMPTY_BOX
            | PEEP_ITEM_EMPTY_BOTTLE);
 }
@@ -1481,7 +1481,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (voucher_arguments == shopItem))
     {
         hasVoucher = true;
@@ -1650,7 +1650,7 @@ loc_69B221:
     if (shopItem >= 32)
         item_extra_flags |= (1u << (shopItem - 32));
     else
-        item_standard_flags |= (1u << shopItem);
+        ItemStandardFlags |= (1u << shopItem);
 
     if (shopItem == SHOP_ITEM_TSHIRT)
         tshirt_colour = ride->track_colour[0].main;
@@ -1726,7 +1726,7 @@ loc_69B221:
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+        ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1869,7 +1869,7 @@ void Guest::PickRideToGoOn()
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (item_standard_flags & PEEP_ITEM_MAP)
+        if (ItemStandardFlags & PEEP_ITEM_MAP)
         {
             ReadMap();
         }
@@ -1907,7 +1907,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (item_standard_flags & PEEP_ITEM_MAP)
+    if (ItemStandardFlags & PEEP_ITEM_MAP)
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2413,7 +2413,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->item_standard_flags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
+    return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
         && peep->voucher_arguments == ride->id;
 }
 
@@ -2634,7 +2634,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
         && peep->voucher_arguments == peep->current_ride)
         return true;
 
@@ -3160,7 +3160,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->item_standard_flags & PEEP_ITEM_MAP))
+    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & PEEP_ITEM_MAP))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3857,10 +3857,10 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_RIDE_FREE)
+        if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_RIDE_FREE)
             && (voucher_arguments == current_ride))
         {
-            item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+            ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
             window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -5337,7 +5337,7 @@ void Guest::UpdateWalking()
 
             if (pos_stnd != 32)
             {
-                item_standard_flags &= ~(1u << pos_stnd);
+                ItemStandardFlags &= ~(1u << pos_stnd);
                 litterType = item_standard_litter[pos_stnd];
             }
             else
@@ -5916,7 +5916,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    item_standard_flags &= ~(1 << cur_container);
+                    ItemStandardFlags &= ~(1 << cur_container);
                     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
@@ -5927,7 +5927,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
-                item_standard_flags &= ~(1 << cur_container);
+                ItemStandardFlags &= ~(1 << cur_container);
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -6855,11 +6855,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon(x, y, z + 9, balloon_colour, isBalloonPopped);
         }
-        item_standard_flags &= ~PEEP_ITEM_BALLOON;
+        ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (item_standard_flags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)
+    if (climate_is_raining() && (ItemStandardFlags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
@@ -6886,7 +6886,7 @@ void Guest::UpdateSpriteType()
     {
         if (item_pref->type == 0)
         {
-            if (item_standard_flags & item_pref->item)
+            if (ItemStandardFlags & item_pref->item)
             {
                 SetSpriteType(item_pref->sprite_type);
                 return;

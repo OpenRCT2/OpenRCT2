@@ -403,7 +403,7 @@ enum PeepNauseaTolerance
 
 enum PeepItem
 {
-    // item_standard_flags
+    // ItemStandardFlags
     PEEP_ITEM_BALLOON = (1 << 0),
     PEEP_ITEM_TOY = (1 << 1),
     PEEP_ITEM_MAP = (1 << 2),
@@ -747,7 +747,7 @@ struct Peep : SpriteBase
     uint8_t hat_colour;
     uint8_t favourite_ride;
     uint8_t favourite_ride_rating;
-    uint32_t item_standard_flags;
+    uint32_t ItemStandardFlags;
 
 public: // Peep
     Guest* AsGuest();
