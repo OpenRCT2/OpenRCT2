@@ -1499,7 +1499,7 @@ private:
 
         dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
         dst->angriness = src->angriness;
-        dst->time_lost = src->time_lost;
+        dst->TimeLost = src->time_lost;
 
         for (size_t i = 0; i < 32; i++)
         {

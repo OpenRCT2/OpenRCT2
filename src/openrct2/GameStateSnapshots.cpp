@@ -306,7 +306,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, voucher_arguments);
         COMPARE_FIELD(Peep, surroundings_thought_timeout);
         COMPARE_FIELD(Peep, angriness);
-        COMPARE_FIELD(Peep, time_lost);
+        COMPARE_FIELD(Peep, TimeLost);
         COMPARE_FIELD(Peep, DaysInQueue);
         COMPARE_FIELD(Peep, BalloonColour);
         COMPARE_FIELD(Peep, UmbrellaColour);

@@ -740,7 +740,7 @@ struct Peep : SpriteBase
     uint8_t voucher_arguments; // ride_id or string_offset_id
     uint8_t surroundings_thought_timeout;
     uint8_t angriness;
-    uint8_t time_lost; // the time the peep has been lost when it reaches 254 generates the lost thought
+    uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
     uint8_t DaysInQueue;
     uint8_t BalloonColour;
     uint8_t UmbrellaColour;

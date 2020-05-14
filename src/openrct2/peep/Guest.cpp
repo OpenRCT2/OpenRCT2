@@ -1399,10 +1399,10 @@ void Guest::CheckIfLost()
         if (!(peep_flags & PEEP_FLAGS_21))
             return;
 
-        time_lost++;
-        if (time_lost != 254)
+        TimeLost++;
+        if (TimeLost != 254)
             return;
-        time_lost = 230;
+        TimeLost = 230;
     }
     InsertNewThought(PEEP_THOUGHT_TYPE_LOST, PEEP_THOUGHT_ITEM_NONE);
 
@@ -3245,7 +3245,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         peep->peep_is_lost_countdown = 200;
         peep_reset_pathfind_goal(peep);
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
-        peep->time_lost = 0;
+        peep->TimeLost = 0;
     }
 }
 

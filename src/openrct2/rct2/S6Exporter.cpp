@@ -1233,7 +1233,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->voucher_arguments = src->voucher_arguments;
     dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
     dst->angriness = src->angriness;
-    dst->time_lost = src->time_lost;
+    dst->time_lost = src->TimeLost;
     dst->days_in_queue = src->DaysInQueue;
     dst->balloon_colour = src->BalloonColour;
     dst->umbrella_colour = src->UmbrellaColour;

@@ -1774,7 +1774,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->no_of_souvenirs = 0;
     peep->surroundings_thought_timeout = 0;
     peep->angriness = 0;
-    peep->time_lost = 0;
+    peep->TimeLost = 0;
 
     uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
     peep->tshirt_colour = tshirt_colours[tshirtColour];
@@ -2410,7 +2410,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             return;
         }
 
-        peep->time_lost = 0;
+        peep->TimeLost = 0;
         auto stationNum = tile_element->AsEntrance()->GetStationIndex();
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
@@ -2839,7 +2839,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
         else
         {
             // Peep is not queuing.
-            peep->time_lost = 0;
+            peep->TimeLost = 0;
             auto stationNum = tile_element->AsPath()->GetStationIndex();
 
             if ((tile_element->AsPath()->HasQueueBanner())
@@ -2929,7 +2929,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         return true;
     }
 
-    peep->time_lost = 0;
+    peep->TimeLost = 0;
 
     if (ride->status != RIDE_STATUS_OPEN)
     {
@@ -2951,7 +2951,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
-        peep->time_lost = 0;
+        peep->TimeLost = 0;
         if (!guest->ShouldGoOnRide(ride, 0, false, false))
         {
             peep_return_to_centre_of_tile(peep);
