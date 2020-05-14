@@ -1705,11 +1705,11 @@ private:
 
     void ImportMoneyEffect(MoneyEffect* dst, MoneyEffect* src)
     {
-        dst->move_delay = src->move_delay;
-        dst->num_movements = src->num_movements;
-        dst->value = src->value;
-        dst->offset_x = src->offset_x;
-        dst->wiggle = src->wiggle;
+        dst->MoveDelay = src->MoveDelay;
+        dst->NumMovements = src->NumMovements;
+        dst->Value = src->Value;
+        dst->OffsetX = src->OffsetX;
+        dst->Wiggle = src->Wiggle;
     }
 
     void ImportSteamParticle(SteamParticle* dst, SteamParticle* src)

@@ -355,12 +355,12 @@ static void CompareSpriteDataSteamParticle(const SteamParticle& left, const Stea
 
 static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEffect& right)
 {
-    COMPARE_FIELD(move_delay);
-    COMPARE_FIELD(num_movements);
-    COMPARE_FIELD(vertical);
-    COMPARE_FIELD(value);
-    COMPARE_FIELD(offset_x);
-    COMPARE_FIELD(wiggle);
+    COMPARE_FIELD(MoveDelay);
+    COMPARE_FIELD(NumMovements);
+    COMPARE_FIELD(Vertical);
+    COMPARE_FIELD(Value);
+    COMPARE_FIELD(OffsetX);
+    COMPARE_FIELD(Wiggle);
 }
 
 static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& left, const VehicleCrashParticle& right)

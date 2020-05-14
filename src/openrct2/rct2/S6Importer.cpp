@@ -1525,12 +1525,12 @@ public:
             {
                 auto src = static_cast<const RCT12SpriteMoneyEffect*>(csrc);
                 auto dst = static_cast<MoneyEffect*>(cdst);
-                dst->move_delay = src->move_delay;
-                dst->num_movements = src->num_movements;
-                dst->vertical = src->vertical;
-                dst->value = src->value;
-                dst->offset_x = src->offset_x;
-                dst->wiggle = src->wiggle;
+                dst->MoveDelay = src->move_delay;
+                dst->NumMovements = src->num_movements;
+                dst->Vertical = src->vertical;
+                dst->Value = src->value;
+                dst->OffsetX = src->offset_x;
+                dst->Wiggle = src->wiggle;
                 break;
             }
             case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:

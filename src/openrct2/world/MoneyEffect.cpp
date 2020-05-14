@@ -47,16 +47,16 @@ void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool 
     if (moneyEffect == nullptr)
         return;
 
-    moneyEffect->value = value;
-    moneyEffect->vertical = (vertical ? 1 : 0);
+    moneyEffect->Value = value;
+    moneyEffect->Vertical = (vertical ? 1 : 0);
     moneyEffect->sprite_width = 64;
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
     moneyEffect->MoveTo({ x, y, z });
     moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
-    moneyEffect->num_movements = 0;
-    moneyEffect->move_delay = 0;
+    moneyEffect->NumMovements = 0;
+    moneyEffect->MoveDelay = 0;
 
     int16_t offsetX = 0;
     if (!gOpenRCT2NoGraphics)
@@ -67,8 +67,8 @@ void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         offsetX = -(gfx_get_string_width(buffer) / 2);
     }
-    moneyEffect->offset_x = offsetX;
-    moneyEffect->wiggle = 0;
+    moneyEffect->OffsetX = offsetX;
+    moneyEffect->Wiggle = 0;
 }
 
 /**
@@ -110,14 +110,14 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
 void MoneyEffect::Update()
 {
     invalidate_sprite_2(this);
-    wiggle++;
-    if (wiggle >= 22)
+    Wiggle++;
+    if (Wiggle >= 22)
     {
-        wiggle = 0;
+        Wiggle = 0;
     }
 
-    move_delay++;
-    if (move_delay < 2)
+    MoveDelay++;
+    if (MoveDelay < 2)
     {
         return;
     }
@@ -125,9 +125,9 @@ void MoneyEffect::Update()
     int32_t newX = x;
     int32_t newY = y;
     int32_t newZ = z;
-    move_delay = 0;
+    MoveDelay = 0;
 
-    if (vertical)
+    if (Vertical)
     {
         newZ += 1;
     }
@@ -136,8 +136,8 @@ void MoneyEffect::Update()
 
     MoveTo({ newX, newY, newZ });
 
-    num_movements++;
-    if (num_movements < 55)
+    NumMovements++;
+    if (NumMovements < 55)
     {
         return;
     }
@@ -147,11 +147,11 @@ void MoneyEffect::Update()
 
 std::pair<rct_string_id, money32> MoneyEffect::GetStringId() const
 {
-    rct_string_id spentStringId = vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
-    rct_string_id receiveStringId = vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
+    rct_string_id spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
+    rct_string_id receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     rct_string_id stringId = receiveStringId;
-    money32 outValue = value;
-    if (value < 0)
+    money32 outValue = Value;
+    if (Value < 0)
     {
         outValue *= -1;
         stringId = spentStringId;
