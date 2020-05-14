@@ -642,7 +642,7 @@ private:
                     break;
                 case OBJECT_UMBRELLA:
                     peep->ItemStandardFlags |= PEEP_ITEM_UMBRELLA;
-                    peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
+                    peep->UmbrellaColour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;
             }

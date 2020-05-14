@@ -1430,7 +1430,7 @@ private:
 
         dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
         dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
-        dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
+        dst->UmbrellaColour = RCT1::GetColour(src->umbrella_colour);
         dst->HatColour = RCT1::GetColour(src->hat_colour);
 
         // Balloons were always blue in RCT1 without AA/LL

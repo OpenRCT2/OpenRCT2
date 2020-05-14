@@ -1236,7 +1236,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->time_lost = src->time_lost;
     dst->days_in_queue = src->days_in_queue;
     dst->balloon_colour = src->balloon_colour;
-    dst->umbrella_colour = src->umbrella_colour;
+    dst->umbrella_colour = src->UmbrellaColour;
     dst->hat_colour = src->HatColour;
     dst->favourite_ride = src->FavouriteRide;
     dst->favourite_ride_rating = src->FavouriteRideRating;

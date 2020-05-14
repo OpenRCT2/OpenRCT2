@@ -743,7 +743,7 @@ struct Peep : SpriteBase
     uint8_t time_lost; // the time the peep has been lost when it reaches 254 generates the lost thought
     uint8_t days_in_queue;
     uint8_t balloon_colour;
-    uint8_t umbrella_colour;
+    uint8_t UmbrellaColour;
     uint8_t HatColour;
     uint8_t FavouriteRide;
     uint8_t FavouriteRideRating;

@@ -1501,7 +1501,7 @@ public:
         dst->time_lost = src->time_lost;
         dst->days_in_queue = src->days_in_queue;
         dst->balloon_colour = src->balloon_colour;
-        dst->umbrella_colour = src->umbrella_colour;
+        dst->UmbrellaColour = src->umbrella_colour;
         dst->HatColour = src->hat_colour;
         dst->FavouriteRide = src->favourite_ride;
         dst->FavouriteRideRating = src->favourite_ride_rating;
