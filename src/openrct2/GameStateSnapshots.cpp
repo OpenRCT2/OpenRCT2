@@ -304,16 +304,16 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, vandalism_seen);
         COMPARE_FIELD(Peep, voucher_type);
         COMPARE_FIELD(Peep, voucher_arguments);
-        COMPARE_FIELD(Peep, surroundings_thought_timeout);
-        COMPARE_FIELD(Peep, angriness);
-        COMPARE_FIELD(Peep, time_lost);
-        COMPARE_FIELD(Peep, days_in_queue);
-        COMPARE_FIELD(Peep, balloon_colour);
-        COMPARE_FIELD(Peep, umbrella_colour);
-        COMPARE_FIELD(Peep, hat_colour);
-        COMPARE_FIELD(Peep, favourite_ride);
-        COMPARE_FIELD(Peep, favourite_ride_rating);
-        COMPARE_FIELD(Peep, item_standard_flags);
+        COMPARE_FIELD(Peep, SurroundingsThoughtTimeout);
+        COMPARE_FIELD(Peep, Angriness);
+        COMPARE_FIELD(Peep, TimeLost);
+        COMPARE_FIELD(Peep, DaysInQueue);
+        COMPARE_FIELD(Peep, BalloonColour);
+        COMPARE_FIELD(Peep, UmbrellaColour);
+        COMPARE_FIELD(Peep, HatColour);
+        COMPARE_FIELD(Peep, FavouriteRide);
+        COMPARE_FIELD(Peep, FavouriteRideRating);
+        COMPARE_FIELD(Peep, ItemStandardFlags);
     }
 
     void CompareSpriteDataVehicle(

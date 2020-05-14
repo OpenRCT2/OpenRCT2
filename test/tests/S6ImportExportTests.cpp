@@ -257,16 +257,16 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(vandalism_seen);
     COMPARE_FIELD(voucher_type);
     COMPARE_FIELD(voucher_arguments);
-    COMPARE_FIELD(surroundings_thought_timeout);
-    COMPARE_FIELD(angriness);
-    COMPARE_FIELD(time_lost);
-    COMPARE_FIELD(days_in_queue);
-    COMPARE_FIELD(balloon_colour);
-    COMPARE_FIELD(umbrella_colour);
-    COMPARE_FIELD(hat_colour);
-    COMPARE_FIELD(favourite_ride);
-    COMPARE_FIELD(favourite_ride_rating);
-    COMPARE_FIELD(item_standard_flags);
+    COMPARE_FIELD(SurroundingsThoughtTimeout);
+    COMPARE_FIELD(Angriness);
+    COMPARE_FIELD(TimeLost);
+    COMPARE_FIELD(DaysInQueue);
+    COMPARE_FIELD(BalloonColour);
+    COMPARE_FIELD(UmbrellaColour);
+    COMPARE_FIELD(HatColour);
+    COMPARE_FIELD(FavouriteRide);
+    COMPARE_FIELD(FavouriteRideRating);
+    COMPARE_FIELD(ItemStandardFlags);
 }
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)

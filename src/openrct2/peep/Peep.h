@@ -403,7 +403,7 @@ enum PeepNauseaTolerance
 
 enum PeepItem
 {
-    // item_standard_flags
+    // ItemStandardFlags
     PEEP_ITEM_BALLOON = (1 << 0),
     PEEP_ITEM_TOY = (1 << 1),
     PEEP_ITEM_MAP = (1 << 2),
@@ -738,16 +738,16 @@ struct Peep : SpriteBase
     uint8_t vandalism_seen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t voucher_type;
     uint8_t voucher_arguments; // ride_id or string_offset_id
-    uint8_t surroundings_thought_timeout;
-    uint8_t angriness;
-    uint8_t time_lost; // the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8_t days_in_queue;
-    uint8_t balloon_colour;
-    uint8_t umbrella_colour;
-    uint8_t hat_colour;
-    uint8_t favourite_ride;
-    uint8_t favourite_ride_rating;
-    uint32_t item_standard_flags;
+    uint8_t SurroundingsThoughtTimeout;
+    uint8_t Angriness;
+    uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
+    uint8_t DaysInQueue;
+    uint8_t BalloonColour;
+    uint8_t UmbrellaColour;
+    uint8_t HatColour;
+    uint8_t FavouriteRide;
+    uint8_t FavouriteRideRating;
+    uint32_t ItemStandardFlags;
 
 public: // Peep
     Guest* AsGuest();

@@ -176,20 +176,20 @@ private:
             }
 
             // remove any free voucher for this ride from peep
-            if (peep->item_standard_flags & PEEP_ITEM_VOUCHER)
+            if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
             {
                 if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->voucher_arguments == _rideIndex)
                 {
-                    peep->item_standard_flags &= ~(PEEP_ITEM_VOUCHER);
+                    peep->ItemStandardFlags &= ~(PEEP_ITEM_VOUCHER);
                 }
             }
 
             // remove any photos of this ride from peep
-            if (peep->item_standard_flags & PEEP_ITEM_PHOTO)
+            if (peep->ItemStandardFlags & PEEP_ITEM_PHOTO)
             {
                 if (peep->photo1_ride_ref == _rideIndex)
                 {
-                    peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
+                    peep->ItemStandardFlags &= ~PEEP_ITEM_PHOTO;
                 }
             }
             if (peep->item_extra_flags & PEEP_ITEM_PHOTO2)
@@ -218,9 +218,9 @@ private:
             {
                 peep->guest_heading_to_ride_id = RIDE_ID_NULL;
             }
-            if (peep->favourite_ride == _rideIndex)
+            if (peep->FavouriteRide == _rideIndex)
             {
-                peep->favourite_ride = RIDE_ID_NULL;
+                peep->FavouriteRide = RIDE_ID_NULL;
             }
 
             for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
