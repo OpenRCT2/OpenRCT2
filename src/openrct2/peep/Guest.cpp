@@ -2713,11 +2713,11 @@ static void peep_update_favourite_ride(Peep* peep, Ride* ride)
 {
     peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
     uint8_t peepRideRating = std::clamp((ride->excitement / 4) + peep->happiness, 0, PEEP_MAX_HAPPINESS);
-    if (peepRideRating >= peep->favourite_ride_rating)
+    if (peepRideRating >= peep->FavouriteRideRating)
     {
         if (peep->happiness >= 160 && peep->happiness_target >= 160)
         {
-            peep->favourite_ride_rating = peepRideRating;
+            peep->FavouriteRideRating = peepRideRating;
             peep->peep_flags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
         }
     }

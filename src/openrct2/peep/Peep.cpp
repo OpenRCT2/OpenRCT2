@@ -1635,7 +1635,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->peep_flags = 0;
     peep->favourite_ride = RIDE_ID_NULL;
-    peep->favourite_ride_rating = 0;
+    peep->FavouriteRideRating = 0;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;
     peep->sprite_width = spriteBounds[peep->action_sprite_type].sprite_width;

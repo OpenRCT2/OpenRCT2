@@ -1543,12 +1543,12 @@ private:
         if (_gameVersion == FILE_VERSION_RCT1_LL)
         {
             dst->favourite_ride = src->favourite_ride;
-            dst->favourite_ride_rating = src->favourite_ride_rating;
+            dst->FavouriteRideRating = src->favourite_ride_rating;
         }
         else
         {
             dst->favourite_ride = RIDE_ID_NULL;
-            dst->favourite_ride_rating = 0;
+            dst->FavouriteRideRating = 0;
         }
 
         dst->ItemStandardFlags = src->item_standard_flags;

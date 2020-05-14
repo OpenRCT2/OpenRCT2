@@ -1239,7 +1239,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->umbrella_colour = src->umbrella_colour;
     dst->hat_colour = src->hat_colour;
     dst->favourite_ride = src->favourite_ride;
-    dst->favourite_ride_rating = src->favourite_ride_rating;
+    dst->favourite_ride_rating = src->FavouriteRideRating;
     dst->item_standard_flags = src->ItemStandardFlags;
 }
 

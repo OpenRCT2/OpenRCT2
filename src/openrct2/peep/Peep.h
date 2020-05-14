@@ -746,7 +746,7 @@ struct Peep : SpriteBase
     uint8_t umbrella_colour;
     uint8_t hat_colour;
     uint8_t favourite_ride;
-    uint8_t favourite_ride_rating;
+    uint8_t FavouriteRideRating;
     uint32_t ItemStandardFlags;
 
 public: // Peep
