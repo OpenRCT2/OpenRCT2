@@ -783,6 +783,11 @@ declare global {
          * How often the ride should be inspected by a mechanic.
          */
         inspectionInterval: number;
+
+        /**
+         * The value of the ride.
+         */
+        value: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";

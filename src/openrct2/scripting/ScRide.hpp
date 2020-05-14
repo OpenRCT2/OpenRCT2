@@ -591,6 +591,34 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        DukValue value_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ride = GetRide();
+            if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
+            {
+                return ToDuk<int32_t>(ctx, ride->value);
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void value_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    ride->value = value.as_int();
+                }
+                else
+                {
+                    ride->value = RIDE_VALUE_UNDEFINED;
+                }
+            }
+        }
+
         Ride* GetRide() const
         {
             return get_ride(_rideId);
@@ -626,6 +654,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::runningCost_get, &ScRide::runningCost_set, "runningCost");
             dukglue_register_property(
                 ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
+            dukglue_register_property(ctx, &ScRide::value_get, &ScRide::value_set, "value");
         }
     };
 } // namespace OpenRCT2::Scripting
