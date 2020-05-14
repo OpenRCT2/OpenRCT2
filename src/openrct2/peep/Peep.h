@@ -738,7 +738,7 @@ struct Peep : SpriteBase
     uint8_t vandalism_seen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t voucher_type;
     uint8_t voucher_arguments; // ride_id or string_offset_id
-    uint8_t surroundings_thought_timeout;
+    uint8_t SurroundingsThoughtTimeout;
     uint8_t Angriness;
     uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
     uint8_t DaysInQueue;

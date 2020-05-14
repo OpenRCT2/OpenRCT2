@@ -1496,7 +1496,7 @@ public:
         dst->vandalism_seen = src->vandalism_seen;
         dst->voucher_type = src->voucher_type;
         dst->voucher_arguments = src->voucher_arguments;
-        dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
+        dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;
         dst->DaysInQueue = src->days_in_queue;

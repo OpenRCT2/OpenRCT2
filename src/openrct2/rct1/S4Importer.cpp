@@ -1497,7 +1497,7 @@ private:
         dst->voucher_arguments = src->voucher_arguments;
         dst->voucher_type = src->voucher_type;
 
-        dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
+        dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;
 

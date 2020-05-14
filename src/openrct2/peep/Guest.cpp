@@ -755,10 +755,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING)
         {
-            surroundings_thought_timeout++;
-            if (surroundings_thought_timeout >= 18)
+            SurroundingsThoughtTimeout++;
+            if (SurroundingsThoughtTimeout >= 18)
             {
-                surroundings_thought_timeout = 0;
+                SurroundingsThoughtTimeout = 0;
                 if (x != LOCATION_NULL)
                 {
                     PeepThoughtType thought_type = peep_assess_surroundings(x & 0xFFE0, y & 0xFFE0, z);

@@ -1772,7 +1772,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->no_of_food = 0;
     peep->no_of_drinks = 0;
     peep->no_of_souvenirs = 0;
-    peep->surroundings_thought_timeout = 0;
+    peep->SurroundingsThoughtTimeout = 0;
     peep->Angriness = 0;
     peep->TimeLost = 0;
 
