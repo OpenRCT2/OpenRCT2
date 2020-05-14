@@ -721,19 +721,24 @@ declare global {
      */
     interface Peep extends Entity {
         /**
+         * Whether the peep is a guest or staff member.
+         */
+        peepType: PeepType;
+
+        /**
          * Name of the peep.
          */
         name: string;
 
         /**
-         * Colour of the peep's t-shirt.
+         * Main flags for peep behaviour.
          */
-        tshirtColour: number;
+        flags: number;
 
         /**
-         * Colour of the peep's trousers.
+         * The peep's direct destination.
          */
-        trousersColour: number;
+        destination: CoordsXY;
 
         /**
          * How tired the guest is between 32 and 128 where lower is more tired.
@@ -744,6 +749,38 @@ declare global {
          * The target energy value. Energy will increase / decrease slowly towards this value.
          */
         energyTarget: number;
+    }
+
+    type PeepType = "guest" | "staff";
+
+    /**
+     * Represents a guest.
+     */
+    interface Guest extends Peep {
+        /**
+         * Colour of the guest's t-shirt.
+         */
+        tshirtColour: number;
+
+        /**
+         * Colour of the guest's trousers.
+         */
+        trousersColour: number;
+
+        /**
+         * Colour of the guest's balloon.
+         */
+        balloonColour: number;
+
+        /**
+         * Colour of the guest's hat.
+         */
+        hatColour: number;
+
+        /**
+         * Colour of the guest's umbrella.
+         */
+        umbrellaColour: number;
 
         /**
          * How happy the guest is between 0 and 255.
@@ -805,6 +842,33 @@ declare global {
          */
         cash: number;
     }
+
+    /**
+     * Represents a staff member.
+     */
+    interface Staff extends Peep {
+        /**
+         * The type of staff member, e.g. handyman, mechanic.
+         */
+        staffType: StaffType;
+
+        /**
+         * Colour of the staff member. Not applicable for entertainers.
+         */
+        colour: number;
+
+        /**
+         * The entertainer's costume, only applicable for entertainers.
+         */
+        costume: number;
+
+        /**
+         * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
+         */
+        orders: number;
+    }
+
+    type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
 
     /**
      * Network APIs

@@ -13,6 +13,8 @@
 
 #    include "../Context.h"
 #    include "../common.h"
+#    include "../peep/Peep.h"
+#    include "../peep/Staff.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
 #    include "ScriptEngine.h"
@@ -180,7 +182,28 @@ namespace OpenRCT2::Scripting
         {
         }
 
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScEntity, ScPeep>(ctx);
+            dukglue_register_property(ctx, &ScPeep::peepType_get, nullptr, "peepType");
+            dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
+            dukglue_register_property(ctx, &ScPeep::flags_get, &ScPeep::flags_set, "flags");
+            dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
+            dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");
+            dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
+        }
+
     private:
+        std::string peepType_get() const
+        {
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                return peep->type == PEEP_TYPE_STAFF ? "staff" : "guest";
+            }
+            return "";
+        }
+
         std::string name_get() const
         {
             auto peep = GetPeep();
@@ -237,29 +260,82 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue pathfindGoal_get() const
+        uint8_t energy_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto peep = GetPeep();
-            if (peep != nullptr)
-            {
-                return ToDuk(ctx, CoordsXY(peep->destination_x, peep->destination_y));
-            }
-            return ToDuk(ctx, nullptr);
+            return peep != nullptr ? peep->energy : 0;
         }
-
-        void pathfindGoal_set(const DukValue& value)
+        void energy_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                auto pos = FromDuk<CoordsXY>(value);
-                peep->pathfind_goal.x = pos.x;
-                peep->pathfind_goal.y = pos.y;
-                peep->pathfind_goal.z = pos.z;
-                peep->Invalidate();
+                peep->energy = value;
             }
+        }
+
+        uint8_t energyTarget_get() const
+        {
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->energy_target : 0;
+        }
+        void energyTarget_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                peep->energy_target = value;
+            }
+        }
+
+    protected:
+        Peep* GetPeep() const
+        {
+            return get_sprite(_id)->AsPeep();
+        }
+    };
+
+    class ScGuest : public ScPeep
+    {
+    public:
+        ScGuest(uint16_t id)
+            : ScPeep(id)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScPeep, ScGuest>(ctx);
+            dukglue_register_property(ctx, &ScGuest::tshirtColour_get, &ScGuest::tshirtColour_set, "tshirtColour");
+            dukglue_register_property(ctx, &ScGuest::trousersColour_get, &ScGuest::trousersColour_set, "trousersColour");
+            dukglue_register_property(ctx, &ScGuest::balloonColour_get, &ScGuest::balloonColour_set, "balloonColour");
+            dukglue_register_property(ctx, &ScGuest::hatColour_get, &ScGuest::hatColour_set, "hatColour");
+            dukglue_register_property(ctx, &ScGuest::umbrellaColour_get, &ScGuest::umbrellaColour_set, "umbrellaColour");
+            dukglue_register_property(ctx, &ScGuest::happiness_get, &ScGuest::happiness_set, "happiness");
+            dukglue_register_property(ctx, &ScGuest::happinessTarget_get, &ScGuest::happinessTarget_set, "happinessTarget");
+            dukglue_register_property(ctx, &ScGuest::nausea_get, &ScGuest::nausea_set, "nausea");
+            dukglue_register_property(ctx, &ScGuest::nauseaTarget_get, &ScGuest::nauseaTarget_set, "nauseaTarget");
+            dukglue_register_property(ctx, &ScGuest::hunger_get, &ScGuest::hunger_set, "hunger");
+            dukglue_register_property(ctx, &ScGuest::thirst_get, &ScGuest::thirst_set, "thirst");
+            dukglue_register_property(ctx, &ScGuest::toilet_get, &ScGuest::toilet_set, "toilet");
+            dukglue_register_property(ctx, &ScGuest::mass_get, &ScGuest::mass_set, "mass");
+            dukglue_register_property(ctx, &ScGuest::minIntensity_get, &ScGuest::minIntensity_set, "minIntensity");
+            dukglue_register_property(ctx, &ScGuest::maxIntensity_get, &ScGuest::maxIntensity_set, "maxIntensity");
+            dukglue_register_property(ctx, &ScGuest::nauseaTolerance_get, &ScGuest::nauseaTolerance_set, "nauseaTolerance");
+            dukglue_register_property(ctx, &ScGuest::cash_get, &ScGuest::cash_set, "cash");
+        }
+
+    private:
+        Guest* GetGuest() const
+        {
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                return peep->AsGuest();
+            }
+            return nullptr;
         }
 
         uint8_t tshirtColour_get() const
@@ -294,33 +370,51 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t energy_get() const
+        uint8_t balloonColour_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy : 0;
+            return peep != nullptr ? peep->BalloonColour : 0;
         }
-        void energy_set(uint8_t value)
+        void balloonColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy = value;
+                peep->BalloonColour = value;
+                peep->Invalidate();
             }
         }
 
-        uint8_t energyTarget_get() const
+        uint8_t hatColour_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy_target : 0;
+            return peep != nullptr ? peep->HatColour : 0;
         }
-        void energyTarget_set(uint8_t value)
+        void hatColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy_target = value;
+                peep->HatColour = value;
+                peep->Invalidate();
+            }
+        }
+
+        uint8_t umbrellaColour_get() const
+        {
+            auto peep = GetPeep();
+            return peep != nullptr ? peep->UmbrellaColour : 0;
+        }
+        void umbrellaColour_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                peep->UmbrellaColour = value;
+                peep->Invalidate();
             }
         }
 
@@ -503,35 +597,136 @@ namespace OpenRCT2::Scripting
                 peep->cash_in_pocket = std::max(0, value);
             }
         }
+    };
 
-        Peep* GetPeep() const
+    class ScStaff : public ScPeep
+    {
+    public:
+        ScStaff(uint16_t id)
+            : ScPeep(id)
         {
-            return get_sprite(_id)->AsPeep();
         }
 
-    public:
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScEntity, ScPeep>(ctx);
-            dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
-            dukglue_register_property(ctx, &ScPeep::flags_get, &ScPeep::flags_set, "flags");
-            dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
-            dukglue_register_property(ctx, &ScPeep::tshirtColour_get, &ScPeep::tshirtColour_set, "tshirtColour");
-            dukglue_register_property(ctx, &ScPeep::trousersColour_get, &ScPeep::trousersColour_set, "trousersColour");
-            dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");
-            dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
-            dukglue_register_property(ctx, &ScPeep::happiness_get, &ScPeep::happiness_set, "happiness");
-            dukglue_register_property(ctx, &ScPeep::happinessTarget_get, &ScPeep::happinessTarget_set, "happinessTarget");
-            dukglue_register_property(ctx, &ScPeep::nausea_get, &ScPeep::nausea_set, "nausea");
-            dukglue_register_property(ctx, &ScPeep::nauseaTarget_get, &ScPeep::nauseaTarget_set, "nauseaTarget");
-            dukglue_register_property(ctx, &ScPeep::hunger_get, &ScPeep::hunger_set, "hunger");
-            dukglue_register_property(ctx, &ScPeep::thirst_get, &ScPeep::thirst_set, "thirst");
-            dukglue_register_property(ctx, &ScPeep::toilet_get, &ScPeep::toilet_set, "toilet");
-            dukglue_register_property(ctx, &ScPeep::mass_get, &ScPeep::mass_set, "mass");
-            dukglue_register_property(ctx, &ScPeep::minIntensity_get, &ScPeep::minIntensity_set, "minIntensity");
-            dukglue_register_property(ctx, &ScPeep::maxIntensity_get, &ScPeep::maxIntensity_set, "maxIntensity");
-            dukglue_register_property(ctx, &ScPeep::nauseaTolerance_get, &ScPeep::nauseaTolerance_set, "nauseaTolerance");
-            dukglue_register_property(ctx, &ScPeep::cash_get, &ScPeep::cash_set, "cash");
+            dukglue_set_base_class<ScPeep, ScStaff>(ctx);
+            dukglue_register_property(ctx, &ScStaff::staffType_get, &ScStaff::staffType_set, "staffType");
+            dukglue_register_property(ctx, &ScStaff::colour_get, &ScStaff::colour_set, "colour");
+            dukglue_register_property(ctx, &ScStaff::costume_get, &ScStaff::costume_set, "costume");
+            dukglue_register_property(ctx, &ScStaff::orders_get, &ScStaff::orders_set, "orders");
+        }
+
+    private:
+        Staff* GetStaff() const
+        {
+            auto peep = GetPeep();
+            if (peep != nullptr)
+            {
+                return peep->AsStaff();
+            }
+            return nullptr;
+        }
+
+        std::string staffType_get() const
+        {
+            auto peep = GetStaff();
+            if (peep != nullptr)
+            {
+                switch (peep->staff_type)
+                {
+                    case STAFF_TYPE_HANDYMAN:
+                        return "handyman";
+                    case STAFF_TYPE_MECHANIC:
+                        return "mechanic";
+                    case STAFF_TYPE_SECURITY:
+                        return "security";
+                    case STAFF_TYPE_ENTERTAINER:
+                        return "entertainer";
+                }
+            }
+            return "";
+        }
+
+        void staffType_set(const std::string& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetStaff();
+            if (peep != nullptr)
+            {
+                if (value == "handyman" && peep->staff_type != STAFF_TYPE_HANDYMAN)
+                {
+                    peep->staff_type = STAFF_TYPE_HANDYMAN;
+                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_HANDYMAN;
+                }
+                else if (value == "mechanic" && peep->staff_type != STAFF_TYPE_MECHANIC)
+                {
+                    peep->staff_type = STAFF_TYPE_MECHANIC;
+                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_MECHANIC;
+                }
+                else if (value == "security" && peep->staff_type != STAFF_TYPE_SECURITY)
+                {
+                    peep->staff_type = STAFF_TYPE_SECURITY;
+                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_SECURITY;
+                }
+                else if (value == "entertainer" && peep->staff_type != STAFF_TYPE_ENTERTAINER)
+                {
+                    peep->staff_type = STAFF_TYPE_ENTERTAINER;
+                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
+                }
+            }
+        }
+
+        uint8_t colour_get() const
+        {
+            auto peep = GetStaff();
+            return peep != nullptr ? peep->tshirt_colour : 0;
+        }
+
+        void colour_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetStaff();
+            if (peep != nullptr)
+            {
+                peep->tshirt_colour = value;
+                peep->trousers_colour = value;
+            }
+        }
+
+        uint8_t costume_get() const
+        {
+            auto peep = GetStaff();
+            if (peep != nullptr && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+            {
+                return peep->GetCostume();
+            }
+            return 0;
+        }
+
+        void costume_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetStaff();
+            if (peep != nullptr)
+            {
+                peep->SetCostume(value);
+            }
+        }
+
+        uint8_t orders_get() const
+        {
+            auto peep = GetStaff();
+            return peep != nullptr ? peep->staff_orders : 0;
+        }
+
+        void orders_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetStaff();
+            if (peep != nullptr)
+            {
+                peep->staff_orders = value;
+            }
         }
     };
 

@@ -389,6 +389,8 @@ void ScriptEngine::Initialise()
     ScTileElement::Register(ctx);
     ScEntity::Register(ctx);
     ScPeep::Register(ctx);
+    ScGuest::Register(ctx);
+    ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
