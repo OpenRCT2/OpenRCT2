@@ -1659,7 +1659,7 @@ loc_69B221:
         HatColour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_BALLOON)
-        balloon_colour = ride->track_colour[0].main;
+        BalloonColour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_UMBRELLA)
         UmbrellaColour = ride->track_colour[0].main;
@@ -6853,7 +6853,7 @@ void Guest::UpdateSpriteType()
                 isBalloonPopped = true;
                 audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
             }
-            create_balloon(x, y, z + 9, balloon_colour, isBalloonPopped);
+            create_balloon(x, y, z + 9, BalloonColour, isBalloonPopped);
         }
         ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;

@@ -894,7 +894,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
     {
         animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
+        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
         gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
     }
 
@@ -1943,7 +1943,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
     switch (item)
     {
         case SHOP_ITEM_BALLOON:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour) | ShopItems[item].Image);
+            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->photo1_ride_ref);

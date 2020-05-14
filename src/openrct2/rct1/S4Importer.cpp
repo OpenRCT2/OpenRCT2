@@ -1436,11 +1436,11 @@ private:
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->balloon_colour = COLOUR_LIGHT_BLUE;
+            dst->BalloonColour = COLOUR_LIGHT_BLUE;
         }
         else
         {
-            dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
+            dst->BalloonColour = RCT1::GetColour(src->balloon_colour);
         }
 
         dst->destination_x = src->destination_x;

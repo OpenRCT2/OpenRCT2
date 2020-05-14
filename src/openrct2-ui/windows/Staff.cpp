@@ -1048,7 +1048,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ebx >= 0x2A1D && ebx < 0x2A3D)
     {
         ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 

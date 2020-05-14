@@ -3398,7 +3398,7 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 
         if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != LOCATION_NULL)
         {
-            create_balloon(peep->x, peep->y, spawn_height, peep->balloon_colour, false);
+            create_balloon(peep->x, peep->y, spawn_height, peep->BalloonColour, false);
             peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             peep->UpdateSpriteType();
         }

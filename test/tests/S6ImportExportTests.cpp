@@ -261,7 +261,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(angriness);
     COMPARE_FIELD(time_lost);
     COMPARE_FIELD(days_in_queue);
-    COMPARE_FIELD(balloon_colour);
+    COMPARE_FIELD(BalloonColour);
     COMPARE_FIELD(UmbrellaColour);
     COMPARE_FIELD(HatColour);
     COMPARE_FIELD(FavouriteRide);
