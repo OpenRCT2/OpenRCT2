@@ -588,7 +588,7 @@ private:
                     if (value > 0)
                     {
                         peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
-                        peep->angriness = 0;
+                        peep->Angriness = 0;
                     }
                     break;
                 case GUEST_PARAMETER_ENERGY:

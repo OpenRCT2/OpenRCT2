@@ -1773,7 +1773,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->no_of_drinks = 0;
     peep->no_of_souvenirs = 0;
     peep->surroundings_thought_timeout = 0;
-    peep->angriness = 0;
+    peep->Angriness = 0;
     peep->TimeLost = 0;
 
     uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
@@ -2172,7 +2172,7 @@ static constexpr const int32_t face_sprite_large[] = {
 static int32_t get_face_sprite_offset(Peep* peep)
 {
     // ANGRY
-    if (peep->angriness > 0)
+    if (peep->Angriness > 0)
         return PEEP_FACE_OFFSET_ANGRY;
 
     // VERY_VERY_SICK

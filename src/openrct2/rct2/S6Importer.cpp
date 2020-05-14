@@ -1497,7 +1497,7 @@ public:
         dst->voucher_type = src->voucher_type;
         dst->voucher_arguments = src->voucher_arguments;
         dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
-        dst->angriness = src->angriness;
+        dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;
         dst->DaysInQueue = src->days_in_queue;
         dst->BalloonColour = src->balloon_colour;

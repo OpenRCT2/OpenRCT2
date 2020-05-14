@@ -1498,7 +1498,7 @@ private:
         dst->voucher_type = src->voucher_type;
 
         dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
-        dst->angriness = src->angriness;
+        dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;
 
         for (size_t i = 0; i < 32; i++)

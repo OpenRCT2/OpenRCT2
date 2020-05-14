@@ -750,8 +750,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 nausea = 130;
         }
 
-        if (angriness != 0)
-            angriness--;
+        if (Angriness != 0)
+            Angriness--;
 
         if (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING)
         {
@@ -6292,7 +6292,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
 
     map_invalidate_tile_zoom1({ peep->NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
 
-    peep->angriness = 16;
+    peep->Angriness = 16;
 }
 
 /**
