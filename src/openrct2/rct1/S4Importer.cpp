@@ -1472,7 +1472,7 @@ private:
         dst->current_car = src->current_car;
         dst->current_seat = src->current_seat;
         dst->time_on_ride = src->time_on_ride;
-        dst->days_in_queue = src->days_in_queue;
+        dst->DaysInQueue = src->days_in_queue;
 
         dst->interaction_ride_index = src->interaction_ride_index;
 

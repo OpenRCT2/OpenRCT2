@@ -741,7 +741,7 @@ struct Peep : SpriteBase
     uint8_t surroundings_thought_timeout;
     uint8_t angriness;
     uint8_t time_lost; // the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8_t days_in_queue;
+    uint8_t DaysInQueue;
     uint8_t BalloonColour;
     uint8_t UmbrellaColour;
     uint8_t HatColour;

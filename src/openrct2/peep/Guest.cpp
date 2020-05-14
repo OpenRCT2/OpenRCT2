@@ -3872,7 +3872,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     }
 
     sub_state = PEEP_RIDE_LEAVE_ENTRANCE;
-    uint8_t queueTime = days_in_queue;
+    uint8_t queueTime = DaysInQueue;
     if (queueTime < 253)
         queueTime += 3;
 

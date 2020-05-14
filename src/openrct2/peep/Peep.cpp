@@ -1482,9 +1482,9 @@ void peep_update_days_in_queue()
     {
         if (peep->outside_of_park == 0 && peep->state == PEEP_STATE_QUEUING)
         {
-            if (peep->days_in_queue < 255)
+            if (peep->DaysInQueue < 255)
             {
-                peep->days_in_queue += 1;
+                peep->DaysInQueue += 1;
             }
         }
     }
@@ -2435,7 +2435,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         peep->current_ride = rideIndex;
         peep->current_ride_station = stationNum;
-        peep->days_in_queue = 0;
+        peep->DaysInQueue = 0;
         peep->SetState(PEEP_STATE_QUEUING);
         peep->sub_state = 11;
         peep->time_in_queue = 0;
@@ -2865,7 +2865,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->current_ride = rideIndex;
                     peep->current_ride_station = stationNum;
                     peep->state = PEEP_STATE_QUEUING;
-                    peep->days_in_queue = 0;
+                    peep->DaysInQueue = 0;
                     peep_window_state_update(peep);
 
                     peep->sub_state = 10;
