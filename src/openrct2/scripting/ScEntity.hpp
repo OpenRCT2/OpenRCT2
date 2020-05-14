@@ -20,6 +20,8 @@
 #    include "ScriptEngine.h"
 
 #    include <algorithm>
+#    include <string_view>
+#    include <unordered_map>
 
 namespace OpenRCT2::Scripting
 {
@@ -174,6 +176,34 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    static const DukEnumMap<uint32_t> PeepFlagMap({
+        { "leavingPark", PEEP_FLAGS_LEAVING_PARK },
+        { "slowWalk", PEEP_FLAGS_SLOW_WALK },
+        { "tracking", PEEP_FLAGS_TRACKING },
+        { "waving", PEEP_FLAGS_WAVING },
+        { "hasPaidForParkEntry", PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY },
+        { "photo", PEEP_FLAGS_PHOTO },
+        { "painting", PEEP_FLAGS_PAINTING },
+        { "wow", PEEP_FLAGS_WOW },
+        { "litter", PEEP_FLAGS_LITTER },
+        { "lost", PEEP_FLAGS_LOST },
+        { "hunger", PEEP_FLAGS_HUNGER },
+        { "toilet", PEEP_FLAGS_TOILET },
+        { "crowded", PEEP_FLAGS_CROWDED },
+        { "happiness", PEEP_FLAGS_HAPPINESS },
+        { "nausea", PEEP_FLAGS_NAUSEA },
+        { "purple", PEEP_FLAGS_PURPLE },
+        { "pizza", PEEP_FLAGS_PIZZA },
+        { "explode", PEEP_FLAGS_EXPLODE },
+        { "rideShouldBeMarkedAsFavourite", PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE },
+        { "parkEntranceChosen", PEEP_FLAGS_PARK_ENTRANCE_CHOSEN },
+        { "contagious", PEEP_FLAGS_CONTAGIOUS },
+        { "joy", PEEP_FLAGS_JOY },
+        { "angry", PEEP_FLAGS_ANGRY },
+        { "iceCream", PEEP_FLAGS_ICE_CREAM },
+        { "hereWeAre", PEEP_FLAGS_HERE_WE_ARE },
+    });
+
     class ScPeep : public ScEntity
     {
     public:
@@ -187,10 +217,11 @@ namespace OpenRCT2::Scripting
             dukglue_set_base_class<ScEntity, ScPeep>(ctx);
             dukglue_register_property(ctx, &ScPeep::peepType_get, nullptr, "peepType");
             dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
-            dukglue_register_property(ctx, &ScPeep::flags_get, &ScPeep::flags_set, "flags");
             dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
             dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");
             dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
+            dukglue_register_method(ctx, &ScPeep::getFlag, "getFlag");
+            dukglue_register_method(ctx, &ScPeep::setFlag, "setFlag");
         }
 
     private:
@@ -219,19 +250,28 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t flags_get() const
+        bool getFlag(const std::string& key) const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->peep_flags : 0;
+            if (peep != nullptr)
+            {
+                auto mask = PeepFlagMap[key];
+                return (peep->peep_flags & mask) != 0;
+            }
+            return false;
         }
 
-        void flags_set(uint32_t value)
+        void setFlag(const std::string& key, bool value)
         {
             ThrowIfGameStateNotMutable();
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->peep_flags = value;
+                auto mask = PeepFlagMap[key];
+                if (value)
+                    peep->peep_flags |= mask;
+                else
+                    peep->peep_flags &= ~mask;
                 peep->Invalidate();
             }
         }

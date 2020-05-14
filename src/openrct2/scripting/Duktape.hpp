@@ -185,6 +185,46 @@ namespace OpenRCT2::Scripting
         DukStackFrame(DukStackFrame&&) = delete;
     };
 
+    /**
+     * Bi-directional map for converting between strings and enums / numbers.
+     */
+    template<typename T> class DukEnumMap
+    {
+    private:
+        std::unordered_map<std::string_view, T> _s2n;
+        std::unordered_map<T, std::string_view> _n2s;
+
+    public:
+        DukEnumMap(const std::initializer_list<std::pair<std::string_view, T>>& items)
+        {
+            _s2n = std::unordered_map<std::string_view, T>(items.begin(), items.end());
+            for (const auto& kvp : items)
+            {
+                _n2s.emplace(std::get<1>(kvp), std::get<0>(kvp));
+            }
+        }
+
+        std::string_view operator[](T k) const
+        {
+            auto it = _n2s.find(k);
+            if (it == _n2s.end())
+            {
+                return "";
+            }
+            return it->second;
+        }
+
+        T operator[](const std::string_view& k) const
+        {
+            auto it = _s2n.find(k);
+            if (it == _s2n.end())
+            {
+                return 0;
+            }
+            return it->second;
+        }
+    };
+
     inline duk_ret_t duk_json_decode_wrapper(duk_context* ctx, void*)
     {
         duk_json_decode(ctx, -1);

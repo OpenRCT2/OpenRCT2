@@ -731,11 +731,6 @@ declare global {
         name: string;
 
         /**
-         * Main flags for peep behaviour.
-         */
-        flags: number;
-
-        /**
          * The peep's direct destination.
          */
         destination: CoordsXY;
@@ -749,7 +744,47 @@ declare global {
          * The target energy value. Energy will increase / decrease slowly towards this value.
          */
         energyTarget: number;
+
+        /**
+         * Gets whether a given flag is set or not.
+         * @param key The flag to test.
+         */
+        getFlag(key: PeepFlags): boolean;
+
+        /**
+         * Sets the given flag to the given value.
+         * @param key The flag to set.
+         * @param value Whether to set or clear the flag.
+         */
+        setFlag(key: PeepFlags, value: boolean): void;
     }
+
+    type PeepFlags =
+        "leavingPark" |
+        "slowWalk" |
+        "tracking" |
+        "waving" |
+        "hasPaidForParkEntry" |
+        "photo" |
+        "painting" |
+        "wow" |
+        "litter" |
+        "lost" |
+        "hunger" |
+        "toilet" |
+        "crowded" |
+        "happiness" |
+        "nausea" |
+        "purple" |
+        "pizza" |
+        "explode" |
+        "rideShouldBeMarkedAsFavourite" |
+        "parkEntranceChosen" |
+        "contagious" |
+        "joy" |
+        "angry" |
+        "iceCream" |
+        "hereWeAre";
 
     type PeepType = "guest" | "staff";
 
