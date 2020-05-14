@@ -1542,12 +1542,12 @@ private:
         // Set it to N/A if the save comes from the original or AA.
         if (_gameVersion == FILE_VERSION_RCT1_LL)
         {
-            dst->favourite_ride = src->favourite_ride;
+            dst->FavouriteRide = src->favourite_ride;
             dst->FavouriteRideRating = src->favourite_ride_rating;
         }
         else
         {
-            dst->favourite_ride = RIDE_ID_NULL;
+            dst->FavouriteRide = RIDE_ID_NULL;
             dst->FavouriteRideRating = 0;
         }
 

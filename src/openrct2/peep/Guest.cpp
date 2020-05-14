@@ -1787,7 +1787,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     if (peep_flags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE)
     {
         peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-        favourite_ride = rideIndex;
+        FavouriteRide = rideIndex;
         // TODO fix this flag name or add another one
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }

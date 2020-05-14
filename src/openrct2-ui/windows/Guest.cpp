@@ -1698,9 +1698,9 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
     set_format_arg(0, rct_string_id, STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
-    if (peep->favourite_ride != RIDE_ID_NULL)
+    if (peep->FavouriteRide != RIDE_ID_NULL)
     {
-        auto ride = get_ride(peep->favourite_ride);
+        auto ride = get_ride(peep->FavouriteRide);
         if (ride != nullptr)
         {
             ride->FormatNameTo(gCommonFormatArgs);

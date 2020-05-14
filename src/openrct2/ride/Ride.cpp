@@ -324,9 +324,9 @@ void ride_update_favourited_stat()
 
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->favourite_ride != RIDE_ID_NULL)
+        if (peep->FavouriteRide != RIDE_ID_NULL)
         {
-            auto ride = get_ride(peep->favourite_ride);
+            auto ride = get_ride(peep->FavouriteRide);
             if (ride != nullptr)
             {
                 ride->guests_favourite++;
