@@ -1656,7 +1656,7 @@ loc_69B221:
         tshirt_colour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_HAT)
-        hat_colour = ride->track_colour[0].main;
+        HatColour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_BALLOON)
         balloon_colour = ride->track_colour[0].main;

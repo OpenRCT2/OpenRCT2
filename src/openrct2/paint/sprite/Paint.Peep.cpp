@@ -87,7 +87,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
 
     if (baseImageId >= 10717 && baseImageId < 10749)
     {
-        imageId = (baseImageId + 32) | peep->hat_colour << 19 | IMAGE_TYPE_REMAP;
+        imageId = (baseImageId + 32) | peep->HatColour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }
