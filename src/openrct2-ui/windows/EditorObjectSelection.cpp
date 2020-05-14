@@ -785,7 +785,8 @@ static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetinde
 {
     if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
     {
-        set_format_arg(0, rct_string_id, ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
     }
 }
 
@@ -823,7 +824,8 @@ static void window_editor_object_selection_invalidate(rct_window* w)
         w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
 
     // Set window title and buttons
-    set_format_arg(0, rct_string_id, ObjectSelectionPages[w->selected_tab].Caption);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(ObjectSelectionPages[w->selected_tab].Caption);
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         w->widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;

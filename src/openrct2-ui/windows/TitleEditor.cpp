@@ -1125,7 +1125,6 @@ static void window_title_editor_add_park_callback(int32_t result, const utf8* pa
     {
         free(_renameSavePath);
         _renameSavePath = _strdup(filename);
-        // set_format_arg(0, intptr_t, static_cast<intptr_t>(&_renameSavePath));
         rct_window* w = window_find_by_class(WC_TITLE_EDITOR);
         window_text_input_open(
             w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING,

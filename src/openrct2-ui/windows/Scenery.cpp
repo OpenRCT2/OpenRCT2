@@ -921,6 +921,8 @@ void window_scenery_scrollmouseover(rct_window* w, int32_t scrollIndex, const Sc
  */
 void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
+    auto ft = Formatter::Common();
+
     switch (widgetIndex)
     {
         case WIDX_SCENERY_TAB_1:
@@ -942,10 +944,10 @@ void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_stri
         case WIDX_SCENERY_TAB_17:
         case WIDX_SCENERY_TAB_18:
         case WIDX_SCENERY_TAB_19:
-            set_format_arg(0, rct_string_id, get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
+            ft.Add<rct_string_id>(get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
             break;
         case WIDX_SCENERY_TAB_20:
-            set_format_arg(0, rct_string_id, STR_MISCELLANEOUS);
+            ft.Add<rct_string_id>(STR_MISCELLANEOUS);
             break;
     }
 }
@@ -1171,18 +1173,19 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
         price = gSceneryPlaceCost;
     }
 
-    set_format_arg(0, uint32_t, price);
-
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        auto ft = Formatter::Common();
+        ft.Add<uint32_t>(price);
+
         // -14
         gfx_draw_string_right(
             dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 0x1A,
             w->windowPos.y + w->height - 13);
     }
 
-    set_format_arg(
-        0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
     gfx_draw_string_left_clipped(
         dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 3, w->windowPos.y + w->height - 13,
         w->width - 19);

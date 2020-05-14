@@ -970,8 +970,9 @@ static void window_new_ride_paint_ride_information(
 
     // Ride name and description
     rideNaming = get_ride_naming(item.Type, rideEntry);
-    set_format_arg(0, rct_string_id, rideNaming.name);
-    set_format_arg(2, rct_string_id, rideNaming.description);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(rideNaming.name);
+    ft.Add<rct_string_id>(rideNaming.description);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];

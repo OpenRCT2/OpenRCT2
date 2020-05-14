@@ -958,8 +958,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
 
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char*, parkName);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(parkName);
         gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
     }
 
@@ -968,9 +969,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->windowPos.y + w->widgets[WIDX_SCENARIO_NAME].top;
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, gS6Info.name);
-
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(gS6Info.name);
     gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Scenario details label
@@ -983,9 +984,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->windowPos.y + w->widgets[WIDX_DETAILS].top + 10;
     width = w->widgets[WIDX_DETAILS].left - 4;
 
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, gS6Info.details);
-
+    ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(gS6Info.details);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label

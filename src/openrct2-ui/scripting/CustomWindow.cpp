@@ -648,7 +648,8 @@ namespace OpenRCT2::Ui::Windows
         window_custom_set_pressed_tab(w);
 
         const auto& desc = GetInfo(w).Desc;
-        set_format_arg(0, void*, desc.Title.c_str());
+        auto ft = Formatter::Common();
+        ft.Add<void*>(desc.Title.c_str());
 
         auto& info = GetInfo(w);
         size_t scrollIndex = 0;

@@ -2270,7 +2270,8 @@ static void window_ride_construction_invalidate(rct_window* w)
             stringId = STR_BOOSTER;
         }
     }
-    set_format_arg(0, uint16_t, stringId);
+    auto ft = Formatter::Common();
+    ft.Add<uint16_t>(stringId);
 
     if (_currentlyShowingBrakeOrBoosterSpeed)
     {
@@ -2279,7 +2280,7 @@ static void window_ride_construction_invalidate(rct_window* w)
         {
             brakeSpeed2 = get_booster_speed(ride->type, brakeSpeed2);
         }
-        set_format_arg(2, uint16_t, brakeSpeed2);
+        ft.Add<uint16_t>(brakeSpeed2);
     }
 
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings

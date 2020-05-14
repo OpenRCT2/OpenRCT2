@@ -144,7 +144,8 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
     {
         stringId = STR_STRING_TOOLTIP;
-        set_format_arg(0, const char*, widget->sztooltip);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(widget->sztooltip);
     }
 
     if (stringId == STR_NONE)

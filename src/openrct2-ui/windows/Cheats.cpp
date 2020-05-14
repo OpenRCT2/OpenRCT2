@@ -1132,6 +1132,8 @@ static void window_cheats_invalidate(rct_window* w)
     // Set title
     w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
 
+    auto ft = Formatter::Common();
+
     switch (w->page)
     {
         case WINDOW_CHEATS_PAGE_MONEY:
@@ -1152,7 +1154,7 @@ static void window_cheats_invalidate(rct_window* w)
         }
         break;
         case WINDOW_CHEATS_PAGE_GUESTS:
-            set_format_arg(0, int32_t, 10000);
+            ft.Add<int32_t>(MONEY(1000, 00));
             widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
             widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
             widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
@@ -1166,7 +1168,7 @@ static void window_cheats_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
         case WINDOW_CHEATS_PAGE_RIDES:
-            set_format_arg(0, uint16_t, 255);
+            ft.Add<uint16_t>(255);
             widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
             widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
             widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
@@ -1197,7 +1199,8 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
         uint8_t colour = w->colours[1];
-        set_format_arg(0, money32, _moneySpinnerValue);
+        auto ft = Formatter::Common();
+        ft.Add<money32>(_moneySpinnerValue);
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;

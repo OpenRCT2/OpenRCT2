@@ -509,7 +509,8 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
  */
 static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char*, _trackDesign->name.c_str());
+    auto ft = Formatter::Common();
+    ft.Add<char*>(_trackDesign->name.c_str());
     window_draw_widgets(w, dpi);
 
     // Draw mini tile preview
