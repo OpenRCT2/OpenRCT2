@@ -81,7 +81,7 @@ bool news_item_is_queue_empty()
 void news_item_init_queue()
 {
     news_item_get(0)->Type = NEWS_ITEM_NULL;
-    news_item_get(11)->Type = NEWS_ITEM_NULL;
+    news_item_get(NEWS_ITEM_HISTORY_START)->Type = NEWS_ITEM_NULL;
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
@@ -164,11 +164,11 @@ void news_item_close_current()
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < NEWS_ITEM_HISTORY_START - 1; i++)
     {
         newsItems[i] = newsItems[i + 1];
     }
-    newsItems[10].Type = NEWS_ITEM_NULL;
+    newsItems[NEWS_ITEM_HISTORY_START - 1].Type = NEWS_ITEM_NULL;
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -177,7 +177,7 @@ void news_item_close_current()
 
 static void news_item_shift_history_up()
 {
-    const int32_t history_idx = 11;
+    const int32_t history_idx = NEWS_ITEM_HISTORY_START;
     NewsItem* history_start = news_item_get(history_idx);
     const size_t count = sizeof(NewsItem) * (MAX_NEWS_ITEMS - 1 - history_idx);
     memmove(history_start, history_start + 1, count);
@@ -190,7 +190,7 @@ static void news_item_shift_history_up()
 static int32_t news_item_get_new_history_slot()
 {
     // Find an available history news item slot
-    for (int32_t i = 11; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             return i;
@@ -301,7 +301,7 @@ static NewsItem* news_item_first_open_queue_slot()
 
     while (newsItem->Type != NEWS_ITEM_NULL)
     {
-        if (newsItem + 1 >= &gNewsItems[10])
+        if (newsItem + 1 >= &gNewsItems[NEWS_ITEM_HISTORY_START - 1])
             news_item_close_current();
         else
             newsItem++;
@@ -438,7 +438,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
 void news_item_disable_news(uint8_t type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    for (int32_t i = 0; i < 11; i++)
+    for (int32_t i = 0; i < NEWS_ITEM_HISTORY_START; i++)
     {
         if (!news_item_is_empty(i))
         {
@@ -459,7 +459,7 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
         }
     }
 
-    for (int32_t i = 11; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
     {
         if (!news_item_is_empty(i))
         {
@@ -483,4 +483,21 @@ void news_item_add_to_queue_custom(NewsItem* newNewsItem)
     *newsItem = *newNewsItem;
     newsItem++;
     newsItem->Type = NEWS_ITEM_NULL;
+}
+
+void news_item_remove(int32_t index)
+{
+    if (index < 0 || index >= MAX_NEWS_ITEMS)
+        return;
+
+    // News item is already null, no need to remove it
+    if (gNewsItems[index].Type == NEWS_ITEM_NULL)
+        return;
+
+    size_t newsBoundary = index < NEWS_ITEM_HISTORY_START ? NEWS_ITEM_HISTORY_START : MAX_NEWS_ITEMS;
+    for (size_t i = index; i < newsBoundary - 1; i++)
+    {
+        gNewsItems[i] = gNewsItems[i + 1];
+    }
+    gNewsItems[newsBoundary - 1].Type = NEWS_ITEM_NULL;
 }

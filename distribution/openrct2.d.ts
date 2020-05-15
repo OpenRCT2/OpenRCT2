@@ -896,7 +896,34 @@ declare global {
         "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart";
 
     interface ParkMessage {
+        /**
+         * Whether the message has been shown and archived.
+         */
+        readonly isArchived: boolean;
+
+        /**
+         * The date this message was posted in total elapsed months.
+         */
+        month: number;
+
+        /**
+         * The day of the month this message was posted.
+         */
+        day: number;
+
+        /**
+         * How old the message is in number of ticks.
+         */
+        tickCount: number;
+
+        /**
+         * The format of the message such as the icon and whether location is enabled.
+         */
         type: ParkMessageType;
+
+        /**
+         * The actual message content.
+         */
         text: string;
 
         /**
@@ -905,6 +932,17 @@ declare global {
          * Researched item for research.
          */
         subject?: number;
+
+        /**
+         * Removes the message.
+         */
+        remove(): void;
+    }
+
+    interface ParkMessageDesc  {
+        type: ParkMessageType;
+        text: string;
+        subject?: number;
     }
 
     interface Park {
@@ -912,9 +950,10 @@ declare global {
         rating: number;
         bankLoan: number;
         maxBankLoan: number;
+        messages: ParkMessage[];
 
         postMessage(message: string): void;
-        postMessage(message: ParkMessage): void;
+        postMessage(message: ParkMessageDesc): void;
     }
 
     interface Cheats {

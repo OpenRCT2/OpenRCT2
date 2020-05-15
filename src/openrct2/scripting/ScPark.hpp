@@ -13,6 +13,7 @@
 
 #    include "../Context.h"
 #    include "../common.h"
+#    include "../core/String.hpp"
 #    include "../management/Finance.h"
 #    include "../management/NewsItem.h"
 #    include "../windows/Intent.h"
@@ -24,6 +25,204 @@
 
 namespace OpenRCT2::Scripting
 {
+    static constexpr const char* ParkMessageTypeStrings[] = {
+        "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart",
+    };
+
+    inline uint8_t GetParkMessageType(const std::string& key)
+    {
+        auto it = std::find(std::begin(ParkMessageTypeStrings), std::end(ParkMessageTypeStrings), key);
+        return it != std::end(ParkMessageTypeStrings)
+            ? static_cast<uint8_t>(NEWS_ITEM_RIDE + std::distance(std::begin(ParkMessageTypeStrings), it))
+            : static_cast<uint8_t>(NEWS_ITEM_BLANK);
+    }
+
+    inline std::string GetParkMessageType(uint8_t type)
+    {
+        // Decrement 1 as ParkMessageTypeStrings doesn't contain the null type
+        type--;
+        if (type < std::size(ParkMessageTypeStrings))
+        {
+            return ParkMessageTypeStrings[type];
+        }
+        return {};
+    }
+
+    template<> inline NewsItem FromDuk(const DukValue& value)
+    {
+        NewsItem result{};
+        result.Type = GetParkMessageType(value["type"].as_string());
+        result.Assoc = value["subject"].as_int();
+        result.Ticks = value["tickCount"].as_int();
+        result.MonthYear = value["month"].as_int();
+        result.Day = value["day"].as_int();
+
+        auto text = language_convert_string(value["text"].as_string());
+        String::Set(result.Text, sizeof(result.Text), text.c_str());
+        return result;
+    }
+
+    class ScParkMessage
+    {
+    private:
+        size_t _index{};
+
+    public:
+        ScParkMessage(size_t index)
+            : _index(index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScParkMessage::isArchived_get, nullptr, "isArchived");
+            dukglue_register_property(ctx, &ScParkMessage::month_get, &ScParkMessage::month_set, "month");
+            dukglue_register_property(ctx, &ScParkMessage::day_get, &ScParkMessage::day_set, "day");
+            dukglue_register_property(ctx, &ScParkMessage::tickCount_get, &ScParkMessage::tickCount_set, "tickCount");
+            dukglue_register_property(ctx, &ScParkMessage::type_get, &ScParkMessage::type_set, "type");
+            dukglue_register_property(ctx, &ScParkMessage::subject_get, &ScParkMessage::subject_set, "subject");
+            dukglue_register_property(ctx, &ScParkMessage::text_get, &ScParkMessage::text_set, "text");
+            dukglue_register_method(ctx, &ScParkMessage::remove, "remove");
+        }
+
+    private:
+        NewsItem* GetMessage() const
+        {
+            return &gNewsItems[_index];
+        }
+
+        bool isArchived_get() const
+        {
+            return _index >= NEWS_ITEM_HISTORY_START;
+        }
+
+        uint16_t month_get() const
+        {
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                return msg->MonthYear;
+            }
+            return 0;
+        }
+
+        void month_set(uint16_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                msg->MonthYear = value;
+            }
+        }
+
+        uint8_t day_get() const
+        {
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                return msg->Day;
+            }
+            return 0;
+        }
+
+        void day_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                msg->Day = value;
+            }
+        }
+
+        uint16_t tickCount_get() const
+        {
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                return msg->Ticks;
+            }
+            return 0;
+        }
+
+        void tickCount_set(uint16_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                msg->Ticks = value;
+            }
+        }
+
+        std::string type_get() const
+        {
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                return GetParkMessageType(msg->Type);
+            }
+            return {};
+        }
+
+        void type_set(const std::string& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                msg->Type = GetParkMessageType(value);
+            }
+        }
+
+        uint32_t subject_get() const
+        {
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                return msg->Assoc;
+            }
+            return 0;
+        }
+
+        void subject_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                msg->Assoc = value;
+            }
+        }
+
+        std::string text_get() const
+        {
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                return language_convert_string_to_tokens(msg->Text);
+            }
+            return 0;
+        }
+
+        void text_set(const std::string& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto msg = GetMessage();
+            if (msg != nullptr)
+            {
+                auto text = language_convert_string(value);
+                String::Set(msg->Text, sizeof(msg->Text), text.c_str());
+            }
+        }
+
+        void remove()
+        {
+            news_item_remove(static_cast<int32_t>(_index));
+        }
+    };
+
     class ScPark
     {
     public:
@@ -75,6 +274,61 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
+        std::vector<std::shared_ptr<ScParkMessage>> messages_get() const
+        {
+            std::vector<std::shared_ptr<ScParkMessage>> result;
+            for (int32_t i = 0; i < NEWS_ITEM_HISTORY_START; i++)
+            {
+                if (news_item_is_empty(i))
+                    break;
+                result.push_back(std::make_shared<ScParkMessage>(i));
+            }
+            for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
+            {
+                if (news_item_is_empty(i))
+                    break;
+                result.push_back(std::make_shared<ScParkMessage>(i));
+            }
+            return result;
+        }
+
+        void messages_set(const std::vector<DukValue>& value)
+        {
+            int32_t index = 0;
+            int32_t archiveIndex = NEWS_ITEM_HISTORY_START;
+            for (const auto& item : value)
+            {
+                auto isArchived = item["isArchived"].as_bool();
+                auto newsItem = FromDuk<NewsItem>(item);
+                if (isArchived)
+                {
+                    if (archiveIndex < MAX_NEWS_ITEMS)
+                    {
+                        gNewsItems[archiveIndex] = newsItem;
+                        archiveIndex++;
+                    }
+                }
+                else
+                {
+                    if (index < NEWS_ITEM_HISTORY_START)
+                    {
+                        gNewsItems[index] = newsItem;
+                        index++;
+                    }
+                }
+            }
+
+            // End the lists by setting next item to null
+            if (index < NEWS_ITEM_HISTORY_START)
+            {
+                gNewsItems[index].Type = NEWS_ITEM_NULL;
+            }
+            if (archiveIndex < MAX_NEWS_ITEMS)
+            {
+                gNewsItems[archiveIndex].Type = NEWS_ITEM_NULL;
+            }
+        }
+
         void postMessage(DukValue message)
         {
             ThrowIfGameStateNotMutable();
@@ -116,24 +370,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::rating_get, &ScPark::rating_set, "rating");
             dukglue_register_property(ctx, &ScPark::bankLoan_get, &ScPark::bankLoan_set, "bankLoan");
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
+            dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
-        }
-
-    private:
-        static uint8_t GetParkMessageType(const std::string& key)
-        {
-            static auto keys = { "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award",
-                                 "chart" };
-            uint8_t i = 0;
-            for (const auto& k : keys)
-            {
-                if (k == key)
-                {
-                    return NEWS_ITEM_RIDE + i;
-                }
-                i++;
-            }
-            return NEWS_ITEM_BLANK;
         }
     };
 } // namespace OpenRCT2::Scripting

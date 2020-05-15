@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,8 @@ struct NewsItem
     utf8 Text[256];
 };
 
-#define MAX_NEWS_ITEMS 61
+constexpr int32_t NEWS_ITEM_HISTORY_START = 11;
+constexpr int32_t MAX_NEWS_ITEMS = 61;
 
 extern const uint8_t news_type_properties[10];
 
@@ -82,3 +83,4 @@ bool news_item_is_queue_empty();
 bool news_item_is_valid_idx(int32_t index);
 
 void news_item_add_to_queue_custom(NewsItem* newNewsItem);
+void news_item_remove(int32_t index);
