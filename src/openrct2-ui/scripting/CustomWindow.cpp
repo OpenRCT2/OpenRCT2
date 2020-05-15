@@ -581,6 +581,18 @@ namespace OpenRCT2::Ui::Windows
             }
             InvokeEventHandler(info.Owner, info.Desc.OnUpdate);
         }
+
+        // Since the plugin may alter widget positions and sizes during an update event,
+        // we need to force an update for all list view scrollbars
+        rct_widgetindex widgetIndex = 0;
+        for (auto widget = w->widgets; widget->type != WWT_EMPTY; widget++)
+        {
+            if (widget->type == WWT_SCROLL)
+            {
+                widget_scroll_update_thumbs(w, widgetIndex);
+            }
+            widgetIndex++;
+        }
     }
 
     static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
