@@ -35,19 +35,16 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
     const auto& a = *this;
     const auto& b = other;
 
-    // Order by Favourite
     if (a.Favourite != b.Favourite)
     {
         return a.Favourite ? -1 : 1;
     }
 
-    // Order by Local
     if (a.Local != b.Local)
     {
         return a.Local ? -1 : 1;
     }
 
-    // Then by version
     bool serverACompatible = a.Version == network_get_version();
     bool serverBCompatible = b.Version == network_get_version();
     if (serverACompatible != serverBCompatible)
@@ -55,19 +52,16 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return serverACompatible ? -1 : 1;
     }
 
-    // Then by password protection
     if (a.RequiresPassword != b.RequiresPassword)
     {
         return a.RequiresPassword ? 1 : -1;
     }
 
-    // Then by number of Players
     if (a.Players != b.Players)
     {
         return a.Players > b.Players ? -1 : 1;
     }
 
-    // Then by name
     return String::Compare(a.Name, b.Name, true);
 }
 
@@ -201,7 +195,7 @@ void ServerList::ReadAndAddFavourites()
 
 void ServerList::WriteFavourites() const
 {
-    // Save just Favourite servers
+    // Save just favourite servers
     std::vector<ServerListEntry> favouriteServers;
     std::copy_if(
         _serverEntries.begin(), _serverEntries.end(), std::back_inserter(favouriteServers),
