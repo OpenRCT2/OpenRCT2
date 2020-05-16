@@ -5113,7 +5113,7 @@ void Guest::UpdateRideShopLeave()
             return;
     }
 
-    SetState(PEEP_STATE_WALKING);
+    SetState(PEEP_STATE_FALLING);
 
     auto ride = get_ride(current_ride);
     if (ride != nullptr)
