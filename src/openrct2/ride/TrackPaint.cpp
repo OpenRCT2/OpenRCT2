@@ -2218,6 +2218,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 }
 
+#ifdef __ENABLE_LIGHTFX__
 void track_paint_add_kiosk_lights(CoordsXY mapPosition, uint8_t direction, int32_t height, uint8_t zOffset)
 {
     switch (get_current_rotation())
@@ -2335,3 +2336,4 @@ void track_paint_add_shop_lights(CoordsXY mapPosition, uint8_t direction, int32_
             break;
     }
 }
+#endif
