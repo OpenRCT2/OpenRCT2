@@ -183,28 +183,27 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
 {
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    int32_t x = 245;
-    int32_t y = 2;
+    auto screenCoords = ScreenCoordsXY{ 245, 2 };
 
     for (size_t i = 0; i < std::size(music_credits); i++)
     {
-        gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, nullptr);
-        y += lineHeight;
+        gfx_draw_string_centred(dpi, music_credits[i], screenCoords, COLOUR_BLACK, nullptr);
+        screenCoords.y += lineHeight;
     }
 
     // Add 4 more space before "Original recordings ...".
-    y += 4;
-    gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, COLOUR_BLACK, nullptr);
-    y += lineHeight;
+    screenCoords.y += 4;
+    gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, screenCoords, COLOUR_BLACK, nullptr);
+    screenCoords.y += lineHeight;
 
     // Draw the separator
-    y += 5;
-    gfx_fill_rect_inset(dpi, 4, y, 484, y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
-    y += lineHeight + 1;
+    screenCoords.y += 5;
+    gfx_fill_rect_inset(dpi, 4, screenCoords.y, 484, screenCoords.y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+    screenCoords.y += lineHeight + 1;
 
     for (size_t i = 0; i < std::size(music_credits_rct2); i++)
     {
-        gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, nullptr);
-        y += lineHeight;
+        gfx_draw_string_centred(dpi, music_credits_rct2[i], screenCoords, COLOUR_BLACK, nullptr);
+        screenCoords.y += lineHeight;
     }
 }

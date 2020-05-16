@@ -15,13 +15,14 @@
 static void graph_draw_months_uint8_t(
     rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
 {
-    int32_t i, x, y, yearOver32, currentMonth, currentDay;
+    int32_t i, yearOver32, currentMonth, currentDay;
+    ScreenCoordsXY screenCoords;
 
     currentMonth = date_get_month(gDateMonthsElapsed);
     currentDay = gDateMonthTicks;
     yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-    x = baseX;
-    y = baseY;
+    screenCoords.x = baseX;
+    screenCoords.y = baseY;
     for (i = count - 1; i >= 0; i--)
     {
         if (history[i] != 255 && yearOver32 % 4 == 0)
@@ -29,14 +30,14 @@ static void graph_draw_months_uint8_t(
             // Draw month text
             auto ft = Formatter::Common();
             ft.Add<uint32_t>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
-            gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, gCommonFormatArgs);
+            gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, screenCoords - ScreenCoordsXY{ 0, 10 }, COLOUR_BLACK, gCommonFormatArgs);
 
             // Draw month mark
-            gfx_fill_rect(dpi, x, y, x, y + 3, PALETTE_INDEX_10);
+            gfx_fill_rect(dpi, screenCoords.x, screenCoords.y, screenCoords.x, screenCoords.y + 3, PALETTE_INDEX_10);
         }
 
         yearOver32 = (yearOver32 + 1) % 32;
-        x += 6;
+        screenCoords.x += 6;
     }
 }
 
@@ -104,27 +105,26 @@ void graph_draw_uint8_t(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count,
 static void graph_draw_months_money32(
     rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY)
 {
-    int32_t i, x, y, yearOver32, currentMonth, currentDay;
+    int32_t i, yearOver32, currentMonth, currentDay;
 
     currentMonth = date_get_month(gDateMonthsElapsed);
     currentDay = gDateMonthTicks;
     yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-    x = baseX;
-    y = baseY;
+    auto screenCoords = ScreenCoordsXY{ baseX, baseY };
     for (i = count - 1; i >= 0; i--)
     {
         if (history[i] != MONEY32_UNDEFINED && yearOver32 % 4 == 0)
         {
             // Draw month text
             int32_t monthFormat = DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)];
-            gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, &monthFormat);
+            gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, screenCoords - ScreenCoordsXY{ 0, 10 }, COLOUR_BLACK, &monthFormat);
 
             // Draw month mark
-            gfx_fill_rect(dpi, x, y, x, y + 3, PALETTE_INDEX_10);
+            gfx_fill_rect(dpi, screenCoords.x, screenCoords.y, screenCoords.x, screenCoords.y + 3, PALETTE_INDEX_10);
         }
 
         yearOver32 = (yearOver32 + 1) % 32;
-        x += 6;
+        screenCoords.x += 6;
     }
 }
 
@@ -294,7 +294,7 @@ static void graph_draw_hovered_value(
     }
 
     gfx_draw_string_centred(
-        dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, info.coords.x, info.coords.y - 16, COLOUR_BLACK, &info.money);
+        dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, { info.coords.x, info.coords.y - 16 }, COLOUR_BLACK, &info.money);
 
     gfx_fill_rect(dpi, info.coords.x - 2, info.coords.y - 2, info.coords.x + 2, info.coords.y + 2, PALETTE_INDEX_10);
     gfx_fill_rect(dpi, info.coords.x - 1, info.coords.y - 1, info.coords.x + 1, info.coords.y + 1, PALETTE_INDEX_21);

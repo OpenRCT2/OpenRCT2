@@ -604,7 +604,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 {
                     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
                 }
-                gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, gCommonFormatArgs);
+                gfx_draw_string_centred(dpi, format, ScreenCoordsXY{ wide ? 270 : 210, y + 1 }, colour, gCommonFormatArgs);
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -624,7 +624,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(buffer);
                     gfx_draw_string_centred(
-                        dpi, format, wide ? 270 : 210, y + scenarioTitleHeight + 1, COLOUR_BLACK, gCommonFormatArgs);
+                        dpi, format, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, COLOUR_BLACK, gCommonFormatArgs);
                 }
 
                 y += scenarioItemHeight;
@@ -643,7 +643,7 @@ static void draw_category_heading(
 
     // Draw string
     int32_t centreX = (left + right) / 2;
-    gfx_draw_string_centred(dpi, stringId, centreX, y, baseColour, nullptr);
+    gfx_draw_string_centred(dpi, stringId, ScreenCoordsXY{ centreX, y }, baseColour, nullptr);
 
     // Get string dimensions
     utf8* buffer = gCommonStringFormatBuffer;

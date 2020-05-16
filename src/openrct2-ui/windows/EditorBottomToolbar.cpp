@@ -459,7 +459,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + w->windowPos.x;
         int16_t stateY = w->height - 0x0C + w->windowPos.y;
         gfx_draw_string_centred(
-            dpi, EditorStepNames[gS6Info.editor_step], stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE,
+            dpi, EditorStepNames[gS6Info.editor_step], { stateX, stateY }, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE,
             nullptr);
 
         if (drawPreviousButton)
@@ -485,8 +485,8 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
-            gfx_draw_string_centred(dpi, STR_BACK_TO_PREVIOUS_STEP, textX, textY, textColour, nullptr);
-            gfx_draw_string_centred(dpi, stringId, textX, textY + 10, textColour, nullptr);
+            gfx_draw_string_centred(dpi, STR_BACK_TO_PREVIOUS_STEP, ScreenCoordsXY{ textX, textY }, textColour, nullptr);
+            gfx_draw_string_centred(dpi, stringId, ScreenCoordsXY{ textX, textY + 10 }, textColour, nullptr);
         }
 
         if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
@@ -512,8 +512,8 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
-            gfx_draw_string_centred(dpi, STR_FORWARD_TO_NEXT_STEP, textX, textY, textColour, nullptr);
-            gfx_draw_string_centred(dpi, stringId, textX, textY + 10, textColour, nullptr);
+            gfx_draw_string_centred(dpi, STR_FORWARD_TO_NEXT_STEP, ScreenCoordsXY{ textX, textY }, textColour, nullptr);
+            gfx_draw_string_centred(dpi, stringId, ScreenCoordsXY{ textX, textY + 10 }, textColour, nullptr);
         }
     }
 }

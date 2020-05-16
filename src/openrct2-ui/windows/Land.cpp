@@ -339,7 +339,8 @@ static void window_land_invalidate(rct_window* w)
  */
 static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y, numTiles;
+    ScreenCoordsXY screenCoords;
+    int32_t numTiles;
     money32 price;
     rct_widget* previewWidget = &window_land_widgets[WIDX_PREVIEW];
 
@@ -348,34 +349,34 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
-        y = w->windowPos.y + (previewWidget->top + previewWidget->bottom) / 2;
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
+        screenCoords.x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
+        screenCoords.y = w->windowPos.y + (previewWidget->top + previewWidget->bottom) / 2;
+        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
     }
     else if (gLandMountainMode)
     {
-        x = w->windowPos.x + previewWidget->left;
-        y = w->windowPos.y + previewWidget->top;
+        screenCoords.x = w->windowPos.x + previewWidget->left;
+        screenCoords.y = w->windowPos.y + previewWidget->top;
         int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
-        gfx_draw_sprite(dpi, sprite, x, y, 0);
+        gfx_draw_sprite(dpi, sprite, screenCoords.x, screenCoords.y, 0);
         widget_draw(dpi, w, WIDX_DECREMENT);
         widget_draw(dpi, w, WIDX_INCREMENT);
     }
 
-    x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
-    y = w->windowPos.y + previewWidget->bottom + 5;
+    screenCoords.x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
+    screenCoords.y = w->windowPos.y + previewWidget->bottom + 5;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Draw raise cost amount
         if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
-        y += 10;
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gLandToolRaiseCost);
+        screenCoords.y += 10;
 
         // Draw lower cost amount
         if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
-        y += 50;
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gLandToolLowerCost);
+        screenCoords.y += 50;
 
         // Draw paint price
         numTiles = gLandToolSize * gLandToolSize;
@@ -398,7 +399,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto ft = Formatter::Common();
             ft.Add<money32>(price);
-            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
+            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, gCommonFormatArgs);
         }
     }
 }

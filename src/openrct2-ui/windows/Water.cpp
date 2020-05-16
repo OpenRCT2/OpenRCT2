@@ -211,29 +211,29 @@ static void window_water_invalidate(rct_window* w)
  */
 static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y;
+    ScreenCoordsXY screenCoords;
 
-    x = w->windowPos.x + (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2;
-    y = w->windowPos.y + (window_water_widgets[WIDX_PREVIEW].top + window_water_widgets[WIDX_PREVIEW].bottom) / 2;
+    screenCoords.x = w->windowPos.x + (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2;
+    screenCoords.y = w->windowPos.y + (window_water_widgets[WIDX_PREVIEW].top + window_water_widgets[WIDX_PREVIEW].bottom) / 2;
 
     window_draw_widgets(w, dpi);
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
+        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Draw raise cost amount
-        x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->windowPos.x;
-        y = window_water_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5;
+        screenCoords.x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->windowPos.x;
+        screenCoords.y = window_water_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5;
         if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
-            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolRaiseCost);
-        y += 10;
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gWaterToolRaiseCost);
+        screenCoords.y += 10;
 
         // Draw lower cost amount
         if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
-            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gWaterToolLowerCost);
     }
 }

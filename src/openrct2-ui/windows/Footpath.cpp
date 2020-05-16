@@ -596,6 +596,7 @@ static void window_footpath_invalidate(rct_window* w)
  */
 static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    ScreenCoordsXY screenCoords;
     window_draw_widgets(w, dpi);
 
     if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT)))
@@ -618,26 +619,27 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image += pathType->image;
 
         // Draw construction image
-        int32_t x = w->windowPos.x
+        screenCoords.x = w->windowPos.x
             + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        int32_t y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
-        gfx_draw_sprite(dpi, image, x, y, 0);
+        screenCoords.y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
+        gfx_draw_sprite(dpi, image, screenCoords.x, screenCoords.y, 0);
 
         // Draw build this... label
-        x = w->windowPos.x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
-        gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, nullptr);
+        screenCoords.x = w->windowPos.x
+            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+        screenCoords.y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
+        gfx_draw_string_centred(dpi, STR_BUILD_THIS, screenCoords, COLOUR_BLACK, nullptr);
     }
 
     // Draw cost
-    int32_t x = w->windowPos.x
+    screenCoords.x = w->windowPos.x
         + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-    int32_t y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
+    screenCoords.y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
     if (_window_footpath_cost != MONEY32_UNDEFINED)
     {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, COLOUR_BLACK, &_window_footpath_cost);
+            gfx_draw_string_centred(dpi, STR_COST_LABEL, screenCoords, COLOUR_BLACK, &_window_footpath_cost);
         }
     }
 }
