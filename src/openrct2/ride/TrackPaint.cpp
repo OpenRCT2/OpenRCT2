@@ -2175,11 +2175,10 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             if (ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
                 zOffset = 23;
 
-            if (ride->type == RIDE_TYPE_FOOD_STALL || ride->type == RIDE_TYPE_DRINK_STALL || ride->type == RIDE_TYPE_SHOP
-                || ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
-                track_paint_add_shop_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
-            else if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
+            if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
                 track_paint_add_kiosk_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+                track_paint_add_shop_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
         }
 #endif
 
