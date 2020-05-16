@@ -1260,12 +1260,12 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
         {
             auto src = static_cast<const MoneyEffect*>(csrc);
             auto dst = static_cast<RCT12SpriteMoneyEffect*>(cdst);
-            dst->move_delay = src->move_delay;
-            dst->num_movements = src->num_movements;
-            dst->vertical = src->vertical;
-            dst->value = src->value;
-            dst->offset_x = src->offset_x;
-            dst->wiggle = src->wiggle;
+            dst->move_delay = src->MoveDelay;
+            dst->num_movements = src->NumMovements;
+            dst->vertical = src->Vertical;
+            dst->value = src->Value;
+            dst->offset_x = src->OffsetX;
+            dst->wiggle = src->Wiggle;
             break;
         }
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
