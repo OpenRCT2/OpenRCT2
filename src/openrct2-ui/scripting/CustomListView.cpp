@@ -24,6 +24,8 @@ using namespace OpenRCT2::Ui::Windows;
 
 namespace OpenRCT2::Scripting
 {
+    constexpr size_t COLUMN_HEADER_HEIGHT = LIST_ROW_HEIGHT + 1;
+
     template<> ColumnSortOrder FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::STRING)
@@ -212,27 +214,19 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
 
     if (!initialising)
     {
-        size_t scrollIndex = 0;
-        for (auto widget = ParentWindow->widgets; widget->type != WWT_LAST; widget++)
+        auto widget = GetWidget();
+        if (widget != nullptr)
         {
-            if (widget->type == WWT_SCROLL)
-            {
-                if (scrollIndex == ScrollIndex)
-                {
-                    if (value == ScrollbarType::Horizontal)
-                        widget->content = SCROLL_HORIZONTAL;
-                    else if (value == ScrollbarType::Vertical)
-                        widget->content = SCROLL_VERTICAL;
-                    else if (value == ScrollbarType::Both)
-                        widget->content = SCROLL_BOTH;
-                    else
-                        widget->content = 0;
-                }
-                scrollIndex++;
-            }
+            if (value == ScrollbarType::Horizontal)
+                widget->content = SCROLL_HORIZONTAL;
+            else if (value == ScrollbarType::Vertical)
+                widget->content = SCROLL_VERTICAL;
+            else if (value == ScrollbarType::Both)
+                widget->content = SCROLL_BOTH;
+            else
+                widget->content = 0;
         }
-        window_init_scroll_widgets(ParentWindow);
-        Invalidate();
+        RefreshScroll();
     }
 }
 
@@ -249,8 +243,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_init_scroll_widgets(ParentWindow);
-        Invalidate();
+        RefreshScroll();
     }
 }
 
@@ -277,8 +270,7 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_init_scroll_widgets(ParentWindow);
-        Invalidate();
+        RefreshScroll();
     }
 }
 
@@ -388,9 +380,6 @@ void CustomListView::Resize(const ScreenSize& size)
         }
         widthRemaining = std::max(0, widthRemaining - column.Width);
     }
-
-    window_init_scroll_widgets(ParentWindow);
-    Invalidate();
 }
 
 ScreenSize CustomListView::GetSize()
@@ -413,6 +402,37 @@ ScreenSize CustomListView::GetSize()
     if (Scrollbars == ScrollbarType::Vertical || Scrollbars == ScrollbarType::Both)
     {
         result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
+        if (ShowColumnHeaders)
+        {
+            result.height += COLUMN_HEADER_HEIGHT;
+        }
+    }
+
+    // If the list is getting bigger than the contents, pan towards top left scroll
+    auto widget = GetWidget();
+    if (widget != nullptr)
+    {
+        auto& scroll = ParentWindow->scrolls[ScrollIndex];
+
+        // Horizontal
+        auto left = result.width - widget->right + widget->left + 21;
+        if (left < 0)
+            left = 0;
+        if (left < scroll.h_left)
+        {
+            scroll.h_left = left;
+            Invalidate();
+        }
+
+        // Vertical
+        auto top = result.height - widget->bottom + widget->top + 21;
+        if (top < 0)
+            top = 0;
+        if (top < scroll.v_top)
+        {
+            scroll.v_top = top;
+            Invalidate();
+        }
     }
     return result;
 }
@@ -517,7 +537,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, paletteIndex);
 
-    int32_t y = ShowColumnHeaders ? LIST_ROW_HEIGHT + 1 : 0;
+    int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
     for (size_t i = 0; i < Items.size(); i++)
     {
         if (y > dpi->y + dpi->height)
@@ -665,7 +685,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         else
         {
             // Check what row we pressed
-            int32_t firstY = ShowColumnHeaders ? LIST_ROW_HEIGHT + 1 : 0;
+            int32_t firstY = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
             int32_t row = (pos.y - firstY) / LIST_ROW_HEIGHT;
             if (row >= 0 && row < static_cast<int32_t>(Items.size()))
             {
@@ -701,6 +721,29 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         }
     }
     return result;
+}
+
+void CustomListView::RefreshScroll()
+{
+    window_init_scroll_widgets(ParentWindow);
+    Invalidate();
+}
+
+rct_widget* CustomListView::GetWidget() const
+{
+    size_t scrollIndex = 0;
+    for (auto widget = ParentWindow->widgets; widget->type != WWT_LAST; widget++)
+    {
+        if (widget->type == WWT_SCROLL)
+        {
+            if (scrollIndex == ScrollIndex)
+            {
+                return widget;
+            }
+            scrollIndex++;
+        }
+    }
+    return nullptr;
 }
 
 void CustomListView::Invalidate()

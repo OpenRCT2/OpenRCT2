@@ -145,6 +145,8 @@ namespace OpenRCT2::Ui::Windows
             rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
             bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
+        void RefreshScroll();
+        rct_widget* GetWidget() const;
         void Invalidate();
     };
 } // namespace OpenRCT2::Ui::Windows
