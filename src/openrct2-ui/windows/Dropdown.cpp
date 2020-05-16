@@ -315,6 +315,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t cell_x, cell_y, l, t, r, b, item, image, colour;
 
+    ScreenCoordsXY coords;
+
     window_draw_widgets(w, dpi);
 
     int32_t highlightedIndex = gDropdownHighlightedIndex;
@@ -395,9 +397,11 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                         colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
                 // Draw item string
+                coords.x = w->windowPos.x + 2 + (cell_x * _dropdown_item_width);
+                coords.y = w->windowPos.y + 2 + (cell_y * _dropdown_item_height);
                 gfx_draw_string_left_clipped(
                     dpi, item, static_cast<void*>(&gDropdownItemsArgs[i]), colour,
-                    w->windowPos.x + 2 + (cell_x * _dropdown_item_width), w->windowPos.y + 2 + (cell_y * _dropdown_item_height),
+                    coords,
                     w->width - 5);
             }
         }

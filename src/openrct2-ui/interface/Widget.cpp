@@ -393,6 +393,7 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     int32_t l = w->windowPos.x + widget->left;
     int32_t r = w->windowPos.x + widget->right;
     int32_t t;
+    const ScreenCoordsXY coords = {l + 1, r - 1};
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_DROPDOWN || widget->type == WWT_SPINNER
         || widget->type == WWT_TABLE_HEADER)
@@ -413,7 +414,8 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
         stringId = STR_STRING;
         formatArgs = &widget->string;
     }
-    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, l + 1, t, r - l);
+    //gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, l + 1, t, r - l);
+    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, coords, t);
 }
 
 /**

@@ -1706,7 +1706,8 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ride->FormatNameTo(gCommonFormatArgs);
         }
     }
-    gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, x, y, w->width - 14);
+    ScreenCoordsXY coords = { x , y };
+    gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, coords, w->width - 14);
 }
 
 /**
