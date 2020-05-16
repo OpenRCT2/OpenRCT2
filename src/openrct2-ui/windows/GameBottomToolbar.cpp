@@ -423,7 +423,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + (widget.left + widget.right) / 2,
-            w->windowPos.y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6) };
+                                            w->windowPos.y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6) };
 
         auto ft = Formatter::Common();
         ft.Add<money32>(gCash);
@@ -451,7 +451,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + (widget.left + widget.right) / 2,
-            w->windowPos.y + (widget.top + widget.bottom) / 2 - 6 };
+                                            w->windowPos.y + (widget.top + widget.bottom) / 2 - 6 };
 
         gfx_draw_string_centred(
             dpi,
@@ -505,10 +505,10 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
-                 + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
-            / 2
-        + w->windowPos.x,
-        window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->windowPos.y + 2 };
+                                         + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
+                                                / 2
+                                            + w->windowPos.x,
+                                        window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->windowPos.y + 2 };
 
     // Date
     int32_t year = date_get_year(gDateMonthsElapsed) + 1;

@@ -814,9 +814,10 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_map_draw_tab_images(w, dpi);
 
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + (window_map_widgets[WIDX_LAND_TOOL].left
-        + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
-        w->windowPos.y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2 };
+    auto screenCoords = ScreenCoordsXY{
+        w->windowPos.x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
+        w->windowPos.y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2
+    };
 
     // Draw land tool size
     if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -851,7 +852,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
             for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
             {
-                gfx_fill_rect(dpi, screenCoords.x, screenCoords.y + 2, screenCoords.x + 6, screenCoords.y + 8, RideKeyColours[i]);
+                gfx_fill_rect(
+                    dpi, screenCoords.x, screenCoords.y + 2, screenCoords.x + 6, screenCoords.y + 8, RideKeyColours[i]);
                 gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords.x + LIST_ROW_HEIGHT, screenCoords.y);
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)

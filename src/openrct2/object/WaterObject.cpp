@@ -11,11 +11,11 @@
 
 #include "WaterObject.h"
 
-#include "../world/Location.hpp"
 #include "../OpenRCT2.h"
 #include "../core/IStream.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
+#include "../world/Location.hpp"
 #include "ObjectJsonHelpers.h"
 
 #include <memory>

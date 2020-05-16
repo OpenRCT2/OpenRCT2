@@ -237,7 +237,7 @@ static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
         auto screenCoords = ScreenCoordsXY { w->windowPos.x + (preview.left + preview.right) / 2,
-            w->windowPos.y + (preview.top + preview.bottom) / 2 };
+                                             w->windowPos.y + (preview.top + preview.bottom) / 2 };
         gfx_draw_string_centred(
             dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gWindowSceneryScatterSize);
     }

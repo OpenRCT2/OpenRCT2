@@ -351,7 +351,8 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenCoords.x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
         screenCoords.y = w->windowPos.y + (previewWidget->top + previewWidget->bottom) / 2;
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        gfx_draw_string_centred(
+            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
     }
     else if (gLandMountainMode)
     {
