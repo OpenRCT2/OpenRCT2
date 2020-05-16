@@ -771,8 +771,14 @@ declare global {
 
         /**
          * The date in months when the ride was built.
+         * Subtract this from `date.monthsElapsed` to get the age.
          */
         buildDate: number;
+
+        /**
+         * How old the ride is in months.
+         */
+        readonly age: number;
 
         /**
          * The running cost of the ride billed every fortnight. Multiply this by 16 to get the cost per hour (~ 1 year).

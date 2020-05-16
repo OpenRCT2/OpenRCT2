@@ -561,6 +561,12 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        int32_t age_get() const
+        {
+            auto ride = GetRide();
+            return ride != nullptr ? ride->GetAge() : 0;
+        }
+
         int16_t runningCost_get() const
         {
             auto ride = GetRide();
@@ -651,6 +657,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::nausea_get, &ScRide::nausea_set, "nausea");
             dukglue_register_property(ctx, &ScRide::totalCustomers_get, &ScRide::totalCustomers_set, "totalCustomers");
             dukglue_register_property(ctx, &ScRide::buildDate_get, &ScRide::buildDate_set, "buildDate");
+            dukglue_register_property(ctx, &ScRide::age_get, nullptr, "age");
             dukglue_register_property(ctx, &ScRide::runningCost_get, &ScRide::runningCost_set, "runningCost");
             dukglue_register_property(
                 ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
