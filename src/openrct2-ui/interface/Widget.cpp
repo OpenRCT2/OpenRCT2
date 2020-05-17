@@ -413,7 +413,7 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
         stringId = STR_STRING;
         formatArgs = &widget->string;
     }
-    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, { l + 1, r - 1 }, t);
+    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, { l + 1, t } r - 1);
 }
 
 /**
