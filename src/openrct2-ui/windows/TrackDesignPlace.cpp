@@ -529,7 +529,7 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         gfx_draw_string_centred(
-            dpi, STR_COST_LABEL, w->windowPos.x + 88, w->windowPos.y + 94, COLOUR_BLACK, &_window_track_place_last_cost);
+            dpi, STR_COST_LABEL, { w->windowPos.x + 88, w->windowPos.y + 94 }, COLOUR_BLACK, &_window_track_place_last_cost);
     }
 }
 
