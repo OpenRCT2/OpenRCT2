@@ -2921,7 +2921,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     widget = &window_ride_main_widgets[WIDX_VIEW];
     gfx_draw_string_centred(
         dpi, STR_WINDOW_COLOUR_2_STRINGID,
-        ScreenCoordsXY{ w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top }, COLOUR_BLACK,
+        { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top }, COLOUR_BLACK,
         gCommonFormatArgs);
 
     // Status

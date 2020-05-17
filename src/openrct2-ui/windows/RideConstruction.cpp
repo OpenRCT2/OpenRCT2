@@ -2330,8 +2330,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     // Draw track piece
-    screenCoords.x = w->windowPos.x + widget->left + 1;
-    screenCoords.y = w->windowPos.y + widget->top + 1;
+    screenCoords = { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 };
     width = widget->right - widget->left - 1;
     height = widget->bottom - widget->top - 1;
     if (clip_drawpixelinfo(&clipdpi, dpi, screenCoords.x, screenCoords.y, width, height))
@@ -2341,8 +2340,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     }
 
     // Draw cost
-    screenCoords.x = w->windowPos.x + (widget->left + widget->right) / 2;
-    screenCoords.y = w->windowPos.y + widget->bottom - 23;
+    screenCoords = { w->windowPos.x + (widget->left + widget->right) / 2, w->windowPos.y + widget->bottom - 23 };
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, screenCoords, COLOUR_BLACK, w);
 

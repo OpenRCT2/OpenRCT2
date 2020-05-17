@@ -531,8 +531,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Temperature
-    screenCoords.x = w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
-    screenCoords.y += line_height + 1;
+    screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
+                     screenCoords.y + line_height + 1 };
 
     int32_t temperature = gClimateCurrent.Temperature;
     rct_string_id format = STR_CELSIUS_VALUE;

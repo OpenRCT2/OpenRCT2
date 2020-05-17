@@ -830,8 +830,10 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // People starting position (scenario editor only)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
     {
-        screenCoords.x = w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
-        screenCoords.y = w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
+        screenCoords = {
+            w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
+            w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18
+        };
         gfx_draw_sprite(
             dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
             screenCoords.x, screenCoords.y, 0);
@@ -842,8 +844,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Render the map legend
         if (w->selected_tab == PAGE_RIDES)
         {
-            screenCoords.x = w->windowPos.x + 4;
-            screenCoords.y = w->windowPos.y + w->widgets[WIDX_MAP].bottom + 2;
+            screenCoords = { w->windowPos.x + 4, w->windowPos.y + w->widgets[WIDX_MAP].bottom + 2 };
 
             static rct_string_id mapLabels[] = {
                 STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,

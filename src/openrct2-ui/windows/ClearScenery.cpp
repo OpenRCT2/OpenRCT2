@@ -235,15 +235,13 @@ static void window_clear_scenery_invalidate(rct_window* w)
  */
 static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    ScreenCoordsXY screenCoords;
-
     window_draw_widgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
-    screenCoords.x = w->windowPos.x
-        + (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2;
-    screenCoords.y = w->windowPos.y
-        + (window_clear_scenery_widgets[WIDX_PREVIEW].top + window_clear_scenery_widgets[WIDX_PREVIEW].bottom) / 2;
+    ScreenCoordsXY screenCoords = { w->windowPos.x
+        + (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2,
+                                    w->windowPos.y
+        + (window_clear_scenery_widgets[WIDX_PREVIEW].top + window_clear_scenery_widgets[WIDX_PREVIEW].bottom) / 2 };
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
         gfx_draw_string_centred(

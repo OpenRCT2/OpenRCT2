@@ -16,13 +16,11 @@ static void graph_draw_months_uint8_t(
     rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
 {
     int32_t i, yearOver32, currentMonth, currentDay;
-    ScreenCoordsXY screenCoords;
 
     currentMonth = date_get_month(gDateMonthsElapsed);
     currentDay = gDateMonthTicks;
     yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-    screenCoords.x = baseX;
-    screenCoords.y = baseY;
+    auto screenCoords = ScreenCoordsXY{ baseX, baseY };
     for (i = count - 1; i >= 0; i--)
     {
         if (history[i] != 255 && yearOver32 % 4 == 0)
@@ -295,7 +293,7 @@ static void graph_draw_hovered_value(
     }
 
     gfx_draw_string_centred(
-        dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, { info.coords.x, info.coords.y - 16 }, COLOUR_BLACK, &info.money);
+        dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, info.coords - ScreenCoordsXY{ 0, 16 }, COLOUR_BLACK, &info.money);
 
     gfx_fill_rect(dpi, info.coords.x - 2, info.coords.y - 2, info.coords.x + 2, info.coords.y + 2, PALETTE_INDEX_10);
     gfx_fill_rect(dpi, info.coords.x - 1, info.coords.y - 1, info.coords.x + 1, info.coords.y + 1, PALETTE_INDEX_21);

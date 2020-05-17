@@ -619,15 +619,15 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image += pathType->image;
 
         // Draw construction image
-        screenCoords.x = w->windowPos.x
-            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        screenCoords.y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
+        screenCoords = { w->windowPos.x
+            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2,
+                         w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
         gfx_draw_sprite(dpi, image, screenCoords.x, screenCoords.y, 0);
 
         // Draw build this... label
-        screenCoords.x = w->windowPos.x
-            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-        screenCoords.y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
+        screenCoords = { w->windowPos.x
+            + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2,
+                         w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, screenCoords, COLOUR_BLACK, nullptr);
     }
 
