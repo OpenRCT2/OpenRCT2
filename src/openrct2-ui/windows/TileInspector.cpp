@@ -1754,32 +1754,32 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if ((widget = &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, gCommonFormatArgs, w->colours[1], w->windowPos.x + widget->left + 1,
-            w->windowPos.y + widget->top + 1, widget->right - widget->left);
+            dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, gCommonFormatArgs, w->colours[1],
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1], w->windowPos.x + widget->left + 1,
-            w->windowPos.y + widget->top + 1, widget->right - widget->left);
+            dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1],
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1], w->windowPos.x + widget->left + 1,
-            w->windowPos.y + widget->top + 1, widget->right - widget->left);
+            dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1],
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, gCommonFormatArgs, w->colours[1], w->windowPos.x + widget->left + 1,
-            w->windowPos.y + widget->top + 1, widget->right - widget->left);
+            dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, gCommonFormatArgs, w->colours[1],
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, gCommonFormatArgs, w->colours[1], w->windowPos.x + widget->left + 1,
-            w->windowPos.y + widget->top + 1, widget->right - widget->left);
+            dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, gCommonFormatArgs, w->colours[1],
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
     }
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
@@ -2298,7 +2298,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(typeName);
         gfx_draw_string_left_clipped(
-            dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y, COL_X_BH); // 3px padding
+            dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, { x + COL_X_TYPE + 3, y }, COL_X_BH); // 3px padding
 
         // Base height
         ft = Formatter::Common();

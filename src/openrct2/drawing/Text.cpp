@@ -190,12 +190,12 @@ void draw_string_right_underline(rct_drawpixelinfo* dpi, rct_string_id format, v
 }
 
 // Ellipsised
-void gfx_draw_string_left_clipped(
+/*void gfx_draw_string_left_clipped(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y, int32_t width)
 {
     // DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::LEFT);
     gfx_draw_string_left_clipped(dpi, format, args, colour, { x, y }, width);
-}
+}*/
 
 void gfx_draw_string_left_clipped(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width)
