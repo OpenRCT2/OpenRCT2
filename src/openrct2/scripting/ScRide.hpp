@@ -636,6 +636,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
             dukglue_register_property(ctx, &ScRide::object_get, nullptr, "object");
             dukglue_register_property(ctx, &ScRide::type_get, nullptr, "type");
+            dukglue_register_property(ctx, &ScRide::classification_get, nullptr, "classification");
             dukglue_register_property(ctx, &ScRide::name_get, &ScRide::name_set, "name");
             dukglue_register_property(ctx, &ScRide::status_get, nullptr, "status");
             dukglue_register_property(ctx, &ScRide::lifecycleFlags_get, &ScRide::lifecycleFlags_set, "lifecycleFlags");
