@@ -1071,7 +1071,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     width = w->width - w->widgets[WIDX_LIST].right - 6;
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char*, listItem->repositoryItem->Name.c_str());
-    ScreenCoordsXY coords = { x, y };
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Draw description of object
