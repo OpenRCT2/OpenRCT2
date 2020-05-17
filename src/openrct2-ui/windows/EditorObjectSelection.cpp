@@ -1037,7 +1037,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : STR_NONE;
-        ScreenCoordsXY screenCoord = { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 };
+        ScreenCoordsXY screenCoords = { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 };
         gfx_draw_string_left_clipped(
             dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], screenCoord, widget->right - widget->left);
     }
