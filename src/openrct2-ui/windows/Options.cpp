@@ -2181,7 +2181,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
             int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
             uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
-            ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1, w->windowPos.y + pathWidget.top + padding };
+            ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1, w->windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
             gfx_draw_string_left_clipped(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], screenCoords, 277);
             break;
         }
