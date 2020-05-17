@@ -173,7 +173,8 @@ void gfx_draw_string_right(
     DrawTextCompat(dpi, coords.x, coords.y, format, args, colour, TextAlignment::RIGHT);
 }
 // Underline
-void draw_string_left_underline(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
+void draw_string_left_underline(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
 {
     DrawTextCompat(dpi, coords.x, coords.y, format, args, colour, TextAlignment::LEFT, true);
 }

@@ -676,10 +676,12 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         // Darken every even row
         if (i % 2 == 0)
-            gfx_fill_rect(dpi, screenCoords.x, screenCoords.y - 1, screenCoords.x + 121, screenCoords.y + (TABLE_CELL_HEIGHT - 2),
-                          ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(
+                dpi, screenCoords.x, screenCoords.y - 1, screenCoords.x + 121, screenCoords.y + (TABLE_CELL_HEIGHT - 2),
+                ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-        gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, screenCoords.x, screenCoords.y - 1);
+        gfx_draw_string_left(
+            dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, screenCoords.x, screenCoords.y - 1);
         screenCoords.y += TABLE_CELL_HEIGHT;
     }
 
