@@ -665,22 +665,22 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    int32_t x = w->windowPos.x + 8;
-    int32_t y = w->windowPos.y + 51;
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 8, w->windowPos.y + 51 };
 
     // Expenditure / Income heading
-    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, x, y);
-    y += 14;
+    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, screenCoords);
+    screenCoords.y += 14;
 
     // Expenditure / Income row labels
     for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
         // Darken every even row
         if (i % 2 == 0)
-            gfx_fill_rect(dpi, x, y - 1, x + 121, y + (TABLE_CELL_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, screenCoords.x, screenCoords.y - 1, screenCoords.x + 121, screenCoords.y + (TABLE_CELL_HEIGHT - 2),
+                          ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-        gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, x, y - 1);
-        y += TABLE_CELL_HEIGHT;
+        gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, screenCoords.x, screenCoords.y - 1);
+        screenCoords.y += TABLE_CELL_HEIGHT;
     }
 
     // Horizontal rule below expenditure / income table
