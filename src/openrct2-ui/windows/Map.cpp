@@ -830,10 +830,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // People starting position (scenario editor only)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
     {
-        screenCoords = {
-            w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-            w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18
-        };
+        screenCoords = { w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
+                         w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
         gfx_draw_sprite(
             dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
             screenCoords.x, screenCoords.y, 0);
