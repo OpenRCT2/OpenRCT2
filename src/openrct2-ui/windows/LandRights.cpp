@@ -271,9 +271,7 @@ static void window_land_rights_invalidate(rct_window* w)
 
 static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    ScreenCoordsXY screenCoords;
-
-    screenCoords = {
+    auto screenCoords = ScreenCoordsXY{
         w->windowPos.x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2,
         w->windowPos.y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2
     };
