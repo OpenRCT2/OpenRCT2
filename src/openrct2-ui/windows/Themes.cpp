@@ -842,8 +842,8 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
             w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
         gfx_draw_string_left_clipped(
             dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
-            w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
-            w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
+            {w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
+            w->windowPos.y + window_themes_widgets[WIDX_THEMES_PRESETS].top},
             w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
                 - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4);
     }

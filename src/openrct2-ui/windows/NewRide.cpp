@@ -981,7 +981,7 @@ static void window_new_ride_paint_ride_information(
     if (availabilityString[0] != 0)
     {
         const char* drawString = availabilityString;
-        gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
+        gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, {x, y + 39}, WW - 2);
     }
 
     if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)

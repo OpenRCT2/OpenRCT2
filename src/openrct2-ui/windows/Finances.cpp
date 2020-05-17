@@ -1220,7 +1220,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         }
 
         // Advertisement
-        gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, x + 4, y, 296);
+        gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, {x + 4, y}, 296);
 
         // Duration
         uint16_t weeksRemaining = campaign->WeeksLeft;

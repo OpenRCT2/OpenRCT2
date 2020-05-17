@@ -606,7 +606,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         // Ride name
         ride->FormatNameTo(gCommonFormatArgs);
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 159);
+        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, {0, y - 1}, 159);
 
         // Ride information
         auto formatSecondaryEnabled = true;
@@ -744,7 +744,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         {
             set_format_arg(0, rct_string_id, formatSecondary);
         }
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 160, y - 1, 157);
+        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, {160, y - 1}, 157);
         y += SCROLLABLE_ROW_HEIGHT;
     }
 }

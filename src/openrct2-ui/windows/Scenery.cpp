@@ -1187,7 +1187,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
     gfx_draw_string_left_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 3, w->windowPos.y + w->height - 13,
+        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, {w->windowPos.x + 3, w->windowPos.y + w->height - 13},
         w->width - 19);
 }
 

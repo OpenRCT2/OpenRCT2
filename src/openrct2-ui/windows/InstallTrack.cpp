@@ -322,7 +322,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Ride length
         set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
         set_format_arg(2, uint16_t, td6->ride_length);
-        gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
+        gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, {x, y}, 214);
         y += LIST_ROW_HEIGHT;
     }
 
