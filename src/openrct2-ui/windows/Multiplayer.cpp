@@ -700,7 +700,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
             }
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, 256, screenCoords.y, 100);
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { 256, screenCoords.y }, 100);
 
             // Draw ping
             lineCh = buffer;

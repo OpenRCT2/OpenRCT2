@@ -365,7 +365,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
         ft.Add<rct_string_id>(ShortcutList[i].StringId);
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, bindingOffset);
+        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 }, bindingOffset);
 
         char keybinding[128];
         keyboard_shortcuts_format_string(keybinding, 128, ShortcutList[i].ShortcutId);
@@ -376,7 +376,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(keybinding);
-            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, bindingOffset, y - 1, maxWidth);
+            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { bindingOffset, y - 1 }, maxWidth);
         }
     }
 }

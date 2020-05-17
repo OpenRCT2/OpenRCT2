@@ -668,7 +668,7 @@ void CustomListView::PaintCell(
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(text);
-    gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, pos.x, pos.y, size.width);
+    gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, pos, size.width);
 }
 
 std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)

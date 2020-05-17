@@ -838,8 +838,8 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
             gfx_draw_string_left_clipped(
                 dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
-                w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
-                w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top,
+                { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
+                  w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top },
                 w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
                     - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4);
             break;

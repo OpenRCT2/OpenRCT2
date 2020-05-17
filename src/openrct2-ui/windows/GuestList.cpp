@@ -718,7 +718,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         format = STR_ALL_GUESTS_SUMMARISED;
     }
-    gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK, x, y, 310);
+    gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK, { x, y }, 310);
 
     // Number of guests (list items)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
@@ -769,7 +769,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     // Guest name
                     auto peep = GET_PEEP(spriteIndex);
                     peep->FormatNameTo(gCommonFormatArgs);
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 113);
+                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 113);
 
                     switch (_window_guest_list_selected_view)
                     {
@@ -783,7 +783,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
 
                             // Action
                             peep->FormatActionTo(gCommonFormatArgs);
-                            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 133, y, 314);
+                            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 133, y }, 314);
                             break;
                         case VIEW_THOUGHTS:
                             // For each thought
@@ -798,7 +798,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                     break;
 
                                 peep_thought_set_format_args(&peep->thoughts[j]);
-                                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 118, y, 329);
+                                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 118, y }, 329);
                                 break;
                             }
                             break;
@@ -843,7 +843,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     std::memcpy(
                         gCommonFormatArgs, _window_guest_list_groups_arguments[i].args,
                         std::min(sizeof(gCommonFormatArgs), sizeof(_window_guest_list_groups_arguments[i].args)));
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 414);
+                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 414);
 
                     // Draw guest count
                     set_format_arg(0, rct_string_id, STR_GUESTS_COUNT_COMMA_SEP);

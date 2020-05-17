@@ -625,7 +625,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             auto ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
-            gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
+            gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 214);
             y += LIST_ROW_HEIGHT;
         }
 

@@ -752,8 +752,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
 
     // Command dropdown name
     gfx_draw_string_left_clipped(
-        dpi, command_info.nameStringId, nullptr, w->colours[1], w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1,
-        w->windowPos.y + w->widgets[WIDX_COMMAND].top,
+        dpi, command_info.nameStringId, nullptr, w->colours[1],
+        { w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1, w->windowPos.y + w->widgets[WIDX_COMMAND].top },
         w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
 
     // Label (e.g. "Location:")
@@ -763,8 +763,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {
         gfx_draw_string_left_clipped(
-            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
-            w->windowPos.y + w->widgets[WIDX_INPUT].top,
+            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1],
+            { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
             w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
@@ -786,8 +786,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             w->windowPos.x + w->widgets[WIDX_VIEWPORT].left, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top,
             w->windowPos.x + w->widgets[WIDX_VIEWPORT].right, w->windowPos.y + w->widgets[WIDX_VIEWPORT].bottom);
         gfx_draw_string_left_clipped(
-            dpi, spriteString, gCommonFormatArgs, colour, w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2,
-            w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1,
+            dpi, spriteString, gCommonFormatArgs, colour,
+            { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },
             w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
@@ -796,15 +796,15 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         {
             gfx_draw_string_left_clipped(
                 dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1],
-                w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
         else
         {
             Formatter::Common().Add<uintptr_t>(reinterpret_cast<uintptr_t>(_sequence->Saves[command.SaveIndex]));
             gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
-                w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
+                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
@@ -814,7 +814,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         {
             gfx_draw_string_left_clipped(
                 dpi, STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, nullptr, w->colours[1],
-                w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
         else
@@ -832,8 +832,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             }
             Formatter::Common().Add<const char*>(name);
             gfx_draw_string_left_clipped(
-                dpi, nameString, gCommonFormatArgs, w->colours[1], w->windowPos.x + w->widgets[WIDX_INPUT].left + 1,
-                w->windowPos.y + w->widgets[WIDX_INPUT].top,
+                dpi, nameString, gCommonFormatArgs, w->colours[1],
+                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
