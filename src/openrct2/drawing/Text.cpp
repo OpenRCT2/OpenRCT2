@@ -180,9 +180,9 @@ void draw_string_left_underline(
 }
 
 void draw_string_centred_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
 {
-    DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::CENTRE, true);
+    DrawTextCompat(dpi, coords.x, coords.y, format, args, colour, TextAlignment::CENTRE, true);
 }
 
 void draw_string_right_underline(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
