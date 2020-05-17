@@ -718,7 +718,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw path text
     set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(buffer));
     gfx_draw_string_left_clipped(
-        dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, {w->windowPos.x + 4, w->windowPos.y + 20}, w->width - 8);
+        dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8);
 
     // Name button text
     rct_string_id id = STR_NONE;
@@ -780,7 +780,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, _listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
-        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, {10, y}, max_file_width);
+        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 10, y }, max_file_width);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
@@ -792,7 +792,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
             set_format_arg(2, char*, _listItems[i].time_formatted.c_str());
             gfx_draw_string_left_clipped(
-                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, {dateAnchor + DATE_TIME_GAP, y}, maxTimeWidth);
+                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth);
         }
     }
 }

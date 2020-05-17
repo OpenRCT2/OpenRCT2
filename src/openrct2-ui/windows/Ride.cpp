@@ -5096,7 +5096,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         gfx_draw_string_left_clipped(
-            dpi, STR_STATION_STYLE, gCommonFormatArgs, COLOUR_BLACK, {w->windowPos.x + 3, w->windowPos.y + 103}, 97);
+            dpi, STR_STATION_STYLE, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97);
     }
 }
 
@@ -5826,7 +5826,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     set_format_arg(2 + (numTimes * 4), uint16_t, 0);
                     set_format_arg(4 + (numTimes * 4), uint16_t, 0);
                     set_format_arg(6 + (numTimes * 4), uint16_t, 0);
-                    gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, COLOUR_BLACK, {x, y}, 308);
+                    gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 308);
                     y += LIST_ROW_HEIGHT;
                 }
 
@@ -5859,7 +5859,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 set_format_arg(2 + (numLengths * 4), uint16_t, 0);
                 set_format_arg(4 + (numLengths * 4), uint16_t, 0);
                 set_format_arg(6 + (numLengths * 4), uint16_t, 0);
-                gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, {x, y}, 308);
+                gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 308);
                 y += LIST_ROW_HEIGHT;
 
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
