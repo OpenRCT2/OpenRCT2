@@ -230,8 +230,7 @@ int32_t gfx_draw_string_left_wrapped(
 }
 
 int32_t gfx_draw_string_left_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format,
-    uint8_t colour)
+    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
