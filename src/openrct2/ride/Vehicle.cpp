@@ -5277,7 +5277,7 @@ void Vehicle::KillPassengers(Ride* curRide)
     if (num_peeps == 0)
         return;
 
-    for (uint8_t i = 0; i < num_peeps; i++)
+    for (auto i = 0; i < num_peeps; i++)
     {
         Peep* curPeep = GET_PEEP(peep[i]);
         if (curPeep->outside_of_park == 0)
