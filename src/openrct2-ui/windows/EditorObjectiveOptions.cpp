@@ -987,7 +987,15 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.details);
+<<<<<<< HEAD
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, width, STR_BLACK_STRING, COLOUR_BLACK);
+=======
+    ScreenCoordsXY screenCoords;
+    screenCoords.x = x;
+    screenCoords.y = y;
+    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+
+>>>>>>> a91fd4218... gfx_draw_string_left_wrapped overload added
 
     // Scenario category label
     x = w->windowPos.x + 8;
