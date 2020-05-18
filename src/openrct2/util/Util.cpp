@@ -333,8 +333,8 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
             return -1;
         else if (!(isdigit(*s1) && isdigit(*s2)))
         {
-            if (*s1 != *s2)
-                return (int)*s1 - (int)*s2;
+            if (tolower(*s1) != tolower(*s2))
+                return tolower(*s1) - tolower(*s2);
             else
                 (++s1, ++s2);
         }
