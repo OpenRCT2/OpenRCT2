@@ -15,6 +15,7 @@
 #    include "../actions/CustomAction.hpp"
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.hpp"
+#    include "../actions/LandRaiseAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
@@ -854,6 +855,25 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         {
             obj.Set("ride", rideCreateResult.rideIndex);
         }
+    }
+
+    if (action.GetType() == GAME_COMMAND_RAISE_LAND)
+    {
+        auto& raiseLandResult = static_cast<LandRaiseGameActionResult&>(*result.get());
+        const MapRange& mapRange = raiseLandResult.Range;
+
+        DukObject range(_context);
+        DukObject leftTop(_context);
+        leftTop.Set("x", mapRange.GetLeft());
+        leftTop.Set("y", mapRange.GetTop());
+        range.Set("leftTop", leftTop.Take());
+
+        DukObject rightBottom(_context);
+        rightBottom.Set("x", mapRange.GetRight());
+        rightBottom.Set("y", mapRange.GetBottom());
+        range.Set("rightBottom", rightBottom.Take());
+
+        obj.Set("range", range.Take());
     }
 
     return obj.Take();

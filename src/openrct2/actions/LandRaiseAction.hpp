@@ -26,7 +26,22 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandRaiseAction, GAME_COMMAND_RAISE_LAND, GameActionResult)
+class LandRaiseGameActionResult final : public GameActionResult
+{
+public:
+    LandRaiseGameActionResult()
+        : GameActionResult(GA_ERROR::OK, STR_NONE)
+    {
+    }
+    LandRaiseGameActionResult(GA_ERROR error, rct_string_id message)
+        : GameActionResult(error, STR_CANT_RAISE_LAND_HERE, message)
+    {
+    }
+
+    MapRange Range;
+};
+
+DEFINE_GAME_ACTION(LandRaiseAction, GAME_COMMAND_RAISE_LAND, LandRaiseGameActionResult)
 {
 private:
     CoordsXY _coords;
@@ -42,6 +57,11 @@ public:
         , _range(range)
         , _selectionType(selectionType)
     {
+    }
+
+    const MapRange& GetMapRange() const
+    {
+        return _range;
     }
 
     uint16_t GetActionFlags() const override
@@ -85,6 +105,7 @@ private:
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
         res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
+        res->Range = _range;
         res->Expenditure = ExpenditureType::Landscaping;
 
         if (isExecuting)
