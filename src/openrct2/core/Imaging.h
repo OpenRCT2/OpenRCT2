@@ -35,8 +35,12 @@ struct GamePalette
 {
     PaletteBGRA Colour[PALETTE_SIZE];
 
-    const PaletteBGRA& operator[](uint16_t idx) const
+    const PaletteBGRA operator[](uint16_t idx) const
     {
+        assert(idx < PALETTE_SIZE);
+        if (idx >= PALETTE_SIZE)
+            return {};
+
         return Colour[idx];
     }
 
