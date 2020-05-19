@@ -720,8 +720,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t x = 0;
-    int32_t y = TABLE_CELL_HEIGHT + 2;
+    auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
 
     rct_widget self = w->widgets[WIDX_SUMMARY_SCROLL];
     int32_t row_width = std::max<uint16_t>(w->scrolls[0].h_right, self.right - self.left);
@@ -732,16 +731,17 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         // Darken every even row
         if (i % 2 == 0)
             gfx_fill_rect(
-                dpi, x, y - 1, x + row_width, y + (TABLE_CELL_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
+                dpi, screenCoords.x, screenCoords.y - 1, screenCoords.x + row_width, screenCoords.y + (TABLE_CELL_HEIGHT - 2),
+                ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-        y += TABLE_CELL_HEIGHT;
+        screenCoords.y += TABLE_CELL_HEIGHT;
     }
 
     // Expenditure / Income values for each month
     int16_t currentMonthYear = gDateMonthsElapsed;
     for (int32_t i = summary_max_available_month(); i >= 0; i--)
     {
-        y = 0;
+        screenCoords.y = 0;
 
         int16_t monthyear = currentMonthYear - i;
         if (monthyear < 0)
@@ -753,8 +753,8 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         ft.Add<uint16_t>(monthyear);
         draw_string_right_underline(
             dpi, monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs,
-            COLOUR_BLACK, x + EXPENDITURE_COLUMN_WIDTH, y);
-        y += 14;
+            COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        screenCoords.y += 14;
 
         // Month expenditures
         money32 profit = 0;
@@ -766,19 +766,21 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
                 profit += expenditure;
                 gfx_draw_string_right(
                     dpi, expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
-                    &expenditure, COLOUR_BLACK, x + EXPENDITURE_COLUMN_WIDTH, y);
+                    &expenditure, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
             }
-            y += TABLE_CELL_HEIGHT;
+            screenCoords.y += TABLE_CELL_HEIGHT;
         }
-        y += 4;
+        screenCoords.y += 4;
 
         // Month profit
         gfx_draw_string_right(
             dpi, profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE, &profit, COLOUR_BLACK,
-            x + EXPENDITURE_COLUMN_WIDTH, y);
-        gfx_fill_rect(dpi, x + 10, y - 2, x + EXPENDITURE_COLUMN_WIDTH, y - 2, PALETTE_INDEX_10);
+            screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        gfx_fill_rect(
+            dpi, screenCoords.x + 10, screenCoords.y - 2, screenCoords.x + EXPENDITURE_COLUMN_WIDTH, screenCoords.y - 2,
+            PALETTE_INDEX_10);
 
-        x += EXPENDITURE_COLUMN_WIDTH;
+        screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
     }
 
     _lastPaintedMonth = currentMonthYear;
