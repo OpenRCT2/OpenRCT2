@@ -545,7 +545,7 @@ void draw_string_left_underline(
 void draw_string_centred_underline(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
 void draw_string_right_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y);
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
 
 void gfx_draw_string_left_clipped(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
