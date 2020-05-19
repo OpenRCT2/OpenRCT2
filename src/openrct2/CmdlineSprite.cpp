@@ -36,14 +36,6 @@ struct rct_sprite_file_header
 
 assert_struct_size(rct_sprite_file_header, 8);
 
-struct rle_code
-{
-    uint8_t num_pixels;
-    uint8_t offset_x;
-};
-
-assert_struct_size(rle_code, 2);
-
 #pragma pack(pop)
 
 static PaletteBGRA spriteFilePalette[256];
