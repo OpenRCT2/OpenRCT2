@@ -204,9 +204,9 @@ void gfx_draw_string_centred_clipped(
 }
 
 void gfx_draw_string_right_clipped(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y, int32_t width)
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width)
 {
-    DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::RIGHT);
+    DrawTextEllipsisedCompat(dpi, coords.x, coords.y, width, format, args, colour, TextAlignment::RIGHT);
 }
 
 // Wrapping
