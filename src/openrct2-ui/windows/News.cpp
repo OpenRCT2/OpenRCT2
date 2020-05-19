@@ -290,7 +290,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
         // Item text
         utf8* text = newsItem->Text;
-        gfx_draw_string_left_wrapped(dpi, &text, 2, y + lineHeight, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
+        gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
         if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON))

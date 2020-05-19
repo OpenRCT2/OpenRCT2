@@ -1599,7 +1599,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gScenarioDetails.c_str());
-    y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, COLOUR_BLACK);
+    y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, 222, STR_BLACK_STRING, COLOUR_BLACK);
     y += 5;
 
     // Your objective:
@@ -1612,7 +1612,8 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
     ft.Add<money32>(gScenarioObjectiveCurrency);
 
-    y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
+    y += gfx_draw_string_left_wrapped(
+        dpi, gCommonFormatArgs, { x, y }, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
     y += 5;
 
     // Objective outcome
@@ -1621,13 +1622,13 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
             // Objective failed
-            gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
+            gfx_draw_string_left_wrapped(dpi, nullptr, { x, y }, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
         }
         else
         {
             // Objective completed
             set_format_arg(0, money32, gScenarioCompletedCompanyValue);
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
         }
     }
 }
@@ -1741,7 +1742,7 @@ static void window_park_awards_paint(rct_window* w, rct_drawpixelinfo* dpi)
             continue;
 
         gfx_draw_sprite(dpi, ParkAwards[award->Type].sprite, x, y, 0);
-        gfx_draw_string_left_wrapped(dpi, nullptr, x + 34, y + 6, 180, ParkAwards[award->Type].text, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, nullptr, { x + 34, y + 6 }, 180, ParkAwards[award->Type].text, COLOUR_BLACK);
 
         y += 32;
         count++;

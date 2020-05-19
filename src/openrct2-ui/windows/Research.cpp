@@ -347,12 +347,12 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
         stringId = STR_RESEARCH_UNKNOWN;
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &stringId, { x, y }, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
         y += 25;
 
         // Progress
         stringId = STR_RESEARCH_COMPLETED_AL;
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &stringId, { x, y }, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
         y += 15;
 
         auto ft = Formatter::Common();
