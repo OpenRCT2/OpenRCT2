@@ -159,6 +159,7 @@ void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* ar
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 */
 
 
