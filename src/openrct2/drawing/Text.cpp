@@ -234,6 +234,7 @@ int32_t gfx_draw_string_left_wrapped(
     layout.Draw(dpi, coords.x, coords.y);
 
     return layout.GetHeight();
+
 }
 
 int32_t gfx_draw_string_left_wrapped(

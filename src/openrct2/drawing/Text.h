@@ -1,4 +1,5 @@
 /*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
