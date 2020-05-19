@@ -788,7 +788,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             set_format_arg(0, rct_string_id, STR_STRING);
             set_format_arg(2, char*, _listItems[i].date_formatted.c_str());
             gfx_draw_string_right_clipped(
-                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, dateAnchor - DATE_TIME_GAP, y, maxDateWidth);
+                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth);
 
             set_format_arg(2, char*, _listItems[i].time_formatted.c_str());
             gfx_draw_string_left_clipped(
