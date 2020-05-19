@@ -29,6 +29,27 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
+constexpr const auto PALETTE_SIZE = 256;
+
+struct GamePalette
+{
+    PaletteBGRA Colour[PALETTE_SIZE];
+
+    const PaletteBGRA operator[](uint16_t idx) const
+    {
+        assert(idx < PALETTE_SIZE);
+        if (idx >= PALETTE_SIZE)
+            return {};
+
+        return Colour[idx];
+    }
+
+    explicit operator uint8_t*()
+    {
+        return reinterpret_cast<uint8_t*>(Colour);
+    }
+};
+
 enum class IMAGE_FORMAT
 {
     UNKNOWN,
