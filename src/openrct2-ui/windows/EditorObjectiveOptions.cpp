@@ -987,7 +987,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.details);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
+    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label
     x = w->windowPos.x + 8;
