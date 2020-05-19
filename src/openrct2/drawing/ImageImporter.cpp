@@ -292,11 +292,11 @@ int32_t ImageImporter::CalculatePaletteIndex(
     return paletteIndex;
 }
 
-int32_t ImageImporter::GetPaletteIndex(const PaletteBGRA* palette, int16_t* colour)
+int32_t ImageImporter::GetPaletteIndex(const GamePalette& palette, int16_t* colour)
 {
     if (!IsTransparentPixel(colour))
     {
-        for (int32_t i = 0; i < 256; i++)
+        for (int32_t i = 0; i < PALETTE_SIZE; i++)
         {
             if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
                 && static_cast<int16_t>(palette[i].Blue) == colour[2])
@@ -333,11 +333,11 @@ bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
     return true;
 }
 
-int32_t ImageImporter::GetClosestPaletteIndex(const PaletteBGRA* palette, const int16_t* colour)
+int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour)
 {
     auto smallestError = static_cast<uint32_t>(-1);
     auto bestMatch = PALETTE_TRANSPARENT;
-    for (int32_t x = 0; x < 256; x++)
+    for (int32_t x = 0; x < PALETTE_SIZE; x++)
     {
         if (IsChangablePixel(x))
         {

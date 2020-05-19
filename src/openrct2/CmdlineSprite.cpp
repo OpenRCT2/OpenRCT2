@@ -38,7 +38,7 @@ assert_struct_size(rct_sprite_file_header, 8);
 
 #pragma pack(pop)
 
-static PaletteBGRA spriteFilePalette[256];
+static GamePalette spriteFilePalette;
 
 static rct_sprite_file_header spriteFileHeader;
 static rct_g1_element* spriteFileEntries;
@@ -215,19 +215,19 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
     dpi.pitch = 0;
     dpi.zoom_level = 0;
 
-    std::memcpy(spriteFilePalette, StandardPalette, 256 * sizeof(PaletteBGRA));
+    spriteFilePalette = StandardPalette;
 
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
     {
         gfx_rle_sprite_to_buffer(
-            spriteHeader->offset, pixels, reinterpret_cast<uint8_t*>(spriteFilePalette), &dpi, ImageId(), 0,
-            spriteHeader->height, 0, spriteHeader->width);
+            spriteHeader->offset, pixels, static_cast<uint8_t*>(spriteFilePalette), &dpi, ImageId(), 0, spriteHeader->height, 0,
+            spriteHeader->width);
     }
     else
     {
         gfx_bmp_sprite_to_buffer(
-            reinterpret_cast<uint8_t*>(spriteFilePalette), spriteHeader->offset, pixels, spriteHeader, &dpi,
-            spriteHeader->height, spriteHeader->width, ImageId());
+            static_cast<uint8_t*>(spriteFilePalette), spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
+            spriteHeader->width, ImageId());
     }
 
     auto const pixels8 = dpi.bits;

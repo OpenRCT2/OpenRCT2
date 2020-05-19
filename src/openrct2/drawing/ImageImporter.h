@@ -58,14 +58,14 @@ namespace OpenRCT2::Drawing
 
         static int32_t CalculatePaletteIndex(
             IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
-        static int32_t GetPaletteIndex(const PaletteBGRA* palette, int16_t* colour);
+        static int32_t GetPaletteIndex(const GamePalette& palette, int16_t* colour);
         static bool IsTransparentPixel(const int16_t* colour);
         static bool IsChangablePixel(int32_t paletteIndex);
-        static int32_t GetClosestPaletteIndex(const PaletteBGRA* palette, const int16_t* colour);
+        static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
     };
 } // namespace OpenRCT2::Drawing
 
-constexpr const PaletteBGRA StandardPalette[256] = {
+constexpr const GamePalette StandardPalette = { {
     // 0 (unused)
     { 0, 0, 0, 255 },
 
@@ -348,4 +348,4 @@ constexpr const PaletteBGRA StandardPalette[256] = {
 
     // 255 (unused?)
     { 0, 0, 0, 255 },
-};
+} };
