@@ -380,6 +380,7 @@ void ScriptEngine::Initialise()
     ScObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);
     ScPark::Register(ctx);
+    ScParkMessage::Register(ctx);
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
     ScRide::Register(ctx);
