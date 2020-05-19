@@ -213,20 +213,7 @@ void gfx_draw_string_right_clipped(
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
 {
-    utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    _legacyPaint.UnderlineText = false;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = TextAlignment::LEFT;
-    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-
-    StaticLayout layout(buffer, _legacyPaint, width);
-    layout.Draw(dpi, x, y);
-
-    return layout.GetHeight();
+    return gfx_draw_string_left_wrapped(dpi, args, { x, y }, width, format, colour);
 }
 
 int32_t gfx_draw_string_left_wrapped(
