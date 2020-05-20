@@ -973,7 +973,7 @@ static void window_new_ride_paint_ride_information(
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(rideNaming.name);
     ft.Add<rct_string_id>(rideNaming.description);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
+    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
     window_new_ride_list_vehicles_for(item.Type, rideEntry, availabilityString, sizeof(availabilityString));

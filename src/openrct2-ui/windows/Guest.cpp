@@ -1901,7 +1901,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
         peep_thought_set_format_args(thought);
-        y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
+        y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, width, STR_BLACK_STRING, COLOUR_BLACK);
 
         // If this is the last visible line end drawing.
         if (y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -2044,7 +2044,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 continue;
 
             rct_string_id stringId = window_guest_inventory_format_item(guest, item);
-            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, COLOUR_BLACK);
+            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, itemNameWidth, stringId, COLOUR_BLACK);
             numItems++;
         }
 
