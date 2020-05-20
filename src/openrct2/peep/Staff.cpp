@@ -1100,6 +1100,16 @@ bool Staff::DoPathFinding()
     }
 }
 
+uint8_t Staff::GetCostume() const
+{
+    return sprite_type - PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
+}
+
+void Staff::SetCostume(uint8_t value)
+{
+    sprite_type = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
+}
+
 colour_t staff_get_colour(uint8_t staffType)
 {
     switch (staffType)

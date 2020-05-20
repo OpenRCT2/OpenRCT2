@@ -893,6 +893,8 @@ public:
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
     bool DoPathFinding();
+    uint8_t GetCostume() const;
+    void SetCostume(uint8_t value);
 
 private:
     void UpdatePatrolling();
