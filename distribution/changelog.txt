@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#7648] "Enable all drawable track pieces" now enables more pieces for the Twister, Vertical and Air Powered Vertical coasters.
 - Feature: [#9029] Open doors with the tile inspector.
+- Feature: [#9614] Can now pop balloons and quack ducks in title screen.
 - Feature: [#10572] Cheat to allow building at invalid heights.
 - Feature: [#11155] Guest entry points can now be removed by clicking them again.
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
