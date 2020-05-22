@@ -323,37 +323,32 @@ int32_t strcicmp(char const* a, char const* b)
 // - Guest 100
 // - John v2.0
 // - John v2.1
-int32_t strlogicalcmp(char const* a, char const* b)
+int32_t strlogicalcmp(const char* s1, const char* s2)
 {
-    for (;; a++, b++)
+    for (;;)
     {
-        int32_t result = tolower(*a) - tolower(*b);
-        bool both_numeric = *a >= '0' && *a <= '9' && *b >= '0' && *b <= '9';
-        if (result != 0 || !*a || both_numeric)
-        { // difference found || end of string
-            if (both_numeric)
-            { // a and b both start with a number
-                // Get the numbers in the string at current positions
-                int32_t na = 0, nb = 0;
-                for (; *a >= '0' && *a <= '9'; a++)
-                {
-                    na *= 10;
-                    na += *a - '0';
-                }
-                for (; *b >= '0' && *b <= '9'; b++)
-                {
-                    nb *= 10;
-                    nb += *b - '0';
-                }
-                // In case the numbers are the same
-                if (na == nb)
-                    continue;
-                return na - nb;
-            }
+        if (*s2 == '\0')
+            return *s1 != '\0';
+        else if (*s1 == '\0')
+            return -1;
+        else if (!(isdigit(*s1) && isdigit(*s2)))
+        {
+            if (tolower(*s1) != tolower(*s2))
+                return tolower(*s1) - tolower(*s2);
             else
-            {
-                return result;
-            }
+                (++s1, ++s2);
+        }
+        else
+        {
+            char *lim1, *lim2;
+            unsigned long n1 = strtoul(s1, &lim1, 10);
+            unsigned long n2 = strtoul(s2, &lim2, 10);
+            if (n1 > n2)
+                return 1;
+            else if (n1 < n2)
+                return -1;
+            s1 = lim1;
+            s2 = lim2;
         }
     }
 }
