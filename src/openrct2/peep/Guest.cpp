@@ -5113,7 +5113,8 @@ void Guest::UpdateRideShopLeave()
             return;
     }
 
-    SetState(PEEP_STATE_WALKING);
+    //#11758 Previously SetState(PEEP_STATE_WALKING) caused Peeps to double-back to exit point of shop
+    SetState(PEEP_STATE_FALLING);
 
     auto ride = get_ride(current_ride);
     if (ride != nullptr)
