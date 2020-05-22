@@ -22,6 +22,7 @@
 - Fix: [#11259] Custom JSON object breaks saves.
 - Fix: [#11290] Perform funds checking for all peeps entering a ride.
 - Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
+- Fix: [#11386] Alphabetical sorting is broken.
 - Fix: [#11405] Building a path through walls does not always remove the walls.
 - Fix: [#11450] Rides with unsuitable track can't be opened even with "Enable all drawable track pieces" cheat.
 - Fix: [#11455] Object Selection window cuts off scenery names.
