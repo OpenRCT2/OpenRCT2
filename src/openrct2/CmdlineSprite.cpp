@@ -462,7 +462,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
     {
         if (argc < 3)
         {
-            fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
+            fprintf(stdout, "usage: sprite exportalldat <DAT identifier> <output directory>\n");
             return -1;
         }
 
