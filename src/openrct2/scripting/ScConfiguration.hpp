@@ -22,12 +22,17 @@ namespace OpenRCT2::Scripting
     class ScConfiguration
     {
     private:
-        bool _isUserConfig{ true };
+        bool _isUserConfig{};
         DukValue _backingObject;
 
     public:
-        ScConfiguration() = default;
+        // context.configuration
+        ScConfiguration()
+            : _isUserConfig(true)
+        {
+        }
 
+        // context.sharedStorage
         ScConfiguration(const DukValue& backingObject)
             : _backingObject(backingObject)
         {
