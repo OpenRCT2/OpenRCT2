@@ -252,6 +252,11 @@ public:
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
+
+    uint32_t GetNumImages() const
+    {
+        return GetImageTable().GetCount();
+    }
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop

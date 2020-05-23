@@ -32,12 +32,14 @@ static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
 const CommandLineCommand CommandLine::SpriteCommands[]
 {
     // Main commands
-    DefineCommand("append",    "<spritefile> <input> [x_offset y_offset]", SpriteOptions, HandleSprite),
-    DefineCommand("build",     "<spritefile> <json path> [silent]",        SpriteOptions, HandleSprite),
-    DefineCommand("create",    "<spritefile>",                             SpriteOptions, HandleSprite),
-    DefineCommand("details",   "<spritefile> [idx]",                       SpriteOptions, HandleSprite),
-    DefineCommand("export",    "<spritefile> <idx> <output>",              SpriteOptions, HandleSprite),
-    DefineCommand("exportall", "<spritefile> <output directory>",          SpriteOptions, HandleSprite),
+    DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", SpriteOptions, HandleSprite),
+    DefineCommand("build",        "<spritefile> <json path> [silent]",        SpriteOptions, HandleSprite),
+    DefineCommand("create",       "<spritefile>",                             SpriteOptions, HandleSprite),
+    DefineCommand("details",      "<spritefile> [idx]",                       SpriteOptions, HandleSprite),
+    DefineCommand("export",       "<spritefile> <idx> <output>",              SpriteOptions, HandleSprite),
+    DefineCommand("exportall",    "<spritefile> <output directory>",          SpriteOptions, HandleSprite),
+    DefineCommand("exportalldat", "<datname> <output directory>",             SpriteOptions, HandleSprite),
+
     CommandTableEnd
 };
 // clang-format on

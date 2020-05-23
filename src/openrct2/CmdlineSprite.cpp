@@ -11,18 +11,26 @@
 
 #include "CmdlineSprite.h"
 
+#include "Context.h"
 #include "OpenRCT2.h"
 #include "core/Imaging.h"
-#include "core/String.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
-#include "localisation/Language.h"
+#include "object/ObjectLimits.h"
+#include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
 #include "platform/platform.h"
 #include "util/Util.h"
+#include "world/Entrance.h"
+#include "world/Scenery.h"
 
 #include <cmath>
 #include <cstring>
 #include <jansson.h>
+
+#ifdef _WIN32
+#    include "core/String.hpp"
+#endif
 
 using namespace OpenRCT2::Drawing;
 
@@ -194,14 +202,12 @@ static void sprite_file_close()
     SafeFree(spriteFileData);
 }
 
-static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
+static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath)
 {
-    rct_g1_element* spriteHeader;
     rct_drawpixelinfo dpi;
     uint8_t* pixels;
     int32_t pixelBufferSize;
 
-    spriteHeader = &spriteFileEntries[spriteIndex];
     pixelBufferSize = spriteHeader->width * spriteHeader->height;
     std::unique_ptr<uint8_t[]> pixelBuffer(new uint8_t[pixelBufferSize]);
     pixels = pixelBuffer.get();
@@ -262,18 +268,18 @@ static bool sprite_file_import(
 
         if (!forceBmp)
         {
-            flags = (ImageImporter::IMPORT_FLAGS)ImageImporter::IMPORT_FLAGS::RLE;
+            flags = ImageImporter::IMPORT_FLAGS::RLE;
         }
 
         if (keep_palette)
         {
             format = IMAGE_FORMAT::PNG;
-            flags = (ImageImporter::IMPORT_FLAGS)(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
         }
 
         ImageImporter importer;
         auto image = Imaging::ReadFromFile(path, format);
-        auto result = importer.Import(image, x_offset, y_offset, flags, (ImageImporter::IMPORT_MODE)mode);
+        auto result = importer.Import(image, x_offset, y_offset, flags, static_cast<ImageImporter::IMPORT_MODE>(mode));
 
         *outElement = result.Element;
         *outBuffer = static_cast<uint8_t*>(result.Buffer);
@@ -369,7 +375,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        if (!sprite_file_export(spriteIndex, outputPath))
+        rct_g1_element* spriteHeader = &spriteFileEntries[spriteIndex];
+        if (!sprite_file_export(spriteHeader, outputPath))
         {
             fprintf(stderr, "Could not export\n");
             sprite_file_close();
@@ -429,7 +436,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 printf("\r%d / %d, %d%%", spriteIndex, maxIndex, spriteIndex / maxIndex);
             }
 
-            if (!sprite_file_export(spriteIndex, outputPath))
+            rct_g1_element* spriteHeader = &spriteFileEntries[spriteIndex];
+            if (!sprite_file_export(spriteHeader, outputPath))
             {
                 fprintf(stderr, "Could not export\n");
                 sprite_file_close();
@@ -448,6 +456,155 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         sprite_file_close();
+        return 1;
+    }
+    else if (_strcmpi(argv[0], "exportalldat") == 0)
+    {
+        if (argc < 3)
+        {
+            fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
+            return -1;
+        }
+
+        char datName[DAT_NAME_LENGTH + 1] = { 0 };
+        std::fill_n(datName, DAT_NAME_LENGTH, ' ');
+        int32_t i = 0;
+        for (const char* ch = argv[1]; *ch != '\0' && i < DAT_NAME_LENGTH; ch++)
+        {
+            datName[i++] = *ch;
+        }
+
+        auto context = OpenRCT2::CreateContext();
+        context->Initialise();
+
+        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(datName);
+        if (ori == nullptr)
+        {
+            fprintf(stderr, "Could not find the object.\n");
+            return -1;
+        }
+
+        const rct_object_entry* entry = &ori->ObjectEntry;
+        void* loadedObject = object_manager_load_object(entry);
+        if (loadedObject == nullptr)
+        {
+            fprintf(stderr, "Unable to load object.\n");
+            return -1;
+        }
+        auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        uint8_t objectType = entry->GetType();
+
+        auto& objManager = context->GetObjectManager();
+        auto metaObject = objManager.GetLoadedObject(objectType, entryIndex);
+
+        char outputPath[MAX_PATH];
+        safe_strcpy(outputPath, argv[2], MAX_PATH);
+        path_end_with_separator(outputPath, MAX_PATH);
+
+        if (!platform_ensure_directory_exists(outputPath))
+        {
+            fprintf(stderr, "Unable to create directory.\n");
+            return -1;
+        }
+
+        int32_t maxIndex = static_cast<int32_t>(metaObject->GetNumImages());
+        int32_t imagesOffset = 0;
+        switch (objectType)
+        {
+            case OBJECT_TYPE_RIDE:
+            {
+                auto rideEntry = get_ride_entry(entryIndex);
+                imagesOffset = rideEntry->images_offset;
+                break;
+            }
+            case OBJECT_TYPE_SMALL_SCENERY:
+            case OBJECT_TYPE_LARGE_SCENERY:
+            case OBJECT_TYPE_WALLS:
+            case OBJECT_TYPE_BANNERS:
+            case OBJECT_TYPE_PATH_BITS:
+            {
+                auto obj = objManager.GetLoadedObject(objectType, entryIndex);
+                if (obj != nullptr)
+                {
+                    auto sceneryEntry = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+                    imagesOffset = sceneryEntry->image;
+                }
+                break;
+            }
+            case OBJECT_TYPE_PATHS:
+            {
+                auto pathEntry = get_path_surface_entry(entryIndex);
+                imagesOffset = pathEntry->image;
+                break;
+            }
+            case OBJECT_TYPE_SCENERY_GROUP:
+            {
+                auto sceneryGroupEntry = get_scenery_group_entry(entryIndex);
+                imagesOffset = sceneryGroupEntry->image;
+                break;
+            }
+            case OBJECT_TYPE_PARK_ENTRANCE:
+            {
+                auto obj = objManager.GetLoadedObject(objectType, entryIndex);
+                if (obj != nullptr)
+                {
+                    auto entranceEnty = static_cast<rct_entrance_type*>(obj->GetLegacyData());
+                    imagesOffset = entranceEnty->image_id;
+                }
+                break;
+            }
+            default:
+            {
+                fprintf(stderr, "Cannot extract images from this type of object.\n");
+                return -1;
+            }
+        }
+
+        int32_t numDigits = std::max(1, static_cast<int32_t>(std::floor(std::log(maxIndex))));
+        size_t pathLen = strlen(outputPath);
+
+        if (pathLen >= static_cast<size_t>(MAX_PATH - numDigits - 5))
+        {
+            fprintf(stderr, "Path too long.\n");
+            return -1;
+        }
+
+        for (int32_t x = 0; x < numDigits; x++)
+        {
+            outputPath[pathLen + x] = '0';
+        }
+        safe_strcpy(outputPath + pathLen + numDigits, ".png", MAX_PATH - pathLen - numDigits);
+
+        for (int32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
+        {
+            const rct_g1_element* g1 = gfx_get_g1_element(spriteIndex + imagesOffset);
+            if (g1 == nullptr)
+            {
+                fprintf(stderr, "Could not load image metadata\n");
+                return -1;
+            }
+
+            if (!sprite_file_export(const_cast<rct_g1_element*>(g1), outputPath))
+            {
+                fprintf(stderr, "Could not export\n");
+                sprite_file_close();
+                return -1;
+            }
+
+            fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", outputPath, g1->x_offset, g1->y_offset);
+
+            // Add to the index at the end of the file name
+            char* counter = outputPath + pathLen + numDigits - 1;
+            (*counter)++;
+            while (*counter > '9')
+            {
+                *counter = '0';
+                counter--;
+                (*counter)++;
+            }
+        }
+
+        metaObject->Unload();
         return 1;
     }
     else if (_strcmpi(argv[0], "create") == 0)
