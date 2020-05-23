@@ -13,16 +13,18 @@
 
 #include "OpenRCT2.h"
 #include "core/Imaging.h"
-#include "core/String.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
-#include "localisation/Language.h"
 #include "platform/platform.h"
 #include "util/Util.h"
 
 #include <cmath>
 #include <cstring>
 #include <jansson.h>
+
+#ifdef _WIN32
+#    include "core/String.hpp"
+#endif
 
 using namespace OpenRCT2::Drawing;
 
@@ -262,18 +264,18 @@ static bool sprite_file_import(
 
         if (!forceBmp)
         {
-            flags = (ImageImporter::IMPORT_FLAGS)ImageImporter::IMPORT_FLAGS::RLE;
+            flags = ImageImporter::IMPORT_FLAGS::RLE;
         }
 
         if (keep_palette)
         {
             format = IMAGE_FORMAT::PNG;
-            flags = (ImageImporter::IMPORT_FLAGS)(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
         }
 
         ImageImporter importer;
         auto image = Imaging::ReadFromFile(path, format);
-        auto result = importer.Import(image, x_offset, y_offset, flags, (ImageImporter::IMPORT_MODE)mode);
+        auto result = importer.Import(image, x_offset, y_offset, flags, static_cast<ImageImporter::IMPORT_MODE>(mode));
 
         *outElement = result.Element;
         *outBuffer = static_cast<uint8_t*>(result.Buffer);
