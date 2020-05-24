@@ -34,6 +34,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/actions/SetCheatAction.hpp>
 
 extern bool gWindowSceneryEyedropperEnabled;
 
@@ -1020,6 +1021,12 @@ static void shortcut_decrease_element_height()
     }
 }
 
+static void shortcut_toggle_clearance_checks()
+{
+    auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks == 0 ? 1 : 0);
+    GameActions::Execute(&setCheatAction);
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -1109,6 +1116,7 @@ namespace
         shortcut_decrease_y_coord,
         shortcut_increase_element_height,
         shortcut_decrease_element_height,
+        shortcut_toggle_clearance_checks,
     };
 } // anonymous namespace
 
