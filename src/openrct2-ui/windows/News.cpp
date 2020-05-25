@@ -150,7 +150,7 @@ static void window_news_update(rct_window* w)
 
     j = w->news.var_480;
     w->news.var_480 = -1;
-    for (i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
+    for (i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             return;
@@ -188,7 +188,7 @@ static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_
     int32_t itemHeight = window_news_get_item_height();
 
     *height = 0;
-    for (int32_t i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             break;
@@ -208,7 +208,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
 
     buttonIndex = 0;
     auto mutableScreenCoords = screenCoords;
-    for (i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
+    for (i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             break;
@@ -238,7 +238,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
 
     if (buttonIndex != 0)
     {
-        w->news.var_480 = i - MAX_RECENT_NEWS_ITEMS;
+        w->news.var_480 = i - NEWS_ITEM_HISTORY_START;
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
         w->Invalidate();
@@ -266,7 +266,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
     int32_t i, x, y, yy, press;
 
     y = 0;
-    for (i = MAX_RECENT_NEWS_ITEMS; i < MAX_NEWS_ITEMS; i++)
+    for (i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
     {
         NewsItem* const newsItem = news_item_get(i);
         if (news_item_is_empty(i))
@@ -301,7 +301,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             press = 0;
             if (w->news.var_480 != -1)
             {
-                const uint8_t idx = MAX_RECENT_NEWS_ITEMS + w->news.var_480;
+                const uint8_t idx = NEWS_ITEM_HISTORY_START + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
@@ -378,7 +378,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             press = 0;
             if (w->news.var_480 != -1)
             {
-                const uint8_t idx = MAX_RECENT_NEWS_ITEMS + w->news.var_480;
+                const uint8_t idx = NEWS_ITEM_HISTORY_START + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 2)
                     press = 0x20;

@@ -59,9 +59,9 @@ struct NewsItem
     }
 };
 
-constexpr int32_t MAX_RECENT_NEWS_ITEMS = 11;
+constexpr int32_t NEWS_ITEM_HISTORY_START = 11;
 constexpr int32_t MAX_OLD_NEWS_ITEMS = 50;
-constexpr int32_t MAX_NEWS_ITEMS = MAX_RECENT_NEWS_ITEMS + MAX_OLD_NEWS_ITEMS;
+constexpr int32_t MAX_NEWS_ITEMS = NEWS_ITEM_HISTORY_START + MAX_OLD_NEWS_ITEMS;
 
 extern const uint8_t news_type_properties[10];
 
@@ -116,7 +116,7 @@ private:
     int32_t RemoveTime() const;
     void AppendToOld(NewsItem& item);
 
-    NewsItem Recent[MAX_RECENT_NEWS_ITEMS];
+    NewsItem Recent[NEWS_ITEM_HISTORY_START];
     NewsItem Old[MAX_OLD_NEWS_ITEMS];
 };
 

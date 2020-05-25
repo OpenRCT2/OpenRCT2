@@ -56,10 +56,10 @@ NewsItem* news_item_get(int32_t index)
 
 NewsItem& NewsItemQueue::operator[](size_t index)
 {
-    if (index < MAX_RECENT_NEWS_ITEMS)
+    if (index < NEWS_ITEM_HISTORY_START)
         return Recent[index];
     else
-        return Old[index - MAX_RECENT_NEWS_ITEMS];
+        return Old[index - NEWS_ITEM_HISTORY_START];
 }
 
 NewsItem* NewsItemQueue::At(int32_t index)
@@ -187,7 +187,7 @@ void NewsItemQueue::MoveCurrentToOld()
 
     // Dequeue the current news item, shift news up
     memmove(Recent, Recent + 1, sizeof(NewsItem) * (std::size(Recent) - 1));
-    Recent[MAX_RECENT_NEWS_ITEMS - 1].Type = NEWS_ITEM_NULL;
+    Recent[NEWS_ITEM_HISTORY_START - 1].Type = NEWS_ITEM_NULL;
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
