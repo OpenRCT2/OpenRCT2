@@ -78,7 +78,7 @@ struct NewsItemQueue
     const NewsItem& Oldest() const;
     bool IsCurrentOld() const;
     void MoveCurrentToOld();
-    NewsItem* FirstOpenSlot();
+    NewsItem* FirstOpenOrCreateSlot();
 
     template<typename Predicate> void ForeachRecentNews(Predicate&& p)
     {
