@@ -3668,6 +3668,7 @@ STR_6370    :{SMALLFONT}{BLACK}Allows placing track pieces at any height interva
 STR_6371    :The specified path contains a RollerCoaster Tycoon 1 installation, but the “csg1i.dat” file is missing. This file needs to be copied from the RollerCoaster Tycoon 1 CD to the “Data” folder of the RollerCoaster Tycoon 1 install on your hard drive.
 STR_6372    :The specified path contains a RollerCoaster Tycoon 1 installation, but this version is not suitable. OpenRCT2 needs a Loopy Landscapes or RCT Deluxe install in order to use RollerCoaster Tycoon 1 assets.
 STR_6373    :Toggle clearance checks
+STR_6374    :C
 
 #############
 # Scenarios #
