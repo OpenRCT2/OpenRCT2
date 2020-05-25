@@ -39,6 +39,26 @@ const uint8_t news_type_properties[] = {
     NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
+NewsItem& NewsItemQueue::Current()
+{
+    return Recent[0];
+}
+
+const NewsItem& NewsItemQueue::Current() const
+{
+    return Recent[0];
+}
+
+NewsItem& NewsItemQueue::Oldest()
+{
+    return Old[0];
+}
+
+const NewsItem& NewsItemQueue::Oldest() const
+{
+    return Old[0];
+}
+
 bool news_item_is_valid_idx(int32_t index)
 {
     if (index >= MAX_NEWS_ITEMS)

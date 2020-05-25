@@ -72,22 +72,10 @@ struct NewsItemQueue
     bool IsEmpty() const;
     void Init();
     uint16_t IncrementTicks();
-    NewsItem& Current()
-    {
-        return Recent[0];
-    }
-    const NewsItem& Current() const
-    {
-        return Recent[0];
-    }
-    NewsItem& Oldest()
-    {
-        return Old[0];
-    }
-    const NewsItem& Oldest() const
-    {
-        return Old[0];
-    }
+    NewsItem& Current();
+    const NewsItem& Current() const;
+    NewsItem& Oldest();
+    const NewsItem& Oldest() const;
     bool IsCurrentOld() const;
     void MoveCurrentToOld();
     NewsItem* FirstOpenSlot();
