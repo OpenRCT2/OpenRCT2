@@ -46,7 +46,6 @@
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
-#include "network/Twitch.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -1030,7 +1029,6 @@ namespace OpenRCT2
             }
 #endif
 
-            Twitch::Update();
             chat_update();
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Update();

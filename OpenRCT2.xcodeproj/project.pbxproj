@@ -26,7 +26,6 @@
 		01C6F0C822FD51FC0057E2F7 /* T6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01C6F0C522FD51FC0057E2F7 /* T6Exporter.cpp */; };
 		01C6F0C922FD51FC0057E2F7 /* T6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01C6F0C622FD51FC0057E2F7 /* T6Importer.cpp */; };
 		01DDFE6522FD608500221318 /* Window_internal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01DDFE6422FD608500221318 /* Window_internal.cpp */; };
-		2A1F4FE0221FF4B0003CA045 /* Twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */; };
 		2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
@@ -1729,8 +1728,6 @@
 		F76C840C1EC4E7CC00FA49E2 /* ServerList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerList.h; sourceTree = "<group>"; };
 		F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
 		F76C840E1EC4E7CC00FA49E2 /* Socket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
-		F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Twitch.cpp; sourceTree = "<group>"; };
-		F76C84101EC4E7CC00FA49E2 /* Twitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Twitch.h; sourceTree = "<group>"; };
 		F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BannerObject.cpp; sourceTree = "<group>"; };
 		F76C84131EC4E7CC00FA49E2 /* BannerObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerObject.h; sourceTree = "<group>"; };
 		F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntranceObject.cpp; sourceTree = "<group>"; };
