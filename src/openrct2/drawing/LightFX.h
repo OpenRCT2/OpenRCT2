@@ -17,7 +17,7 @@
 struct CoordsXY;
 struct Vehicle;
 struct rct_drawpixelinfo;
-struct rct_palette;
+struct GamePalette;
 
 enum LIGHTFX_LIGHT_TYPE
 {
@@ -57,7 +57,7 @@ void lightfx_render_lights_to_frontbuffer();
 void lightfx_update_viewport_settings();
 
 void* lightfx_get_front_buffer();
-const rct_palette* lightfx_get_palette();
+const GamePalette& lightfx_get_palette();
 
 void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, uint8_t lightType);
 

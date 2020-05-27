@@ -34,7 +34,7 @@ enum DRAWING_ENGINE_FLAGS
 };
 
 struct rct_drawpixelinfo;
-struct rct_palette_entry;
+struct GamePalette;
 
 namespace OpenRCT2::Ui
 {
@@ -54,7 +54,7 @@ namespace OpenRCT2::Drawing
 
         virtual void Initialise() abstract;
         virtual void Resize(uint32_t width, uint32_t height) abstract;
-        virtual void SetPalette(const rct_palette_entry* colours) abstract;
+        virtual void SetPalette(const GamePalette& colours) abstract;
 
         virtual void SetVSync(bool vsync) abstract;
 

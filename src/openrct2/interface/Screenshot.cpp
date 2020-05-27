@@ -41,7 +41,7 @@ using namespace OpenRCT2::Drawing;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo* dpi, const rct_palette& palette)
+static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi->bits;
     auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
@@ -52,7 +52,7 @@ static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo
         image.Height = dpi->height;
         image.Depth = 8;
         image.Stride = dpi->width + dpi->pitch;
-        image.Palette = std::make_unique<rct_palette>(palette);
+        image.Palette = std::make_unique<GamePalette>(palette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
         return true;
@@ -90,16 +90,6 @@ void screenshot_check()
             // redraw_rain();
         }
     }
-}
-
-static rct_palette screenshot_get_rendered_palette()
-{
-    rct_palette palette;
-    for (int32_t i = 0; i < 256; i++)
-    {
-        palette.entries[i] = gPalette[i];
-    }
-    return palette;
 }
 
 static std::string screenshot_get_park_name()
@@ -178,8 +168,7 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
         return "";
     }
 
-    auto renderedPalette = screenshot_get_rendered_palette();
-    if (WriteDpiToFile(path->c_str(), dpi, renderedPalette))
+    if (WriteDpiToFile(path->c_str(), dpi, gPalette))
     {
         return *path;
     }
@@ -425,8 +414,7 @@ void screenshot_giant()
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        auto renderedPalette = screenshot_get_rendered_palette();
-        WriteDpiToFile(path->c_str(), &dpi, renderedPalette);
+        WriteDpiToFile(path->c_str(), &dpi, gPalette);
 
         // Show user that screenshot saved successfully
         auto ft = Formatter::Common();
@@ -744,8 +732,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        auto renderedPalette = screenshot_get_rendered_palette();
-        WriteDpiToFile(outputPath, &dpi, renderedPalette);
+        WriteDpiToFile(outputPath, &dpi, gPalette);
     }
     catch (const std::exception& e)
     {
@@ -838,8 +825,7 @@ void CaptureImage(const CaptureOptions& options)
     auto outputPath = ResolveFilenameForCapture(options.Filename);
     auto dpi = CreateDPI(viewport);
     RenderViewport(nullptr, viewport, dpi);
-    auto renderedPalette = screenshot_get_rendered_palette();
-    WriteDpiToFile(outputPath, &dpi, renderedPalette);
+    WriteDpiToFile(outputPath, &dpi, gPalette);
     ReleaseDPI(dpi);
 
     gCurrentRotation = backupRotation;
