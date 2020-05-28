@@ -142,6 +142,7 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
         if ((_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
             || (_legacyType.wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR))
         {
+            _legacyType.wall.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
             _legacyType.wall.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
         }
     }
