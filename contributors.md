@@ -50,7 +50,7 @@ The following people are not part of the development team, but have been contrib
 * (atmaxinger) - User configuration
 * (anyc) - Housecleaning, cross-platform fixes
 * Michael Steenbeek (Gymnasiast) - Cheats, RCT1 ride style, misc.
-* Miso Zmiric (mzmiric5) - Twitch integration, misc.
+* Miso Zmiric (mzmiric5) - Old Twitch integration, misc.
 * Inseok Lee (dlunch) - Load save files from command line
 * Jørn Lomax (jvlomax) - Configuration parser
 * Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.

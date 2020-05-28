@@ -128,17 +128,6 @@ struct SoundConfiguration
     bool audio_focus;
 };
 
-struct TwitchConfiguration
-{
-    utf8* channel;
-    utf8* api_url;
-    bool enable_follower_peep_names;
-    bool enable_follower_peep_tracking;
-    bool enable_chat_peep_names;
-    bool enable_chat_peep_tracking;
-    bool enable_news;
-};
-
 struct NetworkConfiguration
 {
     std::string player_name;
@@ -238,7 +227,6 @@ enum MEASUREMENT_FORMAT
 extern GeneralConfiguration gConfigGeneral;
 extern InterfaceConfiguration gConfigInterface;
 extern SoundConfiguration gConfigSound;
-extern TwitchConfiguration gConfigTwitch;
 extern NetworkConfiguration gConfigNetwork;
 extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;

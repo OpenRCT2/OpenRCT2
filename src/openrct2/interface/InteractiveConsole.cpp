@@ -1035,18 +1035,6 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
     return 0;
 }
 
-static int32_t cc_twitch([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
-{
-#ifdef DISABLE_TWITCH
-    console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
-#else
-    // TODO: Add some twitch commands
-    // Display a message to the player for now
-    console.WriteLine("To be implemented");
-#endif
-    return 0;
-}
-
 static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
@@ -1781,7 +1769,6 @@ static constexpr const console_command console_command_table[] = {
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>" },
     { "terminate", cc_terminate, "Calls std::terminate(), for testing purposes only.", "terminate" },
-    { "twitch", cc_twitch, "Twitch API", "twitch" },
     { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
     { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
     { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <name> [max_ticks]"},

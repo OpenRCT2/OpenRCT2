@@ -37,6 +37,7 @@
 - Technical: [#8110] OpenRCT2 now uses a single directory name for title sequences instead of three.
 - Technical: [#11517] Windows Vista is supported again (libzip regression in the previous release).
 - Technical: The required version of macOS has been increased to 10.14 (Mojave) for plugin support.
+- Removed: [#11820] Twitch support (relied on a server that has been down for a few years).
 
 0.2.6 (2020-04-17)
 ------------------------------------------------------------------------

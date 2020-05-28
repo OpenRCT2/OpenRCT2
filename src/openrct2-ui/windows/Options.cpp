@@ -50,7 +50,6 @@ enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     WINDOW_OPTIONS_PAGE_MISC,
     WINDOW_OPTIONS_PAGE_ADVANCED,
-    WINDOW_OPTIONS_PAGE_TWITCH,
     WINDOW_OPTIONS_PAGE_COUNT
 };
 
@@ -68,7 +67,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TAB_5,
     WIDX_TAB_6,
     WIDX_TAB_7,
-    WIDX_TAB_8,
 
     WIDX_PAGE_START,
 
@@ -189,28 +187,11 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
-
-    // Twitch
-    WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
-    WIDX_API_URL_BUTTON,
-    WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX,
-    WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX,
-    WIDX_CHAT_PEEP_NAMES_CHECKBOX,
-    WIDX_CHAT_PEEP_TRACKING_CHECKBOX,
-    WIDX_NEWS_CHECKBOX
 };
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS_TITLE;
 static constexpr const int32_t WW = 310;
 static constexpr const int32_t WH = 332;
-
-#ifndef DISABLE_TWITCH
-    #define TWITCH_TAB_SPRITE   IMAGE_TYPE_REMAP | SPR_TAB
-    #define TWITCH_TAB_COLOUR   1
-#else
-    #define TWITCH_TAB_SPRITE   IMAGE_TYPE_REMAP | SPR_G2_TAB_DISABLED
-    #define TWITCH_TAB_COLOUR   0
-#endif
 
 #define MAIN_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
@@ -221,8 +202,7 @@ static constexpr const int32_t WH = 332;
     { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_AUDIO_TIP }, \
     { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
     { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
-    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_ADVANCED }, \
-    { WWT_TAB,              TWITCH_TAB_COLOUR,  220,    250,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_ADVANCED }
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
@@ -377,18 +357,6 @@ static rct_widget window_options_advanced_widgets[] = {
     { WIDGETS_END },
 };
 
-static rct_widget window_options_twitch_widgets[] = {
-    MAIN_OPTIONS_WIDGETS,
-    { WWT_BUTTON,           1,  10,     299,    54,     66,     STR_TWITCH_NAME,            STR_TWITCH_NAME_TIP },              // Twitch channel name
-    { WWT_BUTTON,           1,  10,     299,    71,     83,     STR_TWITCH_API_URL,         STR_TWITCH_API_URL_TIP },           // Twitch API name
-    { WWT_CHECKBOX,         2,  10,     299,    88,     103,    STR_TWITCH_PEEP_FOLLOWERS,  STR_TWITCH_PEEP_FOLLOWERS_TIP },    // Twitch name peeps by follows
-    { WWT_CHECKBOX,         2,  10,     299,    104,    119,    STR_TWITCH_FOLLOWERS_TRACK, STR_TWITCH_FOLLOWERS_TRACK_TIP },   // Twitch information on for follows
-    { WWT_CHECKBOX,         2,  10,     299,    120,    135,    STR_TWITCH_PEEP_CHAT,       STR_TWITCH_PEEP_CHAT_TIP },         // Twitch name peeps by chat
-    { WWT_CHECKBOX,         2,  10,     299,    136,    151,    STR_TWITCH_CHAT_TRACK,      STR_TWITCH_CHAT_TRACK_TIP  },       // Twitch information on for chat
-    { WWT_CHECKBOX,         2,  10,     299,    152,    167,    STR_TWITCH_CHAT_NEWS,       STR_TWITCH_CHAT_NEWS_TIP },         // Twitch chat !news as notifications in game
-    { WIDGETS_END },
-};
-
 static rct_widget *window_options_page_widgets[] = {
     window_options_display_widgets,
     window_options_rendering_widgets,
@@ -397,7 +365,6 @@ static rct_widget *window_options_page_widgets[] = {
     window_options_controls_and_interface_widgets,
     window_options_misc_widgets,
     window_options_advanced_widgets,
-    window_options_twitch_widgets
 };
 
 #pragma endregion
@@ -438,7 +405,6 @@ const int32_t window_options_tab_animation_divisor[] =
     2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     4, // WINDOW_OPTIONS_PAGE_MISC,
     2, // WINDOW_OPTIONS_PAGE_ADVANCED,
-    1  // WINDOW_OPTIONS_PAGE_TWITCH,
 };
 const int32_t window_options_tab_animation_frames[] =
 {
@@ -449,7 +415,6 @@ const int32_t window_options_tab_animation_frames[] =
      4, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     16, // WINDOW_OPTIONS_PAGE_MISC,
     16, // WINDOW_OPTIONS_PAGE_ADVANCED,
-     1  // WINDOW_OPTIONS_PAGE_TWITCH,
 };
 
 static void window_options_set_page(rct_window *w, int32_t page);
@@ -468,7 +433,6 @@ static void window_options_update(rct_window *w);
 static void window_options_invalidate(rct_window *w);
 static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_options_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
 static rct_window_event_list window_options_events = {
@@ -491,7 +455,7 @@ static rct_window_event_list window_options_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_options_text_input,
+    nullptr,
     nullptr,
     nullptr,
     window_options_tooltip,
@@ -514,8 +478,7 @@ static rct_window_event_list window_options_events = {
     (1 << WIDX_TAB_4) | \
     (1 << WIDX_TAB_5) | \
     (1 << WIDX_TAB_6) | \
-    (1 << WIDX_TAB_7) | \
-    (1 << WIDX_TAB_8)
+    (1 << WIDX_TAB_7)
 
 static uint64_t window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -620,15 +583,6 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_PATH_TO_RCT1_TEXT) |
     (1 << WIDX_PATH_TO_RCT1_BUTTON) |
     (1 << WIDX_PATH_TO_RCT1_CLEAR),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_CHANNEL_BUTTON) |
-    (1 << WIDX_API_URL_BUTTON) |
-    (1 << WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX) |
-    (1 << WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX) |
-    (1 << WIDX_CHAT_PEEP_NAMES_CHECKBOX) |
-    (1 << WIDX_CHAT_PEEP_TRACKING_CHECKBOX) |
-    (1 << WIDX_NEWS_CHECKBOX)
 };
 // clang-format on
 
@@ -675,7 +629,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_TAB_5:
         case WIDX_TAB_6:
         case WIDX_TAB_7:
-        case WIDX_TAB_8:
             window_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
     }
@@ -1012,45 +965,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                         config_save_default();
                     }
                     w->Invalidate();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_TWITCH:
-            switch (widgetIndex)
-            {
-                case WIDX_CHANNEL_BUTTON:
-                    window_text_input_raw_open(
-                        w, widgetIndex, STR_TWITCH_NAME, STR_TWITCH_NAME_DESC, gConfigTwitch.channel, 32);
-                    break;
-                case WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX:
-                    gConfigTwitch.enable_follower_peep_names ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX:
-                    gConfigTwitch.enable_follower_peep_tracking ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_CHAT_PEEP_NAMES_CHECKBOX:
-                    gConfigTwitch.enable_chat_peep_names ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_CHAT_PEEP_TRACKING_CHECKBOX:
-                    gConfigTwitch.enable_chat_peep_tracking ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_NEWS_CHECKBOX:
-                    gConfigTwitch.enable_news ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_API_URL_BUTTON:
-                    window_text_input_raw_open(
-                        w, widgetIndex, STR_TWITCH_API_URL, STR_TWITCH_API_URL_DESC, gConfigTwitch.api_url, 256);
                     break;
             }
             break;
@@ -1393,9 +1307,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
             }
             break;
-
-        case WINDOW_OPTIONS_PAGE_TWITCH:
-            break;
     }
 }
 
@@ -1658,9 +1569,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     break;
             }
             break;
-
-        case WINDOW_OPTIONS_PAGE_TWITCH:
-            break;
     }
 }
 
@@ -1690,11 +1598,7 @@ static void window_options_invalidate(rct_window* w)
     }
     window_options_set_pressed_tab(w);
 
-#ifdef DISABLE_TWITCH
-    w->disabled_widgets = (1 << WIDX_TAB_8);
-#else
     w->disabled_widgets = 0;
-#endif
 
     switch (w->page)
     {
@@ -1992,14 +1896,6 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
             widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
             break;
-
-        case WINDOW_OPTIONS_PAGE_TWITCH:
-            widget_set_checkbox_value(w, WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX, gConfigTwitch.enable_follower_peep_names);
-            widget_set_checkbox_value(w, WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX, gConfigTwitch.enable_follower_peep_tracking);
-            widget_set_checkbox_value(w, WIDX_CHAT_PEEP_NAMES_CHECKBOX, gConfigTwitch.enable_chat_peep_names);
-            widget_set_checkbox_value(w, WIDX_CHAT_PEEP_TRACKING_CHECKBOX, gConfigTwitch.enable_chat_peep_tracking);
-            widget_set_checkbox_value(w, WIDX_NEWS_CHECKBOX, gConfigTwitch.enable_news);
-            break;
     }
 
     // Automatically adjust window height to fit widgets
@@ -2211,33 +2107,6 @@ static void window_options_scrollgetsize(rct_window* w, int32_t scrollIndex, int
     }
 }
 
-static void window_options_text_input(rct_window* w, rct_widgetindex widgetIndex, char* text)
-{
-    if (text == nullptr)
-        return;
-
-    if (widgetIndex == WIDX_CHANNEL_BUTTON)
-    {
-        free(gConfigTwitch.channel);
-        gConfigTwitch.channel = _strdup(text);
-        config_save_default();
-    }
-    else if (widgetIndex == WIDX_API_URL_BUTTON)
-    {
-        if (!String::StartsWith(text, "http://", false) && !String::StartsWith(text, "https://", false))
-        {
-            context_show_error(STR_INVALID_URL, STR_NONE);
-            return;
-        }
-        if (gConfigTwitch.api_url != nullptr)
-        {
-            free(gConfigTwitch.api_url);
-        }
-        gConfigTwitch.api_url = _strdup(text);
-        config_save_default();
-    }
-}
-
 static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
 {
     if (w->page == WINDOW_OPTIONS_PAGE_ADVANCED && widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
@@ -2320,7 +2189,6 @@ static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH, SPR_G2_TAB_TWITCH);
 }
 
 #pragma endregion
