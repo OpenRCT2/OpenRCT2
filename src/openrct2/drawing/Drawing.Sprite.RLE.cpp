@@ -109,8 +109,7 @@ static void FASTCALL DrawRLESprite2(
                 {
                     if (image_type & IMAGE_TYPE_TRANSPARENT)
                     {
-                        uint16_t color = ((*copySrc << 8) | *copyDest) - 0x100;
-                        *copyDest = paletteMap[color];
+                        *copyDest = paletteMap.Blend(*copySrc, *copyDest);
                     }
                     else
                     {

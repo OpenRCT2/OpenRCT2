@@ -456,29 +456,36 @@ public:
 struct PaletteMap
 {
 private:
-    uint8_t* _map{};
-    size_t _mapLength{};
+    uint8_t* _data{};
+    uint32_t _dataLength{};
+    uint16_t _numMaps;
+    uint16_t _mapLength;
 
 public:
     static const PaletteMap& GetDefault();
 
     PaletteMap() = default;
 
-    PaletteMap(uint8_t* map, size_t mapLength)
-        : _map(map)
+    PaletteMap(uint8_t* data, uint16_t numMaps, uint16_t mapLength)
+        : _data(data)
+        , _dataLength(numMaps * mapLength)
+        , _numMaps(numMaps)
         , _mapLength(mapLength)
     {
     }
 
     template<std::size_t TSize>
     PaletteMap(uint8_t (&map)[TSize])
-        : _map(map)
-        , _mapLength(std::size(map))
+        : _data(map)
+        , _dataLength(static_cast<uint32_t>(std::size(map)))
+        , _numMaps(1)
+        , _mapLength(static_cast<uint16_t>(std::size(map)))
     {
     }
 
     uint8_t& operator[](size_t index);
     uint8_t operator[](size_t index) const;
+    uint8_t Blend(uint8_t src, uint8_t dst) const;
     void Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length);
 };
 

@@ -26,7 +26,7 @@ const PaletteMap& PaletteMap::GetDefault()
 {
     static bool initialised = false;
     static uint8_t data[256];
-    static PaletteMap defaultMap(data, sizeof(data));
+    static PaletteMap defaultMap(data);
     if (!initialised)
     {
         for (size_t i = 0; i < sizeof(data); i++)
@@ -39,21 +39,38 @@ const PaletteMap& PaletteMap::GetDefault()
 
 uint8_t& PaletteMap::operator[](size_t index)
 {
-    if (index >= _mapLength)
+    assert(index < _dataLength);
+
+    // Provide safety in release builds
+    if (index >= _dataLength)
     {
         static uint8_t dummy;
         return dummy;
     }
-    return _map[index];
+
+    return _data[index];
 }
 
 uint8_t PaletteMap::operator[](size_t index) const
 {
-    if (index >= _mapLength)
+    assert(index < _dataLength);
+
+    // Provide safety in release builds
+    if (index >= _dataLength)
     {
         return 0;
     }
-    return _map[index];
+
+    return _data[index];
+}
+
+uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
+{
+    // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
+    assert(src != 0 && (src - 1) < _numMaps);
+    assert(dst < _mapLength);
+    auto idx = ((src - 1) * 256) + dst;
+    return (*this)[idx];
 }
 
 void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length)
@@ -61,7 +78,7 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
     auto maxLength = std::min(_mapLength - srcIndex, _mapLength - dstIndex);
     assert(length <= maxLength);
     auto copyLength = std::min(length, maxLength);
-    std::memcpy(&_map[dstIndex], &src._map[srcIndex], copyLength);
+    std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
 }
 
 // HACK These were originally passed back through registers
@@ -749,7 +766,7 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
         auto g1 = gfx_get_g1_element(*g1Index);
         if (g1 != nullptr)
         {
-            return PaletteMap(g1->offset, 256 * 256);
+            return PaletteMap(g1->offset, g1->height, g1->width);
         }
     }
     return std::nullopt;
