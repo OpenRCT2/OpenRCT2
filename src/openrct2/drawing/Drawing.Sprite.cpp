@@ -378,20 +378,23 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
             auto tertiaryPaletteMap = GetPaletteMapForColour(imageId.GetTertiary());
             if (tertiaryPaletteMap)
             {
-                paletteMap.Copy(0x2E, *tertiaryPaletteMap, 0xF3, 12);
+                paletteMap.Copy(
+                    PALETTE_OFFSET_REMAP_TERTIARY, *tertiaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
             }
         }
 
         auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
         if (primaryPaletteMap)
         {
-            paletteMap.Copy(0xF3, *primaryPaletteMap, 0xF3, 12);
+            paletteMap.Copy(
+                PALETTE_OFFSET_REMAP_PRIMARY, *primaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
         }
 
         auto secondaryPaletteMap = GetPaletteMapForColour(imageId.GetSecondary());
         if (secondaryPaletteMap)
         {
-            paletteMap.Copy(0xCA, *secondaryPaletteMap, 0xF3, 12);
+            paletteMap.Copy(
+                PALETTE_OFFSET_REMAP_SECONDARY, *secondaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
         }
 
         return paletteMap;
