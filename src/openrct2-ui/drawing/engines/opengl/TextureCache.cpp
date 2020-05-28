@@ -96,7 +96,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
     return info;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap)
 {
     GlyphId glyphId{};
     glyphId.Image = image;
@@ -105,7 +105,12 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
     {
         shared_lock lock(_mutex);
 
-        std::copy_n(palette, sizeof(glyphId.Palette), reinterpret_cast<uint8_t*>(&glyphId.Palette));
+        uint8_t glyphMap[8];
+        for (uint8_t i = 0; i < 8; i++)
+        {
+            glyphMap[i] = paletteMap[i];
+        }
+        std::copy_n(glyphMap, sizeof(glyphId.Palette), reinterpret_cast<uint8_t*>(&glyphId.Palette));
 
         auto kvp = _glyphTextureMap.find(glyphId);
         if (kvp != _glyphTextureMap.end())
@@ -121,7 +126,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
     // Load new texture.
     unique_lock lock(_mutex);
 
-    auto cacheInfo = LoadGlyphTexture(image, palette);
+    auto cacheInfo = LoadGlyphTexture(image, paletteMap);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
 
     return (*it.first).second;
@@ -175,9 +180,13 @@ void TextureCache::GeneratePaletteTexture()
     for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
     {
         GLint y = PaletteToY(i);
-        uint16_t image = palette_to_g1_offset[i];
-        auto element = gfx_get_g1_element(image);
-        gfx_draw_sprite_software(&dpi, ImageId(image), -element->x_offset, y - element->y_offset);
+
+        auto g1Index = GetPaletteG1Index(i);
+        if (g1Index)
+        {
+            auto element = gfx_get_g1_element(*g1Index);
+            gfx_draw_sprite_software(&dpi, ImageId(*g1Index), -element->x_offset, y - element->y_offset);
+        }
     }
 
     glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
@@ -240,9 +249,9 @@ AtlasTextureInfo TextureCache::LoadImageTexture(uint32_t image)
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, uint8_t* palette)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap)
 {
-    rct_drawpixelinfo dpi = GetGlyphAsDPI(image, palette);
+    rct_drawpixelinfo dpi = GetGlyphAsDPI(image, paletteMap);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
     cacheInfo.image = image;
@@ -304,7 +313,7 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryC
     return dpi;
 }
 
-rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, uint8_t* palette)
+rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, const PaletteMap& palette)
 {
     auto g1Element = gfx_get_g1_element(image & 0x7FFFFUL);
     int32_t width = g1Element->width;

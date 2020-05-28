@@ -358,59 +358,43 @@ bool gfx_load_csg()
     }
 }
 
-const uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
+static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
 {
     if (!imageId.HasSecondary())
     {
-        uint8_t palette_ref = imageId.GetRemap();
+        uint8_t paletteId = imageId.GetRemap();
         if (!imageId.IsBlended())
         {
-            palette_ref &= 0x7F;
+            paletteId &= 0x7F;
         }
-
-        uint16_t palette_offset = palette_to_g1_offset[palette_ref];
-        auto g1 = gfx_get_g1_element(palette_offset);
-        if (g1 == nullptr)
-        {
-            return nullptr;
-        }
-        else
-        {
-            return g1->offset;
-        }
+        return GetPaletteMapForColour(paletteId);
     }
     else
     {
-        uint8_t* palette_pointer = gPeepPalette;
-
-        uint32_t primary_offset = palette_to_g1_offset[imageId.GetPrimary()];
-        uint32_t secondary_offset = palette_to_g1_offset[imageId.GetSecondary()];
-
+        auto paletteMap = PaletteMap(gPeepPalette);
         if (imageId.HasTertiary())
         {
-            palette_pointer = gOtherPalette;
-#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-            assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
-#endif // DEBUG_LEVEL_2
-            uint32_t tertiary_offset = palette_to_g1_offset[imageId.GetTertiary()];
-            auto tertiary_palette = gfx_get_g1_element(tertiary_offset);
-            if (tertiary_palette != nullptr)
+            paletteMap = PaletteMap(gOtherPalette);
+            auto tertiaryPaletteMap = GetPaletteMapForColour(imageId.GetTertiary());
+            if (tertiaryPaletteMap)
             {
-                std::memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
+                paletteMap.Copy(0x2E, *tertiaryPaletteMap, 0xF3, 12);
             }
         }
-        auto primary_palette = gfx_get_g1_element(primary_offset);
-        if (primary_palette != nullptr)
+
+        auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
+        if (primaryPaletteMap)
         {
-            std::memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
-        }
-        auto secondary_palette = gfx_get_g1_element(secondary_offset);
-        if (secondary_palette != nullptr)
-        {
-            std::memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
+            paletteMap.Copy(0xF3, *primaryPaletteMap, 0xF3, 12);
         }
 
-        return palette_pointer;
+        auto secondaryPaletteMap = GetPaletteMapForColour(imageId.GetSecondary());
+        if (secondaryPaletteMap)
+        {
+            paletteMap.Copy(0xCA, *secondaryPaletteMap, 0xF3, 12);
+        }
+
+        return paletteMap;
     }
 }
 
@@ -419,7 +403,11 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
     if (imageId.HasValue())
     {
         auto palette = gfx_draw_sprite_get_palette(imageId);
-        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette);
+        if (!palette)
+        {
+            palette = PaletteMap::GetDefault();
+        }
+        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, *palette);
     }
 }
 
@@ -433,7 +421,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const uint8_t* palette_pointer)
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
     const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
@@ -452,7 +440,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
         gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer);
+            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, paletteMap);
         return;
     }
 
@@ -473,6 +461,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     // This will be the height of the drawn image
     int32_t height = g1->height;
+
     // This is the start y coordinate on the destination
     int16_t dest_start_y = y + g1->y_offset;
 
@@ -529,6 +518,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     // This will be the width of the drawn image
     int32_t width = g1->width;
+
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
@@ -580,14 +570,14 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         // We have to use a different method to move the source pointer for
         // rle encoded sprites so that will be handled within this function
         gfx_rle_sprite_to_buffer(
-            g1->offset, dest_pointer, palette_pointer, dpi, imageId, source_start_y, height, source_start_x, width);
+            g1->offset, dest_pointer, paletteMap, dpi, imageId, source_start_y, height, source_start_x, width);
         return;
     }
     else if (!(g1->flags & G1_FLAG_1))
     {
         // Move the pointer to the start point of the source
         auto source_pointer = g1->offset + ((static_cast<size_t>(g1->width) * source_start_y) + source_start_x);
-        gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
+        gfx_bmp_sprite_to_buffer(paletteMap, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
     }
 }
 

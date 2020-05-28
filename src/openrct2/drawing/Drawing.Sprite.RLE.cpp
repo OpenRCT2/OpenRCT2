@@ -15,7 +15,7 @@
 
 template<int32_t image_type, int32_t zoom_level>
 static void FASTCALL DrawRLESprite2_Magnify(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const PaletteMap& RESTRICT paletteMap,
     const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
     // TODO
@@ -23,7 +23,7 @@ static void FASTCALL DrawRLESprite2_Magnify(
 
 template<int32_t image_type, int32_t zoom_level>
 static void FASTCALL DrawRLESprite2(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const PaletteMap& RESTRICT paletteMap,
     const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
     // The distance between two samples in the source image.
@@ -110,11 +110,11 @@ static void FASTCALL DrawRLESprite2(
                     if (image_type & IMAGE_TYPE_TRANSPARENT)
                     {
                         uint16_t color = ((*copySrc << 8) | *copyDest) - 0x100;
-                        *copyDest = palette_pointer[color];
+                        *copyDest = paletteMap[color];
                     }
                     else
                     {
-                        *copyDest = palette_pointer[*copySrc];
+                        *copyDest = paletteMap[*copySrc];
                     }
                 }
             }
@@ -123,7 +123,7 @@ static void FASTCALL DrawRLESprite2(
                 for (int j = 0; j < numPixels; j += zoom_amount, copyDest++)
                 {
                     uint8_t pixel = *copyDest;
-                    pixel = palette_pointer[pixel];
+                    pixel = paletteMap[pixel];
                     *copyDest = pixel;
                 }
             }
@@ -147,16 +147,16 @@ static void FASTCALL DrawRLESprite2(
 
 #define DrawRLESpriteHelper2_Magnify(image_type, zoom_level)                                                                   \
     DrawRLESprite2_Magnify<image_type, zoom_level>(                                                                            \
-        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
+        source_bits_pointer, dest_bits_pointer, paletteMap, dpi, source_y_start, height, source_x_start, width)
 
 #define DrawRLESpriteHelper2(image_type, zoom_level)                                                                           \
     DrawRLESprite2<image_type, zoom_level>(                                                                                    \
-        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
+        source_bits_pointer, dest_bits_pointer, paletteMap, dpi, source_y_start, height, source_x_start, width)
 
 template<int32_t image_type>
 static void FASTCALL DrawRLESprite1(
-    const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const uint8_t* palette_pointer,
-    const rct_drawpixelinfo* dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
+    const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const PaletteMap& paletteMap, const rct_drawpixelinfo* dpi,
+    int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
     auto zoom_level = static_cast<int8_t>(dpi->zoom_level);
     switch (zoom_level)
@@ -187,7 +187,7 @@ static void FASTCALL DrawRLESprite1(
 
 #define DrawRLESpriteHelper1(image_type)                                                                                       \
     DrawRLESprite1<image_type>(                                                                                                \
-        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
+        source_bits_pointer, dest_bits_pointer, paletteMap, dpi, source_y_start, height, source_x_start, width)
 
 /**
  * Transfers readied images onto buffers
@@ -196,7 +196,7 @@ static void FASTCALL DrawRLESprite1(
  * @param imageId Only flags are used.
  */
 void FASTCALL gfx_rle_sprite_to_buffer(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const PaletteMap& RESTRICT paletteMap,
     const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
     int32_t width)
 {

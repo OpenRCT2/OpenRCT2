@@ -24,6 +24,7 @@
 #include <vector>
 
 struct rct_drawpixelinfo;
+struct PaletteMap;
 
 struct GlyphId
 {
@@ -218,7 +219,7 @@ public:
     ~TextureCache();
     void InvalidateImage(uint32_t image);
     BasicTextureInfo GetOrLoadImageTexture(uint32_t image);
-    BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette);
+    BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
@@ -229,10 +230,10 @@ private:
     void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
     AtlasTextureInfo LoadImageTexture(uint32_t image);
-    AtlasTextureInfo LoadGlyphTexture(uint32_t image, uint8_t* palette);
+    AtlasTextureInfo LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
     AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
     static rct_drawpixelinfo GetImageAsDPI(uint32_t image, uint32_t tertiaryColour);
-    static rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, uint8_t* palette);
+    static rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, const PaletteMap& paletteMap);
     void FreeTextures();
 
     static rct_drawpixelinfo CreateDPI(int32_t width, int32_t height);
