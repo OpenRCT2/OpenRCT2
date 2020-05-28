@@ -77,7 +77,7 @@ static uint8_t _current_view_rotation_back = 0;
 static ZoomLevel _current_view_zoom_back = 0;
 static ZoomLevel _current_view_zoom_back_delay = 0;
 
-static rct_palette gPalette_light;
+static GamePalette gPalette_light;
 
 static uint8_t calc_light_intensity_lantern(int32_t x, int32_t y)
 {
@@ -614,9 +614,9 @@ void* lightfx_get_front_buffer()
     return _light_rendered_buffer_front;
 }
 
-const rct_palette* lightfx_get_palette()
+const GamePalette& lightfx_get_palette()
 {
-    return &gPalette_light;
+    return gPalette_light;
 }
 
 void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, uint8_t lightType)
@@ -971,12 +971,12 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
             std::max(
                 0.0f, (-overExpose + static_cast<float>(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
-        rct_palette_entry* dstEntry = &gPalette_light.entries[i];
-        dstEntry->red = static_cast<uint8_t>(
+        auto dstEntry = &gPalette_light[i];
+        dstEntry->Red = static_cast<uint8_t>(
             std::min<float>(0xFF, (static_cast<float>(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-        dstEntry->green = static_cast<uint8_t>(
+        dstEntry->Green = static_cast<uint8_t>(
             std::min<float>(0xFF, (static_cast<float>(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-        dstEntry->blue = static_cast<uint8_t>(
+        dstEntry->Blue = static_cast<uint8_t>(
             std::min<float>(0xFF, (static_cast<float>(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
 }

@@ -245,7 +245,7 @@ static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath
         image.Height = dpi.height;
         image.Depth = 8;
         image.Stride = dpi.width + dpi.pitch;
-        image.Palette = std::make_unique<rct_palette>(*(reinterpret_cast<rct_palette*>(&spriteFilePalette)));
+        image.Palette = std::make_unique<GamePalette>(StandardPalette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
         return true;

@@ -66,7 +66,7 @@ static LARGE_INTEGER _entryTimestamp;
 
 using update_palette_func = void (*)(const uint8_t*, int32_t, int32_t);
 
-rct_palette_entry gPalette[256];
+GamePalette gPalette;
 
 void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
 {
@@ -95,18 +95,18 @@ void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_
             }
         }
 
-        gPalette[i].red = r;
-        gPalette[i].green = g;
-        gPalette[i].blue = b;
-        gPalette[i].alpha = 0;
+        gPalette[i].Red = r;
+        gPalette[i].Green = g;
+        gPalette[i].Blue = b;
+        gPalette[i].Alpha = 0;
         colours += 4;
     }
 
     // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-    gPalette[255].alpha = 0;
-    gPalette[255].red = 255;
-    gPalette[255].green = 255;
-    gPalette[255].blue = 255;
+    gPalette[255].Alpha = 0;
+    gPalette[255].Red = 255;
+    gPalette[255].Green = 255;
+    gPalette[255].Blue = 255;
 
     if (!gOpenRCT2Headless)
     {

@@ -77,7 +77,7 @@ public:
         ConfigureBits(width, height, _surface->pitch);
     }
 
-    void SetPalette(const rct_palette_entry* palette) override
+    void SetPalette(const GamePalette& palette) override
     {
         SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
         if (windowSurface != nullptr && _palette != nullptr)
@@ -85,10 +85,10 @@ public:
             SDL_Colour colours[256];
             for (int32_t i = 0; i < 256; i++)
             {
-                colours[i].r = palette[i].red;
-                colours[i].g = palette[i].green;
-                colours[i].b = palette[i].blue;
-                colours[i].a = palette[i].alpha;
+                colours[i].r = palette[i].Red;
+                colours[i].g = palette[i].Green;
+                colours[i].b = palette[i].Blue;
+                colours[i].a = palette[i].Alpha;
             }
             SDL_SetPaletteColors(_palette, colours, 0, 256);
         }

@@ -19,36 +19,6 @@
 #include <vector>
 
 struct rct_drawpixelinfo;
-struct rct_palette;
-
-struct PaletteBGRA
-{
-    uint8_t Blue{};
-    uint8_t Green{};
-    uint8_t Red{};
-    uint8_t Alpha{};
-};
-
-constexpr const auto PALETTE_SIZE = 256;
-
-struct GamePalette
-{
-    PaletteBGRA Colour[PALETTE_SIZE];
-
-    const PaletteBGRA operator[](uint16_t idx) const
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-            return {};
-
-        return Colour[idx];
-    }
-
-    explicit operator uint8_t*()
-    {
-        return reinterpret_cast<uint8_t*>(Colour);
-    }
-};
 
 enum class IMAGE_FORMAT
 {
@@ -68,7 +38,7 @@ struct Image
 
     // Data
     std::vector<uint8_t> Pixels;
-    std::unique_ptr<rct_palette> Palette;
+    std::unique_ptr<GamePalette> Palette;
     uint32_t Stride{};
 };
 

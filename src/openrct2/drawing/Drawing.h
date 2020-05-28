@@ -14,6 +14,7 @@
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.hpp"
 
+#include <optional>
 #include <vector>
 struct ScreenCoordsXY;
 
@@ -27,6 +28,47 @@ namespace OpenRCT2::Drawing
 {
     interface IDrawingEngine;
 }
+
+struct PaletteBGRA
+{
+    uint8_t Blue{};
+    uint8_t Green{};
+    uint8_t Red{};
+    uint8_t Alpha{};
+};
+
+constexpr const auto PALETTE_SIZE = 256;
+
+struct GamePalette
+{
+    PaletteBGRA Colour[PALETTE_SIZE]{};
+
+    PaletteBGRA& operator[](uint16_t idx)
+    {
+        assert(idx < PALETTE_SIZE);
+        if (idx >= PALETTE_SIZE)
+        {
+            static PaletteBGRA dummy;
+            return dummy;
+        }
+
+        return Colour[idx];
+    }
+
+    const PaletteBGRA operator[](uint16_t idx) const
+    {
+        assert(idx < PALETTE_SIZE);
+        if (idx >= PALETTE_SIZE)
+            return {};
+
+        return Colour[idx];
+    }
+
+    explicit operator uint8_t*()
+    {
+        return reinterpret_cast<uint8_t*>(Colour);
+    }
+};
 
 struct rct_g1_element
 {
@@ -227,24 +269,6 @@ struct translucent_window_palette
     FILTER_PALETTE_ID shadow;
 };
 
-#pragma pack(push, 1)
-
-struct rct_palette_entry
-{
-    uint8_t blue;
-    uint8_t green;
-    uint8_t red;
-    uint8_t alpha;
-};
-assert_struct_size(rct_palette_entry, 4);
-
-#pragma pack(pop)
-
-struct rct_palette
-{
-    rct_palette_entry entries[256];
-};
-
 struct rct_size16
 {
     int16_t width;
@@ -443,7 +467,7 @@ public:
 extern thread_local int16_t gCurrentFontSpriteBase;
 extern thread_local uint16_t gCurrentFontFlags;
 
-extern rct_palette_entry gPalette[256];
+extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
 extern const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT];

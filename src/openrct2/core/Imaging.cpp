@@ -200,10 +200,10 @@ namespace Imaging
                 }
                 for (size_t i = 0; i < PNG_MAX_PALETTE_LENGTH; i++)
                 {
-                    const auto entry = &image.Palette->entries[i];
-                    png_palette[i].blue = entry->blue;
-                    png_palette[i].green = entry->green;
-                    png_palette[i].red = entry->red;
+                    const auto& entry = (*image.Palette)[static_cast<uint16_t>(i)];
+                    png_palette[i].blue = entry.Blue;
+                    png_palette[i].green = entry.Green;
+                    png_palette[i].red = entry.Red;
                 }
                 png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
             }

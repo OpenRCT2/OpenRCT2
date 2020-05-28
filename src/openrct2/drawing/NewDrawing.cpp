@@ -86,7 +86,7 @@ void drawing_engine_resize()
     }
 }
 
-void drawing_engine_set_palette(const rct_palette_entry* colours)
+void drawing_engine_set_palette(const GamePalette& colours)
 {
     auto context = GetContext();
     if (context != nullptr)
