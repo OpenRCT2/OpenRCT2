@@ -2527,19 +2527,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}{COMMA16}년
 STR_5161    :날짜 형식:
 STR_5162    :일/월/년
 STR_5163    :월/일/년
-STR_5164    :트위치 채널 이름
-STR_5165    :손님 이름을 팔로워 이름을 따서 붙이기
-STR_5166    :{SMALLFONT}{BLACK}트위치 채널의 팔로워 이름을 따서 손님 이름으로 사용합니다
-STR_5167    :팔로워 손님 추적
-STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을 딴 손님을 추적합니다
-STR_5169    :손님 이름을 트위치 채팅 접속자 이름을 따서 붙이기
-STR_5170    :{SMALLFONT}{BLACK}트위치 채팅의 접속자 이름을 따서 손님 이름으로 사용합니다
-STR_5171    :채팅 인원 추적
-STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참여하고 있는 사람들의 이름을 딴 손님의 행적을 추적합니다
-STR_5173    :트위치 채팅 내용을 뉴스로 전송
-STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
-STR_5175    :트위치 채널 이름 입력
-STR_5176    :트위치 통합 허용
 STR_5177    :전체 화면 모드:
 STR_5178    :{SMALLFONT}{BLACK}재정 치트를 보여줍니다
 STR_5179    :{SMALLFONT}{BLACK}손님 치트를 보여줍니다
@@ -2634,7 +2621,6 @@ STR_5267    :{SMALLFONT}{BLACK}문화와 단위
 STR_5268    :{SMALLFONT}{BLACK}오디오
 STR_5269    :{SMALLFONT}{BLACK}제어 및 인터페이스
 STR_5270    :{SMALLFONT}{BLACK}기타
-STR_5271    :{SMALLFONT}{BLACK}트위치
 STR_5272    :{SMALLFONT}{BLACK}소형 조형물
 STR_5273    :{SMALLFONT}{BLACK}대형 조형물
 STR_5274    :{SMALLFONT}{BLACK}보도
@@ -3174,7 +3160,6 @@ STR_5848    :{SMALLFONT}{BLACK}사용자 타이틀 시퀀스를 생성하고 관
 STR_5849    :{SMALLFONT}{BLACK}새로 고용한 직원을 자동으로 보도 위에 놓습니다.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
-STR_5852    :{SMALLFONT}{BLACK}트위치 통합에 사용할 트위치TV 채널 명을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
 STR_5854    :{SMALLFONT}{BLACK}놀이기구 음악 켜기/끄기
 STR_5855    :{SMALLFONT}{BLACK}전체화면, 창 모드, 전체화면 (창모드) 중에서 선택합니다.
@@ -3573,9 +3558,6 @@ STR_6248    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 {CURRENCY}에 재단장
 STR_6249    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 재단장하시겠습니까?
 STR_6250    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 완전히 파괴하고 {CURRENCY}만큼을 회수하시겠습니까?
 STR_6251    :놀이기구에 아직 손님이 남아있습니다
-STR_6252    :트위치 API URL
-STR_6253    :{SMALLFONT}{BLACK}트위치 통합 API의 URL을 지정합니다. 트위치 통합 기능을 사용하려면 이 항목을 입력해야 합니다.
-STR_6254    :트위치 통합 API의 URL:
 STR_6255    :URL이 올바르지 않습니다
 STR_6256    :렌더링 효과
 STR_6257    :반투명하게

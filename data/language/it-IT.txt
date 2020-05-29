@@ -2528,19 +2528,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, anno {POP16}{COMMA16}
 STR_5161    :Formato data:
 STR_5162    :Giorno/Mese/Anno
 STR_5163    :Mese/Giorno/Anno
-STR_5164    :Nome canale Twitch
-STR_5165    :Nomina i visitatori come i follower
-STR_5166    :{SMALLFONT}{BLACK}Nomina i visitatori come i follower{NEWLINE}del proprio canale Twitch
-STR_5167    :Segui i visitatori follower
-STR_5168    :{SMALLFONT}{BLACK}Segui i visitatori che si chiamano come i follower su Twitch
-STR_5169    :Nomina i visitatori come gli utenti in chat su Twitch
-STR_5170    :{SMALLFONT}{BLACK}I visitatori del parco hanno i nomi degli utenti in chat su Twitch
-STR_5171    :Segui i visitatori della chat
-STR_5172    :{SMALLFONT}{BLACK}Attiva informazioni per seguire i visitatori che si chiamano come gli utenti in chat su Twitch
-STR_5173    :Mostra la chat di Twitch come avvisi
-STR_5174    :{SMALLFONT}{BLACK}Mostra i messaggi di chat su Twitch preceduti da !news nelle notifiche all'interno del gioco
-STR_5175    :Inserire il nome del proprio canale Twitch
-STR_5176    :Attiva integrazione con Twitch
 STR_5177    :Modalità schermo:
 STR_5178    :{SMALLFONT}{BLACK}Mostra trucchi finanziari
 STR_5179    :{SMALLFONT}{BLACK}Mostra trucchi dei visitatori
@@ -2637,7 +2624,6 @@ STR_5267    :{SMALLFONT}{BLACK}Cultura and Unità
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Controlli e interfaccia
 STR_5270    :{SMALLFONT}{BLACK}Varie
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Scenari piccoli
 STR_5273    :{SMALLFONT}{BLACK}Scenari grandi
 STR_5274    :{SMALLFONT}{BLACK}Percorso
@@ -3176,7 +3162,6 @@ STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei ti
 STR_5848    :{SMALLFONT}{BLACK}Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :{SMALLFONT}{BLACK}Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
 STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di ispezione{NEWLINE}nelle nuove attrazioni
-STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione con Twitch
 STR_5853    :{SMALLFONT}{BLACK}Abilita/Disabilita gli effetti sonori
 STR_5854    :{SMALLFONT}{BLACK}Abilita/Disabilita le musiche delle attrazioni
 STR_5855    :{SMALLFONT}{BLACK}Imposta a tutto schermo, senza bordi della finestra{NEWLINE}o come finestra
@@ -3577,9 +3562,6 @@ STR_6248    :{WINDOW_COLOUR_1}Rinnovare davvero {STRINGID} al costo di {CURRENCY
 STR_6249    :{WINDOW_COLOUR_1}Rinnovare davvero {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Si è sicuri di voler demolire completamente {STRINGID} e guadagnare {CURRENCY}?
 STR_6251    :L'attrazione non è ancora vuota
-STR_6252    :URL API di Twitch
-STR_6253    :{SMALLFONT}{BLACK}Inserire l'URL delle API per l'integrazione di Twitch. Richiesto per abilitare l'integrazione con Twitch.
-STR_6254    :URL delle API per l'integrazione di Twitch:
 STR_6255    :L'URL non è valido
 STR_6256    :Effetti di rendering
 STR_6257    :Vetro (traslucido)

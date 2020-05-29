@@ -2547,19 +2547,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Rok {POP16}{COMMA16}
 STR_5161    :Format daty:
 STR_5162    :dzień/miesiąc/rok
 STR_5163    :miesiąc/dzień/rok
-STR_5164    :Nazwa kanału Twitch
-STR_5165    :Nazywaj gości nickami śledzących twój kanał
-STR_5166    :{SMALLFONT}{BLACK}Twoi goście będą nazywani tak jak osoby śledzące twój kanał
-STR_5167    :Śledź obserwujących gości
-STR_5168    :{SMALLFONT}{BLACK}Włączy śledzenie informacji dla gości nazwanych jak obserwatorzy z Twitch
-STR_5169    :Nazywaj gości nickami twoich widzów
-STR_5170    :{SMALLFONT}{BLACK}Twoi goście będą nazywani tak jak twoi widzowie
-STR_5171    :Śledź użytkowników czatu
-STR_5172    :{SMALLFONT}{BLACK}Włączy śledzenie informacji dla gości nazwanych jak użytkownicy czatu z Twitch
-STR_5173    :Wyświetlaj chat Twitcha jako powiadomienia
-STR_5174    :{SMALLFONT}{BLACK}Użyje wiadomości z Twitcha poprzedzonych przez !news jako komunikaty wewnątrz gry
-STR_5175    :Wprowadź nazwę swojego kanału Twitch
-STR_5176    :Włącz integrację z Twitchem
 STR_5177    :Tryb pełnego ekranu:
 STR_5178    :{SMALLFONT}{BLACK}Kody finansowe
 STR_5179    :{SMALLFONT}{BLACK}Kody związane z gośćmi
@@ -2654,7 +2641,6 @@ STR_5267    :{SMALLFONT}{BLACK}Język i jednostki
 STR_5268    :{SMALLFONT}{BLACK}Dźwięk
 STR_5269    :{SMALLFONT}{BLACK}Sterowanie i interfejs
 STR_5270    :{SMALLFONT}{BLACK}Różne
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Mała sceneria
 STR_5273    :{SMALLFONT}{BLACK}Duża sceneria
 STR_5274    :{SMALLFONT}{BLACK}Ścieżka
@@ -3190,7 +3176,6 @@ STR_5848    :{SMALLFONT}{BLACK}Twórz i zarządzaj sekwencjami tytułowymi
 STR_5849    :{SMALLFONT}{BLACK}Automatycznie rozlokuj{NEWLINE}nowo zatrudniony personel
 STR_5850    :{SMALLFONT}{BLACK}Nowo zatrudniony dozorca domyślnie {NEWLINE}kosi trawę (zaszłość RCT1)
 STR_5851    :{SMALLFONT}{BLACK}Ustaw domyślną częstotliwość inspekcji{NEWLINE}na nowych atrakcjach
-STR_5852    :{SMALLFONT}{BLACK}Ustaw nazwę kanału TwitchTV który będzie używany przy integracji z Twitch
 STR_5853    :{SMALLFONT}{BLACK}Przełącznik włączania/wyłączania efektów dźwiękowych
 STR_5854    :{SMALLFONT}{BLACK}Przełącznik włączania/wyłączania dźwięków na atrakcjach
 STR_5855    :{SMALLFONT}{BLACK}Ustaw normalny pełny ekran, bezramkowy pełny ekran{NEWLINE}klub tryb okienkowy
@@ -3589,9 +3574,6 @@ STR_6248    :{WINDOW_COLOUR_1}Czy chcesz odnowić {STRINGID} za {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Czy chcesz odnowić {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Czy na pewno chcesz zburzyć {STRINGID} i dostać za to {CURRENCY}?
 STR_6251    :Przejażdżka nie jest pusta jeszcze
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Podaj URL do Twitch API. Wymagany, aby zintegrować aplikacę z Twitchem.
-STR_6254    :Adres URL API Twitcha:
 STR_6255    :Adres URL jest nieprawidłowy
 STR_6256    :Efekty renderowania
 STR_6257    :Glassy (translucent)

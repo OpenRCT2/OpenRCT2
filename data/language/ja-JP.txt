@@ -2524,19 +2524,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID} {POP16}{COMMA16}年
 STR_5161    :日付形式:
 STR_5162    :日月年
 STR_5163    :月日年
-STR_5164    :Twitchのチャンネル名
-STR_5165    :来客をフォロワーの名にする
-STR_5166    :{SMALLFONT}{BLACK}来客をTwitchのチャンネルのフォロワーの名にする
-STR_5167    :フォロワーの来客の行動を表示する
-STR_5168    :{SMALLFONT}{BLACK}Twitchのフォロワーの来客の行動の表示の切り替え
-STR_5169    :来客をTwitchチャットの人の名にする
-STR_5170    :{SMALLFONT}{BLACK}来客をTwitchチャットの人の名にする
-STR_5171    :チャットの来客の行動を表示する
-STR_5172    :{SMALLFONT}{BLACK}Twitchのチャットの人の来客の行動の表示の切り替え
-STR_5173    :Twitchチャットをニュースに表示する
-STR_5174    :{SMALLFONT}{BLACK}Twitchチャットの「!news」で始まるメッセージはゲームのニュースになる。
-STR_5175    :Twitchチャンネルの名を入力して下さい。
-STR_5176    :Twitch統合の切り替え
 STR_5177    :スクリーンモード:
 STR_5178    :{SMALLFONT}{BLACK}財務表のカニング
 STR_5179    :{SMALLFONT}{BLACK}ゲストのカニング
@@ -2631,7 +2618,6 @@ STR_5267    :{SMALLFONT}{BLACK}文化と単位
 STR_5268    :{SMALLFONT}{BLACK}音楽
 STR_5269    :{SMALLFONT}{BLACK}コントロールとインターフェイス
 STR_5270    :{SMALLFONT}{BLACK}雑貨
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}小さな景観物
 STR_5273    :{SMALLFONT}{BLACK}大きな景観物
 STR_5274    :{SMALLFONT}{BLACK}歩道
@@ -3169,7 +3155,6 @@ STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
-STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
 STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
@@ -3568,9 +3553,6 @@ STR_6248    :{WINDOW_COLOUR_1}{STRINGID}のライド{CURRENCY}で修復よろし
 STR_6249    :{WINDOW_COLOUR_1}{STRINGID}のライド修復よろしいですか？
 STR_6250    :{WINDOW_COLOUR_1}{STRINGID}を完全に破棄して{CURRENCY}を獲得してもよろしいですか？
 STR_6251    :ライドはまだ空ではありません
-STR_6252    :Twitch統合APIのURL
-STR_6253    :{SMALLFONT}{BLACK}Twitch統合APIのURLを入力してください。Twitchの統合を有効にするために必要です。
-STR_6254    :Twitch統合APIのURL:
 STR_6255    :URLが無効です
 STR_6256    :レンダリング・エフェクト
 STR_6257    :ガラス質（半透明）

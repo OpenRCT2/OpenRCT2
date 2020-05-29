@@ -2533,19 +2533,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, any {POP16}{COMMA16}
 STR_5161    :Format de la data:
 STR_5162    :Dia/Mes/Any
 STR_5163    :Mes/Dia/Any
-STR_5164    :Nom del canal Twitch
-STR_5165    :Usa els noms dels seguidors
-STR_5166    :{SMALLFONT}{BLACK}Posa el nom dels seguidors del canal Twitch als visitants del parc.
-STR_5167    :Vigila als seguidors
-STR_5168    :{SMALLFONT}{BLACK}Vigila i dóna informació rellevant de què fan els visitants que porten el nom d'algun seguidor del Twitch.
-STR_5169    :Usa els noms dels usuaris del xat
-STR_5170    :{SMALLFONT}{BLACK}Posa el nom dels usuaris del xat del Twitch als visitants del parc.
-STR_5171    :Vigila als usuaris del xat
-STR_5172    :{SMALLFONT}{BLACK}Vigila i dóna informació rellevant de què fan els visitants que porten el nom d'algun usuari del xat del Twitch.
-STR_5173    :Mostra el xat com a notícies
-STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per «!news» per rebre les notificacions durant la partida.
-STR_5175    :Escriu el nom del canal Twitch
-STR_5176    :Activa la integració del Twitch
 STR_5177    :Mode de pantalla:
 STR_5178    :{SMALLFONT}{BLACK}Mostra les trampes financeres.
 STR_5179    :{SMALLFONT}{BLACK}Mostra les trampes per als visitants.
@@ -2640,7 +2627,6 @@ STR_5267    :{SMALLFONT}{BLACK}Idioma i unitats
 STR_5268    :{SMALLFONT}{BLACK}Música i so
 STR_5269    :{SMALLFONT}{BLACK}Controls i interfície
 STR_5270    :{SMALLFONT}{BLACK}Altres
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Decoració petita
 STR_5273    :{SMALLFONT}{BLACK}Decoració gran
 STR_5274    :{SMALLFONT}{BLACK}Camí
@@ -3181,7 +3167,6 @@ STR_5848    :{SMALLFONT}{BLACK}Crea i organitza les seqüències del menú princ
 STR_5849    :{SMALLFONT}{BLACK}Coloca automàticament{NEWLINE}els empleats acabats de contractar.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Estableix l'interval de revisió per defecte{NEWLINE}per a les atraccions noves.
-STR_5852    :{SMALLFONT}{BLACK}Estableix el nom del canal TwitchTV que s'ha d'usar per la integració del Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Activa/Desactiva els efectes de so.
 STR_5854    :{SMALLFONT}{BLACK}Activa/Desactiva la música de les atraccions.
 STR_5855    :{SMALLFONT}{BLACK}Escolliu el mode de pantalla completa normal,{NEWLINE}pantalla completa sense vores o bé finestra.
@@ -3580,9 +3565,6 @@ STR_6248    :{WINDOW_COLOUR_1}Voleu retocar {STRINGID} per {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Voleu retocar {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Esteu segurs que voleu demolir completament {STRINGID} i recuperar {CURRENCY}?
 STR_6251    :Encara hi ha persones a l'atracció
-STR_6252    :URL de l'API del Twitch
-STR_6253    :{SMALLFONT}{BLACK}Doneu la URL de l'API d'integració del Twitch. Cal aquesta URL per tal d'activar la integració del Twitch.
-STR_6254    :URL de l'API d'integració del Twitch:
 STR_6255    :La URL no és vàlida
 STR_6256    :Efectes de renderitzat
 STR_6257    :Cristal·lí (translúcid)

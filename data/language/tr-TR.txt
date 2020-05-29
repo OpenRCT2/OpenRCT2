@@ -2538,19 +2538,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Yıl {POP16}{COMMA16}
 STR_5161    :Tarih formatı:
 STR_5162    :Gün/Ay/Yıl
 STR_5163    :Ay/Gün/Yıl
-STR_5164    :Twitch kanal ismi
-STR_5165    :Müşterilere takipçilernizin isimlerini ver
-STR_5166    :{SMALLFONT}{BLACK}Oyundaki müşterilere Twitch'de sizi takip edenlerin isimleri veriliyor
-STR_5167    :Takipçi müşterileri takip et
-STR_5168    :{SMALLFONT}{BLACK}Bu ayar ile Twitch takipçi ismi taşıyan müşteriler üzeri bilgi alıyorsunuz
-STR_5169    :Müşterilere Twitch Chat'de bulunanların isimlerini ver
-STR_5170    :{SMALLFONT}{BLACK}Oyundaki müşterilere Twitch Chat'de bulunan kişilerin isimleri veriliyor
-STR_5171    :Sohbet müşterilerini takip 
-STR_5172    :{SMALLFONT}{BLACK}Bu ayar ile Twitch Chat ismi taşıyan müşteriler üzeri bilgi alıyorsunuz
-STR_5173    :Twitch Chat'den gelen mesajları oyuna aktar
-STR_5174    :{SMALLFONT}{BLACK}Twitch Chat üzeri aldığınız mesajları oyunda bildirme olarak alınız
-STR_5175    :Twitch Kanal isminizi giriniz
-STR_5176    :Twitch bağlantısını aç/kapat
 STR_5177    :Ekran modu:
 STR_5178    :{SMALLFONT}{BLACK}Finansal hileleri göster
 STR_5179    :{SMALLFONT}{BLACK}Müşteri hilelerni göster
@@ -2645,7 +2632,6 @@ STR_5267    :{SMALLFONT}{BLACK}Dil ve birimler
 STR_5268    :{SMALLFONT}{BLACK}Ses
 STR_5269    :{SMALLFONT}{BLACK}Tuş ayarları ve arayüz
 STR_5270    :{SMALLFONT}{BLACK}Diğer
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Küçük dekorasyonlar
 STR_5273    :{SMALLFONT}{BLACK}Büyük dekorasyonlar
 STR_5274    :{SMALLFONT}{BLACK}Yollar
@@ -3183,7 +3169,6 @@ STR_5848    :{SMALLFONT}{BLACK}Başlık dizisi değiştiriniz veya oluşturunuz
 STR_5849    :{SMALLFONT}{BLACK}Yeni işciler otomatikman{NEWLINE}bir yere yerleştiriliyor
 STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Yeni inşa edilen aletlere{NEWLINE}otomatikman seçdiğiniz kontrol süreci ayarlanıyor
-STR_5852    :{SMALLFONT}{BLACK}Twitch bağlantısı için kullanılacak Twitch hesap adınızı giriniz
 STR_5853    :{SMALLFONT}{BLACK}Ses efektlerini aç/kapat
 STR_5854    :{SMALLFONT}{BLACK}Alet müziklerini aç/kapat
 STR_5855    :{SMALLFONT}{BLACK}Ekran modunu seçiniz
@@ -3582,9 +3567,6 @@ STR_6248    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} için yenilemek iste
 STR_6249    :{WINDOW_COLOUR_1}{STRINGID} aletini yenilemek istiyormusunuz?
 STR_6250    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} geri ödeme ile silmek istediğinizden eminmisiniz?
 STR_6251    :Alet henüz boş değil
-STR_6252    :Twitch API adresi
-STR_6253    :{SMALLFONT}{BLACK}Twitch kullanımı için bağlamak istediğiniz Twitch kanalının adresini buraya giriniz
-STR_6254    :Twitch bağlantısı adresi:
 STR_6255    :Adres geçerli değil
 STR_6256    :Rendering seçenekleri
 STR_6257    :Yarı saydam

@@ -2513,19 +2513,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID} {POP16}{COMMA16}. év
 STR_5161    :Dátumformátum:
 STR_5162    :nap/hónap/év
 STR_5163    :hónap/nap/év
-STR_5164    :Twitch csatorna neve
-STR_5165    :Vendégek követők utáni elnevezése
-STR_5166    :{SMALLFONT}{BLACK}A vendégek a csatorna Twitch követői{NEWLINE}után kapják a nevüket
-STR_5167    :Követőkről elnevezett vendégek követése
-STR_5168    :{SMALLFONT}{BLACK}A csatorna Twitch követőiről elnevezett vendégek követési információinak bekapcsolása
-STR_5169    :Vendégek Twitch chat résztvevők utáni elnevezése
-STR_5170    :{SMALLFONT}{BLACK}A vendégek Twitch chat résztvevők utáni elnevezése
-STR_5171    :Chat résztvevőkről elnevezett vendégek követése
-STR_5172    :{SMALLFONT}{BLACK}A Twitch chat résztvevőiről elnevezett vendégek követési információinak bekapcsolása
-STR_5173    :Twitch chat hírként történő megjelenítése
-STR_5174    :{SMALLFONT}{BLACK}A !news előtagú Twitch chat üzenetek játékbeli üzenetként történő használata
-STR_5175    :Add meg a Twitch csatornád nevét
-STR_5176    :Twitch integráció engedélyezése
 STR_5177    :Képernyőmód:
 STR_5178    :{SMALLFONT}{BLACK}Pénzügyi csalások
 STR_5179    :{SMALLFONT}{BLACK}Vendég-csalások
@@ -2620,7 +2607,6 @@ STR_5267    :{SMALLFONT}{BLACK}Kultúra és egységek
 STR_5268    :{SMALLFONT}{BLACK}Hang
 STR_5269    :{SMALLFONT}{BLACK}Irányítás és felhasználói felület
 STR_5270    :{SMALLFONT}{BLACK}Egyéb
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Kis díszletek
 STR_5273    :{SMALLFONT}{BLACK}Nagy díszletek
 STR_5274    :{SMALLFONT}{BLACK}Út
@@ -3135,7 +3121,6 @@ STR_5844    :{SMALLFONT}{BLACK}Tartsa fenn a kapcsolatot a többjátékos{NEWLIN
 STR_5845    :{SMALLFONT}{BLACK}Hozzáadja a hibakereső{NEWLINE}eszközök gombját az eszköztárhoz.{NEWLINE}Engedélyezi a fejlesztői konzol gyorsbillentyűjét
 STR_5849    :{SMALLFONT}{BLACK}Az újonnan felvett alkalmazottak{NEWLINE}automatikus lerakása
 STR_5850    :<már nincs használatban>
-STR_5852    :{SMALLFONT}{BLACK}A Twitch integrációhoz használni kívánt TwitchTV csatorna nevének megadása
 STR_5853    :{SMALLFONT}{BLACK}A hanghatások be- és kikapcsolása
 STR_5854    :{SMALLFONT}{BLACK}A játékok zenéjének be- és kikapcsolása
 STR_5855    :{SMALLFONT}{BLACK}Váltás a hagyományos teljes képernyős,{NEWLINE}keret nélküli teljes képernyős és az{NEWLINE}ablakos megjelenítési módok között
@@ -3518,9 +3503,6 @@ STR_6248    :{WINDOW_COLOUR_1}Biztos, hogy fel akarod újítani ezt: {STRINGID}?
 STR_6249    :{WINDOW_COLOUR_1}Biztos, hogy fel akarod újítani ezt: {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Biztos, hogy le akarod rombolni ezt: {STRINGID}? A visszatérítés összege: {CURRENCY}
 STR_6251    :A játék még nem üres
-STR_6252    :Twitch API URL-je
-STR_6253    :{SMALLFONT}{BLACK}A Twitch integrációs API URL-jének megadása. Szükséges a Twitch integráció használatához.
-STR_6254    :A Twitch integrációs API URL-je:
 STR_6255    :Érvénytelen URL
 STR_6256    :Megjelenítési hatások
 STR_6257    :Üveges (áttetsző)

@@ -2530,19 +2530,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, année {POP16}{COMMA16}
 STR_5161    :Format de date :
 STR_5162    :Jour/Mois/Année
 STR_5163    :Mois/Jour/Année
-STR_5164    :Nom de la chaîne Twitch
-STR_5165    :Nommer les visiteurs d'après les abonnés
-STR_5166    :{SMALLFONT}{BLACK}Renomme les visiteurs d'après les abonnés à la chaîne Twitch
-STR_5167    :Suivre les visiteurs abonnés
-STR_5168    :{SMALLFONT}{BLACK}Active les informations de suivi pour les visiteurs nommés d'après les abonnés à la chaîne Twitch
-STR_5169    :Nommer les visiteurs d'après les participants du chat
-STR_5170    :{SMALLFONT}{BLACK}Renomme les visiteurs d'après les participants du chat Twitch
-STR_5171    :Suivre les visiteurs du chat
-STR_5172    :{SMALLFONT}{BLACK}Active les informations de suivi pour les visiteurs nommés d'après les participants du chat Twitch
-STR_5173    :Passer les messages Twitch dans les notifications
-STR_5174    :{SMALLFONT}{BLACK}Utilise les messages de chat Twitch précédés de !news pour les notifications durant le jeu
-STR_5175    :Saisir le nom de votre chaîne Twitch
-STR_5176    :Activer l'intégration Twitch
 STR_5177    :Mode plein écran :
 STR_5178    :{SMALLFONT}{BLACK}Afficher les options de triche financière
 STR_5179    :{SMALLFONT}{BLACK}Afficher les options de triche des visiteurs
@@ -2637,7 +2624,6 @@ STR_5267    :{SMALLFONT}{BLACK}Langue et unités
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Contrôles et interface
 STR_5270    :{SMALLFONT}{BLACK}Divers
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Petits décors
 STR_5273    :{SMALLFONT}{BLACK}Grands décors
 STR_5274    :{SMALLFONT}{BLACK}Allées
@@ -3178,7 +3164,6 @@ STR_5848    :{SMALLFONT}{BLACK}Créer et gérer des séquences titre personnalis
 STR_5849    :{SMALLFONT}{BLACK}Placer automatiquement les nouveaux employés
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Définit le délai d'inspection par défaut sur les nouvelles attractions
-STR_5852    :{SMALLFONT}{BLACK}Définit le nom de la chaîne TwitchTV utilisée pour l'intégration à Twitch
 STR_5853    :{SMALLFONT}{BLACK}Active/désactive les effets sonores
 STR_5854    :{SMALLFONT}{BLACK}Active/désactive les musiques des attractions
 STR_5855    :{SMALLFONT}{BLACK}Définit le mode fenêtré, plein écran, ou plein écran dans un nouveau bureau
@@ -3580,9 +3565,6 @@ STR_6248    :{WINDOW_COLOUR_1}Voulez-vous renouveller {STRINGID} pour {CURRENCY}
 STR_6249    :{WINDOW_COLOUR_1}Voulez-vous renouveller {STRINGID} ?
 STR_6250    :{WINDOW_COLOUR_1}Etes-vous sûr(e) de vouloir détruire complétement {STRINGID} et gagner {CURRENCY} ?
 STR_6251    :L'attraction n'est pas encore vide
-STR_6252    :Adresse vers l'intégration API Twitch
-STR_6253    :{SMALLFONT}{BLACK}Fournit l'adresse vers l'intégration API de Twitch. Requis pour activer les interactions Twitch.
-STR_6254    :Adresse URL de l'intégration API Twitch :
 STR_6255    :L'adresse est invalide
 STR_6256    :Effets de rendu
 STR_6257    :Verre (transparent)

@@ -2545,19 +2545,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, År {POP16}{COMMA16}
 STR_5161    :Dato Format:
 STR_5162    :Dag/Måned/År
 STR_5163    :Måned/Dag/År
-STR_5164    :Twitch Kanal navn
-STR_5165    :Navngiv gæster efter følgere på Twitch
-STR_5166    :{SMALLFONT}{BLACK}Navngiv gæster efter dem der er {NEWLINE}følgere på din Twitch konto
-STR_5167    :Overvåg gæster der er følgere på Twitch
-STR_5168    :{SMALLFONT}{BLACK}Aktiverer overvågnings information for gæster der er navngivet efter følgere på Twitch
-STR_5169    :Navngiv gæster efter chat-brugere på Twitch
-STR_5170    :{SMALLFONT}{BLACK}Giv gæster et navn fra personer der chatter på Twitch
-STR_5171    :Overvåg gæster der er i Twitch chat
-STR_5172    :{SMALLFONT}{BLACK}Aktiverer overvågnings information for gæster der er navngivet efter deltager i chatten på Twitch
-STR_5173    :Træk Twitch chat som nyheder
-STR_5174    :{SMALLFONT}{BLACK}Brug Twitch chat meddelelser efterfulgt af !nyhed for meddelelser i spillet
-STR_5175    :Angiv dit navn på din Twitch kanal
-STR_5176    :Aktiver Twitch integration
 STR_5177    :Skærmtilstand:
 STR_5178    :{SMALLFONT}{BLACK}Vis finansiel snyd
 STR_5179    :{SMALLFONT}{BLACK}Vis gæste snyd
@@ -2652,7 +2639,6 @@ STR_5267    :{SMALLFONT}{BLACK}Kultur og enheder
 STR_5268    :{SMALLFONT}{BLACK}Lyd
 STR_5269    :{SMALLFONT}{BLACK}Kontrol og udseende
 STR_5270    :{SMALLFONT}{BLACK}Diverse
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Lille Sceneri
 STR_5273    :{SMALLFONT}{BLACK}Stort Sceneri
 STR_5274    :{SMALLFONT}{BLACK}Gangstier
@@ -3193,7 +3179,6 @@ STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
 STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built forlystelser
-STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
 STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
@@ -3592,9 +3577,6 @@ STR_6248    :{WINDOW_COLOUR_1}Vil du renovere {STRINGID} for {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Vil du renovere {STRINGID}?STR_6249    :{WINDOW_COLOUR_1}Do you want to renovere {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Er du sikker på at du vil destruere {STRINGID} og modtage {CURRENCY}?
 STR_6251    :Forlystelse er ikke tom endnu
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Angiv URL til Twitch integrations API. Påkrævet for at aktivere Twitch integration.
-STR_6254    :URL til Twitch integrations API:
 STR_6255    :URL er ikke gyldig
 STR_6256    :Renderings effekter
 STR_6257    :Uklar (halvgennemsigtig)

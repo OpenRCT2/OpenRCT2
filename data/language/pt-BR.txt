@@ -2521,19 +2521,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Ano {POP16}{COMMA16}
 STR_5161    :Formato da Data:
 STR_5162    :Dia/Mês/Ano
 STR_5163    :Mês/Dia/Ano
-STR_5164    :Nome do canal do Twitch
-STR_5165    :Usar nome dos seguidores
-STR_5166    :{SMALLFONT}{BLACK}Nomeia os visitantes com o nome{NEWLINE}dos seguidores do canal no Twitch
-STR_5167    :Rastrear visitantes seguidores
-STR_5168    :{SMALLFONT}{BLACK}Habilita informação de rastreamento dos visitantes com nome igual aos dos seguidores do seu canal no Twitch
-STR_5169    :Usar nome das pessoas no chat do Twitch
-STR_5170    :{SMALLFONT}{BLACK}Nomeia os visitantes com o nome das pessoas no chat do Twitch
-STR_5171    :Rastrear visitantes do chat
-STR_5172    :{SMALLFONT}{BLACK}Habilita informação de rastreamento dos visitantes com nome igual aos das pessoas do chat do Twitch
-STR_5173    :Mostrar chat do Twitch como notícias
-STR_5174    :{SMALLFONT}{BLACK}Usa as mensagens do chat do Twitch precedido por !news nas notificações dentro do jogo
-STR_5175    :Insira o nome do seu canal no Twitch
-STR_5176    :Habilitar integração com Twitch
 STR_5177    :Modo de tela:
 STR_5178    :{SMALLFONT}{BLACK}Mostrar trapaças financeiras
 STR_5179    :{SMALLFONT}{BLACK}Mostrar trapaças de visitantes
@@ -2628,7 +2615,6 @@ STR_5267    :{SMALLFONT}{BLACK}Idioma e Unidades
 STR_5268    :{SMALLFONT}{BLACK}Áudio
 STR_5269    :{SMALLFONT}{BLACK}Controles e interface
 STR_5270    :{SMALLFONT}{BLACK}Variados
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Cenário Pequeno
 STR_5273    :{SMALLFONT}{BLACK}Cenário Grande
 STR_5274    :{SMALLFONT}{BLACK}Calçada
@@ -3166,7 +3152,6 @@ STR_5848    :{SMALLFONT}{BLACK}Cria ou gerencia sequências de títulos personal
 STR_5849    :{SMALLFONT}{BLACK}Posiciona automaticamente{NEWLINE}novos funcionários contratados
 STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Define o intervalo de inspeção padrão{NEWLINE}nas novas atrações construídas
-STR_5852    :{SMALLFONT}{BLACK}Define o nome do canal do TwitchTV que será usado para a integração do Twitch
 STR_5853    :{SMALLFONT}{BLACK}Liga/Desliga os efeitos sonoros
 STR_5854    :{SMALLFONT}{BLACK}Liga/Desliga música da atração
 STR_5855    :{SMALLFONT}{BLACK}Define tela cheia sem borda ou em modo janela
@@ -3565,9 +3550,6 @@ STR_6248    :{WINDOW_COLOUR_1}Você quer reformar {STRINGID} por {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Você quer reformar {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Você tem certeza que quer demolir completamente {STRINGID} e ganhar {CURRENCY}?
 STR_6251    :Brinquedo ainda não está vazio
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Fornece URL do API de integração do Twitch. Necessário para permitir a integração com Twitch.
-STR_6254    :URL do API de integração do Twitch:
 STR_6255    :URL não é válido
 STR_6256    :Efeitos de renderização
 STR_6257    :Vítreo (translúcido)

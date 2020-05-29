@@ -2530,19 +2530,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, år {POP16}{COMMA16}
 STR_5161    :Datumformat:
 STR_5162    :Dag/Månad/År
 STR_5163    :Månad/Dag/År
-STR_5164    :Kanalnamn på Twitch
-STR_5165    :Namnge besökare efter följare
-STR_5166    :{SMALLFONT}{BLACK}Namnger besökare efter Twitchkanalens följare
-STR_5167    :Spåra följarbesökare
-STR_5168    :{SMALLFONT}{BLACK}Aktiverar spårningsinformation för besökare uppkallade efter kanalens Twitchföljare
-STR_5169    :Namnge besökare efter namn i Twitchchatten
-STR_5170    :{SMALLFONT}{BLACK}Ger besökare namn från Twitchkanalens chatt
-STR_5171    :Spåra chattbesökare
-STR_5172    :{SMALLFONT}{BLACK}Aktiverar spårningsinformation för besökare namngivna efter Twitchkanalens chattare
-STR_5173    :Använd Twitchchatten som nyheter
-STR_5174    :{SMALLFONT}{BLACK}Använder Twitchchattens meddelanden som börjar med !nyheter som notifikationer i spelet
-STR_5175    :Skriv in namnet på Twitchkanalen
-STR_5176    :Aktivera Twitchfunktionen
 STR_5177    :Skärmlägen:
 STR_5178    :{SMALLFONT}{BLACK}Visa ekonomiska fusk
 STR_5179    :{SMALLFONT}{BLACK}Visa besökarfusk
@@ -2637,7 +2624,6 @@ STR_5267    :{SMALLFONT}{BLACK}Kultur och enheter
 STR_5268    :{SMALLFONT}{BLACK}Ljud
 STR_5269    :{SMALLFONT}{BLACK}Kontroller och gränssnitt
 STR_5270    :{SMALLFONT}{BLACK}Diverse
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Små dekorationer
 STR_5273    :{SMALLFONT}{BLACK}Stora dekorationer
 STR_5274    :{SMALLFONT}{BLACK}Gångväg
@@ -3174,7 +3160,6 @@ STR_5848    :{SMALLFONT}{BLACK}Skapa och hantera egna titelsekvenser
 STR_5849    :{SMALLFONT}{BLACK}Placera automatiskt ut ny personal när de anställs
 STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sätter standarden på inspektionsmellanrummen{NEWLINE}på nybyggda attraktioner
-STR_5852    :{SMALLFONT}{BLACK}Välj namnet på TwitchTV kanalen som kan använda funktionerna nedanför efteråt
 STR_5853    :{SMALLFONT}{BLACK}Slå av eller på ljudeffekter
 STR_5854    :{SMALLFONT}{BLACK}Slå av eller på åkturernas musik
 STR_5855    :{SMALLFONT}{BLACK}Välj att spela i fullskärm, fönster,{NEWLINE}eller fullskärmsläge utan kanter
@@ -3573,9 +3558,6 @@ STR_6248    :{WINDOW_COLOUR_1}Vill du renovera {STRINGID} för {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Vill du renovera {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Är du säker på att du vill riva {STRINGID} och tjäna {CURRENCY}?
 STR_6251    :Åkturen är inte tom
-STR_6252    :Twitch API-URL
-STR_6253    :{SMALLFONT}{BLACK}Skriv in URL:en för Twitch integrerade-API. Krävs för att aktivera Twitch-integration.
-STR_6254    :URL:en av Twitch integrerade-API:
 STR_6255    :URL:en är inte giltig
 STR_6256    :Rendering-effekt
 STR_6257    :Glasaktig (genomskinlig)

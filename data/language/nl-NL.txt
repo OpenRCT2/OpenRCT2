@@ -2536,19 +2536,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, jaar {POP16}{COMMA16}
 STR_5161    :Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
-STR_5164    :Twitch-kanaalnaam
-STR_5165    :Bezoekers namen van volgers geven
-STR_5166    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
-STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengeb.
-STR_5168    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
-STR_5169    :Bez. namen van gebruikers in de Twitch-chat geven
-STR_5170    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers in de Twitch-chat.
-STR_5171    :Bez. met Twitch-chatnamen volgen in berichtengebied
-STR_5172    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
-STR_5173    :Twitch-chat als nieuws weergeven
-STR_5174    :{SMALLFONT}{BLACK}Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
-STR_5175    :Voer de naam van je Twitch-kanaal in
-STR_5176    :Twitch-integratie inschakelen
 STR_5177    :Schermmodus:
 STR_5178    :{SMALLFONT}{BLACK}Cheats voor financiën
 STR_5179    :{SMALLFONT}{BLACK}Cheats voor bezoekers
@@ -2643,7 +2630,6 @@ STR_5267    :{SMALLFONT}{BLACK}Landinstellingen
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Bediening en interface
 STR_5270    :{SMALLFONT}{BLACK}Overig
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Klein decor
 STR_5273    :{SMALLFONT}{BLACK}Groot decor
 STR_5274    :{SMALLFONT}{BLACK}Voetpaden
@@ -3182,7 +3168,6 @@ STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
 STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
-STR_5852    :{SMALLFONT}{BLACK}Stelt de naam van het Twitch.tv-kanaal in waarmee moet worden geïntegreerd.
 STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
 STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.
 STR_5855    :{SMALLFONT}{BLACK}Stelt in of er volledig scherm, een randloos venster of een regulier venster moet worden gebruikt.
@@ -3581,9 +3566,6 @@ STR_6248    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren voor {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren?
 STR_6250    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} volledig wilt afbreken? Je krijgt er {CURRENCY} voor terug.
 STR_6251    :Attractie is nog niet leeg
-STR_6252    :Twitch-API-URL
-STR_6253    :{SMALLFONT}{BLACK}Voer de URL van de Twitch-integratie-API in. Vereist voor het inschakelen van Twitch-integratie.
-STR_6254    :URL van de Twitch-integratie-API:
 STR_6255    :URL is niet geldig
 STR_6256    :Renderingeffecten
 STR_6257    :Glas (doorschijnend)

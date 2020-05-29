@@ -2539,19 +2539,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
 STR_5161    :日期格式:
 STR_5162    :日/月/年
 STR_5163    :月/日/年
-STR_5164    :Twitch频道名称
-STR_5165    :以关注者的用户名命名游客
-STR_5166    :{SMALLFONT}{BLACK}用Twitch频道的关注者来命名游客
-STR_5167    :跟踪'关注者'游客
-STR_5168    :{SMALLFONT}{BLACK}启用跟踪关注者用户名的游客信息
-STR_5169    :以Twitch聊天中的名字命名游客
-STR_5170    :{SMALLFONT}{BLACK}用Twitch聊天中的名字来命名游客
-STR_5171    :跟踪'聊天'游客
-STR_5172    :{SMALLFONT}{BLACK}启用跟踪参与聊天用户名的游客信息
-STR_5173    :将Twitch聊天的内容以新闻的方式推送
-STR_5174    :{SMALLFONT}{BLACK}将Twitch聊天中所有标'!news'的内容以通知的方式推送
-STR_5175    :请输入你的Twitch频道名称
-STR_5176    :允许Twitch与游戏集成
 STR_5177    :显示模式:
 STR_5178    :{SMALLFONT}{BLACK}显示财务秘籍
 STR_5179    :{SMALLFONT}{BLACK}显示游客秘籍
@@ -2646,7 +2633,6 @@ STR_5267    :{SMALLFONT}{BLACK}语言及单位
 STR_5268    :{SMALLFONT}{BLACK}音效
 STR_5269    :{SMALLFONT}{BLACK}控制及界面
 STR_5270    :{SMALLFONT}{BLACK}杂项
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}小型景观
 STR_5273    :{SMALLFONT}{BLACK}大型景观
 STR_5274    :{SMALLFONT}{BLACK}道路
@@ -3187,7 +3173,6 @@ STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
 STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
-STR_5852    :{SMALLFONT}{BLACK}设置Twitch集成中使用的TwitchTV频道名
 STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
 STR_5854    :{SMALLFONT}{BLACK}开启/关闭游乐设施音乐
 STR_5855    :{SMALLFONT}{BLACK}设置全屏, 窗口或无边框窗口显示
@@ -3587,9 +3572,6 @@ STR_6248    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID} 以获得 {CURRENCY}
 STR_6249    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}你是否确定要完全拆除 {STRINGID} 以获得 {CURRENCY}?
 STR_6251    :游乐设施尚未清空
-STR_6252    :Twitch API 链接
-STR_6253    :{SMALLFONT}{BLACK}提供Twitch集成API链接. 用以启用Twitch集成.
-STR_6254    :Twitch集成API链接:
 STR_6255    :链接无效
 STR_6256    :渲染效果
 STR_6257    :明净的 (半透明)

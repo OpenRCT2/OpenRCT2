@@ -2541,19 +2541,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
 STR_5161    :日期格式:
 STR_5162    :日/月/年
 STR_5163    :月/日/年
-STR_5164    :Twitch頻道名稱
-STR_5165    :以追隨者的用戶名命名遊客
-STR_5166    :{SMALLFONT}{BLACK}以Twitch頻道的追隨者命名遊客
-STR_5167    :追蹤'追隨者'遊客
-STR_5168    :{SMALLFONT}{BLACK}開啟追隨者用戶名遊客的追蹤資訊
-STR_5169    :以聊天室用戶的名字命名遊客
-STR_5170    :{SMALLFONT}{BLACK}以Twitch頻道的聊天室用戶的名字命名遊客
-STR_5171    :追蹤'聊天室用戶'遊客
-STR_5172    :{SMALLFONT}{BLACK}開啟聊天室用戶名遊客的追蹤資訊
-STR_5173    :將Twitch聊天室的內容推送為新聞
-STR_5174    :{SMALLFONT}{BLACK}將Twitch聊天室所有標記為'!news'的內容以最近消息顯示於遊戲內
-STR_5175    :請輸入你的Twitch頻道名稱
-STR_5176    :准許Twitch頻道融合於遊戲之中
 STR_5177    :顯示模式:
 STR_5178    :{SMALLFONT}{BLACK}顯示用於財政的密技
 STR_5179    :{SMALLFONT}{BLACK}顯示用於遊客的密技
@@ -2648,7 +2635,6 @@ STR_5267    :{SMALLFONT}{BLACK}語言及單位
 STR_5268    :{SMALLFONT}{BLACK}音效
 STR_5269    :{SMALLFONT}{BLACK}控制及介面
 STR_5270    :{SMALLFONT}{BLACK}其他
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}小型景物
 STR_5273    :{SMALLFONT}{BLACK}大型景物
 STR_5274    :{SMALLFONT}{BLACK}道路
@@ -3189,7 +3175,6 @@ STR_5848    :{SMALLFONT}{BLACK}建立及管理自訂的主選單動畫
 STR_5849    :{SMALLFONT}{BLACK}自動放置新僱用的員工
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}設置新建設的遊樂設施{NEWLINE}的預設檢查時隔
-STR_5852    :{SMALLFONT}{BLACK}設置將會於Twitch整合功能的Twitch.tv頻道名稱
 STR_5853    :{SMALLFONT}{BLACK}啟用/禁用音效
 STR_5854    :{SMALLFONT}{BLACK}啟用/禁用音樂
 STR_5855    :{SMALLFONT}{BLACK}設置全螢幕, 視窗化,{NEWLINE}或無邊框式的全螢幕顯示模式
@@ -3591,9 +3576,6 @@ STR_6248    :{WINDOW_COLOUR_1}你確定要以{CURRENCY}翻新{STRINGID}嗎?
 STR_6249    :{WINDOW_COLOUR_1}你確定要翻新{STRINGID}嗎?
 STR_6250    :{WINDOW_COLOUR_1}你確定要完整移除{STRINGID}並賺取{CURRENCY}嗎?
 STR_6251    :遊樂設施依然在開啟中
-STR_6252    :Twitch API地址
-STR_6253    :{SMALLFONT}{BLACK}輸入Twitch整合API的地址. 啟用Twitch整合功能時必需填妥.
-STR_6254    :Twitch整合API地址:
 STR_6255    :非法的地址
 STR_6256    :渲染效果
 STR_6257    :玻璃 (半透明)
