@@ -888,11 +888,11 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         imgId = SPR_G2_SANDBOX;
         gfx_draw_sprite(dpi, imgId, x, y, 3);
 
-        // Draw an icon if clearance checks are disabled
+        // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks != 0)
         {
             gfx_draw_string_right(
-                dpi, STR_ICON_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, x + 26, y + 2);
+                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, x + 26, y + 2);
         }
     }
 
