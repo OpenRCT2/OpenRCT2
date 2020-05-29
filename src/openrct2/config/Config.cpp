@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -386,6 +386,7 @@ namespace Config
             model->default_password = reader->GetString("default_password", "");
             model->stay_connected = reader->GetBoolean("stay_connected", true);
             model->advertise = reader->GetBoolean("advertise", true);
+            model->advertise_address = reader->GetString("advertise_address", "");
             model->maxplayers = reader->GetInt32("maxplayers", 16);
             model->server_name = reader->GetString("server_name", "Server");
             model->server_description = reader->GetString("server_description", "");
@@ -412,6 +413,7 @@ namespace Config
         writer->WriteString("default_password", model->default_password);
         writer->WriteBoolean("stay_connected", model->stay_connected);
         writer->WriteBoolean("advertise", model->advertise);
+        writer->WriteString("advertise_address", model->advertise_address);
         writer->WriteInt32("maxplayers", model->maxplayers);
         writer->WriteString("server_name", model->server_name);
         writer->WriteString("server_description", model->server_description);
