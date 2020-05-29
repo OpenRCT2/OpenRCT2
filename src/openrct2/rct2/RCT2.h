@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -251,7 +251,7 @@ struct rct2_ride
     uint8_t pad_16F[0x7];              // 0x16F
     uint8_t spiral_slide_progress;     // 0x176
     uint8_t pad_177[0x9];              // 0x177
-    int16_t build_date;                // 0x180
+    uint16_t build_date;               // 0x180
     money16 upkeep_cost;               // 0x182
     uint16_t race_winner;              // 0x184
     uint8_t pad_186[0x02];             // 0x186

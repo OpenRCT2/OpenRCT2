@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -306,7 +306,7 @@ struct Ride
     };
     uint8_t slide_peep_t_shirt_colour;
     uint8_t spiral_slide_progress;
-    int16_t build_date;
+    uint16_t build_date;
     money16 upkeep_cost;
     uint16_t race_winner;
     uint32_t music_position;
@@ -411,6 +411,8 @@ public:
 
     rct_ride_entry* GetRideEntry() const;
 
+    size_t GetNumPrices() const;
+    int32_t GetAge() const;
     int32_t GetTotalQueueLength() const;
     int32_t GetMaxQueueTime() const;
 

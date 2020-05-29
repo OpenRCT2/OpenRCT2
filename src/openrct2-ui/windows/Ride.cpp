@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -6980,7 +6980,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y;
     uint8_t shopItem;
-    int16_t popularity, satisfaction, queueTime, age;
+    int16_t popularity, satisfaction, queueTime;
     int32_t customersPerHour;
     rct_string_id stringId;
 
@@ -7080,7 +7080,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Age
     // If the ride has a build date that is in the future, show it as built this year.
-    age = std::max((gDateMonthsElapsed - ride->build_date) / 8, 0);
+    int16_t age = std::max(date_get_year(ride->GetAge()), 0);
     stringId = age == 0 ? STR_BUILT_THIS_YEAR : age == 1 ? STR_BUILT_LAST_YEAR : STR_BUILT_YEARS_AGO;
     gfx_draw_string_left(dpi, stringId, &age, COLOUR_BLACK, x, y);
 }

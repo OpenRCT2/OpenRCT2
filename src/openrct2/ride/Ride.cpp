@@ -248,6 +248,42 @@ int32_t ride_get_count()
     return static_cast<int32_t>(GetRideManager().size());
 }
 
+size_t Ride::GetNumPrices() const
+{
+    size_t result = 0;
+    if (type == RIDE_TYPE_CASH_MACHINE || type == RIDE_TYPE_FIRST_AID)
+    {
+        result = 0;
+    }
+    else if (type == RIDE_TYPE_TOILETS)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = 1;
+
+        auto rideEntry = GetRideEntry();
+        if (rideEntry != nullptr)
+        {
+            if (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+            {
+                result++;
+            }
+            else if (rideEntry->shop_item[1] != SHOP_ITEM_NONE)
+            {
+                result++;
+            }
+        }
+    }
+    return result;
+}
+
+int32_t Ride::GetAge() const
+{
+    return static_cast<int32_t>(gDateMonthsElapsed) - build_date;
+}
+
 int32_t Ride::GetTotalQueueLength() const
 {
     int32_t i, queueLength = 0;
@@ -891,7 +927,9 @@ void ride_init_all()
 void reset_all_ride_build_dates()
 {
     for (auto& ride : GetRideManager())
-        ride.build_date -= gDateMonthsElapsed;
+    {
+        ride.build_date = gDateMonthsElapsed;
+    }
 }
 
 #pragma endregion
@@ -2214,8 +2252,7 @@ static void ride_inspection_update(Ride* ride)
 
 static int32_t get_age_penalty(Ride* ride)
 {
-    int32_t years;
-    years = date_get_year(gDateMonthsElapsed - ride->build_date);
+    auto years = date_get_year(ride->GetAge());
     switch (years)
     {
         case 0:
@@ -2308,7 +2345,7 @@ static void ride_breakdown_update(Ride* ride)
  */
 static int32_t ride_get_new_breakdown_problem(Ride* ride)
 {
-    int32_t availableBreakdownProblems, monthsOld, totalProbability, randomProbability, problemBits, breakdownProblem;
+    int32_t availableBreakdownProblems, totalProbability, randomProbability, problemBits, breakdownProblem;
 
     // Brake failure is more likely when it's raining
     _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = climate_is_raining() ? 20 : 3;
@@ -2356,7 +2393,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     if (gCheatsDisableBrakesFailure)
         return -1;
 
-    monthsOld = gDateMonthsElapsed - ride->build_date;
+    auto monthsOld = ride->GetAge();
     if (monthsOld < 16 || ride->reliability_percentage > 50)
         return -1;
 
