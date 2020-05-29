@@ -502,7 +502,9 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint,
         {
             y += *info->y_offset++;
         }
-        gfx_draw_glpyh(dpi, sprite, x, y, info->palette);
+
+        PaletteMap paletteMap(info->palette);
+        gfx_draw_glyph(dpi, sprite, x, y, paletteMap);
     }
 
     info->x += characterWidth;
@@ -698,21 +700,23 @@ static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* t
             break;
         case FORMAT_ADJUST_PALETTE:
         {
-            uint16_t eax = palette_to_g1_offset[static_cast<uint8_t>(*nextCh++)];
-            const rct_g1_element* g1 = gfx_get_g1_element(eax);
-            if (g1 != nullptr)
+            auto paletteMapId = static_cast<colour_t>(*nextCh++);
+            auto paletteMap = GetPaletteMapForColour(paletteMapId);
+            if (paletteMap)
             {
-                uint32_t ebx = g1->offset[249] + 256;
+                uint32_t c = (*paletteMap)[249] + 256;
                 if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE))
                 {
-                    ebx = ebx & 0xFF;
+                    c &= 0xFF;
                 }
-                info->palette[1] = ebx & 0xFF;
-                info->palette[2] = (ebx >> 8) & 0xFF;
+                info->palette[1] = c & 0xFF;
+                info->palette[2] = (c >> 8) & 0xFF;
 
                 // Adjust the text palette
-                std::memcpy(info->palette + 3, &(g1->offset[247]), 2);
-                std::memcpy(info->palette + 5, &(g1->offset[250]), 2);
+                info->palette[3] = (*paletteMap)[247];
+                info->palette[4] = (*paletteMap)[248];
+                info->palette[5] = (*paletteMap)[250];
+                info->palette[6] = (*paletteMap)[251];
             }
             break;
         }

@@ -31,6 +31,6 @@ namespace OpenRCT2::Drawing
         virtual void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) abstract;
         virtual void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) abstract;
         virtual void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) abstract;
-        virtual void DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette) abstract;
+        virtual void DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
     };
 } // namespace OpenRCT2::Drawing

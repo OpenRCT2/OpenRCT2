@@ -46,8 +46,6 @@ assert_struct_size(rct_sprite_file_header, 8);
 
 #pragma pack(pop)
 
-static GamePalette spriteFilePalette;
-
 static rct_sprite_file_header spriteFileHeader;
 static rct_g1_element* spriteFileEntries;
 static uint8_t* spriteFileData;
@@ -221,18 +219,16 @@ static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath
     dpi.pitch = 0;
     dpi.zoom_level = 0;
 
-    spriteFilePalette = StandardPalette;
-
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
     {
         gfx_rle_sprite_to_buffer(
-            spriteHeader->offset, pixels, static_cast<uint8_t*>(spriteFilePalette), &dpi, ImageId(), 0, spriteHeader->height, 0,
+            spriteHeader->offset, pixels, PaletteMap::GetDefault(), &dpi, ImageId(), 0, spriteHeader->height, 0,
             spriteHeader->width);
     }
     else
     {
         gfx_bmp_sprite_to_buffer(
-            static_cast<uint8_t*>(spriteFilePalette), spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
+            PaletteMap::GetDefault(), spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
             spriteHeader->width, ImageId());
     }
 

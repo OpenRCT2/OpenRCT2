@@ -10,7 +10,7 @@
 #include "Drawing.h"
 
 static void FASTCALL gfx_bmp_sprite_to_buffer_magnify(
-    const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
+    const PaletteMap& paletteMap, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
     rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
 {
     auto zoom_level = dest_dpi->zoom_level;
@@ -44,14 +44,14 @@ static void FASTCALL gfx_bmp_sprite_to_buffer_magnify(
  * @param imageId Only flags are used.
  */
 void FASTCALL gfx_bmp_sprite_to_buffer(
-    const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
+    const PaletteMap& paletteMap, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
     rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
 {
     auto zoom_level = dest_dpi->zoom_level;
     if (zoom_level < 0)
     {
         gfx_bmp_sprite_to_buffer_magnify(
-            palette_pointer, source_pointer, dest_pointer, source_image, dest_dpi, height, width, imageId);
+            paletteMap, source_pointer, dest_pointer, source_image, dest_dpi, height, width, imageId);
         return;
     }
 
@@ -62,8 +62,6 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     // Image uses the palette pointer to remap the colours of the image
     if (imageId.HasPrimary())
     {
-        assert(palette_pointer != nullptr);
-
         // Image with remaps
         for (; height > 0; height -= zoom_amount)
         {
@@ -73,7 +71,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
                  no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++)
             {
                 uint8_t pixel = *source_pointer;
-                pixel = palette_pointer[pixel];
+                pixel = paletteMap[pixel];
                 if (pixel)
                 {
                     *dest_pointer = pixel;
@@ -91,7 +89,6 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     // by the palette pointer.
     if (imageId.IsBlended())
     { // Not tested
-        assert(palette_pointer != nullptr);
         for (; height > 0; height -= zoom_amount)
         {
             uint8_t* next_source_pointer = source_pointer + source_line_width;
@@ -104,7 +101,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
                 if (pixel)
                 {
                     pixel = *dest_pointer;
-                    pixel = palette_pointer[pixel];
+                    pixel = paletteMap[pixel];
                     *dest_pointer = pixel;
                 }
             }

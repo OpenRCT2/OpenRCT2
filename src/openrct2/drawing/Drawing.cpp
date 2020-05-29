@@ -20,6 +20,67 @@
 #include "../world/Location.hpp"
 #include "../world/Water.h"
 
+#include <cstring>
+
+const PaletteMap& PaletteMap::GetDefault()
+{
+    static bool initialised = false;
+    static uint8_t data[256];
+    static PaletteMap defaultMap(data);
+    if (!initialised)
+    {
+        for (size_t i = 0; i < sizeof(data); i++)
+        {
+            data[i] = static_cast<uint8_t>(i);
+        }
+    }
+    return defaultMap;
+}
+
+uint8_t& PaletteMap::operator[](size_t index)
+{
+    assert(index < _dataLength);
+
+    // Provide safety in release builds
+    if (index >= _dataLength)
+    {
+        static uint8_t dummy;
+        return dummy;
+    }
+
+    return _data[index];
+}
+
+uint8_t PaletteMap::operator[](size_t index) const
+{
+    assert(index < _dataLength);
+
+    // Provide safety in release builds
+    if (index >= _dataLength)
+    {
+        return 0;
+    }
+
+    return _data[index];
+}
+
+uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
+{
+    // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
+    assert(src != 0 && (src - 1) < _numMaps);
+    assert(dst < _mapLength);
+    auto idx = ((src - 1) * 256) + dst;
+    return (*this)[idx];
+}
+
+void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length)
+{
+    auto maxLength = std::min(_mapLength - srcIndex, _mapLength - dstIndex);
+    assert(length <= maxLength);
+    auto copyLength = std::min(length, maxLength);
+    std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
+}
+
 // HACK These were originally passed back through registers
 thread_local int32_t gLastDrawStringX;
 thread_local int32_t gLastDrawStringY;
@@ -269,7 +330,7 @@ const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT] = {
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
+static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -686,4 +747,27 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
     {
         gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
     }
+}
+
+std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
+{
+    if (paletteId < std::size(palette_to_g1_offset))
+    {
+        return palette_to_g1_offset[paletteId];
+    }
+    return std::nullopt;
+}
+
+std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
+{
+    auto g1Index = GetPaletteG1Index(paletteId);
+    if (g1Index)
+    {
+        auto g1 = gfx_get_g1_element(*g1Index);
+        if (g1 != nullptr)
+        {
+            return PaletteMap(g1->offset, g1->height, g1->width);
+        }
+    }
+    return std::nullopt;
 }
