@@ -724,7 +724,7 @@ struct Peep : SpriteBase
     };
     union
     {
-        money16 paid_on_food;
+        money16 PaidOnFood;
         uint16_t StaffLitterSwept;
     };
     union

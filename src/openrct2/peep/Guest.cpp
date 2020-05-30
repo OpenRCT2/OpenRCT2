@@ -1709,7 +1709,7 @@ loc_69B221:
 
     if (ShopItems[shopItem].IsFood())
     {
-        expend_type = &paid_on_food;
+        expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 

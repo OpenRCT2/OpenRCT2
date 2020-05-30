@@ -1766,7 +1766,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->VandalismSeen = 0;
     peep->paid_to_enter = 0;
     peep->paid_on_rides = 0;
-    peep->paid_on_food = 0;
+    peep->PaidOnFood = 0;
     peep->paid_on_drink = 0;
     peep->PaidOnSouvenirs = 0;
     peep->NoOfFood = 0;

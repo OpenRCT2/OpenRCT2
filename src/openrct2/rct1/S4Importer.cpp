@@ -1491,7 +1491,7 @@ private:
         dst->paid_to_enter = src->paid_to_enter;
         dst->paid_on_rides = src->paid_on_rides;
         dst->paid_on_drink = src->paid_on_drink;
-        dst->paid_on_food = src->paid_on_food;
+        dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
         dst->VoucherArguments = src->voucher_arguments;
