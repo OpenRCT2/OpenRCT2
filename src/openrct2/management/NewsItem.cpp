@@ -51,12 +51,12 @@ const NewsItem& NewsItemQueue::Current() const
 
 NewsItem& NewsItemQueue::Oldest()
 {
-    return Old[0];
+    return Archived[0];
 }
 
 const NewsItem& NewsItemQueue::Oldest() const
 {
-    return Old[0];
+    return Archived[0];
 }
 
 bool news_item_is_valid_idx(int32_t index)
@@ -79,7 +79,7 @@ NewsItem& NewsItemQueue::operator[](size_t index)
     if (index < NEWS_ITEM_HISTORY_START)
         return Recent[index];
     else
-        return Old[index - NEWS_ITEM_HISTORY_START];
+        return Archived[index - NEWS_ITEM_HISTORY_START];
 }
 
 NewsItem* NewsItemQueue::At(int32_t index)
@@ -164,7 +164,7 @@ int32_t NewsItemQueue::RemoveTime() const
     return 320;
 }
 
-bool NewsItemQueue::IsCurrentOld() const
+bool NewsItemQueue::CurrentShouldBeArchived() const
 {
     return Current().Ticks >= RemoveTime();
 }
@@ -186,8 +186,8 @@ void news_item_update_current()
     news_item_tick_current();
 
     // Removal of current news item
-    if (gNewsItems.IsCurrentOld())
-        gNewsItems.MoveCurrentToOld();
+    if (gNewsItems.CurrentShouldBeArchived())
+        gNewsItems.ArchiveCurrent();
 }
 
 /**
@@ -196,16 +196,16 @@ void news_item_update_current()
  */
 void news_item_close_current()
 {
-    gNewsItems.MoveCurrentToOld();
+    gNewsItems.ArchiveCurrent();
 }
 
-void NewsItemQueue::MoveCurrentToOld()
+void NewsItemQueue::ArchiveCurrent()
 {
     // Check if there is a current message
     if (IsEmpty())
         return;
 
-    AppendToOld(Current());
+    AppendToArchive(Current());
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
@@ -223,21 +223,21 @@ void NewsItemQueue::MoveCurrentToOld()
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
  */
-void NewsItemQueue::AppendToOld(NewsItem& item)
+void NewsItemQueue::AppendToArchive(NewsItem& item)
 {
-    auto it = std::find_if(std::begin(Old), std::end(Old), [](const auto& newsItem) { return newsItem.IsEmpty(); });
-    if (it != std::end(Old))
+    auto it = std::find_if(std::begin(Archived), std::end(Archived), [](const auto& newsItem) { return newsItem.IsEmpty(); });
+    if (it != std::end(Archived))
     {
         *it = item;
         ++it;
-        if (it != std::end(Old))
+        if (it != std::end(Archived))
             it->Type = NEWS_ITEM_NULL;
         return;
     }
 
     // Dequeue the first history news item, shift history up
-    memmove(Old, Old + 1, sizeof(NewsItem) * (std::size(Old) - 1));
-    Old[MAX_OLD_NEWS_ITEMS - 1] = item;
+    memmove(Archived, Archived + 1, sizeof(NewsItem) * (std::size(Archived) - 1));
+    Archived[MAX_NEWS_ITEMS_ARCHIVE - 1] = item;
 }
 
 /**
@@ -340,7 +340,7 @@ NewsItem* NewsItemQueue::FirstOpenOrCreateSlot()
     for (; !it->IsEmpty();)
     {
         if (it + 2 >= std::end(Recent))
-            MoveCurrentToOld();
+            ArchiveCurrent();
         else
             it++;
     }
@@ -488,7 +488,7 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
         }
     });
 
-    gNewsItems.ForeachOldNews([type, assoc](auto& newsItem) {
+    gNewsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.Flags |= NEWS_FLAG_HAS_BUTTON;

@@ -60,8 +60,8 @@ struct NewsItem
 };
 
 constexpr int32_t NEWS_ITEM_HISTORY_START = 11;
-constexpr int32_t MAX_OLD_NEWS_ITEMS = 50;
-constexpr int32_t MAX_NEWS_ITEMS = NEWS_ITEM_HISTORY_START + MAX_OLD_NEWS_ITEMS;
+constexpr int32_t MAX_NEWS_ITEMS_ARCHIVE = 50;
+constexpr int32_t MAX_NEWS_ITEMS = NEWS_ITEM_HISTORY_START + MAX_NEWS_ITEMS_ARCHIVE;
 
 extern const uint8_t news_type_properties[10];
 
@@ -77,8 +77,8 @@ struct NewsItemQueue
     const NewsItem& Current() const;
     NewsItem& Oldest();
     const NewsItem& Oldest() const;
-    bool IsCurrentOld() const;
-    void MoveCurrentToOld();
+    bool CurrentShouldBeArchived() const;
+    void ArchiveCurrent();
     NewsItem* FirstOpenOrCreateSlot();
 
     template<typename Predicate> void ForeachRecentNews(Predicate&& p)
@@ -91,9 +91,9 @@ struct NewsItemQueue
         }
     }
 
-    template<typename Predicate> void ForeachOldNews(Predicate&& p)
+    template<typename Predicate> void ForeachArchivedNews(Predicate&& p)
     {
-        for (auto& newsItem : Old)
+        for (auto& newsItem : Archived)
         {
             if (newsItem.IsEmpty())
                 break;
@@ -103,10 +103,10 @@ struct NewsItemQueue
 
 private:
     int32_t RemoveTime() const;
-    void AppendToOld(NewsItem& item);
+    void AppendToArchive(NewsItem& item);
 
     NewsItem Recent[NEWS_ITEM_HISTORY_START];
-    NewsItem Old[MAX_OLD_NEWS_ITEMS];
+    NewsItem Archived[MAX_NEWS_ITEMS_ARCHIVE];
 };
 
 extern NewsItemQueue gNewsItems;
