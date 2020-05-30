@@ -213,35 +213,35 @@ void Vehicle::CableLiftUpdateArriving()
         SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, sub_state);
 }
 
-static bool sub_6DF01A_loop(Vehicle* vehicle)
+bool Vehicle::CableLiftUpdateTrackMotionForwards()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return false;
 
-    for (; vehicle->remaining_distance >= 13962; _vehicleUnkF64E10++)
+    for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
-        uint8_t trackType = vehicle->track_type >> 2;
-        if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle->track_progress == 160)
+        uint8_t trackType = track_type >> 2;
+        if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
         }
 
-        uint16_t trackProgress = vehicle->track_progress + 1;
+        uint16_t trackProgress = track_progress + 1;
 
-        const rct_vehicle_info* moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, 0);
-        uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->TrackSubposition, vehicle->track_type);
+        const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
+        uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
         if (trackProgress >= trackTotalProgress)
         {
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
             _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
+            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             CoordsXYE output;
             int32_t outputZ;
             int32_t outputDirection;
 
-            auto input = CoordsXYE{ vehicle->TrackLocation, trackElement };
+            auto input = CoordsXYE{ TrackLocation, trackElement };
 
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
                 return false;
@@ -250,18 +250,18 @@ static bool sub_6DF01A_loop(Vehicle* vehicle)
                 || TrackDefinitions[output.element->AsTrack()->GetTrackType()].bank_start != _vehicleBankEndF64E37)
                 return false;
 
-            vehicle->TrackLocation = { output, outputZ };
-            vehicle->track_direction = outputDirection;
-            vehicle->track_type |= output.element->AsTrack()->GetTrackType() << 2;
+            TrackLocation = { output, outputZ };
+            track_direction = outputDirection;
+            track_type |= output.element->AsTrack()->GetTrackType() << 2;
             trackProgress = 0;
         }
 
-        vehicle->track_progress = trackProgress;
-        moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
-        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + vehicle->TrackLocation;
+        track_progress = trackProgress;
+        moveInfo = vehicle_get_move_info(TrackSubposition, track_type, trackProgress);
+        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideData5[ride->type].z_offset;
+        unk.z += RideData5[curRide->type].z_offset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -269,43 +269,43 @@ static bool sub_6DF01A_loop(Vehicle* vehicle)
         if (unk.z != unk_F64E20.z)
             bx |= (1 << 2);
 
-        vehicle->remaining_distance -= dword_9A2930[bx];
+        remaining_distance -= dword_9A2930[bx];
         unk_F64E20.x = unk.x;
         unk_F64E20.y = unk.y;
         unk_F64E20.z = unk.z;
 
-        vehicle->sprite_direction = moveInfo->direction;
-        vehicle->bank_rotation = moveInfo->bank_rotation;
-        vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        sprite_direction = moveInfo->direction;
+        bank_rotation = moveInfo->bank_rotation;
+        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-        if (vehicle->remaining_distance >= 13962)
+        if (remaining_distance >= 13962)
         {
-            vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
+            acceleration += dword_9A2970[vehicle_sprite_type];
         }
     }
     return true;
 }
 
-static bool sub_6DF21B_loop(Vehicle* vehicle)
+bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 {
-    auto ride = get_ride(vehicle->ride);
-    if (ride == nullptr)
+    auto curRide = get_ride(ride);
+    if (curRide == nullptr)
         return false;
 
-    for (; vehicle->remaining_distance < 0; _vehicleUnkF64E10++)
+    for (; remaining_distance < 0; _vehicleUnkF64E10++)
     {
-        uint16_t trackProgress = vehicle->track_progress - 1;
+        uint16_t trackProgress = track_progress - 1;
         const rct_vehicle_info* moveInfo;
 
         if (static_cast<int16_t>(trackProgress) == -1)
         {
-            uint8_t trackType = vehicle->track_type >> 2;
+            uint8_t trackType = track_type >> 2;
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
             _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
 
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
+            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
-            auto input = CoordsXYE{ vehicle->TrackLocation, trackElement };
+            auto input = CoordsXYE{ TrackLocation, trackElement };
             track_begin_end output;
 
             if (!track_block_get_previous(input, &output))
@@ -315,26 +315,26 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
                 || TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].bank_end != _vehicleBankEndF64E37)
                 return false;
 
-            vehicle->TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
-            vehicle->track_direction = output.begin_direction;
-            vehicle->track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
+            TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
+            track_direction = output.begin_direction;
+            track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
 
             if (output.begin_element->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }
 
-            moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, 0);
-            uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->TrackSubposition, vehicle->track_type);
+            moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
+            uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
             trackProgress = trackTotalProgress - 1;
         }
-        vehicle->track_progress = trackProgress;
+        track_progress = trackProgress;
 
-        moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
-        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + vehicle->TrackLocation;
+        moveInfo = vehicle_get_move_info(TrackSubposition, track_type, trackProgress);
+        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideData5[ride->type].z_offset;
+        unk.z += RideData5[curRide->type].z_offset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -342,18 +342,18 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
         if (unk.z != unk_F64E20.z)
             bx |= (1 << 2);
 
-        vehicle->remaining_distance += dword_9A2930[bx];
+        remaining_distance += dword_9A2930[bx];
         unk_F64E20.x = unk.x;
         unk_F64E20.y = unk.y;
         unk_F64E20.z = unk.z;
 
-        vehicle->sprite_direction = moveInfo->direction;
-        vehicle->bank_rotation = moveInfo->bank_rotation;
-        vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        sprite_direction = moveInfo->direction;
+        bank_rotation = moveInfo->bank_rotation;
+        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-        if (vehicle->remaining_distance < 0)
+        if (remaining_distance < 0)
         {
-            vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
+            acceleration += dword_9A2970[vehicle_sprite_type];
         }
     }
     return true;
@@ -399,7 +399,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
             {
                 if (vehicle->remaining_distance < 0)
                 {
-                    if (sub_6DF21B_loop(vehicle))
+                    if (vehicle->CableLiftUpdateTrackMotionBackwards())
                     {
                         break;
                     }
@@ -415,7 +415,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                 }
                 else
                 {
-                    if (sub_6DF01A_loop(vehicle))
+                    if (vehicle->CableLiftUpdateTrackMotionForwards())
                     {
                         break;
                     }
