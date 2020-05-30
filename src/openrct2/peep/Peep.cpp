@@ -1764,7 +1764,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->litter_count = 0;
     peep->disgusting_count = 0;
     peep->VandalismSeen = 0;
-    peep->paid_to_enter = 0;
+    peep->PaidToEnter = 0;
     peep->PaidOnRides = 0;
     peep->PaidOnFood = 0;
     peep->paid_on_drink = 0;
@@ -2627,7 +2627,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             }
 
             gTotalIncomeFromAdmissions += entranceFee;
-            guest->SpendMoney(peep->paid_to_enter, entranceFee, ExpenditureType::ParkEntranceTickets);
+            guest->SpendMoney(peep->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
             peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
