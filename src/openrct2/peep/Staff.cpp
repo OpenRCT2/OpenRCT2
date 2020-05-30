@@ -370,7 +370,7 @@ void staff_reset_stats()
         peep->staff_lawns_mown = 0;
         peep->staff_rides_fixed = 0;
         peep->staff_gardens_watered = 0;
-        peep->staff_rides_inspected = 0;
+        peep->StaffRidesInspected = 0;
         peep->StaffLitterSwept = 0;
         peep->StaffBinsEmptied = 0;
     }
@@ -2630,7 +2630,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         {
             UpdateRideInspected(current_ride);
 
-            staff_rides_inspected++;
+            StaffRidesInspected++;
             window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
             return true;
