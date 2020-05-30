@@ -1227,7 +1227,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->paid_on_souvenirs = src->paid_on_souvenirs;
     dst->no_of_food = src->no_of_food;
     dst->no_of_drinks = src->no_of_drinks;
-    dst->no_of_souvenirs = src->no_of_souvenirs;
+    dst->no_of_souvenirs = src->NoOfSouvenirs;
     dst->vandalism_seen = src->VandalismSeen;
     dst->voucher_type = src->VoucherType;
     dst->voucher_arguments = src->VoucherArguments;

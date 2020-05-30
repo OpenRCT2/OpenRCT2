@@ -1492,7 +1492,7 @@ public:
         dst->paid_on_souvenirs = src->paid_on_souvenirs;
         dst->no_of_food = src->no_of_food;
         dst->no_of_drinks = src->no_of_drinks;
-        dst->no_of_souvenirs = src->no_of_souvenirs;
+        dst->NoOfSouvenirs = src->no_of_souvenirs;
         dst->VandalismSeen = src->vandalism_seen;
         dst->VoucherType = src->voucher_type;
         dst->VoucherArguments = src->voucher_arguments;

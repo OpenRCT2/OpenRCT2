@@ -734,7 +734,7 @@ struct Peep : SpriteBase
     };
     uint8_t no_of_food;
     uint8_t no_of_drinks;
-    uint8_t no_of_souvenirs;
+    uint8_t NoOfSouvenirs;
     uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t VoucherType;
     uint8_t VoucherArguments; // ride_id or string_offset_id

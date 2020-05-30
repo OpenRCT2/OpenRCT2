@@ -1486,7 +1486,7 @@ private:
 
         dst->no_of_drinks = src->no_of_drinks;
         dst->no_of_food = src->no_of_food;
-        dst->no_of_souvenirs = src->no_of_souvenirs;
+        dst->NoOfSouvenirs = src->no_of_souvenirs;
 
         dst->paid_to_enter = src->paid_to_enter;
         dst->paid_on_rides = src->paid_on_rides;
