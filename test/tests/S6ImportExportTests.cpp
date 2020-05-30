@@ -291,10 +291,10 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
     COMPARE_FIELD(var_44);
     COMPARE_FIELD(mass);
     COMPARE_FIELD(update_flags);
-    COMPARE_FIELD(swing_sprite);
+    COMPARE_FIELD(SwingSprite);
     COMPARE_FIELD(current_station);
-    COMPARE_FIELD(swinging_car_var_0);
-    COMPARE_FIELD(var_4E);
+    COMPARE_FIELD(SwingPosition);
+    COMPARE_FIELD(SwingSpeed);
     COMPARE_FIELD(status);
     COMPARE_FIELD(sub_state);
     for (int i = 0; i < 32; i++)

@@ -338,10 +338,10 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, var_44);
         COMPARE_FIELD(Vehicle, mass);
         COMPARE_FIELD(Vehicle, update_flags);
-        COMPARE_FIELD(Vehicle, swing_sprite);
+        COMPARE_FIELD(Vehicle, SwingSprite);
         COMPARE_FIELD(Vehicle, current_station);
-        COMPARE_FIELD(Vehicle, swinging_car_var_0);
-        COMPARE_FIELD(Vehicle, var_4E);
+        COMPARE_FIELD(Vehicle, SwingPosition);
+        COMPARE_FIELD(Vehicle, SwingSpeed);
         COMPARE_FIELD(Vehicle, status);
         COMPARE_FIELD(Vehicle, sub_state);
         for (int i = 0; i < 32; i++)
