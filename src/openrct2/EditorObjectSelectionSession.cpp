@@ -321,7 +321,7 @@ void unload_unselected_objects()
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     size_t numObjectsToUnload = 0;
-    rct_object_entry* objectsToUnload = static_cast<rct_object_entry*>(malloc(numItems * sizeof(rct_object_entry)));
+    rct_object_entry* objectsToUnload = new rct_object_entry[numItems];
 
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -335,7 +335,7 @@ void unload_unselected_objects()
     }
 
     object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
-    free(objectsToUnload);
+    delete[] objectsToUnload;
 }
 
 /**

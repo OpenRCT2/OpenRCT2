@@ -145,6 +145,8 @@ The following people are not part of the development team, but have been contrib
 * Mustapha Elghoul (mustaphaelghoul)
 * Tyler Leamon (tylerleamon)
 * Michael Coates (outerwear)
+* Reid Baris (Rdbaris)
+* Deanna Baris (dbaris)
 
 ## Toolchain
 * (Balletie) - macOS
