@@ -6618,22 +6618,22 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
  * merely as a velocity regulator, in a closed state. When the brake is open, it
  * boosts the train to the speed limit
  */
-static void apply_non_stop_block_brake(Vehicle* vehicle)
+void Vehicle::ApplyNonStopBlockBrake()
 {
-    if (vehicle->velocity >= 0)
+    if (velocity >= 0)
     {
         // If the vehicle is below the speed limit
-        if (vehicle->velocity <= BLOCK_BRAKE_BASE_SPEED)
+        if (velocity <= BLOCK_BRAKE_BASE_SPEED)
         {
             // Boost it to the fixed block brake speed
-            vehicle->velocity = BLOCK_BRAKE_BASE_SPEED;
-            vehicle->acceleration = 0;
+            velocity = BLOCK_BRAKE_BASE_SPEED;
+            acceleration = 0;
         }
         else
         {
             // Slow it down till the fixed block brake speed
-            vehicle->velocity -= vehicle->velocity >> 4;
-            vehicle->acceleration = 0;
+            velocity -= velocity >> 4;
+            acceleration = 0;
         }
     }
 }
@@ -6642,27 +6642,19 @@ static void apply_non_stop_block_brake(Vehicle* vehicle)
  *
  * Modifies the train's velocity influenced by a block brake
  */
-static void apply_block_brakes(Vehicle* vehicle, bool is_block_brake_closed)
+void Vehicle::ApplyStopBlockBrake()
 {
-    // If the site is in a "train blocking" state
-    if (is_block_brake_closed)
+    // Slow it down till completely stop the car
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+    acceleration = 0;
+    // If the this is slow enough, stop it. If not, slow it down
+    if (velocity <= 0x20000)
     {
-        // Slow it down till completely stop the car
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-        vehicle->acceleration = 0;
-        // If the vehicle is slow enough, stop it. If not, slow it down
-        if (vehicle->velocity <= 0x20000)
-        {
-            vehicle->velocity = 0;
-        }
-        else
-        {
-            vehicle->velocity -= vehicle->velocity >> 3;
-        }
+        velocity = 0;
     }
     else
     {
-        apply_non_stop_block_brake(vehicle);
+        velocity -= velocity >> 3;
     }
 }
 
@@ -6699,10 +6691,10 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     switch (trackType)
     {
         case TRACK_ELEM_BLOCK_BRAKES:
-            if (curRide->IsBlockSectioned())
-                apply_block_brakes(this, trackElement->AsTrack()->BlockBrakeClosed());
+            if (curRide->IsBlockSectioned() && trackElement->AsTrack()->BlockBrakeClosed())
+                ApplyStopBlockBrake();
             else
-                apply_non_stop_block_brake(this);
+                ApplyNonStopBlockBrake();
 
             break;
         case TRACK_ELEM_END_STATION:
@@ -6721,7 +6713,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 {
                     if (trackElement->AsTrack()->BlockBrakeClosed())
                     {
-                        apply_block_brakes(this, true);
+                        ApplyStopBlockBrake();
                     }
                 }
             }
