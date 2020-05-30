@@ -79,7 +79,7 @@ struct NewsItemQueue
     const NewsItem& Oldest() const;
     bool CurrentShouldBeArchived() const;
     void ArchiveCurrent();
-    NewsItem* FirstOpenOrCreateSlot();
+    NewsItem* FirstOpenOrNewSlot();
 
     template<typename Predicate> void ForeachRecentNews(Predicate&& p)
     {

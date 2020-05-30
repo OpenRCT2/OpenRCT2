@@ -334,7 +334,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
     return subjectLoc;
 }
 
-NewsItem* NewsItemQueue::FirstOpenOrCreateSlot()
+NewsItem* NewsItemQueue::FirstOpenOrNewSlot()
 {
     auto it = std::begin(Recent);
     for (; !it->IsEmpty();)
@@ -363,7 +363,7 @@ NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t
 
 NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
 {
-    NewsItem* newsItem = gNewsItems.FirstOpenOrCreateSlot();
+    NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc;
@@ -499,7 +499,7 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
 
 void news_item_add_to_queue_custom(NewsItem* newNewsItem)
 {
-    NewsItem* newsItem = gNewsItems.FirstOpenOrCreateSlot();
+    NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
     newsItem++;
     newsItem->Type = NEWS_ITEM_NULL;
