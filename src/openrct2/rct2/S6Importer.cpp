@@ -1495,7 +1495,7 @@ public:
         dst->no_of_souvenirs = src->no_of_souvenirs;
         dst->vandalism_seen = src->vandalism_seen;
         dst->voucher_type = src->voucher_type;
-        dst->voucher_arguments = src->voucher_arguments;
+        dst->VoucherArguments = src->voucher_arguments;
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;

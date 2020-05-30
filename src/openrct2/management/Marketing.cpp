@@ -141,7 +141,7 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
             peep->ItemStandardFlags |= PEEP_ITEM_VOUCHER;
             peep->voucher_type = VOUCHER_TYPE_RIDE_FREE;
-            peep->voucher_arguments = campaign->RideId;
+            peep->VoucherArguments = campaign->RideId;
             peep->guest_heading_to_ride_id = campaign->RideId;
             peep->peep_is_lost_countdown = 240;
             break;
@@ -152,7 +152,7 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
             peep->ItemStandardFlags |= PEEP_ITEM_VOUCHER;
             peep->voucher_type = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
-            peep->voucher_arguments = campaign->ShopItemType;
+            peep->VoucherArguments = campaign->ShopItemType;
             break;
         case ADVERTISING_CAMPAIGN_PARK:
             break;
