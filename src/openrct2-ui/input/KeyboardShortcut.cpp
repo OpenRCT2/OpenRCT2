@@ -1023,7 +1023,7 @@ static void shortcut_decrease_element_height()
 
 static void shortcut_toggle_clearance_checks()
 {
-    auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 1 : 0);
+    auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 0 : 1);
     GameActions::Execute(&setCheatAction);
 }
 
