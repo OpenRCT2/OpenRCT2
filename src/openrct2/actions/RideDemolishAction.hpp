@@ -178,7 +178,7 @@ private:
             // remove any free voucher for this ride from peep
             if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
             {
-                if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->VoucherArguments == _rideIndex)
+                if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherArguments == _rideIndex)
                 {
                     peep->ItemStandardFlags &= ~(PEEP_ITEM_VOUCHER);
                 }

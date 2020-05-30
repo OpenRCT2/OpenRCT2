@@ -1494,7 +1494,7 @@ public:
         dst->no_of_drinks = src->no_of_drinks;
         dst->no_of_souvenirs = src->no_of_souvenirs;
         dst->vandalism_seen = src->vandalism_seen;
-        dst->voucher_type = src->voucher_type;
+        dst->VoucherType = src->voucher_type;
         dst->VoucherArguments = src->voucher_arguments;
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;

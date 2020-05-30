@@ -1955,7 +1955,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_VOUCHER:
-            switch (peep->voucher_type)
+            switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);

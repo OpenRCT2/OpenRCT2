@@ -1481,7 +1481,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherArguments == shopItem))
     {
         hasVoucher = true;
@@ -2413,7 +2413,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
+    return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherArguments == ride->id;
 }
 
@@ -2634,7 +2634,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherArguments == peep->current_ride)
         return true;
 
@@ -3857,7 +3857,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_RIDE_FREE)
+        if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
             && (VoucherArguments == current_ride))
         {
             ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;

@@ -1495,7 +1495,7 @@ private:
         dst->paid_on_souvenirs = src->paid_on_souvenirs;
 
         dst->VoucherArguments = src->voucher_arguments;
-        dst->voucher_type = src->voucher_type;
+        dst->VoucherType = src->voucher_type;
 
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;

@@ -2603,13 +2603,13 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         {
             if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
             {
-                if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
+                if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
                     peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
                     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
-                else if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_FREE)
+                else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
                     peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
