@@ -371,4 +371,5 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     SHORTCUT_UNDEFINED,                       // SHORTCUT_SCENERY_PICKER
     SHORTCUT_UNDEFINED,                       // SHORTCUT_SCALE_UP
     SHORTCUT_UNDEFINED,                       // SHORTCUT_SCALE_DOWN
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_TOGGLE_CLEARANCE_CHECKS
 };

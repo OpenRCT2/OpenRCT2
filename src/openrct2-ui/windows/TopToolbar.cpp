@@ -887,6 +887,13 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             y++;
         imgId = SPR_G2_SANDBOX;
         gfx_draw_sprite(dpi, imgId, x, y, 3);
+
+        // Draw an overlay if clearance checks are disabled
+        if (gCheatsDisableClearanceChecks)
+        {
+            gfx_draw_string_right(
+                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, x + 26, y + 2);
+        }
     }
 
     // Draw chat button

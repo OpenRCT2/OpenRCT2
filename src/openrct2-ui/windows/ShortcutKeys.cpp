@@ -102,7 +102,11 @@ static const ShortcutStringPair ShortcutList[] =
     { SHORTCUT_SHOW_OPTIONS,                          STR_SHORTCUT_SHOW_OPTIONS },
     { SHORTCUT_SCREENSHOT,                            STR_SHORTCUT_SCREENSHOT },
     { SHORTCUT_MUTE_SOUND,                            STR_SHORTCUT_MUTE_SOUND },
+
+    { SHORTCUT_UNDEFINED,                             STR_NONE },
+
     { SHORTCUT_OPEN_CHEAT_WINDOW,                     STR_SHORTCUT_OPEN_CHEATS_WINDOW },
+    { SHORTCUT_TOGGLE_CLEARANCE_CHECKS,               STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS },
 
     { SHORTCUT_UNDEFINED,                             STR_NONE },
 

@@ -104,6 +104,8 @@ public:
                 break;
             case CheatType::DisableClearanceChecks:
                 gCheatsDisableClearanceChecks = _param1 != 0;
+                // Required to update the clearance checks overlay on the Cheats button.
+                window_invalidate_by_class(WC_TOP_TOOLBAR);
                 break;
             case CheatType::DisableSupportLimits:
                 gCheatsDisableSupportLimits = _param1 != 0;
