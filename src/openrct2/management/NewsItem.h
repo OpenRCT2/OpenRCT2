@@ -68,6 +68,7 @@ extern const uint8_t news_type_properties[10];
 struct NewsItemQueue
 {
     NewsItem& operator[](size_t index);
+    const NewsItem& operator[](size_t index) const;
     NewsItem* At(int32_t index);
     const NewsItem* At(int32_t index) const;
     bool IsEmpty() const;

@@ -76,6 +76,11 @@ NewsItem* news_item_get(int32_t index)
 
 NewsItem& NewsItemQueue::operator[](size_t index)
 {
+    return const_cast<NewsItem&>(const_cast<const NewsItemQueue&>(*this)[index]);
+}
+
+const NewsItem& NewsItemQueue::operator[](size_t index) const
+{
     if (index < NEWS_ITEM_HISTORY_START)
         return Recent[index];
     else
