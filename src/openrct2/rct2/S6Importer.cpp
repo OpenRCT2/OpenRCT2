@@ -1487,7 +1487,7 @@ public:
         dst->time_on_ride = src->time_on_ride;
         dst->disgusting_count = src->disgusting_count;
         dst->paid_to_enter = src->paid_to_enter;
-        dst->paid_on_rides = src->paid_on_rides;
+        dst->PaidOnRides = src->paid_on_rides;
         dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
         dst->NoOfFood = src->no_of_food;

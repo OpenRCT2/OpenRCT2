@@ -3867,7 +3867,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         {
             ride->total_profit += ridePrice;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-            SpendMoney(paid_on_rides, ridePrice, ExpenditureType::ParkRideTickets);
+            SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }
     }
 
