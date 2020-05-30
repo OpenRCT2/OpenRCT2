@@ -371,7 +371,7 @@ void staff_reset_stats()
         peep->staff_rides_fixed = 0;
         peep->staff_gardens_watered = 0;
         peep->staff_rides_inspected = 0;
-        peep->staff_litter_swept = 0;
+        peep->StaffLitterSwept = 0;
         peep->StaffBinsEmptied = 0;
     }
 }
@@ -1394,7 +1394,7 @@ void Staff::UpdateSweeping()
     {
         // Remove sick at this location
         litter_remove_at(x, y, z);
-        staff_litter_swept++;
+        StaffLitterSwept++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction())

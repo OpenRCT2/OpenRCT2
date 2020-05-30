@@ -1117,7 +1117,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_STAFF_STAT_GARDENS_WATERED, static_cast<void*>(&peep->staff_gardens_watered), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->staff_litter_swept), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->StaffLitterSwept), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->StaffBinsEmptied), COLOUR_BLACK, x, y);
