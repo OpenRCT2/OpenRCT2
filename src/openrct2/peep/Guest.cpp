@@ -1699,7 +1699,7 @@ loc_69B221:
         no_of_food++;
 
     if (ShopItems[shopItem].IsDrink())
-        no_of_drinks++;
+        NoOfDrinks++;
 
     if (ShopItems[shopItem].IsSouvenir())
         NoOfSouvenirs++;

@@ -252,7 +252,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(paid_on_food);
     COMPARE_FIELD(paid_on_souvenirs);
     COMPARE_FIELD(no_of_food);
-    COMPARE_FIELD(no_of_drinks);
+    COMPARE_FIELD(NoOfDrinks);
     COMPARE_FIELD(NoOfSouvenirs);
     COMPARE_FIELD(VandalismSeen);
     COMPARE_FIELD(VoucherType);
