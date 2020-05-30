@@ -124,7 +124,7 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
         acceleration = 0;
     }
 
-    if (!(cable_lift_update_track_motion(this) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
+    if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
         return;
 
     velocity = 0;
@@ -147,7 +147,7 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
         acceleration = 0;
     }
 
-    cable_lift_update_track_motion(this);
+    CableLiftUpdateTrackMotion();
 
     // Next check to see if the second part of the cable lift
     // is at the front of the passenger vehicle to simulate the
@@ -194,7 +194,7 @@ void Vehicle::CableLiftUpdateTravelling()
     if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
         return;
 
-    if (!(cable_lift_update_track_motion(this) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
+    if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
         return;
 
     velocity = 0;
@@ -363,21 +363,21 @@ static bool sub_6DF21B_loop(Vehicle* vehicle)
  *
  *  rct2: 0x006DEF56
  */
-int32_t cable_lift_update_track_motion(Vehicle* cableLift)
+int32_t Vehicle::CableLiftUpdateTrackMotion()
 {
     _vehicleF64E2C = 0;
-    gCurrentVehicle = cableLift;
+    gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
     _vehicleStationIndex = STATION_INDEX_NULL;
 
-    cableLift->velocity += cableLift->acceleration;
-    _vehicleVelocityF64E08 = cableLift->velocity;
-    _vehicleVelocityF64E0C = (cableLift->velocity / 1024) * 42;
+    velocity += acceleration;
+    _vehicleVelocityF64E08 = velocity;
+    _vehicleVelocityF64E0C = (velocity / 1024) * 42;
 
-    Vehicle* frontVehicle = cableLift;
-    if (cableLift->velocity < 0)
+    Vehicle* frontVehicle = this;
+    if (velocity < 0)
     {
-        frontVehicle = cableLift->TrainTail();
+        frontVehicle = TrainTail();
     }
 
     _vehicleFrontVehicle = frontVehicle;
@@ -442,7 +442,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
         }
         else
         {
-            if (vehicle == cableLift)
+            if (vehicle == this)
                 break;
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
@@ -452,7 +452,7 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
     uint16_t massTotal = 0;
     int32_t accelerationTotal = 0;
 
-    for (uint16_t spriteId = cableLift->sprite_index; spriteId != SPRITE_INDEX_NULL;)
+    for (uint16_t spriteId = sprite_index; spriteId != SPRITE_INDEX_NULL;)
     {
         Vehicle* vehicle = GET_VEHICLE(spriteId);
         vehicleCount++;
@@ -464,17 +464,17 @@ int32_t cable_lift_update_track_motion(Vehicle* cableLift)
     }
 
     int32_t newAcceleration = (accelerationTotal / vehicleCount) >> 9;
-    newAcceleration -= cableLift->velocity >> 12;
+    newAcceleration -= velocity >> 12;
 
-    int32_t edx = cableLift->velocity >> 8;
+    int32_t edx = velocity >> 8;
     edx *= edx;
-    if (cableLift->velocity < 0)
+    if (velocity < 0)
     {
         edx = -edx;
     }
     edx >>= 4;
     newAcceleration -= edx / massTotal;
 
-    cableLift->acceleration = newAcceleration;
+    acceleration = newAcceleration;
     return _vehicleMotionTrackFlags;
 }
