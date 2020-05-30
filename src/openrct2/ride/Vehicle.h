@@ -321,6 +321,11 @@ struct Vehicle : SpriteBase
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
 
+    uint16_t UpdateFlag(uint32_t flag) const
+    {
+        return update_flags & flag;
+    }
+
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
