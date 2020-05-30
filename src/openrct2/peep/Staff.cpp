@@ -369,7 +369,7 @@ void staff_reset_stats()
         peep->time_in_park = gDateMonthsElapsed;
         peep->staff_lawns_mown = 0;
         peep->staff_rides_fixed = 0;
-        peep->staff_gardens_watered = 0;
+        peep->StaffGardensWatered = 0;
         peep->StaffRidesInspected = 0;
         peep->StaffLitterSwept = 0;
         peep->StaffBinsEmptied = 0;
@@ -1291,7 +1291,7 @@ void Staff::UpdateWatering()
 
             tile_element->AsSmallScenery()->SetAge(0);
             map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-            staff_gardens_watered++;
+            StaffGardensWatered++;
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
