@@ -1424,7 +1424,7 @@ private:
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
         dst->step_progress = src->step_progress;
-        dst->vandalism_seen = src->vandalism_seen;
+        dst->VandalismSeen = src->vandalism_seen;
 
         dst->type = static_cast<PeepType>(src->type);
 

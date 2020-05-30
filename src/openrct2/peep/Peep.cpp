@@ -1763,7 +1763,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     peep->litter_count = 0;
     peep->disgusting_count = 0;
-    peep->vandalism_seen = 0;
+    peep->VandalismSeen = 0;
     peep->paid_to_enter = 0;
     peep->paid_on_rides = 0;
     peep->paid_on_food = 0;
@@ -2659,9 +2659,9 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         return;
     }
 
-    uint8_t vandalThoughtTimeout = (peep->vandalism_seen & 0xC0) >> 6;
+    uint8_t vandalThoughtTimeout = (peep->VandalismSeen & 0xC0) >> 6;
     // Advance the vandalised tiles by 1
-    uint8_t vandalisedTiles = (peep->vandalism_seen * 2) & 0x3F;
+    uint8_t vandalisedTiles = (peep->VandalismSeen * 2) & 0x3F;
 
     if (vandalism)
     {
@@ -2684,7 +2684,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         vandalThoughtTimeout--;
     }
 
-    peep->vandalism_seen = (vandalThoughtTimeout << 6) | vandalisedTiles;
+    peep->VandalismSeen = (vandalThoughtTimeout << 6) | vandalisedTiles;
     uint16_t crowded = 0;
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
