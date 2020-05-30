@@ -6821,9 +6821,9 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
     }
 }
 
-static int32_t vehicle_get_swing_amount(Vehicle* vehicle)
+int32_t Vehicle::GetSwingAmount() const
 {
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = track_type >> 2;
     switch (trackType)
     {
         case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
@@ -6861,7 +6861,7 @@ static int32_t vehicle_get_swing_amount(Vehicle* vehicle)
         case TRACK_ELEM_S_BEND_LEFT:
         case TRACK_ELEM_S_BEND_LEFT_COVERED:
             // loc_6D67EF
-            if (vehicle->track_progress < 48)
+            if (track_progress < 48)
             {
                 return 14;
             }
@@ -6873,7 +6873,7 @@ static int32_t vehicle_get_swing_amount(Vehicle* vehicle)
         case TRACK_ELEM_S_BEND_RIGHT:
         case TRACK_ELEM_S_BEND_RIGHT_COVERED:
             // loc_6D67CC
-            if (vehicle->track_progress < 48)
+            if (track_progress < 48)
             {
                 return -14;
             }
@@ -6945,21 +6945,21 @@ static int32_t vehicle_get_swing_amount(Vehicle* vehicle)
  *
  *  rct2: 0x006D6776
  */
-static void vehicle_update_swinging_car(Vehicle* vehicle)
+void Vehicle::UpdateSwingingCar()
 {
     int32_t dword_F64E08 = abs(_vehicleVelocityF64E08);
-    vehicle->var_4E += (-vehicle->swinging_car_var_0) >> 6;
-    int32_t swingAmount = vehicle_get_swing_amount(vehicle);
+    var_4E += (-swinging_car_var_0) >> 6;
+    int32_t swingAmount = GetSwingAmount();
     if (swingAmount < 0)
     {
-        vehicle->var_4E -= dword_F64E08 >> (-swingAmount);
+        var_4E -= dword_F64E08 >> (-swingAmount);
     }
     else if (swingAmount > 0)
     {
-        vehicle->var_4E += dword_F64E08 >> swingAmount;
+        var_4E += dword_F64E08 >> swingAmount;
     }
 
-    auto vehicleEntry = vehicle->Entry();
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6980,7 +6980,7 @@ static void vehicle_update_swinging_car(Vehicle* vehicle)
         dx = 5370;
         cx = -5370;
 
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = track_type >> 2;
         switch (trackType)
         {
             case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
@@ -7009,28 +7009,28 @@ static void vehicle_update_swinging_car(Vehicle* vehicle)
                 break;
         }
 
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
+        if (update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
         {
             dx = 0;
             cx = 0;
         }
     }
 
-    vehicle->swinging_car_var_0 += vehicle->var_4E;
-    vehicle->var_4E -= vehicle->var_4E >> 5;
-    int16_t ax = vehicle->swinging_car_var_0;
+    swinging_car_var_0 += var_4E;
+    var_4E -= var_4E >> 5;
+    int16_t ax = swinging_car_var_0;
     if (ax > dx)
     {
         ax = dx;
-        vehicle->var_4E = 0;
+        var_4E = 0;
     }
     if (ax < cx)
     {
         ax = cx;
-        vehicle->var_4E = 0;
+        var_4E = 0;
     }
 
-    vehicle->swinging_car_var_0 = ax;
+    swinging_car_var_0 = ax;
     uint8_t swingSprite = 11;
     if (ax >= -10012)
     {
@@ -7080,10 +7080,10 @@ static void vehicle_update_swinging_car(Vehicle* vehicle)
             }
         }
     }
-    if (swingSprite != vehicle->swing_sprite)
+    if (swingSprite != swing_sprite)
     {
-        vehicle->swing_sprite = swingSprite;
-        vehicle->Invalidate();
+        swing_sprite = swingSprite;
+        Invalidate();
     }
 }
 
@@ -7135,21 +7135,21 @@ static const uint8_t TrackTypeToSpinFunction[256] = {
  *
  *  rct2: 0x006D661F
  */
-static void vehicle_update_spinning_car(Vehicle* vehicle)
+void Vehicle::UpdateSpinningCar()
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE)
+    if (update_flags & VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE)
     {
-        vehicle->spin_speed = 0;
+        spin_speed = 0;
         return;
     }
 
-    auto vehicleEntry = vehicle->Entry();
+    auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
     }
     int32_t spinningInertia = vehicleEntry->spinning_inertia;
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = track_type >> 2;
     int32_t dword_F64E08 = _vehicleVelocityF64E08;
     int32_t spinSpeed;
     // An L spin adds to the spin speed, R does the opposite
@@ -7162,86 +7162,86 @@ static void vehicle_update_spinning_car(Vehicle* vehicle)
             spinningInertia += 6;
             spinSpeed = dword_F64E08 >> spinningInertia;
             // Alternate the spin direction (roughly). Perhaps in future save a value to the track
-            if (vehicle->sprite_index & 1)
+            if (sprite_index & 1)
             {
-                vehicle->spin_speed -= spinSpeed;
+                spin_speed -= spinSpeed;
             }
             else
             {
-                vehicle->spin_speed += spinSpeed;
+                spin_speed += spinSpeed;
             }
             break;
         case R5_SPIN:
             // It looks like in the original there was going to be special code for whirlpool
             // this has been removed and just uses R5_SPIN
             spinningInertia += 5;
-            vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
+            spin_speed -= dword_F64E08 >> spinningInertia;
             break;
         case L5_SPIN:
             spinningInertia += 5;
-            vehicle->spin_speed += dword_F64E08 >> spinningInertia;
+            spin_speed += dword_F64E08 >> spinningInertia;
             break;
         case R7_SPIN:
             spinningInertia += 7;
-            vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
+            spin_speed -= dword_F64E08 >> spinningInertia;
             break;
         case L7_SPIN:
             spinningInertia += 7;
-            vehicle->spin_speed += dword_F64E08 >> spinningInertia;
+            spin_speed += dword_F64E08 >> spinningInertia;
             break;
         case RL_SPIN:
             // Right Left Curve Track Piece
-            if (vehicle->track_progress < 48)
+            if (track_progress < 48)
             {
                 // R8_SPIN
                 spinningInertia += 8;
-                vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
+                spin_speed -= dword_F64E08 >> spinningInertia;
                 break;
             }
             [[fallthrough]];
         case L9_SPIN:
             spinningInertia += 9;
-            vehicle->spin_speed += dword_F64E08 >> spinningInertia;
+            spin_speed += dword_F64E08 >> spinningInertia;
             break;
         case L8_SPIN:
             spinningInertia += 8;
-            vehicle->spin_speed += dword_F64E08 >> spinningInertia;
+            spin_speed += dword_F64E08 >> spinningInertia;
             break;
         case SP_SPIN:
             // On rapids spin after fully on them
-            if (vehicle->track_progress > 22)
+            if (track_progress > 22)
             {
                 // L5_SPIN
                 spinningInertia += 5;
-                vehicle->spin_speed += dword_F64E08 >> spinningInertia;
+                spin_speed += dword_F64E08 >> spinningInertia;
             }
             break;
         case LR_SPIN:
             // Left Right Curve Track Piece
-            if (vehicle->track_progress < 48)
+            if (track_progress < 48)
             {
                 // L8_SPIN
                 spinningInertia += 8;
-                vehicle->spin_speed += dword_F64E08 >> spinningInertia;
+                spin_speed += dword_F64E08 >> spinningInertia;
                 break;
             }
             [[fallthrough]];
         case R9_SPIN:
             spinningInertia += 9;
-            vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
+            spin_speed -= dword_F64E08 >> spinningInertia;
             break;
         case R8_SPIN:
             spinningInertia += 8;
-            vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
+            spin_speed -= dword_F64E08 >> spinningInertia;
             break;
     }
 
-    spinSpeed = std::clamp(vehicle->spin_speed, VEHICLE_MIN_SPIN_SPEED, VEHICLE_MAX_SPIN_SPEED);
-    vehicle->spin_speed = spinSpeed;
-    vehicle->spin_sprite += spinSpeed >> 8;
+    spinSpeed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED, VEHICLE_MAX_SPIN_SPEED);
+    spin_speed = spinSpeed;
+    spin_sprite += spinSpeed >> 8;
     // Note this actually increases the spin speed if going right!
-    vehicle->spin_speed -= spinSpeed >> vehicleEntry->spinning_friction;
-    vehicle->Invalidate();
+    spin_speed -= spinSpeed >> vehicleEntry->spinning_friction;
+    Invalidate();
 }
 
 /**
@@ -9617,12 +9617,12 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         // Swinging cars
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
         {
-            vehicle_update_swinging_car(car);
+            car->UpdateSwingingCar();
         }
         // Spinning cars
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
-            vehicle_update_spinning_car(car);
+            car->UpdateSpinningCar();
         }
         // Rider sprites?? animation??
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION)

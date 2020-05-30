@@ -383,6 +383,9 @@ private:
     void UpdateTrackMotionUpStopCheck() const;
     void CheckAndApplyBlockSectionStopSite();
     void UpdateVelocity();
+    void UpdateSpinningCar();
+    void UpdateSwingingCar();
+    int32_t GetSwingAmount() const;
     bool OpenRestraints();
     bool CloseRestraints();
     void CrashOnWater();
