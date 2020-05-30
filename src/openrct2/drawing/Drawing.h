@@ -458,7 +458,10 @@ struct PaletteMap
 private:
     uint8_t* _data{};
     uint32_t _dataLength{};
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
     uint16_t _numMaps;
+#pragma clang diagnostic pop
     uint16_t _mapLength;
 
 public:
