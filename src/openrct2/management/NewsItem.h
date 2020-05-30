@@ -69,6 +69,7 @@ struct NewsItemQueue
 {
     NewsItem& operator[](size_t index);
     NewsItem* At(int32_t index);
+    const NewsItem* At(int32_t index) const;
     bool IsEmpty() const;
     void Init();
     uint16_t IncrementTicks();

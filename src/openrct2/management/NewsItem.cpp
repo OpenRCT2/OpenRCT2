@@ -84,6 +84,11 @@ NewsItem& NewsItemQueue::operator[](size_t index)
 
 NewsItem* NewsItemQueue::At(int32_t index)
 {
+    return const_cast<NewsItem*>(const_cast<const NewsItemQueue&>(*this).At(index));
+}
+
+const NewsItem* NewsItemQueue::At(int32_t index) const
+{
     if (news_item_is_valid_idx(index))
     {
         return &(*this)[index];
