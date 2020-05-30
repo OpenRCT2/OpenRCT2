@@ -1460,7 +1460,7 @@ private:
         dst->mass = src->mass;
 
         dst->litter_count = src->litter_count;
-        dst->disgusting_count = src->disgusting_count;
+        dst->DisgustingCount = src->disgusting_count;
 
         dst->intensity = static_cast<IntensityRange>(src->intensity);
         dst->nausea_tolerance = src->nausea_tolerance;
