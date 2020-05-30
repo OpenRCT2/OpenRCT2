@@ -1696,7 +1696,7 @@ loc_69B221:
     }
 
     if (ShopItems[shopItem].IsFood())
-        no_of_food++;
+        NoOfFood++;
 
     if (ShopItems[shopItem].IsDrink())
         NoOfDrinks++;

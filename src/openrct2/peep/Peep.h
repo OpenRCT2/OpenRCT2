@@ -732,7 +732,7 @@ struct Peep : SpriteBase
         money16 paid_on_souvenirs;
         uint16_t staff_bins_emptied;
     };
-    uint8_t no_of_food;
+    uint8_t NoOfFood;
     uint8_t NoOfDrinks;
     uint8_t NoOfSouvenirs;
     uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen

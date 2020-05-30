@@ -298,7 +298,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, paid_on_rides);
         COMPARE_FIELD(Peep, paid_on_food);
         COMPARE_FIELD(Peep, paid_on_souvenirs);
-        COMPARE_FIELD(Peep, no_of_food);
+        COMPARE_FIELD(Peep, NoOfFood);
         COMPARE_FIELD(Peep, NoOfDrinks);
         COMPARE_FIELD(Peep, NoOfSouvenirs);
         COMPARE_FIELD(Peep, VandalismSeen);
