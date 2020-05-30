@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -175,6 +175,11 @@ private:
         json_t* body = json_object();
         json_object_set_new(body, "key", json_string(_key.c_str()));
         json_object_set_new(body, "port", json_integer(_port));
+
+        if (!gConfigNetwork.advertise_address.empty())
+        {
+            json_object_set_new(body, "address", json_string(gConfigNetwork.advertise_address.c_str()));
+        }
 
         char* bodyDump = json_dumps(body, JSON_COMPACT);
         request.body = bodyDump;
