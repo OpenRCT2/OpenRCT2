@@ -1704,7 +1704,7 @@ loc_69B221:
     if (ShopItems[shopItem].IsSouvenir())
         NoOfSouvenirs++;
 
-    money16* expend_type = &paid_on_souvenirs;
+    money16* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (ShopItems[shopItem].IsFood())

@@ -1834,7 +1834,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on souvenirs
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->paid_on_souvenirs);
+    set_format_arg(0, money32, peep->PaidOnSouvenirs);
     set_format_arg(4, uint16_t, peep->NoOfSouvenirs);
     if (peep->NoOfSouvenirs != 1)
     {

@@ -1492,7 +1492,7 @@ private:
         dst->paid_on_rides = src->paid_on_rides;
         dst->paid_on_drink = src->paid_on_drink;
         dst->paid_on_food = src->paid_on_food;
-        dst->paid_on_souvenirs = src->paid_on_souvenirs;
+        dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
         dst->VoucherArguments = src->voucher_arguments;
         dst->VoucherType = src->voucher_type;

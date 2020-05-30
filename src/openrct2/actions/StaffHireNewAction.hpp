@@ -172,7 +172,7 @@ private:
             newPeep->paid_to_enter = 0;
             newPeep->paid_on_rides = 0;
             newPeep->paid_on_food = 0;
-            newPeep->paid_on_souvenirs = 0;
+            newPeep->PaidOnSouvenirs = 0;
             newPeep->FavouriteRide = RIDE_ID_NULL;
             newPeep->staff_orders = _staffOrders;
 
