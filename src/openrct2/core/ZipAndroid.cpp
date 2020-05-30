@@ -74,7 +74,7 @@ public:
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
 
-        utf8* string = (char*)malloc(strlen(jniChars) + 1);
+        utf8* string = new char*(strlen(jniChars) + 1);
         std::memcpy((void*)string, jniChars, strlen(jniChars));
         string[strlen(jniChars)] = 0x00;
 

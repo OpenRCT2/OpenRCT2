@@ -120,12 +120,12 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
         dpi.width = resolutionWidth;
         dpi.height = resolutionHeight;
         dpi.pitch = 0;
-        dpi.bits = static_cast<uint8_t*>(malloc(dpi.width * dpi.height));
-
+        dpi.bits = new uint8_t(dpi.width * dpi.height);
+        
         log_info("Obtaining sprite data...");
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height, &sessions);
 
-        free(dpi.bits);
+        delete dpi.bits;
         drawing_engine_dispose();
     }
     log_info("Got %u paint sessions.", std::size(sessions));

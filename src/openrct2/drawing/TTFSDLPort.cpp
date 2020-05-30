@@ -384,7 +384,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         return NULL;
     }
 
-    font = static_cast<TTF_Font*>(malloc(sizeof *font));
+    font = new TTF_Font;
     if (font == NULL)
     {
         TTF_SetError("Out of memory");
@@ -548,12 +548,12 @@ static void Flush_Glyph(c_glyph* glyph)
     glyph->index = 0;
     if (glyph->bitmap.buffer)
     {
-        free(glyph->bitmap.buffer);
+        delete[] glyph->bitmap.buffer;
         glyph->bitmap.buffer = 0;
     }
     if (glyph->pixmap.buffer)
     {
-        free(glyph->pixmap.buffer);
+        delete[] glyph->pixmap.buffer;
         glyph->pixmap.buffer = 0;
     }
     glyph->cached = 0;
@@ -992,13 +992,13 @@ void TTF_CloseFont(TTF_Font* font)
         }
         if (font->args.stream)
         {
-            free(font->args.stream);
+            delete font->args.stream;
         }
         if (font->freesrc)
         {
             fclose(font->src);
         }
-        free(font);
+        delete font;
     }
 }
 

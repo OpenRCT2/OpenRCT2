@@ -103,8 +103,8 @@ static bool sprite_file_open(const utf8* path)
             fclose(file);
             return false;
         }
+        spriteFileData = new uint8_t(spriteFileHeader.total_size);
 
-        spriteFileData = static_cast<uint8_t*>(malloc(spriteFileHeader.total_size));
         if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {
             free(spriteFileData);
@@ -113,7 +113,7 @@ static bool sprite_file_open(const utf8* path)
         }
 
         int32_t entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
-        spriteFileEntries = static_cast<rct_g1_element*>(malloc(entryTableSize));
+        spriteFileEntries = new rct_g1_element[entryTableSize];
         for (uint32_t i = 0; i < spriteFileHeader.num_entries; i++)
         {
             rct_g1_element_32bit* inElement = &openElements[i];
@@ -801,7 +801,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         json_decref(sprite_list);
-        free(directoryPath);
+        delete directoryPath;
 
         fprintf(stdout, "Finished\n");
         return 1;
