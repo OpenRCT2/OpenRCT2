@@ -1127,7 +1127,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->StaffRidesInspected), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->staff_rides_fixed), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->StaffRidesFixed), COLOUR_BLACK, x, y);
             break;
     }
 }

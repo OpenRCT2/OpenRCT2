@@ -368,7 +368,7 @@ void staff_reset_stats()
     {
         peep->time_in_park = gDateMonthsElapsed;
         peep->staff_lawns_mown = 0;
-        peep->staff_rides_fixed = 0;
+        peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;
         peep->StaffRidesInspected = 0;
         peep->StaffLitterSwept = 0;
@@ -2636,7 +2636,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
             return true;
         }
 
-        staff_rides_fixed++;
+        StaffRidesFixed++;
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = direction << 3;
