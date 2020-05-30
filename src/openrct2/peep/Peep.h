@@ -730,7 +730,7 @@ struct Peep : SpriteBase
     union
     {
         money16 paid_on_souvenirs;
-        uint16_t staff_bins_emptied;
+        uint16_t StaffBinsEmptied;
     };
     uint8_t NoOfFood;
     uint8_t NoOfDrinks;

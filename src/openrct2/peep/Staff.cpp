@@ -372,7 +372,7 @@ void staff_reset_stats()
         peep->staff_gardens_watered = 0;
         peep->staff_rides_inspected = 0;
         peep->staff_litter_swept = 0;
-        peep->staff_bins_emptied = 0;
+        peep->StaffBinsEmptied = 0;
     }
 }
 
@@ -1375,7 +1375,7 @@ void Staff::UpdateEmptyingBin()
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-        staff_bins_emptied++;
+        StaffBinsEmptied++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }

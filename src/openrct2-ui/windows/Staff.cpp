@@ -1120,7 +1120,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->staff_litter_swept), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->staff_bins_emptied), COLOUR_BLACK, x, y);
+                dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->StaffBinsEmptied), COLOUR_BLACK, x, y);
             break;
         case STAFF_TYPE_MECHANIC:
             gfx_draw_string_left(
