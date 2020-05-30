@@ -1110,8 +1110,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     switch (peep->staff_type)
     {
         case STAFF_TYPE_HANDYMAN:
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->staff_lawns_mown), COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_GARDENS_WATERED, static_cast<void*>(&peep->StaffGardensWatered), COLOUR_BLACK, x, y);

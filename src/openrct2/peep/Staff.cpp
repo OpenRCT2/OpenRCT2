@@ -367,7 +367,7 @@ void staff_reset_stats()
     FOR_ALL_STAFF (spriteIndex, peep)
     {
         peep->time_in_park = gDateMonthsElapsed;
-        peep->staff_lawns_mown = 0;
+        peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;
         peep->StaffRidesInspected = 0;
@@ -1231,7 +1231,7 @@ void Staff::UpdateMowing()
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
             map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
-        staff_lawns_mown++;
+        StaffLawnsMown++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
