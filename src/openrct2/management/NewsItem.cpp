@@ -41,22 +41,12 @@ const uint8_t news_type_properties[] = {
 
 NewsItem& NewsItemQueues::Current()
 {
-    return Recent[0];
+    return Recent.front();
 }
 
 const NewsItem& NewsItemQueues::Current() const
 {
-    return Recent[0];
-}
-
-NewsItem& NewsItemQueues::Oldest()
-{
-    return Archived[0];
-}
-
-const NewsItem& NewsItemQueues::Oldest() const
-{
-    return Archived[0];
+    return Recent.front();
 }
 
 bool news_item_is_valid_idx(int32_t index)
@@ -81,10 +71,10 @@ NewsItem& NewsItemQueues::operator[](size_t index)
 
 const NewsItem& NewsItemQueues::operator[](size_t index) const
 {
-    if (index < NEWS_ITEM_HISTORY_START)
+    if (index < Recent.capacity())
         return Recent[index];
     else
-        return Archived[index - NEWS_ITEM_HISTORY_START];
+        return Archived[index - Recent.capacity()];
 }
 
 NewsItem* NewsItemQueues::At(int32_t index)
@@ -117,23 +107,15 @@ bool news_item_is_queue_empty()
 
 bool NewsItemQueues::IsEmpty() const
 {
-    return Current().IsEmpty();
+    return Recent.empty();
 }
 
 /**
  *
  *  rct2: 0x0066DF32
  */
-void NewsItemQueues::Init()
-{
-    Current().Type = NEWS_ITEM_NULL;
-    Oldest().Type = NEWS_ITEM_NULL;
-}
-
 void news_item_init_queue()
 {
-    gNewsItems.Init();
-
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
     {
@@ -210,39 +192,17 @@ void NewsItemQueues::ArchiveCurrent()
     if (IsEmpty())
         return;
 
-    AppendToArchive(Current());
+    Archived.push_back(Current());
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    memmove(Recent, Recent + 1, sizeof(NewsItem) * (std::size(Recent) - 1));
-    Recent[NEWS_ITEM_HISTORY_START - 1].Type = NEWS_ITEM_NULL;
+    Recent.pop_front();
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     context_broadcast_intent(&intent);
-}
-
-/**
- * Finds a spare history slot or replaces an existing one if there are no spare
- * slots available.
- */
-void NewsItemQueues::AppendToArchive(NewsItem& item)
-{
-    auto it = std::find_if(std::begin(Archived), std::end(Archived), [](const auto& newsItem) { return newsItem.IsEmpty(); });
-    if (it != std::end(Archived))
-    {
-        *it = item;
-        ++it;
-        if (it != std::end(Archived))
-            it->Type = NEWS_ITEM_NULL;
-        return;
-    }
-
-    // Dequeue the first history news item, shift history up
-    memmove(Archived, Archived + 1, sizeof(NewsItem) * (std::size(Archived) - 1));
-    Archived[MAX_NEWS_ITEMS_ARCHIVE - 1] = item;
 }
 
 /**
@@ -341,15 +301,18 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
 
 NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
 {
-    auto it = std::begin(Recent);
-    for (; !it->IsEmpty();)
+    for (auto emptySlots = Recent.capacity() - Recent.size(); emptySlots < 2; ++emptySlots)
     {
-        if (it + 2 >= std::end(Recent))
-            ArchiveCurrent();
-        else
-            it++;
+        ArchiveCurrent();
     }
-    return &*it;
+
+    auto res = Recent.end();
+    // The for loop above guarantees there is always an extra element to use
+    assert(Recent.capacity() - Recent.size() >= 2);
+    auto newsItem = res + 1;
+    newsItem->Type = NEWS_ITEM_NULL;
+
+    return &*res;
 }
 
 /**
@@ -377,14 +340,7 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
-    NewsItem* res = newsItem;
-
-    // Blatant disregard for what happens on the last element.
-    // TODO: Change this when we implement the queue ourselves.
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
-
-    return res;
+    return newsItem;
 }
 
 /**
@@ -506,8 +462,6 @@ void news_item_add_to_queue_custom(NewsItem* newNewsItem)
 {
     NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
 }
 
 void news_item_remove(int32_t index)
