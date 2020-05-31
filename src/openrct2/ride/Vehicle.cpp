@@ -9433,6 +9433,36 @@ loc_6DD069:
  *
  *  rct2: 0x006DC1E4
  */
+static uint8_t modified_speed(uint16_t trackType, uint8_t trackSubposition, uint8_t speed)
+{
+    enum
+    {
+        FULL_SPEED,
+        THREE_QUARTER_SPEED,
+        HALF_SPEED
+    };
+
+    uint8_t speedModifier = FULL_SPEED;
+
+    if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
+    {
+        speedModifier = (trackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
+    }
+    else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
+    {
+        speedModifier = (trackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
+    }
+
+    switch (speedModifier)
+    {
+        case HALF_SPEED:
+            return speed >> 1;
+        case THREE_QUARTER_SPEED:
+            return speed - (speed >> 2);
+    }
+    return speed;
+}
+
 int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
     rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration)
 {
@@ -9448,42 +9478,9 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             return curAcceleration;
         }
     }
-            return;
-        }
-    }
-
-    enum
-    {
-        FULL_SPEED,
-        THREE_QUARTER_SPEED,
-        HALF_SPEED
-    };
-
-    uint8_t speedModifier = FULL_SPEED;
-    uint16_t trackType = track_type >> 2;
-
-    if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
-    {
-        speedModifier = (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
-    }
-    else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
-    {
-        speedModifier = (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
-    }
-
-    uint8_t curSpeed = speed;
-    switch (speedModifier)
-    {
-        case HALF_SPEED:
-            curSpeed = speed >> 1;
-            break;
-        case THREE_QUARTER_SPEED:
-            curSpeed = speed - (speed >> 2);
-            break;
-    }
-
-    int32_t poweredAcceleration = curSpeed << 14;
-    int32_t quarterForce = (curSpeed * totalMass) >> 2;
+    uint8_t modifiedSpeed = modified_speed(track_type >> 2, TrackSubposition, speed);
+    int32_t poweredAcceleration = modifiedSpeed << 14;
+    int32_t quarterForce = (modifiedSpeed * totalMass) >> 2;
     if (UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
     {
         poweredAcceleration = -poweredAcceleration;
@@ -9755,7 +9752,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
     {
-        vehicle->UpdateTrackMotionPoweredRideAcceleration(vehicleEntry, totalMass, &curAcceleration);
+        curAcceleration = vehicle->UpdateTrackMotionPoweredRideAcceleration(vehicleEntry, totalMass, curAcceleration);
     }
     else if (curAcceleration <= 0 && curAcceleration >= -500)
     {
