@@ -1490,9 +1490,9 @@ public:
         dst->PaidOnRides = src->paid_on_rides;
         dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
-        dst->NoOfFood = src->no_of_food;
-        dst->NoOfDrinks = src->no_of_drinks;
-        dst->NoOfSouvenirs = src->no_of_souvenirs;
+        dst->AmountOfFood = src->no_of_food;
+        dst->AmountOfDrinks = src->no_of_drinks;
+        dst->AmountOfSouvenirs = src->no_of_souvenirs;
         dst->VandalismSeen = src->vandalism_seen;
         dst->VoucherType = src->voucher_type;
         dst->VoucherArguments = src->voucher_arguments;

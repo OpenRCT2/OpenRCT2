@@ -1696,13 +1696,13 @@ loc_69B221:
     }
 
     if (ShopItems[shopItem].IsFood())
-        NoOfFood++;
+        AmountOfFood++;
 
     if (ShopItems[shopItem].IsDrink())
-        NoOfDrinks++;
+        AmountOfDrinks++;
 
     if (ShopItems[shopItem].IsSouvenir())
-        NoOfSouvenirs++;
+        AmountOfSouvenirs++;
 
     money16* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;

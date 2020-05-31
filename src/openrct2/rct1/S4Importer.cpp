@@ -1484,9 +1484,9 @@ private:
         // This doubles as staff type
         dst->no_of_rides = src->no_of_rides;
 
-        dst->NoOfDrinks = src->no_of_drinks;
-        dst->NoOfFood = src->no_of_food;
-        dst->NoOfSouvenirs = src->no_of_souvenirs;
+        dst->AmountOfDrinks = src->no_of_drinks;
+        dst->AmountOfFood = src->no_of_food;
+        dst->AmountOfSouvenirs = src->no_of_souvenirs;
 
         dst->PaidToEnter = src->paid_to_enter;
         dst->PaidOnRides = src->paid_on_rides;
