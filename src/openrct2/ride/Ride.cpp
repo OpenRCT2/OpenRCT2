@@ -5002,7 +5002,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     tail->next_vehicle_on_ride = head->sprite_index;
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
-    cable_lift_update_track_motion(head);
+    head->CableLiftUpdateTrackMotion();
     return true;
 }
 

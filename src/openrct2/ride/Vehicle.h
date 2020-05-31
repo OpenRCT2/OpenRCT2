@@ -313,6 +313,7 @@ struct Vehicle : SpriteBase
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
     bool DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* spriteId) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
+    int32_t CableLiftUpdateTrackMotion();
     GForces GetGForces() const;
     void SetMapToolbar() const;
     int32_t IsUsedInPairs() const;
@@ -325,6 +326,8 @@ private:
     uint16_t GetSoundPriority() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
+    bool CableLiftUpdateTrackMotionForwards();
+    bool CableLiftUpdateTrackMotionBackwards();
     void CableLiftUpdateMovingToEndOfStation();
     void CableLiftUpdateWaitingToDepart();
     void CableLiftUpdateDeparting();
