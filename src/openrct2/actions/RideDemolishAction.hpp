@@ -214,9 +214,9 @@ private:
                 }
             }
 
-            if (peep->guest_heading_to_ride_id == _rideIndex)
+            if (peep->GuestHeadingToRideId == _rideIndex)
             {
-                peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+                peep->GuestHeadingToRideId = RIDE_ID_NULL;
             }
             if (peep->FavouriteRide == _rideIndex)
             {

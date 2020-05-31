@@ -1209,34 +1209,34 @@ void peep_problem_warnings_update()
                 break;
 
             case PEEP_THOUGHT_TYPE_HUNGRY: // 0x14
-                if (peep->guest_heading_to_ride_id == 0xFF)
+                if (peep->GuestHeadingToRideId == 0xFF)
                 {
                     hunger_counter++;
                     break;
                 }
-                ride = get_ride(peep->guest_heading_to_ride_id);
+                ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                     hunger_counter++;
                 break;
 
             case PEEP_THOUGHT_TYPE_THIRSTY:
-                if (peep->guest_heading_to_ride_id == 0xFF)
+                if (peep->GuestHeadingToRideId == 0xFF)
                 {
                     thirst_counter++;
                     break;
                 }
-                ride = get_ride(peep->guest_heading_to_ride_id);
+                ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_DRINKS))
                     thirst_counter++;
                 break;
 
             case PEEP_THOUGHT_TYPE_TOILET:
-                if (peep->guest_heading_to_ride_id == 0xFF)
+                if (peep->GuestHeadingToRideId == 0xFF)
                 {
                     toilet_counter++;
                     break;
                 }
-                ride = get_ride(peep->guest_heading_to_ride_id);
+                ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_TOILET))
                     toilet_counter++;
                 break;
@@ -1760,7 +1760,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->PathfindGoal.direction = INVALID_DIRECTION;
     peep->ItemStandardFlags = 0;
     peep->item_extra_flags = 0;
-    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+    peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->LitterCount = 0;
     peep->DisgustingCount = 0;
     peep->VandalismSeen = 0;
@@ -1841,9 +1841,9 @@ void Peep::FormatActionTo(void* argsV) const
         }
         case PEEP_STATE_WALKING:
         case PEEP_STATE_USING_BIN:
-            if (guest_heading_to_ride_id != RIDE_ID_NULL)
+            if (GuestHeadingToRideId != RIDE_ID_NULL)
             {
-                auto ride = get_ride(guest_heading_to_ride_id);
+                auto ride = get_ride(GuestHeadingToRideId);
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_HEADING_FOR);
@@ -2993,8 +2993,8 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
     }
     else
     {
-        if (peep->guest_heading_to_ride_id == rideIndex)
-            peep->guest_heading_to_ride_id = 0xFF;
+        if (peep->GuestHeadingToRideId == rideIndex)
+            peep->GuestHeadingToRideId = 0xFF;
         peep->action_sprite_image_offset = _unk_F1AEF0;
         peep->SetState(PEEP_STATE_BUYING);
         peep->current_ride = rideIndex;

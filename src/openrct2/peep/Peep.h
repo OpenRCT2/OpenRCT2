@@ -521,7 +521,7 @@ enum PeepInvalidate
     PEEP_INVALIDATE_PEEP_2 = 1 << 2,
     PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
     PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
-    PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when guest_heading_to_ride_id is changed
+    PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when GuestHeadingToRideId is changed
 };
 
 // Flags used by peep_should_go_on_ride()
@@ -689,7 +689,7 @@ struct Peep : SpriteBase
     union
     {
         uint8_t staff_id;
-        uint8_t guest_heading_to_ride_id;
+        uint8_t GuestHeadingToRideId;
     };
     union
     {

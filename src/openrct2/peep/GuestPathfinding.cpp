@@ -2053,7 +2053,7 @@ int32_t guest_path_finding(Guest* peep)
         return guest_path_find_park_entrance(peep, edges);
     }
 
-    if (peep->guest_heading_to_ride_id == 0xFF)
+    if (peep->GuestHeadingToRideId == 0xFF)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
@@ -2066,7 +2066,7 @@ int32_t guest_path_finding(Guest* peep)
     }
 
     // Peep is heading for a ride.
-    ride_id_t rideIndex = peep->guest_heading_to_ride_id;
+    ride_id_t rideIndex = peep->GuestHeadingToRideId;
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
     {

@@ -803,7 +803,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         }
 
         if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && no_of_rides == 0
-            && guest_heading_to_ride_id == RIDE_ID_NULL)
+            && GuestHeadingToRideId == RIDE_ID_NULL)
         {
             uint32_t time_duration = gScenarioTicks - time_in_park;
             time_duration /= 2048;
@@ -812,7 +812,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 PickRideToGoOn();
 
-                if (guest_heading_to_ride_id == RIDE_ID_NULL)
+                if (GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     happiness_target = std::max(happiness_target - 128, 0);
                     peep_leave_park(this);
@@ -1416,13 +1416,13 @@ void Guest::CheckIfLost()
  */
 void Guest::CheckCantFindRide()
 {
-    if (guest_heading_to_ride_id == RIDE_ID_NULL)
+    if (GuestHeadingToRideId == RIDE_ID_NULL)
         return;
 
     // Peeps will think "I can't find ride X" twice before giving up completely.
     if (PeepIsLostCountdown == 30 || PeepIsLostCountdown == 60)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND, guest_heading_to_ride_id);
+        InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND, GuestHeadingToRideId);
         happiness_target = std::max(happiness_target - 30, 0);
     }
 
@@ -1430,7 +1430,7 @@ void Guest::CheckCantFindRide()
     if (PeepIsLostCountdown != 0)
         return;
 
-    guest_heading_to_ride_id = RIDE_ID_NULL;
+    GuestHeadingToRideId = RIDE_ID_NULL;
     rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
 
     if (w)
@@ -1800,7 +1800,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_should_go_on_ride_again(this, ride))
     {
-        guest_heading_to_ride_id = rideIndex;
+        GuestHeadingToRideId = rideIndex;
         PeepIsLostCountdown = 200;
         peep_reset_pathfind_goal(this);
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
@@ -1850,7 +1850,7 @@ void Guest::PickRideToGoOn()
 {
     if (state != PEEP_STATE_WALKING)
         return;
-    if (guest_heading_to_ride_id != RIDE_ID_NULL)
+    if (GuestHeadingToRideId != RIDE_ID_NULL)
         return;
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
@@ -1863,7 +1863,7 @@ void Guest::PickRideToGoOn()
     if (ride != nullptr)
     {
         // Head to that ride
-        guest_heading_to_ride_id = ride->id;
+        GuestHeadingToRideId = ride->id;
         PeepIsLostCountdown = 200;
         peep_reset_pathfind_goal(this);
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
@@ -2093,7 +2093,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             {
                 // If a peep has already decided that they're going to go on a ride, they'll skip the weather and
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
-                if (ride->id == guest_heading_to_ride_id)
+                if (ride->id == GuestHeadingToRideId)
                 {
                     if (ride->intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
                     {
@@ -2240,7 +2240,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             ride_update_popularity(ride, 1);
         }
 
-        if (ride->id == guest_heading_to_ride_id)
+        if (ride->id == GuestHeadingToRideId)
         {
             peep_reset_ride_heading(this);
         }
@@ -2319,7 +2319,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     if (peepAtShop)
     {
         ride_update_popularity(ride, 1);
-        if (ride->id == guest_heading_to_ride_id)
+        if (ride->id == GuestHeadingToRideId)
         {
             peep_reset_ride_heading(this);
         }
@@ -2394,7 +2394,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
         previous_ride_time_out = 0;
     }
 
-    if (ride->id == guest_heading_to_ride_id)
+    if (ride->id == GuestHeadingToRideId)
     {
         peep_reset_ride_heading(this);
     }
@@ -2428,7 +2428,7 @@ static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
     peep->previous_ride = ride->id;
     peep->previous_ride_time_out = 0;
     // Change status "Heading to" to "Walking" if queue is full
-    if (ride->id == peep->guest_heading_to_ride_id)
+    if (ride->id == peep->GuestHeadingToRideId)
     {
         peep_reset_ride_heading(peep);
     }
@@ -2436,7 +2436,7 @@ static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 
 static void peep_reset_ride_heading(Peep* peep)
 {
-    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+    peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
 }
 
@@ -3117,7 +3117,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
  */
 static void peep_leave_park(Peep* peep)
 {
-    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+    peep->GuestHeadingToRideId = RIDE_ID_NULL;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
         if (peep->PeepIsLostCountdown < 60)
@@ -3150,9 +3150,9 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         return;
     if (peep->x == LOCATION_NULL)
         return;
-    if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
+    if (peep->GuestHeadingToRideId != RIDE_ID_NULL)
     {
-        auto ride = get_ride(peep->guest_heading_to_ride_id);
+        auto ride = get_ride(peep->GuestHeadingToRideId);
         if (ride != nullptr && predicate(*ride))
         {
             return;
@@ -3241,7 +3241,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     if (closestRide != nullptr)
     {
         // Head to that ride
-        peep->guest_heading_to_ride_id = closestRide->id;
+        peep->GuestHeadingToRideId = closestRide->id;
         peep->PeepIsLostCountdown = 200;
         peep_reset_pathfind_goal(peep);
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
@@ -6944,5 +6944,5 @@ void Guest::UpdateSpriteType()
 
 bool Guest::HeadingForRideOrParkExit() const
 {
-    return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || (guest_heading_to_ride_id != 0xFF);
+    return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || (GuestHeadingToRideId != 0xFF);
 }
