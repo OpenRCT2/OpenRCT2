@@ -2976,7 +2976,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         peep->SetState(PEEP_STATE_ENTERING_RIDE);
         peep->sub_state = PEEP_SHOP_APPROACH;
 
-        peep->time_on_ride = 0;
+        peep->TimeOnRide = 0;
         ride->cur_num_customers++;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
         {

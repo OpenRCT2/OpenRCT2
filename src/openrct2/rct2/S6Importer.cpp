@@ -1484,7 +1484,7 @@ public:
         }
         dst->no_action_frame_num = src->no_action_frame_num;
         dst->litter_count = src->litter_count;
-        dst->time_on_ride = src->time_on_ride;
+        dst->TimeOnRide = src->time_on_ride;
         dst->DisgustingCount = src->disgusting_count;
         dst->PaidToEnter = src->paid_to_enter;
         dst->PaidOnRides = src->paid_on_rides;

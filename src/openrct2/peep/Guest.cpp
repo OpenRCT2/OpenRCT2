@@ -776,18 +776,18 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (state == PEEP_STATE_ON_RIDE || state == PEEP_STATE_ENTERING_RIDE)
         {
-            time_on_ride = std::min(255, time_on_ride + 1);
+            TimeOnRide = std::min(255, TimeOnRide + 1);
 
             if (peep_flags & PEEP_FLAGS_WOW)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_WOW2, PEEP_THOUGHT_ITEM_NONE);
             }
 
-            if (time_on_ride > 15)
+            if (TimeOnRide > 15)
             {
                 happiness_target = std::max(0, happiness_target - 5);
 
-                if (time_on_ride > 22)
+                if (TimeOnRide > 22)
                 {
                     auto ride = get_ride(current_ride);
                     if (ride != nullptr)
@@ -2548,7 +2548,7 @@ void Guest::GoToRideEntrance(Ride* ride)
     sub_state = PEEP_RIDE_IN_ENTRANCE;
 
     rejoin_queue_timeout = 0;
-    time_on_ride = 0;
+    TimeOnRide = 0;
 
     RemoveFromQueue();
 }
@@ -4079,7 +4079,7 @@ void Guest::UpdateRideEnterVehicle()
                     vehicle->mass += seatedPeepAsGuest->mass;
                     seatedPeepAsGuest->MoveTo({ LOCATION_NULL, 0, 0 });
                     seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
-                    seatedPeepAsGuest->time_on_ride = 0;
+                    seatedPeepAsGuest->TimeOnRide = 0;
                     seatedPeepAsGuest->sub_state = PEEP_RIDE_ON_RIDE;
                     seatedPeepAsGuest->OnEnterRide(current_ride);
                 }
@@ -4095,7 +4095,7 @@ void Guest::UpdateRideEnterVehicle()
 
             SetState(PEEP_STATE_ON_RIDE);
 
-            time_on_ride = 0;
+            TimeOnRide = 0;
             sub_state = PEEP_RIDE_ON_RIDE;
             OnEnterRide(current_ride);
         }
