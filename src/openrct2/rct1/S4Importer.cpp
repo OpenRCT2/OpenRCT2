@@ -1459,7 +1459,7 @@ private:
         dst->toilet = src->toilet;
         dst->mass = src->mass;
 
-        dst->litter_count = src->litter_count;
+        dst->LitterCount = src->litter_count;
         dst->DisgustingCount = src->disgusting_count;
 
         dst->intensity = static_cast<IntensityRange>(src->intensity);

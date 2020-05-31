@@ -6212,7 +6212,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         if (peep->state != PEEP_STATE_WALKING)
             return;
 
-        if ((peep->litter_count & 0xC0) != 0xC0 && (peep->DisgustingCount & 0xC0) != 0xC0)
+        if ((peep->LitterCount & 0xC0) != 0xC0 && (peep->DisgustingCount & 0xC0) != 0xC0)
             return;
 
         if ((scenario_rand() & 0xFFFF) > 3276)

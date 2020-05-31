@@ -1761,7 +1761,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->ItemStandardFlags = 0;
     peep->item_extra_flags = 0;
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
-    peep->litter_count = 0;
+    peep->LitterCount = 0;
     peep->DisgustingCount = 0;
     peep->VandalismSeen = 0;
     peep->PaidToEnter = 0;
@@ -2753,14 +2753,14 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
     }
 
-    uint8_t litter_time = peep->litter_count & 0xC0;
-    litter_count = ((peep->litter_count & 0xF) << 2) | litter_count;
-    peep->litter_count = litter_count | litter_time;
+    uint8_t litter_time = peep->LitterCount & 0xC0;
+    litter_count = ((peep->LitterCount & 0xF) << 2) | litter_count;
+    peep->LitterCount = litter_count | litter_time;
 
     if (litter_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
     {
         // Reduce the litter time
-        peep->litter_count -= 0x40;
+        peep->LitterCount -= 0x40;
     }
     else
     {
@@ -2775,7 +2775,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset litter time
-            peep->litter_count |= 0xC0;
+            peep->LitterCount |= 0xC0;
         }
     }
 
