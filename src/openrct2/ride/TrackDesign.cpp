@@ -59,6 +59,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <memory>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -2111,7 +2112,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
  */
 static map_backup* track_design_preview_backup_map()
 {
-    //map_backup* backup = static_cast<map_backup*>(malloc(sizeof(map_backup)));
+    // map_backup* backup = static_cast<map_backup*>(malloc(sizeof(map_backup)));
     auto backup_ptr = std::make_unique<map_backup>();
     map_backup* backup = backup_ptr.get();
     if (backup != nullptr)

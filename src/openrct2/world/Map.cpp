@@ -56,8 +56,8 @@
 #include "Wall.h"
 
 #include <algorithm>
-#include<memory>
 #include <iterator>
+#include <memory>
 
 using namespace OpenRCT2;
 
@@ -1077,7 +1077,8 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    //TileElement* new_tile_elements = static_cast<TileElement*>(malloc(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM * sizeof(TileElement)));
+    // TileElement* new_tile_elements = static_cast<TileElement*>(malloc(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM *
+    // sizeof(TileElement)));
     auto new_tile_elements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
     TileElement* new_elements_pointer = new_tile_elements.get();
 
@@ -1109,7 +1110,6 @@ void map_reorganise_elements()
     num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements.get());
     std::memcpy(gTileElements, new_tile_elements.get(), num_elements * sizeof(TileElement));
     std::memset(gTileElements + num_elements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - num_elements) * sizeof(TileElement));
-
 
     map_update_tile_pointers();
 }
