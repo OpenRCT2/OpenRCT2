@@ -875,7 +875,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.
-             * Reset the pathfind_goal - this means that the PathfindHistory
+             * Reset the PathfindGoal - this means that the PathfindHistory
              * will be reset in the next call to peep_pathfind_choose_direction().
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the

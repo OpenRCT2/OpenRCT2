@@ -2115,7 +2115,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
-        int32_t args[] = { peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z, peep->pathfind_goal.direction };
+        int32_t args[] = { peep->PathfindGoal.x, peep->PathfindGoal.y, peep->PathfindGoal.z, peep->PathfindGoal.direction };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, screenCoords.x, screenCoords.y);
     }
     screenCoords.y += LIST_ROW_HEIGHT;

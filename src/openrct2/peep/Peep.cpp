@@ -1754,10 +1754,10 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->cash_in_pocket = cash;
     peep->cash_spent = 0;
     peep->time_in_park = -1;
-    peep->pathfind_goal.x = 0xFF;
-    peep->pathfind_goal.y = 0xFF;
-    peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = INVALID_DIRECTION;
+    peep->PathfindGoal.x = 0xFF;
+    peep->PathfindGoal.y = 0xFF;
+    peep->PathfindGoal.z = 0xFF;
+    peep->PathfindGoal.direction = INVALID_DIRECTION;
     peep->ItemStandardFlags = 0;
     peep->item_extra_flags = 0;
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
@@ -3199,14 +3199,14 @@ void peep_reset_pathfind_goal(Peep* peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (gPathFindDebug)
     {
-        log_info("Resetting pathfind_goal for %s", gPathFindDebugPeepName);
+        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    peep->pathfind_goal.x = 0xFF;
-    peep->pathfind_goal.y = 0xFF;
-    peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = INVALID_DIRECTION;
+    peep->PathfindGoal.x = 0xFF;
+    peep->PathfindGoal.y = 0xFF;
+    peep->PathfindGoal.z = 0xFF;
+    peep->PathfindGoal.direction = INVALID_DIRECTION;
 }
 
 /**

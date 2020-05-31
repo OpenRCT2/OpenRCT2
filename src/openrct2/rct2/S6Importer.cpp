@@ -1477,7 +1477,7 @@ public:
         dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
         dst->photo1_ride_ref = src->photo1_ride_ref;
         dst->peep_flags = src->peep_flags;
-        dst->pathfind_goal = src->pathfind_goal;
+        dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
         {
             dst->PathfindHistory[i] = src->pathfind_history[i];

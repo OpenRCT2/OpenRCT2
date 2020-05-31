@@ -1237,7 +1237,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
     permitted_edges &= 0xF;
     uint8_t edges = permitted_edges;
-    if (isThin && peep->pathfind_goal.x == goal.x && peep->pathfind_goal.y == goal.y && peep->pathfind_goal.z == goal.z)
+    if (isThin && peep->PathfindGoal.x == goal.x && peep->PathfindGoal.y == goal.y && peep->PathfindGoal.z == goal.z)
     {
         /* Use of peep->PathfindHistory[]:
          * When walking to a goal, the peep PathfindHistory stores
@@ -1304,13 +1304,13 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
     /* If this is a new goal for the peep. Store it and reset the peep's
      * PathfindHistory. */
-    if (!direction_valid(peep->pathfind_goal.direction) || peep->pathfind_goal.x != goal.x || peep->pathfind_goal.y != goal.y
-        || peep->pathfind_goal.z != goal.z)
+    if (!direction_valid(peep->PathfindGoal.direction) || peep->PathfindGoal.x != goal.x || peep->PathfindGoal.y != goal.y
+        || peep->PathfindGoal.z != goal.z)
     {
-        peep->pathfind_goal.x = goal.x;
-        peep->pathfind_goal.y = goal.y;
-        peep->pathfind_goal.z = goal.z;
-        peep->pathfind_goal.direction = 0;
+        peep->PathfindGoal.x = goal.x;
+        peep->PathfindGoal.y = goal.y;
+        peep->PathfindGoal.z = goal.z;
+        peep->PathfindGoal.direction = 0;
 
         // Clear pathfinding history
         std::fill_n(reinterpret_cast<uint8_t*>(peep->PathfindHistory), sizeof(peep->PathfindHistory), 0xFF);
@@ -1511,8 +1511,8 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
         /* Peep does not remember this junction, so forget a junction
          * and remember this junction. */
-        int32_t i = peep->pathfind_goal.direction++;
-        peep->pathfind_goal.direction &= 3;
+        int32_t i = peep->PathfindGoal.direction++;
+        peep->PathfindGoal.direction &= 3;
         peep->PathfindHistory[i].x = static_cast<uint8_t>(loc.x);
         peep->PathfindHistory[i].y = static_cast<uint8_t>(loc.y);
         peep->PathfindHistory[i].z = loc.z;
@@ -2147,7 +2147,7 @@ int32_t guest_path_finding(Guest* peep)
     if (direction == INVALID_DIRECTION)
     {
         /* Heuristic search failed for all directions.
-         * Reset the pathfind_goal - this means that the PathfindHistory
+         * Reset the PathfindGoal - this means that the PathfindHistory
          * will be reset in the next call to peep_pathfind_choose_direction().
          * This lets the heuristic search "try again" in case the player has
          * edited the path layout or the mechanic was already stuck in the

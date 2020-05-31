@@ -232,10 +232,10 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(staff_orders);
     COMPARE_FIELD(photo1_ride_ref);
     COMPARE_FIELD(peep_flags);
-    COMPARE_FIELD(pathfind_goal.x);
-    COMPARE_FIELD(pathfind_goal.y);
-    COMPARE_FIELD(pathfind_goal.z);
-    COMPARE_FIELD(pathfind_goal.direction);
+    COMPARE_FIELD(PathfindGoal.x);
+    COMPARE_FIELD(PathfindGoal.y);
+    COMPARE_FIELD(PathfindGoal.z);
+    COMPARE_FIELD(PathfindGoal.direction);
     for (int i = 0; i < 4; i++)
     {
         COMPARE_FIELD(PathfindHistory[i].x);

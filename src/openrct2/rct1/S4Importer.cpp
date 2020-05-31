@@ -1533,10 +1533,10 @@ private:
         dst->next_in_queue = src->next_in_queue;
 
         dst->peep_flags = 0;
-        dst->pathfind_goal.x = 0xFF;
-        dst->pathfind_goal.y = 0xFF;
-        dst->pathfind_goal.z = 0xFF;
-        dst->pathfind_goal.direction = INVALID_DIRECTION;
+        dst->PathfindGoal.x = 0xFF;
+        dst->PathfindGoal.y = 0xFF;
+        dst->PathfindGoal.z = 0xFF;
+        dst->PathfindGoal.direction = INVALID_DIRECTION;
 
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
