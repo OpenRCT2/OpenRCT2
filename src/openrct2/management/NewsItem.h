@@ -13,6 +13,7 @@
 #include "../world/Location.hpp"
 
 #include <optional>
+#include <vector>
 
 enum
 {
@@ -72,15 +73,11 @@ struct NewsItemQueue
     NewsItem* At(int32_t index);
     const NewsItem* At(int32_t index) const;
     bool IsEmpty() const;
-    void Init();
     uint16_t IncrementTicks();
-    NewsItem& Current();
     const NewsItem& Current() const;
-    NewsItem& Oldest();
-    const NewsItem& Oldest() const;
-    bool CurrentShouldBeArchived() const;
     void ArchiveCurrent();
-    NewsItem* FirstOpenOrNewSlot();
+    void ArchiveCurrentIfEnoughTicksPassed();
+    NewsItem& NewNewsItem();
 
     template<typename Predicate> void ForeachRecentNews(Predicate&& p)
     {
@@ -104,10 +101,15 @@ struct NewsItemQueue
 
 private:
     int32_t RemoveTime() const;
+    void ArchiveIfFull();
     void AppendToArchive(NewsItem& item);
 
-    NewsItem Recent[NEWS_ITEM_HISTORY_START];
-    NewsItem Archived[MAX_NEWS_ITEMS_ARCHIVE];
+    NewsItem& RecentAt(size_t index);
+    const NewsItem& RecentAt(size_t index) const;
+    const NewsItem& ArchivedAt(size_t index) const;
+
+    mutable std::vector<NewsItem> Recent;
+    mutable std::vector<NewsItem> Archived;
 };
 
 extern NewsItemQueue gNewsItems;

@@ -39,24 +39,9 @@ const uint8_t news_type_properties[] = {
     NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
-NewsItem& NewsItemQueue::Current()
-{
-    return Recent[0];
-}
-
 const NewsItem& NewsItemQueue::Current() const
 {
-    return Recent[0];
-}
-
-NewsItem& NewsItemQueue::Oldest()
-{
-    return Archived[0];
-}
-
-const NewsItem& NewsItemQueue::Oldest() const
-{
-    return Archived[0];
+    return RecentAt(0);
 }
 
 bool news_item_is_valid_idx(int32_t index)
@@ -82,9 +67,41 @@ NewsItem& NewsItemQueue::operator[](size_t index)
 const NewsItem& NewsItemQueue::operator[](size_t index) const
 {
     if (index < NEWS_ITEM_HISTORY_START)
-        return Recent[index];
+        return RecentAt(index);
     else
-        return Archived[index - NEWS_ITEM_HISTORY_START];
+        return ArchivedAt(index - NEWS_ITEM_HISTORY_START);
+}
+
+NewsItem& NewsItemQueue::RecentAt(size_t index)
+{
+    return const_cast<NewsItem&>(const_cast<const NewsItemQueue&>(*this).RecentAt(index));
+}
+
+static void fill_up_to(std::vector<NewsItem>& v, size_t index)
+{
+    while (index <= std::size(v))
+    {
+        v.emplace_back();
+        v.back().Type = NEWS_ITEM_NULL;
+    }
+}
+
+const NewsItem& NewsItemQueue::RecentAt(size_t index) const
+{
+    if (index < NEWS_ITEM_HISTORY_START)
+    {
+        fill_up_to(Recent, index);
+    }
+    return Recent[index];
+}
+
+const NewsItem& NewsItemQueue::ArchivedAt(size_t index) const
+{
+    if (index < MAX_NEWS_ITEMS_ARCHIVE)
+    {
+        fill_up_to(Archived, index);
+    }
+    return Archived[index];
 }
 
 NewsItem* NewsItemQueue::At(int32_t index)
@@ -117,23 +134,15 @@ bool news_item_is_queue_empty()
 
 bool NewsItemQueue::IsEmpty() const
 {
-    return Current().IsEmpty();
+    return Recent.empty() || Current().IsEmpty();
 }
 
 /**
  *
  *  rct2: 0x0066DF32
  */
-void NewsItemQueue::Init()
-{
-    Current().Type = NEWS_ITEM_NULL;
-    Oldest().Type = NEWS_ITEM_NULL;
-}
-
 void news_item_init_queue()
 {
-    gNewsItems.Init();
-
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
     {
@@ -146,7 +155,7 @@ void news_item_init_queue()
 
 uint16_t NewsItemQueue::IncrementTicks()
 {
-    return ++Current().Ticks;
+    return ++RecentAt(0).Ticks;
 }
 
 static void news_item_tick_current()
@@ -162,16 +171,17 @@ static void news_item_tick_current()
 
 int32_t NewsItemQueue::RemoveTime() const
 {
-    if (!Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
+    if (std::size(Recent) >= 6 && !Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
     {
         return 256;
     }
     return 320;
 }
 
-bool NewsItemQueue::CurrentShouldBeArchived() const
+void NewsItemQueue::ArchiveCurrentIfEnoughTicksPassed()
 {
-    return Current().Ticks >= RemoveTime();
+    if (RecentAt(0).Ticks >= RemoveTime())
+        ArchiveCurrent();
 }
 
 /**
@@ -191,10 +201,17 @@ void news_item_update_current()
     news_item_tick_current();
 
     // Removal of current news item
-    if (gNewsItems.CurrentShouldBeArchived())
-        gNewsItems.ArchiveCurrent();
+    gNewsItems.ArchiveCurrentIfEnoughTicksPassed();
 }
 
+static void erase_empty(std::vector<NewsItem>& v)
+{
+    auto it = std::find_if(std::begin(v), std::end(v), [](const auto& newsItem) { return newsItem.IsEmpty(); });
+    if (it != std::end(v))
+    {
+        v.erase(it, std::end(v));
+    }
+}
 /**
  *
  *  rct2: 0x0066E377
@@ -206,18 +223,20 @@ void news_item_close_current()
 
 void NewsItemQueue::ArchiveCurrent()
 {
+    erase_empty(Recent);
+    erase_empty(Archived);
+
     // Check if there is a current message
     if (IsEmpty())
         return;
 
-    AppendToArchive(Current());
+    AppendToArchive(Recent.front());
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    memmove(Recent, Recent + 1, sizeof(NewsItem) * (std::size(Recent) - 1));
-    Recent[NEWS_ITEM_HISTORY_START - 1].Type = NEWS_ITEM_NULL;
+    Recent.erase(std::begin(Recent));
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -230,19 +249,11 @@ void NewsItemQueue::ArchiveCurrent()
  */
 void NewsItemQueue::AppendToArchive(NewsItem& item)
 {
-    auto it = std::find_if(std::begin(Archived), std::end(Archived), [](const auto& newsItem) { return newsItem.IsEmpty(); });
-    if (it != std::end(Archived))
+    if (std::size(Archived) >= MAX_NEWS_ITEMS_ARCHIVE)
     {
-        *it = item;
-        ++it;
-        if (it != std::end(Archived))
-            it->Type = NEWS_ITEM_NULL;
-        return;
+        Archived.erase(std::begin(Archived));
     }
-
-    // Dequeue the first history news item, shift history up
-    memmove(Archived, Archived + 1, sizeof(NewsItem) * (std::size(Archived) - 1));
-    Archived[MAX_NEWS_ITEMS_ARCHIVE - 1] = item;
+    Archived.push_back(item);
 }
 
 /**
@@ -339,17 +350,14 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
     return subjectLoc;
 }
 
-NewsItem* NewsItemQueue::FirstOpenOrNewSlot()
+NewsItem& NewsItemQueue::NewNewsItem()
 {
-    auto it = std::begin(Recent);
-    for (; !it->IsEmpty();)
-    {
-        if (it + 2 >= std::end(Recent))
-            ArchiveCurrent();
-        else
-            it++;
-    }
-    return &*it;
+    erase_empty(Recent);
+    while (std::size(Recent) + 2 >= NEWS_ITEM_HISTORY_START)
+        ArchiveCurrent();
+    Recent.emplace_back();
+    Recent.back().Type = NEWS_ITEM_NULL;
+    return Recent.back();
 }
 
 /**
@@ -368,23 +376,16 @@ NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t
 
 NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
 {
-    NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
-    newsItem->Type = type;
-    newsItem->Flags = 0;
-    newsItem->Assoc = assoc;
-    newsItem->Ticks = 0;
-    newsItem->MonthYear = gDateMonthsElapsed;
-    newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
-    safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
+    NewsItem& newsItem = gNewsItems.NewNewsItem();
+    newsItem.Type = type;
+    newsItem.Flags = 0;
+    newsItem.Assoc = assoc;
+    newsItem.Ticks = 0;
+    newsItem.MonthYear = gDateMonthsElapsed;
+    newsItem.Day = ((days_in_month[date_get_month(newsItem.MonthYear)] * gDateMonthTicks) >> 16) + 1;
+    safe_strcpy(newsItem.Text, text, sizeof(newsItem.Text));
 
-    NewsItem* res = newsItem;
-
-    // Blatant disregard for what happens on the last element.
-    // TODO: Change this when we implement the queue ourselves.
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
-
-    return res;
+    return &newsItem;
 }
 
 /**
@@ -504,10 +505,7 @@ void news_item_disable_news(uint8_t type, uint32_t assoc)
 
 void news_item_add_to_queue_custom(NewsItem* newNewsItem)
 {
-    NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
-    *newsItem = *newNewsItem;
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
+    gNewsItems.NewNewsItem() = *newNewsItem;
 }
 
 void news_item_remove(int32_t index)
