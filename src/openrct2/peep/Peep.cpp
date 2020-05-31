@@ -631,14 +631,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         sprite_direction = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
-        no_action_frame_num++;
+        NoActionFrameNum++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
         const uint8_t* imageOffset = peepAnimation[action_sprite_type].frame_offsets;
-        if (no_action_frame_num >= peepAnimation[action_sprite_type].num_frames)
+        if (NoActionFrameNum >= peepAnimation[action_sprite_type].num_frames)
         {
-            no_action_frame_num = 0;
+            NoActionFrameNum = 0;
         }
-        action_sprite_image_offset = imageOffset[no_action_frame_num];
+        action_sprite_image_offset = imageOffset[NoActionFrameNum];
         return loc;
     }
 
@@ -1631,7 +1631,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->action = PEEP_ACTION_NONE_2;
     peep->special_sprite = 0;
     peep->action_sprite_image_offset = 0;
-    peep->no_action_frame_num = 0;
+    peep->NoActionFrameNum = 0;
     peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->peep_flags = 0;
     peep->FavouriteRide = RIDE_ID_NULL;

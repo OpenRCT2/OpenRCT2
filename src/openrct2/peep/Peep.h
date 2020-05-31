@@ -700,7 +700,7 @@ struct Peep : SpriteBase
     uint32_t peep_flags;
     rct12_xyzd8 pathfind_goal;
     rct12_xyzd8 pathfind_history[4];
-    uint8_t no_action_frame_num;
+    uint8_t NoActionFrameNum;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;
     union

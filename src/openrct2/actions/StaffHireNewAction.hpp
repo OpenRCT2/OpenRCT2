@@ -163,7 +163,7 @@ private:
             newPeep->action = PEEP_ACTION_NONE_2;
             newPeep->special_sprite = 0;
             newPeep->action_sprite_image_offset = 0;
-            newPeep->no_action_frame_num = 0;
+            newPeep->NoActionFrameNum = 0;
             newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->path_check_optimisation = 0;
             newPeep->type = PEEP_TYPE_STAFF;

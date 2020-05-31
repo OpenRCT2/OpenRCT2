@@ -1482,7 +1482,7 @@ public:
         {
             dst->pathfind_history[i] = src->pathfind_history[i];
         }
-        dst->no_action_frame_num = src->no_action_frame_num;
+        dst->NoActionFrameNum = src->no_action_frame_num;
         dst->LitterCount = src->litter_count;
         dst->TimeOnRide = src->time_on_ride;
         dst->DisgustingCount = src->disgusting_count;

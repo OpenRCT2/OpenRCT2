@@ -1395,7 +1395,7 @@ private:
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->no_action_frame_num = src->no_action_frame_num;
+        dst->NoActionFrameNum = src->no_action_frame_num;
         dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->action_frame = src->action_frame;
 

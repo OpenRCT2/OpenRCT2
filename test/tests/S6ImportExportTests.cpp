@@ -243,7 +243,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
         COMPARE_FIELD(pathfind_history[i].z);
         COMPARE_FIELD(pathfind_history[i].direction);
     }
-    COMPARE_FIELD(no_action_frame_num);
+    COMPARE_FIELD(NoActionFrameNum);
     COMPARE_FIELD(LitterCount);
     COMPARE_FIELD(TimeOnRide);
     COMPARE_FIELD(DisgustingCount);

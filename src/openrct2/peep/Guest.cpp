@@ -6765,7 +6765,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 
     sprite_type = new_sprite_type;
     action_sprite_image_offset = 0;
-    no_action_frame_num = 0;
+    NoActionFrameNum = 0;
 
     if (action >= PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;
