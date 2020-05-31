@@ -56,7 +56,6 @@
 #include "Wall.h"
 
 #include <algorithm>
-#include<memory>
 #include <iterator>
 #include <memory>
 
@@ -1099,7 +1098,6 @@ void map_reorganise_elements()
             TileElement* endElement = startElement;
             while (!(endElement++)->IsLastForTile())
                 ;
-
 
             num_elements = static_cast<uint32_t>(endElement - startElement);
             std::memcpy(new_elements_pointer, startElement, num_elements * sizeof(TileElement));
