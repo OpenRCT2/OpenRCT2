@@ -1377,6 +1377,7 @@ declare global {
          */
         border?: boolean;
         image: number;
+        isPressed: boolean;
         text: string;
         onClick: () => void;
     }

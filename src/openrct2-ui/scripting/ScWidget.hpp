@@ -212,27 +212,6 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t image_get() const
-        {
-            if (IsCustomWindow())
-            {
-                auto widget = GetWidget();
-                if (widget != nullptr && widget->type == WWT_FLATBTN)
-                {
-                    return widget->image;
-                }
-            }
-            return 0;
-        }
-        void image_set(uint32_t value)
-        {
-            auto widget = GetWidget();
-            if (widget != nullptr && widget->type == WWT_FLATBTN)
-            {
-                widget->image = value;
-            }
-        }
-
         std::string text_get() const
         {
             if (IsCustomWindow())
@@ -281,7 +260,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
 
             // No so common
-            dukglue_register_property(ctx, &ScWidget::image_get, &ScWidget::image_set, "image");
             dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");
             dukglue_register_property(ctx, &ScWidget::viewport_get, nullptr, "viewport");
         }
@@ -321,6 +299,84 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScButtonWidget : public ScWidget
+    {
+    public:
+        ScButtonWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScButtonWidget>(ctx);
+            dukglue_register_property(ctx, &ScButtonWidget::border_get, &ScButtonWidget::border_set, "border");
+            dukglue_register_property(ctx, &ScButtonWidget::isPressed_get, &ScButtonWidget::isPressed_set, "isPressed");
+            dukglue_register_property(ctx, &ScButtonWidget::image_get, &ScButtonWidget::image_set, "image");
+        }
+
+    private:
+        bool border_get() const
+        {
+            auto widget = GetWidget();
+            if (widget != nullptr)
+            {
+                return widget->type == WWT_IMGBTN;
+            }
+            return false;
+        }
+        void border_set(bool value)
+        {
+            auto widget = GetWidget();
+            if (widget != nullptr && (widget->type == WWT_FLATBTN || widget->type == WWT_IMGBTN))
+            {
+                if (value)
+                    widget->type = WWT_IMGBTN;
+                else
+                    widget->type = WWT_FLATBTN;
+                Invalidate();
+            }
+        }
+
+        bool isPressed_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return widget_is_pressed(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isPressed_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+                Invalidate();
+            }
+        }
+
+        uint32_t image_get() const
+        {
+            auto widget = GetWidget();
+            if (widget != nullptr && widget->type == WWT_FLATBTN)
+            {
+                return widget->image;
+            }
+            return 0;
+        }
+        void image_set(uint32_t value)
+        {
+            auto widget = GetWidget();
+            if (widget != nullptr && widget->type == WWT_FLATBTN)
+            {
+                widget->image = value;
+                Invalidate();
+            }
+        }
+    };
+
     class ScCheckBoxWidget : public ScWidget
     {
     public:
@@ -351,6 +407,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+                Invalidate();
             }
         }
     };
@@ -608,6 +665,10 @@ namespace OpenRCT2::Scripting
         auto n = w->number;
         switch (widget.type)
         {
+            case WWT_BUTTON:
+            case WWT_FLATBTN:
+            case WWT_IMGBTN:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScButtonWidget>(c, n, widgetIndex));
             case WWT_CHECKBOX:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
             case WWT_DROPDOWN:

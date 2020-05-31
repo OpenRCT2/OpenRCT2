@@ -32,6 +32,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScUi::Register(ctx);
     ScViewport::Register(ctx);
     ScWidget::Register(ctx);
+    ScButtonWidget::Register(ctx);
     ScCheckBoxWidget::Register(ctx);
     ScDropdownWidget::Register(ctx);
     ScListViewWidget::Register(ctx);
