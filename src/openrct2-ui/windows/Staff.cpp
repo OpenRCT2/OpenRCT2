@@ -570,7 +570,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     Peep* peep = GET_PEEP(w->number);
 
     // Disable clear patrol area if no area is set.
-    if (!(gStaffModes[peep->staff_id] & 2))
+    if (!(gStaffModes[peep->StaffId] & 2))
     {
         dropdown_set_disabled(1, true);
     }
@@ -593,9 +593,9 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
         Peep* peep = GET_PEEP(w->number);
         for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
         {
-            gStaffPatrolAreas[peep->staff_id * STAFF_PATROL_AREA_SIZE + i] = 0;
+            gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
         }
-        gStaffModes[peep->staff_id] &= ~2;
+        gStaffModes[peep->StaffId] &= ~2;
 
         gfx_invalidate_screen();
         staff_update_greyed_patrol_areas();

@@ -69,9 +69,9 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        int32_t patrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+        int32_t patrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
 
-        staff_toggle_patrol_area(peep->staff_id, _loc.x, _loc.y);
+        staff_toggle_patrol_area(peep->StaffId, _loc.x, _loc.y);
 
         bool isPatrolling = false;
         for (int32_t i = 0; i < 128; i++)
@@ -83,10 +83,10 @@ public:
             }
         }
 
-        gStaffModes[peep->staff_id] &= ~(1 << 1);
+        gStaffModes[peep->StaffId] &= ~(1 << 1);
         if (isPatrolling)
         {
-            gStaffModes[peep->staff_id] |= (1 << 1);
+            gStaffModes[peep->StaffId] |= (1 << 1);
         }
 
         for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)

@@ -1596,7 +1596,7 @@ private:
         //                                          index in the array ----^     ^--- bit position in the 8-bit value
         // We do the opposite in this function to recover the x and y values.
 
-        int32_t peepOffset = staffmember->staff_id * RCT12_PATROL_AREA_SIZE;
+        int32_t peepOffset = staffmember->StaffId * RCT12_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {
             if (_s4.patrol_areas[peepOffset + i] == 0)
@@ -1620,7 +1620,7 @@ private:
                 x <<= 7;
                 int32_t y = val & 0x3E0;
                 y <<= 2;
-                staff_set_patrol_area(staffmember->staff_id, x, y, true);
+                staff_set_patrol_area(staffmember->StaffId, x, y, true);
             }
         }
     }

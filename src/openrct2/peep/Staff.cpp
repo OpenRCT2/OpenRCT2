@@ -70,7 +70,7 @@ const rct_string_id StaffCostumeNames[] = {
 };
 // clang-format on
 
-// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their staff_id
+// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
 uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
 uint8_t gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
@@ -157,7 +157,7 @@ void staff_update_greyed_patrol_areas()
         {
             if (peep->staff_type == staff_type)
             {
-                int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+                int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
                 {
                     gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
@@ -178,7 +178,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
         return false;
 
     // Check if staff has patrol area
-    if (!(gStaffModes[staff_id] & 2))
+    if (!(gStaffModes[StaffId] & 2))
         return true;
 
     return IsPatrolAreaSet(loc);
@@ -395,7 +395,7 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
 
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
-    return staff_is_patrol_area_set(staff_id, coords.x, coords.y);
+    return staff_is_patrol_area_set(StaffId, coords.x, coords.y);
 }
 
 bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)

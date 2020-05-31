@@ -386,7 +386,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
 
             if (isPatrolAreaSet)
             {
-                if (!(gStaffModes[peep->staff_id] & 2))
+                if (!(gStaffModes[peep->StaffId] & 2))
                 {
                     continue;
                 }
@@ -707,7 +707,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { actionOffset, y }, actionColumnSize);
 
             // True if a patrol path is set for the worker
-            if (gStaffModes[peep->staff_id] & 2)
+            if (gStaffModes[peep->StaffId] & 2)
             {
                 gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, nameColumnSize + 5, y, 0);
             }

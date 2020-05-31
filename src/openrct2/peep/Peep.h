@@ -688,7 +688,7 @@ struct Peep : SpriteBase
     uint8_t path_check_optimisation; // see peep.checkForPath
     union
     {
-        uint8_t staff_id;
+        uint8_t StaffId;
         uint8_t GuestHeadingToRideId;
     };
     union
