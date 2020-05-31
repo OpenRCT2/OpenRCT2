@@ -65,7 +65,7 @@ constexpr int32_t MAX_NEWS_ITEMS = NEWS_ITEM_HISTORY_START + MAX_NEWS_ITEMS_ARCH
 
 extern const uint8_t news_type_properties[10];
 
-struct NewsItemQueue
+struct NewsItemQueues
 {
     NewsItem& operator[](size_t index);
     const NewsItem& operator[](size_t index) const;
@@ -110,7 +110,7 @@ private:
     NewsItem Archived[MAX_NEWS_ITEMS_ARCHIVE];
 };
 
-extern NewsItemQueue gNewsItems;
+extern NewsItemQueues gNewsItems;
 
 void news_item_init_queue();
 

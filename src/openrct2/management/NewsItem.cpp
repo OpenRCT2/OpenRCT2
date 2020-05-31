@@ -23,7 +23,7 @@
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
 
-NewsItemQueue gNewsItems;
+NewsItemQueues gNewsItems;
 
 /** rct2: 0x0097BE7C */
 const uint8_t news_type_properties[] = {
@@ -39,22 +39,22 @@ const uint8_t news_type_properties[] = {
     NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
-NewsItem& NewsItemQueue::Current()
+NewsItem& NewsItemQueues::Current()
 {
     return Recent[0];
 }
 
-const NewsItem& NewsItemQueue::Current() const
+const NewsItem& NewsItemQueues::Current() const
 {
     return Recent[0];
 }
 
-NewsItem& NewsItemQueue::Oldest()
+NewsItem& NewsItemQueues::Oldest()
 {
     return Archived[0];
 }
 
-const NewsItem& NewsItemQueue::Oldest() const
+const NewsItem& NewsItemQueues::Oldest() const
 {
     return Archived[0];
 }
@@ -74,12 +74,12 @@ NewsItem* news_item_get(int32_t index)
     return gNewsItems.At(index);
 }
 
-NewsItem& NewsItemQueue::operator[](size_t index)
+NewsItem& NewsItemQueues::operator[](size_t index)
 {
-    return const_cast<NewsItem&>(const_cast<const NewsItemQueue&>(*this)[index]);
+    return const_cast<NewsItem&>(const_cast<const NewsItemQueues&>(*this)[index]);
 }
 
-const NewsItem& NewsItemQueue::operator[](size_t index) const
+const NewsItem& NewsItemQueues::operator[](size_t index) const
 {
     if (index < NEWS_ITEM_HISTORY_START)
         return Recent[index];
@@ -87,12 +87,12 @@ const NewsItem& NewsItemQueue::operator[](size_t index) const
         return Archived[index - NEWS_ITEM_HISTORY_START];
 }
 
-NewsItem* NewsItemQueue::At(int32_t index)
+NewsItem* NewsItemQueues::At(int32_t index)
 {
-    return const_cast<NewsItem*>(const_cast<const NewsItemQueue&>(*this).At(index));
+    return const_cast<NewsItem*>(const_cast<const NewsItemQueues&>(*this).At(index));
 }
 
-const NewsItem* NewsItemQueue::At(int32_t index) const
+const NewsItem* NewsItemQueues::At(int32_t index) const
 {
     if (news_item_is_valid_idx(index))
     {
@@ -115,7 +115,7 @@ bool news_item_is_queue_empty()
     return gNewsItems.IsEmpty();
 }
 
-bool NewsItemQueue::IsEmpty() const
+bool NewsItemQueues::IsEmpty() const
 {
     return Current().IsEmpty();
 }
@@ -124,7 +124,7 @@ bool NewsItemQueue::IsEmpty() const
  *
  *  rct2: 0x0066DF32
  */
-void NewsItemQueue::Init()
+void NewsItemQueues::Init()
 {
     Current().Type = NEWS_ITEM_NULL;
     Oldest().Type = NEWS_ITEM_NULL;
@@ -144,7 +144,7 @@ void news_item_init_queue()
     context_broadcast_intent(&intent);
 }
 
-uint16_t NewsItemQueue::IncrementTicks()
+uint16_t NewsItemQueues::IncrementTicks()
 {
     return ++Current().Ticks;
 }
@@ -160,7 +160,7 @@ static void news_item_tick_current()
     }
 }
 
-int32_t NewsItemQueue::RemoveTime() const
+int32_t NewsItemQueues::RemoveTime() const
 {
     if (!Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
     {
@@ -169,7 +169,7 @@ int32_t NewsItemQueue::RemoveTime() const
     return 320;
 }
 
-bool NewsItemQueue::CurrentShouldBeArchived() const
+bool NewsItemQueues::CurrentShouldBeArchived() const
 {
     return Current().Ticks >= RemoveTime();
 }
@@ -204,7 +204,7 @@ void news_item_close_current()
     gNewsItems.ArchiveCurrent();
 }
 
-void NewsItemQueue::ArchiveCurrent()
+void NewsItemQueues::ArchiveCurrent()
 {
     // Check if there is a current message
     if (IsEmpty())
@@ -228,7 +228,7 @@ void NewsItemQueue::ArchiveCurrent()
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
  */
-void NewsItemQueue::AppendToArchive(NewsItem& item)
+void NewsItemQueues::AppendToArchive(NewsItem& item)
 {
     auto it = std::find_if(std::begin(Archived), std::end(Archived), [](const auto& newsItem) { return newsItem.IsEmpty(); });
     if (it != std::end(Archived))
@@ -339,7 +339,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
     return subjectLoc;
 }
 
-NewsItem* NewsItemQueue::FirstOpenOrNewSlot()
+NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
 {
     auto it = std::begin(Recent);
     for (; !it->IsEmpty();)
