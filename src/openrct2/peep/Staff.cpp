@@ -616,13 +616,13 @@ bool Staff::DoHandymanPathFinding()
     uint8_t litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
 
-    if ((staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
     {
         litterDirection = staff_handyman_direction_to_nearest_litter(this);
     }
 
     Direction newDirection = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (staff_orders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
+    if (litterDirection == INVALID_DIRECTION && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
     {
         newDirection = staff_handyman_direction_to_uncut_grass(this, validDirections);
     }
@@ -1645,7 +1645,7 @@ static constexpr const CoordsXY _WateringUseOffsets[] = {
  */
 static int32_t peep_update_patrolling_find_watering(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
+    if (!(peep->StaffOrders & STAFF_ORDERS_WATER_FLOWERS))
         return 0;
 
     uint8_t chosen_position = scenario_rand() & 7;
@@ -1717,7 +1717,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
  */
 static int32_t peep_update_patrolling_find_bin(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
+    if (!(peep->StaffOrders & STAFF_ORDERS_EMPTY_BINS))
         return 0;
 
     if (peep->GetNextIsSurface())
@@ -1782,7 +1782,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
  */
 static int32_t peep_update_patrolling_find_grass(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
+    if (!(peep->StaffOrders & STAFF_ORDERS_MOWING))
         return 0;
 
     if (peep->StaffMowingTimeout < 12)
@@ -1814,7 +1814,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
  */
 static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_SWEEPING))
+    if (!(peep->StaffOrders & STAFF_ORDERS_SWEEPING))
         return 0;
 
     uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);

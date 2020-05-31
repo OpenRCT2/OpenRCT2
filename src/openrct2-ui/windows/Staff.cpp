@@ -635,7 +635,7 @@ static void window_staff_set_order(rct_window* w, int32_t order_id)
 {
     Peep* peep = GET_PEEP(w->number);
 
-    uint8_t newOrders = peep->staff_orders ^ (1 << order_id);
+    uint8_t newOrders = peep->StaffOrders ^ (1 << order_id);
     auto staffSetOrdersAction = StaffSetOrdersAction(w->number, newOrders);
     GameActions::Execute(&staffSetOrdersAction);
 }
@@ -834,7 +834,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_EMPTY;
             w->pressed_widgets &= ~(
                 (1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
-            w->pressed_widgets |= peep->staff_orders << WIDX_CHECKBOX_1;
+            w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case STAFF_TYPE_MECHANIC:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
@@ -846,7 +846,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_EMPTY;
             w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2));
-            w->pressed_widgets |= peep->staff_orders << WIDX_CHECKBOX_1;
+            w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case STAFF_TYPE_SECURITY:
             // Security guards don't have an options screen.

@@ -174,7 +174,7 @@ private:
             newPeep->PaidOnFood = 0;
             newPeep->PaidOnSouvenirs = 0;
             newPeep->FavouriteRide = RIDE_ID_NULL;
-            newPeep->staff_orders = _staffOrders;
+            newPeep->StaffOrders = _staffOrders;
 
             uint16_t idSearchSpriteIndex;
             Peep* idSearchPeep;

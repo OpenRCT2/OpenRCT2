@@ -715,7 +715,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             auto staffOrderIcon_x = nameColumnSize + 20;
             if (peep->staff_type != 3)
             {
-                auto staffOrders = peep->staff_orders;
+                auto staffOrders = peep->StaffOrders;
                 auto staffOrderSprite = staffOrderBaseSprites[_windowStaffListSelectedTab];
 
                 while (staffOrders != 0)

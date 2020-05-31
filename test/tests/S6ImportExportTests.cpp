@@ -229,7 +229,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     }
     COMPARE_FIELD(path_check_optimisation);
     COMPARE_FIELD(guest_heading_to_ride_id);
-    COMPARE_FIELD(staff_orders);
+    COMPARE_FIELD(StaffOrders);
     COMPARE_FIELD(Photo1RideRef);
     COMPARE_FIELD(PeepFlags);
     COMPARE_FIELD(PathfindGoal.x);

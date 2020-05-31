@@ -756,7 +756,7 @@ namespace OpenRCT2::Scripting
         uint8_t orders_get() const
         {
             auto peep = GetStaff();
-            return peep != nullptr ? peep->staff_orders : 0;
+            return peep != nullptr ? peep->StaffOrders : 0;
         }
 
         void orders_set(uint8_t value)
@@ -765,7 +765,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetStaff();
             if (peep != nullptr)
             {
-                peep->staff_orders = value;
+                peep->StaffOrders = value;
             }
         }
     };

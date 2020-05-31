@@ -3170,7 +3170,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             if (type == PEEP_TYPE_STAFF && !GetNextIsSurface())
             {
                 // Prevent staff from leaving the path on their own unless they're allowed to mow.
-                if (!((this->staff_orders & STAFF_ORDERS_MOWING) && this->StaffMowingTimeout >= 12))
+                if (!((this->StaffOrders & STAFF_ORDERS_MOWING) && this->StaffMowingTimeout >= 12))
                 {
                     peep_return_to_centre_of_tile(this);
                     return;
