@@ -9433,24 +9433,21 @@ loc_6DD069:
  *
  *  rct2: 0x006DC1E4
  */
-void Vehicle::UpdateTrackMotionPoweredRideAcceleration(
-    rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, int32_t* curAcceleration)
+int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
+    rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration)
 {
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
     {
         if (velocity > (speed * 0x4000))
         {
             // Same code as none powered rides
-            if (*curAcceleration <= 0)
+            if (curAcceleration <= 0 && curAcceleration >= -500 && velocity <= 0x8000)
             {
-                if (*curAcceleration >= -500)
-                {
-                    if (velocity <= 0x8000)
-                    {
-                        *curAcceleration += 400;
-                    }
-                }
+                return curAcceleration + 400;
             }
+            return curAcceleration;
+        }
+    }
             return;
         }
     }
@@ -9530,17 +9527,16 @@ void Vehicle::UpdateTrackMotionPoweredRideAcceleration(
                     spin_speed = 0;
                 }
             }
-            *curAcceleration += poweredAcceleration;
-            return;
+            return curAcceleration + poweredAcceleration;
         }
     }
 
     if (std::abs(velocity) <= 0x10000)
     {
-        *curAcceleration = 0;
+        return poweredAcceleration;
     }
 
-    *curAcceleration += poweredAcceleration;
+    return curAcceleration + poweredAcceleration;
 }
 
 /**
