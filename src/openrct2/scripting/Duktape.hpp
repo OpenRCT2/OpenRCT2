@@ -219,7 +219,7 @@ namespace OpenRCT2::Scripting
             auto it = _s2n.find(k);
             if (it == _s2n.end())
             {
-                return 0;
+                return static_cast<T>(0);
             }
             return it->second;
         }

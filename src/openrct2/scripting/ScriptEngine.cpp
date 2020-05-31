@@ -390,6 +390,7 @@ void ScriptEngine::Initialise()
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
     ScEntity::Register(ctx);
+    ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
     ScStaff::Register(ctx);
