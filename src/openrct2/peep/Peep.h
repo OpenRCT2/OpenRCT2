@@ -706,7 +706,7 @@ struct Peep : SpriteBase
     union
     {
         uint8_t time_on_ride;
-        uint8_t staff_mowing_timeout;
+        uint8_t StaffMowingTimeout;
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t DisgustingCount;

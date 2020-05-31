@@ -611,7 +611,7 @@ int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
  */
 bool Staff::DoHandymanPathFinding()
 {
-    staff_mowing_timeout++;
+    StaffMowingTimeout++;
 
     uint8_t litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
@@ -622,7 +622,7 @@ bool Staff::DoHandymanPathFinding()
     }
 
     Direction newDirection = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (staff_orders & STAFF_ORDERS_MOWING) && staff_mowing_timeout >= 12)
+    if (litterDirection == INVALID_DIRECTION && (staff_orders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
     {
         newDirection = staff_handyman_direction_to_uncut_grass(this, validDirections);
     }
@@ -1242,7 +1242,7 @@ void Staff::UpdateMowing()
  */
 void Staff::UpdateWatering()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
     if (sub_state == 0)
     {
         if (!CheckForPath())
@@ -1305,7 +1305,7 @@ void Staff::UpdateWatering()
  */
 void Staff::UpdateEmptyingBin()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
 
     if (sub_state == 0)
     {
@@ -1386,7 +1386,7 @@ void Staff::UpdateEmptyingBin()
  */
 void Staff::UpdateSweeping()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
     if (!CheckForPath())
         return;
 
@@ -1785,7 +1785,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
     if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
         return 0;
 
-    if (peep->staff_mowing_timeout < 12)
+    if (peep->StaffMowingTimeout < 12)
         return 0;
 
     if (!(peep->GetNextIsSurface()))
