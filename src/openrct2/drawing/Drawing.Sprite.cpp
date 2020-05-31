@@ -572,16 +572,25 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     {
         // We have to use a different method to move the source pointer for
         // rle encoded sprites so that will be handled within this function
-        gfx_rle_sprite_to_buffer(
-            g1->offset, dest_pointer, paletteMap, dpi, imageId, source_start_y, height, source_start_x, width);
+        DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
+        gfx_rle_sprite_to_buffer(args);
         return;
     }
     else if (!(g1->flags & G1_FLAG_1))
     {
-        // Move the pointer to the start point of the source
-        auto source_pointer = g1->offset + ((static_cast<size_t>(g1->width) * source_start_y) + source_start_x);
+        DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
+        gfx_bmp_sprite_to_buffer(args);
+    }
+}
 
-        DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, width, height, source_pointer, dest_pointer);
+void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
+{
+    if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
+    {
+        gfx_rle_sprite_to_buffer(args);
+    }
+    else if (!(args.SourceImage.flags & G1_FLAG_1))
+    {
         gfx_bmp_sprite_to_buffer(args);
     }
 }

@@ -9,47 +9,22 @@
 
 #include "Drawing.h"
 
-static void FASTCALL gfx_bmp_sprite_to_buffer_magnify(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawSpriteArgs& args)
 {
-    auto dpi = args.DPI;
-    auto zoom_level = dpi->zoom_level;
-    uint8_t zoom_amount = 1 * zoom_level;
-    uint32_t dest_line_width = (dpi->width / zoom_level) + dpi->pitch;
-    uint32_t source_line_width = args.SourceImage.width * zoom_level;
-
-    // Basic bitmap with no draw pixels
-    auto source_pointer = args.SourceBits;
-    auto dest_pointer = args.DestinationBits;
-    auto width = args.Width;
-    auto height = args.Height;
-    for (; height > 0; height -= zoom_amount)
-    {
-        auto next_source_pointer = source_pointer + source_line_width;
-        auto next_dest_pointer = dest_pointer + dest_line_width;
-
-        for (int32_t no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount)
-        {
-            uint8_t pixel = *source_pointer;
-            if (pixel)
-            {
-                *dest_pointer = pixel;
-            }
-        }
-        dest_pointer = next_dest_pointer;
-        source_pointer = next_source_pointer;
-    }
+    // TODO
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL gfx_bmp_sprite_to_buffer_x(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawSpriteArgs& args)
 {
-    auto src = args.SourceBits;
+    auto& g1 = args.SourceImage;
+    auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
     auto dst = args.DestinationBits;
-    auto& paletteMap = args.PalMap;
+    [[maybe_unused]] auto& paletteMap = args.PalMap;
     auto width = args.Width;
     auto height = args.Height;
     auto dpi = args.DPI;
     auto zoomLevel = dpi->zoom_level;
-    size_t srcLineWidth = args.SourceImage.width * zoomLevel;
+    size_t srcLineWidth = g1.width * zoomLevel;
     size_t dstLineWidth = (static_cast<size_t>(dpi->width) / zoomLevel) + dpi->pitch;
     uint8_t zoom = 1 * zoomLevel;
     for (; height > 0; height -= zoom)
@@ -69,15 +44,39 @@ template<DrawBlendOp TBlendOp> static void FASTCALL gfx_bmp_sprite_to_buffer_x(D
 
             if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
             {
-                *dst = paletteMap.Blend(*src, *dst);
+                auto pixel = paletteMap.Blend(*src, *dst);
+                if constexpr (TBlendOp & BLEND_TRANSPARENT)
+                {
+                    if (pixel == 0)
+                    {
+                        continue;
+                    }
+                }
+                *dst = pixel;
             }
             else if constexpr ((TBlendOp & BLEND_SRC) != 0)
             {
-                *dst = paletteMap[*src];
+                auto pixel = paletteMap[*src];
+                if constexpr (TBlendOp & BLEND_TRANSPARENT)
+                {
+                    if (pixel == 0)
+                    {
+                        continue;
+                    }
+                }
+                *dst = pixel;
             }
             else if constexpr ((TBlendOp & BLEND_DST) != 0)
             {
-                *dst = paletteMap[*dst];
+                auto pixel = paletteMap[*dst];
+                if constexpr (TBlendOp & BLEND_TRANSPARENT)
+                {
+                    if (pixel == 0)
+                    {
+                        continue;
+                    }
+                }
+                *dst = pixel;
             }
             else
             {
@@ -89,6 +88,18 @@ template<DrawBlendOp TBlendOp> static void FASTCALL gfx_bmp_sprite_to_buffer_x(D
     }
 }
 
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(DrawSpriteArgs& args)
+{
+    if (args.DPI->zoom_level < 0)
+    {
+        DrawBMPSpriteMagnify<TBlendOp>(args);
+    }
+    else
+    {
+        DrawBMPSpriteMinify<TBlendOp>(args);
+    }
+}
+
 /**
  * Copies a sprite onto the buffer. There is no compression used on the sprite
  * image.
@@ -97,37 +108,37 @@ template<DrawBlendOp TBlendOp> static void FASTCALL gfx_bmp_sprite_to_buffer_x(D
  */
 void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args)
 {
-    auto dpi = args.DPI;
-    auto zoom_level = dpi->zoom_level;
-    if (zoom_level < 0)
-    {
-        gfx_bmp_sprite_to_buffer_magnify(args);
-        return;
-    }
-
     auto imageId = args.Image;
 
     // Image uses the palette pointer to remap the colours of the image
     if (imageId.HasPrimary())
     {
-        // Copy non-transparent bitmap data but re-colour using the palette map.
-        gfx_bmp_sprite_to_buffer_x<BLEND_TRANSPARENT | BLEND_SRC>(args);
+        if (imageId.IsBlended())
+        {
+            // Copy non-transparent bitmap data but blend src and dst pixel using the palette map.
+            DrawBMPSprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST>(args);
+        }
+        else
+        {
+            // Copy non-transparent bitmap data but re-colour using the palette map.
+            DrawBMPSprite<BLEND_TRANSPARENT | BLEND_SRC>(args);
+        }
     }
     else if (imageId.IsBlended())
     {
         // Image is only a transparency mask. Just colour the pixels using the palette map.
         // Used for glass.
-        gfx_bmp_sprite_to_buffer_x<BLEND_TRANSPARENT | BLEND_DST>(args);
+        DrawBMPSprite<BLEND_TRANSPARENT | BLEND_DST>(args);
         return;
     }
     else if (!(args.SourceImage.flags & G1_FLAG_BMP))
     {
         // Copy raw bitmap data to target
-        gfx_bmp_sprite_to_buffer_x<BLEND_NONE>(args);
+        DrawBMPSprite<BLEND_NONE>(args);
     }
     else
     {
         // Copy raw bitmap data to target but exclude transparent pixels
-        gfx_bmp_sprite_to_buffer_x<BLEND_TRANSPARENT>(args);
+        DrawBMPSprite<BLEND_TRANSPARENT>(args);
     }
 }

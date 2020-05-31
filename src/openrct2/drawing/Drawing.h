@@ -520,21 +520,23 @@ struct DrawSpriteArgs
     ImageId Image;
     const PaletteMap& PalMap;
     const rct_g1_element& SourceImage;
+    int32_t SrcX;
+    int32_t SrcY;
     int32_t Width;
     int32_t Height;
-    const uint8_t* SourceBits;
     uint8_t* DestinationBits;
 
     DrawSpriteArgs(
-        rct_drawpixelinfo* dpi, ImageId image, const PaletteMap& palMap, const rct_g1_element& sourceImage, int32_t width,
-        int32_t height, const uint8_t* sourceBits, uint8_t* destinationBits)
+        rct_drawpixelinfo* dpi, ImageId image, const PaletteMap& palMap, const rct_g1_element& sourceImage, int32_t srcX,
+        int32_t srcY, int32_t width, int32_t height, uint8_t* destinationBits)
         : DPI(dpi)
         , Image(image)
         , PalMap(palMap)
         , SourceImage(sourceImage)
+        , SrcX(srcX)
+        , SrcY(srcY)
         , Width(width)
         , Height(height)
-        , SourceBits(sourceBits)
         , DestinationBits(destinationBits)
     {
     }
@@ -624,11 +626,9 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
 void gfx_object_check_all_images_freed();
 size_t ImageListGetUsedCount();
 size_t ImageListGetMaximum();
+void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args);
-void FASTCALL gfx_rle_sprite_to_buffer(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const PaletteMap& RESTRICT paletteMap,
-    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
-    int32_t width);
+void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, const PaletteMap& paletteMap);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
