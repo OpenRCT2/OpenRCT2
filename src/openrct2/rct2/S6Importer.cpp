@@ -1341,7 +1341,7 @@ public:
         dst->var_44 = src->var_44;
         dst->mass = src->mass;
         dst->update_flags = src->update_flags;
-        dst->SwingSprite = src->swing_sprite;
+        dst->SwingSprite = src->SwingSprite;
         dst->current_station = src->current_station;
         dst->current_time = src->current_time;
         dst->crash_z = src->crash_z;
