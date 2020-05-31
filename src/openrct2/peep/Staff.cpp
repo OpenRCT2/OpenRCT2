@@ -367,12 +367,12 @@ void staff_reset_stats()
     FOR_ALL_STAFF (spriteIndex, peep)
     {
         peep->time_in_park = gDateMonthsElapsed;
-        peep->staff_lawns_mown = 0;
-        peep->staff_rides_fixed = 0;
-        peep->staff_gardens_watered = 0;
-        peep->staff_rides_inspected = 0;
-        peep->staff_litter_swept = 0;
-        peep->staff_bins_emptied = 0;
+        peep->StaffLawnsMown = 0;
+        peep->StaffRidesFixed = 0;
+        peep->StaffGardensWatered = 0;
+        peep->StaffRidesInspected = 0;
+        peep->StaffLitterSwept = 0;
+        peep->StaffBinsEmptied = 0;
     }
 }
 
@@ -1231,7 +1231,7 @@ void Staff::UpdateMowing()
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
             map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
-        staff_lawns_mown++;
+        StaffLawnsMown++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1291,7 +1291,7 @@ void Staff::UpdateWatering()
 
             tile_element->AsSmallScenery()->SetAge(0);
             map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-            staff_gardens_watered++;
+            StaffGardensWatered++;
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
@@ -1375,7 +1375,7 @@ void Staff::UpdateEmptyingBin()
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-        staff_bins_emptied++;
+        StaffBinsEmptied++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1394,7 +1394,7 @@ void Staff::UpdateSweeping()
     {
         // Remove sick at this location
         litter_remove_at(x, y, z);
-        staff_litter_swept++;
+        StaffLitterSwept++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction())
@@ -2630,13 +2630,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         {
             UpdateRideInspected(current_ride);
 
-            staff_rides_inspected++;
+            StaffRidesInspected++;
             window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
             return true;
         }
 
-        staff_rides_fixed++;
+        StaffRidesFixed++;
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = direction << 3;

@@ -1790,12 +1790,12 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
-    set_format_arg(0, money32, peep->paid_to_enter);
+    set_format_arg(0, money32, peep->PaidToEnter);
     gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Paid on rides
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->paid_on_rides);
+    set_format_arg(0, money32, peep->PaidOnRides);
     set_format_arg(4, uint16_t, peep->no_of_rides);
     if (peep->no_of_rides != 1)
     {
@@ -1808,9 +1808,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on food
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->paid_on_food);
-    set_format_arg(4, uint16_t, peep->no_of_food);
-    if (peep->no_of_food != 1)
+    set_format_arg(0, money32, peep->PaidOnFood);
+    set_format_arg(4, uint16_t, peep->AmountOfFood);
+    if (peep->AmountOfFood != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
@@ -1822,8 +1822,8 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on drinks
     y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->paid_on_drink);
-    set_format_arg(4, uint16_t, peep->no_of_drinks);
-    if (peep->no_of_drinks != 1)
+    set_format_arg(4, uint16_t, peep->AmountOfDrinks);
+    if (peep->AmountOfDrinks != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
@@ -1834,9 +1834,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on souvenirs
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->paid_on_souvenirs);
-    set_format_arg(4, uint16_t, peep->no_of_souvenirs);
-    if (peep->no_of_souvenirs != 1)
+    set_format_arg(0, money32, peep->PaidOnSouvenirs);
+    set_format_arg(4, uint16_t, peep->AmountOfSouvenirs);
+    if (peep->AmountOfSouvenirs != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
@@ -1955,7 +1955,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_VOUCHER:
-            switch (peep->voucher_type)
+            switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
@@ -1963,7 +1963,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     set_format_arg(10, const char*, parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
-                    ride = get_ride(peep->voucher_arguments);
+                    ride = get_ride(peep->VoucherArguments);
                     if (ride != nullptr)
                     {
                         set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
@@ -1977,7 +1977,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     break;
                 case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    set_format_arg(8, rct_string_id, ShopItems[peep->voucher_arguments].Naming.Singular);
+                    set_format_arg(8, rct_string_id, ShopItems[peep->VoucherArguments].Naming.Singular);
                     break;
             }
             break;

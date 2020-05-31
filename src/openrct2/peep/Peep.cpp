@@ -1762,16 +1762,16 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->item_extra_flags = 0;
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     peep->litter_count = 0;
-    peep->disgusting_count = 0;
-    peep->vandalism_seen = 0;
-    peep->paid_to_enter = 0;
-    peep->paid_on_rides = 0;
-    peep->paid_on_food = 0;
+    peep->DisgustingCount = 0;
+    peep->VandalismSeen = 0;
+    peep->PaidToEnter = 0;
+    peep->PaidOnRides = 0;
+    peep->PaidOnFood = 0;
     peep->paid_on_drink = 0;
-    peep->paid_on_souvenirs = 0;
-    peep->no_of_food = 0;
-    peep->no_of_drinks = 0;
-    peep->no_of_souvenirs = 0;
+    peep->PaidOnSouvenirs = 0;
+    peep->AmountOfFood = 0;
+    peep->AmountOfDrinks = 0;
+    peep->AmountOfSouvenirs = 0;
     peep->SurroundingsThoughtTimeout = 0;
     peep->Angriness = 0;
     peep->TimeLost = 0;
@@ -2603,13 +2603,13 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         {
             if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
             {
-                if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
+                if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
                     peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
                     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
-                else if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_FREE)
+                else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
                     peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
@@ -2627,7 +2627,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             }
 
             gTotalIncomeFromAdmissions += entranceFee;
-            guest->SpendMoney(peep->paid_to_enter, entranceFee, ExpenditureType::ParkEntranceTickets);
+            guest->SpendMoney(peep->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
             peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
@@ -2659,9 +2659,9 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         return;
     }
 
-    uint8_t vandalThoughtTimeout = (peep->vandalism_seen & 0xC0) >> 6;
+    uint8_t vandalThoughtTimeout = (peep->VandalismSeen & 0xC0) >> 6;
     // Advance the vandalised tiles by 1
-    uint8_t vandalisedTiles = (peep->vandalism_seen * 2) & 0x3F;
+    uint8_t vandalisedTiles = (peep->VandalismSeen * 2) & 0x3F;
 
     if (vandalism)
     {
@@ -2684,7 +2684,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         vandalThoughtTimeout--;
     }
 
-    peep->vandalism_seen = (vandalThoughtTimeout << 6) | vandalisedTiles;
+    peep->VandalismSeen = (vandalThoughtTimeout << 6) | vandalisedTiles;
     uint16_t crowded = 0;
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
@@ -2727,14 +2727,14 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     litter_count = std::min(static_cast<uint8_t>(3), litter_count);
     sick_count = std::min(static_cast<uint8_t>(3), sick_count);
 
-    uint8_t disgusting_time = peep->disgusting_count & 0xC0;
-    uint8_t disgusting_count = ((peep->disgusting_count & 0xF) << 2) | sick_count;
-    peep->disgusting_count = disgusting_count | disgusting_time;
+    uint8_t disgusting_time = peep->DisgustingCount & 0xC0;
+    uint8_t disgusting_count = ((peep->DisgustingCount & 0xF) << 2) | sick_count;
+    peep->DisgustingCount = disgusting_count | disgusting_time;
 
     if (disgusting_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
     {
         // Reduce the disgusting time
-        peep->disgusting_count -= 0x40;
+        peep->DisgustingCount -= 0x40;
     }
     else
     {
@@ -2749,7 +2749,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset disgusting time
-            peep->disgusting_count |= 0xC0;
+            peep->DisgustingCount |= 0xC0;
         }
     }
 

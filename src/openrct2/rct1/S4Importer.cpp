@@ -1424,7 +1424,7 @@ private:
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
         dst->step_progress = src->step_progress;
-        dst->vandalism_seen = src->vandalism_seen;
+        dst->VandalismSeen = src->vandalism_seen;
 
         dst->type = static_cast<PeepType>(src->type);
 
@@ -1460,7 +1460,7 @@ private:
         dst->mass = src->mass;
 
         dst->litter_count = src->litter_count;
-        dst->disgusting_count = src->disgusting_count;
+        dst->DisgustingCount = src->disgusting_count;
 
         dst->intensity = static_cast<IntensityRange>(src->intensity);
         dst->nausea_tolerance = src->nausea_tolerance;
@@ -1484,18 +1484,18 @@ private:
         // This doubles as staff type
         dst->no_of_rides = src->no_of_rides;
 
-        dst->no_of_drinks = src->no_of_drinks;
-        dst->no_of_food = src->no_of_food;
-        dst->no_of_souvenirs = src->no_of_souvenirs;
+        dst->AmountOfDrinks = src->no_of_drinks;
+        dst->AmountOfFood = src->no_of_food;
+        dst->AmountOfSouvenirs = src->no_of_souvenirs;
 
-        dst->paid_to_enter = src->paid_to_enter;
-        dst->paid_on_rides = src->paid_on_rides;
+        dst->PaidToEnter = src->paid_to_enter;
+        dst->PaidOnRides = src->paid_on_rides;
         dst->paid_on_drink = src->paid_on_drink;
-        dst->paid_on_food = src->paid_on_food;
-        dst->paid_on_souvenirs = src->paid_on_souvenirs;
+        dst->PaidOnFood = src->paid_on_food;
+        dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
-        dst->voucher_arguments = src->voucher_arguments;
-        dst->voucher_type = src->voucher_type;
+        dst->VoucherArguments = src->voucher_arguments;
+        dst->VoucherType = src->voucher_type;
 
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
