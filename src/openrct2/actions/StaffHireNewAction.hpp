@@ -168,7 +168,7 @@ private:
             newPeep->path_check_optimisation = 0;
             newPeep->type = PEEP_TYPE_STAFF;
             newPeep->outside_of_park = 0;
-            newPeep->peep_flags = 0;
+            newPeep->PeepFlags = 0;
             newPeep->PaidToEnter = 0;
             newPeep->PaidOnRides = 0;
             newPeep->PaidOnFood = 0;

@@ -1211,7 +1211,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
     dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
     dst->photo1_ride_ref = src->photo1_ride_ref;
-    dst->peep_flags = src->peep_flags;
+    dst->peep_flags = src->PeepFlags;
     dst->pathfind_goal = src->PathfindGoal;
     for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
     {

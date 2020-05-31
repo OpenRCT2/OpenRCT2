@@ -284,7 +284,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, guest_heading_to_ride_id);
         COMPARE_FIELD(Peep, staff_orders);
         COMPARE_FIELD(Peep, photo1_ride_ref);
-        COMPARE_FIELD(Peep, peep_flags);
+        COMPARE_FIELD(Peep, PeepFlags);
         COMPARE_FIELD(Peep, PathfindGoal);
         for (int i = 0; i < 4; i++)
         {

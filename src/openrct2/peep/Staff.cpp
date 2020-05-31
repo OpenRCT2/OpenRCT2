@@ -1860,10 +1860,10 @@ void Staff::Tick128UpdateStaff()
     if (action < PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;
 
-    peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
+    PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (gSpriteTypeToSlowWalkMap[newSpriteType])
     {
-        peep_flags |= PEEP_FLAGS_SLOW_WALK;
+        PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
     action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;

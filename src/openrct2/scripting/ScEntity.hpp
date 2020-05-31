@@ -256,7 +256,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 auto mask = PeepFlagMap[key];
-                return (peep->peep_flags & mask) != 0;
+                return (peep->PeepFlags & mask) != 0;
             }
             return false;
         }
@@ -269,9 +269,9 @@ namespace OpenRCT2::Scripting
             {
                 auto mask = PeepFlagMap[key];
                 if (value)
-                    peep->peep_flags |= mask;
+                    peep->PeepFlags |= mask;
                 else
-                    peep->peep_flags &= ~mask;
+                    peep->PeepFlags &= ~mask;
                 peep->Invalidate();
             }
         }

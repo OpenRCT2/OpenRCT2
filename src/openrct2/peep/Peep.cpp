@@ -1123,7 +1123,7 @@ void Peep::Update()
     uint32_t stepsToTake = energy;
     if (stepsToTake < 95 && state == PEEP_STATE_QUEUING)
         stepsToTake = 95;
-    if ((peep_flags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
+    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
     if (action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
     {
@@ -1633,7 +1633,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->action_sprite_image_offset = 0;
     peep->NoActionFrameNum = 0;
     peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-    peep->peep_flags = 0;
+    peep->PeepFlags = 0;
     peep->FavouriteRide = RIDE_ID_NULL;
     peep->FavouriteRideRating = 0;
 
@@ -1852,7 +1852,7 @@ void Peep::FormatActionTo(void* argsV) const
             }
             else
             {
-                ft.Add<rct_string_id>((peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
+                ft.Add<rct_string_id>((PeepFlags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
             }
             break;
         case PEEP_STATE_QUEUING_FRONT:
@@ -2228,7 +2228,7 @@ void peep_set_map_tooltip(Peep* peep)
     auto ft = Formatter::MapTooltip();
     if (peep->type == PEEP_TYPE_GUEST)
     {
-        ft.Add<rct_string_id>((peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
+        ft.Add<rct_string_id>((peep->PeepFlags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
         ft.Add<uint32_t>(get_peep_face_sprite_small(peep));
         peep->FormatNameTo(ft);
         peep->FormatActionTo(ft);
@@ -2439,7 +2439,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->SetState(PEEP_STATE_QUEUING);
         peep->sub_state = 11;
         peep->time_in_queue = 0;
-        if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+        if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
@@ -2484,7 +2484,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
                 return;
             }
 
-            if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+            if (!(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
@@ -2501,7 +2501,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             peep->SetState(PEEP_STATE_LEAVING_PARK);
 
             peep->var_37 = 0;
-            if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+            if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
             {
                 auto ft = Formatter::Common();
                 peep->FormatNameTo(ft);
@@ -2628,7 +2628,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
             gTotalIncomeFromAdmissions += entranceFee;
             guest->SpendMoney(peep->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
-            peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
+            peep->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
         gTotalAdmissions++;
@@ -2871,7 +2871,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->sub_state = 10;
                     peep->destination_tolerance = 2;
                     peep->time_in_queue = 0;
-                    if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+                    if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
                     {
                         auto ft = Formatter::Common();
                         peep->FormatNameTo(ft);
@@ -2943,7 +2943,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         return true;
     }
 
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
         peep_return_to_centre_of_tile(peep);
         return true;
@@ -2978,7 +2978,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
 
         peep->TimeOnRide = 0;
         ride->cur_num_customers++;
-        if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+        if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
@@ -3322,7 +3322,7 @@ void pathfind_logging_enable([[maybe_unused]] Peep* peep)
      * be output for. */
     if (peep->type == PEEP_TYPE_GUEST)
     {
-        gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+        gPathFindDebug = peep->PeepFlags & PEEP_FLAGS_TRACKING;
     }
     /* For staff, there is no tracking button (any other similar
      * suitable existing mechanism?), so fall back to a crude

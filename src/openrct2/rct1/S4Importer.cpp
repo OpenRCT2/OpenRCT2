@@ -1532,7 +1532,7 @@ private:
         // The ID is fixed later
         dst->next_in_queue = src->next_in_queue;
 
-        dst->peep_flags = 0;
+        dst->PeepFlags = 0;
         dst->PathfindGoal.x = 0xFF;
         dst->PathfindGoal.y = 0xFF;
         dst->PathfindGoal.z = 0xFF;

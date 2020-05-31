@@ -442,15 +442,15 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
         return 8;
 
     // PEEP_FLAGS_2? It's cleared here but not set anywhere!
-    if ((peep->peep_flags & PEEP_FLAGS_2))
+    if ((peep->PeepFlags & PEEP_FLAGS_2))
     {
         if ((scenario_rand() & 0xFFFF) <= 7281)
-            peep->peep_flags &= ~PEEP_FLAGS_2;
+            peep->PeepFlags &= ~PEEP_FLAGS_2;
 
         return 8;
     }
 
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK && peep->peep_is_lost_countdown < 90)
+    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK && peep->peep_is_lost_countdown < 90)
     {
         return 8;
     }
@@ -458,7 +458,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
     if (peep->ItemStandardFlags & PEEP_ITEM_MAP)
         return 7;
 
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return 7;
 
     return 5;
@@ -1646,13 +1646,13 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
 static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 {
     // If entrance no longer exists, choose a new one
-    if ((peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->current_ride >= gParkEntrances.size())
+    if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->current_ride >= gParkEntrances.size())
     {
         peep->current_ride = 0xFF;
-        peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+        peep->PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
     }
 
-    if (!(peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
+    if (!(peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
     {
         uint8_t chosenEntrance = 0xFF;
         uint16_t nearestDist = 0xFFFF;
@@ -1672,7 +1672,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
             return guest_path_find_aimless(peep, edges);
 
         peep->current_ride = chosenEntrance;
-        peep->peep_flags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+        peep->PeepFlags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
     const auto& entrance = gParkEntrances[peep->current_ride];
@@ -2041,7 +2041,7 @@ int32_t guest_path_finding(Guest* peep)
         }
     }
 
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)

@@ -395,7 +395,7 @@ int32_t Park::CalculateParkRating() const
                 {
                     happyGuestCount++;
                 }
-                if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
+                if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
                 {
                     lostGuestCount++;
                 }

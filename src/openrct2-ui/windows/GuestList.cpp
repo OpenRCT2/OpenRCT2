@@ -778,7 +778,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), 118, y + 1, 0);
 
                             // Tracking icon
-                            if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+                            if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
                                 gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y + 1, 0);
 
                             // Action
@@ -1041,7 +1041,7 @@ static void window_guest_list_find_groups()
 
 static bool guest_should_be_visible(Peep* peep)
 {
-    if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
+    if (_window_guest_list_tracking_only && !(peep->PeepFlags & PEEP_FLAGS_TRACKING))
         return false;
 
     if (_window_guest_list_filter_name[0] != '\0')
