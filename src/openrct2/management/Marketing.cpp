@@ -143,7 +143,7 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
             peep->VoucherType = VOUCHER_TYPE_RIDE_FREE;
             peep->VoucherArguments = campaign->RideId;
             peep->guest_heading_to_ride_id = campaign->RideId;
-            peep->peep_is_lost_countdown = 240;
+            peep->PeepIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
             peep->ItemStandardFlags |= PEEP_ITEM_VOUCHER;
@@ -158,7 +158,7 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
             break;
         case ADVERTISING_CAMPAIGN_RIDE:
             peep->guest_heading_to_ride_id = campaign->RideId;
-            peep->peep_is_lost_countdown = 240;
+            peep->PeepIsLostCountdown = 240;
             break;
     }
 }

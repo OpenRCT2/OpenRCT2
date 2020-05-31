@@ -450,7 +450,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
         return 8;
     }
 
-    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK && peep->peep_is_lost_countdown < 90)
+    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK && peep->PeepIsLostCountdown < 90)
     {
         return 8;
     }

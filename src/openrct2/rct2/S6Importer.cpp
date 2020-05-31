@@ -1474,7 +1474,7 @@ public:
         }
         dst->path_check_optimisation = src->path_check_optimisation;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
-        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+        dst->PeepIsLostCountdown = src->peep_is_lost_countdown;
         dst->Photo1RideRef = src->photo1_ride_ref;
         dst->PeepFlags = src->peep_flags;
         dst->PathfindGoal = src->pathfind_goal;

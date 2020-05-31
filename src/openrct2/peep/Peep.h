@@ -694,7 +694,7 @@ struct Peep : SpriteBase
     union
     {
         uint8_t staff_orders;
-        uint8_t peep_is_lost_countdown;
+        uint8_t PeepIsLostCountdown;
     };
     uint8_t Photo1RideRef;
     uint32_t PeepFlags;

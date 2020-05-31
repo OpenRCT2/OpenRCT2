@@ -1528,7 +1528,7 @@ private:
         dst->path_check_optimisation = 0;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
         // Doubles as staff orders
-        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+        dst->PeepIsLostCountdown = src->peep_is_lost_countdown;
         // The ID is fixed later
         dst->next_in_queue = src->next_in_queue;
 
