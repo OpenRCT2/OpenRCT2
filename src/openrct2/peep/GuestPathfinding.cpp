@@ -975,14 +975,14 @@ static void peep_pathfind_heuristic_search(
                 /* First check if going through the junction would be
                  * a loop.  If so, the current search path ends here.
                  * Path finding loop detection can take advantage of both the
-                 * peep->pathfind_history - loops through remembered junctions
+                 * peep->PathfindHistory - loops through remembered junctions
                  *     the peep has already passed through getting to its
                  *     current position while on the way to its current goal;
                  * _peepPathFindHistory - loops in the current search path. */
                 bool pathLoop = false;
-                /* Check the peep->pathfind_history to see if this junction has
+                /* Check the peep->PathfindHistory to see if this junction has
                  * already been visited by the peep while heading for this goal. */
-                for (auto& pathfindHistory : peep->pathfind_history)
+                for (auto& pathfindHistory : peep->PathfindHistory)
                 {
                     if (pathfindHistory.x == loc.x && pathfindHistory.y == loc.y && pathfindHistory.z == loc.z)
                     {
@@ -1221,7 +1221,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         }
 
         /* Check if this path element is a thin junction.
-         * Only 'thin' junctions are remembered in peep->pathfind_history.
+         * Only 'thin' junctions are remembered in peep->PathfindHistory.
          * NO attempt is made to merge the overlaid path elements and
          * check if the combination is 'thin'!
          * The junction is considered 'thin' simply if any of the
@@ -1239,8 +1239,8 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     uint8_t edges = permitted_edges;
     if (isThin && peep->pathfind_goal.x == goal.x && peep->pathfind_goal.y == goal.y && peep->pathfind_goal.z == goal.z)
     {
-        /* Use of peep->pathfind_history[]:
-         * When walking to a goal, the peep pathfind_history stores
+        /* Use of peep->PathfindHistory[]:
+         * When walking to a goal, the peep PathfindHistory stores
          * the last 4 thin junctions that the peep walked through.
          * For each of these 4 thin junctions the peep remembers
          * those edges it has not yet taken.
@@ -1254,11 +1254,11 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         /* If the peep remembers walking through this junction
          * previously while heading for its goal, retrieve the
          * directions it has not yet tried. */
-        for (auto& pathfindHistory : peep->pathfind_history)
+        for (auto& pathfindHistory : peep->PathfindHistory)
         {
             if (pathfindHistory.x == loc.x && pathfindHistory.y == loc.y && pathfindHistory.z == loc.z)
             {
-                /* Fix broken pathfind_history[i].direction
+                /* Fix broken PathfindHistory[i].direction
                  * which have untried directions that are not
                  * currently possible - could be due to pathing
                  * changes or in earlier code .directions was
@@ -1303,7 +1303,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     }
 
     /* If this is a new goal for the peep. Store it and reset the peep's
-     * pathfind_history. */
+     * PathfindHistory. */
     if (!direction_valid(peep->pathfind_goal.direction) || peep->pathfind_goal.x != goal.x || peep->pathfind_goal.y != goal.y
         || peep->pathfind_goal.z != goal.z)
     {
@@ -1313,7 +1313,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         peep->pathfind_goal.direction = 0;
 
         // Clear pathfinding history
-        std::fill_n(reinterpret_cast<uint8_t*>(peep->pathfind_history), sizeof(peep->pathfind_history), 0xFF);
+        std::fill_n(reinterpret_cast<uint8_t*>(peep->PathfindHistory), sizeof(peep->PathfindHistory), 0xFF);
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
@@ -1488,15 +1488,15 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     {
         for (int32_t i = 0; i < 4; ++i)
         {
-            if (peep->pathfind_history[i].x == loc.x && peep->pathfind_history[i].y == loc.y
-                && peep->pathfind_history[i].z == loc.z)
+            if (peep->PathfindHistory[i].x == loc.x && peep->PathfindHistory[i].y == loc.y
+                && peep->PathfindHistory[i].z == loc.z)
             {
                 /* Peep remembers this junction, so remove the
                  * chosen_edge from those left to try. */
-                peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+                peep->PathfindHistory[i].direction &= ~(1 << chosen_edge);
                 /* Also remove the edge through which the peep
                  * entered the junction from those left to try. */
-                peep->pathfind_history[i].direction &= ~(1 << direction_reverse(peep->direction));
+                peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->direction));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (gPathFindDebug)
                 {
@@ -1513,15 +1513,15 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
          * and remember this junction. */
         int32_t i = peep->pathfind_goal.direction++;
         peep->pathfind_goal.direction &= 3;
-        peep->pathfind_history[i].x = static_cast<uint8_t>(loc.x);
-        peep->pathfind_history[i].y = static_cast<uint8_t>(loc.y);
-        peep->pathfind_history[i].z = loc.z;
-        peep->pathfind_history[i].direction = permitted_edges;
+        peep->PathfindHistory[i].x = static_cast<uint8_t>(loc.x);
+        peep->PathfindHistory[i].y = static_cast<uint8_t>(loc.y);
+        peep->PathfindHistory[i].z = loc.z;
+        peep->PathfindHistory[i].direction = permitted_edges;
         /* Remove the chosen_edge from those left to try. */
-        peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+        peep->PathfindHistory[i].direction &= ~(1 << chosen_edge);
         /* Also remove the edge through which the peep
          * entered the junction from those left to try. */
-        peep->pathfind_history[i].direction &= ~(1 << direction_reverse(peep->direction));
+        peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->direction));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
@@ -2147,7 +2147,7 @@ int32_t guest_path_finding(Guest* peep)
     if (direction == INVALID_DIRECTION)
     {
         /* Heuristic search failed for all directions.
-         * Reset the pathfind_goal - this means that the pathfind_history
+         * Reset the pathfind_goal - this means that the PathfindHistory
          * will be reset in the next call to peep_pathfind_choose_direction().
          * This lets the heuristic search "try again" in case the player has
          * edited the path layout or the mechanic was already stuck in the

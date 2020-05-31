@@ -1480,7 +1480,7 @@ public:
         dst->pathfind_goal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
         {
-            dst->pathfind_history[i] = src->pathfind_history[i];
+            dst->PathfindHistory[i] = src->pathfind_history[i];
         }
         dst->NoActionFrameNum = src->no_action_frame_num;
         dst->LitterCount = src->litter_count;

@@ -288,7 +288,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, pathfind_goal);
         for (int i = 0; i < 4; i++)
         {
-            COMPARE_FIELD(Peep, pathfind_history[i]);
+            COMPARE_FIELD(Peep, PathfindHistory[i]);
         }
         COMPARE_FIELD(Peep, NoActionFrameNum);
         COMPARE_FIELD(Peep, LitterCount);

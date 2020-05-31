@@ -238,10 +238,10 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(pathfind_goal.direction);
     for (int i = 0; i < 4; i++)
     {
-        COMPARE_FIELD(pathfind_history[i].x);
-        COMPARE_FIELD(pathfind_history[i].y);
-        COMPARE_FIELD(pathfind_history[i].z);
-        COMPARE_FIELD(pathfind_history[i].direction);
+        COMPARE_FIELD(PathfindHistory[i].x);
+        COMPARE_FIELD(PathfindHistory[i].y);
+        COMPARE_FIELD(PathfindHistory[i].z);
+        COMPARE_FIELD(PathfindHistory[i].direction);
     }
     COMPARE_FIELD(NoActionFrameNum);
     COMPARE_FIELD(LitterCount);
