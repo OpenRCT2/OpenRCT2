@@ -1671,7 +1671,7 @@ loc_69B221:
     time_to_consume = std::min((time_to_consume + consumptionTime), 255);
 
     if (shopItem == SHOP_ITEM_PHOTO)
-        photo1_ride_ref = ride->id;
+        Photo1RideRef = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO2)
         photo2_ride_ref = ride->id;

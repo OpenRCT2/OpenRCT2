@@ -1510,7 +1510,7 @@ private:
             dst->ride_types_been_on[i] = src->ride_types_been_on[i];
         }
 
-        dst->photo1_ride_ref = src->photo1_ride_ref;
+        dst->Photo1RideRef = src->photo1_ride_ref;
 
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {

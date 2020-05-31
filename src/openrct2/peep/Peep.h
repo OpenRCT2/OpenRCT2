@@ -696,7 +696,7 @@ struct Peep : SpriteBase
         uint8_t staff_orders;
         uint8_t peep_is_lost_countdown;
     };
-    uint8_t photo1_ride_ref;
+    uint8_t Photo1RideRef;
     uint32_t PeepFlags;
     rct12_xyzd8 PathfindGoal;
     rct12_xyzd8 PathfindHistory[4];

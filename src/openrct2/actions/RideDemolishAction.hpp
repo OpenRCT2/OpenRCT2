@@ -187,7 +187,7 @@ private:
             // remove any photos of this ride from peep
             if (peep->ItemStandardFlags & PEEP_ITEM_PHOTO)
             {
-                if (peep->photo1_ride_ref == _rideIndex)
+                if (peep->Photo1RideRef == _rideIndex)
                 {
                     peep->ItemStandardFlags &= ~PEEP_ITEM_PHOTO;
                 }

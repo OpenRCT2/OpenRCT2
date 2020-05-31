@@ -1947,7 +1947,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
-            ride = get_ride(peep->photo1_ride_ref);
+            ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
