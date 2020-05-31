@@ -381,6 +381,8 @@ private:
     void UpdateHandleWaterSplash() const;
     void Claxon() const;
     void UpdateTrackMotionUpStopCheck() const;
+    void ApplyNonStopBlockBrake();
+    void ApplyStopBlockBrake();
     void CheckAndApplyBlockSectionStopSite();
     void UpdateVelocity();
     bool OpenRestraints();
