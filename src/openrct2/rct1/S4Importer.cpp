@@ -1525,7 +1525,7 @@ private:
         dst->previous_ride = src->previous_ride;
         dst->previous_ride_time_out = src->previous_ride_time_out;
 
-        dst->path_check_optimisation = 0;
+        dst->PathCheckOptimisation = 0;
         dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
         // Doubles as staff orders
         dst->PeepIsLostCountdown = src->peep_is_lost_countdown;

@@ -471,8 +471,8 @@ static void peep_128_tick_update(Peep* peep, int32_t index)
  */
 bool Peep::CheckForPath()
 {
-    path_check_optimisation++;
-    if ((path_check_optimisation & 0xF) != (sprite_index & 0xF))
+    PathCheckOptimisation++;
+    if ((PathCheckOptimisation & 0xF) != (sprite_index & 0xF))
     {
         // This condition makes the check happen less often
         // As a side effect peeps hover for a short,
@@ -758,7 +758,7 @@ void Peep::PickupAbort(int32_t old_x)
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-        path_check_optimisation = 0;
+        PathCheckOptimisation = 0;
     }
 
     gPickupPeepImage = UINT32_MAX;
@@ -807,7 +807,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-        path_check_optimisation = 0;
+        PathCheckOptimisation = 0;
         sprite_position_tween_reset();
 
         if (type == PEEP_TYPE_GUEST)
@@ -1645,7 +1645,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
     peep->mass = (scenario_rand() & 0x1F) + 45;
-    peep->path_check_optimisation = 0;
+    peep->PathCheckOptimisation = 0;
     peep->interaction_ride_index = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
     peep->previous_ride = RIDE_ID_NULL;

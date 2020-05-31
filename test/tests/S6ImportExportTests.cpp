@@ -227,7 +227,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
         COMPARE_FIELD(thoughts[i].freshness);
         COMPARE_FIELD(thoughts[i].fresh_timeout);
     }
-    COMPARE_FIELD(path_check_optimisation);
+    COMPARE_FIELD(PathCheckOptimisation);
     COMPARE_FIELD(GuestHeadingToRideId);
     COMPARE_FIELD(StaffOrders);
     COMPARE_FIELD(Photo1RideRef);

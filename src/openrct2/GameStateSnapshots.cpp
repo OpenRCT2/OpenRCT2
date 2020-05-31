@@ -280,7 +280,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             COMPARE_FIELD(Peep, thoughts[i]);
         }
-        COMPARE_FIELD(Peep, path_check_optimisation);
+        COMPARE_FIELD(Peep, PathCheckOptimisation);
         COMPARE_FIELD(Peep, GuestHeadingToRideId);
         COMPARE_FIELD(Peep, StaffOrders);
         COMPARE_FIELD(Peep, Photo1RideRef);

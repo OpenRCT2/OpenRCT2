@@ -165,7 +165,7 @@ private:
             newPeep->action_sprite_image_offset = 0;
             newPeep->NoActionFrameNum = 0;
             newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-            newPeep->path_check_optimisation = 0;
+            newPeep->PathCheckOptimisation = 0;
             newPeep->type = PEEP_TYPE_STAFF;
             newPeep->outside_of_park = 0;
             newPeep->PeepFlags = 0;

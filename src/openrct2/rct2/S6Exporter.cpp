@@ -1207,7 +1207,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }
-    dst->path_check_optimisation = src->path_check_optimisation;
+    dst->path_check_optimisation = src->PathCheckOptimisation;
     dst->guest_heading_to_ride_id = src->GuestHeadingToRideId;
     dst->peep_is_lost_countdown = src->PeepIsLostCountdown;
     dst->photo1_ride_ref = src->Photo1RideRef;

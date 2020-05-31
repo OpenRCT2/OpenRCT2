@@ -685,7 +685,7 @@ struct Peep : SpriteBase
     uint8_t previous_ride;
     uint16_t previous_ride_time_out;
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];
-    uint8_t path_check_optimisation; // see peep.checkForPath
+    uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {
         uint8_t StaffId;
