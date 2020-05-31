@@ -636,6 +636,7 @@ void gfx_draw_string_with_y_offsets(
     bool forceSpriteFont);
 
 int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, int32_t* font_height);
+std::pair<int32_t, int32_t> gfx_calculate_string_dimensions(utf8* text, int32_t width, int32_t* outNumLines, int32_t* outFontHeight);
 int32_t gfx_get_string_width(const utf8* buffer);
 int32_t gfx_get_string_width_new_lined(char* buffer);
 int32_t string_get_height_raw(char* buffer);

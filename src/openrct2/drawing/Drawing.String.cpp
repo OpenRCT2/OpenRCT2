@@ -335,6 +335,109 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32
     }
 }
 
+/**
+ * Wrap the text in buffer to width, returns width of longest line.
+ *
+ * Inserts NULL where line should break (as \n is used for something else),
+ * so the number of lines is returned in num_lines. font_height seems to be
+ * a control character for line height.
+ *
+ *  rct2: 0x006C21E2
+ * buffer (esi)
+ * width (edi) - in
+ * num_lines (edi) - out
+ * font_height (ebx) - out
+ */
+std::pair<int32_t, int32_t> gfx_calculate_string_dimensions(
+    utf8* text, int32_t width, int32_t* outNumLines, int32_t* outFontHeight)
+{
+    int32_t lineWidth = 0;
+    int32_t maxWidth = 0;
+    *outNumLines = 0;
+
+    // Pointer to the start of the current word
+    utf8* currentWord = nullptr;
+
+    // Width of line up to current word
+    int32_t currentWidth = 0;
+    utf8 ch_new = *text;
+    utf8* ch = &ch_new;
+    utf8* firstCh = &ch_new;
+    utf8* nextCh;
+    int32_t codepoint;
+    int32_t numCharactersOnLine = 0;
+    while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0)
+    {
+        if (codepoint == ' ')
+        {
+            currentWord = ch;
+            currentWidth = lineWidth;
+            numCharactersOnLine++;
+        }
+        else if (codepoint == FORMAT_NEWLINE)
+        {
+            *ch++ = 0;
+            maxWidth = std::max(maxWidth, lineWidth);
+            (*outNumLines)++;
+            lineWidth = 0;
+            currentWord = nullptr;
+            firstCh = ch;
+            numCharactersOnLine = 0;
+            continue;
+        }
+        else if (utf8_is_format_code(codepoint))
+        {
+            ch = nextCh;
+            ch += utf8_get_format_code_arg_length(codepoint);
+            continue;
+        }
+
+        uint8_t saveCh = *nextCh;
+        *nextCh = 0;
+        lineWidth = gfx_get_string_width(firstCh);
+        *nextCh = saveCh;
+
+        if (lineWidth <= width || numCharactersOnLine == 0)
+        {
+            ch = nextCh;
+            numCharactersOnLine++;
+        }
+        else if (currentWord == nullptr)
+        {
+            // Single word is longer than line, insert null terminator
+            ch += utf8_insert_codepoint(ch, 0);
+            maxWidth = std::max(maxWidth, lineWidth);
+            (*outNumLines)++;
+            lineWidth = 0;
+            currentWord = nullptr;
+            firstCh = ch;
+            numCharactersOnLine = 0;
+        }
+        else
+        {
+            ch = currentWord;
+            *ch++ = 0;
+
+            maxWidth = std::max(maxWidth, currentWidth);
+            (*outNumLines)++;
+            lineWidth = 0;
+            currentWord = nullptr;
+            firstCh = ch;
+            numCharactersOnLine = 0;
+        }
+    }
+    maxWidth = std::max(maxWidth, lineWidth);
+    *outFontHeight = gCurrentFontSpriteBase;
+    if (maxWidth == 0)
+    {
+        return std::pair<int32_t, int32_t>(string_get_height_raw(text), lineWidth);
+    }
+    else
+    {
+        return std::pair<int32_t, int32_t>(string_get_height_raw(text), maxWidth);
+    }
+}
+
 int32_t string_get_height_raw(char* buffer)
 {
     uint16_t fontBase = gCurrentFontSpriteBase;
