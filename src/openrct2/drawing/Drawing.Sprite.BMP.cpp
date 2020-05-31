@@ -9,16 +9,19 @@
 
 #include "Drawing.h"
 
-static void FASTCALL gfx_bmp_sprite_to_buffer_magnify(
-    const PaletteMap& paletteMap, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
+static void FASTCALL gfx_bmp_sprite_to_buffer_magnify(DrawSpriteArgs& args)
 {
-    auto zoom_level = dest_dpi->zoom_level;
+    auto dpi = args.DPI;
+    auto zoom_level = dpi->zoom_level;
     uint8_t zoom_amount = 1 * zoom_level;
-    uint32_t dest_line_width = (dest_dpi->width / zoom_level) + dest_dpi->pitch;
-    uint32_t source_line_width = source_image->width * zoom_level;
+    uint32_t dest_line_width = (dpi->width / zoom_level) + dpi->pitch;
+    uint32_t source_line_width = args.SourceImage.width * zoom_level;
 
     // Basic bitmap with no draw pixels
+    auto source_pointer = args.SourceBits;
+    auto dest_pointer = args.DestinationBits;
+    auto width = args.Width;
+    auto height = args.Height;
     for (; height > 0; height -= zoom_amount)
     {
         auto next_source_pointer = source_pointer + source_line_width;
@@ -37,116 +40,94 @@ static void FASTCALL gfx_bmp_sprite_to_buffer_magnify(
     }
 }
 
+template<DrawBlendOp TBlendOp> static void FASTCALL gfx_bmp_sprite_to_buffer_x(DrawSpriteArgs& args)
+{
+    auto src = args.SourceBits;
+    auto dst = args.DestinationBits;
+    auto& paletteMap = args.PalMap;
+    auto width = args.Width;
+    auto height = args.Height;
+    auto dpi = args.DPI;
+    auto zoomLevel = dpi->zoom_level;
+    size_t srcLineWidth = args.SourceImage.width * zoomLevel;
+    size_t dstLineWidth = (static_cast<size_t>(dpi->width) / zoomLevel) + dpi->pitch;
+    uint8_t zoom = 1 * zoomLevel;
+    for (; height > 0; height -= zoom)
+    {
+        auto nextSrc = src + srcLineWidth;
+        auto nextDst = dst + dstLineWidth;
+        for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src += zoom, dst++)
+        {
+            if constexpr (TBlendOp & BLEND_TRANSPARENT)
+            {
+                // Ignore transparent pixels
+                if (*src == 0)
+                {
+                    continue;
+                }
+            }
+
+            if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+            {
+                *dst = paletteMap.Blend(*src, *dst);
+            }
+            else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+            {
+                *dst = paletteMap[*src];
+            }
+            else if constexpr ((TBlendOp & BLEND_DST) != 0)
+            {
+                *dst = paletteMap[*dst];
+            }
+            else
+            {
+                *dst = *src;
+            }
+        }
+        src = nextSrc;
+        dst = nextDst;
+    }
+}
+
 /**
  * Copies a sprite onto the buffer. There is no compression used on the sprite
  * image.
  *  rct2: 0x0067A690
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_bmp_sprite_to_buffer(
-    const PaletteMap& paletteMap, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
+void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args)
 {
-    auto zoom_level = dest_dpi->zoom_level;
+    auto dpi = args.DPI;
+    auto zoom_level = dpi->zoom_level;
     if (zoom_level < 0)
     {
-        gfx_bmp_sprite_to_buffer_magnify(
-            paletteMap, source_pointer, dest_pointer, source_image, dest_dpi, height, width, imageId);
+        gfx_bmp_sprite_to_buffer_magnify(args);
         return;
     }
 
-    uint8_t zoom_amount = 1 * zoom_level;
-    uint32_t dest_line_width = (dest_dpi->width / zoom_level) + dest_dpi->pitch;
-    uint32_t source_line_width = source_image->width * zoom_level;
+    auto imageId = args.Image;
 
     // Image uses the palette pointer to remap the colours of the image
     if (imageId.HasPrimary())
     {
-        // Image with remaps
-        for (; height > 0; height -= zoom_amount)
-        {
-            uint8_t* next_source_pointer = source_pointer + source_line_width;
-            uint8_t* next_dest_pointer = dest_pointer + dest_line_width;
-            for (int32_t no_pixels = width; no_pixels > 0;
-                 no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++)
-            {
-                uint8_t pixel = *source_pointer;
-                pixel = paletteMap[pixel];
-                if (pixel)
-                {
-                    *dest_pointer = pixel;
-                }
-            }
-
-            source_pointer = next_source_pointer;
-            dest_pointer = next_dest_pointer;
-        }
-        return;
+        // Copy non-transparent bitmap data but re-colour using the palette map.
+        gfx_bmp_sprite_to_buffer_x<BLEND_TRANSPARENT | BLEND_SRC>(args);
     }
-
-    // Image is transparent. It only uses source pointer for
-    // telling if it needs to be drawn not for colour. Colour provided
-    // by the palette pointer.
-    if (imageId.IsBlended())
-    { // Not tested
-        for (; height > 0; height -= zoom_amount)
-        {
-            uint8_t* next_source_pointer = source_pointer + source_line_width;
-            uint8_t* next_dest_pointer = dest_pointer + dest_line_width;
-
-            for (int32_t no_pixels = width; no_pixels > 0;
-                 no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++)
-            {
-                uint8_t pixel = *source_pointer;
-                if (pixel)
-                {
-                    pixel = *dest_pointer;
-                    pixel = paletteMap[pixel];
-                    *dest_pointer = pixel;
-                }
-            }
-
-            source_pointer = next_source_pointer;
-            dest_pointer = next_dest_pointer;
-        }
-        return;
-    }
-
-    // Basic bitmap no fancy stuff
-    if (!(source_image->flags & G1_FLAG_BMP))
-    { // Not tested
-        for (; height > 0; height -= zoom_amount)
-        {
-            uint8_t* next_source_pointer = source_pointer + source_line_width;
-            uint8_t* next_dest_pointer = dest_pointer + dest_line_width;
-
-            for (int32_t no_pixels = width; no_pixels > 0;
-                 no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount)
-            {
-                *dest_pointer = *source_pointer;
-            }
-
-            dest_pointer = next_dest_pointer;
-            source_pointer = next_source_pointer;
-        }
-        return;
-    }
-
-    // Basic bitmap with no draw pixels
-    for (; height > 0; height -= zoom_amount)
+    else if (imageId.IsBlended())
     {
-        uint8_t* next_source_pointer = source_pointer + source_line_width;
-        uint8_t* next_dest_pointer = dest_pointer + dest_line_width;
-
-        for (int32_t no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount)
-        {
-            uint8_t pixel = *source_pointer;
-            if (pixel)
-            {
-                *dest_pointer = pixel;
-            }
-        }
-        dest_pointer = next_dest_pointer;
-        source_pointer = next_source_pointer;
+        // Image is only a transparency mask. Just colour the pixels using the palette map.
+        // Used for glass.
+        gfx_bmp_sprite_to_buffer_x<BLEND_TRANSPARENT | BLEND_DST>(args);
+        return;
+    }
+    else if (!(args.SourceImage.flags & G1_FLAG_BMP))
+    {
+        // Copy raw bitmap data to target
+        gfx_bmp_sprite_to_buffer_x<BLEND_NONE>(args);
+    }
+    else
+    {
+        // Copy raw bitmap data to target but exclude transparent pixels
+        gfx_bmp_sprite_to_buffer_x<BLEND_TRANSPARENT>(args);
     }
 }

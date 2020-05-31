@@ -227,9 +227,10 @@ static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath
     }
     else
     {
-        gfx_bmp_sprite_to_buffer(
-            PaletteMap::GetDefault(), spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
-            spriteHeader->width, ImageId());
+        DrawSpriteArgs args(
+            &dpi, ImageId(), PaletteMap::GetDefault(), *spriteHeader, spriteHeader->width, spriteHeader->height,
+            spriteHeader->offset, pixels);
+        gfx_bmp_sprite_to_buffer(args);
     }
 
     auto const pixels8 = dpi.bits;

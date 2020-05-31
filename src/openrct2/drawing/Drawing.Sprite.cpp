@@ -580,7 +580,9 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     {
         // Move the pointer to the start point of the source
         auto source_pointer = g1->offset + ((static_cast<size_t>(g1->width) * source_start_y) + source_start_x);
-        gfx_bmp_sprite_to_buffer(paletteMap, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
+
+        DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, width, height, source_pointer, dest_pointer);
+        gfx_bmp_sprite_to_buffer(args);
     }
 }
 
