@@ -1158,7 +1158,7 @@ int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement)
     if (ride == nullptr)
         return bankStart;
 
-    bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
+    bool isInverted = (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
         ^ tileElement->AsTrack()->IsInverted();
     return track_get_actual_bank_2(ride->type, isInverted, bankStart);
 }

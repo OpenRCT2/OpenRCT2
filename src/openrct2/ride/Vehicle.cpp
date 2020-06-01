@@ -1423,7 +1423,7 @@ bool Vehicle::CloseRestraints()
     do
     {
         vehicle = GET_VEHICLE(vehicle_id);
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_CAR && vehicle->restraints_position != 0
+        if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0
             && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
                 || curRide->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_OPEN))
         {
@@ -1533,7 +1533,7 @@ bool Vehicle::OpenRestraints()
             continue;
         }
 
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_CAR && vehicle->restraints_position != 0xFF
+        if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0xFF
             && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
                 || curRide->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_CLOSED))
         {
@@ -1656,7 +1656,7 @@ void Vehicle::UpdateMeasurements()
             return;
 
         uint16_t trackElemType = track_type / 4;
-        if (trackElemType == TRACK_ELEM_POWERED_LIFT || (update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (trackElemType == TRACK_ELEM_POWERED_LIFT || UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
@@ -2003,7 +2003,7 @@ void Vehicle::Update()
     if (curRide == nullptr)
         return;
 
-    if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+    if (UpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
         UpdateMeasurements();
 
     _vehicleBreakdown = 255;
@@ -2219,7 +2219,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         return;
 
     if (curRide->status == RIDE_STATUS_OPEN && !(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-        && !(update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
+        && !UpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
     }
@@ -2576,7 +2576,7 @@ void Vehicle::UpdateWaitingToDepart()
     {
         if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
-            if (update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
+            if (UpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT))
             {
                 if (!CanDepartSynchronised())
                 {
@@ -2802,7 +2802,7 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
         {
             continue;
         }
-        if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT))
+        if (!vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT))
         {
             continue;
         }
@@ -3230,7 +3230,7 @@ void Vehicle::UpdateDeparting()
 
     if (sub_state == 0)
     {
-        if (update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
+        if (UpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
         {
             if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
@@ -3264,7 +3264,7 @@ void Vehicle::UpdateDeparting()
 
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
-            if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+            if (UpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
             {
                 if (curRide->current_test_segment + 1 < curRide->num_stations)
                 {
@@ -3825,7 +3825,7 @@ void Vehicle::UpdateTravelling()
                 if (velocity != 0)
                     sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
 
-                if (!(update_flags & VEHICLE_UPDATE_FLAG_12))
+                if (!UpdateFlag(VEHICLE_UPDATE_FLAG_12))
                 {
                     if (velocity >= curRide->lift_hill_speed * -31079)
                     {
@@ -3865,8 +3865,7 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-    if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && velocity >= 0
-        && !(update_flags & VEHICLE_UPDATE_FLAG_12))
+    if (curRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && velocity >= 0 && !UpdateFlag(VEHICLE_UPDATE_FLAG_12))
     {
         return;
     }
@@ -4056,7 +4055,7 @@ loc_6D8E36:
             return;
         }
 
-        if (num_laps == curRide->num_circuits && update_flags & VEHICLE_UPDATE_FLAG_12)
+        if (num_laps == curRide->num_circuits && UpdateFlag(VEHICLE_UPDATE_FLAG_12))
         {
             SetState(VEHICLE_STATUS_DEPARTING, 1);
             return;
@@ -4135,7 +4134,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (sub_state != 1)
                 return;
 
-            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
+            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && UpdateFlag(VEHICLE_UPDATE_FLAG_TESTING)
                 && curRide->current_test_segment + 1 >= curRide->num_stations)
             {
                 UpdateTestFinish();
@@ -4175,7 +4174,7 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
     }
 
-    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && update_flags & VEHICLE_UPDATE_FLAG_TESTING
+    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && UpdateFlag(VEHICLE_UPDATE_FLAG_TESTING)
         && curRide->current_test_segment + 1 >= curRide->num_stations)
     {
         UpdateTestFinish();
@@ -4214,7 +4213,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     if (sub_state == 0)
     {
-        if (update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
+        if (UpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
         {
             if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
@@ -4235,7 +4234,7 @@ void Vehicle::UpdateTravellingCableLift()
         PeepEasterEggHereWeAre();
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
-            if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+            if (UpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
             {
                 if (curRide->current_test_segment + 1 < curRide->num_stations)
                 {
@@ -4602,7 +4601,7 @@ void Vehicle::UpdateMotionBoatHire()
         {
             eax = speed << 14;
             int32_t ebx = (speed * curMass) >> 2;
-            if (update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+            if (UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
             {
                 eax = -eax;
             }
@@ -6455,7 +6454,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     int32_t ebx = (speed * mass) >> 2;
     int32_t _eax = speed << 14;
-    if (update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+    if (UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
     {
         _eax = -_eax;
     }
@@ -6728,11 +6727,11 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 void Vehicle::UpdateVelocity()
 {
     int32_t nextVelocity = acceleration + velocity;
-    if (update_flags & VEHICLE_UPDATE_FLAG_ZERO_VELOCITY)
+    if (UpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY))
     {
         nextVelocity = 0;
     }
-    if (update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)
+    if (UpdateFlag(VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP))
     {
         vertical_drop_countdown--;
         if (vertical_drop_countdown == -70)
@@ -7001,7 +7000,7 @@ void Vehicle::UpdateSwingingCar()
                 break;
         }
 
-        if (update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
+        if (UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             dx = 0;
             cx = 0;
@@ -7129,7 +7128,7 @@ static const uint8_t TrackTypeToSpinFunction[256] = {
  */
 void Vehicle::UpdateSpinningCar()
 {
-    if (update_flags & VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE)
+    if (UpdateFlag(VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE))
     {
         spin_speed = 0;
         return;
@@ -7509,7 +7508,7 @@ static bool loc_6DB38B(Vehicle* vehicle, TileElement* tileElement)
 static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
 {
     uint16_t probability = 0x8000;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6)
+    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_6))
     {
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
     }
@@ -7654,7 +7653,7 @@ void Vehicle::UpdateReverserCarBogies()
 static bool vehicle_update_motion_collision_detection(
     Vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_1)
+    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_1))
         return false;
 
     auto vehicleEntry = vehicle->Entry();
@@ -7902,7 +7901,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
 
     if (trackType == TRACK_ELEM_TOWER_BASE && vehicle == gCurrentVehicle)
     {
-        if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+        if (vehicle->track_progress > 3 && !vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
         {
             CoordsXYE output;
             int32_t outputZ, outputDirection;
@@ -8216,7 +8215,7 @@ loc_6DAEB9:
     {
         if (IsHead())
         {
-            if (!(update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP))
+            if (!UpdateFlag(VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP))
             {
                 if (track_progress >= 8)
                 {
@@ -8438,7 +8437,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
             return false;
         }
 
-        bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
+        bool isInverted = (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
             ^ tileElement->AsTrack()->IsInverted();
         int32_t bank = TrackDefinitions[trackType].bank_end;
         bank = track_get_actual_bank_2(ride->type, isInverted, bank);
@@ -8514,7 +8513,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     }
     else
     {
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
+        if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
             if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
@@ -9128,7 +9127,7 @@ loc_6DCA9A:
 
     vehicle->TrackLocation = { x, y, z };
 
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
+    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
     {
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
         if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
@@ -9301,7 +9300,7 @@ loc_6DCE68:
     }
 
 loc_6DCEB2:
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
+    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
     {
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
     }
@@ -9378,7 +9377,7 @@ loc_6DCEFF:
     regs.eax <<= 14;
     regs.ebx *= totalMass;
     regs.ebx >>= 2;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
     {
         regs.eax = -regs.eax;
     }
@@ -9496,7 +9495,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
 
     int32_t poweredAcceleration = speed << 14;
     int32_t quarterForce = (speed * totalMass) >> 2;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
     {
         poweredAcceleration = -poweredAcceleration;
     }
@@ -9683,7 +9682,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         sub_6DBF3E(car);
 
         // loc_6DC0F7
-        if (car->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
+        if (car->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
@@ -9861,7 +9860,7 @@ void Vehicle::UpdateCrossings() const
     const Vehicle* frontVehicle{};
     const Vehicle* backVehicle{};
 
-    bool travellingForwards = !(update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
+    bool travellingForwards = !UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
 
     if (travellingForwards)
     {
