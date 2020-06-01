@@ -740,8 +740,11 @@ void X8DrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskIm
 
 void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour)
 {
+    uint8_t palette[256];
+    std::fill_n(palette, sizeof(palette), colour);
+    palette[0] = 0;
     gfx_draw_sprite_palette_set_software(
-        _dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), x, y, PaletteMap::GetDefault());
+        _dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), x, y, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
