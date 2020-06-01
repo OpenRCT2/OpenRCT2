@@ -221,11 +221,11 @@ struct Vehicle : SpriteBase
     uint16_t var_44;
     uint16_t mass;
     uint16_t update_flags;
-    uint8_t swing_sprite;
+    uint8_t SwingSprite;
     StationIndex current_station;
     union
     {
-        int16_t swinging_car_var_0;
+        int16_t SwingPosition;
         int16_t current_time;
         struct
         {
@@ -235,7 +235,7 @@ struct Vehicle : SpriteBase
     };
     union
     {
-        int16_t var_4E;
+        int16_t SwingSpeed;
         int16_t crash_z;
     };
     VEHICLE_STATUS status;

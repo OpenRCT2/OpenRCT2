@@ -483,12 +483,12 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     uint16_t var_44;
     uint16_t mass;         // 0x46
     uint16_t update_flags; // 0x48
-    uint8_t swing_sprite;
+    uint8_t SwingSprite;
     uint8_t current_station; // 0x4B
     union
     {
-        int16_t swinging_car_var_0; // 0x4C
-        int16_t current_time;       // 0x4C
+        int16_t SwingPosition; // 0x4C
+        int16_t current_time;  // 0x4C
         struct
         {
             int8_t ferris_wheel_var_0; // 0x4C
@@ -497,7 +497,7 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t var_4E;
+        int16_t SwingSpeed;
         int16_t crash_z; // 0x4E
     };
     uint8_t status;                  // 0x50

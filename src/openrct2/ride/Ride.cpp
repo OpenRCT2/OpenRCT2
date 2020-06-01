@@ -4367,9 +4367,9 @@ static Vehicle* vehicle_create_car(
     vehicle->powered_acceleration = vehicleEntry->powered_acceleration;
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->swing_sprite = 0;
-    vehicle->swinging_car_var_0 = 0;
-    vehicle->var_4E = 0;
+    vehicle->SwingSprite = 0;
+    vehicle->SwingPosition = 0;
+    vehicle->SwingSpeed = 0;
     vehicle->restraints_position = 0;
     vehicle->spin_sprite = 0;
     vehicle->spin_speed = 0;
@@ -4794,7 +4794,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
             {
                 car->velocity = 0;
                 car->acceleration = 0;
-                car->swing_sprite = 0;
+                car->SwingSprite = 0;
                 car->remaining_distance += 13962;
 
                 uint16_t spriteIndex = car->next_vehicle_on_train;

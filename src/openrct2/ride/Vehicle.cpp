@@ -1473,9 +1473,9 @@ bool Vehicle::OpenRestraints()
     {
         vehicle = GET_VEHICLE(vehicle_id);
 
-        vehicle->swinging_car_var_0 = 0;
-        vehicle->var_4E = 0;
-        vehicle->swing_sprite = 0;
+        vehicle->SwingPosition = 0;
+        vehicle->SwingSpeed = 0;
+        vehicle->SwingSprite = 0;
 
         auto curRide = get_ride(vehicle->ride);
         if (curRide == nullptr)
@@ -3629,7 +3629,7 @@ void Vehicle::UpdateCollisionSetup()
         train->MoveTo({ train->x, train->y, train->z });
         invalidate_sprite_2(train);
 
-        train->var_4E = 0;
+        train->SwingSpeed = 0;
     }
 
     (GET_VEHICLE(prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
@@ -6940,15 +6940,15 @@ int32_t Vehicle::GetSwingAmount() const
 void Vehicle::UpdateSwingingCar()
 {
     int32_t dword_F64E08 = abs(_vehicleVelocityF64E08);
-    var_4E += (-swinging_car_var_0) >> 6;
+    SwingSpeed += (-SwingPosition) >> 6;
     int32_t swingAmount = GetSwingAmount();
     if (swingAmount < 0)
     {
-        var_4E -= dword_F64E08 >> (-swingAmount);
+        SwingSpeed -= dword_F64E08 >> (-swingAmount);
     }
     else if (swingAmount > 0)
     {
-        var_4E += dword_F64E08 >> swingAmount;
+        SwingSpeed += dword_F64E08 >> swingAmount;
     }
 
     auto vehicleEntry = Entry();
@@ -7008,21 +7008,21 @@ void Vehicle::UpdateSwingingCar()
         }
     }
 
-    swinging_car_var_0 += var_4E;
-    var_4E -= var_4E >> 5;
-    int16_t ax = swinging_car_var_0;
+    SwingPosition += SwingSpeed;
+    SwingSpeed -= SwingSpeed >> 5;
+    int16_t ax = SwingPosition;
     if (ax > dx)
     {
         ax = dx;
-        var_4E = 0;
+        SwingSpeed = 0;
     }
     if (ax < cx)
     {
         ax = cx;
-        var_4E = 0;
+        SwingSpeed = 0;
     }
 
-    swinging_car_var_0 = ax;
+    SwingPosition = ax;
     uint8_t swingSprite = 11;
     if (ax >= -10012)
     {
@@ -7072,9 +7072,9 @@ void Vehicle::UpdateSwingingCar()
             }
         }
     }
-    if (swingSprite != swing_sprite)
+    if (swingSprite != SwingSprite)
     {
-        swing_sprite = swingSprite;
+        SwingSprite = swingSprite;
         Invalidate();
     }
 }
@@ -8322,9 +8322,9 @@ loc_6DAEB9:
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
         {
-            swing_sprite = 0;
-            swinging_car_var_0 = 0;
-            var_4E = 0;
+            SwingSprite = 0;
+            SwingPosition = 0;
+            SwingSpeed = 0;
         }
 
         // this == frontVehicle
@@ -8630,9 +8630,9 @@ loc_6DBA33:;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
         {
-            swing_sprite = 0;
-            swinging_car_var_0 = 0;
-            var_4E = 0;
+            SwingSprite = 0;
+            SwingPosition = 0;
+            SwingSpeed = 0;
         }
 
         if (this == _vehicleFrontVehicle)
@@ -9032,9 +9032,9 @@ loc_6DC743:
     {
         if (vehicle->vehicle_sprite_type != 0)
         {
-            vehicle->swing_sprite = 0;
-            vehicle->swinging_car_var_0 = 0;
-            vehicle->var_4E = 0;
+            vehicle->SwingSprite = 0;
+            vehicle->SwingPosition = 0;
+            vehicle->SwingSpeed = 0;
         }
     }
 
@@ -9186,9 +9186,9 @@ loc_6DCC2C:
     {
         if (vehicle->vehicle_sprite_type != 0)
         {
-            vehicle->swing_sprite = 0;
-            vehicle->swinging_car_var_0 = 0;
-            vehicle->var_4E = 0;
+            vehicle->SwingSprite = 0;
+            vehicle->SwingPosition = 0;
+            vehicle->SwingSpeed = 0;
         }
     }
 

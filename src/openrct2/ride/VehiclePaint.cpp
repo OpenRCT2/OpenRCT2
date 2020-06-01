@@ -958,7 +958,7 @@ static void vehicle_sprite_paint_6D520E(
     paint_session* session, const Vehicle* vehicle, int32_t ebx, int32_t ecx, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    vehicle_sprite_paint(session, vehicle, ebx + vehicle->swing_sprite, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(session, vehicle, ebx + vehicle->SwingSprite, ecx, z, vehicleEntry);
 }
 
 // 6D51EB
@@ -974,7 +974,7 @@ static void vehicle_sprite_paint_6D51EB(
     {
         ebx = ebx / 8;
     }
-    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->swing_sprite + vehicleEntry->base_image_id;
+    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->SwingSprite + vehicleEntry->base_image_id;
     vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
 }
 

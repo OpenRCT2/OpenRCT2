@@ -54,7 +54,7 @@ void vehicle_visual_submarine(
         }
         baseImage_id *= vehicleEntry->base_num_frames;
         baseImage_id += vehicleEntry->base_image_id;
-        baseImage_id += vehicle->swing_sprite;
+        baseImage_id += vehicle->SwingSprite;
     }
 
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
