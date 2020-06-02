@@ -112,6 +112,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t SelectedIndex{};
         bool IsChecked{};
         bool IsDisabled{};
+        bool IsPressed{};
         bool HasBorder{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
@@ -149,16 +150,13 @@ namespace OpenRCT2::Ui::Windows
                     result.Text = ProcessString(desc["text"]);
                     result.HasBorder = true;
                 }
+                result.IsPressed = AsOrDefault(desc["isPressed"], false);
                 result.OnClick = desc["onClick"];
             }
             else if (result.Type == "checkbox")
             {
                 result.Text = ProcessString(desc["text"]);
-                auto dukIsChecked = desc["isChecked"];
-                if (dukIsChecked.type() == DukValue::Type::BOOLEAN)
-                {
-                    result.IsChecked = dukIsChecked.as_bool();
-                }
+                result.IsChecked = AsOrDefault(desc["isChecked"], false);
                 result.OnChange = desc["onChange"];
             }
             else if (result.Type == "dropdown")
@@ -820,6 +818,10 @@ namespace OpenRCT2::Ui::Windows
                 widget.type = WWT_BUTTON;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            }
+            if (desc.IsPressed)
+            {
+                widget.flags |= WIDGET_FLAGS::IS_PRESSED;
             }
             widgetList.push_back(widget);
         }
