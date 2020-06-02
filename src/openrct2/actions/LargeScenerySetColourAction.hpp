@@ -129,6 +129,11 @@ private:
                 }
             }
 
+            if (!LocationValid(currentTile))
+            {
+                return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            }
+
             auto tileElement = map_get_large_scenery_segment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
 
             if (tileElement == nullptr)

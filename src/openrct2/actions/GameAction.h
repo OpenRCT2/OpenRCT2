@@ -315,7 +315,7 @@ public:
      */
     virtual GameActionResult::Ptr Execute() const abstract;
 
-    bool LocationValid(const CoordsXY& coords);
+    bool LocationValid(const CoordsXY& coords) const;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

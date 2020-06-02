@@ -556,7 +556,7 @@ namespace GameActions
     }
 } // namespace GameActions
 
-bool GameAction::LocationValid(const CoordsXY& coords)
+bool GameAction::LocationValid(const CoordsXY& coords) const
 {
     auto result = map_is_location_valid(coords);
     if (!result)
@@ -569,7 +569,9 @@ bool GameAction::LocationValid(const CoordsXY& coords)
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("playerId", _playerId);
+        obj.Set("x", coords.x);
+        obj.Set("y", coords.y);
+        obj.Set("player", _playerId);
         obj.Set("type", _type);
 
         auto flags = GetActionFlags();

@@ -60,6 +60,11 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
         }
 
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
+        }
+
         Peep* const peep = GET_PEEP(_spriteId);
         if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
         {

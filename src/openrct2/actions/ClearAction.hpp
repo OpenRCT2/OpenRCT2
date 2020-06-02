@@ -102,7 +102,7 @@ private:
         {
             for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
             {
-                if (MapCanClearAt({ x, y }))
+                if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
                 {
                     auto cost = ClearSceneryFromTile({ x, y }, executing);
                     if (cost != MONEY32_UNDEFINED)

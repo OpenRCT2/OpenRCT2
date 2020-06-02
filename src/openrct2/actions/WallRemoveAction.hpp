@@ -44,7 +44,7 @@ public:
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
 
-        if (!map_is_location_valid(_loc))
+        if (!LocationValid(_loc))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);

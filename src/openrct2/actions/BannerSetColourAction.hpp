@@ -62,7 +62,7 @@ private:
         res->Position.z = _loc.z;
         res->ErrorTitle = STR_CANT_REPAINT_THIS;
 
-        if (_loc.x < 0 || _loc.y < 0 || _loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY)
+        if (!LocationValid(_loc))
         {
             log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);

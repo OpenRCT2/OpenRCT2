@@ -97,6 +97,10 @@ public:
                 }
             }
 
+            if (!LocationValid(currentTile))
+            {
+                return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            }
             // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
             // scenery tile elements.
             if (flags & GAME_COMMAND_FLAG_PATH_SCENERY)

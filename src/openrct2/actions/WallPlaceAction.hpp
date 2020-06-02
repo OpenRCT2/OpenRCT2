@@ -112,6 +112,11 @@ public:
             res->Position.z = tile_element_height(res->Position);
         }
 
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED);
+        }
+
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY)
             && !gCheatsSandboxMode)
         {

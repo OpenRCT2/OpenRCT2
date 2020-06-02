@@ -65,7 +65,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
-        if (_loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32) || _loc.y >= (gMapSizeUnits - 32))
+        if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
+            || _loc.y >= (gMapSizeUnits - 32))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);

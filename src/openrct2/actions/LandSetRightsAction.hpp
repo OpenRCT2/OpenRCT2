@@ -112,6 +112,8 @@ private:
         {
             for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
+                if (!LocationValid({ x, y }))
+                    continue;
                 auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
                 if (result->Error == GA_ERROR::OK)
                 {
