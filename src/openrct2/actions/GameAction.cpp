@@ -18,6 +18,8 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/Duktape.hpp"
+#include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -552,5 +554,35 @@ namespace GameActions
     {
         return ExecuteInternal(action, false);
     }
-
 } // namespace GameActions
+
+bool GameAction::LocationValid(const CoordsXY& coords)
+{
+    auto result = map_is_location_valid(coords);
+    if (!result)
+        return false;
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("playerId", _playerId);
+        obj.Set("type", _type);
+
+        auto flags = GetActionFlags();
+        obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION, e, true);
+
+        auto scriptResult = OpenRCT2::Scripting::AsOrDefault(e["result"], true);
+
+        return scriptResult;
+    }
+#endif
+    return true;
+}
