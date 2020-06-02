@@ -503,8 +503,9 @@ enum
     RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
     RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED = 1 << 16,
     RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
-    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,   // Used for the Award for Best Custom-designed Rides
-    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19 // Not used anymore
+    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,    // Used for the Award for Best Custom-designed Rides
+    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
+    RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
 };
 
 // Constants used by the ride_type->flags property at 0x008

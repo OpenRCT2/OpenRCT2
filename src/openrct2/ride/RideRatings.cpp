@@ -163,7 +163,7 @@ static void ride_ratings_update_state_0()
     }
 
     auto ride = get_ride(currentRide);
-    if (ride != nullptr && ride->status != RIDE_STATUS_CLOSED)
+    if (ride != nullptr && ride->status != RIDE_STATUS_CLOSED && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_INITIALISE;
     }
