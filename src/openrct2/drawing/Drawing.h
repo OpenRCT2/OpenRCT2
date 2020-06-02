@@ -142,6 +142,28 @@ enum : uint32_t
     // REMAP_2_PLUS = REMAP 3
 };
 
+using DrawBlendOp = uint8_t;
+
+constexpr DrawBlendOp BLEND_NONE = 0;
+
+/**
+ * Only supported by BITMAP. RLE images always encode transparency via the encoding.
+ * Pixel value of 0 represents transparent.
+ */
+constexpr DrawBlendOp BLEND_TRANSPARENT = 1 << 0;
+
+/**
+ * Whether to use the pixel value from the source image.
+ * This is usually only unset for glass images where there the src is only a transparency mask.
+ */
+constexpr DrawBlendOp BLEND_SRC = 1 << 1;
+
+/**
+ * Whether to use the pixel value of the destination image for blending.
+ * This is used for any image that filters the target image, e.g. glass or water.
+ */
+constexpr DrawBlendOp BLEND_DST = 2 << 2;
+
 enum
 {
     INSET_RECT_FLAG_FILL_GREY = (1 << 2),         // 0x04
@@ -492,6 +514,34 @@ public:
     void Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length);
 };
 
+struct DrawSpriteArgs
+{
+    rct_drawpixelinfo* DPI;
+    ImageId Image;
+    const PaletteMap& PalMap;
+    const rct_g1_element& SourceImage;
+    int32_t SrcX;
+    int32_t SrcY;
+    int32_t Width;
+    int32_t Height;
+    uint8_t* DestinationBits;
+
+    DrawSpriteArgs(
+        rct_drawpixelinfo* dpi, ImageId image, const PaletteMap& palMap, const rct_g1_element& sourceImage, int32_t srcX,
+        int32_t srcY, int32_t width, int32_t height, uint8_t* destinationBits)
+        : DPI(dpi)
+        , Image(image)
+        , PalMap(palMap)
+        , SourceImage(sourceImage)
+        , SrcX(srcX)
+        , SrcY(srcY)
+        , Width(width)
+        , Height(height)
+        , DestinationBits(destinationBits)
+    {
+    }
+};
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
 #define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId)                                                                     \
     (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | (((primaryId) << 19) | ((secondaryId) << 24)))
@@ -576,13 +626,9 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
 void gfx_object_check_all_images_freed();
 size_t ImageListGetUsedCount();
 size_t ImageListGetMaximum();
-void FASTCALL gfx_bmp_sprite_to_buffer(
-    const PaletteMap& paletteMap, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId);
-void FASTCALL gfx_rle_sprite_to_buffer(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const PaletteMap& RESTRICT paletteMap,
-    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
-    int32_t width);
+void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args);
+void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args);
+void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, const PaletteMap& paletteMap);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);

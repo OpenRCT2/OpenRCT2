@@ -219,18 +219,9 @@ static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath
     dpi.pitch = 0;
     dpi.zoom_level = 0;
 
-    if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
-    {
-        gfx_rle_sprite_to_buffer(
-            spriteHeader->offset, pixels, PaletteMap::GetDefault(), &dpi, ImageId(), 0, spriteHeader->height, 0,
-            spriteHeader->width);
-    }
-    else
-    {
-        gfx_bmp_sprite_to_buffer(
-            PaletteMap::GetDefault(), spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
-            spriteHeader->width, ImageId());
-    }
+    DrawSpriteArgs args(
+        &dpi, ImageId(), PaletteMap::GetDefault(), *spriteHeader, 0, 0, spriteHeader->width, spriteHeader->height, pixels);
+    gfx_sprite_to_buffer(args);
 
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
