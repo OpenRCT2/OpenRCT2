@@ -979,7 +979,9 @@ static void window_map_show_default_scenario_editor_buttons(rct_window* w)
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         w->widgets[WIDX_MAP_GENERATOR].type = WWT_BUTTON;
 
-    set_format_arg(2, uint16_t, gMapSize - 2);
+    auto ft = Formatter::Common();
+    ft.Increment(2);
+    ft.Add<uint16_t>(gMapSize - 2);
 }
 
 static void window_map_inputsize_land(rct_window* w)

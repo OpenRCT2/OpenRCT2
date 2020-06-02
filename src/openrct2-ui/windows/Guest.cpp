@@ -1697,7 +1697,8 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-    set_format_arg(0, rct_string_id, STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
     if (peep->FavouriteRide != RIDE_ID_NULL)
     {
         auto ride = get_ride(peep->FavouriteRide);
@@ -1778,25 +1779,29 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Cash in pocket
-    set_format_arg(0, money32, peep->cash_in_pocket);
+    auto ft = Formatter::Common();
+    ft.Add<money32>(peep->cash_in_pocket);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Cash spent
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->cash_spent);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->cash_spent);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     y += LIST_ROW_HEIGHT * 2;
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
-    set_format_arg(0, money32, peep->PaidToEnter);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidToEnter);
     gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Paid on rides
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->PaidOnRides);
-    set_format_arg(4, uint16_t, peep->no_of_rides);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidOnRides);
+    ft.Add<uint16_t>(peep->no_of_rides);
     if (peep->no_of_rides != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1808,8 +1813,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on food
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->PaidOnFood);
-    set_format_arg(4, uint16_t, peep->AmountOfFood);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidOnFood);
+    ft.Add<uint16_t>(peep->AmountOfFood);
     if (peep->AmountOfFood != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1821,8 +1827,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on drinks
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->paid_on_drink);
-    set_format_arg(4, uint16_t, peep->AmountOfDrinks);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->paid_on_drink);
+    ft.Add<uint16_t>(peep->AmountOfDrinks);
     if (peep->AmountOfDrinks != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1834,8 +1841,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on souvenirs
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->PaidOnSouvenirs);
-    set_format_arg(4, uint16_t, peep->AmountOfSouvenirs);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidOnSouvenirs);
+    ft.Add<uint16_t>(peep->AmountOfSouvenirs);
     if (peep->AmountOfSouvenirs != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -2083,7 +2091,8 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                                         w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
     {
-        set_format_arg(0, uint32_t, peep->sprite_index);
+        auto ft = Formatter::Common();
+        ft.Add<uint32_t>(peep->sprite_index);
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
     }
     screenCoords.y += LIST_ROW_HEIGHT;

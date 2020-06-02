@@ -832,7 +832,9 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
-            set_format_arg(0, uintptr_t, _sequenceName);
+        {
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(_sequenceName);
             gfx_draw_string_left(
                 dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1], w->windowPos.x + 10,
                 w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
@@ -843,6 +845,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
                     - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4);
             break;
+        }
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:

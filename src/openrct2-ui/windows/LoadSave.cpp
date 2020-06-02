@@ -716,7 +716,8 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
     // Draw path text
-    set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(buffer));
+    auto ft = Formatter::Common();
+    ft.Add<uintptr_t>(Platform::StrDecompToPrecomp(buffer));
     gfx_draw_string_left_clipped(
         dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8);
 
@@ -1236,8 +1237,9 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, char*, _window_overwrite_prompt_name);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
     gfx_draw_string_centred_wrapped(

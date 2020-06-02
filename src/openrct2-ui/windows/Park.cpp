@@ -1627,7 +1627,8 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         else
         {
             // Objective completed
-            set_format_arg(0, money32, gScenarioCompletedCompanyValue);
+            ft = Formatter::Common();
+            ft.Add<money32>(gScenarioCompletedCompanyValue);
             gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
         }
     }

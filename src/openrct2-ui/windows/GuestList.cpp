@@ -725,7 +725,8 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         x = w->windowPos.x + 4;
         y = w->windowPos.y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
-        set_format_arg(0, int32_t, static_cast<int32_t>(GuestList.size()));
+        auto ft = Formatter::Common();
+        ft.Add<int32_t>(static_cast<int32_t>(GuestList.size()));
         gfx_draw_string_left(
             dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
             COLOUR_BLACK, x, y);
@@ -846,8 +847,9 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 414);
 
                     // Draw guest count
-                    set_format_arg(0, rct_string_id, STR_GUESTS_COUNT_COMMA_SEP);
-                    set_format_arg(2, uint32_t, numGuests);
+                    auto ft = Formatter::Common();
+                    ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
+                    ft.Add<uint32_t>(numGuests);
                     gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 326, y);
                 }
                 y += SUMMARISED_GUEST_ROW_HEIGHT;

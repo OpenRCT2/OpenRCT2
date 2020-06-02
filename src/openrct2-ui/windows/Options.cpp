@@ -2069,7 +2069,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos.x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
                 w->windowPos.y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
-            set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
+            auto ft = Formatter::Common();
+            ft.Add<uintptr_t>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
             rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
@@ -2118,7 +2119,8 @@ static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, r
         }
         else
         {
-            set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(gConfigGeneral.rct1_path));
+            auto ft = Formatter::Common();
+            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(gConfigGeneral.rct1_path));
         }
     }
 }
