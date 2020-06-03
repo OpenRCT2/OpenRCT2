@@ -576,6 +576,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
 
         auto flags = GetActionFlags();
         obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
+        obj.Set("result", true);
 
         // Call the subscriptions
         auto e = obj.Take();

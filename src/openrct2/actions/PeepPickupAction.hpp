@@ -60,7 +60,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
         }
 
-        if (!LocationValid(_loc))
+        if (!_loc.isNull() && !LocationValid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
         }
