@@ -1254,10 +1254,13 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
             }
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+        {
             sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
-            set_format_arg<rct_string_id>(res.ErrorMessageArgs.data(), 0, sceneryEntry->name);
+            auto ft = Formatter(res.ErrorMessageArgs.data());
+            ft.Add<rct_string_id>(sceneryEntry->name);
             break;
+        }
         case TILE_ELEMENT_TYPE_ENTRANCE:
             switch (tileElement->AsEntrance()->GetEntranceType())
             {
@@ -1273,15 +1276,21 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
             }
             break;
         case TILE_ELEMENT_TYPE_WALL:
+        {
             sceneryEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
-            set_format_arg<rct_string_id>(res.ErrorMessageArgs.data(), 0, sceneryEntry->name);
+            auto ft = Formatter(res.ErrorMessageArgs.data());
+            ft.Add<rct_string_id>(sceneryEntry->name);
             break;
+        }
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        {
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
-            set_format_arg<rct_string_id>(res.ErrorMessageArgs.data(), 0, sceneryEntry->name);
+            auto ft = Formatter(res.ErrorMessageArgs.data());
+            ft.Add<rct_string_id>(sceneryEntry->name);
             break;
+        }
     }
 }
 

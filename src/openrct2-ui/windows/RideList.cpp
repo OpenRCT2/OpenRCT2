@@ -609,6 +609,8 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 }, 159);
 
         // Ride information
+        auto ft = Formatter::Common();
+        ft.Increment(2);
         auto formatSecondaryEnabled = true;
         rct_string_id formatSecondary = 0;
         switch (_window_ride_list_information_type)
@@ -628,7 +630,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 if (ride->popularity != 255)
                 {
                     formatSecondary = STR_POPULARITY_LABEL;
-                    set_format_arg(2, uint16_t, ride->popularity * 4);
+                    ft.Add<uint16_t>(ride->popularity * 4);
                 }
                 break;
             case INFORMATION_TYPE_SATISFACTION:
@@ -636,7 +638,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 if (ride->satisfaction != 255)
                 {
                     formatSecondary = STR_SATISFACTION_LABEL;
-                    set_format_arg(2, uint16_t, ride->satisfaction * 5);
+                    ft.Add<uint16_t>(ride->satisfaction * 5);
                 }
                 break;
             case INFORMATION_TYPE_PROFIT:
@@ -644,24 +646,24 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 if (ride->profit != MONEY32_UNDEFINED)
                 {
                     formatSecondary = STR_PROFIT_LABEL;
-                    set_format_arg(2, int32_t, ride->profit);
+                    ft.Add<int32_t>(ride->profit);
                 }
                 break;
             case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                 formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
-                set_format_arg(2, uint32_t, ride->total_customers);
+                ft.Add<uint32_t>(ride->total_customers);
                 break;
             case INFORMATION_TYPE_TOTAL_PROFIT:
                 formatSecondary = 0;
                 if (ride->total_profit != MONEY32_UNDEFINED)
                 {
                     formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
-                    set_format_arg(2, int32_t, ride->total_profit);
+                    ft.Add<int32_t>(ride->total_profit);
                 }
                 break;
             case INFORMATION_TYPE_CUSTOMERS:
                 formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
-                set_format_arg(2, uint32_t, ride_customers_per_hour(ride));
+                ft.Add<uint32_t>(ride_customers_per_hour(ride));
                 break;
             case INFORMATION_TYPE_AGE:
             {
@@ -678,7 +680,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                         formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL;
                         break;
                 }
-                set_format_arg(2, int16_t, age);
+                ft.Add<int16_t>(age);
                 break;
             }
             case INFORMATION_TYPE_INCOME:
@@ -686,7 +688,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 if (ride->income_per_hour != MONEY32_UNDEFINED)
                 {
                     formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
-                    set_format_arg(2, int32_t, ride->income_per_hour);
+                    ft.Add<int32_t>(ride->income_per_hour);
                 }
                 break;
             case INFORMATION_TYPE_RUNNING_COST:
@@ -694,11 +696,11 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 if (ride->upkeep_cost != MONEY16_UNDEFINED)
                 {
                     formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
-                    set_format_arg(2, int32_t, ride->upkeep_cost * 16);
+                    ft.Add<int32_t>(ride->upkeep_cost * 16);
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_LENGTH:
-                set_format_arg(2, uint16_t, ride->GetTotalQueueLength());
+                ft.Add<uint16_t>(ride->GetTotalQueueLength());
                 formatSecondary = STR_QUEUE_EMPTY;
                 {
                     uint16_t arg;
@@ -711,7 +713,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_TIME:
-                set_format_arg(2, uint16_t, ride->GetMaxQueueTime());
+                ft.Add<uint16_t>(ride->GetMaxQueueTime());
                 formatSecondary = STR_QUEUE_TIME_LABEL;
                 {
                     uint16_t arg;
@@ -722,18 +724,18 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
             case INFORMATION_TYPE_RELIABILITY:
-                set_format_arg(2, uint16_t, ride->reliability_percentage);
+                ft.Add<uint16_t>(ride->reliability_percentage);
                 formatSecondary = STR_RELIABILITY_LABEL;
                 break;
             case INFORMATION_TYPE_DOWN_TIME:
-                set_format_arg(2, uint16_t, ride->downtime);
+                ft.Add<uint16_t>(ride->downtime);
                 formatSecondary = STR_DOWN_TIME_LABEL;
                 break;
             case INFORMATION_TYPE_GUESTS_FAVOURITE:
                 formatSecondary = 0;
                 if (ride->IsRide())
                 {
-                    set_format_arg(2, uint16_t, ride->guests_favourite);
+                    ft.Add<uint16_t>(ride->guests_favourite);
                     formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
                                                                   : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                 }
@@ -742,7 +744,8 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         if (formatSecondaryEnabled)
         {
-            set_format_arg(0, rct_string_id, formatSecondary);
+            ft.Increment(-ft.NumBytes());
+            ft.Add<rct_string_id>(formatSecondary);
         }
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 160, y - 1 }, 157);
         y += SCROLLABLE_ROW_HEIGHT;

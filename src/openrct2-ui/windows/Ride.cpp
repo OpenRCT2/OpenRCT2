@@ -2884,7 +2884,6 @@ static rct_string_id window_ride_get_status(rct_window* w, void* arguments)
 static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
-    rct_string_id stringId;
 
     window_draw_widgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
@@ -2902,21 +2901,24 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride == nullptr)
         return;
 
-    stringId = STR_OVERALL_VIEW;
+    auto ft = Formatter::Common();
     if (w->ride.view != 0)
     {
-        stringId = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number;
         if (w->ride.view > ride->num_vehicles)
         {
-            set_format_arg(2, uint16_t, w->ride.view - ride->num_vehicles);
-            stringId = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number;
+            ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number);
+            ft.Add<uint16_t>(w->ride.view - ride->num_vehicles);
         }
         else
         {
-            set_format_arg(2, uint16_t, w->ride.view);
+            ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
+            ft.Add<uint16_t>(w->ride.view);
         }
     }
-    set_format_arg(0, uint16_t, stringId);
+    else
+    {
+        ft.Add<rct_string_id>(STR_OVERALL_VIEW);
+    }
 
     widget = &window_ride_main_widgets[WIDX_VIEW];
     gfx_draw_string_centred(
@@ -3105,33 +3107,33 @@ static void window_ride_vehicle_invalidate(rct_window* w)
         window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WWT_EMPTY;
     }
 
-    set_format_arg(6, uint16_t, carsPerTrain);
+    auto ft = Formatter::Common();
+    ft.Increment(6);
+    ft.Add<uint16_t>(carsPerTrain);
     RIDE_COMPONENT_TYPE vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
     stringId = RideComponentNames[vehicleType].count;
     if (ride->num_vehicles > 1)
     {
         stringId = RideComponentNames[vehicleType].count_plural;
     }
-    set_format_arg(8, rct_string_id, stringId);
-    set_format_arg(10, uint16_t, ride->num_vehicles);
+    ft.Add<rct_string_id>(stringId);
+    ft.Add<uint16_t>(ride->num_vehicles);
 
     stringId = RideComponentNames[vehicleType].count;
     if (ride->max_trains > 1)
     {
         stringId = RideComponentNames[vehicleType].count_plural;
     }
-    set_format_arg(12, rct_string_id, stringId);
-    set_format_arg(14, uint16_t, ride->max_trains);
-
-    set_format_arg(16, uint16_t, std::max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
+    ft.Add<rct_string_id>(stringId);
+    ft.Add<uint16_t>(ride->max_trains);
+    ft.Add<uint16_t>(std::max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
 
     stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].singular;
     if ((ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars > 1)
     {
         stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].plural;
     }
-
-    set_format_arg(18, rct_string_id, stringId);
+    ft.Add<rct_string_id>(stringId);
 
     window_ride_anchor_border_widgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
@@ -3664,7 +3666,9 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WWT_BUTTON;
-        set_format_arg(20, uint16_t, ride->lift_hill_speed);
+        auto ft = Formatter::Common();
+        ft.Increment(20);
+        ft.Add<uint16_t>(ride->lift_hill_speed);
     }
     else
     {
@@ -3681,7 +3685,9 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WWT_BUTTON;
-        set_format_arg(22, uint16_t, ride->num_circuits);
+        auto ft = Formatter::Common();
+        ft.Increment(22);
+        ft.Add<uint16_t>(ride->num_circuits);
     }
     else
     {
@@ -3745,10 +3751,12 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WWT_BUTTON;
 
-        set_format_arg(10, rct_string_id, STR_FORMAT_SECONDS);
-        set_format_arg(12, uint16_t, ride->min_waiting_time);
-        set_format_arg(14, rct_string_id, STR_FORMAT_SECONDS);
-        set_format_arg(16, uint16_t, ride->max_waiting_time);
+        auto ft = Formatter::Common();
+        ft.Increment(10);
+        ft.Add<rct_string_id>(STR_FORMAT_SECONDS);
+        ft.Add<uint16_t>(ride->min_waiting_time);
+        ft.Add<rct_string_id>(STR_FORMAT_SECONDS);
+        ft.Add<uint16_t>(ride->max_waiting_time);
 
         if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
             w->pressed_widgets |= (1 << WIDX_LOAD_CHECKBOX);
@@ -3780,26 +3788,31 @@ static void window_ride_operating_invalidate(rct_window* w)
         w->pressed_widgets |= (1 << WIDX_MAXIMUM_LENGTH_CHECKBOX);
 
     // Mode specific functionality
-    set_format_arg(18, uint16_t, ride->operation_option);
+    auto ft = Formatter::Common();
+    ft.Increment(18);
+    ft.Add<uint16_t>(ride->operation_option);
     switch (ride->mode)
     {
         case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
         case RIDE_MODE_POWERED_LAUNCH:
         case RIDE_MODE_UPWARD_LAUNCH:
         case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-            set_format_arg(18, uint16_t, (ride->launch_speed * 9) / 4);
+            ft.Increment(-ft.NumBytes() + 18);
+            ft.Add<uint16_t>((ride->launch_speed * 9) / 4);
             format = STR_RIDE_MODE_SPEED_VALUE;
             caption = STR_LAUNCH_SPEED;
             tooltip = STR_LAUNCH_SPEED_TIP;
             break;
         case RIDE_MODE_STATION_TO_STATION:
-            set_format_arg(18, uint16_t, (ride->speed * 9) / 4);
+            ft.Increment(-ft.NumBytes() + 18);
+            ft.Add<uint16_t>((ride->speed * 9) / 4);
             format = STR_RIDE_MODE_SPEED_VALUE;
             caption = STR_SPEED;
             tooltip = STR_SPEED_TIP;
             break;
         case RIDE_MODE_RACE:
-            set_format_arg(18, uint16_t, ride->num_laps);
+            ft.Increment(-ft.NumBytes() + 18);
+            ft.Add<uint16_t>(ride->num_laps);
             format = STR_NUMBER_OF_LAPS_VALUE;
             caption = STR_NUMBER_OF_LAPS;
             tooltip = STR_NUMBER_OF_LAPS_TIP;
@@ -3836,7 +3849,9 @@ static void window_ride_operating_invalidate(rct_window* w)
         {
             uint16_t arg;
             std::memcpy(&arg, gCommonFormatArgs + 18, sizeof(uint16_t));
-            set_format_arg(18, uint16_t, arg * 3);
+            ft = Formatter::Common();
+            ft.Increment(18);
+            ft.Add<uint16_t>(arg * 3);
         }
 
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_LABEL;
@@ -5750,8 +5765,9 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
         {
             // Excitement
             rct_string_id ratingName = get_rating_name(ride->excitement);
-            set_format_arg(0, uint32_t, ride->excitement);
-            set_format_arg(4, rct_string_id, ratingName);
+            auto ft = Formatter::Common();
+            ft.Add<uint32_t>(ride->excitement);
+            ft.Add<rct_string_id>(ratingName);
             rct_string_id stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
                                                                                : STR_EXCITEMENT_RATING;
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -5759,8 +5775,9 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
 
             // Intensity
             ratingName = get_rating_name(ride->intensity);
-            set_format_arg(0, uint32_t, ride->intensity);
-            set_format_arg(4, rct_string_id, ratingName);
+            ft = Formatter::Common();
+            ft.Add<uint32_t>(ride->intensity);
+            ft.Add<rct_string_id>(ratingName);
 
             stringId = STR_INTENSITY_RATING;
             if (ride->excitement == RIDE_RATING_UNDEFINED)
@@ -5773,8 +5790,9 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
 
             // Nausea
             ratingName = get_rating_name(ride->nausea);
-            set_format_arg(0, uint32_t, ride->nausea);
-            set_format_arg(4, rct_string_id, ratingName);
+            ft = Formatter::Common();
+            ft.Add<uint32_t>(ride->nausea);
+            ft.Add<rct_string_id>(ratingName);
             stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
             y += 2 * LIST_ROW_HEIGHT;
@@ -5804,38 +5822,42 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     y += LIST_ROW_HEIGHT;
 
                     // Ride time
+                    ft = Formatter::Common();
                     int32_t numTimes = 0;
                     for (int32_t i = 0; i < ride->num_stations; i++)
                     {
                         time = ride->stations[numTimes].SegmentTime;
                         if (time != 0)
                         {
-                            set_format_arg(0 + (numTimes * 4), uint16_t, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
-                            set_format_arg(2 + (numTimes * 4), uint16_t, time);
+                            ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
+                            ft.Add<uint16_t>(time);
                             numTimes++;
                         }
                     }
                     if (numTimes == 0)
                     {
-                        set_format_arg(0, rct_string_id, STR_RIDE_TIME_ENTRY);
-                        set_format_arg(2, uint16_t, 0);
+                        ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY);
+                        ft.Add<uint16_t>(0);
                         numTimes++;
                     }
                     else
                     {
                         // sadly, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
                         // therefore we set the last entry to use the no-separator format now, post-format
-                        set_format_arg(0 + ((numTimes - 1) * 4), uint16_t, STR_RIDE_TIME_ENTRY);
+                        ft.Increment(-ft.NumBytes() + ((numTimes - 1) * 4));
+                        ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY);
                     }
-                    set_format_arg(0 + (numTimes * 4), uint16_t, 0);
-                    set_format_arg(2 + (numTimes * 4), uint16_t, 0);
-                    set_format_arg(4 + (numTimes * 4), uint16_t, 0);
-                    set_format_arg(6 + (numTimes * 4), uint16_t, 0);
+                    ft.Increment(-ft.NumBytes() + (numTimes * 4));
+                    ft.Add<uint16_t>(0);
+                    ft.Add<uint16_t>(0);
+                    ft.Add<uint16_t>(0);
+                    ft.Add<uint16_t>(0);
                     gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 308);
                     y += LIST_ROW_HEIGHT;
                 }
 
                 // Ride length
+                ft = Formatter::Common();
                 int32_t numLengths = 0;
                 for (int32_t i = 0; i < ride->num_stations; i++)
                 {
@@ -5843,27 +5865,29 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     if (length != 0)
                     {
                         length >>= 16;
-                        set_format_arg(0 + (numLengths * 4), uint16_t, STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR);
-                        set_format_arg(2 + (numLengths * 4), uint16_t, (length & 0xFFFF));
+                        ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR);
+                        ft.Add<uint16_t>(length & 0xFFFF);
                         numLengths++;
                     }
                 }
                 if (numLengths == 0)
                 {
-                    set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-                    set_format_arg(2, uint16_t, 0);
+                    ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+                    ft.Add<uint16_t>(0);
                     numLengths++;
                 }
                 else
                 {
                     // sadly, STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
                     // therefore we set the last entry to use the no-separator format now, post-format
-                    set_format_arg(0 + ((numLengths - 1) * 4), rct_string_id, STR_RIDE_LENGTH_ENTRY);
+                    ft.Increment(-ft.NumBytes() + ((numLengths - 1) * 4));
+                    ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
                 }
-                set_format_arg(0 + (numLengths * 4), uint16_t, 0);
-                set_format_arg(2 + (numLengths * 4), uint16_t, 0);
-                set_format_arg(4 + (numLengths * 4), uint16_t, 0);
-                set_format_arg(6 + (numLengths * 4), uint16_t, 0);
+                ft.Increment(-ft.NumBytes() + (numLengths * 4));
+                ft.Add<uint16_t>(0);
+                ft.Add<uint16_t>(0);
+                ft.Add<uint16_t>(0);
+                ft.Add<uint16_t>(0);
                 gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 308);
                 y += LIST_ROW_HEIGHT;
 
@@ -6708,7 +6732,9 @@ static void window_ride_income_invalidate(rct_window* w)
 
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_ARG_6_CURRENCY2DP;
     money16 ridePrimaryPrice = ride_get_price(ride);
-    set_format_arg(6, money32, ridePrimaryPrice);
+    auto ft = Formatter::Common();
+    ft.Increment(6);
+    ft.Add<money32>(ridePrimaryPrice);
     if (ridePrimaryPrice == 0)
         window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
@@ -6758,7 +6784,7 @@ static void window_ride_income_invalidate(rct_window* w)
 
         // Set secondary item price
         window_ride_income_widgets[WIDX_SECONDARY_PRICE].text = STR_RIDE_SECONDARY_PRICE_VALUE;
-        set_format_arg(10, money32, ride->price[1]);
+        ft.Add<money32>(ride->price[1]);
         if (ride->price[1] == 0)
             window_ride_income_widgets[WIDX_SECONDARY_PRICE].text = STR_FREE;
     }
