@@ -13,9 +13,147 @@
 
 #include <cstring>
 
-template<int32_t image_type, int32_t zoom_level> static void FASTCALL DrawRLESpriteMagnify(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
 {
-    // TODO
+    if constexpr (TBlendOp & BLEND_TRANSPARENT)
+    {
+        // Ignore transparent pixels
+        if (*src == 0)
+        {
+            return false;
+        }
+    }
+
+    if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+    {
+        auto pixel = paletteMap.Blend(*src, *dst);
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+    {
+        auto pixel = paletteMap[*src];
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else if constexpr ((TBlendOp & BLEND_DST) != 0)
+    {
+        auto pixel = paletteMap[*dst];
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else
+    {
+        *dst = *src;
+        return true;
+    }
+}
+
+template<DrawBlendOp TBlendOp>
+static void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap, uint8_t zoom, size_t dstPitch)
+{
+    auto yDstSkip = dstPitch - zoom;
+    for (uint8_t yy = 0; yy < zoom; yy++)
+    {
+        for (uint8_t xx = 0; xx < zoom; xx++)
+        {
+            BlitPixel<TBlendOp>(src, dst, paletteMap);
+            dst++;
+        }
+        dst += yDstSkip;
+    }
+}
+
+template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteMagnify(DrawSpriteArgs& args)
+{
+    auto dpi = args.DPI;
+    auto src0 = args.SourceImage.offset;
+    auto dst0 = args.DestinationBits;
+    auto srcX = args.SrcX;
+    auto srcY = args.SrcY;
+    auto width = args.Width;
+    auto height = args.Height;
+    auto& paletteMap = args.PalMap;
+    auto zoom = 1 << TZoom;
+    auto dstLineWidth = (static_cast<size_t>(dpi->width) << TZoom) + dpi->pitch;
+
+    // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
+    if (srcY < 0)
+    {
+        srcY += zoom;
+        height -= zoom;
+        dst0 += dstLineWidth;
+    }
+
+    // For every line in the image
+    for (int32_t i = 0; i < height; i++)
+    {
+        int32_t y = srcY + i;
+
+        // The first part of the source pointer is a list of offsets to different lines
+        // This will move the pointer to the correct source line.
+        uint16_t lineOffset = src0[y * 2] | (src0[y * 2 + 1] << 8);
+        auto nextRun = src0 + lineOffset;
+        auto dstLineStart = dst0 + ((dstLineWidth * i) << TZoom);
+
+        // For every data chunk in the line
+        bool isEndOfLine = false;
+        while (!isEndOfLine)
+        {
+            // Read chunk metadata
+            auto src = nextRun;
+            auto dataSize = *src++;
+            auto firstPixelX = *src++;
+            isEndOfLine = (dataSize & 0x80) != 0;
+            dataSize &= 0x7F;
+
+            // Have our next source pointer point to the next data section
+            nextRun = src + dataSize;
+
+            int32_t x = firstPixelX - srcX;
+            int32_t numPixels = dataSize;
+            if (x < 0)
+            {
+                src += -x;
+                numPixels += x;
+                x = 0;
+            }
+
+            // If the end position is further out than the whole image
+            // end position then we need to shorten the line again
+            numPixels = std::min(numPixels, width - x);
+
+            auto dst = dstLineStart + (static_cast<size_t>(x) << TZoom);
+            while (numPixels > 0)
+            {
+                BlitPixels<TBlendOp>(src, dst, paletteMap, zoom, dstLineWidth);
+                src++;
+                dst += zoom;
+                numPixels--;
+            }
+        }
+    }
 }
 
 template<DrawBlendOp TBlendOp, int32_t zoom_level> static void FASTCALL DrawRLESpriteMinify(DrawSpriteArgs& args)
