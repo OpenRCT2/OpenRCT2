@@ -653,7 +653,9 @@ static void window_finances_summary_invalidate(rct_window* w)
         window_finances_summary_invertscroll(w);
 
     window_finances_set_pressed_tab(w);
-    set_format_arg(6, money32, gBankLoan);
+    auto ft = Formatter::Common();
+    ft.Increment(6);
+    ft.Add<money32>(gBankLoan);
 }
 
 /**

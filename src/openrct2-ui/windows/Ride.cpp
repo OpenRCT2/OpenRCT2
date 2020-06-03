@@ -4954,11 +4954,13 @@ static void window_ride_colour_invalidate(rct_window* w)
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_EMPTY;
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_EMPTY;
         }
-        set_format_arg(6, rct_string_id, VehicleColourSchemeNames[vehicleColourSchemeType]);
-        set_format_arg(8, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
-        set_format_arg(
-            10, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
-        set_format_arg(12, uint16_t, w->vehicleIndex + 1);
+        auto ft = Formatter::Common();
+        ft.Increment(6);
+        ft.Add<rct_string_id>(VehicleColourSchemeNames[vehicleColourSchemeType]);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
+        ft.Add<uint16_t>(w->vehicleIndex + 1);
+
         // Vehicle index
         if (vehicleColourSchemeType != 0)
         {
@@ -4986,7 +4988,9 @@ static void window_ride_colour_invalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
     }
 
-    set_format_arg(14, rct_string_id, ColourSchemeNames[colourScheme]);
+    auto ft = Formatter::Common();
+    ft.Increment(14);
+    ft.Add<rct_string_id>(ColourSchemeNames[colourScheme]);
 
     window_ride_anchor_border_widgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
@@ -6090,9 +6094,10 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
             auto [measurement, message] = ride_get_measurement(ride);
             if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
             {
-                set_format_arg(4, uint16_t, measurement->vehicle_index + 1);
-                set_format_arg(
-                    2, rct_string_id, RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].count);
+                auto ft = Formatter::Common();
+                ft.Increment(2);
+                ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].count);
+                ft.Add<uint16_t>(measurement->vehicle_index + 1);
             }
             else
             {
@@ -7048,8 +7053,9 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     shopItem = ride->GetRideEntry()->shop_item[0];
     if (shopItem != SHOP_ITEM_NONE)
     {
-        set_format_arg(0, rct_string_id, ShopItems[shopItem].Naming.Plural);
-        set_format_arg(2, uint32_t, ride->no_primary_items_sold);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Plural);
+        ft.Add<uint32_t>(ride->no_primary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
@@ -7059,8 +7065,9 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                                                       : ride->GetRideEntry()->shop_item[1];
     if (shopItem != SHOP_ITEM_NONE)
     {
-        set_format_arg(0, rct_string_id, ShopItems[shopItem].Naming.Plural);
-        set_format_arg(2, uint32_t, ride->no_secondary_items_sold);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Plural);
+        ft.Add<uint32_t>(ride->no_secondary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }

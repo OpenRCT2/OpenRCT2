@@ -773,25 +773,30 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // display a marker next to the currently loaded game file
         if (_listItems[i].loaded)
         {
-            set_format_arg(0, rct_string_id, STR_RIGHTGUILLEMET);
+            auto ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_RIGHTGUILLEMET);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y);
         }
 
         // Print filename
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, _listItems[i].name.c_str());
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<char*>(_listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
         gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 10, y }, max_file_width);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
-            set_format_arg(0, rct_string_id, STR_STRING);
-            set_format_arg(2, char*, _listItems[i].date_formatted.c_str());
+            ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<char*>(_listItems[i].date_formatted.c_str());
             gfx_draw_string_right_clipped(
                 dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth);
 
-            set_format_arg(2, char*, _listItems[i].time_formatted.c_str());
+            ft = Formatter::Common();
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<char*>(_listItems[i].time_formatted.c_str());
             gfx_draw_string_left_clipped(
                 dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth);
         }

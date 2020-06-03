@@ -1605,8 +1605,10 @@ static void window_options_invalidate(rct_window* w)
         case WINDOW_OPTIONS_PAGE_DISPLAY:
         {
             // Resolution dropdown caption.
-            set_format_arg(16, uint16_t, static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
-            set_format_arg(18, uint16_t, static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
+            auto ft = Formatter::Common();
+            ft.Increment(16);
+            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
+            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
             if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
@@ -1729,8 +1731,10 @@ static void window_options_invalidate(rct_window* w)
         }
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
+        {
             // Language
-            set_format_arg(0, char*, LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
+            auto ft = Formatter::Common();
+            ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
             // Currency: pounds, dollars, etc. (10 total)
             window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
@@ -1767,7 +1771,7 @@ static void window_options_invalidate(rct_window* w)
                                                                                                           : STR_REAL_VALUES;
 
             break;
-
+        }
         case WINDOW_OPTIONS_PAGE_AUDIO:
         {
             // Sound device
@@ -1793,7 +1797,8 @@ static void window_options_invalidate(rct_window* w)
             }
 
             window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
-            set_format_arg(0, char*, audioDeviceName);
+            auto ft = Formatter::Common();
+            ft.Add<char*>(audioDeviceName);
 
             window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
 
@@ -1830,7 +1835,8 @@ static void window_options_invalidate(rct_window* w)
 
             size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
             const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-            set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(activeThemeName));
+            auto ft = Formatter::Common();
+            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(activeThemeName));
 
             break;
         }
@@ -1838,7 +1844,8 @@ static void window_options_invalidate(rct_window* w)
         case WINDOW_OPTIONS_PAGE_MISC:
         {
             const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
-            set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(name));
+            auto ft = Formatter::Common();
+            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(name));
 
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs

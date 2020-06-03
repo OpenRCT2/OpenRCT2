@@ -1518,7 +1518,8 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t eax = gScenarioTicks;
         eax -= peep->time_in_park;
         eax >>= 11;
-        set_format_arg(0, uint16_t, eax & 0xFFFF);
+        auto ft = Formatter::Common();
+        ft.Add<uint16_t>(eax & 0xFFFF);
         gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 
@@ -1530,16 +1531,20 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Intensity
+    auto ft = Formatter::Common();
     auto maxIntensity = peep->intensity.GetMaximum();
-    set_format_arg(0, uint16_t, maxIntensity);
     int32_t string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BELOW;
     if (peep->intensity.GetMinimum() != 0)
     {
-        set_format_arg(0, uint16_t, peep->intensity.GetMinimum());
-        set_format_arg(2, uint16_t, maxIntensity);
+        ft.Add<uint16_t>(peep->intensity.GetMinimum());
+        ft.Add<uint16_t>(maxIntensity);
         string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BETWEEN;
         if (maxIntensity == 15)
             string_id = STR_GUEST_STAT_PREFERRED_INTESITY_ABOVE;
+    }
+    else
+    {
+        ft.Add<uint16_t>(maxIntensity);
     }
 
     gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, COLOUR_BLACK, x + 4, y);
@@ -1553,7 +1558,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     };
     y += LIST_ROW_HEIGHT;
     int32_t nausea_tolerance = peep->nausea_tolerance & 0x3;
-    set_format_arg(0, rct_string_id, nauseaTolerances[nausea_tolerance]);
+    ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 }
 
@@ -1942,17 +1947,19 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
     auto parkName = park.Name.c_str();
 
     // Default arguments
-    set_format_arg(0, uint32_t, ShopItems[item].Image);
-    set_format_arg(4, rct_string_id, ShopItems[item].Naming.Display);
-    set_format_arg(6, rct_string_id, STR_STRING);
-    set_format_arg(8, const char*, parkName);
+    auto ft = Formatter::Common();
+    ft.Add<uint32_t>(ShopItems[item].Image);
+    ft.Add<rct_string_id>(ShopItems[item].Naming.Display);
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(parkName);
 
     // Special overrides
     Ride* ride{};
     switch (item)
     {
         case SHOP_ITEM_BALLOON:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
+            ft.Increment(-ft.NumBytes());
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->photo1_ride_ref);
@@ -1960,40 +1967,47 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
+            ft.Increment(-ft.NumBytes());
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_VOUCHER:
             switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-                    set_format_arg(8, rct_string_id, STR_STRING);
-                    set_format_arg(10, const char*, parkName);
+                    ft.Increment(-ft.NumBytes() + 6);
+                    ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->VoucherArguments);
                     if (ride != nullptr)
                     {
-                        set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+                        ft.Increment(-ft.NumBytes() + 6);
+                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                         ride->FormatNameTo(gCommonFormatArgs + 8);
                     }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-                    set_format_arg(8, rct_string_id, STR_STRING);
-                    set_format_arg(10, const char*, parkName);
+                    ft.Increment(-ft.NumBytes() + 6);
+                    ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    set_format_arg(8, rct_string_id, ShopItems[peep->VoucherArguments].Naming.Singular);
+                    ft.Increment(-ft.NumBytes() + 6);
+                    ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
+                    ft.Add<rct_string_id>(ShopItems[peep->VoucherArguments].Naming.Singular);
                     break;
             }
             break;
         case SHOP_ITEM_HAT:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
+            ft.Increment(-ft.NumBytes());
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_TSHIRT:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItems[item].Image);
+            ft.Increment(-ft.NumBytes());
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->photo2_ride_ref);

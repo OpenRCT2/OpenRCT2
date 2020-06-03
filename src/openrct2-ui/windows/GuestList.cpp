@@ -659,7 +659,9 @@ static void window_guest_list_invalidate(rct_window* w)
     {
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_DROPDOWN;
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_BUTTON;
-        set_format_arg(4, uint16_t, _window_guest_list_selected_page + 1);
+        auto ft = Formatter::Common();
+        ft.Increment(4);
+        ft.Add<uint16_t>(_window_guest_list_selected_page + 1);
     }
     else
     {
