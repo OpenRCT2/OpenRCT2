@@ -3797,21 +3797,24 @@ static void window_ride_operating_invalidate(rct_window* w)
         case RIDE_MODE_POWERED_LAUNCH:
         case RIDE_MODE_UPWARD_LAUNCH:
         case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-            ft.Increment(-ft.NumBytes() + 18);
+            ft.Rewind();
+            ft.Increment(18);
             ft.Add<uint16_t>((ride->launch_speed * 9) / 4);
             format = STR_RIDE_MODE_SPEED_VALUE;
             caption = STR_LAUNCH_SPEED;
             tooltip = STR_LAUNCH_SPEED_TIP;
             break;
         case RIDE_MODE_STATION_TO_STATION:
-            ft.Increment(-ft.NumBytes() + 18);
+            ft.Rewind();
+            ft.Increment(18);
             ft.Add<uint16_t>((ride->speed * 9) / 4);
             format = STR_RIDE_MODE_SPEED_VALUE;
             caption = STR_SPEED;
             tooltip = STR_SPEED_TIP;
             break;
         case RIDE_MODE_RACE:
-            ft.Increment(-ft.NumBytes() + 18);
+            ft.Rewind();
+            ft.Increment(18);
             ft.Add<uint16_t>(ride->num_laps);
             format = STR_NUMBER_OF_LAPS_VALUE;
             caption = STR_NUMBER_OF_LAPS;
@@ -5844,10 +5847,12 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     {
                         // sadly, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
                         // therefore we set the last entry to use the no-separator format now, post-format
-                        ft.Increment(-ft.NumBytes() + ((numTimes - 1) * 4));
+                        ft.Rewind();
+                        ft.Increment((numTimes - 1) * 4);
                         ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY);
                     }
-                    ft.Increment(-ft.NumBytes() + (numTimes * 4));
+                    ft.Rewind();
+                    ft.Increment(numTimes * 4);
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
@@ -5880,10 +5885,12 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 {
                     // sadly, STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
                     // therefore we set the last entry to use the no-separator format now, post-format
-                    ft.Increment(-ft.NumBytes() + ((numLengths - 1) * 4));
+                    ft.Rewind();
+                    ft.Increment((numLengths - 1) * 4);
                     ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
                 }
-                ft.Increment(-ft.NumBytes() + (numLengths * 4));
+                ft.Rewind();
+                ft.Increment(numLengths * 4);
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);

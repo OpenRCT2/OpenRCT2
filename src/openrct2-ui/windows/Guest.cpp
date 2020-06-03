@@ -1958,7 +1958,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
     switch (item)
     {
         case SHOP_ITEM_BALLOON:
-            ft.Increment(-ft.NumBytes());
+            ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
@@ -1967,14 +1967,15 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
-            ft.Increment(-ft.NumBytes());
+            ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_VOUCHER:
             switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
-                    ft.Increment(-ft.NumBytes() + 6);
+                    ft.Rewind();
+                    ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<const char*>(parkName);
@@ -1983,30 +1984,33 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     ride = get_ride(peep->VoucherArguments);
                     if (ride != nullptr)
                     {
-                        ft.Increment(-ft.NumBytes() + 6);
+                        ft.Rewind();
+                        ft.Increment(6);
                         ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                         ride->FormatNameTo(gCommonFormatArgs + 8);
                     }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-                    ft.Increment(-ft.NumBytes() + 6);
+                    ft.Rewind();
+                    ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-                    ft.Increment(-ft.NumBytes() + 6);
+                    ft.Rewind();
+                    ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
                     ft.Add<rct_string_id>(ShopItems[peep->VoucherArguments].Naming.Singular);
                     break;
             }
             break;
         case SHOP_ITEM_HAT:
-            ft.Increment(-ft.NumBytes());
+            ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_TSHIRT:
-            ft.Increment(-ft.NumBytes());
+            ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO2:

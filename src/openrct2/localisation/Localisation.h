@@ -112,9 +112,14 @@ public:
         return CurrentBuf;
     }
 
-    void Increment(std::size_t count)
+    void Increment(size_t count)
     {
         CurrentBuf += count;
+    }
+
+    void Rewind()
+    {
+        CurrentBuf -= NumBytes();
     }
 
     std::size_t NumBytes() const

@@ -744,7 +744,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         if (formatSecondaryEnabled)
         {
-            ft.Increment(-ft.NumBytes());
+            ft.Rewind();
             ft.Add<rct_string_id>(formatSecondary);
         }
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 160, y - 1 }, 157);
