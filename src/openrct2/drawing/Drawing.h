@@ -544,6 +544,78 @@ struct DrawSpriteArgs
     }
 };
 
+template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
+{
+    if constexpr (TBlendOp & BLEND_TRANSPARENT)
+    {
+        // Ignore transparent pixels
+        if (*src == 0)
+        {
+            return false;
+        }
+    }
+
+    if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+    {
+        auto pixel = paletteMap.Blend(*src, *dst);
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+    {
+        auto pixel = paletteMap[*src];
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else if constexpr ((TBlendOp & BLEND_DST) != 0)
+    {
+        auto pixel = paletteMap[*dst];
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else
+    {
+        *dst = *src;
+        return true;
+    }
+}
+
+template<DrawBlendOp TBlendOp>
+void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap, uint8_t zoom, size_t dstPitch)
+{
+    auto yDstSkip = dstPitch - zoom;
+    for (uint8_t yy = 0; yy < zoom; yy++)
+    {
+        for (uint8_t xx = 0; xx < zoom; xx++)
+        {
+            BlitPixel<TBlendOp>(src, dst, paletteMap);
+            dst++;
+        }
+        dst += yDstSkip;
+    }
+}
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
 #define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId)                                                                     \
     (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | (((primaryId) << 19) | ((secondaryId) << 24)))
