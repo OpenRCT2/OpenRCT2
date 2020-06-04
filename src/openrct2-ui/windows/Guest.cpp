@@ -1558,7 +1558,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     };
     y += LIST_ROW_HEIGHT;
     int32_t nausea_tolerance = peep->nausea_tolerance & 0x3;
-    auto ft = Formatter::Common();
+    ft = Formatter::Common();
     ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 }
