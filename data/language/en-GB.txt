@@ -1940,10 +1940,10 @@ STR_2728    :{UINT16}hour:{UINT16}min
 STR_2729    :{UINT16}hour:{UINT16}mins
 STR_2730    :{UINT16}hours:{UINT16}min
 STR_2731    :{UINT16}hours:{UINT16}mins
-STR_2732    :{COMMA32}ft
-STR_2733    :{COMMA32}m
-STR_2734    :{COMMA16}mph
-STR_2735    :{COMMA16}km/h
+STR_2732    :{COMMA32} ft
+STR_2733    :{COMMA32} m
+STR_2734    :{COMMA16} mph
+STR_2735    :{COMMA16} km/h
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :Title screen music:
@@ -2920,7 +2920,7 @@ STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kč)
 STR_5581    :Show FPS
 STR_5582    :Trap mouse cursor in window
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open shops and stalls
