@@ -3695,6 +3695,8 @@ STR_6369    :Tillad bygning af spor i ugyldige højder
 STR_6370    :{SMALLFONT}{BLACK}Gør det muligt at placere sporstykker i ethvert højdeniveauiveau
 STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men filen “csg1i.dat” mangler. Det er nødvendigt at kopiere denne fil fra RollerCoaster Tycoon 1 CD'en, til “Data” folderen under RollerCoaster Tycoon 1 installationen på din harddisk.
 STR_6372    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men denne version er ikke korrekt. OpenRCT2 har brug for, Loopy Landscapes eller RCT Deluxe installationen for at kunne bruge RollerCoaster Tycoon 1 aktiver.
+STR_6373    :Slå rydningskontrol til/fra
+STR_6374    :R
 
 #############
 # Scenarios #
