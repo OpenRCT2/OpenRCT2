@@ -931,8 +931,17 @@ declare global {
          */
         colours: VehicleColour;
 
-        speed: number;
+        /**
+         * The acceleration for vehicles with constant power, e.g.
+         * transport rides and boats.
+         */
         poweredAcceleration: number;
+
+        /**
+         * The maximum speed for vehicles with constant power, e.g.
+         * transport rides and boats.
+         */
+        poweredMaxSpeed: number;
 
         /**
          * Current status of the car or train.
