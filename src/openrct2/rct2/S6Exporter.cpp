@@ -1217,7 +1217,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     {
         dst->pathfind_history[i] = src->PathfindHistory[i];
     }
-    dst->no_action_frame_num = src->NoActionFrameNum;
+    dst->no_action_frame_num = src->WalkingFrameNum;
     dst->litter_count = src->LitterCount;
     dst->time_on_ride = src->GuestTimeOnRide;
     dst->disgusting_count = src->DisgustingCount;

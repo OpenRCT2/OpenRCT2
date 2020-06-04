@@ -290,7 +290,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             COMPARE_FIELD(Peep, PathfindHistory[i]);
         }
-        COMPARE_FIELD(Peep, NoActionFrameNum);
+        COMPARE_FIELD(Peep, WalkingFrameNum);
         COMPARE_FIELD(Peep, LitterCount);
         COMPARE_FIELD(Peep, GuestTimeOnRide);
         COMPARE_FIELD(Peep, DisgustingCount);

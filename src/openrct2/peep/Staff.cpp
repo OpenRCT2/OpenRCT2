@@ -1856,7 +1856,7 @@ void Staff::Tick128UpdateStaff()
 
     sprite_type = newSpriteType;
     action_sprite_image_offset = 0;
-    NoActionFrameNum = 0;
+    WalkingFrameNum = 0;
     if (action < PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;
 
