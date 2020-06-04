@@ -1471,7 +1471,7 @@ private:
         dst->current_train = src->current_train;
         dst->current_car = src->current_car;
         dst->current_seat = src->current_seat;
-        dst->TimeOnRide = src->time_on_ride;
+        dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
         dst->interaction_ride_index = src->interaction_ride_index;
