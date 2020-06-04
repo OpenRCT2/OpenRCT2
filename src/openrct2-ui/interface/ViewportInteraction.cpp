@@ -77,8 +77,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (info->type == VIEWPORT_INTERACTION_ITEM_SPRITE && sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_MISC
-            && (sprite->generic.type == SPRITE_MISC_BALLOON || sprite->generic.type == SPRITE_MISC_DUCK))
+        if (sprite->IsBalloon() || sprite->IsDuck())
             return info->type;
         else
             return VIEWPORT_INTERACTION_ITEM_NONE;
