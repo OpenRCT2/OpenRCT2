@@ -1395,7 +1395,7 @@ private:
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->no_action_frame_num = src->no_action_frame_num;
+        dst->WalkingFrameNum = src->no_action_frame_num;
         dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->action_frame = src->action_frame;
 
@@ -1459,7 +1459,7 @@ private:
         dst->toilet = src->toilet;
         dst->mass = src->mass;
 
-        dst->litter_count = src->litter_count;
+        dst->LitterCount = src->litter_count;
         dst->DisgustingCount = src->disgusting_count;
 
         dst->intensity = static_cast<IntensityRange>(src->intensity);
@@ -1471,7 +1471,7 @@ private:
         dst->current_train = src->current_train;
         dst->current_car = src->current_car;
         dst->current_seat = src->current_seat;
-        dst->time_on_ride = src->time_on_ride;
+        dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
         dst->interaction_ride_index = src->interaction_ride_index;
@@ -1510,7 +1510,7 @@ private:
             dst->ride_types_been_on[i] = src->ride_types_been_on[i];
         }
 
-        dst->photo1_ride_ref = src->photo1_ride_ref;
+        dst->Photo1RideRef = src->photo1_ride_ref;
 
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
@@ -1525,18 +1525,18 @@ private:
         dst->previous_ride = src->previous_ride;
         dst->previous_ride_time_out = src->previous_ride_time_out;
 
-        dst->path_check_optimisation = 0;
-        dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
+        dst->PathCheckOptimisation = 0;
+        dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
         // Doubles as staff orders
-        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+        dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
         // The ID is fixed later
         dst->next_in_queue = src->next_in_queue;
 
-        dst->peep_flags = 0;
-        dst->pathfind_goal.x = 0xFF;
-        dst->pathfind_goal.y = 0xFF;
-        dst->pathfind_goal.z = 0xFF;
-        dst->pathfind_goal.direction = INVALID_DIRECTION;
+        dst->PeepFlags = 0;
+        dst->PathfindGoal.x = 0xFF;
+        dst->PathfindGoal.y = 0xFF;
+        dst->PathfindGoal.z = 0xFF;
+        dst->PathfindGoal.direction = INVALID_DIRECTION;
 
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
@@ -1596,7 +1596,7 @@ private:
         //                                          index in the array ----^     ^--- bit position in the 8-bit value
         // We do the opposite in this function to recover the x and y values.
 
-        int32_t peepOffset = staffmember->staff_id * RCT12_PATROL_AREA_SIZE;
+        int32_t peepOffset = staffmember->StaffId * RCT12_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {
             if (_s4.patrol_areas[peepOffset + i] == 0)
@@ -1620,7 +1620,7 @@ private:
                 x <<= 7;
                 int32_t y = val & 0x3E0;
                 y <<= 2;
-                staff_set_patrol_area(staffmember->staff_id, x, y, true);
+                staff_set_patrol_area(staffmember->StaffId, x, y, true);
             }
         }
     }

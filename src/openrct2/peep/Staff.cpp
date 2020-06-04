@@ -70,7 +70,7 @@ const rct_string_id StaffCostumeNames[] = {
 };
 // clang-format on
 
-// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their staff_id
+// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
 uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
 uint8_t gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
@@ -157,7 +157,7 @@ void staff_update_greyed_patrol_areas()
         {
             if (peep->staff_type == staff_type)
             {
-                int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+                int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
                 {
                     gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
@@ -178,7 +178,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
         return false;
 
     // Check if staff has patrol area
-    if (!(gStaffModes[staff_id] & 2))
+    if (!(gStaffModes[StaffId] & 2))
         return true;
 
     return IsPatrolAreaSet(loc);
@@ -395,7 +395,7 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
 
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
-    return staff_is_patrol_area_set(staff_id, coords.x, coords.y);
+    return staff_is_patrol_area_set(StaffId, coords.x, coords.y);
 }
 
 bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)
@@ -611,18 +611,18 @@ int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
  */
 bool Staff::DoHandymanPathFinding()
 {
-    staff_mowing_timeout++;
+    StaffMowingTimeout++;
 
     uint8_t litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
 
-    if ((staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
     {
         litterDirection = staff_handyman_direction_to_nearest_litter(this);
     }
 
     Direction newDirection = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (staff_orders & STAFF_ORDERS_MOWING) && staff_mowing_timeout >= 12)
+    if (litterDirection == INVALID_DIRECTION && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
     {
         newDirection = staff_handyman_direction_to_uncut_grass(this, validDirections);
     }
@@ -875,7 +875,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.
-             * Reset the pathfind_goal - this means that the pathfind_history
+             * Reset the PathfindGoal - this means that the PathfindHistory
              * will be reset in the next call to peep_pathfind_choose_direction().
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
@@ -1242,7 +1242,7 @@ void Staff::UpdateMowing()
  */
 void Staff::UpdateWatering()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
     if (sub_state == 0)
     {
         if (!CheckForPath())
@@ -1305,7 +1305,7 @@ void Staff::UpdateWatering()
  */
 void Staff::UpdateEmptyingBin()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
 
     if (sub_state == 0)
     {
@@ -1386,7 +1386,7 @@ void Staff::UpdateEmptyingBin()
  */
 void Staff::UpdateSweeping()
 {
-    staff_mowing_timeout = 0;
+    StaffMowingTimeout = 0;
     if (!CheckForPath())
         return;
 
@@ -1645,7 +1645,7 @@ static constexpr const CoordsXY _WateringUseOffsets[] = {
  */
 static int32_t peep_update_patrolling_find_watering(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
+    if (!(peep->StaffOrders & STAFF_ORDERS_WATER_FLOWERS))
         return 0;
 
     uint8_t chosen_position = scenario_rand() & 7;
@@ -1717,7 +1717,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
  */
 static int32_t peep_update_patrolling_find_bin(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
+    if (!(peep->StaffOrders & STAFF_ORDERS_EMPTY_BINS))
         return 0;
 
     if (peep->GetNextIsSurface())
@@ -1782,10 +1782,10 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
  */
 static int32_t peep_update_patrolling_find_grass(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
+    if (!(peep->StaffOrders & STAFF_ORDERS_MOWING))
         return 0;
 
-    if (peep->staff_mowing_timeout < 12)
+    if (peep->StaffMowingTimeout < 12)
         return 0;
 
     if (!(peep->GetNextIsSurface()))
@@ -1814,7 +1814,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
  */
 static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 {
-    if (!(peep->staff_orders & STAFF_ORDERS_SWEEPING))
+    if (!(peep->StaffOrders & STAFF_ORDERS_SWEEPING))
         return 0;
 
     uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
@@ -1856,14 +1856,14 @@ void Staff::Tick128UpdateStaff()
 
     sprite_type = newSpriteType;
     action_sprite_image_offset = 0;
-    no_action_frame_num = 0;
+    WalkingFrameNum = 0;
     if (action < PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;
 
-    peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
+    PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (gSpriteTypeToSlowWalkMap[newSpriteType])
     {
-        peep_flags |= PEEP_FLAGS_SLOW_WALK;
+        PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
     action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;

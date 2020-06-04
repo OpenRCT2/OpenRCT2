@@ -280,19 +280,19 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             COMPARE_FIELD(Peep, thoughts[i]);
         }
-        COMPARE_FIELD(Peep, path_check_optimisation);
-        COMPARE_FIELD(Peep, guest_heading_to_ride_id);
-        COMPARE_FIELD(Peep, staff_orders);
-        COMPARE_FIELD(Peep, photo1_ride_ref);
-        COMPARE_FIELD(Peep, peep_flags);
-        COMPARE_FIELD(Peep, pathfind_goal);
+        COMPARE_FIELD(Peep, PathCheckOptimisation);
+        COMPARE_FIELD(Peep, GuestHeadingToRideId);
+        COMPARE_FIELD(Peep, StaffOrders);
+        COMPARE_FIELD(Peep, Photo1RideRef);
+        COMPARE_FIELD(Peep, PeepFlags);
+        COMPARE_FIELD(Peep, PathfindGoal);
         for (int i = 0; i < 4; i++)
         {
-            COMPARE_FIELD(Peep, pathfind_history[i]);
+            COMPARE_FIELD(Peep, PathfindHistory[i]);
         }
-        COMPARE_FIELD(Peep, no_action_frame_num);
-        COMPARE_FIELD(Peep, litter_count);
-        COMPARE_FIELD(Peep, time_on_ride);
+        COMPARE_FIELD(Peep, WalkingFrameNum);
+        COMPARE_FIELD(Peep, LitterCount);
+        COMPARE_FIELD(Peep, GuestTimeOnRide);
         COMPARE_FIELD(Peep, DisgustingCount);
         COMPARE_FIELD(Peep, PaidToEnter);
         COMPARE_FIELD(Peep, PaidOnRides);

@@ -724,7 +724,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_TRACK:
         {
-            uint32_t flags = peep->peep_flags ^ PEEP_FLAGS_TRACKING;
+            uint32_t flags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
             auto guestSetFlagsAction = GuestSetFlagsAction(w->number, flags);
             GameActions::Execute(&guestSetFlagsAction);
@@ -1136,7 +1136,7 @@ void window_guest_overview_invalidate(rct_window* w)
 
     auto peep = GET_PEEP(w->number);
     w->pressed_widgets &= ~(1 << WIDX_TRACK);
-    if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+    if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
     {
         w->pressed_widgets |= (1 << WIDX_TRACK);
     }
@@ -1947,7 +1947,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
-            ride = get_ride(peep->photo1_ride_ref);
+            ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
@@ -2115,7 +2115,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
-        int32_t args[] = { peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z, peep->pathfind_goal.direction };
+        int32_t args[] = { peep->PathfindGoal.x, peep->PathfindGoal.y, peep->PathfindGoal.z, peep->PathfindGoal.direction };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, args, 0, screenCoords.x, screenCoords.y);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -2123,7 +2123,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += LIST_ROW_HEIGHT;
 
     screenCoords.x += 10;
-    for (auto& point : peep->pathfind_history)
+    for (auto& point : peep->PathfindHistory)
     {
         int32_t args[] = { point.x, point.y, point.z, point.direction };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, args, 0, screenCoords.x, screenCoords.y);

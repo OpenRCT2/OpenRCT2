@@ -1207,19 +1207,19 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }
-    dst->path_check_optimisation = src->path_check_optimisation;
-    dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
-    dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
-    dst->photo1_ride_ref = src->photo1_ride_ref;
-    dst->peep_flags = src->peep_flags;
-    dst->pathfind_goal = src->pathfind_goal;
-    for (size_t i = 0; i < std::size(src->pathfind_history); i++)
+    dst->path_check_optimisation = src->PathCheckOptimisation;
+    dst->guest_heading_to_ride_id = src->GuestHeadingToRideId;
+    dst->peep_is_lost_countdown = src->GuestIsLostCountdown;
+    dst->photo1_ride_ref = src->Photo1RideRef;
+    dst->peep_flags = src->PeepFlags;
+    dst->pathfind_goal = src->PathfindGoal;
+    for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
     {
-        dst->pathfind_history[i] = src->pathfind_history[i];
+        dst->pathfind_history[i] = src->PathfindHistory[i];
     }
-    dst->no_action_frame_num = src->no_action_frame_num;
-    dst->litter_count = src->litter_count;
-    dst->time_on_ride = src->time_on_ride;
+    dst->no_action_frame_num = src->WalkingFrameNum;
+    dst->litter_count = src->LitterCount;
+    dst->time_on_ride = src->GuestTimeOnRide;
     dst->disgusting_count = src->DisgustingCount;
     dst->paid_to_enter = src->PaidToEnter;
     dst->paid_on_rides = src->PaidOnRides;

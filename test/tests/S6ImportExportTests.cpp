@@ -227,25 +227,25 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
         COMPARE_FIELD(thoughts[i].freshness);
         COMPARE_FIELD(thoughts[i].fresh_timeout);
     }
-    COMPARE_FIELD(path_check_optimisation);
-    COMPARE_FIELD(guest_heading_to_ride_id);
-    COMPARE_FIELD(staff_orders);
-    COMPARE_FIELD(photo1_ride_ref);
-    COMPARE_FIELD(peep_flags);
-    COMPARE_FIELD(pathfind_goal.x);
-    COMPARE_FIELD(pathfind_goal.y);
-    COMPARE_FIELD(pathfind_goal.z);
-    COMPARE_FIELD(pathfind_goal.direction);
+    COMPARE_FIELD(PathCheckOptimisation);
+    COMPARE_FIELD(GuestHeadingToRideId);
+    COMPARE_FIELD(StaffOrders);
+    COMPARE_FIELD(Photo1RideRef);
+    COMPARE_FIELD(PeepFlags);
+    COMPARE_FIELD(PathfindGoal.x);
+    COMPARE_FIELD(PathfindGoal.y);
+    COMPARE_FIELD(PathfindGoal.z);
+    COMPARE_FIELD(PathfindGoal.direction);
     for (int i = 0; i < 4; i++)
     {
-        COMPARE_FIELD(pathfind_history[i].x);
-        COMPARE_FIELD(pathfind_history[i].y);
-        COMPARE_FIELD(pathfind_history[i].z);
-        COMPARE_FIELD(pathfind_history[i].direction);
+        COMPARE_FIELD(PathfindHistory[i].x);
+        COMPARE_FIELD(PathfindHistory[i].y);
+        COMPARE_FIELD(PathfindHistory[i].z);
+        COMPARE_FIELD(PathfindHistory[i].direction);
     }
-    COMPARE_FIELD(no_action_frame_num);
-    COMPARE_FIELD(litter_count);
-    COMPARE_FIELD(time_on_ride);
+    COMPARE_FIELD(WalkingFrameNum);
+    COMPARE_FIELD(LitterCount);
+    COMPARE_FIELD(GuestTimeOnRide);
     COMPARE_FIELD(DisgustingCount);
     COMPARE_FIELD(PaidToEnter);
     COMPARE_FIELD(PaidOnRides);

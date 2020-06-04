@@ -187,7 +187,7 @@ private:
             // remove any photos of this ride from peep
             if (peep->ItemStandardFlags & PEEP_ITEM_PHOTO)
             {
-                if (peep->photo1_ride_ref == _rideIndex)
+                if (peep->Photo1RideRef == _rideIndex)
                 {
                     peep->ItemStandardFlags &= ~PEEP_ITEM_PHOTO;
                 }
@@ -214,9 +214,9 @@ private:
                 }
             }
 
-            if (peep->guest_heading_to_ride_id == _rideIndex)
+            if (peep->GuestHeadingToRideId == _rideIndex)
             {
-                peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+                peep->GuestHeadingToRideId = RIDE_ID_NULL;
             }
             if (peep->FavouriteRide == _rideIndex)
             {

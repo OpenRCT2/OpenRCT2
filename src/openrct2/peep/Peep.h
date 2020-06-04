@@ -521,7 +521,7 @@ enum PeepInvalidate
     PEEP_INVALIDATE_PEEP_2 = 1 << 2,
     PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
     PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
-    PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when guest_heading_to_ride_id is changed
+    PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when GuestHeadingToRideId is changed
 };
 
 // Flags used by peep_should_go_on_ride()
@@ -685,28 +685,28 @@ struct Peep : SpriteBase
     uint8_t previous_ride;
     uint16_t previous_ride_time_out;
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];
-    uint8_t path_check_optimisation; // see peep.checkForPath
+    uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {
-        uint8_t staff_id;
-        uint8_t guest_heading_to_ride_id;
+        uint8_t StaffId;
+        uint8_t GuestHeadingToRideId;
     };
     union
     {
-        uint8_t staff_orders;
-        uint8_t peep_is_lost_countdown;
+        uint8_t StaffOrders;
+        uint8_t GuestIsLostCountdown;
     };
-    uint8_t photo1_ride_ref;
-    uint32_t peep_flags;
-    rct12_xyzd8 pathfind_goal;
-    rct12_xyzd8 pathfind_history[4];
-    uint8_t no_action_frame_num;
+    uint8_t Photo1RideRef;
+    uint32_t PeepFlags;
+    rct12_xyzd8 PathfindGoal;
+    rct12_xyzd8 PathfindHistory[4];
+    uint8_t WalkingFrameNum;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t litter_count;
+    uint8_t LitterCount;
     union
     {
-        uint8_t time_on_ride;
-        uint8_t staff_mowing_timeout;
+        uint8_t GuestTimeOnRide;
+        uint8_t StaffMowingTimeout;
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t DisgustingCount;

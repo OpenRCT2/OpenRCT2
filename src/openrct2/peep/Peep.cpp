@@ -471,8 +471,8 @@ static void peep_128_tick_update(Peep* peep, int32_t index)
  */
 bool Peep::CheckForPath()
 {
-    path_check_optimisation++;
-    if ((path_check_optimisation & 0xF) != (sprite_index & 0xF))
+    PathCheckOptimisation++;
+    if ((PathCheckOptimisation & 0xF) != (sprite_index & 0xF))
     {
         // This condition makes the check happen less often
         // As a side effect peeps hover for a short,
@@ -631,14 +631,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         sprite_direction = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
-        no_action_frame_num++;
+        WalkingFrameNum++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
         const uint8_t* imageOffset = peepAnimation[action_sprite_type].frame_offsets;
-        if (no_action_frame_num >= peepAnimation[action_sprite_type].num_frames)
+        if (WalkingFrameNum >= peepAnimation[action_sprite_type].num_frames)
         {
-            no_action_frame_num = 0;
+            WalkingFrameNum = 0;
         }
-        action_sprite_image_offset = imageOffset[no_action_frame_num];
+        action_sprite_image_offset = imageOffset[WalkingFrameNum];
         return loc;
     }
 
@@ -758,7 +758,7 @@ void Peep::PickupAbort(int32_t old_x)
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-        path_check_optimisation = 0;
+        PathCheckOptimisation = 0;
     }
 
     gPickupPeepImage = UINT32_MAX;
@@ -807,7 +807,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-        path_check_optimisation = 0;
+        PathCheckOptimisation = 0;
         sprite_position_tween_reset();
 
         if (type == PEEP_TYPE_GUEST)
@@ -848,7 +848,7 @@ void peep_sprite_remove(Peep* peep)
     {
         window_invalidate_by_class(WC_STAFF_LIST);
 
-        gStaffModes[peep->staff_id] = 0;
+        gStaffModes[peep->StaffId] = 0;
         peep->type = PEEP_TYPE_INVALID;
         staff_update_greyed_patrol_areas();
         peep->type = PEEP_TYPE_STAFF;
@@ -1123,7 +1123,7 @@ void Peep::Update()
     uint32_t stepsToTake = energy;
     if (stepsToTake < 95 && state == PEEP_STATE_QUEUING)
         stepsToTake = 95;
-    if ((peep_flags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
+    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
     if (action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
     {
@@ -1209,34 +1209,34 @@ void peep_problem_warnings_update()
                 break;
 
             case PEEP_THOUGHT_TYPE_HUNGRY: // 0x14
-                if (peep->guest_heading_to_ride_id == 0xFF)
+                if (peep->GuestHeadingToRideId == 0xFF)
                 {
                     hunger_counter++;
                     break;
                 }
-                ride = get_ride(peep->guest_heading_to_ride_id);
+                ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                     hunger_counter++;
                 break;
 
             case PEEP_THOUGHT_TYPE_THIRSTY:
-                if (peep->guest_heading_to_ride_id == 0xFF)
+                if (peep->GuestHeadingToRideId == 0xFF)
                 {
                     thirst_counter++;
                     break;
                 }
-                ride = get_ride(peep->guest_heading_to_ride_id);
+                ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_DRINKS))
                     thirst_counter++;
                 break;
 
             case PEEP_THOUGHT_TYPE_TOILET:
-                if (peep->guest_heading_to_ride_id == 0xFF)
+                if (peep->GuestHeadingToRideId == 0xFF)
                 {
                     toilet_counter++;
                     break;
                 }
-                ride = get_ride(peep->guest_heading_to_ride_id);
+                ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_TOILET))
                     toilet_counter++;
                 break;
@@ -1631,9 +1631,9 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->action = PEEP_ACTION_NONE_2;
     peep->special_sprite = 0;
     peep->action_sprite_image_offset = 0;
-    peep->no_action_frame_num = 0;
+    peep->WalkingFrameNum = 0;
     peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-    peep->peep_flags = 0;
+    peep->PeepFlags = 0;
     peep->FavouriteRide = RIDE_ID_NULL;
     peep->FavouriteRideRating = 0;
 
@@ -1645,7 +1645,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
     peep->mass = (scenario_rand() & 0x1F) + 45;
-    peep->path_check_optimisation = 0;
+    peep->PathCheckOptimisation = 0;
     peep->interaction_ride_index = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
     peep->previous_ride = RIDE_ID_NULL;
@@ -1754,14 +1754,14 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->cash_in_pocket = cash;
     peep->cash_spent = 0;
     peep->time_in_park = -1;
-    peep->pathfind_goal.x = 0xFF;
-    peep->pathfind_goal.y = 0xFF;
-    peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = INVALID_DIRECTION;
+    peep->PathfindGoal.x = 0xFF;
+    peep->PathfindGoal.y = 0xFF;
+    peep->PathfindGoal.z = 0xFF;
+    peep->PathfindGoal.direction = INVALID_DIRECTION;
     peep->ItemStandardFlags = 0;
     peep->item_extra_flags = 0;
-    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
-    peep->litter_count = 0;
+    peep->GuestHeadingToRideId = RIDE_ID_NULL;
+    peep->LitterCount = 0;
     peep->DisgustingCount = 0;
     peep->VandalismSeen = 0;
     peep->PaidToEnter = 0;
@@ -1841,9 +1841,9 @@ void Peep::FormatActionTo(void* argsV) const
         }
         case PEEP_STATE_WALKING:
         case PEEP_STATE_USING_BIN:
-            if (guest_heading_to_ride_id != RIDE_ID_NULL)
+            if (GuestHeadingToRideId != RIDE_ID_NULL)
             {
-                auto ride = get_ride(guest_heading_to_ride_id);
+                auto ride = get_ride(GuestHeadingToRideId);
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_HEADING_FOR);
@@ -1852,7 +1852,7 @@ void Peep::FormatActionTo(void* argsV) const
             }
             else
             {
-                ft.Add<rct_string_id>((peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
+                ft.Add<rct_string_id>((PeepFlags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
             }
             break;
         case PEEP_STATE_QUEUING_FRONT:
@@ -2228,7 +2228,7 @@ void peep_set_map_tooltip(Peep* peep)
     auto ft = Formatter::MapTooltip();
     if (peep->type == PEEP_TYPE_GUEST)
     {
-        ft.Add<rct_string_id>((peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
+        ft.Add<rct_string_id>((peep->PeepFlags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
         ft.Add<uint32_t>(get_peep_face_sprite_small(peep));
         peep->FormatNameTo(ft);
         peep->FormatActionTo(ft);
@@ -2439,7 +2439,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->SetState(PEEP_STATE_QUEUING);
         peep->sub_state = 11;
         peep->time_in_queue = 0;
-        if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+        if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
@@ -2484,7 +2484,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
                 return;
             }
 
-            if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+            if (!(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
@@ -2501,7 +2501,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             peep->SetState(PEEP_STATE_LEAVING_PARK);
 
             peep->var_37 = 0;
-            if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+            if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
             {
                 auto ft = Formatter::Common();
                 peep->FormatNameTo(ft);
@@ -2628,7 +2628,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
             gTotalIncomeFromAdmissions += entranceFee;
             guest->SpendMoney(peep->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
-            peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
+            peep->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
         gTotalAdmissions++;
@@ -2753,14 +2753,14 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
     }
 
-    uint8_t litter_time = peep->litter_count & 0xC0;
-    litter_count = ((peep->litter_count & 0xF) << 2) | litter_count;
-    peep->litter_count = litter_count | litter_time;
+    uint8_t litter_time = peep->LitterCount & 0xC0;
+    litter_count = ((peep->LitterCount & 0xF) << 2) | litter_count;
+    peep->LitterCount = litter_count | litter_time;
 
     if (litter_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
     {
         // Reduce the litter time
-        peep->litter_count -= 0x40;
+        peep->LitterCount -= 0x40;
     }
     else
     {
@@ -2775,7 +2775,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset litter time
-            peep->litter_count |= 0xC0;
+            peep->LitterCount |= 0xC0;
         }
     }
 
@@ -2871,7 +2871,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->sub_state = 10;
                     peep->destination_tolerance = 2;
                     peep->time_in_queue = 0;
-                    if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+                    if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
                     {
                         auto ft = Formatter::Common();
                         peep->FormatNameTo(ft);
@@ -2943,7 +2943,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         return true;
     }
 
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
         peep_return_to_centre_of_tile(peep);
         return true;
@@ -2976,9 +2976,9 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         peep->SetState(PEEP_STATE_ENTERING_RIDE);
         peep->sub_state = PEEP_SHOP_APPROACH;
 
-        peep->time_on_ride = 0;
+        peep->GuestTimeOnRide = 0;
         ride->cur_num_customers++;
-        if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+        if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
@@ -2993,8 +2993,8 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
     }
     else
     {
-        if (peep->guest_heading_to_ride_id == rideIndex)
-            peep->guest_heading_to_ride_id = 0xFF;
+        if (peep->GuestHeadingToRideId == rideIndex)
+            peep->GuestHeadingToRideId = 0xFF;
         peep->action_sprite_image_offset = _unk_F1AEF0;
         peep->SetState(PEEP_STATE_BUYING);
         peep->current_ride = rideIndex;
@@ -3170,7 +3170,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             if (type == PEEP_TYPE_STAFF && !GetNextIsSurface())
             {
                 // Prevent staff from leaving the path on their own unless they're allowed to mow.
-                if (!((this->staff_orders & STAFF_ORDERS_MOWING) && this->staff_mowing_timeout >= 12))
+                if (!((this->StaffOrders & STAFF_ORDERS_MOWING) && this->StaffMowingTimeout >= 12))
                 {
                     peep_return_to_centre_of_tile(this);
                     return;
@@ -3199,14 +3199,14 @@ void peep_reset_pathfind_goal(Peep* peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (gPathFindDebug)
     {
-        log_info("Resetting pathfind_goal for %s", gPathFindDebugPeepName);
+        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    peep->pathfind_goal.x = 0xFF;
-    peep->pathfind_goal.y = 0xFF;
-    peep->pathfind_goal.z = 0xFF;
-    peep->pathfind_goal.direction = INVALID_DIRECTION;
+    peep->PathfindGoal.x = 0xFF;
+    peep->PathfindGoal.y = 0xFF;
+    peep->PathfindGoal.z = 0xFF;
+    peep->PathfindGoal.direction = INVALID_DIRECTION;
 }
 
 /**
@@ -3322,7 +3322,7 @@ void pathfind_logging_enable([[maybe_unused]] Peep* peep)
      * be output for. */
     if (peep->type == PEEP_TYPE_GUEST)
     {
-        gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+        gPathFindDebug = peep->PeepFlags & PEEP_FLAGS_TRACKING;
     }
     /* For staff, there is no tracking button (any other similar
      * suitable existing mechanism?), so fall back to a crude

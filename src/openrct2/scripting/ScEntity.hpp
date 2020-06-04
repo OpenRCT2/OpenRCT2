@@ -256,7 +256,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 auto mask = PeepFlagMap[key];
-                return (peep->peep_flags & mask) != 0;
+                return (peep->PeepFlags & mask) != 0;
             }
             return false;
         }
@@ -269,9 +269,9 @@ namespace OpenRCT2::Scripting
             {
                 auto mask = PeepFlagMap[key];
                 if (value)
-                    peep->peep_flags |= mask;
+                    peep->PeepFlags |= mask;
                 else
-                    peep->peep_flags &= ~mask;
+                    peep->PeepFlags &= ~mask;
                 peep->Invalidate();
             }
         }
@@ -756,7 +756,7 @@ namespace OpenRCT2::Scripting
         uint8_t orders_get() const
         {
             auto peep = GetStaff();
-            return peep != nullptr ? peep->staff_orders : 0;
+            return peep != nullptr ? peep->StaffOrders : 0;
         }
 
         void orders_set(uint8_t value)
@@ -765,7 +765,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetStaff();
             if (peep != nullptr)
             {
-                peep->staff_orders = value;
+                peep->StaffOrders = value;
             }
         }
     };

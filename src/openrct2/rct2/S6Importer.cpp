@@ -1472,19 +1472,19 @@ public:
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
-        dst->path_check_optimisation = src->path_check_optimisation;
-        dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
-        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
-        dst->photo1_ride_ref = src->photo1_ride_ref;
-        dst->peep_flags = src->peep_flags;
-        dst->pathfind_goal = src->pathfind_goal;
+        dst->PathCheckOptimisation = src->path_check_optimisation;
+        dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
+        dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
+        dst->Photo1RideRef = src->photo1_ride_ref;
+        dst->PeepFlags = src->peep_flags;
+        dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
         {
-            dst->pathfind_history[i] = src->pathfind_history[i];
+            dst->PathfindHistory[i] = src->pathfind_history[i];
         }
-        dst->no_action_frame_num = src->no_action_frame_num;
-        dst->litter_count = src->litter_count;
-        dst->time_on_ride = src->time_on_ride;
+        dst->WalkingFrameNum = src->no_action_frame_num;
+        dst->LitterCount = src->litter_count;
+        dst->GuestTimeOnRide = src->time_on_ride;
         dst->DisgustingCount = src->disgusting_count;
         dst->PaidToEnter = src->paid_to_enter;
         dst->PaidOnRides = src->paid_on_rides;
