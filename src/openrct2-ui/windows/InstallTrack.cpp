@@ -320,8 +320,9 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         // Ride length
-        set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-        set_format_arg(2, uint16_t, td6->ride_length);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+        ft.Add<uint16_t>(td6->ride_length);
         gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 214);
         y += LIST_ROW_HEIGHT;
     }
@@ -379,15 +380,17 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (td6->space_required_x != 0xFF)
     {
         // Space required
-        set_format_arg(0, uint16_t, td6->space_required_x);
-        set_format_arg(2, uint16_t, td6->space_required_y);
+        auto ft = Formatter::Common();
+        ft.Add<uint16_t>(td6->space_required_x);
+        ft.Add<uint16_t>(td6->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
 
     if (td6->cost != 0)
     {
-        set_format_arg(0, uint32_t, td6->cost);
+        auto ft = Formatter::Common();
+        ft.Add<uint32_t>(td6->cost);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 }

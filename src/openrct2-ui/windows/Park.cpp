@@ -1429,14 +1429,16 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
         parkSize = squaredmetres_to_squaredfeet(parkSize);
     }
-    set_format_arg(0, uint32_t, parkSize);
+    auto ft = Formatter::Common();
+    ft.Add<uint32_t>(parkSize);
     gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
     if (w->list_information_type != 0xFFFF)
     {
-        set_format_arg(0, uint32_t, w->list_information_type);
+        ft = Formatter::Common();
+        ft.Add<uint32_t>(w->list_information_type);
         gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
     y += LIST_ROW_HEIGHT;
@@ -1444,7 +1446,8 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number of staff
     if (w->numberOfStaff != -1)
     {
-        set_format_arg(0, uint32_t, w->numberOfStaff);
+        ft = Formatter::Common();
+        ft.Add<uint32_t>(w->numberOfStaff);
         gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
     y += LIST_ROW_HEIGHT;
@@ -1627,7 +1630,8 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         else
         {
             // Objective completed
-            set_format_arg(0, money32, gScenarioCompletedCompanyValue);
+            ft = Formatter::Common();
+            ft.Add<money32>(gScenarioCompletedCompanyValue);
             gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
         }
     }

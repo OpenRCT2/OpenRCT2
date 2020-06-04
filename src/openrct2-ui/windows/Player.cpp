@@ -374,7 +374,8 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
-        set_format_arg(0, const char*, buffer);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(buffer);
 
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
@@ -384,7 +385,8 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw ping
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 90, w->windowPos.y + 24 };
 
-    set_format_arg(0, rct_string_id, STR_PING);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_PING);
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
@@ -394,10 +396,14 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords = { w->windowPos.x + (w->width / 2), w->windowPos.y + w->height - 13 };
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
-    set_format_arg(0, rct_string_id, STR_ACTION_NA);
+    ft = Formatter::Common();
     if (lastaction != -999)
     {
-        set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
+        ft.Add<rct_string_id>(network_get_action_name_string_id(lastaction));
+    }
+    else
+    {
+        ft.Add<rct_string_id>(STR_ACTION_NA);
     }
     gfx_draw_string_centred_clipped(
         dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords.x, screenCoords.y, width);
@@ -546,12 +552,14 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t x = w->windowPos.x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     int32_t y = w->windowPos.y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-    set_format_arg(0, uint32_t, network_get_player_commands_ran(player));
+    auto ft = Formatter::Common();
+    ft.Add<uint32_t>(network_get_player_commands_ran(player));
     gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     y += LIST_ROW_HEIGHT;
 
-    set_format_arg(0, uint32_t, network_get_player_money_spent(player));
+    ft = Formatter::Common();
+    ft.Add<uint32_t>(network_get_player_money_spent(player));
     gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 }
 
@@ -682,13 +690,14 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
 
 static void window_player_update_title(rct_window* w)
 {
+    auto ft = Formatter::Common();
     int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player != -1)
     {
-        set_format_arg(0, const char*, network_get_player_name(player)); // set title caption to player name
+        ft.Add<const char*>(network_get_player_name(player)); // set title caption to player name
     }
     else
     {
-        set_format_arg(0, const char*, "");
+        ft.Add<const char*>("");
     }
 }

@@ -1518,7 +1518,8 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t eax = gScenarioTicks;
         eax -= peep->time_in_park;
         eax >>= 11;
-        set_format_arg(0, uint16_t, eax & 0xFFFF);
+        auto ft = Formatter::Common();
+        ft.Add<uint16_t>(eax & 0xFFFF);
         gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 
@@ -1530,16 +1531,20 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Intensity
+    auto ft = Formatter::Common();
     auto maxIntensity = peep->intensity.GetMaximum();
-    set_format_arg(0, uint16_t, maxIntensity);
     int32_t string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BELOW;
     if (peep->intensity.GetMinimum() != 0)
     {
-        set_format_arg(0, uint16_t, peep->intensity.GetMinimum());
-        set_format_arg(2, uint16_t, maxIntensity);
+        ft.Add<uint16_t>(peep->intensity.GetMinimum());
+        ft.Add<uint16_t>(maxIntensity);
         string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BETWEEN;
         if (maxIntensity == 15)
             string_id = STR_GUEST_STAT_PREFERRED_INTESITY_ABOVE;
+    }
+    else
+    {
+        ft.Add<uint16_t>(maxIntensity);
     }
 
     gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, COLOUR_BLACK, x + 4, y);
@@ -1553,7 +1558,8 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     };
     y += LIST_ROW_HEIGHT;
     int32_t nausea_tolerance = peep->nausea_tolerance & 0x3;
-    set_format_arg(0, rct_string_id, nauseaTolerances[nausea_tolerance]);
+    ft = Formatter::Common();
+    ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 }
 
@@ -1697,7 +1703,8 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-    set_format_arg(0, rct_string_id, STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
     if (peep->FavouriteRide != RIDE_ID_NULL)
     {
         auto ride = get_ride(peep->FavouriteRide);
@@ -1778,25 +1785,29 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Cash in pocket
-    set_format_arg(0, money32, peep->cash_in_pocket);
+    auto ft = Formatter::Common();
+    ft.Add<money32>(peep->cash_in_pocket);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Cash spent
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->cash_spent);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->cash_spent);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     y += LIST_ROW_HEIGHT * 2;
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
-    set_format_arg(0, money32, peep->PaidToEnter);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidToEnter);
     gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Paid on rides
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->PaidOnRides);
-    set_format_arg(4, uint16_t, peep->no_of_rides);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidOnRides);
+    ft.Add<uint16_t>(peep->no_of_rides);
     if (peep->no_of_rides != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1808,8 +1819,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on food
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->PaidOnFood);
-    set_format_arg(4, uint16_t, peep->AmountOfFood);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidOnFood);
+    ft.Add<uint16_t>(peep->AmountOfFood);
     if (peep->AmountOfFood != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1821,8 +1833,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on drinks
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->paid_on_drink);
-    set_format_arg(4, uint16_t, peep->AmountOfDrinks);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->paid_on_drink);
+    ft.Add<uint16_t>(peep->AmountOfDrinks);
     if (peep->AmountOfDrinks != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1834,8 +1847,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Paid on souvenirs
     y += LIST_ROW_HEIGHT;
-    set_format_arg(0, money32, peep->PaidOnSouvenirs);
-    set_format_arg(4, uint16_t, peep->AmountOfSouvenirs);
+    ft = Formatter::Common();
+    ft.Add<money32>(peep->PaidOnSouvenirs);
+    ft.Add<uint16_t>(peep->AmountOfSouvenirs);
     if (peep->AmountOfSouvenirs != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1934,17 +1948,19 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
     auto parkName = park.Name.c_str();
 
     // Default arguments
-    set_format_arg(0, uint32_t, ShopItems[item].Image);
-    set_format_arg(4, rct_string_id, ShopItems[item].Naming.Display);
-    set_format_arg(6, rct_string_id, STR_STRING);
-    set_format_arg(8, const char*, parkName);
+    auto ft = Formatter::Common();
+    ft.Add<uint32_t>(ShopItems[item].Image);
+    ft.Add<rct_string_id>(ShopItems[item].Naming.Display);
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(parkName);
 
     // Special overrides
     Ride* ride{};
     switch (item)
     {
         case SHOP_ITEM_BALLOON:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
+            ft.Rewind();
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->Photo1RideRef);
@@ -1952,40 +1968,51 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
+            ft.Rewind();
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_VOUCHER:
             switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-                    set_format_arg(8, rct_string_id, STR_STRING);
-                    set_format_arg(10, const char*, parkName);
+                    ft.Rewind();
+                    ft.Increment(6);
+                    ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->VoucherArguments);
                     if (ride != nullptr)
                     {
-                        set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+                        ft.Rewind();
+                        ft.Increment(6);
+                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                         ride->FormatNameTo(gCommonFormatArgs + 8);
                     }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-                    set_format_arg(8, rct_string_id, STR_STRING);
-                    set_format_arg(10, const char*, parkName);
+                    ft.Rewind();
+                    ft.Increment(6);
+                    ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    set_format_arg(8, rct_string_id, ShopItems[peep->VoucherArguments].Naming.Singular);
+                    ft.Rewind();
+                    ft.Increment(6);
+                    ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
+                    ft.Add<rct_string_id>(ShopItems[peep->VoucherArguments].Naming.Singular);
                     break;
             }
             break;
         case SHOP_ITEM_HAT:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
+            ft.Rewind();
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_TSHIRT:
-            set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItems[item].Image);
+            ft.Rewind();
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->photo2_ride_ref);
@@ -2083,7 +2110,8 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                                         w->windowPos.y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
     {
-        set_format_arg(0, uint32_t, peep->sprite_index);
+        auto ft = Formatter::Common();
+        ft.Add<uint32_t>(peep->sprite_index);
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
     }
     screenCoords.y += LIST_ROW_HEIGHT;

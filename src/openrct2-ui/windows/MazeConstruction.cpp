@@ -432,7 +432,9 @@ static void window_maze_construction_invalidate(rct_window* w)
     }
     else
     {
-        set_format_arg(4, rct_string_id, STR_NONE);
+        auto ft = Formatter::Common();
+        ft.Increment(4);
+        ft.Add<rct_string_id>(STR_NONE);
     }
 }
 

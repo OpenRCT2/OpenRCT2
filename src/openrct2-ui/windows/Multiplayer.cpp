@@ -696,10 +696,14 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 
             // Draw last action
             int32_t action = network_get_player_last_action(i, 2000);
-            set_format_arg(0, rct_string_id, STR_ACTION_NA);
+            auto ft = Formatter::Common();
             if (action != -999)
             {
-                set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
+                ft.Add<rct_string_id>(network_get_action_name_string_id(action));
+            }
+            else
+            {
+                ft.Add<rct_string_id>(STR_ACTION_NA);
             }
             gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { 256, screenCoords.y }, 100);
 
@@ -910,7 +914,8 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
-        set_format_arg(0, const char*, buffer);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
             w->windowPos.y + widget->top, widget->right - widget->left - 8);
@@ -934,7 +939,8 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
-        set_format_arg(0, const char*, buffer);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
             w->windowPos.y + widget->top, widget->right - widget->left - 8);
@@ -975,7 +981,8 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
             }
 
             // Draw action name
-            set_format_arg(0, uint16_t, network_get_action_name_string_id(i));
+            auto ft = Formatter::Common();
+            ft.Add<uint16_t>(network_get_action_name_string_id(i));
             gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, screenCoords.y);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;

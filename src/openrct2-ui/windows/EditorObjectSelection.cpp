@@ -1017,8 +1017,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             totalSelectable = 4;
 
-        set_format_arg(0, uint16_t, numSelected);
-        set_format_arg(2, uint16_t, totalSelectable);
+        auto ft = Formatter::Common();
+        ft.Add<uint16_t>(numSelected);
+        ft.Add<uint16_t>(totalSelectable);
         gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 
@@ -1065,16 +1066,18 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     x = w->windowPos.x + (widget->left + widget->right) / 2 + 1;
     y = w->windowPos.y + widget->bottom + 3;
     width = w->width - w->widgets[WIDX_LIST].right - 6;
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, listItem->repositoryItem->Name.c_str());
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Draw description of object
     auto description = object_get_description(_loadedObject);
     if (!description.empty())
     {
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char*, description.c_str());
+        ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(description.c_str());
 
         x = w->windowPos.x + w->widgets[WIDX_LIST].right + 4;
         y += 15;
@@ -1101,8 +1104,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     // Draw object dat name
     const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, path);
+    ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(path);
     gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 5, y);
 }
 

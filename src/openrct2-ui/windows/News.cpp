@@ -284,8 +284,9 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
-        set_format_arg(0, rct_string_id, DateDayNames[newsItem->Day - 1]);
-        set_format_arg(2, rct_string_id, DateGameMonthNames[date_get_month(newsItem->MonthYear)]);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(DateDayNames[newsItem->Day - 1]);
+        ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem->MonthYear)]);
         gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 2, y);
 
         // Item text

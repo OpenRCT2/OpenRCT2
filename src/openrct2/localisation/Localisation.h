@@ -85,19 +85,6 @@ extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
     std::memcpy(args + offset, &value, size);
 }
 
-template<typename T> void constexpr set_format_arg(uint8_t* args, size_t offset, uintptr_t value)
-{
-    static_assert(sizeof(T) <= sizeof(uintptr_t), "Type too large");
-    set_format_arg_body(args, offset, value, sizeof(T));
-}
-
-#define set_format_arg(offset, type, value)                                                                                    \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large");                                                    \
-        set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)(value), sizeof(type));                                      \
-    } while (false)
-
 class Formatter
 {
     const uint8_t* StartBuf;
@@ -125,9 +112,14 @@ public:
         return CurrentBuf;
     }
 
-    void Increment(std::size_t count)
+    void Increment(size_t count)
     {
         CurrentBuf += count;
+    }
+
+    void Rewind()
+    {
+        CurrentBuf -= NumBytes();
     }
 
     std::size_t NumBytes() const

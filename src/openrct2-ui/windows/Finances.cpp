@@ -653,7 +653,9 @@ static void window_finances_summary_invalidate(rct_window* w)
         window_finances_summary_invertscroll(w);
 
     window_finances_set_pressed_tab(w);
-    set_format_arg(6, money32, gBankLoan);
+    auto ft = Formatter::Common();
+    ft.Increment(6);
+    ft.Add<money32>(gBankLoan);
 }
 
 /**
@@ -692,7 +694,8 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Loan and interest rate
     gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->windowPos.x + 8, w->windowPos.y + 279);
-    set_format_arg(0, uint16_t, gBankLoanInterestRate);
+    auto ft = Formatter::Common();
+    ft.Add<uint16_t>(gBankLoanInterestRate);
     gfx_draw_string_left(
         dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 167, w->windowPos.y + 279);
 
@@ -704,7 +707,8 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME)
     {
         money32 lastMonthProfit = finance_get_last_month_shop_profit();
-        set_format_arg(0, money32, lastMonthProfit);
+        ft = Formatter::Common();
+        ft.Add<money32>(lastMonthProfit);
         gfx_draw_string_left(
             dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK,
             w->windowPos.x + 280, w->windowPos.y + 279);

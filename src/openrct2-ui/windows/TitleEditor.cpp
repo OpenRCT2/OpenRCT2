@@ -832,7 +832,9 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
-            set_format_arg(0, uintptr_t, _sequenceName);
+        {
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(_sequenceName);
             gfx_draw_string_left(
                 dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1], w->windowPos.x + 10,
                 w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
@@ -843,6 +845,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
                     - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4);
             break;
+        }
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
@@ -894,7 +897,8 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
         }
 
         char buffer[256];
-        set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[i]);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(_editingTitleSequence->Saves[i]);
         if (selected || hover)
         {
             format_string(buffer, 256, STR_STRING, gCommonFormatArgs);
@@ -904,7 +908,8 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
             format_string(buffer + 1, 255, STR_STRING, gCommonFormatArgs);
             buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_BLACK));
         }
-        set_format_arg(0, uintptr_t, &buffer);
+        ft = Formatter::Common();
+        ft.Add<const char*>(&buffer);
         gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
     }
 }
@@ -943,6 +948,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
+        auto ft = Formatter::Common();
         rct_string_id commandName = STR_NONE;
         switch (command->Type)
         {
@@ -955,25 +961,25 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 }
                 else
                 {
-                    set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[command->SaveIndex]);
+                    ft.Add<const char*>(_editingTitleSequence->Saves[command->SaveIndex]);
                 }
                 break;
             case TITLE_SCRIPT_LOCATION:
                 commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
-                set_format_arg(0, uint16_t, command->X);
-                set_format_arg(2, uint16_t, command->Y);
+                ft.Add<uint16_t>(command->X);
+                ft.Add<uint16_t>(command->Y);
                 break;
             case TITLE_SCRIPT_ROTATE:
                 commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
-                set_format_arg(0, uint16_t, command->Rotations);
+                ft.Add<uint16_t>(command->Rotations);
                 break;
             case TITLE_SCRIPT_ZOOM:
                 commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
-                set_format_arg(0, uint16_t, command->Zoom);
+                ft.Add<uint16_t>(command->Zoom);
                 break;
             case TITLE_SCRIPT_SPEED:
                 commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
-                set_format_arg(0, rct_string_id, SpeedNames[command->Speed - 1]);
+                ft.Add<rct_string_id>(SpeedNames[command->Speed - 1]);
                 break;
             case TITLE_SCRIPT_FOLLOW:
                 commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
@@ -983,12 +989,12 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 }
                 else
                 {
-                    set_format_arg(0, uintptr_t, reinterpret_cast<uintptr_t>(command->SpriteName));
+                    ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(command->SpriteName));
                 }
                 break;
             case TITLE_SCRIPT_WAIT:
                 commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
-                set_format_arg(0, uint16_t, command->Milliseconds);
+                ft.Add<uint16_t>(command->Milliseconds);
                 break;
             case TITLE_SCRIPT_RESTART:
                 commandName = STR_TITLE_EDITOR_RESTART;
@@ -1013,7 +1019,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_MISSING_SCENARIO;
                 }
-                set_format_arg(0, uintptr_t, name);
+                ft.Add<const char*>(name);
                 break;
             }
             default:
@@ -1030,7 +1036,8 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             format_string(buffer + 1, 255, commandName, gCommonFormatArgs);
             buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
         }
-        set_format_arg(0, uintptr_t, &buffer);
+        ft = Formatter::Common();
+        ft.Add<const char*>(&buffer);
         gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
     }
 }
