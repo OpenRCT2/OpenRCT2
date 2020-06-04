@@ -1420,14 +1420,14 @@ void Guest::CheckCantFindRide()
         return;
 
     // Peeps will think "I can't find ride X" twice before giving up completely.
-    if (PeepIsLostCountdown == 30 || PeepIsLostCountdown == 60)
+    if (GuestIsLostCountdown == 30 || GuestIsLostCountdown == 60)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND, GuestHeadingToRideId);
         happiness_target = std::max(happiness_target - 30, 0);
     }
 
-    PeepIsLostCountdown--;
-    if (PeepIsLostCountdown != 0)
+    GuestIsLostCountdown--;
+    if (GuestIsLostCountdown != 0)
         return;
 
     GuestHeadingToRideId = RIDE_ID_NULL;
@@ -1452,14 +1452,14 @@ void Guest::CheckCantFindExit()
         return;
 
     // Peeps who can't find the park exit will continue to get less happy until they find it.
-    if (PeepIsLostCountdown == 1)
+    if (GuestIsLostCountdown == 1)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, PEEP_THOUGHT_ITEM_NONE);
         happiness_target = std::max(happiness_target - 30, 0);
     }
 
-    if (--PeepIsLostCountdown == 0)
-        PeepIsLostCountdown = 90;
+    if (--GuestIsLostCountdown == 0)
+        GuestIsLostCountdown = 90;
 }
 
 /** Main logic to decide whether a peep should buy an item in question
@@ -1801,7 +1801,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     if (ride != nullptr && peep_should_go_on_ride_again(this, ride))
     {
         GuestHeadingToRideId = rideIndex;
-        PeepIsLostCountdown = 200;
+        GuestIsLostCountdown = 200;
         peep_reset_pathfind_goal(this);
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
     }
@@ -1864,7 +1864,7 @@ void Guest::PickRideToGoOn()
     {
         // Head to that ride
         GuestHeadingToRideId = ride->id;
-        PeepIsLostCountdown = 200;
+        GuestIsLostCountdown = 200;
         peep_reset_pathfind_goal(this);
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
 
@@ -3120,14 +3120,14 @@ static void peep_leave_park(Peep* peep)
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
-        if (peep->PeepIsLostCountdown < 60)
+        if (peep->GuestIsLostCountdown < 60)
         {
             return;
         }
     }
     else
     {
-        peep->PeepIsLostCountdown = 254;
+        peep->GuestIsLostCountdown = 254;
         peep->PeepFlags |= PEEP_FLAGS_LEAVING_PARK;
         peep->PeepFlags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
@@ -3242,7 +3242,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     {
         // Head to that ride
         peep->GuestHeadingToRideId = closestRide->id;
-        peep->PeepIsLostCountdown = 200;
+        peep->GuestIsLostCountdown = 200;
         peep_reset_pathfind_goal(peep);
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
         peep->TimeLost = 0;

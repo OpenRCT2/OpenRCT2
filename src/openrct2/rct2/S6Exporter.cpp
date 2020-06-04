@@ -1209,7 +1209,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     }
     dst->path_check_optimisation = src->PathCheckOptimisation;
     dst->guest_heading_to_ride_id = src->GuestHeadingToRideId;
-    dst->peep_is_lost_countdown = src->PeepIsLostCountdown;
+    dst->peep_is_lost_countdown = src->GuestIsLostCountdown;
     dst->photo1_ride_ref = src->Photo1RideRef;
     dst->peep_flags = src->PeepFlags;
     dst->pathfind_goal = src->PathfindGoal;
