@@ -577,8 +577,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 widget_invalidate(w, WIDX_TAB_0 + w->page);
             }
-            InvokeEventHandler(info.Owner, info.Desc.OnUpdate);
         }
+
+        InvokeEventHandler(info.Owner, info.Desc.OnUpdate);
 
         // Since the plugin may alter widget positions and sizes during an update event,
         // we need to force an update for all list view scrollbars
