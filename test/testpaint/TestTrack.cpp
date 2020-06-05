@@ -150,8 +150,7 @@ class EntranceStyleFilter : public ITestTrackFilter
 public:
     bool AppliesTo(uint8_t rideType, uint8_t trackType) override
     {
-        if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-            || trackType == TRACK_ELEM_END_STATION)
+        if (track_type_is_station(trackType))
         {
             return true;
         }
@@ -222,8 +221,7 @@ uint8_t TestTrack::TestPaintTrackElement(uint8_t rideType, uint8_t trackType, st
 
     if (rideType == RIDE_TYPE_CHAIRLIFT)
     {
-        if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-            || trackType == TRACK_ELEM_END_STATION)
+        if (track_type_is_station(trackType))
         {
             // These rides check neighbouring tiles for tracks
             return TEST_SKIPPED;

@@ -284,7 +284,7 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
                 }
                 ft.Add<rct_string_id>(stringId);
             }
-            else if (track_element_is_station(tileElement))
+            else if (tileElement->AsTrack()->IsStation())
             {
                 rct_string_id stringId;
                 if (ride->num_stations > 1)

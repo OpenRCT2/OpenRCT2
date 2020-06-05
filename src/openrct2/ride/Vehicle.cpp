@@ -6988,16 +6988,10 @@ void Vehicle::UpdateSwingingCar()
                 break;
         }
 
-        switch (trackType)
+        if (track_type_is_station(trackType) || trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BLOCK_BRAKES)
         {
-            case TRACK_ELEM_END_STATION:
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-            case TRACK_ELEM_BRAKES:
-            case TRACK_ELEM_BLOCK_BRAKES:
-                dx = 0;
-                cx = 0;
-                break;
+            dx = 0;
+            cx = 0;
         }
 
         if (UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
@@ -8088,7 +8082,7 @@ loc_6DB41D:
         }
         else if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         {
-            if (track_element_is_station(tileElement))
+            if (tileElement->AsTrack()->IsStation())
             {
                 VehicleUpdateGoKartAttemptSwitchLanes(vehicle);
             }
@@ -9941,9 +9935,7 @@ void Vehicle::UpdateCrossings() const
                 xyElement.element = output.begin_element;
             }
 
-            if (xyElement.element->AsTrack()->GetTrackType() == TRACK_ELEM_BEGIN_STATION
-                || xyElement.element->AsTrack()->GetTrackType() == TRACK_ELEM_MIDDLE_STATION
-                || xyElement.element->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+            if (xyElement.element->AsTrack()->IsStation())
             {
                 break;
             }

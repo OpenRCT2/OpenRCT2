@@ -370,6 +370,8 @@ public:
     uint8_t GetDoorBState() const;
     void SetDoorAState(uint8_t newState);
     void SetDoorBState(uint8_t newState);
+
+    bool IsStation() const;
 };
 assert_struct_size(TrackElement, 16);
 

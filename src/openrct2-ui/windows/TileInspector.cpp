@@ -1922,7 +1922,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 int16_t sequenceNumber = trackElement->GetSequenceIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_WHITE, x, y + 33);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_WHITE, x, y + 44);
-                if (track_element_is_station(tileElement))
+                if (trackElement->IsStation())
                 {
                     int16_t stationIndex = trackElement->GetStationIndex();
                     auto ft = Formatter::Common();
