@@ -554,7 +554,7 @@ void track_get_front(CoordsXYE* input, CoordsXYE* output);
 
 bool track_element_is_block_start(TileElement* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
-bool track_element_is_station(TileElement* trackElement);
+bool track_type_is_station(track_type_t trackType);
 
 int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank);
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);

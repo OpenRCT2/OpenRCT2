@@ -684,10 +684,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 }
                 else
                 {
-                    trackType = tileElement->AsTrack()->GetTrackType();
-                    bool isStation
-                        = (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-                           || trackType == TRACK_ELEM_BEGIN_STATION);
+                    bool isStation = tileElement->AsTrack()->IsStation();
                     if (tileElement->clearance_height == inputTileElement->base_height)
                     {
                         proximity_score_increment(PROXIMITY_OWN_TRACK_TOUCH_ABOVE);

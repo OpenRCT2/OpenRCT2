@@ -3414,7 +3414,7 @@ void ride_set_map_tooltip(TileElement* tileElement)
     }
     else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        if (track_element_is_station(tileElement))
+        if (tileElement->AsTrack()->IsStation())
         {
             ride_station_set_map_tooltip(tileElement);
         }
@@ -6222,12 +6222,9 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                 if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
                     continue;
 
-                switch (tileElement->AsTrack()->GetTrackType())
+                if (tileElement->AsTrack()->IsStation())
                 {
-                    case TRACK_ELEM_END_STATION:
-                    case TRACK_ELEM_BEGIN_STATION:
-                    case TRACK_ELEM_MIDDLE_STATION:
-                        goToNextTile = true;
+                    goToNextTile = true;
                 }
             } while (!goToNextTile && !(tileElement++)->IsLastForTile());
 
@@ -7228,7 +7225,7 @@ TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tol
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
             /* Check if tileElement is a station platform. */
-            if (!track_element_is_station(tileElement))
+            if (!tileElement->AsTrack()->IsStation())
                 continue;
 
             if (z - z_tolerance > tileElement->base_height || z + z_tolerance < tileElement->base_height)

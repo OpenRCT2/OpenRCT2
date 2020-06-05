@@ -221,8 +221,7 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-        || trackType == TRACK_ELEM_TOWER_BASE)
+    if (track_type_is_station(trackType) || trackType == TRACK_ELEM_TOWER_BASE)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -255,7 +254,7 @@ uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 
 bool RCT12TrackElement::HasGreenLight() const
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (track_type_is_station(trackType))
     {
         return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
     }
@@ -753,8 +752,7 @@ void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-        || trackType == TRACK_ELEM_TOWER_BASE)
+    if (track_type_is_station(trackType) || trackType == TRACK_ELEM_TOWER_BASE)
     {
         sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
         sequence |= (newStationIndex << 4);
@@ -819,7 +817,7 @@ void RCT12TrackElement::SetBlockBrakeClosed(bool isClosed)
 
 void RCT12TrackElement::SetHasGreenLight(uint8_t greenLight)
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (track_type_is_station(trackType))
     {
         sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
         if (greenLight)

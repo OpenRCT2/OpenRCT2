@@ -495,3 +495,21 @@ CoordsXYZ RideStation::GetStart() const
     TileCoordsXYZ stationTileCoords{ Start.x, Start.y, Height };
     return stationTileCoords.ToCoordsXYZ();
 }
+
+bool TrackElement::IsStation() const
+{
+    return track_type_is_station(GetTrackType());
+}
+
+bool track_type_is_station(track_type_t trackType)
+{
+    switch (trackType)
+    {
+        case TRACK_ELEM_END_STATION:
+        case TRACK_ELEM_BEGIN_STATION:
+        case TRACK_ELEM_MIDDLE_STATION:
+            return true;
+        default:
+            return false;
+    }
+}

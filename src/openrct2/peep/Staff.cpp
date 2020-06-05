@@ -2203,17 +2203,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
             }
 
             uint8_t trackType = vehicle->track_type >> 2;
-            if (trackType == TRACK_ELEM_END_STATION)
-            {
-                break;
-            }
-
-            if (trackType == TRACK_ELEM_BEGIN_STATION)
-            {
-                break;
-            }
-
-            if (trackType == TRACK_ELEM_MIDDLE_STATION)
+            if (track_type_is_station(trackType))
             {
                 break;
             }
@@ -2453,7 +2443,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
         track_begin_end trackBeginEnd;
         while (track_block_get_previous(input, &trackBeginEnd))
         {
-            if (track_element_is_station(trackBeginEnd.begin_element))
+            if (trackBeginEnd.begin_element->AsTrack()->IsStation())
             {
                 input.x = trackBeginEnd.begin_x;
                 input.y = trackBeginEnd.begin_y;
