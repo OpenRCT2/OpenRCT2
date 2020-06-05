@@ -244,36 +244,6 @@ public:
 
         res->Position.z = maxHeight;
 
-        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            if (_bannerId == BANNER_INDEX_NULL)
-            {
-                log_error("No free banners available");
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
-            }
-
-            auto banner = GetBanner(_bannerId);
-            if (!banner->IsNull())
-            {
-                log_error("No free banners available");
-                return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
-            }
-
-            banner->text = {};
-            banner->colour = 2;
-            banner->text_colour = 2;
-            banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
-            banner->type = 0;
-            banner->position = TileCoordsXY(_loc);
-
-            ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
-            if (rideIndex != RIDE_ID_NULL)
-            {
-                banner->ride_index = rideIndex;
-                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            }
-        }
-
         if (!map_check_free_elements_and_reorganise(totalNumTiles))
         {
             log_error("No free map elements available");
@@ -326,6 +296,37 @@ public:
                 res->tileElement = newTileElement;
             }
             map_invalidate_tile_full(curTile);
+        }
+
+        // Allocate banner after all tiles to ensure banner id doesn't need to be freed.
+        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("No free banners available");
+                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
+            }
+
+            auto banner = GetBanner(_bannerId);
+            if (!banner->IsNull())
+            {
+                log_error("No free banners available");
+                return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
+            }
+
+            banner->text = {};
+            banner->colour = 2;
+            banner->text_colour = 2;
+            banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+            banner->type = 0;
+            banner->position = TileCoordsXY(_loc);
+
+            ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
+            if (rideIndex != RIDE_ID_NULL)
+            {
+                banner->ride_index = rideIndex;
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            }
         }
 
         // Force ride construction to recheck area
