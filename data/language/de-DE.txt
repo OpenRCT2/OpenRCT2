@@ -3669,6 +3669,8 @@ STR_6369    :Streckenbau an ungültigen Höhen erlauben
 STR_6370    :{SMALLFONT}{BLACK}Erlaubt Platzierung von Streckenteilen an beliebigen Höhenintervallen
 STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „RollerCoaster Tycoon 1“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
 STR_6372    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber diese Version ist ungeeignet. OpenRCT2 benötigt eine „Loopy Landscapes“- oder eine „RCT Deluxe“-Installation, um die „RollerCoaster Tycoon 1“-Mediendaten benutzen zu können.
+STR_6373    :Abstandsüberprüfungen umschalten
+STR_6374    :A
 
 #############
 # Scenarios #

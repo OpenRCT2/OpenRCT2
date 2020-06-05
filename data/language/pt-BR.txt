@@ -2796,7 +2796,7 @@ STR_5452    :Alternar barra de ferramentas
 STR_5453    :Selecione outra atração
 STR_5454    :Remover limite de FPS
 STR_5455    :Ativar o modo sandbox
-STR_5456    :Desabilitar as verificações de depuração
+STR_5456    :Desabilitar as verificações de folga
 STR_5457    :Desativar limites de apoio
 STR_5458    :Girar no sentido horário
 STR_5459    :Girar no sentido anti-horário
@@ -3668,6 +3668,8 @@ STR_6369    :Permitir construção de trilhos em alturas inválidas
 STR_6370    :{SMALLFONT}{BLACK}Permite a construção de trilhos em qualquer intervalo de altura
 STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado do CD do RollerCoaster Tycoon 1 para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
 STR_6372    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas essa versão não é compatível. O OpenRCT2 precisa da instalação do Loopy Landscapes ou RCT Deluxe para usar os recursos do RollerCoaster Tycoon 1.
+STR_6373    :Liga/desliga verificação de folga
+STR_6374    :F
 
 #############
 # Scenarios #
