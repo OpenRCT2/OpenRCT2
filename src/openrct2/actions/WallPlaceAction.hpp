@@ -342,36 +342,6 @@ public:
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
-        if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            if (_bannerId == BANNER_INDEX_NULL)
-            {
-                log_error("Banner Index not specified.");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
-            }
-
-            auto banner = GetBanner(_bannerId);
-            if (!banner->IsNull())
-            {
-                log_error("No free banners available");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
-            }
-
-            banner->text = {};
-            banner->colour = COLOUR_WHITE;
-            banner->text_colour = COLOUR_WHITE;
-            banner->flags = BANNER_FLAG_IS_WALL;
-            banner->type = 0;
-            banner->position = TileCoordsXY(_loc);
-
-            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
-            if (rideIndex != RIDE_ID_NULL)
-            {
-                banner->ride_index = rideIndex;
-                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            }
-        }
-
         uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
@@ -393,6 +363,37 @@ public:
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
+
+        if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("Banner Index not specified.");
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
+            }
+
+            auto banner = GetBanner(_bannerId);
+            if (!banner->IsNull())
+            {
+                log_error("No free banners available");
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
+            }
+
+            banner->text = {};
+            banner->colour = COLOUR_WHITE;
+            banner->text_colour = COLOUR_WHITE;
+            banner->flags = BANNER_FLAG_IS_WALL;
+            banner->type = 0; // Banner must be deleted after this point in an early return
+            banner->position = TileCoordsXY(_loc);
+
+            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
+            if (rideIndex != RIDE_ID_NULL)
+            {
+                banner->ride_index = rideIndex;
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            }
+        }
+
         TileElement* tileElement = tile_element_insert(targetLoc, 0b0000);
         assert(tileElement != nullptr);
 

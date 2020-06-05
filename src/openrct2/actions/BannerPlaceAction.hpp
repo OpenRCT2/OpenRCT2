@@ -128,6 +128,13 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
+        rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
+        if (bannerEntry == nullptr)
+        {
+            log_error("Invalid banner object type. bannerType = ", _bannerType);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+        }
+
         auto banner = GetBanner(_bannerIndex);
         if (!banner->IsNull())
         {
@@ -141,7 +148,7 @@ public:
         banner->flags = 0;
         banner->text = {};
         banner->text_colour = 2;
-        banner->type = _bannerType;
+        banner->type = _bannerType; // Banner must be deleted after this point in an early return
         banner->colour = _primaryColour;
         banner->position = TileCoordsXY(_loc);
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
@@ -157,12 +164,6 @@ public:
         map_invalidate_tile_full(_loc);
         map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
-        rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
-        if (bannerEntry == nullptr)
-        {
-            log_error("Invalid banner object type. bannerType = ", _bannerType);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
-        }
         res->Cost = bannerEntry->banner.price;
         return res;
     }
