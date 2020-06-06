@@ -208,7 +208,7 @@ void JumpingFountain::AdvanceAnimation()
 {
     const int32_t newType = GetType();
     const int32_t direction = (sprite_direction >> 3) & 7;
-    const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
+    const CoordsXY newLoc = XY() + CoordsDirectionDelta[direction];
 
     int32_t availableDirections = 0;
     for (uint32_t i = 0; i < _fountainDirectionsNegative.size(); i++)

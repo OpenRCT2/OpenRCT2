@@ -76,7 +76,7 @@ void Balloon::Pop()
 {
     popped = 1;
     frame = 0;
-    audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
+    audio_play_sound_at_location(SoundId::BalloonPop, XYZ());
 }
 
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)

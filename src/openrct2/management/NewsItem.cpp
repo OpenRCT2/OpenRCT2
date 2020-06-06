@@ -238,7 +238,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             if (peep == nullptr)
                 break;
 
-            subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+            subjectLoc = peep->XYZ();
             if (subjectLoc->x != LOCATION_NULL)
                 break;
 
@@ -265,7 +265,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
             if (sprite != nullptr)
             {
-                subjectLoc = CoordsXYZ{ sprite->vehicle.x, sprite->vehicle.y, sprite->vehicle.z };
+                subjectLoc = sprite->vehicle.XYZ();
             }
             break;
         }
@@ -277,7 +277,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
                 auto peep = sprite->generic.As<Peep>();
                 if (peep != nullptr)
                 {
-                    subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+                    subjectLoc = peep->XYZ();
                 }
             }
             break;

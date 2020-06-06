@@ -1064,7 +1064,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
         if (peep->x == LOCATION_NULL)
             continue;
 
-        MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
+        MapCoordsXY c = window_map_transform_to_map_coords(peep->XY());
         int16_t left = c.x;
         int16_t top = c.y;
 
@@ -1118,7 +1118,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
             if (vehicle->x == LOCATION_NULL)
                 continue;
 
-            MapCoordsXY c = window_map_transform_to_map_coords({ vehicle->x, vehicle->y });
+            MapCoordsXY c = window_map_transform_to_map_coords(vehicle->XY());
 
             gfx_fill_rect(dpi, c.x, c.y, c.x, c.y, PALETTE_INDEX_171);
         }

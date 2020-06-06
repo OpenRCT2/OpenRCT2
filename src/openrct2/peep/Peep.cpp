@@ -619,7 +619,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
             }
         }
         sprite_direction = nextDirection;
-        CoordsXY loc = { x, y };
+        auto loc = XY();
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
@@ -641,14 +641,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         action_sprite_image_offset = 0;
         action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
-        return { { x, y } };
+        return { XY() };
     }
     action_sprite_image_offset = peepAnimation[action_sprite_type].frame_offsets[action_frame];
 
     // If not throwing up and not at the frame where sick appears.
     if (action != PEEP_ACTION_THROW_UP || action_frame != 15)
     {
-        return { { x, y } };
+        return { XY() };
     }
 
     // We are throwing up
@@ -667,9 +667,9 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     SoundId coughs[4] = { SoundId::Cough1, SoundId::Cough2, SoundId::Cough3, SoundId::Cough4 };
     auto soundId = coughs[scenario_rand() & 3];
-    audio_play_sound_at_location(soundId, { x, y, z });
+    audio_play_sound_at_location(soundId, XYZ());
 
-    return { { x, y } };
+    return { XY() };
 }
 
 /**
@@ -896,7 +896,7 @@ void Peep::UpdateFalling()
     }
 
     // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-    TileElement* tile_element = map_get_first_element_at({ x, y });
+    TileElement* tile_element = map_get_first_element_at(XY());
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
 
@@ -908,7 +908,7 @@ void Peep::UpdateFalling()
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
                 int32_t height = map_height_from_slope(
-                                     { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
+                                     XY(), tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->GetBaseZ();
 
                 if (height < z - 1 || height > z + 4)
@@ -948,7 +948,7 @@ void Peep::UpdateFalling()
                         return;
                     }
                 }
-                int32_t map_height = tile_element_height({ x, y });
+                int32_t map_height = tile_element_height(XY());
                 if (map_height < z || map_height - 4 > z)
                     continue;
                 saved_height = map_height;
@@ -974,7 +974,7 @@ void Peep::UpdateFalling()
 
     MoveTo({ x, y, saved_height });
 
-    NextLoc = { CoordsXY{ x, y }.ToTileStart(), saved_map->GetBaseZ() };
+    NextLoc = { XY().ToTileStart(), saved_map->GetBaseZ() };
 
     if (saved_map->GetType() != TILE_ELEMENT_TYPE_PATH)
     {

@@ -463,7 +463,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
         return INVALID_DIRECTION;
     }
 
-    auto litterTile = CoordsXY{ nearestLitter->x, nearestLitter->y }.ToTileStart();
+    auto litterTile = nearestLitter->XY().ToTileStart();
 
     if (!peep->AsStaff()->IsLocationInPatrol(litterTile))
     {
@@ -2557,7 +2557,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
     if (action_frame == 0x13 || action_frame == 0x19 || action_frame == 0x1F || action_frame == 0x25 || action_frame == 0x2B)
     {
-        audio_play_sound_at_location(SoundId::MechanicFix, { x, y, z });
+        audio_play_sound_at_location(SoundId::MechanicFix, XYZ());
     }
 
     return false;

@@ -176,7 +176,7 @@ void viewport_create(
     {
         w->viewport_target_sprite = sprite;
         rct_sprite* centre_sprite = get_sprite(sprite);
-        centrePos = { centre_sprite->generic.x, centre_sprite->generic.y, centre_sprite->generic.z };
+        centrePos = centre_sprite->generic.XYZ();
     }
     else
     {
@@ -621,12 +621,12 @@ void viewport_update_sprite_follow(rct_window* window)
     {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height({ sprite->generic.x, sprite->generic.y })) - 16;
+        int32_t height = (tile_element_height(sprite->generic.XY())) - 16;
         int32_t underground = sprite->generic.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        auto centreLoc = centre_2d_coordinates({ sprite->generic.x, sprite->generic.y, sprite->generic.z }, window->viewport);
+        auto centreLoc = centre_2d_coordinates(sprite->generic.XYZ(), window->viewport);
         if (centreLoc)
         {
             window->savedViewPos = *centreLoc;

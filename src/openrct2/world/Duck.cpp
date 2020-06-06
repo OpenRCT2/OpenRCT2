@@ -109,7 +109,7 @@ void Duck::UpdateFlyToWater()
     Invalidate();
     int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
     int32_t direction = sprite_direction >> 3;
-    auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
+    auto destination = CoordsXYZ{ XY() + DuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
     auto surfaceElement = map_get_surface_element_at(CoordsXY{ target_x, target_y });
@@ -190,8 +190,8 @@ void Duck::UpdateSwim()
         else
         {
             Invalidate();
-            int16_t landZ = tile_element_height({ x, y });
-            int16_t waterZ = tile_element_water_height({ x, y });
+            int16_t landZ = tile_element_height(XY());
+            int16_t waterZ = tile_element_water_height(XY());
 
             if (z < landZ || waterZ == 0)
             {
@@ -209,7 +209,7 @@ void Duck::UpdateSwim()
                 }
 
                 int32_t direction = sprite_direction >> 3;
-                auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
+                auto destination = CoordsXYZ{ XY() + DuckMoveOffset[direction], 0 };
                 landZ = tile_element_height(destination);
                 waterZ = tile_element_water_height(destination);
 
@@ -358,7 +358,7 @@ void duck_update(Duck* duck)
 
 void duck_press(Duck* duck)
 {
-    audio_play_sound_at_location(SoundId::Quack, { duck->x, duck->y, duck->z });
+    audio_play_sound_at_location(SoundId::Quack, duck->XYZ());
 }
 
 void duck_remove_all()
