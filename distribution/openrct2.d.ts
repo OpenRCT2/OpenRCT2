@@ -175,6 +175,8 @@ declare global {
          * 
          * @param type The object type.
          * @param index The index. TODO?
+         * 
+         * @return A loaded game object. TODO what if no object at index?
          */
         getObject(type: ObjectType, index: number): Object;
 
@@ -183,6 +185,8 @@ declare global {
          * 
          * @param type The "ride" object type.
          * @param index The index. TODO?
+         * 
+         * @return The loaded ride object. TODO what if no object at index?
          */
         getObject(type: "ride", index: number): RideObject;
 
@@ -191,6 +195,8 @@ declare global {
          * 
          * @param type The "small_cenery" object type.
          * @param index The index. TODO?
+         * 
+         * @return The loaded small scenery object. TODO what if no object at index?
          */
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
 
@@ -198,6 +204,8 @@ declare global {
          * Get all loaded objects of the given type.
          * 
          * @param type The object type.
+         * 
+         * @return An array of loaded objects.
          */
         getAllObjects(type: ObjectType): Object[];
 
@@ -205,6 +213,8 @@ declare global {
          * Get all loaded objects of the "ride" object type.
          * 
          * @param type The "ride" object type.
+         * 
+         * @return An array of ride objects.
          */
         getAllObjects(type: "ride"): RideObject[];
 
@@ -217,6 +227,8 @@ declare global {
          * 
          * @param min The minimum value inclusive.
          * @param max The maximum value exclusive.
+         * 
+         * @return A random number in the given range.
          */
         getRandom(min: number, max: number): number;
 
@@ -335,16 +347,58 @@ declare global {
     }
 
     /**
-     * APIs to interact with the game configuration.
+     * The game configuration.
      */
     interface Configuration {
+
+        /**
+         * Get the configuration for the given namespace.
+         * 
+         * @param namespace TODO?
+         */
         getAll(namespace: string): { [name: string]: any };
+
+        /**
+         * Get the value of the given key in the configuration.
+         * 
+         * @param key The key of the value to retrieve.
+         * 
+         * @return The configuration value if it exists, or undefined otherwise.
+         */
         get<T>(key: string): T | undefined;
+
+        /**
+         * Get the value of the given key in the configuration.
+         * 
+         * @param key The key of the value to retrieve.
+         * @param defaultValue The value to return if the key does not exist.
+         * 
+         * @return The configuration value if it exists, or defaultValue otherwise.
+         */
         get<T>(key: string, defaultValue: T): T;
+
+        /**
+         * Set the value of the given key in the configuration. If the key does not exist in the
+         * configuration, add the key and set its value.
+         * 
+         * @param key The key whose value will be set.
+         * @param value The value of the key.
+         */
         set<T>(key: string, value: T): void;
+
+        /**
+         * Determine if the configuration contains the given key.
+         * 
+         * @param key The key to check.
+         * 
+         * @return True if the key exists in the configuration, false otherwise.
+         */
         has(key: string): boolean;
     }
 
+    /**
+     * Options for screenshot capture.
+     */
     interface CaptureOptions {
         /**
          * A relative filename from the screenshot directory to save the capture as.
@@ -381,6 +435,7 @@ declare global {
         rotation: number;
     }
 
+    /** Game object types. */
     type ObjectType =
         "ride" |
         "small_scenery" |
@@ -397,11 +452,13 @@ declare global {
         "station" |
         "music";
 
+    /** Hook types. */
     type HookType =
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
         "ride.ratings.calculate";
 
+    /** Types associated with spending money. */
     type ExpenditureType =
         "ride_construction" |
         "ride_runningcosts" |
@@ -418,35 +475,55 @@ declare global {
         "research" |
         "interest";
 
+    /** Arugments for the GameActionEvent hook callback. */
     interface GameActionEventArgs {
+        /** The number of the player who executed the action. TODO always 0 in single player? */
         readonly player: number;
+        /** The event type. */
         readonly type: string;
+        /** TODO True if the event only occurs in the client, false if needs to be synchronized to the network? */
         readonly isClientOnly: boolean;
+        /** TODO */
         readonly args: object;
+        /** The result of the action. */
         result: GameActionResult;
     }
 
+    /** The result of the game action. */
     interface GameActionResult {
+        /** TODO? */
         error?: number;
+        /** TODO? */
         errorTitle?: string;
+        /** The error message which is displayed in a pop-up, if specified. */
         errorMessage?: string;
+        /** The position of the error message, if any. TODO position of the error or just the position of the action? */
         position?: CoordsXYZ;
+        /** The cost of the game action, if any. */
         cost?: number;
+        /** The type of the cost of the game action for financial purposes, if any. */
         expenditureType?: ExpenditureType;
     }
 
+    /** The result of the ride creation game action. */
     interface RideCreateGameActionResult extends GameActionResult {
+        /** The ride number. TODO reference? */
         readonly ride: number;
     }
 
+    /** Arguments for the NetworkEvent hook callback. */
     interface NetworkEventArgs {
+        /** The number of the player who executed the action. TODO always 0 in single player? */
         readonly player: number;
     }
 
+    /** Arugments for the NetworkChatEvent hook callback. */
     interface NetworkChatEventArgs extends NetworkEventArgs {
+        /** The message text. */
         message: string;
     }
 
+    /** Arugments for the NetworkAuthenticateEvent hook callback. */
     interface NetworkAuthenticateEventArgs {
         readonly name: number;
         readonly ipAddress: string;
@@ -454,10 +531,15 @@ declare global {
         cancel: boolean;
     }
 
+    /** Arugments for the RideRatingCalculate hook callback. */
     interface RideRatingsCalculateArgs {
+        /** The ride id. */
         readonly rideId: number;
+        /** The ride excitement. */
         excitement: number;
+        /** The ride intensity. */
         intensity: number;
+        /** The ride nausea. */
         nausea: number;
     }
 
