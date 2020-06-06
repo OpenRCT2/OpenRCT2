@@ -805,7 +805,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && no_of_rides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
-            uint32_t time_duration = gScenarioTicks - time_in_park;
+            uint32_t time_duration = gScenarioTicks - TimeInPark;
             time_duration /= 2048;
 
             if (time_duration >= 5)
@@ -5679,7 +5679,7 @@ void Guest::UpdateEnteringPark()
     SetState(PEEP_STATE_FALLING);
 
     outside_of_park = 0;
-    time_in_park = gScenarioTicks;
+    TimeInPark = gScenarioTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

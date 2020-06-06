@@ -1104,7 +1104,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y += LIST_ROW_HEIGHT;
     }
 
-    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->time_in_park), COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->TimeInPark), COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
     switch (peep->staff_type)

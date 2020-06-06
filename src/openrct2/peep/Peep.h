@@ -680,7 +680,7 @@ struct Peep : SpriteBase
     uint32_t id;
     money32 cash_in_pocket;
     money32 cash_spent;
-    int32_t time_in_park;
+    int32_t TimeInPark;
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
     uint8_t PreviousRide;
     uint16_t PreviousRideTimeOut;

@@ -366,7 +366,7 @@ void staff_reset_stats()
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {
-        peep->time_in_park = gDateMonthsElapsed;
+        peep->TimeInPark = gDateMonthsElapsed;
         peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;

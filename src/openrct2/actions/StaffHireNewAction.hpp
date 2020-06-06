@@ -231,7 +231,7 @@ private:
             }
 
             // Staff uses this
-            newPeep->time_in_park = gDateMonthsElapsed;
+            newPeep->TimeInPark = gDateMonthsElapsed;
             newPeep->PathfindGoal.x = 0xFF;
             newPeep->PathfindGoal.y = 0xFF;
             newPeep->PathfindGoal.z = 0xFF;

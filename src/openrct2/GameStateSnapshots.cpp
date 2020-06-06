@@ -272,7 +272,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, id);
         COMPARE_FIELD(Peep, cash_in_pocket);
         COMPARE_FIELD(Peep, cash_spent);
-        COMPARE_FIELD(Peep, time_in_park);
+        COMPARE_FIELD(Peep, TimeInPark);
         COMPARE_FIELD(Peep, RejoinQueueTimeout);
         COMPARE_FIELD(Peep, PreviousRide);
         COMPARE_FIELD(Peep, PreviousRideTimeOut);
