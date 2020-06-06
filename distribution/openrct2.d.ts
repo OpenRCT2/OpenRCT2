@@ -64,30 +64,28 @@ declare global {
     }
 
     /**
-     * A coordinate within the game.
-     * Each in-game tile is a size of 32x32.
+     * A 2D coordinate within the game map.
      */
     interface CoordsXY {
+        /** The x location on the map. Each in-game tile is a size of 32x32 units. */
         x: number;
+        /** The y location on the map. Each in-game tile is a size of 32x32 units. */
         y: number;
     }
 
     /**
-     * A coordinate within the game.
-     * Each in-game tile is a size of 32x32.
-     * The z-coordinate raises 16 per land increment. A full-height wall is 32 in height.
+     * A 3D coordinate within the game map.
      */
     interface CoordsXYZ extends CoordsXY {
+        /** The z location on the map. One land increment is 16 z units. A full-height wall is 32 z units. */
         z: number;
     }
 
     /**
-     * A coordinate within the game.
-     * Each in-game tile is a size of 32x32.
-     * The z-coordinate raises 16 per land increment. A full-height wall is 32 in height.
-     * The direction is between 0 and 3.
+     * A 3D coordinate within the game map which includes direction.
      */
     interface CoordsXYZD extends CoordsXYZ {
+        /** A number between 0 and 3 indicating direction. */
         direction: number;
     }
 
@@ -100,28 +98,42 @@ declare global {
     }
 
     /**
-     * Represents information about the plugin such as type, name, author and version.
-     * It also includes the entry point.
+     * Information about the plugin such as type, name, author, version, and entry point.
      */
     interface PluginMetadata {
+        /** The plugin name. */
         name: string;
+        /** The plugin version. Consider using semantic versioning (semver.org). */
         version: string;
+        /** The plugin author(s). */
         authors: string | string[];
+        /** The plugin type. */
         type: PluginType;
+        /** The minimum API version required by the plugin. */
         minApiVersion?: number;
+        /** The entry point for the plugin. */
         main: () => void;
     }
 
     /**
-     * Console APIs
-     * Currently interact with stdout.
+     * Console APIs. Currently they only interact with stdout.
      */
     interface Console {
+        /**
+         * Clear the console.
+         */
         clear(): void;
+
+        /**
+         * Log a message in the console. TODO can this execute commands too?
+         * 
+         * @param message A message or content to print to the console.
+         * @param optionalParams An array of parameters to pass to the console. TODO?
+         */
         log(message?: any, ...optionalParams: any[]): void;
 
         /**
-         * Executes a command using the legacy console REPL. This should not be used
+         * Execute a command using the legacy console REPL. This should not be used
          * by plugins, and exists only for servers to continue using old commands until
          * all functionality can be accomplished with this scripting API.
          *
@@ -153,35 +165,64 @@ declare global {
         /**
          * Render the current state of the map and save to disc.
          * Useful for server administration and timelapse creation.
+         * 
          * @param options Options that control the capture and output file.
          */
         captureImage(options: CaptureOptions): void;
 
         /**
-         * Gets the loaded object at the given index.
+         * Get the loaded object at the given index.
+         * 
          * @param type The object type.
-         * @param index The index.
+         * @param index The index. TODO?
          */
         getObject(type: ObjectType, index: number): Object;
+
+        /**
+         * Get the loaded ride object at the given index.
+         * 
+         * @param type The "ride" object type.
+         * @param index The index. TODO?
+         */
         getObject(type: "ride", index: number): RideObject;
+
+        /**
+         * Get the loaded small scenery object at the given index.
+         * 
+         * @param type The "small_cenery" object type.
+         * @param index The index. TODO?
+         */
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
 
+        /**
+         * Get all loaded objects of the given type.
+         * 
+         * @param type The object type.
+         */
         getAllObjects(type: ObjectType): Object[];
+
+        /**
+         * Get all loaded objects of the "ride" object type.
+         * 
+         * @param type The "ride" object type.
+         */
         getAllObjects(type: "ride"): RideObject[];
 
         /**
-         * Gets a random integer within the specified range using the game's pseudo-
+         * Get a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
          * all clients, you therefore must be in a context that can mutate the game
          * state. Use this to generate random numbers instead of Math.Random during
          * game logic routines such as hooks and game actions.
+         * 
          * @param min The minimum value inclusive.
          * @param max The maximum value exclusive.
          */
         getRandom(min: number, max: number): number;
 
         /**
-         * Registers a new game action that allows clients to interact with the game.
+         * Register a new game action that allows clients to interact with the game.
+         * 
          * @param action The unique name of the action.
          * @param query Logic for validating and returning a price for an action.
          * @param execute Logic for validating and executing the action.
@@ -195,6 +236,7 @@ declare global {
         /**
          * Query the result of running a game action. This allows you to check the outcome and validity of
          * an action without actually executing it.
+         * 
          * @param action The name of the action.
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
@@ -204,6 +246,7 @@ declare global {
         /**
          * Executes a game action. In a network game, this will send a request to the server and wait
          * for the server to reply.
+         * 
          * @param action The name of the action.
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
@@ -211,21 +254,89 @@ declare global {
         executeAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
 
         /**
-         * Subscribes to the given hook.
+         * Subscribe to the given hook.
+         * 
+         * @param hook The hook type.
+         * @param callback The function to execute when the hook is invoked.
          */
         subscribe(hook: HookType, callback: Function): IDisposable;
 
+        /**
+         * Subscribe to the query game action hook.
+         * 
+         * @param hook The "action.query" hook type.
+         * @param callback The function to execute with the result of the game action.
+         */
         subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
+
+        /**
+         * Subscribe to the execute game action hook.
+         * 
+         * @param hook The "action.execute" hook type.
+         * @param callback The function to execute with the result of the game action.
+         */
         subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
+
+        /**
+         * Subscribe to the game tick hook.
+         * 
+         * @param hook The "interval.tick" hook type.
+         * @param callback The function to execute when the hook is invoked.
+         */
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
+
+        /**
+         * Subscribe to the in-game day hook.
+         * 
+         * @param hook The "interval.day" hook type.
+         * @param callback The function to execute when the hook is invoked.
+         */
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
+
+        /**
+         * Subscribe to the network chat hook.
+         * 
+         * @param hook The "network.chat" hook type.
+         * @param callback The function to execute with the result of the network chat event.
+         */
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+
+        /**
+         * Subscribe to the network authentication hook.
+         * 
+         * @param hook The "network.authenticate" hook type.
+         * @param callback The function to execute with the result of the network authentication event.
+         */
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
+
+        /**
+         * Subscribe to the join network event hook.
+         * 
+         * @param hook The "network.join" hook type.
+         * @param callback The function to execute with the result of the join network event.
+         */
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
+
+        /**
+         * Subscribe to the leave network hook.
+         * 
+         * @param hook The "network.leave" hook type.
+         * @param callback The function to execute with the result of the network event.
+         */
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
+
+        /**
+         * Subscribe to the calulate ride ratings hook.
+         * 
+         * @param hook The "ride.ratings.calculate" hook type.
+         * @param callback The function to execute with the result of the ride ratings calculation.
+         */
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
     }
 
+    /**
+     * APIs to interact with the game configuration.
+     */
     interface Configuration {
         getAll(namespace: string): { [name: string]: any };
         get<T>(key: string): T | undefined;
