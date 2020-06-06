@@ -725,6 +725,16 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
     }
 }
 
+CoordsXYZ SpriteBase::XYZ() const
+{
+    return { x, y, z };
+}
+
+CoordsXY SpriteBase::XY() const
+{
+    return { x, y };
+}
+
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
 {
     CoordsXYZ coords3d = { x, y, z };

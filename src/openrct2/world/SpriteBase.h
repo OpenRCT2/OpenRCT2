@@ -3,6 +3,7 @@
 #include "../common.h"
 
 struct CoordsXYZ;
+struct CoordsXY;
 
 struct SpriteBase
 {
@@ -42,6 +43,9 @@ struct SpriteBase
     {
         return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }
+
+    CoordsXYZ XYZ() const;
+    CoordsXY XY() const;
 };
 
 struct SpriteGeneric : SpriteBase
