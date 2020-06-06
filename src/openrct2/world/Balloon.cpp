@@ -14,11 +14,6 @@
 #include "../util/Util.h"
 #include "Sprite.h"
 
-bool rct_sprite::IsBalloon()
-{
-    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.type == SPRITE_MISC_BALLOON;
-}
-
 template<> bool SpriteBase::Is<Balloon>() const
 {
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_BALLOON;
@@ -27,7 +22,7 @@ template<> bool SpriteBase::Is<Balloon>() const
 Balloon* rct_sprite::AsBalloon()
 {
     Balloon* result = nullptr;
-    if (IsBalloon())
+    if (generic.Is<Balloon>())
     {
         result = reinterpret_cast<Balloon*>(this);
     }

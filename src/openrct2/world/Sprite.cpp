@@ -880,7 +880,7 @@ uint16_t remove_floating_sprites()
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
         rct_sprite* rctSprite = get_sprite(i);
-        if (rctSprite->IsBalloon())
+        if (rctSprite->generic.Is<Balloon>())
         {
             sprite_remove(rctSprite->AsBalloon());
             sprite_misc_update(rctSprite);

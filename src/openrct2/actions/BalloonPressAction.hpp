@@ -37,7 +37,7 @@ public:
     GameActionResult::Ptr Query() const override
     {
         rct_sprite* sprite = try_get_sprite(_spriteIndex);
-        if (sprite == nullptr || !sprite->IsBalloon())
+        if (sprite == nullptr || !sprite->generic.Is<Balloon>())
         {
             log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -48,7 +48,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         rct_sprite* sprite = try_get_sprite(_spriteIndex);
-        if (sprite == nullptr || !sprite->IsBalloon())
+        if (sprite == nullptr || !sprite->generic.Is<Balloon>())
         {
             log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
