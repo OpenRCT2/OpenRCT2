@@ -417,14 +417,8 @@ void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
     if (!GuestHasValidXY())
         return;
 
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
-    if (spriteIndex == SPRITE_INDEX_NULL)
-        return;
-
-    auto otherPeep = GET_PEEP(spriteIndex);
-    for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant)
+    for (auto otherPeep : EntityTileList<Peep>({ x, y }))
     {
-        otherPeep = GET_PEEP(spriteIndex);
         auto otherGuest = otherPeep->AsGuest();
         if (otherGuest)
         {
@@ -5477,15 +5471,8 @@ void Guest::UpdateWalking()
         return;
 
     // Check if there is a peep watching (and if there is place for us)
-    for (uint16_t sprite_id = sprite_get_first_in_quadrant(x, y); sprite_id != SPRITE_INDEX_NULL;)
+    for (auto peep : EntityTileList<Peep>({ x, y }))
     {
-        auto sprite = GetEntity(sprite_id);
-        sprite_id = sprite->next_in_quadrant;
-        auto peep = sprite->As<Peep>();
-
-        if (peep == nullptr)
-            continue;
-
         if (peep->State != PEEP_STATE_WATCHING)
             continue;
 

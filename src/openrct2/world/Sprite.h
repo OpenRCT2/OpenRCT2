@@ -262,4 +262,86 @@ int32_t check_for_sprite_list_cycles(bool fix);
 int32_t check_for_spatial_index_cycles(bool fix);
 int32_t fix_disjoint_sprites();
 
+template<typename T = SpriteBase> class EntityTileList
+{
+private:
+    uint16_t FirstEntity = SPRITE_INDEX_NULL;
+
+    class EntityTileIterator
+    {
+    private:
+        T* Entity = nullptr;
+        uint16_t NextEntityId = SPRITE_INDEX_NULL;
+
+    public:
+        EntityTileIterator(const uint16_t _EntityId)
+            : NextEntityId(_EntityId)
+        {
+            ++(*this);
+        }
+        EntityTileIterator& operator++()
+        {
+            if (NextEntityId != SPRITE_INDEX_NULL)
+            {
+                Entity = nullptr;
+                while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
+                {
+                    auto baseEntity = GetEntity(NextEntityId);
+                    if (!baseEntity)
+                    {
+                        NextEntityId = SPRITE_INDEX_NULL;
+                    }
+                    NextEntityId = baseEntity->next_in_quadrant;
+                    Entity = baseEntity->As<T>();
+                }
+            }
+            else
+            {
+                Entity = nullptr;
+            }
+            return *this;
+        }
+
+        EntityTileIterator operator++(int)
+        {
+            EntityTileIterator retval = *this;
+            ++(*this);
+            return retval;
+        }
+        bool operator==(EntityTileIterator other) const
+        {
+            return Entity == other.Entity;
+        }
+        bool operator!=(EntityTileIterator other) const
+        {
+            return !(*this == other);
+        }
+        T* operator*()
+        {
+            return Entity;
+        }
+        // iterator traits
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = const T*;
+        using reference = const T&;
+        using iterator_category = std::forward_iterator_tag;
+    };
+
+public:
+    EntityTileList(const CoordsXY& loc)
+        : FirstEntity(sprite_get_first_in_quadrant(loc.x, loc.y))
+    {
+    }
+
+    EntityTileIterator begin()
+    {
+        return EntityTileIterator(FirstEntity);
+    }
+    EntityTileIterator end()
+    {
+        return EntityTileIterator(SPRITE_INDEX_NULL);
+    }
+};
+
 #endif
