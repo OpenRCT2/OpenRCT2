@@ -549,16 +549,21 @@ declare global {
     interface GameDate {
         /**
          * The total number of ticks that have elapsed since the beginning of the game / scenario. This
-         * should never reset.
+         * should never reset. TODO: so this isn't actually scenario, right? Only game?
          */
         readonly ticksElapsed: number;
+
         /**
-         * The total number of months that have elapsed. This will equate to 16 on 1st March, Year 2.
-         * Note: this represents the current date and may be reset by cheats or scripts.
+         * The total number of months that have elapsed plus 8. This means the value will be 8 on March 1, Year 1,
+         * and March 1, Year 2 will be 16, and so on. TODO: I corrected this, need to verify.
+         * This represents the current date and may be reset by cheats or scripts.
          */
         monthsElapsed: number;
+
         /**
-         * The total number of years that have elapsed. This always equates to (monthsElapsed / 8).
+         * The total number of years that have elapsed. There are 8 months in each in-game year, so this
+         * always equates to (monthsElapsed / 8).
+         * Since the value is based on monthsElapsed, it may be reset by cheats or scripts.
          */
         readonly yearsElapsed: number;
 
@@ -580,96 +585,211 @@ declare global {
      * APIs for the map.
      */
     interface GameMap {
+        /** The total size of the map. TODO in tiles? */
         readonly size: CoordsXY;
+        /** The number of rides on the game map. */
         readonly numRides: number;
+        /** The number of objects on the game map. */
         readonly numEntities: number;
+        /** An array of all the rides on the map. */
         readonly rides: Ride[];
 
+        /** Get the ride with the given ID. TODO what if doesn't exist?
+         * 
+         * @param id The ride id.
+         * 
+         * @return The ride. TODO what if doesn't exist?
+         */
         getRide(id: number): Ride;
+
+        /**
+         * Get the tile at the given position. TODO what if OOB?
+         * 
+         * @param x The x-coordinate of the tile.
+         * @param y The y-coordinate of the tile.
+         * 
+         * @return The game tile. TODO what if OOB?
+         */
         getTile(x: number, y: number): Tile;
+
+        /**
+         * Get the object with the given id. TODO what if doesn't exist?
+         * 
+         * @param id The object id.
+         * 
+         * @return The object. TODO what if doesn't exist?
+         */
         getEntity(id: number): Entity;
+
+        /**
+         * Get all map objects of the given type.
+         * 
+         * @param type The object type.
+         * 
+         * @return An array of objects.
+         */
         getAllEntities(type: EntityType): Entity[];
+
+        /**
+         * Get all peep objects.
+         * 
+         * @param type The "peep" object type.
+         * 
+         * @return An array of Peeps.
+         */
         getAllEntities(type: "peep"): Peep[];
     }
 
+    /** Type of tile elements (e.g. surface, footpath, track). */
     type TileElementType =
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner"
-        /** This only exist to retrieve the types for existing corrupt elements. For hiding elements, use the isHidden field instead. */
+        /** This only exists to retrieve the types for existing corrupt elements. For hiding elements, use the isHidden field instead. */
         | "openrct2_corrupt_deprecated";
 
+    /**
+     * A tile element.
+     */
     interface BaseTileElement {
+        /** The tile type. */
         type: TileElementType;
+        /** The base height of the tile for collision. */
         baseHeight: number;
+        /** The top height of the tile for collision. */
         clearanceHeight: number;
-        isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        /** Indicates if the tile is hidden. Take caution when changing this field, it may invalidate 
+         * TileElements you have stored in your plugin. 
+         */
+        isHidden: boolean;
     }
 
+    /**
+     * A surface element.
+     */
     interface SurfaceElement extends BaseTileElement {
+        /** TODO what does the number mean? */
         slope: number;
+        /** A number indicating the surface style. */
         surfaceStyle: number;
+        /** A number indicating the edge style (blended or not?) TODO: verify */
         edgeStyle: number;
+        /** The surface height of the water. */
         waterHeight: number;
+        /** The length of the grass from X to Y. TODO */
         grassLength: number;
+        /** A number from x to y indicating the ownership status. TODO */
         ownership: number;
+        /** A number indicating the location of park fences. */
         parkFences: number;
 
+        /** True if the surface is owned by the park, false otherwise. */
         readonly hasOwnership: boolean;
+        /** True if the surface has construction rights owned by the park, false otherwise. */
         readonly hasConstructionRights: boolean;
     }
 
+    /**
+     * A footpath element.
+     */
     interface FootpathElement extends BaseTileElement {
+        /** A number indicating the footpath type. TODO */
         footpathType: number;
+        /** A number indicating the connection points on the path. TODO */
         edgesAndCorners: number;
+        /** A number between x and y indicating the slope direction, or null for a flat path. TODO */
         slopeDirection: number | null;
+        /** True if the path has a crossing which is occupied (e.g. by a train), false otherwise. */
         isBlockedByVehicle: boolean;
+        /** TODO? Is this for better pathfinding? */
         isWide: boolean;
 
+        /** Indicates if the path is a queue. */
         isQueue: boolean;
+        /** A number between x and y indicating the queue banner direction, or null if no banner is present. TODO */
         queueBannerDirection: number | null;
+        /** TODO? */
         ride: number;
+        /** TODO? */
         station: number;
 
+        /** TODO? */
         addition: number | null;
+        /** TODO? */
         isAdditionBroken: boolean;
     }
 
+    /**
+     * A track element.
+     */
     interface TrackElement extends BaseTileElement {
+        /** A number indicating the track type. */
         trackType: number;
+        /** TODO? */
         sequence: number;
+        /** The id of the ride the track belongs to. */
         ride: number;
+        /** TODO? */
         station: number;
+        /** True if the track has a chain lift, false otherwise. */
         hasChainLift: boolean;
     }
 
+    /**
+     * A scenery element a single tile or smaller.
+     */
     interface SmallSceneryElement extends BaseTileElement {
+        /** TODO? */
         object: number;
+        /** The number from x to y indicating the primary color. TODO */
         primaryColour: number;
+        /** The number from x to y indicating the secondary color. TODO */
         secondaryColour: number;
     }
 
+    /** An entrance (or exit?) TODO */
     interface EntranceElement extends BaseTileElement {
+        /** TODO? */
         object: number;
+        /** TODO? */
         sequence: number;
+        /** The id of the ride the entrance/exit belongs to. */
         ride: number;
+        /** The station number on the ride (x to y). TODO */
         station: number;
     }
 
+    /** 
+     * A wall element.
+     */
     interface WallElement extends BaseTileElement {
+        /** TODO? */
         object: number;
     }
 
+    /**
+     * A scenery element larger than one tile.
+     */
     interface LargeSceneryElement extends BaseTileElement {
+        /** TODO? */
         object: number;
+        /** The number from x to y indicating the primary color. TODO */
         primaryColour: number;
+        /** The number from x to y indicating the secondary color. TODO */
         secondaryColour: number;
     }
 
+    /**
+     * A banner element.
+     */
     interface BannerElement extends BaseTileElement {
     }
 
+    /**
+     * A corrupt element. Often used to make the element above it invisible.
+     */
     interface CorruptElement extends BaseTileElement {
     }
 
+    /** A tile element, which can be a surface, footpath, or track element. */
     type TileElement = SurfaceElement | FootpathElement | TrackElement;
 
     /**
@@ -681,24 +801,49 @@ declare global {
         readonly x: number;
         /** The y position in tiles. */
         readonly y: number;
-        /** Gets an array of all the tile elements on this tile. */
+        /** An array of all the tile elements on this tile. */
         readonly elements: TileElement[];
-        /** Gets the number of tile elements on this tile. */
+        /** The number of tile elements on this tile. */
         readonly numElements: number;
         /**
-         * Gets or sets the raw data for this tile.
+         * Get or set the raw data for this tile.
          * This can provide more control and efficiency for tile manipulation but requires
          * knowledge of tile element structures and may change between versions of OpenRCT2.
          */
         data: Uint8Array;
 
-        /** Gets the tile element at the given index on this tile. */
+        /** 
+         * Gets the tile element at the given index on this tile. TODO what if OOB?
+         * 
+         * @param index The tile element index.
+         * 
+         * @return The tile element. TODO what if OOB?
+         */
         getElement(index: number): TileElement;
-        /** Gets the tile element at the given index on this tile. */
+
+        /** 
+         * Gets the base tile element at the given index on this tile. TODO what if OOB?
+         * 
+         * @param index The base tile element index.
+         * 
+         * @return The base tile element. TODO what if OOB?
+         */
         getElement<T extends BaseTileElement>(index: number): T;
-        /** Inserts a new tile element at the given index on this tile. */
+
+        /** 
+         * Inserts a new tile element at the given index on this tile. TODO what if OOB?
+         * 
+         * @param index The index at which to insert the element. TODO what if something's already at the index?
+         * 
+         * @return The updated tile element. TODO what if OOB?
+         */
         insertElement(index: number): TileElement;
-        /** Removes the tile element at the given index from this tile. */
+
+        /** 
+         * Removes the tile element at the given index from this tile. TODO what if OOB?
+         * 
+         * @param index The tile element index.
+         */
         removeElement(index: number): void;
     }
 
