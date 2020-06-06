@@ -137,7 +137,6 @@ union rct_sprite
     CrashSplashParticle crash_splash;
     SteamParticle steam_particle;
 
-    bool IsMoneyEffect();
     bool IsPeep() const;
     Balloon* AsBalloon();
     Duck* AsDuck();

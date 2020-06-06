@@ -895,7 +895,7 @@ uint16_t remove_floating_sprites()
                 removed++;
             }
         }
-        else if (rctSprite->IsMoneyEffect())
+        else if (rctSprite->generic.Is<MoneyEffect>())
         {
             sprite_remove(rctSprite->AsMoneyEffect());
             sprite_misc_update(rctSprite);
