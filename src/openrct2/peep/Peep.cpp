@@ -1054,28 +1054,28 @@ static void peep_update_thoughts(Peep* peep)
     int32_t fresh_thought = -1;
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+        if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
             break;
 
-        if (peep->thoughts[i].freshness == 1)
+        if (peep->Thoughts[i].freshness == 1)
         {
             add_fresh = 0;
             // If thought is fresh we wait 220 ticks
             // before allowing a new thought to become fresh.
-            if (++peep->thoughts[i].fresh_timeout >= 220)
+            if (++peep->Thoughts[i].fresh_timeout >= 220)
             {
-                peep->thoughts[i].fresh_timeout = 0;
+                peep->Thoughts[i].fresh_timeout = 0;
                 // Thought is no longer fresh
-                peep->thoughts[i].freshness++;
+                peep->Thoughts[i].freshness++;
                 add_fresh = 1;
             }
         }
-        else if (peep->thoughts[i].freshness > 1)
+        else if (peep->Thoughts[i].freshness > 1)
         {
-            if (++peep->thoughts[i].fresh_timeout == 0)
+            if (++peep->Thoughts[i].fresh_timeout == 0)
             {
                 // When thought is older than ~6900 ticks remove it
-                if (++peep->thoughts[i].freshness >= 28)
+                if (++peep->Thoughts[i].freshness >= 28)
                 {
                     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
@@ -1083,9 +1083,9 @@ static void peep_update_thoughts(Peep* peep)
                     if (i < PEEP_MAX_THOUGHTS - 2)
                     {
                         memmove(
-                            &peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                            &peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
                     }
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
                 }
             }
         }
@@ -1099,7 +1099,7 @@ static void peep_update_thoughts(Peep* peep)
     // fresh.
     if (add_fresh && fresh_thought != -1)
     {
-        peep->thoughts[fresh_thought].freshness = 1;
+        peep->Thoughts[fresh_thought].freshness = 1;
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
     }
 }
@@ -1199,10 +1199,10 @@ void peep_problem_warnings_update()
 
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0 || peep->thoughts[0].freshness > 5)
+        if (peep->outside_of_park != 0 || peep->Thoughts[0].freshness > 5)
             continue;
 
-        switch (peep->thoughts[0].type)
+        switch (peep->Thoughts[0].type)
         {
             case PEEP_THOUGHT_TYPE_LOST: // 0x10
                 lost_counter++;
@@ -1586,7 +1586,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
 
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &thoughts[i];
+        rct_peep_thought* thought = &Thoughts[i];
         // Remove the oldest thought by setting it to NONE.
         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
             break;
@@ -1604,12 +1604,12 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
         }
     }
 
-    memmove(&thoughts[1], &thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&Thoughts[1], &Thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
 
-    thoughts[0].type = thoughtType;
-    thoughts[0].item = thoughtArguments;
-    thoughts[0].freshness = 0;
-    thoughts[0].fresh_timeout = 0;
+    Thoughts[0].type = thoughtType;
+    Thoughts[0].item = thoughtArguments;
+    Thoughts[0].freshness = 0;
+    Thoughts[0].fresh_timeout = 0;
 
     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }
@@ -1649,7 +1649,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->interaction_ride_index = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
     peep->previous_ride = RIDE_ID_NULL;
-    peep->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
+    peep->Thoughts->type = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 
     uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;

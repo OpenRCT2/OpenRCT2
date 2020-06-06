@@ -684,7 +684,7 @@ struct Peep : SpriteBase
     int8_t rejoin_queue_timeout; // whilst waiting for a free vehicle (or pair) in the entrance
     uint8_t previous_ride;
     uint16_t previous_ride_time_out;
-    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];
+    rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {

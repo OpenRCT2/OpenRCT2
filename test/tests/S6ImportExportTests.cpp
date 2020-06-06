@@ -222,10 +222,10 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(previous_ride_time_out);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        COMPARE_FIELD(thoughts[i].type);
-        COMPARE_FIELD(thoughts[i].item);
-        COMPARE_FIELD(thoughts[i].freshness);
-        COMPARE_FIELD(thoughts[i].fresh_timeout);
+        COMPARE_FIELD(Thoughts[i].type);
+        COMPARE_FIELD(Thoughts[i].item);
+        COMPARE_FIELD(Thoughts[i].freshness);
+        COMPARE_FIELD(Thoughts[i].fresh_timeout);
     }
     COMPARE_FIELD(PathCheckOptimisation);
     COMPARE_FIELD(GuestHeadingToRideId);

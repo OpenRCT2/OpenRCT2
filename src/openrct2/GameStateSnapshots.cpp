@@ -278,7 +278,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, previous_ride_time_out);
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
-            COMPARE_FIELD(Peep, thoughts[i]);
+            COMPARE_FIELD(Peep, Thoughts[i]);
         }
         COMPARE_FIELD(Peep, PathCheckOptimisation);
         COMPARE_FIELD(Peep, GuestHeadingToRideId);
