@@ -2391,7 +2391,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
     if (peepAtRide && updateLastRide)
     {
         previous_ride = ride->id;
-        previous_ride_time_out = 0;
+        PreviousRideTimeOut = 0;
     }
 
     if (ride->id == GuestHeadingToRideId)
@@ -2426,7 +2426,7 @@ static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
     peep->previous_ride = ride->id;
-    peep->previous_ride_time_out = 0;
+    peep->PreviousRideTimeOut = 0;
     // Change status "Heading to" to "Walking" if queue is full
     if (ride->id == peep->GuestHeadingToRideId)
     {
@@ -3397,7 +3397,7 @@ void Guest::UpdateBuying()
             if (!item_bought)
             {
                 previous_ride = current_ride;
-                previous_ride_time_out = 0;
+                PreviousRideTimeOut = 0;
             }
             else
             {

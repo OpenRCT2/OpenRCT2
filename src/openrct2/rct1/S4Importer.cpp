@@ -1523,7 +1523,7 @@ private:
         }
 
         dst->previous_ride = src->previous_ride;
-        dst->previous_ride_time_out = src->previous_ride_time_out;
+        dst->PreviousRideTimeOut = src->previous_ride_time_out;
 
         dst->PathCheckOptimisation = 0;
         dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;

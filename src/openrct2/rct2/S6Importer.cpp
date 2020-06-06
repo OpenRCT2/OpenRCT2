@@ -1462,7 +1462,7 @@ public:
         dst->time_in_park = src->time_in_park;
         dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
         dst->previous_ride = src->previous_ride;
-        dst->previous_ride_time_out = src->previous_ride_time_out;
+        dst->PreviousRideTimeOut = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
             auto srcThought = &src->thoughts[i];

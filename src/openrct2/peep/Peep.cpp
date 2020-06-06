@@ -1113,7 +1113,7 @@ void Peep::Update()
     if (type == PEEP_TYPE_GUEST)
     {
         if (previous_ride != RIDE_ID_NULL)
-            if (++previous_ride_time_out >= 720)
+            if (++PreviousRideTimeOut >= 720)
                 previous_ride = RIDE_ID_NULL;
 
         peep_update_thoughts(this);

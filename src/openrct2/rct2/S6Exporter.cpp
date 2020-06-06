@@ -1197,7 +1197,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->time_in_park = src->time_in_park;
     dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
     dst->previous_ride = src->previous_ride;
-    dst->previous_ride_time_out = src->previous_ride_time_out;
+    dst->previous_ride_time_out = src->PreviousRideTimeOut;
     for (size_t i = 0; i < std::size(src->Thoughts); i++)
     {
         auto srcThought = &src->Thoughts[i];
