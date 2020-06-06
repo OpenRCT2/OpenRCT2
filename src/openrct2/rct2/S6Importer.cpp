@@ -1457,7 +1457,7 @@ public:
             dst->rides_been_on[i] = src->rides_been_on[i];
         }
         dst->id = src->id;
-        dst->cash_in_pocket = src->cash_in_pocket;
+        dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
         dst->TimeInPark = src->time_in_park;
         dst->RejoinQueueTimeout = src->rejoin_queue_timeout;

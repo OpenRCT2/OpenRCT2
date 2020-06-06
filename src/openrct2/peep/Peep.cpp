@@ -1751,7 +1751,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
         cash = 0;
     }
 
-    peep->cash_in_pocket = cash;
+    peep->CashInPocket = cash;
     peep->CashSpent = 0;
     peep->TimeInPark = -1;
     peep->PathfindGoal.x = 0xFF;
@@ -2616,7 +2616,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
                     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
-            if (entranceFee > peep->cash_in_pocket)
+            if (entranceFee > peep->CashInPocket)
             {
                 peep->state = PEEP_STATE_LEAVING_PARK;
                 peep->var_37 = 1;

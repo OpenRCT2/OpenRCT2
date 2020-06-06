@@ -1477,7 +1477,7 @@ private:
         dst->interaction_ride_index = src->interaction_ride_index;
 
         dst->id = src->id;
-        dst->cash_in_pocket = src->cash_in_pocket;
+        dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
         dst->TimeInPark = src->time_in_park;
 

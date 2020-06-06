@@ -678,7 +678,7 @@ struct Peep : SpriteBase
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
     uint32_t id;
-    money32 cash_in_pocket;
+    money32 CashInPocket;
     money32 CashSpent;
     int32_t TimeInPark;
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance

@@ -1786,7 +1786,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Cash in pocket
     auto ft = Formatter::Common();
-    ft.Add<money32>(peep->cash_in_pocket);
+    ft.Add<money32>(peep->CashInPocket);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Cash spent

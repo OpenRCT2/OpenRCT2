@@ -866,8 +866,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TOILET;
                     }
 
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && cash_in_pocket <= MONEY(9, 00) && happiness >= 105
-                        && energy >= 70)
+                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && happiness >= 105 && energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
                          * This was superfluous so should probably check something else.
@@ -1551,12 +1550,12 @@ loc_69B119:
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            if (cash_in_pocket == 0)
+            if (CashInPocket == 0)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
-            if (price > cash_in_pocket)
+            if (price > CashInPocket)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
                 return false;
@@ -2055,11 +2054,11 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             // Basic price checks
             if (ridePrice != 0 && !peep_has_voucher_for_free_ride(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                if (ridePrice > cash_in_pocket)
+                if (ridePrice > CashInPocket)
                 {
                     if (peepAtRide)
                     {
-                        if (cash_in_pocket <= 0)
+                        if (CashInPocket <= 0)
                         {
                             InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                         }
@@ -2299,11 +2298,11 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
     // Basic price checks
     auto ridePrice = ride_get_price(ride);
-    if (ridePrice != 0 && ridePrice > cash_in_pocket)
+    if (ridePrice != 0 && ridePrice > CashInPocket)
     {
         if (peepAtShop)
         {
-            if (cash_in_pocket <= 0)
+            if (CashInPocket <= 0)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
             }
@@ -2343,7 +2342,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
-    cash_in_pocket = std::max(0, cash_in_pocket - amount);
+    CashInPocket = std::max(0, CashInPocket - amount);
     CashSpent += amount;
 
     peep_expend_type += static_cast<money16>(amount);
@@ -2638,14 +2637,14 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
         && peep->VoucherArguments == peep->current_ride)
         return true;
 
-    if (peep->cash_in_pocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
 
-    if (ridePrice > peep->cash_in_pocket)
+    if (ridePrice > peep->CashInPocket)
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
         peep_update_ride_at_entrance_try_leave(peep);
@@ -3094,7 +3093,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
         }
         else
         {
-            if (peep->energy >= 55 && peep->happiness >= 45 && peep->cash_in_pocket >= MONEY(5, 00))
+            if (peep->energy >= 55 && peep->happiness >= 45 && peep->CashInPocket >= MONEY(5, 00))
             {
                 return;
             }
@@ -3327,7 +3326,7 @@ static bool peep_should_use_cash_machine(Peep* peep, ride_id_t rideIndex)
         return false;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return false;
-    if (peep->cash_in_pocket > MONEY(20, 00))
+    if (peep->CashInPocket > MONEY(20, 00))
         return false;
     if (115 + (scenario_rand() % 128) > peep->happiness)
         return false;
@@ -3374,7 +3373,7 @@ void Guest::UpdateBuying()
         {
             if (current_ride != PreviousRide)
             {
-                cash_in_pocket += MONEY(50, 00);
+                CashInPocket += MONEY(50, 00);
             }
             window_invalidate_by_number(WC_PEEP, sprite_index);
         }
