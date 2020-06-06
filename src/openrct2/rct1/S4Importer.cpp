@@ -1478,7 +1478,7 @@ private:
 
         dst->id = src->id;
         dst->cash_in_pocket = src->cash_in_pocket;
-        dst->cash_spent = src->cash_spent;
+        dst->CashSpent = src->cash_spent;
         dst->TimeInPark = src->time_in_park;
 
         // This doubles as staff type

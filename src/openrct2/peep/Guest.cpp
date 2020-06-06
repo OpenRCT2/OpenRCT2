@@ -2344,7 +2344,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
     cash_in_pocket = std::max(0, cash_in_pocket - amount);
-    cash_spent += amount;
+    CashSpent += amount;
 
     peep_expend_type += static_cast<money16>(amount);
 

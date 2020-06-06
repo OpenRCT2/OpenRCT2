@@ -1752,7 +1752,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     }
 
     peep->cash_in_pocket = cash;
-    peep->cash_spent = 0;
+    peep->CashSpent = 0;
     peep->TimeInPark = -1;
     peep->PathfindGoal.x = 0xFF;
     peep->PathfindGoal.y = 0xFF;

@@ -1792,7 +1792,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash spent
     y += LIST_ROW_HEIGHT;
     ft = Formatter::Common();
-    ft.Add<money32>(peep->cash_spent);
+    ft.Add<money32>(peep->CashSpent);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     y += LIST_ROW_HEIGHT * 2;

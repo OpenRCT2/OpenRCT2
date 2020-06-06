@@ -1458,7 +1458,7 @@ public:
         }
         dst->id = src->id;
         dst->cash_in_pocket = src->cash_in_pocket;
-        dst->cash_spent = src->cash_spent;
+        dst->CashSpent = src->cash_spent;
         dst->TimeInPark = src->time_in_park;
         dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
         dst->PreviousRide = src->previous_ride;
