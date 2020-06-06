@@ -274,7 +274,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             if (sprite == nullptr)
                 break;
 
-            auto peep = sprite->AsPeep();
+            auto peep = sprite->generic.As<Peep>();
             if (peep == nullptr)
                 break;
 
@@ -314,7 +314,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             auto sprite = try_get_sprite(subject);
             if (sprite != nullptr)
             {
-                auto peep = sprite->AsPeep();
+                auto peep = sprite->generic.As<Peep>();
                 if (peep != nullptr)
                 {
                     subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
@@ -410,7 +410,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             auto sprite = try_get_sprite(subject);
             if (sprite != nullptr)
             {
-                auto peep = sprite->AsPeep();
+                auto peep = sprite->generic.As<Peep>();
                 if (peep != nullptr)
                 {
                     auto intent = Intent(WC_PEEP);

@@ -834,7 +834,7 @@ size_t Ride::FormatStatusTo(void* argsV) const
         auto sprite = get_sprite(race_winner);
         if (sprite != nullptr && sprite->generic.Is<Peep>())
         {
-            auto peep = sprite->AsPeep();
+            auto peep = sprite->generic.As<Peep>();
             ft.Add<rct_string_id>(STR_RACE_WON_BY);
             peep->FormatNameTo(ft);
         }

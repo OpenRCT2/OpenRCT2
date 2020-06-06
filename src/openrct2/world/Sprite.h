@@ -137,7 +137,6 @@ union rct_sprite
     CrashSplashParticle crash_splash;
     SteamParticle steam_particle;
 
-    Peep* AsPeep();
     // Default constructor to prevent non trivial construction issues
     rct_sprite()
         : pad_00()

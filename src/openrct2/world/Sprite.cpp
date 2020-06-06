@@ -745,7 +745,7 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
  */
 void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = (reinterpret_cast<rct_sprite*>(sprite))->AsPeep();
+    auto peep = sprite->As<Peep>();
     if (peep != nullptr)
     {
         peep->SetName({});

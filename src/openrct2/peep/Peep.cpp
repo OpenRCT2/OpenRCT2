@@ -328,16 +328,6 @@ template<> bool SpriteBase::Is<Peep>() const
     return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
 }
 
-Peep* rct_sprite::AsPeep()
-{
-    Peep* result = nullptr;
-    if (generic.Is<Peep>())
-    {
-        return reinterpret_cast<Peep*>(this);
-    }
-    return result;
-}
-
 Guest* Peep::AsGuest()
 {
     return type == PEEP_TYPE_GUEST ? static_cast<Guest*>(this) : nullptr;

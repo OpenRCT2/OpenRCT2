@@ -327,7 +327,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     if (sprite == nullptr)
                         break;
 
-                    auto peep = sprite->AsPeep();
+                    auto peep = sprite->generic.As<Peep>();
                     if (peep == nullptr)
                         break;
 
