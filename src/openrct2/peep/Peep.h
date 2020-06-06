@@ -994,7 +994,7 @@ enum
  */
 #define FOR_ALL_PEEPS(sprite_index, peep)                                                                                      \
     for ((sprite_index) = gSpriteListHead[SPRITE_LIST_PEEP]; (sprite_index) != SPRITE_INDEX_NULL; (sprite_index) = peep->next) \
-        if (((peep) = GET_PEEP(sprite_index)) != nullptr || 1)
+        if (((peep) = GetEntity<Peep>(sprite_index)) != nullptr || 1)
 
 #define FOR_ALL_GUESTS(sprite_index, peep)                                                                                     \
     FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \

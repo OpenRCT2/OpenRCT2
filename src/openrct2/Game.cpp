@@ -614,10 +614,10 @@ void reset_all_sprite_quadrant_placements()
 {
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* spr = get_sprite(i);
-        if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        auto* spr = GetEntity(i);
+        if (spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
-            spr->generic.MoveTo({ spr->generic.x, spr->generic.y, spr->generic.z });
+            spr->MoveTo({ spr->x, spr->y, spr->z });
         }
     }
 }

@@ -162,7 +162,7 @@ namespace OpenRCT2::Scripting
 
         SpriteBase* GetEntity() const
         {
-            return &get_sprite(_id)->generic;
+            return ::GetEntity(_id);
         }
 
     public:
@@ -746,7 +746,7 @@ namespace OpenRCT2::Scripting
     protected:
         Peep* GetPeep() const
         {
-            return get_sprite(_id)->generic.As<Peep>();
+            return ::GetEntity<Peep>(_id);
         }
     };
 

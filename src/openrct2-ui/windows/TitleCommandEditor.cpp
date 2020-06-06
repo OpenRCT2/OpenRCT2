@@ -648,7 +648,7 @@ static void window_title_command_editor_tool_down(
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
         {
-            Litter* litter = &(get_sprite(spriteIndex)->litter);
+            Litter* litter = GetEntity<Litter>(spriteIndex);
             if (litter->type < std::size(litterNames))
             {
                 validSprite = true;

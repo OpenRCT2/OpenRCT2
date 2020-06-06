@@ -1321,9 +1321,11 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
+    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL;)
     {
-        get_sprite(i)->vehicle.UpdateSoundParams(vehicleSoundParamsList);
+        auto vehicle = GetEntity<Vehicle>(i);
+        i = vehicle->next;
+        vehicle->UpdateSoundParams(vehicleSoundParamsList);
     }
 
     // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
@@ -5632,12 +5634,7 @@ void Vehicle::UpdateSound()
  */
 SoundId Vehicle::UpdateScreamSound()
 {
-    uint32_t r;
-    uint16_t spriteIndex;
-    rct_ride_entry* rideEntry;
-    Vehicle* vehicle2;
-
-    rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
@@ -5650,10 +5647,11 @@ SoundId Vehicle::UpdateScreamSound()
         if (velocity > -0x2C000)
             return SoundId::Null;
 
-        spriteIndex = sprite_index;
-        do
+        for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
         {
-            vehicle2 = &(get_sprite(spriteIndex)->vehicle);
+            auto vehicle2 = GetEntity<Vehicle>(spriteIndex);
+            spriteIndex = vehicle2->next_vehicle_on_train;
+
             if (vehicle2->vehicle_sprite_type < 1)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 4)
@@ -5662,17 +5660,18 @@ SoundId Vehicle::UpdateScreamSound()
                 continue;
             if (vehicle2->vehicle_sprite_type <= 15)
                 goto produceScream;
-        } while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+        }
         return SoundId::Null;
     }
 
     if (velocity < 0x2C000)
         return SoundId::Null;
 
-    spriteIndex = sprite_index;
-    do
+    for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
     {
-        vehicle2 = &(get_sprite(spriteIndex)->vehicle);
+        auto vehicle2 = GetEntity<Vehicle>(spriteIndex);
+        spriteIndex = vehicle2->next_vehicle_on_train;
+
         if (vehicle2->vehicle_sprite_type < 5)
             continue;
         if (vehicle2->vehicle_sprite_type <= 8)
@@ -5681,13 +5680,13 @@ SoundId Vehicle::UpdateScreamSound()
             continue;
         if (vehicle2->vehicle_sprite_type <= 23)
             goto produceScream;
-    } while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+    }
     return SoundId::Null;
 
 produceScream:
     if (scream_sound_id == SoundId::Null)
     {
-        r = scenario_rand();
+        auto r = scenario_rand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
         {
             switch (vehicleEntry->sound_range)
@@ -9718,17 +9717,12 @@ rct_ride_entry_vehicle* Vehicle::Entry() const
 
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
-    const Vehicle* vehicle = this;
-    uint16_t spriteIndex;
     int32_t numPeeps = 0;
-    for (;;)
+    for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
     {
-        numPeeps += vehicle->num_peeps;
+        const Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
         spriteIndex = vehicle->next_vehicle_on_train;
-        if (spriteIndex == SPRITE_INDEX_NULL)
-            break;
-
-        vehicle = &(get_sprite(spriteIndex)->vehicle);
+        numPeeps += vehicle->num_peeps;
     }
 
     return numPeeps;

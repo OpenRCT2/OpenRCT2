@@ -427,13 +427,10 @@ private:
 
     void RemoveLitter() const
     {
-        Litter* litter;
-        uint16_t spriteIndex, nextSpriteIndex;
-
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;)
         {
-            litter = &(get_sprite(spriteIndex)->litter);
-            nextSpriteIndex = litter->next;
+            auto litter = GetEntity<Litter>(spriteIndex);
+            spriteIndex = litter->next;
             sprite_remove(litter);
         }
 

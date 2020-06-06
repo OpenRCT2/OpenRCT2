@@ -1341,10 +1341,9 @@ private:
         }
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
-            rct_sprite* sprite = get_sprite(i);
-            if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            auto vehicle = GetEntity<Vehicle>(i);
+            if (vehicle != nullptr)
             {
-                Vehicle* vehicle = reinterpret_cast<Vehicle*>(sprite);
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }

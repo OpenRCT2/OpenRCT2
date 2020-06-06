@@ -604,7 +604,7 @@ static void window_guest_common_invalidate(rct_window* w)
  */
 void window_guest_disable_widgets(rct_window* w)
 {
-    Peep* peep = &get_sprite(w->number)->peep;
+    Peep* peep = GetEntity<Peep>(w->number);
     uint64_t disabled_widgets = 0;
 
     if (peep_can_be_picked_up(peep))

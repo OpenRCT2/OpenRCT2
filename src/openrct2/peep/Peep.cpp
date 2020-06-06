@@ -2678,13 +2678,13 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     uint16_t crowded = 0;
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
-    uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    for (uint16_t sprite_id = sprite_get_first_in_quadrant(x, y); sprite_id != SPRITE_INDEX_NULL;)
     {
-        sprite = get_sprite(sprite_id);
-        if (sprite->generic.Is<Peep>())
+        auto sprite = GetEntity(sprite_id);
+        sprite_id = sprite->next_in_quadrant;
+
+        if (auto other_peep = sprite->As<Peep>(); other_peep != nullptr)
         {
-            Peep* other_peep = reinterpret_cast<Peep*>(sprite);
             if (other_peep->State != PEEP_STATE_WALKING)
                 continue;
 
@@ -2693,9 +2693,8 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             crowded++;
             continue;
         }
-        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        else if (auto litter = sprite->As<Litter>(); litter != nullptr)
         {
-            Litter* litter = reinterpret_cast<Litter*>(sprite);
             if (abs(litter->z - peep->NextLoc.z) > 16)
                 continue;
 
