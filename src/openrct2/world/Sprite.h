@@ -137,7 +137,6 @@ union rct_sprite
     CrashSplashParticle crash_splash;
     SteamParticle steam_particle;
 
-    Balloon* AsBalloon();
     Duck* AsDuck();
     MoneyEffect* AsMoneyEffect();
     Peep* AsPeep();

@@ -54,7 +54,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        sprite->AsBalloon()->Press();
+        sprite->generic.As<Balloon>()->Press();
 
         return MakeResult();
     }

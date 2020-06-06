@@ -19,16 +19,6 @@ template<> bool SpriteBase::Is<Balloon>() const
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_BALLOON;
 }
 
-Balloon* rct_sprite::AsBalloon()
-{
-    Balloon* result = nullptr;
-    if (generic.Is<Balloon>())
-    {
-        result = reinterpret_cast<Balloon*>(this);
-    }
-    return result;
-}
-
 void Balloon::Update()
 {
     invalidate_sprite_2(this);

@@ -170,7 +170,7 @@ int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
                         {
                             case SPRITE_MISC_BALLOON:
                             {
-                                auto balloonPress = BalloonPressAction(info.sprite->AsBalloon()->sprite_index);
+                                auto balloonPress = BalloonPressAction(info.sprite->generic.sprite_index);
                                 GameActions::Execute(&balloonPress);
                             }
                             break;

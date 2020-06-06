@@ -882,7 +882,7 @@ uint16_t remove_floating_sprites()
         rct_sprite* rctSprite = get_sprite(i);
         if (rctSprite->generic.Is<Balloon>())
         {
-            sprite_remove(rctSprite->AsBalloon());
+            sprite_remove(&rctSprite->generic);
             sprite_misc_update(rctSprite);
             removed++;
         }
@@ -897,7 +897,7 @@ uint16_t remove_floating_sprites()
         }
         else if (rctSprite->generic.Is<MoneyEffect>())
         {
-            sprite_remove(rctSprite->AsMoneyEffect());
+            sprite_remove(&rctSprite->generic);
             sprite_misc_update(rctSprite);
             removed++;
         }
