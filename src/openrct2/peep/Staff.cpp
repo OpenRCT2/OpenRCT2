@@ -1045,13 +1045,13 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
         }
         else if (peep->state == PEEP_STATE_QUEUING)
         {
-            if (peep->time_in_queue > 200)
+            if (peep->TimeInQueue > 200)
             {
-                peep->time_in_queue -= 200;
+                peep->TimeInQueue -= 200;
             }
             else
             {
-                peep->time_in_queue = 0;
+                peep->TimeInQueue = 0;
             }
             peep->happiness_target = std::min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
         }

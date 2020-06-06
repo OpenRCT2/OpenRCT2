@@ -208,7 +208,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(next_in_queue);
     COMPARE_FIELD(maze_last_edge);
     COMPARE_FIELD(interaction_ride_index);
-    COMPARE_FIELD(time_in_queue);
+    COMPARE_FIELD(TimeInQueue);
     for (int i = 0; i < 32; i++)
     {
         COMPARE_FIELD(RidesBeenOn[i]);

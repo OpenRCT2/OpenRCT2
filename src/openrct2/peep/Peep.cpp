@@ -2265,7 +2265,7 @@ void Peep::SwitchNextActionSpriteType()
  */
 static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
 {
-    peep->time_in_queue++;
+    peep->TimeInQueue++;
     if (peep->next_in_queue == SPRITE_INDEX_NULL)
         return false;
 
@@ -2438,7 +2438,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->DaysInQueue = 0;
         peep->SetState(PEEP_STATE_QUEUING);
         peep->sub_state = 11;
-        peep->time_in_queue = 0;
+        peep->TimeInQueue = 0;
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter::Common();
@@ -2870,7 +2870,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
 
                     peep->sub_state = 10;
                     peep->destination_tolerance = 2;
-                    peep->time_in_queue = 0;
+                    peep->TimeInQueue = 0;
                     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
                     {
                         auto ft = Formatter::Common();

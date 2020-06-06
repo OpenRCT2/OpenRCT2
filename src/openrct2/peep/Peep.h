@@ -673,7 +673,7 @@ struct Peep : SpriteBase
         Direction direction; // Direction ?
     };
     uint8_t interaction_ride_index;
-    uint16_t time_in_queue;
+    uint16_t TimeInQueue;
     uint8_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.

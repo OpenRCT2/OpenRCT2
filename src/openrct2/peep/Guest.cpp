@@ -952,7 +952,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 break;
 
             case PEEP_STATE_QUEUING:
-                if (time_in_queue >= 2000)
+                if (TimeInQueue >= 2000)
                 {
                     /* Peep happiness is affected once the peep has been waiting
                      * too long in a queue. */
@@ -2029,7 +2029,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         }
 
                         // This checks if there's a peep standing still at the very end of the queue.
-                        if (maxD <= 13 && lastPeepInQueue->time_in_queue > 10)
+                        if (maxD <= 13 && lastPeepInQueue->TimeInQueue > 10)
                         {
                             peep_tried_to_enter_full_queue(this, ride);
                             return false;
@@ -2680,11 +2680,11 @@ static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride)
     // Calculate satisfaction based on how long the peep has been in the queue for.
     // (For comparison: peeps start thinking "I've been queueing for a long time" at 3500 and
     // start leaving the queue at 4300.)
-    if (peep->time_in_queue >= 4500)
+    if (peep->TimeInQueue >= 4500)
         satisfaction -= 35;
-    else if (peep->time_in_queue >= 2250)
+    else if (peep->TimeInQueue >= 2250)
         satisfaction -= 10;
-    else if (peep->time_in_queue <= 750)
+    else if (peep->TimeInQueue <= 750)
         satisfaction += 10;
 
     // Peeps get a small boost in satisfaction if they've been on a ride of the same type before,
@@ -5588,7 +5588,7 @@ void Guest::UpdateQueuing()
         return;
     if (sprite_type == PEEP_SPRITE_TYPE_NORMAL)
     {
-        if (time_in_queue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
+        if (TimeInQueue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
         {
             // Eat Food/Look at watch
             action = PEEP_ACTION_EAT_FOOD;
@@ -5596,7 +5596,7 @@ void Guest::UpdateQueuing()
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
         }
-        if (time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+        if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
             // Create the I have been waiting in line ages thought
             InsertNewThought(PEEP_THOUGHT_TYPE_QUEUING_AGES, current_ride);
@@ -5604,7 +5604,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(time_in_queue & 0x3F) && action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
+        if (!(TimeInQueue & 0x3F) && action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
         {
             switch (sprite_type)
             {
@@ -5641,7 +5641,7 @@ void Guest::UpdateQueuing()
             }
         }
     }
-    if (time_in_queue < 4300)
+    if (TimeInQueue < 4300)
         return;
 
     if (happiness <= 65 && (0xFFFF & scenario_rand()) < 2184)

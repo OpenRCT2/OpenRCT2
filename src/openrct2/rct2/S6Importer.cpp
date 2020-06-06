@@ -1451,7 +1451,7 @@ public:
         dst->next_in_queue = src->next_in_queue;
         dst->direction = src->direction;
         dst->interaction_ride_index = src->interaction_ride_index;
-        dst->time_in_queue = src->time_in_queue;
+        dst->TimeInQueue = src->time_in_queue;
         for (size_t i = 0; i < std::size(src->rides_been_on); i++)
         {
             dst->RidesBeenOn[i] = src->rides_been_on[i];
