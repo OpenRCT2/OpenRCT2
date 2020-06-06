@@ -1112,9 +1112,9 @@ void Peep::Update()
 {
     if (type == PEEP_TYPE_GUEST)
     {
-        if (previous_ride != RIDE_ID_NULL)
+        if (PreviousRide != RIDE_ID_NULL)
             if (++PreviousRideTimeOut >= 720)
-                previous_ride = RIDE_ID_NULL;
+                PreviousRide = RIDE_ID_NULL;
 
         peep_update_thoughts(this);
     }
@@ -1648,7 +1648,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->PathCheckOptimisation = 0;
     peep->interaction_ride_index = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
-    peep->previous_ride = RIDE_ID_NULL;
+    peep->PreviousRide = RIDE_ID_NULL;
     peep->Thoughts->type = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 

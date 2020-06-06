@@ -2046,7 +2046,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
         if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ridePrice != 0)
         {
-            if (previous_ride == ride->id)
+            if (PreviousRide == ride->id)
             {
                 ChoseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
@@ -2256,7 +2256,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
 bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 {
     // Peeps won't go to the same shop twice in a row.
-    if (ride->id == previous_ride)
+    if (ride->id == PreviousRide)
     {
         ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
@@ -2390,7 +2390,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
-        previous_ride = ride->id;
+        PreviousRide = ride->id;
         PreviousRideTimeOut = 0;
     }
 
@@ -2425,7 +2425,7 @@ static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
-    peep->previous_ride = ride->id;
+    peep->PreviousRide = ride->id;
     peep->PreviousRideTimeOut = 0;
     // Change status "Heading to" to "Walking" if queue is full
     if (ride->id == peep->GuestHeadingToRideId)
@@ -3372,7 +3372,7 @@ void Guest::UpdateBuying()
 
         if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
-            if (current_ride != previous_ride)
+            if (current_ride != PreviousRide)
             {
                 cash_in_pocket += MONEY(50, 00);
             }
@@ -3389,14 +3389,14 @@ void Guest::UpdateBuying()
 
     bool item_bought = false;
 
-    if (current_ride != previous_ride)
+    if (current_ride != PreviousRide)
     {
         if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
             item_bought = peep_should_use_cash_machine(this, current_ride);
             if (!item_bought)
             {
-                previous_ride = current_ride;
+                PreviousRide = current_ride;
                 PreviousRideTimeOut = 0;
             }
             else

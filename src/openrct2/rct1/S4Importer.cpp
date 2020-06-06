@@ -1522,7 +1522,7 @@ private:
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
 
-        dst->previous_ride = src->previous_ride;
+        dst->PreviousRide = src->previous_ride;
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
 
         dst->PathCheckOptimisation = 0;

@@ -1461,7 +1461,7 @@ public:
         dst->cash_spent = src->cash_spent;
         dst->time_in_park = src->time_in_park;
         dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
-        dst->previous_ride = src->previous_ride;
+        dst->PreviousRide = src->previous_ride;
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
