@@ -328,15 +328,10 @@ template<> bool SpriteBase::Is<Peep>() const
     return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
 }
 
-bool rct_sprite::IsPeep() const
-{
-    return peep.sprite_identifier == SPRITE_IDENTIFIER_PEEP;
-}
-
 Peep* rct_sprite::AsPeep()
 {
     Peep* result = nullptr;
-    if (IsPeep())
+    if (generic.Is<Peep>())
     {
         return reinterpret_cast<Peep*>(this);
     }
@@ -392,7 +387,7 @@ Peep* try_get_guest(uint16_t spriteIndex)
     rct_sprite* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr)
         return nullptr;
-    if (!sprite->IsPeep())
+    if (!sprite->generic.Is<Peep>())
         return nullptr;
     if (sprite->peep.type != PEEP_TYPE_GUEST)
         return nullptr;
@@ -2697,7 +2692,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
-        if (sprite->IsPeep())
+        if (sprite->generic.Is<Peep>())
         {
             Peep* other_peep = reinterpret_cast<Peep*>(sprite);
             if (other_peep->state != PEEP_STATE_WALKING)

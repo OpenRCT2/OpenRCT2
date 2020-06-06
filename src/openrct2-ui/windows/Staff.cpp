@@ -1214,7 +1214,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
             return;
 
         rct_sprite* sprite = try_get_sprite(w->number);
-        if (sprite == nullptr || !sprite->IsPeep())
+        if (sprite == nullptr || !sprite->generic.Is<Peep>())
             return;
 
         Peep& peep = sprite->peep;
@@ -1255,7 +1255,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     rct_sprite* sprite = try_get_sprite(w->number);
-    if (sprite == nullptr || !sprite->IsPeep())
+    if (sprite == nullptr || !sprite->generic.Is<Peep>())
         return;
 
     Peep& peep = sprite->peep;

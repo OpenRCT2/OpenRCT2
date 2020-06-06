@@ -288,7 +288,7 @@ rct_sprite_checksum sprite_checksum()
                         break;
                 }
 
-                if (copy.IsPeep())
+                if (copy.generic.Is<Peep>())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.name = {};
