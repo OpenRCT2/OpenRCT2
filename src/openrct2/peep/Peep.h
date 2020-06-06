@@ -669,7 +669,7 @@ struct Peep : SpriteBase
     };
     union
     {
-        uint8_t maze_last_edge;
+        uint8_t MazeLastEdge;
         Direction PeepDirection; // Direction ?
     };
     uint8_t InteractionRideIndex;

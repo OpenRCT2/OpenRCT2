@@ -3537,7 +3537,7 @@ static constexpr const CoordsXY _MazeEntranceStart[] = {
 
 static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
-    peep->maze_last_edge = entrance_loc.direction + 1;
+    peep->MazeLastEdge = entrance_loc.direction + 1;
 
     entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
     entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
@@ -3546,13 +3546,13 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     if (scenario_rand() & 0x40)
     {
         direction += 4;
-        peep->maze_last_edge += 2;
+        peep->MazeLastEdge += 2;
     }
 
     direction &= 0xF;
     // Direction is 11, 15, 3, or 7
     peep->var_37 = direction;
-    peep->maze_last_edge &= 3;
+    peep->MazeLastEdge &= 3;
 
     entrance_loc.x += _MazeEntranceStart[direction / 4].x;
     entrance_loc.y += _MazeEntranceStart[direction / 4].y;
@@ -4884,7 +4884,7 @@ void Guest::UpdateRideMazePathfinding()
     if (openHedges == 0)
         return;
 
-    uint8_t mazeLastEdge = direction_reverse(maze_last_edge);
+    uint8_t mazeLastEdge = direction_reverse(MazeLastEdge);
     openHedges &= ~(1 << mazeLastEdge);
     if (openHedges == 0)
         openHedges |= (1 << mazeLastEdge);
@@ -4934,15 +4934,15 @@ void Guest::UpdateRideMazePathfinding()
     switch (mazeType)
     {
         case maze_type::invalid:
-            maze_last_edge++;
-            maze_last_edge &= 3;
+            MazeLastEdge++;
+            MazeLastEdge &= 3;
             return;
         case maze_type::hedge:
             destination_x = targetLoc.x;
             destination_y = targetLoc.y;
 
             var_37 = _MazeGetNewDirectionFromEdge[var_37 / 4][chosenEdge];
-            maze_last_edge = chosenEdge;
+            MazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
             targetLoc.x = destination_x;
@@ -4958,7 +4958,7 @@ void Guest::UpdateRideMazePathfinding()
             destination_x = targetLoc.x;
             destination_y = targetLoc.y;
             var_37 = 16;
-            maze_last_edge = chosenEdge;
+            MazeLastEdge = chosenEdge;
             break;
     }
 
