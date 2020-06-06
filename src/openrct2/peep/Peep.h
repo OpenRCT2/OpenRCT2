@@ -664,7 +664,7 @@ struct Peep : SpriteBase
     uint8_t step_progress;
     union
     {
-        uint16_t mechanic_time_since_call; // time getting to ride to fix
+        uint16_t MechanicTimeSinceCall; // time getting to ride to fix
         uint16_t NextInQueue;
     };
     union

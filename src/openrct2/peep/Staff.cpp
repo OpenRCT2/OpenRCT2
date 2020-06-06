@@ -1444,15 +1444,15 @@ void Staff::UpdateHeadingToInspect()
 
     if (sub_state == 0)
     {
-        mechanic_time_since_call = 0;
+        MechanicTimeSinceCall = 0;
         peep_reset_pathfind_goal(this);
         sub_state = 2;
     }
 
     if (sub_state <= 3)
     {
-        mechanic_time_since_call++;
-        if (mechanic_time_since_call > 2500)
+        MechanicTimeSinceCall++;
+        if (MechanicTimeSinceCall > 2500)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
             {
@@ -1554,7 +1554,7 @@ void Staff::UpdateAnswering()
         {
             sub_state = 2;
             peep_window_state_update(this);
-            mechanic_time_since_call = 0;
+            MechanicTimeSinceCall = 0;
             peep_reset_pathfind_goal(this);
             return;
         }
@@ -1564,8 +1564,8 @@ void Staff::UpdateAnswering()
     }
     else if (sub_state <= 3)
     {
-        mechanic_time_since_call++;
-        if (mechanic_time_since_call > 2500)
+        MechanicTimeSinceCall++;
+        if (MechanicTimeSinceCall > 2500)
         {
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
