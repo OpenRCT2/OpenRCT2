@@ -4999,7 +4999,7 @@ void Guest::UpdateRideLeaveExit()
         }
     }
 
-    interaction_ride_index = RIDE_ID_NULL;
+    InteractionRideIndex = RIDE_ID_NULL;
     SetState(PEEP_STATE_FALLING);
 
     CoordsXY targetLoc = { x, y };

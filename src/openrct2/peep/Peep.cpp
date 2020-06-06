@@ -1646,7 +1646,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->sprite_direction = 0;
     peep->mass = (scenario_rand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
-    peep->interaction_ride_index = RIDE_ID_NULL;
+    peep->InteractionRideIndex = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
     peep->PreviousRide = RIDE_ID_NULL;
     peep->Thoughts->type = PEEP_THOUGHT_TYPE_NONE;
@@ -2369,7 +2369,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
     {
         // Default guest/staff behaviour attempting to enter a
         // ride exit is to turn around.
-        peep->interaction_ride_index = 0xFF;
+        peep->InteractionRideIndex = 0xFF;
         peep_return_to_centre_of_tile(peep);
         return;
     }
@@ -2386,7 +2386,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         {
             // Default staff behaviour attempting to enter a
             // ride entrance is to turn around.
-            peep->interaction_ride_index = 0xFF;
+            peep->InteractionRideIndex = 0xFF;
             peep_return_to_centre_of_tile(peep);
             return;
         }
@@ -2400,7 +2400,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         }
 
         // Guest is on a normal path, i.e. ride has no queue.
-        if (peep->interaction_ride_index == rideIndex)
+        if (peep->InteractionRideIndex == rideIndex)
         {
             // Peep is retrying the ride entrance without leaving
             // the path tile and without trying any other ride
@@ -2419,14 +2419,14 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         {
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
-            peep->interaction_ride_index = rideIndex;
+            peep->InteractionRideIndex = rideIndex;
             peep_return_to_centre_of_tile(peep);
             return;
         }
 
         // Guest has decided to go on the ride.
         peep->action_sprite_image_offset = _unk_F1AEF0;
-        peep->interaction_ride_index = rideIndex;
+        peep->InteractionRideIndex = rideIndex;
 
         uint16_t previous_last = ride->stations[stationNum].LastPeepInQueue;
         ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
@@ -2830,7 +2830,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
             else
             {
                 // Queue got disconnected from the original ride.
-                peep->interaction_ride_index = 0xFF;
+                peep->InteractionRideIndex = 0xFF;
                 guest->RemoveFromQueue();
                 peep->SetState(PEEP_STATE_1);
                 peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
@@ -2853,7 +2853,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                 if (ride != nullptr && guest->ShouldGoOnRide(ride, stationNum, true, false))
                 {
                     // Peep has decided to go on the ride at the queue.
-                    peep->interaction_ride_index = rideIndex;
+                    peep->InteractionRideIndex = rideIndex;
 
                     // Add the peep to the ride queue.
                     uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
@@ -2901,7 +2901,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     }
     else
     {
-        peep->interaction_ride_index = 0xFF;
+        peep->InteractionRideIndex = 0xFF;
         if (peep->state == PEEP_STATE_QUEUING)
         {
             peep->RemoveFromQueue();
@@ -2937,7 +2937,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         return true;
     }
 
-    if (peep->interaction_ride_index == rideIndex)
+    if (peep->InteractionRideIndex == rideIndex)
     {
         peep_return_to_centre_of_tile(peep);
         return true;
@@ -3140,7 +3140,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         int16_t height = abs(tile_element_height(newLoc) - z);
         if (height <= 3 || (type == PEEP_TYPE_STAFF && height <= 32))
         {
-            interaction_ride_index = 0xFF;
+            InteractionRideIndex = 0xFF;
             if (state == PEEP_STATE_QUEUING)
             {
                 RemoveFromQueue();

@@ -1474,7 +1474,7 @@ private:
         dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
-        dst->interaction_ride_index = src->interaction_ride_index;
+        dst->InteractionRideIndex = src->interaction_ride_index;
 
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;

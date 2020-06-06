@@ -672,7 +672,7 @@ struct Peep : SpriteBase
         uint8_t maze_last_edge;
         Direction direction; // Direction ?
     };
-    uint8_t interaction_ride_index;
+    uint8_t InteractionRideIndex;
     uint16_t TimeInQueue;
     uint8_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
