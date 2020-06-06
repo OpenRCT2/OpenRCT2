@@ -9433,28 +9433,8 @@ loc_6DD069:
  *
  *  rct2: 0x006DC1E4
  */
-static void vehicle_update_track_motion_powered_ride_acceleration(
-    Vehicle* vehicle, rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, int32_t* acceleration)
+static uint8_t modified_speed(uint16_t trackType, uint8_t trackSubposition, uint8_t speed)
 {
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
-    {
-        if (vehicle->velocity > (vehicle->speed * 0x4000))
-        {
-            // Same code as none powered rides
-            if (*acceleration <= 0)
-            {
-                if (*acceleration >= -500)
-                {
-                    if (vehicle->velocity <= 0x8000)
-                    {
-                        *acceleration += 400;
-                    }
-                }
-            }
-            return;
-        }
-    }
-
     enum
     {
         FULL_SPEED,
@@ -9463,38 +9443,50 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
     };
 
     uint8_t speedModifier = FULL_SPEED;
-    uint16_t trackType = vehicle->track_direction >> 2;
 
     if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
     {
-        speedModifier = (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE) ? HALF_SPEED
-                                                                                                    : THREE_QUARTER_SPEED;
+        speedModifier = (trackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
     else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
     {
-        speedModifier = (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE) ? HALF_SPEED
-                                                                                                     : THREE_QUARTER_SPEED;
+        speedModifier = (trackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
 
-    uint8_t speed = vehicle->speed;
     switch (speedModifier)
     {
         case HALF_SPEED:
-            speed = vehicle->speed >> 1;
-            break;
+            return speed >> 1;
         case THREE_QUARTER_SPEED:
-            speed = vehicle->speed - (vehicle->speed >> 2);
-            break;
+            return speed - (speed >> 2);
     }
+    return speed;
+}
 
-    int32_t poweredAcceleration = speed << 14;
-    int32_t quarterForce = (speed * totalMass) >> 2;
-    if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
+    rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration)
+{
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
+    {
+        if (velocity > (speed * 0x4000))
+        {
+            // Same code as none powered rides
+            if (curAcceleration <= 0 && curAcceleration >= -500 && velocity <= 0x8000)
+            {
+                return curAcceleration + 400;
+            }
+            return curAcceleration;
+        }
+    }
+    uint8_t modifiedSpeed = modified_speed(track_type >> 2, TrackSubposition, speed);
+    int32_t poweredAcceleration = modifiedSpeed << 14;
+    int32_t quarterForce = (modifiedSpeed * totalMass) >> 2;
+    if (UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
     {
         poweredAcceleration = -poweredAcceleration;
     }
-    poweredAcceleration -= vehicle->velocity;
-    poweredAcceleration *= vehicle->powered_acceleration << 1;
+    poweredAcceleration -= velocity;
+    poweredAcceleration *= powered_acceleration << 1;
     if (quarterForce != 0)
     {
         poweredAcceleration /= quarterForce;
@@ -9514,11 +9506,10 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
-            vehicle->spin_speed = std::clamp(
-                vehicle->spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
+            spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
         }
 
-        if (vehicle->vehicle_sprite_type != 0)
+        if (vehicle_sprite_type != 0)
         {
             if (poweredAcceleration < 0)
             {
@@ -9528,22 +9519,21 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
             {
                 // If the vehicle is on the up slope kill the spin speedModifier
-                if (vehicle->vehicle_sprite_type == 2)
+                if (vehicle_sprite_type == 2)
                 {
-                    vehicle->spin_speed = 0;
+                    spin_speed = 0;
                 }
             }
-            *acceleration += poweredAcceleration;
-            return;
+            return curAcceleration + poweredAcceleration;
         }
     }
 
-    if (std::abs(vehicle->velocity) <= 0x10000)
+    if (std::abs(velocity) <= 0x10000)
     {
-        *acceleration = 0;
+        return poweredAcceleration;
     }
 
-    *acceleration += poweredAcceleration;
+    return curAcceleration + poweredAcceleration;
 }
 
 /**
@@ -9762,7 +9752,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
     {
-        vehicle_update_track_motion_powered_ride_acceleration(vehicle, vehicleEntry, totalMass, &curAcceleration);
+        curAcceleration = vehicle->UpdateTrackMotionPoweredRideAcceleration(vehicleEntry, totalMass, curAcceleration);
     }
     else if (curAcceleration <= 0 && curAcceleration >= -500)
     {
