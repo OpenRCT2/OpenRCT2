@@ -2547,7 +2547,7 @@ void Guest::GoToRideEntrance(Ride* ride)
     SetState(PEEP_STATE_ENTERING_RIDE);
     sub_state = PEEP_RIDE_IN_ENTRANCE;
 
-    rejoin_queue_timeout = 0;
+    RejoinQueueTimeout = 0;
     GuestTimeOnRide = 0;
 
     RemoveFromQueue();
@@ -3948,7 +3948,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++rejoin_queue_timeout) == 0)
+        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
         {
             peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
             return;
@@ -4017,7 +4017,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     }
 
     Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[current_train]);
-    if (ride->status == RIDE_STATUS_OPEN && ++rejoin_queue_timeout != 0
+    if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
         && !currentTrain->UpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
