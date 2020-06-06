@@ -179,7 +179,7 @@ private:
             uint16_t idSearchSpriteIndex;
             Peep* idSearchPeep;
 
-            // We search for the first available id for a given staff type
+            // We search for the first available Id for a given staff type
             uint32_t newStaffId = 0;
             for (;;)
             {
@@ -191,7 +191,7 @@ private:
                     if (idSearchPeep->staff_type != _staffType)
                         continue;
 
-                    if (idSearchPeep->id == newStaffId)
+                    if (idSearchPeep->Id == newStaffId)
                     {
                         found = true;
                         break;
@@ -202,7 +202,7 @@ private:
                     break;
             }
 
-            newPeep->id = newStaffId;
+            newPeep->Id = newStaffId;
             newPeep->staff_type = _staffType;
 
             PeepSpriteType spriteType = spriteTypes[_staffType];

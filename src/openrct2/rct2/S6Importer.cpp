@@ -1456,7 +1456,7 @@ public:
         {
             dst->rides_been_on[i] = src->rides_been_on[i];
         }
-        dst->id = src->id;
+        dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
         dst->TimeInPark = src->time_in_park;

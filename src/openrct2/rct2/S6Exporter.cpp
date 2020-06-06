@@ -1125,7 +1125,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
-            dst->name_string_idx = get_real_name_string_id_from_id(src->id);
+            dst->name_string_idx = get_real_name_string_id_from_id(src->Id);
         }
         else
         {
@@ -1191,7 +1191,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     {
         dst->rides_been_on[i] = src->rides_been_on[i];
     }
-    dst->id = src->id;
+    dst->id = src->Id;
     dst->cash_in_pocket = src->CashInPocket;
     dst->cash_spent = src->CashSpent;
     dst->time_in_park = src->TimeInPark;

@@ -1729,7 +1729,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
     peep->no_of_rides = 0;
     std::fill_n(peep->ride_types_been_on, 16, 0x00);
-    peep->id = gNextGuestNumber++;
+    peep->Id = gNextGuestNumber++;
     peep->name = nullptr;
 
     money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
@@ -1998,17 +1998,17 @@ size_t Peep::FormatNameTo(void* argsV) const
             }
 
             ft.Add<rct_string_id>(staffNames[staffNameIndex]);
-            ft.Add<uint32_t>(id);
+            ft.Add<uint32_t>(Id);
             return ft.NumBytes();
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
-            auto realNameStringId = get_real_name_string_id_from_id(id);
+            auto realNameStringId = get_real_name_string_id_from_id(Id);
             return ft.Add<rct_string_id>(realNameStringId).NumBytes();
         }
         else
         {
-            return ft.Add<rct_string_id>(STR_GUEST_X).Add<uint32_t>(id).NumBytes();
+            return ft.Add<rct_string_id>(STR_GUEST_X).Add<uint32_t>(Id).NumBytes();
         }
     }
     else
@@ -3230,7 +3230,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
 rct_string_id get_real_name_string_id_from_id(uint32_t id)
 {
-    // Generate a name_string_idx from the peep id using bit twiddling
+    // Generate a name_string_idx from the peep Id using bit twiddling
     uint16_t ax = static_cast<uint16_t>(id + 0xF0B);
     uint16_t dx = 0;
     static constexpr uint16_t twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
@@ -3271,7 +3271,7 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
         else
         {
             // Simple ID comparison for when both peeps use a number or a generated name
-            return peep_a->id - peep_b->id;
+            return peep_a->Id - peep_b->Id;
         }
     }
 
@@ -3315,7 +3315,7 @@ void pathfind_logging_enable([[maybe_unused]] Peep* peep)
 {
 #    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     /* Determine if the pathfinding debugging is wanted for this peep. */
-    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
+    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->Id));
 
     /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
      * determine for which guest(s) the pathfinding debugging will

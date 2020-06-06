@@ -628,7 +628,7 @@ static void window_title_command_editor_tool_down(
             {
                 uint8_t formatArgs[32]{};
                 peep->FormatNameTo(formatArgs);
-                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->id);
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
             }
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)

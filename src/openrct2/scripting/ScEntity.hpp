@@ -642,8 +642,8 @@ namespace OpenRCT2::Scripting
     class ScStaff : public ScPeep
     {
     public:
-        ScStaff(uint16_t id)
-            : ScPeep(id)
+        ScStaff(uint16_t Id)
+            : ScPeep(Id)
         {
         }
 

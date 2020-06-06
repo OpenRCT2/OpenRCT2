@@ -8954,7 +8954,7 @@ loc_6DC743:
                     if (z == 2)
                     {
                         Peep* peep = GET_PEEP(vehicle->peep[0]);
-                        if (peep->id & 7)
+                        if (peep->Id & 7)
                         {
                             z = 7;
                         }
@@ -8962,7 +8962,7 @@ loc_6DC743:
                     if (z == 6)
                     {
                         Peep* peep = GET_PEEP(vehicle->peep[0]);
-                        if (peep->id & 7)
+                        if (peep->Id & 7)
                         {
                             z = 8;
                         }
