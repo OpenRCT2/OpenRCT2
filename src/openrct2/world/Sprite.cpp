@@ -886,7 +886,7 @@ uint16_t remove_floating_sprites()
             sprite_misc_update(rctSprite);
             removed++;
         }
-        else if (rctSprite->IsDuck())
+        else if (rctSprite->generic.Is<Duck>())
         {
             if (rctSprite->AsDuck()->IsFlying())
             {

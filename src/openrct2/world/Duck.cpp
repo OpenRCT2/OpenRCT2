@@ -79,15 +79,10 @@ template<> bool SpriteBase::Is<Duck>() const
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_DUCK;
 }
 
-bool rct_sprite::IsDuck()
-{
-    return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->duck.type == SPRITE_MISC_DUCK;
-}
-
 Duck* rct_sprite::AsDuck()
 {
     Duck* result = nullptr;
-    if (IsDuck())
+    if (generic.Is<Duck>())
     {
         return reinterpret_cast<Duck*>(this);
     }
