@@ -1446,7 +1446,7 @@ private:
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
         dst->destination_tolerance = src->destination_tolerance;
-        dst->direction = src->direction;
+        dst->PeepDirection = src->direction;
 
         dst->energy = src->energy;
         dst->energy_target = src->energy_target;

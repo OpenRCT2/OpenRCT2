@@ -94,7 +94,7 @@ protected:
         // 'destination' which is a close position that they will walk towards in a straight line - in this case, one
         // tile away. Stepping the peep will move them towards their destination, and once they reach it, a new
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
-        peep->direction = moveDir;
+        peep->PeepDirection = moveDir;
         peep->destination_x = peep->x + CoordsDirectionDelta[moveDir].x;
         peep->destination_y = peep->y + CoordsDirectionDelta[moveDir].y;
         peep->destination_tolerance = 2;

@@ -3380,7 +3380,7 @@ void Guest::UpdateBuying()
         sprite_direction ^= 0x10;
         destination_x = NextLoc.x + 16;
         destination_y = NextLoc.y + 16;
-        direction = direction_reverse(direction);
+        PeepDirection = direction_reverse(PeepDirection);
 
         SetState(PEEP_STATE_WALKING);
         return;

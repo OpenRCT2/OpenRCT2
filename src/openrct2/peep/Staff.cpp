@@ -658,10 +658,10 @@ bool Staff::DoHandymanPathFinding()
                 }
                 else
                 {
-                    pathDirections &= ~(1 << direction_reverse(direction));
+                    pathDirections &= ~(1 << direction_reverse(PeepDirection));
                     if (pathDirections == 0)
                     {
-                        pathDirections |= 1 << direction_reverse(direction);
+                        pathDirections |= 1 << direction_reverse(PeepDirection);
                     }
                 }
 
@@ -687,7 +687,7 @@ bool Staff::DoHandymanPathFinding()
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    direction = newDirection;
+    PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
     destination_y = chosenTile.y + 16;
     destination_tolerance = 3;
@@ -781,8 +781,8 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
 {
     if (scenario_rand() & 1)
     {
-        if (pathDirections & (1 << peep->direction))
-            return peep->direction;
+        if (pathDirections & (1 << peep->PeepDirection))
+            return peep->PeepDirection;
     }
 
     // Modified from original to spam scenario_rand less
@@ -794,7 +794,7 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
             return direction;
     }
     // This will never happen as pathDirections always has a bit set.
-    return peep->direction;
+    return peep->PeepDirection;
 }
 
 /**
@@ -813,10 +813,10 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
     }
 
     // Check if this is dead end - i.e. only way out is the reverse direction.
-    pathDirections &= ~(1 << direction_reverse(peep->direction));
+    pathDirections &= ~(1 << direction_reverse(peep->PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << direction_reverse(peep->direction));
+        pathDirections |= (1 << direction_reverse(peep->PeepDirection));
     }
 
     direction = bitscanforward(pathDirections);
@@ -921,7 +921,7 @@ bool Staff::DoMechanicPathFinding()
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    direction = newDirection;
+    PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
     destination_y = chosenTile.y + 16;
     destination_tolerance = (scenario_rand() & 7) + 2;
@@ -947,10 +947,10 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
         return staff_direction_surface(peep, scenario_rand() & 3);
     }
 
-    pathDirections &= ~(1 << direction_reverse(peep->direction));
+    pathDirections &= ~(1 << direction_reverse(peep->PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << direction_reverse(peep->direction));
+        pathDirections |= (1 << direction_reverse(peep->PeepDirection));
     }
 
     direction = bitscanforward(pathDirections);
@@ -1004,7 +1004,7 @@ bool Staff::DoMiscPathFinding()
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
-    direction = newDirection;
+    PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
     destination_y = chosenTile.y + 16;
     destination_tolerance = (scenario_rand() & 7) + 2;
@@ -1490,15 +1490,15 @@ void Staff::UpdateHeadingToInspect()
             }
         }
 
-        direction = rideEntranceExitElement->GetDirection();
+        PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets[direction].x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets[direction].y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         destination_x = destX;
         destination_y = destY;
         destination_tolerance = 2;
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
         sub_state = 4;
@@ -1601,15 +1601,15 @@ void Staff::UpdateAnswering()
             }
         }
 
-        direction = rideEntranceExitElement->GetDirection();
+        PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets[direction].x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets[direction].y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         destination_x = destX;
         destination_y = destY;
         destination_tolerance = 2;
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
         sub_state = 4;
@@ -2211,7 +2211,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
 
-        CoordsXY offset = DirectionOffsets[direction];
+        CoordsXY offset = DirectionOffsets[PeepDirection];
         destination_x = (offset.x * -12) + vehicle->x;
         destination_y = (offset.y * -12) + vehicle->y;
         destination_tolerance = 2;
@@ -2239,7 +2239,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
 
         action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
         action_sprite_image_offset = 0;
@@ -2281,7 +2281,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
         action = PEEP_ACTION_STAFF_FIX_3;
         action_sprite_image_offset = 0;
         action_frame = 0;
@@ -2388,7 +2388,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
 {
     if (!firstRun)
     {
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
         action = PEEP_ACTION_STAFF_CHECKBOARD;
         action_frame = 0;
         action_sprite_image_offset = 0;
@@ -2504,7 +2504,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
             return true;
         }
 
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
 
         action = PEEP_ACTION_STAFF_FIX;
         action_frame = 0;
@@ -2532,7 +2532,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
 
         action = PEEP_ACTION_STAFF_FIX_GROUND;
         action_frame = 0;
@@ -2585,7 +2585,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 
         stationPosition = stationPosition.ToTileCentre();
 
-        CoordsXY stationPlatformDirection = DirectionOffsets[direction];
+        CoordsXY stationPlatformDirection = DirectionOffsets[PeepDirection];
         stationPosition.x += stationPlatformDirection.x * 20;
         stationPosition.y += stationPlatformDirection.y * 20;
 
@@ -2629,7 +2629,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         StaffRidesFixed++;
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
-        sprite_direction = direction << 3;
+        sprite_direction = PeepDirection << 3;
         action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
         action_frame = 0;
         action_sprite_image_offset = 0;
@@ -2672,7 +2672,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 
         exitPosition = exitPosition.ToTileCentre();
 
-        CoordsXY ebx_direction = DirectionOffsets[direction];
+        CoordsXY ebx_direction = DirectionOffsets[PeepDirection];
         exitPosition.x -= ebx_direction.x * 19;
         exitPosition.y -= ebx_direction.y * 19;
 

@@ -118,7 +118,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
         return guest_surface_path_finding(peep);
     }
 
-    peep->direction = direction;
+    peep->PeepDirection = direction;
     peep->destination_x = newTile.x;
     peep->destination_y = newTile.y;
     peep->destination_tolerance = 2;
@@ -415,9 +415,9 @@ static int32_t guest_path_find_aimless(Peep* peep, uint8_t edges)
     if (scenario_rand() & 1)
     {
         // If possible go straight
-        if (edges & (1 << peep->direction))
+        if (edges & (1 << peep->PeepDirection))
         {
-            return peep_move_one_tile(peep->direction, peep);
+            return peep_move_one_tile(peep->PeepDirection, peep);
         }
     }
 
@@ -1496,13 +1496,13 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                 peep->PathfindHistory[i].direction &= ~(1 << chosen_edge);
                 /* Also remove the edge through which the peep
                  * entered the junction from those left to try. */
-                peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->direction));
+                peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->PeepDirection));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (gPathFindDebug)
                 {
                     log_verbose(
                         "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
-                        loc.x, loc.y, loc.z, direction_reverse(peep->direction), chosen_edge);
+                        loc.x, loc.y, loc.z, direction_reverse(peep->PeepDirection), chosen_edge);
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 return chosen_edge;
@@ -1521,13 +1521,13 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         peep->PathfindHistory[i].direction &= ~(1 << chosen_edge);
         /* Also remove the edge through which the peep
          * entered the junction from those left to try. */
-        peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->direction));
+        peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->PeepDirection));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
             log_verbose(
                 "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
-                loc.z, direction_reverse(peep->direction), chosen_edge);
+                loc.z, direction_reverse(peep->PeepDirection), chosen_edge);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1935,7 +1935,7 @@ int32_t guest_path_finding(Guest* peep)
             edges = adjustedEdges;
     }
 
-    int32_t direction = direction_reverse(peep->direction);
+    int32_t direction = direction_reverse(peep->PeepDirection);
     // Check if in a dead end (i.e. only edge is where the peep came from)
     if (!(edges & ~(1 << direction)))
     {
