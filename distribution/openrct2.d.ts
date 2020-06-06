@@ -884,33 +884,47 @@ declare global {
      * Represents the object definition of a ride or stall.
      */
     interface RideObject extends Object {
-        /**
-         * The description of the ride / stall in the player's current language.
-         */
+        /** The description of the ride / stall in the player's current language. */
         readonly description: string;
-        /**
-         * A text description describing the capacity of the ride in the player's current language.
-         */
+        /** A text description describing the capacity of the ride in the player's current language. */
         readonly capacity: string;
-
+        /** The ride object flags. TODO */
         readonly flags: number;
+        /** The ride type. TODO why is this an array */
         readonly rideType: number[];
+        /** The minimum number of cars per train. TODO w/ or w/o cheats? */
         readonly minCarsInTrain: number;
+        /** The maximum number of cars per train. TODO w/ or w/o cheats? */
         readonly maxCarsInTrain: number;
+        /** The maximum (?) number of cars per flat ride. TODO */
         readonly carsPerFlatRide: number;
+        /** TODO? */
         readonly zeroCars: number;
+        /** The vehicle shown in the train tab preview? TODO */
         readonly tabVehicle: number;
+        /** The default vehicle for the ride type. */
         readonly defaultVehicle: number;
+        /** The vehicle number for the front car in a train. */
         readonly frontVehicle: number;
+        /** The vehicle number for the second car in a train. */
         readonly secondVehicle: number;
+        /** The vehicle number for the last car in a train. */
         readonly rearVehicle: number;
+        /** The vehicle number for the third car in a train. */
         readonly thirdVehicle: number;
+        /** An array of all the vehicles in the train. */
         readonly vehicles: RideObjectVehicle[];
+        /** The exitement multiplier. */
         readonly excitementMultiplier: number;
+        /** The intensity multiplier. */
         readonly intensityMultiplier: number;
+        /** The nausea multiplier. */
         readonly nauseaMultiplier: number;
+        /** The max support height for the ride. TODO units */
         readonly maxHeight: number;
+        /** If the ride is a shop, a number indicating the item sold. TODO on ride photos? */
         readonly shopItem: number;
+        /** If the ride is a show, a number indicating the second item sold. TODO */
         readonly shopItemSecondary: number;
     }
 
@@ -922,13 +936,16 @@ declare global {
         readonly numVerticalFrames: number;
         readonly numHorizontalFrames: number;
         readonly spacing: number;
+        /** The vehicle mass for a single car. TODO units */
         readonly carMass: number;
         readonly tabHeight: number;
+        /** The number of seats per car. */
         readonly numSeats: number;
         readonly spriteFlags: number;
         readonly spriteWidth: number;
         readonly spriteHeightNegative: number;
         readonly spriteHeightPositive: number;
+        /** The animation frame. TODO what if not animated */
         readonly animation: number;
         readonly flags: number;
         readonly baseNumFrames: number;
@@ -949,7 +966,9 @@ declare global {
         readonly corkscrewImageId: number;
         readonly noVehicleImages: number;
         readonly noSeatingRows: number;
+        /** A number indicating the inertia (tendency to keep spinning) of a spinning vehicle. TODO */
         readonly spinningInertia: number;
+        /** A number indicating the friction (tendency to stop spinning) of a spinning vehicle. TODO */
         readonly spinningFriction: number;
         readonly frictionSoundId: number;
         readonly logFlumeReverserVehicleType: number;
@@ -992,65 +1011,52 @@ declare global {
      * Represents a ride or stall within the park.
      */
     interface Ride {
-        /**
-         * The object metadata for this ride.
-         */
+        /** The object metadata for this ride. */
         readonly object: RideObject;
-
-        /**
-         * The unique ID / index of the ride.
-         */
+        /** The unique ID / index of the ride. */
         readonly id: number;
-
-        /**
-         * The type of the ride represented as the internal built-in ride type ID.
-         */
+        /** The type of the ride represented as the internal built-in ride type ID. */
         type: number;
-
-        /**
-         * Whether the ride is a ride, shop or facility.
-         */
+        /** Whether the ride is a ride, shop or facility. */
         readonly classification: RideClassification;
-
-        /**
-         * The generated or custom name of the ride.
-         */
+        /** The generated or custom name of the ride. */
         name: string;
-
-        /**
-         * Whether the ride is open, closed or testing.
-         */
+        /** Whether the ride is open, closed or testing. */
         readonly status: RideStatus;
-
-        /**
-         * Various flags related to the operation of the ride.
-         */
+        /** Various flags related to the operation of the ride. */
         lifecycleFlags: number;
-
-        /**
-         * The operation mode.
-         */
+        /** The operation mode. TODO */
         mode: number;
-
-        /**
-         * Flags related to how trains depart.
-         */
+        /** Flags related to how trains depart. */
         departFlags: number;
-
-        /**
-         * The minimum time a train will wait at the station before departing.
-         */
+        /** The minimum time a train will wait at the station before departing. TODO units */
         minimumWaitingTime: number;
-
-        /**
-         * The maximum time a train will wait at the station before departing.
-         */
+        /** The maximum time a train will wait at the station before departing. TODO units */
         maximumWaitingTime: number;
-
-        /**
-         * The head vehicle IDs associated with the ride, one for each train.
-         */
+        /** The head vehicle IDs associated with the ride, one for each train. */
         readonly vehicles: number[];
+        /** The track colour schemes for the ride. */
+        colourSchemes: TrackColour[];
+        /** The style used for the station, entrance, and exit building. TODO range */
+        stationStyle: number;
+        /** The music track to play at each station. TODO range */
+        music: number;
+        /** Information about each station. */
+        readonly stations: RideStation[];
+        /** The admission price for the ride and the price of the on-ride photo, or the cost of each item of the stall. TODO which one is [0] and [1] */
+        price: number[];
+        /** The total number of customers the ride has served since it was built. */
+        totalCustomers: number;
+        /** The date in months when the ride was built. Subtract this from `date.monthsElapsed` to get the age. */
+        buildDate: number;
+        /** How old the ride is in months. */
+        readonly age: number;
+        /** The running cost of the ride billed every fortnight. Multiply this by 16 to get the cost per hour (~1 in-game year). */
+        runningCost: number;
+        /** How often the ride should be inspected by a mechanic. TODO units */
+        inspectionInterval: number;
+        /** The value of the ride. TODO units? */
+        value: number;
 
         /**
          * The colour for each vehicle when the ride opens. Modifying this directly will not
@@ -1058,136 +1064,88 @@ declare global {
          * have been modified.
          */
         vehicleColours: VehicleColour[];
-
         /**
-         * The track colour schemes for the ride.
-         */
-        colourSchemes: TrackColour[];
-
-        /**
-         * The style used for the station, entrance, and exit building.
-         */
-        stationStyle: number;
-
-        /**
-         * The music track to play at each station.
-         */
-        music: number;
-
-        /**
-         * Information about each station.
-         */
-        readonly stations: RideStation[];
-
-        /**
-         * The admission price for the ride and the price of the on-ride photo, or the cost of each item of the stall.
-         */
-        price: number[];
-
-        /**
-         * The excitement metric of the ride represented as a 2 decimal point fixed integer.
+         * The excitement metric of the ride represented as an integer. The value displayed in-game uses the last 2 digits
+         * as the decimal portion.
          * For example, `652` equates to `6.52`.
          */
         excitement: number;
-
         /**
-         * The intensity metric of the ride represented as a 2 decimal point fixed integer.
+         * The intensity metric of the ride represented as an integer. The value displayed in-game uses the last 2 digits
+         * as the decimal portion.
          * For example, `652` equates to `6.52`.
          */
         intensity: number;
-
         /**
-         * The nausea metric of the ride represented as a 2 decimal point fixed integer.
+         * The nausea metric of the ride represented as an integer. The value displayed in-game uses the last 2 digits
+         * as the decimal portion.
          * For example, `652` equates to `6.52`.
          */
         nausea: number;
-
-        /**
-         * The total number of customers the ride has served since it was built.
-         */
-        totalCustomers: number;
-
-        /**
-         * The date in months when the ride was built.
-         * Subtract this from `date.monthsElapsed` to get the age.
-         */
-        buildDate: number;
-
-        /**
-         * How old the ride is in months.
-         */
-        readonly age: number;
-
-        /**
-         * The running cost of the ride billed every fortnight. Multiply this by 16 to get the cost per hour (~ 1 year).
-         */
-        runningCost: number;
-
-        /**
-         * How often the ride should be inspected by a mechanic.
-         */
-        inspectionInterval: number;
-
-        /**
-         * The value of the ride.
-         */
-        value: number;
     }
 
+    /** Indicates ride, stall, or facility. */
     type RideClassification = "ride" | "stall" | "facility";
 
+    /** Indicates operating status (open, closed, testing, or simulating). */
     type RideStatus = "closed" | "open" | "testing" | "simulating";
 
+    /** A track color scheme. */
     interface TrackColour {
+        /** The main color of the scheme. TODO value */
         main: number;
+        /** The secondary color of the scheme. TODO value */
         additional: number;
+        /** The support color of the scheme. TODO value */
         supports: number;
     }
 
+    /** A color scheme used for a single vehicle. */
     interface VehicleColour {
+        /** The body color of the vehicle. TODO value */
         body: number;
+        /** The trim color of the vehicle. TODO value */
         trim: number;
+        /** The third color of the vehicle. TODO value, also I think this is intended to be tertiary */
         ternary: number;
     }
 
+    /**
+     * Information associated with a ride station.
+     */
     interface RideStation {
+        /** The coordinate of the first tile of the station, in tiles. TODO start = has lights? */
         start: CoordsXYZ;
+        /** The length of the station in tiles. */
         length: number;
+        /** The coordinate of the station entrance, in tiles. */
         entrance: CoordsXYZD;
+        /** The coorindate of the station exit, in tiles. */
         exit: CoordsXYZD;
     }
 
+    /** The type of a entity that may move (car, duck, peep). */
     type EntityType =
         "car" | "duck" | "peep";
 
     /**
-     * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
+     * Represents an object "entity" on the map that can may move and has a sub-tile coordinate.
      */
     interface Entity {
-        /**
-         * The entity index within the entity list.
-         */
+        /** The entity index within the entity list. */
         readonly id: number;
-        /**
-         * The type of entity, e.g. car, duck, litter, or peep.
-         */
+        /** The type of entity, e.g. car, duck, litter, or peep. TODO litter actually isn't an option? */
         readonly type: EntityType;
-        /**
-         * The x-coordinate of the entity in game units.
-         */
+        /** The x-coordinate of the entity in game units. */
         x: number;
-        /**
-         * The y-coordinate of the entity in game units.
-         */
+        /** The y-coordinate of the entity in game units. */
         y: number;
-        /**
-         * The z-coordinate of the entity in game units.
-         */
+        /** The z-coordinate of the entity in game units. */
         z: number;
 
         /**
          * Removes the entity from the map.
-         * Note: removing vehicles and peeps that are on rides is currently unsupported.
+         * Warning: Removing vehicles and peeps that are on rides is currently unsupported.
          */
         remove(): void;
     }
@@ -1196,45 +1154,36 @@ declare global {
      * Represents a guest or staff member.
      */
     interface Peep extends Entity {
-        /**
-         * Whether the peep is a guest or staff member.
-         */
+        /** Whether the peep is a guest or staff member. */
         peepType: PeepType;
-
-        /**
-         * Name of the peep.
-         */
+        /** Custom or generated name of the peep. */
         name: string;
-
-        /**
-         * The peep's direct destination.
-         */
+        /** The peep's direct destination. */
         destination: CoordsXY;
-
-        /**
-         * How tired the guest is between 32 and 128 where lower is more tired.
-         */
+        /** How tired the guest is between 32 and 128 where lower is more tired. */
         energy: number;
-
-        /**
-         * The target energy value. Energy will increase / decrease slowly towards this value.
-         */
+        /** The target energy value. Energy will increase / decrease slowly towards this value. */
         energyTarget: number;
 
         /**
          * Gets whether a given flag is set or not.
+         * 
          * @param key The flag to test.
+         * 
+         * @return True if the flag is set, false otherwise.
          */
         getFlag(key: PeepFlags): boolean;
 
         /**
          * Sets the given flag to the given value.
+         * 
          * @param key The flag to set.
-         * @param value Whether to set or clear the flag.
+         * @param value True to set the flag, false to clear it.
          */
         setFlag(key: PeepFlags, value: boolean): void;
     }
 
+    /** Flags indicating various guest behaviors or actions. */
     type PeepFlags =
         "leavingPark" |
         "slowWalk" |
@@ -1268,89 +1217,39 @@ declare global {
      * Represents a guest.
      */
     interface Guest extends Peep {
-        /**
-         * Colour of the guest's t-shirt.
-         */
+        /** Colour of the guest's t-shirt. TODO range */
         tshirtColour: number;
-
-        /**
-         * Colour of the guest's trousers.
-         */
-        trousersColour: number;
-
-        /**
-         * Colour of the guest's balloon.
-         */
+        /** Colour of the guest's trousers. TODO range*/
+        trousersColour: number; 
+        /** Colour of the guest's balloon. TODO range, what if no balloon?*/
         balloonColour: number;
-
-        /**
-         * Colour of the guest's hat.
-         */
+        /**Colour of the guest's hat. TODO range, what if no hat?*/
         hatColour: number;
-
-        /**
-         * Colour of the guest's umbrella.
-         */
+        /**Colour of the guest's umbrella. TODO range, what if no umbrella?*/
         umbrellaColour: number;
-
-        /**
-         * How happy the guest is between 0 and 255.
-         */
+        /** How happy the guest is between 0 and 255. Higher numbers indicate more happiness. */
         happiness: number;
-
-        /**
-         * The target happiness value. Happiness will increase / decrease slowly towards this value.
-         */
+        /** The target happiness value. Happiness will increase / decrease slowly towards this value. */
         happinessTarget: number;
-
-        /**
-         * How nauseated the guest is between 0 and 255.
-         */
+        /** How nauseated the guest is between 0 and 255. Higher numbers indicate more nausea. */
         nausea: number;
-
-        /**
-         * The target nausea value. Nausea will increase / decrease slowly towards this value.
-         */
+        /** The target nausea value. Nausea will increase / decrease slowly towards this value. */
         nauseaTarget: number;
-
-        /**
-         * How hungry the guest is between 0 and 255. Lower is more hungry.
-         */
+        /** How hungry the guest is between 0 and 255. Lower is more hungry. */
         hunger: number;
-
-        /**
-         * How thirsty the guest is between 0 and 255. Lower is more thirsty.
-         */
+        /** How thirsty the guest is between 0 and 255. Lower is more thirsty. */
         thirst: number;
-
-        /**
-         * How much the guest requires the need to go to the toilet between 0 and 255.
-         */
+        /** How much the guest sneed to go to the toilet between 0 and 255. Higher numbers indicate greater need. */
         toilet: number;
-
-        /**
-         * The mass of the guest. Affects vehicle mass.
-         */
+        /** The mass of the guest. Affects vehicle mass. TODO units */
         mass: number;
-
-        /**
-         * The guest's minimum preferred intensity between 0 and 15.
-         */
+        /** The guest's minimum preferred intensity between 0 and 15. */
         minIntensity: number;
-
-        /**
-         * The guest's maximum preferred intensity between 0 and 15.
-         */
+        /** The guest's maximum preferred intensity between 0 and 15. */
         maxIntensity: number;
-
-        /**
-         * The guest's tolerance to nauseating rides between 0 and 3.
-         */
+        /** The guest's tolerance to nauseating rides between 0 and 3. Lower numbers indicate lower tolerance. */
         nauseaTolerance: number;
-
-        /**
-         * Amount of cash in the guest's pocket.
-         */
+        /** Amount of cash in the guest's pocket. TODO units */
         cash: number;
     }
 
@@ -1358,32 +1257,22 @@ declare global {
      * Represents a staff member.
      */
     interface Staff extends Peep {
-        /**
-         * The type of staff member, e.g. handyman, mechanic.
-         */
+        /** The type of staff member (e.g. handyman, mechanic). */
         staffType: StaffType;
-
-        /**
-         * Colour of the staff member. Not applicable for entertainers.
-         */
+        /** Colour of the staff member. Not applicable for entertainers. TODO values*/
         colour: number;
-
-        /**
-         * The entertainer's costume, only applicable for entertainers.
-         */
+        /** The entertainer's costume, only applicable for entertainers. TODO values*/
         costume: number;
-
-        /**
-         * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
-         */
+        /** The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc. TODO values*/
         orders: number;
     }
 
+    /** The available staff types (e.g. handyman, mechanic). */
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
 
     /**
-     * Network APIs
-     * Use `network.status` to determine whether the current game is a client, server or in single player mode.
+     * Network APIs.
+     * Use `network.status` to determine whether the current game is a client, server or in single player mode. TODO network.mode you mean?
      */
     interface Network {
         readonly mode: NetworkMode;
