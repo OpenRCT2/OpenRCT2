@@ -1530,7 +1530,7 @@ private:
         // Doubles as staff orders
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
         // The ID is fixed later
-        dst->next_in_queue = src->next_in_queue;
+        dst->NextInQueue = src->next_in_queue;
 
         dst->PeepFlags = 0;
         dst->PathfindGoal.x = 0xFF;
@@ -1581,7 +1581,7 @@ private:
 
     void FixPeepNextInQueue(Peep* peep, const uint16_t* spriteIndexMap)
     {
-        peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
+        peep->NextInQueue = MapSpriteIndex(peep->NextInQueue, spriteIndexMap);
     }
 
     void ImportStaffPatrolArea(Peep* staffmember)

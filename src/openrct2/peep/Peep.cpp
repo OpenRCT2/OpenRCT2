@@ -2266,10 +2266,10 @@ void Peep::SwitchNextActionSpriteType()
 static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
 {
     peep->TimeInQueue++;
-    if (peep->next_in_queue == SPRITE_INDEX_NULL)
+    if (peep->NextInQueue == SPRITE_INDEX_NULL)
         return false;
 
-    Peep* peep_next = GET_PEEP(peep->next_in_queue);
+    Peep* peep_next = GET_PEEP(peep->NextInQueue);
 
     int16_t x_diff = abs(peep_next->x - peep->x);
     int16_t y_diff = abs(peep_next->y - peep->y);
@@ -2430,7 +2430,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         uint16_t previous_last = ride->stations[stationNum].LastPeepInQueue;
         ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
-        peep->next_in_queue = previous_last;
+        peep->NextInQueue = previous_last;
         ride->stations[stationNum].QueueLength++;
 
         peep->current_ride = rideIndex;
@@ -2858,7 +2858,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     // Add the peep to the ride queue.
                     uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
                     ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
-                    peep->next_in_queue = old_last_peep;
+                    peep->NextInQueue = old_last_peep;
                     ride->stations[stationNum].QueueLength++;
 
                     peep_decrement_num_riders(peep);
@@ -3425,7 +3425,7 @@ void Peep::RemoveFromQueue()
 
     if (sprite_index == station.LastPeepInQueue)
     {
-        station.LastPeepInQueue = next_in_queue;
+        station.LastPeepInQueue = NextInQueue;
         return;
     }
 
@@ -3433,12 +3433,12 @@ void Peep::RemoveFromQueue()
     while (spriteId != SPRITE_INDEX_NULL)
     {
         Peep* other_peep = GET_PEEP(spriteId);
-        if (sprite_index == other_peep->next_in_queue)
+        if (sprite_index == other_peep->NextInQueue)
         {
-            other_peep->next_in_queue = next_in_queue;
+            other_peep->NextInQueue = NextInQueue;
             return;
         }
-        spriteId = other_peep->next_in_queue;
+        spriteId = other_peep->NextInQueue;
     }
 }
 

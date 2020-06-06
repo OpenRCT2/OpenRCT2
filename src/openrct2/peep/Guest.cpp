@@ -5551,14 +5551,14 @@ void Guest::UpdateQueuing()
     if (sub_state != 10)
     {
         bool is_front = true;
-        if (next_in_queue != SPRITE_INDEX_NULL)
+        if (NextInQueue != SPRITE_INDEX_NULL)
         {
-            // Fix #4819: Occasionally the peep->next_in_queue is incorrectly set
+            // Fix #4819: Occasionally the peep->NextInQueue is incorrectly set
             // to prevent this from causing the peeps to enter a loop
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            Peep* next_peep = GET_PEEP(next_in_queue);
+            Peep* next_peep = GET_PEEP(NextInQueue);
             if (abs(next_peep->x - x) < 32 && abs(next_peep->y - y) < 32)
             {
                 is_front = false;

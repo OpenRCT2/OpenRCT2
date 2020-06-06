@@ -205,7 +205,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(action);
     COMPARE_FIELD(action_frame);
     COMPARE_FIELD(step_progress);
-    COMPARE_FIELD(next_in_queue);
+    COMPARE_FIELD(NextInQueue);
     COMPARE_FIELD(MazeLastEdge);
     COMPARE_FIELD(InteractionRideIndex);
     COMPARE_FIELD(TimeInQueue);

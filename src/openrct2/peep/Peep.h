@@ -665,7 +665,7 @@ struct Peep : SpriteBase
     union
     {
         uint16_t mechanic_time_since_call; // time getting to ride to fix
-        uint16_t next_in_queue;
+        uint16_t NextInQueue;
     };
     union
     {
