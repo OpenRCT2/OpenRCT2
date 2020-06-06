@@ -193,6 +193,15 @@ enum
 
 rct_sprite* try_get_sprite(size_t spriteIndex);
 rct_sprite* get_sprite(size_t sprite_idx);
+template<typename T> T* GetEntity(size_t sprite_idx)
+{
+    auto spr = reinterpret_cast<SpriteBase*>(get_sprite(sprite_idx));
+    if (spr == nullptr)
+        return nullptr;
+    return spr->As<T>();
+}
+
+SpriteBase* GetEntity(size_t sprite_idx);
 
 extern uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
 extern uint16_t gSpriteListCount[SPRITE_LIST_COUNT];

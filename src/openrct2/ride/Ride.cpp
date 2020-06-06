@@ -831,10 +831,9 @@ size_t Ride::FormatStatusTo(void* argsV) const
         mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         && race_winner != SPRITE_INDEX_NULL)
     {
-        auto sprite = get_sprite(race_winner);
-        if (sprite != nullptr && sprite->generic.Is<Peep>())
+        auto peep = GetEntity<Peep>(race_winner);
+        if (peep != nullptr)
         {
-            auto peep = sprite->generic.As<Peep>();
             ft.Add<rct_string_id>(STR_RACE_WON_BY);
             peep->FormatNameTo(ft);
         }
@@ -2739,10 +2738,12 @@ Staff* ride_get_mechanic(Ride* ride)
 {
     if (ride->mechanic != SPRITE_INDEX_NULL)
     {
-        auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
-        if (peep != nullptr && peep->IsMechanic())
+        auto peep = GetEntity<Peep>(ride->mechanic);
+        if (peep != nullptr)
         {
-            return peep;
+            auto staff = peep->AsStaff();
+            if (staff != nullptr && staff->IsMechanic())
+                return staff;
         }
     }
     return nullptr;

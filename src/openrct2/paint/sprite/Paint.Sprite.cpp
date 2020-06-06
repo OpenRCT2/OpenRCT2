@@ -35,12 +35,6 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         return;
     }
 
-    uint16_t sprite_idx = sprite_get_first_in_quadrant(x, y);
-    if (sprite_idx == SPRITE_INDEX_NULL)
-    {
-        return;
-    }
-
     rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > 2)
     {
@@ -49,22 +43,22 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
     const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL;
-         sprite_idx = spr->generic.next_in_quadrant)
+    for (uint16_t sprite_idx = sprite_get_first_in_quadrant(x, y); sprite_idx != SPRITE_INDEX_NULL;)
     {
-        spr = get_sprite(sprite_idx);
+        auto spr = GetEntity(sprite_idx);
+        sprite_idx = spr->next_in_quadrant;
 
         if (highlightPathIssues)
         {
-            if (spr->generic.Is<Peep>())
+            const auto peep = spr->As<Peep>();
+            if (peep != nullptr)
             {
-                const Peep* peep = reinterpret_cast<const Peep*>(spr);
                 if (!(peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_HANDYMAN))
                 {
                     continue;
                 }
             }
-            else if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_LITTER)
+            else if (spr->sprite_identifier != SPRITE_IDENTIFIER_LITTER)
             {
                 continue;
             }
@@ -76,15 +70,15 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         // height of the slope element, and consequently clipped.
         if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
-            if (spr->generic.z > (gClipHeight * COORDS_Z_STEP))
+            if (spr->z > (gClipHeight * COORDS_Z_STEP))
             {
                 continue;
             }
-            if (spr->generic.x < gClipSelectionA.x || spr->generic.x > gClipSelectionB.x)
+            if (spr->x < gClipSelectionA.x || spr->x > gClipSelectionB.x)
             {
                 continue;
             }
-            if (spr->generic.y < gClipSelectionA.y || spr->generic.y > gClipSelectionB.y)
+            if (spr->y < gClipSelectionA.y || spr->y > gClipSelectionB.y)
             {
                 continue;
             }
@@ -92,41 +86,42 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
         dpi = &session->DPI;
 
-        if (dpi->y + dpi->height <= spr->generic.sprite_top || spr->generic.sprite_bottom <= dpi->y
-            || dpi->x + dpi->width <= spr->generic.sprite_left || spr->generic.sprite_right <= dpi->x)
+        if (dpi->y + dpi->height <= spr->sprite_top || spr->sprite_bottom <= dpi->y || dpi->x + dpi->width <= spr->sprite_left
+            || spr->sprite_right <= dpi->x)
         {
             continue;
         }
 
         int32_t image_direction = session->CurrentRotation;
         image_direction <<= 3;
-        image_direction += spr->generic.sprite_direction;
+        image_direction += spr->sprite_direction;
         image_direction &= 0x1F;
 
         session->CurrentlyDrawnItem = spr;
-        session->SpritePosition.x = spr->generic.x;
-        session->SpritePosition.y = spr->generic.y;
+        session->SpritePosition.x = spr->x;
+        session->SpritePosition.y = spr->y;
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 
-        switch (spr->generic.sprite_identifier)
+        switch (spr->sprite_identifier)
         {
             case SPRITE_IDENTIFIER_VEHICLE:
-                vehicle_paint(session, reinterpret_cast<const Vehicle*>(spr), image_direction);
+                vehicle_paint(session, spr->As<Vehicle>(), image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
                 {
-                    lightfx_add_lights_magic_vehicle(reinterpret_cast<Vehicle*>(const_cast<rct_sprite*>(spr)));
+                    lightfx_add_lights_magic_vehicle(spr->As<Vehicle>());
                 }
 #endif
                 break;
             case SPRITE_IDENTIFIER_PEEP:
-                peep_paint(session, reinterpret_cast<const Peep*>(spr), image_direction);
+                peep_paint(session, spr->As<Peep>(), image_direction);
                 break;
             case SPRITE_IDENTIFIER_MISC:
-                misc_paint(session, spr, image_direction);
+                // TODO: Update misc_paint to take a specific sprite type
+                misc_paint(session, reinterpret_cast<rct_sprite*>(spr), image_direction);
                 break;
             case SPRITE_IDENTIFIER_LITTER:
-                litter_paint(session, reinterpret_cast<const Litter*>(spr), image_direction);
+                litter_paint(session, spr->As<Litter>(), image_direction);
                 break;
             default:
                 assert(false);

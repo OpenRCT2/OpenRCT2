@@ -945,7 +945,7 @@ void S6Exporter::ExportSprites()
     sprite_clear_all_unused();
     for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
     {
-        ExportSprite(&_s6.sprites[i], get_sprite(i));
+        ExportSprite(&_s6.sprites[i], reinterpret_cast<const rct_sprite*>(GetEntity(i)));
     }
 
     for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)

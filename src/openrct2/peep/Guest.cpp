@@ -3012,10 +3012,10 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    Litter* litter;
-    for (uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next)
+    for (uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL;)
     {
-        litter = &(get_sprite(sprite_idx)->litter);
+        auto litter = GetEntity<Litter>(sprite_idx);
+        sprite_idx = litter->next;
 
         int16_t dist_x = abs(litter->x - centre_x);
         int16_t dist_y = abs(litter->y - centre_y);
@@ -5477,24 +5477,25 @@ void Guest::UpdateWalking()
         return;
 
     // Check if there is a peep watching (and if there is place for us)
-    uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    for (uint16_t sprite_id = sprite_get_first_in_quadrant(x, y); sprite_id != SPRITE_INDEX_NULL;)
     {
-        sprite = get_sprite(sprite_id);
+        auto sprite = GetEntity(sprite_id);
+        sprite_id = sprite->next_in_quadrant;
+        auto peep = sprite->As<Peep>();
 
-        if (!sprite->generic.Is<Peep>())
+        if (peep == nullptr)
             continue;
 
-        if (sprite->peep.State != PEEP_STATE_WATCHING)
+        if (peep->State != PEEP_STATE_WATCHING)
             continue;
 
-        if (z != sprite->peep.z)
+        if (z != peep->z)
             continue;
 
-        if ((sprite->peep.Var37 & 0x3) != chosen_edge)
+        if ((peep->Var37 & 0x3) != chosen_edge)
             continue;
 
-        positions_free &= ~(1 << ((sprite->peep.Var37 & 0x1C) >> 2));
+        positions_free &= ~(1 << ((peep->Var37 & 0x1C) >> 2));
     }
 
     if (!positions_free)
@@ -6060,27 +6061,28 @@ bool Guest::UpdateWalkingFindBench()
     for (; !(edges & (1 << chosen_edge));)
         chosen_edge = (chosen_edge + 1) & 0x3;
 
-    uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
     uint8_t free_edge = 3;
 
     // Check if there is no peep sitting in chosen_edge
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    for (uint16_t sprite_id = sprite_get_first_in_quadrant(x, y); sprite_id != SPRITE_INDEX_NULL;)
     {
-        sprite = get_sprite(sprite_id);
+        auto sprite = GetEntity(sprite_id);
+        sprite_id = sprite->next_in_quadrant;
+        auto peep = sprite->As<Peep>();
 
-        if (!sprite->generic.Is<Peep>())
+        if (peep == nullptr)
             continue;
 
-        if (sprite->peep.State != PEEP_STATE_SITTING)
+        if (peep->State != PEEP_STATE_SITTING)
             continue;
 
-        if (z != sprite->peep.z)
+        if (z != peep->z)
             continue;
 
-        if ((sprite->peep.Var37 & 0x3) != chosen_edge)
+        if ((peep->Var37 & 0x3) != chosen_edge)
             continue;
 
-        free_edge &= ~(1 << ((sprite->peep.Var37 & 0x4) >> 2));
+        free_edge &= ~(1 << ((peep->Var37 & 0x4) >> 2));
     }
 
     if (!free_edge)
@@ -6255,14 +6257,14 @@ static void peep_update_walking_break_scenery(Peep* peep)
     if (edges == 0xF)
         return;
 
-    uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
-
     // Check if a peep is already sitting on the bench. If so, do not vandalise it.
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    for (uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y); sprite_id != SPRITE_INDEX_NULL;)
     {
-        sprite = get_sprite(sprite_id);
+        auto sprite = GetEntity(sprite_id);
+        sprite_id = sprite->next_in_quadrant;
+        auto peep2 = sprite->As<Peep>();
 
-        if (!sprite->generic.Is<Peep>() || (sprite->peep.State != PEEP_STATE_SITTING) || (peep->z != sprite->peep.z))
+        if (peep2 == nullptr || (peep2->State != PEEP_STATE_SITTING) || (peep->z != peep2->z))
         {
             continue;
         }

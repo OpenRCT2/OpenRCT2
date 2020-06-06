@@ -469,12 +469,11 @@ int32_t Park::CalculateParkRating() const
 
     // Litter
     {
-        Litter* litter;
         int32_t litterCount = 0;
-        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
-             spriteIndex = litter->next)
+        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;)
         {
-            litter = &(get_sprite(spriteIndex)->litter);
+            auto litter = GetEntity<Litter>(spriteIndex);
+            spriteIndex = litter->next;
 
             // Ignore recently dropped litter
             if (litter->creationTick - gScenarioTicks >= 7680)

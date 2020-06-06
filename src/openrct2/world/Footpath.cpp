@@ -390,21 +390,20 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
  */
 void footpath_remove_litter(const CoordsXYZ& footpathPos)
 {
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
-    while (spriteIndex != SPRITE_INDEX_NULL)
+    for (uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y); spriteIndex != SPRITE_INDEX_NULL;)
     {
-        Litter* sprite = &get_sprite(spriteIndex)->litter;
-        uint16_t nextSpriteIndex = sprite->next_in_quadrant;
-        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        auto sprite = GetEntity(spriteIndex);
+        spriteIndex = sprite->next_in_quadrant;
+        Litter* litter = sprite->As<Litter>();
+        if (litter != nullptr)
         {
-            int32_t distanceZ = abs(sprite->z - footpathPos.z);
+            int32_t distanceZ = abs(litter->z - footpathPos.z);
             if (distanceZ <= 32)
             {
-                sprite->Invalidate0();
-                sprite_remove(sprite);
+                litter->Invalidate0();
+                sprite_remove(litter);
             }
         }
-        spriteIndex = nextSpriteIndex;
     }
 }
 
@@ -414,14 +413,13 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
  */
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
 {
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
-    while (spriteIndex != SPRITE_INDEX_NULL)
+    for (auto spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y); spriteIndex != SPRITE_INDEX_NULL;)
     {
-        auto* entity = get_sprite(spriteIndex);
-        uint16_t nextSpriteIndex = entity->generic.next_in_quadrant;
-        if (entity->generic.Is<Peep>())
+        auto entity = GetEntity(spriteIndex);
+        spriteIndex = entity->next_in_quadrant;
+        auto peep = entity->As<Peep>();
+        if (peep != nullptr)
         {
-            Peep* peep = &entity->peep;
             if (peep->State == PEEP_STATE_SITTING || peep->State == PEEP_STATE_WATCHING)
             {
                 if (peep->z == footpathPos.z)
@@ -434,7 +432,6 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
                 }
             }
         }
-        spriteIndex = nextSpriteIndex;
     }
 }
 
