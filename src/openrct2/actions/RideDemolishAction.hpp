@@ -160,8 +160,8 @@ private:
             uint8_t ride_id_bit = _rideIndex % 8;
             uint8_t ride_id_offset = _rideIndex / 8;
 
-            // clear ride from potentially being in rides_been_on
-            peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
+            // clear ride from potentially being in RidesBeenOn
+            peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
             if (peep->state == PEEP_STATE_WATCHING)
             {
                 if (peep->current_ride == _rideIndex)

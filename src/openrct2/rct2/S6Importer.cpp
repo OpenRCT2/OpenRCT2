@@ -1454,7 +1454,7 @@ public:
         dst->time_in_queue = src->time_in_queue;
         for (size_t i = 0; i < std::size(src->rides_been_on); i++)
         {
-            dst->rides_been_on[i] = src->rides_been_on[i];
+            dst->RidesBeenOn[i] = src->rides_been_on[i];
         }
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;

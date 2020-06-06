@@ -2366,13 +2366,13 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
 void Guest::SetHasRidden(const Ride* ride)
 {
-    rides_been_on[ride->id / 8] |= 1 << (ride->id % 8);
+    RidesBeenOn[ride->id / 8] |= 1 << (ride->id % 8);
     SetHasRiddenRideType(ride->type);
 }
 
 bool Guest::HasRidden(const Ride* ride) const
 {
-    return rides_been_on[ride->id / 8] & (1 << (ride->id % 8));
+    return RidesBeenOn[ride->id / 8] & (1 << (ride->id % 8));
 }
 
 void Guest::SetHasRiddenRideType(int32_t rideType)

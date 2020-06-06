@@ -1503,7 +1503,7 @@ private:
 
         for (size_t i = 0; i < 32; i++)
         {
-            dst->rides_been_on[i] = src->rides_been_on[i];
+            dst->RidesBeenOn[i] = src->rides_been_on[i];
         }
         for (size_t i = 0; i < 16; i++)
         {

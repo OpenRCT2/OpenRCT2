@@ -267,7 +267,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, time_in_queue);
         for (int i = 0; i < 32; i++)
         {
-            COMPARE_FIELD(Peep, rides_been_on[i]);
+            COMPARE_FIELD(Peep, RidesBeenOn[i]);
         }
         COMPARE_FIELD(Peep, Id);
         COMPARE_FIELD(Peep, CashInPocket);

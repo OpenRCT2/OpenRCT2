@@ -1725,7 +1725,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
     peep->toilet = 0;
     peep->time_to_consume = 0;
-    std::fill_n(peep->rides_been_on, 32, 0x00);
+    std::fill_n(peep->RidesBeenOn, 32, 0x00);
 
     peep->no_of_rides = 0;
     std::fill_n(peep->ride_types_been_on, 16, 0x00);

@@ -1187,9 +1187,9 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->direction = src->direction;
     dst->interaction_ride_index = src->interaction_ride_index;
     dst->time_in_queue = src->time_in_queue;
-    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+    for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)
     {
-        dst->rides_been_on[i] = src->rides_been_on[i];
+        dst->rides_been_on[i] = src->RidesBeenOn[i];
     }
     dst->id = src->Id;
     dst->cash_in_pocket = src->CashInPocket;
