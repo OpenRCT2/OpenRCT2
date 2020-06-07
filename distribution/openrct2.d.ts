@@ -1275,55 +1275,135 @@ declare global {
      * Use `network.status` to determine whether the current game is a client, server or in single player mode. TODO network.mode you mean?
      */
     interface Network {
+        /** The network mode (none, server, client). */
         readonly mode: NetworkMode;
+        /** The number of the groups on the server. TODO what if offline */
         readonly numGroups: number;
+        /** The number of players on the server. TODO what if offline, can it be 0? */
         readonly numPlayers: number;
+        /** An array with the list of the player groups. */
         readonly groups: PlayerGroup[];
+        /** An array with the list of players. */
         readonly players: Player[];
+        /** The current player object. */
         readonly currentPlayer: Player;
+        /** The number of the group new players are assigned. */
         defaultGroup: number;
 
+        /**
+         * Get the server info (name, description, etc).
+         */
         getServerInfo(): ServerInfo;
+
+        /**
+         * Create a new group. TODO add? Create? name?
+         */
         addGroup(): void;
+
+        /**
+         * Get the group with the given index.
+         * 
+         * @param index The index of the group to retrieve. TODO what if OOB?
+         * 
+         * @return The player group.
+         */
         getGroup(index: number): PlayerGroup;
+
+        /**
+         * Delete the group with the given index. TODO what happens to the players in that group?
+         * 
+         * @param index The index of the group to delete. TODO what if OOB?
+         */
         removeGroup(index: number): void;
+
+        /**
+         * Get the player object for the given index.
+         * 
+         * @param index The index of the player to retrieve. TODO what if OOB?
+         * 
+         * @return The player object.
+         */
         getPlayer(index: number): Player;
+
+        /**
+         * Kick the player with the given index from the server.
+         * 
+         * @param index The index of the player to kick. TODO what if OOB?
+         */
         kickPlayer(index: number): void;
+
+        /**
+         * Send a message to all players.
+         * 
+         * @param message The message to send.
+         */
         sendMessage(message: string): void;
+
+        /**
+         * Send a message to players with the given IDs.
+         * 
+         * @param message The message to send.
+         * @param players An array of player IDs.
+         */
         sendMessage(message: string, players: number[]): void;
     }
 
+    /** The network mode. TODO what mode is single plyer? */
     type NetworkMode = "none" | "server" | "client";
 
     /**
      * Represents a player within a network game.
      */
     interface Player {
+        /** The unique player ID. */
         readonly id: number;
+        /** The player name. */
         readonly name: string;
+        /** The group the player belongs to. */
         group: number;
+        /** The ping of the player in ms. */
         readonly ping: number;
+        /** The number of game actions executed by the player. */
         readonly commandsRan: number;
+        /** The amount of money spent by the player. TODO units */
         readonly moneySpent: number;
+        /** The player's IP address. */
         readonly ipAddress: string;
+        /** The player's public key hash. */
         readonly publicKeyHash: string;
     }
 
+    /**
+     * A group of players. Typically used to restrict permissions.
+     */
     interface PlayerGroup {
+        /** The unique group ID. */
         readonly id: number;
+        /** The group name. */
         name: string;
+        /** An array of permissions granted to members of the group. */
         permissions: PermissionType[];
     }
 
+    /**
+     * Server info. Commonly surfaced in the server browser.
+     */
     interface ServerInfo {
+        /** The name of the server. */
         readonly name: string;
+        /** A description of the server. */
         readonly description: string;
+        /** A message to be sent to the player upon log in. TODO? */
         readonly greeting: string;
+        /** The name of the server provider. */
         readonly providerName: string;
+        /** The server provider's email. */
         readonly providerEmail: string;
+        /** The server provider's website. */
         readonly providerWebsite: string;
     }
 
+    /** Multiplayer permission types. */
     type PermissionType =
         "chat" |
         "terraform" |
@@ -1359,41 +1439,26 @@ declare global {
     type ParkMessageType =
         "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart";
 
+    /**
+     * Represents an in-game message.
+     */
     interface ParkMessage {
-        /**
-         * Whether the message has been shown and archived.
-         */
+        /** Whether the message has been shown and archived. */
         readonly isArchived: boolean;
-
-        /**
-         * The date this message was posted in total elapsed months.
-         */
+        /** The number of total elapsed months since the beginning of the game when the message was sent. */
         month: number;
-
-        /**
-         * The day of the month this message was posted.
-         */
+        /** The day of the month this message was posted (1-31). */
         day: number;
-
-        /**
-         * How old the message is in number of ticks.
-         */
+        /** How old the message is in ticks. */
         tickCount: number;
-
-        /**
-         * The format of the message such as the icon and whether location is enabled.
-         */
+        /** The format of the message such as the icon and whether location is enabled. */
         type: ParkMessageType;
-
-        /**
-         * The actual message content.
-         */
+        /** The message content. */
         text: string;
 
-        /**
-         * Ride ID for attraction.
-         * Entity ID for peep_on_attraction or peep.
-         * Researched item for research.
+        /** 
+         * The id of the mesage subject, if any. Use Ride ID for attraction, Entity ID for peep_on_attraction 
+         * or peep, and researched item id for research.
          */
         subject?: number;
 
@@ -1403,45 +1468,99 @@ declare global {
         remove(): void;
     }
 
+    /**
+     * The park message description. TODO?
+     */
     interface ParkMessageDesc  {
+        /** The format of the message such as the icon and whether location is enabled. */
         type: ParkMessageType;
+        /** The message content. */
         text: string;
+
+        /** 
+         * The id of the mesage subject, if any. Use Ride ID for attraction, Entity ID for peep_on_attraction 
+         * or peep, and researched item id for research.
+         */
         subject?: number;
     }
 
+    /**
+     * Represents the park.
+     */
     interface Park {
+        /** The amount of cash available to spend. TODO: units */
         cash: number;
+        /** The park rating (0-999). */
         rating: number;
+        /** The current amount of the bank loan. TODO units */
         bankLoan: number;
+        /** The maximum possible bank loan. TODO units */
         maxBankLoan: number;
+        /** An array of all park messages. TODO what is the cap? */
         messages: ParkMessage[];
 
+        /**
+         * Post a massge to the in-game tracker.
+         * 
+         * @param message The message content.
+         */
         postMessage(message: string): void;
+
+        /**
+         * Post a message to the in-game tracker.
+         * 
+         * @param message The message content. TODO?
+         */
         postMessage(message: ParkMessageDesc): void;
     }
 
+    /**
+     * Flags tracking enabled cheats.
+     */
     interface Cheats {
+        /** Allows changing ride types after constructing rides. */
         allowArbitraryRideTypeChanges: boolean;
+        /** TODO? */
         allowTrackPlaceInvalidHeights: boolean;
+        /** Allows building while the game is paused. */
         buildInPauseMode: boolean;
+        /** Prevents all rides from breaking down. */
         disableAllBreakdowns: boolean;
+        /** Prevents the brakes failure breakdown type. */
         disableBrakesFailure: boolean;
+        /** Disables collision checking for all objects. */
         disableClearanceChecks: boolean;
+        /** Prevents litter from being placed. */
         disableLittering: boolean;
+        /** Prevents flowers and other plants from needing water. */
         disablePlantAging: boolean;
+        /** Prevents ride value decrease as they age. */
         disableRideValueAging: boolean;
+        /** Causes the game to ignore support limits. */
         disableSupportLimits: boolean;
+        /** Ignores the limit for train length. The upper limit is still 255. */
         disableTrainLengthLimit: boolean;
+        /** Prevents angry guests from causing vandalism. */
         disableVandalism: boolean;
+        /** TODO? */
         enableAllDrawableTrackPieces: boolean;
+        /** Allow placing a chain lift on any track piece. */
         enableChainLiftOnAllTrack: boolean;
+        /** TODO? */
         fastLiftHill: boolean;
+        /** Freezes the weather to its current state. */
         freezeWeather: boolean;
+        /** TODO? */
         ignoreResearchStatus: boolean;
+        /** Guests will ignore ride intensity. */
         ignoreRideIntensity: boolean;
+        /** Allow marketing campaigns to continue indefinitely. TODO? */
         neverendingMarketing: boolean;
+        /** Allows changing certain settings normally only available in the scenario editor. */
         sandboxMode: boolean;
+        /** Makes all operating modes available for every ride type. */
         showAllOperatingModes: boolean;
+        /** Allows selecting vehicles from other track types. */
         showVehiclesFromOtherTrackTypes: boolean;
     }
 
@@ -1451,13 +1570,26 @@ declare global {
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
      */
     interface Ui {
+        /** The width of the client window. */
         readonly width: number;
+        /** The height of the cleint window. */
         readonly height: number;
+        /** The total number of in-game windows. TODO? */
         readonly windows: number;
+        /** The window currently in-focus. */
         readonly mainViewport: Viewport;
+        /** The currently highlighted tile. TODO? */
         readonly tileSelection: TileSelection;
+        /** TODO? */
         readonly tool: Tool;
 
+        /**
+         * Get the window with the given ID.
+         * 
+         * @param id The window ID. TODO what if OOB?
+         * 
+         * @return The window object.
+         */
         getWindow(id: number): Window;
         getWindow(classification: string): Window;
         openWindow(desc: WindowDesc): Window;
