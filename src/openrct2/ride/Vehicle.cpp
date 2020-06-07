@@ -8155,7 +8155,6 @@ bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ri
     registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
-    regs.edi = track_type;
     regs.cx = GetTrackType();
     int32_t trackType = GetTrackType();
     if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN)
@@ -8767,8 +8766,8 @@ loc_6DC476:
 
     if (vehicle->mini_golf_flags & (1 << 0))
     {
-        regs.di = vehicle->IsHead() ? vehicle->next_vehicle_on_ride : vehicle->prev_vehicle_on_ride;
-        Vehicle* vEDI = GET_VEHICLE(regs.di);
+        auto vehicleIdx = vehicle->IsHead() ? vehicle->next_vehicle_on_ride : vehicle->prev_vehicle_on_ride;
+        Vehicle* vEDI = GET_VEHICLE(vehicleIdx);
         if (!(vEDI->mini_golf_flags & (1 << 0)) || (vEDI->mini_golf_flags & (1 << 2)))
         {
             goto loc_6DC985;
@@ -8783,8 +8782,8 @@ loc_6DC476:
 
     if (vehicle->mini_golf_flags & (1 << 1))
     {
-        regs.di = vehicle->IsHead() ? vehicle->next_vehicle_on_ride : vehicle->prev_vehicle_on_ride;
-        Vehicle* vEDI = GET_VEHICLE(regs.di);
+        auto vehicleIdx = vehicle->IsHead() ? vehicle->next_vehicle_on_ride : vehicle->prev_vehicle_on_ride;
+        Vehicle* vEDI = GET_VEHICLE(vehicleIdx);
         if (!(vEDI->mini_golf_flags & (1 << 1)) || (vEDI->mini_golf_flags & (1 << 2)))
         {
             goto loc_6DC985;
