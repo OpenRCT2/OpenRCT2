@@ -659,8 +659,8 @@ struct Peep : SpriteBase
     // reads this again
     PeepActionSpriteType next_action_sprite_type;
     uint8_t action_sprite_image_offset;
-    PeepActionType action;
-    uint8_t action_frame;
+    PeepActionType Action;
+    uint8_t ActionFrame;
     uint8_t StepProgress;
     union
     {

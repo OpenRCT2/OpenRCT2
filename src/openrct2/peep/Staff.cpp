@@ -1064,10 +1064,10 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
  */
 bool Staff::DoEntertainerPathFinding()
 {
-    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2))
+    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2))
     {
-        action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
-        action_frame = 0;
+        Action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -1254,8 +1254,8 @@ void Staff::UpdateWatering()
             return;
 
         sprite_direction = (var_37 & 3) << 3;
-        action = PEEP_ACTION_STAFF_WATERING;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_WATERING;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
 
@@ -1263,7 +1263,7 @@ void Staff::UpdateWatering()
     }
     else if (sub_state == 1)
     {
-        if (action != PEEP_ACTION_NONE_2)
+        if (Action != PEEP_ACTION_NONE_2)
         {
             UpdateAction();
             Invalidate();
@@ -1318,8 +1318,8 @@ void Staff::UpdateEmptyingBin()
             return;
 
         sprite_direction = (var_37 & 3) << 3;
-        action = PEEP_ACTION_STAFF_EMPTY_BIN;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_EMPTY_BIN;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
 
@@ -1327,7 +1327,7 @@ void Staff::UpdateEmptyingBin()
     }
     else if (sub_state == 1)
     {
-        if (action == PEEP_ACTION_NONE_2)
+        if (Action == PEEP_ACTION_NONE_2)
         {
             StateReset();
             return;
@@ -1336,7 +1336,7 @@ void Staff::UpdateEmptyingBin()
         UpdateAction();
         Invalidate();
 
-        if (action_frame != 11)
+        if (ActionFrame != 11)
             return;
 
         TileElement* tile_element = map_get_first_element_at(NextLoc);
@@ -1390,7 +1390,7 @@ void Staff::UpdateSweeping()
     if (!CheckForPath())
         return;
 
-    if (action == PEEP_ACTION_STAFF_SWEEP && action_frame == 8)
+    if (Action == PEEP_ACTION_STAFF_SWEEP && ActionFrame == 8)
     {
         // Remove sick at this location
         litter_remove_at(x, y, z);
@@ -1407,8 +1407,8 @@ void Staff::UpdateSweeping()
     var_37++;
     if (var_37 != 2)
     {
-        action = PEEP_ACTION_STAFF_SWEEP;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_SWEEP;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
         return;
@@ -1538,8 +1538,8 @@ void Staff::UpdateAnswering()
 
     if (sub_state == 0)
     {
-        action = PEEP_ACTION_STAFF_ANSWER_CALL;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_ANSWER_CALL;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -1550,7 +1550,7 @@ void Staff::UpdateAnswering()
     }
     else if (sub_state == 1)
     {
-        if (action == PEEP_ACTION_NONE_2)
+        if (Action == PEEP_ACTION_NONE_2)
         {
             sub_state = 2;
             peep_window_state_update(this);
@@ -1857,8 +1857,8 @@ void Staff::Tick128UpdateStaff()
     sprite_type = newSpriteType;
     action_sprite_image_offset = 0;
     WalkingFrameNum = 0;
-    if (action < PEEP_ACTION_NONE_1)
-        action = PEEP_ACTION_NONE_2;
+    if (Action < PEEP_ACTION_NONE_1)
+        Action = PEEP_ACTION_NONE_2;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (gSpriteTypeToSlowWalkMap[newSpriteType])
@@ -2241,13 +2241,13 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
     {
         sprite_direction = PeepDirection << 3;
 
-        action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
+        Action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
         action_sprite_image_offset = 0;
-        action_frame = 0;
+        ActionFrame = 0;
         UpdateCurrentActionSpriteType();
     }
 
-    if (action == PEEP_ACTION_NONE_2)
+    if (Action == PEEP_ACTION_NONE_2)
     {
         return true;
     }
@@ -2255,8 +2255,8 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
     UpdateAction();
     Invalidate();
 
-    uint8_t actionFrame = (action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
-    if (action_frame != actionFrame)
+    uint8_t actionFrame = (Action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
+    if (ActionFrame != actionFrame)
     {
         return false;
     }
@@ -2282,14 +2282,14 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
     if (!firstRun)
     {
         sprite_direction = PeepDirection << 3;
-        action = PEEP_ACTION_STAFF_FIX_3;
+        Action = PEEP_ACTION_STAFF_FIX_3;
         action_sprite_image_offset = 0;
-        action_frame = 0;
+        ActionFrame = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (action == PEEP_ACTION_NONE_2)
+    if (Action == PEEP_ACTION_NONE_2)
     {
         return true;
     }
@@ -2297,7 +2297,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
     UpdateAction();
     Invalidate();
 
-    if (action_frame != 0x65)
+    if (ActionFrame != 0x65)
     {
         return false;
     }
@@ -2389,14 +2389,14 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     if (!firstRun)
     {
         sprite_direction = PeepDirection << 3;
-        action = PEEP_ACTION_STAFF_CHECKBOARD;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_CHECKBOARD;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (action == PEEP_ACTION_NONE_2)
+    if (Action == PEEP_ACTION_NONE_2)
     {
         return true;
     }
@@ -2506,14 +2506,14 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
 
         sprite_direction = PeepDirection << 3;
 
-        action = PEEP_ACTION_STAFF_FIX;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_FIX;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (action == PEEP_ACTION_NONE_2)
+    if (Action == PEEP_ACTION_NONE_2)
     {
         return true;
     }
@@ -2534,14 +2534,14 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
     {
         sprite_direction = PeepDirection << 3;
 
-        action = PEEP_ACTION_STAFF_FIX_GROUND;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_FIX_GROUND;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (action == PEEP_ACTION_NONE_2)
+    if (Action == PEEP_ACTION_NONE_2)
     {
         return true;
     }
@@ -2549,13 +2549,13 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
     UpdateAction();
     Invalidate();
 
-    if (action_frame == 0x28)
+    if (ActionFrame == 0x28)
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
-    if (action_frame == 0x13 || action_frame == 0x19 || action_frame == 0x1F || action_frame == 0x25 || action_frame == 0x2B)
+    if (ActionFrame == 0x13 || ActionFrame == 0x19 || ActionFrame == 0x1F || ActionFrame == 0x25 || ActionFrame == 0x2B)
     {
         audio_play_sound_at_location(SoundId::MechanicFix, { x, y, z });
     }
@@ -2630,14 +2630,14 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = PeepDirection << 3;
-        action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
-        action_frame = 0;
+        Action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (action != PEEP_ACTION_NONE_2)
+    if (Action != PEEP_ACTION_NONE_2)
     {
         UpdateAction();
         Invalidate();

@@ -1445,8 +1445,8 @@ public:
         dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->action = static_cast<PeepActionType>(src->action);
-        dst->action_frame = src->action_frame;
+        dst->Action = static_cast<PeepActionType>(src->action);
+        dst->ActionFrame = src->action_frame;
         dst->StepProgress = src->step_progress;
         dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;

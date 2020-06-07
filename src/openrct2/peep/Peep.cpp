@@ -499,18 +499,18 @@ bool Peep::CheckForPath()
 
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
-    if (action >= PEEP_ACTION_NONE_1)
+    if (Action >= PEEP_ACTION_NONE_1)
     { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
         return PeepSpecialSpriteToSpriteTypeMap[special_sprite];
     }
-    else if (action < std::size(PeepActionToSpriteTypeMap))
+    else if (Action < std::size(PeepActionToSpriteTypeMap))
     {
-        return PeepActionToSpriteTypeMap[action];
+        return PeepActionToSpriteTypeMap[Action];
     }
     else
     {
         openrct2_assert(
-            action >= std::size(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1, "Invalid peep action %u", action);
+            Action >= std::size(PeepActionToSpriteTypeMap) && Action < PEEP_ACTION_NONE_1, "Invalid peep action %u", Action);
         return PEEP_ACTION_SPRITE_TYPE_NONE;
     }
 }
@@ -550,7 +550,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
     special_sprite = special_sprite_id;
 
     // If NONE_1 or NONE_2
-    if (action >= PEEP_ACTION_NONE_1)
+    if (Action >= PEEP_ACTION_NONE_1)
     {
         action_sprite_image_offset = 0;
     }
@@ -583,9 +583,9 @@ std::optional<CoordsXY> Peep::UpdateAction()
 std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     _unk_F1AEF0 = action_sprite_image_offset;
-    if (action == PEEP_ACTION_NONE_1)
+    if (Action == PEEP_ACTION_NONE_1)
     {
-        action = PEEP_ACTION_NONE_2;
+        Action = PEEP_ACTION_NONE_2;
     }
 
     CoordsXY diffrenceLoc = { x - destination_x, y - destination_y };
@@ -595,7 +595,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
-    if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
+    if (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2)
     {
         if (xy_distance <= destination_tolerance)
         {
@@ -633,20 +633,20 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     }
 
     const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
-    action_frame++;
+    ActionFrame++;
 
     // If last frame of action
-    if (action_frame >= peepAnimation[action_sprite_type].num_frames)
+    if (ActionFrame >= peepAnimation[action_sprite_type].num_frames)
     {
         action_sprite_image_offset = 0;
-        action = PEEP_ACTION_NONE_2;
+        Action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    action_sprite_image_offset = peepAnimation[action_sprite_type].frame_offsets[action_frame];
+    action_sprite_image_offset = peepAnimation[action_sprite_type].frame_offsets[ActionFrame];
 
     // If not throwing up and not at the frame where sick appears.
-    if (action != PEEP_ACTION_THROW_UP || action_frame != 15)
+    if (Action != PEEP_ACTION_THROW_UP || ActionFrame != 15)
     {
         return { { x, y } };
     }
@@ -744,7 +744,7 @@ void Peep::PickupAbort(int32_t old_x)
     if (x != LOCATION_NULL)
     {
         SetState(PEEP_STATE_FALLING);
-        action = PEEP_ACTION_NONE_2;
+        Action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
@@ -793,7 +793,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
     {
         MoveTo(destination);
         SetState(PEEP_STATE_FALLING);
-        action = PEEP_ACTION_NONE_2;
+        Action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
@@ -875,12 +875,12 @@ void Peep::Remove()
  */
 void Peep::UpdateFalling()
 {
-    if (action == PEEP_ACTION_DROWNING)
+    if (Action == PEEP_ACTION_DROWNING)
     {
         // Check to see if we are ready to drown.
         UpdateAction();
         Invalidate();
-        if (action == PEEP_ACTION_DROWNING)
+        if (Action == PEEP_ACTION_DROWNING)
             return;
 
         if (gConfigNotifications.guest_died)
@@ -939,8 +939,8 @@ void Peep::UpdateFalling()
 
                         InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
-                        action = PEEP_ACTION_DROWNING;
-                        action_frame = 0;
+                        Action = PEEP_ACTION_DROWNING;
+                        ActionFrame = 0;
                         action_sprite_image_offset = 0;
 
                         UpdateCurrentActionSpriteType();
@@ -1115,7 +1115,7 @@ void Peep::Update()
         stepsToTake = 95;
     if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
-    if (action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
+    if (Action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
     {
         stepsToTake /= 2;
         if (state == PEEP_STATE_QUEUING)
@@ -1446,10 +1446,10 @@ void peep_applause()
         peep_release_balloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->action >= 254)
+        if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->Action >= 254)
         {
-            peep->action = PEEP_ACTION_CLAP;
-            peep->action_frame = 0;
+            peep->Action = PEEP_ACTION_CLAP;
+            peep->ActionFrame = 0;
             peep->action_sprite_image_offset = 0;
             peep->UpdateCurrentActionSpriteType();
         }
@@ -1566,10 +1566,10 @@ static constexpr const uint8_t tshirt_colours[] = {
 void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
 {
     PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
-    if (newAction != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)
+    if (newAction != PEEP_ACTION_NONE_2 && this->Action >= PEEP_ACTION_NONE_1)
     {
-        action = newAction;
-        action_frame = 0;
+        Action = newAction;
+        ActionFrame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
     }
@@ -1618,7 +1618,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
     peep->outside_of_park = 1;
     peep->state = PEEP_STATE_FALLING;
-    peep->action = PEEP_ACTION_NONE_2;
+    peep->Action = PEEP_ACTION_NONE_2;
     peep->special_sprite = 0;
     peep->action_sprite_image_offset = 0;
     peep->WalkingFrameNum = 0;
@@ -1794,7 +1794,7 @@ void Peep::FormatActionTo(void* argsV) const
     switch (state)
     {
         case PEEP_STATE_FALLING:
-            ft.Add<rct_string_id>(action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
+            ft.Add<rct_string_id>(Action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
             break;
         case PEEP_STATE_1:
             ft.Add<rct_string_id>(STR_WALKING);
@@ -2308,13 +2308,13 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
         }
     }
 
-    if (peep->action < PEEP_ACTION_NONE_1)
+    if (peep->Action < PEEP_ACTION_NONE_1)
         peep->UpdateAction();
 
-    if (peep->action != PEEP_ACTION_NONE_2)
+    if (peep->Action != PEEP_ACTION_NONE_2)
         return true;
 
-    peep->action = PEEP_ACTION_NONE_1;
+    peep->Action = PEEP_ACTION_NONE_1;
     peep->next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
@@ -3034,10 +3034,10 @@ void Peep::PerformNextAction(uint8_t& pathing_result)
 void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 {
     pathing_result = 0;
-    PeepActionType previousAction = action;
+    PeepActionType previousAction = Action;
 
-    if (action == PEEP_ACTION_NONE_1)
-        action = PEEP_ACTION_NONE_2;
+    if (Action == PEEP_ACTION_NONE_1)
+        Action = PEEP_ACTION_NONE_2;
 
     if (state == PEEP_STATE_QUEUING)
     {
