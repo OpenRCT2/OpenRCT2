@@ -491,13 +491,13 @@ declare global {
 
     /** The result of the game action. */
     interface GameActionResult {
-        /** TODO? */
+        /** The error category. TODO enum */
         error?: number;
-        /** TODO? */
+        /** The error title. Generally this is the same for all actions of the same type, e.g. "Land cannot be modified..." */
         errorTitle?: string;
-        /** The error message which is displayed in a pop-up, if specified. */
+        /** The error message. Usually this is the "Why", e.g. "Land not owned by park!" */
         errorMessage?: string;
-        /** The position of the error message, if any. TODO position of the error or just the position of the action? */
+        /** The position of the action, if any. If the action covers a range of tiles, the position is in the center. */
         position?: CoordsXYZ;
         /** The cost of the game action, if any. */
         cost?: number;
@@ -589,7 +589,7 @@ declare global {
         readonly size: CoordsXY;
         /** The number of rides on the game map. */
         readonly numRides: number;
-        /** The number of objects on the game map. */
+        /** The number of entities (guests, vehicles, ducks, etc) on the game map. */
         readonly numEntities: number;
         /** An array of all the rides on the map. */
         readonly rides: Ride[];
@@ -613,27 +613,27 @@ declare global {
         getTile(x: number, y: number): Tile;
 
         /**
-         * Get the object with the given id. TODO what if doesn't exist?
+         * Get the entity with the given id. TODO what if doesn't exist?
          * 
-         * @param id The object id.
+         * @param id The entity id.
          * 
-         * @return The object. TODO what if doesn't exist?
+         * @return The entity. TODO what if doesn't exist?
          */
         getEntity(id: number): Entity;
 
         /**
-         * Get all map objects of the given type.
+         * Get all map entities of the given type.
          * 
-         * @param type The object type.
+         * @param type The entity type (e.g. guest, vehicle, etc).
          * 
-         * @return An array of objects.
+         * @return An array of entities.
          */
         getAllEntities(type: EntityType): Entity[];
 
         /**
-         * Get all peep objects.
+         * Get all peep entities.
          * 
-         * @param type The "peep" object type.
+         * @param type The "peep" entity type.
          * 
          * @return An array of Peeps.
          */
@@ -676,7 +676,7 @@ declare global {
         waterHeight: number;
         /** The length of the grass from X to Y. TODO */
         grassLength: number;
-        /** A number from x to y indicating the ownership status. TODO */
+        /** Flags indicating the ownership status. TODO flags */
         ownership: number;
         /** A number indicating the location of park fences. */
         parkFences: number;
@@ -699,21 +699,21 @@ declare global {
         slopeDirection: number | null;
         /** True if the path has a crossing which is occupied (e.g. by a train), false otherwise. */
         isBlockedByVehicle: boolean;
-        /** TODO? Is this for better pathfinding? */
+        /** Used for pathfinding. This value should not be adjusted. */
         isWide: boolean;
 
         /** Indicates if the path is a queue. */
         isQueue: boolean;
         /** A number between x and y indicating the queue banner direction, or null if no banner is present. TODO */
         queueBannerDirection: number | null;
-        /** TODO? */
+        /** If the path is a queue, this is the ride ID of the ride the queue is for. */
         ride: number;
-        /** TODO? */
+        /** If the path is a queue, this is the station index of the station the queue leads to. */
         station: number;
 
-        /** TODO? */
+        /** The index of the type of the path addition (e.g. bench, lamp, bin). */
         addition: number | null;
-        /** TODO? */
+        /** Indicates if the path addition has been vandalized. */
         isAdditionBroken: boolean;
     }
 
@@ -723,11 +723,11 @@ declare global {
     interface TrackElement extends BaseTileElement {
         /** A number indicating the track type. */
         trackType: number;
-        /** TODO? */
+        /** Used for multi-tile track elements. The number increases from 0 to n, where n is the number of tiles occupied. */
         sequence: number;
         /** The id of the ride the track belongs to. */
         ride: number;
-        /** TODO? */
+        /** A number from 0-3 indicating the station index the track belongs to. TODO leads to or departs from? */
         station: number;
         /** True if the track has a chain lift, false otherwise. */
         hasChainLift: boolean;
@@ -737,31 +737,33 @@ declare global {
      * A scenery element a single tile or smaller.
      */
     interface SmallSceneryElement extends BaseTileElement {
-        /** TODO? */
+        /** The object index within the tile. */
         object: number;
-        /** The number from x to y indicating the primary color. TODO */
+        /** The number from x to y indicating the primary colour. TODO enum */
         primaryColour: number;
-        /** The number from x to y indicating the secondary color. TODO */
+        /** The number from x to y indicating the secondary colour. TODO enum */
         secondaryColour: number;
     }
 
-    /** An entrance (or exit?) TODO */
+    /** 
+     * An entrance, exit, or park entrance. 
+     */
     interface EntranceElement extends BaseTileElement {
-        /** TODO? */
+        /** The object index within the tile. */
         object: number;
-        /** TODO? */
+        /** Used for multi-tile entrance elements. Only applies to the park entrance and is numbered 0 to 2. */
         sequence: number;
         /** The id of the ride the entrance/exit belongs to. */
         ride: number;
-        /** The station number on the ride (x to y). TODO */
+        /** The station number on the ride (0-3). */
         station: number;
     }
 
     /** 
-     * A wall element.
+     * A wall element that exists on a tile edge.
      */
     interface WallElement extends BaseTileElement {
-        /** TODO? */
+        /** The object index within the tile. */
         object: number;
     }
 
@@ -769,11 +771,11 @@ declare global {
      * A scenery element larger than one tile.
      */
     interface LargeSceneryElement extends BaseTileElement {
-        /** TODO? */
+        /** The object index within the tile. */
         object: number;
-        /** The number from x to y indicating the primary color. TODO */
+        /** The number from x to y indicating the primary colour. TODO */
         primaryColour: number;
-        /** The number from x to y indicating the secondary color. TODO */
+        /** The number from x to y indicating the secondary colour. TODO */
         secondaryColour: number;
     }
 
@@ -890,7 +892,7 @@ declare global {
         readonly capacity: string;
         /** The ride object flags. TODO */
         readonly flags: number;
-        /** The ride type. TODO why is this an array */
+        /** The ride types. Each ride can have up to three types (e.g. Gentle, Transport, etc). */
         readonly rideType: number[];
         /** The minimum number of cars per train. TODO w/ or w/o cheats? */
         readonly minCarsInTrain: number;
@@ -900,7 +902,7 @@ declare global {
         readonly carsPerFlatRide: number;
         /** TODO? */
         readonly zeroCars: number;
-        /** The vehicle shown in the train tab preview? TODO */
+        /** The vehicle shown in the train tab preview. */
         readonly tabVehicle: number;
         /** The default vehicle for the ride type. */
         readonly defaultVehicle: number;
@@ -922,9 +924,9 @@ declare global {
         readonly nauseaMultiplier: number;
         /** The max support height for the ride. TODO units */
         readonly maxHeight: number;
-        /** If the ride is a shop, a number indicating the item sold. TODO on ride photos? */
+        /** A number indicating the first item sold (ride ticket, food, on-ride photo, etc). */
         readonly shopItem: number;
-        /** If the ride is a show, a number indicating the second item sold. TODO */
+        /** A number indicating the second item sold (ride ticket, food, on-ride photo, etc). */
         readonly shopItemSecondary: number;
     }
 
@@ -1090,23 +1092,23 @@ declare global {
     /** Indicates operating status (open, closed, testing, or simulating). */
     type RideStatus = "closed" | "open" | "testing" | "simulating";
 
-    /** A track color scheme. */
+    /** A track colour scheme. */
     interface TrackColour {
-        /** The main color of the scheme. TODO value */
+        /** The main colour of the scheme. TODO value */
         main: number;
-        /** The secondary color of the scheme. TODO value */
+        /** The secondary colour of the scheme. TODO value */
         additional: number;
-        /** The support color of the scheme. TODO value */
+        /** The support colour of the scheme. TODO value */
         supports: number;
     }
 
-    /** A color scheme used for a single vehicle. */
+    /** A colour scheme used for a single vehicle. */
     interface VehicleColour {
-        /** The body color of the vehicle. TODO value */
+        /** The body colour of the vehicle. TODO value */
         body: number;
-        /** The trim color of the vehicle. TODO value */
+        /** The trim colour of the vehicle. TODO value */
         trim: number;
-        /** The third color of the vehicle. TODO value, also I think this is intended to be tertiary */
+        /** The third colour of the vehicle. TODO value, also I think this is intended to be tertiary */
         ternary: number;
     }
 
@@ -1114,7 +1116,7 @@ declare global {
      * Information associated with a ride station.
      */
     interface RideStation {
-        /** The coordinate of the first tile of the station, in tiles. TODO start = has lights? */
+        /** The coordinate of the first tile of the station (with the control lights), in tiles. */
         start: CoordsXYZ;
         /** The length of the station in tiles. */
         length: number;
@@ -1129,7 +1131,7 @@ declare global {
         "car" | "duck" | "peep";
 
     /**
-     * Represents an object "entity" on the map that can may move and has a sub-tile coordinate.
+     * Represents an object "entity" on the map that can typically move and has a sub-tile coordinate.
      */
     interface Entity {
         /** The entity index within the entity list. */
@@ -1938,7 +1940,7 @@ declare global {
     interface ListView extends Widget {
         /** (Optional) The scollbar type to use for the list. TODO default? */
         scrollbars?: ScrollbarType;
-        /** (Optional) Indicates if alternating rows use different coloring to improve readability. */
+        /** (Optional) Indicates if alternating rows use different colouring to improve readability. */
         isStriped?: boolean;
         /** (Optional) Indicates if column headings should be shown. */
         showColumnHeaders?: boolean;
@@ -2018,7 +2020,7 @@ declare global {
         maxHeight: number;
         /** TODO? */
         isSticky: boolean;
-        /** An array of numbers representing the window colors. TODO? */
+        /** An array of numbers representing the window colours. TODO? */
         colours: number[];
         /** The window title. */
         title: string;
@@ -2075,7 +2077,7 @@ declare global {
         maxHeight?: number;
         /** (Optional) An array of widgets that make up the window. */
         widgets?: Widget[];
-        /** (Optional) The window colors. TODO default? */
+        /** (Optional) The window colours. TODO default? */
         colours?: number[];
         /** (Optional) An array of tabs in the winow. */
         tabs?: WindowTabDesc[];
