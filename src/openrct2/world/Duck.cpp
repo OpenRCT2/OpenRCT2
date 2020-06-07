@@ -74,19 +74,9 @@ static constexpr const uint8_t * DuckAnimations[] =
 };
 // clang-format on
 
-bool rct_sprite::IsDuck()
+template<> bool SpriteBase::Is<Duck>() const
 {
-    return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->duck.type == SPRITE_MISC_DUCK;
-}
-
-Duck* rct_sprite::AsDuck()
-{
-    Duck* result = nullptr;
-    if (IsDuck())
-    {
-        return reinterpret_cast<Duck*>(this);
-    }
-    return result;
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_DUCK;
 }
 
 void Duck::Invalidate()

@@ -726,6 +726,11 @@ static const struct
 
 // clang-format on
 
+template<> bool SpriteBase::Is<Vehicle>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+}
+
 static bool vehicle_move_info_valid(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset)
 {
     if (trackSubposition >= static_cast<int32_t>(std::size(gTrackVehicleInfo)))

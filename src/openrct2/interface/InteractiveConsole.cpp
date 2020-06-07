@@ -1574,7 +1574,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
             continue;
 
-        auto peep = sprite->AsPeep();
+        auto peep = sprite->generic.As<Peep>();
         if (peep != nullptr)
             peeps.push_back(peep);
     }

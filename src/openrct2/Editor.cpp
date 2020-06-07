@@ -309,7 +309,7 @@ namespace Editor
         //
         for (int32_t i = 0; i < MAX_SPRITES; i++)
         {
-            auto peep = get_sprite(i)->AsPeep();
+            auto peep = get_sprite(i)->generic.As<Peep>();
             if (peep != nullptr)
             {
                 peep->SetName({});

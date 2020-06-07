@@ -612,7 +612,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             if (sprite == nullptr)
                 break;
 
-            auto peep = sprite->AsPeep();
+            auto peep = sprite->generic.As<Peep>();
             if (peep == nullptr)
                 return;
 

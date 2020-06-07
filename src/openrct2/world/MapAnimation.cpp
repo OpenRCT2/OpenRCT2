@@ -202,7 +202,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                 for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->generic.next_in_quadrant)
                 {
                     sprite = get_sprite(spriteIdx);
-                    if (!sprite->IsPeep())
+                    if (!sprite->generic.Is<Peep>())
                         continue;
 
                     peep = &sprite->peep;

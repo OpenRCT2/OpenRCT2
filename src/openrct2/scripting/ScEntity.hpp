@@ -333,7 +333,7 @@ namespace OpenRCT2::Scripting
     protected:
         Peep* GetPeep() const
         {
-            return get_sprite(_id)->AsPeep();
+            return get_sprite(_id)->generic.As<Peep>();
         }
     };
 

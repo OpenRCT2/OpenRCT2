@@ -52,6 +52,26 @@ static CoordsXYZ _spritelocations2[MAX_SPRITES];
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex);
 
+template<> bool SpriteBase::Is<Litter>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_LITTER;
+}
+
+template<> bool SpriteBase::Is<SteamParticle>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_STEAM_PARTICLE;
+}
+
+template<> bool SpriteBase::Is<ExplosionFlare>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_FLARE;
+}
+
+template<> bool SpriteBase::Is<ExplosionCloud>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_CLOUD;
+}
+
 std::string rct_sprite_checksum::ToString() const
 {
     std::string result;
@@ -268,7 +288,7 @@ rct_sprite_checksum sprite_checksum()
                         break;
                 }
 
-                if (copy.IsPeep())
+                if (copy.generic.Is<Peep>())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.name = {};
@@ -725,7 +745,7 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
  */
 void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = (reinterpret_cast<rct_sprite*>(sprite))->AsPeep();
+    auto peep = sprite->As<Peep>();
     if (peep != nullptr)
     {
         peep->SetName({});
@@ -860,24 +880,24 @@ uint16_t remove_floating_sprites()
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
         rct_sprite* rctSprite = get_sprite(i);
-        if (rctSprite->IsBalloon())
+        if (rctSprite->generic.Is<Balloon>())
         {
-            sprite_remove(rctSprite->AsBalloon());
+            sprite_remove(&rctSprite->generic);
             sprite_misc_update(rctSprite);
             removed++;
         }
-        else if (rctSprite->IsDuck())
+        else if (rctSprite->generic.Is<Duck>())
         {
-            if (rctSprite->AsDuck()->IsFlying())
+            if (rctSprite->generic.As<Duck>()->IsFlying())
             {
                 rctSprite->duck.Remove();
                 sprite_misc_update(rctSprite);
                 removed++;
             }
         }
-        else if (rctSprite->IsMoneyEffect())
+        else if (rctSprite->generic.Is<MoneyEffect>())
         {
-            sprite_remove(rctSprite->AsMoneyEffect());
+            sprite_remove(&rctSprite->generic);
             sprite_misc_update(rctSprite);
             removed++;
         }

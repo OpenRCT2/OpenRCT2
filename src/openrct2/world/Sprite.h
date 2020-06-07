@@ -100,6 +100,14 @@ struct VehicleCrashParticle : SpriteGeneric
     int32_t acceleration_z;
 };
 
+struct ExplosionFlare : SpriteGeneric
+{
+};
+
+struct ExplosionCloud : SpriteGeneric
+{
+};
+
 struct CrashSplashParticle : SpriteGeneric
 {
 };
@@ -129,14 +137,6 @@ union rct_sprite
     CrashSplashParticle crash_splash;
     SteamParticle steam_particle;
 
-    bool IsBalloon();
-    bool IsDuck();
-    bool IsMoneyEffect();
-    bool IsPeep() const;
-    Balloon* AsBalloon();
-    Duck* AsDuck();
-    MoneyEffect* AsMoneyEffect();
-    Peep* AsPeep();
     // Default constructor to prevent non trivial construction issues
     rct_sprite()
         : pad_00()
