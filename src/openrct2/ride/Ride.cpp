@@ -309,7 +309,7 @@ Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->NextInQueue;
+        spriteIndex = peep->GuestNextInQueue;
         result = peep;
     }
     return result;
@@ -322,7 +322,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->NextInQueue;
+        spriteIndex = peep->GuestNextInQueue;
         count++;
     }
     stations[stationIndex].QueueLength = count;
@@ -333,7 +333,7 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
     assert(stationIndex < MAX_STATIONS);
     assert(peep != nullptr);
 
-    peep->NextInQueue = SPRITE_INDEX_NULL;
+    peep->GuestNextInQueue = SPRITE_INDEX_NULL;
     Peep* queueHeadGuest = GetQueueHeadGuest(peep->current_ride_station);
     if (queueHeadGuest == nullptr)
     {
@@ -341,7 +341,7 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
     }
     else
     {
-        queueHeadGuest->NextInQueue = peep->sprite_index;
+        queueHeadGuest->GuestNextInQueue = peep->sprite_index;
     }
     UpdateQueueLength(peep->current_ride_station);
 }

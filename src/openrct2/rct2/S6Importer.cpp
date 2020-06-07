@@ -1448,7 +1448,7 @@ public:
         dst->action = static_cast<PeepActionType>(src->action);
         dst->action_frame = src->action_frame;
         dst->step_progress = src->step_progress;
-        dst->NextInQueue = src->next_in_queue;
+        dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;
         dst->InteractionRideIndex = src->interaction_ride_index;
         dst->TimeInQueue = src->time_in_queue;
