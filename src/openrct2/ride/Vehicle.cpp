@@ -2020,7 +2020,7 @@ void Vehicle::Update()
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE) || (vehicle_sprite_type == 2 && velocity <= 0x20000))
             {
-                update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
             }
         }
     }
@@ -2381,7 +2381,7 @@ void Vehicle::UpdateWaitingForPassengers()
             {
                 if (curRide->max_waiting_time * 32 < time_waiting)
                 {
-                    update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                    SetUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART);
                     TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
@@ -2405,7 +2405,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 {
                     if (train->current_station == current_station)
                     {
-                        update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART);
                         TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                         return;
                     }
@@ -2418,7 +2418,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             if (num_peeps_on_train == num_seats_on_train)
             {
-                update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                SetUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART);
                 TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
@@ -2435,13 +2435,13 @@ void Vehicle::UpdateWaitingForPassengers()
                 peepTarget = 1;
 
             if (num_peeps_on_train >= peepTarget)
-                update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+                SetUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART);
 
             TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
             return;
         }
 
-        update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+        SetUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART);
         TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
         return;
     }
@@ -2454,7 +2454,7 @@ void Vehicle::UpdateWaitingForPassengers()
 
     if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
     {
-        update_flags |= VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+        SetUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
     }
 
     SetState(VEHICLE_STATUS_WAITING_TO_DEPART);
@@ -3155,7 +3155,7 @@ static void test_reset(ride_id_t rideId, StationIndex curStation)
 
 void Vehicle::TestReset()
 {
-    update_flags |= VEHICLE_UPDATE_FLAG_TESTING;
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
     test_reset(ride, current_station);
 }
 
@@ -3382,7 +3382,7 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
                         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
                     }
                 }
@@ -3400,7 +3400,7 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
                         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
                     }
                 }
@@ -3839,7 +3839,7 @@ void Vehicle::UpdateTravelling()
                         if (_vehicleBreakdown == 0)
                         {
                             sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-                            update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                            SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
                         }
                     }
                 }
@@ -3855,7 +3855,7 @@ void Vehicle::UpdateTravelling()
                 {
                     if (_vehicleBreakdown == 0)
                     {
-                        update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
+                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
                         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                     }
                 }
@@ -4003,7 +4003,7 @@ void Vehicle::UpdateArriving()
         if (RideTypeDescriptors[curRide->type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS
             && curRide->mode != RIDE_MODE_SHUTTLE && curRide->mode != RIDE_MODE_POWERED_LAUNCH)
         {
-            update_flags |= VEHICLE_UPDATE_FLAG_12;
+            SetUpdateFlag(VEHICLE_UPDATE_FLAG_12);
         }
         else
         {
@@ -7789,7 +7789,7 @@ static bool vehicle_update_motion_collision_detection(
     vehicle->var_C4++;
     if (vehicle->var_C4 < 200)
     {
-        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
+        vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
         if (otherVehicleIndex != nullptr)
             *otherVehicleIndex = collideId;
         return true;
@@ -7835,7 +7835,7 @@ static bool vehicle_update_motion_collision_detection(
         return false;
     }
 
-    vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
+    vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
     if (otherVehicleIndex != nullptr)
         *otherVehicleIndex = collideId;
     return true;
@@ -8063,7 +8063,7 @@ loc_6DB358:
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
     }
@@ -8114,7 +8114,7 @@ loc_6DB41D:
     vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     if (tileElement->AsTrack()->HasChain())
     {
-        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
+        vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
@@ -8221,7 +8221,7 @@ loc_6DAEB9:
                     acceleration = -_vehicleVelocityF64E08 * 16;
                     if (track_progress >= 24)
                     {
-                        update_flags |= VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
+                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP);
                         vertical_drop_countdown = 90;
                     }
                 }
@@ -8452,7 +8452,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
 
@@ -8507,7 +8507,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
             }
-            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
+            vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
         }
     }
     else
@@ -8873,7 +8873,7 @@ loc_6DC476:
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
     }
@@ -9119,7 +9119,7 @@ loc_6DCA9A:
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
     }

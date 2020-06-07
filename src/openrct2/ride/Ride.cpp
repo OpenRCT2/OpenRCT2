@@ -2487,7 +2487,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
                         }
                     }
                     if (vehicle != nullptr)
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+                        vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                 }
             }
             break;
@@ -2501,7 +2501,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
             if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
             {
                 vehicle = GET_VEHICLE(vehicleSpriteIdx);
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -4504,7 +4504,7 @@ static Vehicle* vehicle_create_car(
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
         vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
