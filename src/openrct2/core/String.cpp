@@ -454,7 +454,7 @@ namespace String
 
     utf8* SkipBOM(utf8* buffer)
     {
-        return const_cast<utf8*>(SkipBOM((const utf8*)buffer));
+        return const_cast<utf8*>(SkipBOM(static_cast<const utf8*>(buffer)));
     }
 
     const utf8* SkipBOM(const utf8* buffer)
@@ -474,7 +474,7 @@ namespace String
 
     codepoint_t GetNextCodepoint(utf8* ptr, utf8** nextPtr)
     {
-        return GetNextCodepoint((const utf8*)ptr, (const utf8**)nextPtr);
+        return GetNextCodepoint(static_cast<const utf8*>(ptr), const_cast<const utf8**>(nextPtr));
     }
 
     codepoint_t GetNextCodepoint(const utf8* ptr, const utf8** nextPtr)

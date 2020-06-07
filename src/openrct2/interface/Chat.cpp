@@ -102,7 +102,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     // Draw chat window
     if (gChatOpen)
     {
-        inputLineHeight = chat_string_wrapped_get_height((void*)&inputLine, _chatWidth - 10);
+        inputLineHeight = chat_string_wrapped_get_height(static_cast<void*>(&inputLine), _chatWidth - 10);
         _chatTop -= inputLineHeight;
 
         for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++)
@@ -114,7 +114,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
             safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-            int32_t lineHeight = chat_string_wrapped_get_height((void*)&lineCh, _chatWidth - 10);
+            int32_t lineHeight = chat_string_wrapped_get_height(static_cast<void*>(&lineCh), _chatWidth - 10);
             _chatTop -= (lineHeight + 5);
         }
 
@@ -157,7 +157,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-        stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, ScreenCoordsXY(x, y), _chatWidth - 10) + 5;
+        stringHeight = chat_history_draw_string(dpi, static_cast<void*>(&lineCh), ScreenCoordsXY(x, y), _chatWidth - 10) + 5;
         gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
 
         if ((y - stringHeight) < 50)
@@ -177,7 +177,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         lineCh = lineBuffer;
         inputLineHeight = gfx_draw_string_left_wrapped(
-            dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
+            dpi, static_cast<void*>(&lineCh), x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
         gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
 
         // TODO: Show caret if the input text has multiple lines
@@ -281,7 +281,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, const Scree
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    gfx_draw_string(dpi, (char*)"", TEXT_COLOUR_255, { dpi->x, dpi->y });
+    gfx_draw_string(dpi, "", TEXT_COLOUR_255, { dpi->x, dpi->y });
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, STR_STRING, args);
 

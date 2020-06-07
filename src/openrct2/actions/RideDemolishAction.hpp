@@ -305,7 +305,7 @@ private:
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (it.element->AsTrack()->GetRideIndex() != (ride_id_t)_rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != static_cast<ride_id_t>(_rideIndex))
                 continue;
 
             auto location = CoordsXYZD(

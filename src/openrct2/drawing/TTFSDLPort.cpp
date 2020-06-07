@@ -1,3 +1,7 @@
+// Adapted from freetype.h in order to avoid C-style casts.
+
+#define FT_LOAD_TARGET_ALT(x) (static_cast<FT_Int32>((x)&15) << 16)
+
 /**
  * The following code is from SDL2_ttf (2 Jan 2017).
  * Taking just what was needed for OpenRCT2 with all SDL2 calls
@@ -1530,9 +1534,9 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
 void TTF_SetFontHinting(TTF_Font* font, int hinting)
 {
     if (hinting == TTF_HINTING_LIGHT)
-        font->hinting = FT_LOAD_TARGET_LIGHT;
+        font->hinting = FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT);
     else if (hinting == TTF_HINTING_MONO)
-        font->hinting = FT_LOAD_TARGET_MONO;
+        font->hinting = FT_LOAD_TARGET_ALT(FT_RENDER_MODE_MONO);
     else if (hinting == TTF_HINTING_NONE)
         font->hinting = FT_LOAD_NO_HINTING;
     else
@@ -1543,9 +1547,9 @@ void TTF_SetFontHinting(TTF_Font* font, int hinting)
 
 int TTF_GetFontHinting(const TTF_Font* font)
 {
-    if (font->hinting == FT_LOAD_TARGET_LIGHT)
+    if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT))
         return TTF_HINTING_LIGHT;
-    else if (font->hinting == FT_LOAD_TARGET_MONO)
+    else if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_MONO))
         return TTF_HINTING_MONO;
     else if (font->hinting == FT_LOAD_NO_HINTING)
         return TTF_HINTING_NONE;

@@ -60,7 +60,7 @@ namespace File
         }
 
         fs.seekg(0, std::ios::end);
-        auto fsize = (size_t)fs.tellg();
+        auto fsize = static_cast<size_t>(fs.tellg());
         if (fsize > SIZE_MAX)
         {
             std::string message = String::StdFormat(

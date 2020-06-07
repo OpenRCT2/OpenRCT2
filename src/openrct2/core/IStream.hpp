@@ -226,7 +226,10 @@ private:
     public:
         explicit vector_streambuf(const std::vector<T>& vec)
         {
-            this->setg((char*)vec.data(), (char*)vec.data(), (char*)(vec.data() + vec.size()));
+            this->setg(
+                reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
+                reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
+                reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data() + vec.size())));
         }
     };
 

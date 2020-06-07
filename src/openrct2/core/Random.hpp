@@ -62,7 +62,7 @@ namespace Random
 
         template<typename _TIt> void generate(_TIt begin, _TIt end) const
         {
-            std::copy_n(v.begin(), std::min((size_t)(end - begin), N), begin);
+            std::copy_n(v.begin(), std::min(static_cast<size_t>(end - begin), N), begin);
         }
 
         constexpr size_t size() const

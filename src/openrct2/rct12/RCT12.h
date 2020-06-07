@@ -280,8 +280,9 @@ struct RCT12TileElement : public RCT12TileElementBase
     uint8_t pad_04[4];
     template<typename TType, RCT12TileElementType TClass> TType* as() const
     {
-        // TODO: CAST-IMPROVEMENT-NEEDED
-        return static_cast<RCT12TileElementType>(GetType()) == TClass ? (TType*)this : nullptr;
+        return static_cast<RCT12TileElementType>(GetType()) == TClass
+            ? reinterpret_cast<TType*>(const_cast<RCT12TileElement*>(this))
+            : nullptr;
     }
 
     RCT12SurfaceElement* AsSurface() const

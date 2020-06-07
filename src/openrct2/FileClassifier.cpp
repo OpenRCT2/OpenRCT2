@@ -95,7 +95,7 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
     uint64_t originalPosition = stream->GetPosition();
     try
     {
-        size_t dataLength = (size_t)stream->GetLength();
+        size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
         std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
@@ -132,7 +132,7 @@ static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
     uint64_t originalPosition = stream->GetPosition();
     try
     {
-        size_t dataLength = (size_t)stream->GetLength();
+        size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
         std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);

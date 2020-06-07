@@ -637,8 +637,7 @@ namespace OpenRCT2
                         // which the window function doesn't like
                         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                         intent.putExtra(INTENT_EXTRA_PATH, path);
-                        // TODO: CAST-IMPROVEMENT-NEEDED
-                        intent.putExtra(INTENT_EXTRA_LIST, (void*)e.MissingObjects.data());
+                        intent.putExtra(INTENT_EXTRA_LIST, const_cast<rct_object_entry*>(e.MissingObjects.data()));
                         intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                         auto windowManager = _uiContext->GetWindowManager();

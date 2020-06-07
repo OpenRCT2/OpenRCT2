@@ -1095,7 +1095,8 @@ void ScriptEngine::LoadSharedStorage()
         if (File::Exists(path))
         {
             auto data = File::ReadAllBytes(path);
-            auto result = DuktapeTryParseJson(_context, std::string_view((const char*)data.data(), data.size()));
+            auto result = DuktapeTryParseJson(
+                _context, std::string_view(reinterpret_cast<const char*>(data.data()), data.size()));
             if (result)
             {
                 _sharedStorage = std::move(*result);

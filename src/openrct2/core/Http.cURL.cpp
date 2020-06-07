@@ -99,7 +99,7 @@ namespace Http
 
             curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
             curl_easy_setopt(curl, CURLOPT_READDATA, &wt);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)wt.sizeleft);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(wt.sizeleft));
         }
 
         if (req.forceIPv4)
@@ -114,9 +114,9 @@ namespace Http
         curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&res);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, static_cast<void*>(&res));
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
-        curl_easy_setopt(curl, CURLOPT_HEADERDATA, (void*)&res);
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, static_cast<void*>(&res));
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);

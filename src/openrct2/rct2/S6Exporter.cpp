@@ -178,7 +178,7 @@ void S6Exporter::Export()
         const rct_object_entry* entry = get_loaded_object_entry(i);
         void* entryData = get_loaded_object_chunk(i);
         // RCT2 uses (void *)-1 to mark NULL. Make sure it's written in a vanilla-compatible way.
-        if (entryData == nullptr || entryData == (void*)-1)
+        if (entryData == nullptr || entryData == reinterpret_cast<void*>(-1))
         {
             std::memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
         }

@@ -722,14 +722,14 @@ void* object_manager_get_loaded_object_by_index(size_t index)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(index);
-    return (void*)loadedObject;
+    return static_cast<void*>(loadedObject);
 }
 
 void* object_manager_get_loaded_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(entry);
-    return (void*)loadedObject;
+    return static_cast<void*>(loadedObject);
 }
 
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject)
@@ -744,7 +744,7 @@ void* object_manager_load_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);
-    return (void*)loadedObject;
+    return static_cast<void*>(loadedObject);
 }
 
 void object_manager_unload_objects(const rct_object_entry* entries, size_t count)

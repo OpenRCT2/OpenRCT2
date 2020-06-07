@@ -109,11 +109,11 @@ public:
     {
         if (_address.sa_family == AF_INET)
         {
-            return ((sockaddr_in*)&_address)->sin_port;
+            return reinterpret_cast<const sockaddr_in*>(&_address)->sin_port;
         }
         else
         {
-            return ((sockaddr_in6*)&_address)->sin6_port;
+            return reinterpret_cast<const sockaddr_in6*>(&_address)->sin6_port;
         }
     }
 

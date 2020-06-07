@@ -139,7 +139,7 @@ std::string language_convert_string_to_tokens(const std::string_view& s)
     auto readPtr = input.c_str();
     while (true)
     {
-        char32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        char32_t code = utf8_get_next(readPtr, const_cast<const utf8**>(&readPtr));
         if (code == 0)
         {
             break;

@@ -26,7 +26,7 @@ private:
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
-        for (int32_t i = 0; i < DIRBASE_COUNT; i++)
+        for (size_t i = 0; i < DIRBASE_COUNT; i++)
         {
             _basePath[i] = basePaths[i];
         }
@@ -124,35 +124,38 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     // Set default paths
     std::string basePaths[DIRBASE_COUNT];
-    basePaths[(size_t)DIRBASE::OPENRCT2] = Platform::GetInstallPath();
-    basePaths[(size_t)DIRBASE::USER] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
-    basePaths[(size_t)DIRBASE::CONFIG] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
-    basePaths[(size_t)DIRBASE::CACHE] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
-    basePaths[(size_t)DIRBASE::DOCUMENTATION] = Platform::GetDocsPath();
+    basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)] = Platform::GetInstallPath();
+    basePaths[static_cast<size_t>(DIRBASE::USER)] = Path::Combine(
+        Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
+    basePaths[static_cast<size_t>(DIRBASE::CONFIG)] = Path::Combine(
+        Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
+    basePaths[static_cast<size_t>(DIRBASE::CACHE)] = Path::Combine(
+        Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
+    basePaths[static_cast<size_t>(DIRBASE::DOCUMENTATION)] = Platform::GetDocsPath();
 
     // Override paths that have been specified via the command line
     if (!String::IsNullOrEmpty(gCustomRCT1DataPath))
     {
-        basePaths[(size_t)DIRBASE::RCT1] = gCustomRCT1DataPath;
+        basePaths[static_cast<size_t>(DIRBASE::RCT1)] = gCustomRCT1DataPath;
     }
     if (!String::IsNullOrEmpty(gCustomRCT2DataPath))
     {
-        basePaths[(size_t)DIRBASE::RCT2] = gCustomRCT2DataPath;
+        basePaths[static_cast<size_t>(DIRBASE::RCT2)] = gCustomRCT2DataPath;
     }
     if (!String::IsNullOrEmpty(gCustomOpenrctDataPath))
     {
-        basePaths[(size_t)DIRBASE::OPENRCT2] = gCustomOpenrctDataPath;
+        basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)] = gCustomOpenrctDataPath;
     }
     if (!String::IsNullOrEmpty(gCustomUserDataPath))
     {
-        basePaths[(size_t)DIRBASE::USER] = gCustomUserDataPath;
-        basePaths[(size_t)DIRBASE::CONFIG] = gCustomUserDataPath;
-        basePaths[(size_t)DIRBASE::CACHE] = gCustomUserDataPath;
+        basePaths[static_cast<size_t>(DIRBASE::USER)] = gCustomUserDataPath;
+        basePaths[static_cast<size_t>(DIRBASE::CONFIG)] = gCustomUserDataPath;
+        basePaths[static_cast<size_t>(DIRBASE::CACHE)] = gCustomUserDataPath;
     }
 
-    if (basePaths[(size_t)DIRBASE::DOCUMENTATION].empty())
+    if (basePaths[static_cast<size_t>(DIRBASE::DOCUMENTATION)].empty())
     {
-        basePaths[(size_t)DIRBASE::DOCUMENTATION] = basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)];
+        basePaths[static_cast<size_t>(DIRBASE::DOCUMENTATION)] = basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)];
     }
 
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
