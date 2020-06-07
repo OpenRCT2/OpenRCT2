@@ -2,7 +2,13 @@
 
 OpenRCT2 allows custom scripts (also known as plug-ins) to be written and executed in the game providing additional behaviour on top of the vanilla experience. This can range from extra windows providing information about the park to entire new multiplayer game modes.
 
-Each script is a single physical javascript file within the `plugin` directory in your OpenRCT2 user directory. This is usually `C:\Users\YourName\Documents\OpenRCT2` on Windows, or `$XDG_CONFIG_HOME/OpenRCT2` or in its absence `$HOME/.config/OpenRCT2` on Linux. OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
+Each script is a single physical javascript file within the `plugin` directory in your OpenRCT2 user directory. The user directory for each platform is usually:
+
+- Windows: `C:\Users\YourName\Documents\OpenRCT2`
+- Mac: `/Users/YourName/Library/Application Support/OpenRCT2`
+- Linux: `$XDG_CONFIG_HOME/OpenRCT2` or in its absence `$HOME/.config/OpenRCT2`
+
+OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
 
 There are two types of scripts:
 * Local
