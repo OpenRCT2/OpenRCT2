@@ -9304,12 +9304,12 @@ loc_6DCEB2:
     }
     if (_vehicleVelocityF64E08 >= 0)
     {
-        regs.si = vehicle->next_vehicle_on_train;
-        if (static_cast<uint16_t>(regs.si) == SPRITE_INDEX_NULL)
+        auto nextVehicleIndex = vehicle->next_vehicle_on_train;
+        if (nextVehicleIndex == SPRITE_INDEX_NULL)
         {
             goto loc_6DCEFF;
         }
-        vehicle = GET_VEHICLE(static_cast<uint16_t>(regs.si));
+        vehicle = GET_VEHICLE(nextVehicleIndex);
         goto loc_6DC40E;
     }
 
@@ -9333,12 +9333,12 @@ loc_6DCEFF:
         regs.dx |= vehicle->update_flags;
         totalMass += vehicle->mass;
         regs.eax += vehicle->acceleration;
-        regs.si = vehicle->next_vehicle_on_train;
-        if (static_cast<uint16_t>(regs.si) == SPRITE_INDEX_NULL)
+        auto nextVehicleIndex = vehicle->next_vehicle_on_train;
+        if (nextVehicleIndex == SPRITE_INDEX_NULL)
         {
             break;
         }
-        vehicle = GET_VEHICLE(static_cast<uint16_t>(regs.si));
+        vehicle = GET_VEHICLE(nextVehicleIndex);
     }
 
     vehicle = gCurrentVehicle;
