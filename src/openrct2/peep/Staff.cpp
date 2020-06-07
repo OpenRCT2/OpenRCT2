@@ -2267,7 +2267,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
         return true;
     }
 
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
 
     return false;
 }
@@ -2308,7 +2308,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
         return true;
     }
 
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
 
     return false;
 }

@@ -273,7 +273,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
             continue;
 
         Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
         rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 

@@ -1590,7 +1590,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-        update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
+        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
         window_invalidate_by_number(WC_RIDE, ride);
         return;
     }
@@ -2332,7 +2332,7 @@ void Vehicle::UpdateWaitingForPassengers()
         if (time_waiting != 0xFFFF)
             time_waiting++;
 
-        update_flags &= ~VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
+        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART);
 
         // 0xF64E31, 0xF64E32, 0xF64E33
         uint8_t num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
@@ -2450,7 +2450,7 @@ void Vehicle::UpdateWaitingForPassengers()
         return;
 
     velocity = 0;
-    update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
 
     if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
     {
@@ -3027,7 +3027,7 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
         if (sv->vehicle_id != SPRITE_INDEX_NULL)
         {
             Vehicle* v = GET_VEHICLE(sv->vehicle_id);
-            v->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+            v->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
         }
     }
 
@@ -3105,7 +3105,7 @@ void Vehicle::UpdateTestFinish()
     if (!test_finish(ride))
         return;
 
-    update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
 }
 
 /**
@@ -3383,11 +3383,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                        update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
                     }
                 }
                 else
-                    update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
             }
         }
         else
@@ -3401,11 +3401,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                        update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
                     }
                 }
                 else
-                    update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
             }
         }
     }
@@ -3914,7 +3914,7 @@ void Vehicle::UpdateArriving()
         case RIDE_MODE_SPACE_RINGS:
         case RIDE_MODE_HAUNTED_HOUSE:
         case RIDE_MODE_CROOKED_HOUSE:
-            update_flags &= ~VEHICLE_UPDATE_FLAG_12;
+            ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
             velocity = 0;
             acceleration = 0;
             SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
@@ -4088,7 +4088,7 @@ loc_6D8E36:
         return;
     }
 
-    update_flags &= ~VEHICLE_UPDATE_FLAG_12;
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
     velocity = 0;
     acceleration = 0;
     SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
@@ -6741,7 +6741,7 @@ void Vehicle::UpdateVelocity()
         vertical_drop_countdown--;
         if (vertical_drop_countdown == -70)
         {
-            update_flags &= ~VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
+            ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP);
         }
         if (vertical_drop_countdown >= 0)
         {
@@ -7509,7 +7509,7 @@ static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
     uint16_t probability = 0x8000;
     if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_6))
     {
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
     }
     else
     {
@@ -8056,7 +8056,7 @@ loc_6DB358:
     }
 
     // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
@@ -8111,7 +8111,7 @@ loc_6DB41D:
 
     // loc_6DB500
     // Update VEHICLE_UPDATE_FLAG_ON_LIFT_HILL
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
+    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     if (tileElement->AsTrack()->HasChain())
     {
         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
@@ -8447,7 +8447,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         }
 
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
@@ -8514,7 +8514,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     {
         if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
-            vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
+            vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
             if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
                 if (_vehicleVelocityF64E08 < 0)
@@ -8868,7 +8868,7 @@ loc_6DC476:
 
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
@@ -8891,7 +8891,7 @@ loc_6DC476:
         vehicle->TrackSubposition = regs.al;
     }
 
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
+    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
     vehicle->var_CF = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     regs.ax = 0;
@@ -9114,7 +9114,7 @@ loc_6DCA9A:
 
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (tileElement->AsTrack()->IsInverted())
@@ -9128,7 +9128,7 @@ loc_6DCA9A:
 
     if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
     {
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
         if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
             if (_vehicleVelocityF64E08 < 0)

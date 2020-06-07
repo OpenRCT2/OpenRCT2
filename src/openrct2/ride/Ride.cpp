@@ -4604,7 +4604,7 @@ static void vehicle_unset_update_flag_b1(Vehicle* head)
     Vehicle* vehicle = head;
     while (true)
     {
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
         uint16_t spriteIndex = vehicle->next_vehicle_on_train;
         if (spriteIndex == SPRITE_INDEX_NULL)
         {
@@ -4810,7 +4810,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         car = train;
         while (true)
         {
-            car->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+            car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
             car->SetState(VEHICLE_STATUS_TRAVELLING, car->sub_state);
             if ((car->track_type >> 2) == TRACK_ELEM_END_STATION)
             {
@@ -6355,7 +6355,7 @@ void invalidate_test_results(Ride* ride)
             if (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
             }
         }
     }
@@ -6384,9 +6384,9 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                 spriteIndex = vehicle->next_vehicle_on_train;
             }
         }
