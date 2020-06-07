@@ -94,12 +94,6 @@ const NewsItem* NewsItemQueues::At(int32_t index) const
     }
 }
 
-bool news_item_is_empty(int32_t index)
-{
-    NewsItem* news = gNewsItems.At(index);
-    return news != nullptr && news->IsEmpty();
-}
-
 bool news_item_is_queue_empty()
 {
     return gNewsItems.IsEmpty();

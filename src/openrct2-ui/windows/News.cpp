@@ -146,36 +146,25 @@ static void window_news_update(rct_window* w)
     w->Invalidate();
     audio_play_sound(SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
 
-    int32_t j = w->news.var_480;
+    size_t j = w->news.var_480;
     w->news.var_480 = -1;
-    int32_t i = 0;
-    for (; i < MAX_NEWS_ITEMS_ARCHIVE; i++)
-    {
-        NewsItem* const newsItem = news_item_get(i + NEWS_ITEM_HISTORY_START);
-        if (newsItem->IsEmpty())
-            return;
-
-        if (j > 0)
-        {
-            --j;
-            continue;
-        }
-
-        if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
-            return;
-        if (w->news.var_482 == 1)
-        {
-            news_item_open_subject(newsItem->Type, newsItem->Assoc);
-        }
-        else if (w->news.var_482 > 1)
-        {
-            auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
-            if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
-            {
-                window_scroll_to_location(w, subjectLoc->x, subjectLoc->y, subjectLoc->z);
-            }
-        }
+    if (j >= gNewsItems.GetArchived().size())
         return;
+
+    const auto& newsItem = gNewsItems.GetArchived()[j];
+    if (newsItem.Flags & NEWS_FLAG_HAS_BUTTON)
+        return;
+    if (w->news.var_482 == 1)
+    {
+        news_item_open_subject(newsItem.Type, newsItem.Assoc);
+    }
+    else if (w->news.var_482 > 1)
+    {
+        auto subjectLoc = news_item_get_subject_location(newsItem.Type, newsItem.Assoc);
+        if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
+        {
+            window_scroll_to_location(w, subjectLoc->x, subjectLoc->y, subjectLoc->z);
+        }
     }
 }
 
@@ -185,14 +174,7 @@ static void window_news_update(rct_window* w)
  */
 static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    int32_t i = 0;
-    for (; i < MAX_NEWS_ITEMS_ARCHIVE; i++)
-    {
-        NewsItem* const newsItem = news_item_get(i + NEWS_ITEM_HISTORY_START);
-        if (newsItem->IsEmpty())
-            break;
-    }
-    *height = i * window_news_get_item_height();
+    *height = static_cast<int32_t>(gNewsItems.GetArchived().size()) * window_news_get_item_height();
 }
 
 /**
@@ -206,32 +188,29 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
     int32_t i = 0;
     int32_t buttonIndex = 0;
     auto mutableScreenCoords = screenCoords;
-    for (; i < MAX_NEWS_ITEMS_ARCHIVE; i++)
+    for (const auto& newsItem : gNewsItems.GetArchived())
     {
-        NewsItem* const newsItem = news_item_get(i + NEWS_ITEM_HISTORY_START);
-        if (newsItem->IsEmpty())
-            break;
-
         if (mutableScreenCoords.y < itemHeight)
         {
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
+            if (newsItem.Flags & NEWS_FLAG_HAS_BUTTON || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
                 || mutableScreenCoords.x < 328)
             {
                 buttonIndex = 0;
                 break;
             }
-            else if (mutableScreenCoords.x < 351 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)
+            else if (mutableScreenCoords.x < 351 && news_type_properties[newsItem.Type] & NEWS_TYPE_HAS_SUBJECT)
             {
                 buttonIndex = 1;
                 break;
             }
-            else if (mutableScreenCoords.x < 376 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION)
+            else if (mutableScreenCoords.x < 376 && news_type_properties[newsItem.Type] & NEWS_TYPE_HAS_LOCATION)
             {
                 buttonIndex = 2;
                 break;
             }
         }
         mutableScreenCoords.y -= itemHeight;
+        i++;
     }
 
     if (buttonIndex != 0)
@@ -264,16 +243,14 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
     int32_t y = 0;
     int32_t i = 0;
-    for (; i < MAX_NEWS_ITEMS_ARCHIVE; i++)
+    for (const auto& newsItem : gNewsItems.GetArchived())
     {
-        NewsItem* const newsItem = news_item_get(i + NEWS_ITEM_HISTORY_START);
-        if (newsItem->IsEmpty())
-            break;
         if (y >= dpi->y + dpi->height)
             break;
         if (y + itemHeight < dpi->y)
         {
             y += itemHeight;
+            i++;
             continue;
         }
 
@@ -283,16 +260,16 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
         // Date text
         auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(DateDayNames[newsItem->Day - 1]);
-        ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem->MonthYear)]);
+        ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
+        ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
         gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 2, y);
 
         // Item text
-        utf8* text = newsItem->Text;
+        auto text = newsItem.Text;
         gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
-        if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON))
+        if ((news_type_properties[newsItem.Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
         {
             int32_t x = 328;
             int32_t yy = y + lineHeight + 4;
@@ -306,7 +283,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             }
             gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
 
-            switch (newsItem->Type)
+            switch (newsItem.Type)
             {
                 case NEWS_ITEM_RIDE:
                     gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
@@ -320,7 +297,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                         break;
                     }
 
-                    auto sprite = try_get_sprite(newsItem->Assoc);
+                    auto sprite = try_get_sprite(newsItem.Assoc);
                     if (sprite == nullptr)
                         break;
 
@@ -353,7 +330,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
                     break;
                 case NEWS_ITEM_RESEARCH:
-                    gfx_draw_sprite(dpi, newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
+                    gfx_draw_sprite(dpi, newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
                     break;
                 case NEWS_ITEM_PEEPS:
                     gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
@@ -368,7 +345,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         }
 
         // Location button
-        if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON))
+        if ((news_type_properties[newsItem.Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
         {
             int32_t x = 352;
             int32_t yy = y + lineHeight + 4;
@@ -385,5 +362,6 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         }
 
         y += itemHeight;
+        i++;
     }
 }
