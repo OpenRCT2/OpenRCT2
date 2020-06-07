@@ -160,8 +160,8 @@ private:
             uint8_t ride_id_bit = _rideIndex % 8;
             uint8_t ride_id_offset = _rideIndex / 8;
 
-            // clear ride from potentially being in rides_been_on
-            peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
+            // clear ride from potentially being in RidesBeenOn
+            peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
             if (peep->state == PEEP_STATE_WATCHING)
             {
                 if (peep->current_ride == _rideIndex)
@@ -227,15 +227,15 @@ private:
             {
                 // Don't touch items after the first NONE thought as they are not valid
                 // fixes issues with clearing out bad thought data in multiplayer
-                if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+                if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
                     break;
 
-                if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->thoughts[i].item == _rideIndex)
+                if (peep->Thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->Thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
-                    memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
+                    memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
                     // Next iteration, check the new thought at this index
                     i--;
                 }

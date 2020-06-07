@@ -1105,12 +1105,12 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t i = 0;
     for (; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+        if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
         {
             w->list_information_type = 0;
             return;
         }
-        if (peep->thoughts[i].freshness == 1)
+        if (peep->Thoughts[i].freshness == 1)
         { // If a fresh thought
             break;
         }
@@ -1122,7 +1122,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     x = widget->right - widget->left - w->list_information_type;
-    peep_thought_set_format_args(&peep->thoughts[i]);
+    peep_thought_set_format_args(&peep->Thoughts[i]);
     gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, 0);
 }
 
@@ -1513,10 +1513,10 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Time in park
     y += LIST_ROW_HEIGHT + 1;
-    if (peep->time_in_park != -1)
+    if (peep->TimeInPark != -1)
     {
         int32_t eax = gScenarioTicks;
-        eax -= peep->time_in_park;
+        eax -= peep->TimeInPark;
         eax >>= 11;
         auto ft = Formatter::Common();
         ft.Add<uint16_t>(eax & 0xFFFF);
@@ -1579,7 +1579,7 @@ void window_guest_rides_update(rct_window* w)
     if (guest != nullptr)
     {
         // Every 2048 ticks do a full window_invalidate
-        int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
+        int32_t number_of_ticks = gScenarioTicks - peep->TimeInPark;
         if (!(number_of_ticks & 0x7FF))
             w->Invalidate();
 
@@ -1786,13 +1786,13 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Cash in pocket
     auto ft = Formatter::Common();
-    ft.Add<money32>(peep->cash_in_pocket);
+    ft.Add<money32>(peep->CashInPocket);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Cash spent
     y += LIST_ROW_HEIGHT;
     ft = Formatter::Common();
-    ft.Add<money32>(peep->cash_spent);
+    ft.Add<money32>(peep->CashSpent);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     y += LIST_ROW_HEIGHT * 2;
@@ -1904,7 +1904,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, x, y);
 
     y += 10;
-    for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought)
+    for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
     {
         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
             return;

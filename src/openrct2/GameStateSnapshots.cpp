@@ -261,24 +261,24 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, action);
         COMPARE_FIELD(Peep, action_frame);
         COMPARE_FIELD(Peep, step_progress);
-        COMPARE_FIELD(Peep, next_in_queue);
-        COMPARE_FIELD(Peep, maze_last_edge);
-        COMPARE_FIELD(Peep, interaction_ride_index);
-        COMPARE_FIELD(Peep, time_in_queue);
+        COMPARE_FIELD(Peep, GuestNextInQueue);
+        COMPARE_FIELD(Peep, MazeLastEdge);
+        COMPARE_FIELD(Peep, InteractionRideIndex);
+        COMPARE_FIELD(Peep, TimeInQueue);
         for (int i = 0; i < 32; i++)
         {
-            COMPARE_FIELD(Peep, rides_been_on[i]);
+            COMPARE_FIELD(Peep, RidesBeenOn[i]);
         }
-        COMPARE_FIELD(Peep, id);
-        COMPARE_FIELD(Peep, cash_in_pocket);
-        COMPARE_FIELD(Peep, cash_spent);
-        COMPARE_FIELD(Peep, time_in_park);
-        COMPARE_FIELD(Peep, rejoin_queue_timeout);
-        COMPARE_FIELD(Peep, previous_ride);
-        COMPARE_FIELD(Peep, previous_ride_time_out);
+        COMPARE_FIELD(Peep, Id);
+        COMPARE_FIELD(Peep, CashInPocket);
+        COMPARE_FIELD(Peep, CashSpent);
+        COMPARE_FIELD(Peep, TimeInPark);
+        COMPARE_FIELD(Peep, RejoinQueueTimeout);
+        COMPARE_FIELD(Peep, PreviousRide);
+        COMPARE_FIELD(Peep, PreviousRideTimeOut);
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
-            COMPARE_FIELD(Peep, thoughts[i]);
+            COMPARE_FIELD(Peep, Thoughts[i]);
         }
         COMPARE_FIELD(Peep, PathCheckOptimisation);
         COMPARE_FIELD(Peep, GuestHeadingToRideId);

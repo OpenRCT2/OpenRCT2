@@ -626,7 +626,7 @@ namespace OpenRCT2::Scripting
         int32_t cash_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->cash_in_pocket : 0;
+            return peep != nullptr ? peep->CashInPocket : 0;
         }
         void cash_set(int32_t value)
         {
@@ -634,7 +634,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->cash_in_pocket = std::max(0, value);
+                peep->CashInPocket = std::max(0, value);
             }
         }
     };
@@ -642,8 +642,8 @@ namespace OpenRCT2::Scripting
     class ScStaff : public ScPeep
     {
     public:
-        ScStaff(uint16_t id)
-            : ScPeep(id)
+        ScStaff(uint16_t Id)
+            : ScPeep(Id)
         {
         }
 

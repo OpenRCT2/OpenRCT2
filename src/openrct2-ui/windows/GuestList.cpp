@@ -792,7 +792,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             // For each thought
                             for (uint32_t j = 0; j < PEEP_MAX_THOUGHTS; j++)
                             {
-                                thought = &peep->thoughts[j];
+                                thought = &peep->Thoughts[j];
                                 if (thought->type == PEEP_THOUGHT_TYPE_NONE)
                                     break;
                                 if (thought->freshness == 0)
@@ -800,7 +800,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 if (thought->freshness > 5)
                                     break;
 
-                                peep_thought_set_format_args(&peep->thoughts[j]);
+                                peep_thought_set_format_args(&peep->Thoughts[j]);
                                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 118, y }, 329);
                                 break;
                             }
@@ -911,7 +911,7 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
             break;
         case VIEW_THOUGHTS:
         {
-            auto thought = &peep->thoughts[0];
+            auto thought = &peep->Thoughts[0];
             if (thought->freshness <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE)
             {
                 std::memset(gCommonFormatArgs, 0, sizeof(gCommonFormatArgs));

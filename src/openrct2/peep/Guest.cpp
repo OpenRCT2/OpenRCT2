@@ -805,7 +805,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && no_of_rides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
-            uint32_t time_duration = gScenarioTicks - time_in_park;
+            uint32_t time_duration = gScenarioTicks - TimeInPark;
             time_duration /= 2048;
 
             if (time_duration >= 5)
@@ -866,8 +866,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TOILET;
                     }
 
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && cash_in_pocket <= MONEY(9, 00) && happiness >= 105
-                        && energy >= 70)
+                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && happiness >= 105 && energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
                          * This was superfluous so should probably check something else.
@@ -953,7 +952,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 break;
 
             case PEEP_STATE_QUEUING:
-                if (time_in_queue >= 2000)
+                if (TimeInQueue >= 2000)
                 {
                     /* Peep happiness is affected once the peep has been waiting
                      * too long in a queue. */
@@ -1551,12 +1550,12 @@ loc_69B119:
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            if (cash_in_pocket == 0)
+            if (CashInPocket == 0)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
-            if (price > cash_in_pocket)
+            if (price > CashInPocket)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
                 return false;
@@ -2030,7 +2029,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         }
 
                         // This checks if there's a peep standing still at the very end of the queue.
-                        if (maxD <= 13 && lastPeepInQueue->time_in_queue > 10)
+                        if (maxD <= 13 && lastPeepInQueue->TimeInQueue > 10)
                         {
                             peep_tried_to_enter_full_queue(this, ride);
                             return false;
@@ -2046,7 +2045,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
         if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ridePrice != 0)
         {
-            if (previous_ride == ride->id)
+            if (PreviousRide == ride->id)
             {
                 ChoseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
@@ -2055,11 +2054,11 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             // Basic price checks
             if (ridePrice != 0 && !peep_has_voucher_for_free_ride(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                if (ridePrice > cash_in_pocket)
+                if (ridePrice > CashInPocket)
                 {
                     if (peepAtRide)
                     {
-                        if (cash_in_pocket <= 0)
+                        if (CashInPocket <= 0)
                         {
                             InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                         }
@@ -2256,7 +2255,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
 bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 {
     // Peeps won't go to the same shop twice in a row.
-    if (ride->id == previous_ride)
+    if (ride->id == PreviousRide)
     {
         ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
@@ -2299,11 +2298,11 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
     // Basic price checks
     auto ridePrice = ride_get_price(ride);
-    if (ridePrice != 0 && ridePrice > cash_in_pocket)
+    if (ridePrice != 0 && ridePrice > CashInPocket)
     {
         if (peepAtShop)
         {
-            if (cash_in_pocket <= 0)
+            if (CashInPocket <= 0)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
             }
@@ -2343,8 +2342,8 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
-    cash_in_pocket = std::max(0, cash_in_pocket - amount);
-    cash_spent += amount;
+    CashInPocket = std::max(0, CashInPocket - amount);
+    CashSpent += amount;
 
     peep_expend_type += static_cast<money16>(amount);
 
@@ -2367,13 +2366,13 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
 void Guest::SetHasRidden(const Ride* ride)
 {
-    rides_been_on[ride->id / 8] |= 1 << (ride->id % 8);
+    RidesBeenOn[ride->id / 8] |= 1 << (ride->id % 8);
     SetHasRiddenRideType(ride->type);
 }
 
 bool Guest::HasRidden(const Ride* ride) const
 {
-    return rides_been_on[ride->id / 8] & (1 << (ride->id % 8));
+    return RidesBeenOn[ride->id / 8] & (1 << (ride->id % 8));
 }
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
@@ -2390,8 +2389,8 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
-        previous_ride = ride->id;
-        previous_ride_time_out = 0;
+        PreviousRide = ride->id;
+        PreviousRideTimeOut = 0;
     }
 
     if (ride->id == GuestHeadingToRideId)
@@ -2425,8 +2424,8 @@ static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
-    peep->previous_ride = ride->id;
-    peep->previous_ride_time_out = 0;
+    peep->PreviousRide = ride->id;
+    peep->PreviousRideTimeOut = 0;
     // Change status "Heading to" to "Walking" if queue is full
     if (ride->id == peep->GuestHeadingToRideId)
     {
@@ -2547,7 +2546,7 @@ void Guest::GoToRideEntrance(Ride* ride)
     SetState(PEEP_STATE_ENTERING_RIDE);
     sub_state = PEEP_RIDE_IN_ENTRANCE;
 
-    rejoin_queue_timeout = 0;
+    RejoinQueueTimeout = 0;
     GuestTimeOnRide = 0;
 
     RemoveFromQueue();
@@ -2638,14 +2637,14 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
         && peep->VoucherArguments == peep->current_ride)
         return true;
 
-    if (peep->cash_in_pocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
 
-    if (ridePrice > peep->cash_in_pocket)
+    if (ridePrice > peep->CashInPocket)
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
         peep_update_ride_at_entrance_try_leave(peep);
@@ -2681,11 +2680,11 @@ static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride)
     // Calculate satisfaction based on how long the peep has been in the queue for.
     // (For comparison: peeps start thinking "I've been queueing for a long time" at 3500 and
     // start leaving the queue at 4300.)
-    if (peep->time_in_queue >= 4500)
+    if (peep->TimeInQueue >= 4500)
         satisfaction -= 35;
-    else if (peep->time_in_queue >= 2250)
+    else if (peep->TimeInQueue >= 2250)
         satisfaction -= 10;
-    else if (peep->time_in_queue <= 750)
+    else if (peep->TimeInQueue <= 750)
         satisfaction += 10;
 
     // Peeps get a small boost in satisfaction if they've been on a ride of the same type before,
@@ -3094,7 +3093,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
         }
         else
         {
-            if (peep->energy >= 55 && peep->happiness >= 45 && peep->cash_in_pocket >= MONEY(5, 00))
+            if (peep->energy >= 55 && peep->happiness >= 45 && peep->CashInPocket >= MONEY(5, 00))
             {
                 return;
             }
@@ -3297,7 +3296,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
     // Remove the related thought
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &thoughts[i];
+        rct_peep_thought* thought = &Thoughts[i];
 
         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
             break;
@@ -3310,7 +3309,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
             memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
         }
 
-        thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
 
         window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
@@ -3327,7 +3326,7 @@ static bool peep_should_use_cash_machine(Peep* peep, ride_id_t rideIndex)
         return false;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return false;
-    if (peep->cash_in_pocket > MONEY(20, 00))
+    if (peep->CashInPocket > MONEY(20, 00))
         return false;
     if (115 + (scenario_rand() % 128) > peep->happiness)
         return false;
@@ -3372,16 +3371,16 @@ void Guest::UpdateBuying()
 
         if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
-            if (current_ride != previous_ride)
+            if (current_ride != PreviousRide)
             {
-                cash_in_pocket += MONEY(50, 00);
+                CashInPocket += MONEY(50, 00);
             }
             window_invalidate_by_number(WC_PEEP, sprite_index);
         }
         sprite_direction ^= 0x10;
         destination_x = NextLoc.x + 16;
         destination_y = NextLoc.y + 16;
-        direction = direction_reverse(direction);
+        PeepDirection = direction_reverse(PeepDirection);
 
         SetState(PEEP_STATE_WALKING);
         return;
@@ -3389,15 +3388,15 @@ void Guest::UpdateBuying()
 
     bool item_bought = false;
 
-    if (current_ride != previous_ride)
+    if (current_ride != PreviousRide)
     {
         if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
             item_bought = peep_should_use_cash_machine(this, current_ride);
             if (!item_bought)
             {
-                previous_ride = current_ride;
-                previous_ride_time_out = 0;
+                PreviousRide = current_ride;
+                PreviousRideTimeOut = 0;
             }
             else
             {
@@ -3538,7 +3537,7 @@ static constexpr const CoordsXY _MazeEntranceStart[] = {
 
 static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
-    peep->maze_last_edge = entrance_loc.direction + 1;
+    peep->MazeLastEdge = entrance_loc.direction + 1;
 
     entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
     entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
@@ -3547,13 +3546,13 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     if (scenario_rand() & 0x40)
     {
         direction += 4;
-        peep->maze_last_edge += 2;
+        peep->MazeLastEdge += 2;
     }
 
     direction &= 0xF;
     // Direction is 11, 15, 3, or 7
     peep->var_37 = direction;
-    peep->maze_last_edge &= 3;
+    peep->MazeLastEdge &= 3;
 
     entrance_loc.x += _MazeEntranceStart[direction / 4].x;
     entrance_loc.y += _MazeEntranceStart[direction / 4].y;
@@ -3948,7 +3947,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++rejoin_queue_timeout) == 0)
+        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
         {
             peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
             return;
@@ -4017,7 +4016,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     }
 
     Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[current_train]);
-    if (ride->status == RIDE_STATUS_OPEN && ++rejoin_queue_timeout != 0
+    if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
         && !currentTrain->UpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
@@ -4885,7 +4884,7 @@ void Guest::UpdateRideMazePathfinding()
     if (openHedges == 0)
         return;
 
-    uint8_t mazeLastEdge = direction_reverse(maze_last_edge);
+    uint8_t mazeLastEdge = direction_reverse(MazeLastEdge);
     openHedges &= ~(1 << mazeLastEdge);
     if (openHedges == 0)
         openHedges |= (1 << mazeLastEdge);
@@ -4935,15 +4934,15 @@ void Guest::UpdateRideMazePathfinding()
     switch (mazeType)
     {
         case maze_type::invalid:
-            maze_last_edge++;
-            maze_last_edge &= 3;
+            MazeLastEdge++;
+            MazeLastEdge &= 3;
             return;
         case maze_type::hedge:
             destination_x = targetLoc.x;
             destination_y = targetLoc.y;
 
             var_37 = _MazeGetNewDirectionFromEdge[var_37 / 4][chosenEdge];
-            maze_last_edge = chosenEdge;
+            MazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
             targetLoc.x = destination_x;
@@ -4959,7 +4958,7 @@ void Guest::UpdateRideMazePathfinding()
             destination_x = targetLoc.x;
             destination_y = targetLoc.y;
             var_37 = 16;
-            maze_last_edge = chosenEdge;
+            MazeLastEdge = chosenEdge;
             break;
     }
 
@@ -5000,7 +4999,7 @@ void Guest::UpdateRideLeaveExit()
         }
     }
 
-    interaction_ride_index = RIDE_ID_NULL;
+    InteractionRideIndex = RIDE_ID_NULL;
     SetState(PEEP_STATE_FALLING);
 
     CoordsXY targetLoc = { x, y };
@@ -5552,14 +5551,14 @@ void Guest::UpdateQueuing()
     if (sub_state != 10)
     {
         bool is_front = true;
-        if (next_in_queue != SPRITE_INDEX_NULL)
+        if (GuestNextInQueue != SPRITE_INDEX_NULL)
         {
-            // Fix #4819: Occasionally the peep->next_in_queue is incorrectly set
+            // Fix #4819: Occasionally the peep->GuestNextInQueue is incorrectly set
             // to prevent this from causing the peeps to enter a loop
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            Peep* next_peep = GET_PEEP(next_in_queue);
+            Peep* next_peep = GET_PEEP(GuestNextInQueue);
             if (abs(next_peep->x - x) < 32 && abs(next_peep->y - y) < 32)
             {
                 is_front = false;
@@ -5589,7 +5588,7 @@ void Guest::UpdateQueuing()
         return;
     if (sprite_type == PEEP_SPRITE_TYPE_NORMAL)
     {
-        if (time_in_queue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
+        if (TimeInQueue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
         {
             // Eat Food/Look at watch
             action = PEEP_ACTION_EAT_FOOD;
@@ -5597,7 +5596,7 @@ void Guest::UpdateQueuing()
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
         }
-        if (time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+        if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
             // Create the I have been waiting in line ages thought
             InsertNewThought(PEEP_THOUGHT_TYPE_QUEUING_AGES, current_ride);
@@ -5605,7 +5604,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(time_in_queue & 0x3F) && action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
+        if (!(TimeInQueue & 0x3F) && action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
         {
             switch (sprite_type)
             {
@@ -5642,7 +5641,7 @@ void Guest::UpdateQueuing()
             }
         }
     }
-    if (time_in_queue < 4300)
+    if (TimeInQueue < 4300)
         return;
 
     if (happiness <= 65 && (0xFFFF & scenario_rand()) < 2184)
@@ -5679,7 +5678,7 @@ void Guest::UpdateEnteringPark()
     SetState(PEEP_STATE_FALLING);
 
     outside_of_park = 0;
-    time_in_park = gScenarioTicks;
+    TimeInPark = gScenarioTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

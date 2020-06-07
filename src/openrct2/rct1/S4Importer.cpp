@@ -1446,7 +1446,7 @@ private:
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
         dst->destination_tolerance = src->destination_tolerance;
-        dst->direction = src->direction;
+        dst->PeepDirection = src->direction;
 
         dst->energy = src->energy;
         dst->energy_target = src->energy_target;
@@ -1474,12 +1474,12 @@ private:
         dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
-        dst->interaction_ride_index = src->interaction_ride_index;
+        dst->InteractionRideIndex = src->interaction_ride_index;
 
-        dst->id = src->id;
-        dst->cash_in_pocket = src->cash_in_pocket;
-        dst->cash_spent = src->cash_spent;
-        dst->time_in_park = src->time_in_park;
+        dst->Id = src->id;
+        dst->CashInPocket = src->cash_in_pocket;
+        dst->CashSpent = src->cash_spent;
+        dst->TimeInPark = src->time_in_park;
 
         // This doubles as staff type
         dst->no_of_rides = src->no_of_rides;
@@ -1503,7 +1503,7 @@ private:
 
         for (size_t i = 0; i < 32; i++)
         {
-            dst->rides_been_on[i] = src->rides_been_on[i];
+            dst->RidesBeenOn[i] = src->rides_been_on[i];
         }
         for (size_t i = 0; i < 16; i++)
         {
@@ -1515,22 +1515,22 @@ private:
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
             auto srcThought = &src->thoughts[i];
-            auto dstThought = &dst->thoughts[i];
+            auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
             dstThought->item = srcThought->type;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
 
-        dst->previous_ride = src->previous_ride;
-        dst->previous_ride_time_out = src->previous_ride_time_out;
+        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRideTimeOut = src->previous_ride_time_out;
 
         dst->PathCheckOptimisation = 0;
         dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
         // Doubles as staff orders
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
         // The ID is fixed later
-        dst->next_in_queue = src->next_in_queue;
+        dst->GuestNextInQueue = src->next_in_queue;
 
         dst->PeepFlags = 0;
         dst->PathfindGoal.x = 0xFF;
@@ -1581,7 +1581,7 @@ private:
 
     void FixPeepNextInQueue(Peep* peep, const uint16_t* spriteIndexMap)
     {
-        peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
+        peep->GuestNextInQueue = MapSpriteIndex(peep->GuestNextInQueue, spriteIndexMap);
     }
 
     void ImportStaffPatrolArea(Peep* staffmember)

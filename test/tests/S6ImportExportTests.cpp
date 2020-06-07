@@ -205,27 +205,27 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(action);
     COMPARE_FIELD(action_frame);
     COMPARE_FIELD(step_progress);
-    COMPARE_FIELD(next_in_queue);
-    COMPARE_FIELD(maze_last_edge);
-    COMPARE_FIELD(interaction_ride_index);
-    COMPARE_FIELD(time_in_queue);
+    COMPARE_FIELD(GuestNextInQueue);
+    COMPARE_FIELD(MazeLastEdge);
+    COMPARE_FIELD(InteractionRideIndex);
+    COMPARE_FIELD(TimeInQueue);
     for (int i = 0; i < 32; i++)
     {
-        COMPARE_FIELD(rides_been_on[i]);
+        COMPARE_FIELD(RidesBeenOn[i]);
     }
-    COMPARE_FIELD(id);
-    COMPARE_FIELD(cash_in_pocket);
-    COMPARE_FIELD(cash_spent);
-    COMPARE_FIELD(time_in_park);
-    COMPARE_FIELD(rejoin_queue_timeout);
-    COMPARE_FIELD(previous_ride);
-    COMPARE_FIELD(previous_ride_time_out);
+    COMPARE_FIELD(Id);
+    COMPARE_FIELD(CashInPocket);
+    COMPARE_FIELD(CashSpent);
+    COMPARE_FIELD(TimeInPark);
+    COMPARE_FIELD(RejoinQueueTimeout);
+    COMPARE_FIELD(PreviousRide);
+    COMPARE_FIELD(PreviousRideTimeOut);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        COMPARE_FIELD(thoughts[i].type);
-        COMPARE_FIELD(thoughts[i].item);
-        COMPARE_FIELD(thoughts[i].freshness);
-        COMPARE_FIELD(thoughts[i].fresh_timeout);
+        COMPARE_FIELD(Thoughts[i].type);
+        COMPARE_FIELD(Thoughts[i].item);
+        COMPARE_FIELD(Thoughts[i].freshness);
+        COMPARE_FIELD(Thoughts[i].fresh_timeout);
     }
     COMPARE_FIELD(PathCheckOptimisation);
     COMPARE_FIELD(GuestHeadingToRideId);

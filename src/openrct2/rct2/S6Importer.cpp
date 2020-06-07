@@ -1448,25 +1448,25 @@ public:
         dst->action = static_cast<PeepActionType>(src->action);
         dst->action_frame = src->action_frame;
         dst->step_progress = src->step_progress;
-        dst->next_in_queue = src->next_in_queue;
-        dst->direction = src->direction;
-        dst->interaction_ride_index = src->interaction_ride_index;
-        dst->time_in_queue = src->time_in_queue;
+        dst->GuestNextInQueue = src->next_in_queue;
+        dst->PeepDirection = src->direction;
+        dst->InteractionRideIndex = src->interaction_ride_index;
+        dst->TimeInQueue = src->time_in_queue;
         for (size_t i = 0; i < std::size(src->rides_been_on); i++)
         {
-            dst->rides_been_on[i] = src->rides_been_on[i];
+            dst->RidesBeenOn[i] = src->rides_been_on[i];
         }
-        dst->id = src->id;
-        dst->cash_in_pocket = src->cash_in_pocket;
-        dst->cash_spent = src->cash_spent;
-        dst->time_in_park = src->time_in_park;
-        dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
-        dst->previous_ride = src->previous_ride;
-        dst->previous_ride_time_out = src->previous_ride_time_out;
+        dst->Id = src->id;
+        dst->CashInPocket = src->cash_in_pocket;
+        dst->CashSpent = src->cash_spent;
+        dst->TimeInPark = src->time_in_park;
+        dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
+        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRideTimeOut = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
             auto srcThought = &src->thoughts[i];
-            auto dstThought = &dst->thoughts[i];
+            auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
             dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;

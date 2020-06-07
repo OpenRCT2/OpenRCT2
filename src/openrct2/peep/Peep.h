@@ -664,27 +664,27 @@ struct Peep : SpriteBase
     uint8_t step_progress;
     union
     {
-        uint16_t mechanic_time_since_call; // time getting to ride to fix
-        uint16_t next_in_queue;
+        uint16_t MechanicTimeSinceCall; // time getting to ride to fix
+        uint16_t GuestNextInQueue;
     };
     union
     {
-        uint8_t maze_last_edge;
-        Direction direction; // Direction ?
+        uint8_t MazeLastEdge;
+        Direction PeepDirection; // Direction ?
     };
-    uint8_t interaction_ride_index;
-    uint16_t time_in_queue;
-    uint8_t rides_been_on[32];
+    uint8_t InteractionRideIndex;
+    uint16_t TimeInQueue;
+    uint8_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32_t id;
-    money32 cash_in_pocket;
-    money32 cash_spent;
-    int32_t time_in_park;
-    int8_t rejoin_queue_timeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    uint8_t previous_ride;
-    uint16_t previous_ride_time_out;
-    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];
+    uint32_t Id;
+    money32 CashInPocket;
+    money32 CashSpent;
+    int32_t TimeInPark;
+    int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
+    uint8_t PreviousRide;
+    uint16_t PreviousRideTimeOut;
+    rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {

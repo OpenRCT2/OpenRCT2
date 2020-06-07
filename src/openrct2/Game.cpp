@@ -465,7 +465,7 @@ void game_fix_save_vars()
                 continue;
             }
             auto ft = Formatter::Common();
-            ft.Add<uint32_t>(peep->id);
+            ft.Add<uint32_t>(peep->Id);
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
