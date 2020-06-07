@@ -2202,7 +2202,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
                 break;
             }
 
-            uint8_t trackType = vehicle->track_type >> 2;
+            uint8_t trackType = vehicle->GetTrackType();
             if (track_type_is_station(trackType))
             {
                 break;

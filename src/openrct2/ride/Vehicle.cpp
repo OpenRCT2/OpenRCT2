@@ -1660,7 +1660,7 @@ void Vehicle::UpdateMeasurements()
         if (ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
             return;
 
-        uint16_t trackElemType = track_type / 4;
+        uint16_t trackElemType = GetTrackType();
         if (trackElemType == TRACK_ELEM_POWERED_LIFT || UpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
@@ -3161,7 +3161,7 @@ void Vehicle::TestReset()
 
 bool Vehicle::CurrentTowerElementIsTop()
 {
-    TileElement* tileElement = map_get_track_element_at_of_type(TrackLocation, track_type >> 2);
+    TileElement* tileElement = map_get_track_element_at_of_type(TrackLocation, GetTrackType());
     if (tileElement != nullptr)
     {
         while (!tileElement->IsLastForTile())
@@ -5728,7 +5728,7 @@ GForces Vehicle::GetGForces() const
 
     // Note shr has meant some of the below functions cast a known negative number to
     // unsigned. Possibly an original bug but will be left implemented.
-    switch (track_type >> 2)
+    switch (GetTrackType())
     {
         case TRACK_ELEM_FLAT:
         case TRACK_ELEM_END_STATION:
@@ -6489,7 +6489,7 @@ static bool wouldCollideWithDodgemsTrackEdge(
 
 bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collidedWith) const
 {
-    uint32_t trackType = track_type >> 2;
+    uint32_t trackType = GetTrackType();
 
     if (wouldCollideWithDodgemsTrackEdge(coords, TrackLocation, trackType, (var_44 * 30) >> 9))
     {
@@ -6558,7 +6558,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     // No up stops (coaster types)
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
-        int32_t trackType = track_type >> 2;
+        int32_t trackType = GetTrackType();
         if (!track_element_is_covered(trackType))
         {
             auto gForces = GetGForces();
@@ -6587,7 +6587,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     else if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH)
     {
         // No up stops bobsleigh type
-        int32_t trackType = track_type >> 2;
+        int32_t trackType = GetTrackType();
         if (!track_element_is_covered(trackType))
         {
             auto gForces = GetGForces();
@@ -6683,7 +6683,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
         acceleration = 0;
     }
 
-    int32_t trackType = track_type >> 2;
+    int32_t trackType = GetTrackType();
 
     TileElement* trackElement = map_get_track_element_at_of_type(TrackLocation, trackType);
 
@@ -6819,7 +6819,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
 
 int32_t Vehicle::GetSwingAmount() const
 {
-    int32_t trackType = track_type >> 2;
+    int32_t trackType = GetTrackType();
     switch (trackType)
     {
         case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
@@ -6976,7 +6976,7 @@ void Vehicle::UpdateSwingingCar()
         dx = 5370;
         cx = -5370;
 
-        int32_t trackType = track_type >> 2;
+        int32_t trackType = GetTrackType();
         switch (trackType)
         {
             case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
@@ -7139,7 +7139,7 @@ void Vehicle::UpdateSpinningCar()
         return;
     }
     int32_t spinningInertia = vehicleEntry->spinning_inertia;
-    int32_t trackType = track_type >> 2;
+    int32_t trackType = GetTrackType();
     int32_t dword_F64E08 = _vehicleVelocityF64E08;
     int32_t spinSpeed;
     // An L spin adds to the spin speed, R does the opposite
@@ -7455,7 +7455,7 @@ static void vehicle_play_scenery_door_close_sound(Vehicle* vehicle, WallElement*
  */
 static void vehicle_update_scenery_door(Vehicle* vehicle)
 {
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = vehicle->GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     while ((trackBlock + 1)->index != 255)
     {
@@ -7539,7 +7539,7 @@ static void vehicle_trigger_on_ride_photo(Vehicle* vehicle, TileElement* tileEle
  */
 static void vehicle_update_handle_scenery_door(Vehicle* vehicle)
 {
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = vehicle->GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
     auto wallCoords = CoordsXYZ{ vehicle->TrackLocation, vehicle->TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
@@ -7585,7 +7585,7 @@ static void vehicle_update_play_water_splash_sound()
 void Vehicle::UpdateHandleWaterSplash() const
 {
     rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
-    int32_t trackType = track_type >> 2;
+    int32_t trackType = GetTrackType();
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND))
     {
@@ -7597,7 +7597,7 @@ void Vehicle::UpdateHandleWaterSplash() const
                 {
                     Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
                     Vehicle* nextNextVehicle = GET_VEHICLE(nextVehicle->next_vehicle_on_ride);
-                    if (!track_element_is_covered(nextNextVehicle->track_type >> 2))
+                    if (!track_element_is_covered(nextNextVehicle->GetTrackType()))
                     {
                         if (track_progress == 4)
                         {
@@ -7874,7 +7874,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
         return;
     }
 
-    int32_t trackType = vehicle->track_type >> 2;
+    int32_t trackType = vehicle->GetTrackType();
     if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
@@ -8156,8 +8156,8 @@ bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ri
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
     regs.edi = track_type;
-    regs.cx = track_type >> 2;
-    int32_t trackType = track_type >> 2;
+    regs.cx = GetTrackType();
+    int32_t trackType = GetTrackType();
     if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN)
     {
         if (track_progress == 80)
@@ -8269,7 +8269,7 @@ loc_6DAEB9:
 
     // loc_6DB706
     moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
-    trackType = track_type >> 2;
+    trackType = GetTrackType();
     {
         int16_t curX = TrackLocation.x + moveInfo->x;
         int16_t curY = TrackLocation.y + moveInfo->y;
@@ -8551,7 +8551,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
 loc_6DBA33:;
-    uint16_t trackType = track_type >> 2;
+    uint16_t trackType = GetTrackType();
     if (trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
     {
         int32_t unkVelocity = _vehicleVelocityF64E08;
@@ -8839,7 +8839,7 @@ loc_6DC476:
     }
 
     {
-        uint16_t trackType = vehicle->track_type >> 2;
+        uint16_t trackType = vehicle->GetTrackType();
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
         tileElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
@@ -9088,7 +9088,7 @@ loc_6DCA9A:
     }
 
     {
-        uint16_t trackType = vehicle->track_type >> 2;
+        uint16_t trackType = vehicle->GetTrackType();
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 
@@ -9249,7 +9249,7 @@ loc_6DCE02:
         goto loc_6DCEB2;
     }
     {
-        uint16_t trackType = vehicle->track_type >> 2;
+        uint16_t trackType = vehicle->GetTrackType();
         if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             goto loc_6DCEB2;
@@ -9371,7 +9371,7 @@ loc_6DCEFF:
         }
     }
     regs.eax = vehicle->speed;
-    regs.bx = vehicle->track_type >> 2;
+    regs.bx = vehicle->GetTrackType();
     regs.ebx = regs.eax;
     regs.eax <<= 14;
     regs.ebx *= totalMass;
@@ -9483,7 +9483,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             return curAcceleration;
         }
     }
-    uint8_t modifiedSpeed = modified_speed(track_type >> 2, TrackSubposition, speed);
+    uint8_t modifiedSpeed = modified_speed(GetTrackType(), TrackSubposition, speed);
     int32_t poweredAcceleration = modifiedSpeed << 14;
     int32_t quarterForce = (modifiedSpeed * totalMass) >> 2;
     if (UpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
@@ -9770,7 +9770,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if ((vehicle->track_type >> 2) == TRACK_ELEM_WATER_SPLASH)
+    if ((vehicle->GetTrackType()) == TRACK_ELEM_WATER_SPLASH)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {
@@ -9782,7 +9782,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     {
         if (vehicle->IsHead())
         {
-            if (track_element_is_covered(vehicle->track_type >> 2))
+            if (track_element_is_covered(vehicle->GetTrackType()))
             {
                 if (vehicle->velocity > 0x20000)
                 {
@@ -9867,7 +9867,7 @@ void Vehicle::UpdateCrossings() const
 
     CoordsXYE xyElement = { frontVehicle->TrackLocation,
                             map_get_track_element_at_of_type_seq(
-                                frontVehicle->TrackLocation, frontVehicle->track_type >> 2, 0) };
+                                frontVehicle->TrackLocation, frontVehicle->GetTrackType(), 0) };
     int32_t curZ = frontVehicle->TrackLocation.z;
 
     if (xyElement.element && status != VEHICLE_STATUS_ARRIVING)
@@ -9938,7 +9938,7 @@ void Vehicle::UpdateCrossings() const
     }
 
     xyElement = { backVehicle->TrackLocation,
-                  map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->track_type >> 2, 0) };
+                  map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->GetTrackType(), 0) };
     curZ = backVehicle->TrackLocation.z;
 
     if (xyElement.element)

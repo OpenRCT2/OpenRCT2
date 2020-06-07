@@ -4169,7 +4169,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             for (; !vehicle->IsHead(); vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride))
             {
-                uint16_t trackType = vehicle->track_type >> 2;
+                uint16_t trackType = vehicle->GetTrackType();
                 if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
                     continue;
 

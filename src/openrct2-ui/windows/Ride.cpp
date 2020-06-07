@@ -2774,7 +2774,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
     if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED)
     {
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = vehicle->GetTrackType();
         if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
             || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
             || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
