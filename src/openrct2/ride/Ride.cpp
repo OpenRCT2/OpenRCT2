@@ -2888,7 +2888,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
         return;
     }
 
-    uint8_t trackType = (vehicle->track_type >> 2) & 0xFF;
+    uint8_t trackType = (vehicle->GetTrackType()) & 0xFF;
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
         || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
         || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
@@ -4812,7 +4812,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         {
             car->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
             car->SetState(VEHICLE_STATUS_TRAVELLING, car->sub_state);
-            if ((car->track_type >> 2) == TRACK_ELEM_END_STATION)
+            if ((car->GetTrackType()) == TRACK_ELEM_END_STATION)
             {
                 car->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, car->sub_state);
             }

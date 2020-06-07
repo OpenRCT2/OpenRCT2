@@ -221,7 +221,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
-        uint8_t trackType = track_type >> 2;
+        uint8_t trackType = GetTrackType();
         if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
@@ -299,7 +299,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         if (static_cast<int16_t>(trackProgress) == -1)
         {
-            uint8_t trackType = track_type >> 2;
+            uint8_t trackType = GetTrackType();
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
             _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
 

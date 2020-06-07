@@ -321,6 +321,11 @@ struct Vehicle : SpriteBase
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
 
+    uint16_t GetTrackType() const
+    {
+        return track_type >> 2;
+    }
+
     uint16_t UpdateFlag(uint32_t flag) const
     {
         return update_flags & flag;

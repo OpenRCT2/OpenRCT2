@@ -2339,8 +2339,8 @@ static void vehicle_sprite_17(
 {
     if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
-        if ((vehicle->track_type >> 2) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-            && (vehicle->track_type >> 2) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
+        if ((vehicle->GetTrackType()) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
+            && (vehicle->GetTrackType()) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
         {
             vehicleEntry--;
         }
@@ -2364,9 +2364,9 @@ static void vehicle_sprite_18(
 {
     if (vehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
-        if ((vehicle->track_type >> 2) != TRACK_ELEM_90_DEG_DOWN
-            && (vehicle->track_type >> 2) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-            && (vehicle->track_type >> 2) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
+        if ((vehicle->GetTrackType()) != TRACK_ELEM_90_DEG_DOWN
+            && (vehicle->GetTrackType()) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
+            && (vehicle->GetTrackType()) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
         {
             vehicleEntry--;
         }
@@ -2964,7 +2964,7 @@ static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
  */
 static void vehicle_visual_splash1_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    if ((vehicle->track_type >> 2) != TRACK_ELEM_WATER_SPLASH)
+    if ((vehicle->GetTrackType()) != TRACK_ELEM_WATER_SPLASH)
     {
         return;
     }
@@ -3074,7 +3074,7 @@ static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (!track_element_is_covered(vehicle->track_type >> 2))
+    if (!track_element_is_covered(vehicle->GetTrackType()))
     {
         return;
     }
