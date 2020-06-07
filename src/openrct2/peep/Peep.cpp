@@ -552,7 +552,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
     // If NONE_1 or NONE_2
     if (Action >= PEEP_ACTION_NONE_1)
     {
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
     }
     UpdateCurrentActionSpriteType();
 }
@@ -582,7 +582,7 @@ std::optional<CoordsXY> Peep::UpdateAction()
  */
 std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
-    _unk_F1AEF0 = action_sprite_image_offset;
+    _unk_F1AEF0 = ActionSpriteImageOffset;
     if (Action == PEEP_ACTION_NONE_1)
     {
         Action = PEEP_ACTION_NONE_2;
@@ -628,7 +628,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         {
             WalkingFrameNum = 0;
         }
-        action_sprite_image_offset = imageOffset[WalkingFrameNum];
+        ActionSpriteImageOffset = imageOffset[WalkingFrameNum];
         return loc;
     }
 
@@ -638,12 +638,12 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     // If last frame of action
     if (ActionFrame >= peepAnimation[action_sprite_type].num_frames)
     {
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
         Action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    action_sprite_image_offset = peepAnimation[action_sprite_type].frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation[action_sprite_type].frame_offsets[ActionFrame];
 
     // If not throwing up and not at the frame where sick appears.
     if (Action != PEEP_ACTION_THROW_UP || ActionFrame != 15)
@@ -746,7 +746,7 @@ void Peep::PickupAbort(int32_t old_x)
         SetState(PEEP_STATE_FALLING);
         Action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
         PathCheckOptimisation = 0;
     }
@@ -795,7 +795,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         SetState(PEEP_STATE_FALLING);
         Action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
         action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
         PathCheckOptimisation = 0;
         sprite_position_tween_reset();
@@ -941,7 +941,7 @@ void Peep::UpdateFalling()
 
                         Action = PEEP_ACTION_DROWNING;
                         ActionFrame = 0;
-                        action_sprite_image_offset = 0;
+                        ActionSpriteImageOffset = 0;
 
                         UpdateCurrentActionSpriteType();
                         peep_window_state_update(this);
@@ -1450,7 +1450,7 @@ void peep_applause()
         {
             peep->Action = PEEP_ACTION_CLAP;
             peep->ActionFrame = 0;
-            peep->action_sprite_image_offset = 0;
+            peep->ActionSpriteImageOffset = 0;
             peep->UpdateCurrentActionSpriteType();
         }
     }
@@ -1570,7 +1570,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
     {
         Action = newAction;
         ActionFrame = 0;
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
     }
 
@@ -1620,7 +1620,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->state = PEEP_STATE_FALLING;
     peep->Action = PEEP_ACTION_NONE_2;
     peep->special_sprite = 0;
-    peep->action_sprite_image_offset = 0;
+    peep->ActionSpriteImageOffset = 0;
     peep->WalkingFrameNum = 0;
     peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->PeepFlags = 0;
@@ -2385,7 +2385,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         {
             // Guest is in the ride queue.
             peep->sub_state = 11;
-            peep->action_sprite_image_offset = _unk_F1AEF0;
+            peep->ActionSpriteImageOffset = _unk_F1AEF0;
             return;
         }
 
@@ -2415,7 +2415,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         }
 
         // Guest has decided to go on the ride.
-        peep->action_sprite_image_offset = _unk_F1AEF0;
+        peep->ActionSpriteImageOffset = _unk_F1AEF0;
         peep->InteractionRideIndex = rideIndex;
 
         uint16_t previous_last = ride->stations[stationNum].LastPeepInQueue;
@@ -2985,7 +2985,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
     {
         if (peep->GuestHeadingToRideId == rideIndex)
             peep->GuestHeadingToRideId = 0xFF;
-        peep->action_sprite_image_offset = _unk_F1AEF0;
+        peep->ActionSpriteImageOffset = _unk_F1AEF0;
         peep->SetState(PEEP_STATE_BUYING);
         peep->current_ride = rideIndex;
         peep->sub_state = 0;

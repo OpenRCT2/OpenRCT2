@@ -201,7 +201,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(special_sprite);
     COMPARE_FIELD(action_sprite_type);
     COMPARE_FIELD(next_action_sprite_type);
-    COMPARE_FIELD(action_sprite_image_offset);
+    COMPARE_FIELD(ActionSpriteImageOffset);
     COMPARE_FIELD(Action);
     COMPARE_FIELD(ActionFrame);
     COMPARE_FIELD(StepProgress);

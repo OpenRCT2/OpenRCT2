@@ -459,7 +459,7 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
         {
             passingPeep->Action = PEEP_ACTION_WAVE_2;
             passingPeep->ActionFrame = 0;
-            passingPeep->action_sprite_image_offset = 0;
+            passingPeep->ActionSpriteImageOffset = 0;
             passingPeep->UpdateCurrentActionSpriteType();
         }
     }
@@ -476,7 +476,7 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
     {
         passingPeep->Action = PEEP_ACTION_THROW_UP;
         passingPeep->ActionFrame = 0;
-        passingPeep->action_sprite_image_offset = 0;
+        passingPeep->ActionSpriteImageOffset = 0;
         passingPeep->UpdateCurrentActionSpriteType();
     }
 }
@@ -521,7 +521,7 @@ void Guest::UpdateEasterEggInteractions()
             {
                 Action = PEEP_ACTION_JOY;
                 ActionFrame = 0;
-                action_sprite_image_offset = 0;
+                ActionSpriteImageOffset = 0;
                 UpdateCurrentActionSpriteType();
             }
         }
@@ -1049,7 +1049,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 {
                     Action = PEEP_ACTION_THROW_UP;
                     ActionFrame = 0;
-                    action_sprite_image_offset = 0;
+                    ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
                 }
             }
@@ -1281,7 +1281,7 @@ void Guest::UpdateSitting()
             }
             Action = PEEP_ACTION_SITTING_EAT_FOOD;
             ActionFrame = 0;
-            action_sprite_image_offset = 0;
+            ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
             return;
         }
@@ -1309,7 +1309,7 @@ void Guest::UpdateSitting()
             Action = PEEP_ACTION_SITTING_CHECK_WATCH;
         }
         ActionFrame = 0;
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
         return;
     }
@@ -2405,7 +2405,7 @@ void Guest::ReadMap()
     {
         Action = PEEP_ACTION_READ_MAP;
         ActionFrame = 0;
-        action_sprite_image_offset = 0;
+        ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
     }
 }
@@ -3402,7 +3402,7 @@ void Guest::UpdateBuying()
             {
                 Action = PEEP_ACTION_WITHDRAW_MONEY;
                 ActionFrame = 0;
-                action_sprite_image_offset = 0;
+                ActionSpriteImageOffset = 0;
 
                 UpdateCurrentActionSpriteType();
 
@@ -4126,11 +4126,11 @@ void Guest::UpdateRideLeaveVehicle()
             return;
     }
 
-    action_sprite_image_offset++;
-    if (action_sprite_image_offset & 3)
+    ActionSpriteImageOffset++;
+    if (ActionSpriteImageOffset & 3)
         return;
 
-    action_sprite_image_offset = 0;
+    ActionSpriteImageOffset = 0;
 
     vehicle->num_peeps--;
     vehicle->mass -= mass;
@@ -4841,7 +4841,7 @@ void Guest::UpdateRideMazePathfinding()
         {
             Action = PEEP_ACTION_JUMP;
             ActionFrame = 0;
-            action_sprite_image_offset = 0;
+            ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
         }
     }
@@ -5265,7 +5265,7 @@ void Guest::UpdateWalking()
             {
                 Action = PEEP_ACTION_WAVE_2;
                 ActionFrame = 0;
-                action_sprite_image_offset = 0;
+                ActionSpriteImageOffset = 0;
 
                 UpdateCurrentActionSpriteType();
             }
@@ -5280,7 +5280,7 @@ void Guest::UpdateWalking()
             {
                 Action = PEEP_ACTION_TAKE_PHOTO;
                 ActionFrame = 0;
-                action_sprite_image_offset = 0;
+                ActionSpriteImageOffset = 0;
 
                 UpdateCurrentActionSpriteType();
             }
@@ -5295,7 +5295,7 @@ void Guest::UpdateWalking()
             {
                 Action = PEEP_ACTION_DRAW_PICTURE;
                 ActionFrame = 0;
-                action_sprite_image_offset = 0;
+                ActionSpriteImageOffset = 0;
 
                 UpdateCurrentActionSpriteType();
             }
@@ -5593,7 +5593,7 @@ void Guest::UpdateQueuing()
             // Eat Food/Look at watch
             Action = PEEP_ACTION_EAT_FOOD;
             ActionFrame = 0;
-            action_sprite_image_offset = 0;
+            ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
         }
         if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
@@ -5633,7 +5633,7 @@ void Guest::UpdateQueuing()
                     // Eat food
                     Action = PEEP_ACTION_EAT_FOOD;
                     ActionFrame = 0;
-                    action_sprite_image_offset = 0;
+                    ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
                     break;
                 default:
@@ -5771,7 +5771,7 @@ void Guest::UpdateWatching()
                 {
                     Action = PEEP_ACTION_EAT_FOOD;
                     ActionFrame = 0;
-                    action_sprite_image_offset = 0;
+                    ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
                     return;
                 }
@@ -5781,7 +5781,7 @@ void Guest::UpdateWatching()
             {
                 Action = PEEP_ACTION_TAKE_PHOTO;
                 ActionFrame = 0;
-                action_sprite_image_offset = 0;
+                ActionSpriteImageOffset = 0;
                 UpdateCurrentActionSpriteType();
                 return;
             }
@@ -5792,7 +5792,7 @@ void Guest::UpdateWatching()
                 {
                     Action = PEEP_ACTION_WAVE;
                     ActionFrame = 0;
-                    action_sprite_image_offset = 0;
+                    ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
                     return;
                 }
@@ -6763,7 +6763,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
         return;
 
     sprite_type = new_sprite_type;
-    action_sprite_image_offset = 0;
+    ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
 
     if (Action >= PEEP_ACTION_NONE_1)

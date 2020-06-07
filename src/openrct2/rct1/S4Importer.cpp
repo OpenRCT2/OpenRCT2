@@ -1394,7 +1394,7 @@ private:
         dst->Action = static_cast<PeepActionType>(src->action);
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
-        dst->action_sprite_image_offset = src->action_sprite_image_offset;
+        dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->WalkingFrameNum = src->no_action_frame_num;
         dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->ActionFrame = src->action_frame;

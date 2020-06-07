@@ -162,7 +162,7 @@ private:
             newPeep->window_invalidate_flags = 0;
             newPeep->Action = PEEP_ACTION_NONE_2;
             newPeep->special_sprite = 0;
-            newPeep->action_sprite_image_offset = 0;
+            newPeep->ActionSpriteImageOffset = 0;
             newPeep->WalkingFrameNum = 0;
             newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->PathCheckOptimisation = 0;
