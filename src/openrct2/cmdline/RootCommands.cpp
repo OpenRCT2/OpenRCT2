@@ -54,7 +54,7 @@ static bool _verbose = false;
 static bool _headless = false;
 static utf8* _password = nullptr;
 static utf8* _userDataPath = nullptr;
-static utf8* _openrctDataPath = nullptr;
+static utf8* _openrct2DataPath = nullptr;
 static utf8* _rct1DataPath = nullptr;
 static utf8* _rct2DataPath = nullptr;
 static bool _silentBreakpad = false;
@@ -62,22 +62,22 @@ static bool _silentBreakpad = false;
 // clang-format off
 static constexpr const CommandLineOptionDefinition StandardOptions[]
 {
-    { CMDLINE_TYPE_SWITCH,  &_help,            'h', "help",              "show this help message and exit"                            },
-    { CMDLINE_TYPE_SWITCH,  &_version,         'v', "version",           "show version information and exit"                          },
-    { CMDLINE_TYPE_SWITCH,  &_noInstall,       'n', "no-install",        "do not install scenario if passed"                          },
-    { CMDLINE_TYPE_SWITCH,  &_all,             'a', "all",               "show help for all commands"                                 },
-    { CMDLINE_TYPE_SWITCH,  &_about,           NAC, "about",             "show information about " OPENRCT2_NAME                      },
-    { CMDLINE_TYPE_SWITCH,  &_verbose,         NAC, "verbose",           "log verbose messages"                                       },
-    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
-#ifndef DISABLE_NETWORK
-    { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
-    { CMDLINE_TYPE_STRING,  &_address,         NAC, "address",           "address to listen on when hosting a server"                 },
-#endif
-    { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
-    { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
-    { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
-    { CMDLINE_TYPE_STRING,  &_rct1DataPath,    NAC, "rct1-data-path",    "path to the RollerCoaster Tycoon 1 data directory (containing data/csg1.dat)" },
-    { CMDLINE_TYPE_STRING,  &_rct2DataPath,    NAC, "rct2-data-path",    "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
+    { CMDLINE_TYPE_SWITCH,  &_help,             'h', "help",               "show this help message and exit"                            },
+    { CMDLINE_TYPE_SWITCH,  &_version,          'v', "version",            "show version information and exit"                          },
+    { CMDLINE_TYPE_SWITCH,  &_noInstall,        'n', "no-install",         "do not install scenario if passed"                          },
+    { CMDLINE_TYPE_SWITCH,  &_all,              'a', "all",                "show help for all commands"                                 },
+    { CMDLINE_TYPE_SWITCH,  &_about,            NAC, "about",              "show information about " OPENRCT2_NAME                      },
+    { CMDLINE_TYPE_SWITCH,  &_verbose,          NAC, "verbose",            "log verbose messages"                                       },
+    { CMDLINE_TYPE_SWITCH,  &_headless,         NAC, "headless",           "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
+#ifndef DISABLE_NETWORK                                                    
+    { CMDLINE_TYPE_INTEGER, &_port,             NAC, "port",               "port to use for hosting or joining a server"                },
+    { CMDLINE_TYPE_STRING,  &_address,          NAC, "address",            "address to listen on when hosting a server"                 },
+#endif                                                                     
+    { CMDLINE_TYPE_STRING,  &_password,         NAC, "password",           "password needed to join the server"                         },
+    { CMDLINE_TYPE_STRING,  &_userDataPath,     NAC, "user-data-path",     "path to the user data directory (containing config.ini)"    },
+    { CMDLINE_TYPE_STRING,  &_openrct2DataPath, NAC, "openrct2-data-path", "path to the OpenRCT2 data directory (containing languages)" },
+    { CMDLINE_TYPE_STRING,  &_rct1DataPath,     NAC, "rct1-data-path",     "path to the RollerCoaster Tycoon 1 data directory (containing data/csg1.dat)" },
+    { CMDLINE_TYPE_STRING,  &_rct2DataPath,     NAC, "rct2-data-path",     "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
 #ifdef USE_BREAKPAD
     { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
 #endif // USE_BREAKPAD
@@ -204,12 +204,12 @@ exitcode_t CommandLine::HandleCommandDefault()
         Memory::Free(_userDataPath);
     }
 
-    if (_openrctDataPath != nullptr)
+    if (_openrct2DataPath != nullptr)
     {
         utf8 absolutePath[MAX_PATH]{};
-        Path::GetAbsolute(absolutePath, std::size(absolutePath), _openrctDataPath);
-        String::Set(gCustomOpenrctDataPath, std::size(gCustomOpenrctDataPath), absolutePath);
-        Memory::Free(_openrctDataPath);
+        Path::GetAbsolute(absolutePath, std::size(absolutePath), _openrct2DataPath);
+        String::Set(gCustomOpenRCT2DataPath, std::size(gCustomOpenRCT2DataPath), absolutePath);
+        Memory::Free(_openrct2DataPath);
     }
 
     if (_rct1DataPath != nullptr)

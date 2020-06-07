@@ -110,7 +110,7 @@ bool platform_file_move(const utf8* srcPath, const utf8* dstPath);
 bool platform_file_delete(const utf8* path);
 uint32_t platform_get_ticks();
 void platform_sleep(uint32_t ms);
-void platform_get_openrct_data_path(utf8* outPath, size_t outSize);
+void platform_get_openrct2_data_path(utf8* outPath, size_t outSize);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);
 std::string platform_get_username();
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
@@ -156,7 +156,7 @@ void platform_remove_file_associations();
 bool platform_setup_uri_protocol();
 // This function cannot be marked as 'static', even though it may seem to be,
 // as it requires external linkage, which 'static' prevents
-__declspec(dllexport) int32_t StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow);
+__declspec(dllexport) int32_t StartOpenRCT2(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow);
 #endif // _WIN32
 
 #ifdef __ANDROID__
