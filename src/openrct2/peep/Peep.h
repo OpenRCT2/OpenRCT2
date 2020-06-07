@@ -661,7 +661,7 @@ struct Peep : SpriteBase
     uint8_t action_sprite_image_offset;
     PeepActionType action;
     uint8_t action_frame;
-    uint8_t step_progress;
+    uint8_t StepProgress;
     union
     {
         uint16_t MechanicTimeSinceCall; // time getting to ride to fix

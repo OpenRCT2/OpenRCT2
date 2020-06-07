@@ -1182,7 +1182,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->action_sprite_image_offset = src->action_sprite_image_offset;
     dst->action = static_cast<uint8_t>(src->action);
     dst->action_frame = src->action_frame;
-    dst->step_progress = src->step_progress;
+    dst->step_progress = src->StepProgress;
     dst->next_in_queue = src->GuestNextInQueue;
     dst->direction = src->PeepDirection;
     dst->interaction_ride_index = src->InteractionRideIndex;

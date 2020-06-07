@@ -1447,7 +1447,7 @@ public:
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
         dst->action = static_cast<PeepActionType>(src->action);
         dst->action_frame = src->action_frame;
-        dst->step_progress = src->step_progress;
+        dst->StepProgress = src->step_progress;
         dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;
         dst->InteractionRideIndex = src->interaction_ride_index;

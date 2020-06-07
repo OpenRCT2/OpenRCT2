@@ -1122,8 +1122,8 @@ void Peep::Update()
             stepsToTake += stepsToTake / 2;
     }
 
-    uint32_t carryCheck = step_progress + stepsToTake;
-    step_progress = carryCheck;
+    uint32_t carryCheck = StepProgress + stepsToTake;
+    StepProgress = carryCheck;
     if (carryCheck <= 255)
     {
         auto guest = AsGuest();

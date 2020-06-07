@@ -1423,7 +1423,7 @@ private:
         dst->next_flags = src->next_flags;
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
-        dst->step_progress = src->step_progress;
+        dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
 
         dst->type = static_cast<PeepType>(src->type);
