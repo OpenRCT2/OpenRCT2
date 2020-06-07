@@ -4145,7 +4145,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                             while (spriteId != SPRITE_INDEX_NULL)
                             {
                                 vehicle = GET_VEHICLE(spriteId);
-                                vehicle->update_flags &= ~(
+                                vehicle->ClearUpdateFlag(
                                     VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_UPDATE_FLAG_ZERO_VELOCITY
                                     | VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                                 spriteId = vehicle->next_vehicle_on_train;
@@ -4157,11 +4157,11 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     case BREAKDOWN_DOORS_STUCK_CLOSED:
                     case BREAKDOWN_DOORS_STUCK_OPEN:
                         vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
-                        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+                        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                         break;
                     case BREAKDOWN_VEHICLE_MALFUNCTION:
                         vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
-                        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+                        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                         break;
                 }
                 ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);

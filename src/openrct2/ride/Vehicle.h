@@ -330,6 +330,14 @@ struct Vehicle : SpriteBase
     {
         return update_flags & flag;
     }
+    void ClearUpdateFlag(uint32_t flag)
+    {
+        update_flags &= ~flag;
+    }
+    void SetUpdateFlag(uint32_t flag)
+    {
+        update_flags |= flag;
+    }
 
 private:
     bool SoundCanPlay() const;
