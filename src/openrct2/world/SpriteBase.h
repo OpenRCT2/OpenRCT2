@@ -36,12 +36,11 @@ struct SpriteBase
     template<typename T> bool Is() const;
     template<typename T> T* As()
     {
-        T* result = nullptr;
-        if (Is<T>())
-        {
-            result = reinterpret_cast<T*>(this);
-        }
-        return result;
+        return Is<T>() ? reinterpret_cast<T*>(this) : nullptr;
+    }
+    template<typename T> const T* As() const
+    {
+        return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }
 };
 
