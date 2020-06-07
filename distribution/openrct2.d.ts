@@ -1591,13 +1591,41 @@ declare global {
          * @return The window object.
          */
         getWindow(id: number): Window;
+
+        /**
+         * Get a window with the given classification. TODO not sure though because I would assume that it would be an array
+         * 
+         * @param classification TODO?
+         * 
+         * @return The window object.
+         */
         getWindow(classification: string): Window;
+
+        /**
+         * Open a window with the given parameters.
+         * 
+         * @param desc An object containing information about the size and appaearance of the window
+         * 
+         * @return An object representing the opened window
+         */
         openWindow(desc: WindowDesc): Window;
+
+        /**
+         * Close all windows with the given classification. TODO?
+         * 
+         * @param classification The window classification.
+         * @param id (Optional) The id of the window to close.
+         */
         closeWindows(classification: string, id?: number): void;
+
+        /**
+         * Close all windows. Performs the same operation as the shift+backspace shortcut.
+         */
         closeAllWindows(): void;
 
         /**
          * Show a red error box.
+         * 
          * @param title The title / first line of the box.
          * @param message The message / second line of the box.
          */
@@ -1605,6 +1633,7 @@ declare global {
 
         /**
          * Shows a text input prompt and calls the given callback when entered.
+         * 
          * @param desc The parameters for the text input window.
          */
         showTextInput(desc: TextInputDesc): void;
@@ -1612,10 +1641,17 @@ declare global {
         /**
          * Begins a new tool session. The cursor will change to the style specified by the
          * given tool descriptor and cursor events will be provided.
+         * 
          * @param tool The properties and event handlers for the tool.
          */
         activateTool(tool: ToolDesc): void;
 
+        /**
+         * Add a menu item, ie to a dropdown. TODO?
+         * 
+         * @param text The menu item text.
+         * @param callback A function to call upon selecting the menu item.
+         */
         registerMenuItem(text: string, callback: () => void): void;
     }
 
@@ -1623,49 +1659,61 @@ declare global {
      * Parameters for the text input window.
      */
     interface TextInputDesc {
-        /**
-         * The title of the text input window.
-         */
+        /** The title of the text input window. */
         title: string;
-
-        /**
-         * The description to show above the text box.
-         */
+        /** The description to show above the text box. */
         description: string;
-
-        /**
-         * The current value of the text box.
-         */
+        /** The current value of the text box, if any. */
         initialValue?: string;
-
-        /**
-         * The maximum length the value can be.
-         */
+        /** The maximum length the value can be, if any. TODO is there a default? */
         maxLength?: number;
 
         /**
-         * The function to call when the user has entered a new value and pressed OK.
+         * The function to call when the user has entered a new value and pressed OK. The function takes a
+         * string and has no return value.
          */
         callback: (value: string) => void;
     }
 
+    /**
+     * Represents a range of selected tiles. TODO do you need both? Can the array be different than the range & vice versa?
+     */
     interface TileSelection {
+        /** A rectangular range of tiles. */
         range: MapRange;
+        /** An array of tile coordinates. */
         tiles: CoordsXY[];
     }
 
+    /**
+     * A cursor tool.
+     */
     interface Tool {
+        /** The unique ID of the tool. TODO is there a set of values for this? */
         id: string;
+        /** The cursor type (e.g. arrow, bench, bin, etc). */
         cursor: CursorType;
 
+        /**
+         * The function to call when the tool is canceled. Often will reset to the default cursor. The
+         * function takes no arguments and returns no value.
+         */
         cancel: () => void;
     }
 
+    /**
+     * Arguments associated with tool events.
+     */
     interface ToolEventArgs {
+        /** True if the tool is activated. Usually corresponds to the mouse button being down. */
         readonly isDown: boolean;
+        /** The game client coordinates of the tool. */
         readonly screenCoords: ScreenCoordsXY;
+        /** The map coordinates of the tool, if applicable. */
         readonly mapCoords?: CoordsXYZ;
+        /** The map tile index, if applicable. */
         readonly tileElementIndex?: number;
+        /** The ID of the entity under the tool. */
         readonly entityId?: number;
     }
 
@@ -1673,16 +1721,43 @@ declare global {
      * Describes the properties and event handlers for a custom tool.
      */
     interface ToolDesc {
+        /** A unique ID for the tool. */
         id: string;
+        /** The cursor type for the custom tool (e.g. arrow, bench, bin, etc). */
         cursor?: CursorType;
 
+        /**
+         * A function called when the tool is started. The function takes no arguments and returns no value.
+         */
         onStart: () => void;
+
+        /** 
+         * A function called when the tool is activated. Usually corresponds to the mouse button being pressed.
+         * The function takes a ToolEventArgs instance and returns no value.
+         */
         onDown: (e: ToolEventArgs) => void;
+
+        /**
+         * A function called when the tool is moved. Usually corresponds to the mouse being moved. The function
+         * takes a ToolEventArgs instance and returns no value.
+         */
         onMove: (e: ToolEventArgs) => void;
+
+        /** 
+         * A function called when the tool is deactivated. Usually corresponds to the mouse button being released.
+         * The function takes a ToolEventArgs instance and returns no value.
+         */
         onUp: (e: ToolEventArgs) => void;
+
+        /**
+         * A function called when the tool is finished. The function takes no arguments and returns no value.
+         */
         onFinish: () => void;
     }
 
+    /**
+     * A string representing the cursor type.
+     */
     type CursorType =
         "arrow" |
         "bench_down" |
@@ -1718,158 +1793,369 @@ declare global {
     type WidgetType =
         "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
 
+    /**
+     * An interface that represents some UI element.
+     */
     interface Widget {
+        /** The type of widget (e.g. checkbox, dropdown, label, etc). */
         type: WidgetType;
+        /** The horizotal position of the widget, in pixels. TODO is this relative? */
         x: number;
+        /** The vertical position of the widget, in pixels. TODO is this relative? */
         y: number;
+        /** The width of the widget, in pixels. */
         width: number;
+        /** The height of the widget, in pixels. */
         height: number;
+        /** (Optional) The name of the widget. */
         name?: string;
+        /** (Optional) The widget tooltip. */
         tooltip?: string;
+        /** Indicates if the widget can be interacted with. */
         isDisabled?: boolean;
     }
 
+    /**
+     * Represents a button widget, including callbacks.
+     */
     interface ButtonWidget extends Widget {
+        /** The button image. Commonly used for tabs. TODO what number for no image? */
+        image: number;
+        /** The button appearance, pressed or not pressed. */
+        isPressed: boolean;
+        /** The button text. */
+        text: string;
+
         /**
-         * Whether the button has a 3D border.
+         * Whether the button has a 3D border. TODO what is the default if undefined?
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border?: boolean;
-        image: number;
-        isPressed: boolean;
-        text: string;
+
+        /**
+         * A function to be executed when the button is clicked. The function takes no argument and
+         * returns no value.
+         */
         onClick: () => void;
     }
 
+    /**
+     * Represents a checkbox widget, including callbacks.
+     */
     interface CheckboxWidget extends Widget {
+        /** The checkbox text. */
         text: string;
+        /** The checkbox state. */
         isChecked: boolean;
+        
+        /**
+         * A function to be executed when the state of the checkbox changes. The function takes a boolean
+         * that represents the state of the checkbox and returns no value.
+         */
         onChange: (isChecked: boolean) => void;
     }
 
+    /**
+     * Represents a dropdown widget.
+     */
     interface DropdownWidget extends Widget {
+        /** An array of strings available as dropdown options. */
         items: string[];
+        /** The index of the currently selected item. */
         selectedIndex: number;
+
+        /**
+         * A function to be executed when the selected item changes. The function takes the index of the item
+         * and returns no value.
+         */
         onChange: (index: number) => void;
     }
 
+    /** 
+     * Represents a text label.
+     */
     interface LabelWidget extends Widget {
+        /** The label text. */
         text: string;
+
+        /** 
+         * A function to be called when the label changes. It is uncommon for this to do anything for labels.
+         * The function takes an index TODO?? and returns no value.
+         */
         onChange: (index: number) => void;
     }
 
+    /**
+     * The sorting order to be used for list columns.
+     */
     type SortOrder = "none" | "ascending" | "descending";
 
+    /**
+     * The scroll bar type(s) to be used.
+     */
     type ScrollbarType = "none" | "horizontal" | "vertical" | "both";
 
+    /**
+     * Represents a column in a list.
+     */
     interface ListViewColumn {
+        /** Indicates the ability to sort by this column. TODO default?*/
         canSort?: boolean;
+        /** The current sort order for the column. */
         sortOrder?: SortOrder;
+        /** (Optional) The column header. */
         header?: string;
+        /** (Optional) The tooltop for the column header. */
         headerTooltip?: string;
+        /** (Optional) The column width. TODO what if not defined? */
         width?: number;
+        /** (Optional) A number used to size columns in a list by ratio. Consider using this for lists with no horizontal scroll. */
         ratioWidth?: number;
+        /** (Optional) The minimum width of a column, in pixels. */
         minWidth?: number;
+        /** (Optional) The maximum width of a column, in pixels. */
         maxWidth?: number;
     }
 
+    /**
+     * An array of strings in a list view.
+     */
     type ListViewItem = string[];
 
+    /**
+     * Represents a selected cell.
+     */
     interface RowColumn {
+        /** The row number of the selected cell indexed from 0. */
         row: number;
+        /** The column number of the selected cell indexed from 0. */
         column: number;
     }
 
+    /** 
+     * Represents a list view widget and callbacks for interacting with the list.
+     */
     interface ListView extends Widget {
+        /** (Optional) The scollbar type to use for the list. TODO default? */
         scrollbars?: ScrollbarType;
+        /** (Optional) Indicates if alternating rows use different coloring to improve readability. */
         isStriped?: boolean;
+        /** (Optional) Indicates if column headings should be shown. */
         showColumnHeaders?: boolean;
+        /** (Optional) An array of columns in the list. */
         columns?: ListViewColumn[];
+        /** (Optional) An array or strings or ListViewItem with the list items. */
         items?: string[] | ListViewItem[];
+        /** (Optional) Indicates the row and column of a selected cell, if any. */
         selectedCell?: RowColumn;
+        /** Indicates the highlighted cell, if any. */
         readonly highlightedCell?: RowColumn;
+        /** (Optional) Indicates if cells can be selected in the list. TODO default? */
         canSelect?: boolean;
 
+        /**
+         * A function executed when a cell is highlighted. The function takes an item index and a column index
+         * and returns no value. Note that the item index is not a row index because the list may be sorted.
+         */
         onHighlight: (item: number, column: number) => void;
+
+        /**
+         * A function executed when a cell is clicked. The function takes an item index and a colimn index and
+         * returns no value. Note that the item index is not a row index because the list may be sorted.
+         */
         onClick: (item: number, column: number) => void;
     }
 
+    /**
+     * Represents a spinner widget which can be incremented or decremented, such as for price.
+     */
     interface SpinnerWidget extends Widget {
+        /** The spinner text. */
         text: string;
+
+        /**
+         * A function executed when the spinner is decremented. The function takes no arguments and returns no value.
+         */
         onDecrement: () => void;
+
+        /** 
+         * A function executed when the spinner is incremented. The function takes no arguments and returns no value.
+         */
         onIncrement: () => void;
     }
 
+    /**
+     * Represents a viewport widget.
+     */
     interface ViewportWidget extends Widget {
+        /** A viewport to a point on the map. */
         viewport: Viewport
     }
 
+    /**
+     * Represents a game window.
+     */
     interface Window {
+        /** TODO? */
         classification: number;
+        /** TODO? */
         number: number;
+        /** The horizontal position of the window in the game client, in pixels. */
         x: number;
+        /** The vertical position of the window in the game client, in pixels. */
         y: number;
+        /** The width of the window, in pixels. */
         width: number;
+        /** The height of the window, in pixels. */
         height: number;
+        /** The minimum width of the window, in pixels. */
         minWidth: number;
+        /** The maximum width of the window, in pixels. */
         maxWidth: number;
+        /** The minimum height of the window, in pixels. */
         minHeight: number;
+        /** The maximum height of the window, in pixels. */
         maxHeight: number;
+        /** TODO? */
         isSticky: boolean;
+        /** An array of numbers representing the window colors. TODO? */
         colours: number[];
+        /** The window title. */
         title: string;
+        /** An array of widgets that make up the window. */
         widgets: Widget[];
+        /** The index of the currently active tab. */
         tabIndex: number;
 
+        /**
+         * Close the window.
+         */
         close(): void;
+
+        /**
+         * Bring the window to the front and make it the focused window.
+         */
         bringToFront(): void;
+
+        /**
+         * Find the widget of the given type with the given name.
+         * 
+         * @param name The name of the widget. TODO what if there is more than one?
+         * 
+         * @return The widget, or TODO if it doesn't exist.
+         */
         findWidget<T extends Widget>(name: string): T;
     }
 
+    /** 
+     * Represents a window description. Window descriptions are used to create windows with `ui.createWindow`.
+     */
     interface WindowDesc {
+        /** TODO? */
         classification: string;
+        /** (Optional) The horizontal position of the window, in pixels. */
         x?: number;
+        /** (Optional) The vertical position of the window, in pixels. */
         y?: number;
+        /** The width of the window, in pixels. */
         width: number;
+        /** The height of the window, in pixels. */
         height: number;
+        /** The title of the window. */
         title: string;
+        /** (Optional) The window ID. */
         id?: number;
+        /** (Optional) The minimum width of the window, in pixels. */
         minWidth?: number;
+        /** (Optional) The maximum width of the window, in pixels. */
         minHeight?: number;
+        /** (Optional) The minimum height of the window, in pixels. */
         maxWidth?: number;
+        /** (Optional) The maximum height of the window, in pixels. */
         maxHeight?: number;
+        /** (Optional) An array of widgets that make up the window. */
         widgets?: Widget[];
+        /** (Optional) The window colors. TODO default? */
         colours?: number[];
+        /** (Optional) An array of tabs in the winow. */
         tabs?: WindowTabDesc[];
 
+        /**
+         * A function executed when the window is closed.
+         */
         onClose?: () => void;
+
+        /**
+         * A function executed when the window is updated. TODO when does this happen exactly?
+         */
         onUpdate?: () => void;
+
+        /**
+         * A function executed when a new tab is selected.
+         */
         tabChange?: () => void;
     }
 
+    /**
+     * Represents the animation state of an image in a tab.
+     */
     interface ImageAnimation {
+        /** The animation frame used when the tab is not selected. */
         frameBase: number;
+        /** (Optional) The number of frames to use in the animation. */
         frameCount?: number;
+        /** (Optional) How long to display each frame, in x. TODO units? Ticks? default if not provided? */
         frameDuration?: number;
+        /** TODO offset from where? window? tab? */
         offset?: ScreenCoordsXY;
     }
 
+    /**
+     * Represents a window tab and its widgets.
+     */
     interface WindowTabDesc {
+        /** The image number or image animation to be used for the tab. */
         image: number | ImageAnimation;
+        /** (Optional) A list of widgets in the tab. */
         widgets?: Widget[];
     }
 
+    /**
+     * Represents a viewport.
+     */
     interface Viewport {
+        /** The left edge of the viewport. TODO relative to where? */
         left: number;
+        /** The top edge of the viewport. TODO relative to where? */
         top: number;
+        /** The right edge of the viewport. TODO relative to where? */
         right: number;
+        /** The bottom edge of the viewport. TODO relative to where? */
         bottom: number;
+        /** The rotational position of the viewport (0-3). */
         rotation: number;
+        /** The zoom level of the viewport (0-x). TODO */
         zoom: number;
+        /** TODO? */
         visibilityFlags: number;
 
+        /**
+         * Get the center coorindates of the viewport.
+         */
         getCentrePosition(): CoordsXY;
+
+        /**
+         * Change the viewport's position. TODO center position?  Upper left?
+         * 
+         * @param position The 2- or 3-dimensional coordinates to move to.
+         */
         moveTo(position: CoordsXY | CoordsXYZ): void;
+
+        /**
+         * Scroll the viewport to the given position. TODO how is this different from move? scroll vs instant i guess?
+         * 
+         * @param position The 2- or 3-dimensional coordinatrs to scroll to.
+         */
         scrollTo(position: CoordsXY | CoordsXYZ): void;
     }
 }
