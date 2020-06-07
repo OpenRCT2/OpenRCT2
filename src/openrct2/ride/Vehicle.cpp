@@ -6756,9 +6756,9 @@ void Vehicle::UpdateVelocity()
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
-static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, TileElement* tileElement)
+static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
 {
-    auto location = vehicle->TrackLocation;
+    auto location = vehicleTrackLocation;
     track_begin_end trackBeginEnd, slowTrackBeginEnd;
     TileElement slowTileElement = *tileElement;
     bool counter = true;
@@ -6769,7 +6769,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
         {
             return;
         }
-        if (trackBeginEnd.begin_x == vehicle->TrackLocation.x && trackBeginEnd.begin_y == vehicle->TrackLocation.y
+        if (trackBeginEnd.begin_x == vehicleTrackLocation.x && trackBeginEnd.begin_y == vehicleTrackLocation.y
             && tileElement == trackBeginEnd.begin_element)
         {
             return;
@@ -6810,8 +6810,7 @@ static void vehicle_update_block_brakes_open_previous_section(Vehicle* vehicle, 
     int32_t trackType = trackElement->GetTrackType();
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
-        auto ride = get_ride(vehicle->ride);
-        if (ride != nullptr && ride->IsBlockSectioned())
+        if (ride.IsBlockSectioned())
         {
             audio_play_sound_at_location(SoundId::BlockBrakeClose, location);
         }
@@ -7418,7 +7417,7 @@ void Vehicle::UpdateAdditionalAnimation()
  *
  *  rct2: 0x006DEDB1
  */
-static void vehicle_play_scenery_door_open_sound(Vehicle* vehicle, WallElement* tileElement)
+static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
     rct_scenery_entry* wallEntry = tileElement->GetEntry();
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
@@ -7427,7 +7426,7 @@ static void vehicle_play_scenery_door_open_sound(Vehicle* vehicle, WallElement* 
         auto soundId = DoorOpenSoundIds[doorSoundType - 1];
         if (soundId != SoundId::Null)
         {
-            audio_play_sound_at_location(soundId, vehicle->TrackLocation);
+            audio_play_sound_at_location(soundId, loc);
         }
     }
 }
@@ -7436,7 +7435,7 @@ static void vehicle_play_scenery_door_open_sound(Vehicle* vehicle, WallElement* 
  *
  *  rct2: 0x006DED7A
  */
-static void vehicle_play_scenery_door_close_sound(Vehicle* vehicle, WallElement* tileElement)
+static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
     rct_scenery_entry* wallEntry = tileElement->GetEntry();
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
@@ -7445,7 +7444,7 @@ static void vehicle_play_scenery_door_close_sound(Vehicle* vehicle, WallElement*
         auto soundId = DoorCloseSoundIds[doorSoundType - 1];
         if (soundId != SoundId::Null)
         {
-            audio_play_sound_at_location(soundId, vehicle->TrackLocation);
+            audio_play_sound_at_location(soundId, loc);
         }
     }
 }
@@ -7478,14 +7477,14 @@ static void vehicle_update_scenery_door(Vehicle* vehicle)
         tileElement->SetAnimationIsBackwards(false);
         tileElement->SetAnimationFrame(1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
-        vehicle_play_scenery_door_open_sound(vehicle, tileElement);
+        play_scenery_door_open_sound(vehicle->TrackLocation, tileElement);
     }
 
     if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
     {
         tileElement->SetAnimationIsBackwards(false);
         tileElement->SetAnimationFrame(6);
-        vehicle_play_scenery_door_close_sound(vehicle, tileElement);
+        play_scenery_door_close_sound(vehicle->TrackLocation, tileElement);
     }
 }
 
@@ -7527,11 +7526,11 @@ static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
  *
  *  rct2: 0x006DB545
  */
-static void vehicle_trigger_on_ride_photo(Vehicle* vehicle, TileElement* tileElement)
+static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement)
 {
     tileElement->AsTrack()->SetPhotoTimeout();
 
-    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { vehicle->TrackLocation, tileElement->GetBaseZ() });
+    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
 }
 
 /**
@@ -7558,14 +7557,14 @@ static void vehicle_update_handle_scenery_door(Vehicle* vehicle)
         tileElement->SetAnimationIsBackwards(true);
         tileElement->SetAnimationFrame(1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
-        vehicle_play_scenery_door_open_sound(vehicle, tileElement);
+        play_scenery_door_open_sound(vehicle->TrackLocation, tileElement);
     }
 
     if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
     {
         tileElement->SetAnimationIsBackwards(true);
         tileElement->SetAnimationFrame(6);
-        vehicle_play_scenery_door_close_sound(vehicle, tileElement);
+        play_scenery_door_close_sound(vehicle->TrackLocation, tileElement);
     }
 }
 
@@ -7989,7 +7988,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
                 }
             }
             map_invalidate_element(TrackLocation, tileElement);
-            vehicle_update_block_brakes_open_previous_section(this, tileElement);
+            block_brakes_open_previous_section(*curRide, TrackLocation, tileElement);
         }
     }
 
@@ -8127,7 +8126,7 @@ loc_6DB41D:
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
     {
-        vehicle_trigger_on_ride_photo(this, tileElement);
+        trigger_on_ride_photo(TrackLocation, tileElement);
     }
     {
         curRide = get_ride(tileElement->AsTrack()->GetRideIndex());
