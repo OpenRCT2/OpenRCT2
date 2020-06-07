@@ -108,63 +108,26 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             uint16_t height = jumpingFountain.z + 6;
             int32_t ebx = imageDirection / 8;
 
-            uint8_t al = (jumpingFountain.FountainFlags / 128) & 1;
-            uint8_t ah = (jumpingFountain.sprite_direction / 16) & 1;
+            // Fountain is firing anti clockwise
+            bool reversed = (jumpingFountain.FountainFlags & FOUNTAIN_FLAG::DIRECTION);
+            // Fountain rotation
+            bool rotated = (jumpingFountain.sprite_direction / 16) & 1;
+            bool isAntiClockwise = (ebx / 2) & 1; // Clockwise or Anti-clockwise
 
-            if (al == ah)
+            // These cancel each other out
+            if (reversed != rotated)
             {
-                al = ebx / 2;
-            }
-            else
-            {
-                al = ebx / 2;
-                al = al ^ 1;
+                isAntiClockwise = !isAntiClockwise;
             }
 
             uint32_t baseImageId = (jumpingFountain.type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain.frame;
-            if (al & 1)
-            {
-                switch (ebx)
-                {
-                    case 0:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, -3, height);
-                        break;
+            constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 }, CoordsXY{ 0, -3 } };
+            constexpr std::array<CoordsXY, 2> clockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, 3 }, CoordsXY{ 0, 3 } };
 
-                    case 1:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, 0, height);
-                        break;
+            auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
 
-                    case 2:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, -3, height);
-                        break;
-
-                    case 3:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, -32, height);
-                        break;
-                }
-            }
-            else
-            {
-                switch (ebx)
-                {
-                    case 0:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, 3, height);
-                        break;
-
-                    case 1:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, 0, height);
-                        break;
-
-                    case 2:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 3, height);
-                        break;
-
-                    case 3:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, -32, height);
-                        break;
-                }
-            }
+            sub_98197C_rotated(session, ebx, imageId, 0, 0, 32, 1, 3, height, bb[ebx & 1].x, bb[ebx & 1].y, height);
             break;
         }
 
