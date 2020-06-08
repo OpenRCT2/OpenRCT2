@@ -208,7 +208,7 @@ private:
             }
             if (peep->item_extra_flags & PEEP_ITEM_PHOTO4)
             {
-                if (peep->photo4_ride_ref == _rideIndex)
+                if (peep->Photo4RideRef == _rideIndex)
                 {
                     peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
                 }

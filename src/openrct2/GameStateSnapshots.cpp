@@ -249,7 +249,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, item_extra_flags);
         COMPARE_FIELD(Peep, photo2_ride_ref);
         COMPARE_FIELD(Peep, photo3_ride_ref);
-        COMPARE_FIELD(Peep, photo4_ride_ref);
+        COMPARE_FIELD(Peep, Photo4RideRef);
         COMPARE_FIELD(Peep, CurrentRide);
         COMPARE_FIELD(Peep, CurrentRideStation);
         COMPARE_FIELD(Peep, CurrentTrain);

@@ -1436,7 +1436,7 @@ public:
         dst->item_extra_flags = src->item_extra_flags;
         dst->photo2_ride_ref = src->photo2_ride_ref;
         dst->photo3_ride_ref = src->photo3_ride_ref;
-        dst->photo4_ride_ref = src->photo4_ride_ref;
+        dst->Photo4RideRef = src->photo4_ride_ref;
         dst->CurrentRide = src->current_ride;
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;

@@ -2025,7 +2025,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO4:
-            ride = get_ride(peep->photo4_ride_ref);
+            ride = get_ride(peep->Photo4RideRef);
             if (ride != nullptr)
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;

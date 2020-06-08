@@ -1679,7 +1679,7 @@ loc_69B221:
         photo3_ride_ref = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO4)
-        photo4_ride_ref = ride->id;
+        Photo4RideRef = ride->id;
 
     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     UpdateSpriteType();
