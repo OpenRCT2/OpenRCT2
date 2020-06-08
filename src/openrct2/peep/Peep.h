@@ -648,7 +648,7 @@ struct Peep : SpriteBase
         uint16_t time_to_sitdown;
         struct
         {
-            uint8_t time_to_stand;
+            uint8_t TimeToStand;
             uint8_t StandingFlags;
         };
     };

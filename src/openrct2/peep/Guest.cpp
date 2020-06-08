@@ -5749,7 +5749,7 @@ void Guest::UpdateWatching()
 
         sub_state++;
 
-        time_to_stand = std::clamp(((129 - energy) * 16 + 50) / 2, 0, 255);
+        TimeToStand = std::clamp(((129 - energy) * 16 + 50) / 2, 0, 255);
         UpdateSpriteType();
     }
     else if (sub_state == 1)
@@ -5803,8 +5803,8 @@ void Guest::UpdateWatching()
         if (!(StandingFlags & (1 << 7)))
             return;
 
-        time_to_stand--;
-        if (time_to_stand != 0)
+        TimeToStand--;
+        if (TimeToStand != 0)
             return;
 
         SetState(PEEP_STATE_WALKING);

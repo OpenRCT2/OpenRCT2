@@ -167,10 +167,10 @@ private:
                 if (peep->current_ride == _rideIndex)
                 {
                     peep->current_ride = RIDE_ID_NULL;
-                    if (peep->time_to_stand >= 50)
+                    if (peep->TimeToStand >= 50)
                     {
                         // make peep stop watching the ride
-                        peep->time_to_stand = 50;
+                        peep->TimeToStand = 50;
                     }
                 }
             }
