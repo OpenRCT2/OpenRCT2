@@ -49,6 +49,24 @@ namespace OpenRCT2::Ui::Windows
         { WWT_RESIZE, 1, 0, 0, 14, 0, 0xFFFFFFFF, STR_NONE },                // content panel
     };
 
+// TODO make a function that maps this.
+    static constexpr std::array<std::string_view, 99999> WindowClassifications = {
+        "main_window", "top_toolbar", "bottom_toolbar", "tooltip", "dropdown", "about", "publisher_credits",
+        "music_credits", "error", "ride", "ride_construction", "save_prompt", "ride_list", "construct_ride",
+        "demolish_ride_prompt", "scenery", "options", "footpath", "land", "water", "peep", "guest_list",
+        "staff_list", "fire_prompt", "park_information", "finances", "title_menu", "title_exit",
+        "recent_news", "scenario_select", "track_design_list", "track_design_place", "new_campaign",
+        "keyboard_shortcut_list", "change_keyboard_shortcut", "map", "title_logo", "banner", "map_tooltip",
+        "editor_object_selection", "editor_invention_list", "editor_invention_list_drag",
+        "editor_scenario_options", "editor_objective_options", "manage_track_design", "track_delete_prompt",
+        "install_track", "clear_scenery", "scenery_scatter", "notification_options", "cheats", "research",
+        "viewport", "text_input", "map_gen", "load_save", "load_save_overwrite_prompt", "title_options",
+        "land_rights", "themes", "tile_inspector", "changelog", "title_editor", "title_command_editor",
+        "multiplayer", "player", "network_status", "server_list", "server_start", "custom_currency_config",
+        "debug_paint", "view_clipping", "object_load_error", "network", "staff", "editor_track_bottom_toolbar",
+        "editor_scenario_bottom_toolbar", "chat", "console", "custom_window", "null"
+    };
+
     static void window_custom_close(rct_window* w);
     static void window_custom_mouseup(rct_window* w, rct_widgetindex widgetIndex);
     static void window_custom_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);

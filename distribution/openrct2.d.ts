@@ -42,8 +42,85 @@ declare global {
     */
     var ui: Ui;
 
+    enum Colour {
+        Black,
+        Grey,
+        White,
+        DarkPurple,
+        LightPurple,
+        BrightPurple,
+        DarkBlue,
+        LightBlue,
+        IcyBlue,
+        Teal,
+        Aquamarine,
+        SaturatedGreen,
+        DarkGreen,
+        MossGreen,
+        BrightGreen,
+        OliveGreen,
+        DarkOliveGreen,
+        BrightYellow,
+        Yellow,
+        DarkYellow,
+        LightOrange,
+        DarkOrange,
+        LightBrown,
+        SaturatedBrown,
+        DarkBrown,
+        SalmonPink,
+        BordeauxRed,
+        SaturatedRed,
+        BrightRed,
+        DarkPink,
+        BrightPink,
+        LightPink,
+        ColourCount
+    }
+
+    enum EntertainerCostume {
+        Panda,
+        Tiger,
+        Elephant,
+        Roman,
+        Gorilla,
+        Snowman,
+        Knight,
+        Astronaut,
+        Bandit,
+        Sheriff,
+        Pirate,
+        CostumeCount
+    }
+
+    enum StaffOrderFlags {
+        Sweeping = (1 << 0),
+        WaterFlowers = (1 << 1),
+        EmptyBins = (1 << 2),
+        Mowing = (1 << 3),
+        InspectRides = (1 << 0),
+        FixRides = (1 << 1)
+    }
+
+    type WindowClassification = 
+        "main_window" | "top_toolbar" | "bottom_toolbar" | "tooltip" | "dropdown" | "about" | "publisher_credits" |
+        "music_credits" | "error" | "ride" | "ride_construction" | "save_prompt" | "ride_list" | "construct_ride" |
+        "demolish_ride_prompt" | "scenery" | "options" | "footpath" | "land" | "water" | "peep" | "guest_list" |
+        "staff_list" | "fire_prompt" | "park_information" | "finances" | "title_menu" | "title_exit" |
+        "recent_news" | "scenario_select" | "track_design_list" | "track_design_place" | "new_campaign" |
+        "keyboard_shortcut_list" | "change_keyboard_shortcut" | "map" | "title_logo" | "banner" | "map_tooltip" |
+        "editor_object_selection" | "editor_invention_list" | "editor_invention_list_drag" |
+        "editor_scenario_options" | "editor_objective_options" | "manage_track_design" | "track_delete_prompt" |
+        "install_track" | "clear_scenery" | "scenery_scatter" | "notification_options" | "cheats" | "research" |
+        "viewport" | "text_input" | "map_gen" | "load_save" | "load_save_overwrite_prompt" | "title_options" |
+        "land_rights" | "themes" | "tile_inspector" | "changelog" | "title_editor" | "title_command_editor" |
+        "multiplayer" | "player" | "network_status" | "server_list" | "server_start" | "custom_currency_config" |
+        "debug_paint" | "view_clipping" | "object_load_error" | "network" | "staff" | "editor_track_bottom_toolbar" |
+        "editor_scenario_bottom_toolbar" | "chat" | "console" | "custom_window" | "null";
+
     /**
-     * Registers the plugin. This only only be called once.
+     * Registers the plugin. This should only be called once.
+     * 
      * @param metadata Information about the plugin and the entry point.
      */
     function registerPlugin(metadata: PluginMetadata): void;
@@ -52,6 +129,7 @@ declare global {
      * Represents a JavaScript object that can or should be disposed when no longer needed.
      */
     interface IDisposable {
+        /** Dispose the object. */
         dispose(): void;
     }
 
@@ -59,7 +137,9 @@ declare global {
      * A coordinate within the game's client screen in pixels.
      */
     interface ScreenCoordsXY {
+        /** The horizontal coorindate in pixels. */
         x: number;
+        /** The vertical coordinate in pixels. */
         y: number;
     }
 
@@ -93,7 +173,9 @@ declare global {
      * A rectangular area specified using two coordinates.
      */
     interface MapRange {
+        /** The top left map coordinate defining the range. */
         leftTop: CoordsXY;
+        /** The bottom right map coordinate defining the range. */
         rightBottom: CoordsXY;
     }
 
@@ -193,7 +275,7 @@ declare global {
         /**
          * Get the loaded small scenery object at the given index.
          * 
-         * @param type The "small_cenery" object type.
+         * @param type The "small_scenery" object type.
          * @param index The index. TODO?
          * 
          * @return The loaded small scenery object. TODO what if no object at index?
@@ -278,6 +360,8 @@ declare global {
          * 
          * @param hook The "action.query" hook type.
          * @param callback The function to execute with the result of the game action.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
 
@@ -286,6 +370,8 @@ declare global {
          * 
          * @param hook The "action.execute" hook type.
          * @param callback The function to execute with the result of the game action.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
 
@@ -294,6 +380,8 @@ declare global {
          * 
          * @param hook The "interval.tick" hook type.
          * @param callback The function to execute when the hook is invoked.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
 
@@ -302,6 +390,8 @@ declare global {
          * 
          * @param hook The "interval.day" hook type.
          * @param callback The function to execute when the hook is invoked.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
 
@@ -310,6 +400,8 @@ declare global {
          * 
          * @param hook The "network.chat" hook type.
          * @param callback The function to execute with the result of the network chat event.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
 
@@ -318,6 +410,8 @@ declare global {
          * 
          * @param hook The "network.authenticate" hook type.
          * @param callback The function to execute with the result of the network authentication event.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
 
@@ -326,6 +420,8 @@ declare global {
          * 
          * @param hook The "network.join" hook type.
          * @param callback The function to execute with the result of the join network event.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
 
@@ -334,6 +430,8 @@ declare global {
          * 
          * @param hook The "network.leave" hook type.
          * @param callback The function to execute with the result of the network event.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
 
@@ -342,6 +440,8 @@ declare global {
          * 
          * @param hook The "ride.ratings.calculate" hook type.
          * @param callback The function to execute with the result of the ride ratings calculation.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
     }
@@ -352,9 +452,11 @@ declare global {
     interface Configuration {
 
         /**
-         * Get the configuration for the given namespace.
+         * Get all configuration values in the given namespace.
          * 
-         * @param namespace TODO?
+         * @param namespace The namespace the retrieve.
+         * 
+         * @return An object which maps the namespace to any object. TODO can this be worded better? Is it correct?
          */
         getAll(namespace: string): { [name: string]: any };
 
@@ -425,12 +527,12 @@ declare global {
         position?: CoordsXY;
 
         /**
-         * The zoom level, 0 is 1:1, 1 is 2:1, 2 is 4:1 etc.
+         * The zoom level, 0 is 1:1, 1 is 2:1, 2 is 4:1 etc. TODO enum
          */
         zoom: number;
 
         /**
-         * Rotation of the camera from 0 to 3.
+         * Rotation of the camera from 0 to 3. TODO enum
          */
         rotation: number;
     }
@@ -475,7 +577,9 @@ declare global {
         "research" |
         "interest";
 
-    /** Arugments for the GameActionEvent hook callback. */
+    /** 
+     * Arugments for the GameActionEvent hook callback.
+     */
     interface GameActionEventArgs {
         /** The number of the player who executed the action. TODO always 0 in single player? */
         readonly player: number;
@@ -489,7 +593,9 @@ declare global {
         result: GameActionResult;
     }
 
-    /** The result of the game action. */
+    /** 
+     * Representts the result of the game action.
+     */
     interface GameActionResult {
         /** The error category. TODO enum */
         error?: number;
@@ -505,33 +611,47 @@ declare global {
         expenditureType?: ExpenditureType;
     }
 
-    /** The result of the ride creation game action. */
+    /** 
+     * Represents the result of the ride creation game action.
+     */
     interface RideCreateGameActionResult extends GameActionResult {
         /** The ride number. TODO reference? */
         readonly ride: number;
     }
 
-    /** Arguments for the NetworkEvent hook callback. */
+    /** 
+     * Arguments for the NetworkEvent hook callback.
+     */
     interface NetworkEventArgs {
         /** The number of the player who executed the action. TODO always 0 in single player? */
         readonly player: number;
     }
 
-    /** Arugments for the NetworkChatEvent hook callback. */
+    /** 
+     * Arugments for the NetworkChatEvent hook callback. 
+     */
     interface NetworkChatEventArgs extends NetworkEventArgs {
         /** The message text. */
         message: string;
     }
 
-    /** Arugments for the NetworkAuthenticateEvent hook callback. */
+    /** 
+     * Arugments for the NetworkAuthenticateEvent hook callback.
+     */
     interface NetworkAuthenticateEventArgs {
+        /** The name of the player authenticating. */
         readonly name: number;
+        /** The IP address of the player authenticating. */
         readonly ipAddress: string;
+        /** The public key hash of the player authenticating. */
         readonly publicKeyHash: string;
+        /** True if the event should cancel the authentication, false otherwise. */
         cancel: boolean;
     }
 
-    /** Arugments for the RideRatingCalculate hook callback. */
+    /** 
+     * Arugments for the RideRatingCalculate hook callback.
+     */
     interface RideRatingsCalculateArgs {
         /** The ride id. */
         readonly rideId: number;
@@ -568,7 +688,7 @@ declare global {
         readonly yearsElapsed: number;
 
         /**
-         * How far through the month we are between 0 and 65536. This is incremented by 4 each tick, so
+         * How far through the month we are between 0 and 65535. This is incremented by 4 each tick, so
          * every month takes ~6.8 minutes to complete making a year take just under an hour.
          */
         monthProgress: number;
@@ -594,11 +714,12 @@ declare global {
         /** An array of all the rides on the map. */
         readonly rides: Ride[];
 
-        /** Get the ride with the given ID. TODO what if doesn't exist?
+        /** 
+         * Get the ride with the given ID.
          * 
-         * @param id The ride id.
+         * @param id The ride ID.
          * 
-         * @return The ride. TODO what if doesn't exist?
+         * @return The ride, or null if no ride exists with the given ID.
          */
         getRide(id: number): Ride;
 
@@ -613,11 +734,11 @@ declare global {
         getTile(x: number, y: number): Tile;
 
         /**
-         * Get the entity with the given id. TODO what if doesn't exist?
+         * Get the entity with the given ID.
          * 
-         * @param id The entity id.
+         * @param id The entity ID.
          * 
-         * @return The entity. TODO what if doesn't exist?
+         * @return The entity, or null if no entity exists with the given ID.
          */
         getEntity(id: number): Entity;
 
@@ -640,7 +761,7 @@ declare global {
         getAllEntities(type: "peep"): Peep[];
     }
 
-    /** Type of tile elements (e.g. surface, footpath, track). */
+    /** Type of tile elements (e.g. surface, footpath, track, etc). */
     type TileElementType =
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner"
         /** This only exists to retrieve the types for existing corrupt elements. For hiding elements, use the isHidden field instead. */
@@ -656,8 +777,10 @@ declare global {
         baseHeight: number;
         /** The top height of the tile for collision. */
         clearanceHeight: number;
-        /** Indicates if the tile is hidden. Take caution when changing this field, it may invalidate 
-         * TileElements you have stored in your plugin. 
+
+        /** 
+         * Indicates if the tile is hidden. Take caution when changing this field, it may invalidate 
+         * TileElements you have stored in your plugin.
          */
         isHidden: boolean;
     }
@@ -670,7 +793,7 @@ declare global {
         slope: number;
         /** A number indicating the surface style. */
         surfaceStyle: number;
-        /** A number indicating the edge style (blended or not?) TODO: verify */
+        /** An index indicating the edge style. TODO enum? */
         edgeStyle: number;
         /** The surface height of the water. */
         waterHeight: number;
@@ -691,26 +814,24 @@ declare global {
      * A footpath element.
      */
     interface FootpathElement extends BaseTileElement {
-        /** A number indicating the footpath type. TODO */
+        /** A number indicating the footpath type. TODO enum */
         footpathType: number;
         /** A number indicating the connection points on the path. TODO */
         edgesAndCorners: number;
-        /** A number between x and y indicating the slope direction, or null for a flat path. TODO */
+        /** A number between 0 and 3 indicating the slope direction, or null for a flat path. */
         slopeDirection: number | null;
         /** True if the path has a crossing which is occupied (e.g. by a train), false otherwise. */
         isBlockedByVehicle: boolean;
         /** Used for pathfinding. This value should not be adjusted. */
         isWide: boolean;
-
         /** Indicates if the path is a queue. */
         isQueue: boolean;
-        /** A number between x and y indicating the queue banner direction, or null if no banner is present. TODO */
+        /** A number between 0 and 3 indicating the queue banner direction, or null if no banner is present. */
         queueBannerDirection: number | null;
         /** If the path is a queue, this is the ride ID of the ride the queue is for. */
         ride: number;
         /** If the path is a queue, this is the station index of the station the queue leads to. */
         station: number;
-
         /** The index of the type of the path addition (e.g. bench, lamp, bin). */
         addition: number | null;
         /** Indicates if the path addition has been vandalized. */
@@ -727,7 +848,7 @@ declare global {
         sequence: number;
         /** The id of the ride the track belongs to. */
         ride: number;
-        /** A number from 0-3 indicating the station index the track belongs to. TODO leads to or departs from? */
+        /** A number from indexed from 0 indicating the station the track departs from. */
         station: number;
         /** True if the track has a chain lift, false otherwise. */
         hasChainLift: boolean;
@@ -739,10 +860,10 @@ declare global {
     interface SmallSceneryElement extends BaseTileElement {
         /** The object index within the tile. */
         object: number;
-        /** The number from x to y indicating the primary colour. TODO enum */
-        primaryColour: number;
-        /** The number from x to y indicating the secondary colour. TODO enum */
-        secondaryColour: number;
+        /** The number from x to y indicating the primary colour. */
+        primaryColour: Colour;
+        /** The number from x to y indicating the secondary colour. */
+        secondaryColour: Colour;
     }
 
     /** 
@@ -753,9 +874,9 @@ declare global {
         object: number;
         /** Used for multi-tile entrance elements. Only applies to the park entrance and is numbered 0 to 2. */
         sequence: number;
-        /** The id of the ride the entrance/exit belongs to. */
+        /** The ID of the ride the entrance/exit belongs to. TODO what if park entrance? */
         ride: number;
-        /** The station number on the ride (0-3). */
+        /** The station number the entrance/exit belongs to, indexed from 0. */
         station: number;
     }
 
@@ -773,10 +894,10 @@ declare global {
     interface LargeSceneryElement extends BaseTileElement {
         /** The object index within the tile. */
         object: number;
-        /** The number from x to y indicating the primary colour. TODO */
-        primaryColour: number;
-        /** The number from x to y indicating the secondary colour. TODO */
-        secondaryColour: number;
+        /** The number from x to y indicating the primary colour. */
+        primaryColour: Colour;
+        /** The number from x to y indicating the secondary colour. */
+        secondaryColour: Colour;
     }
 
     /**
@@ -853,21 +974,14 @@ declare global {
      * Represents the definition of a loaded object (.DAT or .json) such a ride type or scenery item.
      */
     interface Object {
-        /**
-         * The object type.
-         */
+        /** The object type. */
         readonly type: ObjectType;
-
-        /**
-         * The index of the loaded object for the object type.
-         */
+        /** The index of the loaded object for the object type. */
         readonly index: number;
-
-        /**
-         * The unique identifier of the object, e.g. "rct2.burgb".
-         * Only JSON objects will have an identifier.
-         */
+        /** The unique identifier of the object, e.g. "rct2.burgb". Only JSON objects will have an identifier. */
         readonly identifier: string;
+        /** The object name in the user's current language. */
+        readonly name: string;
 
         /**
          * The original unique identifier of the object, e.g. "BURGB   ".
@@ -875,11 +989,6 @@ declare global {
          * Only .DAT objects or JSON objects based on .DAT objects will have legacy identifiers.
          */
         readonly legacyIdentifier: string;
-
-        /**
-         * The name in the user's current language.
-         */
-        readonly name: string;
     }
 
     /**
@@ -968,9 +1077,9 @@ declare global {
         readonly corkscrewImageId: number;
         readonly noVehicleImages: number;
         readonly noSeatingRows: number;
-        /** A number indicating the inertia (tendency to keep spinning) of a spinning vehicle. TODO */
+        /** A number indicating the inertia (tendency to keep current spin rate) of a spinning vehicle. TODO */
         readonly spinningInertia: number;
-        /** A number indicating the friction (tendency to stop spinning) of a spinning vehicle. TODO */
+        /** A number indicating the friction (force which slows spinning) of a spinning vehicle. TODO */
         readonly spinningFriction: number;
         readonly frictionSoundId: number;
         readonly logFlumeReverserVehicleType: number;
@@ -988,24 +1097,13 @@ declare global {
      * Represents the object definition of a small scenery item such a tree.
      */
     interface SmallSceneryObject extends Object {
-        /**
-         * Raw bit flags that describe characteristics of the scenery item.
-         */
+        /** Raw bit flags that describe characteristics of the scenery item. TODO enum */
         readonly flags: number;
-
-        /**
-         * The default clearance height of the scenery item.
-         */
+        /** The default clearance height of the scenery item. TODO units */
         readonly height: number;
-
-        /**
-         * How much the scenery item costs to build.
-         */
+        /** How much the scenery item costs to build. */
         readonly price: number;
-
-        /**
-         * How much the scenery item costs to remove.
-         */
+        /** How much the scenery item costs to remove. */
         readonly removalPrice: number;
     }
 
@@ -1039,13 +1137,13 @@ declare global {
         readonly vehicles: number[];
         /** The track colour schemes for the ride. */
         colourSchemes: TrackColour[];
-        /** The style used for the station, entrance, and exit building. TODO range */
+        /** The style used for the station, entrance, and exit building. TODO enum */
         stationStyle: number;
         /** The music track to play at each station. TODO range */
         music: number;
         /** Information about each station. */
         readonly stations: RideStation[];
-        /** The admission price for the ride and the price of the on-ride photo, or the cost of each item of the stall. TODO which one is [0] and [1] */
+        /** The admission price for the ride and the price of the on-ride photo, or the cost of each item of the stall. */
         price: number[];
         /** The total number of customers the ride has served since it was built. */
         totalCustomers: number;
@@ -1066,18 +1164,21 @@ declare global {
          * have been modified.
          */
         vehicleColours: VehicleColour[];
+
         /**
          * The excitement metric of the ride represented as an integer. The value displayed in-game uses the last 2 digits
          * as the decimal portion.
          * For example, `652` equates to `6.52`.
          */
         excitement: number;
+
         /**
          * The intensity metric of the ride represented as an integer. The value displayed in-game uses the last 2 digits
          * as the decimal portion.
          * For example, `652` equates to `6.52`.
          */
         intensity: number;
+
         /**
          * The nausea metric of the ride represented as an integer. The value displayed in-game uses the last 2 digits
          * as the decimal portion.
@@ -1092,24 +1193,28 @@ declare global {
     /** Indicates operating status (open, closed, testing, or simulating). */
     type RideStatus = "closed" | "open" | "testing" | "simulating";
 
-    /** A track colour scheme. */
+    /** 
+     * A track colour scheme.
+     */
     interface TrackColour {
-        /** The main colour of the scheme. TODO value */
-        main: number;
-        /** The secondary colour of the scheme. TODO value */
-        additional: number;
-        /** The support colour of the scheme. TODO value */
-        supports: number;
+        /** The main colour of the scheme. */
+        main: Colour;
+        /** The secondary colour of the scheme. */
+        additional: Colour;
+        /** The support colour of the scheme. */
+        supports: Colour;
     }
 
-    /** A colour scheme used for a single vehicle. */
+    /** 
+     * A colour scheme used for a single vehicle.
+     */
     interface VehicleColour {
-        /** The body colour of the vehicle. TODO value */
-        body: number;
-        /** The trim colour of the vehicle. TODO value */
-        trim: number;
-        /** The third colour of the vehicle. TODO value, also I think this is intended to be tertiary */
-        ternary: number;
+        /** The body colour of the vehicle. */
+        body: Colour;
+        /** The trim colour of the vehicle. */
+        trim: Colour;
+        /** The third colour of the vehicle. TODO this is intended to be tertiary */
+        ternary: Colour;
     }
 
     /**
@@ -1126,7 +1231,7 @@ declare global {
         exit: CoordsXYZD;
     }
 
-    /** The type of a entity that may move (car, duck, peep). */
+    /** The type of a entity that may move (car, duck, peep). TODO missing litter, balloon */
     type EntityType =
         "car" | "duck" | "peep";
 
@@ -1136,13 +1241,13 @@ declare global {
     interface Entity {
         /** The entity index within the entity list. */
         readonly id: number;
-        /** The type of entity, e.g. car, duck, litter, or peep. TODO litter actually isn't an option? */
+        /** The type of entity (e.g. car, peep, litter, etc). */
         readonly type: EntityType;
-        /** The x-coordinate of the entity in game units. */
+        /** The x-coordinate of the entity in game units. A tile is 32x32 units. */
         x: number;
-        /** The y-coordinate of the entity in game units. */
+        /** The y-coordinate of the entity in game units. A tile is 32x32 units. */
         y: number;
-        /** The z-coordinate of the entity in game units. */
+        /** The z-coordinate of the entity in game units. One land height increment is 16 z units. */
         z: number;
 
         /**
@@ -1219,16 +1324,16 @@ declare global {
      * Represents a guest.
      */
     interface Guest extends Peep {
-        /** Colour of the guest's t-shirt. TODO range */
-        tshirtColour: number;
-        /** Colour of the guest's trousers. TODO range*/
-        trousersColour: number; 
-        /** Colour of the guest's balloon. TODO range, what if no balloon?*/
-        balloonColour: number;
-        /**Colour of the guest's hat. TODO range, what if no hat?*/
-        hatColour: number;
-        /**Colour of the guest's umbrella. TODO range, what if no umbrella?*/
-        umbrellaColour: number;
+        /** Colour of the guest's t-shirt. */
+        tshirtColour: Colour;
+        /** Colour of the guest's trousers. */
+        trousersColour: Colour; 
+        /** Colour of the guest's balloon, if they have one. */
+        balloonColour: Colour;
+        /** Colour of the guest's hat, if they have one. */
+        hatColour: Colour;
+        /** Colour of the guest's umbrella, if they have one. */
+        umbrellaColour: Colour;
         /** How happy the guest is between 0 and 255. Higher numbers indicate more happiness. */
         happiness: number;
         /** The target happiness value. Happiness will increase / decrease slowly towards this value. */
@@ -1243,7 +1348,7 @@ declare global {
         thirst: number;
         /** How much the guest sneed to go to the toilet between 0 and 255. Higher numbers indicate greater need. */
         toilet: number;
-        /** The mass of the guest. Affects vehicle mass. TODO units */
+        /** The mass of the guest, a random number between 45 and 76 inclusive. Affects vehicle mass. */
         mass: number;
         /** The guest's minimum preferred intensity between 0 and 15. */
         minIntensity: number;
@@ -1261,15 +1366,19 @@ declare global {
     interface Staff extends Peep {
         /** The type of staff member (e.g. handyman, mechanic). */
         staffType: StaffType;
-        /** Colour of the staff member. Not applicable for entertainers. TODO values*/
-        colour: number;
-        /** The entertainer's costume, only applicable for entertainers. TODO values*/
-        costume: number;
-        /** The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc. TODO values*/
+        /** Colour of the staff member. Not applicable for entertainers. */
+        colour: Colour;
+        /** The entertainer's costume, only applicable for entertainers. */
+        costume: EntertainerCostume;
+
+        /** 
+         * A set of flags representing the enabled jobs the staff can do (e.g. sweep litter, water plants, 
+         * inspect rides etc). Only applicable for Handymen and Mechanics. 
+         */
         orders: number;
     }
 
-    /** The available staff types (e.g. handyman, mechanic). */
+    /** The available staff types (e.g. handyman, mechanic, etc). */
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
 
     /**
@@ -1367,7 +1476,7 @@ declare global {
         readonly ping: number;
         /** The number of game actions executed by the player. */
         readonly commandsRan: number;
-        /** The amount of money spent by the player. TODO units */
+        /** The amount of money spent by the player. Represented as an integer (e.g. $1.50 = 150¥ = 150). */
         readonly moneySpent: number;
         /** The player's IP address. */
         readonly ipAddress: string;
@@ -1395,7 +1504,7 @@ declare global {
         readonly name: string;
         /** A description of the server. */
         readonly description: string;
-        /** A message to be sent to the player upon log in. TODO? */
+        /** A message to be sent to the player upon log in. TODO is this right? */
         readonly greeting: string;
         /** The name of the server provider. */
         readonly providerName: string;
@@ -1435,9 +1544,7 @@ declare global {
      * Park APIs
      */
 
-    /**
-     * The type of park message, including icon and behaviour.
-     */
+    /** The type of park message, which determines icon and behaviour. */
     type ParkMessageType =
         "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart";
 
@@ -1471,7 +1578,7 @@ declare global {
     }
 
     /**
-     * The park message description. TODO?
+     * The park message description. TODO what's the difference between this and ParkMessage?
      */
     interface ParkMessageDesc  {
         /** The format of the message such as the icon and whether location is enabled. */
@@ -1494,11 +1601,11 @@ declare global {
         cash: number;
         /** The park rating (0-999). */
         rating: number;
-        /** The current amount of the bank loan. TODO units */
+        /** The current amount of the bank loan. Represented as an integer (e.g. $10,000 = 1000000). */
         bankLoan: number;
-        /** The maximum possible bank loan. TODO units */
+        /** The maximum possible bank loan. Represented as an integer (e.g. $10,000 = 1000000). */
         maxBankLoan: number;
-        /** An array of all park messages. TODO what is the cap? */
+        /** An array of the most recent 61 park messages. */
         messages: ParkMessage[];
 
         /**
@@ -1511,7 +1618,7 @@ declare global {
         /**
          * Post a message to the in-game tracker.
          * 
-         * @param message The message content. TODO?
+         * @param message The message content. TODO what's the difference between this and the other method?
          */
         postMessage(message: ParkMessageDesc): void;
     }
@@ -1540,7 +1647,7 @@ declare global {
         disableRideValueAging: boolean;
         /** Causes the game to ignore support limits. */
         disableSupportLimits: boolean;
-        /** Ignores the limit for train length. The upper limit is still 255. */
+        /** Ignores the normal limit for train length. The upper limit is still 255. */
         disableTrainLengthLimit: boolean;
         /** Prevents angry guests from causing vandalism. */
         disableVandalism: boolean;
@@ -1548,7 +1655,7 @@ declare global {
         enableAllDrawableTrackPieces: boolean;
         /** Allow placing a chain lift on any track piece. */
         enableChainLiftOnAllTrack: boolean;
-        /** TODO? */
+        /** Enables setting the lift hill speed to any value. TODO? */
         fastLiftHill: boolean;
         /** Freezes the weather to its current state. */
         freezeWeather: boolean;
@@ -1572,17 +1679,17 @@ declare global {
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
      */
     interface Ui {
-        /** The width of the client window. */
+        /** The width of the client window in pixels. */
         readonly width: number;
-        /** The height of the cleint window. */
+        /** The height of the cleint window in pixels. */
         readonly height: number;
         /** The total number of in-game windows. TODO? */
         readonly windows: number;
-        /** The window currently in-focus. */
+        /** The window currently in focus. */
         readonly mainViewport: Viewport;
-        /** The currently highlighted tile. TODO? */
+        /** The currently highlighted tiles. */
         readonly tileSelection: TileSelection;
-        /** TODO? */
+        /** The current mouse tool. */
         readonly tool: Tool;
 
         /**
@@ -1606,7 +1713,7 @@ declare global {
         /**
          * Open a window with the given parameters.
          * 
-         * @param desc An object containing information about the size and appaearance of the window
+         * @param desc An object containing information about the size and appaearance of the window.
          * 
          * @return An object representing the opened window
          */
@@ -1667,7 +1774,7 @@ declare global {
         description: string;
         /** The current value of the text box, if any. */
         initialValue?: string;
-        /** The maximum length the value can be, if any. TODO is there a default? */
+        /** (Optional) The maximum length the input can be. */
         maxLength?: number;
 
         /**
@@ -1723,7 +1830,7 @@ declare global {
      * Describes the properties and event handlers for a custom tool.
      */
     interface ToolDesc {
-        /** A unique ID for the tool. */
+        /** The unique ID of the tool. */
         id: string;
         /** The cursor type for the custom tool (e.g. arrow, bench, bin, etc). */
         cursor?: CursorType;
@@ -1801,9 +1908,9 @@ declare global {
     interface Widget {
         /** The type of widget (e.g. checkbox, dropdown, label, etc). */
         type: WidgetType;
-        /** The horizotal position of the widget, in pixels. TODO is this relative? */
+        /** The horizotal position of the widget relative to the window, in pixels. */
         x: number;
-        /** The vertical position of the widget, in pixels. TODO is this relative? */
+        /** The vertical position of the widget relative to the window, in pixels. */
         y: number;
         /** The width of the widget, in pixels. */
         width: number;
@@ -1829,8 +1936,8 @@ declare global {
         text: string;
 
         /**
-         * Whether the button has a 3D border. TODO what is the default if undefined?
-         * By default, text buttons have borders and image buttons do not but it can be overridden.
+         * Whether the button has a 3D border. By default, text buttons have borders and image 
+         * buttons do not but it can be overridden using this property.
          */
         border?: boolean;
 
@@ -1882,7 +1989,7 @@ declare global {
 
         /** 
          * A function to be called when the label changes. It is uncommon for this to do anything for labels.
-         * The function takes an index TODO?? and returns no value.
+         * The function takes an index (TODO - what does it mean?) and returns no value.
          */
         onChange: (index: number) => void;
     }
@@ -1901,7 +2008,7 @@ declare global {
      * Represents a column in a list.
      */
     interface ListViewColumn {
-        /** Indicates the ability to sort by this column. TODO default?*/
+        /** Indicates the ability to sort by this column. TODO default? */
         canSort?: boolean;
         /** The current sort order for the column. */
         sortOrder?: SortOrder;
@@ -1938,7 +2045,7 @@ declare global {
      * Represents a list view widget and callbacks for interacting with the list.
      */
     interface ListView extends Widget {
-        /** (Optional) The scollbar type to use for the list. TODO default? */
+        /** (Optional) The scollbar type to use for the list. Vertical by default. */
         scrollbars?: ScrollbarType;
         /** (Optional) Indicates if alternating rows use different colouring to improve readability. */
         isStriped?: boolean;
@@ -2000,7 +2107,7 @@ declare global {
     interface Window {
         /** TODO? */
         classification: number;
-        /** TODO? */
+        /** An identifier unique among open windows. */
         number: number;
         /** The horizontal position of the window in the game client, in pixels. */
         x: number;
@@ -2020,7 +2127,7 @@ declare global {
         maxHeight: number;
         /** TODO? */
         isSticky: boolean;
-        /** An array of numbers representing the window colours. TODO? */
+        /** An array of numbers representing the window colours. TODO does this use the selectable game colors? */
         colours: number[];
         /** The window title. */
         title: string;
@@ -2077,7 +2184,7 @@ declare global {
         maxHeight?: number;
         /** (Optional) An array of widgets that make up the window. */
         widgets?: Widget[];
-        /** (Optional) The window colours. TODO default? */
+        /** (Optional) The window colours. TODO does this use the selectable game colors? */
         colours?: number[];
         /** (Optional) An array of tabs in the winow. */
         tabs?: WindowTabDesc[];
