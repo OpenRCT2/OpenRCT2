@@ -451,8 +451,8 @@ void game_fix_save_vars()
     {
         if (peep->CurrentRideStation >= MAX_STATIONS)
         {
-            const uint8_t srcStation = peep->CurrentRideStation;
-            const uint8_t rideIdx = peep->CurrentRide;
+            const auto srcStation = peep->CurrentRideStation;
+            const auto rideIdx = peep->CurrentRide;
             if (rideIdx == RIDE_ID_NULL)
             {
                 continue;

@@ -48,6 +48,7 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 class Formatter;
 struct TileElement;
 struct Ride;
+using ParkEntranceIndex = uint8_t;
 
 enum PeepType : uint8_t
 {
@@ -635,7 +636,11 @@ struct Peep : SpriteBase
     uint8_t Photo2RideRef;
     uint8_t Photo3RideRef;
     uint8_t Photo4RideRef;
-    uint8_t CurrentRide;
+    union
+    {
+        ride_id_t CurrentRide;
+        ParkEntranceIndex ChosenParkEntrance;
+    };
     StationIndex CurrentRideStation;
     uint8_t CurrentTrain;
     union
