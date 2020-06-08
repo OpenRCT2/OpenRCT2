@@ -1197,8 +1197,8 @@ void Guest::TryGetUpFromSitting()
     if (HasFood())
         return;
 
-    time_to_sitdown--;
-    if (time_to_sitdown)
+    TimeToSitdown--;
+    if (TimeToSitdown)
         return;
 
     SetState(PEEP_STATE_WALKING);
@@ -1239,7 +1239,7 @@ void Guest::UpdateSitting()
         sub_state = PEEP_SITTING_SAT_DOWN;
 
         // Sets time to sit on seat
-        time_to_sitdown = (129 - energy) * 16 + 50;
+        TimeToSitdown = (129 - energy) * 16 + 50;
     }
     else if (sub_state == PEEP_SITTING_SAT_DOWN)
     {

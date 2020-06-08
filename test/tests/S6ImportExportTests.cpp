@@ -197,7 +197,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(current_ride);
     COMPARE_FIELD(current_ride_station);
     COMPARE_FIELD(current_train);
-    COMPARE_FIELD(time_to_sitdown);
+    COMPARE_FIELD(TimeToSitdown);
     COMPARE_FIELD(SpecialSprite);
     COMPARE_FIELD(ActionSpriteType);
     COMPARE_FIELD(NextActionSpriteType);

@@ -645,7 +645,7 @@ struct Peep : SpriteBase
             uint8_t current_car;
             uint8_t current_seat;
         };
-        uint16_t time_to_sitdown;
+        uint16_t TimeToSitdown;
         struct
         {
             uint8_t TimeToStand;

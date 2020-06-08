@@ -1440,7 +1440,7 @@ public:
         dst->current_ride = src->current_ride;
         dst->current_ride_station = src->current_ride_station;
         dst->current_train = src->current_train;
-        dst->time_to_sitdown = src->time_to_sitdown;
+        dst->TimeToSitdown = src->time_to_sitdown;
         dst->SpecialSprite = src->special_sprite;
         dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
