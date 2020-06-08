@@ -6053,15 +6053,9 @@ bool Guest::UpdateWalkingFindBench()
     uint8_t free_edge = 3;
 
     // Check if there is no peep sitting in chosen_edge
-    for (uint16_t sprite_id = sprite_get_first_in_quadrant(x, y); sprite_id != SPRITE_INDEX_NULL;)
+    auto quad = EntityTileList<Peep>({ x, y });
+    for (auto peep : quad)
     {
-        auto sprite = GetEntity(sprite_id);
-        sprite_id = sprite->next_in_quadrant;
-        auto peep = sprite->As<Peep>();
-
-        if (peep == nullptr)
-            continue;
-
         if (peep->State != PEEP_STATE_SITTING)
             continue;
 
@@ -6247,13 +6241,10 @@ static void peep_update_walking_break_scenery(Peep* peep)
         return;
 
     // Check if a peep is already sitting on the bench. If so, do not vandalise it.
-    for (uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y); sprite_id != SPRITE_INDEX_NULL;)
+    auto quad = EntityTileList<Peep>({ peep->x, peep->y });
+    for (auto peep2 : quad)
     {
-        auto sprite = GetEntity(sprite_id);
-        sprite_id = sprite->next_in_quadrant;
-        auto peep2 = sprite->As<Peep>();
-
-        if (peep2 == nullptr || (peep2->State != PEEP_STATE_SITTING) || (peep->z != peep2->z))
+        if ((peep2->State != PEEP_STATE_SITTING) || (peep->z != peep2->z))
         {
             continue;
         }

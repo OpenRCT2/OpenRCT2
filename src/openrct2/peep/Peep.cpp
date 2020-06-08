@@ -2678,12 +2678,10 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     uint16_t crowded = 0;
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
-    for (uint16_t sprite_id = sprite_get_first_in_quadrant(x, y); sprite_id != SPRITE_INDEX_NULL;)
+    auto quad = EntityTileList({ x, y });
+    for (auto entity : quad)
     {
-        auto sprite = GetEntity(sprite_id);
-        sprite_id = sprite->next_in_quadrant;
-
-        if (auto other_peep = sprite->As<Peep>(); other_peep != nullptr)
+        if (auto other_peep = entity->As<Peep>(); other_peep != nullptr)
         {
             if (other_peep->State != PEEP_STATE_WALKING)
                 continue;
@@ -2693,7 +2691,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             crowded++;
             continue;
         }
-        else if (auto litter = sprite->As<Litter>(); litter != nullptr)
+        else if (auto litter = entity->As<Litter>(); litter != nullptr)
         {
             if (abs(litter->z - peep->NextLoc.z) > 16)
                 continue;
