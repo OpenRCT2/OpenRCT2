@@ -188,7 +188,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(paid_on_drink);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        COMPARE_FIELD(ride_types_been_on[i]);
+        COMPARE_FIELD(RideTypesBeenOn[i]);
     }
     COMPARE_FIELD(ItemExtraFlags);
     COMPARE_FIELD(Photo2RideRef);

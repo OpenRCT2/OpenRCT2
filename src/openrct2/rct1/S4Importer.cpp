@@ -1507,7 +1507,7 @@ private:
         }
         for (size_t i = 0; i < 16; i++)
         {
-            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
 
         dst->Photo1RideRef = src->photo1_ride_ref;

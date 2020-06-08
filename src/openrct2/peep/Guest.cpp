@@ -2377,12 +2377,12 @@ bool Guest::HasRidden(const Ride* ride) const
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
-    ride_types_been_on[rideType / 8] |= 1 << (rideType % 8);
+    RideTypesBeenOn[rideType / 8] |= 1 << (rideType % 8);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
-    return ride_types_been_on[rideType / 8] & (1 << (rideType % 8));
+    return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
 }
 
 void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)

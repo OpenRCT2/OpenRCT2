@@ -1431,7 +1431,7 @@ public:
         dst->paid_on_drink = src->paid_on_drink;
         for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
         {
-            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
         dst->ItemExtraFlags = src->item_extra_flags;
         dst->Photo2RideRef = src->photo2_ride_ref;
