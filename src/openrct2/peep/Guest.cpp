@@ -6776,7 +6776,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
+    ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_INVALID;
     UpdateCurrentActionSpriteType();
 
     if (state == PEEP_STATE_SITTING)

@@ -1396,13 +1396,13 @@ private:
         dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->WalkingFrameNum = src->no_action_frame_num;
-        dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
+        dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->ActionFrame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
+        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
+        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
         invalidate_sprite_2(dst);

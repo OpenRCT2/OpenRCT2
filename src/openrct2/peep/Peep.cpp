@@ -525,18 +525,18 @@ void Peep::UpdateCurrentActionSpriteType()
         return;
     }
     PeepActionSpriteType newActionSpriteType = GetActionSpriteType();
-    if (action_sprite_type == newActionSpriteType)
+    if (ActionSpriteType == newActionSpriteType)
     {
         return;
     }
 
     Invalidate();
-    action_sprite_type = newActionSpriteType;
+    ActionSpriteType = newActionSpriteType;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
-    sprite_width = spriteBounds[action_sprite_type].sprite_width;
-    sprite_height_negative = spriteBounds[action_sprite_type].sprite_height_negative;
-    sprite_height_positive = spriteBounds[action_sprite_type].sprite_height_positive;
+    sprite_width = spriteBounds[ActionSpriteType].sprite_width;
+    sprite_height_negative = spriteBounds[ActionSpriteType].sprite_height_negative;
+    sprite_height_positive = spriteBounds[ActionSpriteType].sprite_height_positive;
 
     Invalidate();
 }
@@ -623,8 +623,8 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
-        const uint8_t* imageOffset = peepAnimation[action_sprite_type].frame_offsets;
-        if (WalkingFrameNum >= peepAnimation[action_sprite_type].num_frames)
+        const uint8_t* imageOffset = peepAnimation[ActionSpriteType].frame_offsets;
+        if (WalkingFrameNum >= peepAnimation[ActionSpriteType].num_frames)
         {
             WalkingFrameNum = 0;
         }
@@ -636,14 +636,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     ActionFrame++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation[action_sprite_type].num_frames)
+    if (ActionFrame >= peepAnimation[ActionSpriteType].num_frames)
     {
         ActionSpriteImageOffset = 0;
         Action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    ActionSpriteImageOffset = peepAnimation[action_sprite_type].frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation[ActionSpriteType].frame_offsets[ActionFrame];
 
     // If not throwing up and not at the frame where sick appears.
     if (Action != PEEP_ACTION_THROW_UP || ActionFrame != 15)
@@ -747,7 +747,7 @@ void Peep::PickupAbort(int32_t old_x)
         Action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         ActionSpriteImageOffset = 0;
-        action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
+        ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
         PathCheckOptimisation = 0;
     }
 
@@ -796,13 +796,13 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         Action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         ActionSpriteImageOffset = 0;
-        action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
+        ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
         PathCheckOptimisation = 0;
         sprite_position_tween_reset();
 
         if (type == PEEP_TYPE_GUEST)
         {
-            action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
+            ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_INVALID;
             happiness_target = std::max(happiness_target - 10, 0);
             UpdateCurrentActionSpriteType();
         }
@@ -1622,15 +1622,15 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->special_sprite = 0;
     peep->ActionSpriteImageOffset = 0;
     peep->WalkingFrameNum = 0;
-    peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
+    peep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->PeepFlags = 0;
     peep->FavouriteRide = RIDE_ID_NULL;
     peep->FavouriteRideRating = 0;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;
-    peep->sprite_width = spriteBounds[peep->action_sprite_type].sprite_width;
-    peep->sprite_height_negative = spriteBounds[peep->action_sprite_type].sprite_height_negative;
-    peep->sprite_height_positive = spriteBounds[peep->action_sprite_type].sprite_height_positive;
+    peep->sprite_width = spriteBounds[peep->ActionSpriteType].sprite_width;
+    peep->sprite_height_negative = spriteBounds[peep->ActionSpriteType].sprite_height_negative;
+    peep->sprite_height_positive = spriteBounds[peep->ActionSpriteType].sprite_height_positive;
 
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
@@ -2237,10 +2237,10 @@ void peep_set_map_tooltip(Peep* peep)
 void Peep::SwitchNextActionSpriteType()
 {
     // TBD: Add nextActionSpriteType as function parameter and make peep->NextActionSpriteType obsolete?
-    if (NextActionSpriteType != action_sprite_type)
+    if (NextActionSpriteType != ActionSpriteType)
     {
         Invalidate();
-        action_sprite_type = NextActionSpriteType;
+        ActionSpriteType = NextActionSpriteType;
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
         sprite_width = spriteBounds[NextActionSpriteType].sprite_width;
         sprite_height_negative = spriteBounds[NextActionSpriteType].sprite_height_negative;
