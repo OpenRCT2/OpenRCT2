@@ -1106,7 +1106,7 @@ void ride_remove_peeps(Ride* ride)
         if (peep->state == PEEP_STATE_QUEUING_FRONT || peep->state == PEEP_STATE_ENTERING_RIDE
             || peep->state == PEEP_STATE_LEAVING_RIDE || peep->state == PEEP_STATE_ON_RIDE)
         {
-            if (peep->current_ride != ride->id)
+            if (peep->CurrentRide != ride->id)
                 continue;
 
             peep_decrement_num_riders(peep);
@@ -2604,7 +2604,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
                 || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING)
-                || mechanic->current_ride != ride->id)
+                || mechanic->CurrentRide != ride->id)
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2639,7 +2639,7 @@ static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection
     ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     ride->mechanic = mechanic->sprite_index;
-    mechanic->current_ride = ride->id;
+    mechanic->CurrentRide = ride->id;
     mechanic->CurrentRideStation = ride->inspection_station;
 }
 
@@ -5491,7 +5491,7 @@ void Ride::StopGuestsQueuing()
     {
         if (peep->state != PEEP_STATE_QUEUING)
             continue;
-        if (peep->current_ride != id)
+        if (peep->CurrentRide != id)
             continue;
 
         peep->RemoveFromQueue();

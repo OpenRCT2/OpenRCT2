@@ -789,14 +789,14 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                 if (GuestTimeOnRide > 22)
                 {
-                    auto ride = get_ride(current_ride);
+                    auto ride = get_ride(CurrentRide);
                     if (ride != nullptr)
                     {
                         PeepThoughtType thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)
                             ? PEEP_THOUGHT_TYPE_GET_OUT
                             : PEEP_THOUGHT_TYPE_GET_OFF;
 
-                        InsertNewThought(thought_type, current_ride);
+                        InsertNewThought(thought_type, CurrentRide);
                     }
                 }
             }
@@ -2634,7 +2634,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
     if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
-        && peep->VoucherArguments == peep->current_ride)
+        && peep->VoucherArguments == peep->CurrentRide)
         return true;
 
     if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -2646,7 +2646,7 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
 
     if (ridePrice > peep->CashInPocket)
     {
-        peep->InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
+        peep->InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->CurrentRide);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
@@ -2656,7 +2656,7 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
     {
         if (value * 2 < ridePrice)
         {
-            peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
+            peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_VALUE, peep->CurrentRide);
             peep_update_ride_at_entrance_try_leave(peep);
             return false;
         }
@@ -2692,7 +2692,7 @@ static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride)
     if (peep->HasRiddenRideType(ride->type))
         satisfaction += 10;
 
-    if (peep->HasRidden(get_ride(peep->current_ride)))
+    if (peep->HasRidden(get_ride(peep->CurrentRide)))
         satisfaction += 10;
 
     return satisfaction;
@@ -3353,7 +3353,7 @@ void Guest::UpdateBuying()
     if (!CheckForPath())
         return;
 
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
     {
         SetState(PEEP_STATE_FALLING);
@@ -3371,7 +3371,7 @@ void Guest::UpdateBuying()
 
         if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
-            if (current_ride != PreviousRide)
+            if (CurrentRide != PreviousRide)
             {
                 CashInPocket += MONEY(50, 00);
             }
@@ -3388,14 +3388,14 @@ void Guest::UpdateBuying()
 
     bool item_bought = false;
 
-    if (current_ride != PreviousRide)
+    if (CurrentRide != PreviousRide)
     {
         if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
-            item_bought = peep_should_use_cash_machine(this, current_ride);
+            item_bought = peep_should_use_cash_machine(this, CurrentRide);
             if (!item_bought)
             {
-                PreviousRide = current_ride;
+                PreviousRide = CurrentRide;
                 PreviousRideTimeOut = 0;
             }
             else
@@ -3459,7 +3459,7 @@ void Guest::UpdateBuying()
  */
 void Guest::UpdateRideAtEntrance()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -3562,7 +3562,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     peep->destination_tolerance = 3;
 
     ride->cur_num_customers++;
-    peep->OnEnterRide(peep->current_ride);
+    peep->OnEnterRide(peep->CurrentRide);
     peep->sub_state = PEEP_RIDE_MAZE_PATHFINDING;
 }
 
@@ -3583,7 +3583,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
     peep->CurrentCar = 0;
 
     ride->cur_num_customers++;
-    peep->OnEnterRide(peep->current_ride);
+    peep->OnEnterRide(peep->CurrentRide);
     peep->sub_state = PEEP_RIDE_APPROACH_SPIRAL_SLIDE;
 }
 
@@ -3652,7 +3652,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
  */
 void Guest::UpdateRideAdvanceThroughEntrance()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -3719,7 +3719,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
-                    news_item_add_to_queue(NEWS_ITEM_RIDE, STR_GUESTS_GETTING_STUCK_ON_RIDE, current_ride);
+                    news_item_add_to_queue(NEWS_ITEM_RIDE, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide);
                 }
             }
 
@@ -3857,7 +3857,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (ridePrice != 0)
     {
         if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
-            && (VoucherArguments == current_ride))
+            && (VoucherArguments == CurrentRide))
         {
             ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
             window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -3879,7 +3879,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (queueTime != ride->stations[CurrentRideStation].QueueTime)
     {
         ride->stations[CurrentRideStation].QueueTime = queueTime;
-        window_invalidate_by_number(WC_RIDE, current_ride);
+        window_invalidate_by_number(WC_RIDE, CurrentRide);
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -3941,7 +3941,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
  */
 void Guest::UpdateRideFreeVehicleCheck()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4046,7 +4046,7 @@ void Guest::UpdateRideApproachVehicle()
 
 void Guest::UpdateRideEnterVehicle()
 {
-    auto* ride = get_ride(current_ride);
+    auto* ride = get_ride(CurrentRide);
     if (ride != nullptr)
     {
         auto* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
@@ -4080,7 +4080,7 @@ void Guest::UpdateRideEnterVehicle()
                     seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
                     seatedPeepAsGuest->GuestTimeOnRide = 0;
                     seatedPeepAsGuest->sub_state = PEEP_RIDE_ON_RIDE;
-                    seatedPeepAsGuest->OnEnterRide(current_ride);
+                    seatedPeepAsGuest->OnEnterRide(CurrentRide);
                 }
             }
 
@@ -4096,7 +4096,7 @@ void Guest::UpdateRideEnterVehicle()
 
             GuestTimeOnRide = 0;
             sub_state = PEEP_RIDE_ON_RIDE;
-            OnEnterRide(current_ride);
+            OnEnterRide(CurrentRide);
         }
     }
 }
@@ -4107,7 +4107,7 @@ void Guest::UpdateRideEnterVehicle()
  */
 void Guest::UpdateRideLeaveVehicle()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4311,7 +4311,7 @@ void Guest::UpdateRideLeaveVehicle()
  */
 static void peep_update_ride_prepare_for_exit(Peep* peep)
 {
-    auto ride = get_ride(peep->current_ride);
+    auto ride = get_ride(peep->CurrentRide);
     if (ride == nullptr || peep->CurrentRideStation >= std::size(ride->stations))
         return;
 
@@ -4373,7 +4373,7 @@ void Guest::UpdateRideApproachExit()
  */
 void Guest::UpdateRideInExit()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4411,7 +4411,7 @@ void Guest::UpdateRideInExit()
  */
 void Guest::UpdateRideApproachVehicleWaypoints()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4487,7 +4487,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
  */
 void Guest::UpdateRideApproachExitWaypoints()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4582,7 +4582,7 @@ void Guest::UpdateRideApproachExitWaypoints()
  */
 void Guest::UpdateRideApproachSpiralSlide()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4667,7 +4667,7 @@ static constexpr const CoordsXY _SpiralSlideEndWaypoint[] = {
  */
 void Guest::UpdateRideOnSpiralSlide()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr || ride->type != RIDE_TYPE_SPIRAL_SLIDE)
         return;
 
@@ -4750,7 +4750,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         return;
     }
 
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4825,7 +4825,7 @@ void Guest::UpdateRideMazePathfinding()
         return;
     }
 
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -4975,7 +4975,7 @@ void Guest::UpdateRideMazePathfinding()
  */
 void Guest::UpdateRideLeaveExit()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
 
     if (auto loc = UpdateAction())
     {
@@ -4986,7 +4986,7 @@ void Guest::UpdateRideLeaveExit()
         return;
     }
 
-    OnExitRide(current_ride);
+    OnExitRide(CurrentRide);
 
     if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
     {
@@ -5047,7 +5047,7 @@ void Guest::UpdateRideShopApproach()
  */
 void Guest::UpdateRideShopInteract()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 
@@ -5115,7 +5115,7 @@ void Guest::UpdateRideShopLeave()
     //#11758 Previously SetState(PEEP_STATE_WALKING) caused Peeps to double-back to exit point of shop
     SetState(PEEP_STATE_FALLING);
 
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride != nullptr)
     {
         ride->total_customers++;
@@ -5505,7 +5505,7 @@ void Guest::UpdateWalking()
     for (; !(positions_free & (1 << chosen_position));)
         chosen_position = (chosen_position + 1) & 3;
 
-    current_ride = ride_to_view;
+    CurrentRide = ride_to_view;
     CurrentSeat = ride_seat_to_view;
     var_37 = chosen_edge | (chosen_position << 2);
 
@@ -5523,7 +5523,7 @@ void Guest::UpdateWalking()
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NEW_RIDE, PEEP_THOUGHT_ITEM_NONE);
     }
-    if (current_ride == RIDE_ID_NULL)
+    if (CurrentRide == RIDE_ID_NULL)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_SCENERY, PEEP_THOUGHT_ITEM_NONE);
     }
@@ -5540,7 +5540,7 @@ void Guest::UpdateQueuing()
         RemoveFromQueue();
         return;
     }
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
     {
         RemoveFromQueue();
@@ -5599,7 +5599,7 @@ void Guest::UpdateQueuing()
         if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
             // Create the I have been waiting in line ages thought
-            InsertNewThought(PEEP_THOUGHT_TYPE_QUEUING_AGES, current_ride);
+            InsertNewThought(PEEP_THOUGHT_TYPE_QUEUING_AGES, CurrentRide);
         }
     }
     else

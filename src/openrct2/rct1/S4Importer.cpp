@@ -1466,7 +1466,7 @@ private:
         dst->nausea_tolerance = src->nausea_tolerance;
         dst->window_invalidate_flags = 0;
 
-        dst->current_ride = src->current_ride;
+        dst->CurrentRide = src->current_ride;
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
         dst->CurrentCar = src->current_car;
@@ -3004,7 +3004,7 @@ private:
             Peep* peep;
             FOR_ALL_GUESTS (i, peep)
             {
-                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
                     peep->SetState(PEEP_STATE_FALLING);

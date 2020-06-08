@@ -635,7 +635,7 @@ struct Peep : SpriteBase
     uint8_t photo2_ride_ref;
     uint8_t photo3_ride_ref;
     uint8_t photo4_ride_ref;
-    uint8_t current_ride;
+    uint8_t CurrentRide;
     StationIndex CurrentRideStation;
     uint8_t CurrentTrain;
     union

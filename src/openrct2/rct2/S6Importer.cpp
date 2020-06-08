@@ -1437,7 +1437,7 @@ public:
         dst->photo2_ride_ref = src->photo2_ride_ref;
         dst->photo3_ride_ref = src->photo3_ride_ref;
         dst->photo4_ride_ref = src->photo4_ride_ref;
-        dst->current_ride = src->current_ride;
+        dst->CurrentRide = src->current_ride;
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
         dst->TimeToSitdown = src->time_to_sitdown;

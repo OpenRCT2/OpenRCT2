@@ -745,7 +745,7 @@ static uint8_t staff_mechanic_direction_surface(Peep* peep)
 {
     uint8_t direction = scenario_rand() & 3;
 
-    auto ride = get_ride(peep->current_ride);
+    auto ride = get_ride(peep->CurrentRide);
     if (ride != nullptr && (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION)
         && (scenario_rand() & 1))
     {
@@ -838,7 +838,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
     pathDirections |= (1 << direction);
 
     // Mechanic is heading to ride (either broken down or for inspection).
-    auto ride = get_ride(peep->current_ride);
+    auto ride = get_ride(peep->CurrentRide);
     if (ride != nullptr && (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION))
     {
         /* Find location of the exit for the target ride station
@@ -1422,7 +1422,7 @@ void Staff::UpdateSweeping()
  */
 void Staff::UpdateHeadingToInspect()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
     {
         SetState(PEEP_STATE_FALLING);
@@ -1474,7 +1474,7 @@ void Staff::UpdateHeadingToInspect()
             return;
         }
 
-        if (current_ride != rideEntranceExitElement->AsEntrance()->GetRideIndex())
+        if (CurrentRide != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
         uint8_t exit_index = rideEntranceExitElement->AsEntrance()->GetStationIndex();
@@ -1529,7 +1529,7 @@ void Staff::UpdateHeadingToInspect()
  */
 void Staff::UpdateAnswering()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
     {
         SetState(PEEP_STATE_FALLING);
@@ -1585,7 +1585,7 @@ void Staff::UpdateAnswering()
             return;
         }
 
-        if (current_ride != rideEntranceExitElement->AsEntrance()->GetRideIndex())
+        if (CurrentRide != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
         uint8_t exit_index = rideEntranceExitElement->AsEntrance()->GetStationIndex();
@@ -2065,7 +2065,7 @@ static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
  */
 void Staff::UpdateFixing(int32_t steps)
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
     {
         SetState(PEEP_STATE_FALLING);
@@ -2433,7 +2433,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
         CoordsXYE input;
         input.x = stationPosition.x;
         input.y = stationPosition.y;
-        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationPosition.z }, current_ride);
+        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationPosition.z }, CurrentRide);
         if (input.element == nullptr)
         {
             return true;
@@ -2618,7 +2618,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 
         if (state == PEEP_STATE_INSPECTING)
         {
-            UpdateRideInspected(current_ride);
+            UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected++;
             window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;

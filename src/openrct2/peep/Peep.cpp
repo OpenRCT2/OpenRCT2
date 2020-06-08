@@ -680,7 +680,7 @@ void peep_decrement_num_riders(Peep* peep)
 {
     if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
     {
-        auto ride = get_ride(peep->current_ride);
+        auto ride = get_ride(peep->CurrentRide);
         if (ride != nullptr)
         {
             ride->num_riders = std::max(0, ride->num_riders - 1);
@@ -704,7 +704,7 @@ void peep_window_state_update(Peep* peep)
     {
         if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
         {
-            auto ride = get_ride(peep->current_ride);
+            auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr)
             {
                 ride->num_riders++;
@@ -1803,7 +1803,7 @@ void Peep::FormatActionTo(void* argsV) const
         case PEEP_STATE_LEAVING_RIDE:
         case PEEP_STATE_ENTERING_RIDE:
         {
-            auto ride = get_ride(current_ride);
+            auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
@@ -1818,7 +1818,7 @@ void Peep::FormatActionTo(void* argsV) const
         case PEEP_STATE_BUYING:
         {
             ft.Add<rct_string_id>(STR_AT_RIDE);
-            auto ride = get_ride(current_ride);
+            auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft.Buf());
@@ -1848,7 +1848,7 @@ void Peep::FormatActionTo(void* argsV) const
         case PEEP_STATE_QUEUING_FRONT:
         case PEEP_STATE_QUEUING:
         {
-            auto ride = get_ride(current_ride);
+            auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_QUEUING_FOR);
@@ -1860,9 +1860,9 @@ void Peep::FormatActionTo(void* argsV) const
             ft.Add<rct_string_id>(STR_SITTING);
             break;
         case PEEP_STATE_WATCHING:
-            if (current_ride != RIDE_ID_NULL)
+            if (CurrentRide != RIDE_ID_NULL)
             {
-                auto ride = get_ride(current_ride);
+                auto ride = get_ride(CurrentRide);
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>((CurrentSeat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
@@ -1906,7 +1906,7 @@ void Peep::FormatActionTo(void* argsV) const
             else
             {
                 ft.Add<rct_string_id>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
-                auto ride = get_ride(current_ride);
+                auto ride = get_ride(CurrentRide);
                 if (ride != nullptr)
                 {
                     ride->FormatNameTo(ft.Buf());
@@ -1920,7 +1920,7 @@ void Peep::FormatActionTo(void* argsV) const
         case PEEP_STATE_FIXING:
         {
             ft.Add<rct_string_id>(STR_FIXING_RIDE);
-            auto ride = get_ride(current_ride);
+            auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft.Buf());
@@ -1934,7 +1934,7 @@ void Peep::FormatActionTo(void* argsV) const
         case PEEP_STATE_HEADING_TO_INSPECTION:
         {
             ft.Add<rct_string_id>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
-            auto ride = get_ride(current_ride);
+            auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft.Buf());
@@ -1948,7 +1948,7 @@ void Peep::FormatActionTo(void* argsV) const
         case PEEP_STATE_INSPECTING:
         {
             ft.Add<rct_string_id>(STR_INSPECTING_RIDE);
-            auto ride = get_ride(current_ride);
+            auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft.Buf());
@@ -2423,7 +2423,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->GuestNextInQueue = previous_last;
         ride->stations[stationNum].QueueLength++;
 
-        peep->current_ride = rideIndex;
+        peep->CurrentRide = rideIndex;
         peep->CurrentRideStation = stationNum;
         peep->DaysInQueue = 0;
         peep->SetState(PEEP_STATE_QUEUING);
@@ -2813,7 +2813,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
             // Check if this queue is connected to the ride the
             // peep is queuing for, i.e. the player hasn't edited
             // the queue, rebuilt the ride, etc.
-            if (peep->current_ride == rideIndex)
+            if (peep->CurrentRide == rideIndex)
             {
                 peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
             }
@@ -2852,7 +2852,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     ride->stations[stationNum].QueueLength++;
 
                     peep_decrement_num_riders(peep);
-                    peep->current_ride = rideIndex;
+                    peep->CurrentRide = rideIndex;
                     peep->CurrentRideStation = stationNum;
                     peep->state = PEEP_STATE_QUEUING;
                     peep->DaysInQueue = 0;
@@ -2962,7 +2962,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         peep->destination_y = (y & 0xFFE0) + 16;
         peep->destination_tolerance = 3;
 
-        peep->current_ride = rideIndex;
+        peep->CurrentRide = rideIndex;
         peep->SetState(PEEP_STATE_ENTERING_RIDE);
         peep->sub_state = PEEP_SHOP_APPROACH;
 
@@ -2987,7 +2987,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
             peep->GuestHeadingToRideId = 0xFF;
         peep->ActionSpriteImageOffset = _unk_F1AEF0;
         peep->SetState(PEEP_STATE_BUYING);
-        peep->current_ride = rideIndex;
+        peep->CurrentRide = rideIndex;
         peep->sub_state = 0;
     }
 
@@ -3401,7 +3401,7 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height)
  */
 void Peep::RemoveFromQueue()
 {
-    auto ride = get_ride(current_ride);
+    auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
         return;
 

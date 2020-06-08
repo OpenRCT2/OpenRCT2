@@ -452,7 +452,7 @@ void game_fix_save_vars()
         if (peep->CurrentRideStation >= MAX_STATIONS)
         {
             const uint8_t srcStation = peep->CurrentRideStation;
-            const uint8_t rideIdx = peep->current_ride;
+            const uint8_t rideIdx = peep->CurrentRide;
             if (rideIdx == RIDE_ID_NULL)
             {
                 continue;
@@ -461,7 +461,7 @@ void game_fix_save_vars()
             if (ride == nullptr)
             {
                 log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, spriteIndex);
-                peep->current_ride = RIDE_ID_NULL;
+                peep->CurrentRide = RIDE_ID_NULL;
                 continue;
             }
             auto ft = Formatter::Common();

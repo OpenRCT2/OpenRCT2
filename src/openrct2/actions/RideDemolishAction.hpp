@@ -164,9 +164,9 @@ private:
             peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
             if (peep->state == PEEP_STATE_WATCHING)
             {
-                if (peep->current_ride == _rideIndex)
+                if (peep->CurrentRide == _rideIndex)
                 {
-                    peep->current_ride = RIDE_ID_NULL;
+                    peep->CurrentRide = RIDE_ID_NULL;
                     if (peep->TimeToStand >= 50)
                     {
                         // make peep stop watching the ride
