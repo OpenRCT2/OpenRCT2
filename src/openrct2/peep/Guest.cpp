@@ -5786,7 +5786,7 @@ void Guest::UpdateWatching()
                 return;
             }
 
-            if ((standing_flags & 1))
+            if ((StandingFlags & 1))
             {
                 if ((scenario_rand() & 0xFFFF) <= 655)
                 {
@@ -5799,8 +5799,8 @@ void Guest::UpdateWatching()
             }
         }
 
-        standing_flags ^= (1 << 7);
-        if (!(standing_flags & (1 << 7)))
+        StandingFlags ^= (1 << 7);
+        if (!(StandingFlags & (1 << 7)))
             return;
 
         time_to_stand--;
@@ -6902,7 +6902,7 @@ void Guest::UpdateSpriteType()
         }
     }
 
-    if (state == PEEP_STATE_WATCHING && standing_flags & (1 << 1))
+    if (state == PEEP_STATE_WATCHING && StandingFlags & (1 << 1))
     {
         SetSpriteType(PEEP_SPRITE_TYPE_WATCHING);
         return;

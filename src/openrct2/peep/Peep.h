@@ -649,7 +649,7 @@ struct Peep : SpriteBase
         struct
         {
             uint8_t time_to_stand;
-            uint8_t standing_flags;
+            uint8_t StandingFlags;
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
