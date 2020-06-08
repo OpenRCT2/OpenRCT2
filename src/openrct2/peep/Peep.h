@@ -695,7 +695,7 @@ struct Peep : SpriteBase
     union
     {
         uint8_t StaffId;
-        uint8_t GuestHeadingToRideId;
+        ride_id_t GuestHeadingToRideId;
     };
     union
     {

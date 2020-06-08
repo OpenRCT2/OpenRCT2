@@ -2052,7 +2052,7 @@ int32_t guest_path_finding(Guest* peep)
         return guest_path_find_park_entrance(peep, edges);
     }
 
-    if (peep->GuestHeadingToRideId == 0xFF)
+    if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)

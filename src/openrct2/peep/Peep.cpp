@@ -1181,7 +1181,7 @@ void peep_problem_warnings_update()
                 break;
 
             case PEEP_THOUGHT_TYPE_HUNGRY: // 0x14
-                if (peep->GuestHeadingToRideId == 0xFF)
+                if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     hunger_counter++;
                     break;
@@ -1192,7 +1192,7 @@ void peep_problem_warnings_update()
                 break;
 
             case PEEP_THOUGHT_TYPE_THIRSTY:
-                if (peep->GuestHeadingToRideId == 0xFF)
+                if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     thirst_counter++;
                     break;
@@ -1203,7 +1203,7 @@ void peep_problem_warnings_update()
                 break;
 
             case PEEP_THOUGHT_TYPE_TOILET:
-                if (peep->GuestHeadingToRideId == 0xFF)
+                if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     toilet_counter++;
                     break;
@@ -2940,7 +2940,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
     else
     {
         if (peep->GuestHeadingToRideId == rideIndex)
-            peep->GuestHeadingToRideId = 0xFF;
+            peep->GuestHeadingToRideId = RIDE_ID_NULL;
         peep->ActionSpriteImageOffset = _unk_F1AEF0;
         peep->SetState(PEEP_STATE_BUYING);
         peep->CurrentRide = rideIndex;
