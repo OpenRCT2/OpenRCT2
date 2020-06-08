@@ -2424,7 +2424,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         ride->stations[stationNum].QueueLength++;
 
         peep->current_ride = rideIndex;
-        peep->current_ride_station = stationNum;
+        peep->CurrentRideStation = stationNum;
         peep->DaysInQueue = 0;
         peep->SetState(PEEP_STATE_QUEUING);
         peep->sub_state = 11;
@@ -2853,7 +2853,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
 
                     peep_decrement_num_riders(peep);
                     peep->current_ride = rideIndex;
-                    peep->current_ride_station = stationNum;
+                    peep->CurrentRideStation = stationNum;
                     peep->state = PEEP_STATE_QUEUING;
                     peep->DaysInQueue = 0;
                     peep_window_state_update(peep);
@@ -3405,7 +3405,7 @@ void Peep::RemoveFromQueue()
     if (ride == nullptr)
         return;
 
-    auto& station = ride->stations[current_ride_station];
+    auto& station = ride->stations[CurrentRideStation];
     // Make sure we don't underflow, building while paused might reset it to 0 where peeps have
     // not yet left the queue.
     if (station.QueueLength > 0)

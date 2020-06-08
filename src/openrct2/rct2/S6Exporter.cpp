@@ -1173,7 +1173,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->photo3_ride_ref = src->photo3_ride_ref;
     dst->photo4_ride_ref = src->photo4_ride_ref;
     dst->current_ride = src->current_ride;
-    dst->current_ride_station = src->current_ride_station;
+    dst->current_ride_station = src->CurrentRideStation;
     dst->current_train = src->CurrentTrain;
     dst->time_to_sitdown = src->TimeToSitdown;
     dst->special_sprite = src->SpecialSprite;

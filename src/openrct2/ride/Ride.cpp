@@ -334,16 +334,16 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
     assert(peep != nullptr);
 
     peep->GuestNextInQueue = SPRITE_INDEX_NULL;
-    Peep* queueHeadGuest = GetQueueHeadGuest(peep->current_ride_station);
+    Peep* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
-        stations[peep->current_ride_station].LastPeepInQueue = peep->sprite_index;
+        stations[peep->CurrentRideStation].LastPeepInQueue = peep->sprite_index;
     }
     else
     {
         queueHeadGuest->GuestNextInQueue = peep->sprite_index;
     }
-    UpdateQueueLength(peep->current_ride_station);
+    UpdateQueueLength(peep->CurrentRideStation);
 }
 
 /**
@@ -2640,7 +2640,7 @@ static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     ride->mechanic = mechanic->sprite_index;
     mechanic->current_ride = ride->id;
-    mechanic->current_ride_station = ride->inspection_station;
+    mechanic->CurrentRideStation = ride->inspection_station;
 }
 
 /**

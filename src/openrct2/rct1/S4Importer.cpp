@@ -1467,7 +1467,7 @@ private:
         dst->window_invalidate_flags = 0;
 
         dst->current_ride = src->current_ride;
-        dst->current_ride_station = src->current_ride_station;
+        dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
         dst->CurrentCar = src->current_car;
         dst->CurrentSeat = src->current_seat;

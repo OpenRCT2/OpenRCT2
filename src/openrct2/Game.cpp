@@ -449,9 +449,9 @@ void game_fix_save_vars()
     // Fix possibly invalid field values
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->current_ride_station >= MAX_STATIONS)
+        if (peep->CurrentRideStation >= MAX_STATIONS)
         {
-            const uint8_t srcStation = peep->current_ride_station;
+            const uint8_t srcStation = peep->CurrentRideStation;
             const uint8_t rideIdx = peep->current_ride;
             if (rideIdx == RIDE_ID_NULL)
             {
@@ -478,7 +478,7 @@ void game_fix_save_vars()
             else
             {
                 log_warning("Amending ride station to %u.", station);
-                peep->current_ride_station = station;
+                peep->CurrentRideStation = station;
             }
         }
     }
