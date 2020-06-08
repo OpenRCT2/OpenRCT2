@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+using ShopItemIndex = uint8_t;
+
 struct Ride;
 
 enum

@@ -15,6 +15,7 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
+#include "../ride/ShopItem.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
 
@@ -743,7 +744,11 @@ struct Peep : SpriteBase
     uint8_t AmountOfSouvenirs;
     uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t VoucherType;
-    uint8_t VoucherArguments; // ride_id or string_offset_id
+    union
+    {
+        ride_id_t VoucherRideId;
+        ShopItemIndex VoucherShopItem;
+    };
     uint8_t SurroundingsThoughtTimeout;
     uint8_t Angriness;
     uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought

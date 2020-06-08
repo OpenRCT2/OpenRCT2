@@ -1988,7 +1988,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
-                    ride = get_ride(peep->VoucherArguments);
+                    ride = get_ride(peep->VoucherRideId);
                     if (ride != nullptr)
                     {
                         ft.Rewind();
@@ -2008,7 +2008,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     ft.Rewind();
                     ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    ft.Add<rct_string_id>(ShopItems[peep->VoucherArguments].Naming.Singular);
+                    ft.Add<rct_string_id>(ShopItems[peep->VoucherShopItem].Naming.Singular);
                     break;
             }
             break;
