@@ -67,6 +67,8 @@ constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
 constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
+constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
