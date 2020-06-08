@@ -633,9 +633,9 @@ struct Peep : SpriteBase
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
     uint32_t ItemExtraFlags;
-    uint8_t Photo2RideRef;
-    uint8_t Photo3RideRef;
-    uint8_t Photo4RideRef;
+    ride_id_t Photo2RideRef;
+    ride_id_t Photo3RideRef;
+    ride_id_t Photo4RideRef;
     union
     {
         ride_id_t CurrentRide;
@@ -701,7 +701,7 @@ struct Peep : SpriteBase
         uint8_t StaffOrders;
         uint8_t GuestIsLostCountdown;
     };
-    uint8_t Photo1RideRef;
+    ride_id_t Photo1RideRef;
     uint32_t PeepFlags;
     rct12_xyzd8 PathfindGoal;
     rct12_xyzd8 PathfindHistory[4];
