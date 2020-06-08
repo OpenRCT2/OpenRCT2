@@ -449,10 +449,10 @@ void game_fix_save_vars()
     // Fix possibly invalid field values
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->current_ride_station >= MAX_STATIONS)
+        if (peep->CurrentRideStation >= MAX_STATIONS)
         {
-            const uint8_t srcStation = peep->current_ride_station;
-            const uint8_t rideIdx = peep->current_ride;
+            const uint8_t srcStation = peep->CurrentRideStation;
+            const uint8_t rideIdx = peep->CurrentRide;
             if (rideIdx == RIDE_ID_NULL)
             {
                 continue;
@@ -461,7 +461,7 @@ void game_fix_save_vars()
             if (ride == nullptr)
             {
                 log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, spriteIndex);
-                peep->current_ride = RIDE_ID_NULL;
+                peep->CurrentRide = RIDE_ID_NULL;
                 continue;
             }
             auto ft = Formatter::Common();
@@ -478,7 +478,7 @@ void game_fix_save_vars()
             else
             {
                 log_warning("Amending ride station to %u.", station);
-                peep->current_ride_station = station;
+                peep->CurrentRideStation = station;
             }
         }
     }

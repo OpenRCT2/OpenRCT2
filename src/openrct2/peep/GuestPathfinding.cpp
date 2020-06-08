@@ -1646,9 +1646,9 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
 static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 {
     // If entrance no longer exists, choose a new one
-    if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->current_ride >= gParkEntrances.size())
+    if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->CurrentRide >= gParkEntrances.size())
     {
-        peep->current_ride = 0xFF;
+        peep->CurrentRide = RIDE_ID_NULL;
         peep->PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
     }
 
@@ -1671,11 +1671,11 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
         if (chosenEntrance == 0xFF)
             return guest_path_find_aimless(peep, edges);
 
-        peep->current_ride = chosenEntrance;
+        peep->CurrentRide = chosenEntrance;
         peep->PeepFlags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
-    const auto& entrance = gParkEntrances[peep->current_ride];
+    const auto& entrance = gParkEntrances[peep->CurrentRide];
 
     gPeepPathFindGoalPosition = TileCoordsXYZ(entrance);
     gPeepPathFindIgnoreForeignQueues = true;

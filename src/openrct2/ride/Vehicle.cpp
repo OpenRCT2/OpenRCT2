@@ -3055,7 +3055,7 @@ void Vehicle::PeepEasterEggHereWeAre() const
             Peep* curPeep = GET_PEEP(vehicle->peep[i]);
             if (curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
             {
-                curPeep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, curPeep->current_ride);
+                curPeep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, curPeep->CurrentRide);
             }
         }
     } while ((spriteId = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);

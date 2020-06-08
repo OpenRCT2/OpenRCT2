@@ -632,36 +632,36 @@ struct Peep : SpriteBase
     money16 paid_on_drink;
     uint8_t ride_types_been_on[16];
     uint32_t item_extra_flags;
-    uint8_t photo2_ride_ref;
-    uint8_t photo3_ride_ref;
-    uint8_t photo4_ride_ref;
-    uint8_t current_ride;
-    StationIndex current_ride_station;
-    uint8_t current_train;
+    uint8_t Photo2RideRef;
+    uint8_t Photo3RideRef;
+    uint8_t Photo4RideRef;
+    uint8_t CurrentRide;
+    StationIndex CurrentRideStation;
+    uint8_t CurrentTrain;
     union
     {
         struct
         {
-            uint8_t current_car;
-            uint8_t current_seat;
+            uint8_t CurrentCar;
+            uint8_t CurrentSeat;
         };
-        uint16_t time_to_sitdown;
+        uint16_t TimeToSitdown;
         struct
         {
-            uint8_t time_to_stand;
-            uint8_t standing_flags;
+            uint8_t TimeToStand;
+            uint8_t StandingFlags;
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;
-    PeepActionSpriteType action_sprite_type;
+    uint8_t SpecialSprite;
+    PeepActionSpriteType ActionSpriteType;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    PeepActionSpriteType next_action_sprite_type;
-    uint8_t action_sprite_image_offset;
-    PeepActionType action;
-    uint8_t action_frame;
-    uint8_t step_progress;
+    PeepActionSpriteType NextActionSpriteType;
+    uint8_t ActionSpriteImageOffset;
+    PeepActionType Action;
+    uint8_t ActionFrame;
+    uint8_t StepProgress;
     union
     {
         uint16_t MechanicTimeSinceCall; // time getting to ride to fix

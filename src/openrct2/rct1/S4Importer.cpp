@@ -1391,18 +1391,18 @@ private:
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
         dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
-        dst->action = static_cast<PeepActionType>(src->action);
-        dst->special_sprite = src->special_sprite;
-        dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
-        dst->action_sprite_image_offset = src->action_sprite_image_offset;
+        dst->Action = static_cast<PeepActionType>(src->action);
+        dst->SpecialSprite = src->special_sprite;
+        dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
+        dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->WalkingFrameNum = src->no_action_frame_num;
-        dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
-        dst->action_frame = src->action_frame;
+        dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
+        dst->ActionFrame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
+        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
+        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
         invalidate_sprite_2(dst);
@@ -1423,7 +1423,7 @@ private:
         dst->next_flags = src->next_flags;
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
-        dst->step_progress = src->step_progress;
+        dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
 
         dst->type = static_cast<PeepType>(src->type);
@@ -1466,11 +1466,11 @@ private:
         dst->nausea_tolerance = src->nausea_tolerance;
         dst->window_invalidate_flags = 0;
 
-        dst->current_ride = src->current_ride;
-        dst->current_ride_station = src->current_ride_station;
-        dst->current_train = src->current_train;
-        dst->current_car = src->current_car;
-        dst->current_seat = src->current_seat;
+        dst->CurrentRide = src->current_ride;
+        dst->CurrentRideStation = src->current_ride_station;
+        dst->CurrentTrain = src->current_train;
+        dst->CurrentCar = src->current_car;
+        dst->CurrentSeat = src->current_seat;
         dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
@@ -3004,7 +3004,7 @@ private:
             Peep* peep;
             FOR_ALL_GUESTS (i, peep)
             {
-                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
                     peep->SetState(PEEP_STATE_FALLING);

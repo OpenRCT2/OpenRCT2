@@ -160,11 +160,11 @@ private:
         {
             newPeep->sprite_identifier = 1;
             newPeep->window_invalidate_flags = 0;
-            newPeep->action = PEEP_ACTION_NONE_2;
-            newPeep->special_sprite = 0;
-            newPeep->action_sprite_image_offset = 0;
+            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->SpecialSprite = 0;
+            newPeep->ActionSpriteImageOffset = 0;
             newPeep->WalkingFrameNum = 0;
-            newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
+            newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->PathCheckOptimisation = 0;
             newPeep->type = PEEP_TYPE_STAFF;
             newPeep->outside_of_park = 0;
