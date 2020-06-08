@@ -2471,7 +2471,7 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
 
     peep->CurrentCar = car_array[chosen_car];
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
 
     for (int32_t i = peep->CurrentCar; i > 0; --i)
     {
@@ -2583,7 +2583,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         return false;
     }
 
-    current_train = chosen_train;
+    CurrentTrain = chosen_train;
 
     int32_t i = 0;
 
@@ -3625,7 +3625,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
-    auto vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+    auto vehicle = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
     auto ride_entry = get_ride_entry(vehicle->ride_subtype);
     auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
@@ -3727,7 +3727,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         }
     }
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -3957,7 +3957,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
     for (int32_t i = CurrentCar; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
@@ -4015,7 +4015,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[CurrentTrain]);
     if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
         && !currentTrain->UpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
@@ -4049,7 +4049,7 @@ void Guest::UpdateRideEnterVehicle()
     auto* ride = get_ride(current_ride);
     if (ride != nullptr)
     {
-        auto* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+        auto* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
         if (vehicle != nullptr)
         {
             for (int32_t i = CurrentCar; i != 0; --i)
@@ -4111,7 +4111,7 @@ void Guest::UpdateRideLeaveVehicle()
     if (ride == nullptr)
         return;
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
     uint8_t ride_station = vehicle->current_station;
 
     for (int32_t i = CurrentCar; i != 0; --i)
@@ -4271,7 +4271,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
-    vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
 
     rideEntry = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
@@ -4456,7 +4456,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     // This is incrementing the actual peep waypoint
     var_37++;
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
 
     CoordsXY targetLoc = ride->stations[current_ride_station].Start.ToTileCentre();
 
@@ -4525,7 +4525,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         var_37--;
-        Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
+        Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
         CoordsXY targetLoc = ride->stations[current_ride_station].Start.ToTileCentre();
 
         if (ride->type == RIDE_TYPE_ENTERPRISE)
