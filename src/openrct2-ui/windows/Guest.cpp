@@ -2015,7 +2015,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItems[item].Image);
             break;
         case SHOP_ITEM_PHOTO2:
-            ride = get_ride(peep->photo2_ride_ref);
+            ride = get_ride(peep->Photo2RideRef);
             if (ride != nullptr)
                 ride->FormatNameTo(gCommonFormatArgs + 6);
             break;

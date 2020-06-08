@@ -1673,7 +1673,7 @@ loc_69B221:
         Photo1RideRef = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO2)
-        photo2_ride_ref = ride->id;
+        Photo2RideRef = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO3)
         Photo3RideRef = ride->id;
