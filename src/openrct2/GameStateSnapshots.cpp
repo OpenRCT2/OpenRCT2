@@ -241,7 +241,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, intensity);
         COMPARE_FIELD(Peep, nausea_tolerance);
         COMPARE_FIELD(Peep, window_invalidate_flags);
-        COMPARE_FIELD(Peep, paid_on_drink);
+        COMPARE_FIELD(Peep, PaidOnDrink);
         for (int i = 0; i < 16; i++)
         {
             COMPARE_FIELD(Peep, RideTypesBeenOn[i]);

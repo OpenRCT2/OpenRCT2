@@ -1163,7 +1163,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->intensity = static_cast<uint8_t>(src->intensity);
     dst->nausea_tolerance = src->nausea_tolerance;
     dst->window_invalidate_flags = src->window_invalidate_flags;
-    dst->paid_on_drink = src->paid_on_drink;
+    dst->paid_on_drink = src->PaidOnDrink;
     for (size_t i = 0; i < std::size(src->RideTypesBeenOn); i++)
     {
         dst->ride_types_been_on[i] = src->RideTypesBeenOn[i];

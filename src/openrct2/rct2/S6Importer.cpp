@@ -1428,7 +1428,7 @@ public:
         dst->intensity = static_cast<IntensityRange>(src->intensity);
         dst->nausea_tolerance = src->nausea_tolerance;
         dst->window_invalidate_flags = src->window_invalidate_flags;
-        dst->paid_on_drink = src->paid_on_drink;
+        dst->PaidOnDrink = src->paid_on_drink;
         for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
         {
             dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];

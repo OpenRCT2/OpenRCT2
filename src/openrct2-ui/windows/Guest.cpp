@@ -1834,7 +1834,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on drinks
     y += LIST_ROW_HEIGHT;
     ft = Formatter::Common();
-    ft.Add<money32>(peep->paid_on_drink);
+    ft.Add<money32>(peep->PaidOnDrink);
     ft.Add<uint16_t>(peep->AmountOfDrinks);
     if (peep->AmountOfDrinks != 1)
     {
