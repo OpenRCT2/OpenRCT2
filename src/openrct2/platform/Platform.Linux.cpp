@@ -81,7 +81,7 @@ namespace Platform
     std::string GetInstallPath()
     {
         // 1. Try command line argument
-        auto path = std::string(gCustomOpenrctDataPath);
+        auto path = std::string(gCustomOpenRCT2DataPath);
         if (!path.empty())
         {
             return Path::GetAbsolute(path);

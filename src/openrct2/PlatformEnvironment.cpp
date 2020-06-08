@@ -142,9 +142,9 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     {
         basePaths[static_cast<size_t>(DIRBASE::RCT2)] = gCustomRCT2DataPath;
     }
-    if (!String::IsNullOrEmpty(gCustomOpenrctDataPath))
+    if (!String::IsNullOrEmpty(gCustomOpenRCT2DataPath))
     {
-        basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)] = gCustomOpenrctDataPath;
+        basePaths[static_cast<size_t>(DIRBASE::OPENRCT2)] = gCustomOpenRCT2DataPath;
     }
     if (!String::IsNullOrEmpty(gCustomUserDataPath))
     {

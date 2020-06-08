@@ -36,7 +36,7 @@ const rct_string_id DateFormatStringFormatIds[] = {
 };
 // clang-format on
 
-openrct_timeofday gRealTimeOfDay;
+openrct2_timeofday gRealTimeOfDay;
 
 int32_t date_get_month(int32_t months)
 {
