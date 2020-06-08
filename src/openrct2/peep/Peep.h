@@ -653,7 +653,7 @@ struct Peep : SpriteBase
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;
+    uint8_t SpecialSprite;
     PeepActionSpriteType ActionSpriteType;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again

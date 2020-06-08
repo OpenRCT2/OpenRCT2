@@ -1441,7 +1441,7 @@ public:
         dst->current_ride_station = src->current_ride_station;
         dst->current_train = src->current_train;
         dst->time_to_sitdown = src->time_to_sitdown;
-        dst->special_sprite = src->special_sprite;
+        dst->SpecialSprite = src->special_sprite;
         dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->ActionSpriteImageOffset = src->action_sprite_image_offset;

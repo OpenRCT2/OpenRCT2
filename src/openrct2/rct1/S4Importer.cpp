@@ -1392,7 +1392,7 @@ private:
         // Peep vs. staff (including which kind)
         dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->Action = static_cast<PeepActionType>(src->action);
-        dst->special_sprite = src->special_sprite;
+        dst->SpecialSprite = src->special_sprite;
         dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->WalkingFrameNum = src->no_action_frame_num;

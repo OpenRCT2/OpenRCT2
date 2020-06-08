@@ -501,7 +501,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
 {
     if (Action >= PEEP_ACTION_NONE_1)
     { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
-        return PeepSpecialSpriteToSpriteTypeMap[special_sprite];
+        return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
     else if (Action < std::size(PeepActionToSpriteTypeMap))
     {
@@ -544,10 +544,10 @@ void Peep::UpdateCurrentActionSpriteType()
 /* rct2: 0x00693BE5 */
 void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
 {
-    if (special_sprite_id == special_sprite)
+    if (special_sprite_id == SpecialSprite)
         return;
 
-    special_sprite = special_sprite_id;
+    SpecialSprite = special_sprite_id;
 
     // If NONE_1 or NONE_2
     if (Action >= PEEP_ACTION_NONE_1)
@@ -745,7 +745,7 @@ void Peep::PickupAbort(int32_t old_x)
     {
         SetState(PEEP_STATE_FALLING);
         Action = PEEP_ACTION_NONE_2;
-        special_sprite = 0;
+        SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
         PathCheckOptimisation = 0;
@@ -794,7 +794,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         MoveTo(destination);
         SetState(PEEP_STATE_FALLING);
         Action = PEEP_ACTION_NONE_2;
-        special_sprite = 0;
+        SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
         PathCheckOptimisation = 0;
@@ -1619,7 +1619,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->outside_of_park = 1;
     peep->state = PEEP_STATE_FALLING;
     peep->Action = PEEP_ACTION_NONE_2;
-    peep->special_sprite = 0;
+    peep->SpecialSprite = 0;
     peep->ActionSpriteImageOffset = 0;
     peep->WalkingFrameNum = 0;
     peep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
