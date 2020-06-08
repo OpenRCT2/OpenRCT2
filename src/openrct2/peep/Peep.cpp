@@ -2236,15 +2236,15 @@ void peep_set_map_tooltip(Peep* peep)
  */
 void Peep::SwitchNextActionSpriteType()
 {
-    // TBD: Add nextActionSpriteType as function parameter and make peep->next_action_sprite_type obsolete?
-    if (next_action_sprite_type != action_sprite_type)
+    // TBD: Add nextActionSpriteType as function parameter and make peep->NextActionSpriteType obsolete?
+    if (NextActionSpriteType != action_sprite_type)
     {
         Invalidate();
-        action_sprite_type = next_action_sprite_type;
+        action_sprite_type = NextActionSpriteType;
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
-        sprite_width = spriteBounds[next_action_sprite_type].sprite_width;
-        sprite_height_negative = spriteBounds[next_action_sprite_type].sprite_height_negative;
-        sprite_height_positive = spriteBounds[next_action_sprite_type].sprite_height_positive;
+        sprite_width = spriteBounds[NextActionSpriteType].sprite_width;
+        sprite_height_negative = spriteBounds[NextActionSpriteType].sprite_height_negative;
+        sprite_height_positive = spriteBounds[NextActionSpriteType].sprite_height_positive;
         Invalidate();
     }
 }
@@ -2315,7 +2315,7 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
         return true;
 
     peep->Action = PEEP_ACTION_NONE_1;
-    peep->next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
+    peep->NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
     return true;

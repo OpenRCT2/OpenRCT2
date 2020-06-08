@@ -1233,7 +1233,7 @@ void Guest::UpdateSitting()
 
         sprite_direction = ((var_37 + 2) & 3) * 8;
         Action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
+        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
 
         sub_state = PEEP_SITTING_SAT_DOWN;
@@ -5604,7 +5604,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && Action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
+        if (!(TimeInQueue & 0x3F) && Action == PEEP_ACTION_NONE_1 && NextActionSpriteType == 2)
         {
             switch (sprite_type)
             {
@@ -5743,7 +5743,7 @@ void Guest::UpdateWatching()
         sprite_direction = (var_37 & 3) * 8;
 
         Action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
+        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
 
         SwitchNextActionSpriteType();
 
@@ -6782,13 +6782,13 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     if (state == PEEP_STATE_SITTING)
     {
         Action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
+        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
     }
     if (state == PEEP_STATE_WATCHING)
     {
         Action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
+        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
         SwitchNextActionSpriteType();
     }
 }

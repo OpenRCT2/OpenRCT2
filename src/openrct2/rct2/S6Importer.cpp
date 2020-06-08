@@ -1443,7 +1443,7 @@ public:
         dst->time_to_sitdown = src->time_to_sitdown;
         dst->special_sprite = src->special_sprite;
         dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
-        dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
+        dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->Action = static_cast<PeepActionType>(src->action);
         dst->ActionFrame = src->action_frame;

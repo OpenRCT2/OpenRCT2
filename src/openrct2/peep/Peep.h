@@ -657,7 +657,7 @@ struct Peep : SpriteBase
     PeepActionSpriteType action_sprite_type;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    PeepActionSpriteType next_action_sprite_type;
+    PeepActionSpriteType NextActionSpriteType;
     uint8_t ActionSpriteImageOffset;
     PeepActionType Action;
     uint8_t ActionFrame;
