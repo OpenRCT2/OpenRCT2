@@ -1470,7 +1470,7 @@ private:
         dst->current_ride_station = src->current_ride_station;
         dst->current_train = src->current_train;
         dst->current_car = src->current_car;
-        dst->current_seat = src->current_seat;
+        dst->CurrentSeat = src->current_seat;
         dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 

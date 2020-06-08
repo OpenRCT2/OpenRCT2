@@ -1865,13 +1865,13 @@ void Peep::FormatActionTo(void* argsV) const
                 auto ride = get_ride(current_ride);
                 if (ride != nullptr)
                 {
-                    ft.Add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
+                    ft.Add<rct_string_id>((CurrentSeat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
                     ride->FormatNameTo(ft.Buf());
                 }
             }
             else
             {
-                ft.Add<rct_string_id>((current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
+                ft.Add<rct_string_id>((CurrentSeat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
             }
             break;
         case PEEP_STATE_PICKED:

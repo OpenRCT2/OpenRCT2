@@ -2497,11 +2497,11 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
             chosen_seat++;
         }
     }
-    peep->current_seat = chosen_seat;
+    peep->CurrentSeat = chosen_seat;
     vehicle->next_free_seat++;
 
-    vehicle->peep[peep->current_seat] = peep->sprite_index;
-    vehicle->peep_tshirt_colours[peep->current_seat] = peep->tshirt_colour;
+    vehicle->peep[peep->CurrentSeat] = peep->sprite_index;
+    vehicle->peep_tshirt_colours[peep->CurrentSeat] = peep->tshirt_colour;
 }
 
 /**
@@ -3593,8 +3593,8 @@ static uint8_t peep_get_waypointed_seat_location(
     // The seatlocation can be split into segments around the ride base
     // to decide the segment first split off the segmentable seat location
     // from the fixed section
-    uint8_t seatLocationSegment = peep->current_seat & 0x7;
-    uint8_t seatLocationFixed = peep->current_seat & 0xF8;
+    uint8_t seatLocationSegment = peep->CurrentSeat & 0x7;
+    uint8_t seatLocationFixed = peep->CurrentSeat & 0xF8;
 
     // Enterprise has more segments (8) compared to the normal (4)
     if (ride->type != RIDE_TYPE_ENTERPRISE)
@@ -3771,9 +3771,9 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     if (numSeatPositions != 0)
     {
         size_t loadPositionIndex = numSeatPositions - 1;
-        if (current_seat < numSeatPositions)
+        if (CurrentSeat < numSeatPositions)
         {
-            loadPositionIndex = current_seat;
+            loadPositionIndex = CurrentSeat;
         }
         load_position = vehicle_type->peep_loading_positions[loadPositionIndex];
     }
@@ -3999,7 +3999,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
     {
-        if (current_seat & 1 || !(vehicle->next_free_seat & 1))
+        if (CurrentSeat & 1 || !(vehicle->next_free_seat & 1))
         {
             UpdateRideFreeVehicleEnterRide(ride);
             return;
@@ -4007,7 +4007,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     }
     else
     {
-        uint8_t seat = current_seat | 1;
+        uint8_t seat = CurrentSeat | 1;
         if (seat < vehicle->next_free_seat)
         {
             UpdateRideFreeVehicleEnterRide(ride);
@@ -4024,12 +4024,12 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride->mode != RIDE_MODE_FORWARD_ROTATION && ride->mode != RIDE_MODE_BACKWARD_ROTATION)
     {
-        if (vehicle->next_free_seat - 1 != current_seat)
+        if (vehicle->next_free_seat - 1 != CurrentSeat)
             return;
     }
 
     vehicle->next_free_seat--;
-    vehicle->peep[current_seat] = SPRITE_INDEX_NULL;
+    vehicle->peep[CurrentSeat] = SPRITE_INDEX_NULL;
 
     peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
 }
@@ -4059,13 +4059,13 @@ void Guest::UpdateRideEnterVehicle()
 
             if (ride->mode != RIDE_MODE_FORWARD_ROTATION && ride->mode != RIDE_MODE_BACKWARD_ROTATION)
             {
-                if (current_seat != vehicle->num_peeps)
+                if (CurrentSeat != vehicle->num_peeps)
                     return;
             }
 
             if (vehicle->IsUsedInPairs())
             {
-                auto* seatedPeep = GET_PEEP(vehicle->peep[current_seat ^ 1]);
+                auto* seatedPeep = GET_PEEP(vehicle->peep[CurrentSeat ^ 1]);
                 if (seatedPeep != nullptr)
                 {
                     auto* seatedPeepAsGuest = seatedPeep->AsGuest();
@@ -4122,7 +4122,7 @@ void Guest::UpdateRideLeaveVehicle()
     // Check if ride is NOT Ferris Wheel.
     if (ride->mode != RIDE_MODE_FORWARD_ROTATION && ride->mode != RIDE_MODE_BACKWARD_ROTATION)
     {
-        if (vehicle->num_peeps - 1 != current_seat)
+        if (vehicle->num_peeps - 1 != CurrentSeat)
             return;
     }
 
@@ -4227,9 +4227,9 @@ void Guest::UpdateRideLeaveVehicle()
         platformLocation.y = vehicle->y + DirectionOffsets[platformLocation.direction].y * 12;
 
         // This can evaluate to false with buggy custom rides.
-        if (current_seat < vehicle_entry->peep_loading_positions.size())
+        if (CurrentSeat < vehicle_entry->peep_loading_positions.size())
         {
-            int8_t loadPosition = vehicle_entry->peep_loading_positions[current_seat];
+            int8_t loadPosition = vehicle_entry->peep_loading_positions[CurrentSeat];
 
             switch (vehicle->sprite_direction / 8)
             {
@@ -4250,7 +4250,7 @@ void Guest::UpdateRideLeaveVehicle()
         else
         {
             log_verbose(
-                "current_seat %d is too large! (Vehicle entry has room for %d.)", current_seat,
+                "CurrentSeat %d is too large! (Vehicle entry has room for %d.)", CurrentSeat,
                 vehicle_entry->peep_loading_positions.size());
         }
 
@@ -5506,7 +5506,7 @@ void Guest::UpdateWalking()
         chosen_position = (chosen_position + 1) & 3;
 
     current_ride = ride_to_view;
-    current_seat = ride_seat_to_view;
+    CurrentSeat = ride_seat_to_view;
     var_37 = chosen_edge | (chosen_position << 2);
 
     SetState(PEEP_STATE_WATCHING);
@@ -5519,7 +5519,7 @@ void Guest::UpdateWalking()
     destination_y = destY;
     destination_tolerance = 3;
 
-    if (current_seat & 1)
+    if (CurrentSeat & 1)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NEW_RIDE, PEEP_THOUGHT_ITEM_NONE);
     }
