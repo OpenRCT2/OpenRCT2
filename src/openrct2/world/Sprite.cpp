@@ -847,20 +847,15 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
  */
 void litter_remove_at(int32_t x, int32_t y, int32_t z)
 {
-    for (uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y); spriteIndex != SPRITE_INDEX_NULL;)
+    auto quad = EntityTileList<Litter>({ x, y });
+    for (auto litter : quad)
     {
-        auto* sprite = GetEntity(spriteIndex);
-        spriteIndex = sprite->next_in_quadrant;
-        auto* litter = sprite->As<Litter>();
-        if (litter != nullptr)
+        if (abs(litter->z - z) <= 16)
         {
-            if (abs(litter->z - z) <= 16)
+            if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
             {
-                if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
-                {
-                    invalidate_sprite_0(litter);
-                    sprite_remove(litter);
-                }
+                invalidate_sprite_0(litter);
+                sprite_remove(litter);
             }
         }
     }

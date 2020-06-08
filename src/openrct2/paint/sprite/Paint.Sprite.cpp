@@ -43,11 +43,9 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
     const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (uint16_t sprite_idx = sprite_get_first_in_quadrant(x, y); sprite_idx != SPRITE_INDEX_NULL;)
+    auto quad = EntityTileList({ x, y });
+    for (const auto* spr : quad)
     {
-        auto spr = GetEntity(sprite_idx);
-        sprite_idx = spr->next_in_quadrant;
-
         if (highlightPathIssues)
         {
             const auto peep = spr->As<Peep>();
@@ -117,7 +115,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 peep_paint(session, spr->As<Peep>(), image_direction);
                 break;
             case SPRITE_IDENTIFIER_MISC:
-                misc_paint(session, reinterpret_cast<rct_sprite*>(spr), image_direction);
+                misc_paint(session, reinterpret_cast<const rct_sprite*>(spr), image_direction);
                 break;
             case SPRITE_IDENTIFIER_LITTER:
                 litter_paint(session, spr->As<Litter>(), image_direction);
