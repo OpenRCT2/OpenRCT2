@@ -192,25 +192,25 @@ private:
                     peep->ItemStandardFlags &= ~PEEP_ITEM_PHOTO;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO2)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO2)
             {
                 if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO2;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO3)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO3)
             {
                 if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO3;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO4)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO4)
             {
                 if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO4;
                 }
             }
 

@@ -1433,7 +1433,7 @@ public:
         {
             dst->ride_types_been_on[i] = src->ride_types_been_on[i];
         }
-        dst->item_extra_flags = src->item_extra_flags;
+        dst->ItemExtraFlags = src->item_extra_flags;
         dst->Photo2RideRef = src->photo2_ride_ref;
         dst->Photo3RideRef = src->photo3_ride_ref;
         dst->Photo4RideRef = src->photo4_ride_ref;

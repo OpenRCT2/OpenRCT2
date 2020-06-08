@@ -1749,7 +1749,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->PathfindGoal.z = 0xFF;
     peep->PathfindGoal.direction = INVALID_DIRECTION;
     peep->ItemStandardFlags = 0;
-    peep->item_extra_flags = 0;
+    peep->ItemExtraFlags = 0;
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->LitterCount = 0;
     peep->DisgustingCount = 0;

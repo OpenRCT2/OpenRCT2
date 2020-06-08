@@ -433,7 +433,7 @@ enum PeepItem
     PEEP_ITEM_EMPTY_BOX = (1 << 26),
     PEEP_ITEM_EMPTY_BOTTLE = (1 << 27),
 
-    // item_extra_flags
+    // ItemExtraFlags
     PEEP_ITEM_PHOTO2 = (1 << 0),
     PEEP_ITEM_PHOTO3 = (1 << 1),
     PEEP_ITEM_PHOTO4 = (1 << 2),
@@ -631,7 +631,7 @@ struct Peep : SpriteBase
     uint8_t window_invalidate_flags;
     money16 paid_on_drink;
     uint8_t ride_types_been_on[16];
-    uint32_t item_extra_flags;
+    uint32_t ItemExtraFlags;
     uint8_t Photo2RideRef;
     uint8_t Photo3RideRef;
     uint8_t Photo4RideRef;

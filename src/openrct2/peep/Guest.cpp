@@ -1100,12 +1100,12 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 chosen_food = bitscanforward(HasFoodExtraFlag());
                 if (chosen_food != -1)
                 {
-                    item_extra_flags &= ~(1 << chosen_food);
+                    ItemExtraFlags &= ~(1 << chosen_food);
                     uint8_t discard_container = peep_extra_item_containers[chosen_food];
                     if (discard_container != 0xFF)
                     {
                         if (discard_container >= 32)
-                            item_extra_flags |= (1 << (discard_container - 32));
+                            ItemExtraFlags |= (1 << (discard_container - 32));
                         else
                             ItemStandardFlags |= (1 << discard_container);
                     }
@@ -1323,7 +1323,7 @@ bool Guest::HasItem(int32_t peepItem) const
     }
     else
     {
-        return item_extra_flags & (1u << (peepItem - 32));
+        return ItemExtraFlags & (1u << (peepItem - 32));
     }
 }
 
@@ -1337,7 +1337,7 @@ int32_t Guest::HasFoodStandardFlag() const
 
 int32_t Guest::HasFoodExtraFlag() const
 {
-    return item_extra_flags
+    return ItemExtraFlags
         & (PEEP_ITEM_PRETZEL | PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FUNNEL_CAKE | PEEP_ITEM_BEEF_NOODLES
            | PEEP_ITEM_FRIED_RICE_NOODLES | PEEP_ITEM_WONTON_SOUP | PEEP_ITEM_MEATBALL_SOUP | PEEP_ITEM_FRUIT_JUICE
            | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA | PEEP_ITEM_SUB_SANDWICH | PEEP_ITEM_COOKIE
@@ -1351,7 +1351,7 @@ bool Guest::HasDrinkStandardFlag() const
 
 bool Guest::HasDrinkExtraFlag() const
 {
-    return item_extra_flags
+    return ItemExtraFlags
         & (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
 }
 
@@ -1373,7 +1373,7 @@ int32_t Guest::HasEmptyContainerStandardFlag() const
 
 int32_t Guest::HasEmptyContainerExtraFlag() const
 {
-    return item_extra_flags
+    return ItemExtraFlags
         & (PEEP_ITEM_EMPTY_BOWL_RED | PEEP_ITEM_EMPTY_DRINK_CARTON | PEEP_ITEM_EMPTY_JUICE_CUP | PEEP_ITEM_EMPTY_BOWL_BLUE);
 }
 
@@ -1647,7 +1647,7 @@ loc_69B221:
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
     if (shopItem >= 32)
-        item_extra_flags |= (1u << (shopItem - 32));
+        ItemExtraFlags |= (1u << (shopItem - 32));
     else
         ItemStandardFlags |= (1u << shopItem);
 
@@ -5346,7 +5346,7 @@ void Guest::UpdateWalking()
                 for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
                     if (container & (1u << pos_extr))
                         break;
-                item_extra_flags &= ~(1u << pos_extr);
+                ItemExtraFlags &= ~(1u << pos_extr);
                 litterType = item_extra_litter[pos_extr];
             }
 
@@ -5949,7 +5949,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    item_extra_flags &= ~(1 << cur_container);
+                    ItemExtraFlags &= ~(1 << cur_container);
                     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                     UpdateSpriteType();
@@ -5961,7 +5961,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
-                item_extra_flags &= ~(1 << cur_container);
+                ItemExtraFlags &= ~(1 << cur_container);
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -6894,7 +6894,7 @@ void Guest::UpdateSpriteType()
         }
         else
         {
-            if (item_extra_flags & item_pref->item)
+            if (ItemExtraFlags & item_pref->item)
             {
                 SetSpriteType(item_pref->sprite_type);
                 return;
