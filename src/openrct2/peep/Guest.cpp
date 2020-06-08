@@ -2469,11 +2469,11 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
         chosen_car = (chosen_car * static_cast<uint16_t>(car_array.size())) >> 8;
     }
 
-    peep->current_car = car_array[chosen_car];
+    peep->CurrentCar = car_array[chosen_car];
 
     Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 
-    for (int32_t i = peep->current_car; i > 0; --i)
+    for (int32_t i = peep->CurrentCar; i > 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
@@ -3580,7 +3580,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
 
     peep->destination_x = entrance_loc.x;
     peep->destination_y = entrance_loc.y;
-    peep->current_car = 0;
+    peep->CurrentCar = 0;
 
     ride->cur_num_customers++;
     peep->OnEnterRide(peep->current_ride);
@@ -3733,7 +3733,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    for (int32_t i = current_car; i != 0; --i)
+    for (int32_t i = CurrentCar; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
         if (vehicle == nullptr)
@@ -3958,7 +3958,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     }
 
     Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
-    for (int32_t i = current_car; i != 0; --i)
+    for (int32_t i = CurrentCar; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
@@ -4052,7 +4052,7 @@ void Guest::UpdateRideEnterVehicle()
         auto* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
         if (vehicle != nullptr)
         {
-            for (int32_t i = current_car; i != 0; --i)
+            for (int32_t i = CurrentCar; i != 0; --i)
             {
                 vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
             }
@@ -4114,7 +4114,7 @@ void Guest::UpdateRideLeaveVehicle()
     Vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
     uint8_t ride_station = vehicle->current_station;
 
-    for (int32_t i = current_car; i != 0; --i)
+    for (int32_t i = CurrentCar; i != 0; --i)
     {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
@@ -4608,11 +4608,11 @@ void Guest::UpdateRideApproachSpiralSlide()
         bool lastRide = false;
         if (ride->status != RIDE_STATUS_OPEN)
             lastRide = true;
-        else if (current_car++ != 0)
+        else if (CurrentCar++ != 0)
         {
             if (ride->mode == RIDE_MODE_SINGLE_RIDE_PER_ADMISSION)
                 lastRide = true;
-            if (static_cast<uint8_t>(current_car - 1) > (scenario_rand() & 0xF))
+            if (static_cast<uint8_t>(CurrentCar - 1) > (scenario_rand() & 0xF))
                 lastRide = true;
         }
 

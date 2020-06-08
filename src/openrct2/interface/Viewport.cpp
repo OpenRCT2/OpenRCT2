@@ -695,7 +695,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
                 auto train = GET_VEHICLE(ride->vehicles[peep->current_train]);
                 if (train != nullptr)
                 {
-                    auto car = train->GetCar(peep->current_car);
+                    auto car = train->GetCar(peep->CurrentCar);
                     if (car != nullptr)
                     {
                         focus.sprite.sprite_id = car->sprite_index;
