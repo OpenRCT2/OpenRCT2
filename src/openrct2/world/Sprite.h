@@ -281,23 +281,18 @@ private:
         }
         EntityTileIterator& operator++()
         {
-            if (NextEntityId != SPRITE_INDEX_NULL)
+            Entity = nullptr;
+
+            while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
             {
-                Entity = nullptr;
-                while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
+                auto baseEntity = GetEntity(NextEntityId);
+                if (!baseEntity)
                 {
-                    auto baseEntity = GetEntity(NextEntityId);
-                    if (!baseEntity)
-                    {
-                        NextEntityId = SPRITE_INDEX_NULL;
-                    }
-                    NextEntityId = baseEntity->next_in_quadrant;
-                    Entity = baseEntity->As<T>();
+                    NextEntityId = SPRITE_INDEX_NULL;
+                    continue;
                 }
-            }
-            else
-            {
-                Entity = nullptr;
+                NextEntityId = baseEntity->next_in_quadrant;
+                Entity = baseEntity->template As<T>();
             }
             return *this;
         }

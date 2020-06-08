@@ -191,17 +191,9 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
             {
                 int32_t direction = tileElement->GetDirection();
-                int32_t x2 = loc.x - CoordsDirectionDelta[direction].x;
-                int32_t y2 = loc.y - CoordsDirectionDelta[direction].y;
-
-                for (uint16_t spriteIdx = sprite_get_first_in_quadrant(x2, y2); spriteIdx != SPRITE_INDEX_NULL;)
+                auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
+                for (auto peep : quad)
                 {
-                    auto sprite = GetEntity(spriteIdx);
-                    spriteIdx = sprite->next_in_quadrant;
-                    auto peep = sprite->As<Peep>();
-                    if (peep == nullptr)
-                        continue;
-
                     if (peep->State != PEEP_STATE_WALKING)
                         continue;
                     if (peep->z != loc.z)

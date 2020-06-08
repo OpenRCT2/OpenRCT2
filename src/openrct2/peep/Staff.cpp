@@ -1815,16 +1815,9 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 {
     if (!(peep->StaffOrders & STAFF_ORDERS_SWEEPING))
         return 0;
-
-    for (uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y); sprite_id != SPRITE_INDEX_NULL;)
+    auto quad = EntityTileList<Litter>({ peep->x, peep->y });
+    for (auto litter : quad)
     {
-        auto sprite = GetEntity(sprite_id);
-        sprite_id = sprite->next_in_quadrant;
-        auto litter = sprite->As<Litter>();
-
-        if (litter == nullptr)
-            continue;
-
         uint16_t z_diff = abs(peep->z - litter->z);
 
         if (z_diff >= 16)
