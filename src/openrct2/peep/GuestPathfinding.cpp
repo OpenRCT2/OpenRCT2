@@ -1648,7 +1648,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
     // If entrance no longer exists, choose a new one
     if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->CurrentRide >= gParkEntrances.size())
     {
-        peep->CurrentRide = 0xFF;
+        peep->CurrentRide = RIDE_ID_NULL;
         peep->PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
     }
 
