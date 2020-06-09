@@ -566,7 +566,7 @@ namespace OpenRCT2::Scripting
         uint8_t mass_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->mass : 0;
+            return peep != nullptr ? peep->Mass : 0;
         }
         void mass_set(uint8_t value)
         {
@@ -574,7 +574,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->mass = value;
+                peep->Mass = value;
             }
         }
 

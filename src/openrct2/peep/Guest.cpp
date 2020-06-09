@@ -4075,7 +4075,7 @@ void Guest::UpdateRideEnterVehicle()
                     vehicle->num_peeps++;
                     ride->cur_num_customers++;
 
-                    vehicle->mass += seatedPeepAsGuest->mass;
+                    vehicle->mass += seatedPeepAsGuest->Mass;
                     seatedPeepAsGuest->MoveTo({ LOCATION_NULL, 0, 0 });
                     seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
                     seatedPeepAsGuest->GuestTimeOnRide = 0;
@@ -4087,7 +4087,7 @@ void Guest::UpdateRideEnterVehicle()
             vehicle->num_peeps++;
             ride->cur_num_customers++;
 
-            vehicle->mass += mass;
+            vehicle->mass += Mass;
             invalidate_sprite_2(vehicle);
 
             MoveTo({ LOCATION_NULL, 0, 0 });
@@ -4133,7 +4133,7 @@ void Guest::UpdateRideLeaveVehicle()
     ActionSpriteImageOffset = 0;
 
     vehicle->num_peeps--;
-    vehicle->mass -= mass;
+    vehicle->mass -= Mass;
     invalidate_sprite_2(vehicle);
 
     if (ride_station >= MAX_STATIONS)

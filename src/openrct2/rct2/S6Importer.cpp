@@ -1423,7 +1423,7 @@ public:
         dst->hunger = src->hunger;
         dst->thirst = src->thirst;
         dst->toilet = src->toilet;
-        dst->mass = src->mass;
+        dst->Mass = src->mass;
         dst->TimeToConsume = src->time_to_consume;
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
         dst->NauseaTolerance = src->nausea_tolerance;

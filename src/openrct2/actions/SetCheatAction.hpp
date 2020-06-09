@@ -680,7 +680,7 @@ private:
                         auto peep = GET_PEEP(vehicle->peep[i + offset]);
                         if (peep != nullptr)
                         {
-                            vehicle->mass -= peep->mass;
+                            vehicle->mass -= peep->Mass;
                         }
                     }
 

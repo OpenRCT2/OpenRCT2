@@ -1634,7 +1634,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
-    peep->mass = (scenario_rand() & 0x1F) + 45;
+    peep->Mass = (scenario_rand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
