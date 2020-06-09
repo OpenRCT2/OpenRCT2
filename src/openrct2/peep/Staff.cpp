@@ -1041,7 +1041,7 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
 
         if (peep->state == PEEP_STATE_WALKING)
         {
-            peep->happiness_target = std::min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
+            peep->HappinessTarget = std::min(peep->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
         }
         else if (peep->state == PEEP_STATE_QUEUING)
         {
@@ -1053,7 +1053,7 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
             {
                 peep->TimeInQueue = 0;
             }
-            peep->happiness_target = std::min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
+            peep->HappinessTarget = std::min(peep->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }

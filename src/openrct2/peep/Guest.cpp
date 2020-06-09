@@ -577,7 +577,7 @@ void Guest::HandleEasterEggName()
     if (CheckEasterEggName(EASTEREGG_PEEP_NAME_MELANIE_WARN))
     {
         happiness = 250;
-        happiness_target = 250;
+        HappinessTarget = 250;
         energy = 127;
         energy_target = 127;
         Nausea = 0;
@@ -740,7 +740,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (PeepFlags & PEEP_FLAGS_HAPPINESS)
         {
-            happiness_target = 5;
+            HappinessTarget = 5;
         }
 
         if (PeepFlags & PEEP_FLAGS_NAUSEA)
@@ -766,7 +766,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     if (thought_type != PEEP_THOUGHT_TYPE_NONE)
                     {
                         InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
-                        happiness_target = std::min(PEEP_MAX_HAPPINESS, happiness_target + 45);
+                        HappinessTarget = std::min(PEEP_MAX_HAPPINESS, HappinessTarget + 45);
                     }
                 }
             }
@@ -785,7 +785,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
             if (GuestTimeOnRide > 15)
             {
-                happiness_target = std::max(0, happiness_target - 5);
+                HappinessTarget = std::max(0, HappinessTarget - 5);
 
                 if (GuestTimeOnRide > 22)
                 {
@@ -814,7 +814,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                 if (GuestHeadingToRideId == RIDE_ID_NULL)
                 {
-                    happiness_target = std::max(happiness_target - 128, 0);
+                    HappinessTarget = std::max(HappinessTarget - 128, 0);
                     peep_leave_park(this);
                     peep_update_hunger(this);
                     goto loc_68F9F3;
@@ -986,17 +986,17 @@ void Guest::Tick128UpdateGuest(int32_t index)
                          * slowly happier, up to a certain level. */
                         /* Why don't queue line TV monitors start affecting the peeps
                          * as soon as they join the queue?? */
-                        if (happiness_target < 90)
-                            happiness_target = 90;
+                        if (HappinessTarget < 90)
+                            HappinessTarget = 90;
 
-                        if (happiness_target < 165)
-                            happiness_target += 2;
+                        if (HappinessTarget < 165)
+                            HappinessTarget += 2;
                     }
                     else
                     {
                         /* Without a queue line TV monitor peeps waiting too long
                          * in a queue get less happy. */
-                        happiness_target = std::max(happiness_target - 4, 0);
+                        HappinessTarget = std::max(HappinessTarget - 4, 0);
                     }
                 }
                 peep_update_hunger(this);
@@ -1014,10 +1014,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
     loc_68F9F3:
         // Idle peep happiness tends towards 127 (50%).
-        if (happiness_target >= 128)
-            happiness_target--;
+        if (HappinessTarget >= 128)
+            HappinessTarget--;
         else
-            happiness_target++;
+            HappinessTarget++;
 
         NauseaTarget = std::max(NauseaTarget - 2, 0);
 
@@ -1145,7 +1145,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
     }
 
     uint8_t newHappiness = happiness;
-    uint8_t newHappinessGrowth = happiness_target;
+    uint8_t newHappinessGrowth = HappinessTarget;
     if (newHappiness >= newHappinessGrowth)
     {
         newHappiness = std::max(newHappiness - 4, 0);
@@ -1405,7 +1405,7 @@ void Guest::CheckIfLost()
     }
     InsertNewThought(PEEP_THOUGHT_TYPE_LOST, PEEP_THOUGHT_ITEM_NONE);
 
-    happiness_target = std::max(happiness_target - 30, 0);
+    HappinessTarget = std::max(HappinessTarget - 30, 0);
 }
 
 /**
@@ -1422,7 +1422,7 @@ void Guest::CheckCantFindRide()
     if (GuestIsLostCountdown == 30 || GuestIsLostCountdown == 60)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND, GuestHeadingToRideId);
-        happiness_target = std::max(happiness_target - 30, 0);
+        HappinessTarget = std::max(HappinessTarget - 30, 0);
     }
 
     GuestIsLostCountdown--;
@@ -1454,7 +1454,7 @@ void Guest::CheckCantFindExit()
     if (GuestIsLostCountdown == 1)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, PEEP_THOUGHT_ITEM_NONE);
-        happiness_target = std::max(happiness_target - 30, 0);
+        HappinessTarget = std::max(HappinessTarget - 30, 0);
     }
 
     if (--GuestIsLostCountdown == 0)
@@ -1613,7 +1613,7 @@ loc_69B119:
             }
 
             int32_t happinessGrowth = itemValue * 4;
-            happiness_target = std::min((happiness_target + happinessGrowth), PEEP_MAX_HAPPINESS);
+            HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
             happiness = std::min((happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
     }
@@ -1772,7 +1772,7 @@ void Guest::OnEnterRide(ride_id_t rideIndex)
 
     SetHasRidden(ride);
     peep_update_favourite_ride(this, ride);
-    happiness_target = std::clamp(happiness_target + satisfaction, 0, PEEP_MAX_HAPPINESS);
+    HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, PEEP_MAX_HAPPINESS);
     peep_update_ride_nausea_growth(this, ride);
 }
 
@@ -1790,7 +1790,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         // TODO fix this flag name or add another one
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
-    happiness = happiness_target;
+    happiness = HappinessTarget;
     Nausea = NauseaTarget;
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
 
@@ -2078,9 +2078,9 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 if (peepAtRide)
                 {
                     InsertNewThought(PEEP_THOUGHT_TYPE_NOT_SAFE, ride->id);
-                    if (happiness_target >= 64)
+                    if (HappinessTarget >= 64)
                     {
-                        happiness_target -= 8;
+                        HappinessTarget -= 8;
                     }
                     ride_update_popularity(ride, 0);
                 }
@@ -2108,9 +2108,9 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     if (peepAtRide)
                     {
                         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, ride->id);
-                        if (happiness_target >= 64)
+                        if (HappinessTarget >= 64)
                         {
-                            happiness_target -= 8;
+                            HappinessTarget -= 8;
                         }
                         ride_update_popularity(ride, 0);
                     }
@@ -2130,9 +2130,9 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         if (peepAtRide)
                         {
                             InsertNewThought(PEEP_THOUGHT_TYPE_MORE_THRILLING, ride->id);
-                            if (happiness_target >= 64)
+                            if (HappinessTarget >= 64)
                             {
-                                happiness_target -= 8;
+                                HappinessTarget -= 8;
                             }
                             ride_update_popularity(ride, 0);
                         }
@@ -2153,9 +2153,9 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         if (peepAtRide)
                         {
                             InsertNewThought(PEEP_THOUGHT_TYPE_SICKENING, ride->id);
-                            if (happiness_target >= 64)
+                            if (HappinessTarget >= 64)
                             {
-                                happiness_target -= 8;
+                                HappinessTarget -= 8;
                             }
                             ride_update_popularity(ride, 0);
                         }
@@ -2209,9 +2209,9 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     if (peepAtRide)
                     {
                         InsertNewThought(PEEP_THOUGHT_TYPE_BAD_VALUE, ride->id);
-                        if (happiness_target >= 60)
+                        if (HappinessTarget >= 60)
                         {
-                            happiness_target -= 16;
+                            HappinessTarget -= 16;
                         }
                         ride_update_popularity(ride, 0);
                     }
@@ -2276,9 +2276,9 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
             if (peepAtShop)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_NOT_PAYING, ride->id);
-                if (happiness_target >= 60)
+                if (HappinessTarget >= 60)
                 {
-                    happiness_target -= 16;
+                    HappinessTarget -= 16;
                 }
                 ride_update_popularity(ride, 0);
             }
@@ -2444,9 +2444,9 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
     if (peepAtRide)
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_INTENSE, ride->id);
-        if (peep->happiness_target >= 64)
+        if (peep->HappinessTarget >= 64)
         {
-            peep->happiness_target -= 8;
+            peep->HappinessTarget -= 8;
         }
         ride_update_popularity(ride, 0);
     }
@@ -2714,7 +2714,7 @@ static void peep_update_favourite_ride(Peep* peep, Ride* ride)
     uint8_t peepRideRating = std::clamp((ride->excitement / 4) + peep->happiness, 0, PEEP_MAX_HAPPINESS);
     if (peepRideRating >= peep->FavouriteRideRating)
     {
-        if (peep->happiness >= 160 && peep->happiness_target >= 160)
+        if (peep->happiness >= 160 && peep->HappinessTarget >= 160)
         {
             peep->FavouriteRideRating = peepRideRating;
             peep->PeepFlags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
@@ -2857,7 +2857,7 @@ static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Rid
  */
 static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
 {
-    uint32_t nauseaMultiplier = std::clamp(256 - peep->happiness_target, 64, 200);
+    uint32_t nauseaMultiplier = std::clamp(256 - peep->HappinessTarget, 64, 200);
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->Hunger) / 64;
     nauseaGrowthRateChange >>= (peep->NauseaTolerance & 3);
@@ -5062,8 +5062,8 @@ void Guest::UpdateRideShopInteract()
             destination_x = tileCenterX;
             destination_y = tileCenterY;
             destination_tolerance = 3;
-            happiness_target = std::min(happiness_target + 30, PEEP_MAX_HAPPINESS);
-            happiness = happiness_target;
+            HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
+            happiness = HappinessTarget;
         }
         else
         {
@@ -5091,8 +5091,8 @@ void Guest::UpdateRideShopInteract()
     destination_y = tileCenterY;
     destination_tolerance = 3;
 
-    happiness_target = std::min(happiness_target + 30, PEEP_MAX_HAPPINESS);
-    happiness = happiness_target;
+    HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
+    happiness = HappinessTarget;
     StopPurchaseThought(ride->type);
 }
 

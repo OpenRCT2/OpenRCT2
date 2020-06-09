@@ -476,7 +476,7 @@ namespace OpenRCT2::Scripting
         uint8_t happinessTarget_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->happiness_target : 0;
+            return peep != nullptr ? peep->HappinessTarget : 0;
         }
         void happinessTarget_set(uint8_t value)
         {
@@ -484,7 +484,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->happiness_target = value;
+                peep->HappinessTarget = value;
             }
         }
 

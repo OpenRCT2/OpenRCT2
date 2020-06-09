@@ -618,7 +618,7 @@ struct Peep : SpriteBase
     uint8_t energy;
     uint8_t energy_target;
     uint8_t happiness;
-    uint8_t happiness_target;
+    uint8_t HappinessTarget;
     uint8_t Nausea;
     uint8_t NauseaTarget;
     uint8_t Hunger;

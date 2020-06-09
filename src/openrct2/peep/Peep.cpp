@@ -803,7 +803,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         if (type == PEEP_TYPE_GUEST)
         {
             ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_INVALID;
-            happiness_target = std::max(happiness_target - 10, 0);
+            HappinessTarget = std::max(HappinessTarget - 10, 0);
             UpdateCurrentActionSpriteType();
         }
     }
@@ -1691,7 +1691,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     int8_t happinessDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->happiness = std::clamp(peep->happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
-    peep->happiness_target = peep->happiness;
+    peep->HappinessTarget = peep->happiness;
     peep->Nausea = 0;
     peep->NauseaTarget = 0;
 
@@ -2663,7 +2663,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
                 peep->InsertNewThought(PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
-                peep->happiness_target = std::max(0, peep->happiness_target - 17);
+                peep->HappinessTarget = std::max(0, peep->HappinessTarget - 17);
             }
             vandalThoughtTimeout = 3;
         }
@@ -2711,7 +2711,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
-        peep->happiness_target = std::max(0, peep->happiness_target - 14);
+        peep->HappinessTarget = std::max(0, peep->HappinessTarget - 14);
     }
 
     litter_count = std::min(static_cast<uint8_t>(3), litter_count);
@@ -2737,7 +2737,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
-            peep->happiness_target = std::max(0, peep->happiness_target - 17);
+            peep->HappinessTarget = std::max(0, peep->HappinessTarget - 17);
             // Reset disgusting time
             peep->DisgustingCount |= 0xC0;
         }
@@ -2763,7 +2763,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
-            peep->happiness_target = std::max(0, peep->happiness_target - 17);
+            peep->HappinessTarget = std::max(0, peep->HappinessTarget - 17);
             // Reset litter time
             peep->LitterCount |= 0xC0;
         }

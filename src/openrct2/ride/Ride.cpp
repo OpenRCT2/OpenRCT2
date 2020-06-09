@@ -1130,8 +1130,8 @@ void ride_remove_peeps(Ride* ride)
             peep->state = PEEP_STATE_FALLING;
             peep->SwitchToSpecialSprite(0);
 
-            peep->happiness = std::min(peep->happiness, peep->happiness_target) / 2;
-            peep->happiness_target = peep->happiness;
+            peep->happiness = std::min(peep->happiness, peep->HappinessTarget) / 2;
+            peep->HappinessTarget = peep->happiness;
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }

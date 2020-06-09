@@ -1451,7 +1451,7 @@ private:
         dst->energy = src->energy;
         dst->energy_target = src->energy_target;
         dst->happiness = src->happiness;
-        dst->happiness_target = src->happiness_target;
+        dst->HappinessTarget = src->happiness_target;
         dst->Nausea = src->nausea;
         dst->NauseaTarget = src->nausea_target;
         dst->Hunger = src->hunger;
