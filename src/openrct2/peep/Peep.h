@@ -616,7 +616,7 @@ struct Peep : SpriteBase
     uint8_t destination_tolerance; // How close to destination before next action/state 0 = exact
     uint8_t var_37;
     uint8_t energy;
-    uint8_t energy_target;
+    uint8_t EnergyTarget;
     uint8_t Happiness;
     uint8_t HappinessTarget;
     uint8_t Nausea;

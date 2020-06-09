@@ -1776,7 +1776,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
     uint8_t energy = (scenario_rand() % 64) + 65;
     peep->energy = energy;
-    peep->energy_target = energy;
+    peep->EnergyTarget = energy;
 
     increment_guests_heading_for_park();
 

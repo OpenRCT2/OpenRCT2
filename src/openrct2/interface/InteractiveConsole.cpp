@@ -475,7 +475,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     Peep* peep = GET_PEEP(int_val[0]);
 
                     peep->energy = int_val[1];
-                    peep->energy_target = int_val[1];
+                    peep->EnergyTarget = int_val[1];
                 }
             }
             else if (argv[1] == "costume")

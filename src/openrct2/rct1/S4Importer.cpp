@@ -1449,7 +1449,7 @@ private:
         dst->PeepDirection = src->direction;
 
         dst->energy = src->energy;
-        dst->energy_target = src->energy_target;
+        dst->EnergyTarget = src->energy_target;
         dst->Happiness = src->happiness;
         dst->HappinessTarget = src->happiness_target;
         dst->Nausea = src->nausea;

@@ -579,7 +579,7 @@ void Guest::HandleEasterEggName()
         Happiness = 250;
         HappinessTarget = 250;
         energy = 127;
-        energy_target = 127;
+        EnergyTarget = 127;
         Nausea = 0;
         NauseaTarget = 0;
     }
@@ -933,8 +933,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 break;
 
             case PEEP_STATE_SITTING:
-                if (energy_target <= 135)
-                    energy_target += 5;
+                if (EnergyTarget <= 135)
+                    EnergyTarget += 5;
 
                 if (Thirst >= 5)
                 {
@@ -1118,7 +1118,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
     }
 
     uint8_t newEnergy = energy;
-    uint8_t newTargetEnergy = energy_target;
+    uint8_t newTargetEnergy = EnergyTarget;
     if (newEnergy >= newTargetEnergy)
     {
         newEnergy -= 2;
@@ -3051,7 +3051,7 @@ static void peep_update_hunger(Peep* peep)
     {
         peep->Hunger -= 2;
 
-        peep->energy_target = std::min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
+        peep->EnergyTarget = std::min(peep->EnergyTarget + 2, PEEP_MAX_ENERGY_TARGET);
         peep->Toilet = std::min(peep->Toilet + 1, 255);
     }
 }
@@ -3064,9 +3064,9 @@ static void peep_update_hunger(Peep* peep)
  */
 static void peep_decide_whether_to_leave_park(Peep* peep)
 {
-    if (peep->energy_target >= 33)
+    if (peep->EnergyTarget >= 33)
     {
-        peep->energy_target -= 2;
+        peep->EnergyTarget -= 2;
     }
 
     if (gClimateCurrent.Temperature >= 21 && peep->Thirst >= 5)

@@ -595,7 +595,7 @@ private:
                     break;
                 case GUEST_PARAMETER_ENERGY:
                     peep->energy = value;
-                    peep->energy_target = value;
+                    peep->EnergyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
                     peep->Hunger = value;
@@ -735,7 +735,7 @@ private:
         FOR_ALL_STAFF (spriteIndex, peep)
         {
             peep->energy = value;
-            peep->energy_target = value;
+            peep->EnergyTarget = value;
         }
     }
 

@@ -243,7 +243,7 @@ private:
 
             // Staff energy determines their walking speed
             newPeep->energy = 0x60;
-            newPeep->energy_target = 0x60;
+            newPeep->EnergyTarget = 0x60;
             newPeep->StaffMowingTimeout = 0;
 
             newPeep->StaffId = staffIndex;
