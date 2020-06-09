@@ -1148,7 +1148,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->destination_x = src->destination_x;
     dst->destination_y = src->destination_y;
     dst->destination_tolerance = src->destination_tolerance;
-    dst->var_37 = src->var_37;
+    dst->var_37 = src->Var37;
     dst->energy = src->Energy;
     dst->energy_target = src->EnergyTarget;
     dst->happiness = src->Happiness;

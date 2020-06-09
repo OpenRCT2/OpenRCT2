@@ -170,7 +170,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(destination_x);
     COMPARE_FIELD(destination_y);
     COMPARE_FIELD(destination_tolerance);
-    COMPARE_FIELD(var_37);
+    COMPARE_FIELD(Var37);
     COMPARE_FIELD(Energy);
     COMPARE_FIELD(EnergyTarget);
     COMPARE_FIELD(Happiness);

@@ -1421,7 +1421,7 @@ private:
         dst->sub_state = src->sub_state;
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
         dst->next_flags = src->next_flags;
-        dst->var_37 = src->var_37;
+        dst->Var37 = src->var_37;
         dst->TimeToConsume = src->time_to_consume;
         dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;

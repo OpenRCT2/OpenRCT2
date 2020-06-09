@@ -2490,7 +2490,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             peep->MoveTo({ x, y, peep->z });
             peep->SetState(PEEP_STATE_LEAVING_PARK);
 
-            peep->var_37 = 0;
+            peep->Var37 = 0;
             if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
             {
                 auto ft = Formatter::Common();
@@ -2514,7 +2514,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
         {
             peep->state = PEEP_STATE_LEAVING_PARK;
-            peep->var_37 = 1;
+            peep->Var37 = 1;
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
             peep_return_to_centre_of_tile(peep);
@@ -2581,7 +2581,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         if (!found)
         {
             peep->state = PEEP_STATE_LEAVING_PARK;
-            peep->var_37 = 1;
+            peep->Var37 = 1;
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
             peep_return_to_centre_of_tile(peep);
@@ -2609,7 +2609,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             if (entranceFee > peep->CashInPocket)
             {
                 peep->state = PEEP_STATE_LEAVING_PARK;
-                peep->var_37 = 1;
+                peep->Var37 = 1;
                 decrement_guests_heading_for_park();
                 peep_window_state_update(peep);
                 peep_return_to_centre_of_tile(peep);
@@ -2624,7 +2624,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         gTotalAdmissions++;
         window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
-        peep->var_37 = 1;
+        peep->Var37 = 1;
         peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
         peep->destination_y += CoordsDirectionDelta[peep->PeepDirection].y;
         peep->destination_tolerance = 7;
