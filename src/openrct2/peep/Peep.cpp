@@ -655,10 +655,10 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     Hunger /= 2;
     NauseaTarget /= 2;
 
-    if (nausea < 30)
-        nausea = 0;
+    if (Nausea < 30)
+        Nausea = 0;
     else
-        nausea -= 30;
+        Nausea -= 30;
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
@@ -1692,7 +1692,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->happiness = std::clamp(peep->happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
     peep->happiness_target = peep->happiness;
-    peep->nausea = 0;
+    peep->Nausea = 0;
     peep->NauseaTarget = 0;
 
     /* Scenario editor limits initial guest hunger to between 37..253.
@@ -2166,15 +2166,15 @@ static int32_t get_face_sprite_offset(Peep* peep)
         return PEEP_FACE_OFFSET_ANGRY;
 
     // VERY_VERY_SICK
-    if (peep->nausea > 200)
+    if (peep->Nausea > 200)
         return PEEP_FACE_OFFSET_VERY_VERY_SICK;
 
     // VERY_SICK
-    if (peep->nausea > 170)
+    if (peep->Nausea > 170)
         return PEEP_FACE_OFFSET_VERY_SICK;
 
     // SICK
-    if (peep->nausea > 140)
+    if (peep->Nausea > 140)
         return PEEP_FACE_OFFSET_SICK;
 
     // VERY_TIRED

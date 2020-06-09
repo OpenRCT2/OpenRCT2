@@ -580,7 +580,7 @@ void Guest::HandleEasterEggName()
         happiness_target = 250;
         energy = 127;
         energy_target = 127;
-        nausea = 0;
+        Nausea = 0;
         NauseaTarget = 0;
     }
 
@@ -746,8 +746,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (PeepFlags & PEEP_FLAGS_NAUSEA)
         {
             NauseaTarget = 200;
-            if (nausea <= 130)
-                nausea = 130;
+            if (Nausea <= 130)
+                Nausea = 130;
         }
 
         if (Angriness != 0)
@@ -911,10 +911,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
              * remaining times the encompassing conditional is
              * executed (which is also every second time, but
              * the alternate time to the true branch). */
-            if (nausea >= 140)
+            if (Nausea >= 140)
             {
                 PeepThoughtType thought_type = PEEP_THOUGHT_TYPE_SICK;
-                if (nausea >= 200)
+                if (Nausea >= 200)
                 {
                     thought_type = PEEP_THOUGHT_TYPE_VERY_SICK;
                     peep_head_for_nearest_ride_type(this, RIDE_TYPE_FIRST_AID);
@@ -1043,7 +1043,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (state == PEEP_STATE_WALKING && NauseaTarget >= 128)
         {
-            if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((nausea - 128) / 2))
+            if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
             {
                 if (Action >= PEEP_ACTION_NONE_1)
                 {
@@ -1165,7 +1165,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 
-    uint8_t newNausea = nausea;
+    uint8_t newNausea = Nausea;
     uint8_t newNauseaGrowth = NauseaTarget;
     if (newNausea >= newNauseaGrowth)
     {
@@ -1180,9 +1180,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
             newNausea = newNauseaGrowth;
     }
 
-    if (newNausea != nausea)
+    if (newNausea != Nausea)
     {
-        nausea = newNausea;
+        Nausea = newNausea;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 }
@@ -1505,7 +1505,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             InsertNewThought(PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
             return false;
         }
-        else if (nausea >= 145)
+        else if (Nausea >= 145)
             return false;
     }
 
@@ -1791,7 +1791,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     happiness = happiness_target;
-    nausea = NauseaTarget;
+    Nausea = NauseaTarget;
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
 
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -2164,7 +2164,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     }
 
                     // Very nauseous peeps will only go on very gentle rides.
-                    if (ride->nausea >= FIXED_2DP(1, 40) && nausea > 160)
+                    if (ride->nausea >= FIXED_2DP(1, 40) && Nausea > 160)
                     {
                         ChoseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
@@ -2289,7 +2289,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
     if (ride->type == RIDE_TYPE_FIRST_AID)
     {
-        if (nausea < 128)
+        if (Nausea < 128)
         {
             ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
@@ -2876,7 +2876,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
         return false;
     if (peep->energy < 100)
         return false;
-    if (peep->nausea > 160)
+    if (peep->Nausea > 160)
         return false;
     if (peep->Hunger < 30)
         return false;
@@ -2911,7 +2911,7 @@ static bool peep_really_liked_ride(Peep* peep, Ride* ride)
 {
     if (peep->happiness < 215)
         return false;
-    if (peep->nausea > 120)
+    if (peep->Nausea > 120)
         return false;
     if (!ride_has_ratings(ride))
         return false;
@@ -5055,7 +5055,7 @@ void Guest::UpdateRideShopInteract()
     const int16_t tileCenterY = NextLoc.y + 16;
     if (ride->type == RIDE_TYPE_FIRST_AID)
     {
-        if (nausea <= 35)
+        if (Nausea <= 35)
         {
             sub_state = PEEP_SHOP_LEAVE;
 
@@ -5067,8 +5067,8 @@ void Guest::UpdateRideShopInteract()
         }
         else
         {
-            nausea--;
-            NauseaTarget = nausea;
+            Nausea--;
+            NauseaTarget = Nausea;
         }
         return;
     }
@@ -5412,7 +5412,7 @@ void Guest::UpdateWalking()
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
 
-    if (nausea > 140)
+    if (Nausea > 140)
         return;
 
     if (happiness < 120)
@@ -6003,7 +6003,7 @@ bool Guest::ShouldFindBench()
         }
     }
 
-    if (nausea <= 170 && energy > 50)
+    if (Nausea <= 170 && energy > 50)
     {
         return false;
     }
@@ -6908,13 +6908,13 @@ void Guest::UpdateSpriteType()
         return;
     }
 
-    if (nausea > 170)
+    if (Nausea > 170)
     {
         SetSpriteType(PEEP_SPRITE_TYPE_VERY_NAUSEOUS);
         return;
     }
 
-    if (nausea > 140)
+    if (Nausea > 140)
     {
         SetSpriteType(PEEP_SPRITE_TYPE_NAUSEOUS);
         return;

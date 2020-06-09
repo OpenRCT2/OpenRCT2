@@ -491,7 +491,7 @@ namespace OpenRCT2::Scripting
         uint8_t nausea_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->nausea : 0;
+            return peep != nullptr ? peep->Nausea : 0;
         }
         void nausea_set(uint8_t value)
         {
@@ -499,7 +499,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->nausea = value;
+                peep->Nausea = value;
             }
         }
 

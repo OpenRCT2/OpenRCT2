@@ -604,7 +604,7 @@ private:
                     peep->Thirst = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
-                    peep->nausea = value;
+                    peep->Nausea = value;
                     peep->NauseaTarget = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
