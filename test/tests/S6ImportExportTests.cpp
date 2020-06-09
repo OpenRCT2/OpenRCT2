@@ -184,7 +184,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(time_to_consume);
     COMPARE_FIELD(intensity);
     COMPARE_FIELD(nausea_tolerance);
-    COMPARE_FIELD(window_invalidate_flags);
+    COMPARE_FIELD(WindowInvalidateFlags);
     COMPARE_FIELD(PaidOnDrink);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {

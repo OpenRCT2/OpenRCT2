@@ -660,7 +660,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     else
         nausea -= 30;
 
-    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_2;
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     // Create sick at location
     litter_create(x, y, z, sprite_direction, (sprite_index & 1) ? LITTER_TYPE_SICK_ALT : LITTER_TYPE_SICK);
@@ -1067,7 +1067,7 @@ static void peep_update_thoughts(Peep* peep)
                 // When thought is older than ~6900 ticks remove it
                 if (++peep->Thoughts[i].freshness >= 28)
                 {
-                    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+                    peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
                     // Clear top thought, push others up
                     if (i < PEEP_MAX_THOUGHTS - 2)
@@ -1090,7 +1090,7 @@ static void peep_update_thoughts(Peep* peep)
     if (add_fresh && fresh_thought != -1)
     {
         peep->Thoughts[fresh_thought].freshness = 1;
-        peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+        peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
     }
 }
 
@@ -1601,7 +1601,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
     Thoughts[0].freshness = 0;
     Thoughts[0].fresh_timeout = 0;
 
-    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }
 
 /**
@@ -1640,7 +1640,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->type = PEEP_TYPE_GUEST;
     peep->PreviousRide = RIDE_ID_NULL;
     peep->Thoughts->type = PEEP_THOUGHT_TYPE_NONE;
-    peep->window_invalidate_flags = 0;
+    peep->WindowInvalidateFlags = 0;
 
     uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;
     uint8_t intensityLowest = std::min(intensityHighest, static_cast<uint8_t>(7)) - 3;
@@ -2597,13 +2597,13 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
                 {
                     entranceFee /= 2;
                     peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
-                    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
                     peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
-                    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
             if (entranceFee > peep->CashInPocket)
@@ -3389,7 +3389,7 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height)
         if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != LOCATION_NULL)
         {
             create_balloon(peep->x, peep->y, spawn_height, peep->BalloonColour, false);
-            peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             peep->UpdateSpriteType();
         }
     }

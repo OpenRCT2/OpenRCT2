@@ -513,7 +513,7 @@ enum PeepSpriteType : uint8_t
     PEEP_SPRITE_TYPE_INVALID = 255
 };
 
-// Flags used by peep->window_invalidate_flags
+// Flags used by peep->WindowInvalidateFlags
 enum PeepInvalidate
 {
     PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
@@ -628,7 +628,7 @@ struct Peep : SpriteBase
     uint8_t time_to_consume;
     IntensityRange intensity;
     uint8_t nausea_tolerance;
-    uint8_t window_invalidate_flags;
+    uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
     uint32_t ItemExtraFlags;

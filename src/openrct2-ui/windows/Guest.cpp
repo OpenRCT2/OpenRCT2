@@ -1176,9 +1176,9 @@ void window_guest_overview_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_2);
 
     Peep* peep = GET_PEEP(w->number);
-    if (peep != nullptr && peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_ACTION)
+    if (peep != nullptr && peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
     {
-        peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_ACTION;
+        peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
         widget_invalidate(w, WIDX_ACTION_LBL);
     }
 
@@ -1341,7 +1341,7 @@ void window_guest_stats_update(rct_window* w)
 {
     w->frame_no++;
     Peep* peep = GET_PEEP(w->number);
-    peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_STATS;
+    peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_STATS;
 
     w->Invalidate();
 }
@@ -1872,9 +1872,9 @@ void window_guest_thoughts_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_5);
 
     auto peep = GET_PEEP(w->number);
-    if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_THOUGHTS)
+    if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_THOUGHTS)
     {
-        peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
+        peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
         w->Invalidate();
     }
 }
@@ -1935,9 +1935,9 @@ void window_guest_inventory_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_6);
 
     auto peep = GET_PEEP(w->number);
-    if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_INVENTORY)
+    if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_INVENTORY)
     {
-        peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
+        peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
         w->Invalidate();
     }
 }

@@ -1092,7 +1092,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     ItemStandardFlags |= (1 << discard_container);
                 }
 
-                window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 UpdateSpriteType();
             }
             else
@@ -1110,7 +1110,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                             ItemStandardFlags |= (1 << discard_container);
                     }
 
-                    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                 }
             }
@@ -1141,7 +1141,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
     if (newEnergy != energy)
     {
         energy = newEnergy;
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_2;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 
     uint8_t newHappiness = happiness;
@@ -1162,7 +1162,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
     if (newHappiness != happiness)
     {
         happiness = newHappiness;
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_2;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 
     uint8_t newNausea = nausea;
@@ -1183,7 +1183,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
     if (newNausea != nausea)
     {
         nausea = newNausea;
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_2;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 }
 
@@ -1681,7 +1681,7 @@ loc_69B221:
     if (shopItem == SHOP_ITEM_PHOTO4)
         Photo4RideRef = ride->id;
 
-    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     UpdateSpriteType();
     if (PeepFlags & PEEP_FLAGS_TRACKING)
     {
@@ -1726,7 +1726,7 @@ loc_69B221:
     if (hasVoucher)
     {
         ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
@@ -1788,11 +1788,11 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
         FavouriteRide = rideIndex;
         // TODO fix this flag name or add another one
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     happiness = happiness_target;
     nausea = nausea_target;
-    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
 
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
@@ -1802,7 +1802,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         GuestHeadingToRideId = rideIndex;
         GuestIsLostCountdown = 200;
         peep_reset_pathfind_goal(this);
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
     }
 
     if (peep_should_preferred_intensity_increase(this))
@@ -1865,7 +1865,7 @@ void Guest::PickRideToGoOn()
         GuestHeadingToRideId = ride->id;
         GuestIsLostCountdown = 200;
         peep_reset_pathfind_goal(this);
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
         if (ItemStandardFlags & PEEP_ITEM_MAP)
@@ -2436,7 +2436,7 @@ static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 static void peep_reset_ride_heading(Peep* peep)
 {
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
-    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
+    peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 }
 
 static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
@@ -3243,7 +3243,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         peep->GuestHeadingToRideId = closestRide->id;
         peep->GuestIsLostCountdown = 200;
         peep_reset_pathfind_goal(peep);
-        peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
+        peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
         peep->TimeLost = 0;
     }
 }
@@ -3311,7 +3311,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
 
         Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
 
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
     }
 }
@@ -3860,7 +3860,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
             && (VoucherArguments == CurrentRide))
         {
             ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
-            window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
         {
@@ -5350,7 +5350,7 @@ void Guest::UpdateWalking()
                 litterType = item_extra_litter[pos_extr];
             }
 
-            window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             UpdateSpriteType();
 
             int32_t litterX = x + (scenario_rand() & 0x7) - 3;
@@ -5917,7 +5917,7 @@ void Guest::UpdateUsingBin()
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
                     ItemStandardFlags &= ~(1 << cur_container);
-                    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
                 }
@@ -5928,7 +5928,7 @@ void Guest::UpdateUsingBin()
 
                 litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
                 ItemStandardFlags &= ~(1 << cur_container);
-                window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
             }
@@ -5950,7 +5950,7 @@ void Guest::UpdateUsingBin()
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
                     ItemExtraFlags &= ~(1 << cur_container);
-                    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                     UpdateSpriteType();
                     continue;
@@ -5962,7 +5962,7 @@ void Guest::UpdateUsingBin()
 
                 litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
                 ItemExtraFlags &= ~(1 << cur_container);
-                window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
             }
@@ -6856,7 +6856,7 @@ void Guest::UpdateSpriteType()
             create_balloon(x, y, z + 9, BalloonColour, isBalloonPopped);
         }
         ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
-        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
     if (climate_is_raining() && (ItemStandardFlags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)

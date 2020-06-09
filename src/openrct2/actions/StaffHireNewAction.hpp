@@ -159,7 +159,7 @@ private:
         else
         {
             newPeep->sprite_identifier = 1;
-            newPeep->window_invalidate_flags = 0;
+            newPeep->WindowInvalidateFlags = 0;
             newPeep->Action = PEEP_ACTION_NONE_2;
             newPeep->SpecialSprite = 0;
             newPeep->ActionSpriteImageOffset = 0;

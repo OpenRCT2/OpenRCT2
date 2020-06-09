@@ -1232,7 +1232,7 @@ void Staff::UpdateMowing()
             map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
         StaffLawnsMown++;
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
 
@@ -1292,7 +1292,7 @@ void Staff::UpdateWatering()
             tile_element->AsSmallScenery()->SetAge(0);
             map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
             StaffGardensWatered++;
-            window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
         StateReset();
@@ -1376,7 +1376,7 @@ void Staff::UpdateEmptyingBin()
 
         map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
         StaffBinsEmptied++;
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
 
@@ -1395,7 +1395,7 @@ void Staff::UpdateSweeping()
         // Remove sick at this location
         litter_remove_at(x, y, z);
         StaffLitterSwept++;
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction())
     {
@@ -2621,13 +2621,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected++;
-            window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+            WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
             return true;
         }
 
         StaffRidesFixed++;
-        window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+        WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = PeepDirection << 3;
         Action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
