@@ -1424,7 +1424,7 @@ public:
         dst->thirst = src->thirst;
         dst->toilet = src->toilet;
         dst->mass = src->mass;
-        dst->time_to_consume = src->time_to_consume;
+        dst->TimeToConsume = src->time_to_consume;
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
         dst->NauseaTolerance = src->nausea_tolerance;
         dst->WindowInvalidateFlags = src->window_invalidate_flags;

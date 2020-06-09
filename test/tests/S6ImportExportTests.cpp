@@ -181,7 +181,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(thirst);
     COMPARE_FIELD(toilet);
     COMPARE_FIELD(mass);
-    COMPARE_FIELD(time_to_consume);
+    COMPARE_FIELD(TimeToConsume);
     COMPARE_FIELD(Intensity);
     COMPARE_FIELD(NauseaTolerance);
     COMPARE_FIELD(WindowInvalidateFlags);

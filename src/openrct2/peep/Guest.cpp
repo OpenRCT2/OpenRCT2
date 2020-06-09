@@ -1059,14 +1059,14 @@ void Guest::Tick128UpdateGuest(int32_t index)
     // Remaining content is executed every call.
 
     // 68FA89
-    if (time_to_consume == 0 && HasFood())
+    if (TimeToConsume == 0 && HasFood())
     {
-        time_to_consume += 3;
+        TimeToConsume += 3;
     }
 
-    if (time_to_consume != 0 && state != PEEP_STATE_ON_RIDE)
+    if (TimeToConsume != 0 && state != PEEP_STATE_ON_RIDE)
     {
-        time_to_consume = std::max(time_to_consume - 3, 0);
+        TimeToConsume = std::max(TimeToConsume - 3, 0);
 
         if (HasDrink())
         {
@@ -1079,7 +1079,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             toilet = std::min(toilet + 2, 255);
         }
 
-        if (time_to_consume == 0)
+        if (TimeToConsume == 0)
         {
             int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
             if (chosen_food != -1)
@@ -1667,7 +1667,7 @@ loc_69B221:
         peep_reset_pathfind_goal(this);
 
     uint16_t consumptionTime = item_consumption_time[shopItem];
-    time_to_consume = std::min((time_to_consume + consumptionTime), 255);
+    TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
     if (shopItem == SHOP_ITEM_PHOTO)
         Photo1RideRef = ride->id;

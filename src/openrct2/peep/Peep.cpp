@@ -1714,7 +1714,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, PEEP_MAX_THIRST);
 
     peep->toilet = 0;
-    peep->time_to_consume = 0;
+    peep->TimeToConsume = 0;
     std::fill_n(peep->RidesBeenOn, 32, 0x00);
 
     peep->no_of_rides = 0;
