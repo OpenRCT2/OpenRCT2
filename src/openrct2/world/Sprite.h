@@ -339,4 +339,81 @@ public:
     }
 };
 
+template<typename T = SpriteBase> class EntityList
+{
+private:
+    uint16_t FirstEntity = SPRITE_INDEX_NULL;
+
+    class EntityListIterator
+    {
+    private:
+        T* Entity = nullptr;
+        uint16_t NextEntityId = SPRITE_INDEX_NULL;
+
+    public:
+        EntityListIterator(const uint16_t _EntityId)
+            : NextEntityId(_EntityId)
+        {
+            ++(*this);
+        }
+        EntityListIterator& operator++()
+        {
+            Entity = nullptr;
+
+            while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
+            {
+                auto baseEntity = GetEntity(NextEntityId);
+                if (!baseEntity)
+                {
+                    NextEntityId = SPRITE_INDEX_NULL;
+                    continue;
+                }
+                NextEntityId = baseEntity->next;
+                Entity = baseEntity->template As<T>();
+            }
+            return *this;
+        }
+
+        EntityListIterator operator++(int)
+        {
+            EntityListIterator retval = *this;
+            ++(*this);
+            return retval;
+        }
+        bool operator==(EntityListIterator other) const
+        {
+            return Entity == other.Entity;
+        }
+        bool operator!=(EntityListIterator other) const
+        {
+            return !(*this == other);
+        }
+        T* operator*()
+        {
+            return Entity;
+        }
+        // iterator traits
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = const T*;
+        using reference = const T&;
+        using iterator_category = std::forward_iterator_tag;
+    };
+
+public:
+    EntityList(SPRITE_LIST type)
+        : FirstEntity(gSpriteListHead[type])
+    {
+    }
+
+    EntityListIterator begin()
+    {
+        return EntityListIterator(FirstEntity);
+    }
+    EntityListIterator end()
+    {
+        return EntityListIterator(SPRITE_INDEX_NULL);
+    }
+};
+
 #endif
