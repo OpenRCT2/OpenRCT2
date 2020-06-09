@@ -1677,7 +1677,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
         nauseaTolerance += 4;
     }
 
-    peep->nausea_tolerance = nausea_tolerance_distribution[nauseaTolerance];
+    peep->NauseaTolerance = nausea_tolerance_distribution[nauseaTolerance];
 
     /* Scenario editor limits initial guest happiness to between 37..253.
      * To be on the safe side, assume the value could have been hacked

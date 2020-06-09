@@ -627,7 +627,7 @@ struct Peep : SpriteBase
     uint8_t mass;
     uint8_t time_to_consume;
     IntensityRange intensity;
-    uint8_t nausea_tolerance;
+    uint8_t NauseaTolerance;
     uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];

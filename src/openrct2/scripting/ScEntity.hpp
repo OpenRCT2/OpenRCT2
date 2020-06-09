@@ -611,7 +611,7 @@ namespace OpenRCT2::Scripting
         uint8_t nauseaTolerance_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->nausea_tolerance : 0;
+            return peep != nullptr ? peep->NauseaTolerance : 0;
         }
         void nauseaTolerance_set(uint8_t value)
         {
@@ -619,7 +619,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->nausea_tolerance = std::min<uint8_t>(value, 3);
+                peep->NauseaTolerance = std::min<uint8_t>(value, 3);
             }
         }
 

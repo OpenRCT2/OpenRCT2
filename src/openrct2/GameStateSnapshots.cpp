@@ -239,7 +239,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, mass);
         COMPARE_FIELD(Peep, time_to_consume);
         COMPARE_FIELD(Peep, intensity);
-        COMPARE_FIELD(Peep, nausea_tolerance);
+        COMPARE_FIELD(Peep, NauseaTolerance);
         COMPARE_FIELD(Peep, WindowInvalidateFlags);
         COMPARE_FIELD(Peep, PaidOnDrink);
         for (int i = 0; i < 16; i++)
