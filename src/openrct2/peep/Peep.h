@@ -623,7 +623,7 @@ struct Peep : SpriteBase
     uint8_t nausea_target;
     uint8_t hunger;
     uint8_t thirst;
-    uint8_t toilet;
+    uint8_t Toilet;
     uint8_t Mass;
     uint8_t TimeToConsume;
     IntensityRange Intensity;

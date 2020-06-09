@@ -1157,7 +1157,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->nausea_target = src->nausea_target;
     dst->hunger = src->hunger;
     dst->thirst = src->thirst;
-    dst->toilet = src->toilet;
+    dst->toilet = src->Toilet;
     dst->mass = src->Mass;
     dst->time_to_consume = src->TimeToConsume;
     dst->intensity = static_cast<uint8_t>(src->Intensity);

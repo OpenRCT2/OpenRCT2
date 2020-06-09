@@ -611,7 +611,7 @@ private:
                     peep->NauseaTolerance = value;
                     break;
                 case GUEST_PARAMETER_TOILET:
-                    peep->toilet = value;
+                    peep->Toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
                     peep->Intensity = IntensityRange(value, 15);

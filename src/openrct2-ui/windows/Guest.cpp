@@ -1494,7 +1494,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    int32_t toilet = peep->toilet - 32;
+    int32_t toilet = peep->Toilet - 32;
     if (toilet > 210)
         toilet = 210;
 

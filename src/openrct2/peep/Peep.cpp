@@ -1713,7 +1713,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, PEEP_MAX_THIRST);
 
-    peep->toilet = 0;
+    peep->Toilet = 0;
     peep->TimeToConsume = 0;
     std::fill_n(peep->RidesBeenOn, 32, 0x00);
 

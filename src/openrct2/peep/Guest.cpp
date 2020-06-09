@@ -734,8 +734,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (PeepFlags & PEEP_FLAGS_TOILET)
         {
-            if (toilet <= 180)
-                toilet += 50;
+            if (Toilet <= 180)
+                Toilet += 50;
         }
 
         if (PeepFlags & PEEP_FLAGS_HAPPINESS)
@@ -861,7 +861,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_THIRSTY;
                     }
 
-                    if (toilet >= 160)
+                    if (Toilet >= 160)
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TOILET;
                     }
@@ -939,7 +939,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 if (thirst >= 5)
                 {
                     thirst -= 4;
-                    toilet = std::min(255, toilet + 3);
+                    Toilet = std::min(255, Toilet + 3);
                 }
 
                 if (nausea_target >= 50)
@@ -1036,9 +1036,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
             thirst = std::max(thirst - 1, 0);
         }
 
-        if (toilet >= 195)
+        if (Toilet >= 195)
         {
-            toilet--;
+            Toilet--;
         }
 
         if (state == PEEP_STATE_WALKING && nausea_target >= 128)
@@ -1076,7 +1076,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         {
             hunger = std::min(hunger + 7, 255);
             thirst = std::max(thirst - 3, 0);
-            toilet = std::min(toilet + 2, 255);
+            Toilet = std::min(Toilet + 2, 255);
         }
 
         if (TimeToConsume == 0)
@@ -2263,7 +2263,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
     if (ride->type == RIDE_TYPE_TOILETS)
     {
-        if (toilet < 70)
+        if (Toilet < 70)
         {
             ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
@@ -2271,7 +2271,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
         // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if (ride_get_price(ride) * 40 > toilet)
+        if (ride_get_price(ride) * 40 > Toilet)
         {
             if (peepAtShop)
             {
@@ -2882,7 +2882,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
         return false;
     if (peep->thirst < 20)
         return false;
-    if (peep->toilet > 170)
+    if (peep->Toilet > 170)
         return false;
 
     uint8_t r = (scenario_rand() & 0xFF);
@@ -3052,7 +3052,7 @@ static void peep_update_hunger(Peep* peep)
         peep->hunger -= 2;
 
         peep->energy_target = std::min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
-        peep->toilet = std::min(peep->toilet + 1, 255);
+        peep->Toilet = std::min(peep->Toilet + 1, 255);
     }
 }
 
@@ -5073,9 +5073,9 @@ void Guest::UpdateRideShopInteract()
         return;
     }
 
-    if (toilet != 0)
+    if (Toilet != 0)
     {
-        toilet--;
+        Toilet--;
         return;
     }
 
@@ -5418,7 +5418,7 @@ void Guest::UpdateWalking()
     if (happiness < 120)
         return;
 
-    if (toilet > 140)
+    if (Toilet > 140)
         return;
 
     uint16_t chance = HasFood() ? 13107 : 2849;
@@ -6932,7 +6932,7 @@ void Guest::UpdateSpriteType()
         return;
     }
 
-    if (toilet > 220)
+    if (Toilet > 220)
     {
         SetSpriteType(PEEP_SPRITE_TYPE_REQUIRE_TOILET);
         return;

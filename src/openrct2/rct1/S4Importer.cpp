@@ -1456,7 +1456,7 @@ private:
         dst->nausea_target = src->nausea_target;
         dst->hunger = src->hunger;
         dst->thirst = src->thirst;
-        dst->toilet = src->toilet;
+        dst->Toilet = src->toilet;
         dst->Mass = src->mass;
 
         dst->LitterCount = src->litter_count;

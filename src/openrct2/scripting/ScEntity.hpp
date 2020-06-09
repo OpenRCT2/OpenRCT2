@@ -551,7 +551,7 @@ namespace OpenRCT2::Scripting
         uint8_t toilet_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->toilet : 0;
+            return peep != nullptr ? peep->Toilet : 0;
         }
         void toilet_set(uint8_t value)
         {
@@ -559,7 +559,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->toilet = value;
+                peep->Toilet = value;
             }
         }
 
