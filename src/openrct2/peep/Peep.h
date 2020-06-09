@@ -990,7 +990,7 @@ enum
 
 /**
  * Helper macro loop for enumerating through all the peeps. To avoid needing a end loop counterpart, statements are
- * applied in tautology if statements.
+ * applied in tautology if statements. TODO REMOVE
  */
 #define FOR_ALL_PEEPS(sprite_index, peep)                                                                                      \
     for ((sprite_index) = gSpriteListHead[SPRITE_LIST_PEEP]; (sprite_index) != SPRITE_INDEX_NULL; (sprite_index) = peep->next) \

@@ -443,11 +443,9 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
     uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
-    for (uint16_t litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != SPRITE_INDEX_NULL;)
+    auto list = EntityList<Litter>(SPRITE_LIST_LITTER);
+    for (auto litter : list)
     {
-        auto litter = GetEntity<Litter>(litterIndex);
-        litterIndex = litter->next;
-
         uint16_t distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
 
         if (distance < nearestLitterDist)

@@ -1321,10 +1321,8 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL;)
+    for (auto vehicle : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
     {
-        auto vehicle = GetEntity<Vehicle>(i);
-        i = vehicle->next;
         vehicle->UpdateSoundParams(vehicleSoundParamsList);
     }
 
@@ -1395,21 +1393,14 @@ void vehicle_sounds_update()
  */
 void vehicle_update_all()
 {
-    uint16_t sprite_index;
-    Vehicle* vehicle;
-
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD];
-    while (sprite_index != SPRITE_INDEX_NULL)
+    for (auto vehicle : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
     {
-        vehicle = GET_VEHICLE(sprite_index);
-        sprite_index = vehicle->next;
-
         vehicle->Update();
     }
 }

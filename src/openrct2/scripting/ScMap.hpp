@@ -131,12 +131,9 @@ namespace OpenRCT2::Scripting
             }
 
             std::vector<DukValue> result;
-
-            for (auto spriteId = gSpriteListHead[targetList]; spriteId != SPRITE_INDEX_NULL;)
+            auto list = EntityList(targetList);
+            for (auto sprite : list)
             {
-                auto sprite = GetEntity(spriteId);
-                spriteId = sprite->next;
-
                 // Only the misc list checks the type property
                 if (targetList != SPRITE_LIST_MISC || sprite->type == targetType)
                 {

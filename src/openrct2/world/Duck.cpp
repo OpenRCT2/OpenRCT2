@@ -363,15 +363,10 @@ void duck_press(Duck* duck)
 
 void duck_remove_all()
 {
-    for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;)
+    auto list = EntityList<Duck>(SPRITE_LIST_MISC);
+    for (auto duck : list)
     {
-        auto sprite = GetEntity(spriteIndex);
-        spriteIndex = sprite->next;
-        if (sprite->type == SPRITE_MISC_DUCK)
-        {
-            sprite->Invalidate1();
-            sprite_remove(sprite);
-        }
+        duck->Remove();
     }
 }
 

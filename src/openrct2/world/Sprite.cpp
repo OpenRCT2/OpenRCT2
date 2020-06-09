@@ -358,11 +358,8 @@ static void sprite_reset(SpriteBase* sprite)
  */
 void sprite_clear_all_unused()
 {
-    for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_FREE]; spriteIndex != SPRITE_INDEX_NULL;)
+    for (auto sprite : EntityList(SPRITE_LIST_FREE))
     {
-        auto sprite = GetEntity(spriteIndex);
-        spriteIndex = sprite->next;
-
         sprite_reset(sprite);
         sprite->linked_list_index = SPRITE_LIST_FREE;
 
@@ -631,11 +628,10 @@ static void sprite_misc_update(rct_sprite* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;)
+    for (auto entity : EntityList(SPRITE_LIST_MISC))
     {
-        auto sprite = GetEntity(spriteIndex);
-        spriteIndex = sprite->next;
-        sprite_misc_update(reinterpret_cast<rct_sprite*>(sprite));
+        // TODO: Use more specific Sprite class
+        sprite_misc_update(reinterpret_cast<rct_sprite*>(entity));
     }
 }
 
@@ -806,10 +802,8 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     {
         Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;
-        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;)
+        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
         {
-            Litter* litter = GetEntity<Litter>(spriteIndex);
-            spriteIndex = litter->next;
             if (newestLitterCreationTick <= litter->creationTick)
             {
                 newestLitterCreationTick = litter->creationTick;
@@ -1066,10 +1060,9 @@ static SpriteBase* find_sprite_quadrant_cycle(uint16_t sprite_idx)
 
 static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
 {
-    for (uint16_t sprite_index = gSpriteListHead[sl]; sprite_index != SPRITE_INDEX_NULL;
-         sprite_index = GetEntity(sprite_index)->next)
+    for (auto entity : EntityList(sl))
     {
-        if (sprite_index == index)
+        if (entity->sprite_index == index)
         {
             return true;
         }

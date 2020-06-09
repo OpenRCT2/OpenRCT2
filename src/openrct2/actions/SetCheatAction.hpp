@@ -427,10 +427,9 @@ private:
 
     void RemoveLitter() const
     {
-        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;)
+        auto list = EntityList<Litter>(SPRITE_LIST_LITTER);
+        for (auto litter : list)
         {
-            auto litter = GetEntity<Litter>(spriteIndex);
-            spriteIndex = litter->next;
             sprite_remove(litter);
         }
 
@@ -696,10 +695,9 @@ private:
 
         // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
         // will be fetched on a deleted peep.
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
+        auto list = EntityList<Peep>(SPRITE_LIST_PEEP);
+        for (auto peep : list)
         {
-            auto peep = GET_PEEP(spriteIndex);
-            spriteIndex = peep->next;
             if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
             {
                 peep->Remove();

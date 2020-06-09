@@ -402,20 +402,15 @@ int32_t peep_get_staff_count()
  */
 void peep_update_all()
 {
-    int32_t i = 0;
-    uint16_t spriteIndex;
-    Peep* peep;
-
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
+    int32_t i = 0;
     // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
     // will be fetched on a delted peep if peep leaves the park.
-    for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
+    auto list = EntityList<Peep>(SPRITE_LIST_PEEP);
+    for (auto peep : list)
     {
-        peep = GET_PEEP(spriteIndex);
-        spriteIndex = peep->next;
-
         if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
             peep->Update();

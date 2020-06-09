@@ -3006,11 +3006,8 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    for (uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL;)
+    for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
     {
-        auto litter = GetEntity<Litter>(sprite_idx);
-        sprite_idx = litter->next;
-
         int16_t dist_x = abs(litter->x - centre_x);
         int16_t dist_y = abs(litter->y - centre_y);
         if (std::max(dist_x, dist_y) <= 160)

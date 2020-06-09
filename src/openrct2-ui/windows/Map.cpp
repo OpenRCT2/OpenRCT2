@@ -1106,13 +1106,11 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    Vehicle *train, *vehicle;
-    uint16_t train_index, vehicle_index;
-
-    for (train_index = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
+    auto list = EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD);
+    for (auto train : list)
     {
-        train = GET_VEHICLE(train_index);
-        for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train)
+        Vehicle* vehicle = nullptr;
+        for (auto vehicle_index = train->sprite_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train)
         {
             vehicle = GET_VEHICLE(vehicle_index);
             if (vehicle->x == LOCATION_NULL)
