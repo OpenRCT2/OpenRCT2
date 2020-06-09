@@ -1532,11 +1532,11 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Intensity
     auto ft = Formatter::Common();
-    auto maxIntensity = peep->intensity.GetMaximum();
+    auto maxIntensity = peep->Intensity.GetMaximum();
     int32_t string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BELOW;
-    if (peep->intensity.GetMinimum() != 0)
+    if (peep->Intensity.GetMinimum() != 0)
     {
-        ft.Add<uint16_t>(peep->intensity.GetMinimum());
+        ft.Add<uint16_t>(peep->Intensity.GetMinimum());
         ft.Add<uint16_t>(maxIntensity);
         string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BETWEEN;
         if (maxIntensity == 15)

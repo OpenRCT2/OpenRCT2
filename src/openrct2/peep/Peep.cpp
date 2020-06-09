@@ -1669,7 +1669,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
         intensityHighest = 15;
     }
 
-    peep->intensity = IntensityRange(intensityLowest, intensityHighest);
+    peep->Intensity = IntensityRange(intensityLowest, intensityHighest);
 
     uint8_t nauseaTolerance = scenario_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)

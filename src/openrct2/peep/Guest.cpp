@@ -1807,9 +1807,9 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (peep_should_preferred_intensity_increase(this))
     {
-        if (intensity.GetMaximum() < 15)
+        if (Intensity.GetMaximum() < 15)
         {
-            intensity = intensity.WithMaximum(intensity.GetMaximum() + 1);
+            Intensity = Intensity.WithMaximum(Intensity.GetMaximum() + 1);
         }
     }
 
@@ -2123,8 +2123,8 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                     // at 10.0 (before happiness calculations). A full happiness bar will increase the max
                     // intensity and decrease the min intensity by about 2.5.
-                    ride_rating maxIntensity = std::min(intensity.GetMaximum() * 100, 1000) + happiness;
-                    ride_rating minIntensity = (intensity.GetMinimum() * 100) - happiness;
+                    ride_rating maxIntensity = std::min(Intensity.GetMaximum() * 100, 1000) + happiness;
+                    ride_rating minIntensity = (Intensity.GetMinimum() * 100) - happiness;
                     if (ride->intensity < minIntensity)
                     {
                         if (peepAtRide)
@@ -2764,8 +2764,8 @@ static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Rid
 
     uint8_t intensitySatisfaction = 3;
     uint8_t nauseaSatisfaction = 3;
-    ride_rating maxIntensity = peep->intensity.GetMaximum() * 100;
-    ride_rating minIntensity = peep->intensity.GetMinimum() * 100;
+    ride_rating maxIntensity = peep->Intensity.GetMaximum() * 100;
+    ride_rating minIntensity = peep->Intensity.GetMinimum() * 100;
     if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity)
     {
         intensitySatisfaction--;
@@ -2904,7 +2904,7 @@ static bool peep_should_preferred_intensity_increase(Peep* peep)
     if (peep->happiness < 200)
         return false;
 
-    return (scenario_rand() & 0xFF) >= static_cast<uint8_t>(peep->intensity);
+    return (scenario_rand() & 0xFF) >= static_cast<uint8_t>(peep->Intensity);
 }
 
 static bool peep_really_liked_ride(Peep* peep, Ride* ride)

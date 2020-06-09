@@ -614,7 +614,7 @@ private:
                     peep->toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                    peep->intensity = IntensityRange(value, 15);
+                    peep->Intensity = IntensityRange(value, 15);
                     break;
             }
             peep->UpdateSpriteType();

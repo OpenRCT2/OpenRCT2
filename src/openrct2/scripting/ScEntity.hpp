@@ -581,7 +581,7 @@ namespace OpenRCT2::Scripting
         uint8_t minIntensity_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->intensity.GetMinimum() : 0;
+            return peep != nullptr ? peep->Intensity.GetMinimum() : 0;
         }
         void minIntensity_set(uint8_t value)
         {
@@ -589,14 +589,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->intensity = peep->intensity.WithMinimum(value);
+                peep->Intensity = peep->Intensity.WithMinimum(value);
             }
         }
 
         uint8_t maxIntensity_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->intensity.GetMaximum() : 0;
+            return peep != nullptr ? peep->Intensity.GetMaximum() : 0;
         }
         void maxIntensity_set(uint8_t value)
         {
@@ -604,7 +604,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->intensity = peep->intensity.WithMaximum(value);
+                peep->Intensity = peep->Intensity.WithMaximum(value);
             }
         }
 
