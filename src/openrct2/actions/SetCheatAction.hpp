@@ -584,7 +584,7 @@ private:
             switch (parameter)
             {
                 case GUEST_PARAMETER_HAPPINESS:
-                    peep->happiness = value;
+                    peep->Happiness = value;
                     peep->HappinessTarget = value;
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)

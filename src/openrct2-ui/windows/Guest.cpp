@@ -1404,7 +1404,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Happiness
     gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    int32_t happiness = peep->happiness;
+    int32_t happiness = peep->Happiness;
     if (happiness < 10)
         happiness = 10;
     int32_t ebp = COLOUR_BRIGHT_GREEN;

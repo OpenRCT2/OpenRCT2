@@ -229,7 +229,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, var_37);
         COMPARE_FIELD(Peep, energy);
         COMPARE_FIELD(Peep, energy_target);
-        COMPARE_FIELD(Peep, happiness);
+        COMPARE_FIELD(Peep, Happiness);
         COMPARE_FIELD(Peep, HappinessTarget);
         COMPARE_FIELD(Peep, Nausea);
         COMPARE_FIELD(Peep, NauseaTarget);

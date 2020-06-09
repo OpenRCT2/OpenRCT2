@@ -1682,16 +1682,16 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest happiness to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->happiness = gGuestInitialHappiness;
+    peep->Happiness = gGuestInitialHappiness;
     /* Assume a default initial happiness of 0 is wrong and set
      * to 128 (50%) instead. */
     if (gGuestInitialHappiness == 0)
-        peep->happiness = 128;
+        peep->Happiness = 128;
     /* Initial value will vary by -15..16 */
     int8_t happinessDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->happiness = std::clamp(peep->happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
-    peep->HappinessTarget = peep->happiness;
+    peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
+    peep->HappinessTarget = peep->Happiness;
     peep->Nausea = 0;
     peep->NauseaTarget = 0;
 
@@ -2187,7 +2187,7 @@ static int32_t get_face_sprite_offset(Peep* peep)
 
     int32_t offset = PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY;
     // There are 7 different happiness based faces
-    for (int32_t i = 37; peep->happiness >= i; i += 37)
+    for (int32_t i = 37; peep->Happiness >= i; i += 37)
     {
         offset++;
     }

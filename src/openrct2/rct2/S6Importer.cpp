@@ -1416,7 +1416,7 @@ public:
         dst->var_37 = src->var_37;
         dst->energy = src->energy;
         dst->energy_target = src->energy_target;
-        dst->happiness = src->happiness;
+        dst->Happiness = src->happiness;
         dst->HappinessTarget = src->happiness_target;
         dst->Nausea = src->nausea;
         dst->NauseaTarget = src->nausea_target;
