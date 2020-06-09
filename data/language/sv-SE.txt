@@ -3064,7 +3064,7 @@ STR_5751    :Ingen Data
 STR_5752    :{OUTLINE}{RED}{STRING} har lämnat
 STR_5753    :{OUTLINE}{RED}{STRING} har lämnat ({STRING})
 STR_5754    :Ogiltigt spelarnamn
-STR_5755    :Fel version av OpenRCT (servern använder {STRING})
+STR_5755    :Fel version av OpenRCT2 (servern använder {STRING})
 STR_5756    :Fel lösenord
 STR_5757    :Servern är full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet

@@ -3562,9 +3562,6 @@ STR_6248    :{WINDOW_COLOUR_1}Voulez-vous renouveler {STRINGID} pour {CURRENCY} 
 STR_6249    :{WINDOW_COLOUR_1}Voulez-vous renouveler {STRINGID} ?
 STR_6250    :{WINDOW_COLOUR_1}Etes-vous sûr(e) de vouloir détruire complètement {STRINGID} et gagner {CURRENCY} ?
 STR_6251    :L'attraction n'est pas encore vide
-STR_6252    :Adresse URL de l'API Twitch
-STR_6253    :{SMALLFONT}{BLACK}Renseigner l'adresse URL de l'API d'intégration Twitch. Nécessaire pour activer l'intégration Twitch.
-STR_6254    :Adresse URL de l'API d'intégration Twitch :
 STR_6255    :L'adresse URL est invalide
 STR_6256    :Effets de rendu
 STR_6257    :Translucide
