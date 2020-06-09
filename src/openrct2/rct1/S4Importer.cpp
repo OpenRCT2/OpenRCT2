@@ -1453,7 +1453,7 @@ private:
         dst->happiness = src->happiness;
         dst->happiness_target = src->happiness_target;
         dst->nausea = src->nausea;
-        dst->nausea_target = src->nausea_target;
+        dst->NauseaTarget = src->nausea_target;
         dst->Hunger = src->hunger;
         dst->Thirst = src->thirst;
         dst->Toilet = src->toilet;

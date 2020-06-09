@@ -581,7 +581,7 @@ void Guest::HandleEasterEggName()
         energy = 127;
         energy_target = 127;
         nausea = 0;
-        nausea_target = 0;
+        NauseaTarget = 0;
     }
 
     PeepFlags &= ~PEEP_FLAGS_LITTER;
@@ -745,7 +745,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (PeepFlags & PEEP_FLAGS_NAUSEA)
         {
-            nausea_target = 200;
+            NauseaTarget = 200;
             if (nausea <= 130)
                 nausea = 130;
         }
@@ -942,8 +942,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     Toilet = std::min(255, Toilet + 3);
                 }
 
-                if (nausea_target >= 50)
-                    nausea_target -= 6;
+                if (NauseaTarget >= 50)
+                    NauseaTarget -= 6;
 
                 // In the original this branched differently
                 // but it would mean setting the peep happiness from
@@ -1019,7 +1019,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         else
             happiness_target++;
 
-        nausea_target = std::max(nausea_target - 2, 0);
+        NauseaTarget = std::max(NauseaTarget - 2, 0);
 
         if (energy <= 50)
         {
@@ -1041,7 +1041,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             Toilet--;
         }
 
-        if (state == PEEP_STATE_WALKING && nausea_target >= 128)
+        if (state == PEEP_STATE_WALKING && NauseaTarget >= 128)
         {
             if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((nausea - 128) / 2))
             {
@@ -1166,7 +1166,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
     }
 
     uint8_t newNausea = nausea;
-    uint8_t newNauseaGrowth = nausea_target;
+    uint8_t newNauseaGrowth = NauseaTarget;
     if (newNausea >= newNauseaGrowth)
     {
         newNausea = std::max(newNausea - 4, 0);
@@ -1791,7 +1791,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     happiness = happiness_target;
-    nausea = nausea_target;
+    nausea = NauseaTarget;
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
 
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -2861,7 +2861,7 @@ static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->Hunger) / 64;
     nauseaGrowthRateChange >>= (peep->NauseaTolerance & 3);
-    peep->nausea_target = static_cast<uint8_t>(std::min(peep->nausea_target + nauseaGrowthRateChange, 255u));
+    peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255u));
 }
 
 static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
@@ -5068,7 +5068,7 @@ void Guest::UpdateRideShopInteract()
         else
         {
             nausea--;
-            nausea_target = nausea;
+            NauseaTarget = nausea;
         }
         return;
     }
