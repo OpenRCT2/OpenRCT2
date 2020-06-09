@@ -1448,7 +1448,7 @@ private:
         dst->destination_tolerance = src->destination_tolerance;
         dst->PeepDirection = src->direction;
 
-        dst->energy = src->energy;
+        dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;
         dst->Happiness = src->happiness;
         dst->HappinessTarget = src->happiness_target;

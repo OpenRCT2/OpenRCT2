@@ -443,7 +443,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name.c_str());
+                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->Energy, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -474,7 +474,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 {
                     Peep* peep = GET_PEEP(int_val[0]);
 
-                    peep->energy = int_val[1];
+                    peep->Energy = int_val[1];
                     peep->EnergyTarget = int_val[1];
                 }
             }

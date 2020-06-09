@@ -303,7 +303,7 @@ namespace OpenRCT2::Scripting
         uint8_t energy_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy : 0;
+            return peep != nullptr ? peep->Energy : 0;
         }
         void energy_set(uint8_t value)
         {
@@ -311,7 +311,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy = value;
+                peep->Energy = value;
             }
         }
 

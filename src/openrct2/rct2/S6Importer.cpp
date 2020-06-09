@@ -1414,7 +1414,7 @@ public:
         dst->destination_y = src->destination_y;
         dst->destination_tolerance = src->destination_tolerance;
         dst->var_37 = src->var_37;
-        dst->energy = src->energy;
+        dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;
         dst->Happiness = src->happiness;
         dst->HappinessTarget = src->happiness_target;

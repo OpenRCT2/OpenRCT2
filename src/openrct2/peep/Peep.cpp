@@ -1110,7 +1110,7 @@ void Peep::Update()
     }
 
     // Walking speed logic
-    uint32_t stepsToTake = energy;
+    uint32_t stepsToTake = Energy;
     if (stepsToTake < 95 && state == PEEP_STATE_QUEUING)
         stepsToTake = 95;
     if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
@@ -1775,7 +1775,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
     uint8_t energy = (scenario_rand() % 64) + 65;
-    peep->energy = energy;
+    peep->Energy = energy;
     peep->EnergyTarget = energy;
 
     increment_guests_heading_for_park();
@@ -2178,11 +2178,11 @@ static int32_t get_face_sprite_offset(Peep* peep)
         return PEEP_FACE_OFFSET_SICK;
 
     // VERY_TIRED
-    if (peep->energy < 46)
+    if (peep->Energy < 46)
         return PEEP_FACE_OFFSET_VERY_TIRED;
 
     // TIRED
-    if (peep->energy < 70)
+    if (peep->Energy < 70)
         return PEEP_FACE_OFFSET_TIRED;
 
     int32_t offset = PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY;

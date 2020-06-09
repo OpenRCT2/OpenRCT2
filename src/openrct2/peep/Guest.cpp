@@ -578,7 +578,7 @@ void Guest::HandleEasterEggName()
     {
         Happiness = 250;
         HappinessTarget = 250;
-        energy = 127;
+        Energy = 127;
         EnergyTarget = 127;
         Nausea = 0;
         NauseaTarget = 0;
@@ -846,7 +846,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 }
                 else
                 {
-                    if (energy <= 70 && Happiness < 128)
+                    if (Energy <= 70 && Happiness < 128)
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TIRED;
                     }
@@ -866,7 +866,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TOILET;
                     }
 
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && Happiness >= 105 && energy >= 70)
+                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && Happiness >= 105 && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
                          * This was superfluous so should probably check something else.
@@ -1021,9 +1021,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         NauseaTarget = std::max(NauseaTarget - 2, 0);
 
-        if (energy <= 50)
+        if (Energy <= 50)
         {
-            energy = std::max(energy - 2, 0);
+            Energy = std::max(Energy - 2, 0);
         }
 
         if (Hunger < 10)
@@ -1117,7 +1117,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         }
     }
 
-    uint8_t newEnergy = energy;
+    uint8_t newEnergy = Energy;
     uint8_t newTargetEnergy = EnergyTarget;
     if (newEnergy >= newTargetEnergy)
     {
@@ -1138,9 +1138,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
     /* Previous code here suggested maximum energy is 128. */
     newEnergy = std::min(static_cast<uint8_t>(PEEP_MAX_ENERGY), newEnergy);
 
-    if (newEnergy != energy)
+    if (newEnergy != Energy)
     {
-        energy = newEnergy;
+        Energy = newEnergy;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 
@@ -1239,7 +1239,7 @@ void Guest::UpdateSitting()
         sub_state = PEEP_SITTING_SAT_DOWN;
 
         // Sets time to sit on seat
-        TimeToSitdown = (129 - energy) * 16 + 50;
+        TimeToSitdown = (129 - Energy) * 16 + 50;
     }
     else if (sub_state == PEEP_SITTING_SAT_DOWN)
     {
@@ -2874,7 +2874,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
         return false;
     if (peep->Happiness < 180)
         return false;
-    if (peep->energy < 100)
+    if (peep->Energy < 100)
         return false;
     if (peep->Nausea > 160)
         return false;
@@ -3086,14 +3086,14 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
     {
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
         {
-            if (peep->energy >= 70 && peep->Happiness >= 60)
+            if (peep->Energy >= 70 && peep->Happiness >= 60)
             {
                 return;
             }
         }
         else
         {
-            if (peep->energy >= 55 && peep->Happiness >= 45 && peep->CashInPocket >= MONEY(5, 00))
+            if (peep->Energy >= 55 && peep->Happiness >= 45 && peep->CashInPocket >= MONEY(5, 00))
             {
                 return;
             }
@@ -3330,7 +3330,7 @@ static bool peep_should_use_cash_machine(Peep* peep, ride_id_t rideIndex)
         return false;
     if (115 + (scenario_rand() % 128) > peep->Happiness)
         return false;
-    if (peep->energy < 80)
+    if (peep->Energy < 80)
         return false;
 
     auto ride = get_ride(rideIndex);
@@ -4837,7 +4837,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (Action >= PEEP_ACTION_NONE_1)
     {
-        if (energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
+        if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
         {
             Action = PEEP_ACTION_JUMP;
             ActionFrame = 0;
@@ -5749,7 +5749,7 @@ void Guest::UpdateWatching()
 
         sub_state++;
 
-        TimeToStand = std::clamp(((129 - energy) * 16 + 50) / 2, 0, 255);
+        TimeToStand = std::clamp(((129 - Energy) * 16 + 50) / 2, 0, 255);
         UpdateSpriteType();
     }
     else if (sub_state == 1)
@@ -6003,7 +6003,7 @@ bool Guest::ShouldFindBench()
         }
     }
 
-    if (Nausea <= 170 && energy > 50)
+    if (Nausea <= 170 && Energy > 50)
     {
         return false;
     }
@@ -6206,7 +6206,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
     {
         if (peep->Happiness >= 48)
             return;
-        if (peep->energy < 85)
+        if (peep->Energy < 85)
             return;
         if (peep->state != PEEP_STATE_WALKING)
             return;
@@ -6920,13 +6920,13 @@ void Guest::UpdateSpriteType()
         return;
     }
 
-    if (energy <= 64 && Happiness < 128)
+    if (Energy <= 64 && Happiness < 128)
     {
         SetSpriteType(PEEP_SPRITE_TYPE_HEAD_DOWN);
         return;
     }
 
-    if (energy <= 80 && Happiness < 128)
+    if (Energy <= 80 && Happiness < 128)
     {
         SetSpriteType(PEEP_SPRITE_TYPE_ARMS_CROSSED);
         return;

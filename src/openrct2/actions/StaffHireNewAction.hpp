@@ -242,7 +242,7 @@ private:
             newPeep->trousers_colour = colour;
 
             // Staff energy determines their walking speed
-            newPeep->energy = 0x60;
+            newPeep->Energy = 0x60;
             newPeep->EnergyTarget = 0x60;
             newPeep->StaffMowingTimeout = 0;
 
