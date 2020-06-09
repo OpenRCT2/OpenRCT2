@@ -1454,7 +1454,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    int32_t thirst = peep->thirst;
+    int32_t thirst = peep->Thirst;
     if (thirst > 190)
         thirst = 190;
 

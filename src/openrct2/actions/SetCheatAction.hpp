@@ -601,7 +601,7 @@ private:
                     peep->hunger = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
-                    peep->thirst = value;
+                    peep->Thirst = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
                     peep->nausea = value;

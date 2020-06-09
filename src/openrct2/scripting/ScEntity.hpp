@@ -536,7 +536,7 @@ namespace OpenRCT2::Scripting
         uint8_t thirst_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->thirst : 0;
+            return peep != nullptr ? peep->Thirst : 0;
         }
         void thirst_set(uint8_t value)
         {
@@ -544,7 +544,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->thirst = value;
+                peep->Thirst = value;
             }
         }
 

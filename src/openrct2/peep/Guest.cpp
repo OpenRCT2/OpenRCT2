@@ -856,7 +856,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_HUNGRY;
                     }
 
-                    if (thirst <= 25 && !HasFood())
+                    if (Thirst <= 25 && !HasFood())
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_THIRSTY;
                     }
@@ -936,9 +936,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 if (energy_target <= 135)
                     energy_target += 5;
 
-                if (thirst >= 5)
+                if (Thirst >= 5)
                 {
-                    thirst -= 4;
+                    Thirst -= 4;
                     Toilet = std::min(255, Toilet + 3);
                 }
 
@@ -1031,9 +1031,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
             hunger = std::max(hunger - 1, 0);
         }
 
-        if (thirst < 10)
+        if (Thirst < 10)
         {
-            thirst = std::max(thirst - 1, 0);
+            Thirst = std::max(Thirst - 1, 0);
         }
 
         if (Toilet >= 195)
@@ -1070,12 +1070,12 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (HasDrink())
         {
-            thirst = std::min(thirst + 7, 255);
+            Thirst = std::min(Thirst + 7, 255);
         }
         else
         {
             hunger = std::min(hunger + 7, 255);
-            thirst = std::max(thirst - 3, 0);
+            Thirst = std::max(Thirst - 3, 0);
             Toilet = std::min(Toilet + 2, 255);
         }
 
@@ -1528,7 +1528,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         return false;
     }
 
-    if (ShopItems[shopItem].IsDrink() && (thirst > 75))
+    if (ShopItems[shopItem].IsDrink() && (Thirst > 75))
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
         return false;
@@ -2880,7 +2880,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
         return false;
     if (peep->hunger < 30)
         return false;
-    if (peep->thirst < 20)
+    if (peep->Thirst < 20)
         return false;
     if (peep->Toilet > 170)
         return false;
@@ -3069,9 +3069,9 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
         peep->energy_target -= 2;
     }
 
-    if (gClimateCurrent.Temperature >= 21 && peep->thirst >= 5)
+    if (gClimateCurrent.Temperature >= 21 && peep->Thirst >= 5)
     {
-        peep->thirst--;
+        peep->Thirst--;
     }
 
     if (peep->outside_of_park != 0)

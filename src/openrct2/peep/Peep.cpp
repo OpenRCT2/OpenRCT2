@@ -1707,11 +1707,11 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->thirst = gGuestInitialThirst;
+    peep->Thirst = gGuestInitialThirst;
     /* Initial value will vary by -15..16 */
     int8_t thirstDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, PEEP_MAX_THIRST);
+    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, PEEP_MAX_THIRST);
 
     peep->Toilet = 0;
     peep->TimeToConsume = 0;
