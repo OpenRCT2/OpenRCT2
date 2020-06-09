@@ -652,7 +652,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     }
 
     // We are throwing up
-    hunger /= 2;
+    Hunger /= 2;
     nausea_target /= 2;
 
     if (nausea < 30)
@@ -1698,11 +1698,11 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest hunger to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->hunger = gGuestInitialHunger;
+    peep->Hunger = gGuestInitialHunger;
     /* Initial value will vary by -15..16 */
     int8_t hungerDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->hunger = std::clamp(peep->hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
+    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked

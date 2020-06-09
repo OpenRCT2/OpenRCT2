@@ -598,7 +598,7 @@ private:
                     peep->energy_target = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
-                    peep->hunger = value;
+                    peep->Hunger = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
                     peep->Thirst = value;

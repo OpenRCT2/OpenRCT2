@@ -521,7 +521,7 @@ namespace OpenRCT2::Scripting
         uint8_t hunger_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->hunger : 0;
+            return peep != nullptr ? peep->Hunger : 0;
         }
         void hunger_set(uint8_t value)
         {
@@ -529,7 +529,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->hunger = value;
+                peep->Hunger = value;
             }
         }
 

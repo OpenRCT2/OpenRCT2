@@ -728,8 +728,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (PeepFlags & PEEP_FLAGS_HUNGER)
         {
-            if (hunger >= 15)
-                hunger -= 15;
+            if (Hunger >= 15)
+                Hunger -= 15;
         }
 
         if (PeepFlags & PEEP_FLAGS_TOILET)
@@ -851,7 +851,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TIRED;
                     }
 
-                    if (hunger <= 10 && !HasFood())
+                    if (Hunger <= 10 && !HasFood())
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_HUNGRY;
                     }
@@ -1026,9 +1026,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
             energy = std::max(energy - 2, 0);
         }
 
-        if (hunger < 10)
+        if (Hunger < 10)
         {
-            hunger = std::max(hunger - 1, 0);
+            Hunger = std::max(Hunger - 1, 0);
         }
 
         if (Thirst < 10)
@@ -1074,7 +1074,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         }
         else
         {
-            hunger = std::min(hunger + 7, 255);
+            Hunger = std::min(Hunger + 7, 255);
             Thirst = std::max(Thirst - 3, 0);
             Toilet = std::min(Toilet + 2, 255);
         }
@@ -1522,7 +1522,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-    if (ShopItems[shopItem].IsFood() && (hunger > 75))
+    if (ShopItems[shopItem].IsFood() && (Hunger > 75))
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
         return false;
@@ -2859,7 +2859,7 @@ static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
 {
     uint32_t nauseaMultiplier = std::clamp(256 - peep->happiness_target, 64, 200);
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
-    nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->hunger) / 64;
+    nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->Hunger) / 64;
     nauseaGrowthRateChange >>= (peep->NauseaTolerance & 3);
     peep->nausea_target = static_cast<uint8_t>(std::min(peep->nausea_target + nauseaGrowthRateChange, 255u));
 }
@@ -2878,7 +2878,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
         return false;
     if (peep->nausea > 160)
         return false;
-    if (peep->hunger < 30)
+    if (peep->Hunger < 30)
         return false;
     if (peep->Thirst < 20)
         return false;
@@ -3047,9 +3047,9 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
  */
 static void peep_update_hunger(Peep* peep)
 {
-    if (peep->hunger >= 3)
+    if (peep->Hunger >= 3)
     {
-        peep->hunger -= 2;
+        peep->Hunger -= 2;
 
         peep->energy_target = std::min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
         peep->Toilet = std::min(peep->Toilet + 1, 255);
@@ -5994,7 +5994,7 @@ bool Guest::ShouldFindBench()
 
     if (HasFood())
     {
-        if (hunger < 128 || happiness < 128)
+        if (Hunger < 128 || happiness < 128)
         {
             if (!GetNextIsSurface() && !GetNextIsSloped())
             {
