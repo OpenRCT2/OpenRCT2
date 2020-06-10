@@ -452,7 +452,7 @@ static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_wi
         else
         {
             stringId = STR_STRING;
-            formatArgs = reinterpret_cast<void*>(widget->string);
+            formatArgs = const_cast<void*>(reinterpret_cast<const void*>(&widget->string));
         }
     }
     return std::make_pair(stringId, formatArgs);
