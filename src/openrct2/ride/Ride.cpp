@@ -352,13 +352,10 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
  */
 void ride_update_favourited_stat()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
     for (auto& ride : GetRideManager())
         ride.guests_favourite = 0;
 
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->FavouriteRide != RIDE_ID_NULL)
         {
@@ -1098,9 +1095,7 @@ void ride_remove_peeps(Ride* ride)
     }
 
     // Place all the peeps at exit
-    uint16_t spriteIndex;
-    Peep* peep;
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
     {
         if (peep->State == PEEP_STATE_QUEUING_FRONT || peep->State == PEEP_STATE_ENTERING_RIDE
             || peep->State == PEEP_STATE_LEAVING_RIDE || peep->State == PEEP_STATE_ON_RIDE)
@@ -2685,12 +2680,10 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
  */
 Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
 {
-    uint32_t closestDistance, distance;
-    uint16_t spriteIndex;
-    Peep *peep, *closestMechanic = nullptr;
+    Peep* closestMechanic = nullptr;
+    uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
 
-    closestDistance = UINT_MAX;
-    FOR_ALL_STAFF (spriteIndex, peep)
+    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
         if (peep->StaffType != STAFF_TYPE_MECHANIC)
             continue;
@@ -2723,7 +2716,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
             continue;
 
         // Manhattan distance
-        distance = std::abs(peep->x - x) + std::abs(peep->y - y);
+        uint32_t distance = std::abs(peep->x - x) + std::abs(peep->y - y);
         if (distance < closestDistance)
         {
             closestDistance = distance;
@@ -5485,10 +5478,7 @@ int32_t ride_get_refund_price(const Ride* ride)
  */
 void Ride::StopGuestsQueuing()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->State != PEEP_STATE_QUEUING)
             continue;

@@ -363,8 +363,7 @@ void duck_press(Duck* duck)
 
 void duck_remove_all()
 {
-    auto list = EntityList<Duck>(SPRITE_LIST_MISC);
-    for (auto duck : list)
+    for (auto duck : EntityList<Duck>(SPRITE_LIST_MISC))
     {
         duck->Remove();
     }

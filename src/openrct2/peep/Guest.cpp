@@ -399,6 +399,12 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
+template<> bool SpriteBase::Is<Guest>() const
+{
+    auto peep = As<Peep>();
+    return peep && peep->AssignedPeepType == PEEP_TYPE_GUEST;
+}
+
 bool Guest::GuestHasValidXY() const
 {
     if (x != LOCATION_NULL)
@@ -6245,10 +6251,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         return;
     }
 
-    Peep* inner_peep;
-    uint16_t sprite_index;
-
-    FOR_ALL_STAFF (sprite_index, inner_peep)
+    for (auto inner_peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
         if (inner_peep->StaffType != STAFF_TYPE_SECURITY)
             continue;

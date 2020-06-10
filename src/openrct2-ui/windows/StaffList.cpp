@@ -188,16 +188,15 @@ void WindowStaffListRefresh()
         return;
     }
     StaffList.clear();
-    Peep* peep = nullptr;
-    uint16_t spriteIndex;
-    FOR_ALL_STAFF (spriteIndex, peep)
+
+    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
         sprite_set_flashing(peep, false);
         if (peep->StaffType != _windowStaffListSelectedTab)
             continue;
         sprite_set_flashing(peep, true);
 
-        StaffList.push_back(spriteIndex);
+        StaffList.push_back(peep->sprite_index);
     }
 
     std::sort(StaffList.begin(), StaffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
@@ -338,10 +337,8 @@ void window_staff_list_update(rct_window* w)
         // Enable highlighting of these staff members in map window
         if (window_find_by_class(WC_MAP) != nullptr)
         {
-            int32_t spriteIndex;
-            Peep* peep;
             gWindowMapFlashingFlags |= (1 << 2);
-            FOR_ALL_STAFF (spriteIndex, peep)
+            for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
             {
                 sprite_set_flashing(peep, false);
 
@@ -376,10 +373,10 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
 
         bool isPatrolAreaSet = staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(selectedPeepType), footpathCoords);
 
-        uint16_t spriteIndex;
-        Peep *peep, *closestPeep = nullptr;
+        Peep* closestPeep = nullptr;
         int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
-        FOR_ALL_STAFF (spriteIndex, peep)
+
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
             if (peep->StaffType != selectedPeepType)
                 continue;

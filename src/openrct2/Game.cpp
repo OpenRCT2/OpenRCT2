@@ -432,22 +432,24 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
 void game_fix_save_vars()
 {
     // Recalculates peep count after loading a save to fix corrupted files
-    Peep* peep;
-    uint16_t spriteIndex;
-    uint32_t peepCount = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    uint32_t guestCount = 0;
     {
-        if (!peep->OutsideOfPark)
-            peepCount++;
+        for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
+        {
+            if (!guest->OutsideOfPark)
+            {
+                guestCount++;
+            }
+        }
     }
 
-    gNumGuestsInPark = peepCount;
+    gNumGuestsInPark = guestCount;
 
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
 
     // Fix possibly invalid field values
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->CurrentRideStation >= MAX_STATIONS)
         {
@@ -460,7 +462,7 @@ void game_fix_save_vars()
             Ride* ride = get_ride(rideIdx);
             if (ride == nullptr)
             {
-                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, spriteIndex);
+                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
                 peep->CurrentRide = RIDE_ID_NULL;
                 continue;
             }
@@ -468,11 +470,12 @@ void game_fix_save_vars()
             ft.Add<uint32_t>(peep->Id);
             auto curName = peep->GetName();
             log_warning(
-                "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
+                "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(), srcStation,
+                rideIdx);
             auto station = ride_get_first_valid_station_exit(ride);
             if (station == STATION_INDEX_NULL)
             {
-                log_warning("Couldn't find station, removing peep %u", spriteIndex);
+                log_warning("Couldn't find station, removing peep %u", peep->sprite_index);
                 peepsToRemove.push_back(peep);
             }
             else

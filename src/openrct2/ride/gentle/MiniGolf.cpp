@@ -1217,6 +1217,8 @@ void vehicle_visual_mini_golf_player(
         return;
 
     auto* peep = GetEntity<Peep>(vehicle->peep[0]);
+    if (peep == nullptr)
+        return;
 
     uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);

@@ -427,8 +427,7 @@ private:
 
     void RemoveLitter() const
     {
-        auto list = EntityList<Litter>(SPRITE_LIST_LITTER);
-        for (auto litter : list)
+        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
         {
             sprite_remove(litter);
         }
@@ -571,12 +570,8 @@ private:
 
     void SetGuestParameter(int32_t parameter, int32_t value) const
     {
-        int32_t spriteIndex;
-        Peep* p;
-        FOR_ALL_GUESTS (spriteIndex, p)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            auto peep = p->AsGuest();
-            assert(peep != nullptr);
             switch (parameter)
             {
                 case GUEST_PARAMETER_HAPPINESS:
@@ -619,12 +614,8 @@ private:
 
     void GiveObjectToGuests(int32_t object) const
     {
-        int32_t spriteIndex;
-        Peep* p;
-        FOR_ALL_GUESTS (spriteIndex, p)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            auto peep = p->AsGuest();
-            assert(peep != nullptr);
             switch (object)
             {
                 case OBJECT_MONEY:
@@ -695,8 +686,7 @@ private:
 
         // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
         // will be fetched on a deleted peep.
-        auto list = EntityList<Peep>(SPRITE_LIST_PEEP);
-        for (auto peep : list)
+        for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
         {
             if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
             {
@@ -710,10 +700,7 @@ private:
 
     void ExplodeGuests() const
     {
-        int32_t sprite_index;
-        Peep* peep;
-
-        FOR_ALL_GUESTS (sprite_index, peep)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
             if (scenario_rand_max(6) == 0)
             {
@@ -724,10 +711,7 @@ private:
 
     void SetStaffSpeed(uint8_t value) const
     {
-        uint16_t spriteIndex;
-        Peep* peep;
-
-        FOR_ALL_STAFF (spriteIndex, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
             peep->Energy = value;
             peep->EnergyTarget = value;

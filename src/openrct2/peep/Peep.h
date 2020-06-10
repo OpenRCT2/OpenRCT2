@@ -988,22 +988,6 @@ enum
 /** Helper macro until rides are stored in this module. */
 #define GET_PEEP(sprite_index) &(get_sprite(sprite_index)->peep)
 
-/**
- * Helper macro loop for enumerating through all the peeps. To avoid needing a end loop counterpart, statements are
- * applied in tautology if statements. TODO REMOVE
- */
-#define FOR_ALL_PEEPS(sprite_index, peep)                                                                                      \
-    for ((sprite_index) = gSpriteListHead[SPRITE_LIST_PEEP]; (sprite_index) != SPRITE_INDEX_NULL; (sprite_index) = peep->next) \
-        if (((peep) = GetEntity<Peep>(sprite_index)) != nullptr || 1)
-
-#define FOR_ALL_GUESTS(sprite_index, peep)                                                                                     \
-    FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->AssignedPeepType == PEEP_TYPE_GUEST)
-
-#define FOR_ALL_STAFF(sprite_index, peep)                                                                                      \
-    FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->AssignedPeepType == PEEP_TYPE_STAFF)
-
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
 extern const bool gSpriteTypeToSlowWalkMap[48];

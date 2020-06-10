@@ -131,15 +131,14 @@ namespace OpenRCT2::Scripting
             }
 
             std::vector<DukValue> result;
-            auto list = EntityList(targetList);
-            for (auto sprite : list)
+            for (auto sprite : EntityList(targetList))
             {
                 // Only the misc list checks the type property
                 if (targetList != SPRITE_LIST_MISC || sprite->type == targetType)
                 {
                     if (targetList == SPRITE_LIST_PEEP)
                     {
-                        if (sprite->As<Peep>()->AssignedPeepType == PEEP_TYPE_STAFF)
+                        if (sprite->As<Staff>())
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
                         else
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));

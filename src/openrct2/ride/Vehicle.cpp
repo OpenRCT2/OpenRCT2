@@ -5641,6 +5641,10 @@ SoundId Vehicle::UpdateScreamSound()
         for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
         {
             auto vehicle2 = GetEntity<Vehicle>(spriteIndex);
+            if (vehicle2 == nullptr)
+            {
+                return SoundId::Null;
+            }
             spriteIndex = vehicle2->next_vehicle_on_train;
 
             if (vehicle2->vehicle_sprite_type < 1)
@@ -5661,8 +5665,11 @@ SoundId Vehicle::UpdateScreamSound()
     for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
     {
         auto vehicle2 = GetEntity<Vehicle>(spriteIndex);
+        if (vehicle2 == nullptr)
+        {
+            return SoundId::Null;
+        }
         spriteIndex = vehicle2->next_vehicle_on_train;
-
         if (vehicle2->vehicle_sprite_type < 5)
             continue;
         if (vehicle2->vehicle_sprite_type <= 8)
@@ -9694,6 +9701,10 @@ int32_t Vehicle::NumPeepsUntilTrainTail() const
     for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
     {
         const Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+        if (vehicle == nullptr)
+        {
+            return numPeeps;
+        }
         spriteIndex = vehicle->next_vehicle_on_train;
         numPeeps += vehicle->num_peeps;
     }

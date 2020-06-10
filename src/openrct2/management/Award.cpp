@@ -76,9 +76,6 @@ bool award_is_positive(int32_t type)
 /** More than 1/16 of the total guests must be thinking untidy thoughts. */
 static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_STAFF))
@@ -87,7 +84,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         return false;
 
     uint32_t negativeCount = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -109,9 +106,6 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
 static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
@@ -119,7 +113,7 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 
     uint32_t positiveCount = 0;
     uint32_t negativeCount = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -192,9 +186,6 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
 /** More than 1/128 of the total guests must be thinking scenic thoughts and fewer than 16 untidy thoughts. */
 static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
@@ -202,7 +193,8 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 
     uint32_t positiveCount = 0;
     uint32_t negativeCount = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    auto list = EntityList<Guest>(SPRITE_LIST_PEEP);
+    for (auto peep : list)
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -243,11 +235,8 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
 /** No more than 2 people who think the vandalism is bad and no crashes. */
 static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
     auto peepsWhoDislikeVandalism = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -273,18 +262,13 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 /** All staff types, at least 20 staff, one staff per 32 peeps. */
 static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-    int32_t peepCount, staffCount;
-    int32_t staffTypeFlags;
-
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
 
-    peepCount = 0;
-    staffCount = 0;
-    staffTypeFlags = 0;
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    auto peepCount = 0;
+    auto staffCount = 0;
+    auto staffTypeFlags = 0;
+    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
     {
         if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
         {
@@ -333,9 +317,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 
     // Count hungry peeps
     auto hungryPeeps = 0;
-    uint16_t spriteIndex;
-    Peep* peep;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -379,9 +361,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 
     // Count hungry peeps
     auto hungryPeeps = 0;
-    uint16_t spriteIndex;
-    Peep* peep;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -411,9 +391,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 
     // Count number of guests who are thinking they need the restroom
     auto guestsWhoNeedRestroom = 0;
-    uint16_t spriteIndex;
-    Peep* peep;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;
@@ -538,13 +516,9 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
 /** At least 10 peeps and more than 1/64 of total guests are lost or can't find something. */
 static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t activeAwardTypes)
 {
-    uint32_t peepsCounted, peepsLost;
-    uint16_t spriteIndex;
-    Peep* peep;
-
-    peepsCounted = 0;
-    peepsLost = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    uint32_t peepsCounted = 0;
+    uint32_t peepsLost = 0;
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0)
             continue;

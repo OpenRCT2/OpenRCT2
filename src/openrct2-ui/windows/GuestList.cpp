@@ -248,9 +248,7 @@ void window_guest_list_refresh_list()
     }
 
     GuestList.clear();
-    Peep* peep = nullptr;
-    uint16_t spriteIndex;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         sprite_set_flashing(peep, false);
         if (peep->OutsideOfPark != 0)
@@ -263,7 +261,7 @@ void window_guest_list_refresh_list()
         }
         if (!guest_should_be_visible(peep))
             continue;
-        GuestList.push_back(spriteIndex);
+        GuestList.push_back(peep->sprite_index);
     }
 
     std::sort(GuestList.begin(), GuestList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
@@ -930,9 +928,6 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
  */
 static void window_guest_list_find_groups()
 {
-    int32_t spriteIndex, spriteIndex2, groupIndex, faceIndex;
-    Peep *peep, *peep2;
-
     uint32_t tick256 = floor2(gScenarioTicks, 256);
     if (_window_guest_list_selected_view == _window_guest_list_last_find_groups_selected_view)
     {
@@ -948,18 +943,23 @@ static void window_guest_list_find_groups()
     _window_guest_list_num_groups = 0;
 
     // Set all guests to unassigned
-    FOR_ALL_GUESTS (spriteIndex, peep)
-        if (peep->OutsideOfPark == 0)
-            peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
-
+    {
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        {
+            if (peep->OutsideOfPark == 0)
+            {
+                peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
+            }
+        }
+    }
     // For each guest / group
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
             continue;
 
         // New group, cap at 240 though
-        groupIndex = _window_guest_list_num_groups;
+        int32_t groupIndex = _window_guest_list_num_groups;
         if (groupIndex >= 240)
             break;
 
@@ -971,12 +971,12 @@ static void window_guest_list_find_groups()
         _window_guest_list_filter_arguments = _window_guest_list_groups_arguments[groupIndex];
 
         _window_guest_list_group_index[groupIndex] = groupIndex;
-        faceIndex = groupIndex * 56;
+        auto faceIndex = groupIndex * 56;
         _window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep)
             - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
         // Find more peeps that belong to same group
-        FOR_ALL_GUESTS (spriteIndex2, peep2)
+        for (auto peep2 : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
             if (peep2->OutsideOfPark != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
                 continue;

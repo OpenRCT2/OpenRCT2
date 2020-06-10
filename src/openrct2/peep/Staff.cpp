@@ -79,6 +79,12 @@ colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
 
+template<> bool SpriteBase::Is<Staff>() const
+{
+    auto peep = As<Peep>();
+    return peep && peep->AssignedPeepType == PEEP_TYPE_STAFF;
+}
+
 /**
  *
  *  rct2: 0x006BD3A4
@@ -142,9 +148,6 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
  */
 void staff_update_greyed_patrol_areas()
 {
-    Peep* peep;
-    uint16_t sprite_index;
-
     for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
         int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
@@ -153,7 +156,7 @@ void staff_update_greyed_patrol_areas()
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        FOR_ALL_STAFF (sprite_index, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
             if (peep->StaffType == staff_type)
             {
@@ -361,10 +364,7 @@ static uint8_t staff_get_valid_patrol_directions(Staff* staff, const CoordsXY& l
  */
 void staff_reset_stats()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
-    FOR_ALL_STAFF (spriteIndex, peep)
+    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
         peep->TimeInPark = gDateMonthsElapsed;
         peep->StaffLawnsMown = 0;
@@ -443,8 +443,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
     uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
-    auto list = EntityList<Litter>(SPRITE_LIST_LITTER);
-    for (auto litter : list)
+    for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
     {
         uint16_t distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
 
@@ -1015,10 +1014,7 @@ bool Staff::DoMiscPathFinding()
  */
 static void staff_entertainer_update_nearby_peeps(Peep* peep)
 {
-    uint16_t spriteIndex;
-    Peep* guest;
-
-    FOR_ALL_GUESTS (spriteIndex, guest)
+    for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (guest->x == LOCATION_NULL)
             continue;

@@ -437,13 +437,12 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            Peep* peep;
-            int32_t i;
-            FOR_ALL_STAFF (i, peep)
+            for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->StaffType, peep->Energy, name.c_str());
+                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->StaffType, peep->Energy,
+                    name.c_str());
             }
         }
         else if (argv[0] == "set")
