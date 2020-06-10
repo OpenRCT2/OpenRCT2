@@ -740,9 +740,9 @@ void window_staff_stats_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_3);
 
     Peep* peep = GET_PEEP(w->number);
-    if (peep->window_invalidate_flags & PEEP_INVALIDATE_STAFF_STATS)
+    if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
     {
-        peep->window_invalidate_flags &= ~PEEP_INVALIDATE_STAFF_STATS;
+        peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
         w->Invalidate();
     }
 }

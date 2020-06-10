@@ -159,7 +159,7 @@ private:
         else
         {
             newPeep->sprite_identifier = 1;
-            newPeep->window_invalidate_flags = 0;
+            newPeep->WindowInvalidateFlags = 0;
             newPeep->Action = PEEP_ACTION_NONE_2;
             newPeep->SpecialSprite = 0;
             newPeep->ActionSpriteImageOffset = 0;
@@ -242,8 +242,8 @@ private:
             newPeep->trousers_colour = colour;
 
             // Staff energy determines their walking speed
-            newPeep->energy = 0x60;
-            newPeep->energy_target = 0x60;
+            newPeep->Energy = 0x60;
+            newPeep->EnergyTarget = 0x60;
             newPeep->StaffMowingTimeout = 0;
 
             newPeep->StaffId = staffIndex;

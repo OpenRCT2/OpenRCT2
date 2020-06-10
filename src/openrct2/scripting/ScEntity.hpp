@@ -303,7 +303,7 @@ namespace OpenRCT2::Scripting
         uint8_t energy_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy : 0;
+            return peep != nullptr ? peep->Energy : 0;
         }
         void energy_set(uint8_t value)
         {
@@ -311,14 +311,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy = value;
+                peep->Energy = value;
             }
         }
 
         uint8_t energyTarget_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->energy_target : 0;
+            return peep != nullptr ? peep->EnergyTarget : 0;
         }
         void energyTarget_set(uint8_t value)
         {
@@ -326,7 +326,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->energy_target = value;
+                peep->EnergyTarget = value;
             }
         }
 
@@ -461,7 +461,7 @@ namespace OpenRCT2::Scripting
         uint8_t happiness_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->happiness : 0;
+            return peep != nullptr ? peep->Happiness : 0;
         }
         void happiness_set(uint8_t value)
         {
@@ -469,14 +469,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->happiness = value;
+                peep->Happiness = value;
             }
         }
 
         uint8_t happinessTarget_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->happiness_target : 0;
+            return peep != nullptr ? peep->HappinessTarget : 0;
         }
         void happinessTarget_set(uint8_t value)
         {
@@ -484,14 +484,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->happiness_target = value;
+                peep->HappinessTarget = value;
             }
         }
 
         uint8_t nausea_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->nausea : 0;
+            return peep != nullptr ? peep->Nausea : 0;
         }
         void nausea_set(uint8_t value)
         {
@@ -499,14 +499,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->nausea = value;
+                peep->Nausea = value;
             }
         }
 
         uint8_t nauseaTarget_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->nausea_target : 0;
+            return peep != nullptr ? peep->NauseaTarget : 0;
         }
         void nauseaTarget_set(uint8_t value)
         {
@@ -514,14 +514,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->nausea_target = value;
+                peep->NauseaTarget = value;
             }
         }
 
         uint8_t hunger_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->hunger : 0;
+            return peep != nullptr ? peep->Hunger : 0;
         }
         void hunger_set(uint8_t value)
         {
@@ -529,14 +529,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->hunger = value;
+                peep->Hunger = value;
             }
         }
 
         uint8_t thirst_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->thirst : 0;
+            return peep != nullptr ? peep->Thirst : 0;
         }
         void thirst_set(uint8_t value)
         {
@@ -544,14 +544,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->thirst = value;
+                peep->Thirst = value;
             }
         }
 
         uint8_t toilet_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->toilet : 0;
+            return peep != nullptr ? peep->Toilet : 0;
         }
         void toilet_set(uint8_t value)
         {
@@ -559,14 +559,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->toilet = value;
+                peep->Toilet = value;
             }
         }
 
         uint8_t mass_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->mass : 0;
+            return peep != nullptr ? peep->Mass : 0;
         }
         void mass_set(uint8_t value)
         {
@@ -574,14 +574,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->mass = value;
+                peep->Mass = value;
             }
         }
 
         uint8_t minIntensity_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->intensity.GetMinimum() : 0;
+            return peep != nullptr ? peep->Intensity.GetMinimum() : 0;
         }
         void minIntensity_set(uint8_t value)
         {
@@ -589,14 +589,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->intensity = peep->intensity.WithMinimum(value);
+                peep->Intensity = peep->Intensity.WithMinimum(value);
             }
         }
 
         uint8_t maxIntensity_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->intensity.GetMaximum() : 0;
+            return peep != nullptr ? peep->Intensity.GetMaximum() : 0;
         }
         void maxIntensity_set(uint8_t value)
         {
@@ -604,14 +604,14 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->intensity = peep->intensity.WithMaximum(value);
+                peep->Intensity = peep->Intensity.WithMaximum(value);
             }
         }
 
         uint8_t nauseaTolerance_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->nausea_tolerance : 0;
+            return peep != nullptr ? peep->NauseaTolerance : 0;
         }
         void nauseaTolerance_set(uint8_t value)
         {
@@ -619,7 +619,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->nausea_tolerance = std::min<uint8_t>(value, 3);
+                peep->NauseaTolerance = std::min<uint8_t>(value, 3);
             }
         }
 

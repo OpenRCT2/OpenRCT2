@@ -1421,8 +1421,8 @@ private:
         dst->sub_state = src->sub_state;
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
         dst->next_flags = src->next_flags;
-        dst->var_37 = src->var_37;
-        dst->time_to_consume = src->time_to_consume;
+        dst->Var37 = src->var_37;
+        dst->TimeToConsume = src->time_to_consume;
         dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
 
@@ -1448,23 +1448,23 @@ private:
         dst->destination_tolerance = src->destination_tolerance;
         dst->PeepDirection = src->direction;
 
-        dst->energy = src->energy;
-        dst->energy_target = src->energy_target;
-        dst->happiness = src->happiness;
-        dst->happiness_target = src->happiness_target;
-        dst->nausea = src->nausea;
-        dst->nausea_target = src->nausea_target;
-        dst->hunger = src->hunger;
-        dst->thirst = src->thirst;
-        dst->toilet = src->toilet;
-        dst->mass = src->mass;
+        dst->Energy = src->energy;
+        dst->EnergyTarget = src->energy_target;
+        dst->Happiness = src->happiness;
+        dst->HappinessTarget = src->happiness_target;
+        dst->Nausea = src->nausea;
+        dst->NauseaTarget = src->nausea_target;
+        dst->Hunger = src->hunger;
+        dst->Thirst = src->thirst;
+        dst->Toilet = src->toilet;
+        dst->Mass = src->mass;
 
         dst->LitterCount = src->litter_count;
         dst->DisgustingCount = src->disgusting_count;
 
-        dst->intensity = static_cast<IntensityRange>(src->intensity);
-        dst->nausea_tolerance = src->nausea_tolerance;
-        dst->window_invalidate_flags = 0;
+        dst->Intensity = static_cast<IntensityRange>(src->intensity);
+        dst->NauseaTolerance = src->nausea_tolerance;
+        dst->WindowInvalidateFlags = 0;
 
         dst->CurrentRide = src->current_ride;
         dst->CurrentRideStation = src->current_ride_station;
@@ -1490,7 +1490,7 @@ private:
 
         dst->PaidToEnter = src->paid_to_enter;
         dst->PaidOnRides = src->paid_on_rides;
-        dst->paid_on_drink = src->paid_on_drink;
+        dst->PaidOnDrink = src->paid_on_drink;
         dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
@@ -1507,7 +1507,7 @@ private:
         }
         for (size_t i = 0; i < 16; i++)
         {
-            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
 
         dst->Photo1RideRef = src->photo1_ride_ref;

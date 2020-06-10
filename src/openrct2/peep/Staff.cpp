@@ -1041,7 +1041,7 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
 
         if (peep->state == PEEP_STATE_WALKING)
         {
-            peep->happiness_target = std::min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
+            peep->HappinessTarget = std::min(peep->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
         }
         else if (peep->state == PEEP_STATE_QUEUING)
         {
@@ -1053,7 +1053,7 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
             {
                 peep->TimeInQueue = 0;
             }
-            peep->happiness_target = std::min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
+            peep->HappinessTarget = std::min(peep->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }
@@ -1206,23 +1206,23 @@ void Staff::UpdateMowing()
             return;
         }
 
-        var_37++;
+        Var37++;
 
-        if (var_37 == 1)
+        if (Var37 == 1)
         {
             SwitchToSpecialSprite(2);
         }
 
-        if (var_37 == std::size(_MowingWaypoints))
+        if (Var37 == std::size(_MowingWaypoints))
         {
             StateReset();
             return;
         }
 
-        destination_x = _MowingWaypoints[var_37].x + NextLoc.x;
-        destination_y = _MowingWaypoints[var_37].y + NextLoc.y;
+        destination_x = _MowingWaypoints[Var37].x + NextLoc.x;
+        destination_y = _MowingWaypoints[Var37].y + NextLoc.y;
 
-        if (var_37 != 7)
+        if (Var37 != 7)
             continue;
 
         auto surfaceElement = map_get_surface_element_at(NextLoc);
@@ -1232,7 +1232,7 @@ void Staff::UpdateMowing()
             map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
         StaffLawnsMown++;
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
 
@@ -1253,7 +1253,7 @@ void Staff::UpdateWatering()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction = (var_37 & 3) << 3;
+        sprite_direction = (Var37 & 3) << 3;
         Action = PEEP_ACTION_STAFF_WATERING;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -1270,7 +1270,7 @@ void Staff::UpdateWatering()
             return;
         }
 
-        auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[var_37];
+        auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[Var37];
 
         TileElement* tile_element = map_get_first_element_at(actionLoc);
         if (tile_element == nullptr)
@@ -1292,7 +1292,7 @@ void Staff::UpdateWatering()
             tile_element->AsSmallScenery()->SetAge(0);
             map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
             StaffGardensWatered++;
-            window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
         StateReset();
@@ -1317,7 +1317,7 @@ void Staff::UpdateEmptyingBin()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction = (var_37 & 3) << 3;
+        sprite_direction = (Var37 & 3) << 3;
         Action = PEEP_ACTION_STAFF_EMPTY_BIN;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -1371,12 +1371,12 @@ void Staff::UpdateEmptyingBin()
             return;
         }
 
-        uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << var_37) << var_37);
+        uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << Var37) << Var37);
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
         StaffBinsEmptied++;
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
 
@@ -1395,7 +1395,7 @@ void Staff::UpdateSweeping()
         // Remove sick at this location
         litter_remove_at(x, y, z);
         StaffLitterSwept++;
-        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction())
     {
@@ -1404,8 +1404,8 @@ void Staff::UpdateSweeping()
         return;
     }
 
-    var_37++;
-    if (var_37 != 2)
+    Var37++;
+    if (Var37 != 2)
     {
         Action = PEEP_ACTION_STAFF_SWEEP;
         ActionFrame = 0;
@@ -1698,7 +1698,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
             }
 
             peep->SetState(PEEP_STATE_WATERING);
-            peep->var_37 = chosen_position;
+            peep->Var37 = chosen_position;
 
             peep->sub_state = 0;
             peep->destination_x = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
@@ -1766,7 +1766,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     if (chosen_position == 4)
         return 0;
 
-    peep->var_37 = chosen_position;
+    peep->Var37 = chosen_position;
     peep->SetState(PEEP_STATE_EMPTYING_BIN);
 
     peep->sub_state = 0;
@@ -1797,7 +1797,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
         {
             peep->SetState(PEEP_STATE_MOWING);
-            peep->var_37 = 0;
+            peep->Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
             peep->destination_x = peep->NextLoc.x + _MowingWaypoints[0].x;
             peep->destination_y = peep->NextLoc.y + _MowingWaypoints[0].y;
@@ -1832,7 +1832,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
             continue;
 
         peep->SetState(PEEP_STATE_SWEEPING);
-        peep->var_37 = 0;
+        peep->Var37 = 0;
         peep->destination_x = sprite->litter.x;
         peep->destination_y = sprite->litter.y;
         peep->destination_tolerance = 5;
@@ -2621,13 +2621,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected++;
-            window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+            WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
             return true;
         }
 
         StaffRidesFixed++;
-        window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+        WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = PeepDirection << 3;
         Action = PEEP_ACTION_STAFF_ANSWER_CALL_2;

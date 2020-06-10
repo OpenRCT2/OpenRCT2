@@ -433,7 +433,7 @@ enum PeepItem
     PEEP_ITEM_EMPTY_BOX = (1 << 26),
     PEEP_ITEM_EMPTY_BOTTLE = (1 << 27),
 
-    // item_extra_flags
+    // ItemExtraFlags
     PEEP_ITEM_PHOTO2 = (1 << 0),
     PEEP_ITEM_PHOTO3 = (1 << 1),
     PEEP_ITEM_PHOTO4 = (1 << 2),
@@ -513,7 +513,7 @@ enum PeepSpriteType : uint8_t
     PEEP_SPRITE_TYPE_INVALID = 255
 };
 
-// Flags used by peep->window_invalidate_flags
+// Flags used by peep->WindowInvalidateFlags
 enum PeepInvalidate
 {
     PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
@@ -614,24 +614,24 @@ struct Peep : SpriteBase
     uint16_t destination_x; // Location that the peep is trying to get to
     uint16_t destination_y;
     uint8_t destination_tolerance; // How close to destination before next action/state 0 = exact
-    uint8_t var_37;
-    uint8_t energy;
-    uint8_t energy_target;
-    uint8_t happiness;
-    uint8_t happiness_target;
-    uint8_t nausea;
-    uint8_t nausea_target;
-    uint8_t hunger;
-    uint8_t thirst;
-    uint8_t toilet;
-    uint8_t mass;
-    uint8_t time_to_consume;
-    IntensityRange intensity;
-    uint8_t nausea_tolerance;
-    uint8_t window_invalidate_flags;
-    money16 paid_on_drink;
-    uint8_t ride_types_been_on[16];
-    uint32_t item_extra_flags;
+    uint8_t Var37;
+    uint8_t Energy;
+    uint8_t EnergyTarget;
+    uint8_t Happiness;
+    uint8_t HappinessTarget;
+    uint8_t Nausea;
+    uint8_t NauseaTarget;
+    uint8_t Hunger;
+    uint8_t Thirst;
+    uint8_t Toilet;
+    uint8_t Mass;
+    uint8_t TimeToConsume;
+    IntensityRange Intensity;
+    uint8_t NauseaTolerance;
+    uint8_t WindowInvalidateFlags;
+    money16 PaidOnDrink;
+    uint8_t RideTypesBeenOn[16];
+    uint32_t ItemExtraFlags;
     uint8_t Photo2RideRef;
     uint8_t Photo3RideRef;
     uint8_t Photo4RideRef;

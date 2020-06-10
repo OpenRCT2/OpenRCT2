@@ -170,27 +170,27 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(destination_x);
     COMPARE_FIELD(destination_y);
     COMPARE_FIELD(destination_tolerance);
-    COMPARE_FIELD(var_37);
-    COMPARE_FIELD(energy);
-    COMPARE_FIELD(energy_target);
-    COMPARE_FIELD(happiness);
-    COMPARE_FIELD(happiness_target);
-    COMPARE_FIELD(nausea);
-    COMPARE_FIELD(nausea_target);
-    COMPARE_FIELD(hunger);
-    COMPARE_FIELD(thirst);
-    COMPARE_FIELD(toilet);
-    COMPARE_FIELD(mass);
-    COMPARE_FIELD(time_to_consume);
-    COMPARE_FIELD(intensity);
-    COMPARE_FIELD(nausea_tolerance);
-    COMPARE_FIELD(window_invalidate_flags);
-    COMPARE_FIELD(paid_on_drink);
+    COMPARE_FIELD(Var37);
+    COMPARE_FIELD(Energy);
+    COMPARE_FIELD(EnergyTarget);
+    COMPARE_FIELD(Happiness);
+    COMPARE_FIELD(HappinessTarget);
+    COMPARE_FIELD(Nausea);
+    COMPARE_FIELD(NauseaTarget);
+    COMPARE_FIELD(Hunger);
+    COMPARE_FIELD(Thirst);
+    COMPARE_FIELD(Toilet);
+    COMPARE_FIELD(Mass);
+    COMPARE_FIELD(TimeToConsume);
+    COMPARE_FIELD(Intensity);
+    COMPARE_FIELD(NauseaTolerance);
+    COMPARE_FIELD(WindowInvalidateFlags);
+    COMPARE_FIELD(PaidOnDrink);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        COMPARE_FIELD(ride_types_been_on[i]);
+        COMPARE_FIELD(RideTypesBeenOn[i]);
     }
-    COMPARE_FIELD(item_extra_flags);
+    COMPARE_FIELD(ItemExtraFlags);
     COMPARE_FIELD(Photo2RideRef);
     COMPARE_FIELD(Photo3RideRef);
     COMPARE_FIELD(Photo4RideRef);
