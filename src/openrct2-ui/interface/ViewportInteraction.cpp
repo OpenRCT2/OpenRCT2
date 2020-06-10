@@ -80,7 +80,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
         if (sprite->IsBalloon() || sprite->IsDuck())
             return info->type;
         else
-            return VIEWPORT_INTERACTION_ITEM_NONE;
+            return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
     }
 
     switch (info->type)
