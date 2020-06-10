@@ -955,7 +955,7 @@ void tile_element_remove(TileElement* tileElement)
 
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
-    tileElement->base_height = 0xFF;
+    tileElement->base_height = MAX_ELEMENT_HEIGHT;
 
     if ((tileElement + 1) == gNextFreeTileElement)
     {
@@ -1178,7 +1178,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->base_height = 255;
+            originalTileElement->base_height = MAX_ELEMENT_HEIGHT;
             originalTileElement++;
             newTileElement++;
 
@@ -1211,7 +1211,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->base_height = 255;
+            originalTileElement->base_height = MAX_ELEMENT_HEIGHT;
             originalTileElement++;
             newTileElement++;
         } while (!((newTileElement - 1)->IsLastForTile()));

@@ -1413,7 +1413,7 @@ void S6Exporter::ExportTileElements()
     {
         auto src = &gTileElements[index];
         auto dst = &_s6.tile_elements[index];
-        if (src->base_height == 0xFF)
+        if (src->base_height == MAX_ELEMENT_HEIGHT)
         {
             std::memcpy(dst, src, sizeof(*dst));
         }

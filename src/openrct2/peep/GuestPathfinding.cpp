@@ -1825,7 +1825,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         break;
     }
 
-    if (loc.z == 0xFF)
+    if (loc.z == MAX_ELEMENT_HEIGHT)
         return;
 
     tileElement = lastPathElement;

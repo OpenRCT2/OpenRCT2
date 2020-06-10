@@ -1976,7 +1976,7 @@ private:
         {
             auto src = &_s4.tile_elements[index];
             auto dst = &gTileElements[index + dstOffset];
-            if (src->base_height == 0xFF)
+            if (src->base_height == RCT12_MAX_ELEMENT_HEIGHT)
             {
                 std::memcpy(dst, src, sizeof(*src));
             }
