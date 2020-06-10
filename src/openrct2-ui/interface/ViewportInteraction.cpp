@@ -57,8 +57,8 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     rct_sprite* sprite;
     Vehicle* vehicle;
 
-    // No click input for title screen or scenario editor or track manager
-    if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+    // No click input for scenario editor or track manager
+    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     //
@@ -73,6 +73,15 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     info->y = mapCoord.y;
     tileElement = info->tileElement;
     sprite = info->sprite;
+
+    // Allows only balloons to be popped and ducks to be quacked in title screen
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    {
+        if (info->type == VIEWPORT_INTERACTION_ITEM_SPRITE && (sprite->generic.Is<Balloon>() || sprite->generic.Is<Duck>()))
+            return info->type;
+        else
+            return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+    }
 
     switch (info->type)
     {
