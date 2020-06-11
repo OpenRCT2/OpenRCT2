@@ -1050,7 +1050,7 @@ static void window_finances_profit_graph_invalidate(rct_window* w)
  */
 static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, x, y, graphLeft, graphTop, graphRight, graphBottom;
+    int32_t i, graphLeft, graphTop, graphRight, graphBottom;
 
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
@@ -1088,21 +1088,22 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     }
 
     // Y axis labels
-    x = graphLeft + 18;
-    y = graphTop + 14;
+    auto screenPos = ScreenCoordsXY{ graphLeft + 18, graphTop + 14 };
     money32 axisBase;
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
-        gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
-        y += 39;
+        gfx_draw_string_right(
+            dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 70, 0 });
+        gfx_fill_rect_inset(
+            dpi, screenPos.x + 70, screenPos.y + 5, graphLeft + 482, screenPos.y + 5, w->colours[2],
+            INSET_RECT_FLAG_BORDER_INSET);
+        screenPos.y += 39;
     }
 
     // X axis labels and values
-    x = graphLeft + 98;
-    y = graphTop + 17;
-    graph_draw_money32(dpi, gWeeklyProfitHistory, 64, x, y, yAxisScale, 128);
+    screenPos = { graphLeft + 98, graphTop + 17 };
+    graph_draw_money32(dpi, gWeeklyProfitHistory, 64, screenPos.x, screenPos.y, yAxisScale, 128);
 }
 
 #pragma endregion
