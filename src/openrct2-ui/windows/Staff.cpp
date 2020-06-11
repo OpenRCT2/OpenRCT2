@@ -951,7 +951,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
     int32_t y = w->windowPos.y + widget->top;
     int32_t width = widget->right - widget->left;
-    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { x, y }, width);
 }
 
 /**

@@ -369,7 +369,7 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         formatArgs = &widget->string;
     }
     gfx_draw_string_centred_clipped(
-        dpi, stringId, formatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
+        dpi, stringId, formatArgs, colour, { (l + r + 1) / 2 - 1, t }, widget->right - widget->left - 2);
 }
 
 /**
@@ -565,7 +565,7 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
             width -= 10;
     }
     l += width / 2;
-    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, l, t, width);
+    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, { l, t }, width);
 }
 
 /**
@@ -605,7 +605,7 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, l, t, widget->right - widget->left - 2);
+    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, { l, t }, widget->right - widget->left - 2);
 }
 
 /**

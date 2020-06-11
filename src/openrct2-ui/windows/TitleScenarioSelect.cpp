@@ -475,7 +475,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
             // Show locked information
             int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
             int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-            gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, x + 85, y, 170);
+            gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, { x + 85, y }, 170);
             y += 15;
             y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
         }
@@ -502,7 +502,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
-    gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);
+    gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { x + 85, y }, 170);
     y += 15;
 
     // Scenario details

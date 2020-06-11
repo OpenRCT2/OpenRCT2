@@ -917,8 +917,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
-            w->windowPos.y + widget->top, widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
+            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top },
+            widget->right - widget->left - 8);
     }
 
     int32_t x = w->windowPos.x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
@@ -942,8 +943,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
-            w->windowPos.y + widget->top, widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
+            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top },
+            widget->right - widget->left - 8);
     }
 }
 
