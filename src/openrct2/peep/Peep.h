@@ -601,7 +601,7 @@ struct Peep : SpriteBase
     uint8_t next_flags;
     uint8_t outside_of_park;
     PeepState state;
-    uint8_t sub_state;
+    uint8_t SubState;
     PeepSpriteType SpriteType;
     PeepType Type;
     union

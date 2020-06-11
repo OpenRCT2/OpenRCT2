@@ -828,11 +828,11 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
             return direction;
         }
 
-        if (peep->sub_state != 2)
+        if (peep->SubState != 2)
         {
             return direction;
         }
-        peep->sub_state = 3;
+        peep->SubState = 3;
     }
 
     pathDirections |= (1 << direction);
@@ -1243,7 +1243,7 @@ void Staff::UpdateMowing()
 void Staff::UpdateWatering()
 {
     StaffMowingTimeout = 0;
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         if (!CheckForPath())
             return;
@@ -1259,9 +1259,9 @@ void Staff::UpdateWatering()
         ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
 
-        sub_state = 1;
+        SubState = 1;
     }
-    else if (sub_state == 1)
+    else if (SubState == 1)
     {
         if (Action != PEEP_ACTION_NONE_2)
         {
@@ -1307,7 +1307,7 @@ void Staff::UpdateEmptyingBin()
 {
     StaffMowingTimeout = 0;
 
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         if (!CheckForPath())
             return;
@@ -1323,9 +1323,9 @@ void Staff::UpdateEmptyingBin()
         ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
 
-        sub_state = 1;
+        SubState = 1;
     }
-    else if (sub_state == 1)
+    else if (SubState == 1)
     {
         if (Action == PEEP_ACTION_NONE_2)
         {
@@ -1442,14 +1442,14 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         MechanicTimeSinceCall = 0;
         peep_reset_pathfind_goal(this);
-        sub_state = 2;
+        SubState = 2;
     }
 
-    if (sub_state <= 3)
+    if (SubState <= 3)
     {
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
@@ -1501,8 +1501,8 @@ void Staff::UpdateHeadingToInspect()
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
-        sub_state = 4;
-        // Falls through into sub_state 4
+        SubState = 4;
+        // Falls through into SubState 4
     }
 
     int16_t delta_y = abs(y - DestinationY);
@@ -1520,7 +1520,7 @@ void Staff::UpdateHeadingToInspect()
     }
 
     SetState(PEEP_STATE_INSPECTING);
-    sub_state = 0;
+    SubState = 0;
 }
 
 /**
@@ -1536,7 +1536,7 @@ void Staff::UpdateAnswering()
         return;
     }
 
-    if (sub_state == 0)
+    if (SubState == 0)
     {
         Action = PEEP_ACTION_STAFF_ANSWER_CALL;
         ActionFrame = 0;
@@ -1544,15 +1544,15 @@ void Staff::UpdateAnswering()
 
         UpdateCurrentActionSpriteType();
 
-        sub_state = 1;
+        SubState = 1;
         peep_window_state_update(this);
         return;
     }
-    else if (sub_state == 1)
+    else if (SubState == 1)
     {
         if (Action == PEEP_ACTION_NONE_2)
         {
-            sub_state = 2;
+            SubState = 2;
             peep_window_state_update(this);
             MechanicTimeSinceCall = 0;
             peep_reset_pathfind_goal(this);
@@ -1562,7 +1562,7 @@ void Staff::UpdateAnswering()
         Invalidate();
         return;
     }
-    else if (sub_state <= 3)
+    else if (SubState <= 3)
     {
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
@@ -1612,8 +1612,8 @@ void Staff::UpdateAnswering()
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
-        sub_state = 4;
-        // Falls through into sub_state 4
+        SubState = 4;
+        // Falls through into SubState 4
     }
 
     int16_t delta_y = abs(y - DestinationY);
@@ -1631,7 +1631,7 @@ void Staff::UpdateAnswering()
     }
 
     SetState(PEEP_STATE_FIXING);
-    sub_state = 0;
+    SubState = 0;
 }
 
 /** rct2: 0x00992A5C */
@@ -1700,7 +1700,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
             peep->SetState(PEEP_STATE_WATERING);
             peep->Var37 = chosen_position;
 
-            peep->sub_state = 0;
+            peep->SubState = 0;
             peep->DestinationX = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
             peep->DestinationY = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
             peep->DestinationTolerance = 3;
@@ -1769,7 +1769,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     peep->Var37 = chosen_position;
     peep->SetState(PEEP_STATE_EMPTYING_BIN);
 
-    peep->sub_state = 0;
+    peep->SubState = 0;
     peep->DestinationX = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
     peep->DestinationY = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
     peep->DestinationTolerance = 3;
@@ -2085,7 +2085,7 @@ void Staff::UpdateFixing(int32_t steps)
 
     while (progressToNextSubstate)
     {
-        switch (sub_state)
+        switch (SubState)
         {
             case PEEP_FIXING_ENTER_STATION:
                 next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
@@ -2151,7 +2151,7 @@ void Staff::UpdateFixing(int32_t steps)
             break;
         }
 
-        int32_t subState = sub_state;
+        int32_t subState = SubState;
         uint32_t sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
 
         if (state != PEEP_STATE_INSPECTING)
@@ -2164,13 +2164,13 @@ void Staff::UpdateFixing(int32_t steps)
             subState++;
         } while ((sub_state_sequence_mask & (1 << subState)) == 0);
 
-        sub_state = subState & 0xFF;
+        SubState = subState & 0xFF;
     }
 }
 
 /**
  * rct2: 0x006C0EEC
- * fixing sub_state: enter_station - applies to fixing all break down reasons and ride inspections.
+ * fixing SubState: enter_station - applies to fixing all break down reasons and ride inspections.
  */
 bool Staff::UpdateFixingEnterStation(Ride* ride)
 {
@@ -2182,7 +2182,7 @@ bool Staff::UpdateFixingEnterStation(Ride* ride)
 
 /**
  * rct2: 0x006C0F09
- * fixing sub_state: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
+ * fixing SubState: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
  * - see FixingSubstatesForBreakdown[]
  */
 bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
@@ -2228,7 +2228,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C0FD3
- * fixing sub_state: fix_vehicle - applies to fixing vehicle with:
+ * fixing SubState: fix_vehicle - applies to fixing vehicle with:
  * 1. restraints stuck closed,
  * 2. doors stuck closed,
  * 3. restrains stuck open,
@@ -2274,7 +2274,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C107B
- * fixing sub_state: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
+ * fixing SubState: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
  * - see FixingSubstatesForBreakdown[]
  */
 bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
@@ -2323,7 +2323,7 @@ static constexpr const CoordsXY _StationFixingOffsets[] = {
 
 /**
  * rct2: 0x006C1114
- * fixing sub_state: move_to_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * fixing SubState: move_to_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure,
  * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
@@ -2380,7 +2380,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C11F5
- * fixing sub_state: fix_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * fixing SubState: fix_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure,
  * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
@@ -2409,7 +2409,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
 
 /**
  * rct2: 0x006C1239
- * fixing sub_state: move_to_station_start
+ * fixing SubState: move_to_station_start
  * 1. applies to fixing station specific breakdowns: safety cut-out, control failure,
  * 2. applies to fixing brake failure,
  * 3. applies to inspection.
@@ -2490,7 +2490,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C1368
- * fixing sub_state: fix_station_start
+ * fixing SubState: fix_station_start
  * 1. applies to fixing station specific breakdowns: safety cut-out, control failure,
  * 2. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
@@ -2525,7 +2525,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C13CE
- * fixing sub_state: fix_station_brakes - applies to fixing brake failure
+ * fixing SubState: fix_station_brakes - applies to fixing brake failure
  * - see FixingSubstatesForBreakdown[]
  */
 bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
@@ -2565,7 +2565,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C1474
- * fixing sub_state: move_to_station_exit - applies to fixing all failures & inspections
+ * fixing SubState: move_to_station_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
 bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
@@ -2607,7 +2607,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 
 /**
  * rct2: 0x006C1504
- * fixing sub_state: finish_fix_or_inspect - applies to fixing all failures & inspections
+ * fixing SubState: finish_fix_or_inspect - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
 bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride)
@@ -2651,7 +2651,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 
 /**
  * rct2: 0x006C157E
- * fixing sub_state: leave_by_entrance_exit - applies to fixing all failures & inspections
+ * fixing SubState: leave_by_entrance_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
 bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)

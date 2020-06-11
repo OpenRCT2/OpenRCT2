@@ -4123,13 +4123,13 @@ void Vehicle::UpdateUnloadingPassengers()
             peep[seat * 2] = SPRITE_INDEX_NULL;
 
             curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-            curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+            curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
 
             curPeep = GET_PEEP(peep[seat * 2 + 1]);
             peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
             curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-            curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+            curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
         }
     }
     else
@@ -4163,7 +4163,7 @@ void Vehicle::UpdateUnloadingPassengers()
             {
                 Peep* curPeep = GET_PEEP(train->peep[peepIndex]);
                 curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-                curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+                curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
             }
         }
     }

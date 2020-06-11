@@ -731,7 +731,7 @@ void Peep::Pickup()
     }
     MoveTo({ LOCATION_NULL, y, z });
     SetState(PEEP_STATE_PICKED);
-    sub_state = 0;
+    SubState = 0;
 }
 
 void Peep::PickupAbort(int32_t old_x)
@@ -1026,8 +1026,8 @@ void Peep::UpdatePicked()
 {
     if (gCurrentTicks & 0x1F)
         return;
-    sub_state++;
-    if (sub_state == 13)
+    SubState++;
+    if (SubState == 13)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
     }
@@ -1895,11 +1895,11 @@ void Peep::FormatActionTo(void* argsV) const
             ft.Add<rct_string_id>(STR_EMPTYING_LITTER_BIN);
             break;
         case PEEP_STATE_ANSWERING:
-            if (sub_state == 0)
+            if (SubState == 0)
             {
                 ft.Add<rct_string_id>(STR_WALKING);
             }
-            else if (sub_state == 1)
+            else if (SubState == 1)
             {
                 ft.Add<rct_string_id>(STR_ANSWERING_RADIO_CALL);
             }
@@ -2384,7 +2384,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         if (peep->state == PEEP_STATE_QUEUING)
         {
             // Guest is in the ride queue.
-            peep->sub_state = 11;
+            peep->SubState = 11;
             peep->ActionSpriteImageOffset = _unk_F1AEF0;
             return;
         }
@@ -2427,7 +2427,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->CurrentRideStation = stationNum;
         peep->DaysInQueue = 0;
         peep->SetState(PEEP_STATE_QUEUING);
-        peep->sub_state = 11;
+        peep->SubState = 11;
         peep->TimeInQueue = 0;
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
@@ -2858,7 +2858,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->DaysInQueue = 0;
                     peep_window_state_update(peep);
 
-                    peep->sub_state = 10;
+                    peep->SubState = 10;
                     peep->DestinationTolerance = 2;
                     peep->TimeInQueue = 0;
                     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
@@ -2964,7 +2964,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
 
         peep->CurrentRide = rideIndex;
         peep->SetState(PEEP_STATE_ENTERING_RIDE);
-        peep->sub_state = PEEP_SHOP_APPROACH;
+        peep->SubState = PEEP_SHOP_APPROACH;
 
         peep->GuestTimeOnRide = 0;
         ride->cur_num_customers++;
@@ -2988,7 +2988,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         peep->ActionSpriteImageOffset = _unk_F1AEF0;
         peep->SetState(PEEP_STATE_BUYING);
         peep->CurrentRide = rideIndex;
-        peep->sub_state = 0;
+        peep->SubState = 0;
     }
 
     return true;
