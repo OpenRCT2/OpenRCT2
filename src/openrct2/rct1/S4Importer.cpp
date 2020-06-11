@@ -1429,7 +1429,7 @@ private:
         dst->type = static_cast<PeepType>(src->type);
 
         dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
-        dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
+        dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
         dst->UmbrellaColour = RCT1::GetColour(src->umbrella_colour);
         dst->HatColour = RCT1::GetColour(src->hat_colour);
 

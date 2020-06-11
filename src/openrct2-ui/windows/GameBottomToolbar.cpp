@@ -628,7 +628,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             image_id_base++;
 
             uint32_t image_id = image_id_base;
-            image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
+            image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->TrousersColour);
 
             gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 

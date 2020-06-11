@@ -1409,7 +1409,7 @@ public:
         dst->type = static_cast<PeepType>(src->peep_type);
         dst->no_of_rides = src->no_of_rides;
         dst->tshirt_colour = src->tshirt_colour;
-        dst->trousers_colour = src->trousers_colour;
+        dst->TrousersColour = src->trousers_colour;
         dst->DestinationX = src->destination_x;
         dst->DestinationY = src->destination_y;
         dst->DestinationTolerance = src->destination_tolerance;

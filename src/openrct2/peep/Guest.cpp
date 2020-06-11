@@ -440,7 +440,7 @@ void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
 void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 {
     passingPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
-    passingPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
+    passingPeep->TrousersColour = COLOUR_BRIGHT_PURPLE;
     passingPeep->Invalidate();
 }
 

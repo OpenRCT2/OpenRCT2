@@ -397,7 +397,7 @@ namespace OpenRCT2::Scripting
         uint8_t trousersColour_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->trousers_colour : 0;
+            return peep != nullptr ? peep->TrousersColour : 0;
         }
         void trousersColour_set(uint8_t value)
         {
@@ -405,7 +405,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->trousers_colour = value;
+                peep->TrousersColour = value;
                 peep->Invalidate();
             }
         }
@@ -729,7 +729,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 peep->tshirt_colour = value;
-                peep->trousers_colour = value;
+                peep->TrousersColour = value;
             }
         }
 
