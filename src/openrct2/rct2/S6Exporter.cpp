@@ -1096,9 +1096,9 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
 
     auto generateName = true;
-    if (src->name != nullptr)
+    if (src->Name != nullptr)
     {
-        auto stringId = AllocateUserString(src->name);
+        auto stringId = AllocateUserString(src->Name);
         if (stringId != std::nullopt)
         {
             dst->name_string_idx = *stringId;
@@ -1108,7 +1108,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         {
             log_warning(
                 "Unable to allocate user string for peep #%d (%s) during S6 export.", static_cast<int>(src->sprite_index),
-                src->name);
+                src->Name);
         }
     }
     if (generateName)

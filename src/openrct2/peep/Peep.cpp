@@ -1720,7 +1720,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->NoOfRides = 0;
     std::fill_n(peep->RideTypesBeenOn, 16, 0x00);
     peep->Id = gNextGuestNumber++;
-    peep->name = nullptr;
+    peep->Name = nullptr;
 
     money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
     if (cash < 0)
@@ -1970,7 +1970,7 @@ void Peep::FormatNameTo(Formatter& ft) const
 size_t Peep::FormatNameTo(void* argsV) const
 {
     Formatter ft(static_cast<uint8_t*>(argsV));
-    if (name == nullptr)
+    if (Name == nullptr)
     {
         if (Type == PeepType::PEEP_TYPE_STAFF)
         {
@@ -2003,7 +2003,7 @@ size_t Peep::FormatNameTo(void* argsV) const
     }
     else
     {
-        return ft.Add<rct_string_id>(STR_STRING).Add<const char*>(name).NumBytes();
+        return ft.Add<rct_string_id>(STR_STRING).Add<const char*>(Name).NumBytes();
     }
 }
 
@@ -2018,8 +2018,8 @@ bool Peep::SetName(const std::string_view& value)
 {
     if (value.empty())
     {
-        std::free(name);
-        name = nullptr;
+        std::free(Name);
+        Name = nullptr;
         return true;
     }
     else
@@ -2029,8 +2029,8 @@ bool Peep::SetName(const std::string_view& value)
         {
             std::memcpy(newNameMemory, value.data(), value.size());
             newNameMemory[value.size()] = '\0';
-            std::free(name);
-            name = newNameMemory;
+            std::free(Name);
+            Name = newNameMemory;
             return true;
         }
     }
@@ -3252,7 +3252,7 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
         return peep_a->Type - peep_b->Type;
     }
 
-    if (peep_a->name == nullptr && peep_b->name == nullptr)
+    if (peep_a->Name == nullptr && peep_b->Name == nullptr)
     {
         if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {

@@ -210,7 +210,7 @@ private:
             {
                 spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
             }
-            newPeep->name = nullptr;
+            newPeep->Name = nullptr;
             newPeep->SpriteType = spriteType;
 
             const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
