@@ -352,24 +352,24 @@ void Peep::MoveTo(const CoordsXYZ& newLocation)
 
 uint8_t Peep::GetNextDirection() const
 {
-    return next_flags & PEEP_NEXT_FLAG_DIRECTION_MASK;
+    return NextFlags & PEEP_NEXT_FLAG_DIRECTION_MASK;
 }
 
 bool Peep::GetNextIsSloped() const
 {
-    return next_flags & PEEP_NEXT_FLAG_IS_SLOPED;
+    return NextFlags & PEEP_NEXT_FLAG_IS_SLOPED;
 }
 
 bool Peep::GetNextIsSurface() const
 {
-    return next_flags & PEEP_NEXT_FLAG_IS_SURFACE;
+    return NextFlags & PEEP_NEXT_FLAG_IS_SURFACE;
 }
 
 void Peep::SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface)
 {
-    next_flags = next_direction & PEEP_NEXT_FLAG_DIRECTION_MASK;
-    next_flags |= is_sloped ? PEEP_NEXT_FLAG_IS_SLOPED : 0;
-    next_flags |= is_surface ? PEEP_NEXT_FLAG_IS_SURFACE : 0;
+    NextFlags = next_direction & PEEP_NEXT_FLAG_DIRECTION_MASK;
+    NextFlags |= is_sloped ? PEEP_NEXT_FLAG_IS_SLOPED : 0;
+    NextFlags |= is_surface ? PEEP_NEXT_FLAG_IS_SURFACE : 0;
 }
 
 Peep* try_get_guest(uint16_t spriteIndex)

@@ -2088,7 +2088,7 @@ void Staff::UpdateFixing(int32_t steps)
         switch (SubState)
         {
             case PEEP_FIXING_ENTER_STATION:
-                next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+                NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
                 progressToNextSubstate = UpdateFixingEnterStation(ride);
                 break;
 

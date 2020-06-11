@@ -598,7 +598,7 @@ struct Peep : SpriteBase
 {
     char* name;
     CoordsXYZ NextLoc;
-    uint8_t next_flags;
+    uint8_t NextFlags;
     uint8_t OutsideOfPark;
     PeepState State;
     uint8_t SubState;

@@ -1420,7 +1420,7 @@ private:
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
-        dst->next_flags = src->next_flags;
+        dst->NextFlags = src->next_flags;
         dst->Var37 = src->var_37;
         dst->TimeToConsume = src->time_to_consume;
         dst->StepProgress = src->step_progress;

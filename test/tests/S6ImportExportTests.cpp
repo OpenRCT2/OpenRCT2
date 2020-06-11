@@ -158,7 +158,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(NextLoc.x);
     COMPARE_FIELD(NextLoc.y);
     COMPARE_FIELD(NextLoc.z);
-    COMPARE_FIELD(next_flags);
+    COMPARE_FIELD(NextFlags);
     COMPARE_FIELD(OutsideOfPark);
     COMPARE_FIELD(State);
     COMPARE_FIELD(SubState);

@@ -5174,7 +5174,7 @@ void Guest::UpdateGuest()
  * Used by entering_ride and queueing_front */
 void Guest::UpdateRide()
 {
-    next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+    NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
 
     switch (SubState)
     {
