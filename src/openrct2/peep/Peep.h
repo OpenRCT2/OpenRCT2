@@ -612,7 +612,7 @@ struct Peep : SpriteBase
     uint8_t tshirt_colour;
     uint8_t trousers_colour;
     uint16_t destination_x; // Location that the peep is trying to get to
-    uint16_t destination_y;
+    uint16_t DestinationY;
     uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
     uint8_t Var37;
     uint8_t Energy;

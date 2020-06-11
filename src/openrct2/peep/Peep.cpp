@@ -588,7 +588,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         Action = PEEP_ACTION_NONE_2;
     }
 
-    CoordsXY diffrenceLoc = { x - destination_x, y - destination_y };
+    CoordsXY diffrenceLoc = { x - destination_x, y - DestinationY };
 
     int32_t x_delta = abs(diffrenceLoc.x);
     int32_t y_delta = abs(diffrenceLoc.y);
@@ -1006,7 +1006,7 @@ void Peep::Update1()
     }
 
     destination_x = x;
-    destination_y = y;
+    DestinationY = y;
     DestinationTolerance = 10;
     PeepDirection = sprite_direction >> 3;
 }
@@ -2329,7 +2329,7 @@ static void peep_return_to_centre_of_tile(Peep* peep)
 {
     peep->PeepDirection = direction_reverse(peep->PeepDirection);
     peep->destination_x = (peep->x & 0xFFE0) + 16;
-    peep->destination_y = (peep->y & 0xFFE0) + 16;
+    peep->DestinationY = (peep->y & 0xFFE0) + 16;
     peep->DestinationTolerance = 5;
 }
 
@@ -2485,7 +2485,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             }
 
             peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
-            peep->destination_y += CoordsDirectionDelta[peep->PeepDirection].y;
+            peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
             peep->DestinationTolerance = 9;
             peep->MoveTo({ x, y, peep->z });
             peep->SetState(PEEP_STATE_LEAVING_PARK);
@@ -2626,7 +2626,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         peep->Var37 = 1;
         peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
-        peep->destination_y += CoordsDirectionDelta[peep->PeepDirection].y;
+        peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
         peep->DestinationTolerance = 7;
         peep->MoveTo({ x, y, peep->z });
     }
@@ -2959,7 +2959,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
             guest->SpendMoney(money, cost, ExpenditureType::ParkRideTickets);
         }
         peep->destination_x = (x & 0xFFE0) + 16;
-        peep->destination_y = (y & 0xFFE0) + 16;
+        peep->DestinationY = (y & 0xFFE0) + 16;
         peep->DestinationTolerance = 3;
 
         peep->CurrentRide = rideIndex;

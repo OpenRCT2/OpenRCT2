@@ -725,7 +725,7 @@ Peep* Park::GenerateGuest()
 
             // Get the centre point of the tile the peep is on
             peep->destination_x = (peep->x & 0xFFE0) + 16;
-            peep->destination_y = (peep->y & 0xFFE0) + 16;
+            peep->DestinationY = (peep->y & 0xFFE0) + 16;
 
             peep->DestinationTolerance = 5;
             peep->PeepDirection = direction;

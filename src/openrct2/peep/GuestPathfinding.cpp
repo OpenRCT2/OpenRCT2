@@ -120,7 +120,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
 
     peep->PeepDirection = direction;
     peep->destination_x = newTile.x;
-    peep->destination_y = newTile.y;
+    peep->DestinationY = newTile.y;
     peep->DestinationTolerance = 2;
     if (peep->state != PEEP_STATE_QUEUING)
     {

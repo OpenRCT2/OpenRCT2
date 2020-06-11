@@ -689,7 +689,7 @@ bool Staff::DoHandymanPathFinding()
 
     PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
-    destination_y = chosenTile.y + 16;
+    DestinationY = chosenTile.y + 16;
     DestinationTolerance = 3;
     if (state == PEEP_STATE_QUEUING)
     {
@@ -923,7 +923,7 @@ bool Staff::DoMechanicPathFinding()
 
     PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
-    destination_y = chosenTile.y + 16;
+    DestinationY = chosenTile.y + 16;
     DestinationTolerance = (scenario_rand() & 7) + 2;
 
     return false;
@@ -1006,7 +1006,7 @@ bool Staff::DoMiscPathFinding()
 
     PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
-    destination_y = chosenTile.y + 16;
+    DestinationY = chosenTile.y + 16;
     DestinationTolerance = (scenario_rand() & 7) + 2;
 
     return false;
@@ -1220,7 +1220,7 @@ void Staff::UpdateMowing()
         }
 
         destination_x = _MowingWaypoints[Var37].x + NextLoc.x;
-        destination_y = _MowingWaypoints[Var37].y + NextLoc.y;
+        DestinationY = _MowingWaypoints[Var37].y + NextLoc.y;
 
         if (Var37 != 7)
             continue;
@@ -1496,7 +1496,7 @@ void Staff::UpdateHeadingToInspect()
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         destination_x = destX;
-        destination_y = destY;
+        DestinationY = destY;
         DestinationTolerance = 2;
         sprite_direction = PeepDirection << 3;
 
@@ -1505,7 +1505,7 @@ void Staff::UpdateHeadingToInspect()
         // Falls through into sub_state 4
     }
 
-    int16_t delta_y = abs(y - destination_y);
+    int16_t delta_y = abs(y - DestinationY);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
@@ -1607,7 +1607,7 @@ void Staff::UpdateAnswering()
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         destination_x = destX;
-        destination_y = destY;
+        DestinationY = destY;
         DestinationTolerance = 2;
         sprite_direction = PeepDirection << 3;
 
@@ -1616,7 +1616,7 @@ void Staff::UpdateAnswering()
         // Falls through into sub_state 4
     }
 
-    int16_t delta_y = abs(y - destination_y);
+    int16_t delta_y = abs(y - DestinationY);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
@@ -1702,7 +1702,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
 
             peep->sub_state = 0;
             peep->destination_x = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
-            peep->destination_y = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
+            peep->DestinationY = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
             peep->DestinationTolerance = 3;
 
             return 1;
@@ -1771,7 +1771,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
 
     peep->sub_state = 0;
     peep->destination_x = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
-    peep->destination_y = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
+    peep->DestinationY = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
     peep->DestinationTolerance = 3;
     return 1;
 }
@@ -1800,7 +1800,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
             peep->Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
             peep->destination_x = peep->NextLoc.x + _MowingWaypoints[0].x;
-            peep->destination_y = peep->NextLoc.y + _MowingWaypoints[0].y;
+            peep->DestinationY = peep->NextLoc.y + _MowingWaypoints[0].y;
             peep->DestinationTolerance = 3;
             return 1;
         }
@@ -1834,7 +1834,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
         peep->SetState(PEEP_STATE_SWEEPING);
         peep->Var37 = 0;
         peep->destination_x = sprite->litter.x;
-        peep->destination_y = sprite->litter.y;
+        peep->DestinationY = sprite->litter.y;
         peep->DestinationTolerance = 5;
         return 1;
     }
@@ -2213,7 +2213,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 
         CoordsXY offset = DirectionOffsets[PeepDirection];
         destination_x = (offset.x * -12) + vehicle->x;
-        destination_y = (offset.y * -12) + vehicle->y;
+        DestinationY = (offset.y * -12) + vehicle->y;
         DestinationTolerance = 2;
     }
 
@@ -2361,11 +2361,11 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
         stationPos.y += 16 + offset.y;
         if (offset.y == 0)
         {
-            stationPos.y = destination_y;
+            stationPos.y = DestinationY;
         }
 
         destination_x = stationPos.x;
-        destination_y = stationPos.y;
+        DestinationY = stationPos.y;
         DestinationTolerance = 2;
     }
 
@@ -2471,11 +2471,11 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
         destinationY -= offset.y;
         if (offset.y == 0)
         {
-            destinationY = destination_y;
+            destinationY = DestinationY;
         }
 
         destination_x = destinationX;
-        destination_y = destinationY;
+        DestinationY = destinationY;
         DestinationTolerance = 2;
     }
 
@@ -2590,7 +2590,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
         stationPosition.y += stationPlatformDirection.y * 20;
 
         destination_x = stationPosition.x;
-        destination_y = stationPosition.y;
+        DestinationY = stationPosition.y;
         DestinationTolerance = 2;
     }
 
@@ -2677,7 +2677,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
         exitPosition.y -= ebx_direction.y * 19;
 
         destination_x = exitPosition.x;
-        destination_y = exitPosition.y;
+        DestinationY = exitPosition.y;
         DestinationTolerance = 2;
     }
 

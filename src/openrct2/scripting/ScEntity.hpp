@@ -282,7 +282,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return ToDuk(ctx, CoordsXY(peep->destination_x, peep->destination_y));
+                return ToDuk(ctx, CoordsXY(peep->destination_x, peep->DestinationY));
             }
             return ToDuk(ctx, nullptr);
         }
@@ -295,7 +295,7 @@ namespace OpenRCT2::Scripting
             {
                 auto pos = FromDuk<CoordsXY>(value);
                 peep->destination_x = pos.x;
-                peep->destination_y = pos.y;
+                peep->DestinationY = pos.y;
                 peep->Invalidate();
             }
         }
