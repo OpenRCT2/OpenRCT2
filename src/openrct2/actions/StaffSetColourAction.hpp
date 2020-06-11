@@ -71,7 +71,7 @@ public:
         {
             if (peep->staff_type == _staffType)
             {
-                peep->tshirt_colour = _colour;
+                peep->TshirtColour = _colour;
                 peep->TrousersColour = _colour;
             }
         }

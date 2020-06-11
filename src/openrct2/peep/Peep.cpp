@@ -1767,7 +1767,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->TimeLost = 0;
 
     uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
-    peep->tshirt_colour = tshirt_colours[tshirtColour];
+    peep->TshirtColour = tshirt_colours[tshirtColour];
 
     uint8_t trousersColour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
     peep->TrousersColour = trouser_colours[trousersColour];

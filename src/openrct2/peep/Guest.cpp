@@ -439,7 +439,7 @@ void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
 
 void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 {
-    passingPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
+    passingPeep->TshirtColour = COLOUR_BRIGHT_PURPLE;
     passingPeep->TrousersColour = COLOUR_BRIGHT_PURPLE;
     passingPeep->Invalidate();
 }
@@ -1652,7 +1652,7 @@ loc_69B221:
         ItemStandardFlags |= (1u << shopItem);
 
     if (shopItem == SHOP_ITEM_TSHIRT)
-        tshirt_colour = ride->track_colour[0].main;
+        TshirtColour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_HAT)
         HatColour = ride->track_colour[0].main;
@@ -2501,7 +2501,7 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
     vehicle->next_free_seat++;
 
     vehicle->peep[peep->CurrentSeat] = peep->sprite_index;
-    vehicle->peep_tshirt_colours[peep->CurrentSeat] = peep->tshirt_colour;
+    vehicle->peep_tshirt_colours[peep->CurrentSeat] = peep->TshirtColour;
 }
 
 /**
@@ -4686,7 +4686,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 ride->slide_in_use++;
                 ride->slide_peep = sprite_index;
-                ride->slide_peep_t_shirt_colour = tshirt_colour;
+                ride->slide_peep_t_shirt_colour = TshirtColour;
                 ride->spiral_slide_progress = 0;
                 DestinationX++;
                 return;

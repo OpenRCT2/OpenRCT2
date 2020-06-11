@@ -347,7 +347,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
                     uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
                     image_id += 0xA0000001;
-                    image_id |= (peep->tshirt_colour << 19) | (peep->TrousersColour << 24);
+                    image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
 
                     gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
                     break;

@@ -238,7 +238,7 @@ private:
             newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
             uint8_t colour = staff_get_colour(_staffType);
-            newPeep->tshirt_colour = colour;
+            newPeep->TshirtColour = colour;
             newPeep->TrousersColour = colour;
 
             // Staff energy determines their walking speed
