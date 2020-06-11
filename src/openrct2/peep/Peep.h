@@ -602,7 +602,7 @@ struct Peep : SpriteBase
     uint8_t outside_of_park;
     PeepState state;
     uint8_t sub_state;
-    PeepSpriteType sprite_type;
+    PeepSpriteType SpriteType;
     PeepType Type;
     union
     {

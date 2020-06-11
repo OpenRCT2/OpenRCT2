@@ -94,7 +94,7 @@ public:
         Peep* peep = GET_PEEP(_spriteIndex);
 
         auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
-        peep->sprite_type = spriteType;
+        peep->SpriteType = spriteType;
         peep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
         if (peep_slow_walking_types[spriteType])
         {

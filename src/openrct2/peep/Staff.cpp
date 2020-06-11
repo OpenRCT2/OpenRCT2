@@ -1102,12 +1102,12 @@ bool Staff::DoPathFinding()
 
 uint8_t Staff::GetCostume() const
 {
-    return sprite_type - PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
+    return SpriteType - PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
 }
 
 void Staff::SetCostume(uint8_t value)
 {
-    sprite_type = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
+    SpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
 }
 
 colour_t staff_get_colour(uint8_t staffType)
@@ -1851,10 +1851,10 @@ void Staff::Tick128UpdateStaff()
     if (state != PEEP_STATE_PATROLLING)
         newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
 
-    if (sprite_type == newSpriteType)
+    if (SpriteType == newSpriteType)
         return;
 
-    sprite_type = newSpriteType;
+    SpriteType = newSpriteType;
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
     if (Action < PEEP_ACTION_NONE_1)

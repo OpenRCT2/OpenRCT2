@@ -1266,7 +1266,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (sprite_type == PEEP_SPRITE_TYPE_UMBRELLA)
+        if (SpriteType == PEEP_SPRITE_TYPE_UMBRELLA)
         {
             TryGetUpFromSitting();
             return;
@@ -1292,7 +1292,7 @@ void Guest::UpdateSitting()
             TryGetUpFromSitting();
             return;
         }
-        if (sprite_type == PEEP_SPRITE_TYPE_BALLOON || sprite_type == PEEP_SPRITE_TYPE_HAT)
+        if (SpriteType == PEEP_SPRITE_TYPE_BALLOON || SpriteType == PEEP_SPRITE_TYPE_HAT)
         {
             TryGetUpFromSitting();
             return;
@@ -5586,7 +5586,7 @@ void Guest::UpdateQueuing()
     PerformNextAction(pathingResult);
     if (Action < PEEP_ACTION_NONE_1)
         return;
-    if (sprite_type == PEEP_SPRITE_TYPE_NORMAL)
+    if (SpriteType == PEEP_SPRITE_TYPE_NORMAL)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
         {
@@ -5606,7 +5606,7 @@ void Guest::UpdateQueuing()
     {
         if (!(TimeInQueue & 0x3F) && Action == PEEP_ACTION_NONE_1 && NextActionSpriteType == 2)
         {
-            switch (sprite_type)
+            switch (SpriteType)
             {
                 case PEEP_SPRITE_TYPE_ICE_CREAM:
                 case PEEP_SPRITE_TYPE_CHIPS:
@@ -6759,10 +6759,10 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
 void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 {
-    if (sprite_type == new_sprite_type)
+    if (SpriteType == new_sprite_type)
         return;
 
-    sprite_type = new_sprite_type;
+    SpriteType = new_sprite_type;
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
 
@@ -6843,7 +6843,7 @@ static item_pref_t item_order_preference[] = {
  */
 void Guest::UpdateSpriteType()
 {
-    if (sprite_type == PEEP_SPRITE_TYPE_BALLOON && (scenario_rand() & 0xFFFF) <= 327)
+    if (SpriteType == PEEP_SPRITE_TYPE_BALLOON && (scenario_rand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != LOCATION_NULL)

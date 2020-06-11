@@ -1390,7 +1390,7 @@ private:
     {
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
-        dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
+        dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->Action = static_cast<PeepActionType>(src->action);
         dst->SpecialSprite = src->special_sprite;
         dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
@@ -1399,7 +1399,7 @@ private:
         dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->ActionFrame = src->action_frame;
 
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
+        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
         dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
         dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
         dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;

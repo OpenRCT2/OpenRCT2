@@ -732,7 +732,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
             else
             {
-                gfx_draw_sprite(dpi, staffCostumeSprites[peep->sprite_type - 4], staffOrderIcon_x, y, 0);
+                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], staffOrderIcon_x, y, 0);
             }
         }
 

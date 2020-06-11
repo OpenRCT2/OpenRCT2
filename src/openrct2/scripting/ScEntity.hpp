@@ -696,22 +696,22 @@ namespace OpenRCT2::Scripting
                 if (value == "handyman" && peep->StaffType != STAFF_TYPE_HANDYMAN)
                 {
                     peep->StaffType = STAFF_TYPE_HANDYMAN;
-                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_HANDYMAN;
+                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_HANDYMAN;
                 }
                 else if (value == "mechanic" && peep->StaffType != STAFF_TYPE_MECHANIC)
                 {
                     peep->StaffType = STAFF_TYPE_MECHANIC;
-                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_MECHANIC;
+                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_MECHANIC;
                 }
                 else if (value == "security" && peep->StaffType != STAFF_TYPE_SECURITY)
                 {
                     peep->StaffType = STAFF_TYPE_SECURITY;
-                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_SECURITY;
+                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_SECURITY;
                 }
                 else if (value == "entertainer" && peep->StaffType != STAFF_TYPE_ENTERTAINER)
                 {
                     peep->StaffType = STAFF_TYPE_ENTERTAINER;
-                    peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
+                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
                 }
             }
         }

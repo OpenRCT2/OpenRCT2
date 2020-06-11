@@ -819,7 +819,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->sprite_type - 4];
+            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->SpriteType - 4];
             break;
         case STAFF_TYPE_HANDYMAN:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
@@ -1030,7 +1030,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (peep->Type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         y++;
 
-    int32_t ebx = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;
+    int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
 
     int32_t eax = 0;
 
@@ -1174,7 +1174,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     Peep* peep;
     peep = GET_PEEP(w->number);
 
-    uint32_t imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
+    uint32_t imageId = g_peep_animation_entries[peep->SpriteType].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
     imageId += w->picked_peep_frame >> 2;
 
     imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
@@ -1414,7 +1414,7 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     for (int32_t i = 0; i < numCostumes; i++)
     {
         uint8_t costume = _availableCostumes[i];
-        if (peep->sprite_type == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume)
+        if (peep->SpriteType == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume)
         {
             checkedIndex = i;
         }

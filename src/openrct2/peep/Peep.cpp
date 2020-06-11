@@ -520,7 +520,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
  */
 void Peep::UpdateCurrentActionSpriteType()
 {
-    if (sprite_type >= std::size(g_peep_animation_entries))
+    if (SpriteType >= std::size(g_peep_animation_entries))
     {
         return;
     }
@@ -533,7 +533,7 @@ void Peep::UpdateCurrentActionSpriteType()
     Invalidate();
     ActionSpriteType = newActionSpriteType;
 
-    const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
+    const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[SpriteType].sprite_bounds;
     sprite_width = spriteBounds[ActionSpriteType].sprite_width;
     sprite_height_negative = spriteBounds[ActionSpriteType].sprite_height_negative;
     sprite_height_positive = spriteBounds[ActionSpriteType].sprite_height_positive;
@@ -622,7 +622,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
-        const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
+        const rct_peep_animation* peepAnimation = g_peep_animation_entries[SpriteType].sprite_animation;
         const uint8_t* imageOffset = peepAnimation[ActionSpriteType].frame_offsets;
         if (WalkingFrameNum >= peepAnimation[ActionSpriteType].num_frames)
         {
@@ -632,7 +632,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         return loc;
     }
 
-    const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
+    const rct_peep_animation* peepAnimation = g_peep_animation_entries[SpriteType].sprite_animation;
     ActionFrame++;
 
     // If last frame of action
@@ -1615,7 +1615,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
     Peep* peep = &create_sprite(SPRITE_IDENTIFIER_PEEP)->peep;
     peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
-    peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
+    peep->SpriteType = PEEP_SPRITE_TYPE_NORMAL;
     peep->outside_of_park = 1;
     peep->state = PEEP_STATE_FALLING;
     peep->Action = PEEP_ACTION_NONE_2;
@@ -1627,7 +1627,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RIDE_ID_NULL;
     peep->FavouriteRideRating = 0;
 
-    const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;
+    const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->SpriteType].sprite_bounds;
     peep->sprite_width = spriteBounds[peep->ActionSpriteType].sprite_width;
     peep->sprite_height_negative = spriteBounds[peep->ActionSpriteType].sprite_height_negative;
     peep->sprite_height_positive = spriteBounds[peep->ActionSpriteType].sprite_height_positive;
@@ -2241,7 +2241,7 @@ void Peep::SwitchNextActionSpriteType()
     {
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
+        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[SpriteType].sprite_bounds;
         sprite_width = spriteBounds[NextActionSpriteType].sprite_width;
         sprite_height_negative = spriteBounds[NextActionSpriteType].sprite_height_negative;
         sprite_height_positive = spriteBounds[NextActionSpriteType].sprite_height_positive;
@@ -3386,7 +3386,7 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height)
     {
         peep->ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
 
-        if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != LOCATION_NULL)
+        if (peep->SpriteType == PEEP_SPRITE_TYPE_BALLOON && peep->x != LOCATION_NULL)
         {
             create_balloon(peep->x, peep->y, spawn_height, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;

@@ -67,7 +67,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
         return;
     }
 
-    rct_peep_animation_entry sprite = g_peep_animation_entries[peep->sprite_type];
+    rct_peep_animation_entry sprite = g_peep_animation_entries[peep->SpriteType];
 
     PeepActionSpriteType spriteType = peep->ActionSpriteType;
     uint8_t imageOffset = peep->ActionSpriteImageOffset;
