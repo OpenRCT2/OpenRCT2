@@ -813,7 +813,7 @@ Vehicle* try_get_vehicle(uint16_t spriteIndex)
 
 void Vehicle::Invalidate()
 {
-    invalidate_sprite_2(this);
+    Invalidate2();
 }
 
 namespace

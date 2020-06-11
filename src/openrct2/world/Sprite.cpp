@@ -135,29 +135,27 @@ static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
  * Invalidate the sprite if at closest zoom.
  *  rct2: 0x006EC60B
  */
-void invalidate_sprite_0(SpriteBase* sprite)
+void SpriteBase::Invalidate0()
 {
-    invalidate_sprite_max_zoom(sprite, 0);
+    invalidate_sprite_max_zoom(this, 0);
 }
 
 /**
  * Invalidate sprite if at closest zoom or next zoom up from closest.
  *  rct2: 0x006EC53F
  */
-void invalidate_sprite_1(SpriteBase* sprite)
+void SpriteBase::Invalidate1()
 {
-    invalidate_sprite_max_zoom(sprite, 1);
+    invalidate_sprite_max_zoom(this, 1);
 }
 
 /**
  * Invalidate sprite if not at furthest zoom.
  *  rct2: 0x006EC473
- *
- * @param sprite (esi)
  */
-void invalidate_sprite_2(SpriteBase* sprite)
+void SpriteBase::Invalidate2()
 {
-    invalidate_sprite_max_zoom(sprite, 2);
+    invalidate_sprite_max_zoom(this, 2);
 }
 
 /**
@@ -502,7 +500,7 @@ static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
  */
 static void sprite_steam_particle_update(SteamParticle* steam)
 {
-    invalidate_sprite_2(steam);
+    steam->Invalidate2();
 
     // Move up 1 z every 3 ticks (Starts after 4 ticks)
     steam->time_to_move++;
@@ -543,7 +541,7 @@ void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
  */
 static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
 {
-    invalidate_sprite_2(&sprite->generic);
+    sprite->generic.Invalidate2();
     sprite->generic.frame += 128;
     if (sprite->generic.frame >= (36 * 128))
     {
@@ -576,7 +574,7 @@ void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
  */
 static void sprite_misc_explosion_flare_update(rct_sprite* sprite)
 {
-    invalidate_sprite_2(&sprite->generic);
+    sprite->generic.Invalidate2();
     sprite->generic.frame += 64;
     if (sprite->generic.frame >= (124 * 64))
     {
@@ -822,7 +820,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
 
         if (newestLitter != nullptr)
         {
-            invalidate_sprite_0(newestLitter);
+            newestLitter->Invalidate0();
             sprite_remove(newestLitter);
         }
     }
@@ -838,7 +836,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
     litter->type = type;
     litter->MoveTo({ x, y, z });
-    invalidate_sprite_0(litter);
+    litter->Invalidate0();
     litter->creationTick = gScenarioTicks;
 }
 
@@ -861,7 +859,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
             {
                 if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
                 {
-                    invalidate_sprite_0(litter);
+                    litter->Invalidate0();
                     sprite_remove(litter);
                 }
             }
@@ -960,7 +958,7 @@ void sprite_position_tween_all(float alpha)
             sprite_set_coordinates(
                 std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
                 std::round(posB.z * alpha + posA.z * inv), &sprite->generic);
-            invalidate_sprite_2(&sprite->generic);
+            sprite->generic.Invalidate2();
         }
     }
 }
@@ -975,7 +973,7 @@ void sprite_position_tween_restore()
         rct_sprite* sprite = get_sprite(i);
         if (sprite_should_tween(sprite))
         {
-            invalidate_sprite_2(&sprite->generic);
+            sprite->generic.Invalidate2();
 
             auto pos = _spritelocations2[i];
             sprite_set_coordinates(pos.x, pos.y, pos.z, &sprite->generic);

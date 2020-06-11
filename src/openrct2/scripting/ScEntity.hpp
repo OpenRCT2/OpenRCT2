@@ -83,9 +83,9 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
                 entity->MoveTo({ value, entity->y, entity->z });
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
             }
         }
 
@@ -101,9 +101,9 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
                 entity->MoveTo({ entity->x, value, entity->z });
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
             }
         }
 
@@ -119,9 +119,9 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
                 entity->MoveTo({ entity->x, entity->y, value });
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
             }
         }
 
@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                invalidate_sprite_2(entity);
+                entity->Invalidate2();
                 switch (entity->sprite_identifier)
                 {
                     case SPRITE_IDENTIFIER_VEHICLE:

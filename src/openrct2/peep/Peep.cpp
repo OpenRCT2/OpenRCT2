@@ -340,7 +340,7 @@ Staff* Peep::AsStaff()
 
 void Peep::Invalidate()
 {
-    invalidate_sprite_2(this);
+    Invalidate2();
 }
 
 void Peep::MoveTo(const CoordsXYZ& newLocation)

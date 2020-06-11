@@ -1405,7 +1405,7 @@ private:
         dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
-        invalidate_sprite_2(dst);
+        dst->Invalidate2();
 
         dst->sprite_direction = src->sprite_direction;
 
@@ -1646,7 +1646,7 @@ private:
                 litter->sprite_height_negative = srcLitter->sprite_height_negative;
 
                 litter->MoveTo({ srcLitter->x, srcLitter->y, srcLitter->z });
-                invalidate_sprite_2(litter);
+                litter->Invalidate2();
             }
         }
     }
@@ -1698,7 +1698,7 @@ private:
                 }
 
                 dst->MoveTo({ src->x, src->y, src->z });
-                invalidate_sprite_2(dst);
+                dst->Invalidate2();
             }
         }
     }

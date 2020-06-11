@@ -33,6 +33,9 @@ struct SpriteBase
     uint8_t sprite_direction;
 
     void MoveTo(const CoordsXYZ& newLocation);
+    void Invalidate0();
+    void Invalidate1();
+    void Invalidate2();
     template<typename T> bool Is() const;
     template<typename T> T* As()
     {

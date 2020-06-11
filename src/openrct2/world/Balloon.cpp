@@ -21,7 +21,7 @@ template<> bool SpriteBase::Is<Balloon>() const
 
 void Balloon::Update()
 {
-    invalidate_sprite_2(this);
+    Invalidate2();
     if (popped == 1)
     {
         frame++;
