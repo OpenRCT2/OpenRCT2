@@ -163,7 +163,7 @@ namespace OpenRCT2::Scripting
                                 }
                                 else
                                 {
-                                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(carId)));
+                                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
                                     carId = car->vehicle.next_vehicle_on_train;
                                 }
                             }
@@ -197,6 +197,8 @@ namespace OpenRCT2::Scripting
             auto spriteId = sprite->generic.sprite_index;
             switch (sprite->generic.sprite_identifier)
             {
+                case SPRITE_IDENTIFIER_VEHICLE:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
                 case SPRITE_IDENTIFIER_PEEP:
                     if (sprite->peep.type == PEEP_TYPE_STAFF)
                         return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
