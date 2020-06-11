@@ -8699,12 +8699,10 @@ loc_6DBE7F:
  */
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry)
 {
-    registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
     TileElement* tileElement = nullptr;
     CoordsXYZ trackPos;
 
-    regs.ebx = vehicle_sprite_type;
     _vehicleUnkF64E10 = 1;
     acceleration = dword_9A2970[vehicle_sprite_type];
     remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
@@ -8804,11 +8802,10 @@ loc_6DC476:
 
     // There are two bytes before the move info list
     {
-        uint16_t unk16_v34 = track_progress + 1;
-        uint16_t unk16 = vehicle_get_move_info_size(TrackSubposition, track_type);
-        if (unk16_v34 < unk16)
+        uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
+        if (track_progress + 1 < trackTotalProgress)
         {
-            regs.ax = unk16_v34;
+            track_progress += 1;
             goto loc_6DC743;
         }
     }
@@ -8855,21 +8852,19 @@ loc_6DC476:
     if (!IsHead())
     {
         Vehicle* prevVehicle = GET_VEHICLE(prev_vehicle_on_ride);
-        regs.al = prevVehicle->TrackSubposition;
-        if (regs.al != VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9)
+        TrackSubposition = prevVehicle->TrackSubposition;
+        if (TrackSubposition != VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9)
         {
-            regs.al--;
+            TrackSubposition--;
         }
-        TrackSubposition = regs.al;
     }
 
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
     var_CF = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-    regs.ax = 0;
+    track_progress = 0;
 
 loc_6DC743:
-    track_progress = regs.ax;
     if (!IsHead())
     {
         animation_frame++;
@@ -8896,16 +8891,16 @@ loc_6DC743:
                 else
                 {
                     uint16_t rand16 = scenario_rand() & 0xFFFF;
-                    regs.bl = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14;
+                    uint8_t nextTrackSubposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14;
                     if (rand16 <= 0xA000)
                     {
-                        regs.bl = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12;
+                        nextTrackSubposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12;
                         if (rand16 <= 0x900)
                         {
-                            regs.bl = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10;
+                            nextTrackSubposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10;
                         }
                     }
-                    TrackSubposition = regs.bl;
+                    TrackSubposition = nextTrackSubposition;
                 }
                 track_progress++;
                 break;
@@ -8969,22 +8964,7 @@ loc_6DC743:
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset };
 
-    // Investigate redundant code
-    regs.ebx = 0;
-    if (regs.ax != unk_F64E20.x)
-    {
-        regs.ebx |= 1;
-    }
-    if (regs.cx == unk_F64E20.y)
-    {
-        regs.ebx |= 2;
-    }
-    if (regs.dx == unk_F64E20.z)
-    {
-        regs.ebx |= 4;
-    }
-    regs.ebx = 0x368A;
-    remaining_distance -= regs.ebx;
+    remaining_distance -= 0x368A;
     if (remaining_distance < 0)
     {
         remaining_distance = 0;
@@ -9016,7 +8996,6 @@ loc_6DC743:
     goto loc_6DC99A;
 
 loc_6DC985:
-    regs.ebx = 0;
     remaining_distance -= 0x368A;
     if (remaining_distance < 0)
     {
@@ -9039,9 +9018,9 @@ loc_6DC9BC:
     goto loc_6DCD2B;
 
 loc_6DCA9A:
-    regs.ax = track_progress - 1;
-    if (static_cast<uint16_t>(regs.ax) != 0xFFFF)
+    if (track_progress != 0)
     {
+        track_progress -= 1;
         goto loc_6DCC2C;
     }
 
@@ -9098,31 +9077,14 @@ loc_6DCA9A:
     var_CF = tileElement->AsTrack()->GetSeatRotation() << 1;
 
     // There are two bytes before the move info list
-    regs.ax = vehicle_get_move_info_size(TrackSubposition, track_type);
+    track_progress = vehicle_get_move_info_size(TrackSubposition, track_type);
 
 loc_6DCC2C:
-    track_progress = regs.ax;
-
     moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset };
 
-    // Investigate redundant code
-    regs.ebx = 0;
-    if (regs.ax != unk_F64E20.x)
-    {
-        regs.ebx |= 1;
-    }
-    if (regs.cx == unk_F64E20.y)
-    {
-        regs.ebx |= 2;
-    }
-    if (regs.dx == unk_F64E20.z)
-    {
-        regs.ebx |= 4;
-    }
-    regs.ebx = 0x368A;
-    remaining_distance -= regs.ebx;
+    remaining_distance -= 0x368A;
     if (remaining_distance < 0)
     {
         remaining_distance = 0;
@@ -9168,7 +9130,6 @@ loc_6DCD4A:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
-    regs.ebx = vehicle_sprite_type;
     goto loc_6DC99A;
 
 loc_6DCD6B:
@@ -9177,8 +9138,7 @@ loc_6DCD6B:
     {
         Vehicle* vEBP = GET_VEHICLE(otherVehicleIndex);
         Vehicle* vEDI = gCurrentVehicle;
-        regs.eax = abs(vEDI->velocity - vEBP->velocity);
-        if (regs.eax > 0xE0000)
+        if (abs(vEDI->velocity - vEBP->velocity) > 0xE0000)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
@@ -9217,7 +9177,6 @@ loc_6DCE02:
     {
         return;
     }
-    regs.ax = track_progress;
     if (_vehicleVelocityF64E08 < 0)
     {
         if (track_progress > 11)
@@ -9225,7 +9184,6 @@ loc_6DCE02:
             return;
         }
     }
-    regs.cx = 8;
     if (track_progress <= 8)
     {
         return;
