@@ -393,7 +393,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
             unk_F64E20.x = vehicle->x;
             unk_F64E20.y = vehicle->y;
             unk_F64E20.z = vehicle->z;
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
 
             while (true)
             {
@@ -431,7 +431,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
             }
             vehicle->MoveTo(unk_F64E20);
 
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)

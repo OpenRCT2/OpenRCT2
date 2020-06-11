@@ -3633,7 +3633,7 @@ void Vehicle::UpdateCollisionSetup()
         train->sprite_height_positive = 5;
 
         train->MoveTo({ train->x, train->y, train->z });
-        invalidate_sprite_2(train);
+        train->Invalidate();
 
         train->SwingSpeed = 0;
     }
@@ -5453,7 +5453,7 @@ void Vehicle::UpdateCrash()
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
-                invalidate_sprite_2(curVehicle);
+                curVehicle->Invalidate();
             }
             curVehicle->var_C8 += 7281;
             continue;
@@ -5490,7 +5490,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        invalidate_sprite_2(curVehicle);
+        curVehicle->Invalidate();
 
         CoordsXYZ curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
 
@@ -5506,7 +5506,7 @@ void Vehicle::UpdateCrash()
         }
 
         curVehicle->MoveTo(curPosition);
-        invalidate_sprite_2(curVehicle);
+        curVehicle->Invalidate();
 
         if (curVehicle->sub_state == 1)
         {
@@ -9587,7 +9587,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         unk_F64E20.x = car->x;
         unk_F64E20.y = car->y;
         unk_F64E20.z = car->z;
-        invalidate_sprite_2(car);
+        car->Invalidate();
 
         while (true)
         {
@@ -9633,7 +9633,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
         // loc_6DBF20
         car->MoveTo(unk_F64E20);
-        invalidate_sprite_2(car);
+        car->Invalidate();
 
     loc_6DBF3E:
         sub_6DBF3E(car);

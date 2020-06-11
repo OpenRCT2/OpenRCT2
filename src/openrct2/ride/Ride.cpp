@@ -1004,7 +1004,7 @@ static void ride_remove_cable_lift(Ride* ride)
         do
         {
             Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
             sprite_remove(vehicle);
             spriteIndex = vehicle->next_vehicle_on_train;
         } while (spriteIndex != SPRITE_INDEX_NULL);
@@ -1028,7 +1028,7 @@ static void ride_remove_vehicles(Ride* ride)
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-                invalidate_sprite_2(vehicle);
+                vehicle->Invalidate();
                 sprite_remove(vehicle);
                 spriteIndex = vehicle->next_vehicle_on_train;
             }
@@ -6435,7 +6435,7 @@ void ride_update_vehicle_colours(Ride* ride)
             vehicle->colours.body_colour = colours.Body;
             vehicle->colours.trim_colour = colours.Trim;
             vehicle->colours_extended = colours.Ternary;
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
             carIndex++;
         }
