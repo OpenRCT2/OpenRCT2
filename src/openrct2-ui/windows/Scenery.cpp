@@ -1180,8 +1180,8 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // -14
         gfx_draw_string_right(
-            dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 0x1A,
-            w->windowPos.y + w->height - 13);
+            dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK,
+            { w->windowPos.x + w->width - 0x1A, w->windowPos.y + w->height - 13 });
     }
 
     auto ft = Formatter::Common();

@@ -1064,7 +1064,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 200;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, x + 10, y);
+        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, { x + 10, y });
         gfx_fill_rect_inset(dpi, x + 15, y + 5, x + w->width - 32, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 20;
     }
@@ -1195,7 +1195,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 1000;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, x + 10, y);
+        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, { x + 10, y });
         gfx_fill_rect_inset(dpi, x + 15, y + 5, x + w->width - 32, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 20;
     }

@@ -887,7 +887,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
+        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -990,7 +990,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     for (axisBase = MONEY(24, 00); axisBase >= MONEY(0, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
+        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -1094,7 +1094,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
+        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }

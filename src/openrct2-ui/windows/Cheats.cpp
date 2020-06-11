@@ -1216,14 +1216,14 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(
             dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(9) + TXTO);
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(7) + TXTO);
+            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1],
+            { w->windowPos.x + WPL(1) - 34 - TXTO, w->windowPos.y + YPL(7) + TXTO });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(8) + TXTO);
+            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1],
+            { w->windowPos.x + WPL(1) - 34 - TXTO, w->windowPos.y + YPL(8) + TXTO });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(9) + TXTO);
+            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1],
+            { w->windowPos.x + WPL(1) - 34 - TXTO, w->windowPos.y + YPL(9) + TXTO });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
@@ -1232,8 +1232,8 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(
             dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(10) + TXTO);
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(5) + TXTO);
+            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1],
+            { w->windowPos.x + WPL(1) - 34 - TXTO, w->windowPos.y + YPL(5) + TXTO });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {

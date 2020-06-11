@@ -1790,8 +1790,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (windowTileInspectorTileSelected)
     {
         auto tileCoords = TileCoordsXY{ windowTileInspectorToolMap };
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &tileCoords.x, COLOUR_WHITE, w->windowPos.x + 43, w->windowPos.y + 24);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &tileCoords.y, COLOUR_WHITE, w->windowPos.x + 113, w->windowPos.y + 24);
+        gfx_draw_string_right(
+            dpi, STR_FORMAT_INTEGER, &tileCoords.x, COLOUR_WHITE, { w->windowPos.x + 43, w->windowPos.y + 24 });
+            gfx_draw_string_right(
+                dpi, STR_FORMAT_INTEGER, &tileCoords.y, COLOUR_WHITE, { w->windowPos.x + 113, w->windowPos.y + 24 });
     }
     else
     {

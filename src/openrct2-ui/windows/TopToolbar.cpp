@@ -892,7 +892,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gCheatsDisableClearanceChecks)
         {
             gfx_draw_string_right(
-                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, x + 26, y + 2);
+                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE,
+                { x + 26, y + 2 });
         }
     }
 
@@ -966,7 +967,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Draw number of players.
         int32_t player_count = network_get_num_players();
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
+        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, { x + 23, y + 1 });
     }
 }
 
