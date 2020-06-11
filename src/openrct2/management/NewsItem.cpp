@@ -114,8 +114,17 @@ bool NewsItemQueues::IsEmpty() const
  *
  *  rct2: 0x0066DF32
  */
+void NewsItemQueues::Clear()
+{
+    Recent.clear();
+    Archived.clear();
+}
+
 void news_item_init_queue()
 {
+    gNewsItems.Clear();
+    assert(gNewsItems.IsEmpty());
+
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
     {

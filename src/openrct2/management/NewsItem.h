@@ -179,6 +179,11 @@ public:
         return N;
     }
 
+    void clear() noexcept
+    {
+        front().Type = NEWS_ITEM_NULL;
+    }
+
 private:
     std::array<NewsItem, N> Queue;
 };
@@ -190,7 +195,7 @@ struct NewsItemQueues
     NewsItem* At(int32_t index);
     const NewsItem* At(int32_t index) const;
     bool IsEmpty() const;
-    void Init();
+    void Clear();
     uint16_t IncrementTicks();
     NewsItem& Current();
     const NewsItem& Current() const;
