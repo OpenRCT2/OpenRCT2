@@ -1415,7 +1415,7 @@ private:
             dst->SetName(GetUserString(src->name_string_idx));
         }
 
-        dst->outside_of_park = src->outside_of_park;
+        dst->OutsideOfPark = src->outside_of_park;
 
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
@@ -1555,7 +1555,7 @@ private:
 
         if (dst->Type == PEEP_TYPE_GUEST)
         {
-            if (dst->outside_of_park && dst->State != PEEP_STATE_LEAVING_PARK)
+            if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
             {
                 increment_guests_heading_for_park();
             }

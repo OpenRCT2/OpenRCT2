@@ -89,7 +89,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
     uint32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         if (peep->Thoughts[0].freshness > 5)
@@ -121,7 +121,7 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
     uint32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         if (peep->Thoughts[0].freshness > 5)
@@ -204,7 +204,7 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
     uint32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         if (peep->Thoughts[0].freshness > 5)
@@ -249,7 +249,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
     auto peepsWhoDislikeVandalism = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
         if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
             peepsWhoDislikeVandalism++;
@@ -337,7 +337,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
     Peep* peep;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
@@ -383,7 +383,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     Peep* peep;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
@@ -415,7 +415,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
     Peep* peep;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_TOILET)
@@ -546,7 +546,7 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
     peepsLost = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
 
         peepsCounted++;

@@ -389,7 +389,7 @@ int32_t Park::CalculateParkRating() const
         Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
-            if (peep->outside_of_park == 0)
+            if (peep->OutsideOfPark == 0)
             {
                 if (peep->Happiness > 128)
                 {

@@ -802,7 +802,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if (State == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && NoOfRides == 0
+        if (State == PEEP_STATE_WALKING && OutsideOfPark == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && NoOfRides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
             uint32_t time_duration = gScenarioTicks - TimeInPark;
@@ -835,7 +835,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
              * is executed to once every second time the encompassing
              * conditional executes. */
 
-            if (outside_of_park == 0 && (State == PEEP_STATE_WALKING || State == PEEP_STATE_SITTING))
+            if (OutsideOfPark == 0 && (State == PEEP_STATE_WALKING || State == PEEP_STATE_SITTING))
             {
                 uint8_t num_thoughts = 0;
                 PeepThoughtType possible_thoughts[5];
@@ -3074,7 +3074,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
         peep->Thirst--;
     }
 
-    if (peep->outside_of_park != 0)
+    if (peep->OutsideOfPark != 0)
     {
         return;
     }
@@ -5677,7 +5677,7 @@ void Guest::UpdateEnteringPark()
     }
     SetState(PEEP_STATE_FALLING);
 
-    outside_of_park = 0;
+    OutsideOfPark = 0;
     TimeInPark = gScenarioTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
@@ -5707,7 +5707,7 @@ void Guest::UpdateLeavingPark()
         return;
     }
 
-    outside_of_park = 1;
+    OutsideOfPark = 1;
     DestinationTolerance = 5;
     decrement_guests_in_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

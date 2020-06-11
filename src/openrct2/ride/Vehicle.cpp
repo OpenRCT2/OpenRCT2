@@ -5283,7 +5283,7 @@ void Vehicle::KillPassengers(Ride* curRide)
     for (auto i = 0; i < num_peeps; i++)
     {
         Peep* curPeep = GET_PEEP(peep[i]);
-        if (curPeep->outside_of_park == 0)
+        if (curPeep->OutsideOfPark == 0)
         {
             decrement_guests_in_park();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

@@ -72,7 +72,7 @@ protected:
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
-        peep->outside_of_park = 0;
+        peep->OutsideOfPark = 0;
 
         // An earlier iteration of this code just gave peeps a target position to walk to, but it turns out
         // that with no actual ride to head towards, when a peep reaches a junction they use the 'aimless'
