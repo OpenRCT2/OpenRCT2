@@ -607,7 +607,7 @@ struct Peep : SpriteBase
     union
     {
         uint8_t staff_type;
-        uint8_t no_of_rides;
+        uint8_t NoOfRides;
     };
     uint8_t TshirtColour;
     uint8_t TrousersColour;

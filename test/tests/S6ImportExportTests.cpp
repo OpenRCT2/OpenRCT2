@@ -164,7 +164,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(sub_state);
     COMPARE_FIELD(sprite_type);
     COMPARE_FIELD(type);
-    COMPARE_FIELD(no_of_rides);
+    COMPARE_FIELD(NoOfRides);
     COMPARE_FIELD(TshirtColour);
     COMPARE_FIELD(TrousersColour);
     COMPARE_FIELD(DestinationX);

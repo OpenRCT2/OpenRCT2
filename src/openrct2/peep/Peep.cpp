@@ -1717,7 +1717,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->TimeToConsume = 0;
     std::fill_n(peep->RidesBeenOn, 32, 0x00);
 
-    peep->no_of_rides = 0;
+    peep->NoOfRides = 0;
     std::fill_n(peep->RideTypesBeenOn, 16, 0x00);
     peep->Id = gNextGuestNumber++;
     peep->name = nullptr;

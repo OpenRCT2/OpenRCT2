@@ -1407,7 +1407,7 @@ public:
         dst->sub_state = src->sub_state;
         dst->sprite_type = static_cast<PeepSpriteType>(src->sprite_type);
         dst->type = static_cast<PeepType>(src->peep_type);
-        dst->no_of_rides = src->no_of_rides;
+        dst->NoOfRides = src->no_of_rides;
         dst->TshirtColour = src->tshirt_colour;
         dst->TrousersColour = src->trousers_colour;
         dst->DestinationX = src->destination_x;

@@ -1482,7 +1482,7 @@ private:
         dst->TimeInPark = src->time_in_park;
 
         // This doubles as staff type
-        dst->no_of_rides = src->no_of_rides;
+        dst->NoOfRides = src->no_of_rides;
 
         dst->AmountOfDrinks = src->no_of_drinks;
         dst->AmountOfFood = src->no_of_food;

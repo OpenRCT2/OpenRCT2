@@ -1142,7 +1142,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->sub_state = src->sub_state;
     dst->sprite_type = static_cast<uint8_t>(src->sprite_type);
     dst->peep_type = static_cast<uint8_t>(src->type);
-    dst->no_of_rides = src->no_of_rides;
+    dst->no_of_rides = src->NoOfRides;
     dst->tshirt_colour = src->TshirtColour;
     dst->trousers_colour = src->TrousersColour;
     dst->destination_x = src->DestinationX;

@@ -802,7 +802,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && no_of_rides == 0
+        if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && NoOfRides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
             uint32_t time_duration = gScenarioTicks - TimeInPark;
@@ -1541,7 +1541,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
             return false;
-        else if (no_of_rides < 3)
+        else if (NoOfRides < 3)
             return false;
     }
 
@@ -1767,8 +1767,8 @@ void Guest::OnEnterRide(ride_id_t rideIndex)
     ride_update_satisfaction(ride, rideSatisfaction);
 
     // Update various peep stats.
-    if (no_of_rides < 255)
-        no_of_rides++;
+    if (NoOfRides < 255)
+        NoOfRides++;
 
     SetHasRidden(ride);
     peep_update_favourite_ride(this, ride);
@@ -2888,7 +2888,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
     uint8_t r = (scenario_rand() & 0xFF);
     if (r <= 128)
     {
-        if (peep->no_of_rides > 7)
+        if (peep->NoOfRides > 7)
             return false;
         if (r > 64)
             return false;

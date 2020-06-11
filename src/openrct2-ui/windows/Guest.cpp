@@ -1807,8 +1807,8 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
     ft = Formatter::Common();
     ft.Add<money32>(peep->PaidOnRides);
-    ft.Add<uint16_t>(peep->no_of_rides);
-    if (peep->no_of_rides != 1)
+    ft.Add<uint16_t>(peep->NoOfRides);
+    if (peep->NoOfRides != 1)
     {
         gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
