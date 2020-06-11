@@ -122,7 +122,8 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 
             uint32_t baseImageId = (jumpingFountain.type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain.frame;
-            constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 }, CoordsXY{ 0, -3 } };
+            constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 },
+                                                                             CoordsXY{ 0, -3 } };
             constexpr std::array<CoordsXY, 2> clockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, 3 }, CoordsXY{ 0, 3 } };
 
             auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
