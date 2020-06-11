@@ -121,10 +121,10 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     peep->PeepDirection = direction;
     peep->destination_x = newTile.x;
     peep->destination_y = newTile.y;
-    peep->destination_tolerance = 2;
+    peep->DestinationTolerance = 2;
     if (peep->state != PEEP_STATE_QUEUING)
     {
-        peep->destination_tolerance = (scenario_rand() & 7) + 2;
+        peep->DestinationTolerance = (scenario_rand() & 7) + 2;
     }
     return 0;
 }

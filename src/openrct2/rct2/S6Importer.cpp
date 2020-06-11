@@ -1412,7 +1412,7 @@ public:
         dst->trousers_colour = src->trousers_colour;
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
-        dst->destination_tolerance = src->destination_tolerance;
+        dst->DestinationTolerance = src->destination_tolerance;
         dst->Var37 = src->var_37;
         dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;

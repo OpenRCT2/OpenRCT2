@@ -690,10 +690,10 @@ bool Staff::DoHandymanPathFinding()
     PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
     destination_y = chosenTile.y + 16;
-    destination_tolerance = 3;
+    DestinationTolerance = 3;
     if (state == PEEP_STATE_QUEUING)
     {
-        destination_tolerance = (scenario_rand() & 7) + 2;
+        DestinationTolerance = (scenario_rand() & 7) + 2;
     }
     return false;
 }
@@ -924,7 +924,7 @@ bool Staff::DoMechanicPathFinding()
     PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
     destination_y = chosenTile.y + 16;
-    destination_tolerance = (scenario_rand() & 7) + 2;
+    DestinationTolerance = (scenario_rand() & 7) + 2;
 
     return false;
 }
@@ -1007,7 +1007,7 @@ bool Staff::DoMiscPathFinding()
     PeepDirection = newDirection;
     destination_x = chosenTile.x + 16;
     destination_y = chosenTile.y + 16;
-    destination_tolerance = (scenario_rand() & 7) + 2;
+    DestinationTolerance = (scenario_rand() & 7) + 2;
 
     return false;
 }
@@ -1497,7 +1497,7 @@ void Staff::UpdateHeadingToInspect()
 
         destination_x = destX;
         destination_y = destY;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1608,7 +1608,7 @@ void Staff::UpdateAnswering()
 
         destination_x = destX;
         destination_y = destY;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1703,7 +1703,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
             peep->sub_state = 0;
             peep->destination_x = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
             peep->destination_y = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
-            peep->destination_tolerance = 3;
+            peep->DestinationTolerance = 3;
 
             return 1;
         } while (!(tile_element++)->IsLastForTile());
@@ -1772,7 +1772,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     peep->sub_state = 0;
     peep->destination_x = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
     peep->destination_y = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
-    peep->destination_tolerance = 3;
+    peep->DestinationTolerance = 3;
     return 1;
 }
 
@@ -1801,7 +1801,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
             peep->destination_x = peep->NextLoc.x + _MowingWaypoints[0].x;
             peep->destination_y = peep->NextLoc.y + _MowingWaypoints[0].y;
-            peep->destination_tolerance = 3;
+            peep->DestinationTolerance = 3;
             return 1;
         }
     }
@@ -1835,7 +1835,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
         peep->Var37 = 0;
         peep->destination_x = sprite->litter.x;
         peep->destination_y = sprite->litter.y;
-        peep->destination_tolerance = 5;
+        peep->DestinationTolerance = 5;
         return 1;
     }
 
@@ -2214,7 +2214,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
         CoordsXY offset = DirectionOffsets[PeepDirection];
         destination_x = (offset.x * -12) + vehicle->x;
         destination_y = (offset.y * -12) + vehicle->y;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2366,7 +2366,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
 
         destination_x = stationPos.x;
         destination_y = stationPos.y;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2476,7 +2476,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
 
         destination_x = destinationX;
         destination_y = destinationY;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2591,7 +2591,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 
         destination_x = stationPosition.x;
         destination_y = stationPosition.y;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
     }
 
     if (auto loc = UpdateAction())
@@ -2678,7 +2678,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 
         destination_x = exitPosition.x;
         destination_y = exitPosition.y;
-        destination_tolerance = 2;
+        DestinationTolerance = 2;
     }
 
     int16_t xy_distance;

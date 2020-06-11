@@ -225,7 +225,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, trousers_colour);
         COMPARE_FIELD(Peep, destination_x);
         COMPARE_FIELD(Peep, destination_y);
-        COMPARE_FIELD(Peep, destination_tolerance);
+        COMPARE_FIELD(Peep, DestinationTolerance);
         COMPARE_FIELD(Peep, Var37);
         COMPARE_FIELD(Peep, Energy);
         COMPARE_FIELD(Peep, EnergyTarget);

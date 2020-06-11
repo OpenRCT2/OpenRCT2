@@ -1206,7 +1206,7 @@ void Guest::TryGetUpFromSitting()
     // Set destination to the centre of the tile.
     destination_x = (x & 0xFFE0) + 16;
     destination_y = (y & 0xFFE0) + 16;
-    destination_tolerance = 5;
+    DestinationTolerance = 5;
     UpdateCurrentActionSpriteType();
 }
 
@@ -1261,7 +1261,7 @@ void Guest::UpdateSitting()
             // Set destination to the centre of the tile
             destination_x = (x & 0xFFE0) + 16;
             destination_y = (y & 0xFFE0) + 16;
-            destination_tolerance = 5;
+            DestinationTolerance = 5;
             UpdateCurrentActionSpriteType();
             return;
         }
@@ -2541,7 +2541,7 @@ void Guest::GoToRideEntrance(Ride* ride)
 
     destination_x = location.x;
     destination_y = location.y;
-    destination_tolerance = 2;
+    DestinationTolerance = 2;
 
     SetState(PEEP_STATE_ENTERING_RIDE);
     sub_state = PEEP_RIDE_IN_ENTRANCE;
@@ -2624,7 +2624,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 {
     // Destination Tolerance is zero when peep has completely
     // entered entrance
-    if (peep->destination_tolerance == 0)
+    if (peep->DestinationTolerance == 0)
     {
         peep->RemoveFromQueue();
         peep->SetState(PEEP_STATE_FALLING);
@@ -3469,7 +3469,7 @@ void Guest::UpdateRideAtEntrance()
     // zero to indicate it is final decision time (try_leave will pass).
     // When a peep has to return to the queue without getting on a ride
     // this is the state it will return to.
-    if (destination_tolerance != 0)
+    if (DestinationTolerance != 0)
     {
         int16_t xy_distance;
         if (auto loc = UpdateAction(xy_distance))
@@ -3484,7 +3484,7 @@ void Guest::UpdateRideAtEntrance()
         }
         else
         {
-            destination_tolerance = 0;
+            DestinationTolerance = 0;
             sprite_direction ^= (1 << 4);
             Invalidate();
         }
@@ -3559,7 +3559,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
 
     peep->destination_x = entrance_loc.x;
     peep->destination_y = entrance_loc.y;
-    peep->destination_tolerance = 3;
+    peep->DestinationTolerance = 3;
 
     ride->cur_num_customers++;
     peep->OnEnterRide(peep->CurrentRide);
@@ -3760,7 +3760,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     {
         destination_x = vehicle->x;
         destination_y = vehicle->y;
-        destination_tolerance = 15;
+        DestinationTolerance = 15;
         sub_state = PEEP_RIDE_APPROACH_VEHICLE;
         return;
     }
@@ -3841,7 +3841,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
 
     peep->destination_x = x;
     peep->destination_y = y;
-    peep->destination_tolerance = 2;
+    peep->DestinationTolerance = 2;
 
     peep->sprite_direction = exit_direction * 8;
     peep->sub_state = PEEP_RIDE_APPROACH_EXIT;
@@ -3922,7 +3922,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
 
     peep->destination_x = x;
     peep->destination_y = y;
-    peep->destination_tolerance = 2;
+    peep->DestinationTolerance = 2;
 
     peep->SetState(PEEP_STATE_QUEUING_FRONT);
     peep->sub_state = PEEP_RIDE_AT_ENTRANCE;
@@ -4301,7 +4301,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     destination_x = waypointLoc.x;
     destination_y = waypointLoc.y;
-    destination_tolerance = 2;
+    DestinationTolerance = 2;
     sub_state = PEEP_RIDE_APPROACH_EXIT_WAYPOINTS;
 }
 
@@ -4348,7 +4348,7 @@ static void peep_update_ride_prepare_for_exit(Peep* peep)
 
     peep->destination_x = x;
     peep->destination_y = y;
-    peep->destination_tolerance = 2;
+    peep->DestinationTolerance = 2;
     peep->sub_state = PEEP_RIDE_IN_EXIT;
 }
 
@@ -5061,7 +5061,7 @@ void Guest::UpdateRideShopInteract()
 
             destination_x = tileCenterX;
             destination_y = tileCenterY;
-            destination_tolerance = 3;
+            DestinationTolerance = 3;
             HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
             Happiness = HappinessTarget;
         }
@@ -5089,7 +5089,7 @@ void Guest::UpdateRideShopInteract()
 
     destination_x = tileCenterX;
     destination_y = tileCenterY;
-    destination_tolerance = 3;
+    DestinationTolerance = 3;
 
     HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
     Happiness = HappinessTarget;
@@ -5517,7 +5517,7 @@ void Guest::UpdateWalking()
 
     destination_x = destX;
     destination_y = destY;
-    destination_tolerance = 3;
+    DestinationTolerance = 3;
 
     if (CurrentSeat & 1)
     {
@@ -5568,7 +5568,7 @@ void Guest::UpdateQueuing()
         if (is_front)
         {
             // Happens every time peep goes onto ride.
-            destination_tolerance = 0;
+            DestinationTolerance = 0;
             SetState(PEEP_STATE_QUEUING_FRONT);
             sub_state = PEEP_RIDE_AT_ENTRANCE;
             return;
@@ -5708,7 +5708,7 @@ void Guest::UpdateLeavingPark()
     }
 
     outside_of_park = 1;
-    destination_tolerance = 5;
+    DestinationTolerance = 5;
     decrement_guests_in_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
     context_broadcast_intent(&intent);
@@ -5812,7 +5812,7 @@ void Guest::UpdateWatching()
         // Send peep to the centre of current tile.
         destination_x = (x & 0xFFE0) + 16;
         destination_y = (y & 0xFFE0) + 16;
-        destination_tolerance = 5;
+        DestinationTolerance = 5;
         UpdateCurrentActionSpriteType();
     }
 }
@@ -6104,7 +6104,7 @@ bool Guest::UpdateWalkingFindBench()
 
     destination_x = benchX;
     destination_y = benchY;
-    destination_tolerance = 3;
+    DestinationTolerance = 3;
 
     return true;
 }
@@ -6188,7 +6188,7 @@ bool Guest::UpdateWalkingFindBin()
 
     peep->destination_x = binX;
     peep->destination_y = binY;
-    peep->destination_tolerance = 3;
+    peep->DestinationTolerance = 3;
 
     return true;
 }

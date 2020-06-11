@@ -97,7 +97,7 @@ protected:
         peep->PeepDirection = moveDir;
         peep->destination_x = peep->x + CoordsDirectionDelta[moveDir].x;
         peep->destination_y = peep->y + CoordsDirectionDelta[moveDir].y;
-        peep->destination_tolerance = 2;
+        peep->DestinationTolerance = 2;
 
         // Repeatedly step the peep, until they reach the target position or until the expected number of steps have
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data

@@ -597,7 +597,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     if (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2)
     {
-        if (xy_distance <= destination_tolerance)
+        if (xy_distance <= DestinationTolerance)
         {
             return std::nullopt;
         }
@@ -1007,7 +1007,7 @@ void Peep::Update1()
 
     destination_x = x;
     destination_y = y;
-    destination_tolerance = 10;
+    DestinationTolerance = 10;
     PeepDirection = sprite_direction >> 3;
 }
 
@@ -2330,7 +2330,7 @@ static void peep_return_to_centre_of_tile(Peep* peep)
     peep->PeepDirection = direction_reverse(peep->PeepDirection);
     peep->destination_x = (peep->x & 0xFFE0) + 16;
     peep->destination_y = (peep->y & 0xFFE0) + 16;
-    peep->destination_tolerance = 5;
+    peep->DestinationTolerance = 5;
 }
 
 /**
@@ -2486,7 +2486,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
             peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
             peep->destination_y += CoordsDirectionDelta[peep->PeepDirection].y;
-            peep->destination_tolerance = 9;
+            peep->DestinationTolerance = 9;
             peep->MoveTo({ x, y, peep->z });
             peep->SetState(PEEP_STATE_LEAVING_PARK);
 
@@ -2627,7 +2627,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->Var37 = 1;
         peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
         peep->destination_y += CoordsDirectionDelta[peep->PeepDirection].y;
-        peep->destination_tolerance = 7;
+        peep->DestinationTolerance = 7;
         peep->MoveTo({ x, y, peep->z });
     }
 }
@@ -2859,7 +2859,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep_window_state_update(peep);
 
                     peep->sub_state = 10;
-                    peep->destination_tolerance = 2;
+                    peep->DestinationTolerance = 2;
                     peep->TimeInQueue = 0;
                     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
                     {
@@ -2960,7 +2960,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         }
         peep->destination_x = (x & 0xFFE0) + 16;
         peep->destination_y = (y & 0xFFE0) + 16;
-        peep->destination_tolerance = 3;
+        peep->DestinationTolerance = 3;
 
         peep->CurrentRide = rideIndex;
         peep->SetState(PEEP_STATE_ENTERING_RIDE);
