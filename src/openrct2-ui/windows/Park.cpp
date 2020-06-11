@@ -1046,7 +1046,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    auto screenPos = ScreenCoordsXY{ w->windowPos.x, w->windowPos.y };
+    auto screenPos = w->windowPos;
     rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
