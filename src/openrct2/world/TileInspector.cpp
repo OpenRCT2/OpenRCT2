@@ -141,6 +141,52 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int1
     return std::make_unique<GameActionResult>();
 }
 
+static int32_t numLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
+{
+    const rct_scenery_entry* const largeEntry = largeScenery->GetEntry();
+    const auto* const tiles = largeEntry->large_scenery.tiles;
+    const auto direction = largeScenery->GetDirection();
+
+    const auto rotatedFirstTile = CoordsXYZ{
+        CoordsXY{ tiles[largeScenery->GetSequenceIndex()].x_offset, tiles[largeScenery->GetSequenceIndex()].y_offset }.Rotate(
+            direction),
+        tiles[largeScenery->GetSequenceIndex()].z_offset
+    };
+
+    const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
+    auto numFoundElements = 0;
+    for (int32_t i = 0; tiles[i].x_offset != -1; i++)
+    {
+        const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tiles[i].x_offset, tiles[i].y_offset }.Rotate(direction),
+                                                   tiles[i].z_offset };
+
+        const auto currentTile = firstTile + rotatedCurrentTile;
+
+        const TileElement* tileElement = map_get_first_element_at(currentTile);
+        if (tileElement != nullptr)
+        {
+            do
+            {
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+                    continue;
+
+                if (tileElement->GetDirection() != direction)
+                    continue;
+
+                if (tileElement->AsLargeScenery()->GetSequenceIndex() != i)
+                    continue;
+
+                if (tileElement->GetBaseZ() != currentTile.z)
+                    continue;
+
+                numFoundElements++;
+                break;
+            } while (!(tileElement++)->IsLastForTile());
+        }
+    }
+    return numFoundElements;
+}
+
 /**
  * Forcefully removes an element for a given tile
  * @param x The x coordinate of the tile
@@ -157,6 +203,22 @@ GameActionResult::Ptr tile_inspector_remove_element_at(const CoordsXY& loc, int1
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
+
+        auto largeScenery = tileElement->AsLargeScenery();
+        if (largeScenery)
+        {
+            // Only delete the banner entry if there are no other parts of the large scenery to delete
+            if (numLargeScenerySequences(loc, largeScenery) == 1)
+            {
+                tile_element_remove_banner_entry(tileElement);
+            }
+        }
+        else
+        {
+            // Removes any potential banners from the entry
+            tile_element_remove_banner_entry(tileElement);
+        }
+
         tile_element_remove(tileElement);
         map_invalidate_tile_full(loc);
 
