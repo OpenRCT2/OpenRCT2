@@ -427,7 +427,7 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
                 if (peep->z == footpathPos.z)
                 {
                     peep->SetState(PEEP_STATE_WALKING);
-                    peep->destination_x = (peep->x & 0xFFE0) + 16;
+                    peep->DestinationX = (peep->x & 0xFFE0) + 16;
                     peep->DestinationY = (peep->y & 0xFFE0) + 16;
                     peep->DestinationTolerance = 5;
                     peep->UpdateCurrentActionSpriteType();

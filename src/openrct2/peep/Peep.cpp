@@ -588,7 +588,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         Action = PEEP_ACTION_NONE_2;
     }
 
-    CoordsXY diffrenceLoc = { x - destination_x, y - DestinationY };
+    CoordsXY diffrenceLoc = { x - DestinationX, y - DestinationY };
 
     int32_t x_delta = abs(diffrenceLoc.x);
     int32_t y_delta = abs(diffrenceLoc.y);
@@ -1005,7 +1005,7 @@ void Peep::Update1()
         SetState(PEEP_STATE_PATROLLING);
     }
 
-    destination_x = x;
+    DestinationX = x;
     DestinationY = y;
     DestinationTolerance = 10;
     PeepDirection = sprite_direction >> 3;
@@ -2328,7 +2328,7 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
     peep->PeepDirection = direction_reverse(peep->PeepDirection);
-    peep->destination_x = (peep->x & 0xFFE0) + 16;
+    peep->DestinationX = (peep->x & 0xFFE0) + 16;
     peep->DestinationY = (peep->y & 0xFFE0) + 16;
     peep->DestinationTolerance = 5;
 }
@@ -2484,7 +2484,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
                 }
             }
 
-            peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
+            peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
             peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
             peep->DestinationTolerance = 9;
             peep->MoveTo({ x, y, peep->z });
@@ -2625,7 +2625,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
         peep->Var37 = 1;
-        peep->destination_x += CoordsDirectionDelta[peep->PeepDirection].x;
+        peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
         peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
         peep->DestinationTolerance = 7;
         peep->MoveTo({ x, y, peep->z });
@@ -2958,7 +2958,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
             money16 money = 0;
             guest->SpendMoney(money, cost, ExpenditureType::ParkRideTickets);
         }
-        peep->destination_x = (x & 0xFFE0) + 16;
+        peep->DestinationX = (x & 0xFFE0) + 16;
         peep->DestinationY = (y & 0xFFE0) + 16;
         peep->DestinationTolerance = 3;
 

@@ -2170,7 +2170,7 @@ void Ride::UpdateSpiralSlide()
         slide_in_use--;
 
         Peep* peep = GET_PEEP(slide_peep);
-        peep->destination_x++;
+        peep->DestinationX++;
     }
 
     const uint8_t current_rotation = get_current_rotation();

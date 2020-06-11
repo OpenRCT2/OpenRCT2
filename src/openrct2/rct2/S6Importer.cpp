@@ -1410,7 +1410,7 @@ public:
         dst->no_of_rides = src->no_of_rides;
         dst->tshirt_colour = src->tshirt_colour;
         dst->trousers_colour = src->trousers_colour;
-        dst->destination_x = src->destination_x;
+        dst->DestinationX = src->destination_x;
         dst->DestinationY = src->destination_y;
         dst->DestinationTolerance = src->destination_tolerance;
         dst->Var37 = src->var_37;

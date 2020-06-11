@@ -223,7 +223,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, no_of_rides);
         COMPARE_FIELD(Peep, tshirt_colour);
         COMPARE_FIELD(Peep, trousers_colour);
-        COMPARE_FIELD(Peep, destination_x);
+        COMPARE_FIELD(Peep, DestinationX);
         COMPARE_FIELD(Peep, DestinationY);
         COMPARE_FIELD(Peep, DestinationTolerance);
         COMPARE_FIELD(Peep, Var37);

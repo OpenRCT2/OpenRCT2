@@ -1443,7 +1443,7 @@ private:
             dst->BalloonColour = RCT1::GetColour(src->balloon_colour);
         }
 
-        dst->destination_x = src->destination_x;
+        dst->DestinationX = src->destination_x;
         dst->DestinationY = src->destination_y;
         dst->DestinationTolerance = src->destination_tolerance;
         dst->PeepDirection = src->direction;

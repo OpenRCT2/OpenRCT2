@@ -1204,7 +1204,7 @@ void Guest::TryGetUpFromSitting()
     SetState(PEEP_STATE_WALKING);
 
     // Set destination to the centre of the tile.
-    destination_x = (x & 0xFFE0) + 16;
+    DestinationX = (x & 0xFFE0) + 16;
     DestinationY = (y & 0xFFE0) + 16;
     DestinationTolerance = 5;
     UpdateCurrentActionSpriteType();
@@ -1259,7 +1259,7 @@ void Guest::UpdateSitting()
             SetState(PEEP_STATE_WALKING);
 
             // Set destination to the centre of the tile
-            destination_x = (x & 0xFFE0) + 16;
+            DestinationX = (x & 0xFFE0) + 16;
             DestinationY = (y & 0xFFE0) + 16;
             DestinationTolerance = 5;
             UpdateCurrentActionSpriteType();
@@ -2539,7 +2539,7 @@ void Guest::GoToRideEntrance(Ride* ride)
     location.x += x_shift;
     location.y += y_shift;
 
-    destination_x = location.x;
+    DestinationX = location.x;
     DestinationY = location.y;
     DestinationTolerance = 2;
 
@@ -3378,7 +3378,7 @@ void Guest::UpdateBuying()
             window_invalidate_by_number(WC_PEEP, sprite_index);
         }
         sprite_direction ^= 0x10;
-        destination_x = NextLoc.x + 16;
+        DestinationX = NextLoc.x + 16;
         DestinationY = NextLoc.y + 16;
         PeepDirection = direction_reverse(PeepDirection);
 
@@ -3557,7 +3557,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     entrance_loc.x += _MazeEntranceStart[direction / 4].x;
     entrance_loc.y += _MazeEntranceStart[direction / 4].y;
 
-    peep->destination_x = entrance_loc.x;
+    peep->DestinationX = entrance_loc.x;
     peep->DestinationY = entrance_loc.y;
     peep->DestinationTolerance = 3;
 
@@ -3578,7 +3578,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
 
     entrance_loc += SpiralSlideWalkingPath[peep->Var37];
 
-    peep->destination_x = entrance_loc.x;
+    peep->DestinationX = entrance_loc.x;
     peep->DestinationY = entrance_loc.y;
     peep->CurrentCar = 0;
 
@@ -3641,7 +3641,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
     waypoint.x += vehicle_type->peep_loading_waypoints[peep->Var37 / 4][0].x;
     waypoint.y += vehicle_type->peep_loading_waypoints[peep->Var37 / 4][0].y;
 
-    peep->destination_x = waypoint.x;
+    peep->DestinationX = waypoint.x;
     peep->DestinationY = waypoint.y;
     peep->sub_state = PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS;
 }
@@ -3758,7 +3758,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
 
     if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
-        destination_x = vehicle->x;
+        DestinationX = vehicle->x;
         DestinationY = vehicle->y;
         DestinationTolerance = 15;
         sub_state = PEEP_RIDE_APPROACH_VEHICLE;
@@ -3781,13 +3781,13 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     switch (vehicle->sprite_direction / 8)
     {
         case 0:
-            destination_x = vehicle->x - load_position;
+            DestinationX = vehicle->x - load_position;
             break;
         case 1:
             DestinationY = vehicle->y + load_position;
             break;
         case 2:
-            destination_x = vehicle->x + load_position;
+            DestinationX = vehicle->x + load_position;
             break;
         case 3:
             DestinationY = vehicle->y - load_position;
@@ -3839,7 +3839,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
     x -= x_shift;
     y -= y_shift;
 
-    peep->destination_x = x;
+    peep->DestinationX = x;
     peep->DestinationY = y;
     peep->DestinationTolerance = 2;
 
@@ -3920,7 +3920,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
     x += 16 - DirectionOffsets[entranceLocation.direction].x * 20;
     y += 16 - DirectionOffsets[entranceLocation.direction].y * 20;
 
-    peep->destination_x = x;
+    peep->DestinationX = x;
     peep->DestinationY = y;
     peep->DestinationTolerance = 2;
 
@@ -4299,7 +4299,7 @@ void Guest::UpdateRideLeaveVehicle()
     waypointLoc.x += vehicleEntry->peep_loading_waypoints[Var37 / 4][1].x;
     waypointLoc.y += vehicleEntry->peep_loading_waypoints[Var37 / 4][1].y;
 
-    destination_x = waypointLoc.x;
+    DestinationX = waypointLoc.x;
     DestinationY = waypointLoc.y;
     DestinationTolerance = 2;
     sub_state = PEEP_RIDE_APPROACH_EXIT_WAYPOINTS;
@@ -4346,7 +4346,7 @@ static void peep_update_ride_prepare_for_exit(Peep* peep)
     x -= x_shift;
     y -= y_shift;
 
-    peep->destination_x = x;
+    peep->DestinationX = x;
     peep->DestinationY = y;
     peep->DestinationTolerance = 2;
     peep->sub_state = PEEP_RIDE_IN_EXIT;
@@ -4477,7 +4477,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     targetLoc.x += vehicle_type->peep_loading_waypoints[Var37 / 4][waypoint].x;
     targetLoc.y += vehicle_type->peep_loading_waypoints[Var37 / 4][waypoint].y;
 
-    destination_x = targetLoc.x;
+    DestinationX = targetLoc.x;
     DestinationY = targetLoc.y;
 }
 
@@ -4541,7 +4541,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         targetLoc.x += vehicleEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].x;
         targetLoc.y += vehicleEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].y;
 
-        destination_x = targetLoc.x;
+        DestinationX = targetLoc.x;
         DestinationY = targetLoc.y;
         return;
     }
@@ -4572,7 +4572,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     targetLoc.x -= x_shift;
     targetLoc.y -= y_shift;
 
-    destination_x = targetLoc.x;
+    DestinationX = targetLoc.x;
     DestinationY = targetLoc.y;
 }
 
@@ -4597,7 +4597,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 3)
     {
         sub_state = 15;
-        destination_x = 0;
+        DestinationX = 0;
         DestinationY = 0;
         Var37 = (Var37 / 4) & 0xC;
         MoveTo({ LOCATION_NULL, y, z });
@@ -4626,7 +4626,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
             targetLoc += SpiralSlideWalkingPath[Var37];
 
-            destination_x = targetLoc.x;
+            DestinationX = targetLoc.x;
             DestinationY = targetLoc.y;
             sub_state = PEEP_RIDE_LEAVE_SPIRAL_SLIDE;
             return;
@@ -4641,7 +4641,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     targetLoc += SpiralSlideWalkingPath[Var37];
 
-    destination_x = targetLoc.x;
+    DestinationX = targetLoc.x;
     DestinationY = targetLoc.y;
 }
 
@@ -4673,12 +4673,12 @@ void Guest::UpdateRideOnSpiralSlide()
 
     if ((Var37 & 3) == 0)
     {
-        switch (destination_x)
+        switch (DestinationX)
         {
             case 0:
                 DestinationY++;
                 if (DestinationY >= 30)
-                    destination_x++;
+                    DestinationX++;
                 return;
             case 1:
                 if (ride->slide_in_use != 0)
@@ -4688,7 +4688,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 ride->slide_peep = sprite_index;
                 ride->slide_peep_t_shirt_colour = tshirt_colour;
                 ride->spiral_slide_progress = 0;
-                destination_x++;
+                DestinationX++;
                 return;
             case 2:
                 return;
@@ -4698,7 +4698,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 uint8_t dir = (Var37 / 4) & 3;
 
                 // Set the location that the peep walks to go on slide again
-                destination_x = newLocation.x + _SpiralSlideEndWaypoint[dir].x;
+                DestinationX = newLocation.x + _SpiralSlideEndWaypoint[dir].x;
                 DestinationY = newLocation.y + _SpiralSlideEndWaypoint[dir].y;
 
                 // Move the peep sprite to just at the end of the slide
@@ -4731,7 +4731,7 @@ void Guest::UpdateRideOnSpiralSlide()
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     targetLoc += SpiralSlideWalkingPath[Var37];
 
-    destination_x = targetLoc.x;
+    DestinationX = targetLoc.x;
     DestinationY = targetLoc.y;
     sub_state = PEEP_RIDE_APPROACH_SPIRAL_SLIDE;
 }
@@ -4772,7 +4772,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
         targetLoc += SpiralSlideWalkingPath[Var37];
 
-        destination_x = targetLoc.x;
+        DestinationX = targetLoc.x;
         DestinationY = targetLoc.y;
         return;
     }
@@ -4793,7 +4793,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
     targetLoc.x -= xShift;
     targetLoc.y -= yShift;
 
-    destination_x = targetLoc.x;
+    DestinationX = targetLoc.x;
     DestinationY = targetLoc.y;
 }
 
@@ -4846,7 +4846,7 @@ void Guest::UpdateRideMazePathfinding()
         }
     }
 
-    CoordsXY targetLoc = { destination_x & 0xFFE0, DestinationY & 0xFFE0 };
+    CoordsXY targetLoc = { DestinationX & 0xFFE0, DestinationY & 0xFFE0 };
 
     int16_t stationBaseZ = ride->stations[0].GetBaseZ();
 
@@ -4898,7 +4898,7 @@ void Guest::UpdateRideMazePathfinding()
     targetLoc.x = CoordsDirectionDelta[chosenEdge].x / 2;
     targetLoc.y = CoordsDirectionDelta[chosenEdge].y / 2;
 
-    targetLoc.x += destination_x;
+    targetLoc.x += DestinationX;
     targetLoc.y += DestinationY;
 
     enum class maze_type
@@ -4938,14 +4938,14 @@ void Guest::UpdateRideMazePathfinding()
             MazeLastEdge &= 3;
             return;
         case maze_type::hedge:
-            destination_x = targetLoc.x;
+            DestinationX = targetLoc.x;
             DestinationY = targetLoc.y;
 
             Var37 = _MazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
             MazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
-            targetLoc.x = destination_x;
+            targetLoc.x = DestinationX;
             targetLoc.y = DestinationY;
             if (chosenEdge & 1)
             {
@@ -4955,7 +4955,7 @@ void Guest::UpdateRideMazePathfinding()
             {
                 targetLoc.y = targetLoc.ToTileCentre().y;
             }
-            destination_x = targetLoc.x;
+            DestinationX = targetLoc.x;
             DestinationY = targetLoc.y;
             Var37 = 16;
             MazeLastEdge = chosenEdge;
@@ -5059,7 +5059,7 @@ void Guest::UpdateRideShopInteract()
         {
             sub_state = PEEP_SHOP_LEAVE;
 
-            destination_x = tileCenterX;
+            DestinationX = tileCenterX;
             DestinationY = tileCenterY;
             DestinationTolerance = 3;
             HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
@@ -5087,7 +5087,7 @@ void Guest::UpdateRideShopInteract()
 
     sub_state = PEEP_SHOP_LEAVE;
 
-    destination_x = tileCenterX;
+    DestinationX = tileCenterX;
     DestinationY = tileCenterY;
     DestinationTolerance = 3;
 
@@ -5363,7 +5363,7 @@ void Guest::UpdateWalking()
 
     // Check if vehicle is blocking the destination tile
     auto curPos = TileCoordsXYZ(CoordsXYZ{ x, y, z });
-    auto dstPos = TileCoordsXYZ(CoordsXYZ{ destination_x, DestinationY, NextLoc.z });
+    auto dstPos = TileCoordsXYZ(CoordsXYZ{ DestinationX, DestinationY, NextLoc.z });
     if (curPos.x != dstPos.x || curPos.y != dstPos.y)
     {
         if (footpath_is_blocked_by_vehicle(dstPos))
@@ -5515,7 +5515,7 @@ void Guest::UpdateWalking()
     int32_t destX = (x & 0xFFE0) + _WatchingPositionOffsets[Var37 & 0x1F].x;
     int32_t destY = (y & 0xFFE0) + _WatchingPositionOffsets[Var37 & 0x1F].y;
 
-    destination_x = destX;
+    DestinationX = destX;
     DestinationY = destY;
     DestinationTolerance = 3;
 
@@ -5737,7 +5737,7 @@ void Guest::UpdateWatching()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        destination_x = x;
+        DestinationX = x;
         DestinationY = y;
 
         sprite_direction = (Var37 & 3) * 8;
@@ -5810,7 +5810,7 @@ void Guest::UpdateWatching()
         SetState(PEEP_STATE_WALKING);
         UpdateSpriteType();
         // Send peep to the centre of current tile.
-        destination_x = (x & 0xFFE0) + 16;
+        DestinationX = (x & 0xFFE0) + 16;
         DestinationY = (y & 0xFFE0) + 16;
         DestinationTolerance = 5;
         UpdateCurrentActionSpriteType();
@@ -6102,7 +6102,7 @@ bool Guest::UpdateWalkingFindBench()
     int32_t benchX = (x & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].x;
     int32_t benchY = (y & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].y;
 
-    destination_x = benchX;
+    DestinationX = benchX;
     DestinationY = benchY;
     DestinationTolerance = 3;
 
@@ -6186,7 +6186,7 @@ bool Guest::UpdateWalkingFindBin()
     int32_t binX = (peep->x & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].x;
     int32_t binY = (peep->y & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].y;
 
-    peep->destination_x = binX;
+    peep->DestinationX = binX;
     peep->DestinationY = binY;
     peep->DestinationTolerance = 3;
 
