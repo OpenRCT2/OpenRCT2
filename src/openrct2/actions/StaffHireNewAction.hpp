@@ -166,7 +166,7 @@ private:
             newPeep->WalkingFrameNum = 0;
             newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->PathCheckOptimisation = 0;
-            newPeep->type = PEEP_TYPE_STAFF;
+            newPeep->Type = PEEP_TYPE_STAFF;
             newPeep->outside_of_park = 0;
             newPeep->PeepFlags = 0;
             newPeep->PaidToEnter = 0;

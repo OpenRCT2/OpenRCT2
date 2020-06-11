@@ -647,9 +647,9 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     {
         Peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
 
-        if (peep->type == PEEP_TYPE_GUEST)
+        if (peep->Type == PEEP_TYPE_GUEST)
             viewport_update_smart_guest_follow(window, peep);
-        else if (peep->type == PEEP_TYPE_STAFF)
+        else if (peep->Type == PEEP_TYPE_STAFF)
             viewport_update_smart_staff_follow(window, peep);
     }
     else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)

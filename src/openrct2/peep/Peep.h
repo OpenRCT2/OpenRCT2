@@ -603,7 +603,7 @@ struct Peep : SpriteBase
     PeepState state;
     uint8_t sub_state;
     PeepSpriteType sprite_type;
-    PeepType type;
+    PeepType Type;
     union
     {
         uint8_t StaffType;
@@ -998,11 +998,11 @@ enum
 
 #define FOR_ALL_GUESTS(sprite_index, peep)                                                                                     \
     FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->type == PEEP_TYPE_GUEST)
+        if ((peep)->Type == PEEP_TYPE_GUEST)
 
 #define FOR_ALL_STAFF(sprite_index, peep)                                                                                      \
     FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->type == PEEP_TYPE_STAFF)
+        if ((peep)->Type == PEEP_TYPE_STAFF)
 
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
