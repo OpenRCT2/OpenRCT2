@@ -678,7 +678,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
  */
 void peep_decrement_num_riders(Peep* peep)
 {
-    if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
+    if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE)
     {
         auto ride = get_ride(peep->CurrentRide);
         if (ride != nullptr)
@@ -702,7 +702,7 @@ void peep_window_state_update(Peep* peep)
 
     if (peep->Type == PEEP_TYPE_GUEST)
     {
-        if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
+        if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE)
         {
             auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr)
@@ -736,7 +736,7 @@ void Peep::Pickup()
 
 void Peep::PickupAbort(int32_t old_x)
 {
-    if (state != PEEP_STATE_PICKED)
+    if (State != PEEP_STATE_PICKED)
         return;
 
     MoveTo({ old_x, y, z + 8 });
@@ -861,7 +861,7 @@ void Peep::Remove()
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
             context_broadcast_intent(&intent);
         }
-        if (state == PEEP_STATE_ENTERING_PARK)
+        if (State == PEEP_STATE_ENTERING_PARK)
         {
             decrement_guests_heading_for_park();
         }
@@ -1014,7 +1014,7 @@ void Peep::Update1()
 void Peep::SetState(PeepState new_state)
 {
     peep_decrement_num_riders(this);
-    state = new_state;
+    State = new_state;
     peep_window_state_update(this);
 }
 
@@ -1111,14 +1111,14 @@ void Peep::Update()
 
     // Walking speed logic
     uint32_t stepsToTake = Energy;
-    if (stepsToTake < 95 && state == PEEP_STATE_QUEUING)
+    if (stepsToTake < 95 && State == PEEP_STATE_QUEUING)
         stepsToTake = 95;
-    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
+    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
     if (Action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
     {
         stepsToTake /= 2;
-        if (state == PEEP_STATE_QUEUING)
+        if (State == PEEP_STATE_QUEUING)
             stepsToTake += stepsToTake / 2;
     }
 
@@ -1135,7 +1135,7 @@ void Peep::Update()
     else
     {
         // loc_68FD2F
-        switch (state)
+        switch (State)
         {
             case PEEP_STATE_FALLING:
                 UpdateFalling();
@@ -1383,7 +1383,7 @@ void peep_update_crowd_noise()
         if (viewport->viewPos.y + viewport->view_height < peep->sprite_top)
             continue;
 
-        visiblePeeps += peep->state == PEEP_STATE_QUEUING ? 1 : 2;
+        visiblePeeps += peep->State == PEEP_STATE_QUEUING ? 1 : 2;
     }
 
     // This function doesn't account for the fact that the screen might be so big that 100 peeps could potentially be very
@@ -1446,7 +1446,7 @@ void peep_applause()
         peep_release_balloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->Action >= 254)
+        if ((peep->State == PEEP_STATE_WALKING || peep->State == PEEP_STATE_QUEUING) && peep->Action >= 254)
         {
             peep->Action = PEEP_ACTION_CLAP;
             peep->ActionFrame = 0;
@@ -1470,7 +1470,7 @@ void peep_update_days_in_queue()
 
     FOR_ALL_GUESTS (sprite_index, peep)
     {
-        if (peep->outside_of_park == 0 && peep->state == PEEP_STATE_QUEUING)
+        if (peep->outside_of_park == 0 && peep->State == PEEP_STATE_QUEUING)
         {
             if (peep->DaysInQueue < 255)
             {
@@ -1617,7 +1617,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
     peep->SpriteType = PEEP_SPRITE_TYPE_NORMAL;
     peep->outside_of_park = 1;
-    peep->state = PEEP_STATE_FALLING;
+    peep->State = PEEP_STATE_FALLING;
     peep->Action = PEEP_ACTION_NONE_2;
     peep->SpecialSprite = 0;
     peep->ActionSpriteImageOffset = 0;
@@ -1791,7 +1791,7 @@ void Peep::FormatActionTo(Formatter& ft) const
 void Peep::FormatActionTo(void* argsV) const
 {
     Formatter ft(static_cast<uint8_t*>(argsV));
-    switch (state)
+    switch (State)
     {
         case PEEP_STATE_FALLING:
             ft.Add<rct_string_id>(Action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
@@ -2107,7 +2107,7 @@ static constexpr const bool peep_allow_pick_up[] = {
  */
 bool peep_can_be_picked_up(Peep* peep)
 {
-    return peep_allow_pick_up[peep->state];
+    return peep_allow_pick_up[peep->State];
 }
 
 enum
@@ -2381,7 +2381,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             return;
         }
 
-        if (peep->state == PEEP_STATE_QUEUING)
+        if (peep->State == PEEP_STATE_QUEUING)
         {
             // Guest is in the ride queue.
             peep->SubState = 11;
@@ -2468,7 +2468,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             }
 
             // Peep is leaving the park.
-            if (peep->state != PEEP_STATE_WALKING)
+            if (peep->State != PEEP_STATE_WALKING)
             {
                 peep_return_to_centre_of_tile(peep);
                 return;
@@ -2505,7 +2505,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         // Peep is entering the park.
 
-        if (peep->state != PEEP_STATE_ENTERING_PARK)
+        if (peep->State != PEEP_STATE_ENTERING_PARK)
         {
             peep_return_to_centre_of_tile(peep);
             return;
@@ -2513,7 +2513,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
         {
-            peep->state = PEEP_STATE_LEAVING_PARK;
+            peep->State = PEEP_STATE_LEAVING_PARK;
             peep->Var37 = 1;
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
@@ -2580,7 +2580,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
         if (!found)
         {
-            peep->state = PEEP_STATE_LEAVING_PARK;
+            peep->State = PEEP_STATE_LEAVING_PARK;
             peep->Var37 = 1;
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
@@ -2608,7 +2608,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             }
             if (entranceFee > peep->CashInPocket)
             {
-                peep->state = PEEP_STATE_LEAVING_PARK;
+                peep->State = PEEP_STATE_LEAVING_PARK;
                 peep->Var37 = 1;
                 decrement_guests_heading_for_park();
                 peep_window_state_update(peep);
@@ -2685,7 +2685,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         if (sprite->generic.Is<Peep>())
         {
             Peep* other_peep = reinterpret_cast<Peep*>(sprite);
-            if (other_peep->state != PEEP_STATE_WALKING)
+            if (other_peep->State != PEEP_STATE_WALKING)
                 continue;
 
             if (abs(other_peep->z - peep->NextLoc.z) > 16)
@@ -2708,7 +2708,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
     }
 
-    if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
+    if (crowded >= 10 && peep->State == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
         peep->HappinessTarget = std::max(0, peep->HappinessTarget - 14);
@@ -2808,7 +2808,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     if (guest != nullptr && tile_element->AsPath()->IsQueue())
     {
         auto rideIndex = tile_element->AsPath()->GetRideIndex();
-        if (peep->state == PEEP_STATE_QUEUING)
+        if (peep->State == PEEP_STATE_QUEUING)
         {
             // Check if this queue is connected to the ride the
             // peep is queuing for, i.e. the player hasn't edited
@@ -2854,7 +2854,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep_decrement_num_riders(peep);
                     peep->CurrentRide = rideIndex;
                     peep->CurrentRideStation = stationNum;
-                    peep->state = PEEP_STATE_QUEUING;
+                    peep->State = PEEP_STATE_QUEUING;
                     peep->DaysInQueue = 0;
                     peep_window_state_update(peep);
 
@@ -2892,7 +2892,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     else
     {
         peep->InteractionRideIndex = 0xFF;
-        if (peep->state == PEEP_STATE_QUEUING)
+        if (peep->State == PEEP_STATE_QUEUING)
         {
             peep->RemoveFromQueue();
             peep->SetState(PEEP_STATE_1);
@@ -3039,7 +3039,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     if (Action == PEEP_ACTION_NONE_1)
         Action = PEEP_ACTION_NONE_2;
 
-    if (state == PEEP_STATE_QUEUING)
+    if (State == PEEP_STATE_QUEUING)
     {
         if (peep_update_queue_position(this, previousAction))
             return;
@@ -3131,7 +3131,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         if (height <= 3 || (Type == PEEP_TYPE_STAFF && height <= 32))
         {
             InteractionRideIndex = 0xFF;
-            if (state == PEEP_STATE_QUEUING)
+            if (State == PEEP_STATE_QUEUING)
             {
                 RemoveFromQueue();
                 SetState(PEEP_STATE_1);
@@ -3438,7 +3438,7 @@ void Peep::RemoveFromQueue()
  */
 void Peep::RemoveFromRide()
 {
-    if (state == PEEP_STATE_QUEUING)
+    if (State == PEEP_STATE_QUEUING)
     {
         RemoveFromQueue();
     }

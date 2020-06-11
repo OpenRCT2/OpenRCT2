@@ -600,7 +600,7 @@ struct Peep : SpriteBase
     CoordsXYZ NextLoc;
     uint8_t next_flags;
     uint8_t outside_of_park;
-    PeepState state;
+    PeepState State;
     uint8_t SubState;
     PeepSpriteType SpriteType;
     PeepType Type;

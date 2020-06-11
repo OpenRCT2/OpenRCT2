@@ -1138,7 +1138,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->next_z = src->NextLoc.z / COORDS_Z_STEP;
     dst->next_flags = src->next_flags;
     dst->outside_of_park = src->outside_of_park;
-    dst->state = static_cast<uint8_t>(src->state);
+    dst->state = static_cast<uint8_t>(src->State);
     dst->sub_state = src->SubState;
     dst->sprite_type = static_cast<uint8_t>(src->SpriteType);
     dst->peep_type = static_cast<uint8_t>(src->Type);

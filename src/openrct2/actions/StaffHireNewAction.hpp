@@ -225,7 +225,7 @@ private:
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->state = PEEP_STATE_PICKED;
+                newPeep->State = PEEP_STATE_PICKED;
 
                 newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
             }
@@ -265,7 +265,7 @@ private:
     {
         // Find a location to place new staff member
 
-        newPeep->state = PEEP_STATE_FALLING;
+        newPeep->State = PEEP_STATE_FALLING;
 
         int16_t x, y, z;
         uint32_t count = 0;
@@ -276,7 +276,7 @@ private:
         // Count number of walking guests
         FOR_ALL_GUESTS (sprite_index, guest)
         {
-            if (guest->state == PEEP_STATE_WALKING)
+            if (guest->State == PEEP_STATE_WALKING)
             {
                 // Check the walking guest's tile. Only count them if they're on a path tile.
                 guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
@@ -291,7 +291,7 @@ private:
             uint32_t rand = scenario_rand_max(count);
             FOR_ALL_GUESTS (sprite_index, guest)
             {
-                if (guest->state == PEEP_STATE_WALKING)
+                if (guest->State == PEEP_STATE_WALKING)
                 {
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
@@ -324,7 +324,7 @@ private:
             else
             {
                 // User must pick a location
-                newPeep->state = PEEP_STATE_PICKED;
+                newPeep->State = PEEP_STATE_PICKED;
                 x = newPeep->x;
                 y = newPeep->y;
                 z = newPeep->z;

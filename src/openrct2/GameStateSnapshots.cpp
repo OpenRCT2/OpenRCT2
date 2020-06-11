@@ -216,7 +216,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, NextLoc.z);
         COMPARE_FIELD(Peep, next_flags);
         COMPARE_FIELD(Peep, outside_of_park);
-        COMPARE_FIELD(Peep, state);
+        COMPARE_FIELD(Peep, State);
         COMPARE_FIELD(Peep, SubState);
         COMPARE_FIELD(Peep, SpriteType);
         COMPARE_FIELD(Peep, Type);

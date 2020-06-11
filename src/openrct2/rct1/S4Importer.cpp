@@ -1417,7 +1417,7 @@ private:
 
         dst->outside_of_park = src->outside_of_park;
 
-        dst->state = static_cast<PeepState>(src->state);
+        dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
         dst->next_flags = src->next_flags;
@@ -1555,7 +1555,7 @@ private:
 
         if (dst->Type == PEEP_TYPE_GUEST)
         {
-            if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
+            if (dst->outside_of_park && dst->State != PEEP_STATE_LEAVING_PARK)
             {
                 increment_guests_heading_for_park();
             }
@@ -3004,7 +3004,7 @@ private:
             Peep* peep;
             FOR_ALL_GUESTS (i, peep)
             {
-                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
+                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
                     peep->SetState(PEEP_STATE_FALLING);

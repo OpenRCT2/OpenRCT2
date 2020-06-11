@@ -469,7 +469,7 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->state != PEEP_STATE_WALKING)
+    if (passingPeep->State != PEEP_STATE_WALKING)
         return;
 
     if (passingPeep->Action == PEEP_ACTION_NONE_1 || passingPeep->Action == PEEP_ACTION_NONE_2)
@@ -710,7 +710,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         if (PeepFlags & PEEP_FLAGS_EXPLODE && x != LOCATION_NULL)
         {
-            if (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING)
+            if (State == PEEP_STATE_WALKING || State == PEEP_STATE_SITTING)
             {
                 audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
@@ -753,7 +753,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (Angriness != 0)
             Angriness--;
 
-        if (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING)
+        if (State == PEEP_STATE_WALKING || State == PEEP_STATE_SITTING)
         {
             SurroundingsThoughtTimeout++;
             if (SurroundingsThoughtTimeout >= 18)
@@ -774,7 +774,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
         UpdateSpriteType();
 
-        if (state == PEEP_STATE_ON_RIDE || state == PEEP_STATE_ENTERING_RIDE)
+        if (State == PEEP_STATE_ON_RIDE || State == PEEP_STATE_ENTERING_RIDE)
         {
             GuestTimeOnRide = std::min(255, GuestTimeOnRide + 1);
 
@@ -802,7 +802,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && NoOfRides == 0
+        if (State == PEEP_STATE_WALKING && outside_of_park == 0 && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && NoOfRides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
             uint32_t time_duration = gScenarioTicks - TimeInPark;
@@ -835,7 +835,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
              * is executed to once every second time the encompassing
              * conditional executes. */
 
-            if (outside_of_park == 0 && (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING))
+            if (outside_of_park == 0 && (State == PEEP_STATE_WALKING || State == PEEP_STATE_SITTING))
             {
                 uint8_t num_thoughts = 0;
                 PeepThoughtType possible_thoughts[5];
@@ -923,7 +923,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        switch (state)
+        switch (State)
         {
             case PEEP_STATE_WALKING:
             case PEEP_STATE_LEAVING_PARK:
@@ -1041,7 +1041,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             Toilet--;
         }
 
-        if (state == PEEP_STATE_WALKING && NauseaTarget >= 128)
+        if (State == PEEP_STATE_WALKING && NauseaTarget >= 128)
         {
             if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
             {
@@ -1064,7 +1064,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         TimeToConsume += 3;
     }
 
-    if (TimeToConsume != 0 && state != PEEP_STATE_ON_RIDE)
+    if (TimeToConsume != 0 && State != PEEP_STATE_ON_RIDE)
     {
         TimeToConsume = std::max(TimeToConsume - 3, 0);
 
@@ -1847,7 +1847,7 @@ bool Guest::HasFood() const
  */
 void Guest::PickRideToGoOn()
 {
-    if (state != PEEP_STATE_WALKING)
+    if (State != PEEP_STATE_WALKING)
         return;
     if (GuestHeadingToRideId != RIDE_ID_NULL)
         return;
@@ -3141,7 +3141,7 @@ static void peep_leave_park(Peep* peep)
 
 template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool considerOnlyCloseRides, T predicate)
 {
-    if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING)
+    if (peep->State != PEEP_STATE_SITTING && peep->State != PEEP_STATE_WATCHING && peep->State != PEEP_STATE_WALKING)
     {
         return;
     }
@@ -5126,7 +5126,7 @@ void Guest::UpdateRideShopLeave()
 
 void Guest::UpdateGuest()
 {
-    switch (state)
+    switch (State)
     {
         case PEEP_STATE_QUEUING_FRONT:
             UpdateRide();
@@ -5406,7 +5406,7 @@ void Guest::UpdateWalking()
 
     peep_update_walking_break_scenery(this);
 
-    if (state != PEEP_STATE_WALKING)
+    if (State != PEEP_STATE_WALKING)
         return;
 
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -5485,7 +5485,7 @@ void Guest::UpdateWalking()
         if (!sprite->generic.Is<Peep>())
             continue;
 
-        if (sprite->peep.state != PEEP_STATE_WATCHING)
+        if (sprite->peep.State != PEEP_STATE_WATCHING)
             continue;
 
         if (z != sprite->peep.z)
@@ -6071,7 +6071,7 @@ bool Guest::UpdateWalkingFindBench()
         if (!sprite->generic.Is<Peep>())
             continue;
 
-        if (sprite->peep.state != PEEP_STATE_SITTING)
+        if (sprite->peep.State != PEEP_STATE_SITTING)
             continue;
 
         if (z != sprite->peep.z)
@@ -6208,7 +6208,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
             return;
         if (peep->Energy < 85)
             return;
-        if (peep->state != PEEP_STATE_WALKING)
+        if (peep->State != PEEP_STATE_WALKING)
             return;
 
         if ((peep->LitterCount & 0xC0) != 0xC0 && (peep->DisgustingCount & 0xC0) != 0xC0)
@@ -6262,7 +6262,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
     {
         sprite = get_sprite(sprite_id);
 
-        if (!sprite->generic.Is<Peep>() || (sprite->peep.state != PEEP_STATE_SITTING) || (peep->z != sprite->peep.z))
+        if (!sprite->generic.Is<Peep>() || (sprite->peep.State != PEEP_STATE_SITTING) || (peep->z != sprite->peep.z))
         {
             continue;
         }
@@ -6779,13 +6779,13 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_INVALID;
     UpdateCurrentActionSpriteType();
 
-    if (state == PEEP_STATE_SITTING)
+    if (State == PEEP_STATE_SITTING)
     {
         Action = PEEP_ACTION_NONE_1;
         NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
     }
-    if (state == PEEP_STATE_WATCHING)
+    if (State == PEEP_STATE_WATCHING)
     {
         Action = PEEP_ACTION_NONE_1;
         NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
@@ -6902,7 +6902,7 @@ void Guest::UpdateSpriteType()
         }
     }
 
-    if (state == PEEP_STATE_WATCHING && StandingFlags & (1 << 1))
+    if (State == PEEP_STATE_WATCHING && StandingFlags & (1 << 1))
     {
         SetSpriteType(PEEP_SPRITE_TYPE_WATCHING);
         return;

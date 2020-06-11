@@ -422,7 +422,7 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
         if (entity->generic.Is<Peep>())
         {
             Peep* peep = &entity->peep;
-            if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
+            if (peep->State == PEEP_STATE_SITTING || peep->State == PEEP_STATE_WATCHING)
             {
                 if (peep->z == footpathPos.z)
                 {

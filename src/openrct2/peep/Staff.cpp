@@ -691,7 +691,7 @@ bool Staff::DoHandymanPathFinding()
     DestinationX = chosenTile.x + 16;
     DestinationY = chosenTile.y + 16;
     DestinationTolerance = 3;
-    if (state == PEEP_STATE_QUEUING)
+    if (State == PEEP_STATE_QUEUING)
     {
         DestinationTolerance = (scenario_rand() & 7) + 2;
     }
@@ -746,7 +746,7 @@ static uint8_t staff_mechanic_direction_surface(Peep* peep)
     uint8_t direction = scenario_rand() & 3;
 
     auto ride = get_ride(peep->CurrentRide);
-    if (ride != nullptr && (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION)
+    if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
         && (scenario_rand() & 1))
     {
         auto location = ride_get_exit_location(ride, peep->CurrentRideStation);
@@ -823,7 +823,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
-        if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
+        if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
         {
             return direction;
         }
@@ -839,7 +839,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
 
     // Mechanic is heading to ride (either broken down or for inspection).
     auto ride = get_ride(peep->CurrentRide);
-    if (ride != nullptr && (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION))
+    if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION))
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
@@ -937,7 +937,7 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
 {
     Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
-    if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
+    if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
     {
         pathDirections &= validDirections;
     }
@@ -1039,11 +1039,11 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
         if (y_dist > 96)
             continue;
 
-        if (peep->state == PEEP_STATE_WALKING)
+        if (peep->State == PEEP_STATE_WALKING)
         {
             peep->HappinessTarget = std::min(peep->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
         }
-        else if (peep->state == PEEP_STATE_QUEUING)
+        else if (peep->State == PEEP_STATE_QUEUING)
         {
             if (peep->TimeInQueue > 200)
             {
@@ -1848,7 +1848,7 @@ void Staff::Tick128UpdateStaff()
         return;
 
     PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
-    if (state != PEEP_STATE_PATROLLING)
+    if (State != PEEP_STATE_PATROLLING)
         newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
 
     if (SpriteType == newSpriteType)
@@ -1877,7 +1877,7 @@ bool Staff::IsMechanic() const
 
 void Staff::UpdateStaff(uint32_t stepsToTake)
 {
-    switch (state)
+    switch (State)
     {
         case PEEP_STATE_PATROLLING:
             UpdatePatrolling();
@@ -2075,12 +2075,12 @@ void Staff::UpdateFixing(int32_t steps)
     bool progressToNextSubstate = true;
     bool firstRun = true;
 
-    if ((state == PEEP_STATE_INSPECTING)
+    if ((State == PEEP_STATE_INSPECTING)
         && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
-        state = PEEP_STATE_FIXING;
+        State = PEEP_STATE_FIXING;
     }
 
     while (progressToNextSubstate)
@@ -2154,7 +2154,7 @@ void Staff::UpdateFixing(int32_t steps)
         int32_t subState = SubState;
         uint32_t sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
 
-        if (state != PEEP_STATE_INSPECTING)
+        if (State != PEEP_STATE_INSPECTING)
         {
             sub_state_sequence_mask = FixingSubstatesForBreakdown[ride->breakdown_reason_pending];
         }
@@ -2616,7 +2616,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
 
-        if (state == PEEP_STATE_INSPECTING)
+        if (State == PEEP_STATE_INSPECTING)
         {
             UpdateRideInspected(CurrentRide);
 

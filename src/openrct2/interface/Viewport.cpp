@@ -676,7 +676,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
     focus.sprite.sprite_id = peep->sprite_index;
 
-    if (peep->state == PEEP_STATE_PICKED)
+    if (peep->State == PEEP_STATE_PICKED)
     {
         focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
@@ -686,8 +686,8 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     else
     {
         bool overallFocus = true;
-        if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE
-            || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
+        if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE
+            || (peep->State == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
         {
             auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -736,7 +736,7 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
-    if (peep->state == PEEP_STATE_PICKED)
+    if (peep->State == PEEP_STATE_PICKED)
     {
         // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
