@@ -33,7 +33,6 @@
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 224;
-static constexpr const int32_t WW = 230;
 
 // clang-format off
 enum WINDOW_PARK_PAGE {

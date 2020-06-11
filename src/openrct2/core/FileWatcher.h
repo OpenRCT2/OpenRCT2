@@ -59,7 +59,9 @@ public:
     ~FileWatcher();
 
 private:
+#if defined(_WIN32) || defined(__linux__)
     bool _finished{};
+#endif
 
     void WatchDirectory();
 };
