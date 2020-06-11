@@ -28,16 +28,6 @@ enum class PATTERN
     FAST_RANDOM_CHASERS,
 };
 
-namespace FOUNTAIN_FLAG
-{
-    const uint32_t FAST = 1 << 0;
-    const uint32_t GOTO_EDGE = 1 << 1;
-    const uint32_t SPLIT = 1 << 2;
-    const uint32_t TERMINATE = 1 << 3;
-    const uint32_t BOUNCE = 1 << 4;
-    const uint32_t DIRECTION = 1 << 7;
-}; // namespace FOUNTAIN_FLAG
-
 static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, 0 },
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },

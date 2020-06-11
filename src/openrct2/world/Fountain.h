@@ -41,3 +41,13 @@ enum
     JUMPING_FOUNTAIN_TYPE_WATER,
     JUMPING_FOUNTAIN_TYPE_SNOW
 };
+
+namespace FOUNTAIN_FLAG
+{
+    const uint32_t FAST = 1 << 0;
+    const uint32_t GOTO_EDGE = 1 << 1;
+    const uint32_t SPLIT = 1 << 2;
+    const uint32_t TERMINATE = 1 << 3;
+    const uint32_t BOUNCE = 1 << 4;
+    const uint32_t DIRECTION = 1 << 7;
+}; // namespace FOUNTAIN_FLAG
