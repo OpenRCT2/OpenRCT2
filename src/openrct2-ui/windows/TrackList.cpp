@@ -515,12 +515,11 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t trackIndex = _filteredTrackIds[listItemIndex];
 
     // Track preview
-    int32_t x, y, colour;
+    int32_t colour;
     rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
-    x = w->windowPos.x + widget->left + 1;
-    y = w->windowPos.y + widget->top + 1;
+    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     colour = ColourMapA[w->colours[0]].darkest;
-    gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
+    gfx_fill_rect(dpi, screenPos.x, screenPos.y, screenPos.x + 369, screenPos.y + 216, colour);
 
     if (_loadedTrackDesignIndex != trackIndex)
     {
@@ -540,9 +539,8 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    int32_t trackPreviewX = x, trackPreviewY = y;
-    x = w->windowPos.x + (widget->left + widget->right) / 2;
-    y = w->windowPos.y + (widget->top + widget->bottom) / 2;
+    auto trackPreview = screenPos;
+    screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, (widget->top + widget->bottom) / 2 };
 
     rct_g1_element g1temp = {};
     g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
@@ -551,17 +549,17 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, trackPreviewX, trackPreviewY, 0);
+    gfx_draw_sprite(dpi, SPR_TEMP, trackPreview.x, trackPreview.y, 0);
 
-    y = w->windowPos.y + widget->bottom - 12;
+    screenPos.y = w->windowPos.y + widget->bottom - 12;
 
     // Warnings
     if ((_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
-        gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, { x, y }, 368);
-        y -= SCROLLABLE_ROW_HEIGHT;
+        gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+        screenPos.y -= SCROLLABLE_ROW_HEIGHT;
     }
 
     if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
@@ -570,31 +568,30 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             gfx_draw_string_centred_clipped(
-                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, { x, y }, 368);
-            y -= SCROLLABLE_ROW_HEIGHT;
+                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+            screenPos.y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
 
     // Track design name
     utf8* trackName = _trackDesigns[trackIndex].name;
-    gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, COLOUR_BLACK, { x, y }, 368);
+    gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, COLOUR_BLACK, screenPos, 368);
 
     // Information
-    x = w->windowPos.x + widget->left + 1;
-    y = w->windowPos.y + widget->bottom + 2;
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->bottom + 2 };
 
     // Stats
     fixed32_2dp rating = _loadedTrackDesign->excitement * 10;
-    gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, x, y);
-    y += LIST_ROW_HEIGHT;
+    gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, screenPos.x, screenPos.y);
+    screenPos.y += LIST_ROW_HEIGHT;
 
     rating = _loadedTrackDesign->intensity * 10;
-    gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, x, y);
-    y += LIST_ROW_HEIGHT;
+    gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, screenPos.x, screenPos.y);
+    screenPos.y += LIST_ROW_HEIGHT;
 
     rating = _loadedTrackDesign->nausea * 10;
-    gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, x, y);
-    y += LIST_ROW_HEIGHT + 4;
+    gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, screenPos.x, screenPos.y);
+    screenPos.y += LIST_ROW_HEIGHT + 4;
 
     // Information for tracked rides.
     if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_TRACK))
@@ -605,53 +602,53 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Holes
                 uint16_t holes = _loadedTrackDesign->holes & 0x1F;
-                gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, screenPos.x, screenPos.y);
+                screenPos.y += LIST_ROW_HEIGHT;
             }
             else
             {
                 // Maximum speed
                 uint16_t speed = ((_loadedTrackDesign->max_speed << 16) * 9) >> 18;
-                gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, screenPos.x, screenPos.y);
+                screenPos.y += LIST_ROW_HEIGHT;
 
                 // Average speed
                 speed = ((_loadedTrackDesign->average_speed << 16) * 9) >> 18;
-                gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, COLOUR_BLACK, screenPos.x, screenPos.y);
+                screenPos.y += LIST_ROW_HEIGHT;
             }
 
             // Ride length
             auto ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
-            gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, { x, y }, 214);
-            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, screenPos, 214);
+            screenPos.y += LIST_ROW_HEIGHT;
         }
 
         if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             // Maximum positive vertical Gs
             int32_t gForces = _loadedTrackDesign->max_positive_vertical_g * 32;
-            gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
-            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, screenPos.x, screenPos.y);
+            screenPos.y += LIST_ROW_HEIGHT;
 
             // Maximum negative vertical Gs
             gForces = _loadedTrackDesign->max_negative_vertical_g * 32;
-            gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
-            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, screenPos.x, screenPos.y);
+            screenPos.y += LIST_ROW_HEIGHT;
 
             // Maximum lateral Gs
             gForces = _loadedTrackDesign->max_lateral_g * 32;
-            gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
-            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, screenPos.x, screenPos.y);
+            screenPos.y += LIST_ROW_HEIGHT;
 
             if (_loadedTrackDesign->total_air_time != 0)
             {
                 // Total air time
                 int32_t airTime = _loadedTrackDesign->total_air_time * 25;
-                gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, screenPos.x, screenPos.y);
+                screenPos.y += LIST_ROW_HEIGHT;
             }
         }
 
@@ -659,13 +656,13 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Drops
             uint16_t drops = _loadedTrackDesign->drops & 0x3F;
-            gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
-            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, screenPos.x, screenPos.y);
+            screenPos.y += LIST_ROW_HEIGHT;
 
             // Drop height is multiplied by 0.75
             uint16_t highestDropHeight = (_loadedTrackDesign->highest_drop_height * 3) / 4;
-            gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
-            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, screenPos.x, screenPos.y);
+            screenPos.y += LIST_ROW_HEIGHT;
         }
 
         if (_loadedTrackDesign->type != RIDE_TYPE_MINI_GOLF)
@@ -674,11 +671,11 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (inversions != 0)
             {
                 // Inversions
-                gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, screenPos.x, screenPos.y);
+                screenPos.y += LIST_ROW_HEIGHT;
             }
         }
-        y += 4;
+        screenPos.y += 4;
     }
 
     if (_loadedTrackDesign->space_required_x != 0xFF)
@@ -687,14 +684,14 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter::Common();
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
-        y += LIST_ROW_HEIGHT;
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, screenPos.x, screenPos.y);
+        screenPos.y += LIST_ROW_HEIGHT;
     }
 
     if (_loadedTrackDesign->cost != 0)
     {
         Formatter::Common().Add<uint32_t>(_loadedTrackDesign->cost);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, screenPos.x, screenPos.y);
     }
 }
 

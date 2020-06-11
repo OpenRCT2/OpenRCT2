@@ -1085,10 +1085,9 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     Peep* peep = GET_PEEP(w->number);
     peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
-    int32_t x = (widget->left + widget->right) / 2 + w->windowPos.x;
-    int32_t y = w->windowPos.y + widget->top - 1;
+    auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top - 1 };
     int32_t width = widget->right - widget->left;
-    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { x, y }, width);
+    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
 
     // Draw the marquee thought
     widget = &w->widgets[WIDX_MARQUEE];
@@ -1121,9 +1120,9 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    x = widget->right - widget->left - w->list_information_type;
+    screenPos.x = widget->right - widget->left - w->list_information_type;
     peep_thought_set_format_args(&peep->Thoughts[i]);
-    gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, 0);
+    gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos.x, 0);
 }
 
 /**

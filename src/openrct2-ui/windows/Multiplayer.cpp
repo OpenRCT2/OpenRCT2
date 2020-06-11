@@ -922,14 +922,16 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
             widget->right - widget->left - 8);
     }
 
-    int32_t x = w->windowPos.x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
-    int32_t y = w->windowPos.y + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4;
+    auto screenPos = w->windowPos
+        + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
+                          window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
 
-    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], x, y);
+    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], screenPos.x, screenPos.y);
 
-    y += 20;
+    screenPos.y += 20;
 
-    gfx_fill_rect_inset(dpi, x, y - 6, x + 310, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+    gfx_fill_rect_inset(
+        dpi, screenPos.x, screenPos.y - 6, screenPos.x + 310, screenPos.y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
     group = network_get_group_index(_selectedGroup);

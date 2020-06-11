@@ -473,11 +473,13 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (_showLockedInformation)
         {
             // Show locked information
-            int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-            int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-            gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, { x + 85, y }, 170);
-            y += 15;
-            y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
+            auto screenPos = w->windowPos
+                + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
+                                  window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
+            gfx_draw_string_centred_clipped(
+                dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
+            gfx_draw_string_left_wrapped(
+                dpi, nullptr, screenPos.x, screenPos.y + 15, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
         }
         return;
     }
@@ -497,19 +499,23 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Scenario name
-    int32_t x = w->windowPos.x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-    int32_t y = w->windowPos.y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+    auto screenPos = w->windowPos
+        + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
+                          window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
-    gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { x + 85, y }, 170);
-    y += 15;
+    gfx_draw_string_centred_clipped(
+        dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
+    screenPos.y += 15;
 
     // Scenario details
     ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->details);
-    y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
+    screenPos.y += gfx_draw_string_left_wrapped(
+                       dpi, gCommonFormatArgs, screenPos.x, screenPos.y, 170, STR_BLACK_STRING, COLOUR_BLACK)
+        + 5;
 
     // Scenario objective
     ft = Formatter::Common();
@@ -517,7 +523,9 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<int16_t>(scenario->objective_arg_3);
     ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
     ft.Add<int32_t>(scenario->objective_arg_2);
-    y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
+    screenPos.y += gfx_draw_string_left_wrapped(
+                       dpi, gCommonFormatArgs, screenPos.x, screenPos.y, 170, STR_OBJECTIVE, COLOUR_BLACK)
+        + 5;
 
     // Scenario score
     if (scenario->highscore != nullptr)
@@ -532,7 +540,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(completedByName);
         ft.Add<money32>(scenario->highscore->company_value);
-        y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
+        screenPos.y += gfx_draw_string_left_wrapped(
+            dpi, gCommonFormatArgs, screenPos.x, screenPos.y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
     }
 }
 
