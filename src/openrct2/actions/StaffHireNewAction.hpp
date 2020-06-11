@@ -188,7 +188,7 @@ private:
 
                 FOR_ALL_STAFF (idSearchSpriteIndex, idSearchPeep)
                 {
-                    if (idSearchPeep->staff_type != _staffType)
+                    if (idSearchPeep->StaffType != _staffType)
                         continue;
 
                     if (idSearchPeep->Id == newStaffId)
@@ -203,7 +203,7 @@ private:
             }
 
             newPeep->Id = newStaffId;
-            newPeep->staff_type = _staffType;
+            newPeep->StaffType = _staffType;
 
             PeepSpriteType spriteType = spriteTypes[_staffType];
             if (_staffType == STAFF_TYPE_ENTERTAINER)

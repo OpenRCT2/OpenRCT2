@@ -6275,7 +6275,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
 
     FOR_ALL_STAFF (sprite_index, inner_peep)
     {
-        if (inner_peep->staff_type != STAFF_TYPE_SECURITY)
+        if (inner_peep->StaffType != STAFF_TYPE_SECURITY)
             continue;
 
         if (inner_peep->x == LOCATION_NULL)

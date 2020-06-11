@@ -351,7 +351,7 @@ void window_staff_disable_widgets(rct_window* w)
     Peep* peep = &get_sprite(w->number)->peep;
     uint64_t disabled_widgets = (1 << WIDX_TAB_4);
 
-    if (peep->staff_type == STAFF_TYPE_SECURITY)
+    if (peep->StaffType == STAFF_TYPE_SECURITY)
     {
         disabled_widgets |= (1 << WIDX_TAB_2);
     }
@@ -810,7 +810,7 @@ void window_staff_options_invalidate(rct_window* w)
 
     peep->FormatNameTo(gCommonFormatArgs);
 
-    switch (peep->staff_type)
+    switch (peep->StaffType)
     {
         case STAFF_TYPE_ENTERTAINER:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_EMPTY;
@@ -1027,7 +1027,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+    if (peep->type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         y++;
 
     int32_t ebx = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;
@@ -1099,7 +1099,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        Formatter::Common().Add<money32>(gStaffWageTable[peep->staff_type]);
+        Formatter::Common().Add<money32>(gStaffWageTable[peep->StaffType]);
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
@@ -1107,7 +1107,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->TimeInPark), COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    switch (peep->staff_type)
+    switch (peep->StaffType)
     {
         case STAFF_TYPE_HANDYMAN:
             gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, x, y);

@@ -906,7 +906,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
             {
                 patrolColour = COLOUR_GREY;
             }
-            staffType = staff->staff_type;
+            staffType = staff->StaffType;
         }
 
         if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))

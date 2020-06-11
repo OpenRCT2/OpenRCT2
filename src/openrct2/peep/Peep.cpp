@@ -1981,7 +1981,7 @@ size_t Peep::FormatNameTo(void* argsV) const
                 STR_ENTERTAINER_X,
             };
 
-            auto staffNameIndex = staff_type;
+            auto staffNameIndex = StaffType;
             if (staffNameIndex > sizeof(staffNames))
             {
                 staffNameIndex = 0;

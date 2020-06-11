@@ -155,7 +155,7 @@ void staff_update_greyed_patrol_areas()
 
         FOR_ALL_STAFF (sprite_index, peep)
         {
-            if (peep->staff_type == staff_type)
+            if (peep->StaffType == staff_type)
             {
                 int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -1083,7 +1083,7 @@ bool Staff::DoEntertainerPathFinding()
  */
 bool Staff::DoPathFinding()
 {
-    switch (staff_type)
+    switch (StaffType)
     {
         case STAFF_TYPE_HANDYMAN:
             return DoHandymanPathFinding();
@@ -1844,7 +1844,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 
 void Staff::Tick128UpdateStaff()
 {
-    if (staff_type != STAFF_TYPE_SECURITY)
+    if (StaffType != STAFF_TYPE_SECURITY)
         return;
 
     PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
@@ -1872,7 +1872,7 @@ void Staff::Tick128UpdateStaff()
 
 bool Staff::IsMechanic() const
 {
-    return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && type == PEEP_TYPE_STAFF && staff_type == STAFF_TYPE_MECHANIC);
+    return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && type == PEEP_TYPE_STAFF && StaffType == STAFF_TYPE_MECHANIC);
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)
@@ -1943,7 +1943,7 @@ void Staff::UpdatePatrolling()
         }
     }
 
-    if (staff_type != STAFF_TYPE_HANDYMAN)
+    if (StaffType != STAFF_TYPE_HANDYMAN)
         return;
 
     if (peep_update_patrolling_find_sweeping(this))

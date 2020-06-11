@@ -339,7 +339,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     if (peep->type == PEEP_TYPE_STAFF)
                     {
                         sprite_type = peep->sprite_type;
-                        if (peep->staff_type == STAFF_TYPE_ENTERTAINER)
+                        if (peep->StaffType == STAFF_TYPE_ENTERTAINER)
                         {
                             clip_y += 3;
                         }

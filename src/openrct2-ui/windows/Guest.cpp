@@ -873,7 +873,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+    if (peep->type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         y++;
 
     int32_t animationFrame = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;

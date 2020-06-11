@@ -626,7 +626,7 @@ static void peep_pathfind_heuristic_search(
     }
 
     bool nextInPatrolArea = inPatrolArea;
-    if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)
+    if (peep->type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_MECHANIC)
     {
         nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
@@ -1401,7 +1401,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             uint8_t endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
-            if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)
+            if (peep->type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_MECHANIC)
             {
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the

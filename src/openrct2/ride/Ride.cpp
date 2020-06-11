@@ -2693,7 +2693,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
     closestDistance = UINT_MAX;
     FOR_ALL_STAFF (spriteIndex, peep)
     {
-        if (peep->staff_type != STAFF_TYPE_MECHANIC)
+        if (peep->StaffType != STAFF_TYPE_MECHANIC)
             continue;
 
         if (!forInspection)

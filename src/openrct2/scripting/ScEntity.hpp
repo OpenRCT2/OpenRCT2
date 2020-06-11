@@ -672,7 +672,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetStaff();
             if (peep != nullptr)
             {
-                switch (peep->staff_type)
+                switch (peep->StaffType)
                 {
                     case STAFF_TYPE_HANDYMAN:
                         return "handyman";
@@ -693,24 +693,24 @@ namespace OpenRCT2::Scripting
             auto peep = GetStaff();
             if (peep != nullptr)
             {
-                if (value == "handyman" && peep->staff_type != STAFF_TYPE_HANDYMAN)
+                if (value == "handyman" && peep->StaffType != STAFF_TYPE_HANDYMAN)
                 {
-                    peep->staff_type = STAFF_TYPE_HANDYMAN;
+                    peep->StaffType = STAFF_TYPE_HANDYMAN;
                     peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_HANDYMAN;
                 }
-                else if (value == "mechanic" && peep->staff_type != STAFF_TYPE_MECHANIC)
+                else if (value == "mechanic" && peep->StaffType != STAFF_TYPE_MECHANIC)
                 {
-                    peep->staff_type = STAFF_TYPE_MECHANIC;
+                    peep->StaffType = STAFF_TYPE_MECHANIC;
                     peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_MECHANIC;
                 }
-                else if (value == "security" && peep->staff_type != STAFF_TYPE_SECURITY)
+                else if (value == "security" && peep->StaffType != STAFF_TYPE_SECURITY)
                 {
-                    peep->staff_type = STAFF_TYPE_SECURITY;
+                    peep->StaffType = STAFF_TYPE_SECURITY;
                     peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_SECURITY;
                 }
-                else if (value == "entertainer" && peep->staff_type != STAFF_TYPE_ENTERTAINER)
+                else if (value == "entertainer" && peep->StaffType != STAFF_TYPE_ENTERTAINER)
                 {
-                    peep->staff_type = STAFF_TYPE_ENTERTAINER;
+                    peep->StaffType = STAFF_TYPE_ENTERTAINER;
                     peep->sprite_type = PeepSpriteType::PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
                 }
             }
@@ -736,7 +736,7 @@ namespace OpenRCT2::Scripting
         uint8_t costume_get() const
         {
             auto peep = GetStaff();
-            if (peep != nullptr && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+            if (peep != nullptr && peep->StaffType == STAFF_TYPE_ENTERTAINER)
             {
                 return peep->GetCostume();
             }
