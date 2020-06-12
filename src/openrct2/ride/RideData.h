@@ -54,12 +54,6 @@ struct RideNameConvention
     RIDE_COMPONENT_TYPE station;
 };
 
-struct rct_ride_data_4
-{
-    uint8_t price[NUM_SHOP_ITEMS_PER_RIDE];
-    uint8_t default_music;
-};
-
 struct ride_cost
 {
     uint16_t track_price;
@@ -125,6 +119,8 @@ struct RideTypeDescriptor
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     rct_ride_lift_data LiftData;
     UpkeepCostsDescriptor UpkeepCosts;
+    money16 DefaultPrices[NUM_SHOP_ITEMS_PER_RIDE];
+    uint8_t DefaultMusic;
     /** rct2: 0x0097D7CB */
     uint8_t PhotoItem;
 
@@ -265,7 +261,6 @@ constexpr const uint64_t AllRideModesAvailable = (1ULL << RIDE_MODE_CONTINUOUS_C
     | (1ULL << RIDE_MODE_DOWNWARD_LAUNCH) | (1ULL << RIDE_MODE_CROOKED_HOUSE) | (1ULL << RIDE_MODE_FREEFALL_DROP)
     | (1ULL << RIDE_MODE_POWERED_LAUNCH) | (1ULL << RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED);
 
-extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 
@@ -295,6 +290,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
+    SET_FIELD(DefaultPrices, { 20, 20 }),
+    SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on
