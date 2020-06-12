@@ -172,7 +172,7 @@ STR_0593    :매달린 탑승객 좌석이 있는 회전 휠에 타서, 처음�
 STR_0598    :뒤집힌 롤러코스터 차량이 탑승장을 나서 가속하여 높이 솟은 수직 트랙으로 솟아오르고, 다시 탑승장으로 후진하여 반대편의 수직 트랙을 향해 다시 솟아오릅니다.
 STR_0599    :각각의 차량이 부드럽게 꼬인 채로 낙하하는 알찬 구성의 롤러코스터입니다.
 STR_0600    :부드럽게 꼬인 트랙 구조를 따라 이동하는 탄광 차량입니다.
-STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속도까지 올라갑니다.
+STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속력까지 올라갑니다.
 STR_0767    :손님 {INT32}
 STR_0768    :미화원 {INT32}
 STR_0769    :정비기술자 {INT32}
@@ -510,7 +510,7 @@ STR_1125    :운행 중
 STR_1126    :정지하는 중
 STR_1127    :승객 하차 중
 STR_1128    :블록 브레이크에 의해 정지함
-STR_1129    :모든 차량을 같은 색으로
+STR_1129    :모든 차량이 같은 색
 STR_1130    :{STRINGID}마다 다른 색
 STR_1131    :차량마다 다른 색
 STR_1132    :차량 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -710,8 +710,8 @@ STR_1325    :{COMMA16} 코스
 STR_1326    :코스 {COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}오브젝트를 90° 회전시킵니다
 STR_1328    :평지가 필요합니다
-STR_1329    :{WINDOW_COLOUR_2}발진 속도:
-STR_1330    :{SMALLFONT}{BLACK}탑승장 출발 최대 속도
+STR_1329    :{WINDOW_COLOUR_2}발진 속력:
+STR_1330    :{SMALLFONT}{BLACK}탑승장 출발 최대 속력
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -743,7 +743,7 @@ STR_1358    :{WINDOW_COLOUR_2}총 '무중력' 시간: {BLACK}{COMMA2DP32}초
 STR_1359    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
 STR_1360    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
 STR_1361    :속력을 바꿀 수 없습니다...
-STR_1362    :발진 속도를 바꿀 수 없습니다...
+STR_1362    :발진 속력을 바꿀 수 없습니다...
 STR_1363    :지지대가 버틸 수 있는 최대 높이입니다!
 STR_1364    :위 트랙의 지지대를 더 늘릴 수 없습니다!
 STR_1365    :인라인 트위스트 (왼쪽)
@@ -1056,7 +1056,7 @@ STR_1672    :브레이크
 STR_1673    :회전 컨트롤 전환 트랙
 STR_1674    :브레이크 속력
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}브레이크의 제한 속도를 설정하세요
+STR_1676    :{SMALLFONT}{BLACK}브레이크의 제한 속력을 설정하세요
 STR_1677    :{WINDOW_COLOUR_2}인기도: {BLACK}알 수 없음
 STR_1678    :{WINDOW_COLOUR_2}인기도: {BLACK}{COMMA16}%
 STR_1679    :나선 상승 (왼쪽)
@@ -1245,8 +1245,8 @@ STR_1868    :회전 수를 변경할 수 없습니다...
 STR_1869    :{WINDOW_COLOUR_2}회전 수:
 STR_1870    :{SMALLFONT}{BLACK}회전 수를 설정합니다
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}수익: 시간당 {BLACK}{CURRENCY2DP}
-STR_1874    :{WINDOW_COLOUR_2}순익: 시간당 {BLACK}{CURRENCY2DP}
+STR_1873    :{WINDOW_COLOUR_2}수익: {BLACK}시간당 {CURRENCY2DP}
+STR_1874    :{WINDOW_COLOUR_2}순익: {BLACK}시간당 {CURRENCY2DP}
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}놀이기구 점검
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}놀이기구 수리
@@ -2211,7 +2211,7 @@ STR_3091    :이 섹션을 제거할 수 없습니다!
 STR_3092    :이 놀이기구의 탑승장을 옮기거나 편집할 수 없습니다!
 STR_3093    :{WINDOW_COLOUR_2}가장 좋아하는 것: {BLACK}{STRINGID}
 STR_3094    :없음
-STR_3095    :{WINDOW_COLOUR_2}리프트 힐 체인 속도:
+STR_3095    :{WINDOW_COLOUR_2}리프트 힐 체인 속력:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}리프트 힐 체인 속력을 선택하세요
 STR_3099    :{SMALLFONT}{BLACK}색을 선택하세요
@@ -2712,7 +2712,7 @@ STR_5361    :모든 손님에게 다음 물건 주기:
 STR_5362    :{BLACK}손님들의 선호 격렬도 설정:
 STR_5363    :1 이상
 STR_5364    :15 이하
-STR_5365    :{BLACK}직원 속도:
+STR_5365    :{BLACK}직원 속력:
 STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
@@ -3136,7 +3136,7 @@ STR_5824    :{SMALLFONT}{BLACK}폭풍이 칠 때 번개가 치는 효과를 끕�
 STR_5825    :{SMALLFONT}{BLACK}마우스 커서를 화면 밖으로 나가지 못하게 만듭니다.
 STR_5826    :{SMALLFONT}{BLACK}게임 화면에서 마우스 오른쪽 클릭으로 드래그할 때의 방향을 반대로 바꿉니다.
 STR_5827    :{SMALLFONT}{BLACK}GUI에서 사용할 색상 조합을 설정합니다.
-STR_5828    :{SMALLFONT}{BLACK}거리, 속도 등에서 사용할 거리 단위를 설정합니다.
+STR_5828    :{SMALLFONT}{BLACK}거리, 속력 등에서 사용할 거리 단위를 설정합니다.
 STR_5829    :{SMALLFONT}{BLACK}화폐 단위를 변경합니다. 단순히 표기 방식만 변경되고, 환율은 아직 적용되지 않습니다.
 STR_5830    :{SMALLFONT}{BLACK}사용할 언어를 설정합니다.
 STR_5831    :{SMALLFONT}{BLACK}사용할 온도 단위를 설정합니다.
@@ -3419,7 +3419,7 @@ STR_6109    :하이퍼 트위스터
 STR_6110    :주니어 롤러코스터
 STR_6111    :클래식 미니 롤러코스터
 STR_6112    :나선 트랙과 루프를 통과하는 알찬 구성의 철제 트랙 롤러코스터입니다.
-STR_6113    :큰 낙하, 높은 속도, 그리고 무릎 안전바만 있는 편안한 차량을 가진 높고 뒤집어질 수 없는 롤러코스터입니다.
+STR_6113    :큰 낙하, 높은 속력, 그리고 무릎 안전바만 있는 편안한 차량을 가진 높고 뒤집어질 수 없는 롤러코스터입니다.
 STR_6114    :정해진 트랙을 따라 천천히 움직이는 놀이기구입니다.
 STR_6115    :급경사를 오를 수 있는 거대한 4 x 4 트럭 차량입니다.
 STR_6116    :여러 가지 반전 트랙을 통과하면서 부드러운 강철 트랙을 따라서 활강하는, 폭이 넓은 롤러코스터입니다.
@@ -3451,7 +3451,7 @@ STR_6141    :RCT1 하단 툴바
 STR_6142    :{WINDOW_COLOUR_2}트랙 이름: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_6144    :시각적 업데이트 표시
-STR_6145    :{SMALLFONT}{BLACK}부스터 속도 제한 설정
+STR_6145    :{SMALLFONT}{BLACK}부스터 속력 제한 설정
 STR_6146    :모든 표시 가능한 트랙 조각 사용
 STR_6147    :{SMALLFONT}{BLACK}놀이기구 건설 창에서 해당 놀이기구가 지원하는지의 여부와 관계없이, 그 놀이기구에서 사용할 수 있는 모든 트랙 조각의 사용을 허용합니다.
 STR_6148    :마스터 서버에 접속 중...
@@ -3469,7 +3469,7 @@ STR_6159    :부드러운 최대인접 픽셀
 STR_6160    :{WINDOW_COLOUR_2}사용할 수 있는 차량: {BLACK}{STRING}
 STR_6161    :땅에 격자선 표시
 STR_6162    :회전 와일드 마우스
-STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
+STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속력을 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
 STR_6164    :{WHITE}❌
 STR_6165    :수직 동기화 사용
 STR_6166    :{SMALLFONT}{BLACK}게임에 표시되는 각 프레임을 모니터의 갱신 주기에 동기화하여 갈라짐 현상을 방지합니다.
