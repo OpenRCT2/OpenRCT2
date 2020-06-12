@@ -191,7 +191,7 @@ if (NOT DISABLE_TTF)
     endif ()
 
     if (${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
-        target_link_libraries(${PROJECT_NAME} -L{OPENBSD_X11BASE}/lib)
+        target_link_libraries(${PROJECT_NAME} -L${OPENBSD_X11BASE}/lib)
     endif ()
 endif ()
 
