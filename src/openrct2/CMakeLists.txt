@@ -23,7 +23,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
 # GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_link_libraries(${PROJECT_NAME} stdc++fs)
     endif()
@@ -188,6 +188,10 @@ if (NOT DISABLE_TTF)
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_LIBRARIES})
         endif ()
+    endif ()
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
+        target_link_libraries(${PROJECT_NAME} -L${OPENBSD_X11BASE}/lib)
     endif ()
 endif ()
 
