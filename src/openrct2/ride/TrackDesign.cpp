@@ -94,7 +94,7 @@ static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
 static bool _trackDesignPlaceIsReplay = false;
 
-static map_backup* track_design_preview_backup_map();
+static std::unique_ptr<map_backup> track_design_preview_backup_map();
 
 static void track_design_preview_restore_map(map_backup* backup);
 
@@ -2001,7 +2001,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 {
     // Make a copy of the map
-    map_backup* mapBackup = track_design_preview_backup_map();
+    auto mapBackup = track_design_preview_backup_map().get();
     if (mapBackup == nullptr)
     {
         return;
@@ -2110,21 +2110,20 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
  * design preview.
  *  rct2: 0x006D1C68
  */
-static map_backup* track_design_preview_backup_map()
+static std::unique_ptr<map_backup> track_design_preview_backup_map()
 {
     auto backup_ptr = std::make_unique<map_backup>();
-    map_backup* backup = backup_ptr.get();
-    if (backup != nullptr)
+    if (backup_ptr.get() != nullptr)
     {
-        std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
-        std::memcpy(backup->tile_pointers, gTileElementTilePointers, sizeof(backup->tile_pointers));
-        backup->next_free_tile_element = gNextFreeTileElement;
-        backup->map_size_units = gMapSizeUnits;
-        backup->map_size_units_minus_2 = gMapSizeMinus2;
-        backup->map_size = gMapSize;
-        backup->current_rotation = get_current_rotation();
+        std::memcpy(backup_ptr.get()->tile_elements, gTileElements, sizeof(backup_ptr.get()->tile_elements));
+        std::memcpy(backup_ptr.get()->tile_pointers, gTileElementTilePointers, sizeof(backup_ptr.get()->tile_pointers));
+        backup_ptr.get()->next_free_tile_element = gNextFreeTileElement;
+        backup_ptr.get()->map_size_units = gMapSizeUnits;
+        backup_ptr.get()->map_size_units_minus_2 = gMapSizeMinus2;
+        backup_ptr.get()->map_size = gMapSize;
+        backup_ptr.get()->current_rotation = get_current_rotation();
     }
-    return backup;
+    return backup_ptr;
 }
 
 /**
