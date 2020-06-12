@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 7, 7 }),
     SET_FIELD(UpkeepCosts, { 41, 20, 80, 10, 3, 10 }),
+    SET_FIELD(BuildCosts, { 70, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_3),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),

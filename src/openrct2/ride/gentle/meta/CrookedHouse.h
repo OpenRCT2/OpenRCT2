@@ -32,6 +32,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 30, 1, 0, 0, 0, 0 }),
+    SET_FIELD(BuildCosts, { 65, 2, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),

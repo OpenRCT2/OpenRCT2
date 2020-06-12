@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 9, 0, 10 }),
+    SET_FIELD(BuildCosts, { 40, 5, 30, }),
     SET_FIELD(DefaultPrices, { 10, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),

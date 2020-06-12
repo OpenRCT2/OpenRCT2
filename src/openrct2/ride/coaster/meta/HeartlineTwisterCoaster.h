@@ -30,6 +30,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 6 }),
     SET_FIELD(UpkeepCosts, { 47, 20, 80, 11, 3, 10 }),
+    SET_FIELD(BuildCosts, { 135, 7, 30, }),
     SET_FIELD(DefaultPrices, { 15, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
