@@ -1020,7 +1020,7 @@ static void window_new_ride_paint_ride_information(
         {
             price *= TrackPricing[unk2];
         }
-        price = (price >> 17) * 10 * RideData5[item.Type].PriceEstimateMultiplier;
+        price = (price >> 17) * 10 * RideTrackCosts[item.Type].PriceEstimateMultiplier;
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
