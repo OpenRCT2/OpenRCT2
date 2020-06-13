@@ -66,6 +66,7 @@ private:
     const utf8* _s6Path = nullptr;
     rct_s6_data _s6{};
     uint8_t _gameVersion = 0;
+    bool _isSV7 = false;
 
 public:
     S6Importer(IObjectRepository& objectRepository)
@@ -145,6 +146,12 @@ public:
         for (uint16_t i = 0; i < _s6.header.num_packed_objects; i++)
         {
             _objectRepository.ExportPackedObject(stream);
+        }
+
+        if (path)
+        {
+            auto extension = path_get_extension(path);
+            _isSV7 = _stricmp(extension, ".sv7") == 0;
         }
 
         if (isScenario)
@@ -754,7 +761,14 @@ public:
         }
 
         dst->music = src->music;
-        dst->entrance_style = src->entrance_style;
+
+        auto entranceStyle = src->entrance_style;
+        // In SV7, "plain" entrances are invisible.
+        if (_isSV7 && entranceStyle == RCT12_STATION_STYLE_PLAIN)
+        {
+            entranceStyle = RCT12_STATION_STYLE_INVISIBLE;
+        }
+        dst->entrance_style = entranceStyle;
         dst->vehicle_change_timeout = src->vehicle_change_timeout;
         dst->num_block_brakes = src->num_block_brakes;
         dst->lift_hill_speed = src->lift_hill_speed;
