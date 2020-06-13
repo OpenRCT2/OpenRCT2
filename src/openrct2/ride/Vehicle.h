@@ -420,8 +420,7 @@ private:
     void KillPassengers(Ride* curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
     int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
-    void UpdateTrackMotionMiniGolfVehicle(
-        Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry, registers& regs);
+    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry);
     bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
 };
