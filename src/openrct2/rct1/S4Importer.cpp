@@ -838,7 +838,7 @@ private:
         if (_gameVersion == FILE_VERSION_RCT1)
         {
             // Original RCT had no music settings, take default style
-            dst->music = RideData4[dst->type].default_music;
+            dst->music = RideTypeDescriptors[dst->type].DefaultMusic;
 
             // Only merry-go-round and dodgems had music and used
             // the same flag as synchronise stations for the option to enable it

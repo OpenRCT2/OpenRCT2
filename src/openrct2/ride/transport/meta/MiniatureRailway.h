@@ -34,6 +34,8 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 10, 3, 5 }),
+    SET_FIELD(DefaultPrices, { 10, 0 }),
+    SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
 };
 // clang-format on

@@ -188,7 +188,7 @@ public:
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
         }
-        ride->music = RideData4[ride->type].default_music;
+        ride->music = RideTypeDescriptors[ride->type].DefaultMusic;
 
         auto rideProperties = RideProperties[ride->type];
         ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
@@ -210,7 +210,7 @@ public:
         {
             for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
             {
-                ride->price[i] = RideData4[ride->type].price[i];
+                ride->price[i] = RideTypeDescriptors[ride->type].DefaultPrices[i];
             }
 
             if (rideEntry->shop_item[0] == SHOP_ITEM_NONE)

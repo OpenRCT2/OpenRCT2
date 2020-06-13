@@ -1972,7 +1972,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
     if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
-        assert(ride->type < std::size(RideData4));
+        assert(ride->type < std::size(RideTypeDescriptors));
         if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ride_get_price(ride) != 0)
         {
