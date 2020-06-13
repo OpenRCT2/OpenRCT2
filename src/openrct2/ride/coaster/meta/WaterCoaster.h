@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 6 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 80, 8, 3, 10 }),
+    SET_FIELD(BuildCosts, { 55, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),

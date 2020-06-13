@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
+    SET_FIELD(BuildCosts, { 55, 5, 5, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),

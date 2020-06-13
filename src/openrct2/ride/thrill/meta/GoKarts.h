@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 8, 0, 0 }),
+    SET_FIELD(BuildCosts, { 62, 4, 20, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),

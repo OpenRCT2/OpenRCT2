@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 5 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 4, 3, 10 }),
+    SET_FIELD(BuildCosts, { 40, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),

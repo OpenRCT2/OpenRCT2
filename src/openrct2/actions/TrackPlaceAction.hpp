@@ -413,10 +413,10 @@ public:
                 supportHeight = (10 * COORDS_Z_STEP);
             }
 
-            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
         price >>= 16;
@@ -540,7 +540,7 @@ public:
                 supportHeight = (10 * COORDS_Z_STEP);
             }
 
-            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
 
             invalidate_test_results(ride);
             switch (_trackType)
@@ -710,7 +710,7 @@ public:
             map_invalidate_tile_full(mapLoc);
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
         price >>= 16;
