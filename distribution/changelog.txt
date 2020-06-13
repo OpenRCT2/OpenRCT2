@@ -15,6 +15,7 @@
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
 - Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
 - Change: [#11898] The `openrct-data-path` command-line argument has been renamed to `openrct2-data-path`.
+- Change: [#11944] The ride list sort mode is now remembered for the duration of the game.
 - Fix: [#1013] Negative length displayed in Ride window.
 - Fix: [#1148] Research funding dropdown not shown in finances window.
 - Fix: [#5451] Guests scream on every descent, no matter how small.
