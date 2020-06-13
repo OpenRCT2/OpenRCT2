@@ -1855,7 +1855,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
 static StationIndex guest_pathfinding_select_random_station(
     const Guest* guest, int32_t numEntranceStations, std::bitset<MAX_STATIONS>& entranceStations)
 {
-    int32_t select = guest->NoOfRides % numEntranceStations;
+    int32_t select = guest->GuestNoOfRides % numEntranceStations;
     while (select > 0)
     {
         for (StationIndex i = 0; i < MAX_STATIONS; i++)
