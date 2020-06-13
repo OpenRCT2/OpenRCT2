@@ -151,8 +151,7 @@ public:
         if (path)
         {
             auto extension = path_get_extension(path);
-            if (_stricmp(extension, ".sv7") == 0)
-                _isSV7 = true;
+            _isSV7 = _stricmp(extension, ".sv7") == 0;
         }
 
         if (isScenario)
