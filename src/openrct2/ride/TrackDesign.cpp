@@ -2001,7 +2001,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 {
     // Make a copy of the map
-    auto mapBackup = track_design_preview_backup_map().get();
+    auto mapBackup = track_design_preview_backup_map();
     if (mapBackup == nullptr)
     {
         return;
@@ -2019,7 +2019,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     if (!track_design_place_preview(td6, &cost, &ride, &flags))
     {
         std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
-        track_design_preview_restore_map(mapBackup);
+        track_design_preview_restore_map(mapBackup.get());
         return;
     }
     td6->cost = cost;
@@ -2102,7 +2102,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     }
 
     ride->Delete();
-    track_design_preview_restore_map(mapBackup);
+    track_design_preview_restore_map(mapBackup.get());
 }
 
 /**
@@ -2113,15 +2113,15 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 static std::unique_ptr<map_backup> track_design_preview_backup_map()
 {
     auto backup_ptr = std::make_unique<map_backup>();
-    if (backup_ptr.get() != nullptr)
+    if (backup_ptr != nullptr)
     {
-        std::memcpy(backup_ptr.get()->tile_elements, gTileElements, sizeof(backup_ptr.get()->tile_elements));
-        std::memcpy(backup_ptr.get()->tile_pointers, gTileElementTilePointers, sizeof(backup_ptr.get()->tile_pointers));
-        backup_ptr.get()->next_free_tile_element = gNextFreeTileElement;
-        backup_ptr.get()->map_size_units = gMapSizeUnits;
-        backup_ptr.get()->map_size_units_minus_2 = gMapSizeMinus2;
-        backup_ptr.get()->map_size = gMapSize;
-        backup_ptr.get()->current_rotation = get_current_rotation();
+        std::memcpy(backup_ptr->tile_elements, gTileElements, sizeof(backup_ptr->tile_elements));
+        std::memcpy(backup_ptr->tile_pointers, gTileElementTilePointers, sizeof(backup_ptr->tile_pointers));
+        backup_ptr->next_free_tile_element = gNextFreeTileElement;
+        backup_ptr->map_size_units = gMapSizeUnits;
+        backup_ptr->map_size_units_minus_2 = gMapSizeMinus2;
+        backup_ptr->map_size = gMapSize;
+        backup_ptr->current_rotation = get_current_rotation();
     }
     return backup_ptr;
 }
