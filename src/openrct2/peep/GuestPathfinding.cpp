@@ -438,7 +438,7 @@ static int32_t guest_path_find_aimless(Peep* peep, uint8_t edges)
  */
 static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
 {
-    if (peep->Type == PEEP_TYPE_STAFF)
+    if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
         return 8;
 
     // PEEP_FLAGS_2? It's cleared here but not set anywhere!
@@ -626,7 +626,7 @@ static void peep_pathfind_heuristic_search(
     }
 
     bool nextInPatrolArea = inPatrolArea;
-    if (peep->Type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_MECHANIC)
+    if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_MECHANIC)
     {
         nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
@@ -1169,9 +1169,9 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
     /* The max number of tiles to check - a whole-search limit.
      * Mainly to limit the performance impact of the path finding. */
-    int32_t maxTilesChecked = (peep->Type == PEEP_TYPE_STAFF) ? 50000 : 15000;
+    int32_t maxTilesChecked = (peep->AssignedPeepType == PEEP_TYPE_STAFF) ? 50000 : 15000;
     // Used to allow walking through no entry banners
-    _peepPathFindIsStaff = (peep->Type == PEEP_TYPE_STAFF);
+    _peepPathFindIsStaff = (peep->AssignedPeepType == PEEP_TYPE_STAFF);
 
     TileCoordsXYZ goal = gPeepPathFindGoalPosition;
 
@@ -1401,7 +1401,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             uint8_t endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
-            if (peep->Type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_MECHANIC)
+            if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_MECHANIC)
             {
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the

@@ -501,7 +501,7 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
  */
 rct_window* window_guest_open(Peep* peep)
 {
-    if (peep->Type == PEEP_TYPE_STAFF)
+    if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
     {
         return window_staff_open(peep);
     }
@@ -873,7 +873,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->Type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         y++;
 
     int32_t animationFrame = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;

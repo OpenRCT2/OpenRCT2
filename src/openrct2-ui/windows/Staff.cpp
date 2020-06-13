@@ -1027,7 +1027,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->Type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         y++;
 
     int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
@@ -1218,7 +1218,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
             return;
 
         Peep& peep = sprite->peep;
-        if (peep.Type != PEEP_TYPE_STAFF)
+        if (peep.AssignedPeepType != PEEP_TYPE_STAFF)
             return;
 
         auto staff = peep.AsStaff();
@@ -1259,7 +1259,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     Peep& peep = sprite->peep;
-    if (peep.Type != PEEP_TYPE_STAFF)
+    if (peep.AssignedPeepType != PEEP_TYPE_STAFF)
         return;
 
     bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet(destCoords);

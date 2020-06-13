@@ -24,7 +24,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (peep->Type == PEEP_TYPE_STAFF)
+        if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
         {
             int16_t peep_x, peep_y, peep_z;
 

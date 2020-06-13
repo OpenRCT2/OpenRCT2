@@ -286,7 +286,7 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     staffTypeFlags = 0;
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
-        if (peep->Type == PEEP_TYPE_STAFF)
+        if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
         {
             staffCount++;
             staffTypeFlags |= (1 << peep->StaffType);

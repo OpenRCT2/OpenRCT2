@@ -618,7 +618,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
             int32_t clip_x = 10, clip_y = 19;
 
-            if (peep->Type == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+            if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
             {
                 clip_y += 3;
             }

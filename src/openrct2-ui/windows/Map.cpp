@@ -1075,7 +1075,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 
         if (sprite_get_flashing(peep))
         {
-            if (peep->Type == PEEP_TYPE_STAFF)
+            if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
             {
                 if ((gWindowMapFlashingFlags & (1 << 3)) != 0)
                 {

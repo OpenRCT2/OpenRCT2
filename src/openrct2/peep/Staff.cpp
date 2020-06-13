@@ -223,7 +223,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
      * both of these tiles are connected wide paths, the wide flag can be
      * ignored. */
 
-    if (staff->Type != PEEP_TYPE_STAFF)
+    if (staff->AssignedPeepType != PEEP_TYPE_STAFF)
         return false;
 
     if (!staff_is_location_on_patrol_edge(staff, x, y))
@@ -1872,7 +1872,8 @@ void Staff::Tick128UpdateStaff()
 
 bool Staff::IsMechanic() const
 {
-    return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && Type == PEEP_TYPE_STAFF && StaffType == STAFF_TYPE_MECHANIC);
+    return (
+        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PEEP_TYPE_STAFF && StaffType == STAFF_TYPE_MECHANIC);
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)

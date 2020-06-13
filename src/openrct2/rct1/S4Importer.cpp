@@ -1426,7 +1426,7 @@ private:
         dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
 
-        dst->Type = static_cast<PeepType>(src->type);
+        dst->AssignedPeepType = static_cast<PeepType>(src->type);
 
         dst->TshirtColour = RCT1::GetColour(src->tshirt_colour);
         dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
@@ -1553,7 +1553,7 @@ private:
 
         dst->ItemStandardFlags = src->item_standard_flags;
 
-        if (dst->Type == PEEP_TYPE_GUEST)
+        if (dst->AssignedPeepType == PEEP_TYPE_GUEST)
         {
             if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
             {
