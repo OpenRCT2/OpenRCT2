@@ -6558,146 +6558,146 @@
     },
     {
         "path": "track/rmc/corkscrew_left_1_1.png",
-        "x_offset": -23,
-        "y_offset": -112,
+        "x_offset": -34,
+        "y_offset": -125,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_1_2.png",
-        "x_offset": -55,
-        "y_offset": -72,
+        "x_offset": -66,
+        "y_offset": -85,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_1_3.png",
-        "x_offset": -23,
-        "y_offset": -32,
+        "x_offset": -34,
+        "y_offset": -45,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_2_1.png",
-        "x_offset": -23,
-        "y_offset": -80,
+        "x_offset": -34,
+        "y_offset": -93,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_2_2.png",
-        "x_offset": -55,
-        "y_offset": -72,
+        "x_offset": -66,
+        "y_offset": -85,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_2_3.png",
-        "x_offset": -87,
-        "y_offset": -32,
+        "x_offset": -98,
+        "y_offset": -45,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_3_1.png",
-        "x_offset": -28,
-        "y_offset": -40,
+        "x_offset": -37,
+        "y_offset": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_3_2.png",
-        "x_offset": 4,
-        "y_offset": -32,
+        "x_offset": -5,
+        "y_offset": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_3_3.png",
-        "x_offset": -28,
-        "y_offset": -24,
+        "x_offset": -37,
+        "y_offset": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_4_1.png",
-        "x_offset": -87,
-        "y_offset": -67,
+        "x_offset": -98,
+        "y_offset": -84,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_4_2.png",
-        "x_offset": -55,
-        "y_offset": -27,
+        "x_offset": -66,
+        "y_offset": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_left_4_3.png",
-        "x_offset": -23,
-        "y_offset": -19,
+        "x_offset": -34,
+        "y_offset": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_1_1.png",
-        "x_offset": -23,
-        "y_offset": -67,
+        "x_offset": -34,
+        "y_offset": -84,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_1_2.png",
-        "x_offset": -55,
-        "y_offset": -27,
+        "x_offset": -66,
+        "y_offset": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_1_3.png",
-        "x_offset": -87,
-        "y_offset": -19,
+        "x_offset": -98,
+        "y_offset": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_2_1.png",
-        "x_offset": -23,
-        "y_offset": -40,
+        "x_offset": -34,
+        "y_offset": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_2_2.png",
-        "x_offset": -55,
-        "y_offset": -32,
+        "x_offset": -66,
+        "y_offset": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_2_3.png",
-        "x_offset": -23,
-        "y_offset": -24,
+        "x_offset": -34,
+        "y_offset": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_3_1.png",
-        "x_offset": -87,
-        "y_offset": -80,
+        "x_offset": -98,
+        "y_offset": -93,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_3_2.png",
-        "x_offset": -55,
-        "y_offset": -72,
+        "x_offset": -66,
+        "y_offset": -85,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_3_3.png",
-        "x_offset": -23,
-        "y_offset": -32,
+        "x_offset": -34,
+        "y_offset": -45,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_4_1.png",
-        "x_offset": -28,
-        "y_offset": -112,
+        "x_offset": -37,
+        "y_offset": -125,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_4_2.png",
-        "x_offset": 4,
-        "y_offset": -72,
+        "x_offset": -5,
+        "y_offset": -85,
         "palette": "keep"
     },
     {
         "path": "track/rmc/corkscrew_right_4_3.png",
-        "x_offset": -28,
-        "y_offset": -32,
+        "x_offset": -37,
+        "y_offset": -45,
         "palette": "keep"
     },
     {

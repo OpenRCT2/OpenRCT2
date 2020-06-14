@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_HYBRID_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 86, 24, 12, 11, }),
+    SET_FIELD(Heights, { 86, 24, 13, 11, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 5, 8 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_giga_coaster),
