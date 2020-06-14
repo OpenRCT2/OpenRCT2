@@ -108,6 +108,7 @@ declare global {
         version: string;
         authors: string | string[];
         type: PluginType;
+        licence: string;
         minApiVersion?: number;
         main: () => void;
     }

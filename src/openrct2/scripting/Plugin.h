@@ -95,6 +95,7 @@ namespace OpenRCT2::Scripting
 
         static PluginMetadata GetMetadata(const DukValue& dukMetadata);
         static PluginType ParsePluginType(const std::string_view& type);
+        static void CheckForLicence(const DukValue& dukLicence, const std::string_view& pluginName);
     };
 } // namespace OpenRCT2::Scripting
 
