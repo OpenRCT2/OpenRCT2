@@ -7481,10 +7481,10 @@ static void vehicle_update_scenery_door(Vehicle* vehicle)
  *
  *  rct2: 0x006DB38B
  */
-static bool loc_6DB38B(Vehicle* vehicle, TileElement* tileElement)
+static bool loc_6DB38B(bool useInvertedSprites, TileElement* tileElement)
 {
     // Get bank
-    int32_t bankStart = track_get_actual_bank_3(vehicle, tileElement);
+    int32_t bankStart = track_get_actual_bank_3(useInvertedSprites, tileElement);
 
     // Get vangle
     int32_t trackType = tileElement->AsTrack()->GetTrackType();
@@ -8034,7 +8034,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
             }
         }
 
-        if (!loc_6DB38B(this, tileElement))
+        if (!loc_6DB38B(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement))
         {
             return false;
         }
@@ -8815,7 +8815,7 @@ loc_6DC476:
         direction = outDirection;
     }
 
-    if (!loc_6DB38B(this, tileElement))
+    if (!loc_6DB38B(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement))
     {
         goto loc_6DC9BC;
     }
@@ -9027,7 +9027,7 @@ loc_6DCA9A:
         tileElement = trackBeginEnd.begin_element;
     }
 
-    if (!loc_6DB38B(this, tileElement))
+    if (!loc_6DB38B(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement))
     {
         goto loc_6DCD4A;
     }
