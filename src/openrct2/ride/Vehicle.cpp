@@ -7493,12 +7493,12 @@ static bool loc_6DB38B(Vehicle* vehicle, TileElement* tileElement)
     return vangleStart == _vehicleVAngleEndF64E36 && bankStart == _vehicleBankEndF64E37;
 }
 
-static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
+void Vehicle::UpdateGoKartAttemptSwitchLanes()
 {
     uint16_t probability = 0x8000;
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_6))
+    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_6))
     {
-        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
+        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
     }
     else
     {
@@ -7507,7 +7507,7 @@ static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
     if ((scenario_rand() & 0xFFFF) <= probability)
     {
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
-        vehicle->TrackSubposition += 2;
+        TrackSubposition += 2;
     }
 }
 
@@ -8065,16 +8065,10 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         && TrackSubposition < VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TRACK_ELEM_FLAT)
+        if (trackType == TRACK_ELEM_FLAT
+            || ((curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
-            VehicleUpdateGoKartAttemptSwitchLanes(this);
-        }
-        else if (curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        {
-            if (tileElement->AsTrack()->IsStation())
-            {
-                VehicleUpdateGoKartAttemptSwitchLanes(this);
-            }
+            UpdateGoKartAttemptSwitchLanes();
         }
     }
 
