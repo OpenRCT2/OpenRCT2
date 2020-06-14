@@ -2930,8 +2930,8 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     widget = &window_ride_main_widgets[WIDX_STATUS];
     rct_string_id ride_status = window_ride_get_status(w, gCommonFormatArgs);
     gfx_draw_string_centred_clipped(
-        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right) / 2,
-        w->windowPos.y + widget->top, widget->right - widget->left);
+        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK,
+        w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->right - widget->left);
 }
 
 #pragma endregion

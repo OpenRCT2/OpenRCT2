@@ -346,20 +346,19 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
+    auto topLeft = w->windowPos + ScreenCoordsXY{ widget->left, 0 };
     int32_t r = w->windowPos.x + widget->right;
-    int32_t t;
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
     {
         int32_t height = (widget->bottom - widget->top);
         if (height >= 10)
-            t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+            topLeft.y += std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
         else
-            t = w->windowPos.y + widget->top - 1;
+            topLeft.y += widget->top - 1;
     }
     else
-        t = w->windowPos.y + widget->top;
+        topLeft.y += widget->top;
 
     auto stringId = widget->text;
     void* formatArgs = gCommonFormatArgs;
@@ -369,7 +368,7 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         formatArgs = &widget->string;
     }
     gfx_draw_string_centred_clipped(
-        dpi, stringId, formatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
+        dpi, stringId, formatArgs, colour, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->right - widget->left - 2);
 }
 
 /**
@@ -531,10 +530,8 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    auto topLeft = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    auto bottomRight = w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -543,20 +540,19 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     if (w->flags & WF_10)
         press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+    gfx_fill_rect_inset(dpi, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, colour, press);
 
     // Black caption bars look slightly green, this fixes that
     if (colour == 0)
-        gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
+        gfx_fill_rect(dpi, topLeft.x + 1, topLeft.y + 1, bottomRight.x - 1, bottomRight.y - 1, ColourMapA[colour].dark);
     else
-        gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_DARKEN_3);
+        gfx_filter_rect(dpi, topLeft.x + 1, topLeft.y + 1, bottomRight.x - 1, bottomRight.y - 1, PALETTE_DARKEN_3);
 
     // Draw text
     if (widget->text == STR_NONE)
         return;
 
-    l = widget->left + w->windowPos.x + 2;
-    t = widget->top + w->windowPos.y + 1;
+    topLeft = w->windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
     int32_t width = widget->right - widget->left - 4;
     if ((widget + 1)->type == WWT_CLOSEBOX)
     {
@@ -564,8 +560,8 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         if ((widget + 2)->type == WWT_CLOSEBOX)
             width -= 10;
     }
-    l += width / 2;
-    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, l, t, width);
+    topLeft.x += width / 2;
+    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, topLeft, width);
 }
 
 /**
@@ -578,10 +574,8 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    auto topLeft = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    auto bottomRight = w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom };
 
     // Check if the button is pressed down
     uint8_t press = 0;
@@ -594,18 +588,19 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the button
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+    gfx_fill_rect_inset(dpi, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, colour, press);
 
     if (widget->text == STR_NONE)
         return;
 
-    l = w->windowPos.x + (widget->left + widget->right) / 2 - 1;
-    t = w->windowPos.y + std::max<int32_t>(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    topLeft = w->windowPos
+        + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 1,
+                          std::max<int32_t>(widget->top, (widget->top + widget->bottom) / 2 - 5) };
 
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, l, t, widget->right - widget->left - 2);
+    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, topLeft, widget->right - widget->left - 2);
 }
 
 /**

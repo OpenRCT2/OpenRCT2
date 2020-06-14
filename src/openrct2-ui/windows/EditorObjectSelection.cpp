@@ -1066,8 +1066,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
-        gfx_draw_string_centred_clipped(
-            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos.x, screenPos.y, width);
+        gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
     }
 
     // Draw description of object

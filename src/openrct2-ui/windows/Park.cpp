@@ -876,8 +876,9 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
     gfx_draw_string_centred_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (labelWidget->left + labelWidget->right) / 2,
-        w->windowPos.y + labelWidget->top, labelWidget->right - labelWidget->left);
+        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
+        w->windowPos + ScreenCoordsXY{ (labelWidget->left + labelWidget->right) / 2, labelWidget->top },
+        labelWidget->right - labelWidget->left);
 }
 
 /**
