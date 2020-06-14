@@ -158,7 +158,7 @@ void JumpingFountain::Update()
         return;
     }
 
-    invalidate_sprite_0(this);
+    Invalidate0();
     frame++;
 
     switch (type)

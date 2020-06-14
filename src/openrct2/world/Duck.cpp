@@ -81,7 +81,7 @@ template<> bool SpriteBase::Is<Duck>() const
 
 void Duck::Invalidate()
 {
-    invalidate_sprite_1(this);
+    Invalidate1();
 }
 
 bool Duck::IsFlying()
@@ -371,7 +371,7 @@ void duck_remove_all()
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {
-            invalidate_sprite_1(sprite);
+            sprite->Invalidate1();
             sprite_remove(sprite);
         }
     }
