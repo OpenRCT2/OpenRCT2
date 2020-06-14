@@ -7999,8 +7999,6 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     bool isGoingBack = false;
     switch (TrackSubposition)
     {
-        default:
-            break;
         case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK:
         case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL:
             TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK;
@@ -8014,6 +8012,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
             break;
         case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE:
             TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE;
+            break;
+        default:
             break;
     }
 
