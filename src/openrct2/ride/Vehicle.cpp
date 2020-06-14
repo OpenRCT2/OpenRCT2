@@ -4259,7 +4259,7 @@ void Vehicle::UpdateTravellingBoat()
 void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const CoordsXY& trackCoords)
 {
     remaining_distance = 0;
-    if (!UpdateMotionCollisionDetection(currentBoatLocation.x, currentBoatLocation.y, z, nullptr))
+    if (!UpdateMotionCollisionDetection({ currentBoatLocation, z }, nullptr))
     {
         TrackLocation.x = trackCoords.x;
         TrackLocation.y = trackCoords.y;
@@ -4317,24 +4317,22 @@ void Vehicle::UpdateMotionBoatHire()
             // loc_6DA7A5
             var_35++;
             auto loc = BoatLocation.ToTileCentre();
-            int32_t curX = loc.x;
-            int32_t curY = loc.y;
-            int32_t curZ;
+            CoordsXY loc2 = loc;
             uint8_t bl;
 
-            curX -= x;
-            if (curX >= 0)
+            loc2.x -= x;
+            if (loc2.x >= 0)
             {
-                curY -= y;
-                if (curY < 0)
+                loc2.y -= y;
+                if (loc2.y < 0)
                 {
                     // loc_6DA81A:
-                    curY = -curY;
+                    loc2.y = -loc2.y;
                     bl = 24;
-                    if (curY <= curX * 4)
+                    if (loc2.y <= loc2.x * 4)
                     {
                         bl = 16;
-                        if (curX <= curY * 4)
+                        if (loc2.x <= loc2.y * 4)
                         {
                             bl = 20;
                         }
@@ -4343,10 +4341,10 @@ void Vehicle::UpdateMotionBoatHire()
                 else
                 {
                     bl = 8;
-                    if (curY <= curX * 4)
+                    if (loc2.y <= loc2.x * 4)
                     {
                         bl = 16;
-                        if (curX <= curY * 4)
+                        if (loc2.x <= loc2.y * 4)
                         {
                             bl = 12;
                         }
@@ -4355,17 +4353,17 @@ void Vehicle::UpdateMotionBoatHire()
             }
             else
             {
-                curY -= y;
-                if (curY < 0)
+                loc2.y -= y;
+                if (loc2.y < 0)
                 {
                     // loc_6DA83D:
-                    curX = -curX;
-                    curY = -curY;
+                    loc2.x = -loc2.x;
+                    loc2.y = -loc2.y;
                     bl = 24;
-                    if (curY <= curX * 4)
+                    if (loc2.y <= loc2.x * 4)
                     {
                         bl = 0;
-                        if (curX <= curY * 4)
+                        if (loc2.x <= loc2.y * 4)
                         {
                             bl = 28;
                         }
@@ -4373,12 +4371,12 @@ void Vehicle::UpdateMotionBoatHire()
                 }
                 else
                 {
-                    curX = -curX;
+                    loc2.x = -loc2.x;
                     bl = 8;
-                    if (curY <= curX * 4)
+                    if (loc2.y <= loc2.x * 4)
                     {
                         bl = 0;
-                        if (curX <= curY * 4)
+                        if (loc2.x <= loc2.y * 4)
                         {
                             bl = 4;
                         }
@@ -4388,8 +4386,8 @@ void Vehicle::UpdateMotionBoatHire()
 
             // loc_6DA861:
             var_34 = bl;
-            curX += curY;
-            if (curX <= 12)
+            loc2.x += loc2.y;
+            if (loc2.x <= 12)
             {
                 UpdateBoatLocation();
             }
@@ -4422,10 +4420,8 @@ void Vehicle::UpdateMotionBoatHire()
             }
 
             int32_t edi = (sprite_direction | (var_35 & 1)) & 0x1F;
-            curX = x + Unk9A36C4[edi].x;
-            curY = y + Unk9A36C4[edi].y;
-            curZ = z;
-            if (UpdateMotionCollisionDetection(curX, curY, curZ, nullptr))
+            loc2 = { x + Unk9A36C4[edi].x, y + Unk9A36C4[edi].y };
+            if (UpdateMotionCollisionDetection({ loc2, z }, nullptr))
             {
                 remaining_distance = 0;
                 if (sprite_direction == var_34)
@@ -4437,10 +4433,10 @@ void Vehicle::UpdateMotionBoatHire()
                 break;
             }
 
-            auto flooredLocation = CoordsXY(curX, curY).ToTileStart();
+            auto flooredLocation = loc2.ToTileStart();
             if (flooredLocation != TrackLocation)
             {
-                if (!vehicle_boat_is_location_accessible(CoordsXYZ{ curX, curY, TrackLocation.z }))
+                if (!vehicle_boat_is_location_accessible({ loc2, TrackLocation.z }))
                 {
                     // loc_6DA939:
                     auto curRide = GetRide();
@@ -4474,50 +4470,48 @@ void Vehicle::UpdateMotionBoatHire()
 
                     if (!(curRide->boat_hire_return_direction & 1))
                     {
-                        uint16_t tilePart = curY % COORDS_XY_STEP;
+                        uint16_t tilePart = loc2.y % COORDS_XY_STEP;
                         if (tilePart == COORDS_XY_HALF_TILE)
                         {
-                            TryReconnectBoatToTrack({ curX, curY }, flooredLocation);
+                            TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
+                        loc2 = { unk_F64E20.x, unk_F64E20.y };
                         if (tilePart <= COORDS_XY_HALF_TILE)
                         {
-                            curX = unk_F64E20.x;
-                            curY = unk_F64E20.y + 1;
+                            loc2.y += 1;
                         }
                         else
                         {
-                            curX = unk_F64E20.x;
-                            curY = unk_F64E20.y - 1;
+                            loc2.y -= 1;
                         }
                     }
                     else
                     {
                         // loc_6DA9A2:
-                        uint16_t tilePart = curX % COORDS_XY_STEP;
+                        uint16_t tilePart = loc2.x % COORDS_XY_STEP;
                         if (tilePart == COORDS_XY_HALF_TILE)
                         {
-                            TryReconnectBoatToTrack({ curX, curY }, flooredLocation);
+                            TryReconnectBoatToTrack({ loc2.x, loc2.y }, flooredLocation);
                             break;
                         }
+                        loc2 = { unk_F64E20.x, unk_F64E20.y };
                         if (tilePart <= COORDS_XY_HALF_TILE)
                         {
-                            curX = unk_F64E20.x + 1;
-                            curY = unk_F64E20.y;
+                            loc2.x += 1;
                         }
                         else
                         {
-                            curX = unk_F64E20.x - 1;
-                            curY = unk_F64E20.y;
+                            loc2.x -= 1;
                         }
                     }
 
                     // loc_6DA9D1:
                     remaining_distance = 0;
-                    if (!UpdateMotionCollisionDetection(curX, curY, z, nullptr))
+                    if (!UpdateMotionCollisionDetection({ loc2, z }, nullptr))
                     {
-                        unk_F64E20.x = curX;
-                        unk_F64E20.y = curY;
+                        unk_F64E20.x = loc2.x;
+                        unk_F64E20.y = loc2.y;
                     }
                     break;
                 }
@@ -4525,8 +4519,8 @@ void Vehicle::UpdateMotionBoatHire()
             }
 
             remaining_distance -= Unk9A36C4[edi].distance;
-            unk_F64E20.x = curX;
-            unk_F64E20.y = curY;
+            unk_F64E20.x = loc2.x;
+            unk_F64E20.y = loc2.y;
             if (remaining_distance < 0x368A)
             {
                 break;
@@ -7577,7 +7571,7 @@ void Vehicle::UpdateReverserCarBogies()
  * @param z (dx)
  * @param otherVehicleIndex (bp)
  */
-bool Vehicle::UpdateMotionCollisionDetection(int16_t curX, int16_t curY, int16_t curZ, uint16_t* otherVehicleIndex)
+bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* otherVehicleIndex)
 {
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_1))
         return false;
@@ -7601,15 +7595,15 @@ bool Vehicle::UpdateMotionCollisionDetection(int16_t curX, int16_t curY, int16_t
         if (this == collideVehicle)
             return false;
 
-        int32_t x_diff = abs(curX - collideVehicle->x);
+        int32_t x_diff = abs(loc.x - collideVehicle->x);
         if (x_diff > 0x7FFF)
             return false;
 
-        int32_t y_diff = abs(curY - collideVehicle->y);
+        int32_t y_diff = abs(loc.y - collideVehicle->y);
         if (y_diff > 0x7FFF)
             return false;
 
-        int32_t z_diff = abs(curZ - collideVehicle->z);
+        int32_t z_diff = abs(loc.z - collideVehicle->z);
         if (x_diff + y_diff + z_diff > 0xFFFF)
             return false;
 
@@ -7623,7 +7617,7 @@ bool Vehicle::UpdateMotionCollisionDetection(int16_t curX, int16_t curY, int16_t
         return direction < 0xF;
     }
 
-    auto location = CoordsXY{ curX, curY };
+    auto location = CoordsXY{ loc.x, loc.y };
 
     bool mayCollide = false;
     Vehicle* collideVehicle = nullptr;
@@ -7635,7 +7629,8 @@ bool Vehicle::UpdateMotionCollisionDetection(int16_t curX, int16_t curY, int16_t
         {
             if (vehicle2 == this)
                 continue;
-            int32_t z_diff = abs(vehicle2->z - z);
+
+            int32_t z_diff = abs(vehicle2->z - loc.z);
 
             if (z_diff > 16)
                 continue;
@@ -7650,11 +7645,11 @@ bool Vehicle::UpdateMotionCollisionDetection(int16_t curX, int16_t curY, int16_t
             if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                 continue;
 
-            uint32_t x_diff = abs(vehicle2->x - x);
+            uint32_t x_diff = abs(vehicle2->x - loc.x);
             if (x_diff > 0x7FFF)
                 continue;
 
-            uint32_t y_diff = abs(vehicle2->y - y);
+            uint32_t y_diff = abs(vehicle2->y - loc.y);
             if (y_diff > 0x7FFF)
                 continue;
 
@@ -7686,8 +7681,8 @@ bool Vehicle::UpdateMotionCollisionDetection(int16_t curX, int16_t curY, int16_t
 
             uint32_t offsetSpriteDirection = (sprite_direction + 4) & 31;
             uint32_t offsetDirection = offsetSpriteDirection >> 3;
-            uint32_t next_x_diff = abs(curX + AvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
-            uint32_t next_y_diff = abs(curY + AvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
+            uint32_t next_x_diff = abs(loc.x + AvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
+            uint32_t next_y_diff = abs(loc.y + AvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
 
             if (next_x_diff + next_y_diff < x_diff + y_diff)
             {
@@ -8184,20 +8179,19 @@ loc_6DAEB9:
     const auto moveInfo = GetMoveInfo();
     trackType = GetTrackType();
     {
-        int16_t curX = TrackLocation.x + moveInfo->x;
-        int16_t curY = TrackLocation.y + moveInfo->y;
-        int16_t curZ = TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+        CoordsXYZ loc = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
+                          TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 
         regs.ebx = 0;
-        if (curX != unk_F64E20.x)
+        if (loc.x != unk_F64E20.x)
         {
             regs.ebx |= 1;
         }
-        if (curY != unk_F64E20.y)
+        if (loc.y != unk_F64E20.y)
         {
             regs.ebx |= 2;
         }
-        if (curZ != unk_F64E20.z)
+        if (loc.z != unk_F64E20.z)
         {
             regs.ebx |= 4;
         }
@@ -8215,16 +8209,14 @@ loc_6DAEB9:
             ReverseReverserCar();
 
             const rct_vehicle_info* moveInfo2 = GetMoveInfo();
-            curX = x + moveInfo2->x;
-            curY = y + moveInfo2->y;
+            loc.x = x + moveInfo2->x;
+            loc.y = y + moveInfo2->y;
         }
 
         // loc_6DB8A5
         regs.ebx = dword_9A2930[regs.ebx];
         remaining_distance -= regs.ebx;
-        unk_F64E20.x = curX;
-        unk_F64E20.y = curY;
-        unk_F64E20.z = curZ;
+        unk_F64E20 = loc;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         vehicle_sprite_type = moveInfo->vehicle_sprite_type;
@@ -8244,7 +8236,7 @@ loc_6DAEB9:
             if (_vehicleVelocityF64E08 >= 0)
             {
                 otherVehicleIndex = prev_vehicle_on_ride;
-                if (UpdateMotionCollisionDetection(curX, curY, curZ, &otherVehicleIndex))
+                if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
                 {
                     goto loc_6DB967;
                 }
@@ -8512,28 +8504,25 @@ loc_6DBA33:;
     track_progress = regs.ax;
     {
         const rct_vehicle_info* moveInfo = GetMoveInfo();
-        int16_t curX = TrackLocation.x + moveInfo->x;
-        int16_t curY = TrackLocation.y + moveInfo->y;
-        int16_t curZ = TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+        CoordsXYZ loc = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
+                          TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 
         regs.ebx = 0;
-        if (curX != unk_F64E20.x)
+        if (loc.x != unk_F64E20.x)
         {
             regs.ebx |= 1;
         }
-        if (curY != unk_F64E20.y)
+        if (loc.y != unk_F64E20.y)
         {
             regs.ebx |= 2;
         }
-        if (curZ != unk_F64E20.z)
+        if (loc.z != unk_F64E20.z)
         {
             regs.ebx |= 4;
         }
         remaining_distance += dword_9A2930[regs.ebx];
 
-        unk_F64E20.x = curX;
-        unk_F64E20.y = curY;
-        unk_F64E20.z = curZ;
+        unk_F64E20 = loc;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         regs.ebx = moveInfo->vehicle_sprite_type;
@@ -8551,7 +8540,7 @@ loc_6DBA33:;
             if (_vehicleVelocityF64E08 < 0)
             {
                 otherVehicleIndex = next_vehicle_on_ride;
-                if (UpdateMotionCollisionDetection(curX, curY, curZ, &otherVehicleIndex))
+                if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
                 {
                     goto loc_6DBE7F;
                 }
@@ -8897,7 +8886,7 @@ loc_6DC743:
         if (_vehicleVelocityF64E08 >= 0)
         {
             otherVehicleIndex = prev_vehicle_on_ride;
-            UpdateMotionCollisionDetection(trackPos.x, trackPos.y, trackPos.z, &otherVehicleIndex);
+            UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex);
         }
     }
     goto loc_6DC99A;
@@ -9012,7 +9001,7 @@ loc_6DCC2C:
         if (_vehicleVelocityF64E08 >= 0)
         {
             otherVehicleIndex = var_44;
-            if (UpdateMotionCollisionDetection(trackPos.x, trackPos.y, trackPos.z, &otherVehicleIndex))
+            if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
             {
                 goto loc_6DCD6B;
             }
