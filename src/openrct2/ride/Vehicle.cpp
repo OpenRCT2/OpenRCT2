@@ -9205,6 +9205,26 @@ loc_6DCE02:
     }
 }
 
+static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
+{
+    int32_t accelerationDecrease2 = velocity >> 8;
+    accelerationDecrease2 *= accelerationDecrease2;
+    if (velocity < 0)
+    {
+        accelerationDecrease2 = -accelerationDecrease2;
+    }
+    accelerationDecrease2 >>= 4;
+    // OpenRCT2: vehicles from different track types can have  0 mass.
+    if (totalMass != 0)
+    {
+        return accelerationDecrease2 / totalMass;
+    }
+    else
+    {
+        return accelerationDecrease2;
+    }
+}
+
 int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 {
     auto curRide = get_ride(ride);
@@ -9265,14 +9285,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 
     int32_t newAcceleration = ((sumAcceleration / numVehicles) * 21) >> 9;
     newAcceleration -= velocity >> 12;
-    int32_t accelerationDecrease2 = velocity >> 8;
-    accelerationDecrease2 *= accelerationDecrease2;
-    if (velocity < 0)
-    {
-        accelerationDecrease2 = -accelerationDecrease2;
-    }
-    accelerationDecrease2 >>= 4;
-    newAcceleration -= accelerationDecrease2 / totalMass;
+    newAcceleration -= GetAccelerationDecrease2(velocity, totalMass);
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
     {
@@ -9296,39 +9309,36 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         poweredAcceleration *= powered_acceleration << 1;
         poweredAcceleration = poweredAcceleration / quarterForce;
 
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE))
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
         {
-            goto loc_6DD054;
-        }
+            if (poweredAcceleration < 0)
+            {
+                poweredAcceleration >>= 4;
+            }
 
-        if (poweredAcceleration < 0)
-        {
-            poweredAcceleration >>= 4;
-        }
-
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
-        {
-            spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
-        }
-
-        if (vehicle_sprite_type != 0)
-        {
-            poweredAcceleration = std::max(0, poweredAcceleration);
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
             {
-                if (vehicle_sprite_type == 2)
+                spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
+            }
+
+            if (vehicle_sprite_type != 0)
+            {
+                poweredAcceleration = std::max(0, poweredAcceleration);
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
                 {
-                    spin_speed = 0;
+                    if (vehicle_sprite_type == 2)
+                    {
+                        spin_speed = 0;
+                    }
                 }
+                newAcceleration += poweredAcceleration;
+                goto loc_6DD069;
             }
         }
-        else
+
+        if (abs(velocity) > 0x10000)
         {
-        loc_6DD054:
-            if (abs(velocity) > 0x10000)
-            {
-                newAcceleration = 0;
-            }
+            newAcceleration = 0;
         }
         newAcceleration += poweredAcceleration;
     }
@@ -9644,22 +9654,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     }
 
     curAcceleration -= accelerationDecrease1;
-    regs.edx = vehicle->velocity;
-    regs.ebx = regs.edx;
-    regs.edx >>= 8;
-    regs.edx *= regs.edx;
-    if (regs.ebx < 0)
-    {
-        regs.edx = -regs.edx;
-    }
-    regs.edx >>= 4;
-    int32_t accelerationDecrease2 = regs.edx;
-    // OpenRCT2: vehicles from different track types can have  0 mass.
-    if (totalMass != 0)
-    {
-        accelerationDecrease2 = accelerationDecrease2 / totalMass;
-    }
-    curAcceleration -= accelerationDecrease2;
+    curAcceleration -= GetAccelerationDecrease2(vehicle->velocity, totalMass);
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
     {
