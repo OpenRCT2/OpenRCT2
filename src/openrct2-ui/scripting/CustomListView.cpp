@@ -650,13 +650,15 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_UP);
-        gfx_draw_string_right(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos.x + size.width - 1, pos.y);
+        gfx_draw_string_right(
+            dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos + ScreenCoordsXY{ size.width - 1, 0 });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_DOWN);
-        gfx_draw_string_right(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos.x + size.width - 1, pos.y);
+        gfx_draw_string_right(
+            dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos + ScreenCoordsXY{ size.width - 1, 0 });
     }
 }
 

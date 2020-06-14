@@ -852,7 +852,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     auto ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(numGuests);
-                    gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 326, y);
+                    gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 326, y });
                 }
                 y += SUMMARISED_GUEST_ROW_HEIGHT;
             }
