@@ -4476,7 +4476,7 @@ void Vehicle::UpdateMotionBoatHire()
                             TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
-                        loc2 = { unk_F64E20.x, unk_F64E20.y };
+                        loc2 = unk_F64E20;
                         if (tilePart <= COORDS_XY_HALF_TILE)
                         {
                             loc2.y += 1;
@@ -4492,10 +4492,10 @@ void Vehicle::UpdateMotionBoatHire()
                         uint16_t tilePart = loc2.x % COORDS_XY_STEP;
                         if (tilePart == COORDS_XY_HALF_TILE)
                         {
-                            TryReconnectBoatToTrack({ loc2.x, loc2.y }, flooredLocation);
+                            TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
-                        loc2 = { unk_F64E20.x, unk_F64E20.y };
+                        loc2 = unk_F64E20;
                         if (tilePart <= COORDS_XY_HALF_TILE)
                         {
                             loc2.x += 1;
@@ -7617,7 +7617,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
         return direction < 0xF;
     }
 
-    auto location = CoordsXY{ loc.x, loc.y };
+    CoordsXY location = loc;
 
     bool mayCollide = false;
     Vehicle* collideVehicle = nullptr;
@@ -8179,8 +8179,8 @@ loc_6DAEB9:
     const auto moveInfo = GetMoveInfo();
     trackType = GetTrackType();
     {
-        CoordsXYZ loc = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
-                          TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
+        auto loc = TrackLocation
+            + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 
         regs.ebx = 0;
         if (loc.x != unk_F64E20.x)
@@ -8504,8 +8504,8 @@ loc_6DBA33:;
     track_progress = regs.ax;
     {
         const rct_vehicle_info* moveInfo = GetMoveInfo();
-        CoordsXYZ loc = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
-                          TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
+        auto loc = TrackLocation
+            + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 
         regs.ebx = 0;
         if (loc.x != unk_F64E20.x)
