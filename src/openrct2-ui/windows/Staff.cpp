@@ -336,7 +336,7 @@ rct_window* window_staff_open(Peep* peep)
     window_staff_disable_widgets(w);
     window_init_scroll_widgets(w);
     window_staff_viewport_init(w);
-    if (get_sprite(w->number)->peep.state == PEEP_STATE_PICKED)
+    if (get_sprite(w->number)->peep.State == PEEP_STATE_PICKED)
         window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 
     return w;
@@ -351,7 +351,7 @@ void window_staff_disable_widgets(rct_window* w)
     Peep* peep = &get_sprite(w->number)->peep;
     uint64_t disabled_widgets = (1 << WIDX_TAB_4);
 
-    if (peep->staff_type == STAFF_TYPE_SECURITY)
+    if (peep->StaffType == STAFF_TYPE_SECURITY)
     {
         disabled_widgets |= (1 << WIDX_TAB_2);
     }
@@ -810,7 +810,7 @@ void window_staff_options_invalidate(rct_window* w)
 
     peep->FormatNameTo(gCommonFormatArgs);
 
-    switch (peep->staff_type)
+    switch (peep->StaffType)
     {
         case STAFF_TYPE_ENTERTAINER:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_EMPTY;
@@ -819,7 +819,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->sprite_type - 4];
+            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->SpriteType - 4];
             break;
         case STAFF_TYPE_HANDYMAN:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
@@ -1027,10 +1027,10 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         y++;
 
-    int32_t ebx = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;
+    int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
 
     int32_t eax = 0;
 
@@ -1041,7 +1041,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     ebx += eax;
 
-    int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
+    int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
@@ -1099,7 +1099,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        Formatter::Common().Add<money32>(gStaffWageTable[peep->staff_type]);
+        Formatter::Common().Add<money32>(gStaffWageTable[peep->StaffType]);
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
@@ -1107,7 +1107,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->TimeInPark), COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    switch (peep->staff_type)
+    switch (peep->StaffType)
     {
         case STAFF_TYPE_HANDYMAN:
             gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, x, y);
@@ -1174,10 +1174,10 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     Peep* peep;
     peep = GET_PEEP(w->number);
 
-    uint32_t imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
+    uint32_t imageId = g_peep_animation_entries[peep->SpriteType].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
     imageId += w->picked_peep_frame >> 2;
 
-    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     gPickupPeepImage = imageId;
 }
 
@@ -1218,7 +1218,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
             return;
 
         Peep& peep = sprite->peep;
-        if (peep.type != PEEP_TYPE_STAFF)
+        if (peep.AssignedPeepType != PEEP_TYPE_STAFF)
             return;
 
         auto staff = peep.AsStaff();
@@ -1259,7 +1259,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     Peep& peep = sprite->peep;
-    if (peep.type != PEEP_TYPE_STAFF)
+    if (peep.AssignedPeepType != PEEP_TYPE_STAFF)
         return;
 
     bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet(destCoords);
@@ -1336,7 +1336,7 @@ void window_staff_viewport_init(rct_window* w)
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->state == PEEP_STATE_PICKED)
+    if (peep->State == PEEP_STATE_PICKED)
     {
         focus.sprite_id = SPRITE_INDEX_NULL;
     }
@@ -1372,7 +1372,7 @@ void window_staff_viewport_init(rct_window* w)
     w->viewport_focus_sprite.type = focus.type;
     w->viewport_focus_sprite.rotation = focus.rotation;
 
-    if (peep->state != PEEP_STATE_PICKED)
+    if (peep->State != PEEP_STATE_PICKED)
     {
         if (!(w->viewport))
         {
@@ -1414,7 +1414,7 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     for (int32_t i = 0; i < numCostumes; i++)
     {
         uint8_t costume = _availableCostumes[i];
-        if (peep->sprite_type == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume)
+        if (peep->SpriteType == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume)
         {
             checkedIndex = i;
         }

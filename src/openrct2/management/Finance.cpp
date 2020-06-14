@@ -116,7 +116,7 @@ void finance_pay_wages()
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {
-        finance_payment(gStaffWageTable[peep->staff_type] / 4, ExpenditureType::Wages);
+        finance_payment(gStaffWageTable[peep->StaffType] / 4, ExpenditureType::Wages);
     }
 }
 
@@ -254,7 +254,7 @@ void finance_update_daily_profit()
 
         FOR_ALL_STAFF (sprite_index, peep)
         {
-            current_profit -= gStaffWageTable[peep->staff_type];
+            current_profit -= gStaffWageTable[peep->StaffType];
         }
 
         // Research costs

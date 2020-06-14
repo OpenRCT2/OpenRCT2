@@ -703,7 +703,7 @@ private:
         {
             auto peep = GET_PEEP(spriteIndex);
             spriteIndex = peep->next;
-            if (peep->type == PEEP_TYPE_GUEST)
+            if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
             {
                 peep->Remove();
             }

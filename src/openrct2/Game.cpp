@@ -437,7 +437,7 @@ void game_fix_save_vars()
     uint32_t peepCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (!peep->outside_of_park)
+        if (!peep->OutsideOfPark)
             peepCount++;
     }
 

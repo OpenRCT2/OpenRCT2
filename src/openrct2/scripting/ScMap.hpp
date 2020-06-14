@@ -146,7 +146,7 @@ namespace OpenRCT2::Scripting
                     {
                         if (targetList == SPRITE_LIST_PEEP)
                         {
-                            if (sprite->peep.type == PEEP_TYPE_STAFF)
+                            if (sprite->peep.AssignedPeepType == PEEP_TYPE_STAFF)
                                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId)));
                             else
                                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId)));
@@ -200,7 +200,7 @@ namespace OpenRCT2::Scripting
                 case SPRITE_IDENTIFIER_VEHICLE:
                     return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
                 case SPRITE_IDENTIFIER_PEEP:
-                    if (sprite->peep.type == PEEP_TYPE_STAFF)
+                    if (sprite->peep.AssignedPeepType == PEEP_TYPE_STAFF)
                         return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                     else
                         return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));

@@ -4124,13 +4124,13 @@ void Vehicle::UpdateUnloadingPassengers()
             peep[seat * 2] = SPRITE_INDEX_NULL;
 
             curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-            curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+            curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
 
             curPeep = GET_PEEP(peep[seat * 2 + 1]);
             peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
             curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-            curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+            curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
         }
     }
     else
@@ -4164,7 +4164,7 @@ void Vehicle::UpdateUnloadingPassengers()
             {
                 Peep* curPeep = GET_PEEP(train->peep[peepIndex]);
                 curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-                curPeep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
+                curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
             }
         }
     }
@@ -5284,7 +5284,7 @@ void Vehicle::KillPassengers(Ride* curRide)
     for (auto i = 0; i < num_peeps; i++)
     {
         Peep* curPeep = GET_PEEP(peep[i]);
-        if (curPeep->outside_of_park == 0)
+        if (curPeep->OutsideOfPark == 0)
         {
             decrement_guests_in_park();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

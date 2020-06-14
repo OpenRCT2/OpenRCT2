@@ -596,24 +596,24 @@ public:
 
 struct Peep : SpriteBase
 {
-    char* name;
+    char* Name;
     CoordsXYZ NextLoc;
-    uint8_t next_flags;
-    uint8_t outside_of_park;
-    PeepState state;
-    uint8_t sub_state;
-    PeepSpriteType sprite_type;
-    PeepType type;
+    uint8_t NextFlags;
+    uint8_t OutsideOfPark;
+    PeepState State;
+    uint8_t SubState;
+    PeepSpriteType SpriteType;
+    PeepType AssignedPeepType;
     union
     {
-        uint8_t staff_type;
-        uint8_t no_of_rides;
+        uint8_t StaffType;
+        uint8_t GuestNumRides;
     };
-    uint8_t tshirt_colour;
-    uint8_t trousers_colour;
-    uint16_t destination_x; // Location that the peep is trying to get to
-    uint16_t destination_y;
-    uint8_t destination_tolerance; // How close to destination before next action/state 0 = exact
+    uint8_t TshirtColour;
+    uint8_t TrousersColour;
+    uint16_t DestinationX; // Location that the peep is trying to get to
+    uint16_t DestinationY;
+    uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
     uint8_t Var37;
     uint8_t Energy;
     uint8_t EnergyTarget;
@@ -998,11 +998,11 @@ enum
 
 #define FOR_ALL_GUESTS(sprite_index, peep)                                                                                     \
     FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->type == PEEP_TYPE_GUEST)
+        if ((peep)->AssignedPeepType == PEEP_TYPE_GUEST)
 
 #define FOR_ALL_STAFF(sprite_index, peep)                                                                                      \
     FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->type == PEEP_TYPE_STAFF)
+        if ((peep)->AssignedPeepType == PEEP_TYPE_STAFF)
 
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];

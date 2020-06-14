@@ -1222,7 +1222,7 @@ void vehicle_visual_mini_golf_player(
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
-    uint32_t peep_palette = sprite->peep.tshirt_colour << 19 | sprite->peep.trousers_colour << 24 | 0x0A0000000;
+    uint32_t peep_palette = sprite->peep.TshirtColour << 19 | sprite->peep.TrousersColour << 24 | 0x0A0000000;
     sub_98197C(session, image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5);
 }
 

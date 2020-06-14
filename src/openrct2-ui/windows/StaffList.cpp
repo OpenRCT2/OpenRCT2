@@ -193,7 +193,7 @@ void WindowStaffListRefresh()
     FOR_ALL_STAFF (spriteIndex, peep)
     {
         sprite_set_flashing(peep, false);
-        if (peep->staff_type != _windowStaffListSelectedTab)
+        if (peep->StaffType != _windowStaffListSelectedTab)
             continue;
         sprite_set_flashing(peep, true);
 
@@ -345,7 +345,7 @@ void window_staff_list_update(rct_window* w)
             {
                 sprite_set_flashing(peep, false);
 
-                if (peep->staff_type == _windowStaffListSelectedTab)
+                if (peep->StaffType == _windowStaffListSelectedTab)
                 {
                     sprite_set_flashing(peep, true);
                 }
@@ -381,7 +381,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
         FOR_ALL_STAFF (spriteIndex, peep)
         {
-            if (peep->staff_type != selectedPeepType)
+            if (peep->StaffType != selectedPeepType)
                 continue;
 
             if (isPatrolAreaSet)
@@ -713,7 +713,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
 
             auto staffOrderIcon_x = nameColumnSize + 20;
-            if (peep->staff_type != 3)
+            if (peep->StaffType != 3)
             {
                 auto staffOrders = peep->StaffOrders;
                 auto staffOrderSprite = staffOrderBaseSprites[_windowStaffListSelectedTab];
@@ -732,7 +732,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
             else
             {
-                gfx_draw_sprite(dpi, staffCostumeSprites[peep->sprite_type - 4], staffOrderIcon_x, y, 0);
+                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], staffOrderIcon_x, y, 0);
             }
         }
 

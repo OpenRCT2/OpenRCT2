@@ -4352,7 +4352,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 Peep* peep;
                 FOR_ALL_STAFF (spriteIndex, peep)
                 {
-                    if (peep->staff_type == STAFF_TYPE_MECHANIC)
+                    if (peep->StaffType == STAFF_TYPE_MECHANIC)
                     {
                         stringId = STR_CALLING_MECHANIC;
                         break;

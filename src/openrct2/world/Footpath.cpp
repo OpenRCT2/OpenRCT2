@@ -422,14 +422,14 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
         if (entity->generic.Is<Peep>())
         {
             Peep* peep = &entity->peep;
-            if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
+            if (peep->State == PEEP_STATE_SITTING || peep->State == PEEP_STATE_WATCHING)
             {
                 if (peep->z == footpathPos.z)
                 {
                     peep->SetState(PEEP_STATE_WALKING);
-                    peep->destination_x = (peep->x & 0xFFE0) + 16;
-                    peep->destination_y = (peep->y & 0xFFE0) + 16;
-                    peep->destination_tolerance = 5;
+                    peep->DestinationX = (peep->x & 0xFFE0) + 16;
+                    peep->DestinationY = (peep->y & 0xFFE0) + 16;
+                    peep->DestinationTolerance = 5;
                     peep->UpdateCurrentActionSpriteType();
                 }
             }
