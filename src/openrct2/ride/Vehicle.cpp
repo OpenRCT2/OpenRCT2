@@ -7996,79 +7996,80 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     // Change from original: this used to check if the vehicle allowed doors.
     vehicle_update_scenery_door(this);
 
+    bool isGoingBack = false;
     switch (TrackSubposition)
     {
-        default:
-            goto loc_6DB358;
         case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK:
         case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL:
             TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK;
-            goto loc_6DB32A;
+            isGoingBack = true;
+            break;
         case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL:
             TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT;
-            goto loc_6DB358;
+            break;
         case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE:
             TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE;
-            goto loc_6DB358;
+            break;
         case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE:
             TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE;
-            goto loc_6DB358;
+            break;
+        default:
+            break;
     }
 
-loc_6DB32A:
-{
-    track_begin_end trackBeginEnd;
-    if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
+    if (isGoingBack)
     {
-        return false;
-    }
-    location.x = trackBeginEnd.begin_x;
-    location.y = trackBeginEnd.begin_y;
-    location.z = trackBeginEnd.begin_z;
-    location.direction = trackBeginEnd.begin_direction;
-    tileElement = trackBeginEnd.begin_element;
-}
-    goto loc_6DB41D;
-
-loc_6DB358:
-{
-    int32_t curZ, direction;
-    CoordsXYE xyElement = { TrackLocation, tileElement };
-    if (!track_block_get_next(&xyElement, &xyElement, &curZ, &direction))
-    {
-        return false;
-    }
-    tileElement = xyElement.element;
-    location = { xyElement, curZ, static_cast<Direction>(direction) };
-}
-    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_REVERSER
-        || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_REVERSER)
-    {
-        if (IsHead() && velocity <= 0x30000)
+        track_begin_end trackBeginEnd;
+        if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
         {
-            velocity = 0;
+            return false;
         }
+        location.x = trackBeginEnd.begin_x;
+        location.y = trackBeginEnd.begin_y;
+        location.z = trackBeginEnd.begin_z;
+        location.direction = trackBeginEnd.begin_direction;
+        tileElement = trackBeginEnd.begin_element;
     }
-
-    if (!loc_6DB38B(this, tileElement))
+    else
     {
-        return false;
-    }
-
-    // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-    {
-        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-        if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (tileElement->AsTrack()->IsInverted())
+            int32_t curZ, direction;
+            CoordsXYE xyElement = { TrackLocation, tileElement };
+            if (!track_block_get_next(&xyElement, &xyElement, &curZ, &direction))
             {
-                SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                return false;
+            }
+            tileElement = xyElement.element;
+            location = { xyElement, curZ, static_cast<Direction>(direction) };
+        }
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_REVERSER
+            || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_REVERSER)
+        {
+            if (IsHead() && velocity <= 0x30000)
+            {
+                velocity = 0;
+            }
+        }
+
+        if (!loc_6DB38B(this, tileElement))
+        {
+            return false;
+        }
+
+        // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
+        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+        {
+            int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+            if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+            {
+                if (tileElement->AsTrack()->IsInverted())
+                {
+                    SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                }
             }
         }
     }
 
-loc_6DB41D:
     TrackLocation = location;
 
     // TODO check if getting the vehicle entry again is necessary
