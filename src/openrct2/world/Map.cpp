@@ -57,6 +57,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <memory>
 
 using namespace OpenRCT2;
 
@@ -1076,16 +1077,14 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    TileElement* new_tile_elements = static_cast<TileElement*>(malloc(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM * sizeof(TileElement)));
-    TileElement* new_elements_pointer = new_tile_elements;
+    auto newTileElements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
+    TileElement* newElementsPtr = newTileElements.get();
 
-    if (new_tile_elements == nullptr)
+    if (newTileElements == nullptr)
     {
         log_fatal("Unable to allocate memory for map elements.");
         return;
     }
-
-    uint32_t num_elements;
 
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
@@ -1098,17 +1097,15 @@ void map_reorganise_elements()
             while (!(endElement++)->IsLastForTile())
                 ;
 
-            num_elements = static_cast<uint32_t>(endElement - startElement);
-            std::memcpy(new_elements_pointer, startElement, num_elements * sizeof(TileElement));
-            new_elements_pointer += num_elements;
+            const auto numElements = static_cast<uint32_t>(endElement - startElement);
+            std::memcpy(newElementsPtr, startElement, numElements * sizeof(TileElement));
+            newElementsPtr += numElements;
         }
     }
 
-    num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements);
-    std::memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
-    std::memset(gTileElements + num_elements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - num_elements) * sizeof(TileElement));
-
-    free(new_tile_elements);
+    const auto numElements = static_cast<uint32_t>(newElementsPtr - newTileElements.get());
+    std::memcpy(gTileElements, newTileElements.get(), numElements * sizeof(TileElement));
+    std::memset(gTileElements + numElements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - numElements) * sizeof(TileElement));
 
     map_update_tile_pointers();
 }
