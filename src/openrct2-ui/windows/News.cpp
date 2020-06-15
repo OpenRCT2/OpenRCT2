@@ -297,11 +297,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                         break;
                     }
 
-                    auto sprite = try_get_sprite(newsItem.Assoc);
-                    if (sprite == nullptr)
-                        break;
-
-                    auto peep = sprite->generic.As<Peep>();
+                    auto peep = TryGetEntity<Peep>(newsItem.Assoc);
                     if (peep == nullptr)
                         break;
 

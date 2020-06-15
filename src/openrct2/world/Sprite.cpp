@@ -122,6 +122,11 @@ rct_sprite* get_sprite(size_t sprite_idx)
     return &_spriteList[sprite_idx];
 }
 
+SpriteBase* TryGetEntity(size_t sprite_idx)
+{
+    return TryGetEntity<SpriteBase>(sprite_idx);
+}
+
 uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
 {
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
