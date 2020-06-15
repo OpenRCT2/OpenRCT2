@@ -36,6 +36,7 @@
 - Fix: [#11640] Objects with a blank description in one language do not fall back to other languages anymore.
 - Fix: [#11676] Spiral Roller Coaster has regular lift hill available.
 - Fix: [#11695] Mechanics walk to tile 0, 0 at entrance only stations when trying to fix them.
+- Fix: [#11953] Incorrect banner text shade colour on wall text.
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
 - Improved: [#11390] Build hash written to screenshot metadata.
