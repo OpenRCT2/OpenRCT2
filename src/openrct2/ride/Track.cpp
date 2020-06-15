@@ -560,6 +560,16 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 };
 // clang-format on
 
+VAngleAndBank track_vangle_and_bank_start(uint8_t trackType)
+{
+    return { TrackDefinitions[trackType].vangle_start, TrackDefinitions[trackType].bank_start };
+}
+
+VAngleAndBank track_vangle_and_bank_end(uint8_t trackType)
+{
+    return { TrackDefinitions[trackType].vangle_end, TrackDefinitions[trackType].bank_end };
+}
+
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.
  */

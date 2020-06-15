@@ -33,6 +33,20 @@ struct rct_trackdefinition
 assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
 
+struct VAngleAndBank
+{
+    uint8_t VAngle;
+    uint8_t Bank;
+};
+bool operator==(const VAngleAndBank& vb1, const VAngleAndBank& vb2)
+{
+    return vb1.VAngle == vb2.VAngle && vb1.Bank == vb2.Bank;
+}
+bool operator!=(const VAngleAndBank& vb1, const VAngleAndBank& vb2)
+{
+    return !(vb1 == vb2);
+}
+
 /* size 0x0A */
 struct rct_preview_track
 {
@@ -537,6 +551,9 @@ struct track_circuit_iterator
 
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
+
+VAngleAndBank track_vangle_and_bank_start(uint8_t trackType);
+VAngleAndBank track_vangle_and_bank_end(uint8_t trackType);
 
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 

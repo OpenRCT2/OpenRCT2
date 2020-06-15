@@ -608,21 +608,6 @@ enum
     SOUND_RANGE_NONE = 255
 };
 
-// TODO move these to Track.h
-struct VAngleAndBank
-{
-    uint8_t VAngle;
-    uint8_t Bank;
-};
-bool operator==(const VAngleAndBank& vb1, const VAngleAndBank& vb2)
-{
-    return vb1.VAngle == vb2.VAngle && vb1.Bank == vb2.Bank;
-}
-bool operator!=(const VAngleAndBank& vb1, const VAngleAndBank& vb2)
-{
-    return !(vb1 == vb2);
-}
-
 #define VEHICLE_SEAT_PAIR_FLAG 0x80
 #define VEHICLE_SEAT_NUM_MASK 0x7F
 
@@ -638,14 +623,9 @@ extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;
 extern int32_t _vehicleVelocityF64E0C;
 extern int32_t _vehicleUnkF64E10;
-extern VAngleAndBank _vehicleVAngleAndBank;
 extern uint8_t _vehicleF64E2C;
 extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;
-
-// TODO move these to Track.h
-VAngleAndBank VAngleAndBankStart(uint8_t trackType);
-VAngleAndBank VAngleAndBankEnd(uint8_t trackType);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)

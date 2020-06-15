@@ -233,7 +233,6 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
         if (trackProgress >= trackTotalProgress)
         {
-            _vehicleVAngleAndBank = VAngleAndBankEnd(trackType);
             TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             CoordsXYE output;
@@ -245,7 +244,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (_vehicleVAngleAndBank != VAngleAndBankStart(output.element->AsTrack()->GetTrackType()))
+            if (track_vangle_and_bank_end(trackType) != track_vangle_and_bank_start(output.element->AsTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output, outputZ };
@@ -298,8 +297,6 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (static_cast<int16_t>(trackProgress) == -1)
         {
             uint8_t trackType = GetTrackType();
-            _vehicleVAngleAndBank = VAngleAndBankStart(trackType);
-
             TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
@@ -308,7 +305,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             if (!track_block_get_previous(input, &output))
                 return false;
 
-            if (_vehicleVAngleAndBank != VAngleAndBankEnd(output.begin_element->AsTrack()->GetTrackType()))
+            if (track_vangle_and_bank_start(trackType)
+                != track_vangle_and_bank_end(output.begin_element->AsTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
