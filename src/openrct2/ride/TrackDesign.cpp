@@ -2112,18 +2112,18 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
  */
 static std::unique_ptr<map_backup> track_design_preview_backup_map()
 {
-    auto backup_ptr = std::make_unique<map_backup>();
-    if (backup_ptr != nullptr)
+    auto backup = std::make_unique<map_backup>();
+    if (backup != nullptr)
     {
-        std::memcpy(backup_ptr->tile_elements, gTileElements, sizeof(backup_ptr->tile_elements));
-        std::memcpy(backup_ptr->tile_pointers, gTileElementTilePointers, sizeof(backup_ptr->tile_pointers));
-        backup_ptr->next_free_tile_element = gNextFreeTileElement;
-        backup_ptr->map_size_units = gMapSizeUnits;
-        backup_ptr->map_size_units_minus_2 = gMapSizeMinus2;
-        backup_ptr->map_size = gMapSize;
-        backup_ptr->current_rotation = get_current_rotation();
+        std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
+        std::memcpy(backup->tile_pointers, gTileElementTilePointers, sizeof(backup->tile_pointers));
+        backup->next_free_tile_element = gNextFreeTileElement;
+        backup->map_size_units = gMapSizeUnits;
+        backup->map_size_units_minus_2 = gMapSizeMinus2;
+        backup->map_size = gMapSize;
+        backup->current_rotation = get_current_rotation();
     }
-    return backup_ptr;
+    return backup;
 }
 
 /**
