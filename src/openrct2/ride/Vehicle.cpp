@@ -7481,7 +7481,7 @@ static void vehicle_update_scenery_door(Vehicle* vehicle)
  */
 static VAngleAndBank VAngleAndBankStart(bool useInvertedSprites, TileElement* tileElement)
 {
-    int32_t trackType = tileElement->AsTrack()->GetTrackType();
+    auto trackType = tileElement->AsTrack()->GetTrackType();
     return VAngleAndBank{ TrackDefinitions[trackType].vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
 }
 
@@ -8789,7 +8789,6 @@ loc_6DC476:
         }
     }
 
-    auto vangleAndBankEnd = track_vangle_and_bank_end(GetTrackType());
     tileElement = map_get_track_element_at_of_type_seq(TrackLocation, GetTrackType(), 0);
     int32_t direction;
     {
@@ -8805,7 +8804,8 @@ loc_6DC476:
         direction = outDirection;
     }
 
-    if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement) != vangleAndBankEnd)
+    if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+        != track_vangle_and_bank_end(GetTrackType()))
     {
         goto loc_6DC9BC;
     }
@@ -8999,7 +8999,6 @@ loc_6DCA9A:
         goto loc_6DCC2C;
     }
 
-    auto vangleAndBankEnd = track_vangle_and_bank_end(GetTrackType());
     tileElement = map_get_track_element_at_of_type_seq(TrackLocation, GetTrackType(), 0);
     {
         track_begin_end trackBeginEnd;
@@ -9012,7 +9011,8 @@ loc_6DCA9A:
         tileElement = trackBeginEnd.begin_element;
     }
 
-    if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement) != vangleAndBankEnd)
+    if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+        != track_vangle_and_bank_end(GetTrackType()))
     {
         goto loc_6DCD4A;
     }
