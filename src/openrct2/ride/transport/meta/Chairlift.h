@@ -31,6 +31,8 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_STATION_TO_STATION),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(Heights, { 40, 32, 28, 2, }),
+    SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 4, 3, 10 }),
     SET_FIELD(BuildCosts, { 65, 1, 30, }),

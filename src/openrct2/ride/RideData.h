@@ -115,6 +115,9 @@ struct RideTypeDescriptor
     uint8_t DefaultMode;
     RideNameConvention NameConvention;
     uint8_t AvailableBreakdowns;
+    /** rct2: 0x0097D218 */
+    RideHeights Heights;
+    uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     rct_ride_lift_data LiftData;
     UpkeepCostsDescriptor UpkeepCosts;
@@ -262,9 +265,6 @@ constexpr const uint64_t AllRideModesAvailable = (1ULL << RIDE_MODE_CONTINUOUS_C
     | (1ULL << RIDE_MODE_DOWNWARD_LAUNCH) | (1ULL << RIDE_MODE_CROOKED_HOUSE) | (1ULL << RIDE_MODE_FREEFALL_DROP)
     | (1ULL << RIDE_MODE_POWERED_LAUNCH) | (1ULL << RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED);
 
-extern const RideHeights RideData5[RIDE_TYPE_COUNT];
-extern const uint8_t MaxMass[RIDE_TYPE_COUNT];
-
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
@@ -289,6 +289,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
+    SET_FIELD(Heights, { 12, 64, 0, 0, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0, 0, 1 }),

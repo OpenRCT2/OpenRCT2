@@ -32,6 +32,8 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
+    SET_FIELD(Heights, { 7, 32, 5, 9, }),
+    SET_FIELD(MaxMass, 39),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 10, 3, 5 }),
     SET_FIELD(BuildCosts, { 35, 6, 50, }),

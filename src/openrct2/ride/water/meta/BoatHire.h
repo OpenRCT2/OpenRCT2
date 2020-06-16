@@ -29,6 +29,8 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_BOAT_HIRE),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
+    SET_FIELD(Heights, { 255, 16, 0, 3, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
     SET_FIELD(BuildCosts, { 55, 5, 5, }),

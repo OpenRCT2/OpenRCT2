@@ -31,6 +31,8 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_ROTATION),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(Heights, { 16, 160, 3, 2, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 100, 2, 1, }),

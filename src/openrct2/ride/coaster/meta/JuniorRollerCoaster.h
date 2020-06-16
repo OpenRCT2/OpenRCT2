@@ -30,6 +30,8 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
+    SET_FIELD(Heights, { 15, 24, 4, 7, }),
+    SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 6 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 45, 4, 40, }),

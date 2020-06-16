@@ -29,6 +29,8 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_RACE),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
+    SET_FIELD(Heights, { 7, 24, 2, 1, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 8, 0, 0 }),
     SET_FIELD(BuildCosts, { 62, 4, 20, }),

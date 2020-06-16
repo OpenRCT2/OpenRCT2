@@ -1512,7 +1512,7 @@ void Staff::UpdateHeadingToInspect()
 
         if (delta_y < 20)
         {
-            newZ += RideData5[ride->type].PlatformHeight;
+            newZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, newZ });
@@ -1623,7 +1623,7 @@ void Staff::UpdateAnswering()
 
         if (delta_y < 20)
         {
-            newZ += RideData5[ride->type].PlatformHeight;
+            newZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, newZ });
@@ -2689,7 +2689,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 
         if (xy_distance >= 16)
         {
-            stationHeight += RideData5[ride->type].PlatformHeight;
+            stationHeight += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, stationHeight });

@@ -30,6 +30,8 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_CROOKED_HOUSE),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
+    SET_FIELD(Heights, { 16, 96, 3, 2, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
     SET_FIELD(UpkeepCosts, { 30, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 65, 2, 1, }),

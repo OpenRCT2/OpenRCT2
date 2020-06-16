@@ -3683,7 +3683,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         distanceThreshold += 4;
         if (xy_distance < distanceThreshold)
         {
-            actionZ += RideData5[ride->type].PlatformHeight;
+            actionZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, actionZ });
@@ -3803,7 +3803,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
  */
 static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, int16_t z, uint8_t exit_direction)
 {
-    z += RideData5[ride->type].PlatformHeight;
+    z += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
 
     peep->MoveTo({ x, y, z });
 
@@ -4265,7 +4265,7 @@ void Guest::UpdateRideLeaveVehicle()
     Guard::Assert(!exitLocation.isNull());
 
     auto waypointLoc = CoordsXYZ{ ride->stations[CurrentRideStation].Start.ToTileCentre(),
-                                  exitLocation.z + RideData5[ride->type].PlatformHeight };
+                                  exitLocation.z + RideTypeDescriptors[ride->type].Heights.PlatformHeight };
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, CurrentRideStation);
 
@@ -4385,7 +4385,7 @@ void Guest::UpdateRideInExit()
         {
             int16_t actionZ = ride->stations[CurrentRideStation].GetBaseZ();
 
-            actionZ += RideData5[ride->type].PlatformHeight;
+            actionZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
             MoveTo({ *loc, actionZ });
             return;
         }

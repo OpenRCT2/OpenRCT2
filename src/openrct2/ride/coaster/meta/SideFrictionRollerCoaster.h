@@ -29,6 +29,8 @@ constexpr const RideTypeDescriptor SideFrictionRollerCoasterRTD =
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
+    SET_FIELD(Heights, { 15, 24, 4, 11, }),
+    SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { SoundId::LiftWood, 3, 4 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 55, 6, 37, }),

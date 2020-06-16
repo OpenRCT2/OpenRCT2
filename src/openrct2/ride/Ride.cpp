@@ -4401,7 +4401,7 @@ static Vehicle* vehicle_create_car(
         vehicle->TrackLocation = { x, y, z };
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
 
-        z += RideData5[ride->type].VehicleZOffset;
+        z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
@@ -4490,7 +4490,7 @@ static Vehicle* vehicle_create_car(
 
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
         z = tileElement->GetBaseZ();
-        z += RideData5[ride->type].VehicleZOffset;
+        z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
         vehicle->MoveTo({ x, y, z });
         vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (vehicle->sprite_direction >> 3);
@@ -6691,7 +6691,7 @@ void Ride::UpdateMaxVehicles()
             return;
 
         auto stationLength = (*stationNumTiles * 0x44180) - 0x16B2A;
-        int32_t maxMass = MaxMass[type] << 8;
+        int32_t maxMass = RideTypeDescriptors[type].MaxMass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
