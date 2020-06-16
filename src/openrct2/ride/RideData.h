@@ -61,12 +61,12 @@ struct RideBuildCost
     uint8_t PriceEstimateMultiplier;
 };
 
-struct rct_ride_data_5
+struct RideHeights
 {
-    uint8_t max_height;
-    uint8_t clearance_height;
-    int8_t z_offset;
-    uint8_t z;
+    uint8_t MaxHeight;
+    uint8_t ClearanceHeight;
+    int8_t VehicleZOffset;
+    uint8_t PlatformHeight;
 };
 
 struct rct_ride_lift_data
@@ -262,7 +262,7 @@ constexpr const uint64_t AllRideModesAvailable = (1ULL << RIDE_MODE_CONTINUOUS_C
     | (1ULL << RIDE_MODE_DOWNWARD_LAUNCH) | (1ULL << RIDE_MODE_CROOKED_HOUSE) | (1ULL << RIDE_MODE_FREEFALL_DROP)
     | (1ULL << RIDE_MODE_POWERED_LAUNCH) | (1ULL << RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED);
 
-extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
+extern const RideHeights RideData5[RIDE_TYPE_COUNT];
 extern const uint8_t MaxMass[RIDE_TYPE_COUNT];
 
 extern const rct_ride_entry_vehicle CableLiftVehicle;

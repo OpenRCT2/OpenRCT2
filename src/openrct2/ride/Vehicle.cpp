@@ -8272,7 +8272,7 @@ loc_6DAEB9:
     {
         int16_t curX = TrackLocation.x + moveInfo->x;
         int16_t curY = TrackLocation.y + moveInfo->y;
-        int16_t curZ = TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset;
+        int16_t curZ = TrackLocation.z + moveInfo->z + RideData5[curRide->type].VehicleZOffset;
 
         regs.ebx = 0;
         if (curX != unk_F64E20.x)
@@ -8597,7 +8597,7 @@ loc_6DBA33:;
         const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
         int16_t curX = TrackLocation.x + moveInfo->x;
         int16_t curY = TrackLocation.y + moveInfo->y;
-        int16_t curZ = TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset;
+        int16_t curZ = TrackLocation.z + moveInfo->z + RideData5[curRide->type].VehicleZOffset;
 
         regs.ebx = 0;
         if (curX != unk_F64E20.x)
@@ -8962,7 +8962,7 @@ loc_6DC743:
 
     // loc_6DC8A1
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
-                 TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset };
+                 TrackLocation.z + moveInfo->z + RideData5[curRide->type].VehicleZOffset };
 
     remaining_distance -= 0x368A;
     if (remaining_distance < 0)
@@ -9082,7 +9082,7 @@ loc_6DCA9A:
 loc_6DCC2C:
     moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
-                 TrackLocation.z + moveInfo->z + RideData5[curRide->type].z_offset };
+                 TrackLocation.z + moveInfo->z + RideData5[curRide->type].VehicleZOffset };
 
     remaining_distance -= 0x368A;
     if (remaining_distance < 0)

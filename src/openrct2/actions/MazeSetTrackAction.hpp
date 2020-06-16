@@ -124,7 +124,7 @@ public:
         {
             heightDifference /= COORDS_Z_PER_TINY_Z;
 
-            if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
+            if (heightDifference > RideData5[RIDE_TYPE_MAZE].MaxHeight)
             {
                 res->Error = GA_ERROR::TOO_HIGH;
                 res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;

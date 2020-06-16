@@ -300,7 +300,7 @@ const rct_ride_name RideNaming[] =  {
 };
 
 // 0x0097D218
-const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
+const RideHeights RideData5[RIDE_TYPE_COUNT] = {
     {   19,     24,     9,     11, },  // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     {   25,     24,     9,     11, },  // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     {   24,     40,     29,    8,  },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER

@@ -230,13 +230,13 @@ public:
             int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
 
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].ClearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
             else
             {
-                clearanceZ += RideData5[ride->type].clearance_height;
+                clearanceZ += RideData5[ride->type].ClearanceHeight;
             }
 
             clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
@@ -396,7 +396,7 @@ public:
                     }
                     else
                     {
-                        maxHeight = RideData5[ride->type].max_height;
+                        maxHeight = RideData5[ride->type].MaxHeight;
                     }
 
                     ride_height /= COORDS_Z_PER_TINY_Z;
@@ -473,13 +473,13 @@ public:
 
             int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].ClearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
             else
             {
-                clearanceZ += RideData5[ride->type].clearance_height;
+                clearanceZ += RideData5[ride->type].ClearanceHeight;
             }
 
             clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
