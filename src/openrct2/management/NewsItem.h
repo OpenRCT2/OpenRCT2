@@ -204,6 +204,14 @@ struct NewsItemQueues
     bool CurrentShouldBeArchived() const;
     void ArchiveCurrent();
     NewsItem* FirstOpenOrNewSlot();
+    const auto& GetRecent() const
+    {
+        return Recent;
+    }
+    const auto& GetArchived() const
+    {
+        return Archived;
+    }
 
     template<typename Predicate> void ForeachRecentNews(Predicate&& p)
     {
@@ -247,7 +255,6 @@ void news_item_disable_news(uint8_t type, uint32_t assoc);
 
 NewsItem* news_item_get(int32_t index);
 
-bool news_item_is_empty(int32_t index);
 bool news_item_is_queue_empty();
 
 bool news_item_is_valid_idx(int32_t index);

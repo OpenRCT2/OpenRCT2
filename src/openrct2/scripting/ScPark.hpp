@@ -277,17 +277,13 @@ namespace OpenRCT2::Scripting
         std::vector<std::shared_ptr<ScParkMessage>> messages_get() const
         {
             std::vector<std::shared_ptr<ScParkMessage>> result;
-            for (int32_t i = 0; i < NEWS_ITEM_HISTORY_START; i++)
+            for (size_t i = 0, newsSize = gNewsItems.GetRecent().size(); i < newsSize; i++)
             {
-                if (news_item_is_empty(i))
-                    break;
                 result.push_back(std::make_shared<ScParkMessage>(i));
             }
-            for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
+            for (size_t i = 0, newsSize = gNewsItems.GetArchived().size(); i < newsSize; i++)
             {
-                if (news_item_is_empty(i))
-                    break;
-                result.push_back(std::make_shared<ScParkMessage>(i));
+                result.push_back(std::make_shared<ScParkMessage>(i + NEWS_ITEM_HISTORY_START));
             }
             return result;
         }
