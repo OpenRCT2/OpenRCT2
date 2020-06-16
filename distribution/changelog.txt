@@ -11,6 +11,7 @@
 - Feature: [#11320] Support for custom JavaScript plugins.
 - Feature: [#11422] Added a shortcut key for disabling/enabling clearance checks.
 - Feature: [#11788] Command to extract images from a .DAT file.
+- Feature: [#11959] Hacked go-kart tracks can now use 2x2 bends, 3x3 bends and S-bends.
 - Change: [#11209] Warn when user is running OpenRCT2 through Wine.
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
 - Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
