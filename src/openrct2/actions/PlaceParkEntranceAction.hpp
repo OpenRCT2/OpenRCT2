@@ -93,10 +93,11 @@ public:
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (!map_can_construct_at({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }))
+            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2->Error != GA_ERROR::OK)
             {
                 return std::make_unique<GameActionResult>(
-                    GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, gGameCommandErrorText, gCommonFormatArgs);
+                    GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, res2->ErrorMessage.GetStringId(),
+                    res2->ErrorMessageArgs.data());
             }
 
             // Check that entrance element does not already exist at this location

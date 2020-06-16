@@ -141,21 +141,23 @@ public:
                 res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
                 return res;
             }
-
-            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 }))
+            auto constructResult = MapCanConstructAt({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 });
+            if (constructResult->Error != GA_ERROR::OK)
             {
                 return MakeResult(
-                    GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
+                    GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), constructResult->ErrorMessage.GetStringId(),
+                    constructResult->ErrorMessageArgs.data());
             }
 
-            if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
+            
+            if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
                 return res;
             }
 
-            if (gMapGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (constructResult->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
