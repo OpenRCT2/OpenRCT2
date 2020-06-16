@@ -4017,7 +4017,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[CurrentTrain]);
     if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
-        && !currentTrain->UpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
+        && !currentTrain->HasUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
     }
