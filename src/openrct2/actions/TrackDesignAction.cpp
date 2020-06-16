@@ -37,6 +37,11 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     res->Expenditure = ExpenditureType::RideConstruction;
     _currentTrackPieceDirection = _loc.direction;
 
+    if (!LocationValid(_loc))
+    {
+        return MakeResult(GA_ERROR::INVALID_PARAMETERS);
+    }
+
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
     uint8_t entryType;

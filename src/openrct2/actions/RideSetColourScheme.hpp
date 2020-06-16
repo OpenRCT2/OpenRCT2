@@ -58,6 +58,10 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
         return std::make_unique<GameActionResult>();
     }
 

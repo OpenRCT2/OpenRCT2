@@ -314,6 +314,8 @@ public:
      * Apply the game action and change the game state.
      */
     virtual GameActionResult::Ptr Execute() const abstract;
+
+    bool LocationValid(const CoordsXY& coords) const;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

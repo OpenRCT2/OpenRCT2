@@ -186,6 +186,11 @@ public:
 private:
     rct_string_id CheckParameters() const
     {
+        if (!LocationValid(_coords))
+        {
+            return STR_OFF_EDGE_OF_MAP;
+        }
+
         if (_coords.x > gMapSizeMaxXY || _coords.y > gMapSizeMaxXY)
         {
             return STR_OFF_EDGE_OF_MAP;

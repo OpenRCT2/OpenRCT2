@@ -90,6 +90,10 @@ public:
 private:
     GameActionResult::Ptr QueryExecute(bool isExecuting) const
     {
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
         auto res = MakeResult();
         switch (static_cast<TileModifyType>(_setting))
         {

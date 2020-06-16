@@ -80,6 +80,9 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
+                if (!LocationValid({ x, y }))
+                    continue;
+
                 auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;

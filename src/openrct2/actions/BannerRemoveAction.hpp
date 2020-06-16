@@ -48,7 +48,7 @@ public:
         res->Position.z = _loc.z;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
+        if (!LocationValid(_loc) || !map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

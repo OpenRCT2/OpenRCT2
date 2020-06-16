@@ -119,6 +119,9 @@ public:
         {
             for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
             {
+                if (!LocationValid(coords))
+                    continue;
+
                 if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {
                     if (!map_is_location_in_park(coords))

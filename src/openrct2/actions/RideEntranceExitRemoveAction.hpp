@@ -72,6 +72,11 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
 
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+
         bool found = false;
         TileElement* tileElement = map_get_first_element_at(_loc);
 

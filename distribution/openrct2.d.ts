@@ -224,6 +224,7 @@ declare global {
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
+        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
     }
 
     interface Configuration {
@@ -289,7 +290,7 @@ declare global {
     type HookType =
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate";
+        "ride.ratings.calculate" | "action.location";
 
     type ExpenditureType =
         "ride_construction" |
@@ -348,6 +349,15 @@ declare global {
         excitement: number;
         intensity: number;
         nausea: number;
+    }
+
+    interface ActionLocationArgs {
+        readonly x: number;
+        readonly y: number;
+        readonly player: number;
+        readonly type: number;
+        readonly isClientOnly: boolean;
+        result: boolean;
     }
 
     /**

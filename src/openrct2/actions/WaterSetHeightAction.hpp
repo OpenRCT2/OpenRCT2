@@ -61,6 +61,11 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE, errorMsg);
         }
 
+        if (!LocationValid(_coords))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
             if (!map_is_location_in_park(_coords))
