@@ -21,7 +21,7 @@ struct RideGroup
     uint8_t RideType;
     uint16_t MaximumHeight;
     uint64_t AvailableTrackPieces;
-    rct_ride_name Naming;
+    RideNaming Naming;
     uint8_t Flags;
 
     bool Equals(const RideGroup* otherRideGroup) const;

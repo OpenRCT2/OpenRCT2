@@ -449,8 +449,8 @@ static void window_track_list_invalidate(rct_window* w)
 
     if (entry != nullptr)
     {
-        rct_ride_name rideName = get_ride_naming(_window_track_list_item.Type, entry);
-        stringId = rideName.name;
+        RideNaming rideName = get_ride_naming(_window_track_list_item.Type, entry);
+        stringId = rideName.Name;
     }
 
     Formatter::Common().Add<rct_string_id>(stringId);

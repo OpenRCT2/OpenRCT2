@@ -260,7 +260,7 @@ void research_finish_item(ResearchItem* researchItem)
             if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                ft.Add<rct_string_id>(rideEntry->naming.name);
+                ft.Add<rct_string_id>(rideEntry->naming.Name);
             }
             // If a vehicle is the first to be invented for its ride group, show the ride group name.
             else if (
@@ -268,19 +268,19 @@ void research_finish_item(ResearchItem* researchItem)
                 || (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS)
                     && !ride_group_was_invented_before))
             {
-                rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
+                RideNaming naming = get_ride_naming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                ft.Add<rct_string_id>(naming.name);
+                ft.Add<rct_string_id>(naming.Name);
             }
             // If the vehicle should not be listed separately and it isn't the first to be invented for its ride group,
             // report it as a new vehicle for the existing ride group.
             else
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
-                rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
+                RideNaming baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
 
-                ft.Add<rct_string_id>(baseRideNaming.name);
-                ft.Add<rct_string_id>(rideEntry->naming.name);
+                ft.Add<rct_string_id>(baseRideNaming.Name);
+                ft.Add<rct_string_id>(rideEntry->naming.Name);
             }
 
             if (!gSilentResearch)
@@ -713,7 +713,7 @@ rct_string_id ResearchItem::GetName() const
         }
         else
         {
-            return rideEntry->naming.name;
+            return rideEntry->naming.Name;
         }
     }
     else

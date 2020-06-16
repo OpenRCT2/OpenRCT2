@@ -5632,7 +5632,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 {
     if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
@@ -5641,7 +5641,7 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     }
     else if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        return RideNaming[rideType];
+        return RideTypeDescriptors[rideType].Naming;
     }
     else
     {
@@ -7746,13 +7746,13 @@ size_t Ride::FormatNameTo(void* argsV) const
     }
     else
     {
-        auto rideTypeName = RideNaming[type].name;
+        auto rideTypeName = RideTypeDescriptors[type].Naming.Name;
         if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)
             {
-                rideTypeName = rideEntry->naming.name;
+                rideTypeName = rideEntry->naming.Name;
             }
         }
         else if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
@@ -7763,7 +7763,7 @@ size_t Ride::FormatNameTo(void* argsV) const
                 auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
                 if (rideGroup != nullptr)
                 {
-                    rideTypeName = rideGroup->Naming.name;
+                    rideTypeName = rideGroup->Naming.Name;
                 }
             }
         }

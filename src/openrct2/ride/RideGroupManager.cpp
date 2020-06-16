@@ -163,7 +163,7 @@ static constexpr const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RID
 
 bool RideGroup::Equals(const RideGroup* otherRideGroup) const
 {
-    return this->Naming.name == otherRideGroup->Naming.name && this->Naming.description == otherRideGroup->Naming.description;
+    return this->Naming.Name == otherRideGroup->Naming.Name && this->Naming.Description == otherRideGroup->Naming.Description;
 }
 
 bool RideGroup::IsInvented() const

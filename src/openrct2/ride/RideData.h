@@ -113,6 +113,7 @@ struct RideTypeDescriptor
     /** rct2: 0x0097C8AC */
     uint64_t RideModes;
     uint8_t DefaultMode;
+    RideNaming Naming;
     RideNameConvention NameConvention;
     uint8_t AvailableBreakdowns;
     /** rct2: 0x0097D218 */
@@ -248,8 +249,6 @@ constexpr const RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
-
 constexpr const uint64_t AllRideModesAvailable = (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)
     | (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) | (1ULL << RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
     | (1ULL << RIDE_MODE_POWERED_LAUNCH_PASSTROUGH) | (1ULL << RIDE_MODE_SHUTTLE) | (1ULL << RIDE_MODE_NORMAL)
@@ -287,6 +286,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Flags, 0),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 64, 0, 0, }),

@@ -85,12 +85,12 @@ struct vehicle_colour_preset_list
 };
 assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
 
-struct rct_ride_name
+struct RideNaming
 {
-    rct_string_id name;
-    rct_string_id description;
+    rct_string_id Name;
+    rct_string_id Description;
 };
-assert_struct_size(rct_ride_name, 4);
+assert_struct_size(RideNaming, 4);
 
 #pragma pack(pop)
 
@@ -99,7 +99,7 @@ assert_struct_size(rct_ride_name, 4);
  */
 struct rct_ride_entry
 {
-    rct_ride_name naming;
+    RideNaming naming;
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
@@ -1126,7 +1126,7 @@ void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
-rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
+RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
 
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
