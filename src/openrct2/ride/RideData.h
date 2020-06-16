@@ -66,7 +66,6 @@ struct rct_ride_data_5
     uint8_t max_height;
     uint8_t clearance_height;
     int8_t z_offset;
-    uint8_t max_mass;
     uint8_t z;
 };
 
@@ -264,6 +263,7 @@ constexpr const uint64_t AllRideModesAvailable = (1ULL << RIDE_MODE_CONTINUOUS_C
     | (1ULL << RIDE_MODE_POWERED_LAUNCH) | (1ULL << RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED);
 
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
+extern const uint8_t MaxMass[RIDE_TYPE_COUNT];
 
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
