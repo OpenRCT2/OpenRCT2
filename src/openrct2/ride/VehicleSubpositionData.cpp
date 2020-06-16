@@ -21426,7 +21426,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9571BC, {
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_000000, { { 0, 0, 0, 0, 0, 0 } })
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8B8F98[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListDefault[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
     &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -21600,7 +21600,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8B8F98[] = {
     &TrackVehicleInfo_97888A, &TrackVehicleInfo_978D5D, &TrackVehicleInfo_979230, &TrackVehicleInfo_979703,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BBAB8[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListChairliftGoingOut[] = {
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04,
     &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48,
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CFB6E, &TrackVehicleInfo_8CFC90,
@@ -21719,7 +21719,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BBAB8[] = {
     &TrackVehicleInfo_91C1BC, &TrackVehicleInfo_91C377,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BC588[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListChairliftGoingBack[] = {
     &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48,
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04,
     &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8D023A, &TrackVehicleInfo_8D035C,
@@ -21790,7 +21790,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BC588[] = {
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BCBD8[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListChairliftEndBullwheel[] = {
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291,
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF,
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -21861,7 +21861,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BCBD8[] = {
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BD228[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListChairliftStartBullwheel[] = {
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF,
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291,
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -21932,7 +21932,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BD228[] = {
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BD878[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListGoKartsLeftLane[] = {
     &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC, &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640, &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC,
     &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640, &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC, &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640,
     &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC, &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640, &TrackVehicleInfo_900E52, &TrackVehicleInfo_900F74,
@@ -21970,7 +21970,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BD878[] = {
     &TrackVehicleInfo_901762, &TrackVehicleInfo_901884, &TrackVehicleInfo_9019AF, &TrackVehicleInfo_901AE3,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BDBB8[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListGoKartsRightLane[] = {
     &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03, &TrackVehicleInfo_902025, &TrackVehicleInfo_902147, &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03,
     &TrackVehicleInfo_902025, &TrackVehicleInfo_902147, &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03, &TrackVehicleInfo_902025, &TrackVehicleInfo_902147,
     &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03, &TrackVehicleInfo_902025, &TrackVehicleInfo_902147, &TrackVehicleInfo_9034D1, &TrackVehicleInfo_9035F3,
@@ -22008,7 +22008,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BDBB8[] = {
     &TrackVehicleInfo_904284, &TrackVehicleInfo_9042F2, &TrackVehicleInfo_904369, &TrackVehicleInfo_9043E9,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BDEF8[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListGoKartsMovingToRightLane[] = {
     &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884, &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8, &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884,
     &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8, &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884, &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8,
     &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884, &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8, &TrackVehicleInfo_900E52, &TrackVehicleInfo_900F74,
@@ -22046,7 +22046,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BDEF8[] = {
     &TrackVehicleInfo_901762, &TrackVehicleInfo_901884, &TrackVehicleInfo_9019AF, &TrackVehicleInfo_901AE3,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BE238[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListGoKartsMovingToLeftLane[] = {
     &TrackVehicleInfo_904460, &TrackVehicleInfo_904582, &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6, &TrackVehicleInfo_904460, &TrackVehicleInfo_904582,
     &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6, &TrackVehicleInfo_904460, &TrackVehicleInfo_904582, &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6,
     &TrackVehicleInfo_904460, &TrackVehicleInfo_904582, &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6, &TrackVehicleInfo_9034D1, &TrackVehicleInfo_9035F3,
@@ -22084,7 +22084,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BE238[] = {
     &TrackVehicleInfo_904284, &TrackVehicleInfo_9042F2, &TrackVehicleInfo_904369, &TrackVehicleInfo_9043E9,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_9334D0[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListMiniGolfStartPathA9[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -22225,7 +22225,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_9334D0[] = {
     &TrackVehicleInfo_94AE31, &TrackVehicleInfo_94DAEF,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_9341B0[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListMiniGolfBallPathA10[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -22366,7 +22366,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_9341B0[] = {
     &TrackVehicleInfo_94B0DF, &TrackVehicleInfo_94DD9D,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_934E90[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListMiniGolfPathB11[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -22507,7 +22507,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_934E90[] = {
     &TrackVehicleInfo_94B37B, &TrackVehicleInfo_94E039,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_935B70[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListMiniGolfBallPathB12[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -22648,7 +22648,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_935B70[] = {
     &TrackVehicleInfo_94B6B9, &TrackVehicleInfo_94E377,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_936850[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListMiniGolfPathC13[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -22789,7 +22789,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_936850[] = {
     &TrackVehicleInfo_94BA7E, &TrackVehicleInfo_94E73C,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_937530[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListMiniGolfPathC14[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -22930,7 +22930,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_937530[] = {
     &TrackVehicleInfo_94BE16, &TrackVehicleInfo_94EAD4,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8B9F98[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListReverserRCFrontBogie[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
     &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -23078,7 +23078,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8B9F98[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
 };
 
-static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BAD28[] = {
+static constexpr const rct_vehicle_info_list *TrackVehicleInfoListReverserRCRearBogie[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
     &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -23227,24 +23227,24 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BAD28[] = {
 };
 
 // rct2: 0x008B8F30
-constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[17] = {
-    TrackVehicleInfoList_8B8F98, // VEHICLE_TRACK_SUBPOSITION_0
-    TrackVehicleInfoList_8BBAB8, // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
-    TrackVehicleInfoList_8BC588, // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK
-    TrackVehicleInfoList_8BCBD8, // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL
-    TrackVehicleInfoList_8BD228, // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL
-    TrackVehicleInfoList_8BD878, // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE
-    TrackVehicleInfoList_8BDBB8, // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE
-    TrackVehicleInfoList_8BDEF8, // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE
-    TrackVehicleInfoList_8BE238, // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE
-    TrackVehicleInfoList_9334D0, // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9, VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9
-    TrackVehicleInfoList_9341B0, // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10
-    TrackVehicleInfoList_934E90, // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11
-    TrackVehicleInfoList_935B70, // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12
-    TrackVehicleInfoList_936850, // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13
-    TrackVehicleInfoList_937530, // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_14
-    TrackVehicleInfoList_8B9F98, // VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
-    TrackVehicleInfoList_8BAD28, // VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
+constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[VEHICLE_TRACK_SUBPOSITION_COUNT] = {
+    TrackVehicleInfoListDefault,                  // VEHICLE_TRACK_SUBPOSITION_0
+    TrackVehicleInfoListChairliftGoingOut,        // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
+    TrackVehicleInfoListChairliftGoingBack,       // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK
+    TrackVehicleInfoListChairliftEndBullwheel,    // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL
+    TrackVehicleInfoListChairliftStartBullwheel,  // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL
+    TrackVehicleInfoListGoKartsLeftLane,          // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE
+    TrackVehicleInfoListGoKartsRightLane,         // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE
+    TrackVehicleInfoListGoKartsMovingToRightLane, // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE
+    TrackVehicleInfoListGoKartsMovingToLeftLane,  // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE
+    TrackVehicleInfoListMiniGolfStartPathA9,      // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9, VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9
+    TrackVehicleInfoListMiniGolfBallPathA10,      // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10
+    TrackVehicleInfoListMiniGolfPathB11,          // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11
+    TrackVehicleInfoListMiniGolfBallPathB12,      // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12
+    TrackVehicleInfoListMiniGolfPathC13,          // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13
+    TrackVehicleInfoListMiniGolfPathC14,          // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_14
+    TrackVehicleInfoListReverserRCFrontBogie,     // VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
+    TrackVehicleInfoListReverserRCRearBogie,      // VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
 };
 
 // clang-format on
