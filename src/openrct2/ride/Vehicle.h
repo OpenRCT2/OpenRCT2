@@ -328,9 +328,9 @@ struct Vehicle : SpriteBase
         return track_type >> 2;
     }
 
-    uint16_t UpdateFlag(uint32_t flag) const
+    bool HasUpdateFlag(uint32_t flag) const
     {
-        return update_flags & flag;
+        return (update_flags & flag) != 0;
     }
     void ClearUpdateFlag(uint32_t flag)
     {
