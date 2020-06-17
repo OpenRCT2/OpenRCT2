@@ -966,13 +966,13 @@ static void window_new_ride_paint_ride_information(
     rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t width)
 {
     rct_ride_entry* rideEntry = get_ride_entry(item.EntryIndex);
-    rct_ride_name rideNaming;
+    RideNaming rideNaming;
 
     // Ride name and description
     rideNaming = get_ride_naming(item.Type, rideEntry);
     auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(rideNaming.name);
-    ft.Add<rct_string_id>(rideNaming.description);
+    ft.Add<rct_string_id>(rideNaming.Name);
+    ft.Add<rct_string_id>(rideNaming.Description);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
@@ -1093,7 +1093,7 @@ static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_e
         }
 
         // Append vehicle name
-        auto vehicleName = language_get_string(currentRideEntry->naming.name);
+        auto vehicleName = language_get_string(currentRideEntry->naming.Name);
         safe_strcat(buffer, vehicleName, bufferLen);
 
         isFirst = false;

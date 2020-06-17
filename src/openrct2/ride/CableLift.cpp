@@ -69,7 +69,7 @@ Vehicle* cable_lift_segment_create(
 
     z = z * COORDS_Z_STEP;
     current->TrackLocation = { x, y, z };
-    z += RideData5[ride.type].z_offset;
+    z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
     current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
@@ -261,7 +261,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideData5[curRide->type].z_offset;
+        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -334,7 +334,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideData5[curRide->type].z_offset;
+        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)

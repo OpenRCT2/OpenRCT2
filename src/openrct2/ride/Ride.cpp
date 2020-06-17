@@ -4401,7 +4401,7 @@ static Vehicle* vehicle_create_car(
         vehicle->TrackLocation = { x, y, z };
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
 
-        z += RideData5[ride->type].z_offset;
+        z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
@@ -4490,7 +4490,7 @@ static Vehicle* vehicle_create_car(
 
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
         z = tileElement->GetBaseZ();
-        z += RideData5[ride->type].z_offset;
+        z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
         vehicle->MoveTo({ x, y, z });
         vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (vehicle->sprite_direction >> 3);
@@ -5632,7 +5632,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 {
     if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
@@ -5641,7 +5641,7 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     }
     else if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        return RideNaming[rideType];
+        return RideTypeDescriptors[rideType].Naming;
     }
     else
     {
@@ -6691,7 +6691,7 @@ void Ride::UpdateMaxVehicles()
             return;
 
         auto stationLength = (*stationNumTiles * 0x44180) - 0x16B2A;
-        int32_t maxMass = RideData5[type].max_mass << 8;
+        int32_t maxMass = RideTypeDescriptors[type].MaxMass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
@@ -7746,13 +7746,13 @@ size_t Ride::FormatNameTo(void* argsV) const
     }
     else
     {
-        auto rideTypeName = RideNaming[type].name;
+        auto rideTypeName = RideTypeDescriptors[type].Naming.Name;
         if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)
             {
-                rideTypeName = rideEntry->naming.name;
+                rideTypeName = rideEntry->naming.Name;
             }
         }
         else if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
@@ -7763,7 +7763,7 @@ size_t Ride::FormatNameTo(void* argsV) const
                 auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
                 if (rideGroup != nullptr)
                 {
-                    rideTypeName = rideGroup->Naming.name;
+                    rideTypeName = rideGroup->Naming.Name;
                 }
             }
         }

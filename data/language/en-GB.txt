@@ -3669,6 +3669,7 @@ STR_6371    :The specified path contains a RollerCoaster Tycoon 1 installation, 
 STR_6372    :The specified path contains a RollerCoaster Tycoon 1 installation, but this version is not suitable. OpenRCT2 needs a Loopy Landscapes or RCT Deluxe install in order to use RollerCoaster Tycoon 1 assets.
 STR_6373    :Toggle clearance checks
 STR_6374    :C
+STR_6375    :Unknown Ride
 
 #############
 # Scenarios #

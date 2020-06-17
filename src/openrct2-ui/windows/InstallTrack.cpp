@@ -262,7 +262,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, screenPos.x - 1, screenPos.y);
     screenPos.y += LIST_ROW_HEIGHT;
 
-    rct_ride_name rideName;
+    RideNaming rideName;
     rct_string_id friendlyTrackName;
 
     void* objectEntry = object_manager_load_object(&td6->vehicle_object);
@@ -270,12 +270,12 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
         rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
-        friendlyTrackName = rideName.name;
+        friendlyTrackName = rideName.Name;
     }
     else
     {
         // Fall back on the technical track name if the vehicle object cannot be loaded
-        friendlyTrackName = RideNaming[td6->type].name;
+        friendlyTrackName = RideTypeDescriptors[td6->type].Naming.Name;
     }
 
     gfx_draw_string_left(dpi, STR_TRACK_DESIGN_TYPE, &friendlyTrackName, COLOUR_BLACK, screenPos.x, screenPos.y);

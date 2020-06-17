@@ -537,7 +537,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     if (useDefaultName)
     {
         // Default name with number
-        dst->name = RideNaming[src->type].name;
+        dst->name = RideTypeDescriptors[src->type].Naming.Name;
         dst->name_arguments_number = src->default_name_number;
     }
 

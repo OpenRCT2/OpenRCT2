@@ -2262,6 +2262,33 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
     gDropdownDefaultIndex = info.DefaultIndex;
 }
 
+static rct_string_id get_ride_type_name_for_dropdown(uint8_t rideType)
+{
+    switch (rideType)
+    {
+        case RIDE_TYPE_1D:
+            return STR_RIDE_NAME_1D;
+        case RIDE_TYPE_1F:
+            return STR_RIDE_NAME_1F;
+        case RIDE_TYPE_22:
+            return STR_RIDE_NAME_22;
+        case RIDE_TYPE_50:
+            return STR_RIDE_NAME_50;
+        case RIDE_TYPE_52:
+            return STR_RIDE_NAME_52;
+        case RIDE_TYPE_53:
+            return STR_RIDE_NAME_53;
+        case RIDE_TYPE_54:
+            return STR_RIDE_NAME_54;
+        case RIDE_TYPE_55:
+            return STR_RIDE_NAME_55;
+        case RIDE_TYPE_59:
+            return STR_RIDE_NAME_59;
+        default:
+            return RideTypeDescriptors[rideType].Naming.Name;
+    }
+}
+
 static void populate_ride_type_dropdown()
 {
     auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
@@ -2272,7 +2299,8 @@ static void populate_ride_type_dropdown()
 
     for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
     {
-        RideTypeLabel label = { i, RideNaming[i].name, ls.GetString(RideNaming[i].name) };
+        auto name = get_ride_type_name_for_dropdown(i);
+        RideTypeLabel label = { i, name, ls.GetString(name) };
         RideDropdownData.push_back(label);
     }
 
@@ -2375,8 +2403,8 @@ static void populate_vehicle_type_dropdown(Ride* ride)
                     continue;
             }
 
-            VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.name,
-                                       ls.GetString(currentRideEntry->naming.name) };
+            VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.Name,
+                                       ls.GetString(currentRideEntry->naming.Name) };
             VehicleDropdownData.push_back(label);
         }
     }
@@ -2673,7 +2701,7 @@ static void window_ride_main_invalidate(rct_window* w)
     else
     {
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_DROPDOWN;
-        window_ride_main_widgets[WIDX_RIDE_TYPE].text = RideNaming[ride->type].name;
+        window_ride_main_widgets[WIDX_RIDE_TYPE].text = RideTypeDescriptors[ride->type].Naming.Name;
         window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_BUTTON;
     }
 
@@ -3077,7 +3105,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
 
     // Vehicle type
-    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.name;
+    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.Name;
 
     // Trains
     if (rideEntry->cars_per_flat_ride > 1 || gCheatsDisableTrainLengthLimit)
@@ -3169,7 +3197,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + 64;
 
     // Description
-    y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
+    y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.Description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
     y += 2;
 
     // Capacity

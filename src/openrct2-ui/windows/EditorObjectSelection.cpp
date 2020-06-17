@@ -1503,11 +1503,11 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
             if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
             {
                 const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideInfo.RideGroupIndex);
-                result = rideGroup->Naming.name;
+                result = rideGroup->Naming.Name;
             }
             else
             {
-                result = RideNaming[rideType].name;
+                result = RideTypeDescriptors[rideType].Naming.Name;
             }
 
             break;
