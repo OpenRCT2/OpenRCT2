@@ -279,7 +279,8 @@ namespace OpenRCT2::Scripting
             return GetContext()->GetGameState()->GetPark().Name;
         }
 
-        void name_set(std::string value) {
+        void name_set(std::string value)
+        {
             ThrowIfGameStateNotMutable();
             GetContext()->GetGameState()->GetPark().Name = value;
         }
