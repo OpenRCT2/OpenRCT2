@@ -852,7 +852,7 @@ public:
     {
         set_every_ride_type_not_invented();
 
-        for (int32_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+        for (int32_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
         {
             int32_t quadIndex = rideType >> 5;
             int32_t bitIndex = rideType & 0x1F;
