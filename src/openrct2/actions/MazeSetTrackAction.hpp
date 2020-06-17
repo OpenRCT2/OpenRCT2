@@ -149,7 +149,6 @@ public:
                     constructResult->ErrorMessageArgs.data());
             }
 
-            
             if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;

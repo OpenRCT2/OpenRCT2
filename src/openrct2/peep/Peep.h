@@ -48,6 +48,7 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 class Formatter;
 struct TileElement;
 struct Ride;
+class GameActionResult;
 
 enum PeepType : uint8_t
 {
@@ -769,7 +770,7 @@ public: // Peep
     void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
     void Pickup();
     void PickupAbort(int32_t old_x);
-    bool Place(const TileCoordsXYZ& location, bool apply);
+    std::unique_ptr<GameActionResult> Place(const TileCoordsXYZ& location, bool apply);
     static Peep* Generate(const CoordsXYZ& coords);
     void RemoveFromQueue();
     void RemoveFromRide();
