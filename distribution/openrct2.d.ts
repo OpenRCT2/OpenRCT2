@@ -1319,7 +1319,7 @@ declare global {
         remove(): void;
     }
 
-    interface ParkMessageDesc  {
+    interface ParkMessageDesc {
         type: ParkMessageType;
         text: string;
         subject?: number;
@@ -1330,6 +1330,7 @@ declare global {
         rating: number;
         bankLoan: number;
         maxBankLoan: number;
+        name: string;
         messages: ParkMessage[];
 
         postMessage(message: string): void;
