@@ -36,6 +36,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_magic_carpet),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 198, 2, 1, }),

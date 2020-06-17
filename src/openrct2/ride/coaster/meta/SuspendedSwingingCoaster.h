@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor SuspendedSwingingCoasterRTD =
     SET_FIELD(Heights, { 24, 40, 29, 8, }),
     SET_FIELD(MaxMass, 26),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 6 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_suspended_swinging_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 20, 3, 10 }),
     SET_FIELD(BuildCosts, { 95, 5, 50, }),

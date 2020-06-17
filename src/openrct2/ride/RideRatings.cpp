@@ -76,11 +76,7 @@ struct ShelteredEights
     uint8_t TotalShelteredEighths;
 };
 
-using ride_ratings_calculation = void (*)(Ride* ride);
-
 RideRatingCalculationData gRideRatingsCalcData;
-
-static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType);
 
 static void ride_ratings_update_state();
 static void ride_ratings_update_state_0();
@@ -1746,7 +1742,7 @@ static void ride_ratings_apply_first_length_penalty(
 
 #pragma region Ride rating calculation functions
 
-static void ride_ratings_calculate_spiral_roller_coaster(Ride* ride)
+void ride_ratings_calculate_spiral_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -1792,7 +1788,7 @@ static void ride_ratings_calculate_spiral_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
+void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -1830,7 +1826,7 @@ static void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
+void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -1870,7 +1866,7 @@ static void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
+void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -1913,7 +1909,7 @@ static void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
+void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -1951,7 +1947,7 @@ static void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_miniature_railway(Ride* ride)
+void ride_ratings_calculate_miniature_railway(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -1986,7 +1982,7 @@ static void ride_ratings_calculate_miniature_railway(Ride* ride)
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_monorail(Ride* ride)
+void ride_ratings_calculate_monorail(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2021,7 +2017,7 @@ static void ride_ratings_calculate_monorail(Ride* ride)
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
+void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2060,7 +2056,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_boat_hire(Ride* ride)
+void ride_ratings_calculate_boat_hire(Ride* ride)
 {
     ride->unreliability_factor = 7;
     set_unreliability_factor(ride);
@@ -2092,7 +2088,7 @@ static void ride_ratings_calculate_boat_hire(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_wooden_wild_mouse(Ride* ride)
+void ride_ratings_calculate_wooden_wild_mouse(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2133,7 +2129,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_steeplechase(Ride* ride)
+void ride_ratings_calculate_steeplechase(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2173,7 +2169,7 @@ static void ride_ratings_calculate_steeplechase(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_car_ride(Ride* ride)
+void ride_ratings_calculate_car_ride(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2207,7 +2203,7 @@ static void ride_ratings_calculate_car_ride(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_launched_freefall(Ride* ride)
+void ride_ratings_calculate_launched_freefall(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2258,7 +2254,7 @@ static void ride_ratings_calculate_launched_freefall(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
+void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2296,7 +2292,7 @@ static void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_observation_tower(Ride* ride)
+void ride_ratings_calculate_observation_tower(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2326,7 +2322,7 @@ static void ride_ratings_calculate_observation_tower(Ride* ride)
         ride->excitement /= 4;
 }
 
-static void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
+void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2372,7 +2368,7 @@ static void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_dinghy_slide(Ride* ride)
+void ride_ratings_calculate_dinghy_slide(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2410,7 +2406,7 @@ static void ride_ratings_calculate_dinghy_slide(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_mine_train_coaster(Ride* ride)
+void ride_ratings_calculate_mine_train_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2450,7 +2446,7 @@ static void ride_ratings_calculate_mine_train_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_chairlift(Ride* ride)
+void ride_ratings_calculate_chairlift(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2492,7 +2488,7 @@ static void ride_ratings_calculate_chairlift(Ride* ride)
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
+void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2538,7 +2534,7 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_maze(Ride* ride)
+void ride_ratings_calculate_maze(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2564,7 +2560,7 @@ static void ride_ratings_calculate_maze(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_spiral_slide(Ride* ride)
+void ride_ratings_calculate_spiral_slide(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2593,7 +2589,7 @@ static void ride_ratings_calculate_spiral_slide(Ride* ride)
     ride->sheltered_eighths = 2;
 }
 
-static void ride_ratings_calculate_go_karts(Ride* ride)
+void ride_ratings_calculate_go_karts(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2634,7 +2630,7 @@ static void ride_ratings_calculate_go_karts(Ride* ride)
         ride->excitement /= 2;
 }
 
-static void ride_ratings_calculate_log_flume(Ride* ride)
+void ride_ratings_calculate_log_flume(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2666,7 +2662,7 @@ static void ride_ratings_calculate_log_flume(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_river_rapids(Ride* ride)
+void ride_ratings_calculate_river_rapids(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -2699,7 +2695,7 @@ static void ride_ratings_calculate_river_rapids(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_dodgems(Ride* ride)
+void ride_ratings_calculate_dodgems(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2734,7 +2730,7 @@ static void ride_ratings_calculate_dodgems(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-static void ride_ratings_calculate_pirate_ship(Ride* ride)
+void ride_ratings_calculate_pirate_ship(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2759,7 +2755,7 @@ static void ride_ratings_calculate_pirate_ship(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_inverter_ship(Ride* ride)
+void ride_ratings_calculate_inverter_ship(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2784,25 +2780,25 @@ static void ride_ratings_calculate_inverter_ship(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_food_stall(Ride* ride)
+void ride_ratings_calculate_food_stall(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_drink_stall(Ride* ride)
+void ride_ratings_calculate_drink_stall(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_shop(Ride* ride)
+void ride_ratings_calculate_shop(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_merry_go_round(Ride* ride)
+void ride_ratings_calculate_merry_go_round(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2824,19 +2820,19 @@ static void ride_ratings_calculate_merry_go_round(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-static void ride_ratings_calculate_information_kiosk(Ride* ride)
+void ride_ratings_calculate_information_kiosk(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_toilets(Ride* ride)
+void ride_ratings_calculate_toilets(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_ferris_wheel(Ride* ride)
+void ride_ratings_calculate_ferris_wheel(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2858,7 +2854,7 @@ static void ride_ratings_calculate_ferris_wheel(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_motion_simulator(Ride* ride)
+void ride_ratings_calculate_motion_simulator(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2891,7 +2887,7 @@ static void ride_ratings_calculate_motion_simulator(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-static void ride_ratings_calculate_3d_cinema(Ride* ride)
+void ride_ratings_calculate_3d_cinema(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2931,7 +2927,7 @@ static void ride_ratings_calculate_3d_cinema(Ride* ride)
     ride->sheltered_eighths |= 7;
 }
 
-static void ride_ratings_calculate_top_spin(Ride* ride)
+void ride_ratings_calculate_top_spin(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2973,7 +2969,7 @@ static void ride_ratings_calculate_top_spin(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_space_rings(Ride* ride)
+void ride_ratings_calculate_space_rings(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -2995,7 +2991,7 @@ static void ride_ratings_calculate_space_rings(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
+void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3025,7 +3021,7 @@ static void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_lift(Ride* ride)
+void ride_ratings_calculate_lift(Ride* ride)
 {
     int32_t totalLength;
 
@@ -3058,7 +3054,7 @@ static void ride_ratings_calculate_lift(Ride* ride)
         ride->excitement /= 4;
 }
 
-static void ride_ratings_calculate_vertical_drop_roller_coaster(Ride* ride)
+void ride_ratings_calculate_vertical_drop_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3096,13 +3092,13 @@ static void ride_ratings_calculate_vertical_drop_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_cash_machine(Ride* ride)
+void ride_ratings_calculate_cash_machine(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_twist(Ride* ride)
+void ride_ratings_calculate_twist(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -3124,7 +3120,7 @@ static void ride_ratings_calculate_twist(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_haunted_house(Ride* ride)
+void ride_ratings_calculate_haunted_house(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -3148,7 +3144,7 @@ static void ride_ratings_calculate_haunted_house(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-static void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
+void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3193,7 +3189,7 @@ static void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_virginia_reel(Ride* ride)
+void ride_ratings_calculate_virginia_reel(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3230,7 +3226,7 @@ static void ride_ratings_calculate_virginia_reel(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_splash_boats(Ride* ride)
+void ride_ratings_calculate_splash_boats(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3262,7 +3258,7 @@ static void ride_ratings_calculate_splash_boats(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_mini_helicopters(Ride* ride)
+void ride_ratings_calculate_mini_helicopters(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3296,7 +3292,7 @@ static void ride_ratings_calculate_mini_helicopters(Ride* ride)
     ride->sheltered_eighths = 6;
 }
 
-static void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
+void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3346,7 +3342,7 @@ static void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_suspended_monorail(Ride* ride)
+void ride_ratings_calculate_suspended_monorail(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3381,7 +3377,7 @@ static void ride_ratings_calculate_suspended_monorail(Ride* ride)
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
+void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3429,7 +3425,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
+void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3469,7 +3465,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_mini_golf(Ride* ride)
+void ride_ratings_calculate_mini_golf(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3507,13 +3503,13 @@ static void ride_ratings_calculate_mini_golf(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_first_aid(Ride* ride)
+void ride_ratings_calculate_first_aid(Ride* ride)
 {
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-static void ride_ratings_calculate_circus_show(Ride* ride)
+void ride_ratings_calculate_circus_show(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -3537,7 +3533,7 @@ static void ride_ratings_calculate_circus_show(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-static void ride_ratings_calculate_ghost_train(Ride* ride)
+void ride_ratings_calculate_ghost_train(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3570,7 +3566,7 @@ static void ride_ratings_calculate_ghost_train(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
+void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3616,7 +3612,7 @@ static void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
+void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3656,7 +3652,7 @@ static void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
+void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3695,7 +3691,7 @@ static void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_wild_mouse(Ride* ride)
+void ride_ratings_calculate_wild_mouse(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3735,7 +3731,7 @@ static void ride_ratings_calculate_wild_mouse(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
+void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3780,7 +3776,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_giga_coaster(Ride* ride)
+void ride_ratings_calculate_giga_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3826,7 +3822,7 @@ static void ride_ratings_calculate_giga_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_roto_drop(Ride* ride)
+void ride_ratings_calculate_roto_drop(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3854,7 +3850,7 @@ static void ride_ratings_calculate_roto_drop(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_flying_saucers(Ride* ride)
+void ride_ratings_calculate_flying_saucers(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -3892,7 +3888,7 @@ static void ride_ratings_calculate_flying_saucers(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_crooked_house(Ride* ride)
+void ride_ratings_calculate_crooked_house(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -3916,7 +3912,7 @@ static void ride_ratings_calculate_crooked_house(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-static void ride_ratings_calculate_monorail_cycles(Ride* ride)
+void ride_ratings_calculate_monorail_cycles(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3950,7 +3946,7 @@ static void ride_ratings_calculate_monorail_cycles(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
+void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3993,7 +3989,7 @@ static void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_water_coaster(Ride* ride)
+void ride_ratings_calculate_water_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4034,7 +4030,7 @@ static void ride_ratings_calculate_water_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
+void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4065,7 +4061,7 @@ static void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
+void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4106,7 +4102,7 @@ static void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_magic_carpet(Ride* ride)
+void ride_ratings_calculate_magic_carpet(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -4131,7 +4127,7 @@ static void ride_ratings_calculate_magic_carpet(Ride* ride)
     ride->sheltered_eighths = 0;
 }
 
-static void ride_ratings_calculate_submarine_ride(Ride* ride)
+void ride_ratings_calculate_submarine_ride(Ride* ride)
 {
     ride->unreliability_factor = 7;
     set_unreliability_factor(ride);
@@ -4156,7 +4152,7 @@ static void ride_ratings_calculate_submarine_ride(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_river_rafts(Ride* ride)
+void ride_ratings_calculate_river_rafts(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4186,7 +4182,7 @@ static void ride_ratings_calculate_river_rafts(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_enterprise(Ride* ride)
+void ride_ratings_calculate_enterprise(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -4215,7 +4211,7 @@ static void ride_ratings_calculate_enterprise(Ride* ride)
     ride->sheltered_eighths = 3;
 }
 
-static void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride)
+void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4252,7 +4248,7 @@ static void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
+void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4291,7 +4287,7 @@ static void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_mine_ride(Ride* ride)
+void ride_ratings_calculate_mine_ride(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4327,7 +4323,7 @@ static void ride_ratings_calculate_mine_ride(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
-static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
+void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -4377,104 +4373,9 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
 
 #pragma region Ride rating calculation function table
 
-// rct2: 0x0097E050
-static const ride_ratings_calculation RideRatingsCalculateFuncTable[RIDE_TYPE_COUNT] = {
-    ride_ratings_calculate_spiral_roller_coaster,          // SPIRAL_ROLLER_COASTER
-    ride_ratings_calculate_stand_up_roller_coaster,        // STAND_UP_ROLLER_COASTER
-    ride_ratings_calculate_suspended_swinging_coaster,     // SUSPENDED_SWINGING_COASTER
-    ride_ratings_calculate_inverted_roller_coaster,        // INVERTED_ROLLER_COASTER
-    ride_ratings_calculate_junior_roller_coaster,          // JUNIOR_ROLLER_COASTER
-    ride_ratings_calculate_miniature_railway,              // MINIATURE_RAILWAY
-    ride_ratings_calculate_monorail,                       // MONORAIL
-    ride_ratings_calculate_mini_suspended_coaster,         // MINI_SUSPENDED_COASTER
-    ride_ratings_calculate_boat_hire,                      // BOAT_HIRE
-    ride_ratings_calculate_wooden_wild_mouse,              // WOODEN_WILD_MOUSE
-    ride_ratings_calculate_steeplechase,                   // STEEPLECHASE
-    ride_ratings_calculate_car_ride,                       // CAR_RIDE
-    ride_ratings_calculate_launched_freefall,              // LAUNCHED_FREEFALL
-    ride_ratings_calculate_bobsleigh_coaster,              // BOBSLEIGH_COASTER
-    ride_ratings_calculate_observation_tower,              // OBSERVATION_TOWER
-    ride_ratings_calculate_looping_roller_coaster,         // LOOPING_ROLLER_COASTER
-    ride_ratings_calculate_dinghy_slide,                   // DINGHY_SLIDE
-    ride_ratings_calculate_mine_train_coaster,             // MINE_TRAIN_COASTER
-    ride_ratings_calculate_chairlift,                      // CHAIRLIFT
-    ride_ratings_calculate_corkscrew_roller_coaster,       // CORKSCREW_ROLLER_COASTER
-    ride_ratings_calculate_maze,                           // MAZE
-    ride_ratings_calculate_spiral_slide,                   // SPIRAL_SLIDE
-    ride_ratings_calculate_go_karts,                       // GO_KARTS
-    ride_ratings_calculate_log_flume,                      // LOG_FLUME
-    ride_ratings_calculate_river_rapids,                   // RIVER_RAPIDS
-    ride_ratings_calculate_dodgems,                        // DODGEMS
-    ride_ratings_calculate_pirate_ship,                    // PIRATE_SHIP
-    ride_ratings_calculate_inverter_ship,                  // SWINGING_INVERTER_SHIP
-    ride_ratings_calculate_food_stall,                     // FOOD_STALL
-    ride_ratings_calculate_food_stall,                     // 1D
-    ride_ratings_calculate_drink_stall,                    // DRINK_STALL
-    ride_ratings_calculate_drink_stall,                    // 1F
-    ride_ratings_calculate_shop,                           // SHOP
-    ride_ratings_calculate_merry_go_round,                 // MERRY_GO_ROUND
-    ride_ratings_calculate_shop,                           // 22
-    ride_ratings_calculate_information_kiosk,              // INFORMATION_KIOSK
-    ride_ratings_calculate_toilets,                        // TOILETS
-    ride_ratings_calculate_ferris_wheel,                   // FERRIS_WHEEL
-    ride_ratings_calculate_motion_simulator,               // MOTION_SIMULATOR
-    ride_ratings_calculate_3d_cinema,                      // 3D_CINEMA
-    ride_ratings_calculate_top_spin,                       // TOP_SPIN
-    ride_ratings_calculate_space_rings,                    // SPACE_RINGS
-    ride_ratings_calculate_reverse_freefall_coaster,       // REVERSE_FREEFALL_COASTER
-    ride_ratings_calculate_lift,                           // LIFT
-    ride_ratings_calculate_vertical_drop_roller_coaster,   // VERTICAL_DROP_ROLLER_COASTER
-    ride_ratings_calculate_cash_machine,                   // CASH_MACHINE
-    ride_ratings_calculate_twist,                          // TWIST
-    ride_ratings_calculate_haunted_house,                  // HAUNTED_HOUSE
-    ride_ratings_calculate_first_aid,                      // FIRST_AID
-    ride_ratings_calculate_circus_show,                    // CIRCUS_SHOW
-    ride_ratings_calculate_ghost_train,                    // GHOST_TRAIN
-    ride_ratings_calculate_twister_roller_coaster,         // TWISTER_ROLLER_COASTER
-    ride_ratings_calculate_wooden_roller_coaster,          // WOODEN_ROLLER_COASTER
-    ride_ratings_calculate_side_friction_roller_coaster,   // SIDE_FRICTION_ROLLER_COASTER
-    ride_ratings_calculate_wild_mouse,                     // WILD_MOUSE
-    ride_ratings_calculate_multi_dimension_roller_coaster, // MULTI_DIMENSION_ROLLER_COASTER
-    ride_ratings_calculate_multi_dimension_roller_coaster, // 38
-    ride_ratings_calculate_flying_roller_coaster,          // FLYING_ROLLER_COASTER
-    ride_ratings_calculate_flying_roller_coaster,          // 3A
-    ride_ratings_calculate_virginia_reel,                  // VIRGINIA_REEL
-    ride_ratings_calculate_splash_boats,                   // SPLASH_BOATS
-    ride_ratings_calculate_mini_helicopters,               // MINI_HELICOPTERS
-    ride_ratings_calculate_lay_down_roller_coaster,        // LAY_DOWN_ROLLER_COASTER
-    ride_ratings_calculate_suspended_monorail,             // SUSPENDED_MONORAIL
-    ride_ratings_calculate_lay_down_roller_coaster,        // 40
-    ride_ratings_calculate_reverser_roller_coaster,        // REVERSER_ROLLER_COASTER
-    ride_ratings_calculate_heartline_twister_coaster,      // HEARTLINE_TWISTER_COASTER
-    ride_ratings_calculate_mini_golf,                      // MINI_GOLF
-    ride_ratings_calculate_giga_coaster,                   // GIGA_COASTER
-    ride_ratings_calculate_roto_drop,                      // ROTO_DROP
-    ride_ratings_calculate_flying_saucers,                 // FLYING_SAUCERS
-    ride_ratings_calculate_crooked_house,                  // CROOKED_HOUSE
-    ride_ratings_calculate_monorail_cycles,                // MONORAIL_CYCLES
-    ride_ratings_calculate_compact_inverted_coaster,       // COMPACT_INVERTED_COASTER
-    ride_ratings_calculate_water_coaster,                  // WATER_COASTER
-    ride_ratings_calculate_air_powered_vertical_coaster,   // AIR_POWERED_VERTICAL_COASTER
-    ride_ratings_calculate_inverted_hairpin_coaster,       // INVERTED_HAIRPIN_COASTER
-    ride_ratings_calculate_magic_carpet,                   // MAGIC_CARPET
-    ride_ratings_calculate_submarine_ride,                 // SUBMARINE_RIDE
-    ride_ratings_calculate_river_rafts,                    // RIVER_RAFTS
-    nullptr,                                               // 50
-    ride_ratings_calculate_enterprise,                     // ENTERPRISE
-    nullptr,                                               // 52
-    nullptr,                                               // 53
-    nullptr,                                               // 54
-    nullptr,                                               // 55
-    ride_ratings_calculate_inverted_impulse_coaster,       // INVERTED_IMPULSE_COASTER
-    ride_ratings_calculate_mini_roller_coaster,            // MINI_ROLLER_COASTER
-    ride_ratings_calculate_mine_ride,                      // MINE_RIDE
-    nullptr,                                               // 59
-    ride_ratings_calculate_lim_launched_roller_coaster,    // LIM_LAUNCHED_ROLLER_COASTER
-};
-
-static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
+ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
 {
-    return RideRatingsCalculateFuncTable[rideType];
+    return RideTypeDescriptors[rideType].RatingsCalculationFunction;
 }
 
 #pragma endregion

@@ -37,6 +37,7 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
     SET_FIELD(Heights, { 7, 32, 5, 9, }),
     SET_FIELD(MaxMass, 39),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_miniature_railway),
     SET_FIELD(RatingsMultipliers, { 70, 6, -10 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 10, 3, 5 }),
     SET_FIELD(BuildCosts, { 35, 6, 50, }),

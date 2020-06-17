@@ -36,6 +36,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(Heights, { 40, 32, 28, 2, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_chairlift),
     SET_FIELD(RatingsMultipliers, { 70, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 4, 3, 10 }),
     SET_FIELD(BuildCosts, { 65, 1, 30, }),

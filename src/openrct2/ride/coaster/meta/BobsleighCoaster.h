@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor BobsleighCoasterRTD =
     SET_FIELD(Heights, { 19, 24, 5, 7, }),
     SET_FIELD(MaxMass, 25),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_bobsleigh_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 80, 5, 45, }),

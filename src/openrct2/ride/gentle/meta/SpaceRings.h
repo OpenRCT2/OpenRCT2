@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(Heights, { 16, 48, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_space_rings),
     SET_FIELD(RatingsMultipliers, { 12, 4, 4 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 72, 2, 1, }),

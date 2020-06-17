@@ -38,6 +38,7 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(Heights, { 9, 32, 14, 15, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_river_rapids),
     SET_FIELD(RatingsMultipliers, { 72, 26, 6 }),
     SET_FIELD(UpkeepCosts, { 82, 20, 0, 10, 0, 10 }),
     SET_FIELD(BuildCosts, { 62, 6, 40, }),
