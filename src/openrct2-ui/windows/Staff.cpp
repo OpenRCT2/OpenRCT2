@@ -460,8 +460,9 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_PICKUP:
         {
             w->picked_peep_old_x = peep->x;
-
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
+            CoordsXYZ nullLoc{};
+            nullLoc.setNull();
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                     return;
