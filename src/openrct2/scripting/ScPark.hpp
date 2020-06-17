@@ -274,6 +274,16 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
+        std::string name_get() const
+        {
+            return GetContext()->GetGameState()->GetPark().Name;
+        }
+
+        void name_set(std::string value) {
+            ThrowIfGameStateNotMutable();
+            GetContext()->GetGameState()->GetPark().Name = value;
+        }
+
         std::vector<std::shared_ptr<ScParkMessage>> messages_get() const
         {
             std::vector<std::shared_ptr<ScParkMessage>> result;
@@ -366,6 +376,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::rating_get, &ScPark::rating_set, "rating");
             dukglue_register_property(ctx, &ScPark::bankLoan_get, &ScPark::bankLoan_set, "bankLoan");
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
+            dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
         }
