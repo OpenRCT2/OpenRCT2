@@ -190,8 +190,8 @@ public:
         }
         ride->music = RideTypeDescriptors[ride->type].DefaultMusic;
 
-        auto rideProperties = RideProperties[ride->type];
-        ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
+        const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+        ride->operation_option = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
 
         ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
 

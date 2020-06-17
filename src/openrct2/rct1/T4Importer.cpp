@@ -222,7 +222,7 @@ private:
         td->number_of_cars_per_train = td4Base.number_of_cars_per_train;
         td->min_waiting_time = td4Base.min_waiting_time;
         td->max_waiting_time = td4Base.max_waiting_time;
-        td->operation_setting = std::min(td4Base.operation_setting, RideProperties[td->type].max_value);
+        td->operation_setting = std::min(td4Base.operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
         td->max_speed = td4Base.max_speed;
         td->average_speed = td4Base.average_speed;
         td->ride_length = td4Base.ride_length;
@@ -249,7 +249,7 @@ private:
         td->space_required_y = 255;
         td->lift_hill_speed = 5;
         td->num_circuits = 0;
-        td->operation_setting = std::min(td->operation_setting, RideProperties[td->type].max_value);
+        td->operation_setting = std::min(td->operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
 
         if (td->type == RIDE_TYPE_MAZE)
         {

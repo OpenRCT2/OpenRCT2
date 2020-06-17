@@ -510,7 +510,7 @@ money32 Park::CalculateRideValue(const Ride* ride) const
     money32 result = 0;
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
-        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
+        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + RideTypeDescriptors[ride->type].BonusValue * 4);
     }
     return result;
 }
@@ -565,7 +565,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
             continue;
 
         // Add guest score for ride type
-        suggestedMaxGuests += rideBonusValue[ride.type];
+        suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue;
     }
 
     // If difficult guest generation, extra guests are available for good rides
@@ -590,7 +590,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += rideBonusValue[ride.type] * 2;
+            suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue * 2;
         }
     }
 

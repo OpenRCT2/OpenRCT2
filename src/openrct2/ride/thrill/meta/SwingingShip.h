@@ -29,6 +29,7 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_SWING)),
     SET_FIELD(DefaultMode, RIDE_MODE_SWING),
+    SET_FIELD(OperatingSettings, { 7, 25, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_PIRATE_SHIP, STR_RIDE_DESCRIPTION_PIRATE_SHIP }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_SHIP, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -40,5 +41,6 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_PIRATES),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 35)
 };
 // clang-format on

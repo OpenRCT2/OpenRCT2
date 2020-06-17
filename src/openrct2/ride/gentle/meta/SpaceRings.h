@@ -28,6 +28,7 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_SPACE_RINGS)),
     SET_FIELD(DefaultMode, RIDE_MODE_SPACE_RINGS),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_RING, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -39,5 +40,6 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(DefaultPrices, { 5, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 30)
 };
 // clang-format on

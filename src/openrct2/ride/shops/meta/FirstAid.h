@@ -27,6 +27,7 @@ constexpr const RideTypeDescriptor FirstAidRTD =
                      RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_SHOP_STALL)),
     SET_FIELD(DefaultMode, RIDE_MODE_SHOP_STALL),
+    SET_FIELD(OperatingSettings, { 8, 8, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
@@ -38,5 +39,6 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(DefaultPrices, { 0, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 5)
 };
 // clang-format on

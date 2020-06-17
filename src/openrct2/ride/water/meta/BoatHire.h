@@ -27,6 +27,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_BOAT_HIRE)),
     SET_FIELD(DefaultMode, RIDE_MODE_BOAT_HIRE),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
@@ -38,5 +39,6 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 40)
 };
 // clang-format on

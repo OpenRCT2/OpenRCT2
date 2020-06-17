@@ -917,14 +917,14 @@ enum
     TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
 };
 
-struct rct_ride_properties
+struct RideOperatingSettings
 {
-    uint8_t min_value;
-    uint8_t max_value;
-    uint8_t max_brakes_speed;
-    uint8_t powered_lift_acceleration;
-    uint8_t booster_acceleration;
-    int8_t booster_speed_factor; // The factor to shift the raw booster speed with
+    uint8_t MinValue;
+    uint8_t MaxValue;
+    uint8_t MaxBrakesSpeed;
+    uint8_t PoweredLiftAcceleration;
+    uint8_t BoosterAcceleration;
+    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
 };
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -942,8 +942,6 @@ struct rct_ride_properties
 
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
-
-extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 Ride* get_ride(ride_id_t index);
 

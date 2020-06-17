@@ -3349,8 +3349,9 @@ static void window_ride_mode_tweak_increase(rct_window* w)
     if (ride == nullptr)
         return;
 
-    uint8_t maxValue = RideProperties[ride->type].max_value;
-    uint8_t minValue = gCheatsFastLiftHill ? 0 : RideProperties[ride->type].min_value;
+    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    uint8_t maxValue = operatingSettings.MaxValue;
+    uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
 
     if (gCheatsFastLiftHill)
     {
@@ -3373,8 +3374,9 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
     if (ride == nullptr)
         return;
 
-    uint8_t maxValue = RideProperties[ride->type].max_value;
-    uint8_t minValue = gCheatsFastLiftHill ? 0 : RideProperties[ride->type].min_value;
+    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    uint8_t maxValue = operatingSettings.MaxValue;
+    uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
     if (gCheatsFastLiftHill)
     {
         maxValue = 255;
