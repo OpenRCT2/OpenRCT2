@@ -7441,13 +7441,6 @@ uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
     return RIDE_TYPE_NULL;
 }
 
-bool ride_type_supports_boosters(uint8_t rideType)
-{
-    return rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER
-        || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-        || rideType == RIDE_TYPE_GIGA_COASTER || rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER;
-}
-
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
 {
     int8_t shiftFactor = RideTypeDescriptors[rideType].OperatingSettings.BoosterSpeedFactor;
