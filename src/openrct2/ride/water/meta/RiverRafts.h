@@ -30,6 +30,7 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_RIVER_RAFTS, STR_RIDE_DESCRIPTION_RIVER_RAFTS }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -41,5 +42,6 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(DefaultPrices, { 10, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),
+    SET_FIELD(BonusValue, 65)
 };
 // clang-format on

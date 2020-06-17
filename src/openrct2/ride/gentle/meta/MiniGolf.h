@@ -27,6 +27,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_PLAYER, RIDE_COMPONENT_TYPE_COURSE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
@@ -38,5 +39,6 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 23)
 };
 // clang-format on

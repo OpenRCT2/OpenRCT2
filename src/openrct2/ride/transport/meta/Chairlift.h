@@ -29,6 +29,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_IS_SUSPENDED),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_STATION_TO_STATION)),
     SET_FIELD(DefaultMode, RIDE_MODE_STATION_TO_STATION),
+    SET_FIELD(OperatingSettings, { 1, 4, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -40,5 +41,6 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 55)
 };
 // clang-format on

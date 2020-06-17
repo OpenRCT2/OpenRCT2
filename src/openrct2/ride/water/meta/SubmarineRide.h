@@ -29,6 +29,7 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
                      RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SUBMARINE_RIDE, STR_RIDE_DESCRIPTION_SUBMARINE_RIDE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
@@ -40,5 +41,6 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 40)
 };
 // clang-format on

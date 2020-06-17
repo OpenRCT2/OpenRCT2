@@ -8200,14 +8200,15 @@ loc_6DAEB9:
 
         if (regs.eax > _vehicleVelocityF64E08)
         {
-            acceleration = RideProperties[curRide->type].booster_acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
+            acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration
+                << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
 
     if ((trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
         || (trackType == TRACK_ELEM_POWERED_LIFT))
     {
-        acceleration = RideProperties[curRide->type].powered_lift_acceleration << 16;
+        acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.PoweredLiftAcceleration << 16;
     }
     if (trackType == TRACK_ELEM_BRAKE_FOR_DROP)
     {
@@ -8575,7 +8576,7 @@ loc_6DBA33:;
 
         if (regs.eax < _vehicleVelocityF64E08)
         {
-            regs.eax = RideProperties[curRide->type].booster_acceleration << 16;
+            regs.eax = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration << 16;
             acceleration = regs.eax;
         }
     }

@@ -7450,7 +7450,7 @@ bool ride_type_supports_boosters(uint8_t rideType)
 
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = RideProperties[rideType].booster_speed_factor;
+    int8_t shiftFactor = RideTypeDescriptors[rideType].OperatingSettings.BoosterSpeedFactor;
     if (shiftFactor == 0)
     {
         return rawSpeed;

@@ -113,6 +113,8 @@ struct RideTypeDescriptor
     /** rct2: 0x0097C8AC */
     uint64_t RideModes;
     uint8_t DefaultMode;
+    /** rct2: 0x0097CF40 */
+    RideOperatingSettings OperatingSettings;
     RideNaming Naming;
     RideNameConvention NameConvention;
     uint8_t AvailableBreakdowns;
@@ -128,6 +130,8 @@ struct RideTypeDescriptor
     uint8_t DefaultMusic;
     /** rct2: 0x0097D7CB */
     uint8_t PhotoItem;
+    /** rct2: 0x0097D21E */
+    uint8_t BonusValue;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -227,8 +231,6 @@ constexpr const uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER = RIDE_TYPE_FLAG_HAS_G_F
 constexpr const uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT = RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER
     | RIDE_TYPE_FLAG_HAS_AIR_TIME | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT;
 
-extern const uint8_t rideBonusValue[RIDE_TYPE_COUNT];
-
 // clang-format off
 constexpr const RideComponentName RideComponentNames[] = 
 {
@@ -286,6 +288,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Flags, 0),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
@@ -297,6 +300,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 0)
 };
 // clang-format on
 

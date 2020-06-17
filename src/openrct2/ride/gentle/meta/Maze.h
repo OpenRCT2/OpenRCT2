@@ -26,6 +26,7 @@ constexpr const RideTypeDescriptor MazeRTD =
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_MAZE)),
     SET_FIELD(DefaultMode, RIDE_MODE_MAZE),
+    SET_FIELD(OperatingSettings, { 1, 64, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, 0),
@@ -37,5 +38,6 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 40)
 };
 // clang-format on

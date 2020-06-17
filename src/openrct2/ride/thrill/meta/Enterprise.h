@@ -29,6 +29,7 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_ROTATION)),
     SET_FIELD(DefaultMode, RIDE_MODE_ROTATION),
+    SET_FIELD(OperatingSettings, { 10, 20, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -40,5 +41,6 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_2),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 45)
 };
 // clang-format on

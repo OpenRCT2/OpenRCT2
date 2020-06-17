@@ -28,6 +28,7 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_FORWARD_ROTATION) | (1ULL << RIDE_MODE_BACKWARD_ROTATION)),
     SET_FIELD(DefaultMode, RIDE_MODE_FORWARD_ROTATION),
+    SET_FIELD(OperatingSettings, { 1, 3, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -39,5 +40,6 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 45)
 };
 // clang-format on

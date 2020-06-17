@@ -281,8 +281,9 @@ private:
 
     bool ride_is_valid_operation_option(Ride * ride) const
     {
-        uint8_t minValue = RideProperties[ride->type].min_value;
-        uint8_t maxValue = RideProperties[ride->type].max_value;
+        const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+        uint8_t minValue = operatingSettings.MinValue;
+        uint8_t maxValue = operatingSettings.MaxValue;
         if (gCheatsFastLiftHill)
         {
             minValue = 0;

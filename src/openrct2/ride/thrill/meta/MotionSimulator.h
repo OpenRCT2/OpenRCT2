@@ -29,6 +29,7 @@ constexpr const RideTypeDescriptor MotionSimulatorRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_FILM_AVENGING_AVIATORS) | (1ULL << RIDE_MODE_FILM_THRILL_RIDERS)),
     SET_FIELD(DefaultMode, RIDE_MODE_FILM_AVENGING_AVIATORS),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
@@ -40,5 +41,6 @@ constexpr const RideTypeDescriptor MotionSimulatorRTD =
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 45)
 };
 // clang-format on
