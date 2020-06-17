@@ -20,6 +20,7 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_virginia_reel),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
