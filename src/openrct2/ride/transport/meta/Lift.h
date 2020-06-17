@@ -20,6 +20,7 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(Category, RIDE_CATEGORY_TRANSPORT),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_TOWER_BASE),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_lift),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |

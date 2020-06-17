@@ -20,6 +20,15 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, (1ULL << TRACK_ELEM_FLAT) | (1ULL << TRACK_ELEM_25_DEG_UP) | (1ULL << TRACK_ELEM_60_DEG_UP) | 
+                                  (1ULL << TRACK_ELEM_FLAT_TO_25_DEG_UP) | (1ULL << TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP) | 
+                                  (1ULL << TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP) | (1ULL << TRACK_ELEM_25_DEG_UP_TO_FLAT) | 
+                                  (1ULL << TRACK_ELEM_25_DEG_DOWN) | (1ULL << TRACK_ELEM_60_DEG_DOWN) | (1ULL << TRACK_ELEM_FLAT_TO_25_DEG_DOWN) | 
+                                  (1ULL << TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN) | (1ULL << TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN) | 
+                                  (1ULL << TRACK_ELEM_25_DEG_DOWN_TO_FLAT) | (1ULL << TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES) | 
+                                  (1ULL << TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) | (1ULL << TRACK_ELEM_S_BEND_LEFT) | 
+                                  (1ULL << TRACK_ELEM_S_BEND_RIGHT) | (1ULL << TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES) | 
+                                  (1ULL << TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES)),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_dinghy_slide),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
