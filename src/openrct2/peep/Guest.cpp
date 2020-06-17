@@ -3270,7 +3270,7 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
  *  rct2: 0x00699FE3
  * Stops peeps that are having thoughts
  * such as "I'm hungry" after visiting a food shop.
- * Works for Thirst/Hungry/Low Money/Bathroom
+ * Works for Thirst/Hungry/Low Money/Toilet
  */
 void Guest::StopPurchaseThought(uint8_t ride_type)
 {
