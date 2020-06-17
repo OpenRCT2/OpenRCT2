@@ -852,7 +852,7 @@ void S6Exporter::ExportResearchedRideTypes()
 {
     std::fill(std::begin(_s6.researched_ride_types), std::end(_s6.researched_ride_types), false);
 
-    for (int32_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+    for (int32_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
     {
         if (ride_type_is_invented(rideType))
         {

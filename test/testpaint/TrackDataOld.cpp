@@ -19262,7 +19262,7 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
 
 static constexpr const uint32_t _null[256] = {0};
 
-const uint32_t * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
+const uint32_t * RideTypeTrackPaintFunctionsOld[RCT2_RIDE_TYPE_COUNT] = {
     _OldSpiralRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     _OldStandUpRollerCoasterTrackPaintFunctions,            // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     _OldSuspendedSwingingCoasterTrackPaintFunctions,        // RIDE_TYPE_SUSPENDED_SWINGING_COASTER

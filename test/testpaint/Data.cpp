@@ -10,7 +10,7 @@
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 
-const_utf8string RideNames[RIDE_TYPE_COUNT] = {
+const_utf8string RideNames[RCT2_RIDE_TYPE_COUNT] = {
     "SpiralRollerCoaster",
     "StandUpRollerCoaster",
     "SuspendedSwingingCoaster",
@@ -883,7 +883,7 @@ const_utf8string TrackElemNames[] = {
     "TRACK_ELEM_255",
 };
 
-const_utf8string RideCodeNames[RIDE_TYPE_COUNT] = {
+const_utf8string RideCodeNames[RCT2_RIDE_TYPE_COUNT] = {
     "spiral_rc",
     "stand_up_rc",
     "suspended_swinging_rc",
