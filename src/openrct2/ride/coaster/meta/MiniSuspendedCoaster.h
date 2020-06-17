@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(Heights, { 10, 24, 24, 8, }),
     SET_FIELD(MaxMass, 3),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 5 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 60, 5, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

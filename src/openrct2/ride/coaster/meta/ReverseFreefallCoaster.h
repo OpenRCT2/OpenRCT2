@@ -32,6 +32,7 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(Heights, { 255, 32, 4, 7, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 44, 66, 10 }),
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 0, 0, 10 }),
     SET_FIELD(BuildCosts, { 200, 0, 45, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

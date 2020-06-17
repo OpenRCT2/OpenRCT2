@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
     SET_FIELD(Heights, { 21, 24, 4, 7, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { SoundId::LiftArrow, 4, 6 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 82, 6, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

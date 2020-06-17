@@ -94,7 +94,7 @@ static void ride_ratings_calculate(Ride* ride);
 static void ride_ratings_calculate_value(Ride* ride);
 static void ride_ratings_score_close_proximity(TileElement* inputTileElement);
 
-static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
+static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
 /**
  * This is a small hack function to keep calling the ride rating processor until
@@ -836,9 +836,10 @@ static void ride_ratings_calculate_value(Ride* ride)
     }
 
     // Start with the base ratings, multiplied by the ride type specific weights for excitement, intensity and nausea.
-    int32_t value = (((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15)
-        + (((ride->intensity * RideRatings[ride->type].intensity) * 32) >> 15)
-        + (((ride->nausea * RideRatings[ride->type].nausea) * 32) >> 15);
+    const auto& ratingsMultipliers = RideTypeDescriptors[ride->type].RatingsMultipliers;
+    int32_t value = (((ride->excitement * ratingsMultipliers.Excitement) * 32) >> 15)
+        + (((ride->intensity * ratingsMultipliers.Intensity) * 32) >> 15)
+        + (((ride->nausea * ratingsMultipliers.Nausea) * 32) >> 15);
 
     int32_t monthsOld = 0;
     if (!gCheatsDisableRideValueAging)
@@ -978,7 +979,7 @@ static uint16_t ride_compute_upkeep(Ride* ride)
  * - bp: nausea
  * - edi: ride ptr
  */
-static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
+static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
 {
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
 
@@ -989,9 +990,9 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
 
     // Apply ride entry multipliers
     ride_ratings_add(
-        ratings, ((static_cast<int32_t>(ratings->excitement) * rideEntry->excitement_multiplier) >> 7),
-        ((static_cast<int32_t>(ratings->intensity) * rideEntry->intensity_multiplier) >> 7),
-        ((static_cast<int32_t>(ratings->nausea) * rideEntry->nausea_multiplier) >> 7));
+        ratings, ((static_cast<int32_t>(ratings->Excitement) * rideEntry->excitement_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings->Intensity) * rideEntry->intensity_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings->Nausea) * rideEntry->nausea_multiplier) >> 7));
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
@@ -1038,18 +1039,18 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
  * Lowers excitement, the higher the intensity.
  *  rct2: 0x0065E7A3
  */
-static void ride_ratings_apply_intensity_penalty(rating_tuple* ratings)
+static void ride_ratings_apply_intensity_penalty(RatingTuple* ratings)
 {
     static const ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
-    ride_rating excitement = ratings->excitement;
+    ride_rating excitement = ratings->Excitement;
     for (auto intensityBound : intensityBounds)
     {
-        if (ratings->intensity >= intensityBound)
+        if (ratings->Intensity >= intensityBound)
         {
             excitement -= excitement / 4;
         }
     }
-    ratings->excitement = excitement;
+    ratings->Excitement = excitement;
 }
 
 /**
@@ -1151,24 +1152,24 @@ static ShelteredEights get_num_of_sheltered_eighths(Ride* ride)
     return { trackShelteredEighths, numShelteredEighths };
 }
 
-static rating_tuple get_flat_turns_rating(Ride* ride)
+static RatingTuple get_flat_turns_rating(Ride* ride)
 {
     int32_t num3PlusTurns = get_turn_count_3_elements(ride, 0);
     int32_t num2Turns = get_turn_count_2_elements(ride, 0);
     int32_t num1Turns = get_turn_count_1_element(ride, 0);
 
-    rating_tuple rating;
-    rating.excitement = (num3PlusTurns * 0x28000) >> 16;
-    rating.excitement += (num2Turns * 0x30000) >> 16;
-    rating.excitement += (num1Turns * 63421) >> 16;
+    RatingTuple rating;
+    rating.Excitement = (num3PlusTurns * 0x28000) >> 16;
+    rating.Excitement += (num2Turns * 0x30000) >> 16;
+    rating.Excitement += (num1Turns * 63421) >> 16;
 
-    rating.intensity = (num3PlusTurns * 81920) >> 16;
-    rating.intensity += (num2Turns * 49152) >> 16;
-    rating.intensity += (num1Turns * 21140) >> 16;
+    rating.Intensity = (num3PlusTurns * 81920) >> 16;
+    rating.Intensity += (num2Turns * 49152) >> 16;
+    rating.Intensity += (num1Turns * 21140) >> 16;
 
-    rating.nausea = (num3PlusTurns * 0x50000) >> 16;
-    rating.nausea += (num2Turns * 0x32000) >> 16;
-    rating.nausea += (num1Turns * 42281) >> 16;
+    rating.Nausea = (num3PlusTurns * 0x50000) >> 16;
+    rating.Nausea += (num2Turns * 0x32000) >> 16;
+    rating.Nausea += (num1Turns * 42281) >> 16;
 
     return rating;
 }
@@ -1177,24 +1178,24 @@ static rating_tuple get_flat_turns_rating(Ride* ride)
  *
  *  rct2: 0x0065DF72
  */
-static rating_tuple get_banked_turns_rating(Ride* ride)
+static RatingTuple get_banked_turns_rating(Ride* ride)
 {
     int32_t num3PlusTurns = get_turn_count_3_elements(ride, 1);
     int32_t num2Turns = get_turn_count_2_elements(ride, 1);
     int32_t num1Turns = get_turn_count_1_element(ride, 1);
 
-    rating_tuple rating;
-    rating.excitement = (num3PlusTurns * 0x3C000) >> 16;
-    rating.excitement += (num2Turns * 0x3C000) >> 16;
-    rating.excitement += (num1Turns * 73992) >> 16;
+    RatingTuple rating;
+    rating.Excitement = (num3PlusTurns * 0x3C000) >> 16;
+    rating.Excitement += (num2Turns * 0x3C000) >> 16;
+    rating.Excitement += (num1Turns * 73992) >> 16;
 
-    rating.intensity = (num3PlusTurns * 0x14000) >> 16;
-    rating.intensity += (num2Turns * 49152) >> 16;
-    rating.intensity += (num1Turns * 21140) >> 16;
+    rating.Intensity = (num3PlusTurns * 0x14000) >> 16;
+    rating.Intensity += (num2Turns * 49152) >> 16;
+    rating.Intensity += (num1Turns * 21140) >> 16;
 
-    rating.nausea = (num3PlusTurns * 0x50000) >> 16;
-    rating.nausea += (num2Turns * 0x32000) >> 16;
-    rating.nausea += (num1Turns * 48623) >> 16;
+    rating.Nausea = (num3PlusTurns * 0x50000) >> 16;
+    rating.Nausea += (num2Turns * 0x32000) >> 16;
+    rating.Nausea += (num1Turns * 48623) >> 16;
 
     return rating;
 }
@@ -1203,21 +1204,21 @@ static rating_tuple get_banked_turns_rating(Ride* ride)
  *
  *  rct2: 0x0065E047
  */
-static rating_tuple get_sloped_turns_rating(Ride* ride)
+static RatingTuple get_sloped_turns_rating(Ride* ride)
 {
-    rating_tuple rating;
+    RatingTuple rating;
 
     int32_t num4PlusTurns = get_turn_count_4_plus_elements(ride, 2);
     int32_t num3Turns = get_turn_count_3_elements(ride, 2);
     int32_t num2Turns = get_turn_count_2_elements(ride, 2);
     int32_t num1Turns = get_turn_count_1_element(ride, 2);
 
-    rating.excitement = (std::min(num4PlusTurns, 4) * 0x78000) >> 16;
-    rating.excitement += (std::min(num3Turns, 6) * 273066) >> 16;
-    rating.excitement += (std::min(num2Turns, 6) * 0x3AAAA) >> 16;
-    rating.excitement += (std::min(num1Turns, 7) * 187245) >> 16;
-    rating.intensity = 0;
-    rating.nausea = (std::min(num4PlusTurns, 8) * 0x78000) >> 16;
+    rating.Excitement = (std::min(num4PlusTurns, 4) * 0x78000) >> 16;
+    rating.Excitement += (std::min(num3Turns, 6) * 273066) >> 16;
+    rating.Excitement += (std::min(num2Turns, 6) * 0x3AAAA) >> 16;
+    rating.Excitement += (std::min(num1Turns, 7) * 187245) >> 16;
+    rating.Intensity = 0;
+    rating.Nausea = (std::min(num4PlusTurns, 8) * 0x78000) >> 16;
 
     return rating;
 }
@@ -1226,18 +1227,18 @@ static rating_tuple get_sloped_turns_rating(Ride* ride)
  *
  *  rct2: 0x0065E0F2
  */
-static rating_tuple get_inversions_ratings(uint16_t inversions)
+static RatingTuple get_inversions_ratings(uint16_t inversions)
 {
-    rating_tuple rating;
+    RatingTuple rating;
 
-    rating.excitement = (std::min<int32_t>(inversions, 6) * 0x1AAAAA) >> 16;
-    rating.intensity = (inversions * 0x320000) >> 16;
-    rating.nausea = (inversions * 0x15AAAA) >> 16;
+    rating.Excitement = (std::min<int32_t>(inversions, 6) * 0x1AAAAA) >> 16;
+    rating.Intensity = (inversions * 0x320000) >> 16;
+    rating.Nausea = (inversions * 0x15AAAA) >> 16;
 
     return rating;
 }
 
-static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
+static RatingTuple get_special_track_elements_rating(uint8_t type, Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
@@ -1291,8 +1292,8 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
-    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                            static_cast<ride_rating>(nausea) };
+    RatingTuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                           static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1300,38 +1301,38 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
  *
  *  rct2: 0x0065DDD1
  */
-static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
+static RatingTuple ride_ratings_get_turns_ratings(Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
-    rating_tuple specialTrackElementsRating = get_special_track_elements_rating(ride->type, ride);
-    excitement += specialTrackElementsRating.excitement;
-    intensity += specialTrackElementsRating.intensity;
-    nausea += specialTrackElementsRating.nausea;
+    RatingTuple specialTrackElementsRating = get_special_track_elements_rating(ride->type, ride);
+    excitement += specialTrackElementsRating.Excitement;
+    intensity += specialTrackElementsRating.Intensity;
+    nausea += specialTrackElementsRating.Nausea;
 
-    rating_tuple flatTurnsRating = get_flat_turns_rating(ride);
-    excitement += flatTurnsRating.excitement;
-    intensity += flatTurnsRating.intensity;
-    nausea += flatTurnsRating.nausea;
+    RatingTuple flatTurnsRating = get_flat_turns_rating(ride);
+    excitement += flatTurnsRating.Excitement;
+    intensity += flatTurnsRating.Intensity;
+    nausea += flatTurnsRating.Nausea;
 
-    rating_tuple bankedTurnsRating = get_banked_turns_rating(ride);
-    excitement += bankedTurnsRating.excitement;
-    intensity += bankedTurnsRating.intensity;
-    nausea += bankedTurnsRating.nausea;
+    RatingTuple bankedTurnsRating = get_banked_turns_rating(ride);
+    excitement += bankedTurnsRating.Excitement;
+    intensity += bankedTurnsRating.Intensity;
+    nausea += bankedTurnsRating.Nausea;
 
-    rating_tuple slopedTurnsRating = get_sloped_turns_rating(ride);
-    excitement += slopedTurnsRating.excitement;
-    intensity += slopedTurnsRating.intensity;
-    nausea += slopedTurnsRating.nausea;
+    RatingTuple slopedTurnsRating = get_sloped_turns_rating(ride);
+    excitement += slopedTurnsRating.Excitement;
+    intensity += slopedTurnsRating.Intensity;
+    nausea += slopedTurnsRating.Nausea;
 
     auto inversions = (ride->type == RIDE_TYPE_MINI_GOLF) ? ride->holes : ride->inversions;
-    rating_tuple inversionsRating = get_inversions_ratings(inversions);
-    excitement += inversionsRating.excitement;
-    intensity += inversionsRating.intensity;
-    nausea += inversionsRating.nausea;
+    RatingTuple inversionsRating = get_inversions_ratings(inversions);
+    excitement += inversionsRating.Excitement;
+    intensity += inversionsRating.Intensity;
+    nausea += inversionsRating.Nausea;
 
-    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                            static_cast<ride_rating>(nausea) };
+    RatingTuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                           static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1339,7 +1340,7 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
  *
  *  rct2: 0x0065E1C2
  */
-static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
+static RatingTuple ride_ratings_get_sheltered_ratings(Ride* ride)
 {
     int32_t shelteredLengthShifted = (ride->sheltered_length) >> 16;
 
@@ -1369,8 +1370,8 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 
-    rating_tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                            static_cast<ride_rating>(nausea) };
+    RatingTuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                           static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1378,29 +1379,29 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
  *
  *  rct2: 0x0065DCDC
  */
-static rating_tuple ride_ratings_get_gforce_ratings(Ride* ride)
+static RatingTuple ride_ratings_get_gforce_ratings(Ride* ride)
 {
-    rating_tuple result = {
+    RatingTuple result = {
         /* .excitement = */ 0,
         /* .intensity = */ 0,
         /* .nausea = */ 0,
     };
 
     // Apply maximum positive G force factor
-    result.excitement += (ride->max_positive_vertical_g * 5242) >> 16;
-    result.intensity += (ride->max_positive_vertical_g * 52428) >> 16;
-    result.nausea += (ride->max_positive_vertical_g * 17039) >> 16;
+    result.Excitement += (ride->max_positive_vertical_g * 5242) >> 16;
+    result.Intensity += (ride->max_positive_vertical_g * 52428) >> 16;
+    result.Nausea += (ride->max_positive_vertical_g * 17039) >> 16;
 
     // Apply maximum negative G force factor
     fixed16_2dp gforce = ride->max_negative_vertical_g;
-    result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
-    result.intensity += ((gforce - FIXED_2DP(1, 00)) * -52428) >> 16;
-    result.nausea += ((gforce - FIXED_2DP(1, 00)) * -14563) >> 16;
+    result.Excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
+    result.Intensity += ((gforce - FIXED_2DP(1, 00)) * -52428) >> 16;
+    result.Nausea += ((gforce - FIXED_2DP(1, 00)) * -14563) >> 16;
 
     // Apply lateral G force factor
-    result.excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride->max_lateral_g) * 26214) >> 16;
-    result.intensity += ride->max_lateral_g;
-    result.nausea += (ride->max_lateral_g * 21845) >> 16;
+    result.Excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride->max_lateral_g) * 26214) >> 16;
+    result.Intensity += ride->max_lateral_g;
+    result.Nausea += (ride->max_lateral_g * 21845) >> 16;
 
 // Very high lateral G force penalty
 #ifdef ORIGINAL_RATINGS
@@ -1424,9 +1425,9 @@ static rating_tuple ride_ratings_get_gforce_ratings(Ride* ride)
  *
  *  rct2: 0x0065E139
  */
-static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
+static RatingTuple ride_ratings_get_drop_ratings(Ride* ride)
 {
-    rating_tuple result = {
+    RatingTuple result = {
         /* .excitement = */ 0,
         /* .intensity = */ 0,
         /* .nausea = */ 0,
@@ -1434,9 +1435,9 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
 
     // Apply number of drops factor
     int32_t drops = ride->drops & 0x3F;
-    result.excitement += (std::min(9, drops) * 728177) >> 16;
-    result.intensity += (drops * 928426) >> 16;
-    result.nausea += (drops * 655360) >> 16;
+    result.Excitement += (std::min(9, drops) * 728177) >> 16;
+    result.Intensity += (drops * 928426) >> 16;
+    result.Nausea += (drops * 655360) >> 16;
 
     // Apply highest drop factor
     ride_ratings_add(
@@ -1506,33 +1507,33 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
 
 #pragma region Ride rating calculation helpers
 
-static void ride_ratings_set(rating_tuple* ratings, int32_t excitement, int32_t intensity, int32_t nausea)
+static void ride_ratings_set(RatingTuple* ratings, int32_t excitement, int32_t intensity, int32_t nausea)
 {
-    ratings->excitement = 0;
-    ratings->intensity = 0;
-    ratings->nausea = 0;
+    ratings->Excitement = 0;
+    ratings->Intensity = 0;
+    ratings->Nausea = 0;
     ride_ratings_add(ratings, excitement, intensity, nausea);
 }
 
 /**
  * Add to a ride rating with overflow protection.
  */
-static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t intensity, int32_t nausea)
+static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea)
 {
-    int32_t newExcitement = rating->excitement + excitement;
-    int32_t newIntensity = rating->intensity + intensity;
-    int32_t newNausea = rating->nausea + nausea;
-    rating->excitement = std::clamp<int32_t>(newExcitement, 0, INT16_MAX);
-    rating->intensity = std::clamp<int32_t>(newIntensity, 0, INT16_MAX);
-    rating->nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
+    int32_t newExcitement = rating->Excitement + excitement;
+    int32_t newIntensity = rating->Intensity + intensity;
+    int32_t newNausea = rating->Nausea + nausea;
+    rating->Excitement = std::clamp<int32_t>(newExcitement, 0, INT16_MAX);
+    rating->Intensity = std::clamp<int32_t>(newIntensity, 0, INT16_MAX);
+    rating->Nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
 }
 
-static void ride_ratings_apply_length(rating_tuple* ratings, Ride* ride, int32_t maxLength, int32_t excitementMultiplier)
+static void ride_ratings_apply_length(RatingTuple* ratings, Ride* ride, int32_t maxLength, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings, (std::min(ride_get_total_length(ride) >> 16, maxLength) * excitementMultiplier) >> 16, 0, 0);
 }
 
-static void ride_ratings_apply_synchronisation(rating_tuple* ratings, Ride* ride, int32_t excitement, int32_t intensity)
+static void ride_ratings_apply_synchronisation(RatingTuple* ratings, Ride* ride, int32_t excitement, int32_t intensity)
 {
     if ((ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) && ride_has_adjacent_station(ride))
     {
@@ -1540,13 +1541,13 @@ static void ride_ratings_apply_synchronisation(rating_tuple* ratings, Ride* ride
     }
 }
 
-static void ride_ratings_apply_train_length(rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier)
+static void ride_ratings_apply_train_length(RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings, ((ride->num_cars_per_train - 1) * excitementMultiplier) >> 16, 0, 0);
 }
 
 static void ride_ratings_apply_max_speed(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     int32_t modifier = ride->max_speed >> 16;
     ride_ratings_add(
@@ -1555,55 +1556,55 @@ static void ride_ratings_apply_max_speed(
 }
 
 static void ride_ratings_apply_average_speed(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier)
 {
     int32_t modifier = ride->average_speed >> 16;
     ride_ratings_add(ratings, (modifier * excitementMultiplier) >> 16, (modifier * intensityMultiplier) >> 16, 0);
 }
 
-static void ride_ratings_apply_duration(rating_tuple* ratings, Ride* ride, int32_t maxDuration, int32_t excitementMultiplier)
+static void ride_ratings_apply_duration(RatingTuple* ratings, Ride* ride, int32_t maxDuration, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings, (std::min(ride_get_total_time(ride), maxDuration) * excitementMultiplier) >> 16, 0, 0);
 }
 
 static void ride_ratings_apply_gforces(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
-    rating_tuple subRating = ride_ratings_get_gforce_ratings(ride);
+    RatingTuple subRating = ride_ratings_get_gforce_ratings(ride);
     ride_ratings_add(
-        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
-        (subRating.nausea * nauseaMultiplier) >> 16);
+        ratings, (subRating.Excitement * excitementMultiplier) >> 16, (subRating.Intensity * intensityMultiplier) >> 16,
+        (subRating.Nausea * nauseaMultiplier) >> 16);
 }
 
 static void ride_ratings_apply_turns(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
-    rating_tuple subRating = ride_ratings_get_turns_ratings(ride);
+    RatingTuple subRating = ride_ratings_get_turns_ratings(ride);
     ride_ratings_add(
-        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
-        (subRating.nausea * nauseaMultiplier) >> 16);
+        ratings, (subRating.Excitement * excitementMultiplier) >> 16, (subRating.Intensity * intensityMultiplier) >> 16,
+        (subRating.Nausea * nauseaMultiplier) >> 16);
 }
 
 static void ride_ratings_apply_drops(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
-    rating_tuple subRating = ride_ratings_get_drop_ratings(ride);
+    RatingTuple subRating = ride_ratings_get_drop_ratings(ride);
     ride_ratings_add(
-        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
-        (subRating.nausea * nauseaMultiplier) >> 16);
+        ratings, (subRating.Excitement * excitementMultiplier) >> 16, (subRating.Intensity * intensityMultiplier) >> 16,
+        (subRating.Nausea * nauseaMultiplier) >> 16);
 }
 
 static void ride_ratings_apply_sheltered_ratings(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
-    rating_tuple subRating = ride_ratings_get_sheltered_ratings(ride);
+    RatingTuple subRating = ride_ratings_get_sheltered_ratings(ride);
     ride_ratings_add(
-        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
-        (subRating.nausea * nauseaMultiplier) >> 16);
+        ratings, (subRating.Excitement * excitementMultiplier) >> 16, (subRating.Intensity * intensityMultiplier) >> 16,
+        (subRating.Nausea * nauseaMultiplier) >> 16);
 }
 
 static void ride_ratings_apply_operation_option(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     ride_ratings_add(
         ratings, (ride->operation_option * excitementMultiplier) >> 16, (ride->operation_option * intensityMultiplier) >> 16,
@@ -1611,133 +1612,133 @@ static void ride_ratings_apply_operation_option(
 }
 
 static void ride_ratings_apply_rotations(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     ride_ratings_add(
         ratings, ride->rotations * excitementMultiplier, ride->rotations * intensityMultiplier,
         ride->rotations * nauseaMultiplier);
 }
 
-static void ride_ratings_apply_proximity(rating_tuple* ratings, int32_t excitementMultiplier)
+static void ride_ratings_apply_proximity(RatingTuple* ratings, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings, (ride_ratings_get_proximity_score() * excitementMultiplier) >> 16, 0, 0);
 }
 
-static void ride_ratings_apply_scenery(rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier)
+static void ride_ratings_apply_scenery(RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings, (ride_ratings_get_scenery_score(ride) * excitementMultiplier) >> 16, 0, 0);
 }
 
 static void ride_ratings_apply_highest_drop_height_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t minHighestDropHeight, int32_t excitementPenalty, int32_t intensityPenalty,
+    RatingTuple* ratings, Ride* ride, int32_t minHighestDropHeight, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->highest_drop_height < minHighestDropHeight)
     {
-        ratings->excitement /= excitementPenalty;
-        ratings->intensity /= intensityPenalty;
-        ratings->nausea /= nauseaPenalty;
+        ratings->Excitement /= excitementPenalty;
+        ratings->Intensity /= intensityPenalty;
+        ratings->Nausea /= nauseaPenalty;
     }
 }
 
 static void ride_ratings_apply_max_speed_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t minMaxSpeed, int32_t excitementPenalty, int32_t intensityPenalty,
+    RatingTuple* ratings, Ride* ride, int32_t minMaxSpeed, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->max_speed < minMaxSpeed)
     {
-        ratings->excitement /= excitementPenalty;
-        ratings->intensity /= intensityPenalty;
-        ratings->nausea /= nauseaPenalty;
+        ratings->Excitement /= excitementPenalty;
+        ratings->Intensity /= intensityPenalty;
+        ratings->Nausea /= nauseaPenalty;
     }
 }
 
 static void ride_ratings_apply_num_drops_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t minNumDrops, int32_t excitementPenalty, int32_t intensityPenalty,
+    RatingTuple* ratings, Ride* ride, int32_t minNumDrops, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if ((ride->drops & 0x3F) < minNumDrops)
     {
-        ratings->excitement /= excitementPenalty;
-        ratings->intensity /= intensityPenalty;
-        ratings->nausea /= nauseaPenalty;
+        ratings->Excitement /= excitementPenalty;
+        ratings->Intensity /= intensityPenalty;
+        ratings->Nausea /= nauseaPenalty;
     }
 }
 
 static void ride_ratings_apply_max_negative_g_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t maxMaxNegativeVerticalG, int32_t excitementPenalty, int32_t intensityPenalty,
+    RatingTuple* ratings, Ride* ride, int32_t maxMaxNegativeVerticalG, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->max_negative_vertical_g >= maxMaxNegativeVerticalG)
     {
-        ratings->excitement /= excitementPenalty;
-        ratings->intensity /= intensityPenalty;
-        ratings->nausea /= nauseaPenalty;
+        ratings->Excitement /= excitementPenalty;
+        ratings->Intensity /= intensityPenalty;
+        ratings->Nausea /= nauseaPenalty;
     }
 }
 
 static void ride_ratings_apply_max_lateral_g_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t minMaxLateralG, int32_t excitementPenalty, int32_t intensityPenalty,
+    RatingTuple* ratings, Ride* ride, int32_t minMaxLateralG, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->max_lateral_g < minMaxLateralG)
     {
-        ratings->excitement /= excitementPenalty;
-        ratings->intensity /= intensityPenalty;
-        ratings->nausea /= nauseaPenalty;
+        ratings->Excitement /= excitementPenalty;
+        ratings->Intensity /= intensityPenalty;
+        ratings->Nausea /= nauseaPenalty;
     }
 }
 
-static rating_tuple ride_ratings_get_excessive_lateral_g_penalty(Ride* ride)
+static RatingTuple ride_ratings_get_excessive_lateral_g_penalty(Ride* ride)
 {
-    rating_tuple result{};
+    RatingTuple result{};
     if (ride->max_lateral_g > FIXED_2DP(2, 80))
     {
-        result.intensity = FIXED_2DP(3, 75);
-        result.nausea = FIXED_2DP(2, 00);
+        result.Intensity = FIXED_2DP(3, 75);
+        result.Nausea = FIXED_2DP(2, 00);
     }
 
     if (ride->max_lateral_g > FIXED_2DP(3, 10))
     {
         // Remove half of the ride_ratings_get_gforce_ratings
-        result.excitement = (ride->max_positive_vertical_g * 5242) >> 16;
+        result.Excitement = (ride->max_positive_vertical_g * 5242) >> 16;
 
         // Apply maximum negative G force factor
         fixed16_2dp gforce = ride->max_negative_vertical_g;
-        result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
+        result.Excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
 
         // Apply lateral G force factor
-        result.excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride->max_lateral_g) * 26214) >> 16;
+        result.Excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride->max_lateral_g) * 26214) >> 16;
 
         // Remove half of the ride_ratings_get_gforce_ratings
-        result.excitement /= 2;
-        result.excitement *= -1;
-        result.intensity = FIXED_2DP(12, 25);
-        result.nausea = FIXED_2DP(6, 00);
+        result.Excitement /= 2;
+        result.Excitement *= -1;
+        result.Intensity = FIXED_2DP(12, 25);
+        result.Nausea = FIXED_2DP(6, 00);
     }
     return result;
 }
 
 static void ride_ratings_apply_excessive_lateral_g_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+    RatingTuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
 #ifndef ORIGINAL_RATINGS
-    rating_tuple subRating = ride_ratings_get_excessive_lateral_g_penalty(ride);
+    RatingTuple subRating = ride_ratings_get_excessive_lateral_g_penalty(ride);
     ride_ratings_add(
-        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
-        (subRating.nausea * nauseaMultiplier) >> 16);
+        ratings, (subRating.Excitement * excitementMultiplier) >> 16, (subRating.Intensity * intensityMultiplier) >> 16,
+        (subRating.Nausea * nauseaMultiplier) >> 16);
 #endif
 }
 
 static void ride_ratings_apply_first_length_penalty(
-    rating_tuple* ratings, Ride* ride, int32_t minFirstLength, int32_t excitementPenalty, int32_t intensityPenalty,
+    RatingTuple* ratings, Ride* ride, int32_t minFirstLength, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->stations[0].SegmentLength < minFirstLength)
     {
-        ratings->excitement /= excitementPenalty;
-        ratings->intensity /= intensityPenalty;
-        ratings->nausea /= nauseaPenalty;
+        ratings->Excitement /= excitementPenalty;
+        ratings->Intensity /= intensityPenalty;
+        ratings->Nausea /= nauseaPenalty;
     }
 }
 
@@ -1753,7 +1754,7 @@ static void ride_ratings_calculate_spiral_roller_coaster(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 30), RIDE_RATING(0, 30), RIDE_RATING(0, 30));
     ride_ratings_apply_length(&ratings, ride, 6000, 819);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -1799,7 +1800,7 @@ static void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
     ride->unreliability_factor = 17;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 50), RIDE_RATING(3, 00), RIDE_RATING(3, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 10));
@@ -1837,7 +1838,7 @@ static void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
     ride->unreliability_factor = 18;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 30), RIDE_RATING(2, 90), RIDE_RATING(3, 50));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 10));
@@ -1877,7 +1878,7 @@ static void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
     ride->unreliability_factor = 17;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 60), RIDE_RATING(2, 80), RIDE_RATING(3, 20));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 42), RIDE_RATING(0, 05));
@@ -1920,7 +1921,7 @@ static void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
     ride->unreliability_factor = 13;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 40), RIDE_RATING(2, 50), RIDE_RATING(1, 80));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -1958,7 +1959,7 @@ static void ride_ratings_calculate_miniature_railway(Ride* ride)
     ride->unreliability_factor = 11;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_train_length(&ratings, ride, 140434);
@@ -1993,7 +1994,7 @@ static void ride_ratings_calculate_monorail(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 00), RIDE_RATING(0, 00), RIDE_RATING(0, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_train_length(&ratings, ride, 93622);
@@ -2028,7 +2029,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
     ride->unreliability_factor = 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(2, 50), RIDE_RATING(2, 70));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 45), RIDE_RATING(0, 15));
@@ -2068,7 +2069,7 @@ static void ride_ratings_calculate_boat_hire(Ride* ride)
     // of the calculation functions do this before hand. This is because set_unreliability_factor alters the value of ebx
     // (excitement). This is assumed to be a bug and therefore fixed.
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90));
 
     // Most likely checking if the ride has does not have a circuit
@@ -2099,7 +2100,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 90), RIDE_RATING(2, 90), RIDE_RATING(2, 10));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 8));
@@ -2140,7 +2141,7 @@ static void ride_ratings_calculate_steeplechase(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 70), RIDE_RATING(2, 40), RIDE_RATING(1, 80));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 75), RIDE_RATING(0, 9));
@@ -2180,7 +2181,7 @@ static void ride_ratings_calculate_car_ride(Ride* ride)
     ride->unreliability_factor = 12;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 00), RIDE_RATING(0, 50), RIDE_RATING(0, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 15), RIDE_RATING(0, 00));
@@ -2214,7 +2215,7 @@ static void ride_ratings_calculate_launched_freefall(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50));
 
     if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH)
@@ -2265,7 +2266,7 @@ static void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(3, 20), RIDE_RATING(2, 50));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 20), RIDE_RATING(0, 00));
@@ -2303,7 +2304,7 @@ static void ride_ratings_calculate_observation_tower(Ride* ride)
     ride->unreliability_factor = 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 10));
     ride_ratings_add(
         &ratings, ((ride_get_total_length(ride) >> 16) * 45875) >> 16, 0, ((ride_get_total_length(ride) >> 16) * 26214) >> 16);
@@ -2333,7 +2334,7 @@ static void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
     ride->unreliability_factor = ride->IsPoweredLaunched() ? 20 : 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 00), RIDE_RATING(0, 50), RIDE_RATING(0, 20));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -2379,7 +2380,7 @@ static void ride_ratings_calculate_dinghy_slide(Ride* ride)
     ride->unreliability_factor = 13;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 70), RIDE_RATING(2, 00), RIDE_RATING(1, 50));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 50), RIDE_RATING(0, 05));
@@ -2417,7 +2418,7 @@ static void ride_ratings_calculate_mine_train_coaster(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 90), RIDE_RATING(2, 30), RIDE_RATING(2, 10));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -2457,7 +2458,7 @@ static void ride_ratings_calculate_chairlift(Ride* ride)
     ride->unreliability_factor = 14 + (ride->speed * 2);
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 60), RIDE_RATING(0, 40), RIDE_RATING(0, 50));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_train_length(&ratings, ride, 187245);
@@ -2475,8 +2476,8 @@ static void ride_ratings_calculate_chairlift(Ride* ride)
 
     if (ride->num_stations <= 1)
     {
-        ratings.excitement = 0;
-        ratings.intensity /= 2;
+        ratings.Excitement = 0;
+        ratings.Intensity /= 2;
     }
 
     ride->ratings = ratings;
@@ -2499,7 +2500,7 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 00), RIDE_RATING(0, 50), RIDE_RATING(0, 20));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -2544,7 +2545,7 @@ static void ride_ratings_calculate_maze(Ride* ride)
     ride->unreliability_factor = 8;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00));
 
     int32_t size = std::min<uint16_t>(ride->maze_tiles, 100);
@@ -2570,7 +2571,7 @@ static void ride_ratings_calculate_spiral_slide(Ride* ride)
     ride->unreliability_factor = 8;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90));
 
     // Unlimited slides boost
@@ -2600,7 +2601,7 @@ static void ride_ratings_calculate_go_karts(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40));
     ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
@@ -2641,7 +2642,7 @@ static void ride_ratings_calculate_log_flume(Ride* ride)
     ride->unreliability_factor = 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(0, 55), RIDE_RATING(0, 30));
     ride_ratings_apply_length(&ratings, ride, 2000, 7208);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -2673,7 +2674,7 @@ static void ride_ratings_calculate_river_rapids(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 20), RIDE_RATING(0, 70), RIDE_RATING(0, 50));
     ride_ratings_apply_length(&ratings, ride, 2000, 6225);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 30), RIDE_RATING(0, 05));
@@ -2705,7 +2706,7 @@ static void ride_ratings_calculate_dodgems(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35));
 
     if (ride->num_vehicles >= 4)
@@ -2740,7 +2741,7 @@ static void ride_ratings_calculate_pirate_ship(Ride* ride)
     ride->unreliability_factor = 10;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(1, 90), RIDE_RATING(1, 41));
 
     ride_ratings_add(&ratings, ride->operation_option * 5, ride->operation_option * 5, ride->operation_option * 10);
@@ -2765,7 +2766,7 @@ static void ride_ratings_calculate_inverter_ship(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 50), RIDE_RATING(2, 70), RIDE_RATING(2, 74));
 
     ride_ratings_add(&ratings, ride->operation_option * 11, ride->operation_option * 22, ride->operation_option * 22);
@@ -2808,7 +2809,7 @@ static void ride_ratings_calculate_merry_go_round(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(0, 60), RIDE_RATING(0, 15), RIDE_RATING(0, 30));
     ride_ratings_apply_rotations(&ratings, ride, 5, 5, 5);
     ride_ratings_apply_scenery(&ratings, ride, 19521);
@@ -2842,7 +2843,7 @@ static void ride_ratings_calculate_ferris_wheel(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(0, 60), RIDE_RATING(0, 25), RIDE_RATING(0, 30));
     ride_ratings_apply_rotations(&ratings, ride, 25, 25, 25);
     ride_ratings_apply_scenery(&ratings, ride, 41831);
@@ -2865,18 +2866,18 @@ static void ride_ratings_calculate_motion_simulator(Ride* ride)
     set_unreliability_factor(ride);
 
     // Base ratings
-    rating_tuple ratings;
+    RatingTuple ratings;
     if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS)
     {
-        ratings.excitement = RIDE_RATING(3, 25);
-        ratings.intensity = RIDE_RATING(4, 10);
-        ratings.nausea = RIDE_RATING(3, 30);
+        ratings.Excitement = RIDE_RATING(3, 25);
+        ratings.Intensity = RIDE_RATING(4, 10);
+        ratings.Nausea = RIDE_RATING(3, 30);
     }
     else
     {
-        ratings.excitement = RIDE_RATING(2, 90);
-        ratings.intensity = RIDE_RATING(3, 50);
-        ratings.nausea = RIDE_RATING(3, 00);
+        ratings.Excitement = RIDE_RATING(2, 90);
+        ratings.Intensity = RIDE_RATING(3, 50);
+        ratings.Nausea = RIDE_RATING(3, 00);
     }
 
     ride_ratings_apply_intensity_penalty(&ratings);
@@ -2898,24 +2899,24 @@ static void ride_ratings_calculate_3d_cinema(Ride* ride)
     set_unreliability_factor(ride);
 
     // Base ratings
-    rating_tuple ratings;
+    RatingTuple ratings;
     switch (ride->mode)
     {
         default:
         case RIDE_MODE_3D_FILM_MOUSE_TAILS:
-            ratings.excitement = RIDE_RATING(3, 50);
-            ratings.intensity = RIDE_RATING(2, 40);
-            ratings.nausea = RIDE_RATING(1, 40);
+            ratings.Excitement = RIDE_RATING(3, 50);
+            ratings.Intensity = RIDE_RATING(2, 40);
+            ratings.Nausea = RIDE_RATING(1, 40);
             break;
         case RIDE_MODE_3D_FILM_STORM_CHASERS:
-            ratings.excitement = RIDE_RATING(4, 00);
-            ratings.intensity = RIDE_RATING(2, 65);
-            ratings.nausea = RIDE_RATING(1, 55);
+            ratings.Excitement = RIDE_RATING(4, 00);
+            ratings.Intensity = RIDE_RATING(2, 65);
+            ratings.Nausea = RIDE_RATING(1, 55);
             break;
         case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
-            ratings.excitement = RIDE_RATING(4, 20);
-            ratings.intensity = RIDE_RATING(2, 60);
-            ratings.nausea = RIDE_RATING(1, 48);
+            ratings.Excitement = RIDE_RATING(4, 20);
+            ratings.Intensity = RIDE_RATING(2, 60);
+            ratings.Nausea = RIDE_RATING(1, 48);
             break;
     }
 
@@ -2938,24 +2939,24 @@ static void ride_ratings_calculate_top_spin(Ride* ride)
     set_unreliability_factor(ride);
 
     // Base ratings
-    rating_tuple ratings;
+    RatingTuple ratings;
     switch (ride->mode)
     {
         default:
         case RIDE_MODE_BEGINNERS:
-            ratings.excitement = RIDE_RATING(2, 00);
-            ratings.intensity = RIDE_RATING(4, 80);
-            ratings.nausea = RIDE_RATING(5, 74);
+            ratings.Excitement = RIDE_RATING(2, 00);
+            ratings.Intensity = RIDE_RATING(4, 80);
+            ratings.Nausea = RIDE_RATING(5, 74);
             break;
         case RIDE_MODE_INTENSE:
-            ratings.excitement = RIDE_RATING(3, 00);
-            ratings.intensity = RIDE_RATING(5, 75);
-            ratings.nausea = RIDE_RATING(6, 64);
+            ratings.Excitement = RIDE_RATING(3, 00);
+            ratings.Intensity = RIDE_RATING(5, 75);
+            ratings.Nausea = RIDE_RATING(6, 64);
             break;
         case RIDE_MODE_BERSERK:
-            ratings.excitement = RIDE_RATING(3, 20);
-            ratings.intensity = RIDE_RATING(6, 80);
-            ratings.nausea = RIDE_RATING(7, 94);
+            ratings.Excitement = RIDE_RATING(3, 20);
+            ratings.Intensity = RIDE_RATING(6, 80);
+            ratings.Nausea = RIDE_RATING(7, 94);
             break;
     }
 
@@ -2979,7 +2980,7 @@ static void ride_ratings_calculate_space_rings(Ride* ride)
     ride->unreliability_factor = 7;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(2, 10), RIDE_RATING(6, 50));
     ride_ratings_apply_scenery(&ratings, ride, 25098);
 
@@ -3002,7 +3003,7 @@ static void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
     ride->unreliability_factor = 25;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 00), RIDE_RATING(3, 20), RIDE_RATING(2, 80));
     ride_ratings_apply_length(&ratings, ride, 6000, 327);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 60), RIDE_RATING(0, 15));
@@ -3034,7 +3035,7 @@ static void ride_ratings_calculate_lift(Ride* ride)
     ride->unreliability_factor = 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30));
 
     totalLength = ride_get_total_length(ride) >> 16;
@@ -3065,7 +3066,7 @@ static void ride_ratings_calculate_vertical_drop_roller_coaster(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 20), RIDE_RATING(0, 80), RIDE_RATING(0, 30));
     ride_ratings_apply_length(&ratings, ride, 4000, 1146);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3108,7 +3109,7 @@ static void ride_ratings_calculate_twist(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90));
     ride_ratings_apply_rotations(&ratings, ride, 20, 20, 20);
     ride_ratings_apply_scenery(&ratings, ride, 13943);
@@ -3130,7 +3131,7 @@ static void ride_ratings_calculate_haunted_house(Ride* ride)
     ride->unreliability_factor = 8;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = {
+    RatingTuple ratings = {
         /* .excitement =  */ RIDE_RATING(3, 41),
         /* .intensity =  */ RIDE_RATING(1, 53),
         /* .nausea =  */ RIDE_RATING(0, 10),
@@ -3155,7 +3156,7 @@ static void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
     ride->unreliability_factor = 17;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(4, 35), RIDE_RATING(1, 85), RIDE_RATING(4, 33));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3171,7 +3172,7 @@ static void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
     ride_ratings_apply_scenery(&ratings, ride, 6693);
 
     if (ride->inversions == 0)
-        ratings.excitement /= 2;
+        ratings.Excitement /= 2;
 
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 1, 1);
 
@@ -3200,7 +3201,7 @@ static void ride_ratings_calculate_virginia_reel(Ride* ride)
     ride->unreliability_factor = 19;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 10), RIDE_RATING(1, 90), RIDE_RATING(3, 70));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3237,7 +3238,7 @@ static void ride_ratings_calculate_splash_boats(Ride* ride)
     ride->unreliability_factor = 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30));
     ride_ratings_apply_length(&ratings, ride, 2000, 7208);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3269,7 +3270,7 @@ static void ride_ratings_calculate_mini_helicopters(Ride* ride)
     ride->unreliability_factor = 12;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 60), RIDE_RATING(0, 40), RIDE_RATING(0, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 15), RIDE_RATING(0, 00));
@@ -3303,7 +3304,7 @@ static void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
     ride->unreliability_factor = 18;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 85), RIDE_RATING(1, 15), RIDE_RATING(2, 75));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3320,9 +3321,9 @@ static void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
 
     if (ride->inversions == 0)
     {
-        ratings.excitement /= 4;
-        ratings.intensity /= 2;
-        ratings.nausea /= 2;
+        ratings.Excitement /= 4;
+        ratings.Intensity /= 2;
+        ratings.Nausea /= 2;
     }
 
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
@@ -3353,7 +3354,7 @@ static void ride_ratings_calculate_suspended_monorail(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 15), RIDE_RATING(0, 23), RIDE_RATING(0, 8));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_train_length(&ratings, ride, 93622);
@@ -3388,7 +3389,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
     ride->unreliability_factor = 19;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 40), RIDE_RATING(1, 80), RIDE_RATING(1, 70));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3410,7 +3411,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
 
     if (gRideRatingsCalcData.num_reversers < 1)
     {
-        ratings.excitement /= 8;
+        ratings.Excitement /= 8;
     }
 
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 1, 1);
@@ -3436,7 +3437,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
     ride->unreliability_factor = 18;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 40), RIDE_RATING(1, 70), RIDE_RATING(1, 65));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 20), RIDE_RATING(0, 04));
@@ -3452,7 +3453,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
     ride_ratings_apply_scenery(&ratings, ride, 3904);
 
     if (ride->inversions == 0)
-        ratings.excitement /= 4;
+        ratings.Excitement /= 4;
 
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 4, 1, 1);
 
@@ -3476,7 +3477,7 @@ static void ride_ratings_calculate_mini_golf(Ride* ride)
     ride->unreliability_factor = 0;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_turns(&ratings, ride, 14860, 0, 0);
@@ -3490,9 +3491,9 @@ static void ride_ratings_calculate_mini_golf(Ride* ride)
     // Apply no golf holes penalty
     if (ride->holes == 0)
     {
-        ratings.excitement /= 8;
-        ratings.intensity /= 2;
-        ratings.nausea /= 2;
+        ratings.Excitement /= 8;
+        ratings.Intensity /= 2;
+        ratings.Nausea /= 2;
     }
 
     ride_ratings_apply_intensity_penalty(&ratings);
@@ -3519,7 +3520,7 @@ static void ride_ratings_calculate_circus_show(Ride* ride)
     ride->unreliability_factor = 9;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = {
+    RatingTuple ratings = {
         /* .excitement = */ RIDE_RATING(2, 10),
         /* .intensity  = */ RIDE_RATING(0, 30),
         /* .nausea     = */ RIDE_RATING(0, 0),
@@ -3544,7 +3545,7 @@ static void ride_ratings_calculate_ghost_train(Ride* ride)
     ride->unreliability_factor = 12;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 00), RIDE_RATING(0, 20), RIDE_RATING(0, 03));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 15), RIDE_RATING(0, 00));
@@ -3577,7 +3578,7 @@ static void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
     ride->unreliability_factor = 15;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 50), RIDE_RATING(0, 40), RIDE_RATING(0, 30));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3623,7 +3624,7 @@ static void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
     ride->unreliability_factor = 19;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 20), RIDE_RATING(2, 60), RIDE_RATING(2, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3663,7 +3664,7 @@ static void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
     ride->unreliability_factor = 19;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 50), RIDE_RATING(2, 00), RIDE_RATING(1, 50));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3702,7 +3703,7 @@ static void ride_ratings_calculate_wild_mouse(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(2, 50), RIDE_RATING(2, 10));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 8));
@@ -3742,7 +3743,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
     ride->unreliability_factor = 18;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 75), RIDE_RATING(1, 95), RIDE_RATING(4, 79));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3758,7 +3759,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
     ride_ratings_apply_scenery(&ratings, ride, 6693);
 
     if (ride->inversions == 0)
-        ratings.excitement /= 4;
+        ratings.Excitement /= 4;
 
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 1, 1);
     if (ride->inversions == 0)
@@ -3787,7 +3788,7 @@ static void ride_ratings_calculate_giga_coaster(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 85), RIDE_RATING(0, 40), RIDE_RATING(0, 35));
     ride_ratings_apply_length(&ratings, ride, 6000, 819);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -3833,7 +3834,7 @@ static void ride_ratings_calculate_roto_drop(Ride* ride)
     ride->unreliability_factor = 24;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50));
 
     int32_t lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
@@ -3860,7 +3861,7 @@ static void ride_ratings_calculate_flying_saucers(Ride* ride)
     ride->unreliability_factor = 32;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = {
+    RatingTuple ratings = {
         /* .excitement = */ RIDE_RATING(2, 40),
         /* .intensity =  */ RIDE_RATING(0, 55),
         /* .nausea =     */ RIDE_RATING(0, 39),
@@ -3898,7 +3899,7 @@ static void ride_ratings_calculate_crooked_house(Ride* ride)
     ride->unreliability_factor = 5;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = {
+    RatingTuple ratings = {
         /* .excitement = */ RIDE_RATING(2, 15),
         /* .intensity  = */ RIDE_RATING(0, 62),
         /* .nausea     = */ RIDE_RATING(0, 34),
@@ -3923,7 +3924,7 @@ static void ride_ratings_calculate_monorail_cycles(Ride* ride)
     ride->unreliability_factor = 4;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 00));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 15), RIDE_RATING(0, 00));
@@ -3957,7 +3958,7 @@ static void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
     ride->unreliability_factor = ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE ? 31 : 21;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 15), RIDE_RATING(2, 80), RIDE_RATING(3, 20));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 42), RIDE_RATING(0, 05));
@@ -4000,7 +4001,7 @@ static void ride_ratings_calculate_water_coaster(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 70), RIDE_RATING(2, 80), RIDE_RATING(2, 10));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -4023,7 +4024,7 @@ static void ride_ratings_calculate_water_coaster(Ride* ride)
     ride_ratings_apply_adjustments(ride, &ratings);
 
     if (!(ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS))
-        ratings.excitement /= 8;
+        ratings.Excitement /= 8;
 
     ride->ratings = ratings;
 
@@ -4041,7 +4042,7 @@ static void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
     ride->unreliability_factor = 28;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(4, 13), RIDE_RATING(2, 50), RIDE_RATING(2, 80));
     ride_ratings_apply_length(&ratings, ride, 6000, 327);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 60), RIDE_RATING(0, 05));
@@ -4072,7 +4073,7 @@ static void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
     ride->unreliability_factor = 14;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(3, 00), RIDE_RATING(2, 65), RIDE_RATING(2, 25));
     ride_ratings_apply_length(&ratings, ride, 6000, 873);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 8));
@@ -4112,7 +4113,7 @@ static void ride_ratings_calculate_magic_carpet(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 45), RIDE_RATING(1, 60), RIDE_RATING(2, 60));
 
     ride_ratings_add(&ratings, ride->operation_option * 10, ride->operation_option * 20, ride->operation_option * 20);
@@ -4137,7 +4138,7 @@ static void ride_ratings_calculate_submarine_ride(Ride* ride)
 
     // NOTE Fixed bug from original game, see boat Hire.
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 20), RIDE_RATING(1, 80), RIDE_RATING(1, 40));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_proximity(&ratings, 11183);
@@ -4163,7 +4164,7 @@ static void ride_ratings_calculate_river_rafts(Ride* ride)
     ride->unreliability_factor = 12;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 45), RIDE_RATING(0, 25), RIDE_RATING(0, 34));
     ride_ratings_apply_length(&ratings, ride, 2000, 7208);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -4193,7 +4194,7 @@ static void ride_ratings_calculate_enterprise(Ride* ride)
     set_unreliability_factor(ride);
 
     // Base ratings
-    rating_tuple ratings = {
+    RatingTuple ratings = {
         /* .excitement = */ RIDE_RATING(3, 60),
         /* .intensity  = */ RIDE_RATING(4, 55),
         /* .nausea     = */ RIDE_RATING(5, 72),
@@ -4222,7 +4223,7 @@ static void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride)
     ride->unreliability_factor = 20;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(4, 00), RIDE_RATING(3, 00), RIDE_RATING(3, 20));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 42), RIDE_RATING(0, 05));
@@ -4259,7 +4260,7 @@ static void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
     ride->unreliability_factor = 13;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 55), RIDE_RATING(2, 40), RIDE_RATING(1, 85));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -4298,7 +4299,7 @@ static void ride_ratings_calculate_mine_ride(Ride* ride)
     ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 75), RIDE_RATING(1, 00), RIDE_RATING(1, 80));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
@@ -4334,7 +4335,7 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
     ride->unreliability_factor = 25;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings;
+    RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 90), RIDE_RATING(1, 50), RIDE_RATING(2, 20));
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));

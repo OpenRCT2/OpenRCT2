@@ -37,6 +37,7 @@ constexpr const RideTypeDescriptor CarRideRTD =
     SET_FIELD(Heights, { 6, 24, 4, 7, }),
     SET_FIELD(MaxMass, 2),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 70, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 25, 5, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),

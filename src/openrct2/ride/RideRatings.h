@@ -22,13 +22,13 @@ using ride_rating = fixed16_2dp;
 #pragma pack(push, 1)
 
 // Used for return values, for functions that modify all three.
-struct rating_tuple
+struct RatingTuple
 {
-    ride_rating excitement;
-    ride_rating intensity;
-    ride_rating nausea;
+    ride_rating Excitement;
+    ride_rating Intensity;
+    ride_rating Nausea;
 };
-assert_struct_size(rating_tuple, 6);
+assert_struct_size(RatingTuple, 6);
 
 #pragma pack(pop)
 

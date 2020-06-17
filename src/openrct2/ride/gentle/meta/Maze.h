@@ -33,6 +33,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(Heights, { 6, 24, 0, 1, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 50, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 55, 2, 8, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),

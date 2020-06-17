@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
     SET_FIELD(Heights, { 28, 24, 8, 11, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::LiftArrow, 4, 6 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 105, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

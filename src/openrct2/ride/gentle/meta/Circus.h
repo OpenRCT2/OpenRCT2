@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(Heights, { 12, 128, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 125, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),

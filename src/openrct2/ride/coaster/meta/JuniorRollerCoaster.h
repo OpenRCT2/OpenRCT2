@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
     SET_FIELD(Heights, { 15, 24, 4, 7, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 6 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 45, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

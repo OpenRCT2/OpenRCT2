@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(Heights, { 45, 40, 29, 8, }),
     SET_FIELD(MaxMass, 23),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 7 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 180, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 125, 5, 25, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

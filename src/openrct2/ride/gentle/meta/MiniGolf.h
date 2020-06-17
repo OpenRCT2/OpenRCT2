@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(Heights, { 7, 32, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 30, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 50, 7, 20, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
