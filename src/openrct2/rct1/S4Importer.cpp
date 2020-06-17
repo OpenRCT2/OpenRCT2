@@ -210,6 +210,7 @@ public:
 
         game_convert_news_items_to_utf8();
         map_count_remaining_land_rights();
+        research_determine_first_of_type();
     }
 
     bool GetDetails(scenario_index_entry* dst) override

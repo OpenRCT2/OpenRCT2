@@ -16,6 +16,7 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -362,16 +363,33 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     else
     {
         // Research type
-        stringId = STR_RESEARCH_UNKNOWN;
+        rct_string_id strings[2] = { STR_RESEARCH_UNKNOWN, 0 };
+        rct_string_id label = STR_RESEARCH_TYPE_LABEL;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
-            stringId = ResearchCategoryNames[gResearchNextItem->category];
+            strings[0] = ResearchCategoryNames[gResearchNextItem->category];
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
-                stringId = gResearchNextItem->GetName();
+                strings[0] = gResearchNextItem->GetName();
+                if (gResearchNextItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+                {
+                    auto rtd = RideTypeDescriptors[gResearchNextItem->baseRideType];
+                    if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                    {
+                        if (gResearchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                        {
+                            strings[0] = rtd.Naming.Name;
+                        }
+                        else
+                        {
+                            strings[1] = rtd.Naming.Name;
+                            label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
+                        }
+                    }
+                }
             }
         }
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &strings, x, y, 296, label, COLOUR_BLACK);
         y += 25;
 
         // Progress
@@ -402,11 +420,31 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     rct_string_id lastDevelopmentFormat;
     if (gResearchLastItem.has_value())
     {
-        stringId = gResearchLastItem->GetName();
+        rct_string_id strings[2] = { gResearchLastItem->GetName(), 0 };
         uint8_t type = gResearchLastItem->type;
-        lastDevelopmentFormat = (type == RESEARCH_ENTRY_TYPE_RIDE) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
+        if (type == RESEARCH_ENTRY_TYPE_SCENERY)
+        {
+            lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
+        }
+        else
+        {
+            lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
+            auto rtd = RideTypeDescriptors[gResearchLastItem->baseRideType];
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            {
+                if (gResearchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                {
+                    strings[0] = rtd.Naming.Name;
+                }
+                else
+                {
+                    strings[1] = rtd.Naming.Name;
+                    lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
+                }
+            }
+        }
 
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &strings, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }
 }
 
