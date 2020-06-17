@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
     SET_FIELD(Heights, { 12, 64, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 50, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 115, 2, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),

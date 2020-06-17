@@ -123,6 +123,8 @@ struct RideTypeDescriptor
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     rct_ride_lift_data LiftData;
+    // rct2: 0x0097CD1E
+    RatingTuple RatingsMultipliers;
     UpkeepCostsDescriptor UpkeepCosts;
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
@@ -270,8 +272,6 @@ extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
-
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
 extern const rct_string_id RideModeNames[RIDE_MODE_COUNT];
@@ -295,6 +295,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0, 0, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

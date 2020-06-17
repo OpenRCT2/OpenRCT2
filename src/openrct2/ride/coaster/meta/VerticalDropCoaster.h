@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(Heights, { 53, 24, 8, 11, }),
     SET_FIELD(MaxMass, 25),
     SET_FIELD(LiftData, { SoundId::LiftBM, 4, 5 }),
+    SET_FIELD(RatingsMultipliers, { 52, 38, 10 }),
     SET_FIELD(UpkeepCosts, { 44, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 120, 5, 42, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

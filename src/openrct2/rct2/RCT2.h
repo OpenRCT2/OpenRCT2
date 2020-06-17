@@ -217,7 +217,7 @@ struct rct2_ride
     uint8_t chairlift_bullwheel_z[2];                   // 0x13E
     union
     {
-        rating_tuple ratings; // 0x140
+        RatingTuple ratings; // 0x140
         struct
         {
             ride_rating excitement; // 0x140

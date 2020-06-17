@@ -276,7 +276,7 @@ struct Ride
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
-        rating_tuple ratings;
+        RatingTuple ratings;
         struct
         {
             ride_rating excitement;

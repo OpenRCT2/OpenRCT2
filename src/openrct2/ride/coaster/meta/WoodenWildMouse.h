@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
     SET_FIELD(Heights, { 14, 24, 4, 7, }),
     SET_FIELD(MaxMass, 4),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 5 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 30 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
     SET_FIELD(BuildCosts, { 50, 6, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

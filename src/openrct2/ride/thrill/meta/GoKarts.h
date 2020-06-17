@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(Heights, { 7, 24, 2, 1, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 120, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 8, 0, 0 }),
     SET_FIELD(BuildCosts, { 62, 4, 20, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),

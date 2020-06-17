@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 80, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
     SET_FIELD(BuildCosts, { 37, 0, 4, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),

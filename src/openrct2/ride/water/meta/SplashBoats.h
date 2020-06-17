@@ -37,6 +37,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(Heights, { 16, 24, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 80, 34, 6 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 9, 0, 10 }),
     SET_FIELD(BuildCosts, { 57, 5, 30, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

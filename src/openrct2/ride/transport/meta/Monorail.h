@@ -37,6 +37,7 @@ constexpr const RideTypeDescriptor MonorailRTD =
     SET_FIELD(Heights, { 8, 32, 8, 9, }),
     SET_FIELD(MaxMass, 78),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 70, 6, -10 }),
     SET_FIELD(UpkeepCosts, { 65, 20, 0, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 42, 5, 50, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),

@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
     SET_FIELD(Heights, { 54, 24, 8, 9, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { SoundId::LiftBM, 5, 8 }),
+    SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
     SET_FIELD(UpkeepCosts, { 43, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 120, 5, 55, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),

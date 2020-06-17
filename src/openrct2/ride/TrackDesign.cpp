@@ -155,9 +155,9 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     }
     total_air_time = static_cast<uint8_t>(totalAirTime);
 
-    excitement = ride.ratings.excitement / 10;
-    intensity = ride.ratings.intensity / 10;
-    nausea = ride.ratings.nausea / 10;
+    excitement = ride.ratings.Excitement / 10;
+    intensity = ride.ratings.Intensity / 10;
+    nausea = ride.ratings.Nausea / 10;
 
     upkeep_cost = ride.upkeep_cost;
     flags = 0;

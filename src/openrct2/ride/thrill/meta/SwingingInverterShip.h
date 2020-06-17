@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 212, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
