@@ -109,9 +109,9 @@ public:
                     return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE);
                 }
 
-                if (!peep->Place(TileCoordsXYZ(_loc), false))
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2->Error != GA_ERROR::OK)
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
+                    return res2;
                 }
                 break;
             default:
@@ -179,9 +179,9 @@ public:
             break;
             case PeepPickupType::Place:
                 res->Position = _loc;
-                if (!peep->Place(TileCoordsXYZ(_loc), true))
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2->Error != GA_ERROR::OK)
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
+                    return res2;
                 }
                 CancelConcurrentPickups(peep);
                 break;

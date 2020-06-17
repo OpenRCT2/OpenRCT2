@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/GameAction.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -743,8 +744,8 @@ void Peep::PickupAbort(int32_t old_x)
     gPickupPeepImage = UINT32_MAX;
 }
 
-// Returns true when a peep can be dropped at the given location. When apply is set to true the peep gets dropped.
-bool Peep::Place(const TileCoordsXYZ& location, bool apply)
+// Returns GA_ERROR::OK when a peep can be dropped at the given location. When apply is set to true the peep gets dropped.
+std::unique_ptr<GameActionResult> Peep::Place(const TileCoordsXYZ& location, bool apply)
 {
     auto* pathElement = map_get_path_element_at(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
@@ -754,7 +755,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
     }
 
     if (!tileElement)
-        return false;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
@@ -762,18 +763,19 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
 
     if (!map_is_location_owned(destination))
     {
-        gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
-        return false;
+        return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_ERR_CANT_PLACE_PERSON_HERE);
     }
 
-    if (!map_can_construct_at({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 }))
+    if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
+        res->Error != GA_ERROR::OK)
     {
-        if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST)
+        if (res->ErrorMessage.GetStringId() != STR_RAISE_OR_LOWER_LAND_FIRST)
         {
-            if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY)
+            if (res->ErrorMessage.GetStringId() != STR_FOOTPATH_IN_THE_WAY)
             {
-                gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
-                return false;
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::NO_CLEARANCE, STR_ERR_CANT_PLACE_PERSON_HERE, res->ErrorMessage.GetStringId(),
+                    res->ErrorMessageArgs.data());
             }
         }
     }
@@ -797,7 +799,7 @@ bool Peep::Place(const TileCoordsXYZ& location, bool apply)
         }
     }
 
-    return true;
+    return std::make_unique<GameActionResult>();
 }
 
 /**

@@ -187,6 +187,9 @@ void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants);
 
+class GameActionResult;
+class ConstructClearResult;
+
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
@@ -194,6 +197,9 @@ int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY&
 bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
     uint8_t crossingMode);
+std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode);
+std::unique_ptr<ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
@@ -253,7 +259,6 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
-class GameActionResult;
 void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& res);
 
 uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);

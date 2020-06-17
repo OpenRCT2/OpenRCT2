@@ -140,6 +140,12 @@ public:
     std::string GetErrorMessage() const;
 };
 
+class ConstructClearResult final : public GameActionResult
+{
+public:
+    uint8_t GroundFlags{ 0 };
+};
+
 /**
  *
  */

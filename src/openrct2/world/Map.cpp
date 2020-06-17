@@ -1218,12 +1218,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     return insertedElement;
 }
 
-class ConstructClearResult final : public GameActionResult
-{
-public:
-    uint8_t GroundFlags{ 0 };
-};
-
 /**
  *
  *  rct2: 0x0068BB18
@@ -1301,7 +1295,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
  *  ebp = clearFunc
  *  bl = bl
  */
-static GameActionResult::Ptr map_can_construct_with_clear_at(
+std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
@@ -1483,7 +1477,7 @@ bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
     uint8_t crossingMode)
 {
-    GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
+    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode);
     if (auto message = res->ErrorMessage.AsStringId())
         gGameCommandErrorText = *message;
     else
@@ -1493,12 +1487,8 @@ bool map_can_construct_with_clear_at(
     {
         *price += res->Cost;
     }
-    auto ccr = dynamic_cast<ConstructClearResult*>(res.get());
-    if (ccr == nullptr)
-    {
-        return false;
-    }
-    gMapGroundFlags = ccr->GroundFlags;
+
+    gMapGroundFlags = res->GroundFlags;
     return res->Error == GA_ERROR::OK;
 }
 
@@ -1511,6 +1501,10 @@ int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl)
     return map_can_construct_with_clear_at(pos, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
+std::unique_ptr<ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+{
+    return MapCanConstructWithClearAt(pos, nullptr, bl, 0, CREATE_CROSSING_MODE_NONE);
+}
 /**
  * Updates grass length, scenery age and jumping fountains.
  *

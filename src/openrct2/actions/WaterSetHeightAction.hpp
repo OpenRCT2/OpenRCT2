@@ -94,9 +94,10 @@ public:
             zLow = temp;
         }
 
-        if (!map_can_construct_at({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }))
+        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GA_ERROR::OK)
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(
+                GA_ERROR::NO_CLEARANCE, STR_NONE, res2->ErrorMessage.GetStringId(), res2->ErrorMessageArgs.data());
         }
         if (surfaceElement->HasTrackThatNeedsWater())
         {
