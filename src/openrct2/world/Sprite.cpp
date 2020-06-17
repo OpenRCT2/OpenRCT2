@@ -1153,36 +1153,3 @@ int32_t fix_disjoint_sprites()
     }
     return count;
 }
-
-int32_t check_for_spatial_index_cycles(bool fix)
-{
-    for (uint32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++)
-    {
-        auto* cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
-        if (cycle_start != nullptr)
-        {
-            if (fix)
-            {
-                // Store the leftover part of cycle to be fixed
-                uint16_t cycle_next = cycle_start->next_in_quadrant;
-
-                // Break the cycle
-                cycle_start->next_in_quadrant = SPRITE_INDEX_NULL;
-
-                // Now re-add remainder of the cycle back to list, safely.
-                // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, static_cast<SPRITE_LIST>(i)))
-                {
-                    auto* spr = GetEntity(cycle_next);
-
-                    cycle_start->next_in_quadrant = cycle_next;
-                    cycle_next = spr->next_in_quadrant;
-                    spr->next_in_quadrant = SPRITE_INDEX_NULL;
-                    cycle_start = spr;
-                }
-            }
-            return i;
-        }
-    }
-    return -1;
-}

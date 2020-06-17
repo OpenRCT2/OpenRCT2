@@ -151,10 +151,8 @@ void S6Exporter::Save(IStream* stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    int32_t spatial_cycle = check_for_spatial_index_cycles(false);
     int32_t regular_cycle = check_for_sprite_list_cycles(false);
     int32_t disjoint_sprites_count = fix_disjoint_sprites();
-    openrct2_assert(spatial_cycle == -1, "Sprite cycle exists in spatial list %d", spatial_cycle);
     openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
     // This one is less harmful, no need to assert for it ~janisozaur
     if (disjoint_sprites_count > 0)

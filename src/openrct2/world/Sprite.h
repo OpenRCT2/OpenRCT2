@@ -259,7 +259,6 @@ rct_sprite_checksum sprite_checksum();
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
 int32_t check_for_sprite_list_cycles(bool fix);
-int32_t check_for_spatial_index_cycles(bool fix);
 int32_t fix_disjoint_sprites();
 
 template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
