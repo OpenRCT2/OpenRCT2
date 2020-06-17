@@ -10,6 +10,7 @@
 #include "TestTrack.hpp"
 
 #include "../../src/openrct2/ride/RideData.h"
+#include "Data.h"
 #include "FunctionCall.hpp"
 #include "GeneralSupportHeightCall.hpp"
 #include "PaintIntercept.hpp"

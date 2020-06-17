@@ -19,5 +19,6 @@ extern const utf8string FlatTrackNames[256];
 extern const utf8string TrackElemNames[256];
 extern const utf8string RideCodeNames[RIDE_TYPE_COUNT];
 extern const utf8string TrackCodeNames[256];
+extern const uint32_t* RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
 
 #endif // #endif _TEST_PAINT_DATA_H_
