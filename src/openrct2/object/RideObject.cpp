@@ -50,7 +50,11 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.second_vehicle = stream->ReadValue<uint8_t>();
     _legacyType.rear_vehicle = stream->ReadValue<uint8_t>();
     _legacyType.third_vehicle = stream->ReadValue<uint8_t>();
-    _legacyType.pad_019 = stream->ReadValue<uint8_t>();
+
+    _legacyType.BuildMenuPriority = 0;
+    // Skip pad_019
+    stream->Seek(1, STREAM_SEEK_CURRENT);
+
     for (auto& vehicleEntry : _legacyType.vehicles)
     {
         ReadLegacyVehicle(context, stream, &vehicleEntry);
@@ -621,6 +625,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
     }
 
+    _legacyType.BuildMenuPriority = ObjectJsonHelpers::GetInteger(properties, "buildMenuPriority", 0);
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
         properties,
         {
