@@ -117,7 +117,7 @@ struct rct_ride_entry
     uint8_t second_vehicle;
     uint8_t rear_vehicle;
     uint8_t third_vehicle;
-    uint8_t pad_019;
+    uint8_t BuildMenuPriority;
     rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
     vehicle_colour_preset_list* vehicle_preset_list;
     int8_t excitement_multiplier;
