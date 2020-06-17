@@ -153,7 +153,7 @@ private:
             }
         }
 
-        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
             uint8_t ride_id_bit = _rideIndex % 8;
             uint8_t ride_id_offset = _rideIndex / 8;

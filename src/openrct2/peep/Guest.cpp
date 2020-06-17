@@ -3014,7 +3014,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
+    for (auto litter : EntityList<Litter>(EntityListId::Litter))
     {
         int16_t dist_x = abs(litter->x - centre_x);
         int16_t dist_y = abs(litter->y - centre_y);
@@ -6255,7 +6255,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         return;
     }
 
-    for (auto inner_peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+    for (auto inner_peep : EntityList<Staff>(EntityListId::Peep))
     {
         if (inner_peep->StaffType != STAFF_TYPE_SECURITY)
             continue;

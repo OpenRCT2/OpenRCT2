@@ -189,7 +189,7 @@ void WindowStaffListRefresh()
     }
     StaffList.clear();
 
-    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         sprite_set_flashing(peep, false);
         if (peep->StaffType != _windowStaffListSelectedTab)
@@ -338,7 +338,7 @@ void window_staff_list_update(rct_window* w)
         if (window_find_by_class(WC_MAP) != nullptr)
         {
             gWindowMapFlashingFlags |= (1 << 2);
-            for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+            for (auto peep : EntityList<Staff>(EntityListId::Peep))
             {
                 sprite_set_flashing(peep, false);
 
@@ -376,7 +376,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         Peep* closestPeep = nullptr;
         int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
 
-        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
             if (peep->StaffType != selectedPeepType)
                 continue;

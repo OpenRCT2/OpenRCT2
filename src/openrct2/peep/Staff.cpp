@@ -156,7 +156,7 @@ void staff_update_greyed_patrol_areas()
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
             if (peep->StaffType == staff_type)
             {
@@ -361,7 +361,7 @@ static uint8_t staff_get_valid_patrol_directions(Staff* staff, const CoordsXY& l
  */
 void staff_reset_stats()
 {
-    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         peep->TimeInPark = gDateMonthsElapsed;
         peep->StaffLawnsMown = 0;
@@ -440,7 +440,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
     uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
-    for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
+    for (auto litter : EntityList<Litter>(EntityListId::Litter))
     {
         uint16_t distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
 
@@ -1011,7 +1011,7 @@ bool Staff::DoMiscPathFinding()
  */
 static void staff_entertainer_update_nearby_peeps(Peep* peep)
 {
-    for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto guest : EntityList<Guest>(EntityListId::Peep))
     {
         if (guest->x == LOCATION_NULL)
             continue;

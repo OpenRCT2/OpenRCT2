@@ -65,7 +65,7 @@ public:
         }
 
         // Update each staff member's uniform
-        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
             if (peep->StaffType == _staffType)
             {

@@ -111,7 +111,7 @@ void finance_pay_wages()
         return;
     }
 
-    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         finance_payment(gStaffWageTable[peep->StaffType] / 4, ExpenditureType::Wages);
     }
@@ -246,7 +246,7 @@ void finance_update_daily_profit()
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
-        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
             current_profit -= gStaffWageTable[peep->StaffType];
         }

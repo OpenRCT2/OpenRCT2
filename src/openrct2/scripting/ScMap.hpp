@@ -101,29 +101,29 @@ namespace OpenRCT2::Scripting
 
         std::vector<DukValue> getAllEntities(const std::string& type) const
         {
-            SPRITE_LIST targetList{};
+            EntityListId targetList{};
             uint8_t targetType{};
             if (type == "balloon")
             {
-                targetList = SPRITE_LIST_MISC;
+                targetList = EntityListId::Misc;
                 targetType = SPRITE_MISC_BALLOON;
             }
             if (type == "car")
             {
-                targetList = SPRITE_LIST_TRAIN_HEAD;
+                targetList = EntityListId::TrainHead;
             }
             else if (type == "litter")
             {
-                targetList = SPRITE_LIST_LITTER;
+                targetList = EntityListId::Litter;
             }
             else if (type == "duck")
             {
-                targetList = SPRITE_LIST_MISC;
+                targetList = EntityListId::Misc;
                 targetType = SPRITE_MISC_DUCK;
             }
             else if (type == "peep")
             {
-                targetList = SPRITE_LIST_PEEP;
+                targetList = EntityListId::Peep;
             }
             else
             {
@@ -134,16 +134,16 @@ namespace OpenRCT2::Scripting
             for (auto sprite : EntityList(targetList))
             {
                 // Only the misc list checks the type property
-                if (targetList != SPRITE_LIST_MISC || sprite->type == targetType)
+                if (targetList != EntityListId::Misc || sprite->type == targetType)
                 {
-                    if (targetList == SPRITE_LIST_PEEP)
+                    if (targetList == EntityListId::Peep)
                     {
                         if (sprite->As<Staff>())
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
                         else
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
                     }
-                    else if (targetList == SPRITE_LIST_TRAIN_HEAD)
+                    else if (targetList == EntityListId::TrainHead)
                     {
                         for (auto carId = sprite->sprite_index; carId != SPRITE_INDEX_NULL;)
                         {

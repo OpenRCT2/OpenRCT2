@@ -25,8 +25,8 @@
 #include <cmath>
 #include <iterator>
 
-uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
-uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
+uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
+uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
 static rct_sprite _spriteList[MAX_SPRITES];
 
 static bool _spriteFlashingList[MAX_SPRITES];
@@ -50,7 +50,7 @@ static CoordsXYZ _spritelocations1[MAX_SPRITES];
 static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
-static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex);
+static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex);
 
 // Required for GetEntity to return a default
 template<> bool SpriteBase::Is<SpriteBase>() const
@@ -178,7 +178,7 @@ void reset_sprite_list()
     gSavedAge = 0;
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
 
-    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
     {
         gSpriteListHead[i] = SPRITE_INDEX_NULL;
         gSpriteListCount[i] = 0;
@@ -193,7 +193,7 @@ void reset_sprite_list()
         spr->sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->sprite_index = i;
         spr->next = SPRITE_INDEX_NULL;
-        spr->linked_list_index = SPRITE_LIST_FREE;
+        spr->linked_list_index = EntityListId::Free;
 
         if (previous_spr != nullptr)
         {
@@ -203,13 +203,13 @@ void reset_sprite_list()
         else
         {
             spr->previous = SPRITE_INDEX_NULL;
-            gSpriteListHead[SPRITE_LIST_FREE] = i;
+            gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = i;
         }
         _spriteFlashingList[i] = false;
         previous_spr = spr;
     }
 
-    gSpriteListCount[SPRITE_LIST_FREE] = MAX_SPRITES;
+    gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] = MAX_SPRITES;
 
     reset_sprite_spatial_index();
 }
@@ -335,7 +335,7 @@ rct_sprite_checksum sprite_checksum()
 static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
-    uint8_t llto = sprite->linked_list_index;
+    auto llto = sprite->linked_list_index;
     uint16_t next = sprite->next;
     uint16_t next_in_quadrant = sprite->next_in_quadrant;
     uint16_t prev = sprite->previous;
@@ -358,10 +358,10 @@ static void sprite_reset(SpriteBase* sprite)
  */
 void sprite_clear_all_unused()
 {
-    for (auto sprite : EntityList(SPRITE_LIST_FREE))
+    for (auto sprite : EntityList(EntityListId::Free))
     {
         sprite_reset(sprite);
-        sprite->linked_list_index = SPRITE_LIST_FREE;
+        sprite->linked_list_index = EntityListId::Free;
 
         // sprite->next_in_quadrant will only end up as zero owing to corruption
         // most likely due to previous builds not preserving it when resetting sprites
@@ -378,27 +378,27 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linkedListIndex)
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linkedListIndex)
 {
-    if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
+    if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] == 0)
     {
         // No free sprites.
         return nullptr;
     }
 
-    if (linkedListIndex == SPRITE_LIST_MISC)
+    if (linkedListIndex == EntityListId::Misc)
     {
         // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
         // free it will fail to keep slots for more relevant sprites.
         // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
-        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - gSpriteListCount[SPRITE_LIST_MISC];
-        if (miscSlotsRemaining >= gSpriteListCount[SPRITE_LIST_FREE])
+        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - gSpriteListCount[static_cast<uint8_t>(EntityListId::Misc)];
+        if (miscSlotsRemaining >= gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)])
         {
             return nullptr;
         }
     }
 
-    auto* sprite = GetEntity(gSpriteListHead[SPRITE_LIST_FREE]);
+    auto* sprite = GetEntity(gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]);
 
     move_sprite_to_list(sprite, linkedListIndex);
 
@@ -422,20 +422,20 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linked
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
 {
-    SPRITE_LIST linkedListIndex = SPRITE_LIST_FREE;
+    EntityListId linkedListIndex = EntityListId::Free;
     switch (spriteIdentifier)
     {
         case SPRITE_IDENTIFIER_VEHICLE:
-            linkedListIndex = SPRITE_LIST_VEHICLE;
+            linkedListIndex = EntityListId::Vehicle;
             break;
         case SPRITE_IDENTIFIER_PEEP:
-            linkedListIndex = SPRITE_LIST_PEEP;
+            linkedListIndex = EntityListId::Peep;
             break;
         case SPRITE_IDENTIFIER_MISC:
-            linkedListIndex = SPRITE_LIST_MISC;
+            linkedListIndex = EntityListId::Misc;
             break;
         case SPRITE_IDENTIFIER_LITTER:
-            linkedListIndex = SPRITE_LIST_LITTER;
+            linkedListIndex = EntityListId::Litter;
             break;
         default:
             Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
@@ -449,9 +449,9 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
  * This function moves a sprite to the specified sprite linked list.
  * The game uses this list to categorise sprites by type.
  */
-static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
+static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
 {
-    int32_t oldListIndex = sprite->linked_list_index;
+    auto oldListIndex = sprite->linked_list_index;
 
     // No need to move if the sprite is already in the desired list
     if (oldListIndex == newListIndex)
@@ -463,7 +463,7 @@ static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
     // sprite following this one becomes the new head of the list.
     if (sprite->previous == SPRITE_INDEX_NULL)
     {
-        gSpriteListHead[oldListIndex] = sprite->next;
+        gSpriteListHead[static_cast<uint8_t>(oldListIndex)] = sprite->next;
     }
     else
     {
@@ -480,8 +480,10 @@ static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
     sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
     sprite->linked_list_index = newListIndex;
 
-    sprite->next = gSpriteListHead[newListIndex];         // This sprite's next sprite is the old head, since we're the new head
-    gSpriteListHead[newListIndex] = sprite->sprite_index; // Store this sprite's index as head of its new list
+    sprite->next = gSpriteListHead[static_cast<uint8_t>(
+        newListIndex)]; // This sprite's next sprite is the old head, since we're the new head
+    gSpriteListHead[static_cast<uint8_t>(newListIndex)] = sprite->sprite_index; // Store this sprite's index as head of its new
+                                                                                // list
 
     if (sprite->next != SPRITE_INDEX_NULL)
     {
@@ -491,8 +493,8 @@ static void move_sprite_to_list(SpriteBase* sprite, SPRITE_LIST newListIndex)
 
     // These globals are probably counters for each sprite list?
     // Decrement old list counter, increment new list counter.
-    gSpriteListCount[oldListIndex]--;
-    gSpriteListCount[newListIndex]++;
+    gSpriteListCount[static_cast<uint8_t>(oldListIndex)]--;
+    gSpriteListCount[static_cast<uint8_t>(newListIndex)]++;
 }
 
 /**
@@ -628,7 +630,7 @@ static void sprite_misc_update(rct_sprite* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto entity : EntityList(SPRITE_LIST_MISC))
+    for (auto entity : EntityList(EntityListId::Misc))
     {
         // TODO: Use more specific Sprite class
         sprite_misc_update(reinterpret_cast<rct_sprite*>(entity));
@@ -744,7 +746,7 @@ void sprite_remove(SpriteBase* sprite)
         peep->SetName({});
     }
 
-    move_sprite_to_list(sprite, SPRITE_LIST_FREE);
+    move_sprite_to_list(sprite, EntityListId::Free);
     sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->sprite_index] = false;
 
@@ -798,11 +800,11 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     if (!litter_can_be_at(offsetLitterPos))
         return;
 
-    if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500)
+    if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Litter)] >= 500)
     {
         Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;
-        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
+        for (auto litter : EntityList<Litter>(EntityListId::Litter))
         {
             if (newestLitterCreationTick <= litter->creationTick)
             {
@@ -1024,43 +1026,7 @@ static SpriteBase* find_sprite_list_cycle(uint16_t sprite_idx)
     return cycle_start;
 }
 
-static SpriteBase* find_sprite_quadrant_cycle(uint16_t sprite_idx)
-{
-    if (sprite_idx == SPRITE_INDEX_NULL)
-    {
-        return nullptr;
-    }
-    const SpriteBase* fast = GetEntity(sprite_idx);
-    const SpriteBase* slow = fast;
-    bool increment_slow = false;
-    SpriteBase* cycle_start = nullptr;
-    while (fast->sprite_index != SPRITE_INDEX_NULL)
-    {
-        // increment fast every time, unless reached the end
-        if (fast->next_in_quadrant == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        else
-        {
-            fast = GetEntity(fast->next_in_quadrant);
-        }
-        // increment slow only every second iteration
-        if (increment_slow)
-        {
-            slow = GetEntity(slow->next_in_quadrant);
-        }
-        increment_slow = !increment_slow;
-        if (fast == slow)
-        {
-            cycle_start = GetEntity(slow->sprite_index);
-            break;
-        }
-    }
-    return cycle_start;
-}
-
-static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
+static bool index_is_in_list(uint16_t index, EntityListId sl)
 {
     for (auto entity : EntityList(sl))
     {
@@ -1074,7 +1040,7 @@ static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
 
 int32_t check_for_sprite_list_cycles(bool fix)
 {
-    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
     {
         auto* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
         if (cycle_start != nullptr)
@@ -1093,7 +1059,7 @@ int32_t check_for_sprite_list_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, static_cast<SPRITE_LIST>(i)))
+                while (!index_is_in_list(cycle_next, static_cast<EntityListId>(i)))
                 {
                     auto* spr = GetEntity(cycle_next);
 
@@ -1111,7 +1077,7 @@ int32_t check_for_sprite_list_cycles(bool fix)
 }
 
 /**
- * Finds and fixes null sprites that are not reachable via SPRITE_LIST_FREE list.
+ * Finds and fixes null sprites that are not reachable via EntityListId::Free list.
  *
  * @return count of disjoint sprites found
  */
@@ -1121,7 +1087,7 @@ int32_t fix_disjoint_sprites()
     bool reachable[MAX_SPRITES] = { false };
 
     SpriteBase* null_list_tail = nullptr;
-    for (uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_FREE]; sprite_idx != SPRITE_INDEX_NULL;)
+    for (uint16_t sprite_idx = gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]; sprite_idx != SPRITE_INDEX_NULL;)
     {
         reachable[sprite_idx] = true;
         // cache the tail, so we don't have to walk the list twice

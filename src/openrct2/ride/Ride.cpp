@@ -355,7 +355,7 @@ void ride_update_favourited_stat()
     for (auto& ride : GetRideManager())
         ride.guests_favourite = 0;
 
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->FavouriteRide != RIDE_ID_NULL)
         {
@@ -1099,7 +1099,7 @@ void ride_remove_peeps(Ride* ride)
     }
 
     // Place all the peeps at exit
-    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Peep>(EntityListId::Peep))
     {
         if (peep->State == PEEP_STATE_QUEUING_FRONT || peep->State == PEEP_STATE_ENTERING_RIDE
             || peep->State == PEEP_STATE_LEAVING_RIDE || peep->State == PEEP_STATE_ON_RIDE)
@@ -2691,7 +2691,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
     Peep* closestMechanic = nullptr;
     uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
 
-    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         if (peep->StaffType != STAFF_TYPE_MECHANIC)
             continue;
@@ -4299,8 +4299,8 @@ static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startEl
  */
 static int32_t count_free_misc_sprite_slots()
 {
-    int32_t miscSpriteCount = gSpriteListCount[SPRITE_LIST_MISC];
-    int32_t remainingSpriteCount = gSpriteListCount[SPRITE_LIST_FREE];
+    int32_t miscSpriteCount = gSpriteListCount[static_cast<uint8_t>(EntityListId::Misc)];
+    int32_t remainingSpriteCount = gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)];
     return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
@@ -4342,7 +4342,7 @@ static Vehicle* vehicle_create_car(
         return nullptr;
 
     auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE, carIndex == 0 ? SPRITE_LIST_TRAIN_HEAD : SPRITE_LIST_VEHICLE)
+    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE, carIndex == 0 ? EntityListId::TrainHead : EntityListId::Vehicle)
                         ->vehicle;
     if (vehicle == nullptr)
         return nullptr;
@@ -5489,7 +5489,7 @@ int32_t ride_get_refund_price(const Ride* ride)
  */
 void Ride::StopGuestsQueuing()
 {
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->State != PEEP_STATE_QUEUING)
             continue;

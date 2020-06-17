@@ -434,7 +434,7 @@ void game_fix_save_vars()
     // Recalculates peep count after loading a save to fix corrupted files
     uint32_t guestCount = 0;
     {
-        for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto guest : EntityList<Guest>(EntityListId::Peep))
         {
             if (!guest->OutsideOfPark)
             {
@@ -449,7 +449,7 @@ void game_fix_save_vars()
     std::vector<Peep*> peepsToRemove;
 
     // Fix possibly invalid field values
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->CurrentRideStation >= MAX_STATIONS)
         {

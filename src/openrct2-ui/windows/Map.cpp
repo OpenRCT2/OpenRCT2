@@ -1054,7 +1054,7 @@ static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
  */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Peep>(EntityListId::Peep))
     {
         if (peep->x == LOCATION_NULL)
             continue;
@@ -1101,7 +1101,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto train : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
+    for (auto train : EntityList<Vehicle>(EntityListId::TrainHead))
     {
         Vehicle* vehicle = nullptr;
         for (auto vehicle_index = train->sprite_index; vehicle_index != SPRITE_INDEX_NULL;

@@ -946,7 +946,7 @@ void S6Exporter::ExportSprites()
         ExportSprite(&_s6.sprites[i], reinterpret_cast<const rct_sprite*>(GetEntity(i)));
     }
 
-    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
     {
         _s6.sprite_lists_head[i] = gSpriteListHead[i];
         _s6.sprite_lists_count[i] = gSpriteListCount[i];
@@ -987,7 +987,7 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->next_in_quadrant = src->next_in_quadrant;
     dst->next = src->next;
     dst->previous = src->previous;
-    dst->linked_list_type_offset = src->linked_list_index * 2;
+    dst->linked_list_type_offset = static_cast<uint8_t>(src->linked_list_index) * 2;
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = src->flags;

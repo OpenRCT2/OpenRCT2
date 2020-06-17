@@ -1284,7 +1284,7 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (auto vehicle : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
+    for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
     {
         vehicle->UpdateSoundParams(vehicleSoundParamsList);
     }
@@ -1364,7 +1364,7 @@ void vehicle_update_all()
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    for (auto vehicle : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
+    for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
     {
         vehicle->Update();
     }
