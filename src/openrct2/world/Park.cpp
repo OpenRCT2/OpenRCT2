@@ -385,9 +385,7 @@ int32_t Park::CalculateParkRating() const
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         uint32_t happyGuestCount = 0;
         uint32_t lostGuestCount = 0;
-        uint16_t spriteIndex;
-        Peep* peep;
-        FOR_ALL_GUESTS (spriteIndex, peep)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
             if (peep->OutsideOfPark == 0)
             {
@@ -469,13 +467,9 @@ int32_t Park::CalculateParkRating() const
 
     // Litter
     {
-        Litter* litter;
         int32_t litterCount = 0;
-        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
-             spriteIndex = litter->next)
+        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
         {
-            litter = &(get_sprite(spriteIndex)->litter);
-
             // Ignore recently dropped litter
             if (litter->creationTick - gScenarioTicks >= 7680)
             {

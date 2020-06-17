@@ -437,13 +437,12 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            Peep* peep;
-            int32_t i;
-            FOR_ALL_STAFF (i, peep)
+            for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->StaffType, peep->Energy, name.c_str());
+                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->StaffType, peep->Energy,
+                    name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -1573,11 +1572,11 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
 
     for (int i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* sprite = get_sprite(i);
-        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        auto* sprite = GetEntity(i);
+        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
             continue;
 
-        auto peep = sprite->generic.As<Peep>();
+        auto peep = sprite->As<Peep>();
         if (peep != nullptr)
             peeps.push_back(peep);
     }

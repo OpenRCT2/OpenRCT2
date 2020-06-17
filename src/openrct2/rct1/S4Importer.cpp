@@ -1341,10 +1341,9 @@ private:
         }
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
-            rct_sprite* sprite = get_sprite(i);
-            if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            auto vehicle = GetEntity<Vehicle>(i);
+            if (vehicle != nullptr)
             {
-                Vehicle* vehicle = reinterpret_cast<Vehicle*>(sprite);
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
@@ -1354,15 +1353,14 @@ private:
             FixRidePeepLinks(&ride, spriteIndexMap);
         }
 
-        int32_t i;
-        Peep* peep;
-        FOR_ALL_GUESTS (i, peep)
         {
-            FixPeepNextInQueue(peep, spriteIndexMap);
+            for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+            {
+                FixPeepNextInQueue(peep, spriteIndexMap);
+            }
         }
-
         // Fix the news items in advance
-        for (i = 0; i < MAX_NEWS_ITEMS; i++)
+        for (auto i = 0; i < MAX_NEWS_ITEMS; i++)
         {
             rct12_news_item* newsItem = &_s4.messages[i];
 
@@ -1378,7 +1376,7 @@ private:
 
         std::copy(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), gStaffModes);
 
-        FOR_ALL_STAFF (i, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
             ImportStaffPatrolArea(peep);
         }
@@ -3000,9 +2998,7 @@ private:
         if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
         {
             // First, make the queuing peep exit
-            int32_t i;
-            Peep* peep;
-            FOR_ALL_GUESTS (i, peep)
+            for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
             {
                 if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {

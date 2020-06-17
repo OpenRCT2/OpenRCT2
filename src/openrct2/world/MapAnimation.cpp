@@ -159,12 +159,8 @@ static bool map_animation_invalidate_queue_banner(const CoordsXYZ& loc)
 static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
-    rct_sprite* sprite;
-    Peep* peep;
 
-    tileElement = map_get_first_element_at(loc);
+    auto tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -176,7 +172,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
         if (tileElement->IsGhost())
             continue;
 
-        sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
         if (sceneryEntry == nullptr)
             continue;
 
@@ -195,17 +191,9 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
             {
                 int32_t direction = tileElement->GetDirection();
-                int32_t x2 = loc.x - CoordsDirectionDelta[direction].x;
-                int32_t y2 = loc.y - CoordsDirectionDelta[direction].y;
-
-                uint16_t spriteIdx = sprite_get_first_in_quadrant(x2, y2);
-                for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->generic.next_in_quadrant)
+                auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
+                for (auto peep : quad)
                 {
-                    sprite = get_sprite(spriteIdx);
-                    if (!sprite->generic.Is<Peep>())
-                        continue;
-
-                    peep = &sprite->peep;
                     if (peep->State != PEEP_STATE_WALKING)
                         continue;
                     if (peep->z != loc.z)

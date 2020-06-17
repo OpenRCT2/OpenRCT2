@@ -1321,9 +1321,9 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
+    for (auto vehicle : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
     {
-        get_sprite(i)->vehicle.UpdateSoundParams(vehicleSoundParamsList);
+        vehicle->UpdateSoundParams(vehicleSoundParamsList);
     }
 
     // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
@@ -1393,21 +1393,14 @@ void vehicle_sounds_update()
  */
 void vehicle_update_all()
 {
-    uint16_t sprite_index;
-    Vehicle* vehicle;
-
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN_HEAD];
-    while (sprite_index != SPRITE_INDEX_NULL)
+    for (auto vehicle : EntityList<Vehicle>(SPRITE_LIST_TRAIN_HEAD))
     {
-        vehicle = GET_VEHICLE(sprite_index);
-        sprite_index = vehicle->next;
-
         vehicle->Update();
     }
 }
@@ -5632,12 +5625,7 @@ void Vehicle::UpdateSound()
  */
 SoundId Vehicle::UpdateScreamSound()
 {
-    uint32_t r;
-    uint16_t spriteIndex;
-    rct_ride_entry* rideEntry;
-    Vehicle* vehicle2;
-
-    rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
@@ -5650,10 +5638,15 @@ SoundId Vehicle::UpdateScreamSound()
         if (velocity > -0x2C000)
             return SoundId::Null;
 
-        spriteIndex = sprite_index;
-        do
+        for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
         {
-            vehicle2 = &(get_sprite(spriteIndex)->vehicle);
+            auto vehicle2 = GetEntity<Vehicle>(spriteIndex);
+            if (vehicle2 == nullptr)
+            {
+                return SoundId::Null;
+            }
+            spriteIndex = vehicle2->next_vehicle_on_train;
+
             if (vehicle2->vehicle_sprite_type < 1)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 4)
@@ -5662,17 +5655,21 @@ SoundId Vehicle::UpdateScreamSound()
                 continue;
             if (vehicle2->vehicle_sprite_type <= 15)
                 goto produceScream;
-        } while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+        }
         return SoundId::Null;
     }
 
     if (velocity < 0x2C000)
         return SoundId::Null;
 
-    spriteIndex = sprite_index;
-    do
+    for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
     {
-        vehicle2 = &(get_sprite(spriteIndex)->vehicle);
+        auto vehicle2 = GetEntity<Vehicle>(spriteIndex);
+        if (vehicle2 == nullptr)
+        {
+            return SoundId::Null;
+        }
+        spriteIndex = vehicle2->next_vehicle_on_train;
         if (vehicle2->vehicle_sprite_type < 5)
             continue;
         if (vehicle2->vehicle_sprite_type <= 8)
@@ -5681,13 +5678,13 @@ SoundId Vehicle::UpdateScreamSound()
             continue;
         if (vehicle2->vehicle_sprite_type <= 23)
             goto produceScream;
-    } while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+    }
     return SoundId::Null;
 
 produceScream:
     if (scream_sound_id == SoundId::Null)
     {
-        r = scenario_rand();
+        auto r = scenario_rand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
         {
             switch (vehicleEntry->sound_range)
@@ -6506,18 +6503,10 @@ bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collide
     {
         location += xy_offset;
 
-        uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x, location.y);
-        while (spriteIdx != SPRITE_INDEX_NULL)
+        for (auto vehicle2 : EntityTileList<Vehicle>(location))
         {
-            Vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
-            spriteIdx = vehicle2->next_in_quadrant;
-
             if (vehicle2 == this)
                 continue;
-
-            if (vehicle2->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
-                continue;
-
             if (vehicle2->ride != rideIndex)
                 continue;
 
@@ -7699,54 +7688,47 @@ static bool vehicle_update_motion_collision_detection(
     auto location = CoordsXY{ x, y };
 
     bool mayCollide = false;
-    uint16_t collideId = SPRITE_INDEX_NULL;
     Vehicle* collideVehicle = nullptr;
     for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;
 
-        collideId = sprite_get_first_in_quadrant(location.x, location.y);
-        for (; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant)
+        for (auto vehicle2 : EntityTileList<Vehicle>(location))
         {
-            collideVehicle = GET_VEHICLE(collideId);
-            if (collideVehicle == vehicle)
+            if (vehicle2 == vehicle)
                 continue;
-
-            if (collideVehicle->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
-                continue;
-
-            int32_t z_diff = abs(collideVehicle->z - z);
+            int32_t z_diff = abs(vehicle2->z - z);
 
             if (z_diff > 16)
                 continue;
 
-            if (collideVehicle->ride_subtype == RIDE_TYPE_NULL)
+            if (vehicle2->ride_subtype == RIDE_TYPE_NULL)
                 continue;
 
-            auto collideVehicleEntry = collideVehicle->Entry();
+            auto collideVehicleEntry = vehicle2->Entry();
             if (collideVehicleEntry == nullptr)
                 continue;
 
             if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                 continue;
 
-            uint32_t x_diff = abs(collideVehicle->x - x);
+            uint32_t x_diff = abs(vehicle2->x - x);
             if (x_diff > 0x7FFF)
                 continue;
 
-            uint32_t y_diff = abs(collideVehicle->y - y);
+            uint32_t y_diff = abs(vehicle2->y - y);
             if (y_diff > 0x7FFF)
                 continue;
 
-            uint8_t cl = std::min(vehicle->TrackSubposition, collideVehicle->TrackSubposition);
-            uint8_t ch = std::max(vehicle->TrackSubposition, collideVehicle->TrackSubposition);
+            uint8_t cl = std::min(vehicle->TrackSubposition, vehicle2->TrackSubposition);
+            uint8_t ch = std::max(vehicle->TrackSubposition, vehicle2->TrackSubposition);
             if (cl != ch)
             {
                 if (cl == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE && ch == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE)
                     continue;
             }
 
-            uint32_t ecx = vehicle->var_44 + collideVehicle->var_44;
+            uint32_t ecx = vehicle->var_44 + vehicle2->var_44;
             ecx = ((ecx >> 1) * 30) >> 8;
 
             if (x_diff + y_diff >= ecx)
@@ -7754,22 +7736,24 @@ static bool vehicle_update_motion_collision_detection(
 
             if (!(collideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART))
             {
+                collideVehicle = vehicle2;
                 mayCollide = true;
                 break;
             }
 
-            uint8_t direction = (vehicle->sprite_direction - collideVehicle->sprite_direction - 6) & 0x1F;
+            uint8_t direction = (vehicle->sprite_direction - vehicle2->sprite_direction - 6) & 0x1F;
 
             if (direction < 0x14)
                 continue;
 
             uint32_t offsetSpriteDirection = (vehicle->sprite_direction + 4) & 31;
             uint32_t offsetDirection = offsetSpriteDirection >> 3;
-            uint32_t next_x_diff = abs(x + AvoidCollisionMoveOffset[offsetDirection].x - collideVehicle->x);
-            uint32_t next_y_diff = abs(y + AvoidCollisionMoveOffset[offsetDirection].y - collideVehicle->y);
+            uint32_t next_x_diff = abs(x + AvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
+            uint32_t next_y_diff = abs(y + AvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
 
             if (next_x_diff + next_y_diff < x_diff + y_diff)
             {
+                collideVehicle = vehicle2;
                 mayCollide = true;
                 break;
             }
@@ -7791,7 +7775,7 @@ static bool vehicle_update_motion_collision_detection(
     {
         vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
         if (otherVehicleIndex != nullptr)
-            *otherVehicleIndex = collideId;
+            *otherVehicleIndex = collideVehicle->sprite_index;
         return true;
     }
 
@@ -7837,7 +7821,7 @@ static bool vehicle_update_motion_collision_detection(
 
     vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
     if (otherVehicleIndex != nullptr)
-        *otherVehicleIndex = collideId;
+        *otherVehicleIndex = collideVehicle->sprite_index;
     return true;
 }
 
@@ -9714,17 +9698,16 @@ rct_ride_entry_vehicle* Vehicle::Entry() const
 
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
-    const Vehicle* vehicle = this;
-    uint16_t spriteIndex;
     int32_t numPeeps = 0;
-    for (;;)
+    for (uint16_t spriteIndex = sprite_index; spriteIndex != SPRITE_INDEX_NULL;)
     {
-        numPeeps += vehicle->num_peeps;
+        const Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+        if (vehicle == nullptr)
+        {
+            return numPeeps;
+        }
         spriteIndex = vehicle->next_vehicle_on_train;
-        if (spriteIndex == SPRITE_INDEX_NULL)
-            break;
-
-        vehicle = &(get_sprite(spriteIndex)->vehicle);
+        numPeeps += vehicle->num_peeps;
     }
 
     return numPeeps;

@@ -620,11 +620,8 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
 
 static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
-    int32_t distance, closestDistance;
-    uint16_t spriteIndex;
     rct_window* w;
     rct_viewport* viewport;
-    Peep *peep, *closestPeep;
 
     w = window_find_from_point(screenCoords);
     if (w == nullptr)
@@ -637,14 +634,14 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
     screenCoords.x = ((screenCoords.x - viewport->pos.x) * viewport->zoom) + viewport->viewPos.x;
     screenCoords.y = ((screenCoords.y - viewport->pos.y) * viewport->zoom) + viewport->viewPos.y;
 
-    closestPeep = nullptr;
-    closestDistance = 0xFFFF;
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    Peep* closestPeep = nullptr;
+    auto closestDistance = std::numeric_limits<int32_t>::max();
+    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
 
-        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
+        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
             + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - screenCoords.y);
         if (distance > maxDistance)
             continue;

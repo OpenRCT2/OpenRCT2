@@ -281,7 +281,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 
         if (vehicle->num_peeps != 0)
         {
-            Peep* peep = &get_sprite(vehicle->peep[0])->peep;
+            auto peep = GetEntity<Peep>(vehicle->peep[0]);
 
             // Easter egg names should only work on guests
             Guest* guest = peep->AsGuest();

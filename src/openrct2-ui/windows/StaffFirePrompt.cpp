@@ -124,7 +124,7 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    Peep* peep = &get_sprite(w->number)->peep;
+    Peep* peep = GetEntity<Peep>(w->number);
 
     peep->FormatNameTo(gCommonFormatArgs);
 

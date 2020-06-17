@@ -386,12 +386,8 @@ Peep* try_get_guest(uint16_t spriteIndex)
 
 int32_t peep_get_staff_count()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-    int32_t count = 0;
-
-    FOR_ALL_STAFF (spriteIndex, peep)
-        count++;
+    auto list = EntityList<Staff>(SPRITE_LIST_PEEP);
+    auto count = std::distance(list.begin(), list.end());
 
     return count;
 }
@@ -402,20 +398,13 @@ int32_t peep_get_staff_count()
  */
 void peep_update_all()
 {
-    int32_t i = 0;
-    uint16_t spriteIndex;
-    Peep* peep;
-
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
-    // will be fetched on a delted peep if peep leaves the park.
-    for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
+    int32_t i = 0;
+    // Warning this loop can delete peeps
+    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
     {
-        peep = GET_PEEP(spriteIndex);
-        spriteIndex = peep->next;
-
         if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
             peep->Update();
@@ -1180,14 +1169,12 @@ void Peep::Update()
  */
 void peep_problem_warnings_update()
 {
-    Peep* peep;
     Ride* ride;
-    uint16_t spriteIndex;
     uint32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
              disgust_counter = 0, toilet_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark != 0 || peep->Thoughts[0].freshness > 5)
             continue;
@@ -1349,11 +1336,6 @@ void peep_stop_crowd_noise()
  */
 void peep_update_crowd_noise()
 {
-    rct_viewport* viewport;
-    uint16_t spriteIndex;
-    Peep* peep;
-    int32_t visiblePeeps;
-
     if (gGameSoundsOff)
         return;
 
@@ -1363,14 +1345,14 @@ void peep_update_crowd_noise()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    viewport = g_music_tracking_viewport;
+    auto viewport = g_music_tracking_viewport;
     if (viewport == nullptr)
         return;
 
     // Count the number of peeps visible
-    visiblePeeps = 0;
+    auto visiblePeeps = 0;
 
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
@@ -1433,12 +1415,8 @@ void peep_update_crowd_noise()
  */
 void peep_applause()
 {
-    uint16_t spriteIndex;
-    Peep* p;
-    FOR_ALL_GUESTS (spriteIndex, p)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        auto peep = p->AsGuest();
-        assert(peep != nullptr);
         if (peep->OutsideOfPark != 0)
             continue;
 
@@ -1465,10 +1443,7 @@ void peep_applause()
  */
 void peep_update_days_in_queue()
 {
-    uint16_t sprite_index;
-    Peep* peep;
-
-    FOR_ALL_GUESTS (sprite_index, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->OutsideOfPark == 0 && peep->State == PEEP_STATE_QUEUING)
         {
@@ -2678,13 +2653,11 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     uint16_t crowded = 0;
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
-    uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    auto quad = EntityTileList({ x, y });
+    for (auto entity : quad)
     {
-        sprite = get_sprite(sprite_id);
-        if (sprite->generic.Is<Peep>())
+        if (auto other_peep = entity->As<Peep>(); other_peep != nullptr)
         {
-            Peep* other_peep = reinterpret_cast<Peep*>(sprite);
             if (other_peep->State != PEEP_STATE_WALKING)
                 continue;
 
@@ -2693,9 +2666,8 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             crowded++;
             continue;
         }
-        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        else if (auto litter = entity->As<Litter>(); litter != nullptr)
         {
-            Litter* litter = reinterpret_cast<Litter*>(sprite);
             if (abs(litter->z - peep->NextLoc.z) > 16)
                 continue;
 

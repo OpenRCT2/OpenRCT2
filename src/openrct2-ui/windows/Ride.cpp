@@ -1739,7 +1739,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
                 rct_window* w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
                 if (w2 == nullptr)
                 {
-                    Peep* peep = &(get_sprite(peepSpriteIndex)->peep);
+                    Peep* peep = GetEntity<Peep>(peepSpriteIndex);
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
                     context_open_intent(&intent);
@@ -2579,7 +2579,7 @@ static void window_ride_main_update(rct_window* w)
                 if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
                     return;
 
-                Vehicle* vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+                Vehicle* vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
                 if (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT)
@@ -2785,21 +2785,16 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
  */
 static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* arguments)
 {
-    Vehicle* vehicle;
-    int32_t vehicleIndex;
-    uint16_t vehicleSpriteIndex;
-    rct_string_id stringId;
-
     auto ride = get_ride(w->number);
     if (ride == nullptr)
         return 0;
 
-    vehicleIndex = w->ride.view - 1;
-    vehicleSpriteIndex = ride->vehicles[vehicleIndex];
+    auto vehicleIndex = w->ride.view - 1;
+    auto vehicleSpriteIndex = ride->vehicles[vehicleIndex];
     if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
         return 0;
 
-    vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+    auto vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
     if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED)
     {
         int32_t trackType = vehicle->GetTrackType();
@@ -2815,7 +2810,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
         }
     }
 
-    stringId = VehicleStatusNames[vehicle->status];
+    auto stringId = VehicleStatusNames[vehicle->status];
 
     // Get speed in mph
     *(reinterpret_cast<uint16_t*>(reinterpret_cast<uintptr_t>(arguments) + 2)) = (abs(vehicle->velocity) * 9) >> 18;
@@ -4186,11 +4181,11 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
                     case BREAKDOWN_DOORS_STUCK_CLOSED:
                     case BREAKDOWN_DOORS_STUCK_OPEN:
-                        vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
+                        vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
                         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                         break;
                     case BREAKDOWN_VEHICLE_MALFUNCTION:
-                        vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
+                        vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
                         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                         break;
                 }
@@ -4378,9 +4373,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 
-                uint16_t spriteIndex;
-                Peep* peep;
-                FOR_ALL_STAFF (spriteIndex, peep)
+                for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
                 {
                     if (peep->StaffType == STAFF_TYPE_MECHANIC)
                     {
@@ -4410,7 +4403,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
             else
             {
-                auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
+                auto peep = GetEntity<Peep>(ride->mechanic)->AsStaff();
                 if (peep != nullptr && peep->IsMechanic())
                 {
                     peep->FormatNameTo(gCommonFormatArgs);

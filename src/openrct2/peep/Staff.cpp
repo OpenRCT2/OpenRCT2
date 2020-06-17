@@ -79,6 +79,12 @@ colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
 
+template<> bool SpriteBase::Is<Staff>() const
+{
+    auto peep = As<Peep>();
+    return peep && peep->AssignedPeepType == PEEP_TYPE_STAFF;
+}
+
 /**
  *
  *  rct2: 0x006BD3A4
@@ -126,7 +132,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
             return;
 
         // Open window for new staff.
-        Peep* peep = &get_sprite(res->peepSriteIndex)->peep;
+        auto peep = GetEntity<Peep>(res->peepSriteIndex);
         auto intent = Intent(WC_PEEP);
         intent.putExtra(INTENT_EXTRA_PEEP, peep);
         context_open_intent(&intent);
@@ -142,9 +148,6 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
  */
 void staff_update_greyed_patrol_areas()
 {
-    Peep* peep;
-    uint16_t sprite_index;
-
     for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
         int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
@@ -153,7 +156,7 @@ void staff_update_greyed_patrol_areas()
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        FOR_ALL_STAFF (sprite_index, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
             if (peep->StaffType == staff_type)
             {
@@ -361,10 +364,7 @@ static uint8_t staff_get_valid_patrol_directions(Staff* staff, const CoordsXY& l
  */
 void staff_reset_stats()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
-    FOR_ALL_STAFF (spriteIndex, peep)
+    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
         peep->TimeInPark = gDateMonthsElapsed;
         peep->StaffLawnsMown = 0;
@@ -443,12 +443,8 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
     uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
-    Litter* litter = nullptr;
-
-    for (uint16_t litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
+    for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
     {
-        litter = &get_sprite(litterIndex)->litter;
-
         uint16_t distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
 
         if (distance < nearestLitterDist)
@@ -1018,10 +1014,7 @@ bool Staff::DoMiscPathFinding()
  */
 static void staff_entertainer_update_nearby_peeps(Peep* peep)
 {
-    uint16_t spriteIndex;
-    Peep* guest;
-
-    FOR_ALL_GUESTS (spriteIndex, guest)
+    for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (guest->x == LOCATION_NULL)
             continue;
@@ -1816,25 +1809,19 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 {
     if (!(peep->StaffOrders & STAFF_ORDERS_SWEEPING))
         return 0;
-
-    uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
-
-    for (rct_sprite* sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
+    auto quad = EntityTileList<Litter>({ peep->x, peep->y });
+    for (auto litter : quad)
     {
-        sprite = get_sprite(sprite_id);
-
-        if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_LITTER)
-            continue;
-
-        uint16_t z_diff = abs(peep->z - sprite->litter.z);
+        uint16_t z_diff = abs(peep->z - litter->z);
 
         if (z_diff >= 16)
             continue;
 
         peep->SetState(PEEP_STATE_SWEEPING);
+
         peep->Var37 = 0;
-        peep->DestinationX = sprite->litter.x;
-        peep->DestinationY = sprite->litter.y;
+        peep->DestinationX = litter->x;
+        peep->DestinationY = litter->y;
         peep->DestinationTolerance = 5;
         return 1;
     }
