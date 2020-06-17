@@ -2487,7 +2487,7 @@ void Vehicle::UpdateDodgemsMode()
 
     UpdateMotionDodgems();
 
-    // Update the length of time vehicle has been in bumper mode
+    // Update the length of time vehicle has been in dodgems mode
     if (sub_state++ == 0xFF)
     {
         var_CE++;
@@ -2613,7 +2613,7 @@ void Vehicle::UpdateWaitingToDepart()
     switch (curRide->mode)
     {
         case RIDE_MODE_DODGEMS:
-            // Bumper mode uses sub_state / var_CE to tell how long
+            // Dodgems mode uses sub_state / var_CE to tell how long
             // the vehicle has been ridden.
             SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
             var_CE = 0;
