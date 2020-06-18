@@ -54,6 +54,11 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),
-    SET_FIELD(BonusValue, 55)
+    SET_FIELD(BonusValue, 55),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_DARK_GREEN, COLOUR_SATURATED_BROWN, COLOUR_DARK_GREEN },
+        { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_TEAL },
+        { COLOUR_BRIGHT_RED, COLOUR_GREY, COLOUR_SATURATED_RED },
+    )),
 };
 // clang-format on

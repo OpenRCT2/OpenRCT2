@@ -45,6 +45,10 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),
-    SET_FIELD(BonusValue, 65)
+    SET_FIELD(BonusValue, 65),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
+        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
+    )),
 };
 // clang-format on

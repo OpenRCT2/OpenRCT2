@@ -43,6 +43,7 @@ constexpr const RideTypeDescriptor HauntedHouseRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_HORROR),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 22)
+    SET_FIELD(BonusValue, 22),
+    SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
 };
 // clang-format on

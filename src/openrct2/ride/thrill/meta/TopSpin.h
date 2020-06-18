@@ -43,6 +43,11 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 55)
+    SET_FIELD(BonusValue, 55),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_YELLOW },
+        { COLOUR_TEAL, COLOUR_WHITE, COLOUR_WHITE },
+        { COLOUR_DARK_GREEN, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
+    )),
 };
 // clang-format on

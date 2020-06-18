@@ -43,6 +43,10 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 45)
+    SET_FIELD(BonusValue, 45),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
+        { COLOUR_LIGHT_BLUE, COLOUR_YELLOW, COLOUR_GREY },
+    )),
 };
 // clang-format on

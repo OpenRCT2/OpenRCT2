@@ -41,5 +41,10 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_2),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 70),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },
+        { COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
+        { COLOUR_LIGHT_ORANGE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_YELLOW },
+    )),
 };
 // clang-format on

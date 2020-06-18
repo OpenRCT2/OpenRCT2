@@ -10,6 +10,16 @@
 #ifndef _RIDE_DATA_H_
 #define _RIDE_DATA_H_
 
+#define TRACK_COLOUR_PRESETS(...)                                                                                              \
+    {                                                                                                                          \
+        static_cast<uint8_t>(std::size<TrackColour>({ __VA_ARGS__ })),                                                         \
+        {                                                                                                                      \
+            __VA_ARGS__                                                                                                        \
+        }                                                                                                                      \
+    }
+#define DEFAULT_FLAT_RIDE_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW })
+#define DEFAULT_STALL_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
+
 #include "../common.h"
 #include "../localisation/StringIds.h"
 #include "Ride.h"
@@ -138,6 +148,7 @@ struct RideTypeDescriptor
     uint8_t PhotoItem;
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
+    track_colour_preset_list ColourPresets;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -276,8 +287,6 @@ extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
-
 extern const rct_string_id RideModeNames[RIDE_MODE_COUNT];
 
 // clang-format off
@@ -307,7 +316,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 0)
+    SET_FIELD(BonusValue, 0),
+    SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
 };
 // clang-format on
 

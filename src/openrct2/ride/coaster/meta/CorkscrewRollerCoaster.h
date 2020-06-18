@@ -42,6 +42,12 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 100)
+    SET_FIELD(BonusValue, 100),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
+        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
+        { COLOUR_BLACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
+        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
+    )),
 };
 // clang-format on
