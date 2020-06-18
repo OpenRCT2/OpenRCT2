@@ -1394,8 +1394,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
         // Cost to buy land value
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
         arg = gLandPrice;
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
     }
@@ -1440,8 +1439,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
         // Entry price value
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
         arg = gParkEntranceFee;
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
     }
