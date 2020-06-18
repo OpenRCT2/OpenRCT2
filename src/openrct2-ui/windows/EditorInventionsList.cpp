@@ -557,12 +557,12 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Pre-researched items label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left, w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos.x, screenPos.y - 1);
+    gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 0, 1 });
 
     // Research order label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left, w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos.x, screenPos.y - 1);
+    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos.x - ScreenCoordsXY{ 0, 1 });
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
@@ -615,7 +615,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
     stringId = EditorInventionsResearchCategories[researchItem->category];
-    gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, screenPos.x, screenPos.y);
+    gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, screenPos);
 }
 
 /**
@@ -815,12 +815,10 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, const Screen
 static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id drawString;
-    int32_t x, y;
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x, w->windowPos.y + 2 };
 
-    x = w->windowPos.x;
-    y = w->windowPos.y + 2;
     drawString = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
-    gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
+    gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, screenCoords);
 }
 
 static rct_string_id window_editor_inventions_list_prepare_name(const ResearchItem* researchItem, bool withGap)

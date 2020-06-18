@@ -240,17 +240,17 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 10, w->windowPos.y + 30 };
 
-    gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], screenCoords.x, screenCoords.y);
+    gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], screenCoords);
 
     int32_t baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
     ft = Formatter::Common();
     ft.Add<int32_t>(baseExchange);
     gfx_draw_string_left(
-        dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], screenCoords.x + 200, screenCoords.y);
+        dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], screenCoords + ScreenCoordsXY{ 200, 0 });
 
     screenCoords.y += 20;
 
-    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], screenCoords.x, screenCoords.y);
+    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], screenCoords);
 
     screenCoords.x = w->windowPos.x + window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1;
     screenCoords.y = w->windowPos.y + window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top;
@@ -260,13 +260,13 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
     {
         gfx_draw_string_left(
-            dpi, STR_PREFIX, w, w->colours[1], w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
+            dpi, STR_PREFIX, w, w->colours[1], { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
     }
     else
     {
         gfx_draw_string_left(
-            dpi, STR_SUFFIX, w, w->colours[1], w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
+            dpi, STR_SUFFIX, w, w->colours[1], { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top} );
     }
 }

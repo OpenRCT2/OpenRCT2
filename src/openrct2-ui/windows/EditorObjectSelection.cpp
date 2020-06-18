@@ -1018,7 +1018,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         ft.Add<uint16_t>(numSelected);
         ft.Add<uint16_t>(totalSelectable);
         gfx_draw_string_left(
-            dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, screenPos.x, screenPos.y);
+            dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, screenPos);
     }
 
     // Draw sort button text

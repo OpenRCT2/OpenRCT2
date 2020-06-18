@@ -683,7 +683,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         gfx_draw_string_left(
-            dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, screenCoords.x, screenCoords.y - 1);
+            dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
         screenCoords.y += TABLE_CELL_HEIGHT;
     }
 
@@ -693,15 +693,16 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Loan and interest rate
-    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->windowPos.x + 8, w->windowPos.y + 279);
+    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, { w->windowPos.x + 8, w->windowPos.y + 279 });
     auto ft = Formatter::Common();
     ft.Add<uint16_t>(gBankLoanInterestRate);
     gfx_draw_string_left(
-        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 167, w->windowPos.y + 279);
+        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK,
+        { w->windowPos.x + 167, w->windowPos.y + 279 });
 
     // Current cash
     rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->windowPos.x + 8, w->windowPos.y + 294);
+    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, { w->windowPos.x + 8, w->windowPos.y + 294 });
 
     // Objective related financial information
     if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME)
@@ -711,14 +712,15 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<money32>(lastMonthProfit);
         gfx_draw_string_left(
             dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos.x + 280, w->windowPos.y + 279);
+            { w->windowPos.x + 280, w->windowPos.y + 279 });
     }
     else
     {
         // Park value and company value
-        gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->windowPos.x + 280, w->windowPos.y + 279);
         gfx_draw_string_left(
-            dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->windowPos.x + 280, w->windowPos.y + 294);
+            dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, { w->windowPos.x + 280, w->windowPos.y + 279 });
+        gfx_draw_string_left(
+            dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, { w->windowPos.x + 280, w->windowPos.y + 294 });
     }
 }
 
@@ -858,7 +860,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
         dpi,
         cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                           : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
-        &cashLessLoan, COLOUR_BLACK, graphLeft, graphTop - 11);
+        &cashLessLoan, COLOUR_BLACK, { graphLeft, graphTop - 11 });
 
     // Graph
     gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
@@ -961,7 +963,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
 
     // Park value
     money32 parkValue = gParkValue;
-    gfx_draw_string_left(dpi, STR_FINANCES_PARK_VALUE, &parkValue, COLOUR_BLACK, graphLeft, graphTop - 11);
+    gfx_draw_string_left(dpi, STR_FINANCES_PARK_VALUE, &parkValue, COLOUR_BLACK, { graphLeft, graphTop - 11 });
 
     // Graph
     gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
@@ -1065,7 +1067,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     money32 weeklyPofit = gCurrentProfit;
     gfx_draw_string_left(
         dpi, weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, &weeklyPofit,
-        COLOUR_BLACK, graphLeft, graphTop - 11);
+        COLOUR_BLACK, { graphLeft, graphTop - 11 });
 
     // Graph
     gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
@@ -1187,8 +1189,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    int32_t x = w->windowPos.x + 8;
-    int32_t y = w->windowPos.y + 62;
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 8, w->windowPos.y + 62 };
     int32_t noCampaignsActive = 1;
     for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
     {
@@ -1229,22 +1230,23 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         }
 
         // Advertisement
-        gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, { x + 4, y }, 296);
+        gfx_draw_string_left_clipped(
+            dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 }, 296);
 
         // Duration
         uint16_t weeksRemaining = campaign->WeeksLeft;
-        gfx_draw_string_left(
-            dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK, x + 304, y);
+        gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining,
+                             COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 304, 0 });
 
-        y += LIST_ROW_HEIGHT;
+        screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     if (noCampaignsActive)
     {
-        gfx_draw_string_left(dpi, STR_MARKETING_CAMPAIGNS_NONE, nullptr, COLOUR_BLACK, x + 4, y);
-        y += LIST_ROW_HEIGHT;
+        gfx_draw_string_left(dpi, STR_MARKETING_CAMPAIGNS_NONE, nullptr, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 });
+        screenCoords.y += LIST_ROW_HEIGHT;
     }
-    y += 34;
+    screenCoords.y += 34;
 
     // Draw campaign button text
     for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
@@ -1254,8 +1256,10 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             // Draw button text
             money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
-            gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, x + 4, y);
-            gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + WH_SUMMARY, y);
+            gfx_draw_string_left(
+                dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 });
+            gfx_draw_string_left(
+                dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 });
 
             y += BUTTON_FACE_HEIGHT + 2;
         }
