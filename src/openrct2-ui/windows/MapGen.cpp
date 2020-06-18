@@ -124,7 +124,7 @@ static constexpr const int32_t WH = 273;
 
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE },
+    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 18, WH - 5, STR_MAPGEN_ACTION_GENERATE, STR_NONE },
       SPINNER_WIDGETS      (1,  104,    198,    52,     63,     STR_NONE,                   STR_NONE), // NB: 3 widgets
       SPINNER_WIDGETS      (1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE), // NB: 3 widgets
       SPINNER_WIDGETS      (1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE), // NB: 3 widgets
@@ -135,7 +135,7 @@ static rct_widget MapWidgets[] = {
 
 static rct_widget RandomWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,        STR_NONE },
+    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 18, WH - 5, STR_MAPGEN_ACTION_GENERATE,        STR_NONE },
     { WWT_CHECKBOX,         1,  4,      198,    52,     63,     STR_MAPGEN_OPTION_RANDOM_TERRAIN,   STR_NONE },
     { WWT_CHECKBOX,         1,  4,      198,    70,     81,     STR_MAPGEN_OPTION_PLACE_TREES,      STR_NONE },
     { WIDGETS_END },
@@ -143,7 +143,7 @@ static rct_widget RandomWidgets[] = {
 
 static rct_widget SimplexWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,      STR_NONE }, // WIDX_SIMPLEX_GENERATE
+    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 18, WH - 5, STR_MAPGEN_ACTION_GENERATE,      STR_NONE }, // WIDX_SIMPLEX_GENERATE
     { WWT_LABEL_CENTRED,    1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,         STR_NONE }, // WIDX_SIMPLEX_LABEL
       SPINNER_WIDGETS      (1,  104,    198,    70,     81,     STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
       SPINNER_WIDGETS      (1,  104,    198,    88,     99,     STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
@@ -160,7 +160,7 @@ static rct_widget SimplexWidgets[] = {
 
 static rct_widget HeightmapWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 155, WW - 6, WH - 17, WH - 6, STR_MAPGEN_SELECT_HEIGHTMAP, STR_NONE }, // WIDX_HEIGHTMAP_SELECT
+    { WWT_BUTTON,           1, WW - 155, WW - 6, WH - 18, WH - 5, STR_MAPGEN_SELECT_HEIGHTMAP, STR_NONE }, // WIDX_HEIGHTMAP_SELECT
     { WWT_CHECKBOX,         1,  4,      103,    52,     63,     STR_MAPGEN_SMOOTH_HEIGHTMAP,STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
       SPINNER_WIDGETS      (1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
     { WWT_CHECKBOX,         1,  4,      103,    88,     99,     STR_MAPGEN_NORMALIZE,       STR_NONE }, // WIDX_HEIGHTMAP_NORMALIZE

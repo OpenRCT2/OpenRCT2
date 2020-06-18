@@ -97,7 +97,7 @@ static rct_widget window_map_widgets[] = {
     { WWT_CHECKBOX,         1,  58,     241,    197,    208,    STR_LAND_SALE,                          STR_SET_LAND_TO_BE_AVAILABLE_TIP },
     { WWT_CHECKBOX,         1,  58,     231,    197,    208,    STR_CONSTRUCTION_RIGHTS_SALE,           STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
     { WWT_FLATBTN,          1,  218,    241,    45,     68,     SPR_ROTATE_ARROW,                       STR_ROTATE_OBJECTS_90 },
-    { WWT_BUTTON,           1,  110,    240,    190,    201,    STR_MAPGEN_WINDOW_TITLE,                STR_MAP_GENERATOR_TIP},
+    { WWT_BUTTON,           1,  110,    240,    189,    202,    STR_MAPGEN_WINDOW_TITLE,                STR_MAP_GENERATOR_TIP},
     { WIDGETS_END },
 };
 
@@ -747,7 +747,7 @@ static void window_map_invalidate(rct_window* w)
     w->widgets[WIDX_LAND_TOOL_LARGER].bottom = w->height - 27 + 15;
 
     w->widgets[WIDX_MAP_GENERATOR].top = w->height - 69;
-    w->widgets[WIDX_MAP_GENERATOR].bottom = w->height - 69 + 11;
+    w->widgets[WIDX_MAP_GENERATOR].bottom = w->height - 69 + 13;
 
     // Land tool mode (4 checkboxes)
     height = w->height - 55;
