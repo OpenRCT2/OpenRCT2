@@ -697,8 +697,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<uint16_t>(gBankLoanInterestRate);
     gfx_draw_string_left(
-        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ 167, 279 });
+        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 167, 279 });
 
     // Current cash
     rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
@@ -717,8 +716,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else
     {
         // Park value and company value
-        gfx_draw_string_left(
-            dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 279 });
+        gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 279 });
         gfx_draw_string_left(
             dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 294 });
     }

@@ -1228,8 +1228,7 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
         gfx_draw_string_left(
-            dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(17) + TXTO });
+            dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(17) + TXTO });
         gfx_draw_string_left(
             dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(10) + TXTO });
         gfx_draw_string_right(
@@ -1242,17 +1241,13 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             dpi, STR_CHEAT_GUEST_HAPPINESS, nullptr, COLOUR_BLACK,
             w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(1) + TXTO });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_ENERGY, nullptr, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(2) + TXTO });
+            dpi, STR_CHEAT_GUEST_ENERGY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(2) + TXTO });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_HUNGER, nullptr, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(3) + TXTO });
+            dpi, STR_CHEAT_GUEST_HUNGER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(3) + TXTO });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_THIRST, nullptr, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(4) + TXTO });
+            dpi, STR_CHEAT_GUEST_THIRST, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(4) + TXTO });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(5) + TXTO });
+            dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(5) + TXTO });
         gfx_draw_string_left(
             dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK,
             w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(2) + TXTO });

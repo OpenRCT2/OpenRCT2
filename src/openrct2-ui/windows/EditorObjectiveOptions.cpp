@@ -904,8 +904,8 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, screenCoords);
 
         // Objective argument 1 value
-        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1,
-                                                      w->widgets[WIDX_OBJECTIVE_ARG_1].top };
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -939,8 +939,8 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, screenCoords);
 
         // Objective argument 2 value
-        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1,
-                                                      w->widgets[WIDX_OBJECTIVE_ARG_2].top };
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
         arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, screenCoords);
     }
