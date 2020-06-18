@@ -815,7 +815,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, const Screen
 static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id drawString;
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x, w->windowPos.y + 2 };
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 0, 2 };
 
     drawString = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
     gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, screenCoords);

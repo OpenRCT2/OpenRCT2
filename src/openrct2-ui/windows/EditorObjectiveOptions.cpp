@@ -866,18 +866,18 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     // Objective label
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top };
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_OBJECTIVE].top };
     gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, screenCoords);
 
     // Objective value
-    screenCoords = { w->windowPos.x + w->widgets[WIDX_OBJECTIVE].left + 1, w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top };
+    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
     stringId = ObjectiveDropdownOptionNames[gScenarioObjectiveType];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY)
     {
         // Objective argument 1 label
-        screenCoords = { w->windowPos.x + 28, w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_1].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -904,8 +904,8 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, screenCoords);
 
         // Objective argument 1 value
-        screenCoords = { w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1,
-                         w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_1].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1,
+                                                      w->widgets[WIDX_OBJECTIVE_ARG_1].top };
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -935,18 +935,18 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WWT_EMPTY)
     {
         // Objective argument 2 label
-        screenCoords = { w->windowPos.x + 28, w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, screenCoords);
 
         // Objective argument 2 value
-        screenCoords = { w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1,
-                         w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1,
+                                                      w->widgets[WIDX_OBJECTIVE_ARG_2].top };
         arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, screenCoords);
     }
 
     // Park name
-    screenCoords = { w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_PARK_NAME].top };
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_PARK_NAME].top };
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
     {
@@ -960,7 +960,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     }
 
     // Scenario name
-    screenCoords = { w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_SCENARIO_NAME].top };
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_SCENARIO_NAME].top };
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
     auto ft = Formatter::Common();
@@ -969,11 +969,11 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
 
     // Scenario details label
-    screenCoords = { w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_DETAILS].top };
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_DETAILS].top };
     gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, screenCoords);
 
     // Scenario details value
-    screenCoords = { w->windowPos.x + 16, w->windowPos.y + w->widgets[WIDX_DETAILS].top + 10 };
+    screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
     width = w->widgets[WIDX_DETAILS].left - 4;
 
     ft = Formatter::Common();
@@ -982,11 +982,11 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label
-    screenCoords = { w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_CATEGORY].top };
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CATEGORY].top };
     gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, screenCoords);
 
     // Scenario category value
-    screenCoords = { w->windowPos.x + w->widgets[WIDX_CATEGORY].left + 1, w->windowPos.y + w->widgets[WIDX_CATEGORY].top };
+    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
     stringId = ScenarioCategoryStringIds[gS6Info.category];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 }
@@ -1130,7 +1130,7 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
 
     gfx_draw_string_left(
         dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK,
-        { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
+        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
 }
 
 /**

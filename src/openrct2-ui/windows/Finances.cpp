@@ -667,7 +667,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 8, w->windowPos.y + 51 };
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 51 };
 
     // Expenditure / Income heading
     draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, screenCoords);
@@ -693,16 +693,16 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Loan and interest rate
-    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, { w->windowPos.x + 8, w->windowPos.y + 279 });
+    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 279 });
     auto ft = Formatter::Common();
     ft.Add<uint16_t>(gBankLoanInterestRate);
     gfx_draw_string_left(
         dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK,
-        { w->windowPos.x + 167, w->windowPos.y + 279 });
+        w->windowPos + ScreenCoordsXY{ 167, 279 });
 
     // Current cash
     rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, { w->windowPos.x + 8, w->windowPos.y + 294 });
+    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 294 });
 
     // Objective related financial information
     if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME)
@@ -712,15 +712,15 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<money32>(lastMonthProfit);
         gfx_draw_string_left(
             dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK,
-            { w->windowPos.x + 280, w->windowPos.y + 279 });
+            w->windowPos + ScreenCoordsXY{ 280, 279 });
     }
     else
     {
         // Park value and company value
         gfx_draw_string_left(
-            dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, { w->windowPos.x + 280, w->windowPos.y + 279 });
+            dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 279 });
         gfx_draw_string_left(
-            dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, { w->windowPos.x + 280, w->windowPos.y + 294 });
+            dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 294 });
     }
 }
 
@@ -1189,7 +1189,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 8, w->windowPos.y + 62 };
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 62 };
     int32_t noCampaignsActive = 1;
     for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
     {
