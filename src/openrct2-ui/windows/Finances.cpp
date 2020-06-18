@@ -1235,8 +1235,9 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
 
         // Duration
         uint16_t weeksRemaining = campaign->WeeksLeft;
-        gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining,
-                             COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 304, 0 });
+        gfx_draw_string_left(
+            dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK,
+            screenCoords + ScreenCoordsXY{ 304, 0 });
 
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1261,7 +1262,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             gfx_draw_string_left(
                 dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 });
 
-            y += BUTTON_FACE_HEIGHT + 2;
+            screenCoords.y += BUTTON_FACE_HEIGHT + 2;
         }
     }
 }

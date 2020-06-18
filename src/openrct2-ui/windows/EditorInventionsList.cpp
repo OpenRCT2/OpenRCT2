@@ -562,7 +562,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Research order label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left, w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos.x - ScreenCoordsXY{ 0, 1 });
+    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 0, 1 });
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];

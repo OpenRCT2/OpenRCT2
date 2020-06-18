@@ -260,13 +260,15 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
     {
         gfx_draw_string_left(
-            dpi, STR_PREFIX, w, w->colours[1], { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
+            dpi, STR_PREFIX, w, w->colours[1],
+            { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+              w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
     }
     else
     {
         gfx_draw_string_left(
-            dpi, STR_SUFFIX, w, w->colours[1], { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top} );
+            dpi, STR_SUFFIX, w, w->colours[1],
+            { w->windowPos.x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+              w->windowPos.y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
     }
 }

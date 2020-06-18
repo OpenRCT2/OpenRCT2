@@ -866,7 +866,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     // Objective label
-    auto screenCoords = ScreenCoordsXY { w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top };
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 8, w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top };
     gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, screenCoords);
 
     // Objective value
@@ -1129,8 +1129,8 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     gfx_draw_string_left(
-        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK, { w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
+        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK,
+        { w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
 }
 
 /**
