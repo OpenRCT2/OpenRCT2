@@ -148,8 +148,8 @@ namespace OpenRCT2::Scripting
                         for (auto carId = sprite->sprite_index; carId != SPRITE_INDEX_NULL;)
                         {
                             auto car = GetEntity<Vehicle>(carId);
-                            carId = car->next_vehicle_on_train;
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
+                            carId = car->next_vehicle_on_train;
                         }
                     }
                     else
