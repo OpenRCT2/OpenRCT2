@@ -772,7 +772,7 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_MAXIMUM_LOAN].top };
         gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-        screenCoords = w->windowPos 
+        screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_MAXIMUM_LOAN].left + 1, w->widgets[WIDX_MAXIMUM_LOAN].top };
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, screenCoords);
     }

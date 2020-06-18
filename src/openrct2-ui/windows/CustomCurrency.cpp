@@ -263,8 +263,8 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(
             dpi, STR_PREFIX, w, w->colours[1],
             w->windowPos
-                + ScreenCoordsXY { window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                                   window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
+                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+                                  window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
     }
     else
     {
