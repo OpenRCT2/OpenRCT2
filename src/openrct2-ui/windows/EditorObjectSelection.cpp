@@ -669,7 +669,7 @@ static void window_editor_object_selection_dropdown(rct_window* w, rct_widgetind
  */
 static void window_editor_object_selection_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    *height = static_cast<int32_t>(_listItems.size() * 12);
+    *height = static_cast<int32_t>(_listItems.size() * SCROLLABLE_ROW_HEIGHT);
 }
 
 /**
@@ -1084,7 +1084,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
             dpi, gCommonFormatArgs, screenPos.x, screenPos.y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
-    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (12 * 4) };
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 4) };
 
     // Draw ride type.
     if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
@@ -1093,12 +1093,12 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, screenPos);
     }
 
-    screenPos.y += 12;
+    screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object source
     stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
     gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, screenPos);
-    screenPos.y += 12;
+    screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object dat name
     const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
@@ -1126,7 +1126,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
     screenCoords.y = 0;
     for (const auto& listItem : _listItems)
     {
-        if (screenCoords.y + 12 >= dpi->y && screenCoords.y <= dpi->y + dpi->height)
+        if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi->y && screenCoords.y <= dpi->y + dpi->height)
         {
             // Draw checkbox
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
@@ -1136,7 +1136,8 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
             if (listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6))
             {
-                gfx_filter_rect(dpi, 0, screenCoords.y, w->width, screenCoords.y + 11, PALETTE_DARKEN_1);
+                auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
+                gfx_filter_rect(dpi, 0, screenCoords.y, w->width, bottom, PALETTE_DARKEN_1);
                 colour = COLOUR_BRIGHT_GREEN;
             }
 
@@ -1191,7 +1192,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             }
             gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords, width_limit);
         }
-        screenCoords.y += 12;
+        screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -1240,7 +1241,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window* w)
  */
 static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y)
 {
-    int32_t listItemIndex = y / 12;
+    int32_t listItemIndex = y / SCROLLABLE_ROW_HEIGHT;
     if (listItemIndex < 0 || static_cast<size_t>(listItemIndex) >= _listItems.size())
         return -1;
 
