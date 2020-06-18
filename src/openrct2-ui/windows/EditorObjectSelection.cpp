@@ -112,7 +112,7 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
 
 #pragma region Widgets
 
-enum WINDOW_STAFF_LIST_WIDGET_IDX {
+enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -122,7 +122,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_PREVIEW,
     WIDX_INSTALL_TRACK,
     WIDX_FILTER_DROPDOWN,
-    WIDX_FILTER_STRING_BUTTON,
+    WIDX_FILTER_TEXT_BOX,
     WIDX_FILTER_CLEAR_BUTTON,
     WIDX_FILTER_RIDE_TAB_FRAME,
     WIDX_FILTER_RIDE_TAB_ALL,
@@ -143,13 +143,13 @@ static bool _window_editor_object_selection_widgets_initialised;
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WWT_RESIZE,           1,  0,      599,    43,     399,    0xFFFFFFFF,                     STR_NONE },
-    { WWT_BUTTON,           0,  470,    591,    23,     34,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
+    { WWT_BUTTON,           0,  470,    591,    22,     35,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
     { WWT_SCROLL,           1,  4,      291,    60,     386,    SCROLL_VERTICAL,                STR_NONE },
-    { WWT_FLATBTN,          1,  391,    504,    46,     159,    0xFFFFFFFF,                     STR_NONE },
-    { WWT_BUTTON,           0,  470,    591,    23,     34,     STR_INSTALL_NEW_TRACK_DESIGN,   STR_INSTALL_NEW_TRACK_DESIGN_TIP },
-    { WWT_BUTTON,           0,  350,    463,    23,     34,     STR_OBJECT_FILTER,              STR_OBJECT_FILTER_TIP },
-    { WWT_TEXT_BOX,         1,  4,      214,    46,     57,     STR_NONE,                       STR_NONE },
-    { WWT_BUTTON,           1,  218,    287,    46,     57,     STR_OBJECT_SEARCH_CLEAR,        STR_NONE },
+    { WWT_FLATBTN,          1,  391,    504,    45,     159,    0xFFFFFFFF,                     STR_NONE },
+    { WWT_BUTTON,           0,  470,    591,    22,     35,     STR_INSTALL_NEW_TRACK_DESIGN,   STR_INSTALL_NEW_TRACK_DESIGN_TIP },
+    { WWT_BUTTON,           0,  350,    463,    22,     35,     STR_OBJECT_FILTER,              STR_OBJECT_FILTER_TIP },
+    { WWT_TEXT_BOX,         1,  4,      214,    45,     58,     STR_NONE,                       STR_NONE },
+    { WWT_BUTTON,           1,  218,    287,    45,     58,     STR_OBJECT_SEARCH_CLEAR,        STR_NONE },
     { WWT_IMGBTN,           1,  3,      287,    73,     76,     0xFFFFFFFF,                     STR_NONE },
     { WWT_TAB,              1,  3,      33,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_OBJECT_FILTER_ALL_RIDES_TIP },
     { WWT_TAB,              1,  34,     64,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_TRANSPORT_RIDES_TIP },
@@ -389,10 +389,10 @@ rct_window* window_editor_object_selection_open()
     window = window_create_centred(
         600, 400, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
     window->widgets = _window_editor_object_selection_widgets.data();
-    window->widgets[WIDX_FILTER_STRING_BUTTON].string = _filter_string;
+    window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
     window->enabled_widgets = (1 << WIDX_ADVANCED) | (1 << WIDX_INSTALL_TRACK) | (1 << WIDX_FILTER_DROPDOWN)
-        | (1 << WIDX_FILTER_STRING_BUTTON) | (1 << WIDX_FILTER_CLEAR_BUTTON) | (1 << WIDX_CLOSE) | (1 << WIDX_LIST_SORT_TYPE)
+        | (1 << WIDX_FILTER_TEXT_BOX) | (1 << WIDX_FILTER_CLEAR_BUTTON) | (1 << WIDX_CLOSE) | (1 << WIDX_LIST_SORT_TYPE)
         | (1UL << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
@@ -522,7 +522,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             context_open_intent(&intent);
             break;
         }
-        case WIDX_FILTER_STRING_BUTTON:
+        case WIDX_FILTER_TEXT_BOX:
             window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
             break;
         case WIDX_FILTER_CLEAR_BUTTON:
@@ -884,13 +884,13 @@ static void window_editor_object_selection_invalidate(rct_window* w)
 
     bool ridePage = (get_selected_object_type(w) == OBJECT_TYPE_RIDE);
     w->widgets[WIDX_LIST].top = (ridePage ? 118 : 60);
-    w->widgets[WIDX_FILTER_STRING_BUTTON].right = w->widgets[WIDX_LIST].right - 77;
-    w->widgets[WIDX_FILTER_STRING_BUTTON].top = (ridePage ? 80 : 46);
-    w->widgets[WIDX_FILTER_STRING_BUTTON].bottom = (ridePage ? 91 : 57);
+    w->widgets[WIDX_FILTER_TEXT_BOX].right = w->widgets[WIDX_LIST].right - 77;
+    w->widgets[WIDX_FILTER_TEXT_BOX].top = (ridePage ? 79 : 45);
+    w->widgets[WIDX_FILTER_TEXT_BOX].bottom = (ridePage ? 92 : 58);
     w->widgets[WIDX_FILTER_CLEAR_BUTTON].left = w->widgets[WIDX_LIST].right - 73;
     w->widgets[WIDX_FILTER_CLEAR_BUTTON].right = w->widgets[WIDX_LIST].right;
-    w->widgets[WIDX_FILTER_CLEAR_BUTTON].top = (ridePage ? 80 : 46);
-    w->widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (ridePage ? 91 : 57);
+    w->widgets[WIDX_FILTER_CLEAR_BUTTON].top = (ridePage ? 79 : 45);
+    w->widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (ridePage ? 92 : 58);
 
     if (ridePage)
     {
@@ -919,7 +919,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
         int32_t width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - 15) / 2;
 
         w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_TABLE_HEADER;
-        w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_STRING_BUTTON].bottom + 3;
+        w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
         w->widgets[WIDX_LIST_SORT_TYPE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].top + 13;
         w->widgets[WIDX_LIST_SORT_TYPE].left = 4;
         w->widgets[WIDX_LIST_SORT_TYPE].right = w->widgets[WIDX_LIST_SORT_TYPE].left + width_limit;
@@ -1320,7 +1320,7 @@ static void window_editor_object_selection_update(rct_window* w)
     if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number)
     {
         window_update_textbox_caret();
-        widget_invalidate(w, WIDX_FILTER_STRING_BUTTON);
+        widget_invalidate(w, WIDX_FILTER_TEXT_BOX);
     }
 
     for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
@@ -1339,7 +1339,7 @@ static void window_editor_object_selection_update(rct_window* w)
 
 static void window_editor_object_selection_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    if (widgetIndex != WIDX_FILTER_STRING_BUTTON || text == nullptr)
+    if (widgetIndex != WIDX_FILTER_TEXT_BOX || text == nullptr)
         return;
 
     if (strcmp(_filter_string, text) == 0)
