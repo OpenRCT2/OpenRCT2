@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor CompactInvertedCoasterRTD =
     SET_FIELD(Heights, { 27, 40, 29, 8, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 6 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_compact_inverted_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 13, 3, 10 }),
     SET_FIELD(BuildCosts, { 100, 5, 50, }),

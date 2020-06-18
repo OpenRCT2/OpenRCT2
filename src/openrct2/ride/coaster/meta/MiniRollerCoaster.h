@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor MiniRollerCoasterRTD =
     SET_FIELD(Heights, { 16, 24, 9, 11, }),
     SET_FIELD(MaxMass, 10),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 6 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mini_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
     SET_FIELD(BuildCosts, { 65, 4, 40, }),

@@ -33,6 +33,7 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(Heights, { 255, 32, 4, 7, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_air_powered_vertical_coaster),
     SET_FIELD(RatingsMultipliers, { 44, 66, 10 }),
     SET_FIELD(UpkeepCosts, { 90, 20, 0, 0, 0, 10 }),
     SET_FIELD(BuildCosts, { 200, 0, 45, }),

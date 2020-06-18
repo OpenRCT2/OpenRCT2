@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     SET_FIELD(Heights, { 35, 24, 5, 7, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::Null, 4, 6 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_lim_launched_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 42, 20, 80, 9, 3, 10 }),
     SET_FIELD(BuildCosts, { 95, 5, 50, }),

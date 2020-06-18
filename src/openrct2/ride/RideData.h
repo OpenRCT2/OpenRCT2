@@ -17,6 +17,7 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
+using ride_ratings_calculation = void (*)(Ride* ride);
 struct RideComponentName
 {
     rct_string_id singular;
@@ -124,6 +125,8 @@ struct RideTypeDescriptor
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     rct_ride_lift_data LiftData;
+    // rct2: 0x0097E050
+    ride_ratings_calculation RatingsCalculationFunction;
     // rct2: 0x0097CD1E
     RatingTuple RatingsMultipliers;
     UpkeepCostsDescriptor UpkeepCosts;
@@ -297,6 +300,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0, 0, 1 }),

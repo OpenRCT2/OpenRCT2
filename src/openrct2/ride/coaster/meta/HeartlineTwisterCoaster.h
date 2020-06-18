@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(Heights, { 22, 24, 15, 9, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 6 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_heartline_twister_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 47, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 135, 7, 30, }),

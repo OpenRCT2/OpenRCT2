@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor WoodenRollerCoasterRTD =
     SET_FIELD(Heights, { 41, 24, 8, 11, }),
     SET_FIELD(MaxMass, 19),
     SET_FIELD(LiftData, { SoundId::LiftWood, 5, 7 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_wooden_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 52, 33, 8 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 75, 7, 50, }),

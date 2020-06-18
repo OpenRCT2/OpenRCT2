@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor InvertedHairpinCoasterRTD =
     SET_FIELD(Heights, { 16, 24, 24, 7, }),
     SET_FIELD(MaxMass, 4),
     SET_FIELD(LiftData, { SoundId::LiftWildMouse, 4, 6 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_inverted_hairpin_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 30 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
     SET_FIELD(BuildCosts, { 67, 4, 40, }),

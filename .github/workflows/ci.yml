@@ -164,7 +164,7 @@ jobs:
         shell: bash
         env:
           TESTPAINT: true
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DCMAKE_CXX_FLAGS="-m32 -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -gz"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr

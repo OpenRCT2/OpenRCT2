@@ -35,6 +35,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
     SET_FIELD(Heights, { 86, 24, 9, 11, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 5, 8 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_giga_coaster),
     SET_FIELD(RatingsMultipliers, { 51, 32, 10 }),
     SET_FIELD(UpkeepCosts, { 10, 20, 80, 12, 3, 40 }),
     SET_FIELD(BuildCosts, { 120, 5, 55, }),

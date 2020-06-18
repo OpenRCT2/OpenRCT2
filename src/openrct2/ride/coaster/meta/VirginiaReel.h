@@ -34,6 +34,7 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
     SET_FIELD(Heights, { 14, 24, 6, 7, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { SoundId::LiftClassic, 3, 4 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_virginia_reel),
     SET_FIELD(RatingsMultipliers, { 30, 15, 25 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 53, 6, 25, }),

@@ -36,6 +36,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dodgems),
     SET_FIELD(RatingsMultipliers, { 40, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 5, 0, 0 }),
     SET_FIELD(BuildCosts, { 55, 2, 1, }),

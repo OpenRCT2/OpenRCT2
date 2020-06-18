@@ -37,6 +37,7 @@ constexpr const RideTypeDescriptor MotionSimulatorRTD =
     SET_FIELD(Heights, { 12, 64, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_motion_simulator),
     SET_FIELD(RatingsMultipliers, { 24, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 220, 2, 1, }),
