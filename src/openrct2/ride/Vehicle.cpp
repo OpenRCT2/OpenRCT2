@@ -1174,27 +1174,34 @@ static rct_vehicle_sound* vehicle_sounds_update_get_vehicle_sound(rct_vehicle_so
     return nullptr;
 }
 
-static uint16_t Sound1Frequency(const SoundId id, uint16_t baseFrequency)
+enum class SoundType
 {
-    if (_soundParams[static_cast<uint8_t>(id)][1] & 2)
+    TrackNoises,
+    OtherNoises, // e.g. Screams
+};
+
+template<SoundType type> static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
+{
+    if (type == SoundType::TrackNoises)
     {
-        return (baseFrequency / 2) + 4000;
+        if (_soundParams[static_cast<uint8_t>(id)][1] & 2)
+        {
+            return (baseFrequency / 2) + 4000;
+        }
+        return baseFrequency;
     }
-    return baseFrequency;
+    else
+    {
+        if (_soundParams[static_cast<uint8_t>(id)][1] & 1)
+        {
+            return 22050;
+        }
+        return std::min((baseFrequency * 2) - 3248, 25700);
+    }
 }
 
-static uint16_t Sound2Frequency(const SoundId id, uint16_t baseFrequency)
-{
-    if (_soundParams[static_cast<uint8_t>(id)][1] & 1)
-    {
-        return 22050;
-    }
-    return std::min((baseFrequency * 2) - 3248, 25700);
-}
-
-// Track Noises
-static void vehicle_sounds_update_sound_1(
-    const SoundId id, int32_t volume, rct_vehicle_sound_params* sound_params, Sound& sound, uint8_t panVol)
+template<SoundType type>
+static void UpdateSound(const SoundId id, int32_t volume, rct_vehicle_sound_params* sound_params, Sound& sound, uint8_t panVol)
 {
     volume *= panVol;
     volume = volume / 8;
@@ -1221,7 +1228,7 @@ static void vehicle_sounds_update_sound_1(
         sound.Pan = sound_params->pan_x;
         sound.Volume = volume;
         sound.Frequency = sound_params->frequency;
-        uint16_t frequency = Sound1Frequency(id, sound_params->frequency);
+        uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
         uint8_t looping = _soundParams[static_cast<uint8_t>(id)][0];
         int32_t pan = sound_params->pan_x;
         sound.Channel = Mixer_Play_Effect(
@@ -1242,64 +1249,9 @@ static void vehicle_sounds_update_sound_1(
     if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
     {
         sound.Frequency = sound_params->frequency;
-        uint16_t frequency = Sound1Frequency(id, sound_params->frequency);
-        Mixer_Channel_Rate(sound.Channel, DStoMixerRate(frequency));
-    }
-}
-
-// Other noises (e.g. Screams)
-static void vehicle_sounds_update_sound_2(
-    const SoundId id, int32_t volume, rct_vehicle_sound_params* sound_params, Sound& sound, uint8_t panVol)
-{
-    volume *= panVol;
-    volume = volume / 8;
-    volume = std::max(volume - 0x1FFF, -10000);
-
-    if (id == SoundId::Null)
-    {
-        if (sound.Id != SoundId::Null)
+        if (type == SoundType::TrackNoises || !(_soundParams[static_cast<uint8_t>(id)][1] & 1))
         {
-            sound.Id = SoundId::Null;
-            Mixer_Stop_Channel(sound.Channel);
-        }
-        return;
-    }
-
-    if (sound.Id != SoundId::Null && id != sound.Id)
-    {
-        Mixer_Stop_Channel(sound.Channel);
-    }
-
-    if ((sound.Id == SoundId::Null) || (id != sound.Id))
-    {
-        sound.Id = id;
-        sound.Pan = sound_params->pan_x;
-        sound.Volume = volume;
-        sound.Frequency = sound_params->frequency;
-        uint16_t frequency = Sound2Frequency(id, sound_params->frequency);
-        uint8_t looping = _soundParams[static_cast<uint8_t>(id)][0];
-        int32_t pan = sound_params->pan_x;
-        sound.Channel = Mixer_Play_Effect(
-            id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
-            DStoMixerRate(frequency), 0);
-        return;
-    }
-    if (volume != sound.Volume)
-    {
-        Mixer_Channel_Volume(sound.Channel, DStoMixerVolume(volume));
-        sound.Volume = volume;
-    }
-    if (sound_params->pan_x != sound.Pan)
-    {
-        sound.Pan = sound_params->pan_x;
-        Mixer_Channel_Pan(sound.Channel, DStoMixerPan(sound_params->pan_x));
-    }
-    if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
-    {
-        sound.Frequency = sound_params->frequency;
-        if (!(_soundParams[static_cast<uint8_t>(id)][1] & 1))
-        {
-            uint16_t frequency = Sound2Frequency(id, sound_params->frequency);
+            uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
             Mixer_Channel_Rate(sound.Channel, DStoMixerRate(frequency));
         }
     }
@@ -1380,9 +1332,9 @@ void vehicle_sounds_update()
         panVol = std::max(0, panVol - tempvolume);
 
         Vehicle* vehicle = GET_VEHICLE(vehicleSoundParams.id);
-        vehicle_sounds_update_sound_1(
+        UpdateSound<SoundType::TrackNoises>(
             vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->Sound1, panVol);
-        vehicle_sounds_update_sound_2(
+        UpdateSound<SoundType::OtherNoises>(
             vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->Sound2, panVol);
     }
 }
