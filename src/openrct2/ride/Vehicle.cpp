@@ -797,13 +797,18 @@ const rct_vehicle_info* Vehicle::GetMoveInfo() const
     return vehicle_get_move_info(TrackSubposition, track_type, track_progress);
 }
 
-uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection)
+static uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection)
 {
     if (!vehicle_move_info_valid(trackSubposition, typeAndDirection, 0))
     {
         return 0;
     }
     return gTrackVehicleInfo[trackSubposition][typeAndDirection]->size;
+}
+
+uint16_t Vehicle::GetTrackProgress() const
+{
+    return vehicle_get_move_info_size(TrackSubposition, track_type);
 }
 
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
@@ -8230,7 +8235,7 @@ loc_6DAEB9:
     regs.ax = track_progress + 1;
 
     // Track Total Progress is in the two bytes before the move info list
-    uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
+    uint16_t trackTotalProgress = GetTrackProgress();
     if (regs.ax >= trackTotalProgress)
     {
         UpdateCrossings();
@@ -8515,7 +8520,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
 
     // There are two bytes before the move info list
-    uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
+    uint16_t trackTotalProgress = GetTrackProgress();
     *progress = trackTotalProgress - 1;
     return true;
 }
@@ -8778,7 +8783,7 @@ loc_6DC476:
 
     // There are two bytes before the move info list
     {
-        uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
+        uint16_t trackTotalProgress = GetTrackProgress();
         if (track_progress + 1 < trackTotalProgress)
         {
             track_progress += 1;
@@ -9053,7 +9058,7 @@ loc_6DCA9A:
     var_CF = tileElement->AsTrack()->GetSeatRotation() << 1;
 
     // There are two bytes before the move info list
-    track_progress = vehicle_get_move_info_size(TrackSubposition, track_type);
+    track_progress = GetTrackProgress();
 
 loc_6DCC2C:
     moveInfo = GetMoveInfo();

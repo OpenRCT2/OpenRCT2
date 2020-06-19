@@ -229,7 +229,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
         uint16_t trackProgress = track_progress + 1;
 
-        uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
+        uint16_t trackTotalProgress = GetTrackProgress();
         if (trackProgress >= trackTotalProgress)
         {
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
@@ -322,7 +322,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }
 
-            uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
+            uint16_t trackTotalProgress = GetTrackProgress();
             trackProgress = trackTotalProgress - 1;
         }
         track_progress = trackProgress;

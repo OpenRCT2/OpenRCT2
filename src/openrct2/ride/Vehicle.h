@@ -356,6 +356,7 @@ private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
     const rct_vehicle_info* GetMoveInfo() const;
+    uint16_t GetTrackProgress() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
@@ -616,7 +617,6 @@ enum
 Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;
