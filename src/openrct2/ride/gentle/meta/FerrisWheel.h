@@ -32,6 +32,7 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(OperatingSettings, { 1, 3, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_FERRIS_WHEEL)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 16, 176, 3, 2, }),
     SET_FIELD(MaxMass, 255),

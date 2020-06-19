@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_INFORMATION_KIOSK)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 48, 0, 0, }),
     SET_FIELD(MaxMass, 255),
