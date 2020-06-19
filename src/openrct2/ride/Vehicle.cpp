@@ -7438,6 +7438,31 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
     }
 }
 
+static void animate_scenery_door(
+    const CoordsXYZD& doorLocation, const CoordsXYZ& trackLocation, bool isLastVehicle, bool isBackwards)
+{
+    auto door = map_get_wall_element_at(doorLocation);
+    if (door == nullptr)
+    {
+        return;
+    }
+
+    if (!isLastVehicle && (door->GetAnimationFrame() == 0))
+    {
+        door->SetAnimationIsBackwards(isBackwards);
+        door->SetAnimationFrame(1);
+        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
+        play_scenery_door_open_sound(trackLocation, door);
+    }
+
+    if (isLastVehicle)
+    {
+        door->SetAnimationIsBackwards(isBackwards);
+        door->SetAnimationFrame(6);
+        play_scenery_door_close_sound(trackLocation, door);
+    }
+}
+
 /**
  *
  *  rct2: 0x006DEE93
@@ -7454,26 +7479,8 @@ void Vehicle::UpdateSceneryDoor() const
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (track_direction + trackCoordinates->rotation_end) & 3;
 
-    auto tileElement = map_get_wall_element_at(CoordsXYZD{ wallCoords, static_cast<Direction>(direction) });
-    if (tileElement == nullptr)
-    {
-        return;
-    }
-
-    if ((next_vehicle_on_train != SPRITE_INDEX_NULL) && (tileElement->GetAnimationFrame() == 0))
-    {
-        tileElement->SetAnimationIsBackwards(false);
-        tileElement->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
-        play_scenery_door_open_sound(TrackLocation, tileElement);
-    }
-
-    if (next_vehicle_on_train == SPRITE_INDEX_NULL)
-    {
-        tileElement->SetAnimationIsBackwards(false);
-        tileElement->SetAnimationFrame(6);
-        play_scenery_door_close_sound(TrackLocation, tileElement);
-    }
+    animate_scenery_door(
+        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL, false);
 }
 
 /**
@@ -7534,26 +7541,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     int32_t direction = (track_direction + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
-    auto tileElement = map_get_wall_element_at(CoordsXYZD{ wallCoords, static_cast<Direction>(direction) });
-    if (tileElement == nullptr)
-    {
-        return;
-    }
-
-    if ((next_vehicle_on_train != SPRITE_INDEX_NULL) && (tileElement->GetAnimationFrame() == 0))
-    {
-        tileElement->SetAnimationIsBackwards(true);
-        tileElement->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
-        play_scenery_door_open_sound(TrackLocation, tileElement);
-    }
-
-    if (next_vehicle_on_train == SPRITE_INDEX_NULL)
-    {
-        tileElement->SetAnimationIsBackwards(true);
-        tileElement->SetAnimationFrame(6);
-        play_scenery_door_close_sound(TrackLocation, tileElement);
-    }
+    animate_scenery_door(
+        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL, true);
 }
 
 static void vehicle_update_play_water_splash_sound()
