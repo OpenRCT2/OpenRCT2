@@ -1115,7 +1115,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t colour, colour2;
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
 
     bool ridePage = (get_selected_object_type(w) == OBJECT_TYPE_RIDE);
 

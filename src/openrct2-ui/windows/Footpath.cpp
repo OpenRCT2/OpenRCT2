@@ -596,7 +596,7 @@ static void window_footpath_invalidate(rct_window* w)
  */
 static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
     window_draw_widgets(w, dpi);
 
     if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT)))

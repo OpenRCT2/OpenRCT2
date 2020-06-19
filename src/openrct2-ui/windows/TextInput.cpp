@@ -252,7 +252,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
     screenCoords.y = w->windowPos.y + 25;
 
     int32_t no_lines = 0;

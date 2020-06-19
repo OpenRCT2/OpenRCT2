@@ -644,7 +644,7 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
 
 static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
     screenCoords.y = 0;
     for (int32_t i = 0; i < network_get_num_players(); i++)
     {

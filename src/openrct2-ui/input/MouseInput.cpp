@@ -110,7 +110,7 @@ void game_handle_input()
     invalidate_all_windows_after_input();
 
     int32_t state;
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
     while ((state = game_get_next_input(screenCoords)) != MOUSE_STATE_RELEASED)
     {
         game_handle_input_mouse(screenCoords, state & 0xFF);

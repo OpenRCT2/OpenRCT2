@@ -1220,10 +1220,10 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             w->windowPos + ScreenCoordsXY{ WPL(1) - 34 - TXTO, YPL(7) + TXTO });
         gfx_draw_string_right(
             dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1],
-            w->windowPos + ScreenCoordsXY{ WPL(1) - 34 - TXTO, YPL(7) + TXTO });
+            w->windowPos + ScreenCoordsXY{ WPL(1) - 34 - TXTO, YPL(8) + TXTO });
         gfx_draw_string_right(
             dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1],
-            w->windowPos + ScreenCoordsXY{ WPL(1) - 34 - TXTO, YPL(7) + TXTO });
+            w->windowPos + ScreenCoordsXY{ WPL(1) - 34 - TXTO, YPL(9) + TXTO });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
@@ -1250,9 +1250,9 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(5) + TXTO });
         gfx_draw_string_left(
             dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(2) + TXTO });
+            w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(6) + TXTO });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_TOILET, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(2) + TXTO });
+            dpi, STR_CHEAT_GUEST_TOILET, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(7) + TXTO });
         gfx_draw_string_left(
             dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY, nullptr, COLOUR_BLACK,
             w->windowPos + ScreenCoordsXY{ XPL(0) + TXTO, YPL(8) + TXTO });

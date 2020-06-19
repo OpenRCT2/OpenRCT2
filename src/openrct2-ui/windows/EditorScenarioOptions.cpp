@@ -742,7 +742,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_financial_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
@@ -1019,7 +1019,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
 static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t arg;
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
@@ -1381,7 +1381,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
 static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t arg;
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
     rct_string_id stringId;
 
     window_draw_widgets(w, dpi);

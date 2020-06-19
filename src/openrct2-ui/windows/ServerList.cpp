@@ -431,7 +431,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
     int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
 
-    ScreenCoordsXY screenCoords;
+    ScreenCoordsXY screenCoords{};
     screenCoords.y = 0;
     w->widgets[WIDX_LIST].tooltip = STR_NONE;
     for (int32_t i = 0; i < w->no_list_items; i++)
