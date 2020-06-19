@@ -903,16 +903,17 @@ bool Ride::CanHaveMultipleCircuits() const
 
 bool Ride::SupportsStatus(int32_t s) const
 {
+    const auto& rtd = GetRideTypeDescriptor();
+
     switch (s)
     {
         case RIDE_STATUS_CLOSED:
         case RIDE_STATUS_OPEN:
             return true;
         case RIDE_STATUS_SIMULATING:
-            return (
-                !ride_type_has_flag(type, RIDE_TYPE_FLAG_NO_TEST_MODE) && ride_type_has_flag(type, RIDE_TYPE_FLAG_HAS_TRACK));
+            return (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE) && rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK));
         case RIDE_STATUS_TESTING:
-            return !ride_type_has_flag(type, RIDE_TYPE_FLAG_NO_TEST_MODE);
+            return !rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE);
         default:
             return false;
     }
@@ -1406,14 +1407,16 @@ static void ride_construction_reset_current_piece()
     if (ride == nullptr)
         return;
 
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0)
     {
-        _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
+        _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
         _currentTrackSlopeEnd = 0;
         _currentTrackBankEnd = 0;
         _currentTrackLiftHill = 0;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
-        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
         {
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
         }
@@ -1437,6 +1440,8 @@ void ride_construction_set_default_next_piece()
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
 
     int32_t z, direction, trackType, curve, bank, slope;
     track_begin_end trackBeginEnd;
@@ -1463,7 +1468,7 @@ void ride_construction_set_default_next_piece()
 
             // Set whether track is covered
             _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-            if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
@@ -1495,7 +1500,7 @@ void ride_construction_set_default_next_piece()
             _currentTrackCurve = curve;
 
             // Set track banking
-            if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (bank == TRACK_BANK_UPSIDE_DOWN)
                 {
@@ -1524,7 +1529,7 @@ void ride_construction_set_default_next_piece()
 
             // Set whether track is covered
             _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-            if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
@@ -1556,7 +1561,7 @@ void ride_construction_set_default_next_piece()
             _currentTrackCurve = curve;
 
             // Set track banking
-            if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (bank == TRACK_BANK_UPSIDE_DOWN)
                 {
@@ -3029,8 +3034,10 @@ static void ride_free_old_measurements()
 
 std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
 {
+    const auto& rtd = GetRideTypeDescriptor();
+
     // Check if ride type supports data logging
-    if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
     {
         return { nullptr, { STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE, {} } };
     }
@@ -3039,7 +3046,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     if (measurement == nullptr)
     {
         measurement = std::make_unique<RideMeasurement>();
-        if (ride_type_has_flag(type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
         }

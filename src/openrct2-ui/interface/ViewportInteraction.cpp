@@ -363,7 +363,9 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             }
 
             ride->FormatNameTo(ft);
-            ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.station).capitalised);
+
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            ft.Add<rct_string_id>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
                 stationIndex = tileElement->AsEntrance()->GetStationIndex();

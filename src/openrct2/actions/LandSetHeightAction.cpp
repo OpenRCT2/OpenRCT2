@@ -275,7 +275,7 @@ rct_string_id LandSetHeightAction::CheckRideSupports() const
                     int32_t maxHeight = rideEntry->max_height;
                     if (maxHeight == 0)
                     {
-                        maxHeight = RideTypeDescriptors[ride->type].Heights.MaxHeight;
+                        maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
                     }
                     int32_t zDelta = tileElement->clearance_height - _height;
                     if (zDelta >= 0 && zDelta / 2 > maxHeight)
