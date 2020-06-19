@@ -339,7 +339,7 @@ static void window_land_invalidate(rct_window* w)
  */
 static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    ScreenCoordsXY screenCoords{};
+    ScreenCoordsXY screenCoords;
     int32_t numTiles;
     money32 price;
     rct_widget* previewWidget = &window_land_widgets[WIDX_PREVIEW];

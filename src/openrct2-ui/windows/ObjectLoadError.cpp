@@ -578,7 +578,7 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
-        ScreenCoordsXY screenCoords{};
+        ScreenCoordsXY screenCoords;
         screenCoords.y = i * SCROLLABLE_ROW_HEIGHT;
         if (screenCoords.y > dpi->y + dpi->height)
             break;

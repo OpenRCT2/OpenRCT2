@@ -217,7 +217,7 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
 
 ScreenCoordsXY KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState) const
 {
-    ScreenCoordsXY screenCoords{};
+    ScreenCoordsXY screenCoords;
     for (int32_t shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++)
     {
         uint16_t shortcutKey = _keys[shortcutId];

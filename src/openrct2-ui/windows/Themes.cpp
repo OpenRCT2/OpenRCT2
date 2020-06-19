@@ -855,7 +855,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    ScreenCoordsXY screenCoords{};
+    ScreenCoordsXY screenCoords;
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
         return;
