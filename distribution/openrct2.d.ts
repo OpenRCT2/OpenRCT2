@@ -2045,8 +2045,6 @@ declare global {
         remove(): void;
     }
 
-    interface ParkMessageDesc  {
-    interface ParkMessageDesc {
     /**
      * The park message description. TODO what's the difference between this and ParkMessage?
      */
