@@ -754,12 +754,13 @@ namespace OpenRCT2::Ui::Windows
             auto widgetInfo = customInfo.GetCustomWidgetDesc(w, *viewportWidgetIndex);
             if (widgetInfo != nullptr)
             {
-                if (w->viewport == nullptr)
+                auto left = w->windowPos.x + viewportWidget->left + 1;
+                auto top = w->windowPos.y + viewportWidget->top + 1;
+                auto width = (viewportWidget->right - viewportWidget->left) - 1;
+                auto height = (viewportWidget->bottom - viewportWidget->top) - 1;
+                auto viewport = w->viewport;
+                if (viewport == nullptr)
                 {
-                    auto left = w->windowPos.x + viewportWidget->left + 1;
-                    auto top = w->windowPos.y + viewportWidget->top + 1;
-                    auto width = (viewportWidget->right - viewportWidget->left) - 1;
-                    auto height = (viewportWidget->bottom - viewportWidget->top) - 1;
                     auto mapX = 0;
                     auto mapY = 0;
                     auto mapZ = 0;
@@ -768,6 +769,20 @@ namespace OpenRCT2::Ui::Windows
                         SPRITE_INDEX_NULL);
                     w->flags |= WF_NO_SCROLLING;
                     w->Invalidate();
+                }
+                else
+                {
+                    if (viewport->pos.x != left || viewport->pos.y != top || viewport->width != width
+                        || viewport->height != height)
+                    {
+                        viewport->pos.x = left;
+                        viewport->pos.y = top;
+                        viewport->width = width;
+                        viewport->height = height;
+                        viewport->view_width = width * viewport->zoom;
+                        viewport->view_height = height * viewport->zoom;
+                        w->Invalidate();
+                    }
                 }
             }
         }
