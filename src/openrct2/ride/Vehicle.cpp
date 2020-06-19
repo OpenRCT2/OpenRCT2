@@ -1174,6 +1174,24 @@ static rct_vehicle_sound* vehicle_sounds_update_get_vehicle_sound(rct_vehicle_so
     return nullptr;
 }
 
+static uint16_t Sound1Frequency(const SoundId id, uint16_t baseFrequency)
+{
+    if (_soundParams[static_cast<uint8_t>(id)][1] & 2)
+    {
+        return (baseFrequency / 2) + 4000;
+    }
+    return baseFrequency;
+}
+
+static uint16_t Sound2Frequency(const SoundId id, uint16_t baseFrequency)
+{
+    if (_soundParams[static_cast<uint8_t>(id)][1] & 1)
+    {
+        return 22050;
+    }
+    return std::min((baseFrequency * 2) - 3248, 25700);
+}
+
 // Track Noises
 static void vehicle_sounds_update_sound_1(
     Vehicle* vehicle, rct_vehicle_sound_params* sound_params, rct_vehicle_sound* sound, uint8_t panVol)
@@ -1204,11 +1222,7 @@ static void vehicle_sounds_update_sound_1(
         sound->sound1_pan = sound_params->pan_x;
         sound->sound1_volume = volume;
         sound->sound1_freq = sound_params->frequency;
-        uint16_t frequency = sound_params->frequency;
-        if (_soundParams[static_cast<uint8_t>(vehicle->sound1_id)][1] & 2)
-        {
-            frequency = (frequency / 2) + 4000;
-        }
+        uint16_t frequency = Sound1Frequency(vehicle->sound1_id, sound_params->frequency);
         uint8_t looping = _soundParams[static_cast<uint8_t>(vehicle->sound1_id)][0];
         int32_t pan = sound_params->pan_x;
         sound->sound1_channel = Mixer_Play_Effect(
@@ -1229,11 +1243,7 @@ static void vehicle_sounds_update_sound_1(
     if (!(gCurrentTicks & 3) && sound_params->frequency != sound->sound1_freq)
     {
         sound->sound1_freq = sound_params->frequency;
-        uint16_t frequency = sound_params->frequency;
-        if (_soundParams[static_cast<uint8_t>(vehicle->sound1_id)][1] & 2)
-        {
-            frequency = (frequency / 2) + 4000;
-        }
+        uint16_t frequency = Sound1Frequency(vehicle->sound1_id, sound_params->frequency);
         Mixer_Channel_Rate(sound->sound1_channel, DStoMixerRate(frequency));
     }
 }
@@ -1268,13 +1278,7 @@ static void vehicle_sounds_update_sound_2(
         sound->sound2_pan = sound_params->pan_x;
         sound->sound2_volume = volume;
         sound->sound2_freq = sound_params->frequency;
-        uint16_t frequency = sound_params->frequency;
-        if (_soundParams[static_cast<uint8_t>(vehicle->sound2_id)][1] & 1)
-        {
-            frequency = 12649;
-        }
-        frequency = std::min((frequency * 2) - 3248, 25700);
-
+        uint16_t frequency = Sound2Frequency(vehicle->sound2_id, sound_params->frequency);
         uint8_t looping = _soundParams[static_cast<uint8_t>(vehicle->sound2_id)][0];
         int32_t pan = sound_params->pan_x;
         sound->sound2_channel = Mixer_Play_Effect(
@@ -1297,11 +1301,7 @@ static void vehicle_sounds_update_sound_2(
         sound->sound2_freq = sound_params->frequency;
         if (!(_soundParams[static_cast<uint8_t>(vehicle->sound2_id)][1] & 1))
         {
-            uint16_t frequency = (sound_params->frequency * 2) - 3248;
-            if (frequency > 25700)
-            {
-                frequency = 25700;
-            }
+            uint16_t frequency = Sound2Frequency(vehicle->sound2_id, sound_params->frequency);
             Mixer_Channel_Rate(sound->sound2_channel, DStoMixerRate(frequency));
         }
     }
