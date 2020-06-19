@@ -11,6 +11,7 @@
 
 #    include "Plugin.h"
 
+#    include "../Diagnostic.h"
 #    include "../OpenRCT2.h"
 #    include "Duktape.hpp"
 
@@ -127,6 +128,7 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         metadata.Name = TryGetString(dukMetadata["name"], "Plugin name not specified.");
         metadata.Version = TryGetString(dukMetadata["version"], "Plugin version not specified.");
         metadata.Type = ParsePluginType(TryGetString(dukMetadata["type"], "Plugin type not specified."));
+        CheckForLicence(dukMetadata["licence"], metadata.Name);
 
         auto dukMinApiVersion = dukMetadata["minApiVersion"];
         if (dukMinApiVersion.type() == DukValue::Type::NUMBER)
@@ -159,6 +161,12 @@ PluginType Plugin::ParsePluginType(const std::string_view& type)
     if (type == "remote")
         return PluginType::Remote;
     throw std::invalid_argument("Unknown plugin type.");
+}
+
+void Plugin::CheckForLicence(const DukValue& dukLicence, const std::string_view& pluginName)
+{
+    if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
+        log_error("Plugin %s does not specify a licence", pluginName.data());
 }
 
 #endif

@@ -18,6 +18,8 @@ Local scripts can **not** alter the game state. This allows each player to enabl
 
 Remote scripts on the other hand can alter the game state in certain contexts, thus must be enabled for every player in a multiplayer game. Players **cannot** enable or disable remote scripts for multiplayer servers they join. Instead the server will upload any remote scripts that have been enabled on the server to each player. This allows servers to enable scripts without players needing to manually download or enable the same script on their end.
 
+The authors must also define a licence for the plug-in, making it clear to the community whether that plug-in can be altered, copied, etc. A good reference material is listed on [ChooseALlicense](https://choosealicense.com/appendix/), try to pick one of them and use its corresponding identifier, as listed on [SPDX](https://spdx.org/licenses/).
+
 ## Writing Scripts
 
 Scripts are written in ECMAScript 5 compatible JavaScript. OpenRCT2 currently uses the [duktape](https://duktape.org) library to execute scripts. This however does not mean you need to write your plug-in in JavaScript, there are many transpilers that allow you to write in a language of your choice and then compile it to JavaScript allowing it to be executed by OpenRCT2. JavaScript or [TypeScript](https://www.typescriptlang.org) is recommended however, as that will allow you to utilise the type definition file we supply (`openrct2.d.ts`). If you would like to use ECMAScript 6 or later which contain features such as the `let` keyword or classes, then you will need to use a transpiler such as [Babel](https://babeljs.io) or [TypeScript](https://www.typescriptlang.org).
@@ -38,6 +40,7 @@ registerPlugin({
     version: '1.0',
     authors: ['Your Name'],
     type: 'remote',
+    licence: 'MIT',
     main: main
 });
 ```
