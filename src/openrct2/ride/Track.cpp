@@ -560,12 +560,12 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 };
 // clang-format on
 
-PitchAndRoll track_pitch_and_roll_start(uint8_t trackType)
+PitchAndRoll TrackPitchAndRollStart(uint8_t trackType)
 {
     return { TrackDefinitions[trackType].vangle_start, TrackDefinitions[trackType].bank_start };
 }
 
-PitchAndRoll track_pitch_and_roll_end(uint8_t trackType)
+PitchAndRoll TrackPitchAndRollEnd(uint8_t trackType)
 {
     return { TrackDefinitions[trackType].vangle_end, TrackDefinitions[trackType].bank_end };
 }

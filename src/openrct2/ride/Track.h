@@ -554,8 +554,8 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-PitchAndRoll track_pitch_and_roll_start(uint8_t trackType);
-PitchAndRoll track_pitch_and_roll_end(uint8_t trackType);
+PitchAndRoll TrackPitchAndRollStart(uint8_t trackType);
+PitchAndRoll TrackPitchAndRollEnd(uint8_t trackType);
 
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 

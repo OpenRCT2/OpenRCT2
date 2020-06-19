@@ -7937,7 +7937,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
 {
     CoordsXYZD location = {};
 
-    auto pitchAndRollEnd = track_pitch_and_roll_end(trackType);
+    auto pitchAndRollEnd = TrackPitchAndRollEnd(trackType);
     TileElement* tileElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
     if (tileElement == nullptr)
@@ -8371,7 +8371,7 @@ static PitchAndRoll PitchAndRollEnd(Ride* curRide, bool useInvertedSprites, uint
  */
 bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress)
 {
-    auto pitchAndRollStart = track_pitch_and_roll_start(trackType);
+    auto pitchAndRollStart = TrackPitchAndRollStart(trackType);
     TileElement* tileElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
     if (tileElement == nullptr)
@@ -8805,7 +8805,7 @@ loc_6DC476:
     }
 
     if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != track_pitch_and_roll_end(GetTrackType()))
+        != TrackPitchAndRollEnd(GetTrackType()))
     {
         goto loc_6DC9BC;
     }
@@ -9012,7 +9012,7 @@ loc_6DCA9A:
     }
 
     if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != track_pitch_and_roll_end(GetTrackType()))
+        != TrackPitchAndRollEnd(GetTrackType()))
     {
         goto loc_6DCD4A;
     }
