@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor GoKartsRTD =
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_DARK_GREEN },
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

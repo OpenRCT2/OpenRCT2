@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
         { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

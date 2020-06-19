@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor SteelWildMouseRTD =
         { COLOUR_DARK_PURPLE, COLOUR_BRIGHT_PINK, COLOUR_DARK_PURPLE },
         { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_BORDEAUX_RED },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

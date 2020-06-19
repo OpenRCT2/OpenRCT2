@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
         { COLOUR_BLACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor ChairliftRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_OLIVE_GREEN },
         { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_WHITE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -44,5 +44,6 @@ constexpr const RideTypeDescriptor FoodStallRTD =
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 15),
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
+    SET_FIELD(ColourKey, RideColourKey::Food),
 };
 // clang-format on

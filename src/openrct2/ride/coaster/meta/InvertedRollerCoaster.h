@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
         { COLOUR_SATURATED_BROWN, COLOUR_WHITE, COLOUR_SATURATED_BROWN },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

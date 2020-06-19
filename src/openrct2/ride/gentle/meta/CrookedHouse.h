@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

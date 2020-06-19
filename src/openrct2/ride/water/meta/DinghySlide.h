@@ -60,5 +60,6 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_TEAL },
         { COLOUR_BRIGHT_RED, COLOUR_GREY, COLOUR_SATURATED_RED },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

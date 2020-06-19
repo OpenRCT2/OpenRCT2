@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
         { COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

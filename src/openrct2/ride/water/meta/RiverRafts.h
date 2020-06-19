@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

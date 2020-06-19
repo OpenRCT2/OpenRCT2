@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

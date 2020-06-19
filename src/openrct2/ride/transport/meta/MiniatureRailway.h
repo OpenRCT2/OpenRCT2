@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
         { COLOUR_LIGHT_BLUE, COLOUR_WHITE, COLOUR_DARK_BROWN },
         { COLOUR_BRIGHT_RED, COLOUR_WHITE, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

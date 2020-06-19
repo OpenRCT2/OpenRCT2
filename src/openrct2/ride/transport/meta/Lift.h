@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor LiftRTD =
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

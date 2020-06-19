@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

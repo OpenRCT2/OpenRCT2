@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor WoodenRollerCoasterRTD =
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_WHITE },
         { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

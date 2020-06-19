@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
         { COLOUR_BLACK, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
         { COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

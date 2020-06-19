@@ -50,6 +50,7 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
         { COLOUR_TEAL, COLOUR_TEAL, COLOUR_BORDEAUX_RED },
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 
 // Inverted variant
@@ -87,5 +88,6 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
         { COLOUR_TEAL, COLOUR_TEAL, COLOUR_BORDEAUX_RED },
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

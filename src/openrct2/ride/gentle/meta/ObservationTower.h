@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
         { COLOUR_LIGHT_BLUE, COLOUR_YELLOW, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

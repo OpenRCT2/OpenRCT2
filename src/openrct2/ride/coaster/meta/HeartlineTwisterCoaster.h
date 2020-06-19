@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },
         { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on
