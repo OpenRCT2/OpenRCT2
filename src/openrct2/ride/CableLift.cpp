@@ -244,7 +244,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (track_vangle_and_bank_end(trackType) != track_vangle_and_bank_start(output.element->AsTrack()->GetTrackType()))
+            if (track_pitch_and_roll_end(trackType) != track_pitch_and_roll_start(output.element->AsTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output, outputZ };
@@ -305,8 +305,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             if (!track_block_get_previous(input, &output))
                 return false;
 
-            if (track_vangle_and_bank_start(trackType)
-                != track_vangle_and_bank_end(output.begin_element->AsTrack()->GetTrackType()))
+            if (track_pitch_and_roll_start(trackType)
+                != track_pitch_and_roll_end(output.begin_element->AsTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };

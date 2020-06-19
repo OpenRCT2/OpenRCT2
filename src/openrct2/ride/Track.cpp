@@ -560,12 +560,12 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 };
 // clang-format on
 
-VAngleAndBank track_vangle_and_bank_start(uint8_t trackType)
+PitchAndRoll track_pitch_and_roll_start(uint8_t trackType)
 {
     return { TrackDefinitions[trackType].vangle_start, TrackDefinitions[trackType].bank_start };
 }
 
-VAngleAndBank track_vangle_and_bank_end(uint8_t trackType)
+PitchAndRoll track_pitch_and_roll_end(uint8_t trackType)
 {
     return { TrackDefinitions[trackType].vangle_end, TrackDefinitions[trackType].bank_end };
 }
@@ -1130,7 +1130,7 @@ bool track_element_is_block_start(TileElement* trackElement)
     return false;
 }
 
-bank_type_t track_get_actual_bank(TileElement* tileElement, bank_type_t bank)
+roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank)
 {
     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride != nullptr)
@@ -1141,7 +1141,7 @@ bank_type_t track_get_actual_bank(TileElement* tileElement, bank_type_t bank)
     return bank;
 }
 
-bank_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, bank_type_t bank)
+roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank)
 {
     if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
     {
@@ -1160,7 +1160,7 @@ bank_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, bank_type
     return bank;
 }
 
-bank_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement)
+roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     auto bankStart = TrackDefinitions[trackType].bank_start;

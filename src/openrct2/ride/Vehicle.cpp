@@ -7479,10 +7479,10 @@ static void vehicle_update_scenery_door(Vehicle* vehicle)
  *
  *  rct2: 0x006DB38B
  */
-static VAngleAndBank VAngleAndBankStart(bool useInvertedSprites, TileElement* tileElement)
+static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
-    return VAngleAndBank{ TrackDefinitions[trackType].vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
+    return PitchAndRoll{ TrackDefinitions[trackType].vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
 }
 
 static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
@@ -7937,7 +7937,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
 {
     CoordsXYZD location = {};
 
-    auto vangleAndBankEnd = track_vangle_and_bank_end(trackType);
+    auto pitchAndRollEnd = track_pitch_and_roll_end(trackType);
     TileElement* tileElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
     if (tileElement == nullptr)
@@ -8025,7 +8025,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
             }
         }
 
-        if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement) != vangleAndBankEnd)
+        if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement) != pitchAndRollEnd)
         {
             return false;
         }
@@ -8358,7 +8358,7 @@ loc_6DB967:
     return false;
 }
 
-static VAngleAndBank VAngleAndBankEnd(Ride* curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
+static PitchAndRoll PitchAndRollEnd(Ride* curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     return { TrackDefinitions[trackType].vangle_end,
@@ -8371,7 +8371,7 @@ static VAngleAndBank VAngleAndBankEnd(Ride* curRide, bool useInvertedSprites, ui
  */
 bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress)
 {
-    auto vangleAndBankStart = track_vangle_and_bank_start(trackType);
+    auto pitchAndRollStart = track_pitch_and_roll_start(trackType);
     TileElement* tileElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
     if (tileElement == nullptr)
@@ -8416,8 +8416,8 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
             return false;
         }
 
-        if (VAngleAndBankEnd(curRide, HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), trackType, tileElement)
-            != vangleAndBankStart)
+        if (PitchAndRollEnd(curRide, HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), trackType, tileElement)
+            != pitchAndRollStart)
         {
             return false;
         }
@@ -8804,8 +8804,8 @@ loc_6DC476:
         direction = outDirection;
     }
 
-    if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != track_vangle_and_bank_end(GetTrackType()))
+    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+        != track_pitch_and_roll_end(GetTrackType()))
     {
         goto loc_6DC9BC;
     }
@@ -9011,8 +9011,8 @@ loc_6DCA9A:
         tileElement = trackBeginEnd.begin_element;
     }
 
-    if (VAngleAndBankStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != track_vangle_and_bank_end(GetTrackType()))
+    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+        != track_pitch_and_roll_end(GetTrackType()))
     {
         goto loc_6DCD4A;
     }

@@ -18,33 +18,33 @@ constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
 constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
 
 using track_type_t = uint16_t;
-using bank_type_t = uint8_t;
-using vangle_type_t = uint8_t;
+using roll_type_t = uint8_t;
+using pitch_type_t = uint8_t;
 
 #pragma pack(push, 1)
 struct rct_trackdefinition
 {
     uint8_t type;
-    vangle_type_t vangle_end;
-    vangle_type_t vangle_start;
-    bank_type_t bank_end;
-    bank_type_t bank_start;
+    pitch_type_t vangle_end;
+    pitch_type_t vangle_start;
+    roll_type_t bank_end;
+    roll_type_t bank_start;
     int8_t preview_z_offset;
     uint8_t pad[2] = {};
 };
 assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
 
-struct VAngleAndBank
+struct PitchAndRoll
 {
-    vangle_type_t VAngle;
-    bank_type_t Bank;
+    pitch_type_t Pitch;
+    roll_type_t Roll;
 };
-constexpr bool operator==(const VAngleAndBank& vb1, const VAngleAndBank& vb2)
+constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
-    return vb1.VAngle == vb2.VAngle && vb1.Bank == vb2.Bank;
+    return vb1.Pitch == vb2.Pitch && vb1.Roll == vb2.Roll;
 }
-constexpr bool operator!=(const VAngleAndBank& vb1, const VAngleAndBank& vb2)
+constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
     return !(vb1 == vb2);
 }
@@ -554,8 +554,8 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-VAngleAndBank track_vangle_and_bank_start(uint8_t trackType);
-VAngleAndBank track_vangle_and_bank_end(uint8_t trackType);
+PitchAndRoll track_pitch_and_roll_start(uint8_t trackType);
+PitchAndRoll track_pitch_and_roll_end(uint8_t trackType);
 
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
@@ -575,9 +575,9 @@ bool track_element_is_block_start(TileElement* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 
-bank_type_t track_get_actual_bank(TileElement* tileElement, bank_type_t bank);
-bank_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, bank_type_t bank);
-bank_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
+roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
+roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
+roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
 
 bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags, bool fromTrackDesign);
 bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags);
