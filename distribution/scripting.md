@@ -18,7 +18,7 @@ Local scripts can **not** alter the game state. This allows each player to enabl
 
 Remote scripts on the other hand can alter the game state in certain contexts, thus must be enabled for every player in a multiplayer game. Players **cannot** enable or disable remote scripts for multiplayer servers they join. Instead the server will upload any remote scripts that have been enabled on the server to each player. This allows servers to enable scripts without players needing to manually download or enable the same script on their end.
 
-The authors should also define a licence for the plugin, making it clear to the community whether that plugin can be altered, copied, etc. A good reference material is listed on [ChooseALlicense](https://choosealicense.com/appendix/), try to pick one of them and use its corresponding identifier, as listed on [SPDX](https://spdx.org/licenses/).
+The authors must also define a licence for the plug-in, making it clear to the community whether that plug-in can be altered, copied, etc. A good reference material is listed on [ChooseALlicense](https://choosealicense.com/appendix/), try to pick one of them and use its corresponding identifier, as listed on [SPDX](https://spdx.org/licenses/).
 
 ## Writing Scripts
 
