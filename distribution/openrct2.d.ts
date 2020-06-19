@@ -42,6 +42,7 @@ declare global {
     */
     var ui: Ui;
 
+    /** Selectable in-game colors. */
     enum Colour {
         Black,
         Grey,
@@ -78,6 +79,37 @@ declare global {
         ColourCount
     }
 
+    /** Flags that determine how a ride departs the station. */
+    enum DepartFlags {
+        WaitForLoadMask = 7,
+        WaitForLoad = 1 << 3,
+        LeaveWhenAnotherArrives = 1 << 4,
+        SynchroniseWithAdjacentStations = 1 << 5,
+        WaitForMinimumLength = 1 << 6,
+        WaitForMaximumLength = 1 << 7
+    }
+
+    /** Edge styles applied to land. */
+    enum EdgeStyle {
+        Rock,
+        WoodRed,
+        BoodBlack,
+        Ice,
+        Brick,
+        IronRCT1,
+        GreyRCT1,
+        YellowRCT1,
+        RedRCT1,
+        PurpleRCT1,
+        GreenRCT1,
+        StoneBrownRCT1,
+        StoneGreyRCT1,
+        SkyscraperARCT1,
+        SkyscraperBRCT1,
+        EdgeStyleCount
+    }
+
+    /** Costumes available for Entertainers. */
     enum EntertainerCostume {
         Panda,
         Tiger,
@@ -93,6 +125,267 @@ declare global {
         CostumeCount
     }
 
+    /** Flags indicating the connection points for paths. */
+    enum FootpathConnectionFlags {
+        South = (1 << 0),
+        Northeast = (1 << 1),
+        West = (1 << 2),
+        Southeast = (1 << 3),
+        North = (1 << 4),
+        Southwest = (1 << 5),
+        East = (1 << 6),
+        Northwest = (1 << 7)
+    }
+
+    /** Inspection interval. */
+    enum InspectionInterval {
+        Every10Minutes,
+        Every20Minutes,
+        Every30Minutes,
+        Every45Minutes,
+        EveryHour,
+        Every2Hours,
+        Never
+    }
+
+    /** All available music types. */
+    enum Music {
+        DodgemsBeat,
+        FairgroundOrgan,
+        RomanFanfare,
+        Oriental,
+        Martian,
+        JungleDrums,
+        Egyptian,
+        Toyland,
+        CircusShow,
+        Space,
+        Horror,
+        Techno,
+        Gentle,
+        Summer,
+        Water,
+        WildWest,
+        Jurassic,
+        Rock,
+        Ragtime,
+        Fantasy,
+        RockStyle2,
+        Ice,
+        Snow,
+        CustomMusic1,
+        CustomMusic2,
+        Medieval,
+        Urban,
+        Organ,
+        Mechanical,
+        Modern,
+        Pirates,
+        RockStyle3,
+        CandyStyle,
+        MusicCount
+    }
+
+    /** Flags indicating ownership. */
+    enum OwnershipFlags {
+        Unowned = 0,
+        ConstructionRightsOwned = (1 << 4),
+        Owned = (1 << 5),
+        ConstructionRightsAvailable = (1 << 6),
+        OwnershipAvailable = (1 << 7)
+    }
+
+    /** Flags indicating various ride states and capabilities. */
+    enum RideLifecycleFlags {
+        OnTrack = 1 << 0,
+        Tested = 1 << 1,
+        TestInProgress = 1 << 2,
+        NoRawStats = 1 << 3,
+        PassStationNoStopping = 1 << 4,
+        OnRidePhoto = 1 << 5,
+        BreakdownPending = 1 << 6,
+        BrokenDown = 1 << 7,
+        DueInspection = 1 << 8,
+        QueueFull = 1 << 9,
+        Crashed = 1 << 10,
+        HasStalledVehicle = 1 << 11,
+        EverBeenOpened = 1 << 12,
+        Music = 1 << 13,
+        Indestructible = 1 << 14,
+        IndestructibleTrack = 1 << 15,
+        CableLiftHillComponentUsed = 1 << 16,
+        CableLift = 1 << 17,
+        /** Used for the Award for Best Custom-designed Rides. */
+        NotCustomDesigned = 1 << 18,
+        SixFlagsDeprecated = 1 << 19
+    }
+
+    /** Ride operating modes. */
+    enum RideMode {
+        Normal,
+        ContinuousCircuit,
+        ReverseInclineLaunchedShuttle,
+        PoweredLaunchPassthrough, // RCT2 style, pass through station
+        Shuttle,
+        BoatHire,
+        UpwardLaunch,
+        RotatingLift,
+        StationToStation,
+        SingleRidePerAdmission,
+        UnlimitedRidesPerAdmission = 10,
+        Maze,
+        Race,
+        Dodgems,
+        Swing,
+        ShopStall,
+        Rotation,
+        ForwardRotation,
+        BackwardRotation,
+        FilmAvengingAviators,
+        FilMouseTails = 20,
+        SpaceRings,
+        Beginners,
+        LIMPoweredLaunch,
+        FilmThrillRiders,
+        FilmStormChasers,
+        FilmSpaceRaiders,
+        Intense,
+        Berserk,
+        HauntedHouse,
+        CircusShow = 30,
+        DownwardLaunch,
+        CrookedHouse,
+        FreefallDrop,
+        ContinuousCircuitBlockSectioned,
+        /** RCT1 style, don't pass through station. */
+        PoweredLaunch,
+        PoweredLaunchBlockSectioned,
+        RideModeCount,
+        Null = 255,
+    }
+
+    /** Shop items. */
+    enum ShopItem {
+        Balloon,
+        Toy,
+        Map,
+        Photo,
+        Umbrella,
+        Drink,
+        Burger,
+        Chips,
+        IceCream,
+        CandyFloss,
+        EmptyCan,
+        Rubbish,
+        EmptyBurgerBox,
+        Pizza,
+        Voucher,
+        Popcorn,
+        HotDog,
+        Tentacle,
+        Hat,
+        ToffeeApple,
+        TShirt,
+        Doughnut,
+        Coffee,
+        EmptyCup,
+        Chicken,
+        Lemonade,
+        EmptyBox,
+        EmptyBottle = 27,
+        Admission = 31,
+        Photo2 = 32,
+        Photo3,
+        Photo4,
+        Pretzel,
+        Chocolate,
+        IcedTea,
+        FunnelCake,
+        Sunglasses,
+        BeefNoodles,
+        FriedRiceNoodles,
+        WontonSoup,
+        MeatballSoup,
+        FruitJuice,
+        SoybeanMilk,
+        Sujeonggwa,
+        SubSandwich,
+        Cookie,
+        BowlRed,
+        DrinkCarton,
+        EmptyJuiceCup,
+        RoastSausage,
+        EmptyBowlBlue,
+        ShopItemCount = 56,
+        None = 255
+    }
+
+    /** Flags indicating slope. */
+    enum SlopeFlags {
+        Flat = 0x00,
+        /** Not truly a slope, the game will reset this to flat and raise the surface height. (TODO is this correct?) */
+        AllCornersUp = 0xFF,
+    
+        NorthCornerUp = (1 << 0),
+        EastCornerUp = (1 << 1),
+        SouthCornerUp = (1 << 2),
+        WestCornerUp = (1 << 3),
+        /** Combine with single corners to make the whole tile slope in that direction. TODO would this work with both up & down variations?*/
+        SlopeDoubleHeight = (1 << 4),
+    
+        WestCornerDown = AllCornersUp & ~WestCornerUp,
+        SouthCornerDown = AllCornersUp & ~SouthCornerUp,
+        EastCornerDown = AllCornersUp & ~EastCornerUp,
+        NorthCornerDown = AllCornersUp & ~NorthCornerUp,
+    
+        NortheastSideUp = NorthCornerUp | EastCornerUp,
+        SoutheastSideUp = EastCornerUp | SouthCornerUp,
+        NorthwestSideUp = NorthCornerUp | WestCornerUp,
+        SouthwestSideUp = SouthCornerUp | WestCornerUp,
+    
+        WestEastValley = EastCornerUp | WestCornerUp,
+        NorthSouthValley = NorthCornerUp | SouthCornerUp
+    }
+
+    /** Flags that apply to small scenery objects. */
+    enum SmallSceneryFlags {
+        FullTile = (1 << 0),
+        VOffsetCentre = (1 << 1),
+        RequireFlatSurface = (1 << 2),
+        /** If set, the object is manually rotatable. If unset, rotation is automatic. */
+        Rotatable = (1 << 3),
+        Animated = (1 << 4),
+        CanWither = (1 << 5),
+        CanBeWatered = (1 << 6),
+        AnimatedFG = (1 << 7),
+        Diagonal = (1 << 8),
+        HasGlass = (1 << 9),
+        HasPrimaryColor = (1 << 10),
+        FountainSpray1 = (1 << 11),
+        FountainSpray4 = (1 << 12),
+        IsClock = (1 << 13),
+        SwampGoo = (1 << 14),
+        HasFrameOffsets = (1 << 15),
+        Flag17 = (1 << 16),
+        /** Means scenery item can be placed in the air and over water. */
+        Stackable = (1 << 17),
+        NoWalls = (1 << 18),
+        HasSecondaryColor = (1 << 19),
+        NoSupports = (1 << 20),
+        VisibleWhenZoomed = (1 << 21),
+        Cog = (1 << 22),
+        /** Means supports can be built on this object. Used for base blocks. */
+        BuildDirectlyOnTop = (1 << 23),
+        HalfSpace = (1 << 24),
+        ThreeQuarters = (1 << 25),
+        /** Used for scenery items which are support structures. */
+        PaintSupports = (1 << 26),
+        Flag27 = (1 << 27),
+        IsTree = (1 << 28), // Added by OpenRCT2
+    }
+
+    /** Flags indicating the available orders for staff. Numeric values may mean different things for different staff types. */
     enum StaffOrderFlags {
         Sweeping = (1 << 0),
         WaterFlowers = (1 << 1),
@@ -102,6 +395,26 @@ declare global {
         FixRides = (1 << 1)
     }
 
+    /** Surface types applied to land. */
+    enum SurfaceStyle {
+        Grass,
+        Sand,
+        Dirt,
+        Rock,
+        Martian,
+        Checkerboard,
+        GrassClumps,
+        Ice,
+        GridRed,
+        GridYellow,
+        GridBlue,
+        GridGreen,
+        SandDark,
+        SandLight,
+        SurfaceStyleCount //TODO should this include the technical types?
+    }
+
+    /** A list of window classifications, such as finances, ride list, etc. */
     type WindowClassification = 
         "main_window" | "top_toolbar" | "bottom_toolbar" | "tooltip" | "dropdown" | "about" | "publisher_credits" |
         "music_credits" | "error" | "ride" | "ride_construction" | "save_prompt" | "ride_list" | "construct_ride" |
@@ -502,6 +815,7 @@ declare global {
      * Options for screenshot capture.
      */
     interface CaptureOptions {
+
         /**
          * A relative filename from the screenshot directory to save the capture as.
          * By default, the filename will be automatically generated using the system date and time.
@@ -527,12 +841,12 @@ declare global {
         position?: CoordsXY;
 
         /**
-         * The zoom level, 0 is 1:1, 1 is 2:1, 2 is 4:1 etc. TODO enum
+         * The zoom level, 0 is 1:1, 1 is 2:1, 2 is 4:1 etc.
          */
         zoom: number;
 
         /**
-         * Rotation of the camera from 0 to 3. TODO enum
+         * Rotation of the camera from 0 to 3.
          */
         rotation: number;
     }
@@ -705,7 +1019,7 @@ declare global {
      * APIs for the map.
      */
     interface GameMap {
-        /** The total size of the map. TODO in tiles? */
+        /** The total size of the map. Each tile is 32 units, so this will be a multiple of 32. */
         readonly size: CoordsXY;
         /** The number of rides on the game map. */
         readonly numRides: number;
@@ -724,7 +1038,7 @@ declare global {
         getRide(id: number): Ride;
 
         /**
-         * Get the tile at the given position. TODO what if OOB?
+         * Get the tile at the given position. TODO what if OOB? Why isn't the argument a CoordsXY?
          * 
          * @param x The x-coordinate of the tile.
          * @param y The y-coordinate of the tile.
@@ -789,18 +1103,18 @@ declare global {
      * A surface element.
      */
     interface SurfaceElement extends BaseTileElement {
-        /** TODO what does the number mean? */
-        slope: number;
+        /** A set of flags indicating slope. */
+        slope: SlopeFlags;
         /** A number indicating the surface style. */
-        surfaceStyle: number;
-        /** An index indicating the edge style. TODO enum? */
-        edgeStyle: number;
+        surfaceStyle: SurfaceStyle;
+        /** A number indicating the edge style. */
+        edgeStyle: EdgeStyle;
         /** The surface height of the water. */
         waterHeight: number;
-        /** The length of the grass from X to Y. TODO */
+        /** The length of the grass from 0 to 6. Mowed = 0, Clear = 1-3, Clumps = 4-6. */
         grassLength: number;
-        /** Flags indicating the ownership status. TODO flags */
-        ownership: number;
+        /** Flags indicating the ownership status (owned, unowned, etc). */
+        ownership: OwnershipFlags;
         /** A number indicating the location of park fences. */
         parkFences: number;
 
@@ -814,11 +1128,11 @@ declare global {
      * A footpath element.
      */
     interface FootpathElement extends BaseTileElement {
-        /** A number indicating the footpath type. TODO enum */
+        /** A number from 0 to 15 indicating the footpath type. */
         footpathType: number;
-        /** A number indicating the connection points on the path. TODO */
-        edgesAndCorners: number;
-        /** A number between 0 and 3 indicating the slope direction, or null for a flat path. */
+        /** A set of flag indicating the path connection points.*/
+        edgesAndCorners: FootpathConnectionFlags;
+        /** A number from 0 to 3 indicating the slope direction, or null for a flat path. */
         slopeDirection: number | null;
         /** True if the path has a crossing which is occupied (e.g. by a train), false otherwise. */
         isBlockedByVehicle: boolean;
@@ -826,7 +1140,7 @@ declare global {
         isWide: boolean;
         /** Indicates if the path is a queue. */
         isQueue: boolean;
-        /** A number between 0 and 3 indicating the queue banner direction, or null if no banner is present. */
+        /** A number from 0 to 3 indicating the queue banner direction, or null if no banner is present. */
         queueBannerDirection: number | null;
         /** If the path is a queue, this is the ride ID of the ride the queue is for. */
         ride: number;
@@ -860,9 +1174,9 @@ declare global {
     interface SmallSceneryElement extends BaseTileElement {
         /** The object index within the tile. */
         object: number;
-        /** The number from x to y indicating the primary colour. */
+        /** The primary colour. */
         primaryColour: Colour;
-        /** The number from x to y indicating the secondary colour. */
+        /** The secondary colour. */
         secondaryColour: Colour;
     }
 
@@ -894,9 +1208,9 @@ declare global {
     interface LargeSceneryElement extends BaseTileElement {
         /** The object index within the tile. */
         object: number;
-        /** The number from x to y indicating the primary colour. */
+        /** The primary colour. */
         primaryColour: Colour;
-        /** The number from x to y indicating the secondary colour. */
+        /** The secondary colour. */
         secondaryColour: Colour;
     }
 
@@ -928,6 +1242,7 @@ declare global {
         readonly elements: TileElement[];
         /** The number of tile elements on this tile. */
         readonly numElements: number;
+
         /**
          * Get or set the raw data for this tile.
          * This can provide more control and efficiency for tile manipulation but requires
@@ -999,7 +1314,7 @@ declare global {
         readonly description: string;
         /** A text description describing the capacity of the ride in the player's current language. */
         readonly capacity: string;
-        /** The ride object flags. TODO */
+        /** The ride object flags. TODO not sure if these are the RIDE_ENTRY_FLAGs in Ride.h? */
         readonly flags: number;
         /** The ride types. Each ride can have up to three types (e.g. Gentle, Transport, etc). */
         readonly rideType: number[];
@@ -1031,12 +1346,12 @@ declare global {
         readonly intensityMultiplier: number;
         /** The nausea multiplier. */
         readonly nauseaMultiplier: number;
-        /** The max support height for the ride. TODO units */
+        /** The max support height for the ride in in-game units (e.g. 1 unit = 5 ft = 1.5m). */
         readonly maxHeight: number;
         /** A number indicating the first item sold (ride ticket, food, on-ride photo, etc). */
-        readonly shopItem: number;
+        readonly shopItem: ShopItem;
         /** A number indicating the second item sold (ride ticket, food, on-ride photo, etc). */
-        readonly shopItemSecondary: number;
+        readonly shopItemSecondary: ShopItem;
     }
 
     /**
@@ -1047,7 +1362,6 @@ declare global {
         readonly numVerticalFrames: number;
         readonly numHorizontalFrames: number;
         readonly spacing: number;
-        /** The vehicle mass for a single car. TODO units */
         readonly carMass: number;
         readonly tabHeight: number;
         /** The number of seats per car. */
@@ -1056,7 +1370,6 @@ declare global {
         readonly spriteWidth: number;
         readonly spriteHeightNegative: number;
         readonly spriteHeightPositive: number;
-        /** The animation frame. TODO what if not animated */
         readonly animation: number;
         readonly flags: number;
         readonly baseNumFrames: number;
@@ -1077,9 +1390,9 @@ declare global {
         readonly corkscrewImageId: number;
         readonly noVehicleImages: number;
         readonly noSeatingRows: number;
-        /** A number indicating the inertia (tendency to keep current spin rate) of a spinning vehicle. TODO */
+        /** A number indicating the inertia (tendency to keep current spin rate) of a spinning vehicle. */
         readonly spinningInertia: number;
-        /** A number indicating the friction (force which slows spinning) of a spinning vehicle. TODO */
+        /** A number indicating the friction (force which slows spinning) of a spinning vehicle. */
         readonly spinningFriction: number;
         readonly frictionSoundId: number;
         readonly logFlumeReverserVehicleType: number;
@@ -1097,9 +1410,9 @@ declare global {
      * Represents the object definition of a small scenery item such a tree.
      */
     interface SmallSceneryObject extends Object {
-        /** Raw bit flags that describe characteristics of the scenery item. TODO enum */
-        readonly flags: number;
-        /** The default clearance height of the scenery item. TODO units */
+        /** Raw bit flags that describe characteristics of the scenery item. */
+        readonly flags: SmallSceneryFlags;
+        /** The default clearance height of the scenery item. 1 land height unit is 16 z-units, this is typically a multiple of 8. */
         readonly height: number;
         /** How much the scenery item costs to build. */
         readonly price: number;
@@ -1121,14 +1434,14 @@ declare global {
         readonly classification: RideClassification;
         /** The generated or custom name of the ride. */
         name: string;
-        /** Whether the ride is open, closed or testing. */
+        /** Whether the ride is open, closed, testing, or simulating. */
         readonly status: RideStatus;
         /** Various flags related to the operation of the ride. */
-        lifecycleFlags: number;
-        /** The operation mode. TODO */
-        mode: number;
+        lifecycleFlags: RideLifecycleFlags;
+        /** The operation mode. */
+        mode: RideMode;
         /** Flags related to how trains depart. */
-        departFlags: number;
+        departFlags: DepartFlags;
         /** The minimum time a train will wait at the station before departing. TODO units */
         minimumWaitingTime: number;
         /** The maximum time a train will wait at the station before departing. TODO units */
@@ -1137,10 +1450,10 @@ declare global {
         readonly vehicles: number[];
         /** The track colour schemes for the ride. */
         colourSchemes: TrackColour[];
-        /** The style used for the station, entrance, and exit building. TODO enum */
+        /** The style used for the station, entrance, and exit building. */
         stationStyle: number;
-        /** The music track to play at each station. TODO range */
-        music: number;
+        /** The music track to play at each station. */
+        music: Music;
         /** Information about each station. */
         readonly stations: RideStation[];
         /** The admission price for the ride and the price of the on-ride photo, or the cost of each item of the stall. */
@@ -1153,9 +1466,9 @@ declare global {
         readonly age: number;
         /** The running cost of the ride billed every fortnight. Multiply this by 16 to get the cost per hour (~1 in-game year). */
         runningCost: number;
-        /** How often the ride should be inspected by a mechanic. TODO units */
-        inspectionInterval: number;
-        /** The value of the ride. TODO units? */
+        /** How often the ride should be inspected by a mechanic. */
+        inspectionInterval: InspectionInterval;
+        /** The value of the ride. Contributes to park value. */
         value: number;
 
         /**
