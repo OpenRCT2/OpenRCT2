@@ -44,6 +44,11 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_EGYPTIAN),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 35)
+    SET_FIELD(BonusValue, 35),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_BLACK },
+        { COLOUR_YELLOW, COLOUR_WHITE, COLOUR_BLACK },
+        { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_BLACK },
+    )),
 };
 // clang-format on

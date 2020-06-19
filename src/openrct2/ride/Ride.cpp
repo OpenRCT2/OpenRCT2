@@ -5539,12 +5539,12 @@ bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
  */
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
 {
-    if (ride_type >= std::size(RideColourPresets))
+    if (ride_type >= std::size(RideTypeDescriptors))
     {
         return 0;
     }
 
-    const track_colour_preset_list* colourPresets = &RideColourPresets[ride_type];
+    const track_colour_preset_list* colourPresets = &RideTypeDescriptors[ride_type].ColourPresets;
 
     // 200 attempts to find a colour preset that hasn't already been used in the park for this ride type
     for (int32_t i = 0; i < 200; i++)
@@ -5566,7 +5566,7 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
  */
 void Ride::SetColourPreset(uint8_t index)
 {
-    const track_colour_preset_list* colourPresets = &RideColourPresets[type];
+    const track_colour_preset_list* colourPresets = &RideTypeDescriptors[type].ColourPresets;
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
     if (!IsRide())

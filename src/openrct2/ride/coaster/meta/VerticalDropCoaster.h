@@ -42,6 +42,10 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 95)
+    SET_FIELD(BonusValue, 95),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BLACK, COLOUR_GREY, COLOUR_BLACK },
+        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
+    )),
 };
 // clang-format on

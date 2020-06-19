@@ -43,6 +43,7 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(DefaultPrices, { 5, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 30)
+    SET_FIELD(BonusValue, 30),
+    SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
 };
 // clang-format on

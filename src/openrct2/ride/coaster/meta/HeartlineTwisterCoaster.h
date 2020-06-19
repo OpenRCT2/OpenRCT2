@@ -41,6 +41,11 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(DefaultPrices, { 15, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 35)
+    SET_FIELD(BonusValue, 35),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_WHITE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
+        { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },
+        { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_DARK_GREEN },
+    )),
 };
 // clang-format on

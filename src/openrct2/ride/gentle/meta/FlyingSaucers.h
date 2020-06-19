@@ -44,6 +44,10 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 35)
+    SET_FIELD(BonusValue, 35),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_DARK_PURPLE, COLOUR_GREY, COLOUR_BLACK },
+        { COLOUR_BLACK, COLOUR_YELLOW, COLOUR_BLACK },
+    )),
 };
 // clang-format on

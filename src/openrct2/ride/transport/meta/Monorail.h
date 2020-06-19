@@ -45,6 +45,13 @@ constexpr const RideTypeDescriptor MonorailRTD =
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 60)
+    SET_FIELD(BonusValue, 60),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_GREY, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN },
+        { COLOUR_GREY, COLOUR_GREY, COLOUR_SATURATED_BROWN },
+        { COLOUR_GREY, COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED },
+        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
+        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_WHITE },
+    )),
 };
 // clang-format on

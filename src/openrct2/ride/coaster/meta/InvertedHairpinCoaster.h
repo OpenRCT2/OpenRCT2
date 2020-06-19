@@ -42,6 +42,11 @@ constexpr const RideTypeDescriptor InvertedHairpinCoasterRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_2),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO2),
-    SET_FIELD(BonusValue, 55)
+    SET_FIELD(BonusValue, 55),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_RED },
+        { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
+        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
+    )),
 };
 // clang-format on

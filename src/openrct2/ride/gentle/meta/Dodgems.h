@@ -43,6 +43,11 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_DODGEMS_BEAT),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
-    SET_FIELD(BonusValue, 35)
+    SET_FIELD(BonusValue, 35),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN },
+        { COLOUR_LIGHT_BLUE, COLOUR_GREY, COLOUR_GREY },
+        { COLOUR_DARK_GREEN, COLOUR_BLACK, COLOUR_DARK_GREEN },
+    )),
 };
 // clang-format on

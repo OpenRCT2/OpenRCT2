@@ -41,6 +41,11 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO3),
-    SET_FIELD(BonusValue, 50)
+    SET_FIELD(BonusValue, 50),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_SATURATED_BROWN, COLOUR_GREY, COLOUR_SATURATED_BROWN },
+        { COLOUR_BLACK, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
+        { COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
+    )),
 };
 // clang-format on

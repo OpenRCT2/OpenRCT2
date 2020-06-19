@@ -43,6 +43,10 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WILD_WEST),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO2),
-    SET_FIELD(BonusValue, 50)
+    SET_FIELD(BonusValue, 50),
+    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },
+        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK },
+    )),
 };
 // clang-format on
