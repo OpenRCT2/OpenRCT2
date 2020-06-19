@@ -18,6 +18,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Station.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/Location.hpp>
 #include <openrct2/world/Sprite.h>
 #include <openrct2/world/Surface.h>
@@ -460,7 +461,7 @@ StationObject* ride_get_station_object(const Ride* ride)
 
 bool Vehicle::IsGhost() const
 {
-    auto r = get_ride(ride);
+    auto r = GetRide();
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }
 

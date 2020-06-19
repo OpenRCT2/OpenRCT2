@@ -332,6 +332,7 @@ struct Vehicle : SpriteBase
     int32_t IsUsedInPairs() const;
     rct_ride_entry* GetRideEntry() const;
     rct_ride_entry_vehicle* Entry() const;
+    Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
 

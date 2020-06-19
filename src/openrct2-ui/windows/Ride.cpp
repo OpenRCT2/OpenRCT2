@@ -1700,7 +1700,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
 {
     Vehicle* headVehicle = vehicle->TrainHead();
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
-    auto ride = get_ride(headVehicle->ride);
+    auto ride = headVehicle->GetRide();
     if (ride == nullptr)
         return nullptr;
 
