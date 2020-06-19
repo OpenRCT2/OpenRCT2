@@ -122,9 +122,32 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
+                auto delta = value - widget->left;
+
                 Invalidate();
-                widget->right = value + widget->right - widget->left;
-                widget->left = value;
+                widget->left += delta;
+                widget->right += delta;
+
+                if (widget->type == WWT_DROPDOWN)
+                {
+                    auto buttonWidget = widget + 1;
+                    buttonWidget->left += delta;
+                    buttonWidget->right += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+                }
+                else if (widget->type == WWT_SPINNER)
+                {
+                    auto upWidget = widget + 1;
+                    upWidget->left += delta;
+                    upWidget->right += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+
+                    auto downWidget = widget + 2;
+                    downWidget->left += delta;
+                    downWidget->right += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 2);
+                }
+
                 Invalidate();
             }
         }
@@ -143,9 +166,32 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
+                auto delta = value - widget->top;
+
                 Invalidate();
-                widget->bottom = value + widget->bottom - widget->top;
-                widget->top = value;
+                widget->top += delta;
+                widget->bottom += delta;
+
+                if (widget->type == WWT_DROPDOWN)
+                {
+                    auto buttonWidget = widget + 1;
+                    buttonWidget->top += delta;
+                    buttonWidget->bottom += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+                }
+                else if (widget->type == WWT_SPINNER)
+                {
+                    auto upWidget = widget + 1;
+                    upWidget->top += delta;
+                    upWidget->bottom += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+
+                    auto downWidget = widget + 2;
+                    downWidget->top += delta;
+                    downWidget->bottom += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 2);
+                }
+
                 Invalidate();
             }
         }
@@ -164,8 +210,31 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
+                auto delta = widget->left + value - widget->right;
+
                 Invalidate();
-                widget->right = widget->left + value;
+                widget->right += delta;
+
+                if (widget->type == WWT_DROPDOWN)
+                {
+                    auto buttonWidget = widget + 1;
+                    buttonWidget->left += delta;
+                    buttonWidget->right += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+                }
+                else if (widget->type == WWT_SPINNER)
+                {
+                    auto upWidget = widget + 1;
+                    upWidget->left += delta;
+                    upWidget->right += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+
+                    auto downWidget = widget + 2;
+                    downWidget->left += delta;
+                    downWidget->right += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 2);
+                }
+
                 Invalidate();
             }
         }
@@ -184,8 +253,28 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
+                auto delta = widget->top + value - widget->bottom;
+
                 Invalidate();
-                widget->bottom = widget->top + value;
+                widget->bottom += delta;
+
+                if (widget->type == WWT_DROPDOWN)
+                {
+                    auto buttonWidget = widget + 1;
+                    buttonWidget->bottom += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+                }
+                else if (widget->type == WWT_SPINNER)
+                {
+                    auto upWidget = widget + 1;
+                    upWidget->bottom += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 1);
+
+                    auto downWidget = widget + 2;
+                    downWidget->bottom += delta;
+                    widget_invalidate_by_number(_class, _number, _widgetIndex + 2);
+                }
+
                 Invalidate();
             }
         }
