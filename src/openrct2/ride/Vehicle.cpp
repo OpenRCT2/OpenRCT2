@@ -7438,7 +7438,7 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
     }
 }
 
-static void animate_scenery_door(
+static void AnimateSceneryDoor(
     const CoordsXYZD& doorLocation, const CoordsXYZ& trackLocation, bool isLastVehicle, bool isBackwards)
 {
     auto door = map_get_wall_element_at(doorLocation);
@@ -7479,7 +7479,7 @@ void Vehicle::UpdateSceneryDoor() const
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (track_direction + trackCoordinates->rotation_end) & 3;
 
-    animate_scenery_door(
+    AnimateSceneryDoor(
         { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL, false);
 }
 
@@ -7541,7 +7541,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     int32_t direction = (track_direction + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
-    animate_scenery_door(
+    AnimateSceneryDoor(
         { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL, true);
 }
 
