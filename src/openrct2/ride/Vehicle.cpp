@@ -7442,7 +7442,7 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
  *
  *  rct2: 0x006DEE93
  */
-void Vehicle::UpdateSceneryDoor()
+void Vehicle::UpdateSceneryDoor() const
 {
     int32_t trackType = GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
@@ -7525,7 +7525,7 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
  *
  *  rct2: 0x006DEDE8
  */
-void Vehicle::UpdateSceneryDoorBackwards()
+void Vehicle::UpdateSceneryDoorBackwards() const
 {
     int32_t trackType = GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
