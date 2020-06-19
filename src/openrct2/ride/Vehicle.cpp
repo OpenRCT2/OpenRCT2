@@ -1182,7 +1182,7 @@ enum class SoundType
 
 template<SoundType type> static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
 {
-    if (type == SoundType::TrackNoises)
+    if constexpr (type == SoundType::TrackNoises)
     {
         if (_soundParams[static_cast<uint8_t>(id)][1] & 2)
         {
@@ -1198,6 +1198,11 @@ template<SoundType type> static uint16_t SoundFrequency(const SoundId id, uint16
         }
         return std::min((baseFrequency * 2) - 3248, 25700);
     }
+}
+
+template<SoundType type> static bool ShouldUpdateChannelRate(const SoundId id)
+{
+    return type == SoundType::TrackNoises || !(_soundParams[static_cast<uint8_t>(id)][1] & 1);
 }
 
 template<SoundType type>
@@ -1249,7 +1254,7 @@ static void UpdateSound(const SoundId id, int32_t volume, rct_vehicle_sound_para
     if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
     {
         sound.Frequency = sound_params->frequency;
-        if (type == SoundType::TrackNoises || !(_soundParams[static_cast<uint8_t>(id)][1] & 1))
+        if (ShouldUpdateChannelRate<type>(id))
         {
             uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
             Mixer_Channel_Rate(sound.Channel, DStoMixerRate(frequency));
