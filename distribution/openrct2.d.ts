@@ -1669,7 +1669,7 @@ declare global {
         maxIntensity: number;
         /** The guest's tolerance to nauseating rides between 0 and 3. Lower numbers indicate lower tolerance. */
         nauseaTolerance: number;
-        /** Amount of cash in the guest's pocket. TODO units */
+        /** Amount of cash in the guest's pocket.  Represented as an integer (e.g. 150 = $1.50 = 150¥). */
         cash: number;
     }
 
@@ -1688,7 +1688,7 @@ declare global {
          * A set of flags representing the enabled jobs the staff can do (e.g. sweep litter, water plants, 
          * inspect rides etc). Only applicable for Handymen and Mechanics. 
          */
-        orders: number;
+        orders: StaffOrderFlags;
     }
 
     /** The available staff types (e.g. handyman, mechanic, etc). */
@@ -1772,7 +1772,7 @@ declare global {
         sendMessage(message: string, players: number[]): void;
     }
 
-    /** The network mode. TODO what mode is single plyer? */
+    /** The network mode. Select none for single player. */
     type NetworkMode = "none" | "server" | "client";
 
     /**
@@ -1783,13 +1783,13 @@ declare global {
         readonly id: number;
         /** The player name. */
         readonly name: string;
-        /** The group the player belongs to. */
+        /** The group number the player belongs to. */
         group: number;
         /** The ping of the player in ms. */
         readonly ping: number;
         /** The number of game actions executed by the player. */
         readonly commandsRan: number;
-        /** The amount of money spent by the player. Represented as an integer (e.g. $1.50 = 150¥ = 150). */
+        /** The amount of money spent by the player. Represented as an integer (e.g. 150 = $1.50 = 150¥). */
         readonly moneySpent: number;
         /** The player's IP address. */
         readonly ipAddress: string;
@@ -1817,7 +1817,7 @@ declare global {
         readonly name: string;
         /** A description of the server. */
         readonly description: string;
-        /** A message to be sent to the player upon log in. TODO is this right? */
+        /** A message to be sent to the player upon log in. */
         readonly greeting: string;
         /** The name of the server provider. */
         readonly providerName: string;
@@ -1910,13 +1910,13 @@ declare global {
      * Represents the park.
      */
     interface Park {
-        /** The amount of cash available to spend. TODO: units */
+        /** The amount of cash available to spend.  Represented as an integer (e.g. 150 = $1.50 = 150¥). */
         cash: number;
         /** The park rating (0-999). */
         rating: number;
-        /** The current amount of the bank loan. Represented as an integer (e.g. $10,000 = 1000000). */
+        /** The current amount of the bank loan. Represented as an integer (e.g. $10,000 = 1000000). TODO since this can only be integers does it use the *100 multiplier for cash values? */
         bankLoan: number;
-        /** The maximum possible bank loan. Represented as an integer (e.g. $10,000 = 1000000). */
+        /** The maximum possible bank loan. Represented as an integer (e.g. $10,000 = 1000000). TODO since this can only be integers does it use the *100 multiplier for cash values? */
         maxBankLoan: number;
         /** An array of the most recent 61 park messages. */
         messages: ParkMessage[];
@@ -1942,7 +1942,7 @@ declare global {
     interface Cheats {
         /** Allows changing ride types after constructing rides. */
         allowArbitraryRideTypeChanges: boolean;
-        /** TODO? */
+        /** Allows track to be placed at increments of 8 z-units, which is not normally accessible by path. */
         allowTrackPlaceInvalidHeights: boolean;
         /** Allows building while the game is paused. */
         buildInPauseMode: boolean;
@@ -1964,19 +1964,19 @@ declare global {
         disableTrainLengthLimit: boolean;
         /** Prevents angry guests from causing vandalism. */
         disableVandalism: boolean;
-        /** TODO? */
+        /** Enables all track pieces for which track and vehicle sprites exist for the given ride. TODO is this right? */
         enableAllDrawableTrackPieces: boolean;
         /** Allow placing a chain lift on any track piece. */
         enableChainLiftOnAllTrack: boolean;
-        /** Enables setting the lift hill speed to any value. TODO? */
+        /** Unlocks limits on lift hill chain speed. */
         fastLiftHill: boolean;
         /** Freezes the weather to its current state. */
         freezeWeather: boolean;
-        /** TODO? */
+        /** Will make all rides available to build regardless of if they have been researched or not. */
         ignoreResearchStatus: boolean;
         /** Guests will ignore ride intensity. */
         ignoreRideIntensity: boolean;
-        /** Allow marketing campaigns to continue indefinitely. TODO? */
+        /** Allow marketing campaigns to continue indefinitely. */
         neverendingMarketing: boolean;
         /** Allows changing certain settings normally only available in the scenario editor. */
         sandboxMode: boolean;
@@ -2008,9 +2008,9 @@ declare global {
         /**
          * Get the window with the given ID.
          * 
-         * @param id The window ID. TODO what if OOB?
+         * @param id The window ID.
          * 
-         * @return The window object.
+         * @return The window object, or null if none exists with the given ID.
          */
         getWindow(id: number): Window;
 
@@ -2033,7 +2033,7 @@ declare global {
         openWindow(desc: WindowDesc): Window;
 
         /**
-         * Close all windows with the given classification. TODO?
+         * Close all windows with the given classification. Alternatively, if an ID is given, close the window of the given classification and ID. TODO?
          * 
          * @param classification The window classification.
          * @param id (Optional) The id of the window to close.
@@ -2069,7 +2069,7 @@ declare global {
         activateTool(tool: ToolDesc): void;
 
         /**
-         * Add a menu item, ie to a dropdown. TODO?
+         * Add a menu item, i.e. to a dropdown. TODO?
          * 
          * @param text The menu item text.
          * @param callback A function to call upon selecting the menu item.
@@ -2418,8 +2418,8 @@ declare global {
      * Represents a game window.
      */
     interface Window {
-        /** TODO? */
-        classification: number;
+        /** TODO needs to be a number? */
+        classification: WindowClassification;
         /** An identifier unique among open windows. */
         number: number;
         /** The horizontal position of the window in the game client, in pixels. */
