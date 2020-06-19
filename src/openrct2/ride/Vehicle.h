@@ -427,6 +427,7 @@ private:
     bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor();
+    void UpdateSceneryDoorBackwards();
 };
 
 struct train_ref
