@@ -7442,18 +7442,17 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
  *
  *  rct2: 0x006DEE93
  */
-static void vehicle_update_scenery_door(Vehicle* vehicle)
+void Vehicle::UpdateSceneryDoor()
 {
-    int32_t trackType = vehicle->GetTrackType();
+    int32_t trackType = GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     while ((trackBlock + 1)->index != 255)
     {
         trackBlock++;
     }
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
-    auto wallCoords = CoordsXYZ{ vehicle->x, vehicle->y, vehicle->TrackLocation.z - trackBlock->z + trackCoordinates->z_end }
-                          .ToTileStart();
-    int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
+    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
+    int32_t direction = (track_direction + trackCoordinates->rotation_end) & 3;
 
     auto tileElement = map_get_wall_element_at(CoordsXYZD{ wallCoords, static_cast<Direction>(direction) });
     if (tileElement == nullptr)
@@ -7461,19 +7460,19 @@ static void vehicle_update_scenery_door(Vehicle* vehicle)
         return;
     }
 
-    if ((vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) && (tileElement->GetAnimationFrame() == 0))
+    if ((next_vehicle_on_train != SPRITE_INDEX_NULL) && (tileElement->GetAnimationFrame() == 0))
     {
         tileElement->SetAnimationIsBackwards(false);
         tileElement->SetAnimationFrame(1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
-        play_scenery_door_open_sound(vehicle->TrackLocation, tileElement);
+        play_scenery_door_open_sound(TrackLocation, tileElement);
     }
 
-    if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+    if (next_vehicle_on_train == SPRITE_INDEX_NULL)
     {
         tileElement->SetAnimationIsBackwards(false);
         tileElement->SetAnimationFrame(6);
-        play_scenery_door_close_sound(vehicle->TrackLocation, tileElement);
+        play_scenery_door_close_sound(TrackLocation, tileElement);
     }
 }
 
@@ -7977,7 +7976,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     }
 
     // Change from original: this used to check if the vehicle allowed doors.
-    vehicle_update_scenery_door(this);
+    UpdateSceneryDoor();
 
     bool isGoingBack = false;
     switch (TrackSubposition)

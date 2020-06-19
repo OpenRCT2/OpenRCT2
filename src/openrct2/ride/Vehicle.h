@@ -426,6 +426,7 @@ private:
     bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
     void UpdateGoKartAttemptSwitchLanes();
+    void UpdateSceneryDoor();
 };
 
 struct train_ref
