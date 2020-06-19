@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

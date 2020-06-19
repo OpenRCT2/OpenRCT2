@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_GREY },
         { COLOUR_OLIVE_GREEN, COLOUR_BLACK, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

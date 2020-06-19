@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_SATURATED_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
         { COLOUR_YELLOW, COLOUR_WHITE, COLOUR_BLACK },
         { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

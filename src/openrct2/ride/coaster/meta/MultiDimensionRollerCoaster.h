@@ -49,6 +49,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
         { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
         { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 
 constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
@@ -84,5 +85,6 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
         { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
         { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

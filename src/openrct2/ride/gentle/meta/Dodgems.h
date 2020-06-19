@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor DodgemsRTD =
         { COLOUR_LIGHT_BLUE, COLOUR_GREY, COLOUR_GREY },
         { COLOUR_DARK_GREEN, COLOUR_BLACK, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

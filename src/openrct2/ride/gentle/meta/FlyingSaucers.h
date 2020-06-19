@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
         { COLOUR_DARK_PURPLE, COLOUR_GREY, COLOUR_BLACK },
         { COLOUR_BLACK, COLOUR_YELLOW, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

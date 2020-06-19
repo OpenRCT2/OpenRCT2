@@ -48,6 +48,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterRTD =
         { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_YELLOW },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 
 constexpr const RideTypeDescriptor LayDownRollerCoasterAltRTD =
@@ -83,5 +84,6 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterAltRTD =
         { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_YELLOW },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

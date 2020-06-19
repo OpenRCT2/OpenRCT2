@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

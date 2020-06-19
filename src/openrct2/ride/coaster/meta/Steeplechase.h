@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_BLACK },
         { COLOUR_BRIGHT_PINK, COLOUR_BRIGHT_PINK, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

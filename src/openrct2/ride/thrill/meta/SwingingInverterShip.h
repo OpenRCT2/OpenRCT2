@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },
         { COLOUR_BLACK, COLOUR_SATURATED_BROWN, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

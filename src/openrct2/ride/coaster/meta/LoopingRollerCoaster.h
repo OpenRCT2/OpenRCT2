@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor LoopingRollerCoasterRTD =
         { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_LIGHT_BROWN },
         { COLOUR_GREY, COLOUR_LIGHT_ORANGE, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

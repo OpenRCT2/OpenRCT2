@@ -46,5 +46,6 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_YELLOW },
         { COLOUR_GREY, COLOUR_SALMON_PINK, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

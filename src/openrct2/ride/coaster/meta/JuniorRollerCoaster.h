@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
         { COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN, COLOUR_OLIVE_GREEN },
         { COLOUR_BLACK, COLOUR_LIGHT_BLUE, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

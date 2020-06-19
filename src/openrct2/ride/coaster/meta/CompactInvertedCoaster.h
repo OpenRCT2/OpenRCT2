@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor CompactInvertedCoasterRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_YELLOW },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

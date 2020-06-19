@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_LIGHT_PURPLE },
         { COLOUR_DARK_GREEN, COLOUR_YELLOW, COLOUR_WHITE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor SuspendedMonorailRTD =
         { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_BLACK },
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

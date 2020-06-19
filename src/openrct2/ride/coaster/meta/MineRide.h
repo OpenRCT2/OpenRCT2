@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor MineRideRTD =
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

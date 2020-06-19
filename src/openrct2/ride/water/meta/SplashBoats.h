@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK },
         { COLOUR_GREY, COLOUR_GREY, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

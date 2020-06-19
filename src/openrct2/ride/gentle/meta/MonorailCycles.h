@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },
         { COLOUR_GREY, COLOUR_BLACK, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

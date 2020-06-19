@@ -58,6 +58,18 @@ enum RIDE_COMPONENT_TYPE
     RIDE_COMPONENT_TYPE_COUNT
 };
 
+enum class RideColourKey : uint8_t
+{
+    Ride,
+    Food,
+    Drink,
+    Shop,
+    InfoKiosk,
+    FirstAid,
+    CashMachine,
+    Toilets
+};
+
 struct RideNameConvention
 {
     RIDE_COMPONENT_TYPE vehicle;
@@ -149,6 +161,7 @@ struct RideTypeDescriptor
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
     track_colour_preset_list ColourPresets;
+    RideColourKey ColourKey;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -318,6 +331,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
+    SET_FIELD(ColourKey, RideColourKey::Ride)
 };
 // clang-format on
 

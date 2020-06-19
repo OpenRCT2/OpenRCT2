@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor RotoDropRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_GREY },
         { COLOUR_BLACK, COLOUR_LIGHT_BLUE, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

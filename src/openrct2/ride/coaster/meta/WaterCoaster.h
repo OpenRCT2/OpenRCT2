@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_PURPLE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on
