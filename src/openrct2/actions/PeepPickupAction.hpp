@@ -60,6 +60,11 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
         }
 
+        if (!_loc.isNull() && !LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
+        }
+
         Peep* const peep = GET_PEEP(_spriteId);
         if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
         {
@@ -104,9 +109,9 @@ public:
                     return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE);
                 }
 
-                if (!peep->Place(TileCoordsXYZ(_loc), false))
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2->Error != GA_ERROR::OK)
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
+                    return res2;
                 }
                 break;
             default:
@@ -174,9 +179,9 @@ public:
             break;
             case PeepPickupType::Place:
                 res->Position = _loc;
-                if (!peep->Place(TileCoordsXYZ(_loc), true))
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2->Error != GA_ERROR::OK)
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
+                    return res2;
                 }
                 CancelConcurrentPickups(peep);
                 break;

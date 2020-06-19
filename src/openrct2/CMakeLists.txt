@@ -23,7 +23,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
 # GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_link_libraries(${PROJECT_NAME} stdc++fs)
     endif()
@@ -175,13 +175,6 @@ if (NOT MINGW AND NOT MSVC)
     endif ()
 endif ()
 
-if (NOT APPLE AND NOT MINGW AND NOT MSVC)
-    # This is ugly hack to work around https://bugs.launchpad.net/ubuntu/+source/gcc-5/+bug/1568899.
-    # Once C++17 is enabled (and thus old compilers are no longer supported, this needs to be gone.
-    # We cannot simply detect the _compiler_ version, as the bug exists with the C++ _library_
-    target_link_libraries(${PROJECT_NAME} gcc_s gcc)
-endif ()
-
 if (NOT DISABLE_TTF)
     if (STATIC)
         target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES})
@@ -195,6 +188,10 @@ if (NOT DISABLE_TTF)
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_LIBRARIES})
         endif ()
+    endif ()
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
+        target_link_libraries(${PROJECT_NAME} -L${OPENBSD_X11BASE}/lib)
     endif ()
 endif ()
 

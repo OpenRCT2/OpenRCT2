@@ -105,8 +105,8 @@ struct TileElement : public TileElementBase
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
-        // TODO: CAST-IMPROVEMENT-NEEDED
-        return static_cast<TileElementType>(GetType()) == TClass ? (TType*)this : nullptr;
+        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(const_cast<TileElement*>(this))
+                                                                 : nullptr;
     }
 
 public:

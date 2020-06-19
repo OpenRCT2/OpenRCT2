@@ -427,13 +427,8 @@ private:
 
     void RemoveLitter() const
     {
-        Litter* litter;
-        uint16_t spriteIndex, nextSpriteIndex;
-
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
         {
-            litter = &(get_sprite(spriteIndex)->litter);
-            nextSpriteIndex = litter->next;
             sprite_remove(litter);
         }
 
@@ -575,17 +570,13 @@ private:
 
     void SetGuestParameter(int32_t parameter, int32_t value) const
     {
-        int32_t spriteIndex;
-        Peep* p;
-        FOR_ALL_GUESTS (spriteIndex, p)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            auto peep = p->AsGuest();
-            assert(peep != nullptr);
             switch (parameter)
             {
                 case GUEST_PARAMETER_HAPPINESS:
-                    peep->happiness = value;
-                    peep->happiness_target = value;
+                    peep->Happiness = value;
+                    peep->HappinessTarget = value;
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
@@ -594,27 +585,27 @@ private:
                     }
                     break;
                 case GUEST_PARAMETER_ENERGY:
-                    peep->energy = value;
-                    peep->energy_target = value;
+                    peep->Energy = value;
+                    peep->EnergyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
-                    peep->hunger = value;
+                    peep->Hunger = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
-                    peep->thirst = value;
+                    peep->Thirst = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
-                    peep->nausea = value;
-                    peep->nausea_target = value;
+                    peep->Nausea = value;
+                    peep->NauseaTarget = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                    peep->nausea_tolerance = value;
+                    peep->NauseaTolerance = value;
                     break;
                 case GUEST_PARAMETER_TOILET:
-                    peep->toilet = value;
+                    peep->Toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                    peep->intensity = IntensityRange(value, 15);
+                    peep->Intensity = IntensityRange(value, 15);
                     break;
             }
             peep->UpdateSpriteType();
@@ -623,16 +614,12 @@ private:
 
     void GiveObjectToGuests(int32_t object) const
     {
-        int32_t spriteIndex;
-        Peep* p;
-        FOR_ALL_GUESTS (spriteIndex, p)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            auto peep = p->AsGuest();
-            assert(peep != nullptr);
             switch (object)
             {
                 case OBJECT_MONEY:
-                    peep->cash_in_pocket = MONEY(1000, 00);
+                    peep->CashInPocket = MONEY(1000, 00);
                     break;
                 case OBJECT_PARK_MAP:
                     peep->ItemStandardFlags |= PEEP_ITEM_MAP;
@@ -680,7 +667,7 @@ private:
                         auto peep = GET_PEEP(vehicle->peep[i + offset]);
                         if (peep != nullptr)
                         {
-                            vehicle->mass -= peep->mass;
+                            vehicle->mass -= peep->Mass;
                         }
                     }
 
@@ -699,11 +686,9 @@ private:
 
         // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
         // will be fetched on a deleted peep.
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL;)
+        for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
         {
-            auto peep = GET_PEEP(spriteIndex);
-            spriteIndex = peep->next;
-            if (peep->type == PEEP_TYPE_GUEST)
+            if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
             {
                 peep->Remove();
             }
@@ -715,10 +700,7 @@ private:
 
     void ExplodeGuests() const
     {
-        int32_t sprite_index;
-        Peep* peep;
-
-        FOR_ALL_GUESTS (sprite_index, peep)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
             if (scenario_rand_max(6) == 0)
             {
@@ -729,13 +711,10 @@ private:
 
     void SetStaffSpeed(uint8_t value) const
     {
-        uint16_t spriteIndex;
-        Peep* peep;
-
-        FOR_ALL_STAFF (spriteIndex, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
-            peep->energy = value;
-            peep->energy_target = value;
+            peep->Energy = value;
+            peep->EnergyTarget = value;
         }
     }
 

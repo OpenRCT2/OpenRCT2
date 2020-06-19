@@ -67,6 +67,8 @@ constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
 constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
+constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -129,6 +131,24 @@ enum
     // The most significant bit in this mask will always be zero, since rides can only have 4 stations
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
+};
+
+enum
+{
+    RCT12_STATION_STYLE_PLAIN,
+    RCT12_STATION_STYLE_WOODEN,
+    RCT12_STATION_STYLE_CANVAS_TENT,
+    RCT12_STATION_STYLE_CASTLE_GREY,
+    RCT12_STATION_STYLE_CASTLE_BROWN,
+    RCT12_STATION_STYLE_JUNGLE,
+    RCT12_STATION_STYLE_LOG_CABIN,
+    RCT12_STATION_STYLE_CLASSICAL,
+    RCT12_STATION_STYLE_ABSTRACT,
+    RCT12_STATION_STYLE_SNOW,
+    RCT12_STATION_STYLE_PAGODA,
+    RCT12_STATION_STYLE_SPACE,
+
+    RCT12_STATION_STYLE_INVISIBLE, // Added by OpenRCT2
 };
 
 #pragma pack(push, 1)
@@ -280,8 +300,9 @@ struct RCT12TileElement : public RCT12TileElementBase
     uint8_t pad_04[4];
     template<typename TType, RCT12TileElementType TClass> TType* as() const
     {
-        // TODO: CAST-IMPROVEMENT-NEEDED
-        return static_cast<RCT12TileElementType>(GetType()) == TClass ? (TType*)this : nullptr;
+        return static_cast<RCT12TileElementType>(GetType()) == TClass
+            ? reinterpret_cast<TType*>(const_cast<RCT12TileElement*>(this))
+            : nullptr;
     }
 
     RCT12SurfaceElement* AsSurface() const

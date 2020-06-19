@@ -390,21 +390,15 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
  */
 void footpath_remove_litter(const CoordsXYZ& footpathPos)
 {
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
-    while (spriteIndex != SPRITE_INDEX_NULL)
+    auto quad = EntityTileList<Litter>(footpathPos);
+    for (auto litter : quad)
     {
-        Litter* sprite = &get_sprite(spriteIndex)->litter;
-        uint16_t nextSpriteIndex = sprite->next_in_quadrant;
-        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        int32_t distanceZ = abs(litter->z - footpathPos.z);
+        if (distanceZ <= 32)
         {
-            int32_t distanceZ = abs(sprite->z - footpathPos.z);
-            if (distanceZ <= 32)
-            {
-                invalidate_sprite_0(sprite);
-                sprite_remove(sprite);
-            }
+            litter->Invalidate0();
+            sprite_remove(litter);
         }
-        spriteIndex = nextSpriteIndex;
     }
 }
 
@@ -414,27 +408,20 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
  */
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
 {
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
-    while (spriteIndex != SPRITE_INDEX_NULL)
+    auto quad = EntityTileList<Peep>(footpathPos);
+    for (auto peep : quad)
     {
-        auto* entity = get_sprite(spriteIndex);
-        uint16_t nextSpriteIndex = entity->generic.next_in_quadrant;
-        if (entity->IsPeep())
+        if (peep->State == PEEP_STATE_SITTING || peep->State == PEEP_STATE_WATCHING)
         {
-            Peep* peep = &entity->peep;
-            if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
+            if (peep->z == footpathPos.z)
             {
-                if (peep->z == footpathPos.z)
-                {
-                    peep->SetState(PEEP_STATE_WALKING);
-                    peep->destination_x = (peep->x & 0xFFE0) + 16;
-                    peep->destination_y = (peep->y & 0xFFE0) + 16;
-                    peep->destination_tolerance = 5;
-                    peep->UpdateCurrentActionSpriteType();
-                }
+                peep->SetState(PEEP_STATE_WALKING);
+                peep->DestinationX = (peep->x & 0xFFE0) + 16;
+                peep->DestinationY = (peep->y & 0xFFE0) + 16;
+                peep->DestinationTolerance = 5;
+                peep->UpdateCurrentActionSpriteType();
             }
         }
-        spriteIndex = nextSpriteIndex;
     }
 }
 

@@ -3909,6 +3909,8 @@ enum
     STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS = 6373,
     STR_OVERLAY_CLEARANCE_CHECKS_DISABLED = 6374,
 
+    STR_UNKNOWN_RIDE = 6375,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

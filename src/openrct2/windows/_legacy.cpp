@@ -299,15 +299,11 @@ bool window_ride_construction_update_state(
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
-        if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT
-            || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-            || trackType == TRACK_ELEM_S_BEND_LEFT || trackType == TRACK_ELEM_S_BEND_RIGHT)
+        auto availablePieces = RideTypeDescriptors[ride->type].CoveredTrackPieces;
+        auto alternativeType = AlternativeTrackTypes[trackType];
+        if (alternativeType != -1 && availablePieces & (1ULL << trackType))
         {
-            int16_t alternativeType = AlternativeTrackTypes[trackType];
-            if (alternativeType > -1)
-            {
-                trackType = static_cast<uint8_t>(alternativeType);
-            }
+            trackType = static_cast<uint8_t>(alternativeType);
             liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }

@@ -1825,7 +1825,7 @@ STR_2482    :{SMALLFONT}{BLACK}Profitto: {CURRENCY} alla settimana,  valore del 
 STR_2483    :{WINDOW_COLOUR_2}Profitto settimanale: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Profitto settimanale: {RED}{CURRENCY2DP}
 STR_2487    :Mostra i “veri” nomi dei visitatori
-STR_2488    :{SMALLFONT}{BLACK}Svaria tra i “veri” nomi dei visitatori e i loro numeri
+STR_2488    :{SMALLFONT}{BLACK}Alterna tra i nomi “veri” dei visitatori e i loro numeri
 STR_2489    :Tasti rapidi
 STR_2490    :Tasti rapidi
 STR_2491    :Ripristina
@@ -2692,7 +2692,7 @@ STR_5336    :Uscita corsa
 STR_5337    :Entrata Parco
 STR_5338    :Tipo elemento
 STR_5339    :{SMALLFONT}{BLACK}Altezza base
-STR_5340    :{SMALLFONT}{BLACK}Clearance height
+STR_5340    :{SMALLFONT}{BLACK}Altezza margini
 STR_5343    :Colloca automaticamente il personale
 STR_5344    :Changelog
 STR_5345    :Trucchi finanziari
@@ -2805,7 +2805,7 @@ STR_5452    :Visibilità della barra
 STR_5453    :Selezione altra corsa
 STR_5454    :FPS senza limiti
 STR_5455    :Abilita modalità sandbox
-STR_5456    :Disabilita controlli distanze
+STR_5456    :Disabilita controllo margini
 STR_5457    :Disabilita limite supporti
 STR_5458    :Ruota senso orario
 STR_5459    :Ruota antiorario
@@ -3283,7 +3283,7 @@ STR_5970    :{WINDOW_COLOUR_2}ID ingresso: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}ID uscita: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}ID percorso: {BLACK}{COMMA16}
 STR_5973    :Attacca al successivo
-STR_5974    :{SMALLFONT}{BLACK}Cambia l'altezza della base e l'altezza in modo da posizionarle come l'elemento successivo sull'attuale cella. Ciò permette di costruire più facilmente su questa cella.
+STR_5974    :{SMALLFONT}{BLACK}Cambia l'altezza di base e dei margini affinché sia la stessa del successivo elemento sull'attuale cella. Ciò permette di costruire più facilmente su questa cella.
 STR_5975    :Inclinazione:
 STR_5976    :Piatto
 STR_5977    :Lato destro su
@@ -3680,6 +3680,8 @@ STR_6369    :Permetti costruzione percorsi ad altezze non valide
 STR_6370    :{SMALLFONT}{BLACK}Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
 STR_6371    :La cartella specificata contiene un'installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev'essere copiato dal CD di RollerCoaster Tycoon 1 alla cartella “Data” dell'installazione su disco di RollerCoaster Tycoon 1. 
 STR_6372    :La cartella specificata contiene un'installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un'installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
+STR_6373    :Attiva controllo margini
+STR_6374    :M
 
 #############
 # Scenarios #

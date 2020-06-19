@@ -1088,7 +1088,7 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             *args += sizeof(uintptr_t);
 
             if (value != 0)
-                format_append_string(dest, size, (char*)value);
+                format_append_string(dest, size, reinterpret_cast<char*>(value));
             break;
         case FORMAT_MONTHYEAR:
             // Pop argument
@@ -1318,7 +1318,7 @@ void format_string(utf8* dest, size_t size, rct_string_id format, const void* ar
 
     utf8* end = dest;
     size_t left = size;
-    format_string_part(&end, &left, format, (char**)&args);
+    format_string_part(&end, &left, format, reinterpret_cast<char**>(const_cast<void**>(&args)));
     if (left == 0)
     {
         // Replace last character with null terminator
@@ -1353,7 +1353,7 @@ void format_string_raw(utf8* dest, size_t size, const utf8* src, const void* arg
 
     utf8* end = dest;
     size_t left = size;
-    format_string_part_from_raw(&end, &left, src, (char**)&args);
+    format_string_part_from_raw(&end, &left, src, reinterpret_cast<char**>(const_cast<void**>(&args)));
     if (left == 0)
     {
         // Replace last character with null terminator

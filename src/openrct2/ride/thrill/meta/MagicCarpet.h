@@ -20,6 +20,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, FLAT_TRACK_ELEM_1_X_4_A),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_magic_carpet),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -29,10 +30,20 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_SWING)),
     SET_FIELD(DefaultMode, RIDE_MODE_SWING),
+    SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
+    SET_FIELD(Naming, { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(Heights, { 15, 176, 7, 11, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_magic_carpet),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
+    SET_FIELD(BuildCosts, { 198, 2, 1, }),
+    SET_FIELD(DefaultPrices, { 15, 0 }),
+    SET_FIELD(DefaultMusic, MUSIC_STYLE_EGYPTIAN),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 35)
 };
 // clang-format on

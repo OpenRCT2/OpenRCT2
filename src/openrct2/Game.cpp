@@ -432,27 +432,29 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
 void game_fix_save_vars()
 {
     // Recalculates peep count after loading a save to fix corrupted files
-    Peep* peep;
-    uint16_t spriteIndex;
-    uint32_t peepCount = 0;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    uint32_t guestCount = 0;
     {
-        if (!peep->outside_of_park)
-            peepCount++;
+        for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
+        {
+            if (!guest->OutsideOfPark)
+            {
+                guestCount++;
+            }
+        }
     }
 
-    gNumGuestsInPark = peepCount;
+    gNumGuestsInPark = guestCount;
 
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
 
     // Fix possibly invalid field values
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        if (peep->current_ride_station >= MAX_STATIONS)
+        if (peep->CurrentRideStation >= MAX_STATIONS)
         {
-            const uint8_t srcStation = peep->current_ride_station;
-            const uint8_t rideIdx = peep->current_ride;
+            const uint8_t srcStation = peep->CurrentRideStation;
+            const uint8_t rideIdx = peep->CurrentRide;
             if (rideIdx == RIDE_ID_NULL)
             {
                 continue;
@@ -460,25 +462,26 @@ void game_fix_save_vars()
             Ride* ride = get_ride(rideIdx);
             if (ride == nullptr)
             {
-                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, spriteIndex);
-                peep->current_ride = RIDE_ID_NULL;
+                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
+                peep->CurrentRide = RIDE_ID_NULL;
                 continue;
             }
             auto ft = Formatter::Common();
-            ft.Add<uint32_t>(peep->id);
+            ft.Add<uint32_t>(peep->Id);
             auto curName = peep->GetName();
             log_warning(
-                "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
+                "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(), srcStation,
+                rideIdx);
             auto station = ride_get_first_valid_station_exit(ride);
             if (station == STATION_INDEX_NULL)
             {
-                log_warning("Couldn't find station, removing peep %u", spriteIndex);
+                log_warning("Couldn't find station, removing peep %u", peep->sprite_index);
                 peepsToRemove.push_back(peep);
             }
             else
             {
                 log_warning("Amending ride station to %u.", station);
-                peep->current_ride_station = station;
+                peep->CurrentRideStation = station;
             }
         }
     }
@@ -614,10 +617,10 @@ void reset_all_sprite_quadrant_placements()
 {
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
-        rct_sprite* spr = get_sprite(i);
-        if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        auto* spr = GetEntity(i);
+        if (spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
-            spr->generic.MoveTo({ spr->generic.x, spr->generic.y, spr->generic.z });
+            spr->MoveTo({ spr->x, spr->y, spr->z });
         }
     }
 }
@@ -683,8 +686,7 @@ void save_game_as()
 
 static int32_t compare_autosave_file_paths(const void* a, const void* b)
 {
-    // TODO: CAST-IMPROVEMENT-NEEDED
-    return strcmp(*(char**)a, *(char**)b);
+    return strcmp(static_cast<const char*>(a), static_cast<const char*>(b));
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)

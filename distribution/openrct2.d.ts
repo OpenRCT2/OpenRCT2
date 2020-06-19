@@ -757,6 +757,16 @@ declare global {
          * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
          */
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
+
+		/**
+		 * Subscribe to the action location hook.
+		 * 
+         * @param hook The "action.location" hook type.
+         * @param callback The function to execute with the result of the action.
+         * 
+         * @return A disposable object. Call `dispose()` on it to unsubscribe from the hook.
+		 */
+        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
     }
 
     /**
@@ -872,7 +882,7 @@ declare global {
     type HookType =
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate";
+        "ride.ratings.calculate" | "action.location";
 
     /** Types associated with spending money. */
     type ExpenditureType =
@@ -975,6 +985,18 @@ declare global {
         intensity: number;
         /** The ride nausea. */
         nausea: number;
+    }
+
+    /** 
+     * Arugments for the ActionLocation hook callback.
+     */
+    interface ActionLocationArgs {
+        readonly x: number;
+        readonly y: number;
+        readonly player: number;
+        readonly type: number;
+        readonly isClientOnly: boolean;
+        result: boolean;
     }
 
     /**
@@ -1571,6 +1593,139 @@ declare global {
     }
 
     /**
+     * Represents a single car on a ride. A train is made up of multiple cars, but
+     * something like boat hire will be one car per boat.
+     */
+    interface Car extends Entity {
+        /**
+         * The ride this car belongs to.
+         */
+        ride: number;
+
+        /**
+         * The ride object for this car, e.g. the ladybird trains object.
+         */
+        rideObject: number;
+
+        /**
+         * The vehicle type for the ride object used. This is a local index
+         * into the ride object list of vehicle types.
+         */
+        vehicleObject: number;
+
+        spriteType: number;
+
+        /**
+         * How many seats the car has, i.e. the capacity.
+         */
+        numSeats: number;
+
+        /**
+         * The next car on the same train. If this is the last or only car on the train,
+         * this will return null.
+         */
+        nextCarOnTrain: number | null;
+
+        /**
+         * The previous car on the ride. This may be the on the same train or the previous
+         * train. This will point to the last car if this is the first car on the ride.
+         */
+        previousCarOnRide: number;
+
+        /**
+         * The next car on the ride. This may be the on the same train or the next
+         * train. This will point to the first car if this is the last car on the ride.
+         */
+        nextCarOnRide: number;
+
+        /**
+         * The current station the train is in or departing.
+         */
+        currentStation: number;
+
+        /**
+         * How heavy the car is. This is the sum of the mass of the empty car and the
+         * mass of each guest that is riding it.
+         */
+        mass: number;
+
+        /**
+         * How much the car's velocity changes per tick.
+         */
+        acceleration: number;
+
+        /**
+         * How fast the car is moving.
+         */
+        velocity: number;
+
+        /**
+         * The current tilt of the car in the X/Y axis.
+         */
+        bankRotation: number;
+
+        /**
+         * The colour of the car.
+         */
+        colours: VehicleColour;
+
+        /**
+         * The acceleration for vehicles with constant power, e.g.
+         * transport rides and boats.
+         */
+        poweredAcceleration: number;
+
+        /**
+         * The maximum speed for vehicles with constant power, e.g.
+         * transport rides and boats.
+         */
+        poweredMaxSpeed: number;
+
+        /**
+         * Current status of the car or train.
+         */
+        status: VehicleStatus;
+
+        /**
+         * List of peep IDs ordered by seat.
+         */
+        peeps: (number | null)[];
+    }
+
+    type VehicleStatus =
+        "arriving" |
+        "crashed" |
+        "crashing" |
+        "crooked_house_operating" |
+        "departing" |
+        "doing_circus_show" |
+        "ferris_wheel_rotating" |
+        "haunted_house_operating" |
+        "moving_to_end_of_station" |
+        "operating_1a" |
+        "rotating" |
+        "showing_film" |
+        "simulator_operating" |
+        "space_rings_operating" |
+        "starting" |
+        "stopped_by_block_brake" |
+        "stopping_1b" |
+        "stopping" |
+        "swinging" |
+        "top_spin_operating" |
+        "travelling_boat" |
+        "travelling_cable_lift" |
+        "travelling_dodgems" |
+        "travelling" |
+        "unloading_passengers_1c" |
+        "unloading_passengers" |
+        "waiting_for_cable_lift" |
+        "waiting_for_passengers_17" |
+        "waiting_for_passengers" |
+        "waiting_to_depart" |
+        "waiting_to_start";
+
+    /**
      * Represents a guest or staff member.
      */
     interface Peep extends Entity {
@@ -1890,10 +2045,12 @@ declare global {
         remove(): void;
     }
 
+    interface ParkMessageDesc  {
+    interface ParkMessageDesc {
     /**
      * The park message description. TODO what's the difference between this and ParkMessage?
      */
-    interface ParkMessageDesc  {
+    interface ParkMessageDesc {
         /** The format of the message such as the icon and whether location is enabled. */
         type: ParkMessageType;
         /** The message content. */
@@ -1918,6 +2075,8 @@ declare global {
         bankLoan: number;
         /** The maximum possible bank loan. Represented as an integer (e.g. $10,000 = 1000000). TODO since this can only be integers does it use the *100 multiplier for cash values? */
         maxBankLoan: number;
+		/** The park name. */
+        name: string;
         /** An array of the most recent 61 park messages. */
         messages: ParkMessage[];
 

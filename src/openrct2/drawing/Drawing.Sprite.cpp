@@ -264,7 +264,7 @@ bool gfx_load_g2()
 
     char path[MAX_PATH];
 
-    platform_get_openrct_data_path(path, sizeof(path));
+    platform_get_openrct2_data_path(path, sizeof(path));
     safe_strcat_path(path, "g2.dat", MAX_PATH);
     try
     {

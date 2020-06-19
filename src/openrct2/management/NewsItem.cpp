@@ -23,7 +23,7 @@
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
 
-NewsItemQueue gNewsItems;
+NewsItemQueues gNewsItems;
 
 /** rct2: 0x0097BE7C */
 const uint8_t news_type_properties[] = {
@@ -39,24 +39,14 @@ const uint8_t news_type_properties[] = {
     NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
-NewsItem& NewsItemQueue::Current()
+NewsItem& NewsItemQueues::Current()
 {
-    return Recent[0];
+    return Recent.front();
 }
 
-const NewsItem& NewsItemQueue::Current() const
+const NewsItem& NewsItemQueues::Current() const
 {
-    return Recent[0];
-}
-
-NewsItem& NewsItemQueue::Oldest()
-{
-    return Archived[0];
-}
-
-const NewsItem& NewsItemQueue::Oldest() const
-{
-    return Archived[0];
+    return Recent.front();
 }
 
 bool news_item_is_valid_idx(int32_t index)
@@ -74,25 +64,25 @@ NewsItem* news_item_get(int32_t index)
     return gNewsItems.At(index);
 }
 
-NewsItem& NewsItemQueue::operator[](size_t index)
+NewsItem& NewsItemQueues::operator[](size_t index)
 {
-    return const_cast<NewsItem&>(const_cast<const NewsItemQueue&>(*this)[index]);
+    return const_cast<NewsItem&>(const_cast<const NewsItemQueues&>(*this)[index]);
 }
 
-const NewsItem& NewsItemQueue::operator[](size_t index) const
+const NewsItem& NewsItemQueues::operator[](size_t index) const
 {
-    if (index < NEWS_ITEM_HISTORY_START)
+    if (index < Recent.capacity())
         return Recent[index];
     else
-        return Archived[index - NEWS_ITEM_HISTORY_START];
+        return Archived[index - Recent.capacity()];
 }
 
-NewsItem* NewsItemQueue::At(int32_t index)
+NewsItem* NewsItemQueues::At(int32_t index)
 {
-    return const_cast<NewsItem*>(const_cast<const NewsItemQueue&>(*this).At(index));
+    return const_cast<NewsItem*>(const_cast<const NewsItemQueues&>(*this).At(index));
 }
 
-const NewsItem* NewsItemQueue::At(int32_t index) const
+const NewsItem* NewsItemQueues::At(int32_t index) const
 {
     if (news_item_is_valid_idx(index))
     {
@@ -104,35 +94,30 @@ const NewsItem* NewsItemQueue::At(int32_t index) const
     }
 }
 
-bool news_item_is_empty(int32_t index)
-{
-    NewsItem* news = gNewsItems.At(index);
-    return news != nullptr && news->IsEmpty();
-}
-
 bool news_item_is_queue_empty()
 {
     return gNewsItems.IsEmpty();
 }
 
-bool NewsItemQueue::IsEmpty() const
+bool NewsItemQueues::IsEmpty() const
 {
-    return Current().IsEmpty();
+    return Recent.empty();
 }
 
 /**
  *
  *  rct2: 0x0066DF32
  */
-void NewsItemQueue::Init()
+void NewsItemQueues::Clear()
 {
-    Current().Type = NEWS_ITEM_NULL;
-    Oldest().Type = NEWS_ITEM_NULL;
+    Recent.clear();
+    Archived.clear();
 }
 
 void news_item_init_queue()
 {
-    gNewsItems.Init();
+    gNewsItems.Clear();
+    assert(gNewsItems.IsEmpty());
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
@@ -144,7 +129,7 @@ void news_item_init_queue()
     context_broadcast_intent(&intent);
 }
 
-uint16_t NewsItemQueue::IncrementTicks()
+uint16_t NewsItemQueues::IncrementTicks()
 {
     return ++Current().Ticks;
 }
@@ -160,7 +145,7 @@ static void news_item_tick_current()
     }
 }
 
-int32_t NewsItemQueue::RemoveTime() const
+int32_t NewsItemQueues::RemoveTime() const
 {
     if (!Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
     {
@@ -169,7 +154,7 @@ int32_t NewsItemQueue::RemoveTime() const
     return 320;
 }
 
-bool NewsItemQueue::CurrentShouldBeArchived() const
+bool NewsItemQueues::CurrentShouldBeArchived() const
 {
     return Current().Ticks >= RemoveTime();
 }
@@ -204,45 +189,23 @@ void news_item_close_current()
     gNewsItems.ArchiveCurrent();
 }
 
-void NewsItemQueue::ArchiveCurrent()
+void NewsItemQueues::ArchiveCurrent()
 {
     // Check if there is a current message
     if (IsEmpty())
         return;
 
-    AppendToArchive(Current());
+    Archived.push_back(Current());
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    memmove(Recent, Recent + 1, sizeof(NewsItem) * (std::size(Recent) - 1));
-    Recent[NEWS_ITEM_HISTORY_START - 1].Type = NEWS_ITEM_NULL;
+    Recent.pop_front();
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     context_broadcast_intent(&intent);
-}
-
-/**
- * Finds a spare history slot or replaces an existing one if there are no spare
- * slots available.
- */
-void NewsItemQueue::AppendToArchive(NewsItem& item)
-{
-    auto it = std::find_if(std::begin(Archived), std::end(Archived), [](const auto& newsItem) { return newsItem.IsEmpty(); });
-    if (it != std::end(Archived))
-    {
-        *it = item;
-        ++it;
-        if (it != std::end(Archived))
-            it->Type = NEWS_ITEM_NULL;
-        return;
-    }
-
-    // Dequeue the first history news item, shift history up
-    memmove(Archived, Archived + 1, sizeof(NewsItem) * (std::size(Archived) - 1));
-    Archived[MAX_NEWS_ITEMS_ARCHIVE - 1] = item;
 }
 
 /**
@@ -274,7 +237,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             if (sprite == nullptr)
                 break;
 
-            auto peep = sprite->AsPeep();
+            auto peep = sprite->generic.As<Peep>();
             if (peep == nullptr)
                 break;
 
@@ -282,14 +245,14 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             if (subjectLoc->x != LOCATION_NULL)
                 break;
 
-            if (peep->state != PEEP_STATE_ON_RIDE && peep->state != PEEP_STATE_ENTERING_RIDE)
+            if (peep->State != PEEP_STATE_ON_RIDE && peep->State != PEEP_STATE_ENTERING_RIDE)
             {
                 subjectLoc = std::nullopt;
                 break;
             }
 
             // Find which ride peep is on
-            Ride* ride = get_ride(peep->current_ride);
+            Ride* ride = get_ride(peep->CurrentRide);
             if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 subjectLoc = std::nullopt;
@@ -297,9 +260,9 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
 
             // Find the first car of the train peep is on
-            sprite = try_get_sprite(ride->vehicles[peep->current_train]);
+            sprite = try_get_sprite(ride->vehicles[peep->CurrentTrain]);
             // Find the actual car peep is on
-            for (int32_t i = 0; i < peep->current_car && sprite != nullptr; i++)
+            for (int32_t i = 0; i < peep->CurrentCar && sprite != nullptr; i++)
             {
                 sprite = try_get_sprite(sprite->vehicle.next_vehicle_on_train);
             }
@@ -314,7 +277,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             auto sprite = try_get_sprite(subject);
             if (sprite != nullptr)
             {
-                auto peep = sprite->AsPeep();
+                auto peep = sprite->generic.As<Peep>();
                 if (peep != nullptr)
                 {
                     subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
@@ -339,17 +302,20 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
     return subjectLoc;
 }
 
-NewsItem* NewsItemQueue::FirstOpenOrNewSlot()
+NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
 {
-    auto it = std::begin(Recent);
-    for (; !it->IsEmpty();)
+    for (auto emptySlots = Recent.capacity() - Recent.size(); emptySlots < 2; ++emptySlots)
     {
-        if (it + 2 >= std::end(Recent))
-            ArchiveCurrent();
-        else
-            it++;
+        ArchiveCurrent();
     }
-    return &*it;
+
+    auto res = Recent.end();
+    // The for loop above guarantees there is always an extra element to use
+    assert(Recent.capacity() - Recent.size() >= 2);
+    auto newsItem = res + 1;
+    newsItem->Type = NEWS_ITEM_NULL;
+
+    return &*res;
 }
 
 /**
@@ -377,14 +343,7 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
-    NewsItem* res = newsItem;
-
-    // Blatant disregard for what happens on the last element.
-    // TODO: Change this when we implement the queue ourselves.
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
-
-    return res;
+    return newsItem;
 }
 
 /**
@@ -410,7 +369,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             auto sprite = try_get_sprite(subject);
             if (sprite != nullptr)
             {
-                auto peep = sprite->AsPeep();
+                auto peep = sprite->generic.As<Peep>();
                 if (peep != nullptr)
                 {
                     auto intent = Intent(WC_PEEP);
@@ -506,8 +465,6 @@ void news_item_add_to_queue_custom(NewsItem* newNewsItem)
 {
     NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
 }
 
 void news_item_remove(int32_t index)

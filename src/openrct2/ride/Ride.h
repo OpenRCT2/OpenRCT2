@@ -85,12 +85,12 @@ struct vehicle_colour_preset_list
 };
 assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
 
-struct rct_ride_name
+struct RideNaming
 {
-    rct_string_id name;
-    rct_string_id description;
+    rct_string_id Name;
+    rct_string_id Description;
 };
-assert_struct_size(rct_ride_name, 4);
+assert_struct_size(RideNaming, 4);
 
 #pragma pack(pop)
 
@@ -99,7 +99,7 @@ assert_struct_size(rct_ride_name, 4);
  */
 struct rct_ride_entry
 {
-    rct_ride_name naming;
+    RideNaming naming;
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
@@ -117,7 +117,7 @@ struct rct_ride_entry
     uint8_t second_vehicle;
     uint8_t rear_vehicle;
     uint8_t third_vehicle;
-    uint8_t pad_019;
+    uint8_t BuildMenuPriority;
     rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
     vehicle_colour_preset_list* vehicle_preset_list;
     int8_t excitement_multiplier;
@@ -276,7 +276,7 @@ struct Ride
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
-        rating_tuple ratings;
+        RatingTuple ratings;
         struct
         {
             ride_rating excitement;
@@ -917,14 +917,14 @@ enum
     TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
 };
 
-struct rct_ride_properties
+struct RideOperatingSettings
 {
-    uint8_t min_value;
-    uint8_t max_value;
-    uint8_t max_brakes_speed;
-    uint8_t powered_lift_acceleration;
-    uint8_t booster_acceleration;
-    int8_t booster_speed_factor; // The factor to shift the raw booster speed with
+    uint8_t MinValue;
+    uint8_t MaxValue;
+    uint8_t MaxBrakesSpeed;
+    uint8_t PoweredLiftAcceleration;
+    uint8_t BoosterAcceleration;
+    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
 };
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -942,8 +942,6 @@ struct rct_ride_properties
 
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
-
-extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 Ride* get_ride(ride_id_t index);
 
@@ -1126,7 +1124,7 @@ void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
-rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
+RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
 
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
@@ -1213,7 +1211,6 @@ bool ride_has_ratings(const Ride* ride);
 const char* ride_type_get_enum_name(int32_t rideType);
 
 uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
-bool ride_type_supports_boosters(uint8_t rideType);
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);

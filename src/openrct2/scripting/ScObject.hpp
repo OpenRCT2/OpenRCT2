@@ -836,7 +836,7 @@ namespace OpenRCT2::Scripting
             {
                 for (size_t i = 0; i < std::size(entry->vehicles); i++)
                 {
-                    result.push_back(std::make_shared<ScRideObjectVehicle>((OBJECT_TYPE)_type, _index, i));
+                    result.push_back(std::make_shared<ScRideObjectVehicle>(static_cast<OBJECT_TYPE>(_type), _index, i));
                 }
             }
             return result;

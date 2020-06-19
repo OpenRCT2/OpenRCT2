@@ -64,7 +64,7 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
             rct_g1_element g1Element;
 
             uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
-            g1Element.offset = (uint8_t*)(imageDataBase + imageDataOffset);
+            g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
 
             g1Element.width = stream->ReadValue<int16_t>();
             g1Element.height = stream->ReadValue<int16_t>();

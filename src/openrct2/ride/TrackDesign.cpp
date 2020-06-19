@@ -59,6 +59,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <memory>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -93,7 +94,7 @@ static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
 static bool _trackDesignPlaceIsReplay = false;
 
-static map_backup* track_design_preview_backup_map();
+static std::unique_ptr<map_backup> track_design_preview_backup_map();
 
 static void track_design_preview_restore_map(map_backup* backup);
 
@@ -154,9 +155,9 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     }
     total_air_time = static_cast<uint8_t>(totalAirTime);
 
-    excitement = ride.ratings.excitement / 10;
-    intensity = ride.ratings.intensity / 10;
-    nausea = ride.ratings.nausea / 10;
+    excitement = ride.ratings.Excitement / 10;
+    intensity = ride.ratings.Intensity / 10;
+    nausea = ride.ratings.Nausea / 10;
 
     upkeep_cost = ride.upkeep_cost;
     flags = 0;
@@ -2000,7 +2001,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 {
     // Make a copy of the map
-    map_backup* mapBackup = track_design_preview_backup_map();
+    auto mapBackup = track_design_preview_backup_map();
     if (mapBackup == nullptr)
     {
         return;
@@ -2018,7 +2019,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     if (!track_design_place_preview(td6, &cost, &ride, &flags))
     {
         std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
-        track_design_preview_restore_map(mapBackup);
+        track_design_preview_restore_map(mapBackup.get());
         return;
     }
     td6->cost = cost;
@@ -2101,7 +2102,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     }
 
     ride->Delete();
-    track_design_preview_restore_map(mapBackup);
+    track_design_preview_restore_map(mapBackup.get());
 }
 
 /**
@@ -2109,9 +2110,9 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
  * design preview.
  *  rct2: 0x006D1C68
  */
-static map_backup* track_design_preview_backup_map()
+static std::unique_ptr<map_backup> track_design_preview_backup_map()
 {
-    map_backup* backup = static_cast<map_backup*>(malloc(sizeof(map_backup)));
+    auto backup = std::make_unique<map_backup>();
     if (backup != nullptr)
     {
         std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
@@ -2138,8 +2139,6 @@ static void track_design_preview_restore_map(map_backup* backup)
     gMapSizeMinus2 = backup->map_size_units_minus_2;
     gMapSize = backup->map_size;
     gCurrentRotation = backup->current_rotation;
-
-    free(backup);
 }
 
 /**

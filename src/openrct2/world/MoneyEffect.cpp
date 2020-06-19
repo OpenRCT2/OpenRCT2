@@ -18,20 +18,9 @@
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
-bool rct_sprite::IsMoneyEffect()
+template<> bool SpriteBase::Is<MoneyEffect>() const
 {
-    return this->money_effect.sprite_identifier == SPRITE_IDENTIFIER_MISC
-        && this->money_effect.type == SPRITE_MISC_MONEY_EFFECT;
-}
-
-MoneyEffect* rct_sprite::AsMoneyEffect()
-{
-    MoneyEffect* result = nullptr;
-    if (IsMoneyEffect())
-    {
-        result = reinterpret_cast<MoneyEffect*>(this);
-    }
-    return result;
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_MONEY_EFFECT;
 }
 
 /**
@@ -109,7 +98,7 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
  */
 void MoneyEffect::Update()
 {
-    invalidate_sprite_2(this);
+    Invalidate2();
     Wiggle++;
     if (Wiggle >= 22)
     {

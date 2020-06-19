@@ -109,7 +109,7 @@ public:
         }
 
         auto z = ride->stations[_stationNum].GetBaseZ();
-        if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
+        if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }

@@ -57,8 +57,8 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     rct_sprite* sprite;
     Vehicle* vehicle;
 
-    // No click input for title screen or scenario editor or track manager
-    if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+    // No click input for scenario editor or track manager
+    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     //
@@ -73,6 +73,15 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     info->y = mapCoord.y;
     tileElement = info->tileElement;
     sprite = info->sprite;
+
+    // Allows only balloons to be popped and ducks to be quacked in title screen
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    {
+        if (info->type == VIEWPORT_INTERACTION_ITEM_SPRITE && (sprite->generic.Is<Balloon>() || sprite->generic.Is<Duck>()))
+            return info->type;
+        else
+            return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+    }
 
     switch (info->type)
     {
@@ -170,7 +179,7 @@ int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
                         {
                             case SPRITE_MISC_BALLOON:
                             {
-                                auto balloonPress = BalloonPressAction(info.sprite->AsBalloon()->sprite_index);
+                                auto balloonPress = BalloonPressAction(info.sprite->generic.sprite_index);
                                 GameActions::Execute(&balloonPress);
                             }
                             break;
@@ -611,11 +620,8 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
 
 static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
-    int32_t distance, closestDistance;
-    uint16_t spriteIndex;
     rct_window* w;
     rct_viewport* viewport;
-    Peep *peep, *closestPeep;
 
     w = window_find_from_point(screenCoords);
     if (w == nullptr)
@@ -628,14 +634,14 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
     screenCoords.x = ((screenCoords.x - viewport->pos.x) * viewport->zoom) + viewport->viewPos.x;
     screenCoords.y = ((screenCoords.y - viewport->pos.y) * viewport->zoom) + viewport->viewPos.y;
 
-    closestPeep = nullptr;
-    closestDistance = 0xFFFF;
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    Peep* closestPeep = nullptr;
+    auto closestDistance = std::numeric_limits<int32_t>::max();
+    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
 
-        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
+        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
             + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - screenCoords.y);
         if (distance > maxDistance)
             continue;

@@ -82,6 +82,11 @@ private:
         res->Position.z = _loc.z;
         res->ErrorTitle = STR_CANT_REPAINT_THIS;
 
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
             if (!map_is_location_owned(_loc))

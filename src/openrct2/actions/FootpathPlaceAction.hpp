@@ -62,7 +62,7 @@ public:
 
         gFootpathGroundFlags = 0;
 
-        if (map_is_edge(_loc))
+        if (!LocationValid(_loc) || map_is_edge(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }

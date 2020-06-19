@@ -106,17 +106,14 @@ void finance_payment(money32 amount, ExpenditureType type)
  */
 void finance_pay_wages()
 {
-    Peep* peep;
-    uint16_t spriteIndex;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    FOR_ALL_STAFF (spriteIndex, peep)
+    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
-        finance_payment(gStaffWageTable[peep->staff_type] / 4, ExpenditureType::Wages);
+        finance_payment(gStaffWageTable[peep->StaffType] / 4, ExpenditureType::Wages);
     }
 }
 
@@ -249,12 +246,9 @@ void finance_update_daily_profit()
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
-        uint16_t sprite_index;
-        Peep* peep;
-
-        FOR_ALL_STAFF (sprite_index, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
-            current_profit -= gStaffWageTable[peep->staff_type];
+            current_profit -= gStaffWageTable[peep->StaffType];
         }
 
         // Research costs

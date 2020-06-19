@@ -16,7 +16,7 @@
 
 namespace OpenRCT2
 {
-    enum class DIRBASE : int32_t
+    enum class DIRBASE : size_t
     {
         RCT1,          // Base directory for original RollerCoaster Tycoon 1 content.
         RCT2,          // Base directory for original RollerCoaster Tycoon 2 content.
@@ -26,7 +26,7 @@ namespace OpenRCT2
         CACHE,         // Base directory for OpenRCT2 cache files.
         DOCUMENTATION, // Base directory for OpenRCT2 doc files.
     };
-    constexpr int32_t DIRBASE_COUNT = 7;
+    constexpr size_t DIRBASE_COUNT = 7;
     using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
 
     enum class DIRID

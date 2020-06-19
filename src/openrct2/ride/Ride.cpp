@@ -309,7 +309,7 @@ Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->next_in_queue;
+        spriteIndex = peep->GuestNextInQueue;
         result = peep;
     }
     return result;
@@ -322,7 +322,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->next_in_queue;
+        spriteIndex = peep->GuestNextInQueue;
         count++;
     }
     stations[stationIndex].QueueLength = count;
@@ -333,17 +333,17 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
     assert(stationIndex < MAX_STATIONS);
     assert(peep != nullptr);
 
-    peep->next_in_queue = SPRITE_INDEX_NULL;
-    Peep* queueHeadGuest = GetQueueHeadGuest(peep->current_ride_station);
+    peep->GuestNextInQueue = SPRITE_INDEX_NULL;
+    Peep* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
-        stations[peep->current_ride_station].LastPeepInQueue = peep->sprite_index;
+        stations[peep->CurrentRideStation].LastPeepInQueue = peep->sprite_index;
     }
     else
     {
-        queueHeadGuest->next_in_queue = peep->sprite_index;
+        queueHeadGuest->GuestNextInQueue = peep->sprite_index;
     }
-    UpdateQueueLength(peep->current_ride_station);
+    UpdateQueueLength(peep->CurrentRideStation);
 }
 
 /**
@@ -352,13 +352,10 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
  */
 void ride_update_favourited_stat()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
     for (auto& ride : GetRideManager())
         ride.guests_favourite = 0;
 
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         if (peep->FavouriteRide != RIDE_ID_NULL)
         {
@@ -831,10 +828,9 @@ size_t Ride::FormatStatusTo(void* argsV) const
         mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         && race_winner != SPRITE_INDEX_NULL)
     {
-        auto sprite = get_sprite(race_winner);
-        if (sprite != nullptr && sprite->IsPeep())
+        auto peep = GetEntity<Peep>(race_winner);
+        if (peep != nullptr)
         {
-            auto peep = sprite->AsPeep();
             ft.Add<rct_string_id>(STR_RACE_WON_BY);
             peep->FormatNameTo(ft);
         }
@@ -1004,7 +1000,7 @@ static void ride_remove_cable_lift(Ride* ride)
         do
         {
             Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
             sprite_remove(vehicle);
             spriteIndex = vehicle->next_vehicle_on_train;
         } while (spriteIndex != SPRITE_INDEX_NULL);
@@ -1028,7 +1024,7 @@ static void ride_remove_vehicles(Ride* ride)
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-                invalidate_sprite_2(vehicle);
+                vehicle->Invalidate();
                 sprite_remove(vehicle);
                 spriteIndex = vehicle->next_vehicle_on_train;
             }
@@ -1099,18 +1095,16 @@ void ride_remove_peeps(Ride* ride)
     }
 
     // Place all the peeps at exit
-    uint16_t spriteIndex;
-    Peep* peep;
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
     {
-        if (peep->state == PEEP_STATE_QUEUING_FRONT || peep->state == PEEP_STATE_ENTERING_RIDE
-            || peep->state == PEEP_STATE_LEAVING_RIDE || peep->state == PEEP_STATE_ON_RIDE)
+        if (peep->State == PEEP_STATE_QUEUING_FRONT || peep->State == PEEP_STATE_ENTERING_RIDE
+            || peep->State == PEEP_STATE_LEAVING_RIDE || peep->State == PEEP_STATE_ON_RIDE)
         {
-            if (peep->current_ride != ride->id)
+            if (peep->CurrentRide != ride->id)
                 continue;
 
             peep_decrement_num_riders(peep);
-            if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
+            if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->SubState == PEEP_RIDE_AT_ENTRANCE)
                 peep->RemoveFromQueue();
 
             if (exitPosition.direction == INVALID_DIRECTION)
@@ -1127,12 +1121,12 @@ void ride_remove_peeps(Ride* ride)
                 peep->sprite_direction = exitPosition.direction;
             }
 
-            peep->state = PEEP_STATE_FALLING;
+            peep->State = PEEP_STATE_FALLING;
             peep->SwitchToSpecialSprite(0);
 
-            peep->happiness = std::min(peep->happiness, peep->happiness_target) / 2;
-            peep->happiness_target = peep->happiness;
-            peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
+            peep->Happiness = std::min(peep->Happiness, peep->HappinessTarget) / 2;
+            peep->HappinessTarget = peep->Happiness;
+            peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }
 
@@ -2170,7 +2164,7 @@ void Ride::UpdateSpiralSlide()
         slide_in_use--;
 
         Peep* peep = GET_PEEP(slide_peep);
-        peep->destination_x++;
+        peep->DestinationX++;
     }
 
     const uint8_t current_rotation = get_current_rotation();
@@ -2487,7 +2481,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
                         }
                     }
                     if (vehicle != nullptr)
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+                        vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                 }
             }
             break;
@@ -2501,7 +2495,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
             if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
             {
                 vehicle = GET_VEHICLE(vehicleSpriteIdx);
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -2603,8 +2597,8 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         {
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING)
-                || mechanic->current_ride != ride->id)
+                || (mechanic->State != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->State != PEEP_STATE_ANSWERING)
+                || mechanic->CurrentRide != ride->id)
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2616,8 +2610,8 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         {
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_FIXING
-                    && mechanic->state != PEEP_STATE_INSPECTING && mechanic->state != PEEP_STATE_ANSWERING))
+                || (mechanic->State != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->State != PEEP_STATE_FIXING
+                    && mechanic->State != PEEP_STATE_INSPECTING && mechanic->State != PEEP_STATE_ANSWERING))
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2635,12 +2629,12 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
 static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection)
 {
     mechanic->SetState(forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING);
-    mechanic->sub_state = 0;
+    mechanic->SubState = 0;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     ride->mechanic = mechanic->sprite_index;
-    mechanic->current_ride = ride->id;
-    mechanic->current_ride_station = ride->inspection_station;
+    mechanic->CurrentRide = ride->id;
+    mechanic->CurrentRideStation = ride->inspection_station;
 }
 
 /**
@@ -2686,24 +2680,22 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
  */
 Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
 {
-    uint32_t closestDistance, distance;
-    uint16_t spriteIndex;
-    Peep *peep, *closestMechanic = nullptr;
+    Peep* closestMechanic = nullptr;
+    uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
 
-    closestDistance = UINT_MAX;
-    FOR_ALL_STAFF (spriteIndex, peep)
+    for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
     {
-        if (peep->staff_type != STAFF_TYPE_MECHANIC)
+        if (peep->StaffType != STAFF_TYPE_MECHANIC)
             continue;
 
         if (!forInspection)
         {
-            if (peep->state == PEEP_STATE_HEADING_TO_INSPECTION)
+            if (peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
             {
-                if (peep->sub_state >= 4)
+                if (peep->SubState >= 4)
                     continue;
             }
-            else if (peep->state != PEEP_STATE_PATROLLING)
+            else if (peep->State != PEEP_STATE_PATROLLING)
                 continue;
 
             if (!(peep->StaffOrders & STAFF_ORDERS_FIX_RIDES))
@@ -2711,7 +2703,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
         }
         else
         {
-            if (peep->state != PEEP_STATE_PATROLLING || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
+            if (peep->State != PEEP_STATE_PATROLLING || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
                 continue;
         }
 
@@ -2724,7 +2716,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
             continue;
 
         // Manhattan distance
-        distance = std::abs(peep->x - x) + std::abs(peep->y - y);
+        uint32_t distance = std::abs(peep->x - x) + std::abs(peep->y - y);
         if (distance < closestDistance)
         {
             closestDistance = distance;
@@ -2739,10 +2731,12 @@ Staff* ride_get_mechanic(Ride* ride)
 {
     if (ride->mechanic != SPRITE_INDEX_NULL)
     {
-        auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
-        if (peep != nullptr && peep->IsMechanic())
+        auto peep = GetEntity<Peep>(ride->mechanic);
+        if (peep != nullptr)
         {
-            return peep;
+            auto staff = peep->AsStaff();
+            if (staff != nullptr && staff->IsMechanic())
+                return staff;
         }
     }
     return nullptr;
@@ -2888,7 +2882,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
         return;
     }
 
-    uint8_t trackType = (vehicle->track_type >> 2) & 0xFF;
+    uint8_t trackType = (vehicle->GetTrackType()) & 0xFF;
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
         || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
         || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
@@ -4401,7 +4395,7 @@ static Vehicle* vehicle_create_car(
         vehicle->TrackLocation = { x, y, z };
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
 
-        z += RideData5[ride->type].z_offset;
+        z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
@@ -4490,7 +4484,7 @@ static Vehicle* vehicle_create_car(
 
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
         z = tileElement->GetBaseZ();
-        z += RideData5[ride->type].z_offset;
+        z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
         vehicle->MoveTo({ x, y, z });
         vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (vehicle->sprite_direction >> 3);
@@ -4504,7 +4498,7 @@ static Vehicle* vehicle_create_car(
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
         vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
@@ -4604,7 +4598,7 @@ static void vehicle_unset_update_flag_b1(Vehicle* head)
     Vehicle* vehicle = head;
     while (true)
     {
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
         uint16_t spriteIndex = vehicle->next_vehicle_on_train;
         if (spriteIndex == SPRITE_INDEX_NULL)
         {
@@ -4810,9 +4804,9 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         car = train;
         while (true)
         {
-            car->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+            car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
             car->SetState(VEHICLE_STATUS_TRAVELLING, car->sub_state);
-            if ((car->track_type >> 2) == TRACK_ELEM_END_STATION)
+            if ((car->GetTrackType()) == TRACK_ELEM_END_STATION)
             {
                 car->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, car->sub_state);
             }
@@ -5484,14 +5478,11 @@ int32_t ride_get_refund_price(const Ride* ride)
  */
 void Ride::StopGuestsQueuing()
 {
-    uint16_t spriteIndex;
-    Peep* peep;
-
-    FOR_ALL_PEEPS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        if (peep->state != PEEP_STATE_QUEUING)
+        if (peep->State != PEEP_STATE_QUEUING)
             continue;
-        if (peep->current_ride != id)
+        if (peep->CurrentRide != id)
             continue;
 
         peep->RemoveFromQueue();
@@ -5632,7 +5623,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 {
     if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
@@ -5641,7 +5632,7 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     }
     else if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        return RideNaming[rideType];
+        return RideTypeDescriptors[rideType].Naming;
     }
     else
     {
@@ -6355,7 +6346,7 @@ void invalidate_test_results(Ride* ride)
             if (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
             }
         }
     }
@@ -6384,9 +6375,9 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GET_VEHICLE(spriteIndex);
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                 spriteIndex = vehicle->next_vehicle_on_train;
             }
         }
@@ -6435,7 +6426,7 @@ void ride_update_vehicle_colours(Ride* ride)
             vehicle->colours.body_colour = colours.Body;
             vehicle->colours.trim_colour = colours.Trim;
             vehicle->colours_extended = colours.Ternary;
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
             carIndex++;
         }
@@ -6691,7 +6682,7 @@ void Ride::UpdateMaxVehicles()
             return;
 
         auto stationLength = (*stationNumTiles * 0x44180) - 0x16B2A;
-        int32_t maxMass = RideData5[type].max_mass << 8;
+        int32_t maxMass = RideTypeDescriptors[type].MaxMass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
@@ -7441,16 +7432,9 @@ uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
     return RIDE_TYPE_NULL;
 }
 
-bool ride_type_supports_boosters(uint8_t rideType)
-{
-    return rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER
-        || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-        || rideType == RIDE_TYPE_GIGA_COASTER || rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER;
-}
-
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = RideProperties[rideType].booster_speed_factor;
+    int8_t shiftFactor = RideTypeDescriptors[rideType].OperatingSettings.BoosterSpeedFactor;
     if (shiftFactor == 0)
     {
         return rawSpeed;
@@ -7746,13 +7730,13 @@ size_t Ride::FormatNameTo(void* argsV) const
     }
     else
     {
-        auto rideTypeName = RideNaming[type].name;
+        auto rideTypeName = RideTypeDescriptors[type].Naming.Name;
         if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)
             {
-                rideTypeName = rideEntry->naming.name;
+                rideTypeName = rideEntry->naming.Name;
             }
         }
         else if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
@@ -7763,7 +7747,7 @@ size_t Ride::FormatNameTo(void* argsV) const
                 auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
                 if (rideGroup != nullptr)
                 {
-                    rideTypeName = rideGroup->Naming.name;
+                    rideTypeName = rideGroup->Naming.Name;
                 }
             }
         }

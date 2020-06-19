@@ -188,7 +188,7 @@ public:
 
             res->GroundFlags = tempSceneryGroundFlags;
 
-            if (curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits)
+            if (!LocationValid(curTile) || curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits)
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }

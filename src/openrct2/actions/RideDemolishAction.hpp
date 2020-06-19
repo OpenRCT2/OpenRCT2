@@ -153,24 +153,22 @@ private:
             }
         }
 
-        uint16_t spriteIndex;
-        Peep* peep;
-        FOR_ALL_GUESTS (spriteIndex, peep)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
             uint8_t ride_id_bit = _rideIndex % 8;
             uint8_t ride_id_offset = _rideIndex / 8;
 
-            // clear ride from potentially being in rides_been_on
-            peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
-            if (peep->state == PEEP_STATE_WATCHING)
+            // clear ride from potentially being in RidesBeenOn
+            peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
+            if (peep->State == PEEP_STATE_WATCHING)
             {
-                if (peep->current_ride == _rideIndex)
+                if (peep->CurrentRide == _rideIndex)
                 {
-                    peep->current_ride = RIDE_ID_NULL;
-                    if (peep->time_to_stand >= 50)
+                    peep->CurrentRide = RIDE_ID_NULL;
+                    if (peep->TimeToStand >= 50)
                     {
                         // make peep stop watching the ride
-                        peep->time_to_stand = 50;
+                        peep->TimeToStand = 50;
                     }
                 }
             }
@@ -192,25 +190,25 @@ private:
                     peep->ItemStandardFlags &= ~PEEP_ITEM_PHOTO;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO2)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO2)
             {
-                if (peep->photo2_ride_ref == _rideIndex)
+                if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO2;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO3)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO3)
             {
-                if (peep->photo3_ride_ref == _rideIndex)
+                if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO3;
                 }
             }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO4)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO4)
             {
-                if (peep->photo4_ride_ref == _rideIndex)
+                if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO4;
                 }
             }
 
@@ -227,15 +225,15 @@ private:
             {
                 // Don't touch items after the first NONE thought as they are not valid
                 // fixes issues with clearing out bad thought data in multiplayer
-                if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+                if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
                     break;
 
-                if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->thoughts[i].item == _rideIndex)
+                if (peep->Thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->Thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
-                    memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
-                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
+                    memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
                     // Next iteration, check the new thought at this index
                     i--;
                 }
@@ -305,7 +303,7 @@ private:
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (it.element->AsTrack()->GetRideIndex() != (ride_id_t)_rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != static_cast<ride_id_t>(_rideIndex))
                 continue;
 
             auto location = CoordsXYZD(

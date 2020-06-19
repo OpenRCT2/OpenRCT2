@@ -15,7 +15,7 @@
 #include "Track.h"
 
 static void ride_update_station_blocksection(Ride* ride, StationIndex stationIndex);
-static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex);
+static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex);
 static void ride_update_station_normal(Ride* ride, StationIndex stationIndex);
 static void ride_update_station_race(Ride* ride, StationIndex stationIndex);
 static void ride_race_init_vehicle_speeds(Ride* ride);
@@ -36,7 +36,7 @@ void ride_update_station(Ride* ride, StationIndex stationIndex)
             ride_update_station_race(ride, stationIndex);
             break;
         case RIDE_MODE_DODGEMS:
-            ride_update_station_bumpercar(ride, stationIndex);
+            ride_update_station_dodgems(ride, stationIndex);
             break;
         case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
         case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
@@ -83,7 +83,7 @@ static void ride_update_station_blocksection(Ride* ride, StationIndex stationInd
  *
  *  rct2: 0x006AC12B
  */
-static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex)
+static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
 {
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
@@ -273,7 +273,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
             continue;
 
         Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
         rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
@@ -281,7 +281,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 
         if (vehicle->num_peeps != 0)
         {
-            Peep* peep = &get_sprite(vehicle->peep[0])->peep;
+            auto peep = GetEntity<Peep>(vehicle->peep[0]);
 
             // Easter egg names should only work on guests
             Guest* guest = peep->AsGuest();

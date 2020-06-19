@@ -44,7 +44,7 @@ namespace ObjectJsonHelpers
         {
             if (GetBoolean(obj, item.first))
             {
-                flags = (T)(flags | item.second);
+                flags = static_cast<T>(flags | item.second);
             }
         }
         return flags;

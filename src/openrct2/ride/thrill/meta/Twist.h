@@ -20,6 +20,7 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, FLAT_TRACK_ELEM_3_X_3),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_twist),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
@@ -28,10 +29,20 @@ constexpr const RideTypeDescriptor TwistRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_ROTATION)),
     SET_FIELD(DefaultMode, RIDE_MODE_ROTATION),
+    SET_FIELD(OperatingSettings, { 3, 6, 0, 0, 0, 0 }),
+    SET_FIELD(Naming, { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(Heights, { 12, 64, 3, 2, }),
+    SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_twist),
+    SET_FIELD(RatingsMultipliers, { 40, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
+    SET_FIELD(BuildCosts, { 90, 2, 1, }),
+    SET_FIELD(DefaultPrices, { 10, 0 }),
+    SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 40)
 };
 // clang-format on

@@ -50,7 +50,11 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.second_vehicle = stream->ReadValue<uint8_t>();
     _legacyType.rear_vehicle = stream->ReadValue<uint8_t>();
     _legacyType.third_vehicle = stream->ReadValue<uint8_t>();
-    _legacyType.pad_019 = stream->ReadValue<uint8_t>();
+
+    _legacyType.BuildMenuPriority = 0;
+    // Skip pad_019
+    stream->Seek(1, STREAM_SEEK_CURRENT);
+
     for (auto& vehicleEntry : _legacyType.vehicles)
     {
         ReadLegacyVehicle(context, stream, &vehicleEntry);
@@ -166,8 +170,8 @@ void RideObject::Load()
     _legacyType.obj = this;
 
     GetStringTable().Sort();
-    _legacyType.naming.name = language_allocate_object_string(GetName());
-    _legacyType.naming.description = language_allocate_object_string(GetDescription());
+    _legacyType.naming.Name = language_allocate_object_string(GetName());
+    _legacyType.naming.Description = language_allocate_object_string(GetDescription());
     _legacyType.capacity = language_allocate_object_string(GetCapacity());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
@@ -343,13 +347,13 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.naming.name);
-    language_free_object_string(_legacyType.naming.description);
+    language_free_object_string(_legacyType.naming.Name);
+    language_free_object_string(_legacyType.naming.Description);
     language_free_object_string(_legacyType.capacity);
     gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
 
-    _legacyType.naming.name = 0;
-    _legacyType.naming.description = 0;
+    _legacyType.naming.Name = 0;
+    _legacyType.naming.Description = 0;
     _legacyType.capacity = 0;
     _legacyType.images_offset = 0;
 }
@@ -621,6 +625,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
     }
 
+    _legacyType.BuildMenuPriority = ObjectJsonHelpers::GetInteger(properties, "buildMenuPriority", 0);
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
         properties,
         {

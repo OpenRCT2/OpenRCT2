@@ -842,131 +842,134 @@ static void window_top_toolbar_invalidate(rct_window* w)
  */
 static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y, imgId;
+    int32_t imgId;
 
     window_draw_widgets(w, dpi);
 
+    ScreenCoordsXY screenPos{};
     // Draw staff button image (setting masks to the staff colours)
     if (window_top_toolbar_widgets[WIDX_STAFF].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_STAFF].left;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_STAFF].top;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_STAFF].left,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_STAFF].top };
         imgId = SPR_TOOLBAR_STAFF;
         if (widget_is_pressed(w, WIDX_STAFF))
             imgId++;
         imgId |= SPRITE_ID_PALETTE_COLOUR_2(gStaffHandymanColour, gStaffMechanicColour);
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
     }
 
     // Draw fast forward button
     if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
         if (widget_is_pressed(w, WIDX_FASTFORWARD))
-            y++;
+            screenPos.y++;
         imgId = SPR_G2_FASTFORWARD;
-        gfx_draw_sprite(dpi, imgId, x + 6, y + 3, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos.x + 6, screenPos.y + 3, 0);
 
         for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
         {
-            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
+            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, screenPos.x + 5 + i * 5, screenPos.y + 15, 0);
         }
         for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
         {
-            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
+            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, screenPos.x + 5 + i * 6, screenPos.y + 15, 0);
         }
     }
 
     // Draw cheats button
     if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
         if (widget_is_pressed(w, WIDX_CHEATS))
-            y++;
+            screenPos.y++;
         imgId = SPR_G2_SANDBOX;
-        gfx_draw_sprite(dpi, imgId, x, y, 3);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 3);
 
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
         {
             gfx_draw_string_right(
-                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, x + 26, y + 2);
+                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE,
+                screenPos + ScreenCoordsXY{ 26, 2 });
         }
     }
 
     // Draw chat button
     if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_CHAT].left;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_CHAT].top - 2;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_CHAT].left,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
         if (widget_is_pressed(w, WIDX_CHAT))
-            y++;
+            screenPos.y++;
         imgId = SPR_G2_CHAT;
-        gfx_draw_sprite(dpi, imgId, x, y, 3);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 3);
     }
 
     // Draw debug button
     if (window_top_toolbar_widgets[WIDX_DEBUG].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_DEBUG].left;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_DEBUG].left,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
         if (widget_is_pressed(w, WIDX_DEBUG))
-            y++;
+            screenPos.y++;
         imgId = SPR_TAB_GEARS_0;
-        gfx_draw_sprite(dpi, imgId, x, y, 3);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 3);
     }
 
     // Draw research button
     if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_RESEARCH].top;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_RESEARCH].top };
         if (widget_is_pressed(w, WIDX_RESEARCH))
-            y++;
+            screenPos.y++;
         imgId = SPR_TAB_FINANCES_RESEARCH_0;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
     }
 
     // Draw finances button
     if (window_top_toolbar_widgets[WIDX_FINANCES].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
         if (widget_is_pressed(w, WIDX_FINANCES))
-            y++;
+            screenPos.y++;
         imgId = SPR_FINANCE;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
     }
 
     // Draw news button
     if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_NEWS].left + 3;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_NEWS].top + 0;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_NEWS].left + 3,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
         if (widget_is_pressed(w, WIDX_NEWS))
-            y++;
+            screenPos.y++;
         imgId = SPR_G2_TAB_NEWS;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
     }
 
     // Draw network button
     if (window_top_toolbar_widgets[WIDX_NETWORK].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3;
-        y = w->windowPos.y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
+        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3,
+                      w->windowPos.y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0 };
         if (widget_is_pressed(w, WIDX_NETWORK))
-            y++;
+            screenPos.y++;
 
         // Draw (de)sync icon.
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-        gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos.x + 3, screenPos.y + 11, 0);
 
         // Draw number of players.
         int32_t player_count = network_get_num_players();
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
+        gfx_draw_string_right(
+            dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, screenPos + ScreenCoordsXY{ 23, 1 });
     }
 }
 

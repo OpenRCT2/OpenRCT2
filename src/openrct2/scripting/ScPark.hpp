@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../Context.h"
+#    include "../GameState.h"
 #    include "../common.h"
 #    include "../core/String.hpp"
 #    include "../management/Finance.h"
@@ -274,20 +275,27 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
+        std::string name_get() const
+        {
+            return GetContext()->GetGameState()->GetPark().Name;
+        }
+
+        void name_set(std::string value)
+        {
+            ThrowIfGameStateNotMutable();
+            GetContext()->GetGameState()->GetPark().Name = value;
+        }
+
         std::vector<std::shared_ptr<ScParkMessage>> messages_get() const
         {
             std::vector<std::shared_ptr<ScParkMessage>> result;
-            for (int32_t i = 0; i < NEWS_ITEM_HISTORY_START; i++)
+            for (size_t i = 0, newsSize = gNewsItems.GetRecent().size(); i < newsSize; i++)
             {
-                if (news_item_is_empty(i))
-                    break;
                 result.push_back(std::make_shared<ScParkMessage>(i));
             }
-            for (int32_t i = NEWS_ITEM_HISTORY_START; i < MAX_NEWS_ITEMS; i++)
+            for (size_t i = 0, newsSize = gNewsItems.GetArchived().size(); i < newsSize; i++)
             {
-                if (news_item_is_empty(i))
-                    break;
-                result.push_back(std::make_shared<ScParkMessage>(i));
+                result.push_back(std::make_shared<ScParkMessage>(i + NEWS_ITEM_HISTORY_START));
             }
             return result;
         }
@@ -370,6 +378,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::rating_get, &ScPark::rating_set, "rating");
             dukglue_register_property(ctx, &ScPark::bankLoan_get, &ScPark::bankLoan_set, "bankLoan");
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
+            dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
         }

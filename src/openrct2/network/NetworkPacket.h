@@ -58,7 +58,7 @@ public:
     template<typename T> NetworkPacket& operator<<(T value)
     {
         T swapped = ByteSwapBE(value);
-        uint8_t* bytes = (uint8_t*)&swapped;
+        uint8_t* bytes = reinterpret_cast<uint8_t*>(&swapped);
         Data->insert(Data->end(), bytes, bytes + sizeof(value));
         return *this;
     }

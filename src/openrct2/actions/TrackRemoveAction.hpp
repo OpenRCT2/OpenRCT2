@@ -161,6 +161,10 @@ public:
             rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
             auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrack;
 
+            if (!LocationValid(mapLoc))
+            {
+                return MakeResult(GA_ERROR::NOT_OWNED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            }
             map_invalidate_tile_full(mapLoc);
 
             found = false;
@@ -231,10 +235,10 @@ public:
                 _support_height = 10;
             }
 
-            cost += (_support_height / 2) * RideTrackCosts[ride->type].support_price;
+            cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             price *= FlatRideTrackPricing[trackType];
@@ -421,7 +425,7 @@ public:
                 _support_height = 10;
             }
 
-            cost += (_support_height / 2) * RideTrackCosts[ride->type].support_price;
+            cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
 
             if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
@@ -487,7 +491,7 @@ public:
                 break;
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             price *= FlatRideTrackPricing[trackType];

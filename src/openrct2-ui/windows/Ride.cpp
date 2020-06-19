@@ -1739,7 +1739,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
                 rct_window* w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
                 if (w2 == nullptr)
                 {
-                    Peep* peep = &(get_sprite(peepSpriteIndex)->peep);
+                    Peep* peep = GetEntity<Peep>(peepSpriteIndex);
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
                     context_open_intent(&intent);
@@ -2262,6 +2262,33 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
     gDropdownDefaultIndex = info.DefaultIndex;
 }
 
+static rct_string_id get_ride_type_name_for_dropdown(uint8_t rideType)
+{
+    switch (rideType)
+    {
+        case RIDE_TYPE_1D:
+            return STR_RIDE_NAME_1D;
+        case RIDE_TYPE_1F:
+            return STR_RIDE_NAME_1F;
+        case RIDE_TYPE_22:
+            return STR_RIDE_NAME_22;
+        case RIDE_TYPE_50:
+            return STR_RIDE_NAME_50;
+        case RIDE_TYPE_52:
+            return STR_RIDE_NAME_52;
+        case RIDE_TYPE_53:
+            return STR_RIDE_NAME_53;
+        case RIDE_TYPE_54:
+            return STR_RIDE_NAME_54;
+        case RIDE_TYPE_55:
+            return STR_RIDE_NAME_55;
+        case RIDE_TYPE_59:
+            return STR_RIDE_NAME_59;
+        default:
+            return RideTypeDescriptors[rideType].Naming.Name;
+    }
+}
+
 static void populate_ride_type_dropdown()
 {
     auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
@@ -2272,7 +2299,8 @@ static void populate_ride_type_dropdown()
 
     for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
     {
-        RideTypeLabel label = { i, RideNaming[i].name, ls.GetString(RideNaming[i].name) };
+        auto name = get_ride_type_name_for_dropdown(i);
+        RideTypeLabel label = { i, name, ls.GetString(name) };
         RideDropdownData.push_back(label);
     }
 
@@ -2375,8 +2403,8 @@ static void populate_vehicle_type_dropdown(Ride* ride)
                     continue;
             }
 
-            VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.name,
-                                       ls.GetString(currentRideEntry->naming.name) };
+            VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.Name,
+                                       ls.GetString(currentRideEntry->naming.Name) };
             VehicleDropdownData.push_back(label);
         }
     }
@@ -2551,7 +2579,7 @@ static void window_ride_main_update(rct_window* w)
                 if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
                     return;
 
-                Vehicle* vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+                Vehicle* vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
                 if (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
                     && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT)
@@ -2673,7 +2701,7 @@ static void window_ride_main_invalidate(rct_window* w)
     else
     {
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_DROPDOWN;
-        window_ride_main_widgets[WIDX_RIDE_TYPE].text = RideNaming[ride->type].name;
+        window_ride_main_widgets[WIDX_RIDE_TYPE].text = RideTypeDescriptors[ride->type].Naming.Name;
         window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_BUTTON;
     }
 
@@ -2757,24 +2785,19 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
  */
 static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* arguments)
 {
-    Vehicle* vehicle;
-    int32_t vehicleIndex;
-    uint16_t vehicleSpriteIndex;
-    rct_string_id stringId;
-
     auto ride = get_ride(w->number);
     if (ride == nullptr)
         return 0;
 
-    vehicleIndex = w->ride.view - 1;
-    vehicleSpriteIndex = ride->vehicles[vehicleIndex];
+    auto vehicleIndex = w->ride.view - 1;
+    auto vehicleSpriteIndex = ride->vehicles[vehicleIndex];
     if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
         return 0;
 
-    vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
+    auto vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
     if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED)
     {
-        int32_t trackType = vehicle->track_type >> 2;
+        int32_t trackType = vehicle->GetTrackType();
         if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
             || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
             || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
@@ -2787,7 +2810,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
         }
     }
 
-    stringId = VehicleStatusNames[vehicle->status];
+    auto stringId = VehicleStatusNames[vehicle->status];
 
     // Get speed in mph
     *(reinterpret_cast<uint16_t*>(reinterpret_cast<uintptr_t>(arguments) + 2)) = (abs(vehicle->velocity) * 9) >> 18;
@@ -2930,8 +2953,8 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     widget = &window_ride_main_widgets[WIDX_STATUS];
     rct_string_id ride_status = window_ride_get_status(w, gCommonFormatArgs);
     gfx_draw_string_centred_clipped(
-        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right) / 2,
-        w->windowPos.y + widget->top, widget->right - widget->left);
+        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK,
+        w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->right - widget->left);
 }
 
 #pragma endregion
@@ -3077,7 +3100,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
 
     // Vehicle type
-    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.name;
+    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.Name;
 
     // Trains
     if (rideEntry->cars_per_flat_ride > 1 || gCheatsDisableTrainLengthLimit)
@@ -3169,7 +3192,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t y = w->windowPos.y + 64;
 
     // Description
-    y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
+    y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.Description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
     y += 2;
 
     // Capacity
@@ -3321,8 +3344,9 @@ static void window_ride_mode_tweak_increase(rct_window* w)
     if (ride == nullptr)
         return;
 
-    uint8_t maxValue = RideProperties[ride->type].max_value;
-    uint8_t minValue = gCheatsFastLiftHill ? 0 : RideProperties[ride->type].min_value;
+    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    uint8_t maxValue = operatingSettings.MaxValue;
+    uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
 
     if (gCheatsFastLiftHill)
     {
@@ -3345,8 +3369,9 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
     if (ride == nullptr)
         return;
 
-    uint8_t maxValue = RideProperties[ride->type].max_value;
-    uint8_t minValue = gCheatsFastLiftHill ? 0 : RideProperties[ride->type].min_value;
+    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    uint8_t maxValue = operatingSettings.MaxValue;
+    uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
     if (gCheatsFastLiftHill)
     {
         maxValue = 255;
@@ -4145,7 +4170,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                             while (spriteId != SPRITE_INDEX_NULL)
                             {
                                 vehicle = GET_VEHICLE(spriteId);
-                                vehicle->update_flags &= ~(
+                                vehicle->ClearUpdateFlag(
                                     VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_UPDATE_FLAG_ZERO_VELOCITY
                                     | VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                                 spriteId = vehicle->next_vehicle_on_train;
@@ -4156,12 +4181,12 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
                     case BREAKDOWN_DOORS_STUCK_CLOSED:
                     case BREAKDOWN_DOORS_STUCK_OPEN:
-                        vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
-                        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+                        vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
+                        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                         break;
                     case BREAKDOWN_VEHICLE_MALFUNCTION:
-                        vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
-                        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+                        vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
+                        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                         break;
                 }
                 ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
@@ -4348,11 +4373,9 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 
-                uint16_t spriteIndex;
-                Peep* peep;
-                FOR_ALL_STAFF (spriteIndex, peep)
+                for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
                 {
-                    if (peep->staff_type == STAFF_TYPE_MECHANIC)
+                    if (peep->StaffType == STAFF_TYPE_MECHANIC)
                     {
                         stringId = STR_CALLING_MECHANIC;
                         break;
@@ -4380,7 +4403,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
             else
             {
-                auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
+                auto peep = GetEntity<Peep>(ride->mechanic)->AsStaff();
                 if (peep != nullptr && peep->IsMechanic())
                 {
                     peep->FormatNameTo(gCommonFormatArgs);

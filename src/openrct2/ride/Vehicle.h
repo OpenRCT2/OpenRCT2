@@ -174,6 +174,8 @@ enum VEHICLE_TRACK_SUBPOSITION : uint8_t
     VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14,
     VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE,
     VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
+
+    VEHICLE_TRACK_SUBPOSITION_COUNT,
 };
 
 struct Ride;
@@ -321,9 +323,22 @@ struct Vehicle : SpriteBase
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
 
-    uint16_t UpdateFlag(uint32_t flag) const
+    uint16_t GetTrackType() const
     {
-        return update_flags & flag;
+        return track_type >> 2;
+    }
+
+    bool HasUpdateFlag(uint32_t flag) const
+    {
+        return (update_flags & flag) != 0;
+    }
+    void ClearUpdateFlag(uint32_t flag)
+    {
+        update_flags &= ~flag;
+    }
+    void SetUpdateFlag(uint32_t flag)
+    {
+        update_flags |= flag;
     }
 
 private:
@@ -378,6 +393,8 @@ private:
     bool CurrentTowerElementIsTop();
     bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    int32_t UpdateTrackMotionPoweredRideAcceleration(
+        rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration);
     int32_t NumPeepsUntilTrainTail() const;
     void InvalidateWindow();
     void TestReset();
@@ -404,6 +421,10 @@ private:
     void KillAllPassengersInTrain();
     void KillPassengers(Ride* curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
+    int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
+    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry);
+    bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
+    bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
 };
 
 struct train_ref
@@ -495,7 +516,7 @@ enum : uint32_t
     VEHICLE_UPDATE_FLAG_ZERO_VELOCITY = (1 << 7), // Used on rides when safety cutout stops them on a lift
     VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
     VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
-    VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP = (1 << 10),
+    VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP = (1 << 10),
     VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES = (1 << 11), // Used on rides where trains can run for extended periods of time,
                                                           // i.e. the Flying, Lay-down and Multi-dimension RCs.
     VEHICLE_UPDATE_FLAG_12 = (1 << 12),

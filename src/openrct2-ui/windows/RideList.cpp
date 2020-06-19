@@ -185,7 +185,7 @@ static constexpr const rct_string_id page_names[] = {
 };
 // clang-format on
 
-static int32_t _window_ride_list_information_type;
+static int32_t _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 
 static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
 static void window_ride_list_close_all(rct_window* w);
@@ -223,7 +223,7 @@ rct_window* window_ride_list_open()
         window->max_height = 700;
         window_ride_list_refresh_list(window);
     }
-    _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
+
     window->list_information_type = 0;
     _quickDemolishMode = false;
 

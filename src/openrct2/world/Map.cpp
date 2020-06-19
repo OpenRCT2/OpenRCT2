@@ -57,6 +57,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <memory>
 
 using namespace OpenRCT2;
 
@@ -955,7 +956,7 @@ void tile_element_remove(TileElement* tileElement)
 
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
-    tileElement->base_height = 0xFF;
+    tileElement->base_height = MAX_ELEMENT_HEIGHT;
 
     if ((tileElement + 1) == gNextFreeTileElement)
     {
@@ -1076,16 +1077,14 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    TileElement* new_tile_elements = static_cast<TileElement*>(malloc(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM * sizeof(TileElement)));
-    TileElement* new_elements_pointer = new_tile_elements;
+    auto newTileElements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
+    TileElement* newElementsPtr = newTileElements.get();
 
-    if (new_tile_elements == nullptr)
+    if (newTileElements == nullptr)
     {
         log_fatal("Unable to allocate memory for map elements.");
         return;
     }
-
-    uint32_t num_elements;
 
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
@@ -1098,17 +1097,15 @@ void map_reorganise_elements()
             while (!(endElement++)->IsLastForTile())
                 ;
 
-            num_elements = static_cast<uint32_t>(endElement - startElement);
-            std::memcpy(new_elements_pointer, startElement, num_elements * sizeof(TileElement));
-            new_elements_pointer += num_elements;
+            const auto numElements = static_cast<uint32_t>(endElement - startElement);
+            std::memcpy(newElementsPtr, startElement, numElements * sizeof(TileElement));
+            newElementsPtr += numElements;
         }
     }
 
-    num_elements = static_cast<uint32_t>(new_elements_pointer - new_tile_elements);
-    std::memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
-    std::memset(gTileElements + num_elements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - num_elements) * sizeof(TileElement));
-
-    free(new_tile_elements);
+    const auto numElements = static_cast<uint32_t>(newElementsPtr - newTileElements.get());
+    std::memcpy(gTileElements, newTileElements.get(), numElements * sizeof(TileElement));
+    std::memset(gTileElements + numElements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - numElements) * sizeof(TileElement));
 
     map_update_tile_pointers();
 }
@@ -1178,7 +1175,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->base_height = 255;
+            originalTileElement->base_height = MAX_ELEMENT_HEIGHT;
             originalTileElement++;
             newTileElement++;
 
@@ -1211,7 +1208,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->base_height = 255;
+            originalTileElement->base_height = MAX_ELEMENT_HEIGHT;
             originalTileElement++;
             newTileElement++;
         } while (!((newTileElement - 1)->IsLastForTile()));
@@ -1220,12 +1217,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     gNextFreeTileElement = newTileElement;
     return insertedElement;
 }
-
-class ConstructClearResult final : public GameActionResult
-{
-public:
-    uint8_t GroundFlags{ 0 };
-};
 
 /**
  *
@@ -1304,7 +1295,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
  *  ebp = clearFunc
  *  bl = bl
  */
-static GameActionResult::Ptr map_can_construct_with_clear_at(
+std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
@@ -1486,7 +1477,7 @@ bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
     uint8_t crossingMode)
 {
-    GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
+    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode);
     if (auto message = res->ErrorMessage.AsStringId())
         gGameCommandErrorText = *message;
     else
@@ -1496,12 +1487,8 @@ bool map_can_construct_with_clear_at(
     {
         *price += res->Cost;
     }
-    auto ccr = dynamic_cast<ConstructClearResult*>(res.get());
-    if (ccr == nullptr)
-    {
-        return false;
-    }
-    gMapGroundFlags = ccr->GroundFlags;
+
+    gMapGroundFlags = res->GroundFlags;
     return res->Error == GA_ERROR::OK;
 }
 
@@ -1514,6 +1501,10 @@ int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl)
     return map_can_construct_with_clear_at(pos, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
+std::unique_ptr<ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+{
+    return MapCanConstructWithClearAt(pos, nullptr, bl, 0, CREATE_CROSSING_MODE_NONE);
+}
 /**
  * Updates grass length, scenery age and jumping fountains.
  *

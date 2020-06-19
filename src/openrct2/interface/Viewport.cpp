@@ -175,8 +175,8 @@ void viewport_create(
     if (flags & VIEWPORT_FOCUS_TYPE_SPRITE)
     {
         w->viewport_target_sprite = sprite;
-        rct_sprite* centre_sprite = get_sprite(sprite);
-        centrePos = { centre_sprite->generic.x, centre_sprite->generic.y, centre_sprite->generic.z };
+        auto* centre_sprite = GetEntity(sprite);
+        centrePos = { centre_sprite->x, centre_sprite->y, centre_sprite->z };
     }
     else
     {
@@ -619,14 +619,14 @@ void viewport_update_sprite_follow(rct_window* window)
 {
     if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport)
     {
-        rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
+        auto* sprite = GetEntity(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height({ sprite->generic.x, sprite->generic.y })) - 16;
-        int32_t underground = sprite->generic.z < height;
+        int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
+        int32_t underground = sprite->z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        auto centreLoc = centre_2d_coordinates({ sprite->generic.x, sprite->generic.y, sprite->generic.z }, window->viewport);
+        auto centreLoc = centre_2d_coordinates({ sprite->x, sprite->y, sprite->z }, window->viewport);
         if (centreLoc)
         {
             window->savedViewPos = *centreLoc;
@@ -647,9 +647,9 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     {
         Peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
 
-        if (peep->type == PEEP_TYPE_GUEST)
+        if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
             viewport_update_smart_guest_follow(window, peep);
-        else if (peep->type == PEEP_TYPE_STAFF)
+        else if (peep->AssignedPeepType == PEEP_TYPE_STAFF)
             viewport_update_smart_staff_follow(window, peep);
     }
     else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
@@ -676,7 +676,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
     focus.sprite.sprite_id = peep->sprite_index;
 
-    if (peep->state == PEEP_STATE_PICKED)
+    if (peep->State == PEEP_STATE_PICKED)
     {
         focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
@@ -686,16 +686,16 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     else
     {
         bool overallFocus = true;
-        if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE
-            || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
+        if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE
+            || (peep->State == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
         {
-            auto ride = get_ride(peep->current_ride);
+            auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
-                auto train = GET_VEHICLE(ride->vehicles[peep->current_train]);
+                auto train = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
                 if (train != nullptr)
                 {
-                    auto car = train->GetCar(peep->current_car);
+                    auto car = train->GetCar(peep->CurrentCar);
                     if (car != nullptr)
                     {
                         focus.sprite.sprite_id = car->sprite_index;
@@ -706,7 +706,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         }
         if (peep->x == LOCATION_NULL && overallFocus)
         {
-            auto ride = get_ride(peep->current_ride);
+            auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr)
             {
                 auto xy = ride->overall_view.ToTileCentre();
@@ -736,7 +736,7 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
-    if (peep->state == PEEP_STATE_PICKED)
+    if (peep->State == PEEP_STATE_PICKED)
     {
         // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
@@ -828,11 +828,14 @@ static void record_session(const paint_session* session, std::vector<paint_sessi
     // Mind the offset needs to be calculated against the original `session`, not `session_copy`
     for (auto& ps : session_copy->PaintStructs)
     {
-        ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
+        ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>(
+            ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic)
+                                      : std::size(session->PaintStructs));
     }
     for (auto& quad : session_copy->Quadrants)
     {
-        quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
+        quad = reinterpret_cast<paint_struct*>(
+            quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
     }
 }
 

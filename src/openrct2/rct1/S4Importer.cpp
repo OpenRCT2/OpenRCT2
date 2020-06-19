@@ -838,7 +838,7 @@ private:
         if (_gameVersion == FILE_VERSION_RCT1)
         {
             // Original RCT had no music settings, take default style
-            dst->music = RideData4[dst->type].default_music;
+            dst->music = RideTypeDescriptors[dst->type].DefaultMusic;
 
             // Only merry-go-round and dodgems had music and used
             // the same flag as synchronise stations for the option to enable it
@@ -1341,10 +1341,9 @@ private:
         }
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
-            rct_sprite* sprite = get_sprite(i);
-            if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            auto vehicle = GetEntity<Vehicle>(i);
+            if (vehicle != nullptr)
             {
-                Vehicle* vehicle = reinterpret_cast<Vehicle*>(sprite);
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
@@ -1354,15 +1353,14 @@ private:
             FixRidePeepLinks(&ride, spriteIndexMap);
         }
 
-        int32_t i;
-        Peep* peep;
-        FOR_ALL_GUESTS (i, peep)
         {
-            FixPeepNextInQueue(peep, spriteIndexMap);
+            for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+            {
+                FixPeepNextInQueue(peep, spriteIndexMap);
+            }
         }
-
         // Fix the news items in advance
-        for (i = 0; i < MAX_NEWS_ITEMS; i++)
+        for (auto i = 0; i < MAX_NEWS_ITEMS; i++)
         {
             rct12_news_item* newsItem = &_s4.messages[i];
 
@@ -1378,7 +1376,7 @@ private:
 
         std::copy(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), gStaffModes);
 
-        FOR_ALL_STAFF (i, peep)
+        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
         {
             ImportStaffPatrolArea(peep);
         }
@@ -1390,22 +1388,22 @@ private:
     {
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
-        dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
-        dst->action = static_cast<PeepActionType>(src->action);
-        dst->special_sprite = src->special_sprite;
-        dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
-        dst->action_sprite_image_offset = src->action_sprite_image_offset;
+        dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
+        dst->Action = static_cast<PeepActionType>(src->action);
+        dst->SpecialSprite = src->special_sprite;
+        dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
+        dst->ActionSpriteImageOffset = src->action_sprite_image_offset;
         dst->WalkingFrameNum = src->no_action_frame_num;
-        dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
-        dst->action_frame = src->action_frame;
+        dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
+        dst->ActionFrame = src->action_frame;
 
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
+        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
+        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
+        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
-        invalidate_sprite_2(dst);
+        dst->Invalidate2();
 
         dst->sprite_direction = src->sprite_direction;
 
@@ -1415,21 +1413,21 @@ private:
             dst->SetName(GetUserString(src->name_string_idx));
         }
 
-        dst->outside_of_park = src->outside_of_park;
+        dst->OutsideOfPark = src->outside_of_park;
 
-        dst->state = static_cast<PeepState>(src->state);
-        dst->sub_state = src->sub_state;
+        dst->State = static_cast<PeepState>(src->state);
+        dst->SubState = src->sub_state;
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
-        dst->next_flags = src->next_flags;
-        dst->var_37 = src->var_37;
-        dst->time_to_consume = src->time_to_consume;
-        dst->step_progress = src->step_progress;
+        dst->NextFlags = src->next_flags;
+        dst->Var37 = src->var_37;
+        dst->TimeToConsume = src->time_to_consume;
+        dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
 
-        dst->type = static_cast<PeepType>(src->type);
+        dst->AssignedPeepType = static_cast<PeepType>(src->type);
 
-        dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
-        dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
+        dst->TshirtColour = RCT1::GetColour(src->tshirt_colour);
+        dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
         dst->UmbrellaColour = RCT1::GetColour(src->umbrella_colour);
         dst->HatColour = RCT1::GetColour(src->hat_colour);
 
@@ -1443,46 +1441,46 @@ private:
             dst->BalloonColour = RCT1::GetColour(src->balloon_colour);
         }
 
-        dst->destination_x = src->destination_x;
-        dst->destination_y = src->destination_y;
-        dst->destination_tolerance = src->destination_tolerance;
-        dst->direction = src->direction;
+        dst->DestinationX = src->destination_x;
+        dst->DestinationY = src->destination_y;
+        dst->DestinationTolerance = src->destination_tolerance;
+        dst->PeepDirection = src->direction;
 
-        dst->energy = src->energy;
-        dst->energy_target = src->energy_target;
-        dst->happiness = src->happiness;
-        dst->happiness_target = src->happiness_target;
-        dst->nausea = src->nausea;
-        dst->nausea_target = src->nausea_target;
-        dst->hunger = src->hunger;
-        dst->thirst = src->thirst;
-        dst->toilet = src->toilet;
-        dst->mass = src->mass;
+        dst->Energy = src->energy;
+        dst->EnergyTarget = src->energy_target;
+        dst->Happiness = src->happiness;
+        dst->HappinessTarget = src->happiness_target;
+        dst->Nausea = src->nausea;
+        dst->NauseaTarget = src->nausea_target;
+        dst->Hunger = src->hunger;
+        dst->Thirst = src->thirst;
+        dst->Toilet = src->toilet;
+        dst->Mass = src->mass;
 
         dst->LitterCount = src->litter_count;
         dst->DisgustingCount = src->disgusting_count;
 
-        dst->intensity = static_cast<IntensityRange>(src->intensity);
-        dst->nausea_tolerance = src->nausea_tolerance;
-        dst->window_invalidate_flags = 0;
+        dst->Intensity = static_cast<IntensityRange>(src->intensity);
+        dst->NauseaTolerance = src->nausea_tolerance;
+        dst->WindowInvalidateFlags = 0;
 
-        dst->current_ride = src->current_ride;
-        dst->current_ride_station = src->current_ride_station;
-        dst->current_train = src->current_train;
-        dst->current_car = src->current_car;
-        dst->current_seat = src->current_seat;
+        dst->CurrentRide = src->current_ride;
+        dst->CurrentRideStation = src->current_ride_station;
+        dst->CurrentTrain = src->current_train;
+        dst->CurrentCar = src->current_car;
+        dst->CurrentSeat = src->current_seat;
         dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
-        dst->interaction_ride_index = src->interaction_ride_index;
+        dst->InteractionRideIndex = src->interaction_ride_index;
 
-        dst->id = src->id;
-        dst->cash_in_pocket = src->cash_in_pocket;
-        dst->cash_spent = src->cash_spent;
-        dst->time_in_park = src->time_in_park;
+        dst->Id = src->id;
+        dst->CashInPocket = src->cash_in_pocket;
+        dst->CashSpent = src->cash_spent;
+        dst->TimeInPark = src->time_in_park;
 
         // This doubles as staff type
-        dst->no_of_rides = src->no_of_rides;
+        dst->GuestNumRides = src->no_of_rides;
 
         dst->AmountOfDrinks = src->no_of_drinks;
         dst->AmountOfFood = src->no_of_food;
@@ -1490,7 +1488,7 @@ private:
 
         dst->PaidToEnter = src->paid_to_enter;
         dst->PaidOnRides = src->paid_on_rides;
-        dst->paid_on_drink = src->paid_on_drink;
+        dst->PaidOnDrink = src->paid_on_drink;
         dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
@@ -1503,11 +1501,11 @@ private:
 
         for (size_t i = 0; i < 32; i++)
         {
-            dst->rides_been_on[i] = src->rides_been_on[i];
+            dst->RidesBeenOn[i] = src->rides_been_on[i];
         }
         for (size_t i = 0; i < 16; i++)
         {
-            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
 
         dst->Photo1RideRef = src->photo1_ride_ref;
@@ -1515,22 +1513,22 @@ private:
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
             auto srcThought = &src->thoughts[i];
-            auto dstThought = &dst->thoughts[i];
+            auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
             dstThought->item = srcThought->type;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
 
-        dst->previous_ride = src->previous_ride;
-        dst->previous_ride_time_out = src->previous_ride_time_out;
+        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRideTimeOut = src->previous_ride_time_out;
 
         dst->PathCheckOptimisation = 0;
         dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
         // Doubles as staff orders
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
         // The ID is fixed later
-        dst->next_in_queue = src->next_in_queue;
+        dst->GuestNextInQueue = src->next_in_queue;
 
         dst->PeepFlags = 0;
         dst->PathfindGoal.x = 0xFF;
@@ -1553,9 +1551,9 @@ private:
 
         dst->ItemStandardFlags = src->item_standard_flags;
 
-        if (dst->type == PEEP_TYPE_GUEST)
+        if (dst->AssignedPeepType == PEEP_TYPE_GUEST)
         {
-            if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
+            if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
             {
                 increment_guests_heading_for_park();
             }
@@ -1581,7 +1579,7 @@ private:
 
     void FixPeepNextInQueue(Peep* peep, const uint16_t* spriteIndexMap)
     {
-        peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
+        peep->GuestNextInQueue = MapSpriteIndex(peep->GuestNextInQueue, spriteIndexMap);
     }
 
     void ImportStaffPatrolArea(Peep* staffmember)
@@ -1646,7 +1644,7 @@ private:
                 litter->sprite_height_negative = srcLitter->sprite_height_negative;
 
                 litter->MoveTo({ srcLitter->x, srcLitter->y, srcLitter->z });
-                invalidate_sprite_2(litter);
+                litter->Invalidate2();
             }
         }
     }
@@ -1698,7 +1696,7 @@ private:
                 }
 
                 dst->MoveTo({ src->x, src->y, src->z });
-                invalidate_sprite_2(dst);
+                dst->Invalidate2();
             }
         }
     }
@@ -1976,7 +1974,7 @@ private:
         {
             auto src = &_s4.tile_elements[index];
             auto dst = &gTileElements[index + dstOffset];
-            if (src->base_height == 0xFF)
+            if (src->base_height == RCT12_MAX_ELEMENT_HEIGHT)
             {
                 std::memcpy(dst, src, sizeof(*src));
             }
@@ -3000,11 +2998,9 @@ private:
         if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
         {
             // First, make the queuing peep exit
-            int32_t i;
-            Peep* peep;
-            FOR_ALL_GUESTS (i, peep)
+            for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
             {
-                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
                     peep->SetState(PEEP_STATE_FALLING);

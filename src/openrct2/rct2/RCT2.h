@@ -48,6 +48,7 @@ constexpr const uint8_t RCT2_MAX_SCENERY_GROUP_OBJECTS = 19;
 constexpr const uint8_t RCT2_MAX_PARK_ENTRANCE_OBJECTS = 1;
 constexpr const uint8_t RCT2_MAX_WATER_OBJECTS = 1;
 constexpr const uint8_t RCT2_MAX_SCENARIO_TEXT_OBJECTS = 1;
+constexpr const uint8_t RCT2_RIDE_TYPE_COUNT = 91;
 
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
@@ -217,7 +218,7 @@ struct rct2_ride
     uint8_t chairlift_bullwheel_z[2];                   // 0x13E
     union
     {
-        rating_tuple ratings; // 0x140
+        RatingTuple ratings; // 0x140
         struct
         {
             ride_rating excitement; // 0x140

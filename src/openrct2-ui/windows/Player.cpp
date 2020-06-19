@@ -378,8 +378,9 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<const char*>(buffer);
 
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
-            w->windowPos.y + widget->top, widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
+            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top },
+            widget->right - widget->left - 8);
     }
 
     // Draw ping
@@ -405,8 +406,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft.Add<rct_string_id>(STR_ACTION_NA);
     }
-    gfx_draw_string_centred_clipped(
-        dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords.x, screenCoords.y, width);
+    gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {

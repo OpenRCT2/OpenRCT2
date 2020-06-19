@@ -248,12 +248,10 @@ void window_guest_list_refresh_list()
     }
 
     GuestList.clear();
-    Peep* peep = nullptr;
-    uint16_t spriteIndex;
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         sprite_set_flashing(peep, false);
-        if (peep->outside_of_park != 0)
+        if (peep->OutsideOfPark != 0)
             continue;
         if (_window_guest_list_selected_filter != -1)
         {
@@ -263,7 +261,7 @@ void window_guest_list_refresh_list()
         }
         if (!guest_should_be_visible(peep))
             continue;
-        GuestList.push_back(spriteIndex);
+        GuestList.push_back(peep->sprite_index);
     }
 
     std::sort(GuestList.begin(), GuestList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
@@ -792,7 +790,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             // For each thought
                             for (uint32_t j = 0; j < PEEP_MAX_THOUGHTS; j++)
                             {
-                                thought = &peep->thoughts[j];
+                                thought = &peep->Thoughts[j];
                                 if (thought->type == PEEP_THOUGHT_TYPE_NONE)
                                     break;
                                 if (thought->freshness == 0)
@@ -800,7 +798,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 if (thought->freshness > 5)
                                     break;
 
-                                peep_thought_set_format_args(&peep->thoughts[j]);
+                                peep_thought_set_format_args(&peep->Thoughts[j]);
                                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 118, y }, 329);
                                 break;
                             }
@@ -852,7 +850,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     auto ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(numGuests);
-                    gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 326, y);
+                    gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 326, y });
                 }
                 y += SUMMARISED_GUEST_ROW_HEIGHT;
             }
@@ -911,7 +909,7 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
             break;
         case VIEW_THOUGHTS:
         {
-            auto thought = &peep->thoughts[0];
+            auto thought = &peep->Thoughts[0];
             if (thought->freshness <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE)
             {
                 std::memset(gCommonFormatArgs, 0, sizeof(gCommonFormatArgs));
@@ -930,9 +928,6 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
  */
 static void window_guest_list_find_groups()
 {
-    int32_t spriteIndex, spriteIndex2, groupIndex, faceIndex;
-    Peep *peep, *peep2;
-
     uint32_t tick256 = floor2(gScenarioTicks, 256);
     if (_window_guest_list_selected_view == _window_guest_list_last_find_groups_selected_view)
     {
@@ -948,18 +943,23 @@ static void window_guest_list_find_groups()
     _window_guest_list_num_groups = 0;
 
     // Set all guests to unassigned
-    FOR_ALL_GUESTS (spriteIndex, peep)
-        if (peep->outside_of_park == 0)
-            peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
-
-    // For each guest / group
-    FOR_ALL_GUESTS (spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        {
+            if (peep->OutsideOfPark == 0)
+            {
+                peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
+            }
+        }
+    }
+    // For each guest / group
+    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    {
+        if (peep->OutsideOfPark != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
             continue;
 
         // New group, cap at 240 though
-        groupIndex = _window_guest_list_num_groups;
+        int32_t groupIndex = _window_guest_list_num_groups;
         if (groupIndex >= 240)
             break;
 
@@ -971,14 +971,14 @@ static void window_guest_list_find_groups()
         _window_guest_list_filter_arguments = _window_guest_list_groups_arguments[groupIndex];
 
         _window_guest_list_group_index[groupIndex] = groupIndex;
-        faceIndex = groupIndex * 56;
+        auto faceIndex = groupIndex * 56;
         _window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep)
             - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
         // Find more peeps that belong to same group
-        FOR_ALL_GUESTS (spriteIndex2, peep2)
+        for (auto peep2 : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            if (peep2->outside_of_park != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
+            if (peep2->OutsideOfPark != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
                 continue;
 
             // Get and check if in same group

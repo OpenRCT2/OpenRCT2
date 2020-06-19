@@ -20,6 +20,7 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_TOWER_BASE),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_roto_drop),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -29,10 +30,20 @@ constexpr const RideTypeDescriptor RotoDropRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_FREEFALL_DROP)),
     SET_FIELD(DefaultMode, RIDE_MODE_FREEFALL_DROP),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(Naming, { STR_RIDE_NAME_ROTO_DROP, STR_RIDE_DESCRIPTION_ROTO_DROP }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
+    SET_FIELD(Heights, { 255, 32, 3, 2, }),
+    SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_roto_drop),
+    SET_FIELD(RatingsMultipliers, { 50, 50, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
+    SET_FIELD(BuildCosts, { 55, 0, 4, }),
+    SET_FIELD(DefaultPrices, { 20, 0 }),
+    SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(BonusValue, 45)
 };
 // clang-format on

@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#7648] "Enable all drawable track pieces" now enables more pieces for the Twister, Vertical and Air Powered Vertical coasters.
 - Feature: [#9029] Open doors with the tile inspector.
+- Feature: [#9614] Allow popping balloons and quacking ducks in the title screen.
 - Feature: [#10572] Cheat to allow building at invalid heights.
 - Feature: [#11155] Guest entry points can now be removed by clicking them again.
 - Feature: [#11231] Change shortcut window list order to be more intuitive, and split it into logical sections.
@@ -10,9 +11,12 @@
 - Feature: [#11320] Support for custom JavaScript plugins.
 - Feature: [#11422] Added a shortcut key for disabling/enabling clearance checks.
 - Feature: [#11788] Command to extract images from a .DAT file.
+- Feature: [#11959] Hacked go-kart tracks can now use 2x2 bends, 3x3 bends and S-bends.
 - Change: [#11209] Warn when user is running OpenRCT2 through Wine.
 - Change: [#11358] Switch copy and paste button positions in tile inspector.
 - Change: [#11449] Remove complete circuit requirement from Air Powered Vertical Coaster (for RCT1 parity).
+- Change: [#11898] The `openrct-data-path` command-line argument has been renamed to `openrct2-data-path`.
+- Change: [#11944] The ride list sort mode is now remembered for the duration of the game.
 - Fix: [#1013] Negative length displayed in Ride window.
 - Fix: [#1148] Research funding dropdown not shown in finances window.
 - Fix: [#5451] Guests scream on every descent, no matter how small.
@@ -33,6 +37,7 @@
 - Fix: [#11640] Objects with a blank description in one language do not fall back to other languages anymore.
 - Fix: [#11676] Spiral Roller Coaster has regular lift hill available.
 - Fix: [#11695] Mechanics walk to tile 0, 0 at entrance only stations when trying to fix them.
+- Fix: [#11953] Incorrect banner text shade colour on wall text.
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
 - Improved: [#11390] Build hash written to screenshot metadata.

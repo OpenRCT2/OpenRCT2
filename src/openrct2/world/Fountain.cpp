@@ -28,16 +28,6 @@ enum class PATTERN
     FAST_RANDOM_CHASERS,
 };
 
-namespace FOUNTAIN_FLAG
-{
-    const uint32_t FAST = 1 << 0;
-    const uint32_t GOTO_EDGE = 1 << 1;
-    const uint32_t SPLIT = 1 << 2;
-    const uint32_t TERMINATE = 1 << 3;
-    const uint32_t BOUNCE = 1 << 4;
-    const uint32_t DIRECTION = 1 << 7;
-}; // namespace FOUNTAIN_FLAG
-
 static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, 0 },
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
@@ -79,6 +69,12 @@ const uint8_t _fountainPatternFlags[] = {
     0,                                                                     // DOPEY_JUMPERS
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
+
+template<> bool SpriteBase::Is<JumpingFountain>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC
+        && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
+}
 
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
@@ -162,7 +158,7 @@ void JumpingFountain::Update()
         return;
     }
 
-    invalidate_sprite_0(this);
+    Invalidate0();
     frame++;
 
     switch (type)

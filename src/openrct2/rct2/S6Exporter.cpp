@@ -178,7 +178,7 @@ void S6Exporter::Export()
         const rct_object_entry* entry = get_loaded_object_entry(i);
         void* entryData = get_loaded_object_chunk(i);
         // RCT2 uses (void *)-1 to mark NULL. Make sure it's written in a vanilla-compatible way.
-        if (entryData == nullptr || entryData == (void*)-1)
+        if (entryData == nullptr || entryData == reinterpret_cast<void*>(-1))
         {
             std::memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
         }
@@ -537,7 +537,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     if (useDefaultName)
     {
         // Default name with number
-        dst->name = RideNaming[src->type].name;
+        dst->name = RideTypeDescriptors[src->type].Naming.Name;
         dst->name_arguments_number = src->default_name_number;
     }
 
@@ -852,7 +852,7 @@ void S6Exporter::ExportResearchedRideTypes()
 {
     std::fill(std::begin(_s6.researched_ride_types), std::end(_s6.researched_ride_types), false);
 
-    for (int32_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+    for (int32_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
     {
         if (ride_type_is_invented(rideType))
         {
@@ -945,7 +945,7 @@ void S6Exporter::ExportSprites()
     sprite_clear_all_unused();
     for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
     {
-        ExportSprite(&_s6.sprites[i], get_sprite(i));
+        ExportSprite(&_s6.sprites[i], reinterpret_cast<const rct_sprite*>(GetEntity(i)));
     }
 
     for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
@@ -1096,9 +1096,9 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
 
     auto generateName = true;
-    if (src->name != nullptr)
+    if (src->Name != nullptr)
     {
-        auto stringId = AllocateUserString(src->name);
+        auto stringId = AllocateUserString(src->Name);
         if (stringId != std::nullopt)
         {
             dst->name_string_idx = *stringId;
@@ -1108,12 +1108,12 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         {
             log_warning(
                 "Unable to allocate user string for peep #%d (%s) during S6 export.", static_cast<int>(src->sprite_index),
-                src->name);
+                src->Name);
         }
     }
     if (generateName)
     {
-        if (src->type == PeepType::PEEP_TYPE_STAFF)
+        if (src->AssignedPeepType == PeepType::PEEP_TYPE_STAFF)
         {
             static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,
@@ -1121,11 +1121,11 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
                 STR_SECURITY_GUARD_X,
                 STR_ENTERTAINER_X,
             };
-            dst->name_string_idx = staffNames[src->staff_type % sizeof(staffNames)];
+            dst->name_string_idx = staffNames[src->StaffType % sizeof(staffNames)];
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
-            dst->name_string_idx = get_real_name_string_id_from_id(src->id);
+            dst->name_string_idx = get_real_name_string_id_from_id(src->Id);
         }
         else
         {
@@ -1136,71 +1136,71 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->next_x = src->NextLoc.x;
     dst->next_y = src->NextLoc.y;
     dst->next_z = src->NextLoc.z / COORDS_Z_STEP;
-    dst->next_flags = src->next_flags;
-    dst->outside_of_park = src->outside_of_park;
-    dst->state = static_cast<uint8_t>(src->state);
-    dst->sub_state = src->sub_state;
-    dst->sprite_type = static_cast<uint8_t>(src->sprite_type);
-    dst->peep_type = static_cast<uint8_t>(src->type);
-    dst->no_of_rides = src->no_of_rides;
-    dst->tshirt_colour = src->tshirt_colour;
-    dst->trousers_colour = src->trousers_colour;
-    dst->destination_x = src->destination_x;
-    dst->destination_y = src->destination_y;
-    dst->destination_tolerance = src->destination_tolerance;
-    dst->var_37 = src->var_37;
-    dst->energy = src->energy;
-    dst->energy_target = src->energy_target;
-    dst->happiness = src->happiness;
-    dst->happiness_target = src->happiness_target;
-    dst->nausea = src->nausea;
-    dst->nausea_target = src->nausea_target;
-    dst->hunger = src->hunger;
-    dst->thirst = src->thirst;
-    dst->toilet = src->toilet;
-    dst->mass = src->mass;
-    dst->time_to_consume = src->time_to_consume;
-    dst->intensity = static_cast<uint8_t>(src->intensity);
-    dst->nausea_tolerance = src->nausea_tolerance;
-    dst->window_invalidate_flags = src->window_invalidate_flags;
-    dst->paid_on_drink = src->paid_on_drink;
-    for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
+    dst->next_flags = src->NextFlags;
+    dst->outside_of_park = src->OutsideOfPark;
+    dst->state = static_cast<uint8_t>(src->State);
+    dst->sub_state = src->SubState;
+    dst->sprite_type = static_cast<uint8_t>(src->SpriteType);
+    dst->peep_type = static_cast<uint8_t>(src->AssignedPeepType);
+    dst->no_of_rides = src->GuestNumRides;
+    dst->tshirt_colour = src->TshirtColour;
+    dst->trousers_colour = src->TrousersColour;
+    dst->destination_x = src->DestinationX;
+    dst->destination_y = src->DestinationY;
+    dst->destination_tolerance = src->DestinationTolerance;
+    dst->var_37 = src->Var37;
+    dst->energy = src->Energy;
+    dst->energy_target = src->EnergyTarget;
+    dst->happiness = src->Happiness;
+    dst->happiness_target = src->HappinessTarget;
+    dst->nausea = src->Nausea;
+    dst->nausea_target = src->NauseaTarget;
+    dst->hunger = src->Hunger;
+    dst->thirst = src->Thirst;
+    dst->toilet = src->Toilet;
+    dst->mass = src->Mass;
+    dst->time_to_consume = src->TimeToConsume;
+    dst->intensity = static_cast<uint8_t>(src->Intensity);
+    dst->nausea_tolerance = src->NauseaTolerance;
+    dst->window_invalidate_flags = src->WindowInvalidateFlags;
+    dst->paid_on_drink = src->PaidOnDrink;
+    for (size_t i = 0; i < std::size(src->RideTypesBeenOn); i++)
     {
-        dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+        dst->ride_types_been_on[i] = src->RideTypesBeenOn[i];
     }
-    dst->item_extra_flags = src->item_extra_flags;
-    dst->photo2_ride_ref = src->photo2_ride_ref;
-    dst->photo3_ride_ref = src->photo3_ride_ref;
-    dst->photo4_ride_ref = src->photo4_ride_ref;
-    dst->current_ride = src->current_ride;
-    dst->current_ride_station = src->current_ride_station;
-    dst->current_train = src->current_train;
-    dst->time_to_sitdown = src->time_to_sitdown;
-    dst->special_sprite = src->special_sprite;
-    dst->action_sprite_type = static_cast<uint8_t>(src->action_sprite_type);
-    dst->next_action_sprite_type = static_cast<uint8_t>(src->next_action_sprite_type);
-    dst->action_sprite_image_offset = src->action_sprite_image_offset;
-    dst->action = static_cast<uint8_t>(src->action);
-    dst->action_frame = src->action_frame;
-    dst->step_progress = src->step_progress;
-    dst->next_in_queue = src->next_in_queue;
-    dst->direction = src->direction;
-    dst->interaction_ride_index = src->interaction_ride_index;
-    dst->time_in_queue = src->time_in_queue;
-    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+    dst->item_extra_flags = src->ItemExtraFlags;
+    dst->photo2_ride_ref = src->Photo2RideRef;
+    dst->photo3_ride_ref = src->Photo3RideRef;
+    dst->photo4_ride_ref = src->Photo4RideRef;
+    dst->current_ride = src->CurrentRide;
+    dst->current_ride_station = src->CurrentRideStation;
+    dst->current_train = src->CurrentTrain;
+    dst->time_to_sitdown = src->TimeToSitdown;
+    dst->special_sprite = src->SpecialSprite;
+    dst->action_sprite_type = static_cast<uint8_t>(src->ActionSpriteType);
+    dst->next_action_sprite_type = static_cast<uint8_t>(src->NextActionSpriteType);
+    dst->action_sprite_image_offset = src->ActionSpriteImageOffset;
+    dst->action = static_cast<uint8_t>(src->Action);
+    dst->action_frame = src->ActionFrame;
+    dst->step_progress = src->StepProgress;
+    dst->next_in_queue = src->GuestNextInQueue;
+    dst->direction = src->PeepDirection;
+    dst->interaction_ride_index = src->InteractionRideIndex;
+    dst->time_in_queue = src->TimeInQueue;
+    for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)
     {
-        dst->rides_been_on[i] = src->rides_been_on[i];
+        dst->rides_been_on[i] = src->RidesBeenOn[i];
     }
-    dst->id = src->id;
-    dst->cash_in_pocket = src->cash_in_pocket;
-    dst->cash_spent = src->cash_spent;
-    dst->time_in_park = src->time_in_park;
-    dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
-    dst->previous_ride = src->previous_ride;
-    dst->previous_ride_time_out = src->previous_ride_time_out;
-    for (size_t i = 0; i < std::size(src->thoughts); i++)
+    dst->id = src->Id;
+    dst->cash_in_pocket = src->CashInPocket;
+    dst->cash_spent = src->CashSpent;
+    dst->time_in_park = src->TimeInPark;
+    dst->rejoin_queue_timeout = src->RejoinQueueTimeout;
+    dst->previous_ride = src->PreviousRide;
+    dst->previous_ride_time_out = src->PreviousRideTimeOut;
+    for (size_t i = 0; i < std::size(src->Thoughts); i++)
     {
-        auto srcThought = &src->thoughts[i];
+        auto srcThought = &src->Thoughts[i];
         auto dstThought = &dst->thoughts[i];
         dstThought->type = static_cast<uint8_t>(srcThought->type);
         dstThought->item = srcThought->item;
@@ -1413,7 +1413,7 @@ void S6Exporter::ExportTileElements()
     {
         auto src = &gTileElements[index];
         auto dst = &_s6.tile_elements[index];
-        if (src->base_height == 0xFF)
+        if (src->base_height == MAX_ELEMENT_HEIGHT)
         {
             std::memcpy(dst, src, sizeof(*dst));
         }

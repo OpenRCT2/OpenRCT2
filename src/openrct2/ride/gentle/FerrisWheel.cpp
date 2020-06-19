@@ -113,7 +113,7 @@ static void paint_ferris_wheel_structure(
             }
 
             Peep* peep = GET_PEEP(vehicle->peep[i]);
-            if (peep->state != PEEP_STATE_ON_RIDE)
+            if (peep->State != PEEP_STATE_ON_RIDE)
             {
                 continue;
             }

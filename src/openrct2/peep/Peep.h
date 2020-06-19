@@ -48,6 +48,7 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 class Formatter;
 struct TileElement;
 struct Ride;
+class GameActionResult;
 
 enum PeepType : uint8_t
 {
@@ -433,7 +434,7 @@ enum PeepItem
     PEEP_ITEM_EMPTY_BOX = (1 << 26),
     PEEP_ITEM_EMPTY_BOTTLE = (1 << 27),
 
-    // item_extra_flags
+    // ItemExtraFlags
     PEEP_ITEM_PHOTO2 = (1 << 0),
     PEEP_ITEM_PHOTO3 = (1 << 1),
     PEEP_ITEM_PHOTO4 = (1 << 2),
@@ -513,7 +514,7 @@ enum PeepSpriteType : uint8_t
     PEEP_SPRITE_TYPE_INVALID = 255
 };
 
-// Flags used by peep->window_invalidate_flags
+// Flags used by peep->WindowInvalidateFlags
 enum PeepInvalidate
 {
     PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
@@ -596,95 +597,95 @@ public:
 
 struct Peep : SpriteBase
 {
-    char* name;
+    char* Name;
     CoordsXYZ NextLoc;
-    uint8_t next_flags;
-    uint8_t outside_of_park;
-    PeepState state;
-    uint8_t sub_state;
-    PeepSpriteType sprite_type;
-    PeepType type;
+    uint8_t NextFlags;
+    uint8_t OutsideOfPark;
+    PeepState State;
+    uint8_t SubState;
+    PeepSpriteType SpriteType;
+    PeepType AssignedPeepType;
     union
     {
-        uint8_t staff_type;
-        uint8_t no_of_rides;
+        uint8_t StaffType;
+        uint8_t GuestNumRides;
     };
-    uint8_t tshirt_colour;
-    uint8_t trousers_colour;
-    uint16_t destination_x; // Location that the peep is trying to get to
-    uint16_t destination_y;
-    uint8_t destination_tolerance; // How close to destination before next action/state 0 = exact
-    uint8_t var_37;
-    uint8_t energy;
-    uint8_t energy_target;
-    uint8_t happiness;
-    uint8_t happiness_target;
-    uint8_t nausea;
-    uint8_t nausea_target;
-    uint8_t hunger;
-    uint8_t thirst;
-    uint8_t toilet;
-    uint8_t mass;
-    uint8_t time_to_consume;
-    IntensityRange intensity;
-    uint8_t nausea_tolerance;
-    uint8_t window_invalidate_flags;
-    money16 paid_on_drink;
-    uint8_t ride_types_been_on[16];
-    uint32_t item_extra_flags;
-    uint8_t photo2_ride_ref;
-    uint8_t photo3_ride_ref;
-    uint8_t photo4_ride_ref;
-    uint8_t current_ride;
-    StationIndex current_ride_station;
-    uint8_t current_train;
+    uint8_t TshirtColour;
+    uint8_t TrousersColour;
+    uint16_t DestinationX; // Location that the peep is trying to get to
+    uint16_t DestinationY;
+    uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
+    uint8_t Var37;
+    uint8_t Energy;
+    uint8_t EnergyTarget;
+    uint8_t Happiness;
+    uint8_t HappinessTarget;
+    uint8_t Nausea;
+    uint8_t NauseaTarget;
+    uint8_t Hunger;
+    uint8_t Thirst;
+    uint8_t Toilet;
+    uint8_t Mass;
+    uint8_t TimeToConsume;
+    IntensityRange Intensity;
+    uint8_t NauseaTolerance;
+    uint8_t WindowInvalidateFlags;
+    money16 PaidOnDrink;
+    uint8_t RideTypesBeenOn[16];
+    uint32_t ItemExtraFlags;
+    uint8_t Photo2RideRef;
+    uint8_t Photo3RideRef;
+    uint8_t Photo4RideRef;
+    uint8_t CurrentRide;
+    StationIndex CurrentRideStation;
+    uint8_t CurrentTrain;
     union
     {
         struct
         {
-            uint8_t current_car;
-            uint8_t current_seat;
+            uint8_t CurrentCar;
+            uint8_t CurrentSeat;
         };
-        uint16_t time_to_sitdown;
+        uint16_t TimeToSitdown;
         struct
         {
-            uint8_t time_to_stand;
-            uint8_t standing_flags;
+            uint8_t TimeToStand;
+            uint8_t StandingFlags;
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;
-    PeepActionSpriteType action_sprite_type;
+    uint8_t SpecialSprite;
+    PeepActionSpriteType ActionSpriteType;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    PeepActionSpriteType next_action_sprite_type;
-    uint8_t action_sprite_image_offset;
-    PeepActionType action;
-    uint8_t action_frame;
-    uint8_t step_progress;
+    PeepActionSpriteType NextActionSpriteType;
+    uint8_t ActionSpriteImageOffset;
+    PeepActionType Action;
+    uint8_t ActionFrame;
+    uint8_t StepProgress;
     union
     {
-        uint16_t mechanic_time_since_call; // time getting to ride to fix
-        uint16_t next_in_queue;
+        uint16_t MechanicTimeSinceCall; // time getting to ride to fix
+        uint16_t GuestNextInQueue;
     };
     union
     {
-        uint8_t maze_last_edge;
-        Direction direction; // Direction ?
+        uint8_t MazeLastEdge;
+        Direction PeepDirection; // Direction ?
     };
-    uint8_t interaction_ride_index;
-    uint16_t time_in_queue;
-    uint8_t rides_been_on[32];
+    uint8_t InteractionRideIndex;
+    uint16_t TimeInQueue;
+    uint8_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32_t id;
-    money32 cash_in_pocket;
-    money32 cash_spent;
-    int32_t time_in_park;
-    int8_t rejoin_queue_timeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    uint8_t previous_ride;
-    uint16_t previous_ride_time_out;
-    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];
+    uint32_t Id;
+    money32 CashInPocket;
+    money32 CashSpent;
+    int32_t TimeInPark;
+    int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
+    uint8_t PreviousRide;
+    uint16_t PreviousRideTimeOut;
+    rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {
@@ -769,7 +770,7 @@ public: // Peep
     void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
     void Pickup();
     void PickupAbort(int32_t old_x);
-    bool Place(const TileCoordsXYZ& location, bool apply);
+    std::unique_ptr<GameActionResult> Place(const TileCoordsXYZ& location, bool apply);
     static Peep* Generate(const CoordsXYZ& coords);
     void RemoveFromQueue();
     void RemoveFromRide();
@@ -987,22 +988,6 @@ enum
 
 /** Helper macro until rides are stored in this module. */
 #define GET_PEEP(sprite_index) &(get_sprite(sprite_index)->peep)
-
-/**
- * Helper macro loop for enumerating through all the peeps. To avoid needing a end loop counterpart, statements are
- * applied in tautology if statements.
- */
-#define FOR_ALL_PEEPS(sprite_index, peep)                                                                                      \
-    for ((sprite_index) = gSpriteListHead[SPRITE_LIST_PEEP]; (sprite_index) != SPRITE_INDEX_NULL; (sprite_index) = peep->next) \
-        if (((peep) = GET_PEEP(sprite_index)) != nullptr || 1)
-
-#define FOR_ALL_GUESTS(sprite_index, peep)                                                                                     \
-    FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->type == PEEP_TYPE_GUEST)
-
-#define FOR_ALL_STAFF(sprite_index, peep)                                                                                      \
-    FOR_ALL_PEEPS (sprite_index, peep)                                                                                         \
-        if ((peep)->type == PEEP_TYPE_STAFF)
 
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];

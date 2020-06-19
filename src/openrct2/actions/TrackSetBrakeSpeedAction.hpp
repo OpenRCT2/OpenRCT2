@@ -66,6 +66,11 @@ private:
         res->Position.y += 16;
         res->Expenditure = ExpenditureType::RideConstruction;
 
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED, STR_NONE);
+        }
+
         TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
         if (tileElement == nullptr)
         {

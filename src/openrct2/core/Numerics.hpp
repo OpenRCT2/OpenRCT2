@@ -27,7 +27,7 @@ namespace Numerics
     {
         static_assert(std::is_unsigned<_UIntType>::value, "result_type must be an unsigned integral type");
         using limits = typename std::numeric_limits<_UIntType>;
-        return (((_UIntType)(x) << shift) | ((_UIntType)(x) >> (limits::digits - shift)));
+        return ((static_cast<_UIntType>(x) << shift) | (static_cast<_UIntType>(x) >> (limits::digits - shift)));
     }
 
     /**
@@ -53,7 +53,7 @@ namespace Numerics
     {
         static_assert(std::is_unsigned<_UIntType>::value, "result_type must be an unsigned integral type");
         using limits = std::numeric_limits<_UIntType>;
-        return (((_UIntType)(x) >> shift) | ((_UIntType)(x) << (limits::digits - shift)));
+        return ((static_cast<_UIntType>(x) >> shift) | (static_cast<_UIntType>(x) << (limits::digits - shift)));
     }
 
     /**

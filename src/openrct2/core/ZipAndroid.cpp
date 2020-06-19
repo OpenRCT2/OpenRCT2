@@ -59,7 +59,7 @@ public:
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileCountMethod = env->GetMethodID(zipClass, "getNumFiles", "()I");
 
-        return (size_t)env->CallIntMethod(_zip, fileCountMethod);
+        return static_cast<size_t>(env->CallIntMethod(_zip, fileCountMethod));
     }
 
     std::string GetFileName(size_t index) const override

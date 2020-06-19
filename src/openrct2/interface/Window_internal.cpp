@@ -19,10 +19,10 @@ void rct_window::ScrollToViewport()
 
     if (viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE)
     {
-        rct_sprite* sprite = get_sprite(viewport_focus_sprite.sprite_id);
-        newX = sprite->generic.x;
-        newY = sprite->generic.y;
-        newZ = sprite->generic.z;
+        auto* sprite = GetEntity(viewport_focus_sprite.sprite_id);
+        newX = sprite->x;
+        newY = sprite->y;
+        newZ = sprite->z;
     }
     else
     {

@@ -20,6 +20,15 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)),
     SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(CoveredTrackPieces, (1ULL << TRACK_ELEM_FLAT) | (1ULL << TRACK_ELEM_25_DEG_UP) | (1ULL << TRACK_ELEM_60_DEG_UP) | 
+                                  (1ULL << TRACK_ELEM_FLAT_TO_25_DEG_UP) | (1ULL << TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP) | 
+                                  (1ULL << TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP) | (1ULL << TRACK_ELEM_25_DEG_UP_TO_FLAT) | 
+                                  (1ULL << TRACK_ELEM_25_DEG_DOWN) | (1ULL << TRACK_ELEM_60_DEG_DOWN) | (1ULL << TRACK_ELEM_FLAT_TO_25_DEG_DOWN) | 
+                                  (1ULL << TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN) | (1ULL << TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN) | 
+                                  (1ULL << TRACK_ELEM_25_DEG_DOWN_TO_FLAT) | (1ULL << TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES) | 
+                                  (1ULL << TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) | (1ULL << TRACK_ELEM_S_BEND_LEFT) | 
+                                  (1ULL << TRACK_ELEM_S_BEND_RIGHT) | (1ULL << TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES) | 
+                                  (1ULL << TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES)),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_dinghy_slide),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -31,10 +40,20 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(Naming, { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(Heights, { 15, 24, 5, 7, }),
+    SET_FIELD(MaxMass, 5),
     SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 5 }),
+    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dinghy_slide),
+    SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 4, 3, 10 }),
+    SET_FIELD(BuildCosts, { 40, 4, 40, }),
+    SET_FIELD(DefaultPrices, { 20, 20 }),
+    SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),
+    SET_FIELD(BonusValue, 55)
 };
 // clang-format on

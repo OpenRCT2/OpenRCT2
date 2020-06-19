@@ -182,7 +182,7 @@ public:
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), 0 };
             auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
-            if (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode)
+            if (!LocationValid(tileCoords) || (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode))
             {
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -230,13 +230,14 @@ public:
             int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
 
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
+                && RideTypeDescriptors[ride->type].Heights.ClearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
             else
             {
-                clearanceZ += RideData5[ride->type].clearance_height;
+                clearanceZ += RideTypeDescriptors[ride->type].Heights.ClearanceHeight;
             }
 
             clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
@@ -396,7 +397,7 @@ public:
                     }
                     else
                     {
-                        maxHeight = RideData5[ride->type].max_height;
+                        maxHeight = RideTypeDescriptors[ride->type].Heights.MaxHeight;
                     }
 
                     ride_height /= COORDS_Z_PER_TINY_Z;
@@ -413,10 +414,10 @@ public:
                 supportHeight = (10 * COORDS_Z_STEP);
             }
 
-            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
         price >>= 16;
@@ -473,13 +474,14 @@ public:
 
             int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
+                && RideTypeDescriptors[ride->type].Heights.ClearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
             else
             {
-                clearanceZ += RideData5[ride->type].clearance_height;
+                clearanceZ += RideTypeDescriptors[ride->type].Heights.ClearanceHeight;
             }
 
             clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
@@ -540,7 +542,7 @@ public:
                 supportHeight = (10 * COORDS_Z_STEP);
             }
 
-            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
 
             invalidate_test_results(ride);
             switch (_trackType)
@@ -710,7 +712,7 @@ public:
             map_invalidate_tile_full(mapLoc);
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
         price >>= 16;

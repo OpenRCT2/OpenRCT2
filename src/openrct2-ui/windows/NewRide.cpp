@@ -266,7 +266,7 @@ static void window_new_ride_set_page(rct_window* w, int32_t page);
 static void window_new_ride_refresh_widget_sizing(rct_window* w);
 static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w, const ScreenCoordsXY& screenCoords);
 static void window_new_ride_paint_ride_information(
-    rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, int32_t x, int32_t y, int32_t width);
+    rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t width);
 static void window_new_ride_select(rct_window* w);
 static RideSelection* window_new_ride_iterate_over_ride_group(
     uint8_t rideType, uint8_t rideGroupIndex, RideSelection* nextListItem);
@@ -347,18 +347,13 @@ static RideSelection* window_new_ride_iterate_over_ride_group(
     bool buttonForRideTypeCreated = false;
     bool allowDrawingOverLastButton = false;
 
-    char preferredVehicleName[DAT_NAME_LENGTH + 1];
-    safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
+    uint8_t highestVehiclePriority = 0;
 
     // For each ride entry for this ride type
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto& rideEntries = objManager.GetAllRideEntries(rideType);
     for (auto rideEntryIndex : rideEntries)
     {
-        char rideEntryName[DAT_NAME_LENGTH + 1];
-        std::memcpy(rideEntryName, object_entry_get_entry(OBJECT_TYPE_RIDE, rideEntryIndex)->name, 8);
-        rideEntryName[DAT_NAME_LENGTH] = 0;
-
         // Skip if vehicle type is not invented yet
         if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
             continue;
@@ -376,26 +371,12 @@ static RideSelection* window_new_ride_iterate_over_ride_group(
         }
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+            && highestVehiclePriority > rideEntry->BuildMenuPriority)
         {
-            if (strcmp(preferredVehicleName, "        \0") == 0)
-            {
-                safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                preferredVehicleName[DAT_NAME_LENGTH] = 0;
-            }
-            else
-            {
-                if (RideGroupManager::VehiclePreferenceCompare(rideType, preferredVehicleName, rideEntryName) == 1)
-                {
-                    safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                    preferredVehicleName[DAT_NAME_LENGTH] = 0;
-                }
-                else
-                {
-                    continue;
-                }
-            }
+            continue;
         }
+        highestVehiclePriority = rideEntry->BuildMenuPriority;
 
         // Determines how and where to draw a button for this ride type/vehicle.
         if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
@@ -842,7 +823,7 @@ static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi)
         item = w->new_ride.HighlightedRide;
         if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != RIDE_ENTRY_INDEX_NULL)
             window_new_ride_paint_ride_information(
-                w, dpi, item, w->windowPos.x + 3, w->windowPos.y + w->height - 64, w->width - 6);
+                w, dpi, item, w->windowPos + ScreenCoordsXY{ 3, w->height - 64 }, w->width - 6);
     }
     else
     {
@@ -963,17 +944,17 @@ static int32_t get_num_track_designs(RideSelection item)
  *  rct2: 0x006B701C
  */
 static void window_new_ride_paint_ride_information(
-    rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, int32_t x, int32_t y, int32_t width)
+    rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t width)
 {
     rct_ride_entry* rideEntry = get_ride_entry(item.EntryIndex);
-    rct_ride_name rideNaming;
+    RideNaming rideNaming;
 
     // Ride name and description
     rideNaming = get_ride_naming(item.Type, rideEntry);
     auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(rideNaming.name);
-    ft.Add<rct_string_id>(rideNaming.description);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, { x, y }, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
+    ft.Add<rct_string_id>(rideNaming.Name);
+    ft.Add<rct_string_id>(rideNaming.Description);
+    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
     window_new_ride_list_vehicles_for(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
@@ -981,7 +962,8 @@ static void window_new_ride_paint_ride_information(
     if (availabilityString[0] != 0)
     {
         const char* drawString = availabilityString;
-        gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, { x, y + 39 }, WW - 2);
+        gfx_draw_string_left_clipped(
+            dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2);
     }
 
     if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
@@ -1004,14 +986,14 @@ static void window_new_ride_paint_ride_information(
             break;
     }
 
-    gfx_draw_string_left(dpi, designCountStringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 51);
+    gfx_draw_string_left(dpi, designCountStringId, &_lastTrackDesignCount, COLOUR_BLACK, screenPos.x, screenPos.y + 51);
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
         int32_t unk2 = RideTypeDescriptors[item.Type].StartTrackPiece;
-        money32 price = RideTrackCosts[item.Type].track_price;
+        money32 price = RideTypeDescriptors[item.Type].BuildCosts.TrackPrice;
         if (ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             price *= FlatRideTrackPricing[unk2];
@@ -1020,14 +1002,14 @@ static void window_new_ride_paint_ride_information(
         {
             price *= TrackPricing[unk2];
         }
-        price = (price >> 17) * 10 * RideData5[item.Type].PriceEstimateMultiplier;
+        price = (price >> 17) * 10 * RideTypeDescriptors[item.Type].BuildCosts.PriceEstimateMultiplier;
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
         if (!ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
-        gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, x + width, y + 51);
+        gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, screenPos + ScreenCoordsXY{ width, 51 });
     }
 }
 
@@ -1092,7 +1074,7 @@ static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_e
         }
 
         // Append vehicle name
-        auto vehicleName = language_get_string(currentRideEntry->naming.name);
+        auto vehicleName = language_get_string(currentRideEntry->naming.Name);
         safe_strcat(buffer, vehicleName, bufferLen);
 
         isFirst = false;

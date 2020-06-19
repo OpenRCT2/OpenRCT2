@@ -385,13 +385,11 @@ int32_t Park::CalculateParkRating() const
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         uint32_t happyGuestCount = 0;
         uint32_t lostGuestCount = 0;
-        uint16_t spriteIndex;
-        Peep* peep;
-        FOR_ALL_GUESTS (spriteIndex, peep)
+        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            if (peep->outside_of_park == 0)
+            if (peep->OutsideOfPark == 0)
             {
-                if (peep->happiness > 128)
+                if (peep->Happiness > 128)
                 {
                     happyGuestCount++;
                 }
@@ -469,13 +467,9 @@ int32_t Park::CalculateParkRating() const
 
     // Litter
     {
-        Litter* litter;
         int32_t litterCount = 0;
-        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
-             spriteIndex = litter->next)
+        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
         {
-            litter = &(get_sprite(spriteIndex)->litter);
-
             // Ignore recently dropped litter
             if (litter->creationTick - gScenarioTicks >= 7680)
             {
@@ -510,7 +504,7 @@ money32 Park::CalculateRideValue(const Ride* ride) const
     money32 result = 0;
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
-        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
+        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + RideTypeDescriptors[ride->type].BonusValue * 4);
     }
     return result;
 }
@@ -565,7 +559,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
             continue;
 
         // Add guest score for ride type
-        suggestedMaxGuests += rideBonusValue[ride.type];
+        suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue;
     }
 
     // If difficult guest generation, extra guests are available for good rides
@@ -590,7 +584,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += rideBonusValue[ride.type] * 2;
+            suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue * 2;
         }
     }
 
@@ -724,13 +718,13 @@ Peep* Park::GenerateGuest()
             peep->sprite_direction = direction << 3;
 
             // Get the centre point of the tile the peep is on
-            peep->destination_x = (peep->x & 0xFFE0) + 16;
-            peep->destination_y = (peep->y & 0xFFE0) + 16;
+            peep->DestinationX = (peep->x & 0xFFE0) + 16;
+            peep->DestinationY = (peep->y & 0xFFE0) + 16;
 
-            peep->destination_tolerance = 5;
-            peep->direction = direction;
-            peep->var_37 = 0;
-            peep->state = PEEP_STATE_ENTERING_PARK;
+            peep->DestinationTolerance = 5;
+            peep->PeepDirection = direction;
+            peep->Var37 = 0;
+            peep->State = PEEP_STATE_ENTERING_PARK;
         }
     }
     return peep;

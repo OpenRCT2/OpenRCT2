@@ -140,6 +140,12 @@ public:
     std::string GetErrorMessage() const;
 };
 
+class ConstructClearResult final : public GameActionResult
+{
+public:
+    uint8_t GroundFlags{ 0 };
+};
+
 /**
  *
  */
@@ -314,6 +320,8 @@ public:
      * Apply the game action and change the game state.
      */
     virtual GameActionResult::Ptr Execute() const abstract;
+
+    bool LocationValid(const CoordsXY& coords) const;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
         else if (desc.Type == "dropdown")
         {
             widget.type = WWT_DROPDOWN;
-            if (desc.SelectedIndex >= 0 && (size_t)desc.SelectedIndex < desc.Items.size())
+            if (desc.SelectedIndex >= 0 && static_cast<size_t>(desc.SelectedIndex) < desc.Items.size())
             {
                 widget.string = const_cast<utf8*>(desc.Items[desc.SelectedIndex].c_str());
             }

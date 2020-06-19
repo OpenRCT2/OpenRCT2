@@ -14,24 +14,14 @@
 #include "../util/Util.h"
 #include "Sprite.h"
 
-bool rct_sprite::IsBalloon()
+template<> bool SpriteBase::Is<Balloon>() const
 {
-    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.type == SPRITE_MISC_BALLOON;
-}
-
-Balloon* rct_sprite::AsBalloon()
-{
-    Balloon* result = nullptr;
-    if (IsBalloon())
-    {
-        result = reinterpret_cast<Balloon*>(this);
-    }
-    return result;
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_BALLOON;
 }
 
 void Balloon::Update()
 {
-    invalidate_sprite_2(this);
+    Invalidate2();
     if (popped == 1)
     {
         frame++;

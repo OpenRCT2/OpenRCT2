@@ -100,6 +100,14 @@ struct VehicleCrashParticle : SpriteGeneric
     int32_t acceleration_z;
 };
 
+struct ExplosionFlare : SpriteGeneric
+{
+};
+
+struct ExplosionCloud : SpriteGeneric
+{
+};
+
 struct CrashSplashParticle : SpriteGeneric
 {
 };
@@ -129,14 +137,6 @@ union rct_sprite
     CrashSplashParticle crash_splash;
     SteamParticle steam_particle;
 
-    bool IsBalloon();
-    bool IsDuck();
-    bool IsMoneyEffect();
-    bool IsPeep() const;
-    Balloon* AsBalloon();
-    Duck* AsDuck();
-    MoneyEffect* AsMoneyEffect();
-    Peep* AsPeep();
     // Default constructor to prevent non trivial construction issues
     rct_sprite()
         : pad_00()
@@ -193,6 +193,15 @@ enum
 
 rct_sprite* try_get_sprite(size_t spriteIndex);
 rct_sprite* get_sprite(size_t sprite_idx);
+template<typename T> T* GetEntity(size_t sprite_idx)
+{
+    auto spr = reinterpret_cast<SpriteBase*>(get_sprite(sprite_idx));
+    if (spr == nullptr)
+        return nullptr;
+    return spr->As<T>();
+}
+
+SpriteBase* GetEntity(size_t sprite_idx);
 
 extern uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
 extern uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
@@ -209,9 +218,6 @@ void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void sprite_misc_update_all();
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
-void invalidate_sprite_0(SpriteBase* sprite);
-void invalidate_sprite_1(SpriteBase* sprite);
-void invalidate_sprite_2(SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
 void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);
@@ -255,5 +261,105 @@ bool sprite_get_flashing(SpriteBase* sprite);
 int32_t check_for_sprite_list_cycles(bool fix);
 int32_t check_for_spatial_index_cycles(bool fix);
 int32_t fix_disjoint_sprites();
+
+template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
+{
+private:
+    T* Entity = nullptr;
+    uint16_t NextEntityId = SPRITE_INDEX_NULL;
+
+public:
+    EntityIterator(const uint16_t _EntityId)
+        : NextEntityId(_EntityId)
+    {
+        ++(*this);
+    }
+    EntityIterator& operator++()
+    {
+        Entity = nullptr;
+
+        while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
+        {
+            auto baseEntity = GetEntity(NextEntityId);
+            if (!baseEntity)
+            {
+                NextEntityId = SPRITE_INDEX_NULL;
+                continue;
+            }
+            NextEntityId = baseEntity->*NextList;
+            Entity = baseEntity->template As<T>();
+        }
+        return *this;
+    }
+
+    EntityIterator operator++(int)
+    {
+        EntityIterator retval = *this;
+        ++(*this);
+        return retval;
+    }
+    bool operator==(EntityIterator other) const
+    {
+        return Entity == other.Entity;
+    }
+    bool operator!=(EntityIterator other) const
+    {
+        return !(*this == other);
+    }
+    T* operator*()
+    {
+        return Entity;
+    }
+    // iterator traits
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = const T*;
+    using reference = const T&;
+    using iterator_category = std::forward_iterator_tag;
+};
+
+template<typename T = SpriteBase> class EntityTileList
+{
+private:
+    uint16_t FirstEntity = SPRITE_INDEX_NULL;
+    using EntityTileIterator = EntityIterator<T, &SpriteBase::next_in_quadrant>;
+
+public:
+    EntityTileList(const CoordsXY& loc)
+        : FirstEntity(sprite_get_first_in_quadrant(loc.x, loc.y))
+    {
+    }
+
+    EntityTileIterator begin()
+    {
+        return EntityTileIterator(FirstEntity);
+    }
+    EntityTileIterator end()
+    {
+        return EntityTileIterator(SPRITE_INDEX_NULL);
+    }
+};
+
+template<typename T = SpriteBase> class EntityList
+{
+private:
+    uint16_t FirstEntity = SPRITE_INDEX_NULL;
+    using EntityListIterator = EntityIterator<T, &SpriteBase::next>;
+
+public:
+    EntityList(SPRITE_LIST type)
+        : FirstEntity(gSpriteListHead[type])
+    {
+    }
+
+    EntityListIterator begin()
+    {
+        return EntityListIterator(FirstEntity);
+    }
+    EntityListIterator end()
+    {
+        return EntityListIterator(SPRITE_INDEX_NULL);
+    }
+};
 
 #endif

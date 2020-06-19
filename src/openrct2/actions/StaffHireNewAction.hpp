@@ -159,15 +159,15 @@ private:
         else
         {
             newPeep->sprite_identifier = 1;
-            newPeep->window_invalidate_flags = 0;
-            newPeep->action = PEEP_ACTION_NONE_2;
-            newPeep->special_sprite = 0;
-            newPeep->action_sprite_image_offset = 0;
+            newPeep->WindowInvalidateFlags = 0;
+            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->SpecialSprite = 0;
+            newPeep->ActionSpriteImageOffset = 0;
             newPeep->WalkingFrameNum = 0;
-            newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
+            newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->PathCheckOptimisation = 0;
-            newPeep->type = PEEP_TYPE_STAFF;
-            newPeep->outside_of_park = 0;
+            newPeep->AssignedPeepType = PEEP_TYPE_STAFF;
+            newPeep->OutsideOfPark = 0;
             newPeep->PeepFlags = 0;
             newPeep->PaidToEnter = 0;
             newPeep->PaidOnRides = 0;
@@ -176,22 +176,18 @@ private:
             newPeep->FavouriteRide = RIDE_ID_NULL;
             newPeep->StaffOrders = _staffOrders;
 
-            uint16_t idSearchSpriteIndex;
-            Peep* idSearchPeep;
-
-            // We search for the first available id for a given staff type
+            // We search for the first available Id for a given staff type
             uint32_t newStaffId = 0;
             for (;;)
             {
                 bool found = false;
                 ++newStaffId;
-
-                FOR_ALL_STAFF (idSearchSpriteIndex, idSearchPeep)
+                for (auto searchPeep : EntityList<Staff>(SPRITE_LIST_PEEP))
                 {
-                    if (idSearchPeep->staff_type != _staffType)
+                    if (searchPeep->StaffType != _staffType)
                         continue;
 
-                    if (idSearchPeep->id == newStaffId)
+                    if (searchPeep->Id == newStaffId)
                     {
                         found = true;
                         break;
@@ -202,16 +198,16 @@ private:
                     break;
             }
 
-            newPeep->id = newStaffId;
-            newPeep->staff_type = _staffType;
+            newPeep->Id = newStaffId;
+            newPeep->StaffType = _staffType;
 
             PeepSpriteType spriteType = spriteTypes[_staffType];
             if (_staffType == STAFF_TYPE_ENTERTAINER)
             {
                 spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
             }
-            newPeep->name = nullptr;
-            newPeep->sprite_type = spriteType;
+            newPeep->Name = nullptr;
+            newPeep->SpriteType = spriteType;
 
             const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
             newPeep->sprite_width = spriteBounds->sprite_width;
@@ -225,25 +221,25 @@ private:
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->state = PEEP_STATE_PICKED;
+                newPeep->State = PEEP_STATE_PICKED;
 
                 newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
             }
 
             // Staff uses this
-            newPeep->time_in_park = gDateMonthsElapsed;
+            newPeep->TimeInPark = gDateMonthsElapsed;
             newPeep->PathfindGoal.x = 0xFF;
             newPeep->PathfindGoal.y = 0xFF;
             newPeep->PathfindGoal.z = 0xFF;
             newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
             uint8_t colour = staff_get_colour(_staffType);
-            newPeep->tshirt_colour = colour;
-            newPeep->trousers_colour = colour;
+            newPeep->TshirtColour = colour;
+            newPeep->TrousersColour = colour;
 
             // Staff energy determines their walking speed
-            newPeep->energy = 0x60;
-            newPeep->energy_target = 0x60;
+            newPeep->Energy = 0x60;
+            newPeep->EnergyTarget = 0x60;
             newPeep->StaffMowingTimeout = 0;
 
             newPeep->StaffId = staffIndex;
@@ -264,48 +260,63 @@ private:
     void AutoPositionNewStaff(Peep * newPeep) const
     {
         // Find a location to place new staff member
+        newPeep->State = PEEP_STATE_FALLING;
 
-        newPeep->state = PEEP_STATE_FALLING;
-
-        int16_t x, y, z;
         uint32_t count = 0;
-        uint16_t sprite_index;
-        Peep* guest = nullptr;
         PathElement* guest_tile = nullptr;
 
         // Count number of walking guests
-        FOR_ALL_GUESTS (sprite_index, guest)
         {
-            if (guest->state == PEEP_STATE_WALKING)
+            for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
             {
-                // Check the walking guest's tile. Only count them if they're on a path tile.
-                guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
-                if (guest_tile != nullptr)
-                    ++count;
+                if (guest->State == PEEP_STATE_WALKING)
+                {
+                    // Check the walking guest's tile. Only count them if they're on a path tile.
+                    guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
+                    if (guest_tile != nullptr)
+                        ++count;
+                }
             }
         }
 
+        CoordsXYZ newLocation{};
         if (count > 0)
         {
             // Place staff at a random guest
             uint32_t rand = scenario_rand_max(count);
-            FOR_ALL_GUESTS (sprite_index, guest)
+            Guest* chosenGuest = nullptr;
+
+            for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
             {
-                if (guest->state == PEEP_STATE_WALKING)
+                if (guest->State == PEEP_STATE_WALKING)
                 {
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
                     {
                         if (rand == 0)
+                        {
+                            chosenGuest = guest;
                             break;
+                        }
                         --rand;
                     }
                 }
             }
 
-            x = guest->x;
-            y = guest->y;
-            z = guest->z;
+            if (chosenGuest != nullptr)
+            {
+                newLocation.x = chosenGuest->x;
+                newLocation.y = chosenGuest->y;
+                newLocation.z = chosenGuest->z;
+            }
+            else
+            {
+                // User must pick a location
+                newPeep->State = PEEP_STATE_PICKED;
+                newLocation.x = newPeep->x;
+                newLocation.y = newPeep->y;
+                newLocation.z = newPeep->z;
+            }
         }
         else
         {
@@ -315,22 +326,21 @@ private:
                 auto rand = scenario_rand_max(static_cast<uint32_t>(gParkEntrances.size()));
                 const auto& entrance = gParkEntrances[rand];
                 auto dir = entrance.direction;
-                x = entrance.x;
-                y = entrance.y;
-                z = entrance.z;
-                x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
-                y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
+                newLocation = entrance;
+                // TODO: Replace with CoordsDirectionDelta
+                newLocation.x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
+                newLocation.y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
             }
             else
             {
                 // User must pick a location
-                newPeep->state = PEEP_STATE_PICKED;
-                x = newPeep->x;
-                y = newPeep->y;
-                z = newPeep->z;
+                newPeep->State = PEEP_STATE_PICKED;
+                newLocation.x = newPeep->x;
+                newLocation.y = newPeep->y;
+                newLocation.z = newPeep->z;
             }
         }
 
-        newPeep->MoveTo({ x, y, z + 16 });
+        newPeep->MoveTo(newLocation + CoordsXYZ{ 0, 0, 16 });
     }
 };

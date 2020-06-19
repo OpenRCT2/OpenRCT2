@@ -32,7 +32,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "16"
+#define NETWORK_STREAM_VERSION "19"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -1442,7 +1442,7 @@ void Network::Client_Send_AUTH(
     packet->WriteString(name.c_str());
     packet->WriteString(password.c_str());
     packet->WriteString(pubkey.c_str());
-    assert(signature.size() <= (size_t)UINT32_MAX);
+    assert(signature.size() <= static_cast<size_t>(UINT32_MAX));
     *packet << static_cast<uint32_t>(signature.size());
     packet->Write(signature.data(), signature.size());
     _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
@@ -2611,7 +2611,9 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
     const uint8_t* data = packet.Read(dataSize);
     _serverGameState.Write(data, dataSize);
 
-    log_verbose("Received Game State %.02f%%", ((float)_serverGameState.GetLength() / (float)totalSize) * 100.0f);
+    log_verbose(
+        "Received Game State %.02f%%",
+        (static_cast<float>(_serverGameState.GetLength()) / static_cast<float>(totalSize)) * 100.0f);
 
     if (_serverGameState.GetLength() == totalSize)
     {
@@ -2850,7 +2852,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
     context_open_intent(&intent);
 
-    std::memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
+    std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
     if (offset + chunksize == size)
     {
         // Allow queue processing of game actions again.

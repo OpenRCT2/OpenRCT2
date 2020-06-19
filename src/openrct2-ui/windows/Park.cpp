@@ -33,7 +33,6 @@
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 224;
-static constexpr const int32_t WW = 230;
 
 // clang-format off
 enum WINDOW_PARK_PAGE {
@@ -877,8 +876,9 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
     gfx_draw_string_centred_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (labelWidget->left + labelWidget->right) / 2,
-        w->windowPos.y + labelWidget->top, labelWidget->right - labelWidget->left);
+        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
+        w->windowPos + ScreenCoordsXY{ (labelWidget->left + labelWidget->right) / 2, labelWidget->top },
+        labelWidget->right - labelWidget->left);
 }
 
 /**
@@ -1046,34 +1046,34 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    int32_t x = w->windowPos.x;
-    int32_t y = w->windowPos.y;
+    auto screenPos = w->windowPos;
     rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, &gParkRating, COLOUR_BLACK, x + widget->left + 3, y + widget->top + 2);
+    gfx_draw_string_left(
+        dpi, STR_PARK_RATING_LABEL, &gParkRating, COLOUR_BLACK, screenPos.x + widget->left + 3, screenPos.y + widget->top + 2);
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1],
-        INSET_RECT_F_30);
+        dpi, screenPos.x + widget->left + 4, screenPos.y + widget->top + 15, screenPos.x + widget->right - 4,
+        screenPos.y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
 
     // Y axis labels
-    x = x + widget->left + 27;
-    y = y + widget->top + 23;
+    screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 200;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, x + 10, y);
-        gfx_fill_rect_inset(dpi, x + 15, y + 5, x + w->width - 32, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
-        y += 20;
+        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
+        gfx_fill_rect_inset(
+            dpi, screenPos.x + 15, screenPos.y + 5, screenPos.x + w->width - 32, screenPos.y + 5, w->colours[2],
+            INSET_RECT_FLAG_BORDER_INSET);
+        screenPos.y += 20;
     }
 
     // Graph
-    x = w->windowPos.x + widget->left + 47;
-    y = w->windowPos.y + widget->top + 26;
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    graph_draw_uint8_t(dpi, gParkRatingHistory, 32, x, y);
+    graph_draw_uint8_t(dpi, gParkRatingHistory, 32, screenPos.x, screenPos.y);
 }
 
 #pragma endregion
@@ -1176,35 +1176,35 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    int32_t x = w->windowPos.x;
-    int32_t y = w->windowPos.y;
+    auto screenPos = ScreenCoordsXY{ w->windowPos.x, w->windowPos.y };
     rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
     gfx_draw_string_left(
-        dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x + widget->left + 3, y + widget->top + 2);
+        dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, screenPos.x + widget->left + 3,
+        screenPos.y + widget->top + 2);
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1],
-        INSET_RECT_F_30);
+        dpi, screenPos.x + widget->left + 4, screenPos.y + widget->top + 15, screenPos.x + widget->right - 4,
+        screenPos.y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
 
     // Y axis labels
-    x = x + widget->left + 27;
-    y = y + widget->top + 23;
+    screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 1000;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, x + 10, y);
-        gfx_fill_rect_inset(dpi, x + 15, y + 5, x + w->width - 32, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
-        y += 20;
+        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
+        gfx_fill_rect_inset(
+            dpi, screenPos.x + 15, screenPos.y + 5, screenPos.x + w->width - 32, screenPos.y + 5, w->colours[2],
+            INSET_RECT_FLAG_BORDER_INSET);
+        screenPos.y += 20;
     }
 
     // Graph
-    x = w->windowPos.x + widget->left + 47;
-    y = w->windowPos.y + widget->top + 26;
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    graph_draw_uint8_t(dpi, gGuestsInParkHistory, 32, x, y);
+    graph_draw_uint8_t(dpi, gGuestsInParkHistory, 32, screenPos.x, screenPos.y);
 }
 
 #pragma endregion

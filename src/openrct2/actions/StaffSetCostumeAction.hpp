@@ -74,7 +74,7 @@ public:
         }
 
         Peep* peep = GET_PEEP(_spriteIndex);
-        if (peep->type != PEEP_TYPE_STAFF || peep->staff_type != STAFF_TYPE_ENTERTAINER)
+        if (peep->AssignedPeepType != PEEP_TYPE_STAFF || peep->StaffType != STAFF_TYPE_ENTERTAINER)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -94,13 +94,13 @@ public:
         Peep* peep = GET_PEEP(_spriteIndex);
 
         auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
-        peep->sprite_type = spriteType;
+        peep->SpriteType = spriteType;
         peep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
         if (peep_slow_walking_types[spriteType])
         {
             peep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
         }
-        peep->action_frame = 0;
+        peep->ActionFrame = 0;
         peep->UpdateCurrentActionSpriteType();
         peep->Invalidate();
 

@@ -101,8 +101,8 @@ const encoding_convert_entry RCT2ToUnicodeTable[] =
 
 static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
 {
-    uint16_t key = *((uint16_t*)pKey);
-    encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
+    const uint16_t key = *reinterpret_cast<const uint16_t*>(pKey);
+    const encoding_convert_entry *entry = static_cast<const encoding_convert_entry*>(pEntry);
     if (key < entry->code) return -1;
     if (key > entry->code) return 1;
     return 0;

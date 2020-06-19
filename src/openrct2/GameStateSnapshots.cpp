@@ -132,6 +132,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
+        // TODO refactor to not use this as a proxy for getting a pointer to the sprite array
         snapshot.SerialiseSprites(get_sprite(0), MAX_SPRITES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
@@ -214,71 +215,71 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, NextLoc.x);
         COMPARE_FIELD(Peep, NextLoc.y);
         COMPARE_FIELD(Peep, NextLoc.z);
-        COMPARE_FIELD(Peep, next_flags);
-        COMPARE_FIELD(Peep, outside_of_park);
-        COMPARE_FIELD(Peep, state);
-        COMPARE_FIELD(Peep, sub_state);
-        COMPARE_FIELD(Peep, sprite_type);
-        COMPARE_FIELD(Peep, type);
-        COMPARE_FIELD(Peep, no_of_rides);
-        COMPARE_FIELD(Peep, tshirt_colour);
-        COMPARE_FIELD(Peep, trousers_colour);
-        COMPARE_FIELD(Peep, destination_x);
-        COMPARE_FIELD(Peep, destination_y);
-        COMPARE_FIELD(Peep, destination_tolerance);
-        COMPARE_FIELD(Peep, var_37);
-        COMPARE_FIELD(Peep, energy);
-        COMPARE_FIELD(Peep, energy_target);
-        COMPARE_FIELD(Peep, happiness);
-        COMPARE_FIELD(Peep, happiness_target);
-        COMPARE_FIELD(Peep, nausea);
-        COMPARE_FIELD(Peep, nausea_target);
-        COMPARE_FIELD(Peep, hunger);
-        COMPARE_FIELD(Peep, thirst);
-        COMPARE_FIELD(Peep, toilet);
-        COMPARE_FIELD(Peep, mass);
-        COMPARE_FIELD(Peep, time_to_consume);
-        COMPARE_FIELD(Peep, intensity);
-        COMPARE_FIELD(Peep, nausea_tolerance);
-        COMPARE_FIELD(Peep, window_invalidate_flags);
-        COMPARE_FIELD(Peep, paid_on_drink);
+        COMPARE_FIELD(Peep, NextFlags);
+        COMPARE_FIELD(Peep, OutsideOfPark);
+        COMPARE_FIELD(Peep, State);
+        COMPARE_FIELD(Peep, SubState);
+        COMPARE_FIELD(Peep, SpriteType);
+        COMPARE_FIELD(Peep, AssignedPeepType);
+        COMPARE_FIELD(Peep, GuestNumRides);
+        COMPARE_FIELD(Peep, TshirtColour);
+        COMPARE_FIELD(Peep, TrousersColour);
+        COMPARE_FIELD(Peep, DestinationX);
+        COMPARE_FIELD(Peep, DestinationY);
+        COMPARE_FIELD(Peep, DestinationTolerance);
+        COMPARE_FIELD(Peep, Var37);
+        COMPARE_FIELD(Peep, Energy);
+        COMPARE_FIELD(Peep, EnergyTarget);
+        COMPARE_FIELD(Peep, Happiness);
+        COMPARE_FIELD(Peep, HappinessTarget);
+        COMPARE_FIELD(Peep, Nausea);
+        COMPARE_FIELD(Peep, NauseaTarget);
+        COMPARE_FIELD(Peep, Hunger);
+        COMPARE_FIELD(Peep, Thirst);
+        COMPARE_FIELD(Peep, Toilet);
+        COMPARE_FIELD(Peep, Mass);
+        COMPARE_FIELD(Peep, TimeToConsume);
+        COMPARE_FIELD(Peep, Intensity);
+        COMPARE_FIELD(Peep, NauseaTolerance);
+        COMPARE_FIELD(Peep, WindowInvalidateFlags);
+        COMPARE_FIELD(Peep, PaidOnDrink);
         for (int i = 0; i < 16; i++)
         {
-            COMPARE_FIELD(Peep, ride_types_been_on[i]);
+            COMPARE_FIELD(Peep, RideTypesBeenOn[i]);
         }
-        COMPARE_FIELD(Peep, item_extra_flags);
-        COMPARE_FIELD(Peep, photo2_ride_ref);
-        COMPARE_FIELD(Peep, photo3_ride_ref);
-        COMPARE_FIELD(Peep, photo4_ride_ref);
-        COMPARE_FIELD(Peep, current_ride);
-        COMPARE_FIELD(Peep, current_ride_station);
-        COMPARE_FIELD(Peep, current_train);
-        COMPARE_FIELD(Peep, time_to_sitdown);
-        COMPARE_FIELD(Peep, special_sprite);
-        COMPARE_FIELD(Peep, action_sprite_type);
-        COMPARE_FIELD(Peep, next_action_sprite_type);
-        COMPARE_FIELD(Peep, action_sprite_image_offset);
-        COMPARE_FIELD(Peep, action);
-        COMPARE_FIELD(Peep, action_frame);
-        COMPARE_FIELD(Peep, step_progress);
-        COMPARE_FIELD(Peep, next_in_queue);
-        COMPARE_FIELD(Peep, maze_last_edge);
-        COMPARE_FIELD(Peep, interaction_ride_index);
-        COMPARE_FIELD(Peep, time_in_queue);
+        COMPARE_FIELD(Peep, ItemExtraFlags);
+        COMPARE_FIELD(Peep, Photo2RideRef);
+        COMPARE_FIELD(Peep, Photo3RideRef);
+        COMPARE_FIELD(Peep, Photo4RideRef);
+        COMPARE_FIELD(Peep, CurrentRide);
+        COMPARE_FIELD(Peep, CurrentRideStation);
+        COMPARE_FIELD(Peep, CurrentTrain);
+        COMPARE_FIELD(Peep, TimeToSitdown);
+        COMPARE_FIELD(Peep, SpecialSprite);
+        COMPARE_FIELD(Peep, ActionSpriteType);
+        COMPARE_FIELD(Peep, NextActionSpriteType);
+        COMPARE_FIELD(Peep, ActionSpriteImageOffset);
+        COMPARE_FIELD(Peep, Action);
+        COMPARE_FIELD(Peep, ActionFrame);
+        COMPARE_FIELD(Peep, StepProgress);
+        COMPARE_FIELD(Peep, GuestNextInQueue);
+        COMPARE_FIELD(Peep, MazeLastEdge);
+        COMPARE_FIELD(Peep, InteractionRideIndex);
+        COMPARE_FIELD(Peep, TimeInQueue);
         for (int i = 0; i < 32; i++)
         {
-            COMPARE_FIELD(Peep, rides_been_on[i]);
+            COMPARE_FIELD(Peep, RidesBeenOn[i]);
         }
-        COMPARE_FIELD(Peep, id);
-        COMPARE_FIELD(Peep, cash_in_pocket);
-        COMPARE_FIELD(Peep, cash_spent);
-        COMPARE_FIELD(Peep, time_in_park);
-        COMPARE_FIELD(Peep, rejoin_queue_timeout);
-        COMPARE_FIELD(Peep, previous_ride);
-        COMPARE_FIELD(Peep, previous_ride_time_out);
+        COMPARE_FIELD(Peep, Id);
+        COMPARE_FIELD(Peep, CashInPocket);
+        COMPARE_FIELD(Peep, CashSpent);
+        COMPARE_FIELD(Peep, TimeInPark);
+        COMPARE_FIELD(Peep, RejoinQueueTimeout);
+        COMPARE_FIELD(Peep, PreviousRide);
+        COMPARE_FIELD(Peep, PreviousRideTimeOut);
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
-            COMPARE_FIELD(Peep, thoughts[i]);
+            COMPARE_FIELD(Peep, Thoughts[i]);
         }
         COMPARE_FIELD(Peep, PathCheckOptimisation);
         COMPARE_FIELD(Peep, GuestHeadingToRideId);

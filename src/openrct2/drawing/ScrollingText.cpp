@@ -1497,7 +1497,7 @@ static void scrolling_text_set_bitmap_for_sprite(
     utf8* ch = text;
     while (true)
     {
-        uint32_t codepoint = utf8_get_next(ch, (const utf8**)&ch);
+        uint32_t codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch));
 
         // If at the end of the string loop back to the start
         if (codepoint == 0)
@@ -1567,7 +1567,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     utf8* dstCh = text;
     utf8* ch = text;
     int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0)
+    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch))) != 0)
     {
         if (utf8_is_format_code(codepoint))
         {

@@ -69,7 +69,7 @@ Vehicle* cable_lift_segment_create(
 
     z = z * COORDS_Z_STEP;
     current->TrackLocation = { x, y, z };
-    z += RideData5[ride.type].z_offset;
+    z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
     current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
@@ -191,7 +191,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->UpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
+    if (passengerVehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
         return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
@@ -221,7 +221,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
-        uint8_t trackType = track_type >> 2;
+        uint8_t trackType = GetTrackType();
         if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
@@ -261,7 +261,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideData5[curRide->type].z_offset;
+        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -299,7 +299,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         if (static_cast<int16_t>(trackProgress) == -1)
         {
-            uint8_t trackType = track_type >> 2;
+            uint8_t trackType = GetTrackType();
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
             _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
 
@@ -334,7 +334,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideData5[curRide->type].z_offset;
+        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -393,7 +393,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
             unk_F64E20.x = vehicle->x;
             unk_F64E20.y = vehicle->y;
             unk_F64E20.z = vehicle->z;
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
 
             while (true)
             {
@@ -431,7 +431,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
             }
             vehicle->MoveTo(unk_F64E20);
 
-            invalidate_sprite_2(vehicle);
+            vehicle->Invalidate();
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)

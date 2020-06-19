@@ -63,7 +63,7 @@ public:
             return res;
         }
 
-        if (!map_is_location_owned(_loc) && !gCheatsSandboxMode)
+        if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
         {
             res->Error = GA_ERROR::NOT_OWNED;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -86,7 +86,7 @@ public:
         {
             heightDifference /= COORDS_Z_PER_TINY_Z;
 
-            if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
+            if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
             {
                 res->Error = GA_ERROR::TOO_HIGH;
                 res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -125,7 +125,7 @@ public:
             return res;
         }
 
-        money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         return res;
@@ -172,7 +172,7 @@ public:
             return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         auto startLoc = _loc.ToTileStart();

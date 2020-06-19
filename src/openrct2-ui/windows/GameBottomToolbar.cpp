@@ -612,23 +612,23 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             if (sprite == nullptr)
                 break;
 
-            auto peep = sprite->AsPeep();
+            auto peep = sprite->generic.As<Peep>();
             if (peep == nullptr)
                 return;
 
             int32_t clip_x = 10, clip_y = 19;
 
-            if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+            if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
             {
                 clip_y += 3;
             }
 
-            uint32_t image_id_base = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image;
+            uint32_t image_id_base = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image;
             image_id_base += w->frame_no & 0xFFFFFFFC;
             image_id_base++;
 
             uint32_t image_id = image_id_base;
-            image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
+            image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
 
             gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 
