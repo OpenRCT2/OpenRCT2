@@ -782,7 +782,7 @@ static bool vehicle_move_info_valid(int32_t trackSubposition, int32_t typeAndDir
     return true;
 }
 
-const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset)
+static const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset)
 {
     if (!vehicle_move_info_valid(trackSubposition, typeAndDirection, offset))
     {
@@ -790,6 +790,11 @@ const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t 
         return &zero;
     }
     return &gTrackVehicleInfo[trackSubposition][typeAndDirection]->info[offset];
+}
+
+const rct_vehicle_info* Vehicle::GetMoveInfo() const
+{
+    return vehicle_get_move_info(TrackSubposition, track_type, track_progress);
 }
 
 uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection)
@@ -7625,7 +7630,7 @@ void Vehicle::UpdateHandleWaterSplash() const
  */
 void Vehicle::UpdateReverserCarBogies()
 {
-    const auto moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    const auto moveInfo = GetMoveInfo();
     MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z });
 }
 
@@ -8224,8 +8229,6 @@ loc_6DAEB9:
 
     regs.ax = track_progress + 1;
 
-    const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
-
     // Track Total Progress is in the two bytes before the move info list
     uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
     if (regs.ax >= trackTotalProgress)
@@ -8246,7 +8249,7 @@ loc_6DAEB9:
     UpdateHandleWaterSplash();
 
     // loc_6DB706
-    moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    const auto moveInfo = GetMoveInfo();
     trackType = GetTrackType();
     {
         int16_t curX = TrackLocation.x + moveInfo->x;
@@ -8279,7 +8282,7 @@ loc_6DAEB9:
         {
             ReverseReverserCar();
 
-            const rct_vehicle_info* moveInfo2 = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+            const rct_vehicle_info* moveInfo2 = GetMoveInfo();
             curX = x + moveInfo2->x;
             curY = y + moveInfo2->y;
         }
@@ -8573,7 +8576,7 @@ loc_6DBA33:;
     // loc_6DBD42
     track_progress = regs.ax;
     {
-        const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+        const rct_vehicle_info* moveInfo = GetMoveInfo();
         int16_t curX = TrackLocation.x + moveInfo->x;
         int16_t curY = TrackLocation.y + moveInfo->y;
         int16_t curZ = TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
@@ -8773,12 +8776,6 @@ loc_6DC476:
         mini_golf_flags &= ~(1 << 3);
     }
 
-    // loc_6DC5B8
-    // Note: Line below was here as part of
-    // https://github.com/OpenRCT2/OpenRCT2/pull/2605/files#diff-e6c06ccf59b47239e1e220468e52497dR7736
-    // but it is not used and overridden later on.
-    // const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
-
     // There are two bytes before the move info list
     {
         uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
@@ -8855,7 +8852,7 @@ loc_6DC743:
     const rct_vehicle_info* moveInfo;
     for (;;)
     {
-        moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+        moveInfo = GetMoveInfo();
         if (moveInfo->x != LOCATION_NULL)
         {
             break;
@@ -9059,7 +9056,7 @@ loc_6DCA9A:
     track_progress = vehicle_get_move_info_size(TrackSubposition, track_type);
 
 loc_6DCC2C:
-    moveInfo = vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    moveInfo = GetMoveInfo();
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 

@@ -229,7 +229,6 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
         uint16_t trackProgress = track_progress + 1;
 
-        const rct_vehicle_info* moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
         uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
         if (trackProgress >= trackTotalProgress)
         {
@@ -257,7 +256,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         }
 
         track_progress = trackProgress;
-        moveInfo = vehicle_get_move_info(TrackSubposition, track_type, trackProgress);
+        const auto moveInfo = GetMoveInfo();
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
@@ -295,7 +294,6 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
     for (; remaining_distance < 0; _vehicleUnkF64E10++)
     {
         uint16_t trackProgress = track_progress - 1;
-        const rct_vehicle_info* moveInfo;
 
         if (static_cast<int16_t>(trackProgress) == -1)
         {
@@ -324,13 +322,11 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }
 
-            moveInfo = vehicle_get_move_info(TrackSubposition, track_type, 0);
             uint16_t trackTotalProgress = vehicle_get_move_info_size(TrackSubposition, track_type);
             trackProgress = trackTotalProgress - 1;
         }
         track_progress = trackProgress;
-
-        moveInfo = vehicle_get_move_info(TrackSubposition, track_type, trackProgress);
+        const auto moveInfo = GetMoveInfo();
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
