@@ -999,7 +999,7 @@ rct_vehicle_sound_params Vehicle::CreateSoundParam(uint16_t priority) const
 
     int32_t frequency = std::abs(velocity);
 
-    rct_ride_entry* rideType = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideType = GetRideEntry();
     if (rideType != nullptr)
     {
         if (rideType->vehicles[vehicle_type].double_sound_frequency & 1)
@@ -1480,7 +1480,7 @@ bool Vehicle::OpenRestraints()
         if (curRide == nullptr)
             continue;
 
-        auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+        auto rideEntry = vehicle->GetRideEntry();
         if (rideEntry == nullptr)
         {
             continue;
@@ -1994,7 +1994,7 @@ void Vehicle::Update()
         return;
     }
 
-    auto rideEntry = get_ride_entry(ride_subtype);
+    auto rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -2149,7 +2149,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             break;
         default:
         {
-            rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+            rct_ride_entry* rideEntry = GetRideEntry();
             if (rideEntry == nullptr)
             {
                 return;
@@ -2464,7 +2464,7 @@ void Vehicle::UpdateDodgemsMode()
     if (curRide == nullptr)
         return;
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
     {
         return;
@@ -3223,7 +3223,7 @@ void Vehicle::UpdateDeparting()
     if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(ride_subtype);
+    auto rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -3922,7 +3922,7 @@ void Vehicle::UpdateArriving()
         unkF64E35 = 0;
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
     if (sub_state == 0)
@@ -4729,7 +4729,7 @@ void Vehicle::UpdateSwinging()
     if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(ride_subtype);
+    auto rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -4924,7 +4924,7 @@ void Vehicle::UpdateRotating()
     if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(ride_subtype);
+    auto rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
     {
         return;
@@ -5524,7 +5524,7 @@ void Vehicle::UpdateSound()
     if (curRide == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(ride_subtype);
+    auto rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -5625,7 +5625,7 @@ void Vehicle::UpdateSound()
  */
 SoundId Vehicle::UpdateScreamSound()
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
@@ -6446,7 +6446,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     edx >>= 5;
     eax += edx;
     eax /= mass;
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
@@ -7573,7 +7573,7 @@ static void vehicle_update_play_water_splash_sound()
  */
 void Vehicle::UpdateHandleWaterSplash() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     int32_t trackType = GetTrackType();
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND))
@@ -9210,7 +9210,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     if (curRide == nullptr)
         return 0;
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = Entry();
 
     gCurrentVehicle = this;
@@ -9448,7 +9448,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     if (curRide == nullptr)
         return 0;
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     auto vehicleEntry = Entry();
 
     if (vehicleEntry == nullptr)
@@ -9680,9 +9680,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     return _vehicleMotionTrackFlags;
 }
 
+rct_ride_entry* Vehicle::GetRideEntry() const
+{
+    return get_ride_entry(ride_subtype);
+}
+
 rct_ride_entry_vehicle* Vehicle::Entry() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     if (rideEntry == nullptr)
     {
         return nullptr;
@@ -9847,7 +9852,7 @@ void Vehicle::UpdateCrossings() const
 
 void Vehicle::Claxon() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
+    rct_ride_entry* rideEntry = GetRideEntry();
     switch (rideEntry->vehicles[vehicle_type].sound_range)
     {
         case SOUND_RANGE_WHISTLE:

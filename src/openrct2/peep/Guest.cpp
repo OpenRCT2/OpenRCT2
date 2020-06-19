@@ -3623,7 +3623,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
     auto vehicle = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
-    auto ride_entry = get_ride_entry(vehicle->ride_subtype);
+    auto ride_entry = vehicle->GetRideEntry();
     auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
     peep->Var37 = (direction_entrance | peep_get_waypointed_seat_location(peep, ride, vehicle_type, direction_track) * 4) * 4;
@@ -3739,7 +3739,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         }
     }
 
-    ride_entry = get_ride_entry(vehicle->ride_subtype);
+    ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -3960,7 +3960,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
 
-    rct_ride_entry* ride_entry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -4144,7 +4144,7 @@ void Guest::UpdateRideLeaveVehicle()
         ride_station = bestStationIndex;
     }
     CurrentRideStation = ride_station;
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* rideEntry = vehicle->GetRideEntry();
     if (rideEntry == nullptr)
     {
         return;
@@ -4270,7 +4270,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
 
-    rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rideEntry = vehicle->GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
     Var37 = ((exitLocation.direction | peep_get_waypointed_seat_location(this, ride, vehicleEntry, station_direction) * 4) * 4)
@@ -4463,7 +4463,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         targetLoc.y = vehicle->y;
     }
 
-    rct_ride_entry* ride_entry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -4531,7 +4531,7 @@ void Guest::UpdateRideApproachExitWaypoints()
             targetLoc.y = vehicle->y;
         }
 
-        rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rct_ride_entry* rideEntry = vehicle->GetRideEntry();
         rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
         Guard::Assert((Var37 & 3) < 3);
