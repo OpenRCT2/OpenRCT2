@@ -904,7 +904,10 @@ static void research_update_first_of_type(ResearchItem* researchItem)
 
     auto rideType = researchItem->baseRideType;
     if (rideType >= RIDE_TYPE_COUNT)
+    {
+        log_error("Research item has non-existant ride type index %d", rideType);
         return;
+    }
 
     const auto& rtd = RideTypeDescriptors[rideType];
     if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
@@ -936,12 +939,35 @@ static void research_update_first_of_type(ResearchItem* researchItem)
     }
 }
 
+static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
+{
+    auto rideType = researchItem.baseRideType;
+    if (rideType >= RIDE_TYPE_COUNT)
+        return;
+
+    const auto& rtd = RideTypeDescriptors[rideType];
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
+    {
+        _seenRideType[rideType] = true;
+    }
+    else
+    {
+        const auto& entry = get_ride_entry(researchItem.entryIndex);
+        if (entry != nullptr)
+        {
+            auto rideGroupIndex = RideGroupManager::GetRideGroupIndex(rideType, entry);
+            assert(rideGroupIndex < MAX_RIDE_GROUPS_PER_RIDE_TYPE);
+            _seenRideGroup[rideType * rideGroupIndex] = true;
+        }
+    }
+}
+
 void research_determine_first_of_type()
 {
     _seenRideType.reset();
     _seenRideGroup.reset();
 
-    for (auto& researchItem : gResearchItemsInvented)
+    for (const auto& researchItem : gResearchItemsInvented)
     {
         if (researchItem.type != RESEARCH_ENTRY_TYPE_RIDE)
             continue;
@@ -954,39 +980,27 @@ void research_determine_first_of_type()
         if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             continue;
 
+        // The last research item will also be present in gResearchItemsInvented.
+        // Avoid marking its ride type as "invented" prematurely.
+        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem.Equals(&gResearchLastItem.value()))
+            continue;
+
         // The next research item is also present in gResearchItemsInvented, even though it isn't invented yet(!)
         if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
             continue;
 
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-        {
-            _seenRideType[rideType] = true;
-            log_error("Seen %d", rideType);
-        }
-        else
-        {
-            const auto& entry = get_ride_entry(researchItem.entryIndex);
-            if (entry != nullptr)
-            {
-                auto rideGroupIndex = RideGroupManager::GetRideGroupIndex(rideType, entry);
-                assert(rideGroupIndex < MAX_RIDE_GROUPS_PER_RIDE_TYPE);
-                _seenRideGroup[rideType * rideGroupIndex] = true;
-                log_error("Seen rgi %d ri %d", rideGroupIndex, rideType);
-            }
-        }
+        research_mark_ride_type_as_seen(researchItem);
     }
 
     if (gResearchLastItem.has_value())
     {
-        auto tmpVal = gResearchLastItem.value();
-        research_update_first_of_type(&tmpVal);
-        gResearchLastItem = tmpVal;
+        research_update_first_of_type(&gResearchLastItem.value());
+        research_mark_ride_type_as_seen(gResearchLastItem.value());
     }
     if (gResearchNextItem.has_value())
     {
-        auto tmpVal = gResearchNextItem.value();
-        research_update_first_of_type(&tmpVal);
-        gResearchNextItem = tmpVal;
+        research_update_first_of_type(&gResearchNextItem.value());
+        research_mark_ride_type_as_seen(gResearchNextItem.value());
     }
 
     for (auto& researchItem : gResearchItemsUninvented)

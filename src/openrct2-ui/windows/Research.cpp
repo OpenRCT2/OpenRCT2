@@ -363,7 +363,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     else
     {
         // Research type
-        rct_string_id strings[2] = { STR_RESEARCH_UNKNOWN, 0 };
+        std::array<rct_string_id, 2> strings = { STR_RESEARCH_UNKNOWN, 0 };
         rct_string_id label = STR_RESEARCH_TYPE_LABEL;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
@@ -417,10 +417,10 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     x = w->windowPos.x + 10;
     y = w->windowPos.y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
-    rct_string_id lastDevelopmentFormat;
     if (gResearchLastItem.has_value())
     {
-        rct_string_id strings[2] = { gResearchLastItem->GetName(), 0 };
+        rct_string_id lastDevelopmentFormat = STR_EMPTY;
+        std::array<rct_string_id, 2> strings = { gResearchLastItem->GetName(), 0 };
         uint8_t type = gResearchLastItem->type;
         if (type == RESEARCH_ENTRY_TYPE_SCENERY)
         {
