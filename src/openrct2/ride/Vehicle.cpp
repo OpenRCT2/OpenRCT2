@@ -7438,8 +7438,8 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
     }
 }
 
-static void AnimateSceneryDoor(
-    const CoordsXYZD& doorLocation, const CoordsXYZ& trackLocation, bool isLastVehicle, bool isBackwards)
+template<bool isBackwards>
+static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& trackLocation, bool isLastVehicle)
 {
     auto door = map_get_wall_element_at(doorLocation);
     if (door == nullptr)
@@ -7479,8 +7479,8 @@ void Vehicle::UpdateSceneryDoor() const
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (track_direction + trackCoordinates->rotation_end) & 3;
 
-    AnimateSceneryDoor(
-        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL, false);
+    AnimateSceneryDoor<false>(
+        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
 }
 
 /**
@@ -7541,8 +7541,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     int32_t direction = (track_direction + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
-    AnimateSceneryDoor(
-        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL, true);
+    AnimateSceneryDoor<true>(
+        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
 }
 
 static void vehicle_update_play_water_splash_sound()
