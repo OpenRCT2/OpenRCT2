@@ -187,6 +187,17 @@ struct GForces
     int32_t LateralG{};
 };
 
+// Size: 0x09
+struct rct_vehicle_info
+{
+    int16_t x;                   // 0x00
+    int16_t y;                   // 0x02
+    int16_t z;                   // 0x04
+    uint8_t direction;           // 0x06
+    uint8_t vehicle_sprite_type; // 0x07
+    uint8_t bank_rotation;       // 0x08
+};
+
 struct Vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type;
@@ -344,6 +355,8 @@ struct Vehicle : SpriteBase
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
+    const rct_vehicle_info* GetMoveInfo() const;
+    uint16_t GetTrackProgress() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
@@ -434,17 +447,6 @@ struct train_ref
 {
     Vehicle* head;
     Vehicle* tail;
-};
-
-// Size: 0x09
-struct rct_vehicle_info
-{
-    int16_t x;                   // 0x00
-    int16_t y;                   // 0x02
-    int16_t z;                   // 0x04
-    uint8_t direction;           // 0x06
-    uint8_t vehicle_sprite_type; // 0x07
-    uint8_t bank_rotation;       // 0x08
 };
 
 enum : uint32_t
@@ -617,8 +619,6 @@ enum
 Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
-uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;
