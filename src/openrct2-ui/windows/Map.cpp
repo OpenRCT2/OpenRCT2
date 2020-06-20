@@ -857,7 +857,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
-                    screenCoords += { 118, -LIST_ROW_HEIGHT * 4 };
+                    screenCoords += { 118, -(LIST_ROW_HEIGHT * 4) };
                 }
             }
         }
