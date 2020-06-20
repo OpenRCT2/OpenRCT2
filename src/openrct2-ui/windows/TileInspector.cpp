@@ -1802,7 +1802,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (windowTileInspectorSelectedIndex != -1)
     {
         // X and Y of first element in detail box
-        auto screenCoords = w->windowPos
+        screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_GROUPBOX_DETAILS].top + 14 };
 
         // Get map element
