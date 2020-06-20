@@ -384,17 +384,17 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw ping
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 90, w->windowPos.y + 24 };
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 90, 24 };
 
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_PING);
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, screenCoords.x, screenCoords.y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, screenCoords);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
     gfx_draw_string(dpi, ping, w->colours[2], screenCoords + ScreenCoordsXY(30, 0));
 
     // Draw last action
-    screenCoords = { w->windowPos.x + (w->width / 2), w->windowPos.y + w->height - 13 };
+    screenCoords = w->windowPos + ScreenCoordsXY{ w->width / 2, w->height - 13 };
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
     ft = Formatter::Common();
@@ -549,18 +549,19 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    int32_t x = w->windowPos.x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    int32_t y = w->windowPos.y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    auto screenCoords = w->windowPos
+        + ScreenCoordsXY{ window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     auto ft = Formatter::Common();
     ft.Add<uint32_t>(network_get_player_commands_ran(player));
-    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
 
-    y += LIST_ROW_HEIGHT;
+    screenCoords.y += LIST_ROW_HEIGHT;
 
     ft = Formatter::Common();
     ft.Add<uint32_t>(network_get_player_money_spent(player));
-    gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
 }
 
 static void window_player_set_page(rct_window* w, int32_t page)

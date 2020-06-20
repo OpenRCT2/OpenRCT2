@@ -1802,8 +1802,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (windowTileInspectorSelectedIndex != -1)
     {
         // X and Y of first element in detail box
-        int32_t x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-        int32_t y = w->windowPos.y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
+        auto screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_GROUPBOX_DETAILS].top + 14 };
 
         // Get map element
         TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
@@ -1815,7 +1815,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Terrain texture name
                 rct_string_id terrainNameId = TerrainTypeStringIds[tileElement->AsSurface()->GetSurfaceStyle()];
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_WHITE, screenCoords);
 
                 // Edge texture name
                 uint32_t idx = tileElement->AsSurface()->GetEdgeStyle();
@@ -1823,7 +1823,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     idx < std::size(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds",
                     idx);
                 rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tileElement->AsSurface()->GetEdgeStyle()];
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_WHITE, x, y + 11);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_WHITE,
+                    screenCoords + ScreenCoordsXY{ 0, 11 });
 
                 // Land ownership
                 rct_string_id landOwnership;
@@ -1837,27 +1839,31 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
                 else
                     landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_WHITE, x, y + 22);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_WHITE,
+                    screenCoords + ScreenCoordsXY{ 0, 22 });
 
                 // Water level
                 uint32_t waterLevel = tileElement->AsSurface()->GetWaterHeight();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_WHITE, x, y + 33);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_WHITE,
+                    screenCoords + ScreenCoordsXY{ 0, 33 });
 
                 // Properties
                 // Raise / lower label
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                y = w->windowPos.y + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords = w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top };
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
 
                 // Raised corners
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                y = w->windowPos.y + w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, nullptr, COLOUR_WHITE, x, y);
+                screenCoords = w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7,w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top };
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, nullptr, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -1866,7 +1872,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Path name
                 rct_string_id pathNameId = tileElement->AsPath()->GetSurfaceEntry()->string_idx;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, COLOUR_WHITE, screenCoords);
 
                 // Path addition
                 if (tileElement->AsPath()->HasAddition())
@@ -1876,26 +1882,30 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     rct_string_id additionNameId = sceneryElement != nullptr
                         ? sceneryElement->name
                         : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_WHITE, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 11 });
                 }
                 else
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, nullptr, COLOUR_WHITE, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, nullptr, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 11 });
 
                 // Properties
                 // Raise / lower label
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                y = w->windowPos.y + w->widgets[WIDX_PATH_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords = w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_PATH_SPINNER_HEIGHT].top };
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
 
                 // Path connections
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                y = w->windowPos.y + w->widgets[WIDX_PATH_CHECK_EDGE_W].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONNECTED_EDGES, nullptr, COLOUR_WHITE, x, y);
+                screenCoords = w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_PATH_CHECK_EDGE_W].top };
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONNECTED_EDGES, nullptr, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -1909,26 +1919,34 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (ride != nullptr)
                 {
                     auto rideType = RideTypeDescriptors[ride->type].Naming.Name;
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_WHITE, x, y);
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_WHITE, screenCoords);
                 }
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_WHITE, x, y + 11);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 11 });
                 if (ride != nullptr)
                 {
                     ride->FormatNameTo(gCommonFormatArgs);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_WHITE, x, y + 22);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 22 });
                 }
                 // Track
                 int16_t trackType = trackElement->GetTrackType();
                 int16_t sequenceNumber = trackElement->GetSequenceIndex();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_WHITE, x, y + 33);
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_WHITE, x, y + 44);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 33 });
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_WHITE,
+                    screenCoords + ScreenCoordsXY{ 0, 44 });
                 if (trackElement->IsStation())
                 {
                     int16_t stationIndex = trackElement->GetStationIndex();
                     auto ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_COMMA16);
                     ft.Add<int16_t>(stationIndex);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE, x, y + 55);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 55 });
                 }
                 else
                 {
@@ -1936,21 +1954,24 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     auto ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(stationNone);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE, x, y + 55);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 55 });
                 }
 
                 rct_string_id colourScheme = ColourSchemeNames[trackElement->GetColourScheme()];
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLOUR_SCHEME, &colourScheme, COLOUR_WHITE, x, y + 66);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_COLOUR_SCHEME, &colourScheme, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 66 });
 
                 // Properties
                 // Raise / lower label
-                y = w->windowPos.y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -1959,7 +1980,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Age
                 int16_t age = tileElement->AsSmallScenery()->GetAge();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_WHITE, screenCoords);
 
                 // Quadrant value
                 const rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
@@ -1971,31 +1992,34 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                                                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
                                                                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE };
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT, &quadrant_string_idx[quadrant], COLOUR_WHITE, x, y + 11);
+                        dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT, &quadrant_string_idx[quadrant], COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 11 });
                 }
 
                 // Scenery ID
                 int16_t idx = tileElement->AsSmallScenery()->GetEntryIndex();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, COLOUR_WHITE, x, y + 22);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 22 });
 
                 // Properties
                 // Raise / Lower
-                y = w->windowPos.y + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
 
                 // Quarter tile
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                y = w->windowPos.y + w->widgets[WIDX_SCENERY_CHECK_QUARTER_E].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords = w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7,
+                                      w->widgets[WIDX_SCENERY_CHECK_QUARTER_E].top };
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Collision
-                y = w->windowPos.y + w->widgets[WIDX_SCENERY_CHECK_COLLISION_E].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLLISSION, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_SCENERY_CHECK_COLLISION_E].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLLISSION, nullptr, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -2004,7 +2028,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Entrance type
                 rct_string_id entranceType = EntranceTypeStringIds[tileElement->AsEntrance()->GetEntranceType()];
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, COLOUR_WHITE, screenCoords);
 
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
@@ -2012,7 +2036,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     int16_t parkEntranceIndex = park_entrance_get_index(
                         { windowTileInspectorToolMap, tileElement->GetBaseZ() });
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_WHITE, x, y + 11);
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 11 });
                 }
                 else
                 {
@@ -2021,13 +2046,15 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     {
                         // Ride entrance ID
                         gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_WHITE, x, y + 11);
+                            dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_WHITE,
+                            screenCoords + ScreenCoordsXY{ 0, 11 });
                     }
                     else
                     {
                         // Ride exit ID
                         gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_WHITE, x, y + 11);
+                            dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_WHITE,
+                            screenCoords + ScreenCoordsXY{ 0, 11 });
                     }
                 }
 
@@ -2035,30 +2062,35 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     // Entrance part
                     rct_string_id entrancePart = ParkEntrancePartStringIds[tileElement->AsEntrance()->GetSequenceIndex()];
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, COLOUR_WHITE, x, y + 22);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 22 });
                 }
                 else
                 {
                     // Ride ID
                     int16_t rideId = tileElement->AsEntrance()->GetRideIndex();
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_WHITE, x, y + 22);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_WHITE,screenCoords + ScreenCoordsXY{ 0, 22 });
                     // Station index
                     int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
                     auto ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_COMMA16);
                     ft.Add<int16_t>(stationIndex);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE, x, y + 33);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 33 });
                 }
 
                 // Properties
                 // Raise / Lower
-                y = w->windowPos.y + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -2067,7 +2099,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Type
                 int16_t wallType = tileElement->AsWall()->GetEntryIndex();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, COLOUR_WHITE, screenCoords);
 
                 // Banner info
                 rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
@@ -2078,32 +2110,36 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     {
                         uint8_t args[32]{};
                         banner->FormatTextTo(args);
-                        gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, x, y + 11);
+                        gfx_draw_string_left(
+                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
+                            screenCoords + ScreenCoordsXY{ 0, 11 });
                     }
                 }
                 else
                 {
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, nullptr, COLOUR_WHITE, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, nullptr, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 11 });
                 }
 
                 // Properties
                 // Raise / lower label
-                y = w->windowPos.y + w->widgets[WIDX_WALL_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_WALL_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
 
                 // Slope label
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                y = w->windowPos.y + w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_SLOPE, nullptr, COLOUR_WHITE, x, y);
+                screenCoords = w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top };
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_SLOPE, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Animation frame label
-                y = w->windowPos.y + w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current animation frame
                 uint8_t colour = COLOUR_WHITE;
@@ -2111,9 +2147,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     colour = w->colours[0] | COLOUR_FLAG_INSET;
                 }
-                x = w->windowPos.x + w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3;
                 int32_t animationFrame = tileElement->AsWall()->GetAnimationFrame();
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &animationFrame, colour, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &animationFrame, colour, screenCoords);
                 break;
             }
 
@@ -2123,11 +2159,13 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Type
                 auto sceneryElement = tileElement->AsLargeScenery();
                 int16_t largeSceneryType = sceneryElement->GetEntryIndex();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_WHITE, screenCoords);
 
                 // Part ID
                 int16_t pieceID = sceneryElement->GetSequenceIndex();
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_WHITE, x, y + 11);
+                gfx_draw_string_left(
+                    dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_WHITE,
+                    screenCoords + ScreenCoordsXY{ 0, 11 });
 
                 // Banner info
                 rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
@@ -2138,23 +2176,27 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     {
                         uint8_t args[32]{};
                         banner->FormatTextTo(args);
-                        gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, x, y + 22);
+                        gfx_draw_string_left(
+                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
+                            screenCoords + ScreenCoordsXY{ 0, 22 });
                     }
                 }
                 else
                 {
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, nullptr, COLOUR_WHITE, x, y + 22);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, nullptr, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 22 });
                 }
 
                 // Properties
                 // Raise / lower label
-                y = w->windowPos.y + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -2167,23 +2209,23 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     uint8_t args[32]{};
                     banner->FormatTextTo(args);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, x, y);
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, screenCoords);
                 }
 
                 // Properties
                 // Raise / lower label
-                y = w->windowPos.y + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
 
                 // Blocked paths
-                y += 28;
-                x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y += 28;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, nullptr, COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -2191,13 +2233,13 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Properties
                 // Raise / lower label
-                y = w->windowPos.y + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top;
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, x, y);
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top;
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
                 // Current base height
-                x = w->windowPos.x + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].left + 3;
+                screenCoords.x = w->windowPos.x + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].left + 3;
                 int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, x, y);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
                 break;
             }
         } // switch page
@@ -2209,7 +2251,8 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     const int32_t listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-    int32_t y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
+    ScreenCoordsXY screenCoords{};
+    screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
     int32_t i = 0;
     char buffer[256];
 
@@ -2230,16 +2273,22 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
         if (selectedRow)
         {
-            gfx_fill_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(
+                dpi, 0, screenCoords.y, listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                ColourMapA[w->colours[1]].mid_dark);
         }
         else if (hoveredRow)
         {
-            gfx_fill_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+            gfx_fill_rect(
+                dpi, 0, screenCoords.y, listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                ColourMapA[w->colours[1]].mid_dark | 0x1000000);
         }
         else if (((windowTileInspectorElementCount - i) & 1) == 0)
         {
             // Zebra stripes
-            gfx_fill_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].light | 0x1000000);
+            gfx_fill_rect(
+                dpi, 0, screenCoords.y, listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                ColourMapA[w->colours[1]].light | 0x1000000);
         }
 
         switch (type)
@@ -2293,24 +2342,25 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
 
         // Undo relative scroll offset, but keep the 3 pixel padding
-        const int32_t x = -w->widgets[WIDX_LIST].left;
+        screenCoords.x = -w->widgets[WIDX_LIST].left;
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(typeName);
         gfx_draw_string_left_clipped(
-            dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, { x + COL_X_TYPE + 3, y }, COL_X_BH); // 3px padding
+            dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 },
+            COL_X_BH); // 3px padding
 
         // Base height
         ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(baseHeight);
-        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BH, y);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_BH, 0 });
 
         // Clearance height
         ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(clearanceHeight);
-        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_CH, y);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_CH, 0 });
 
         // Checkmarks for ghost and last for tile
         ft = Formatter::Common();
@@ -2318,14 +2368,16 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         ft.Add<char*>(CheckBoxMarkString);
         if (ghost)
         {
-            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_GF, y);
+            gfx_draw_string_left(
+                dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_GF, 0 });
         }
         if (last)
         {
-            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_LF, y);
+            gfx_draw_string_left(
+                dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_LF, 0 });
         }
 
-        y -= SCROLLABLE_ROW_HEIGHT;
+        screenCoords.y -= SCROLLABLE_ROW_HEIGHT;
         i++;
     } while (!(tileElement++)->IsLastForTile());
 }
