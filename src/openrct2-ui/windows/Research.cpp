@@ -392,7 +392,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
             }
         }
         gfx_draw_string_left_wrapped(dpi, &strings, screenCoords.x, screenCoords.y, 296, label, COLOUR_BLACK);
-        y += 25;
+        screenCoords.y += 25;
 
         // Progress
         stringId = ResearchStageNames[gResearchProgressStage];
