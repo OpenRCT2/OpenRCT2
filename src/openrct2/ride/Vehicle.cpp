@@ -7846,17 +7846,17 @@ void Vehicle::ReverseReverserCar()
  *
  *  rct2: 0x006DBF3E
  */
-static void sub_6DBF3E(Vehicle* vehicle)
+void Vehicle::Sub6DBF3E()
 {
-    rct_ride_entry_vehicle* vehicleEntry = vehicle->Entry();
+    rct_ride_entry_vehicle* vehicleEntry = Entry();
 
-    vehicle->acceleration = vehicle->acceleration / _vehicleUnkF64E10;
-    if (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK)
+    acceleration /= _vehicleUnkF64E10;
+    if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK)
     {
         return;
     }
 
-    int32_t trackType = vehicle->GetTrackType();
+    int32_t trackType = GetTrackType();
     if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
@@ -7865,9 +7865,9 @@ static void sub_6DBF3E(Vehicle* vehicle)
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
     TileElement* tileElement = nullptr;
-    if (map_is_location_valid(vehicle->TrackLocation))
+    if (map_is_location_valid(TrackLocation))
     {
-        tileElement = map_get_track_element_at_of_type_seq(vehicle->TrackLocation, trackType, 0);
+        tileElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
     }
 
     if (tileElement == nullptr)
@@ -7880,32 +7880,32 @@ static void sub_6DBF3E(Vehicle* vehicle)
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
 
-    if (trackType == TRACK_ELEM_TOWER_BASE && vehicle == gCurrentVehicle)
+    if (trackType == TRACK_ELEM_TOWER_BASE && this == gCurrentVehicle)
     {
-        if (vehicle->track_progress > 3 && !vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+        if (track_progress > 3 && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
         {
             CoordsXYE output;
             int32_t outputZ, outputDirection;
 
-            CoordsXYE input = { vehicle->TrackLocation, tileElement };
+            CoordsXYE input = { TrackLocation, tileElement };
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
             }
         }
 
-        if (vehicle->track_progress <= 3)
+        if (track_progress <= 3)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
         }
     }
 
-    if (trackType != TRACK_ELEM_END_STATION || vehicle != gCurrentVehicle)
+    if (trackType != TRACK_ELEM_END_STATION || this != gCurrentVehicle)
     {
         return;
     }
 
-    uint16_t ax = vehicle->track_progress;
+    uint16_t ax = track_progress;
     if (_vehicleVelocityF64E08 < 0)
     {
         if (ax <= 22)
@@ -7925,7 +7925,7 @@ static void sub_6DBF3E(Vehicle* vehicle)
             // Determine the stop positions for the karts. If in left lane it's further along the track than the right lane.
             // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and
             // 8).
-            cx = vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE ? 18 : 20;
+            cx = TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE ? 18 : 20;
         }
 
         if (ax > cx)
@@ -9553,7 +9553,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         car->Invalidate();
 
     loc_6DBF3E:
-        sub_6DBF3E(car);
+        car->Sub6DBF3E();
 
         // loc_6DC0F7
         if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))

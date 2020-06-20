@@ -367,6 +367,7 @@ private:
     void CableLiftUpdateDeparting();
     void CableLiftUpdateTravelling();
     void CableLiftUpdateArriving();
+    void Sub6DBF3E();
     void UpdateMeasurements();
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
