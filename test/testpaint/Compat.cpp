@@ -459,6 +459,11 @@ StationObject* ride_get_station_object(const Ride* ride)
     return nullptr;
 }
 
+Ride* Vehicle::GetRide() const
+{
+    return get_ride(ride);
+}
+
 bool Vehicle::IsGhost() const
 {
     auto r = GetRide();
