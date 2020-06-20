@@ -1525,8 +1525,9 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     screenCoords.y += LIST_ROW_HEIGHT + 9;
-    gfx_fill_rect_inset(dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
-                        INSET_RECT_FLAG_BORDER_INSET);
+    gfx_fill_rect_inset(
+        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
     gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, screenCoords);
@@ -1797,8 +1798,9 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
 
     screenCoords.y += LIST_ROW_HEIGHT * 2;
-    gfx_fill_rect_inset(dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1], 
-                        INSET_RECT_FLAG_BORDER_INSET);
+    gfx_fill_rect_inset(
+        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1], 
+        INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
     ft = Formatter::Common();
@@ -1917,8 +1919,8 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
         peep_thought_set_format_args(thought);
-        screenCoords.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING,
-                                                       COLOUR_BLACK);
+        screenCoords.y += gfx_draw_string_left_wrapped(
+            dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -2073,8 +2075,8 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 continue;
 
             rct_string_id stringId = window_guest_inventory_format_item(guest, item);
-            screenCoords.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, itemNameWidth, stringId,
-                                                           COLOUR_BLACK);
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, gCommonFormatArgs, screenCoords, itemNameWidth, stringId, COLOUR_BLACK);
             numItems++;
         }
 
@@ -2111,8 +2113,8 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto peep = GET_PEEP(w->number);
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY { window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                           window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+        + ScreenCoordsXY{ window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
     {
         auto ft = Formatter::Common();
         ft.Add<uint32_t>(peep->sprite_index);

@@ -864,8 +864,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
-        gfx_draw_string_left(dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->windowPos
-            + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
+        gfx_draw_string_left(
+            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
+            w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
     }
 }
 

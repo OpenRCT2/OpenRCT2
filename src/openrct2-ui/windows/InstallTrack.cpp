@@ -259,7 +259,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Track design name & type
     auto trackName = _trackName.c_str();
-    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, screenPos.x - ScreenCoordsXY{ 1, 0 });
+    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 1, 0 });
     screenPos.y += LIST_ROW_HEIGHT;
 
     RideNaming rideName;

@@ -1114,10 +1114,11 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, STR_COMMA16, &_simplex_low, textColour,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->widgets[WIDX_SIMPLEX_LOW].top + 1 });
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &_simplex_high, textColour,
+        dpi, STR_COMMA16, &_simplex_high, textColour,   
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 });
     gfx_draw_string_left(
-        dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour, w->windowPos
+        dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour,
+        w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 });
     gfx_draw_string_left(
         dpi, STR_COMMA16, &_simplex_octaves, textColour,
@@ -1137,7 +1138,8 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     arg = (_waterLevel - 12) / 2;
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &arg, textColour, w->windowPos
+        dpi, STR_COMMA16, &arg, textColour,
+        w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 });
 }
 
@@ -1296,8 +1298,9 @@ static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, STR_MAPGEN_SMOOTH_STRENGTH, nullptr, strengthColour,
         w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 });
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &strength, strengthColour, w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 });
+        dpi, STR_COMMA16, &strength, strengthColour,
+        w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 });
 
     // Low label and value
     const uint8_t labelColour = _heightmapLoaded ? enabledColour : disabledColour;
@@ -1323,8 +1326,10 @@ static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(
         dpi, STR_WATER_LEVEL_LABEL, nullptr, labelColour,
         w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 });
-    gfx_draw_string_left(dpi, STR_COMMA16, &waterLevel, labelColour, w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_COMMA16, &waterLevel, labelColour,
+        w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 });
 }
 
 #pragma endregion

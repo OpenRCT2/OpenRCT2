@@ -2036,7 +2036,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
             gfx_draw_string_left(
-                dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->windowPos
+                dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1],
+                w->windowPos
                     + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 });
             gfx_draw_string_left(
                 dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
@@ -2065,16 +2066,18 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 });
             gfx_draw_string_left(
                 dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
-                                               window_options_advanced_widgets[WIDX_AUTOSAVE].top });
+                w->windowPos
+                    + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
+                                      window_options_advanced_widgets[WIDX_AUTOSAVE].top });
             gfx_draw_string_left(
                 dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1],
                 w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
             int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
             gfx_draw_string_left(
                 dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
-                                               w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
+                w->windowPos
+                    + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
+                                      w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
 
             auto ft = Formatter::Common();
             ft.Add<uintptr_t>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
