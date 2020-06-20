@@ -330,6 +330,7 @@ struct Vehicle : SpriteBase
     GForces GetGForces() const;
     void SetMapToolbar() const;
     int32_t IsUsedInPairs() const;
+    rct_ride_entry* GetRideEntry() const;
     rct_ride_entry_vehicle* Entry() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;

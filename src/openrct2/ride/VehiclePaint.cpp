@@ -3146,7 +3146,7 @@ void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t image
     }
     else
     {
-        rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rideEntry = vehicle->GetRideEntry();
         if (rideEntry == nullptr)
         {
             return;
