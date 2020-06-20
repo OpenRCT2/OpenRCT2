@@ -262,7 +262,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
         ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 2, y);
+        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, { 2, y });
 
         // Item text
         auto text = newsItem.Text;
