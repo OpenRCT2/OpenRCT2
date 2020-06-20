@@ -12,7 +12,7 @@ struct SpriteBase
     uint16_t next_in_quadrant;
     uint16_t next;
     uint16_t previous;
-    // Valid values are SPRITE_LINKEDLIST_OFFSET_...
+    // Valid values are EntityListId::...
     EntityListId linked_list_index;
     // Height from centre of sprite to bottom
     uint8_t sprite_height_negative;
