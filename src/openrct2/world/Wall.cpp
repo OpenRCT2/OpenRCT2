@@ -16,7 +16,6 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../ride/RideGroupManager.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Banner.h"

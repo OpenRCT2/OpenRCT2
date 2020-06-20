@@ -29,11 +29,14 @@
 #include "Track.h"
 #include "coaster/meta/AirPoweredVerticalCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
+#include "coaster/meta/ClassicMiniRollerCoaster.h"
 #include "coaster/meta/CompactInvertedCoaster.h"
 #include "coaster/meta/CorkscrewRollerCoaster.h"
 #include "coaster/meta/FlyingRollerCoaster.h"
 #include "coaster/meta/GigaCoaster.h"
 #include "coaster/meta/HeartlineTwisterCoaster.h"
+#include "coaster/meta/HyperTwister.h"
+#include "coaster/meta/Hypercoaster.h"
 #include "coaster/meta/InvertedHairpinCoaster.h"
 #include "coaster/meta/InvertedImpulseCoaster.h"
 #include "coaster/meta/InvertedRollerCoaster.h"
@@ -49,6 +52,7 @@
 #include "coaster/meta/ReverseFreefallCoaster.h"
 #include "coaster/meta/ReverserRollerCoaster.h"
 #include "coaster/meta/SideFrictionRollerCoaster.h"
+#include "coaster/meta/SpinningWildMouse.h"
 #include "coaster/meta/SpiralRollerCoaster.h"
 #include "coaster/meta/StandUpRollerCoaster.h"
 #include "coaster/meta/SteelWildMouse.h"
@@ -73,6 +77,7 @@
 #include "gentle/meta/MiniGolf.h"
 #include "gentle/meta/MiniHelicopters.h"
 #include "gentle/meta/MonorailCycles.h"
+#include "gentle/meta/MonsterTrucks.h"
 #include "gentle/meta/ObservationTower.h"
 #include "gentle/meta/SpaceRings.h"
 #include "gentle/meta/SpiralSlide.h"
@@ -297,6 +302,11 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MINE_RIDE                          */ MineRideRTD,
     /* RIDE_TYPE_59                                 */ DummyRTD,
     /* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER        */ LIMLaunchedRollerCoasterRTD,
+    /* RIDE_TYPE_HYPERCOASTER,                      */ HypercoasterRTD,
+    /* RIDE_TYPE_HYPER_TWISTER,                     */ HyperTwisterRTD,
+    /* RIDE_TYPE_MONSTER_TRUCKS,                    */ MonsterTrucksRTD,
+    /* RIDE_TYPE_SPINNING_WILD_MOUSE,               */ SpinningWildMouseRTD,
+    /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const

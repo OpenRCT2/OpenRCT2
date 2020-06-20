@@ -20,7 +20,7 @@
 #include "../localisation/Language.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Track.h"
 #include "ObjectJsonHelpers.h"
@@ -31,6 +31,18 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+
+static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
+{
+    for (auto i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
+        auto oldRideType = rideEntry->ride_type[i];
+        if (oldRideType != RIDE_TYPE_NULL)
+        {
+            rideEntry->ride_type[i] = RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+        }
+    }
+}
 
 void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -163,6 +175,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
+    RideObjectUpdateRideType(&_legacyType);
 }
 
 void RideObject::Load()
@@ -399,7 +412,6 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
     }
 
     item->RideInfo.RideFlags = 0;
-    item->RideInfo.RideGroupIndex = RideGroupManager::GetRideGroupIndex(firstRideType, &_legacyType);
 }
 
 void RideObject::ReadLegacyVehicle(
@@ -619,6 +631,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
             { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
         });
 
+    RideObjectUpdateRideType(&_legacyType);
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

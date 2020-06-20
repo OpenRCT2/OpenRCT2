@@ -8030,7 +8030,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         if (curRide != nullptr)
         {
             uint16_t rideType = curRide->type;
-            if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_STEEL_WILD_MOUSE)
+            if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_SPINNING_WILD_MOUSE)
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
             }

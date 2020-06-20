@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "RideGroupManager.h"
 
 #include <memory>
 
@@ -21,6 +20,7 @@ struct track_design_file_ref
 };
 
 #include <string>
+#include <vector>
 
 namespace OpenRCT2
 {
@@ -33,10 +33,7 @@ interface ITrackDesignRepository
 
     virtual size_t GetCount() const abstract;
     virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
-    virtual size_t GetCountForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const abstract;
     virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry)
-        const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForRideGroup(uint8_t rideType, const RideGroup* rideGroup)
         const abstract;
 
     virtual void Scan(int32_t language) abstract;

@@ -11,7 +11,6 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Banner.h"

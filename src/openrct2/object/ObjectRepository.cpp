@@ -74,7 +74,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 19;
+    static constexpr uint16_t VERSION = 20;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -147,7 +147,6 @@ protected:
                 {
                     stream->WriteValue<uint8_t>(item.RideInfo.RideType[i]);
                 }
-                stream->WriteValue<uint8_t>(item.RideInfo.RideGroupIndex);
                 break;
             case OBJECT_TYPE_SCENERY_GROUP:
                 stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
@@ -185,7 +184,6 @@ protected:
                 {
                     item.RideInfo.RideType[i] = stream->ReadValue<uint8_t>();
                 }
-                item.RideInfo.RideGroupIndex = stream->ReadValue<uint8_t>();
                 break;
             case OBJECT_TYPE_SCENERY_GROUP:
             {

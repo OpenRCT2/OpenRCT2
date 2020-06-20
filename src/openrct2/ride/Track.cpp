@@ -29,7 +29,6 @@
 #include "../world/Surface.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "RideGroupManager.h"
 #include "RideRatings.h"
 #include "Station.h"
 #include "TrackData.h"
@@ -1222,7 +1221,7 @@ bool track_element_is_covered(int32_t trackElementType)
 bool track_element_is_booster(uint8_t rideType, uint8_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
-    return rideType != RIDE_TYPE_STEEL_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
+    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
 }
 
 bool track_element_has_speed_setting(uint8_t trackType)

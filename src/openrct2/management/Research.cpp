@@ -23,7 +23,6 @@
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../ride/RideGroupManager.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -243,7 +242,7 @@ void research_finish_item(ResearchItem* researchItem)
 
             auto ft = Formatter::Common();
 
-            // If a vehicle is the first to be invented for its ride type or group, show the ride type/group name.
+            // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
             if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                 || researchItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
@@ -892,7 +891,6 @@ bool ResearchItem::Exists() const
 }
 
 static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
-static std::bitset<RIDE_TYPE_COUNT* MAX_RIDE_GROUPS_PER_RIDE_TYPE> _seenRideGroup = {};
 
 static void research_update_first_of_type(ResearchItem* researchItem)
 {
@@ -916,27 +914,10 @@ static void research_update_first_of_type(ResearchItem* researchItem)
         return;
     }
 
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-    {
-        if (!_seenRideType[rideType])
-            researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
+    if (!_seenRideType[rideType])
+        researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
 
-        _seenRideType[rideType] = true;
-    }
-    else
-    {
-        const auto& entry = get_ride_entry(researchItem->entryIndex);
-        if (entry != nullptr)
-        {
-            auto rideGroupIndex = RideGroupManager::GetRideGroupIndex(rideType, entry);
-            assert(rideGroupIndex < MAX_RIDE_GROUPS_PER_RIDE_TYPE);
-
-            if (!_seenRideGroup[rideType * rideGroupIndex])
-                researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
-
-            _seenRideGroup[rideType * rideGroupIndex] = true;
-        }
-    }
+    _seenRideType[rideType] = true;
 }
 
 static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
@@ -945,27 +926,12 @@ static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
     if (rideType >= RIDE_TYPE_COUNT)
         return;
 
-    const auto& rtd = RideTypeDescriptors[rideType];
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-    {
-        _seenRideType[rideType] = true;
-    }
-    else
-    {
-        const auto& entry = get_ride_entry(researchItem.entryIndex);
-        if (entry != nullptr)
-        {
-            auto rideGroupIndex = RideGroupManager::GetRideGroupIndex(rideType, entry);
-            assert(rideGroupIndex < MAX_RIDE_GROUPS_PER_RIDE_TYPE);
-            _seenRideGroup[rideType * rideGroupIndex] = true;
-        }
-    }
+    _seenRideType[rideType] = true;
 }
 
 void research_determine_first_of_type()
 {
     _seenRideType.reset();
-    _seenRideGroup.reset();
 
     for (const auto& researchItem : gResearchItemsInvented)
     {

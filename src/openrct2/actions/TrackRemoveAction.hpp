@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"

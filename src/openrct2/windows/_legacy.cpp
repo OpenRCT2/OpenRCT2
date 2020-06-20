@@ -17,6 +17,7 @@
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../peep/Staff.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Banner.h"

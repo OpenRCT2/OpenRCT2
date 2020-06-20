@@ -15,6 +15,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/Platform2.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>

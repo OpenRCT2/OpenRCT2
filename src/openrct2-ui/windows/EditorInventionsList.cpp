@@ -19,7 +19,7 @@
 #include <openrct2/object/DefaultObjects.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
-#include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Scenery.h>
@@ -692,10 +692,10 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             && !RideTypeDescriptors[researchItem.baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
-            const rct_string_id rideGroupName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
+            const rct_string_id rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
             format_string(
                 groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
-                static_cast<const void*>(&rideGroupName));
+                static_cast<const void*>(&rideTypeName));
             format_string(vehicleNamePtr, std::size(vehicleNameBuffer), itemNameId, nullptr);
         }
         else
@@ -738,9 +738,9 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
         && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         const auto rideEntry = get_ride_entry(researchItem->entryIndex);
-        const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, rideEntry).Name;
+        const rct_string_id rideTypeName = get_ride_naming(researchItem->baseRideType, rideEntry).Name;
         rct_string_id args[] = {
-            rideGroupName,
+            rideTypeName,
             stringId,
         };
         format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
@@ -833,9 +833,8 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
         && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-        rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))
-                                          .Name;
-        ft.Add<rct_string_id>(rideGroupName);
+        rct_string_id rideTypeName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).Name;
+        ft.Add<rct_string_id>(rideTypeName);
         ft.Add<rct_string_id>(stringId);
     }
     else

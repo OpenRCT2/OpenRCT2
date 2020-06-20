@@ -349,7 +349,7 @@ assert_struct_size(rct_td6_scenery_element, 0x16);
 struct rct_track_td6
 {
     uint8_t type; // 0x00
-    uint8_t vehicle_type;
+    RCT12ObjectEntryIndex vehicle_type;
     union
     {
         // After loading the track this is converted to
@@ -765,3 +765,5 @@ assert_struct_size(RCT2RideRatingCalculationData, 76);
 #pragma pack(pop)
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
+ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);

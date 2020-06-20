@@ -79,7 +79,7 @@ struct ResearchItem
         {
             retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
             retItem.baseRideType = baseRideType;
-            retItem.type = type;
+            retItem.type = OpenRCT2RideTypeToRCT2RideType(type);
             retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
             retItem.category = category;
         }
@@ -101,7 +101,7 @@ struct ResearchItem
         {
             entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
             baseRideType = oldResearchItem.baseRideType;
-            type = oldResearchItem.type;
+            type = RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, get_ride_entry(entryIndex));
             flags = oldResearchItem.flags;
             category = oldResearchItem.category;
         }

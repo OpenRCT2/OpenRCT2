@@ -22,7 +22,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
-#include "RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "TrackDesign.h"
 
 #include <algorithm>
@@ -57,7 +57,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 2;
+    static constexpr uint16_t VERSION = 3;
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
@@ -78,10 +78,15 @@ public:
         auto td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
         {
+            auto* rawObject = object_repository_load_object(&td6->vehicle_object);
+            const auto* rideEntry = static_cast<const rct_ride_entry*>(static_cast<RideObject*>(rawObject)->GetLegacyData());
+            auto rideType = RCT2RideTypeToOpenRCT2RideType(td6->type, rideEntry);
+            object_delete(rawObject);
+
             TrackRepositoryItem item;
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
-            item.RideType = td6->type;
+            item.RideType = rideType;
             item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
             item.Flags = 0;
             if (IsTrackReadOnly(path))
@@ -178,31 +183,6 @@ public:
         return count;
     }
 
-    size_t GetCountForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const override
-    {
-        size_t count = 0;
-        const auto& repo = GetContext()->GetObjectRepository();
-
-        for (const auto& item : _items)
-        {
-            if (item.RideType != rideType)
-            {
-                continue;
-            }
-
-            const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
-            uint8_t rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
-            const RideGroup* itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
-
-            if (itemRideGroup != nullptr && itemRideGroup->Equals(rideGroup))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
     /**
      *
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g.
@@ -230,34 +210,6 @@ public:
             }
 
             if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
-            {
-                track_design_file_ref ref;
-                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
-                ref.path = String::Duplicate(item.Path);
-                refs.push_back(ref);
-            }
-        }
-
-        return refs;
-    }
-
-    std::vector<track_design_file_ref> GetItemsForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const override
-    {
-        std::vector<track_design_file_ref> refs;
-        const auto& repo = GetContext()->GetObjectRepository();
-
-        for (const auto& item : _items)
-        {
-            if (item.RideType != rideType)
-            {
-                continue;
-            }
-
-            const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
-            uint8_t rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
-            const RideGroup* itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
-
-            if (itemRideGroup != nullptr && itemRideGroup->Equals(rideGroup))
             {
                 track_design_file_ref ref;
                 ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
