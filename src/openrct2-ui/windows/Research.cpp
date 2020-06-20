@@ -341,24 +341,26 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
-    int32_t x = w->windowPos.x + 10;
-    int32_t y = w->windowPos.y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    auto screenCoords = w->windowPos
+        + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
     rct_string_id stringId;
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
         stringId = STR_RESEARCH_UNKNOWN;
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
-        y += 25;
+        gfx_draw_string_left_wrapped(
+            dpi, &stringId, screenCoords.x, screenCoords.y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+        screenCoords.y += 25;
 
         // Progress
         stringId = STR_RESEARCH_COMPLETED_AL;
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
-        y += 15;
+        gfx_draw_string_left_wrapped(
+            dpi, &stringId, screenCoords.x, screenCoords.y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        screenCoords.y += 15;
 
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
     }
     else
     {
@@ -389,13 +391,14 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
                 }
             }
         }
-        gfx_draw_string_left_wrapped(dpi, &strings, x, y, 296, label, COLOUR_BLACK);
-        y += 25;
+        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords.x, screenCoords.y, 296, label, COLOUR_BLACK);
+        screenCoords.y += 25;
 
         // Progress
         stringId = ResearchStageNames[gResearchProgressStage];
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
-        y += 15;
+        gfx_draw_string_left_wrapped(
+            dpi, &stringId, screenCoords.x, screenCoords.y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        screenCoords.y += 15;
 
         // Expected
         auto ft = Formatter::Common();
@@ -410,12 +413,11 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
     }
 
     // Last development
-    x = w->windowPos.x + 10;
-    y = w->windowPos.y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
 
     if (gResearchLastItem.has_value())
     {
@@ -444,7 +446,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
             }
         }
 
-        gfx_draw_string_left_wrapped(dpi, &strings, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords.x, screenCoords.y, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }
 }
 
@@ -613,7 +615,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
     int32_t currentResearchLevel = gResearchFundingLevel;
     money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
     gfx_draw_string_left(
-        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos.x + 10, w->windowPos.y + 77);
+        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 10, 77 });
 }
 
 #pragma endregion

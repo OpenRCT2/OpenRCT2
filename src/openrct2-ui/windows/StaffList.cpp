@@ -623,14 +623,14 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         Formatter::Common().Add<money32>(gStaffWageTable[selectedTab]);
         gfx_draw_string_left(
-            dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + w->width - 155, w->windowPos.y + 0x20);
+            dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ w->width - 155, 0x20 });
     }
 
     if (selectedTab < 3)
     {
         gfx_draw_string_left(
-            dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK, w->windowPos.x + 6,
-            window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->windowPos.y + 1);
+            dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK,
+            w->windowPos + ScreenCoordsXY{ 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 });
     }
 
     int32_t staffTypeStringId = StaffNamingConvention[selectedTab].plural;
@@ -645,8 +645,8 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<rct_string_id>(staffTypeStringId);
 
     gfx_draw_string_left(
-        dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + 4,
-        window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->windowPos.y + 2);
+        dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK,
+        w->windowPos + ScreenCoordsXY{ 4, window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + 2 });
 }
 
 /** rct2: 0x00992A08 */
