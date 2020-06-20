@@ -814,10 +814,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_map_draw_tab_images(w, dpi);
 
-    auto screenCoords = ScreenCoordsXY{
-        w->windowPos.x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
-        w->windowPos.y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2
-    };
+    auto screenCoords = w->windowPos
+        + ScreenCoordsXY{ (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
+                          (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2 };
 
     // Draw land tool size
     if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -830,8 +829,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // People starting position (scenario editor only)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
     {
-        screenCoords = { w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-                         w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
+                              w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
         gfx_draw_sprite(
             dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
             screenCoords.x, screenCoords.y, 0);
@@ -842,7 +842,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Render the map legend
         if (w->selected_tab == PAGE_RIDES)
         {
-            screenCoords = { w->windowPos.x + 4, w->windowPos.y + w->widgets[WIDX_MAP].bottom + 2 };
+            screenCoords = w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP].bottom + 2 };
 
             static rct_string_id mapLabels[] = {
                 STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
@@ -853,12 +853,11 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 gfx_fill_rect(
                     dpi, screenCoords.x, screenCoords.y + 2, screenCoords.x + 6, screenCoords.y + 8, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords.x + LIST_ROW_HEIGHT, screenCoords.y);
+                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 });
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
-                    screenCoords.x += 118;
-                    screenCoords.y -= LIST_ROW_HEIGHT * 4;
+                    screenCoords += { 118, -(LIST_ROW_HEIGHT * 4) };
                 }
             }
         }
@@ -866,8 +865,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
         gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->windowPos.x + 4,
-            w->windowPos.y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
+            w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
     }
 }
 
